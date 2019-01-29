@@ -2,7 +2,12 @@
   <div id="index">
     <div class="justify-around">
       <div class="main center-column" v-for="item in myData">
-        <p>{{item.title}}</p>
+        <p class="flex-center">
+          <span>
+            {{item.title}}
+          </span>
+          <b></b>
+        </p>
         <div class="contents">
           <div class="space-column">
             <p></p>
@@ -14,7 +19,12 @@
         </div>
       </div>
     </div>
-    <footer>工作虽忙，也要注意休息~</footer>
+    <footer class="flex-center">
+      <span>
+        <i></i>
+        <b>工作虽忙，也要注意休息～</b>
+      </span>
+    </footer>
   </div>
 </template>
 
@@ -47,35 +57,136 @@
 <style lang="scss" scoped>
   @import "../assets/scss/index/index.scss";
 
+  @mixin indexImg($m, $n) {
+    $url: '../assets/image/index/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
+  @mixin defaultImg($n) {
+    .main:nth-of-type(1) {
+      div {
+        p {
+          @include indexImg('module1.png', $n);
+        }
+      }
+    }
+    .main:nth-of-type(2) {
+      div {
+        p {
+          @include indexImg('module2.png', $n);
+        }
+      }
+    }
+    .main:nth-of-type(3) {
+      div {
+        p {
+          @include indexImg('module3.png', $n);
+        }
+      }
+    }
+    .main:nth-of-type(4) {
+      div {
+        p {
+          @include indexImg('module4.png', $n);
+        }
+      }
+    }
+  }
+
+  @mixin hoverImg($n) {
+    .main:nth-of-type(1):hover {
+      div {
+        p {
+          @include indexImg('modulechoose1.png', $n);
+        }
+      }
+    }
+    .main:nth-of-type(2):hover {
+      div {
+        p {
+          @include indexImg('modulechoose2.png', $n);
+        }
+      }
+    }
+    .main:nth-of-type(3):hover {
+      div {
+        p {
+          @include indexImg('modulechoose3.png', $n);
+        }
+      }
+    }
+    .main:nth-of-type(4):hover {
+      div {
+        p {
+          @include indexImg('modulechoose4.png', $n);
+        }
+      }
+    }
+  }
+
   #theme_name.theme1 {
     #index {
-
+      .main {
+        .contents {
+          div {
+            h2 {
+              @include indexImg('gengduodefault.png', 'theme1');
+            }
+            &:hover {
+              h2 {
+                @include indexImg('gengduo.png', 'theme1');
+              }
+            }
+          }
+        }
+      }
+      .main:hover {
+        .contents {
+          div {
+            h2 {
+              @include indexImg('gengduo.png', 'theme1');
+            }
+          }
+        }
+      }
+      @include defaultImg('theme1');
+      @include hoverImg('theme1');
+      footer {
+        span {
+          @include indexImg('tishiyu.png', 'theme1');
+        }
+      }
     }
   }
 
   #theme_name.theme2 {
     #index {
-      @mixin indexImg($m) {
-        $url: '../assets/image/index/' + $m;
-        @include bgImage($url);
-      }
       .main {
         p {
-          @include indexImg('theme2/toubujuxing.png');
+          @include indexImg('toubujuxing.png', 'theme2');
         }
         .contents {
-          @include indexImg('theme2/waibiankuang.png');
+          @include indexImg('waibiankuang.png', 'theme2');
           div {
-            &:hover {
-              @include indexImg('theme2/xuanzhongmokuai.png');
-            }
             p {
-              @include indexImg('theme2/yuanquan.png');
+              @include indexImg('yuanquan.png', 'theme2');
             }
             h2 {
-              @include indexImg('theme2/gengduo.png');
+              @include indexImg('gengduo.png', 'theme2');
             }
           }
+        }
+      }
+      .main:hover {
+        div {
+          &:hover {
+            @include indexImg('xuanzhongmokuai.png', 'theme2');
+          }
+        }
+      }
+      footer {
+        span {
+          @include indexImg('tishiyu.png', 'theme2');
         }
       }
     }
@@ -83,7 +194,75 @@
 
   #theme_name.theme3 {
     #index {
+      @mixin mainNthBg($b) {
+        div {
+          p {
+            @include indexImg($b);
+          }
+        }
+      }
+      .main {
+        .contents {
+          @include indexImg('waibiankuang.png', 'theme3');
+          div {
+            h2 {
+              @include indexImg('gengduo.png', 'theme3');
+            }
+          }
+        }
+      }
+      .main:hover {
+        div {
+          @include indexImg('xuanzhongmokuai.png', 'theme3');
+        }
+      }
+      @include hoverImg('theme3');
+      @include defaultImg('theme3');
+      footer {
+        span {
+          @include indexImg('tishiyu.png', 'theme3');
+        }
+      }
+    }
+  }
 
+  #theme_name.theme4 {
+    #index {
+      @mixin mainNthBg($b) {
+        div {
+          p {
+            @include indexImg($b);
+          }
+        }
+      }
+      .main {
+        .contents {
+          div {
+            h2 {
+              @include indexImg('gengduodefault.png', 'theme1');
+            }
+            &:hover {
+              h2 {
+                @include indexImg('gengduo.png', 'theme4');
+              }
+            }
+          }
+        }
+      }
+      .main:hover {
+        div {
+          @include indexImg('xuanzhongmokuai.png', 'theme4');
+        }
+      }
+      @include defaultImg('theme4');
+      footer {
+        span {
+          i {
+            @include indexImg('tishiyu.png', 'theme4');
+          }
+
+        }
+      }
     }
   }
 </style>

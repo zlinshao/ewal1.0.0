@@ -1,8 +1,18 @@
 @import "flex.scss";
 
-$colorDFF: #00FDFF;
-$color21: #212121;
 $colorFFF: #FFFFFF;
+$color000: #000000;
+
+$color2F2: #F2F2F2;
+$color874: #686874;
+$color8E33: #CF2E33;
+$color8FE0: #DFDFE0;
+
+$colorDFF: #00FDFF;
+
+$colorE46: #F6DE46;
+
+$colorA7B: #008A7B;
 
 @mixin scroll {
   overflow: auto;
@@ -29,7 +39,7 @@ $colorFFF: #FFFFFF;
 }
 
 @mixin bgImage($m) {
-  background: url($m) no-repeat;
+  background: url($m) no-repeat scroll center;
   background-size: 100% 100%;
 }
 
@@ -39,12 +49,28 @@ $colorFFF: #FFFFFF;
   border-radius: $m;
 }
 
-@mixin transition($s: 3s, $l: linear) {
-  -webkit-transition: all $s $l;
-  -moz-transition: all $s $l;
-  -ms-transition: all $s $l;
-  -o-transition: all $s $l;
-  transition: all $s $l;
+@mixin transition($t ,$s: 1s, $l: linear) {
+  -webkit-transition: $t $s $l;
+  -moz-transition: $t $s $l;
+  -ms-transition: $t $s $l;
+  -o-transition: $t $s $l;
+  transition: $t $s $l;
+}
+
+@mixin transScale($s) {
+  -webkit-transform: scale($s);
+  -moz-transform: scale($s);
+  -ms-transform: scale($s);
+  -o-transform: scale($s);
+  transform: scale($s);
+}
+
+@mixin transOrigin($lf:0,$top:0,$z:0) {
+  -webkit-transform-origin: $lf $top $z;
+  -moz-transform-origin: $lf $top $z;
+  -ms-transform-origin: $lf $top $z;
+  -o-transform-origin: $lf $top $z;
+  transform-origin: $lf $top $z;
 }
 
 @mixin line-clamp($n: 1) {
@@ -58,6 +84,12 @@ $colorFFF: #FFFFFF;
 @mixin writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl;
+}
+
+@mixin boxShaw($p1:0,$p2:0,$p3:0,$p4:0,$c:#000) {
+  -webkit-box-shadow: $p1 $p2 $p3 $p4 $c;
+  -moz-box-shadow: $p1 $p2 $p3 $p4 $c;
+  box-shadow: $p1 $p2 $p3 $p4 $c;
 }
 
 .writingMode {
