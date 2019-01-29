@@ -239,17 +239,4 @@ img {
   width: 100%;
   height: 100%; }
 
-#theme_name #login h2 {
-  width: 600px;
-  margin: 200px auto; }
-
-#theme_name.theme1 #login h2 {
-  color: red; }
-
-#theme_name.theme2 #login h2 {
-  color: orange; }
-
-#theme_name.theme3 #login h2 {
-  color: green; }
-
 /*# sourceMappingURL=index.css.map */

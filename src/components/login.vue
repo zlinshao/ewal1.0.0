@@ -1,8 +1,8 @@
 <template>
   <div id="login">
-    <h2>
-
-    </h2>
+    <div>
+      登录
+    </div>
   </div>
 </template>
 
@@ -27,7 +27,13 @@
 
   #theme_name {
     #login {
-
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: $color2F2;
+      z-index: 42;
     }
   }
 
@@ -44,6 +50,12 @@
   }
 
   #theme_name.theme3 {
+    #login {
+
+    }
+  }
+
+  #theme_name.theme4 {
     #login {
 
     }
