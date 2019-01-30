@@ -13,6 +13,30 @@ $colorDFF: #00FDFF;
 $colorE46: #F6DE46;
 
 $colorA7B: #008A7B;
+$colorC65: #9CCC65;
+$colorC00: #FB8C00;
+
+@mixin inputColor($c) {
+  input {
+    background-color: transparent;
+  }
+
+  input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color: $c;
+  }
+
+  input::-moz-placeholder, textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: $c;
+  }
+
+  input:-moz-placeholder, textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: $c;
+  }
+
+  input:-ms-input-placeholder, textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: $c;
+  }
+}
 
 @mixin scroll {
   overflow: auto;

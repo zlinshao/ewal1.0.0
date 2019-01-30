@@ -136,57 +136,78 @@
     bottom: 0;
     padding: 100px 100px 0 0;
     flex-direction: column; }
-    #theme_name #login .login > div {
-      opacity: 0;
-      transform: rotateY(60deg);
-      -webkit-transition: all 0.8s linear;
-      -moz-transition: all 0.8s linear;
-      -ms-transition: all 0.8s linear;
-      -o-transition: all 0.8s linear;
-      transition: all 0.8s linear; }
-      #theme_name #login .login > div .p1 {
-        width: 120px;
-        height: 120px;
-        margin-right: 35px;
-        -webkit-border-radius: 6px;
-        -moz-border-radius: 6px;
-        border-radius: 6px; }
-      #theme_name #login .login > div .p2 {
-        width: 600px;
-        height: 500px;
-        background-color: #FFFFFF;
-        -webkit-border-radius: 6px;
-        -moz-border-radius: 6px;
-        border-radius: 6px; }
-        #theme_name #login .login > div .p2 .formData {
-          margin: 25px 0; }
-          #theme_name #login .login > div .p2 .formData i {
-            width: 26px;
-            height: 26px; }
-          #theme_name #login .login > div .p2 .formData input {
-            width: 210px;
-            padding: 6px 20px 6px 40px; }
-          #theme_name #login .login > div .p2 .formData b {
-            width: 80px;
-            height: 40px;
-            background-color: #AAA; }
-      #theme_name #login .login > div .p3 {
-        width: 60px;
-        height: 120px;
-        padding-right: 4px;
-        color: #FFFFFF;
-        cursor: pointer; }
-    #theme_name #login .login .loginRotate {
-      opacity: 1;
-      transform: rotateY(0deg) perspective(800px); }
+    #theme_name #login .login > div .p1 {
+      width: 120px;
+      height: 120px;
+      margin-right: 35px;
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      border-radius: 6px; }
+    #theme_name #login .login > div .p2 {
+      width: 600px;
+      height: 500px;
+      background-color: #FFFFFF;
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      border-radius: 6px; }
+      #theme_name #login .login > div .p2 .formData {
+        margin: 25px 0; }
+        #theme_name #login .login > div .p2 .formData i {
+          width: 26px;
+          height: 26px; }
+        #theme_name #login .login > div .p2 .formData input {
+          width: 210px;
+          padding: 6px 20px 6px 40px; }
+        #theme_name #login .login > div .p2 .formData b {
+          width: 80px;
+          height: 40px;
+          background-color: #AAA; }
+    #theme_name #login .login > div .p3 {
+      width: 60px;
+      height: 120px;
+      padding-right: 4px;
+      color: #FFFFFF;
+      cursor: pointer; }
     #theme_name #login .login footer {
       margin: 100px 0 0 120px; }
       #theme_name #login .login footer p {
         width: 35px;
         height: 35px; }
       #theme_name #login .login footer div span + span {
-        border-left: 2px solid #AAAAAA; }
+        border-left: 2px solid; }
       #theme_name #login .login footer div span {
         padding: 0 30px; }
+
+#theme_name.theme2 #login .login > div .p2 {
+  background-color: transparent; }
+  #theme_name.theme2 #login .login > div .p2 input {
+    color: #00FDFF; }
+  #theme_name.theme2 #login .login > div .p2 input {
+    background-color: transparent; }
+  #theme_name.theme2 #login .login > div .p2 input::-webkit-input-placeholder, #theme_name.theme2 #login .login > div .p2 textarea::-webkit-input-placeholder {
+    color: #00FDFF; }
+  #theme_name.theme2 #login .login > div .p2 input::-moz-placeholder, #theme_name.theme2 #login .login > div .p2 textarea::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #00FDFF; }
+  #theme_name.theme2 #login .login > div .p2 input:-moz-placeholder, #theme_name.theme2 #login .login > div .p2 textarea:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #00FDFF; }
+  #theme_name.theme2 #login .login > div .p2 input:-ms-input-placeholder, #theme_name.theme2 #login .login > div .p2 textarea:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #00FDFF; }
+#theme_name.theme2 #login footer span + span {
+  border-color: #00FDFF; }
+
+#theme_name.theme4 #login .login > div {
+  opacity: 0;
+  transform: rotateY(60deg);
+  -webkit-transition: all 0.8s linear;
+  -moz-transition: all 0.8s linear;
+  -ms-transition: all 0.8s linear;
+  -o-transition: all 0.8s linear;
+  transition: all 0.8s linear; }
+#theme_name.theme4 #login .login .loginRotate {
+  opacity: 1;
+  transform: rotateY(0deg) perspective(800px); }
 
 /*# sourceMappingURL=index.css.map */

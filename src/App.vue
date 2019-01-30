@@ -36,8 +36,10 @@
           <div class="justify-center">
             <h1 class="writingMode">
               <span>{{item.title}}</span>
+              <i></i>
               <span>{{item.English}}</span>
             </h1>
+            <b></b>
           </div>
         </div>
       </div>
@@ -55,7 +57,7 @@
     name: 'App',
     data() {
       return {
-        theme_name: '1',
+        theme_name: '2',
         moduleList: false,
         modules: [
           {
@@ -110,194 +112,7 @@
   }
 </script>
 
-<style lang="scss">
-  @import "./assets/scss/common.scss";
+<style lang="scss" scoped>
+  @import "./assets/scss/app/index.scss";
 
-  @mixin appImg($l) {
-    $url: './assets/image/' + $l;
-    @include bgImage($url);
-  }
-
-  @mixin moduleImg($n ,$m) {
-    $url: './assets/image/module/' + $m + '/' + $n;
-    @include bgImage($url);
-  }
-
-  @mixin defaultImg($n) {
-    @for $i from 1 through 9 {
-      .list-#{$i} {
-        p {
-          @include moduleImg('module#{$i}.png', $n);
-        }
-      }
-    }
-  }
-
-  @mixin hoverImg($n) {
-    @for $i from 1 through 9 {
-      .list-#{$i}:hover {
-        p {
-          @include moduleImg('modulechoose#{$i}.png', $n);
-        }
-      }
-    }
-  }
-
-  #app {
-    color: $color874;
-    height: 100%;
-    /*头部*/
-    header {
-      height: 80px;
-      position: fixed;
-      left: 0;
-      right: 0;
-      padding: 0 60px;
-      z-index: 30;
-      .headLeft {
-        > span {
-          b, span {
-            margin-right: 20px;
-          }
-          b {
-            font-size: 30px;
-          }
-          label {
-            font-size: 16px;
-          }
-        }
-        .showButton {
-          margin-left: 30px;
-          cursor: pointer;
-        }
-      }
-      .items-center {
-        .personal {
-          cursor: pointer;
-          span {
-            margin: 0 20px;
-          }
-          p {
-            @include radius(10px);
-            overflow: hidden;
-            width: 45px;
-            height: 45px;
-          }
-        }
-      }
-    }
-    /*复选框*/
-    select {
-      color: $colorFFF;
-      padding: 6px 18px;
-      background-color: rgba(0, 0, 0, .4);
-      @include radius(6px);
-      appearance: none;
-      -moz-appearance: none;
-      -webkit-appearance: none;
-    }
-    select::-ms-expand {
-      display: none;
-    }
-    /*阻止外边距溢出*/
-    #theme_name {
-      margin-top: 80px;
-      > div {
-        &:before {
-          content: '';
-          display: table;
-        }
-      }
-    }
-    /*模态框列表*/
-    #moduleList {
-      position: fixed;
-      top: 80px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 80px 180px 0;
-      z-index: 24;
-      @include transScale(0);
-      @include transOrigin();
-      @include transition(all, .6s);
-      > div {
-        .list {
-          cursor: pointer;
-          p {
-            width: 66px;
-            height: 66px;
-            margin-bottom: 20px;
-          }
-          div {
-            padding: 40px 20px 0;
-            height: 600px;
-            h1 {
-              span:first-of-type {
-                font-size: 28px;
-              }
-              span:last-of-type {
-                margin-top: 20px;
-                font-size: 18px;
-              }
-            }
-          }
-        }
-        .list:hover {
-          div {
-            color: $colorFFF;
-          }
-        }
-      }
-    }
-    /*显示模态框*/
-    #moduleList.moduleList {
-      @include transScale(1);
-    }
-  }
-
-  #app.app1 {
-    background-color: $color2F2;
-    select {
-      color: $colorFFF;
-    }
-    #moduleList {
-      background-color: $colorFFF;
-      > div {
-        @include moduleImg("yunhuan.png", 'theme1');
-        background-size: 42% 80%;
-        @include defaultImg('theme1');
-        @include hoverImg('theme1');
-        .list:hover {
-          div {
-            @include moduleImg("moduledianji.png", 'theme1');
-          }
-        }
-      }
-    }
-  }
-
-  #app.app2 {
-    color: $colorDFF;
-    @include appImg("2.jpg");
-    header {
-      select {
-        color: $colorDFF;
-      }
-    }
-  }
-
-  #app.app3 {
-    @include appImg("3.jpg");
-    header {
-      color: $color874;
-    }
-  }
-
-  #app.app4 {
-    @include appImg("4.png");
-    header {
-      color: $color874;
-    }
-  }
 </style>

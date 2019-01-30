@@ -46,25 +46,7 @@ table {
   border-spacing: 0;
 }
 
-input {
-  background-color: transparent;
-}
-
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
-  color: #CDCDCD;
-}
-
-input::-moz-placeholder, textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
-  color: #CDCDCD;
-}
-
-input:-moz-placeholder, textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-  color: #CDCDCD;
-}
-
-input:-ms-input-placeholder, textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #CDCDCD;
-}
+@include inputColor(#CDCDCD);
 
 textarea:disabled, input:disabled {
   opacity: 1;

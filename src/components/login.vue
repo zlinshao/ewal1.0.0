@@ -85,6 +85,9 @@
     #login {
       .login {
         > div {
+          .p1 {
+            @include loginImg('moduleleft.png', 'theme1');
+          }
           .p2 {
             @include formIcon('theme1');
           }
@@ -103,7 +106,24 @@
 
   #theme_name.theme2 {
     #login {
-
+      @include loginImg('loginbg.png', 'theme2');
+      .login {
+        > div {
+          .p2 {
+            @include formIcon('theme2');
+          }
+          .p3 {
+            @include loginImg('denglu.png', 'theme2');
+            background-size: 180% 100%;
+            background-position: top right;
+          }
+        }
+      }
+      footer {
+        p {
+          @include loginImg('logo.png', 'theme1');
+        }
+      }
     }
   }
 

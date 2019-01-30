@@ -1,0 +1,282 @@
+@import "../common.scss";
+
+@mixin appImg($l) {
+  $url: './assets/image/' + $l;
+  @include bgImage($url);
+}
+
+@mixin moduleImg($n ,$m) {
+  $url: './assets/image/module/' + $m + '/' + $n;
+  @include bgImage($url);
+}
+
+@mixin defaultImg($n) {
+  @for $i from 1 through 9 {
+    .list-#{$i} {
+      p {
+        @include moduleImg('module#{$i}.png', $n);
+      }
+    }
+  }
+}
+
+@mixin hoverImg($n) {
+  @for $i from 1 through 9 {
+    .list-#{$i}:hover {
+      p {
+        @include moduleImg('modulechoose#{$i}.png', $n);
+      }
+    }
+  }
+}
+
+#app {
+  color: $color874;
+  height: 100%;
+  header {
+    height: 80px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    padding: 0 60px;
+    z-index: 30;
+    .headLeft {
+      > span {
+        b, span {
+          margin-right: 20px;
+        }
+        b {
+          font-size: 30px;
+        }
+        label {
+          font-size: 16px;
+        }
+      }
+      .showButton {
+        margin-left: 30px;
+        cursor: pointer;
+      }
+    }
+    .items-center {
+      .personal {
+        cursor: pointer;
+        span {
+          margin: 0 20px;
+        }
+        p {
+          @include radius(10px);
+          overflow: hidden;
+          width: 45px;
+          height: 45px;
+        }
+      }
+    }
+  }
+
+  select {
+    color: $colorFFF;
+    padding: 6px 18px;
+    background-color: rgba(0, 0, 0, .4);
+    @include radius(6px);
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
+  select::-ms-expand {
+    display: none;
+  }
+
+  #theme_name {
+    margin-top: 80px;
+    > div {
+      &:before {
+        content: '';
+        display: table;
+      }
+    }
+  }
+
+  #moduleList {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 80px 180px 0;
+    z-index: 24;
+    @include transScale(0);
+    @include transOrigin();
+    @include transition(all, .6s);
+    > div {
+      .list {
+        cursor: pointer;
+        p {
+          width: 66px;
+          height: 66px;
+          margin-bottom: 20px;
+        }
+        div {
+          padding: 40px 15px 0;
+          height: 600px;
+          h1 {
+            span:first-of-type {
+              font-size: 28px;
+            }
+            span:last-of-type {
+              margin-top: 20px;
+              font-size: 18px;
+            }
+          }
+        }
+      }
+      .list:hover {
+        div {
+          color: $colorFFF;
+        }
+      }
+    }
+  }
+
+  #moduleList.moduleList {
+    @include transScale(1);
+  }
+}
+
+#app.app1 {
+  background-color: $color2F2;
+  select {
+    color: $colorFFF;
+  }
+  #moduleList {
+    background-color: $colorFFF;
+    > div {
+      @include moduleImg("modulebg.png", 'theme1');
+      background-size: 30% 66%;
+      @include defaultImg('theme1');
+      @include hoverImg('theme1');
+      .list:hover {
+        div {
+          @include moduleImg("moduledianji.png", 'theme1');
+        }
+      }
+    }
+  }
+}
+
+#app.app2 {
+  color: $colorDFF;
+  @include appImg("2.jpg");
+  header {
+    select {
+      color: $colorDFF;
+    }
+  }
+  #moduleList {
+    @include bgImage("./assets/image/2.jpg");
+    > div {
+      @include defaultImg('theme2');
+      .list {
+        p {
+          width: 44px;
+          height: 44px;
+          margin-bottom: 40px;
+        }
+        div {
+          @include moduleImg("weidianji.png", 'theme2');
+        }
+      }
+      .list:hover {
+        div {
+          @include moduleImg("moduledianji.png", 'theme2');
+        }
+      }
+    }
+  }
+}
+
+#app.app3 {
+  @include appImg("3.jpg");
+  header {
+    color: $color874;
+  }
+  #moduleList {
+    @include moduleImg("modulebg.png", 'theme3');
+    > div {
+      .list {
+        width: 140px;
+        p {
+          margin: 0;
+        }
+        div {
+          padding: 0 0 0 20px;
+        }
+      }
+      .list:hover {
+        @include moduleImg("moduledianji.png", 'theme3');
+        div {
+          color: $color000;
+        }
+      }
+    }
+  }
+}
+
+#app.app4 {
+  @include appImg("4.png");
+  header {
+    color: $color874;
+  }
+  #moduleList {
+    padding-top: 100px;
+    @include moduleImg("modulebg.png", 'theme4');
+    > div {
+      .list {
+        position: relative;
+        p {
+          margin: 20px 0 0;
+          width: 6px;
+          height: 6px;
+          background-color: $colorC65;
+          @include radius(50%);
+        }
+        div {
+          span {
+            color: $colorFFF;
+          }
+          span:last-of-type {
+            color: $colorC65;
+          }
+          b {
+            position: absolute;
+            top: -80px;
+            width: 65px;
+            height: 167px;
+          }
+        }
+      }
+      .list:hover {
+        p {
+          display: none;
+        }
+        div {
+          @include radius(100px);
+          background-color: $colorFFF;
+          span {
+            color: $colorA7B;
+          }
+          i {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: $colorC00;
+            @include radius(50%);
+            margin-top: 20px;
+          }
+          b {
+            @include moduleImg("topimage.png", 'theme4');
+          }
+        }
+      }
+    }
+  }
+}
