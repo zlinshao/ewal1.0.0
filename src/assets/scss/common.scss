@@ -73,6 +73,14 @@ $colorA7B: #008A7B;
   transform-origin: $lf $top $z;
 }
 
+@mixin transRotate($x:0,$y:0) {
+  -webkit-transform: rotateX($x) rotateY($y);
+  -moz-transform: rotateX($x) rotateY($y);
+  -ms-transform: rotateX($x) rotateY($y);
+  -o-transform: rotateX($x) rotateY($y);
+  transform: rotateX($x) rotateY($y);
+}
+
 @mixin line-clamp($n: 1) {
   overflow: hidden;
   text-overflow: ellipsis;

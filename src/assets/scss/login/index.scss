@@ -1,8 +1,82 @@
-@import "../rest.scss";
+@import "../common.scss";
 
 #theme_name {
   #login {
-
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 42;
+    background-color: $color2F2;
+    .login {
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 0;
+      bottom: 0;
+      padding: 100px 100px 0 0;
+      flex-direction: column;
+      > div {
+        opacity: 0;
+        transform: rotateY(60deg);
+        @include transition(all, .8s);
+        .p1 {
+          width: 120px;
+          height: 120px;
+          margin-right: 35px;
+          @include radius(6px);
+        }
+        .p2 {
+          width: 600px;
+          height: 500px;
+          background-color: $colorFFF;
+          @include radius(6px);
+          .formData {
+            margin: 25px 0;
+            i {
+              width: 26px;
+              height: 26px;
+            }
+            input {
+              width: 210px;
+              padding: 6px 20px 6px 40px;
+            }
+            b {
+              width: 80px;
+              height: 40px;
+              background-color: #AAA;
+            }
+          }
+        }
+        .p3 {
+          width: 60px;
+          height: 120px;
+          padding-right: 4px;
+          color: $colorFFF;
+          cursor: pointer;
+        }
+      }
+      .loginRotate {
+        opacity: 1;
+        transform: rotateY(0deg) perspective(800px);
+      }
+      footer {
+        margin: 100px 0 0 120px;
+        p {
+          width: 35px;
+          height: 35px;
+        }
+        div {
+          span + span {
+            border-left: 2px solid #AAAAAA;
+          }
+          span {
+            padding: 0 30px;
+          }
+        }
+      }
+    }
   }
 }
 

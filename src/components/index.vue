@@ -1,7 +1,7 @@
 <template>
   <div id="index">
     <div class="justify-around">
-      <div class="main center-column" v-for="item in myData">
+      <div class="main items-column" :class="'main-' + (index + 1)" v-for="(item,index) in myData">
         <p class="flex-center">
           <span>
             {{item.title}}
@@ -63,62 +63,24 @@
   }
 
   @mixin defaultImg($n) {
-    .main:nth-of-type(1) {
-      div {
-        p {
-          @include indexImg('module1.png', $n);
-        }
-      }
-    }
-    .main:nth-of-type(2) {
-      div {
-        p {
-          @include indexImg('module2.png', $n);
-        }
-      }
-    }
-    .main:nth-of-type(3) {
-      div {
-        p {
-          @include indexImg('module3.png', $n);
-        }
-      }
-    }
-    .main:nth-of-type(4) {
-      div {
-        p {
-          @include indexImg('module4.png', $n);
+    @for $i from 1 through 4 {
+      .main-#{$i} {
+        div {
+          p {
+            @include indexImg('module#{$i}.png', $n);
+          }
         }
       }
     }
   }
 
   @mixin hoverImg($n) {
-    .main:nth-of-type(1):hover {
-      div {
-        p {
-          @include indexImg('modulechoose1.png', $n);
-        }
-      }
-    }
-    .main:nth-of-type(2):hover {
-      div {
-        p {
-          @include indexImg('modulechoose2.png', $n);
-        }
-      }
-    }
-    .main:nth-of-type(3):hover {
-      div {
-        p {
-          @include indexImg('modulechoose3.png', $n);
-        }
-      }
-    }
-    .main:nth-of-type(4):hover {
-      div {
-        p {
-          @include indexImg('modulechoose4.png', $n);
+    @for $i from 1 through 4 {
+      .main-#{$i}:hover {
+        div {
+          p {
+            @include indexImg('modulechoose#{$i}.png', $n);
+          }
         }
       }
     }
@@ -194,13 +156,6 @@
 
   #theme_name.theme3 {
     #index {
-      @mixin mainNthBg($b) {
-        div {
-          p {
-            @include indexImg($b);
-          }
-        }
-      }
       .main {
         .contents {
           @include indexImg('waibiankuang.png', 'theme3');
@@ -228,13 +183,6 @@
 
   #theme_name.theme4 {
     #index {
-      @mixin mainNthBg($b) {
-        div {
-          p {
-            @include indexImg($b);
-          }
-        }
-      }
       .main {
         .contents {
           div {

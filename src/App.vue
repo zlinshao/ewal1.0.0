@@ -28,11 +28,10 @@
           </p>
         </div>
       </div>
-      <!--<a @click="routerLink('/login')">登录</a>-->
     </header>
     <div id="moduleList" :class="{'moduleList':moduleList}">
       <div class="justify-around">
-        <div v-for="item in modules" class="list center-column">
+        <div v-for="(item,index) in modules" class="list items-column" :class="'list-' + (index + 1)">
           <p></p>
           <div class="justify-center">
             <h1 class="writingMode">
@@ -114,13 +113,40 @@
 <style lang="scss">
   @import "./assets/scss/common.scss";
 
-  #app {
-    @mixin moduleImg($l) {
-      $url: './assets/image/module/' + $l;
-      @include bgImage($url);
+  @mixin appImg($l) {
+    $url: './assets/image/' + $l;
+    @include bgImage($url);
+  }
+
+  @mixin moduleImg($n ,$m) {
+    $url: './assets/image/module/' + $m + '/' + $n;
+    @include bgImage($url);
+  }
+
+  @mixin defaultImg($n) {
+    @for $i from 1 through 9 {
+      .list-#{$i} {
+        p {
+          @include moduleImg('module#{$i}.png', $n);
+        }
+      }
     }
+  }
+
+  @mixin hoverImg($n) {
+    @for $i from 1 through 9 {
+      .list-#{$i}:hover {
+        p {
+          @include moduleImg('modulechoose#{$i}.png', $n);
+        }
+      }
+    }
+  }
+
+  #app {
     color: $color874;
     height: 100%;
+    /*头部*/
     header {
       height: 80px;
       position: fixed;
@@ -160,6 +186,7 @@
         }
       }
     }
+    /*复选框*/
     select {
       color: $colorFFF;
       padding: 6px 18px;
@@ -172,6 +199,7 @@
     select::-ms-expand {
       display: none;
     }
+    /*阻止外边距溢出*/
     #theme_name {
       margin-top: 80px;
       > div {
@@ -181,6 +209,7 @@
         }
       }
     }
+    /*模态框列表*/
     #moduleList {
       position: fixed;
       top: 80px;
@@ -188,21 +217,17 @@
       right: 0;
       bottom: 0;
       padding: 80px 180px 0;
-      background-color: $colorFFF;
       z-index: 24;
       @include transScale(0);
       @include transOrigin();
       @include transition(all, .6s);
       > div {
-        @include moduleImg("yunhuan.png");
-        background-size: 36% 72%;
         .list {
           cursor: pointer;
           p {
-            width: 36px;
-            height: 36px;
-            margin-bottom: 40px;
-            @include moduleImg("modulesuanpan.png");
+            width: 66px;
+            height: 66px;
+            margin-bottom: 20px;
           }
           div {
             padding: 40px 20px 0;
@@ -219,30 +244,36 @@
           }
         }
         .list:hover {
-          p {
-            @include moduleImg("modulexinemiti.png");
-          }
           div {
             color: $colorFFF;
-            @include moduleImg("moduledianji.png");
           }
         }
       }
     }
+    /*显示模态框*/
     #moduleList.moduleList {
       @include transScale(1);
     }
-  }
-
-  @mixin appImg($l) {
-    $url: './assets/image/' + $l;
-    @include bgImage($url);
   }
 
   #app.app1 {
     background-color: $color2F2;
     select {
       color: $colorFFF;
+    }
+    #moduleList {
+      background-color: $colorFFF;
+      > div {
+        @include moduleImg("yunhuan.png", 'theme1');
+        background-size: 42% 80%;
+        @include defaultImg('theme1');
+        @include hoverImg('theme1');
+        .list:hover {
+          div {
+            @include moduleImg("moduledianji.png", 'theme1');
+          }
+        }
+      }
     }
   }
 

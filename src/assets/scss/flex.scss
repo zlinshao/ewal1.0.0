@@ -2,11 +2,21 @@
   display: flex;
   display: -webkit-flex;
 
-  @if $f == 'space-column' {
+  @if $f == 'center-column' {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @if $f == 'bet-column' {
     flex-direction: column;
     justify-content: space-between;
   }
-  @if $f == 'center-column' {
+  @if $f == 'space-column' {
+    flex-direction: column;
+    justify-content: center;
+  }
+  @if $f == 'items-column' {
     flex-direction: column;
     align-items: center;
   }
@@ -48,12 +58,20 @@
   @include flex();
 }
 
+.center-column {
+  @include flex('center-column');
+}
+
+.bet-column {
+  @include flex('bet-column');
+}
+
 .space-column {
   @include flex('space-column');
 }
 
-.center-column {
-  @include flex('center-column');
+.items-column {
+  @include flex('items-column');
 }
 
 // 上下左右居中

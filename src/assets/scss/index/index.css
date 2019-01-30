@@ -2,13 +2,26 @@
   display: flex;
   display: -webkit-flex; }
 
-.space-column {
+.center-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+
+.bet-column {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
   justify-content: space-between; }
 
-.center-column {
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
