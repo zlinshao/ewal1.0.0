@@ -21,7 +21,7 @@
             <option value="4">文艺森系</option>
           </select>
         </div>
-        <div class="items-center personal">
+        <div class="items-center personal" @click="routerLink('login')">
           <span>冯宝宝</span>
           <p>
             <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
@@ -57,7 +57,7 @@
     name: 'App',
     data() {
       return {
-        theme_name: '2',
+        theme_name: '4',
         moduleList: false,
         modules: [
           {

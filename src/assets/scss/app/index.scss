@@ -104,8 +104,9 @@
     bottom: 0;
     padding: 80px 180px 0;
     z-index: 24;
-    @include transScale(0);
-    @include transOrigin();
+    opacity: 0;
+    @include transform(scale(0));
+    @include transOrigin(50%);
     @include transition(all, .6s);
     > div {
       .list {
@@ -138,7 +139,8 @@
   }
 
   #moduleList.moduleList {
-    @include transScale(1);
+    opacity: 1;
+    @include transform(scale(1));
   }
 }
 
@@ -156,6 +158,7 @@
       @include hoverImg('theme1');
       .list:hover {
         div {
+          font-size: 12px;
           @include moduleImg("moduledianji.png", 'theme1');
         }
       }
@@ -186,7 +189,11 @@
         }
       }
       .list:hover {
+        p {
+          opacity: .35;
+        }
         div {
+          color: $colorDFF;
           @include moduleImg("moduledianji.png", 'theme2');
         }
       }

@@ -9,6 +9,9 @@
     .main {
       width: 100%;
       cursor: pointer;
+      opacity: 0;
+      @include transform(translateY(-80px));
+      @include transition(all, .4s);
       > p {
         margin-bottom: 30px;
         text-align: center;
@@ -39,9 +42,13 @@
         }
       }
     }
+    .translateDown {
+      opacity: 1;
+      @include transform(translateY(0));
+    }
     .main:hover {
       .contents {
-        @include transScale(1.03);
+        @include transform(scale(1.03));
       }
     }
     footer {
@@ -79,7 +86,7 @@
       }
       .contents {
         background-color: $colorFFF;
-        @include boxShaw(0, 10px, 20px, 0, rgba(223, 223, 223, 1));
+        @include boxShaw(0 10px 20px 0 rgba(223, 223, 223, 1));
         @include radius(10px);
       }
     }
@@ -162,7 +169,7 @@
       }
       .contents {
         background-color: $colorFFF;
-        @include boxShaw(0, 0, 30px, -10px, #008A7B);
+        @include boxShaw(0 0 30px -10px #008A7B);
         @include radius(10px);
       }
     }

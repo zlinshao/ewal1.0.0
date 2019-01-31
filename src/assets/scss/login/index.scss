@@ -9,6 +9,16 @@
     bottom: 0;
     z-index: 42;
     background-color: $color2F2;
+    header {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      right: 0;
+      span {
+        width: 280px;
+        height: 80px;
+      }
+    }
     .login {
       position: absolute;
       left: 10%;
@@ -28,9 +38,10 @@
           width: 600px;
           height: 500px;
           background-color: $colorFFF;
+          position: relative;
           @include radius(6px);
           .formData {
-            margin: 25px 0;
+            margin: 30px 0;
             i {
               width: 26px;
               height: 26px;
@@ -40,10 +51,24 @@
               padding: 6px 20px 6px 40px;
             }
             b {
+              cursor: pointer;
               width: 80px;
-              height: 40px;
+              height: 36px;
+              @include radius(6px);
+              text-align: center;
+              line-height: 36px;
               background-color: #AAA;
             }
+          }
+          .forgetPassword {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            font-size: 16px;
+            cursor: pointer;
+          }
+          .loginBtn {
+            display: none;
           }
         }
         .p3 {
@@ -56,26 +81,33 @@
       }
       footer {
         margin: 100px 0 0 120px;
-        p {
-          width: 35px;
-          height: 35px;
-        }
-        div {
-          span + span {
-            border-left: 2px solid;
-          }
-          span {
-            padding: 0 30px;
-          }
-        }
+        width: 240px;
+        height: 24px;
       }
+    }
+    h1 {
+      display: none;
     }
   }
 }
 
 #theme_name.theme1 {
   #login {
-
+    .login {
+      > div {
+        .p3 {
+          @include radius(0 100px 100px 0);
+        }
+        .p2 {
+          .forgetPassword {
+            color: $color80C0;
+          }
+        }
+        .p2, .p3 {
+          @include boxShaw(-6px 10px 20px 0px rgba(223, 223, 223, 1));
+        }
+      }
+    }
   }
 }
 
@@ -84,11 +116,19 @@
     .login {
       > div {
         .p2 {
-          background-color: transparent;
+          @include inputColor($colorDFF);
+          .forgetPassword {
+            bottom: 80px;
+            right: 40px;
+            color: $colorDFF;
+          }
           input {
             color: $colorDFF;
           }
-          @include inputColor($colorDFF);
+        }
+        .p3 {
+          color: $colorDFF;
+          padding-right: 22px;
         }
       }
     }
@@ -102,20 +142,76 @@
 
 #theme_name.theme3 {
   #login {
-
+    .login {
+      > div {
+        .p2 {
+          > div {
+            margin-right: 70px;
+            .formData {
+              border: 3px solid #000;
+              padding: 0 30px;
+              border-radius: 100px;
+              background: #fff;
+              height: 50px;
+              margin: 20px 0;
+            }
+          }
+          .forgetPassword {
+            right: 80px;
+            bottom: 25px;
+            color: $color000;
+          }
+          .loginBtn {
+            cursor: pointer;
+            display: block;
+            position: absolute;
+            right: 0;
+            padding: 26px;
+            top: 50%;
+            @include transform(translateY(-50%));
+            span {
+              font-weight: bold;
+              color: $colorFFF;
+            }
+          }
+        }
+        .p3 {
+          display: none;
+        }
+      }
+    }
+    h1 {
+      display: block;
+      position: absolute;
+      left: 60px;
+      bottom: 60px;
+      color: $color000;
+    }
   }
 }
 
 #theme_name.theme4 {
   #login {
     .login {
+      opacity: 0;
+      @include transition(all, .8s);
       > div {
-        opacity: 0;
         transform: rotateY(60deg);
         @include transition(all, .8s);
+        .p2 {
+          .forgetPassword {
+            color: $colorA7B;
+          }
+        }
+        .p3 {
+          background-color: $colorA7B;
+          @include radius(0 20px 20px 0);
+        }
       }
-      .loginRotate {
-        opacity: 1;
+    }
+    .loginRotate {
+      opacity: 1;
+      > div {
         transform: rotateY(0deg) perspective(800px);
       }
     }

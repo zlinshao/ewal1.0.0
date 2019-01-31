@@ -7,6 +7,7 @@ $color2F2: #F2F2F2;
 $color874: #686874;
 $color8E33: #CF2E33;
 $color8FE0: #DFDFE0;
+$color80C0: #C0C0C0;
 
 $colorDFF: #00FDFF;
 
@@ -81,13 +82,14 @@ $colorC00: #FB8C00;
   transition: $t $s $l;
 }
 
-@mixin transScale($s) {
-  -webkit-transform: scale($s);
-  -moz-transform: scale($s);
-  -ms-transform: scale($s);
-  -o-transform: scale($s);
-  transform: scale($s);
+@mixin transform($s) {
+  -webkit-transform: $s;
+  -moz-transform: $s;
+  -ms-transform: $s;
+  -o-transform: $s;
+  transform: $s;
 }
+
 
 @mixin transOrigin($lf:0,$top:0,$z:0) {
   -webkit-transform-origin: $lf $top $z;
@@ -95,14 +97,6 @@ $colorC00: #FB8C00;
   -ms-transform-origin: $lf $top $z;
   -o-transform-origin: $lf $top $z;
   transform-origin: $lf $top $z;
-}
-
-@mixin transRotate($x:0,$y:0) {
-  -webkit-transform: rotateX($x) rotateY($y);
-  -moz-transform: rotateX($x) rotateY($y);
-  -ms-transform: rotateX($x) rotateY($y);
-  -o-transform: rotateX($x) rotateY($y);
-  transform: rotateX($x) rotateY($y);
 }
 
 @mixin line-clamp($n: 1) {
@@ -118,10 +112,10 @@ $colorC00: #FB8C00;
   writing-mode: tb-rl;
 }
 
-@mixin boxShaw($p1:0,$p2:0,$p3:0,$p4:0,$c:#000) {
-  -webkit-box-shadow: $p1 $p2 $p3 $p4 $c;
-  -moz-box-shadow: $p1 $p2 $p3 $p4 $c;
-  box-shadow: $p1 $p2 $p3 $p4 $c;
+@mixin boxShaw($s) {
+  -webkit-box-shadow: $s;
+  -moz-box-shadow: $s;
+  box-shadow: $s;
 }
 
 .writingMode {

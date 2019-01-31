@@ -1,11 +1,10 @@
 <template>
   <div id="index">
     <div class="justify-around">
-      <div class="main items-column" :class="'main-' + (index + 1)" v-for="(item,index) in myData">
+      <div class="main items-column" :class="['main-' + (index + 1), {'translateDown': translateDown}]"
+           v-for="(item,index) in myData">
         <p class="flex-center">
-          <span>
-            {{item.title}}
-          </span>
+          <span>{{item.title}}</span>
           <b></b>
         </p>
         <div class="contents">
@@ -33,6 +32,7 @@
     name: 'index',
     data() {
       return {
+        translateDown: false,
         myData: [
           {
             title: '企业头条',
@@ -47,6 +47,23 @@
             title: '员工关怀',
           },
         ],
+      }
+    },
+    mounted() {
+
+    },
+    activated() {
+      let that = this;
+      setTimeout(function () {
+        that.translateDown = true;
+      }, 10)
+    },
+    watch: {
+      $route: {
+        handler(val, oldVal) {
+          this.translateDown = false;
+        },
+        deep: true// 深度观察监听
       }
     },
     methods: {}
@@ -124,7 +141,7 @@
   #theme_name.theme2 {
     #index {
       .main {
-        p {
+        > p {
           @include indexImg('toubujuxing.png', 'theme2');
         }
         .contents {
@@ -140,7 +157,10 @@
         }
       }
       .main:hover {
-        div {
+        > p {
+          @include indexImg('toubujuxingchoose.png', 'theme2');
+        }
+        .contents {
           &:hover {
             @include indexImg('xuanzhongmokuai.png', 'theme2');
           }
@@ -167,7 +187,7 @@
         }
       }
       .main:hover {
-        div {
+        .contents {
           @include indexImg('xuanzhongmokuai.png', 'theme3');
         }
       }
@@ -198,7 +218,7 @@
         }
       }
       .main:hover {
-        div {
+        .contents {
           @include indexImg('xuanzhongmokuai.png', 'theme4');
         }
       }
