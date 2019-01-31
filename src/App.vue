@@ -17,7 +17,7 @@
           <select v-model="theme_name">
             <option value="1">简约中国风</option>
             <option value="2">科技风</option>
-            <option value="3">小清新</option>
+            <option value="3">孟菲斯风</option>
             <option value="4">文艺森系</option>
           </select>
         </div>

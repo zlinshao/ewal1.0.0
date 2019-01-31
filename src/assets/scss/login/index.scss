@@ -80,7 +80,7 @@
         }
       }
       footer {
-        margin: 100px 0 0 120px;
+        margin: 100px 0 0 94px;
         width: 240px;
         height: 24px;
       }
@@ -128,7 +128,11 @@
         }
         .p3 {
           color: $colorDFF;
+          opacity: .8;
           padding-right: 22px;
+          &:hover {
+            opacity: 1;
+          }
         }
       }
     }

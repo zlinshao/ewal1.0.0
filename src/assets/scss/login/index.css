@@ -192,7 +192,7 @@
       color: #FFFFFF;
       cursor: pointer; }
     #theme_name #login .login footer {
-      margin: 100px 0 0 120px;
+      margin: 100px 0 0 94px;
       width: 240px;
       height: 24px; }
   #theme_name #login h1 {
@@ -230,7 +230,10 @@
   color: #00FDFF; }
 #theme_name.theme2 #login .login > div .p3 {
   color: #00FDFF;
+  opacity: .8;
   padding-right: 22px; }
+  #theme_name.theme2 #login .login > div .p3:hover {
+    opacity: 1; }
 #theme_name.theme2 #login footer span + span {
   border-color: #00FDFF; }
 

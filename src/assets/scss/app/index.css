@@ -321,14 +321,16 @@
       background: url("./assets/image/module/theme2/module9.png") no-repeat scroll center;
       background-size: 100% 100%; }
     #app.app2 #moduleList > div .list p {
+      opacity: .35;
       width: 44px;
       height: 44px;
       margin-bottom: 40px; }
     #app.app2 #moduleList > div .list div {
-      background: url("./assets/image/module/theme2/weidianji.png") no-repeat scroll center;
+      color: #04D8EE;
+      background: url("./assets/image/module/theme2/moduleweidianji.png") no-repeat scroll center;
       background-size: 100% 100%; }
     #app.app2 #moduleList > div .list:hover p {
-      opacity: .35; }
+      opacity: 1; }
     #app.app2 #moduleList > div .list:hover div {
       color: #00FDFF;
       background: url("./assets/image/module/theme2/moduledianji.png") no-repeat scroll center;

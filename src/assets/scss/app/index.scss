@@ -180,17 +180,19 @@
       @include defaultImg('theme2');
       .list {
         p {
+          opacity: .35;
           width: 44px;
           height: 44px;
           margin-bottom: 40px;
         }
         div {
-          @include moduleImg("weidianji.png", 'theme2');
+          color: #04D8EE;
+          @include moduleImg("moduleweidianji.png", 'theme2');
         }
       }
       .list:hover {
         p {
-          opacity: .35;
+          opacity: 1;
         }
         div {
           color: $colorDFF;

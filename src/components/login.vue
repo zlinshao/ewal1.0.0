@@ -92,6 +92,7 @@
 
   #theme_name.theme1 {
     #login {
+      @include loginImg("qidongye.png", 'theme1');
       .login {
         > div {
           .p1 {
@@ -106,9 +107,7 @@
         }
       }
       footer {
-        p {
-          @include loginImg('logo.png', 'theme1');
-        }
+        @include loginImg('footerlogo.png', 'theme1');
       }
     }
   }
