@@ -11,8 +11,7 @@ import router from './router'
 import Axios from './utils/httpService'
 import echarts from 'echarts'
 import 'echarts/theme/macarons.js'
-import './assets/scss/rest.scss'
-import './assets/scss/index/index.scss'
+import './assets/scss/rest.css'
 
 Vue.use(Boss);
 Vue.use(Vuex);

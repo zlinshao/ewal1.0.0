@@ -49,8 +49,8 @@
             </span>
           </p>
           <p class="items-center">
-            <i @click="changingOver"></i>
-            <b @click="changingOver"></b>
+            <i @click="changingOver('remove')"></i>
+            <b @click="changingOver('add')"></b>
           </p>
         </div>
       </div>
@@ -121,8 +121,14 @@
       changingOver(val) {
         switch (val) {
           case 'add':
+            if (this.moduleChoose < this.moduleData.length - 1) {
+              this.moduleChoose++;
+            }
             break;
           case 'remove':
+            if (this.moduleChoose > 0) {
+              this.moduleChoose--;
+            }
             break;
         }
       },

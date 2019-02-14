@@ -251,15 +251,15 @@
       #theme_name #index .moduleWriting > div .moduleFoot b:hover {
         border-left-color: #CF2E33; }
 
-#theme_name.theme1 #index .main:hover > p span {
-  color: #FFFFFF;
-  background-color: #CF2E33; }
 #theme_name.theme1 #index .main > p span {
   width: 130px;
   background-color: #DFDFE0;
   -webkit-border-radius: 221px;
   -moz-border-radius: 221px;
   border-radius: 221px; }
+#theme_name.theme1 #index .main:hover > p span {
+  color: #FFFFFF;
+  background-color: #CF2E33; }
 #theme_name.theme1 #index .main .contents {
   background-color: #FFFFFF;
   -webkit-box-shadow: 0 10px 20px 0 #dfdfdf;
