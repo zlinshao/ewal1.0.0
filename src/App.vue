@@ -14,7 +14,7 @@
       </div>
       <div class="items-center">
         <div>
-          <select v-model="theme_name">
+          <select v-model="theme_name" @change="changeLoading">
             <option value="1">简约中国风</option>
             <option value="2">科技风</option>
             <option value="3">孟菲斯风</option>
@@ -31,7 +31,8 @@
     </header>
     <div id="moduleList" :class="{'moduleList':moduleList}">
       <div class="justify-around">
-        <div v-for="(item,index) in modules" class="list items-column" :class="'list-' + (index + 1)">
+        <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules"
+             @click="routerLink(item.url)">
           <p></p>
           <div class="justify-center">
             <h1 class="writingMode">
@@ -49,6 +50,9 @@
         <router-view/>
       </keep-alive>
     </div>
+    <div class="flex-center changeLoad" v-if="changeLoad">
+      正在切换
+    </div>
   </div>
 </template>
 
@@ -57,42 +61,52 @@
     name: 'App',
     data() {
       return {
-        theme_name: '4',
+        theme_name: '1',
         moduleList: false,
+        changeLoad: false,
         modules: [
           {
+            url: 'president',
             title: '总裁办',
             English: 'Presidents',
           },
           {
+            url: '',
             title: '财务中心',
             English: 'Finacial Center',
           },
           {
+            url: '',
             title: '人力资源中心',
             English: 'Personal Adminstration',
           },
           {
+            url: '',
             title: '新媒体运营中心',
             English: 'Social Media Center',
           },
           {
+            url: '',
             title: '营销中心',
             English: 'Marketing Center',
           },
           {
+            url: '',
             title: '客服中心',
             English: 'Customer Service',
           },
           {
+            url: '',
             title: '乐伽大学',
             English: 'Lejia College',
           },
           {
+            url: '',
             title: '风险控制',
             English: 'Risk Management',
           },
           {
+            url: '',
             title: '知识产权保护',
             English: 'Intellectual Property Protection',
           },
@@ -100,11 +114,24 @@
       }
     },
     mounted() {
-
     },
-    watch: {},
+    watch: {
+      $route: {
+        handler(val, oldVal) {
+          this.moduleList = false;
+        },
+        deep: true// 深度观察监听
+      }
+    },
     computed: {},
     methods: {
+      changeLoading() {
+        this.changeLoad = true;
+        let that = this;
+        setTimeout(function () {
+          that.changeLoad = false;
+        }, 2000);
+      },
       showModules() {
         this.moduleList = !this.moduleList;
       }

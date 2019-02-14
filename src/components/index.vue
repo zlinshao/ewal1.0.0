@@ -2,7 +2,7 @@
   <div id="index">
     <div class="justify-around">
       <div class="main items-column" :class="['main-' + (index + 1), {'translateDown': translateDown}]"
-           v-for="(item,index) in myData">
+           v-for="(item,index) in myData" @click="moduleEntry()">
         <p class="flex-center">
           <span>{{item.title}}</span>
           <b></b>
@@ -13,7 +13,7 @@
             <h1 class="writingMode">
               模块简介模块简介模块简介模块简介 模块简介模块简介模块简介
             </h1>
-            <h2></h2>
+            <h2 @click.stop="moduleEntry('more')"></h2>
           </div>
         </div>
       </div>
@@ -24,6 +24,37 @@
         <b>工作虽忙，也要注意休息～</b>
       </span>
     </footer>
+    <div class="flex-center moduleWriting" v-if="moduleWriting">
+      <div class="bet-column">
+        <div class="items-bet moduleTop">
+          <p>01</p>
+          <p @click="moduleWriting = false">关闭</p>
+        </div>
+        <div class="flex moduleMain" v-for="(item,index) in moduleData" v-if="index === moduleChoose">
+          <div class="mainLeft">
+            <img src="http://img3.redocn.com/20100622/20100621_8c78a30dc5c10ef5552cwCXmHvkvaDCT.jpg">
+          </div>
+          <div class="bet-column mainRight">
+            <div>
+              <p>{{item.title}}</p>
+              <span>{{item.content}}</span>
+            </div>
+            <span>更多&nbsp;></span>
+          </div>
+        </div>
+        <div class="items-bet moduleFoot">
+          <p class="items-center">
+            <span v-for="(item,index) in moduleData.length" :class="{'spanHover': index === moduleChoose}"
+                  @click="moduleChoose = index">
+            </span>
+          </p>
+          <p class="items-center">
+            <i @click="changingOver"></i>
+            <b @click="changingOver"></b>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -33,6 +64,8 @@
     data() {
       return {
         translateDown: false,
+        moduleWriting: false,
+        moduleChoose: 1,
         myData: [
           {
             title: '企业头条',
@@ -47,6 +80,24 @@
             title: '员工关怀',
           },
         ],
+        moduleData: [
+          {
+            title: '反倒是卡',
+            content: '山东黄金咖啡山东黄金咖啡士大夫回家看书犯得上发射点环境发会尽快送达方会尽快啦和艰苦奋斗和时间考虑发山东黄金咖啡山东黄金咖啡士大夫回家看了啊会尽快啦发生的符合健康是回复就开始大黄蜂就开始大幅就开始大家看附近ask地方对健康十分和加咖啡和健康撒法和开始打回复就卡萨丁回复就开始大黄蜂十大和加咖啡还是加咖啡会尽快送达很快乐',
+          },
+          {
+            title: '反倒是卡11111',
+            content: '山东黄金咖啡山东黄金咖啡士大夫回家看书犯得上发射点环境发会尽快送达方会尽快啦和艰苦奋斗和时间考虑发山东黄金咖啡山东黄金咖啡士大夫回家看了啊会尽快啦发生的符合健康是回复就开始大黄蜂就开始大幅就开始大家看附近ask地方对健康十分和加咖啡和健康撒法和开始打回复就卡萨丁回复就开始大黄蜂十大和加咖啡还是加咖啡会尽快送达很快乐',
+          },
+          {
+            title: '反倒是卡22222',
+            content: '山东黄金咖啡山东黄金咖啡士大夫回家看书犯得上发射点环境发会尽快送达方会尽快啦和艰苦奋斗和时间考虑发山东黄金咖啡山东黄金咖啡士大夫回家看了啊会尽快啦发生的符合健康是回复就开始大黄蜂就开始大幅就开始大家看附近ask地方对健康十分和加咖啡和健康撒法和开始打回复就卡萨丁回复就开始大黄蜂十大和加咖啡还是加咖啡会尽快送达很快乐',
+          },
+          {
+            title: '反倒是卡33333',
+            content: '山东黄金咖啡山东黄金咖啡士大夫回家看书犯得上发射点环境发会尽快送达方会尽快啦和艰苦奋斗和时间考虑发山东黄金咖啡山东黄金咖啡士大夫回家看了啊会尽快啦发生的符合健康是回复就开始大黄蜂就开始大幅就开始大家看附近ask地方对健康十分和加咖啡和健康撒法和开始打回复就卡萨丁回复就开始大黄蜂十大和加咖啡还是加咖啡会尽快送达很快乐',
+          },
+        ]
       }
     },
     mounted() {
@@ -66,7 +117,23 @@
         deep: true// 深度观察监听
       }
     },
-    methods: {}
+    methods: {
+      changingOver(val) {
+        switch (val) {
+          case 'add':
+            break;
+          case 'remove':
+            break;
+        }
+      },
+      moduleEntry(val = '') {
+        if (val) {
+
+        } else {
+          this.moduleWriting = true;
+        }
+      },
+    }
   }
 </script>
 
@@ -228,7 +295,6 @@
           i {
             @include indexImg('tishiyu.png', 'theme4');
           }
-
         }
       }
     }

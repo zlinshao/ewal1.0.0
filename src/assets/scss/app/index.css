@@ -2,16 +2,19 @@
   display: flex;
   display: -webkit-flex; }
 
-.center-column {
+.bet-column {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center; }
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
 
 .bet-column {
   display: flex;
   display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex-direction: column;
   justify-content: space-between; }
 
@@ -214,6 +217,15 @@
     -ms-transform: scale(1);
     -o-transform: scale(1);
     transform: scale(1); }
+  #app .changeLoad {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #FFFFFF;
+    color: #212121;
+    z-index: 100; }
 
 #app.app1 {
   background-color: #F2F2F2; }

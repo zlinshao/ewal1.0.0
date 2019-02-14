@@ -137,10 +137,19 @@
       }
     }
   }
-
   #moduleList.moduleList {
     opacity: 1;
     @include transform(scale(1));
+  }
+  .changeLoad {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #FFFFFF;
+    color: #212121;
+    z-index: 100;
   }
 }
 

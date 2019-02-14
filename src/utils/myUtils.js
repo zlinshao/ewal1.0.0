@@ -1,5 +1,6 @@
 class myUtils {
   constructor(data) {
+    this.arr = data;
   }
 
   // 判断字符串是否为空

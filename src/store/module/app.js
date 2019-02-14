@@ -9,7 +9,6 @@ const app = {
   mutations: {
     // 主题
     THEME_NAME(state, view) {
-      console.log(view);
       state.themeName = view;
     },
     // 获取个人信息
@@ -21,7 +20,6 @@ const app = {
   actions: {
     // 主题
     theme_name({commit}, view) {
-      console.log(view);
       commit('THEME_NAME', view);
     },
     // 获取个人信息

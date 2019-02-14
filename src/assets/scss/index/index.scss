@@ -63,6 +63,82 @@
         }
       }
     }
+    .moduleWriting {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 66;
+      background-color: rgba(0, 0, 0, .5);
+      > div {
+        width: 890px;
+        height: 560px;
+        padding: 40px 50px 60px;
+        background-color: $colorFFF;
+        .moduleTop {
+          p {
+            cursor: pointer;
+          }
+        }
+        .moduleMain {
+          .mainLeft {
+            min-width: 320px;
+            max-width: 320px;
+            height: 300px;
+            margin-right: 60px;
+          }
+          .mainRight {
+            height: 100%;
+            p, span {
+              cursor: pointer;
+              color: $color874;
+            }
+            p {
+              font-size: 20px;
+              margin-bottom: 30px;
+            }
+            span {
+              font-size: 14px;
+              @include line-clamp(3);
+              line-height: 30px;
+            }
+          }
+        }
+        .moduleFoot {
+          span {
+            background-color: $color8FE0;
+            @include radius(50%);
+            padding: 6px;
+            margin-right: 12px;
+            cursor: pointer;
+            &:hover {
+              background-color: $color8E33;
+            }
+          }
+          .spanHover {
+            background-color: $color8E33;
+          }
+          i, b {
+            cursor: pointer;
+            border: 10px solid transparent;
+          }
+          i {
+            border-right-color: $color8FE0;
+            margin-right: 15px;
+          }
+          i:hover {
+            border-right-color: $color8E33;
+          }
+          b {
+            border-left-color: $color8FE0;
+          }
+          b:hover {
+            border-left-color: $color8E33;
+          }
+        }
+      }
+    }
   }
 }
 

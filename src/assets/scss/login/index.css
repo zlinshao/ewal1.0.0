@@ -2,16 +2,19 @@
   display: flex;
   display: -webkit-flex; }
 
-.center-column {
+.bet-column {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center; }
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
 
 .bet-column {
   display: flex;
   display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex-direction: column;
   justify-content: space-between; }
 

@@ -2,16 +2,19 @@
   display: flex;
   display: -webkit-flex; }
 
-.center-column {
+.bet-column {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center; }
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
 
 .bet-column {
   display: flex;
   display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex-direction: column;
   justify-content: space-between; }
 
@@ -187,6 +190,66 @@
       height: 35px; }
       #theme_name #index footer span b {
         display: none; }
+  #theme_name #index .moduleWriting {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 66;
+    background-color: rgba(0, 0, 0, 0.5); }
+    #theme_name #index .moduleWriting > div {
+      width: 890px;
+      height: 560px;
+      padding: 40px 50px 60px;
+      background-color: #FFFFFF; }
+      #theme_name #index .moduleWriting > div .moduleTop p {
+        cursor: pointer; }
+      #theme_name #index .moduleWriting > div .moduleMain .mainLeft {
+        min-width: 320px;
+        max-width: 320px;
+        height: 300px;
+        margin-right: 60px; }
+      #theme_name #index .moduleWriting > div .moduleMain .mainRight {
+        height: 100%; }
+        #theme_name #index .moduleWriting > div .moduleMain .mainRight p, #theme_name #index .moduleWriting > div .moduleMain .mainRight span {
+          cursor: pointer;
+          color: #686874; }
+        #theme_name #index .moduleWriting > div .moduleMain .mainRight p {
+          font-size: 20px;
+          margin-bottom: 30px; }
+        #theme_name #index .moduleWriting > div .moduleMain .mainRight span {
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+          line-height: 30px; }
+      #theme_name #index .moduleWriting > div .moduleFoot span {
+        background-color: #DFDFE0;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        padding: 6px;
+        margin-right: 12px;
+        cursor: pointer; }
+        #theme_name #index .moduleWriting > div .moduleFoot span:hover {
+          background-color: #CF2E33; }
+      #theme_name #index .moduleWriting > div .moduleFoot .spanHover {
+        background-color: #CF2E33; }
+      #theme_name #index .moduleWriting > div .moduleFoot i, #theme_name #index .moduleWriting > div .moduleFoot b {
+        cursor: pointer;
+        border: 10px solid transparent; }
+      #theme_name #index .moduleWriting > div .moduleFoot i {
+        border-right-color: #DFDFE0;
+        margin-right: 15px; }
+      #theme_name #index .moduleWriting > div .moduleFoot i:hover {
+        border-right-color: #CF2E33; }
+      #theme_name #index .moduleWriting > div .moduleFoot b {
+        border-left-color: #DFDFE0; }
+      #theme_name #index .moduleWriting > div .moduleFoot b:hover {
+        border-left-color: #CF2E33; }
 
 #theme_name.theme1 #index .main:hover > p span {
   color: #FFFFFF;
