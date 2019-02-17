@@ -195,7 +195,8 @@
     -o-transition: all 0.6s linear;
     transition: all 0.6s linear; }
     #app #moduleList > div .list {
-      cursor: pointer; }
+      cursor: pointer;
+      width: 66px; }
       #app #moduleList > div .list p {
         width: 66px;
         height: 66px;
@@ -291,8 +292,10 @@
       #app.app1 #moduleList > div .list-9:hover p {
         background: url("./assets/image/module/theme1/modulechoose9.png") no-repeat scroll center;
         background-size: 100% 100%; }
+      #app.app1 #moduleList > div .list div h1 span:first-of-type {
+        font-size: 30px;
+        font-family: 'jingDianXingShu'; }
       #app.app1 #moduleList > div .list:hover div {
-        font-size: 12px;
         background: url("./assets/image/module/theme1/moduledianji.png") no-repeat scroll center;
         background-size: 100% 100%; }
 
@@ -341,6 +344,8 @@
       color: #04D8EE;
       background: url("./assets/image/module/theme2/moduleweidianji.png") no-repeat scroll center;
       background-size: 100% 100%; }
+      #app.app2 #moduleList > div .list div h1 span:first-of-type {
+        font-size: 26px; }
     #app.app2 #moduleList > div .list:hover p {
       opacity: 1; }
     #app.app2 #moduleList > div .list:hover div {
@@ -362,6 +367,11 @@
         margin: 0; }
       #app.app3 #moduleList > div .list div {
         padding: 0 0 0 20px; }
+        #app.app3 #moduleList > div .list div h1 span {
+          font-weight: bold;
+          color: #000000; }
+        #app.app3 #moduleList > div .list div h1 span:first-of-type {
+          font-family: 'mengFeiSiTe'; }
     #app.app3 #moduleList > div .list:hover {
       background: url("./assets/image/module/theme3/moduledianji.png") no-repeat scroll center;
       background-size: 100% 100%; }
@@ -389,6 +399,9 @@
         border-radius: 50%; }
       #app.app4 #moduleList > div .list div span {
         color: #FFFFFF; }
+      #app.app4 #moduleList > div .list div span:first-of-type {
+        font-size: 30px;
+        font-family: 'jingDianXingShu'; }
       #app.app4 #moduleList > div .list div span:last-of-type {
         color: #9CCC65; }
       #app.app4 #moduleList > div .list div b {

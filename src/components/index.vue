@@ -101,7 +101,6 @@
       }
     },
     mounted() {
-
     },
     activated() {
       let that = this;
@@ -208,6 +207,11 @@
           @include indexImg('tishiyu.png', 'theme1');
         }
       }
+      .moduleWriting {
+        > div {
+          @include indexImg('bgKuang.png', 'theme1');
+        }
+      }
     }
   }
 
@@ -244,6 +248,11 @@
           @include indexImg('tishiyu.png', 'theme2');
         }
       }
+      .moduleWriting {
+        > div {
+          @include indexImg('bgKuang.png', 'theme2');
+        }
+      }
     }
   }
 
@@ -269,6 +278,12 @@
       footer {
         span {
           @include indexImg('tishiyu.png', 'theme3');
+        }
+      }
+      .moduleWriting {
+        > div {
+          padding: 60px 70px 60px 50px;
+          @include indexImg('bgKuang.png', 'theme3');
         }
       }
     }

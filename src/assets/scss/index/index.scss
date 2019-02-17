@@ -52,8 +52,6 @@
       }
     }
     footer {
-      text-align: center;
-      font-weight: bold;
       padding-top: 70px;
       span {
         width: 436px;
@@ -75,7 +73,6 @@
         width: 890px;
         height: 560px;
         padding: 40px 50px 60px;
-        background-color: $colorFFF;
         .moduleTop {
           p {
             cursor: pointer;
@@ -87,9 +84,13 @@
             max-width: 320px;
             height: 300px;
             margin-right: 60px;
+            img {
+              @include radius(6px);
+            }
           }
           .mainRight {
             height: 100%;
+            padding-right: 100px;
             p, span {
               cursor: pointer;
               color: $color874;
@@ -107,17 +108,23 @@
         }
         .moduleFoot {
           span {
+            &:hover {
+              background-color: $color8E33;
+            }
             background-color: $color8FE0;
             @include radius(50%);
             padding: 6px;
             margin-right: 12px;
             cursor: pointer;
-            &:hover {
-              background-color: $color8E33;
-            }
           }
           .spanHover {
             background-color: $color8E33;
+          }
+          i:hover {
+            border-right-color: $color8E33;
+          }
+          b:hover {
+            border-left-color: $color8E33;
           }
           i, b {
             cursor: pointer;
@@ -127,14 +134,8 @@
             border-right-color: $color8FE0;
             margin-right: 15px;
           }
-          i:hover {
-            border-right-color: $color8E33;
-          }
           b {
             border-left-color: $color8FE0;
-          }
-          b:hover {
-            border-left-color: $color8E33;
           }
         }
       }
@@ -166,6 +167,18 @@
         @include radius(10px);
       }
     }
+    .moduleWriting {
+      > div {
+        background-color: $colorFFF;
+        .moduleMain {
+          .mainRight {
+            p, span {
+              color: $color874;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -180,6 +193,39 @@
       span {
         width: 220px;
         height: 16px;
+      }
+    }
+    .moduleWriting {
+      > div {
+        padding-top: 60px;
+        .moduleTop {
+          p:first-of-type {
+            color: $color131;
+          }
+        }
+        .moduleMain {
+          .mainRight {
+            p, span {
+              color: $colorFFF;
+            }
+          }
+        }
+        .moduleFoot {
+          span {
+            &:hover {
+              background-color: $color131;
+            }
+          }
+          .spanHover {
+            background-color: $color131;
+          }
+          i:hover {
+            border-right-color: $color131;
+          }
+          b:hover {
+            border-left-color: $color131;
+          }
+        }
       }
     }
   }
@@ -222,6 +268,11 @@
         height: 80px;
       }
     }
+    .moduleWriting {
+      > div {
+        padding: 60px 70px 60px 50px;
+      }
+    }
   }
 }
 
@@ -245,7 +296,7 @@
       }
       .contents {
         background-color: $colorFFF;
-        @include boxShaw(0 0 30px -10px #008A7B);
+        @include boxShaw(0 0 30px -10px $colorA7B);
         @include radius(10px);
       }
     }
@@ -262,6 +313,27 @@
         b {
           display: inline-block;
           margin-left: -90px;
+        }
+      }
+    }
+    .moduleWriting {
+      > div {
+        background-color: $colorFFF;
+        .moduleFoot {
+          span {
+            &:hover {
+              background-color: $colorA7B;
+            }
+          }
+          .spanHover {
+            background-color: $colorA7B;
+          }
+          i:hover {
+            border-right-color: $colorA7B;
+          }
+          b:hover {
+            border-left-color: $colorA7B;
+          }
         }
       }
     }

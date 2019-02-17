@@ -35,7 +35,7 @@
              @click="routerLink(item.url)">
           <p></p>
           <div class="justify-center">
-            <h1 class="writingMode">
+            <h1 class="writingMode items-center">
               <span>{{item.title}}</span>
               <i></i>
               <span>{{item.English}}</span>

@@ -111,6 +111,7 @@
     > div {
       .list {
         cursor: pointer;
+        width: 66px;
         p {
           width: 66px;
           height: 66px;
@@ -165,9 +166,18 @@
       background-size: 30% 66%;
       @include defaultImg('theme1');
       @include hoverImg('theme1');
+      .list {
+        div {
+          h1 {
+            span:first-of-type {
+              font-size: 30px;
+              font-family: 'jingDianXingShu';
+            }
+          }
+        }
+      }
       .list:hover {
         div {
-          font-size: 12px;
           @include moduleImg("moduledianji.png", 'theme1');
         }
       }
@@ -197,6 +207,11 @@
         div {
           color: #04D8EE;
           @include moduleImg("moduleweidianji.png", 'theme2');
+          h1 {
+            span:first-of-type {
+              font-size: 26px;
+            }
+          }
         }
       }
       .list:hover {
@@ -227,6 +242,15 @@
         }
         div {
           padding: 0 0 0 20px;
+          h1 {
+            span {
+              font-weight: bold;
+              color: $color000;
+            }
+            span:first-of-type {
+              font-family: 'mengFeiSiTe';
+            }
+          }
         }
       }
       .list:hover {
@@ -260,6 +284,10 @@
         div {
           span {
             color: $colorFFF;
+          }
+          span:first-of-type {
+            font-size: 30px;
+            font-family: 'jingDianXingShu';
           }
           span:last-of-type {
             color: $colorC65;

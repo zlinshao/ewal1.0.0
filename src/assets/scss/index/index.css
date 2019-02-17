@@ -182,8 +182,6 @@
     -o-transform: scale(1.03);
     transform: scale(1.03); }
   #theme_name #index footer {
-    text-align: center;
-    font-weight: bold;
     padding-top: 70px; }
     #theme_name #index footer span {
       width: 436px;
@@ -201,8 +199,7 @@
     #theme_name #index .moduleWriting > div {
       width: 890px;
       height: 560px;
-      padding: 40px 50px 60px;
-      background-color: #FFFFFF; }
+      padding: 40px 50px 60px; }
       #theme_name #index .moduleWriting > div .moduleTop p {
         cursor: pointer; }
       #theme_name #index .moduleWriting > div .moduleMain .mainLeft {
@@ -210,8 +207,13 @@
         max-width: 320px;
         height: 300px;
         margin-right: 60px; }
+        #theme_name #index .moduleWriting > div .moduleMain .mainLeft img {
+          -webkit-border-radius: 6px;
+          -moz-border-radius: 6px;
+          border-radius: 6px; }
       #theme_name #index .moduleWriting > div .moduleMain .mainRight {
-        height: 100%; }
+        height: 100%;
+        padding-right: 100px; }
         #theme_name #index .moduleWriting > div .moduleMain .mainRight p, #theme_name #index .moduleWriting > div .moduleMain .mainRight span {
           cursor: pointer;
           color: #686874; }
@@ -238,28 +240,28 @@
           background-color: #CF2E33; }
       #theme_name #index .moduleWriting > div .moduleFoot .spanHover {
         background-color: #CF2E33; }
+      #theme_name #index .moduleWriting > div .moduleFoot i:hover {
+        border-right-color: #CF2E33; }
+      #theme_name #index .moduleWriting > div .moduleFoot b:hover {
+        border-left-color: #CF2E33; }
       #theme_name #index .moduleWriting > div .moduleFoot i, #theme_name #index .moduleWriting > div .moduleFoot b {
         cursor: pointer;
         border: 10px solid transparent; }
       #theme_name #index .moduleWriting > div .moduleFoot i {
         border-right-color: #DFDFE0;
         margin-right: 15px; }
-      #theme_name #index .moduleWriting > div .moduleFoot i:hover {
-        border-right-color: #CF2E33; }
       #theme_name #index .moduleWriting > div .moduleFoot b {
         border-left-color: #DFDFE0; }
-      #theme_name #index .moduleWriting > div .moduleFoot b:hover {
-        border-left-color: #CF2E33; }
 
+#theme_name.theme1 #index .main:hover > p span {
+  color: #FFFFFF;
+  background-color: #CF2E33; }
 #theme_name.theme1 #index .main > p span {
   width: 130px;
   background-color: #DFDFE0;
   -webkit-border-radius: 221px;
   -moz-border-radius: 221px;
   border-radius: 221px; }
-#theme_name.theme1 #index .main:hover > p span {
-  color: #FFFFFF;
-  background-color: #CF2E33; }
 #theme_name.theme1 #index .main .contents {
   background-color: #FFFFFF;
   -webkit-box-shadow: 0 10px 20px 0 #dfdfdf;
@@ -268,12 +270,30 @@
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px; }
+#theme_name.theme1 #index .moduleWriting > div {
+  background-color: #FFFFFF; }
+  #theme_name.theme1 #index .moduleWriting > div .moduleMain .mainRight p, #theme_name.theme1 #index .moduleWriting > div .moduleMain .mainRight span {
+    color: #686874; }
 
 #theme_name.theme2 #index .main > p {
   width: 224px; }
 #theme_name.theme2 #index footer span {
   width: 220px;
   height: 16px; }
+#theme_name.theme2 #index .moduleWriting > div {
+  padding-top: 60px; }
+  #theme_name.theme2 #index .moduleWriting > div .moduleTop p:first-of-type {
+    color: #FF7131; }
+  #theme_name.theme2 #index .moduleWriting > div .moduleMain .mainRight p, #theme_name.theme2 #index .moduleWriting > div .moduleMain .mainRight span {
+    color: #FFFFFF; }
+  #theme_name.theme2 #index .moduleWriting > div .moduleFoot span:hover {
+    background-color: #FF7131; }
+  #theme_name.theme2 #index .moduleWriting > div .moduleFoot .spanHover {
+    background-color: #FF7131; }
+  #theme_name.theme2 #index .moduleWriting > div .moduleFoot i:hover {
+    border-right-color: #FF7131; }
+  #theme_name.theme2 #index .moduleWriting > div .moduleFoot b:hover {
+    border-left-color: #FF7131; }
 
 #theme_name.theme3 #index .main:hover > p span {
   background-color: #F6DE46; }
@@ -298,6 +318,8 @@
   #theme_name.theme3 #index footer span {
     width: 360px;
     height: 80px; }
+#theme_name.theme3 #index .moduleWriting > div {
+  padding: 60px 70px 60px 50px; }
 
 #theme_name.theme4 #index .main:hover > p span {
   color: #FFFFFF;
@@ -330,5 +352,15 @@
     #theme_name.theme4 #index footer span b {
       display: inline-block;
       margin-left: -90px; }
+#theme_name.theme4 #index .moduleWriting > div {
+  background-color: #FFFFFF; }
+  #theme_name.theme4 #index .moduleWriting > div .moduleFoot span:hover {
+    background-color: #008A7B; }
+  #theme_name.theme4 #index .moduleWriting > div .moduleFoot .spanHover {
+    background-color: #008A7B; }
+  #theme_name.theme4 #index .moduleWriting > div .moduleFoot i:hover {
+    border-right-color: #008A7B; }
+  #theme_name.theme4 #index .moduleWriting > div .moduleFoot b:hover {
+    border-left-color: #008A7B; }
 
 /*# sourceMappingURL=index.css.map */
