@@ -18,6 +18,22 @@ $colorA7B: #008A7B;
 $colorC65: #9CCC65;
 $colorC00: #FB8C00;
 
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf");
+}
+
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF");
+}
+
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf");
+}
+
+
 @mixin inputColor($c) {
   input {
     background-color: transparent;

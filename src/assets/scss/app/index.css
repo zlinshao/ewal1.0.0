@@ -82,6 +82,15 @@
   display: -webkit-flex;
   justify-content: flex-end; }
 
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
 .writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl; }
@@ -140,6 +149,7 @@
     #app header .headLeft > span label {
       font-size: 16px; }
     #app header .headLeft .showButton {
+      font-family: 'jianyue';
       margin-left: 30px;
       cursor: pointer; }
     #app header .items-center .personal {

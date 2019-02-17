@@ -9,7 +9,7 @@
           <label>-1～1.5°C</label>
         </span>
         <span @click="showModules()" class="showButton">
-          部门列表
+          EWAL
         </span>
       </div>
       <div class="items-center">
