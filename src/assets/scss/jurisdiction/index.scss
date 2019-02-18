@@ -1,0 +1,36 @@
+@import "../common.scss";
+
+#theme_name {
+  #jurisdiction {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 101;
+    background-color: $color2F2;
+    .content {
+      width: 802px / 1920px * 100%;
+      height: 626px / 1080px * 100%;
+      text-align: center;
+      position: relative;
+      span{
+        position: absolute;
+        right: -100px;
+        top: 40%;
+        font-family: 'jingDianXingShu';
+        font-size: 32px;
+        b{
+          margin-top: 8px;
+          vertical-align: middle;
+          font-size: 32px;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  height: 100%;
+}
