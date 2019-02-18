@@ -189,7 +189,7 @@
     display: none; }
   #app #theme_name {
     height: 100%;
-    padding-top: 80px; }
+    padding-top: 81px; }
     #app #theme_name > div:before {
       content: '';
       display: table; }
@@ -253,6 +253,9 @@
 
 #app.app1 {
   background-color: #F2F2F2; }
+  #app.app1 header {
+    background-color: #FFFFFF;
+    border-bottom: #F2F2F2; }
   #app.app1 select {
     color: #FFFFFF; }
   #app.app1 #moduleList {
