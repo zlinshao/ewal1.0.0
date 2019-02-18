@@ -2,13 +2,39 @@
 
 #theme_name {
   #customService {
-
+    .menu_list {
+      margin: 0 auto;
+      border-top: 1px solid $colorFE0;
+      border-bottom: 1px solid $colorFE0;
+      padding: 50px 150px;
+      .menu_contain {
+        width: 15%;
+        text-align: center;
+        span {
+          height: 410px;
+          font-size: 32px;
+          text-align: center;
+          letter-spacing: 20px;
+          padding: 20px 5px;
+          cursor: pointer;
+          &:hover {
+            color: white;
+          }
+        }
+      }
+    }
   }
 }
 
 #theme_name.theme1 {
   #customService {
-
+    .menu_list {
+      .menu_contain {
+        span {
+          font-family: 'jingDianXingShu';
+        }
+      }
+    }
   }
 }
 
