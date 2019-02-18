@@ -2,13 +2,86 @@
 
 #theme_name {
   #workOrder {
-
+    > div {
+      background-color: $colorFFF;
+      height: 80px;
+      .orderTopLeft {
+        p {
+          width: 42px;
+          height: 50px;
+          background-color: #DFDFDF;
+          @include radius(0 4px 4px 0);
+          cursor: pointer;
+          padding-bottom: 20px;
+          b {
+            font-size: 30px;
+          }
+        }
+        h1 {
+          font-family: 'jingDianXingShu';
+          font-size: 32px;
+          padding: 0 40px;
+          border-right: 1px solid $color2F2;
+        }
+        h2 {
+          span {
+            color: $color2D2;
+            margin-left: 40px;
+            cursor: pointer;
+            padding-top: 8px;
+            i {
+              width: 16px;
+              height: 3px;
+              margin-top: 6px;
+              background-color: transparent;
+            }
+          }
+        }
+      }
+      .orderTopRight {
+        p {
+          width: 30px;
+          height: 30px;
+          color: $colorFFF;
+          @include radius(6px);
+          margin-right: 40px;
+          cursor: pointer;
+        }
+      }
+    }
   }
 }
 
 #theme_name.theme1 {
   #workOrder {
-
+    > div {
+      .orderTopLeft {
+        p {
+          background-color: $colorFDF;
+        }
+        h1 {
+          font-family: 'jingDianXingShu';
+          border-right: 1px solid $color2F2;
+        }
+        h2 {
+          .chooseList {
+            color: $colorE33;
+            i {
+              background-color: $colorE33;
+            }
+          }
+        }
+      }
+      .orderTopRight {
+        p:first-of-type {
+          background-color: $colorE33;
+          b {
+            font-size: 30px;
+            padding-bottom: 7px;
+          }
+        }
+      }
+    }
   }
 }
 
