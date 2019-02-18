@@ -227,6 +227,8 @@
           cursor: pointer;
           color: #686874; }
         #theme_name #index .moduleWriting > div .moduleMain .mainRight p {
+          font-family: 'mengFeiSiTe';
+          color: #000000;
           font-size: 20px;
           margin-bottom: 30px; }
         #theme_name #index .moduleWriting > div .moduleMain .mainRight span {

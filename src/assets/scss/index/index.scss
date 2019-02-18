@@ -96,6 +96,8 @@
               color: $color874;
             }
             p {
+              font-family: 'mengFeiSiTe';
+              color: $color000;
               font-size: 20px;
               margin-bottom: 30px;
             }
@@ -109,33 +111,33 @@
         .moduleFoot {
           span {
             &:hover {
-              background-color: $color8E33;
+              background-color: $colorE33;
             }
-            background-color: $color8FE0;
+            background-color: $colorFE0;
             @include radius(50%);
             padding: 6px;
             margin-right: 12px;
             cursor: pointer;
           }
           .spanHover {
-            background-color: $color8E33;
+            background-color: $colorE33;
           }
           i:hover {
-            border-right-color: $color8E33;
+            border-right-color: $colorE33;
           }
           b:hover {
-            border-left-color: $color8E33;
+            border-left-color: $colorE33;
           }
           i, b {
             cursor: pointer;
             border: 10px solid transparent;
           }
           i {
-            border-right-color: $color8FE0;
+            border-right-color: $colorFE0;
             margin-right: 15px;
           }
           b {
-            border-left-color: $color8FE0;
+            border-left-color: $colorFE0;
           }
         }
       }
@@ -150,14 +152,14 @@
         > p {
           span {
             color: $colorFFF;
-            background-color: $color8E33;
+            background-color: $colorE33;
           }
         }
       }
       > p {
         span {
           width: 130px;
-          background-color: $color8FE0;
+          background-color: $colorFE0;
           @include radius(221px);
         }
       }
@@ -244,7 +246,7 @@
       > p {
         span {
           width: 130px;
-          background-color: $color8FE0;
+          background-color: $colorFE0;
           @include radius(221px);
         }
       }
@@ -290,7 +292,7 @@
       > p {
         span {
           width: 130px;
-          background-color: $color8FE0;
+          background-color: $colorFE0;
           @include radius(221px);
         }
       }
