@@ -1,7 +1,12 @@
 <template>
   <div id="workOrder">
-    <div>
-      工单2131
+    <div class="items-bet">
+      <div class="orderTopLeft">
+
+      </div>
+      <div class="orderTopRight">
+
+      </div>
     </div>
   </div>
 </template>
