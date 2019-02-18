@@ -176,7 +176,8 @@
   #app select::-ms-expand {
     display: none; }
   #app #theme_name {
-    margin-top: 80px; }
+    height: 100%;
+    padding-top: 80px; }
     #app #theme_name > div:before {
       content: '';
       display: table; }

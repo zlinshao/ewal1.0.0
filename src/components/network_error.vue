@@ -8,7 +8,7 @@
 
 <script>
     export default {
-        name: "",
+        name: "network-error",
         data() {
             return {}
         },
