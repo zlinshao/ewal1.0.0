@@ -56,13 +56,26 @@
         font-family: 'jianyue';
         margin-left: 30px;
         cursor: pointer;
+        border: 1px solid #D2D2D2;
+        padding: 0 30px;
+        @include radius(20px);
+        &:hover {
+          color: $colorE33;
+          border-color: $colorE33;
+        }
       }
     }
     .items-center {
-      .personal {
+      .funTop {
+        margin-right: 40px;
+      }
+      .personal div {
+        margin-left: 30px;
+      }
+      .personal, .funTop {
         cursor: pointer;
         span {
-          margin: 0 20px;
+          margin: 0 30px;
         }
         p {
           @include radius(10px);

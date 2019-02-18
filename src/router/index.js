@@ -1,10 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 const HomePage = () => import  ('@/components/index.vue');//首页
 const Login = () => import  ('@/components/login.vue');//登录
 const President = () => import  ('@/components/president/index.vue');//总裁办
 const Jurisdiction = () => import('@/components/jurisdiction.vue'); //无权限
 const NetWork_error = () => import('@/components/network_error.vue'); //网络已断开
+
+// 客服
+const CustomService = () => import('@/components/customService/index.vue'); //客服
+const WorkOrder = () => import('@/components/customService/workOrder/index.vue'); //工单
 
 Vue.use(Router);
 
@@ -35,6 +40,16 @@ export default new Router({
       path: '/network_error',
       name: '网络断开',
       component: NetWork_error
+    },
+    {
+      path: '/customService',
+      name: '客服',
+      component: CustomService,
+    },
+    {
+      path: '/customService/workOrder',
+      name: '工单',
+      component: WorkOrder,
     }
   ]
 })

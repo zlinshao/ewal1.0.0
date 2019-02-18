@@ -151,12 +151,24 @@
     #app header .headLeft .showButton {
       font-family: 'jianyue';
       margin-left: 30px;
+      cursor: pointer;
+      border: 1px solid #D2D2D2;
+      padding: 0 30px;
+      -webkit-border-radius: 20px;
+      -moz-border-radius: 20px;
+      border-radius: 20px; }
+      #app header .headLeft .showButton:hover {
+        color: #CF2E33;
+        border-color: #CF2E33; }
+    #app header .items-center .funTop {
+      margin-right: 40px; }
+    #app header .items-center .personal div {
+      margin-left: 30px; }
+    #app header .items-center .personal, #app header .items-center .funTop {
       cursor: pointer; }
-    #app header .items-center .personal {
-      cursor: pointer; }
-      #app header .items-center .personal span {
-        margin: 0 20px; }
-      #app header .items-center .personal p {
+      #app header .items-center .personal span, #app header .items-center .funTop span {
+        margin: 0 30px; }
+      #app header .items-center .personal p, #app header .items-center .funTop p {
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
         border-radius: 10px;

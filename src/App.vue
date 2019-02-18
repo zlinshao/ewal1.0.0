@@ -13,6 +13,11 @@
         </span>
       </div>
       <div class="items-center">
+        <div class="items-center funTop ">
+          <span>待办</span>
+          <span>审批</span>
+          <span>更多</span>
+        </div>
         <div>
           <select v-model="theme_name" @change="changeLoading">
             <option value="1">简约中国风</option>
@@ -26,6 +31,7 @@
           <p>
             <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
           </p>
+          <div>放大撒</div>
         </div>
       </div>
     </header>
@@ -91,7 +97,7 @@
             English: 'Marketing Center',
           },
           {
-            url: '',
+            url: 'customService',
             title: '客服中心',
             English: 'Customer Service',
           },
