@@ -1,6 +1,6 @@
 <template>
   <div id="workOrder">
-    <div class="items-bet">
+    <div class="orderTop items-bet">
       <div class="items-center orderTopLeft">
         <p class="flex-center" @click="customModule">
           <b>...</b>
@@ -17,6 +17,29 @@
         <p class="flex-center"><b>+</b></p>
         <p @click="highSearch"></p>
       </div>
+    </div>
+    <div class="orderList">
+      <el-table
+        :data="tableData"
+        height="100%"
+        header-row-class-name="tableHead"
+        style="width: 100%">
+        <el-table-column
+          align="center"
+          label="紧急程度">
+          <template slot-scope="scope">
+            <div class="status" :class="['status' + scope.row.status]">
+              <p>{{statuss[scope.row.status]}}</p>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-for="item in Object.keys(showData)" :key="item"
+          align="center"
+          :prop="item"
+          :label="showData[item]">
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
@@ -40,6 +63,43 @@
             id: 3,
             title: '已完成',
           }
+        ],
+        statuss: {
+          1: '特急',
+          2: '紧急',
+          3: '重要',
+          4: '一般',
+        },
+        showData: {
+          date: '日期',
+          name: '姓名',
+          address: '地址',
+        },
+        tableData: [
+          {
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            status: 2,
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄',
+          },
+          {
+            status: 3,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
+          {
+            status: 4,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
         ]
       }
     },
@@ -76,10 +136,35 @@
 
   #theme_name.theme1 {
     #workOrder {
-      > div {
+      .orderTop {
         .orderTopRight {
           p:last-of-type {
             @include bgImage('../../../assets/image/customService/theme1/search.png');
+          }
+        }
+      }
+      .orderList {
+        .status1 {
+          p {
+            color: $colorFFF;
+            @include workOrderImg('teji.png', 'theme1');
+          }
+        }
+        .status2 {
+          p {
+            color: #FFAD0D;
+            @include workOrderImg('jinji.png', 'theme1');
+          }
+        }
+        .status3 {
+          p {
+            color: #0C66FF;
+            @include workOrderImg('zhongyao.png', 'theme1');
+          }
+        }
+        .status4 {
+          p {
+            color: $color874;
           }
         }
       }

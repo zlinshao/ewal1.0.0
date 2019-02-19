@@ -2,8 +2,11 @@
 
 #theme_name {
   #workOrder {
-    > div {
+    height: 100%;
+    .orderTop, .orderList {
       background-color: $colorFFF;
+    }
+    .orderTop {
       height: 80px;
       .orderTopLeft {
         p {
@@ -28,7 +31,8 @@
             color: $color2D2;
             margin-left: 40px;
             cursor: pointer;
-            padding-top: 8px;
+            padding-top: 6px;
+            font-size: 18px;
             i {
               width: 16px;
               height: 3px;
@@ -46,6 +50,20 @@
           @include radius(6px);
           margin-right: 40px;
           cursor: pointer;
+        }
+      }
+    }
+    .orderList {
+      margin-top: 10px;
+      font-size: 14px;
+      height: 88%;
+      .status {
+        @include flex('flex-center');
+        p {
+          width: 90px;
+          height: 30px;
+          line-height: 30px;
+          font-weight: bold;
         }
       }
     }
