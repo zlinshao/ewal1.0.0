@@ -8,7 +8,7 @@
         <h1>工单</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeList(item.id)" class="items-column"
-                :class="{'chooseList': chooseList === item.id}">
+                :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
           </span>
         </h2>
@@ -22,7 +22,10 @@
       <el-table
         :data="tableData"
         height="100%"
-        header-row-class-name="tableHead"
+        highlight-current-row
+        :row-class-name="tableChooseRow"
+        @cell-click="tableClickRow"
+        header-row-class-name="tableHeader"
         style="width: 100%">
         <el-table-column
           align="center"
@@ -41,15 +44,20 @@
         </el-table-column>
       </el-table>
     </div>
+    <SearchHigh :module="showSearch" @close="showSearch = false"></SearchHigh>
   </div>
 </template>
 
 <script>
+  import SearchHigh from '../../common/searchHigh.vue'
+
   export default {
     name: "index",
+    components: {SearchHigh},
     data() {
       return {
-        chooseList: 1,
+        chooseTab: 1,
+        showSearch: false,
         selects: [
           {
             id: 1,
@@ -75,26 +83,59 @@
           name: '姓名',
           address: '地址',
         },
+        chooseRowIds: [],
         tableData: [
           {
+            id: 10,
             status: 1,
             date: '2016-05-02',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1518 弄',
           },
           {
+            id: 20,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 30,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 11,
             status: 2,
             date: '2016-05-04',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1517 弄',
           },
           {
+            id: 12,
             status: 3,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
           {
+            id: 13,
+            status: 4,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
+          {
+            id: 23,
+            status: 4,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
+          {
+            id: 33,
             status: 4,
             date: '2016-05-01',
             name: '王小虎',
@@ -111,12 +152,20 @@
     computed: {},
     methods: {
       // tab切换
-      changeList(id) {
-        this.chooseList = id;
+      changeTabs(id) {
+        this.chooseTab = id;
+      },
+      tableClickRow(row) {
+        let ids = this.chooseRowIds;
+        ids.push(row.id);
+        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+      },
+      tableChooseRow({row, rowIndex}) {
+        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
       },
       // 高级搜索
       highSearch() {
-
+        this.showSearch = true;
       },
       // 客服入口
       customModule() {

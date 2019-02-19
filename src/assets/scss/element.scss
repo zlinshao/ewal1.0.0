@@ -1,0 +1,86 @@
+@import "flex.scss";
+@import "common.scss";
+
+#theme_name {
+  .el-table {
+    .tableHeader {
+      th {
+        div {
+          height: 40px;
+          line-height: 40px;
+          color: $color874;
+          font-weight: bold;
+        }
+      }
+    }
+    tbody {
+      tr.current-row {
+        td {
+          background-color: transparent !important;
+        }
+      }
+      tr:hover {
+        td {
+          background-color: transparent !important;
+        }
+      }
+    }
+  }
+  .el-input__inner {
+    border: none;
+  }
+}
+
+#theme_name.theme1 {
+  .el-table {
+    tbody {
+      tr.current-row {
+        td {
+          color: $colorE33;
+        }
+      }
+      tr:hover {
+        td {
+          color: rgba(207, 46, 51, .5);
+        }
+      }
+    }
+    .tableChooseRow {
+      color: $color2D2;
+    }
+  }
+}
+
+#theme_name.theme2 {
+
+}
+
+#theme_name.theme3 {
+
+}
+
+#theme_name.theme4 {
+
+}
+
+.el-table__body-wrapper.is-scroll-right, .el-table__body-wrapper.is-scroll-left, .el-table__body-wrapper.is-scroll-middle, .el-table__body-wrapper.is-scrolling-none, .el-table--scrollable-x .el-table__body-wrapper {
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+    @include radius(10px);
+  }
+
+  &::-webkit-scrollbar-button {
+    height: 0;
+    background-color: #eee;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #e4e7ed;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @include radius(10px);
+    background: #747474;
+  }
+}

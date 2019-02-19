@@ -58,38 +58,3 @@ img {
   width: 100%;
   height: 100%;
 }
-
-.el-table {
-  .tableHead {
-    th {
-      div {
-        height: 40px;
-        line-height: 40px;
-        color: #686874;
-        font-weight: bold;
-      }
-    }
-  }
-}
-
-.el-table__body-wrapper.is-scroll-right, .el-table__body-wrapper.is-scroll-left, .el-table__body-wrapper.is-scroll-middle, .el-table__body-wrapper.is-scrolling-none, .el-table--scrollable-x .el-table__body-wrapper {
-  &::-webkit-scrollbar {
-    width: 4px;
-    height: 5px;
-    @include radius(10px);
-  }
-
-  &::-webkit-scrollbar-button {
-    height: 0;
-    background-color: #eee;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #e4e7ed;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    @include radius(10px);
-    background: #747474;
-  }
-}
