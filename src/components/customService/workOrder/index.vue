@@ -45,17 +45,20 @@
       </el-table>
     </div>
     <SearchHigh :module="showSearch" @close="showSearch = false"></SearchHigh>
+    <menu-list :menu-visible="showList" @close="showList = false"></menu-list>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue'
+  import MenuList from '../components/menu-list';
 
   export default {
     name: "index",
-    components: {SearchHigh},
+    components: {SearchHigh,MenuList},
     data() {
       return {
+        showList: false,
         chooseTab: 1,
         showSearch: false,
         selects: [
@@ -169,7 +172,7 @@
       },
       // 客服入口
       customModule() {
-
+        this.showList = true;
       }
     },
   }

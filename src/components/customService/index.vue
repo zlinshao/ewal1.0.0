@@ -1,7 +1,7 @@
 <template>
   <div id="customService">
-    <div style="height: 500px">
-      <menu-list :menuVisible="show_menu_list" @close="show_menu_list = false" @open="show_menu_list = true"></menu-list>
+    <div class="container">
+      <menu-list :menuVisible="show_menu_list" @close="show_menu_list = false"></menu-list>
     </div>
     <div class="info_container">
       <ul class="date_change">

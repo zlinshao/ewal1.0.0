@@ -46,7 +46,7 @@
     props: ['module'],
     data() {
       return {
-        showModule: true,
+        showModule: false,
         highChoose: 2,
         params: {},
         showData: [

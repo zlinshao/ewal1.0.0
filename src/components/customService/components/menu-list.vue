@@ -68,24 +68,65 @@
         this.navVisible = val;
         this.set_show();
       },
-      $route(to,from) {
-        if (to.path === '/customService/workOrder') {
-          this.init_menu_list();
-          this.$emit('open');
-        }
+      $route(to,path) {
+        this.init_menu_list();
       }
     },
     computed: {},
     methods: {
       init_menu_list() {
-        for (var i =0;i<this.menu_list.length;i++) {
-          this.menu_list[i].show = false;
-        }
+        this.menu_list = [
+          {
+            title: '工单',
+            url: '/customService/workOrder',
+            show: false
+          },
+            {
+              title: '回访',
+              url: '',
+              show: false
+            },
+            {
+              title: '到期',
+              url: '',
+              show: false
+            },
+            {
+              title: '资料',
+              url: '',
+              show: false
+            },
+            {
+              title: '合同',
+              url: '',
+              show: false
+            },
+            {
+              title: '客户',
+              url: '',
+              show: false
+            },
+            {
+              title: '房屋',
+              url: '',
+              show: false
+            },
+            {
+              title: '客服',
+              url: '',
+              show: false
+            },
+          ];
+        setTimeout(() => {
+          this.set_show();
+        },1000)
       },
       handleRouterLink(url) {
-        this.navVisible = false;
-        this.$emit('close');
-        this.routerLink(url);
+        if (url === this.$route.path) {
+          this.$emit('close');
+        } else {
+          this.routerLink(url);
+        }
       },
       set_show() {
         var timer = null;
