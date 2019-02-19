@@ -132,76 +132,76 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #workOrder {
-  height: 100%; }
-  #theme_name #workOrder .orderTop, #theme_name #workOrder .orderList {
-    background-color: #FFFFFF; }
-  #theme_name #workOrder .orderTop {
-    height: 80px; }
-    #theme_name #workOrder .orderTop .orderTopLeft p {
-      width: 42px;
-      height: 50px;
-      background-color: #DFDFDF;
-      -webkit-border-radius: 0 4px 4px 0;
-      -moz-border-radius: 0 4px 4px 0;
-      border-radius: 0 4px 4px 0;
-      cursor: pointer;
-      padding-bottom: 20px; }
-      #theme_name #workOrder .orderTop .orderTopLeft p b {
-        font-size: 30px; }
-    #theme_name #workOrder .orderTop .orderTopLeft h1 {
-      font-family: 'jingDianXingShu';
-      font-size: 32px;
-      padding: 0 40px;
-      border-right: 1px solid #F2F2F2; }
-    #theme_name #workOrder .orderTop .orderTopLeft h2 span {
-      color: #D2D2D2;
-      margin-left: 40px;
-      cursor: pointer;
-      padding-top: 6px;
-      font-size: 18px; }
-      #theme_name #workOrder .orderTop .orderTopLeft h2 span i {
-        width: 16px;
-        height: 3px;
-        margin-top: 6px;
-        background-color: transparent; }
-    #theme_name #workOrder .orderTop .orderTopRight p {
-      width: 30px;
-      height: 30px;
-      color: #FFFFFF;
+#theme_name #searchHigh .searchModule, #theme_name #searchHigh .searchContent {
+  position: fixed;
+  top: 81px;
+  right: 0;
+  bottom: 0; }
+#theme_name #searchHigh .searchModule {
+  left: 0;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.4); }
+#theme_name #searchHigh .searchContent {
+  width: 660px;
+  background-color: #F9F9F9;
+  padding: 30px 0;
+  z-index: 21; }
+  #theme_name #searchHigh .searchContent > div {
+    width: 100%;
+    height: 100%;
+    padding: 0 50px;
+    background-size: 370px 350px;
+    background-position: bottom right; }
+    #theme_name #searchHigh .searchContent > div .searchInput {
+      height: 40px;
       -webkit-border-radius: 6px;
       -moz-border-radius: 6px;
       border-radius: 6px;
-      margin-right: 40px;
-      cursor: pointer; }
-  #theme_name #workOrder .orderList {
-    margin-top: 10px;
-    font-size: 14px;
-    height: 88%; }
-    #theme_name #workOrder .orderList .status {
-      display: flex;
-      display: -webkit-flex;
-      align-items: center;
-      justify-content: center; }
-      #theme_name #workOrder .orderList .status p {
-        width: 90px;
-        height: 30px;
-        line-height: 30px;
-        font-weight: bold; }
-
-#theme_name.theme1 #workOrder > div .orderTopLeft p {
-  background-color: #DFDFDF; }
-#theme_name.theme1 #workOrder > div .orderTopLeft h1 {
-  font-family: 'jingDianXingShu';
-  border-right: 1px solid #F2F2F2; }
-#theme_name.theme1 #workOrder > div .orderTopLeft h2 .chooseTab {
-  color: #CF2E33; }
-  #theme_name.theme1 #workOrder > div .orderTopLeft h2 .chooseTab i {
-    background-color: #CF2E33; }
-#theme_name.theme1 #workOrder > div .orderTopRight p:first-of-type {
-  background-color: #CF2E33; }
-  #theme_name.theme1 #workOrder > div .orderTopRight p:first-of-type b {
-    font-size: 30px;
-    padding-bottom: 7px; }
+      overflow: hidden;
+      margin-bottom: 30px;
+      background-color: #FFFFFF; }
+      #theme_name #searchHigh .searchContent > div .searchInput input {
+        width: 100%;
+        height: 100%;
+        padding: 0 15px; }
+      #theme_name #searchHigh .searchContent > div .searchInput span {
+        min-width: 90px;
+        height: 100%;
+        text-align: center;
+        line-height: 40px;
+        background-color: #CF2E33;
+        color: #FFFFFF;
+        cursor: pointer; }
+    #theme_name #searchHigh .searchContent > div .highGrade h5 {
+      padding-left: 3px; }
+    #theme_name #searchHigh .searchContent > div .highGrade > h5 {
+      font-weight: bold; }
+    #theme_name #searchHigh .searchContent > div .highGrade .formData {
+      margin-top: 30px; }
+      #theme_name #searchHigh .searchContent > div .highGrade .formData h5 {
+        margin-bottom: 10px; }
+      #theme_name #searchHigh .searchContent > div .highGrade .formData > div {
+        flex-wrap: wrap; }
+        #theme_name #searchHigh .searchContent > div .highGrade .formData > div > span {
+          padding: 0 10px; }
+        #theme_name #searchHigh .searchContent > div .highGrade .formData > div > p {
+          width: 90px;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
+          font-size: 14px;
+          cursor: pointer;
+          overflow: hidden;
+          white-space: nowrap;
+          -ms-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+          background-color: #FFFFFF;
+          margin: 0 20px 10px 0;
+          -webkit-border-radius: 6px;
+          -moz-border-radius: 6px;
+          border-radius: 6px; }
+        #theme_name #searchHigh .searchContent > div .highGrade .formData > div .highChoose {
+          background-color: #FFEAEA;
+          color: #CF2E33; }
 
 /*# sourceMappingURL=index.css.map */
