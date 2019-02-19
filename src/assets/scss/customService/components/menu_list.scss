@@ -1,0 +1,30 @@
+@import "../../common.scss";
+
+#menu-list {
+  width: 100%;
+  position: absolute;
+  top: 81px;
+  left: 0;
+  background-color: $color2F2;
+  border-bottom: 1px solid #DFDFE0;
+  .menu_list {
+    margin: 0 auto;
+    padding: 45px 150px;
+    .menu_contain {
+      width: 15%;
+      text-align: center;
+      span {
+        height: 410px;
+        font-size: 32px;
+        text-align: center;
+        letter-spacing: 20px;
+        padding: 20px 5px;
+        cursor: pointer;
+        font-family: 'jingDianXingShu';
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}
