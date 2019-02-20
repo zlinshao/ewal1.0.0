@@ -57,9 +57,6 @@
     watch: {},
     computed: {},
     methods: {
-      handleCloseMenu() {
-        this.show_menu_list = false;
-      },
       init_event_chart() {
         var event_chart = this.$echarts.init(document.getElementById('events_charts'));
         event_chart.setOption({
@@ -79,23 +76,6 @@
               avoidLabelOverlap: false,
               selectedOffset: 15,
               startAngle: 45,
-              emphasis: {
-                itemStyle: {
-                  color: {
-                    type: 'linear',
-                    x: 0,
-                    y: 0,
-                    x2: 0,
-                    y2: 1,
-                    colorStops: [{
-                      offset: 0, color: '#909399' // 0% 处的颜色
-                    }, {
-                      offset: 1, color: 'white' // 100% 处的颜色
-                    }],
-                    global: false // 缺省为 false
-                  }
-                }
-              },
               label: {
                 normal: {
                   position: 'inner',
