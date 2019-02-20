@@ -36,7 +36,7 @@
       .day_info{
         & > div {
           width: 25%;
-          height: 300px;
+          //height: 300px;
           padding-left: 30px;
         }
         & > div > p {
@@ -50,7 +50,8 @@
         }
         .work_info {
           //border: 1px solid #9CCC65;
-          & > p {
+          height: 321px;
+          & > p:not(:last-child) {
             margin-bottom: 65px;
           }
         }
