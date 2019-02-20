@@ -3,10 +3,14 @@
 #theme_name {
   #customService {
     .container{
-      height: 500px;
+      #menu-list{
+        position: relative;
+        top: 0;
+        left: 0;
+      }
     }
     .info_container{
-      padding-top: 30px;
+      margin-top: 20px;
       position: relative;
       .date_change {
         position: absolute;
