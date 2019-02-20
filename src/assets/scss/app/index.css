@@ -189,7 +189,7 @@
     display: none; }
   #app #theme_name {
     height: 100%;
-    padding-top: 81px; }
+    padding-top: 80px; }
     #app #theme_name > div:before {
       content: '';
       display: table; }
