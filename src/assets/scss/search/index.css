@@ -142,10 +142,16 @@
   z-index: 20;
   background-color: rgba(0, 0, 0, 0.4); }
 #theme_name #searchHigh .searchContent {
+  right: -660px;
   width: 660px;
   background-color: #F9F9F9;
   padding: 30px 0;
-  z-index: 21; }
+  z-index: 21;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
   #theme_name #searchHigh .searchContent > div {
     width: 100%;
     height: 100%;
@@ -222,5 +228,7 @@
       #theme_name #searchHigh .searchContent > div footer div:last-of-type {
         background-color: #DFDFE0;
         color: #686874; }
+#theme_name #searchHigh .showSearchContent {
+  right: 0; }
 
 /*# sourceMappingURL=index.css.map */

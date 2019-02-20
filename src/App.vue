@@ -147,5 +147,4 @@
 
 <style lang="scss" scoped>
   @import "./assets/scss/app/index.scss";
-
 </style>

@@ -1,11 +1,11 @@
 <template>
-  <div id="searchHigh" v-if="showModule">
-    <div class="searchModule" @click="showModule = false"></div>
-    <div class="searchContent">
+  <div id="searchHigh">
+    <div class="searchModule" v-if="showModule" @click="showModule = false"></div>
+    <div class="searchContent" :class="{'showSearchContent': showModule}">
       <div class="scroll_bar">
         <div class="items-center searchInput">
           <input type="text" v-model="params[showData.keywords]" placeholder="地址/合同编号">
-          <span>搜索</span>
+          <span @click="subSearch">搜索</span>
         </div>
         <div class="highGrade">
           <h5>高级</h5>
