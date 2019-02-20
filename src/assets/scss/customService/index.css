@@ -132,10 +132,12 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #customService .container {
-  height: 500px; }
+#theme_name #customService .container #menu-list {
+  position: relative;
+  top: 0;
+  left: 0; }
 #theme_name #customService .info_container {
-  padding-top: 30px;
+  margin-top: 20px;
   position: relative; }
   #theme_name #customService .info_container .date_change {
     position: absolute;
@@ -157,12 +159,13 @@
       color: white; }
   #theme_name #customService .info_container .day_info > div {
     width: 25%;
-    height: 300px;
     padding-left: 30px; }
   #theme_name #customService .info_container .day_info > div > p {
     font-size: 16px; }
-  #theme_name #customService .info_container .day_info .work_info > p {
-    margin-bottom: 65px; }
+  #theme_name #customService .info_container .day_info .work_info {
+    height: 321px; }
+    #theme_name #customService .info_container .day_info .work_info > p:not(:last-child) {
+      margin-bottom: 65px; }
 
 #theme_name.theme1 #customService .menu_list .menu_contain span {
   font-family: 'jingDianXingShu'; }

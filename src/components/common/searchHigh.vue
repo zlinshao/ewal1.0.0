@@ -4,12 +4,12 @@
     <div class="searchContent">
       <div class="scroll_bar">
         <div class="items-center searchInput">
-          <input type="text" v-model="params.keywords" placeholder="地址/合同编号">
+          <input type="text" v-model="params[showData.keywords]" placeholder="地址/合同编号">
           <span>搜索</span>
         </div>
         <div class="highGrade">
-          <h5>高级</h5>{{params}}
-          <div class="formData" v-for="item in showData">
+          <h5>高级</h5>
+          <div class="formData" v-for="item in showData.data">
             <h5>{{item.title}}</h5>
             <div v-if="item.keyType === 'date'">
               <el-date-picker
@@ -18,7 +18,7 @@
                 align="right"
                 type="date"
                 placeholder="选择日期"
-                :picker-options="pickerOptions">
+                :picker-options="pickerOptions1">
               </el-date-picker>
             </div>
             <div v-if="item.keyType === 'dateRange'">
@@ -28,7 +28,8 @@
                 value-format="yyyy-MM-dd"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期">
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions2">
               </el-date-picker>
             </div>
             <div class="items-center" v-if="item.keyType === 'radio'">
@@ -44,8 +45,15 @@
                 {{key.title}}
               </p>
             </div>
+            <div v-if="item.keyType === 'organ'">
+              <el-input v-model="params[item.keyName]" :placeholder="item.placeholder"></el-input>
+            </div>
           </div>
         </div>
+        <footer class="flex-center">
+          <div @click="subSearch">确定</div>
+          <div @click="resetting">重置</div>
+        </footer>
       </div>
     </div>
   </div>
@@ -54,13 +62,14 @@
 <script>
   export default {
     name: "search-high",
-    props: ['module'],
+    props: ['module', 'showData'],
     data() {
       return {
-        showModule: true,
-        highChoose: 2,
+        showModule: false,
+        searchStatus: '',
         params: {},
-        pickerOptions: {
+        reset: {},
+        pickerOptions1: {
           shortcuts: [{
             text: '今天',
             onClick(picker) {
@@ -82,69 +91,36 @@
             }
           }]
         },
-        showData: [
-          {
-            keyType: 'dateRange',
-            title: '创建时间',
-            placeholder: '请选择日期',
-            keyName: 'date1',
-            dataType: [],
-          },
-          {
-            keyType: 'dateRange',
-            title: '跟进时间',
-            placeholder: '请选择日期',
-            keyName: 'date2',
-            dataType: [],
-          },
-          {
-            keyType: 'radio',
-            title: '紧急程度',
-            keyName: 'radio',
-            dataType: '',
-            value: [
-              {
-                id: 12,
-                title: '特级',
-              },
-              {
-                id: 13,
-                title: '紧急',
-              },
-              {
-                id: 14,
-                title: '重要',
-              },
-              {
-                id: 15,
-                title: '一般',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '状态',
-            keyName: 'check',
-            dataType: [],
-            value: [
-              {
-                id: 22,
-                title: '已完成',
-              },
-              {
-                id: 23,
-                title: '未完成',
-              },
-            ],
-          },
-        ],
+        pickerOptions2: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
       }
     },
     mounted() {
-      for (let key of this.showData) {
-        this.params[key.keyName] = key.dataType;
-      }
-      this.params = Object.assign({}, this.params);
     },
     activated() {
     },
@@ -154,16 +130,31 @@
       },
       showModule(val) {
         if (!val) {
-          this.$emit('close');
+          this.$emit('close', 'close');
         }
-      }
+      },
+      showData: {//深度监听，可监听到对象、数组的变化
+        handler(val, oldVal) {
+          if (this.searchStatus === val.status) return;
+          this.searchStatus = val.status;
+          for (let key of val.data) {
+            this.reset[key.keyName] = key.dataType;
+          }
+          this.reset[val.keywords] = '';
+          this.resetting();
+        },
+        deep: true
+      },
     },
     computed: {},
     methods: {
       // 单选
       chooseRadio(key, val) {
-        this.params[key] = val;
-        this.params = Object.assign({}, this.params);
+        if (val === this.params[key]) {
+          this.params[key] = '';
+        } else {
+          this.params[key] = val;
+        }
       },
       // 复选
       chooseCheck(key, val) {
@@ -173,6 +164,12 @@
         } else {
           check.push(val);
         }
+      },
+      subSearch() {
+        this.$emit('close', this.params);
+      },
+      resetting() {
+        this.params = JSON.parse(JSON.stringify(this.reset));
       },
     },
   }
