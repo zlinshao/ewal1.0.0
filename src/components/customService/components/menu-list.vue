@@ -1,8 +1,8 @@
 <template>
-  <div id="menu-list" v-if="navVisible">
+  <div id="menu-list" class="menu_container" :class="{'show_container' : navVisible}">
     <div class="menu_list flex-center">
-      <div class="menu_contain" v-for="(item,key) in menu_list">
-        <span class="writingMode" :class="{['a_delay-' + (key + 1)] : '...' ,'trans_show' : navVisible  }" :key="key" @click="handleRouterLink(item.url)">{{ item.title }}</span>
+      <div class="menu_contain" :class="{'menu_contain_show' : navVisible}" v-for="(item,key) in menu_list">
+        <span class="writingMode" :class="['a_delay-' + (key + 1)]" :key="key" @click="handleRouterLink(item.url)">{{ item.title }}</span>
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@
         menu_list: [
           {
             title: '工单',
-            url: '/customService/workOrder',
+            url: '/workOrder',
           },
           {
             title: '回访',
@@ -62,6 +62,7 @@
       handleRouterLink(url) {
         if (url === this.$route.path) {
           this.$emit('close');
+          this.navVisible = false;
         } else {
           this.routerLink(url);
         }
@@ -79,22 +80,11 @@
   }
 
   @mixin a_delay($s) {
-    animation-delay: $s + s;
-    -webkit-animation-delay: $s + s;
     transition-delay: $s + s;
     -webkit-transition-delay: $s + s;
   }
 
-  @keyframes show_trans {
-    0% {
-      transform: translateX(-1920px);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-
-  #menu-list {
+  .menu_container {
     .menu_list {
       .menu_contain {
         span {
@@ -102,20 +92,19 @@
           &:hover {
             @include serviceImg('hongdi.png', 'theme1');
           }
-          opacity: 0;
-          transform: translateX(-1920px);
-          transition: all ease 1s;
-          animation: show_trans linear .5s;
+          transform: translateX(-1920px) scale(1.5);
+          transition: all ease .3s;
         }
         @for $i from 1 to 9 {
           .a_delay-#{$i} {
             @include a_delay((10 - $i ) / 10);
           }
         }
-        .trans_show {
-          opacity: 1;
-          transform: translateX(0);
-        }
+      }
+      .menu_contain_show {
+          span {
+            transform: translateX(0) scale(1);
+          }
       }
     }
   }
