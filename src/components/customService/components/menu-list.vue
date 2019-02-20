@@ -2,7 +2,7 @@
   <div id="menu-list" v-if="navVisible">
     <div class="menu_list flex-center">
       <div class="menu_contain" v-for="(item,key) in menu_list">
-        <span class="writingMode" :class="{'show_trans' : item.show}" :key="key" @click="handleRouterLink(item.url)">{{ item.title }}</span>
+        <span class="writingMode" :class="['a_delay-' + (key + 1)]" :key="key" @click="handleRouterLink(item.url)">{{ item.title }}</span>
       </div>
     </div>
   </div>
@@ -19,126 +19,52 @@
           {
             title: '工单',
             url: '/customService/workOrder',
-            show: false
           },
           {
             title: '回访',
             url: '',
-            show: false
           },
           {
             title: '到期',
             url: '',
-            show: false
           },
           {
             title: '资料',
             url: '',
-            show: false
           },
           {
             title: '合同',
             url: '',
-            show: false
           },
           {
             title: '客户',
             url: '',
-            show: false
           },
           {
             title: '客服',
             url: '',
-            show: false
           },
           {
             title: '房屋',
             url: '',
-            show: false
           },
         ],
-        current_show: 8,
       }
     },
-    mounted() {
-      this.set_show();
-    },
+    mounted() { },
     watch: {
       menuVisible(val) {
         this.navVisible = val;
-        this.set_show();
-      },
-      $route(to,path) {
-        this.init_menu_list();
       }
     },
     computed: {},
     methods: {
-      init_menu_list() {
-        this.menu_list = [
-          {
-            title: '工单',
-            url: '/customService/workOrder',
-            show: false
-          },
-            {
-              title: '回访',
-              url: '',
-              show: false
-            },
-            {
-              title: '到期',
-              url: '',
-              show: false
-            },
-            {
-              title: '资料',
-              url: '',
-              show: false
-            },
-            {
-              title: '合同',
-              url: '',
-              show: false
-            },
-            {
-              title: '客户',
-              url: '',
-              show: false
-            },
-            {
-              title: '房屋',
-              url: '',
-              show: false
-            },
-            {
-              title: '客服',
-              url: '',
-              show: false
-            },
-          ];
-        setTimeout(() => {
-          this.set_show();
-        },1000)
-      },
       handleRouterLink(url) {
         if (url === this.$route.path) {
           this.$emit('close');
         } else {
           this.routerLink(url);
         }
-      },
-      set_show() {
-        var timer = null;
-        timer = setInterval(() => {
-          this.current_show--;
-          this.menu_list[this.current_show].show = this.navVisible;
-          if (this.current_show < 1) {
-            clearInterval(timer);
-            this.current_show = 8;
-            timer = null;
-          }
-        }, 200);
       }
     },
   }
@@ -150,6 +76,11 @@
   @mixin serviceImg($m, $n) {
     $url: '../../../assets/image/customService/' + $n + '/' + $m;
     @include bgImage($url);
+  }
+
+  @mixin a_delay($s) {
+    animation-delay: $s + s;
+    -webkit-animation-delay: $s + s;
   }
 
   @keyframes show_trans {
@@ -169,12 +100,13 @@
           &:hover {
             @include serviceImg('hongdi.png', 'theme1');
           }
-          opacity: 0;
-          transition: all ease .2s;
+          transition: all ease 1s;
+          animation: show_trans linear .5s;
         }
-        .show_trans {
-          opacity: 1;
-          animation: show_trans .3s linear;
+        @for $i from 1 to 9 {
+          .a_delay-#{$i} {
+            @include a_delay($i / 10);
+          }
         }
       }
     }

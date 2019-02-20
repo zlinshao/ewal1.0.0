@@ -87,7 +87,7 @@
                 emphasis: {
                   show: true,
                   textStyle: {
-                    fontSize: '14',
+                    fontSize: 18,
                     fontWeight: 'bold'
                   }
                 }
