@@ -8,7 +8,7 @@
           <span>搜索</span>
         </div>
         <div class="highGrade">
-          <h5>高级</h5>{{params}}
+          <h5>高级</h5>
           <div class="formData" v-for="item in showData">
             <h5>{{item.title}}</h5>
             <div v-if="item.keyType === 'date'">
@@ -18,7 +18,7 @@
                 align="right"
                 type="date"
                 placeholder="选择日期"
-                :picker-options="pickerOptions">
+                :picker-options="pickerOptions1">
               </el-date-picker>
             </div>
             <div v-if="item.keyType === 'dateRange'">
@@ -28,7 +28,8 @@
                 value-format="yyyy-MM-dd"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期">
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions2">
               </el-date-picker>
             </div>
             <div class="items-center" v-if="item.keyType === 'radio'">
@@ -44,8 +45,15 @@
                 {{key.title}}
               </p>
             </div>
+            <div v-if="item.keyType === 'organ'">
+              <el-input v-model="params[item.keyName]" :placeholder="item.placeholder"></el-input>
+            </div>
           </div>
         </div>
+        <footer class="flex-center">
+          <div>确定</div>
+          <div>重置</div>
+        </footer>
       </div>
     </div>
   </div>
@@ -58,9 +66,8 @@
     data() {
       return {
         showModule: true,
-        highChoose: 2,
         params: {},
-        pickerOptions: {
+        pickerOptions1: {
           shortcuts: [{
             text: '今天',
             onClick(picker) {
@@ -82,7 +89,41 @@
             }
           }]
         },
+        pickerOptions2: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
         showData: [
+          {
+            keyType: 'date',
+            title: '出生日期',
+            placeholder: '请选择日期',
+            keyName: 'date3',
+            dataType: '',
+          },
           {
             keyType: 'dateRange',
             title: '创建时间',
@@ -137,6 +178,13 @@
               },
             ],
           },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
+          },
         ],
       }
     },
@@ -162,8 +210,11 @@
     methods: {
       // 单选
       chooseRadio(key, val) {
-        this.params[key] = val;
-        this.params = Object.assign({}, this.params);
+        if (val === this.params[key]) {
+          this.params[key] = '';
+        } else {
+          this.params[key] = val;
+        }
       },
       // 复选
       chooseCheck(key, val) {

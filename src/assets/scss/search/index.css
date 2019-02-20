@@ -203,5 +203,24 @@
         #theme_name #searchHigh .searchContent > div .highGrade .formData > div .highChoose {
           background-color: #FFEAEA;
           color: #CF2E33; }
+    #theme_name #searchHigh .searchContent > div footer {
+      padding-top: 60px; }
+      #theme_name #searchHigh .searchContent > div footer div + div {
+        margin-left: 30px; }
+      #theme_name #searchHigh .searchContent > div footer div {
+        cursor: pointer;
+        padding: 10px 30px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        opacity: .8; }
+        #theme_name #searchHigh .searchContent > div footer div:hover {
+          opacity: 1; }
+      #theme_name #searchHigh .searchContent > div footer div:first-of-type {
+        background-color: #CF2E33;
+        color: #FFFFFF; }
+      #theme_name #searchHigh .searchContent > div footer div:last-of-type {
+        background-color: #DFDFE0;
+        color: #686874; }
 
 /*# sourceMappingURL=index.css.map */

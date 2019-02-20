@@ -84,6 +84,29 @@
             }
           }
         }
+        footer {
+          padding-top: 60px;
+          div + div {
+            margin-left: 30px;
+          }
+          div {
+            cursor: pointer;
+            padding: 10px 30px;
+            @include radius(4px);
+            opacity: .8;
+            &:hover {
+              opacity: 1;
+            }
+          }
+          div:first-of-type {
+            background-color: #CF2E33;
+            color: #FFFFFF;
+          }
+          div:last-of-type {
+            background-color: $colorFE0;
+            color: $color874;
+          }
+        }
       }
     }
   }
