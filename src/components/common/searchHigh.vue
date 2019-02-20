@@ -11,6 +11,16 @@
           <h5>高级</h5>{{params}}
           <div class="formData" v-for="item in showData">
             <h5>{{item.title}}</h5>
+            <div v-if="item.keyType === 'date'">
+              <el-date-picker
+                v-model="params[item.keyName]"
+                value-format="yyyy-MM-dd"
+                align="right"
+                type="date"
+                placeholder="选择日期"
+                :picker-options="pickerOptions">
+              </el-date-picker>
+            </div>
             <div v-if="item.keyType === 'dateRange'">
               <el-date-picker
                 v-model="params[item.keyName]"
@@ -28,7 +38,8 @@
               </p>
             </div>
             <div class="items-center" v-if="item.keyType === 'check'">
-              <p @click="chooseCheck(item.keyName,key.id)" :class="{'highChoose': params[item.keyName].includes(key.id)}"
+              <p @click="chooseCheck(item.keyName,key.id)"
+                 :class="{'highChoose': params[item.keyName].includes(key.id)}"
                  v-for="key in item.value" v-if="params[item.keyName]">
                 {{key.title}}
               </p>
@@ -46,9 +57,31 @@
     props: ['module'],
     data() {
       return {
-        showModule: false,
+        showModule: true,
         highChoose: 2,
         params: {},
+        pickerOptions: {
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
         showData: [
           {
             keyType: 'dateRange',
@@ -104,22 +137,6 @@
               },
             ],
           },
-          {
-            keyType: 'check',
-            title: 'HHHHHH',
-            keyName: 'checkS',
-            dataType: [],
-            value: [
-              {
-                id: 22,
-                title: '已完成',
-              },
-              {
-                id: 23,
-                title: '未完成',
-              },
-            ],
-          }
         ],
       }
     },
