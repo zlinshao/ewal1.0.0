@@ -5,8 +5,8 @@
         <div class="light"></div>
         <div class="desk"></div>
         <div class="goods flex-center">
-          <div class="goods_container flex-center" v-for="tmp in market_list">
-            <span class="writingMode header" :class="[ 'bg-' + tmp.id ]"  @click="routerLink(tmp.url)">{{ tmp.title }}</span>
+          <div class="goods_container flex-center" v-for="tmp in market_list" @click="handleRouterTo(tmp.url)">
+            <span class="writingMode header" :class="[ 'bg-' + tmp.id ]">{{ tmp.title }}</span>
             <span class="footer"></span>
           </div>
         </div>
@@ -34,7 +34,7 @@
                 },
                 {
                   title: '房源管理',
-                  url: '',
+                  url: '/houseManagement',
                   id: 3
                 },
                 {
@@ -54,7 +54,16 @@
           }
         },
         computed: {},
-        methods: {},
+        methods: {
+          handleRouterTo(url) {
+            if (url === this.$route.path ) {
+              this.show_Market = false;
+              this.$emit('close');
+            } else {
+              this.routerLink(url);
+            }
+          }
+        },
     }
 </script>
 

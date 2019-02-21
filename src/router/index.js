@@ -13,6 +13,7 @@ const WorkOrder = () => import('@/components/customService/workOrder/index.vue')
 
 //市场
 const MarketCentre = () => import('@/components/marketCentre/index.vue'); //市场
+const HouseManagement = () => import('@/components/marketCentre/houseManagement/index.vue');
 
 Vue.use(Router);
 
@@ -59,6 +60,11 @@ export default new Router({
       path: '/marketCentre',
       name: '市场',
       component: MarketCentre
-    }
+    },
+    {
+      path: '/houseManagement',
+      name: '房源管理',
+      component: HouseManagement
+    },
   ]
 })

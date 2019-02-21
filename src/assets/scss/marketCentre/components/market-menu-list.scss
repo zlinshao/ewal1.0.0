@@ -3,7 +3,7 @@
 .market-menu-list {
   width: 100%;
   height: 490px;
-  position: relative;
+  position: absolute;
   top: -100%;
   left: 0;
   transition: all ease 1s;
@@ -64,5 +64,5 @@
   }
 }
 .show_market {
-  top: 0;
+  top: 81px;
 }

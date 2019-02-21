@@ -1,0 +1,58 @@
+@import "../../common.scss";
+#theme_name {
+  #houseManagement {
+    .header {
+      width: 100%;
+      height: 80px;
+      span.btn {
+        display: inline-block;
+        width: 42px;
+        height: 50px;
+        @include radius(0 4px 4px 0);
+        font-size: 30px;
+        text-align: center;
+        line-height: 30px;
+        cursor: pointer;
+      }
+      span.title {
+        margin-left: 20px;
+        font-size: 30px;
+      }
+      span.set,span.search {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+      span.search {
+        margin: 0 35px;
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #houseManagement {
+    .header {
+      background-color: $colorFFF;
+      span.btn {
+        background-color: $colorFDF;
+      }
+      span.title {
+        color: $colorE33;
+        font-family: 'jingDianXingShu';
+      }
+    }
+  }
+}
+
+#theme_name.theme2 {
+
+}
+
+#theme_name.theme3 {
+
+}
+
+#theme_name.theme4 {
+
+}
