@@ -92,7 +92,7 @@
             English: 'Social Media Center',
           },
           {
-            url: '',
+            url: '/marketCentre',
             title: '营销中心',
             English: 'Marketing Center',
           },

@@ -1,0 +1,109 @@
+<template>
+    <div id="market-menu-list" class="market-menu-list" :class="{'show_market' : show_Market}">
+      <div class="content">
+        <div class="btn"></div>
+        <div class="light"></div>
+        <div class="desk"></div>
+        <div class="goods flex-center">
+          <div class="goods_container flex-center" v-for="tmp in market_list">
+            <span class="writingMode header" :class="[ 'bg-' + tmp.id ]"  @click="routerLink(tmp.url)">{{ tmp.title }}</span>
+            <span class="footer"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "",
+        props: ['showMarket'],
+        data() {
+            return {
+              show_Market: false,
+              market_list: [
+                {
+                  title: '合同管理',
+                  url: '',
+                  id: 1
+                },
+                {
+                  title: '客户管理',
+                  url: '',
+                  id: 2
+                },
+                {
+                  title: '房源管理',
+                  url: '',
+                  id: 3
+                },
+                {
+                  title: '任务管理',
+                  url: '',
+                  id: 4
+                }
+              ]
+            }
+        },
+        mounted() { },
+        activated() {
+        },
+        watch: {
+          showMarket(val) {
+            this.show_Market = val;
+          }
+        },
+        computed: {},
+        methods: {},
+    }
+</script>
+
+<style lang="scss" scoped>
+  @import "../../../assets/scss/marketCentre/components/market-menu-list.scss";
+
+  @mixin marketCentreImg ($m,$n) {
+    $url: '../../../assets/image/marketCentre/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
+  .market-menu-list {
+    .content {
+      .light {
+        @include marketCentreImg('deng.png','theme1');
+      }
+      .btn {
+        @include marketCentreImg('btn.png','theme1');
+      }
+      .desk {
+        @include marketCentreImg('zhuozi.png','theme1');
+      }
+      .goods {
+        .goods_container {
+          flex-direction: column;
+          .header {
+            font-family: 'jingDianXingShu';
+          }
+          @for $i from 1 to 5 {
+            .bg-#{$i} {
+              @include marketCentreImg('wh-' + $i + '.png','theme1');
+              background-size: contain;
+            }
+          }
+          .footer {
+            @include marketCentreImg('xuanzhongdizuo.png','theme1');
+            background-size: contain;
+          }
+          &:hover {
+            @for $i from 1 to 5 {
+              .bg-#{$i} {
+                @include marketCentreImg('wk-' + $i + '.png','theme1');
+                background-size: contain;
+                color: white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+</style>
