@@ -47,7 +47,7 @@ export default new Router({
       component: CustomService,
     },
     {
-      path: '/customService/workOrder',
+      path: '/workOrder',
       name: '工单',
       component: WorkOrder,
     }

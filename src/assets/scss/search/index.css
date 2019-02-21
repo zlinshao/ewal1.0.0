@@ -178,37 +178,39 @@
         background-color: #CF2E33;
         color: #FFFFFF;
         cursor: pointer; }
-    #theme_name #searchHigh .searchContent > div .highGrade h5 {
-      padding-left: 3px; }
-    #theme_name #searchHigh .searchContent > div .highGrade > h5 {
-      font-weight: bold; }
-    #theme_name #searchHigh .searchContent > div .highGrade .formData {
-      margin-top: 30px; }
-      #theme_name #searchHigh .searchContent > div .highGrade .formData h5 {
-        margin-bottom: 10px; }
-      #theme_name #searchHigh .searchContent > div .highGrade .formData > div {
-        flex-wrap: wrap; }
-        #theme_name #searchHigh .searchContent > div .highGrade .formData > div > span {
-          padding: 0 10px; }
-        #theme_name #searchHigh .searchContent > div .highGrade .formData > div > p {
-          width: 90px;
-          height: 40px;
-          line-height: 40px;
-          text-align: center;
-          font-size: 14px;
-          cursor: pointer;
-          overflow: hidden;
-          white-space: nowrap;
-          -ms-text-overflow: ellipsis;
-          text-overflow: ellipsis;
-          background-color: #FFFFFF;
-          margin: 0 20px 10px 0;
-          -webkit-border-radius: 6px;
-          -moz-border-radius: 6px;
-          border-radius: 6px; }
-        #theme_name #searchHigh .searchContent > div .highGrade .formData > div .highChoose {
-          background-color: #FFEAEA;
-          color: #CF2E33; }
+    #theme_name #searchHigh .searchContent > div .highGrade {
+      width: 470px; }
+      #theme_name #searchHigh .searchContent > div .highGrade h5 {
+        padding-left: 3px; }
+      #theme_name #searchHigh .searchContent > div .highGrade > h5 {
+        font-weight: bold; }
+      #theme_name #searchHigh .searchContent > div .highGrade .formData {
+        margin-top: 30px; }
+        #theme_name #searchHigh .searchContent > div .highGrade .formData h5 {
+          margin-bottom: 10px; }
+        #theme_name #searchHigh .searchContent > div .highGrade .formData > div {
+          flex-wrap: wrap; }
+          #theme_name #searchHigh .searchContent > div .highGrade .formData > div > span {
+            padding: 0 10px; }
+          #theme_name #searchHigh .searchContent > div .highGrade .formData > div > p {
+            width: 90px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            overflow: hidden;
+            white-space: nowrap;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            background-color: #FFFFFF;
+            margin: 0 20px 10px 0;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            border-radius: 6px; }
+          #theme_name #searchHigh .searchContent > div .highGrade .formData > div .highChoose {
+            background-color: #FFEAEA;
+            color: #CF2E33; }
     #theme_name #searchHigh .searchContent > div footer {
       padding-top: 60px; }
       #theme_name #searchHigh .searchContent > div footer div + div {

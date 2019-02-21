@@ -18,7 +18,7 @@
         menu_list: [
           {
             title: '工单',
-            url: '/customService/workOrder',
+            url: '/workOrder',
           },
           {
             title: '回访',
