@@ -11,6 +11,9 @@ const NetWork_error = () => import('@/components/network_error.vue'); //网络�
 const CustomService = () => import('@/components/customService/index.vue'); //客服
 const WorkOrder = () => import('@/components/customService/workOrder/index.vue'); //工单
 
+//市场
+const MarketCentre = () => import('@/components/marketCentre/index.vue'); //市场
+
 Vue.use(Router);
 
 export default new Router({
@@ -50,6 +53,12 @@ export default new Router({
       path: '/workOrder',
       name: '工单',
       component: WorkOrder,
+    },
+
+    {
+      path: '/marketCentre',
+      name: '市场',
+      component: MarketCentre
     }
   ]
 })

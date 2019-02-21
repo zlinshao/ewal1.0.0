@@ -1,22 +1,22 @@
 <template>
-  <div id="customService">
+  <div id="marketCentre">
     <div class="container">
-      <menu-list :menuVisible="show_menu_list" @close="show_menu_list = false"></menu-list>
+      <market-menu-list :show-market="show_market"></market-menu-list>
     </div>
     <work-info :work-info="work_info" :event-data="event_data" :attend-data="attend_data" @change="handleChangeDate"></work-info>
   </div>
 </template>
 
 <script>
-  import MenuList from './components/menu-list.vue';
   import WorkInfo from '../common/work-info.vue';
+  import MarketMenuList from './components/market-menu-list.vue';
 
   export default {
     name: "index",
-    components: { MenuList,WorkInfo },
+    components: { WorkInfo,MarketMenuList },
     data() {
       return {
-        show_menu_list: false,
+        show_market: false,
         work_info: [
           {work: '平均在线时长', val: '8 h'},
           {work: '平均处理用时', val: '30 min'},
@@ -32,10 +32,10 @@
       }
     },
     mounted() {
-      this.show_menu_list = true;
-      this.work_info[0].val = '9 h';
-      this.event_data[0].value = 900;
-      this.attend_data = [10,5,2]
+      this.show_market = true;
+      this.work_info[0].val = '7 h';
+      this.event_data[0].value = 700;
+      this.attend_data = [8,3,1]
     },
     activated() {
     },
@@ -43,41 +43,40 @@
     computed: {},
     methods: {
       handleChangeDate(id) {
-        console.log(id);
-        console.log(this.work_info);
+
       }
-    }
+    },
   }
 </script>
 
 <style lang="scss" scoped>
-  @import "../../assets/scss/customService/index.scss";
+  @import "../../assets/scss/marketCentre/index.scss";
 
-  @mixin serviceImg($m, $n) {
-    $url: '../../assets/image/customService/' + $n + '/' + $m;
+  @mixin marketCentreImg($m, $n) {
+    $url: '../../assets/image/marketCentre/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
-    #customService {
+    #marketCentre {
 
     }
   }
 
   #theme_name.theme2 {
-    #customService {
+    #marketCentre {
 
     }
   }
 
   #theme_name.theme3 {
-    #customService {
+    #marketCentre {
 
     }
   }
 
   #theme_name.theme4 {
-    #customService {
+    #marketCentre {
 
     }
   }

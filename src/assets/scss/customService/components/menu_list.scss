@@ -1,10 +1,11 @@
 @import "../../common.scss";
 
-#menu-list {
+.menu_container {
   width: 100%;
   position: absolute;
   top: 81px;
-  left: 0;
+  left: -100%;
+  transition: all ease 1s;
   background-color: $color2F2;
   border-bottom: 1px solid #DFDFE0;
   .menu_list {
@@ -27,4 +28,7 @@
       }
     }
   }
+}
+.show_container{
+  left: 0;
 }
