@@ -1,0 +1,71 @@
+@import '../../common.scss';
+
+#houseCard {
+  > div {
+    width: 290px;
+    height: 350px;
+    flex-direction: column;
+    background:
+      linear-gradient(135deg,transparent 20px ,white 0) top left,
+      linear-gradient(-135deg,transparent 20px ,white 0) top right,
+      linear-gradient(-45deg,transparent 20px, white 0) bottom right,
+      linear-gradient(45deg,transparent 20px, white 0) bottom left;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 20px;
+    .photo {
+      width: 100%;
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+      .bg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .btn {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        line-height: 50px;
+        font-size: 34px;
+      }
+    }
+    .info {
+      height: 50%;
+      text-align: center;
+      .address {
+        font-size: 18px;
+        position: relative;
+        top: 10px;
+      }
+      .text {
+        text-align: left;
+        font-size: 14px;
+        padding-left: 30px;
+        > p {
+          margin-top: 20px;
+          b {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            vertical-align: middle;
+            background-size: contain;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+    &:hover {
+      //border: 1px solid $colorE33;
+    }
+  }
+}

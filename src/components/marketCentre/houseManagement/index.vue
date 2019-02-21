@@ -10,6 +10,11 @@
           <span class="search" @click="isHigh = true"></span>
         </div>
       </div>
+      <div class="container">
+        <div class="content flex-center">
+          <house-card v-for="item in 10"></house-card>
+        </div>
+      </div>
       <market-menu-list :show-market="show_market" @close="handleCloseMenu"></market-menu-list>
       <searchHigh :module="isHigh" :show-data="searchData" @close="handleCloseSearch"></searchHigh>
     </div>
@@ -17,10 +22,12 @@
 
 <script>
   import MarketMenuList from '../components/market-menu-list.vue';
-  import searchHigh from '../../common/searchHigh.vue'
+  import searchHigh from '../../common/searchHigh.vue';
+  import HouseCard from '../components/house-card.vue';
+
     export default {
         name: "index",
-        components: { MarketMenuList ,searchHigh},
+        components: { MarketMenuList ,searchHigh, HouseCard },
         data() {
             return {
               show_market: false,
