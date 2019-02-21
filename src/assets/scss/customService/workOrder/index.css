@@ -175,9 +175,8 @@
       margin-right: 40px;
       cursor: pointer; }
   #theme_name #workOrder .orderList {
-    margin-top: 10px;
-    font-size: 14px;
-    height: 88%; }
+    margin-top: 9px;
+    font-size: 14px; }
     #theme_name #workOrder .orderList .status {
       display: flex;
       display: -webkit-flex;

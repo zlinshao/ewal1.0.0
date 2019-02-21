@@ -18,10 +18,10 @@
         <p @click="highSearch"></p>
       </div>
     </div>
-    <div class="orderList">
+    <div class="orderList" :style="{'height': orderListHeight + 'px'}">
       <el-table
         :data="tableData"
-        height="100%"
+        :height="orderListHeight - 100 + 'px'"
         highlight-current-row
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
@@ -43,6 +43,9 @@
           :label="showData[item]">
         </el-table-column>
       </el-table>
+      <footer class="flex-center" style="height: 100px;">
+        <p>fhsdkfhsdak</p>
+      </footer>
     </div>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
     <menu-list :menu-visible="showList" @close="showList = false"></menu-list>
@@ -59,6 +62,7 @@
     data() {
       return {
         showList: false,
+        orderListHeight: '',
         chooseTab: 1,
         showSearch: false,
         selects: [
@@ -144,7 +148,50 @@
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
+          {
+            id: 10,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 20,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 30,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 11,
+            status: 2,
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄',
+          },
+          {
+            id: 12,
+            status: 3,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
+          {
+            id: 13,
+            status: 4,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
         ],
+
         searchData: {
           status: 'workOrder',
           keywords: 'keywords',
@@ -153,6 +200,7 @@
       }
     },
     mounted() {
+      this.orderListHeight = window.innerHeight - 170;
     },
     activated() {
     },
@@ -235,6 +283,34 @@
                 title: '未完成',
               },
             ],
+          },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
+          },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
+          },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
+          },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
           },
           {
             keyType: 'organ',
