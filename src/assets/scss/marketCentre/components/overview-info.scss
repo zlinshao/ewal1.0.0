@@ -6,6 +6,7 @@
   bottom: 0;
   left: -100%;
   transition: all ease 1s;
+  z-index: 2;
   > div {
     .container {
       width: 100%;
