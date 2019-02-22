@@ -2,7 +2,7 @@
     <div id="workInfo">
       <div class="info_container">
         <ul class="date_change">
-          <li @click="handleChangeDate(tmp.id)" v-for="tmp in date_change_list" :key="tmp.id" :class="{ 'mark_li' : isActive === tmp.id }">{{ tmp.val }}</li>
+
         </ul>
         <div class="day_info flex-center">
           <div class="event_info">
