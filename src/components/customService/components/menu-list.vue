@@ -1,8 +1,8 @@
 <template>
   <div id="menu-list" class="menu_container" :class="{'show_container' : navVisible}">
     <div class="menu_list flex-center">
-      <div class="menu_contain" :class="{'menu_contain_show' : navVisible}" v-for="(item,key) in menu_list">
-        <span class="writingMode" :class="['a_delay-' + (key + 1)]" :key="key" @click="handleRouterLink(item.url)">{{ item.title }}</span>
+      <div class="menu_contain" :class="{['a_delay-' + (key + 1)]:'...','menu_contain_show' : navVisible}" v-for="(item,key) in menu_list">
+        <span class="writingMode" :key="key" @click="handleRouterLink(item.url)">{{ item.title }}</span>
       </div>
     </div>
   </div>
@@ -87,24 +87,22 @@
   .menu_container {
     .menu_list {
       .menu_contain {
+        transform: translateX(-1920px) scale(1.5);
+        transition: all ease .3s;
         span {
           @include serviceImg('huidi.png', 'theme1');
           &:hover {
             @include serviceImg('hongdi.png', 'theme1');
           }
-          transform: translateX(-1920px) scale(1.5);
-          transition: all ease .3s;
         }
-        @for $i from 1 to 9 {
-          .a_delay-#{$i} {
-            @include a_delay((10 - $i ) / 10);
-          }
+      }
+      @for $i from 1 to 9 {
+        .a_delay-#{$i} {
+          @include a_delay((10 - $i ) / 10);
         }
       }
       .menu_contain_show {
-          span {
-            transform: translateX(0) scale(1);
-          }
+        transform: translateX(0) scale(1);
       }
     }
   }
