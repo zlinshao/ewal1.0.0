@@ -132,40 +132,8 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #customService .container #menu-list {
-  position: relative;
-  top: 0;
-  left: 0; }
-#theme_name #customService .info_container {
-  margin-top: 20px;
-  position: relative; }
-  #theme_name #customService .info_container .date_change {
-    position: absolute;
-    top: 30px;
-    right: 0; }
-    #theme_name #customService .info_container .date_change li {
-      width: 90px;
-      height: 40px;
-      color: #999999;
-      background-color: #DFDFDF;
-      text-align: center;
-      line-height: 40px;
-      border-radius: 3px 0 0 3px;
-      margin-bottom: 10px;
-      font-size: 18px;
-      cursor: pointer; }
-    #theme_name #customService .info_container .date_change .mark_li {
-      background-color: #CF2E33;
-      color: white; }
-  #theme_name #customService .info_container .day_info > div {
-    width: 25%;
-    padding-left: 30px; }
-  #theme_name #customService .info_container .day_info > div > p {
-    font-size: 16px; }
-  #theme_name #customService .info_container .day_info .work_info {
-    height: 321px; }
-    #theme_name #customService .info_container .day_info .work_info > p:not(:last-child) {
-      margin-bottom: 65px; }
+#theme_name #customService .container {
+  height: 500px; }
 
 #theme_name.theme1 #customService .menu_list .menu_contain span {
   font-family: 'jingDianXingShu'; }

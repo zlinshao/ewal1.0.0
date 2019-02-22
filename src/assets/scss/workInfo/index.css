@@ -132,32 +132,35 @@
     background: #747474;
     border-radius: 4px; }
 
-.menu_container {
-  width: 100%;
-  position: absolute;
-  top: 81px;
-  left: -100%;
-  transition: all ease 1s;
-  background-color: #F2F2F2;
-  border-bottom: 1px solid #DFDFE0; }
-  .menu_container .menu_list {
-    margin: 0 auto;
-    padding: 45px 150px; }
-    .menu_container .menu_list .menu_contain {
-      width: 15%;
-      text-align: center; }
-      .menu_container .menu_list .menu_contain span {
-        height: 410px;
-        font-size: 32px;
-        text-align: center;
-        letter-spacing: 20px;
-        padding: 20px 5px;
-        cursor: pointer;
-        font-family: 'jingDianXingShu'; }
-        .menu_container .menu_list .menu_contain span:hover {
-          color: white; }
+#workInfo .info_container {
+  padding-top: 20px;
+  position: relative; }
+  #workInfo .info_container .date_change {
+    position: absolute;
+    top: 30px;
+    right: 0; }
+    #workInfo .info_container .date_change li {
+      width: 90px;
+      height: 40px;
+      color: #999999;
+      background-color: #DFDFDF;
+      text-align: center;
+      line-height: 40px;
+      border-radius: 3px 0 0 3px;
+      margin-bottom: 10px;
+      font-size: 18px;
+      cursor: pointer; }
+    #workInfo .info_container .date_change .mark_li {
+      background-color: #CF2E33;
+      color: white; }
+  #workInfo .info_container .day_info > div {
+    width: 25%;
+    padding-left: 30px; }
+  #workInfo .info_container .day_info > div > p {
+    font-size: 16px; }
+  #workInfo .info_container .day_info .work_info {
+    height: 321px; }
+    #workInfo .info_container .day_info .work_info > p:not(:last-child) {
+      margin-bottom: 65px; }
 
-.show_container {
-  left: 0; }
-
-/*# sourceMappingURL=menu_list.css.map */
+/*# sourceMappingURL=index.css.map */
