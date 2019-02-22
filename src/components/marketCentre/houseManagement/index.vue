@@ -10,11 +10,7 @@
           <span class="search" @click="isHigh = true"></span>
         </div>
       </div>
-      <div class="container">
-        <div class="content flex-center">
-          <house-card v-for="item in 10"></house-card>
-        </div>
-      </div>
+      <house-card :house-source="house_source"></house-card>
       <market-menu-list :show-market="show_market" @close="handleCloseMenu"></market-menu-list>
       <searchHigh :module="isHigh" :show-data="searchData" @close="handleCloseSearch"></searchHigh>
     </div>
@@ -37,9 +33,151 @@
                 keywords: 'keywords',
                 data: [],
               },
+              house_source: []
             }
         },
         mounted() {
+          this.house_source.push({
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '已出租',
+              notice: 0,
+              mark: true
+            },
+            {
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 2,
+              mark: false
+            },
+            {
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: true
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: true
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: true
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: true
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: true
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: true
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: true
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: false
+            }
+            ,{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: false
+            }
+            ,{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: false
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: false
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: false
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: false
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: false
+            },{
+              address: '东方兰园12-304',
+              type: '两室1厅1卫',
+              info: '空置120天/剩余3月',
+              price: '建议2600元/月 3月付',
+              notice_type: '未出租',
+              notice: 1,
+              mark: false
+            })
         },
         activated() {
         },
