@@ -226,7 +226,8 @@
 #theme_name .el-table tbody tr:hover td {
   background-color: transparent !important; }
 #theme_name .el-input__inner {
-  border: none; }
+  border: none;
+  background-color: transparent !important; }
 
 #theme_name.theme1 .el-table tbody tr.current-row td {
   color: #CF2E33; }

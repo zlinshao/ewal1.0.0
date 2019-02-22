@@ -11,9 +11,12 @@ const NetWork_error = () => import('@/components/network_error.vue'); //网络�
 const CustomService = () => import('@/components/customService/index.vue'); //客服
 const WorkOrder = () => import('@/components/customService/workOrder/index.vue'); //工单
 
-//市场
-const MarketCentre = () => import('@/components/marketCentre/index.vue'); //市场
+// 市场
+const MarketCentre = () => import('@/components/marketCentre/index.vue');
 const HouseManagement = () => import('@/components/marketCentre/houseManagement/index.vue');
+
+// 人力资源中心
+const HumanResource = () => import('@/components/humanResource/index.vue');
 
 Vue.use(Router);
 
@@ -65,6 +68,11 @@ export default new Router({
       path: '/houseManagement',
       name: '房源管理',
       component: HouseManagement
+    },
+    {
+      path: '/humanResource',
+      name: '人力资源中心',
+      component: HumanResource
     },
   ]
 })

@@ -1,0 +1,255 @@
+.flex {
+  display: flex;
+  display: -webkit-flex; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #747474;
+    border-radius: 4px; }
+
+#houseCard > div {
+  width: 100%;
+  margin-top: 90px; }
+  #houseCard > div .content {
+    margin: 0 auto;
+    padding: 0 200px;
+    position: relative; }
+    #houseCard > div .content > div.cards {
+      flex-wrap: wrap; }
+      #houseCard > div .content > div.cards > div {
+        width: 20%; }
+        #houseCard > div .content > div.cards > div .card {
+          width: 240px;
+          height: 350px;
+          box-sizing: border-box;
+          cursor: pointer;
+          margin: 20px;
+          background: linear-gradient(135deg, transparent 20px, white 0) top left, linear-gradient(-135deg, transparent 20px, white 0) top right, linear-gradient(-45deg, transparent 20px, white 0) bottom right, linear-gradient(45deg, transparent 20px, white 0) bottom left;
+          background-size: 50% 50%;
+          background-repeat: no-repeat;
+          position: relative; }
+          #houseCard > div .content > div.cards > div .card .photo {
+            width: 100%;
+            height: 160px;
+            position: relative; }
+            #houseCard > div .content > div.cards > div .card .photo .picture {
+              width: 100%;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              clip-path: polygon(30px 0, calc(100% - 30px) 0, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0 calc(100% - 30px), 0 30px); }
+            #houseCard > div .content > div.cards > div .card .photo .bg {
+              width: 100%;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              overflow: hidden; }
+              #houseCard > div .content > div.cards > div .card .photo .bg .btn {
+                width: 50px;
+                height: 50px;
+                position: absolute;
+                top: -25px;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+                line-height: 50px;
+                font-size: 34px; }
+              #houseCard > div .content > div.cards > div .card .photo .bg .house_type {
+                width: 50px;
+                height: 20px;
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+                font-size: 16px; }
+            #houseCard > div .content > div.cards > div .card .photo .mark {
+              width: 30px;
+              height: 30px;
+              position: absolute;
+              top: -25px;
+              right: 10px; }
+          #houseCard > div .content > div.cards > div .card .info {
+            height: 50%;
+            text-align: center; }
+            #houseCard > div .content > div.cards > div .card .info .address {
+              font-size: 18px;
+              position: relative;
+              top: 10px; }
+            #houseCard > div .content > div.cards > div .card .info .text {
+              text-align: left;
+              font-size: 14px;
+              padding-left: 30px;
+              margin-top: 20px; }
+              #houseCard > div .content > div.cards > div .card .info .text > p {
+                margin-top: 10px; }
+                #houseCard > div .content > div.cards > div .card .info .text > p b {
+                  display: inline-block;
+                  width: 15px;
+                  height: 15px;
+                  vertical-align: middle;
+                  background-size: contain;
+                  margin-right: 5px; }
+            #houseCard > div .content > div.cards > div .card .info .notice_info {
+              margin-top: 20px; }
+              #houseCard > div .content > div.cards > div .card .info .notice_info > span {
+                width: 50%;
+                text-align: center; }
+              #houseCard > div .content > div.cards > div .card .info .notice_info .notice_type {
+                font-size: 18px;
+                font-weight: bold; }
+              #houseCard > div .content > div.cards > div .card .info .notice_info .notice {
+                height: 20px; }
+          #houseCard > div .content > div.cards > div .card .control {
+            height: 50px;
+            position: absolute;
+            top: -55px;
+            left: 20%;
+            color: white;
+            opacity: 0;
+            transition: all ease 1s; }
+            #houseCard > div .content > div.cards > div .card .control > span {
+              width: 50px;
+              text-align: center;
+              line-height: 20px; }
+            #houseCard > div .content > div.cards > div .card .control .arrows {
+              width: 30px;
+              height: 20px;
+              clip-path: polygon(0 0, 100% 0, 50% 100%);
+              position: absolute;
+              bottom: -10px;
+              left: 20%; }
+          #houseCard > div .content > div.cards > div .card .show_control {
+            opacity: 1; }
+    #houseCard > div .content .page {
+      text-align: center;
+      margin: 20px auto; }
+
+/*# sourceMappingURL=house-card.css.map */

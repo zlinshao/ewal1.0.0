@@ -82,7 +82,7 @@
             English: 'Finacial Center',
           },
           {
-            url: '',
+            url: 'humanResource',
             title: '人力资源中心',
             English: 'Personal Adminstration',
           },

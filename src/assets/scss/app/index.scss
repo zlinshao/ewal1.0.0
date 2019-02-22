@@ -122,7 +122,7 @@
     opacity: 0;
     @include transform(scale(0));
     @include transOrigin(50%);
-    @include transition(all, .6s);
+    @include transition(all .6s linear);
     > div {
       .list {
         cursor: pointer;

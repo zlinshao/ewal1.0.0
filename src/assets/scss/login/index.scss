@@ -198,10 +198,10 @@
   #login {
     .login {
       opacity: 0;
-      @include transition(all, .8s);
+      @include transition(all .8s linear);
       > div {
         transform: rotateY(60deg);
-        @include transition(all, .8s);
+        @include transition(all .8s linear);
         .p2 {
           .forgetPassword {
             color: $colorA7B;

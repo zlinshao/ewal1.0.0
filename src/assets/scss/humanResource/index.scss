@@ -1,0 +1,85 @@
+@import "../common.scss";
+
+#theme_name {
+  #humanResource {
+    > div {
+      #menuList {
+        > div {
+          height: 500px;
+          padding: 0 100px;
+          > div {
+            width: 100%;
+            opacity: 0;
+            transform: translateX(-2000px);
+            @include transition2(opacity 1s, transform 1s);
+            > div {
+              width: 70%;
+              height: 100%;
+              background: orange;
+              &:hover {
+                background-color: green;
+              }
+            }
+          }
+        }
+        .menuList {
+          .menu {
+            opacity: 1;
+            transform: translateX(0);
+          }
+          .menu9 {
+            transition-delay: .1s;
+          }
+          .menu8 {
+            transition-delay: .2s;
+          }
+          .menu7 {
+            transition-delay: .3s;
+          }
+          .menu6 {
+            transition-delay: .4s;
+          }
+          .menu5 {
+            transition-delay: .5s;
+          }
+          .menu4 {
+            transition-delay: .6s;
+          }
+          .menu3 {
+            transition-delay: .7s;
+          }
+          .menu2 {
+            transition-delay: .8s;
+          }
+          .menu1 {
+            transition-delay: .9s;
+          }
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #humanResource {
+
+  }
+}
+
+#theme_name.theme2 {
+  #humanResource {
+
+  }
+}
+
+#theme_name.theme3 {
+  #humanResource {
+
+  }
+}
+
+#theme_name.theme4 {
+  #humanResource {
+
+  }
+}
