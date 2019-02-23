@@ -121,16 +121,21 @@
             }
             .control {
               height: 50px;
+              width: 350px;
               position: absolute;
               top: -55px;
-              left: 20%;
+              left: 15%;
               color: white;
               opacity: 0;
               transition: all ease 1s;
+              line-height: 50px;
+              text-align: center;
+              user-select: none;
               > span {
-                width: 50px;
-                text-align: center;
                 line-height: 20px;
+                position: relative;
+                z-index: 1;
+                margin: 0 5px;
               }
               .arrows {
                 width: 30px;

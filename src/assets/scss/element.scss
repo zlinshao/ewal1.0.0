@@ -30,6 +30,21 @@
     border: none;
     background-color: transparent !important;
   }
+  .el-pagination button:hover {
+    color: $colorE33 !important;
+  }
+  .el-pager li.active {
+    color: $colorE33 !important;
+  }
+  .el-pager li {
+    background-color: transparent !important;
+  }
+  .el-pagination .btn-next, .el-pagination .btn-prev {
+    background-color: transparent !important;
+  }
+  .el-pagination button:disabled {
+    background-color: transparent !important;
+  }
 }
 
 #theme_name.theme1 {
