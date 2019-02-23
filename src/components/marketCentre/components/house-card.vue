@@ -27,13 +27,8 @@
                     <span :class="['notice-' + item.notice ]" class="notice"></span>
                   </div>
                 </div>
-                <div class="control flex-center" :class="{'show_control' : show_control === item.id }">
-                  <span>跟进</span>
-                  <span>上传</span>
-                  <span>标价</span>
-                  <span>评分</span>
-                  <span>标记</span>
-                  <span>密码</span>
+                <div class="control" :class="{'show_control' : show_control === item.id }">
+                  <span v-for="tmp in tip_btn" :key="tmp.id" @click="is_tip = tmp.id" :class="{'tip_btn': is_tip === tmp.id }">{{ tmp.val }}</span>
                   <div class="arrows"></div>
                 </div>
               </div>
@@ -58,7 +53,16 @@
             return {
               show_control: 1,
               content_height: window.innerHeight-171,
-              house_info: []
+              house_info: [],
+              tip_btn: [
+                {id: 1,val: '跟进'},
+                {id: 2,val: '上传'},
+                {id: 3,val: '标价'},
+                {id: 4,val: '评分'},
+                {id: 5,val: '标记'},
+                {id: 6,val: '密码'}
+              ],
+              is_tip: 0
             }
         },
         mounted() {
@@ -80,6 +84,7 @@
           },
           handleOpenControl(id) {
             this.show_control = id;
+            this.is_tip = 0;
           }
         },
     }
@@ -159,6 +164,11 @@
             @include radius(5px);
             .arrows {
               background-color: $color874;
+            }
+            .tip_btn {
+              @include marketCentreImg('xzgj.png','theme1');
+              padding: 5px 25px;
+              color: $colorE33;
             }
           }
         }
