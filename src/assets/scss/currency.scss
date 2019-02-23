@@ -40,16 +40,36 @@
       }
     }
     .listTopRight {
-      p {
-        width: 30px;
-        height: 30px;
+      > div {
         color: $colorFFF;
         @include radius(6px);
         margin-right: 40px;
         cursor: pointer;
       }
-      p:last-of-type {
-        @include bgImage('../../assets/image/customService/theme1/search.png');
+      .add {
+        @include flex('flex-center');
+        padding-bottom: 6px;
+        b {
+          font-size: 30px;
+        }
+      }
+      .search {
+        @include bgImage('../../assets/image/customService/theme1/search.png')
+      }
+      .icons {
+        width: 30px;
+        height: 30px;
+      }
+      .buttons {
+        background-color: $colorFE0;
+        color: $color874;
+        padding: 0 20px;
+        height: 40px;
+        line-height: 38px;
+        &:hover {
+          background-color: $colorE33;
+          color: $colorFFF;
+        }
       }
     }
   }
@@ -63,7 +83,6 @@
       }
       h1 {
         font-family: 'jingDianXingShu';
-        border-right: 1px solid $color2F2;
       }
       h2 {
         .chooseTab {
@@ -75,12 +94,8 @@
       }
     }
     .listTopRight {
-      p:first-of-type {
+      .add {
         background-color: $colorE33;
-        b {
-          font-size: 30px;
-          padding-bottom: 7px;
-        }
       }
     }
   }

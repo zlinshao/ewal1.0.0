@@ -228,6 +228,16 @@
 #theme_name .el-input__inner {
   border: none;
   background-color: transparent !important; }
+#theme_name .el-pagination button:hover {
+  color: #CF2E33 !important; }
+#theme_name .el-pager li.active {
+  color: #CF2E33 !important; }
+#theme_name .el-pager li {
+  background-color: transparent !important; }
+#theme_name .el-pagination .btn-next, #theme_name .el-pagination .btn-prev {
+  background-color: transparent !important; }
+#theme_name .el-pagination button:disabled {
+  background-color: transparent !important; }
 
 #theme_name.theme1 .el-table tbody tr.current-row td {
   color: #CF2E33; }

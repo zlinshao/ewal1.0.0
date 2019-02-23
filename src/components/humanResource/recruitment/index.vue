@@ -8,8 +8,8 @@
         <h1>研发中心</h1>
       </div>
       <div class="items-center listTopRight">
-        <p class="flex-center"><b>+</b></p>
-        <p @click="highSearch"></p>
+        <div class="icons add"><b>+</b></div>
+        <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
     <div class="departList">
