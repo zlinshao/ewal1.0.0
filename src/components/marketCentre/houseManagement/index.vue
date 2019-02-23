@@ -6,7 +6,7 @@
           <span class="title">房源管理</span>
         </div>
         <div class="items-center">
-          <span class="set"></span>
+          <span class="set" @click="lj_visible = true"></span>
           <span class="search" @click="isHigh = true"></span>
         </div>
       </div>
@@ -15,6 +15,14 @@
       <market-menu-list :show-market="show_market" @close="handleCloseMenu"></market-menu-list>
       <searchHigh :module="isHigh" :show-data="searchData" @close="handleCloseSearch"></searchHigh>
       <overview-info :overview-visible="overview_visible"></overview-info>
+      <lj-dialog
+        :visible="lj_visible"
+        :size="lj_size"
+        @close="handleCloseLjDialog">
+        <div class="container">
+          this is content
+        </div>
+      </lj-dialog>
     </div>
 </template>
 
@@ -23,12 +31,15 @@
   import searchHigh from '../../common/searchHigh.vue';
   import HouseCard from '../components/house-card.vue';
   import OverviewInfo from '../components/overview-info.vue';
+  import LjDialog from '../../common/lj-dialog.vue';
 
     export default {
         name: "index",
-        components: { MarketMenuList ,searchHigh, HouseCard ,OverviewInfo },
+        components: { MarketMenuList ,searchHigh, HouseCard ,OverviewInfo,LjDialog },
         data() {
             return {
+              lj_visible: false,
+              lj_size: '',
               overview_visible:false,
               show_market: false,
               isHigh: false,
@@ -219,6 +230,8 @@
             }
           ];
           this.overview_visible = true;
+          this.lj_visible = true;
+          this.lj_size = 'mini'
         },
         activated() {
         },
@@ -233,6 +246,9 @@
           },
           handleCloseOverview() {
             this.overview_visible = false;
+          },
+          handleCloseLjDialog() {
+            this.lj_visible = false;
           }
         },
     }
@@ -261,6 +277,11 @@
         background-size: cover;
         background-color: $colorE33;
         border-radius: 8px 0 0 8px;
+      }
+      .container {
+        width: 100%;
+        height: 100%;
+        background-color: antiquewhite;
       }
     }
   }
