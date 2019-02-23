@@ -107,7 +107,7 @@
             .bg {
               @include marketCentreImg('bk.png','theme1');
               .btn {
-                @include radius(50%);
+                @include radius( 0 0 50px 50px);
                 background-color: $color0C0;
                 &:hover {
                   background-color: $colorE33;

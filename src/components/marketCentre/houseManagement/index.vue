@@ -231,7 +231,7 @@
           ];
           this.overview_visible = true;
           this.lj_visible = true;
-          this.lj_size = 'mini'
+          this.lj_size = 'large'
         },
         activated() {
         },
@@ -277,11 +277,6 @@
         background-size: cover;
         background-color: $colorE33;
         border-radius: 8px 0 0 8px;
-      }
-      .container {
-        width: 100%;
-        height: 100%;
-        background-color: antiquewhite;
       }
     }
   }
