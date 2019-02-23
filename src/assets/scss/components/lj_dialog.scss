@@ -1,0 +1,42 @@
+@import "../common.scss";
+
+#theme_name {
+  .lj_dialog {
+    > div {
+      position: absolute;
+      top: 81px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, .3);
+      z-index: 99;
+      .lj_container {
+        padding: 25px;
+        position: relative;
+        text-align: center;
+        .close_btn {
+          width: 30px;
+          height: 30px;
+          position: absolute;
+          right: -25px;
+          top: -25px;
+          cursor: pointer;
+        }
+        .wen_top,.wen_bottom {
+          width: 50px;
+          height: 50px;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: red;
+        }
+        .wen_top {
+          top: 0;
+        }
+        .wen_bottom {
+          bottom: 0;
+        }
+      }
+    }
+  }
+}
