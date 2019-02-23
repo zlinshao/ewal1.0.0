@@ -4,9 +4,9 @@
         <div class="lj_container" :style="style[lj_size]">
           <slot></slot>
           <span class="close_btn" @click="handleCloseDialog"></span>
+          <span class="wen_top"></span>
+          <span class="wen_bottom"></span>
         </div>
-        <span class="wen_top"></span>
-        <span class="wen_bottom"></span>
       </div>
     </div>
 </template>
@@ -21,22 +21,21 @@
               lj_size: 'small',
               style: {
                 mini: {
-                  width: 50 + '%',
-                  height: 60 + '%'
+                  width: 1200 * 0.4 + 'px',
+                  height: 800 * 0.4 + 'px'
                 },
                 small: {
-                  width: 30 + '%',
-                  height: 40 + '%'
+                  width: 1200 * 0.6 + 'px',
+                  height: 800 * 0.6 + 'px'
                 },
                 large: {
-                  width: 50 + '%',
-                  height: 65 + '%'
+                  width: 1200 * 0.8 + 'px',
+                  height: 800 * 0.8 + 'px'
                 }
               }
             }
         },
-        mounted() {
-        },
+        mounted() { },
         activated() {
         },
         watch: {
@@ -70,12 +69,26 @@
     .lj_dialog {
       > div {
         .lj_container {
+          /*background-color: white;*/
           @include lj_dialogImg('tankuang.png','theme1');
+          background-size: contain;
+          .j_lt {
+            @include lj_dialogImg('lt.png','theme1');
+          }
+          .j_rt {
+            @include lj_dialogImg('rt.png','theme1');
+          }
+          .j_lb {
+            @include lj_dialogImg('lb.png','theme1');
+          }
+          .j_rb {
+            @include lj_dialogImg('rb.png','theme1');
+          }
           .close_btn {
             @include lj_dialogImg('close.png','theme1');
             background-size: contain;
           }
-          .wen_top {
+          .wen_bottom ,.wen_top{
             @include lj_dialogImg('bianjiao.png','theme1');
             background-size: cover;
           }
