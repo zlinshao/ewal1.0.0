@@ -8,8 +8,13 @@
         <h1>员工名册</h1>
       </div>
       <div class="items-center listTopRight">
-        <p class="flex-center"><b>+</b></p>
-        <p @click="highSearch"></p>
+        <div class="searchTerm">
+          <el-checkbox v-model="checked">离职员工</el-checkbox>
+        </div>
+        <div class="buttons">设置报表</div>
+        <div class="buttons">导出报表</div>
+        <!--<div class="icons add"><b>+</b></div>-->
+        <!--<div class="icons search" @click="highSearch"></div>-->
       </div>
     </div>
   </div>
@@ -19,7 +24,9 @@
   export default {
     name: "index",
     data() {
-      return {}
+      return {
+        checked: false,
+      }
     },
     mounted() {
     },
@@ -31,9 +38,6 @@
       moduleList() {
 
       },
-      highSearch() {
-
-      }
     },
   }
 </script>
