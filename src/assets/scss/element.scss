@@ -26,24 +26,80 @@
       }
     }
   }
-  .el-input__inner {
-    border: none;
-    background-color: transparent !important;
+  //input取消border
+  .BorderNone {
+    .el-input__inner {
+      border: none;
+      background-color: transparent !important;
+    }
   }
-  .el-pagination button:hover {
-     color: $colorE33 !important;
-   }
-  .el-pager li.active {
-    color: $colorE33 !important;
+  //离职员工 check红色圆圈
+  .searchTerm {
+    .el-checkbox {
+      @include flex('items-center');
+      .el-checkbox__inner {
+        width: 21px;
+        height: 21px;
+        @include radius(50%);
+        &:after {
+          display: none;
+        }
+        &:hover {
+          border-color: #D8D8D8;
+        }
+      }
+      .el-checkbox__input.is-focus {
+        .el-checkbox__inner {
+          border-color: #D8D8D8;
+        }
+      }
+      .el-checkbox__input.is-checked {
+        .el-checkbox__inner {
+          background-color: $colorE33;
+          border-color: $colorE33;
+        }
+      }
+      .el-checkbox__label {
+        font-size: 18px;
+        color: inherit;
+        padding-bottom: 1px;
+      }
+    }
   }
-  .el-pager li {
-    background-color: transparent !important;
-  }
-  .el-pagination .btn-next, .el-pagination .btn-prev {
-    background-color: transparent !important;
-  }
-  .el-pagination button:disabled {
-    background-color: transparent !important;
+  //分页
+  .page {
+    @mixin noBgColor {
+      background-color: transparent;
+    }
+    $pageColor: $colorE33;
+    .el-pagination {
+      .el-input__inner {
+        @include noBgColor;
+      }
+      .el-input__inner:focus {
+        border-color: $pageColor;
+      }
+      .el-pager {
+        li {
+          @include noBgColor;
+          &:hover {
+            color: $pageColor;
+          }
+        }
+        li.active {
+          color: $pageColor;
+        }
+      }
+      button:hover {
+        color: $pageColor;
+      }
+      button:disabled {
+        @include noBgColor;
+      }
+      .btn-next, .btn-prev {
+        @include noBgColor;
+      }
+    }
   }
 }
 
@@ -78,7 +134,7 @@
 #theme_name.theme4 {
 
 }
-
+//表格scroll重置
 .el-table__body-wrapper.is-scroll-right, .el-table__body-wrapper.is-scroll-left, .el-table__body-wrapper.is-scroll-middle, .el-table__body-wrapper.is-scrolling-none, .el-table--scrollable-x .el-table__body-wrapper {
   &::-webkit-scrollbar {
     width: 4px;

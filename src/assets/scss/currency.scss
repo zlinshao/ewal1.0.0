@@ -41,7 +41,6 @@
     }
     .listTopRight {
       > div {
-        color: $colorFFF;
         @include radius(6px);
         margin-right: 40px;
         cursor: pointer;
@@ -50,6 +49,7 @@
         @include flex('flex-center');
         padding-bottom: 6px;
         b {
+          color: $colorFFF;
           font-size: 30px;
         }
       }

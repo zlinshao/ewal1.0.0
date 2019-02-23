@@ -9,7 +9,7 @@
         </div>
         <div class="highGrade">
           <h5>高级</h5>
-          <div class="formData" v-for="item in showData.data">
+          <div class="formData BorderNone" v-for="item in showData.data">
             <h5>{{item.title}}</h5>
             <div v-if="item.keyType === 'date'">
               <el-date-picker

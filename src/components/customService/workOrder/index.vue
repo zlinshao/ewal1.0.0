@@ -14,8 +14,8 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <p class="flex-center"><b>+</b></p>
-        <p @click="highSearch"></p>
+        <div class="icons add"><b>+</b></div>
+        <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
     <div class="orderList" :style="{'height': orderListHeight + 'px'}">

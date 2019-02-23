@@ -225,19 +225,48 @@
   background-color: transparent !important; }
 #theme_name .el-table tbody tr:hover td {
   background-color: transparent !important; }
-#theme_name .el-input__inner {
+#theme_name .BorderNone .el-input__inner {
   border: none;
   background-color: transparent !important; }
-#theme_name .el-pagination button:hover {
-  color: #CF2E33 !important; }
-#theme_name .el-pager li.active {
-  color: #CF2E33 !important; }
-#theme_name .el-pager li {
-  background-color: transparent !important; }
-#theme_name .el-pagination .btn-next, #theme_name .el-pagination .btn-prev {
-  background-color: transparent !important; }
-#theme_name .el-pagination button:disabled {
-  background-color: transparent !important; }
+#theme_name .searchTerm .el-checkbox {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+  #theme_name .searchTerm .el-checkbox .el-checkbox__inner {
+    width: 21px;
+    height: 21px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%; }
+    #theme_name .searchTerm .el-checkbox .el-checkbox__inner:after {
+      display: none; }
+    #theme_name .searchTerm .el-checkbox .el-checkbox__inner:hover {
+      border-color: #D8D8D8; }
+  #theme_name .searchTerm .el-checkbox .el-checkbox__input.is-focus .el-checkbox__inner {
+    border-color: #D8D8D8; }
+  #theme_name .searchTerm .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: #CF2E33;
+    border-color: #CF2E33; }
+  #theme_name .searchTerm .el-checkbox .el-checkbox__label {
+    font-size: 18px;
+    color: inherit;
+    padding-bottom: 1px; }
+#theme_name .page .el-pagination .el-input__inner {
+  background-color: transparent; }
+#theme_name .page .el-pagination .el-input__inner:focus {
+  border-color: #CF2E33; }
+#theme_name .page .el-pagination .el-pager li {
+  background-color: transparent; }
+  #theme_name .page .el-pagination .el-pager li:hover {
+    color: #CF2E33; }
+#theme_name .page .el-pagination .el-pager li.active {
+  color: #CF2E33; }
+#theme_name .page .el-pagination button:hover {
+  color: #CF2E33; }
+#theme_name .page .el-pagination button:disabled {
+  background-color: transparent; }
+#theme_name .page .el-pagination .btn-next, #theme_name .page .el-pagination .btn-prev {
+  background-color: transparent; }
 
 #theme_name.theme1 .el-table tbody tr.current-row td {
   color: #CF2E33; }
