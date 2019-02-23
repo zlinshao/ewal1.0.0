@@ -132,44 +132,54 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #humanResource > div #menuList > div {
-  height: 500px;
-  padding: 0 100px; }
-  #theme_name #humanResource > div #menuList > div > div {
-    width: 100%;
-    opacity: 0;
-    transform: translateX(-2000px);
-    -webkit-transition: opacity 1s, transform 1s;
-    -moz-transition: opacity 1s, transform 1s;
-    -ms-transition: opacity 1s, transform 1s;
-    -o-transition: opacity 1s, transform 1s;
-    transition: opacity 1s, transform 1s; }
-    #theme_name #humanResource > div #menuList > div > div > div {
-      width: 70%;
-      height: 100%;
-      background: orange; }
-      #theme_name #humanResource > div #menuList > div > div > div:hover {
-        background-color: green; }
-#theme_name #humanResource > div #menuList .menuList .menu {
-  opacity: 1;
-  transform: translateX(0); }
-#theme_name #humanResource > div #menuList .menuList .menu9 {
-  transition-delay: .1s; }
-#theme_name #humanResource > div #menuList .menuList .menu8 {
-  transition-delay: .2s; }
-#theme_name #humanResource > div #menuList .menuList .menu7 {
-  transition-delay: .3s; }
-#theme_name #humanResource > div #menuList .menuList .menu6 {
-  transition-delay: .4s; }
-#theme_name #humanResource > div #menuList .menuList .menu5 {
-  transition-delay: .5s; }
-#theme_name #humanResource > div #menuList .menuList .menu4 {
-  transition-delay: .6s; }
-#theme_name #humanResource > div #menuList .menuList .menu3 {
-  transition-delay: .7s; }
-#theme_name #humanResource > div #menuList .menuList .menu2 {
-  transition-delay: .8s; }
-#theme_name #humanResource > div #menuList .menuList .menu1 {
-  transition-delay: .9s; }
+#theme_name #humanResource {
+  background-color: #FFFFFF; }
+  #theme_name #humanResource > div #menuList > div {
+    height: 500px;
+    padding: 80px 150px;
+    border-bottom: 1px solid #F2F2F2; }
+    #theme_name #humanResource > div #menuList > div .menu {
+      width: 100%;
+      transform: translateX(-2000px);
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -ms-transition: all 0.5s;
+      -o-transition: all 0.5s;
+      transition: all 0.5s; }
+      #theme_name #humanResource > div #menuList > div .menu .childrenMenu {
+        cursor: pointer;
+        width: 60%;
+        height: 100%; }
+        #theme_name #humanResource > div #menuList > div .menu .childrenMenu:hover {
+          color: #FFFFFF; }
+        #theme_name #humanResource > div #menuList > div .menu .childrenMenu span {
+          font-family: 'jingDianXingShu';
+          font-size: 36px; }
+  #theme_name #humanResource > div #menuList .menuList .menu {
+    transform: translateX(0); }
+  #theme_name #humanResource > div #menuList .menuList .menu-1 {
+    transition-delay: 0.9s;
+    -webkit-transition-delay: 0.9s; }
+  #theme_name #humanResource > div #menuList .menuList .menu-2 {
+    transition-delay: 0.8s;
+    -webkit-transition-delay: 0.8s; }
+  #theme_name #humanResource > div #menuList .menuList .menu-3 {
+    transition-delay: 0.7s;
+    -webkit-transition-delay: 0.7s; }
+  #theme_name #humanResource > div #menuList .menuList .menu-4 {
+    transition-delay: 0.6s;
+    -webkit-transition-delay: 0.6s; }
+  #theme_name #humanResource > div #menuList .menuList .menu-5 {
+    transition-delay: 0.5s;
+    -webkit-transition-delay: 0.5s; }
+  #theme_name #humanResource > div #menuList .menuList .menu-6 {
+    transition-delay: 0.4s;
+    -webkit-transition-delay: 0.4s; }
+  #theme_name #humanResource > div #menuList .menuList .menu-7 {
+    transition-delay: 0.3s;
+    -webkit-transition-delay: 0.3s; }
+  #theme_name #humanResource > div #menuList .menuList .menu-8 {
+    transition-delay: 0.2s;
+    -webkit-transition-delay: 0.2s; }
 
 /*# sourceMappingURL=index.css.map */

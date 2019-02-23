@@ -1,16 +1,18 @@
 <template>
   <div id="humanResource">
-    <div @click="menuList = true">111111111</div>
-    <div @click="menuList = false">22222222</div>
     <div>
       <div id="menuList">
         <div class="justify-around" :class="{'menuList': menuList}">
-          <div v-for="item in 6" class="flex-center menu" :class="['menu' + item]">
-            <div></div>
+          <div v-for="item in 6" class="flex-center menu" :class="['menu-' + item]">
+            <div class="childrenMenu flex-center">
+              <span class="writingMode">招兵买马</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div @click="menuList = true">111111111</div>
+    <div @click="menuList = false">22222222</div>
   </div>
 </template>
 
@@ -36,14 +38,51 @@
 <style lang="scss" scoped>
   @import "../../assets/scss/humanResource/index.scss";
 
-  @mixin mobanImg($m, $n) {
+  @mixin humanImg($m, $n) {
     $url: '../../assets/image/humanResource/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
     #humanResource {
-
+      > div {
+        #menuList {
+          > div {
+            .menu-1, .menu-5 {
+              .childrenMenu {
+                @include humanImg('huidi1.png', 'theme1');
+                &:hover {
+                  @include humanImg('hongdi1.png', 'theme1');
+                }
+              }
+            }
+            .menu-2, .menu-6 {
+              .childrenMenu {
+                @include humanImg('huidi2.png', 'theme1');
+                &:hover {
+                  @include humanImg('hongdi2.png', 'theme1');
+                }
+              }
+            }
+            .menu-3 {
+              .childrenMenu {
+                @include humanImg('huidi3.png', 'theme1');
+                &:hover {
+                  @include humanImg('hongdi3.png', 'theme1');
+                }
+              }
+            }
+            .menu-4 {
+              .childrenMenu {
+                @include humanImg('huidi4.png', 'theme1');
+                &:hover {
+                  @include humanImg('hongdi4.png', 'theme1');
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 

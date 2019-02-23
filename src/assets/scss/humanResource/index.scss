@@ -2,57 +2,43 @@
 
 #theme_name {
   #humanResource {
+    background-color: $colorFFF;
     > div {
       #menuList {
+        @mixin delay($s) {
+          transition-delay: $s + s;
+          -webkit-transition-delay: $s + s;
+        }
         > div {
           height: 500px;
-          padding: 0 100px;
-          > div {
+          padding: 80px 150px;
+          border-bottom: 1px solid $color2F2;
+          .menu {
             width: 100%;
-            opacity: 0;
             transform: translateX(-2000px);
-            @include transition2(opacity 1s, transform 1s);
-            > div {
-              width: 70%;
+            @include transition(all .5s);
+            .childrenMenu {
+              cursor: pointer;
+              width: 60%;
               height: 100%;
-              background: orange;
               &:hover {
-                background-color: green;
+                color: $colorFFF;
+              }
+              span {
+                font-family: 'jingDianXingShu';
+                font-size: 36px;
               }
             }
           }
         }
         .menuList {
           .menu {
-            opacity: 1;
             transform: translateX(0);
           }
-          .menu9 {
-            transition-delay: .1s;
-          }
-          .menu8 {
-            transition-delay: .2s;
-          }
-          .menu7 {
-            transition-delay: .3s;
-          }
-          .menu6 {
-            transition-delay: .4s;
-          }
-          .menu5 {
-            transition-delay: .5s;
-          }
-          .menu4 {
-            transition-delay: .6s;
-          }
-          .menu3 {
-            transition-delay: .7s;
-          }
-          .menu2 {
-            transition-delay: .8s;
-          }
-          .menu1 {
-            transition-delay: .9s;
+          @for $i from 1 to 9 {
+            .menu-#{$i} {
+              @include delay((10 - $i ) / 10);
+            }
           }
         }
       }
