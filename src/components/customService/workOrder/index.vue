@@ -1,8 +1,8 @@
 <template>
   <div id="workOrder">
-    <div class="orderTop items-bet">
-      <div class="items-center orderTopLeft">
-        <p class="flex-center" @click="customModule">
+    <div class="listTopCss items-bet">
+      <div class="items-center listTopLeft">
+        <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
         <h1>工单</h1>
@@ -13,7 +13,7 @@
           </span>
         </h2>
       </div>
-      <div class="items-center orderTopRight">
+      <div class="items-center listTopRight">
         <p class="flex-center"><b>+</b></p>
         <p @click="highSearch"></p>
       </div>
@@ -328,7 +328,7 @@
         }
       },
       // 客服入口
-      customModule() {
+      moduleList() {
         this.showList = true;
       }
     },
@@ -345,38 +345,7 @@
 
   #theme_name.theme1 {
     #workOrder {
-      .orderTop {
-        .orderTopRight {
-          p:last-of-type {
-            @include bgImage('../../../assets/image/customService/theme1/search.png');
-          }
-        }
-      }
-      .orderList {
-        .status1 {
-          p {
-            color: $colorFFF;
-            @include workOrderImg('teji.png', 'theme1');
-          }
-        }
-        .status2 {
-          p {
-            color: #FFAD0D;
-            @include workOrderImg('jinji.png', 'theme1');
-          }
-        }
-        .status3 {
-          p {
-            color: #0C66FF;
-            @include workOrderImg('zhongyao.png', 'theme1');
-          }
-        }
-        .status4 {
-          p {
-            color: $color874;
-          }
-        }
-      }
+
     }
   }
 

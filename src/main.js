@@ -15,6 +15,7 @@ import echarts from 'echarts'
 import 'echarts/theme/macarons.js'
 import './assets/scss/rest.css'
 import './assets/scss/element.css'
+import './assets/scss/currency.css'
 
 Vue.use(Boss);
 Vue.use(Vuex);

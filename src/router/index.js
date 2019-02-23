@@ -8,15 +8,17 @@ const Jurisdiction = () => import('@/components/jurisdiction.vue'); //无权限
 const NetWork_error = () => import('@/components/network_error.vue'); //网络已断开
 
 // 客服
-const CustomService = () => import('@/components/customService/index.vue'); //客服
+const CustomService = () => import('@/components/customService/index.vue');
 const WorkOrder = () => import('@/components/customService/workOrder/index.vue'); //工单
 
 // 市场
 const MarketCentre = () => import('@/components/marketCentre/index.vue');
-const HouseManagement = () => import('@/components/marketCentre/houseManagement/index.vue');
+const HouseManagement = () => import('@/components/marketCentre/houseManagement/index.vue');//房源管理
 
 // 人力资源中心
 const HumanResource = () => import('@/components/humanResource/index.vue');
+const Recruitment = () => import('@/components/humanResource/recruitment/index.vue');//招聘中心
+const StaffRoster = () => import('@/components/humanResource/staffRoster/index.vue');//员工名册
 
 Vue.use(Router);
 
@@ -73,6 +75,16 @@ export default new Router({
       path: '/humanResource',
       name: '人力资源中心',
       component: HumanResource
+    },
+    {
+      path: '/recruitment',
+      name: '招聘中心',
+      component: Recruitment
+    },
+    {
+      path: '/staffRoster',
+      name: '员工名册',
+      component: StaffRoster
     },
   ]
 })

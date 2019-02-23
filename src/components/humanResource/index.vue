@@ -4,7 +4,7 @@
       <div id="menuList">
         <div class="justify-around" :class="{'menuList': menuList}">
           <div v-for="item in 6" class="flex-center menu" :class="['menu-' + item]">
-            <div class="childrenMenu flex-center">
+            <div class="childrenMenu flex-center" @click="routerLink('recruitment')">
               <span class="writingMode">招兵买马</span>
             </div>
           </div>
