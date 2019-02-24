@@ -345,7 +345,26 @@
 
   #theme_name.theme1 {
     #workOrder {
-
+      .orderList {
+        .status1 {
+          p {
+            color: $colorFFF;
+            @include workOrderImg('teji.png', 'theme1');
+          }
+        }
+        .status2 {
+          p {
+            color: #FFAD0D;
+            @include workOrderImg('jinji.png', 'theme1');
+          }
+        }
+        .status3 {
+          p {
+            color: #0C66FF;
+            @include workOrderImg('zhongyao.png', 'theme1');
+          }
+        }
+      }
     }
   }
 

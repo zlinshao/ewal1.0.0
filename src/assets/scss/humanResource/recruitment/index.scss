@@ -17,9 +17,15 @@
           background-color: $color2F2;
           text-align: center;
           @include radius(4px);
+          transform: rotateY(-180deg);
+          transition: transform 1s;
+          -webkit-backface-visibility: hidden;
+          -moz-backface-visibility: hidden;
+          -ms-backface-visibility: hidden;
+          backface-visibility: hidden;
           &:hover {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             cursor: pointer;
             color: $colorE33;
             border-color: $colorE33;
@@ -30,14 +36,25 @@
             font-size: 30px;
           }
         }
+        @for $i from 1 through 16 {
+          p:nth-child(#{$i}) {
+            @include delay($i / 10);
+          }
+        }
+      }
+      .mainListHover {
+        p {
+          transform: rotateY(0);
+        }
       }
       .borderLine {
         position: absolute;
         left: 0;
         right: 0;
+        z-index: 1;
         border-radius: 10px;
         b {
-          width: 15*103px;
+          width: 16*103px;
           @include radius(10px);
           border: 3px solid $colorFE0;
         }

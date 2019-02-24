@@ -4,44 +4,7 @@
   #humanResource {
     background-color: $colorFFF;
     > div {
-      #menuList {
-        @mixin delay($s) {
-          transition-delay: $s + s;
-          -webkit-transition-delay: $s + s;
-        }
-        > div {
-          height: 500px;
-          padding: 80px 150px;
-          border-bottom: 1px solid $color2F2;
-          .menu {
-            width: 100%;
-            transform: translateX(-2000px);
-            @include transition(all .5s);
-            .childrenMenu {
-              cursor: pointer;
-              width: 60%;
-              height: 100%;
-              &:hover {
-                color: $colorFFF;
-              }
-              span {
-                font-family: 'jingDianXingShu';
-                font-size: 36px;
-              }
-            }
-          }
-        }
-        .menuList {
-          .menu {
-            transform: translateX(0);
-          }
-          @for $i from 1 to 9 {
-            .menu-#{$i} {
-              @include delay((10 - $i ) / 10);
-            }
-          }
-        }
-      }
+
     }
   }
 }

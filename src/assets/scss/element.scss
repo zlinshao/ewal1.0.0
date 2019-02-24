@@ -1,6 +1,14 @@
 @import "flex.scss";
 @import "common.scss";
 
+//select重置
+.appTheme1 {
+  .el-option-1:hover, .el-option-1.hover {
+    color: $colorE33;
+    background-color: #FFEAEA;
+  }
+}
+
 #theme_name {
   .el-table {
     .tableHeader {
@@ -63,6 +71,16 @@
         font-size: 18px;
         color: inherit;
         padding-bottom: 1px;
+      }
+    }
+  }
+  .el-select {
+    .el-input__inner:focus {
+      border-color: $colorE33;
+    }
+    .el-input.is-focus {
+      .el-input__inner {
+        border-color: $colorE33;
       }
     }
   }
@@ -134,6 +152,7 @@
 #theme_name.theme4 {
 
 }
+
 //表格scroll重置
 .el-table__body-wrapper.is-scroll-right, .el-table__body-wrapper.is-scroll-left, .el-table__body-wrapper.is-scroll-middle, .el-table__body-wrapper.is-scrolling-none, .el-table--scrollable-x .el-table__body-wrapper {
   &::-webkit-scrollbar {

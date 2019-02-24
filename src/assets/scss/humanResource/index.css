@@ -132,54 +132,16 @@
     background: #747474;
     border-radius: 4px; }
 
+.dialogVisible {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 80px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10; }
+
 #theme_name #humanResource {
   background-color: #FFFFFF; }
-  #theme_name #humanResource > div #menuList > div {
-    height: 500px;
-    padding: 80px 150px;
-    border-bottom: 1px solid #F2F2F2; }
-    #theme_name #humanResource > div #menuList > div .menu {
-      width: 100%;
-      transform: translateX(-2000px);
-      -webkit-transition: all 0.5s;
-      -moz-transition: all 0.5s;
-      -ms-transition: all 0.5s;
-      -o-transition: all 0.5s;
-      transition: all 0.5s; }
-      #theme_name #humanResource > div #menuList > div .menu .childrenMenu {
-        cursor: pointer;
-        width: 60%;
-        height: 100%; }
-        #theme_name #humanResource > div #menuList > div .menu .childrenMenu:hover {
-          color: #FFFFFF; }
-        #theme_name #humanResource > div #menuList > div .menu .childrenMenu span {
-          font-family: 'jingDianXingShu';
-          font-size: 36px; }
-  #theme_name #humanResource > div #menuList .menuList .menu {
-    transform: translateX(0); }
-  #theme_name #humanResource > div #menuList .menuList .menu-1 {
-    transition-delay: 0.9s;
-    -webkit-transition-delay: 0.9s; }
-  #theme_name #humanResource > div #menuList .menuList .menu-2 {
-    transition-delay: 0.8s;
-    -webkit-transition-delay: 0.8s; }
-  #theme_name #humanResource > div #menuList .menuList .menu-3 {
-    transition-delay: 0.7s;
-    -webkit-transition-delay: 0.7s; }
-  #theme_name #humanResource > div #menuList .menuList .menu-4 {
-    transition-delay: 0.6s;
-    -webkit-transition-delay: 0.6s; }
-  #theme_name #humanResource > div #menuList .menuList .menu-5 {
-    transition-delay: 0.5s;
-    -webkit-transition-delay: 0.5s; }
-  #theme_name #humanResource > div #menuList .menuList .menu-6 {
-    transition-delay: 0.4s;
-    -webkit-transition-delay: 0.4s; }
-  #theme_name #humanResource > div #menuList .menuList .menu-7 {
-    transition-delay: 0.3s;
-    -webkit-transition-delay: 0.3s; }
-  #theme_name #humanResource > div #menuList .menuList .menu-8 {
-    transition-delay: 0.2s;
-    -webkit-transition-delay: 0.2s; }
 
 /*# sourceMappingURL=index.css.map */
