@@ -4,7 +4,7 @@
     <div class="justify-around list"
          :class="{'menuList':routeAnimation,'backdrop': backdrop,'hover':dialogVisible}">
       <div v-for="(item,index) in list.data" class="flex-center menu" :class="['menu-' + (index + 1)]">
-        <div class="childrenMenu flex-center" @click="routerLink('recruitment')">
+        <div class="childrenMenu flex-center" @click="routerLink('recruitment');dialogVisible = false">
           <span class="writingMode">{{item.title}}</span>
         </div>
       </div>
@@ -103,10 +103,10 @@
         .menu {
           .childrenMenu {
             @include menuImg('customservicehuidi.png', 'theme1');
-            background-size: 40% 100%;
+            background-size: 50px 100%;
             &:hover {
               @include menuImg('customservicehongdi.png', 'theme1');
-              background-size: 40% 100%;
+              background-size: 50px 100%;
             }
           }
         }

@@ -10,6 +10,7 @@
 <script>
   import MenuList from '../common/menuList.vue'
   import {humanResource} from '../../assets/js/allModuleList.js';
+
   export default {
     name: "index",
     components: {MenuList},

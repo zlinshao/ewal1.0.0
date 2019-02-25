@@ -1,21 +1,21 @@
 <template>
   <div id="customService">
-    <div class="container">
-      <menu-list :menuVisible="show_menu_list" @close="show_menu_list = false"></menu-list>
-    </div>
+    <MenuList :list="customService" :module="true"></MenuList>
     <work-info :work-info="work_info" :event-data="event_data" :attend-data="attend_data" @change="handleChangeDate"></work-info>
   </div>
 </template>
 
 <script>
-  import MenuList from './components/menu-list.vue';
+  import MenuList from '../common/menuList.vue';
   import WorkInfo from '../common/work-info.vue';
+  import {customService} from '../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
     components: { MenuList,WorkInfo },
     data() {
       return {
+        customService,
         show_menu_list: false,
         work_info: [
           {work: '平均在线时长', val: '8 h'},

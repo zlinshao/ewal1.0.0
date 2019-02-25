@@ -31,6 +31,14 @@
         <!--<div class="icons search" @click="highSearch"></div>-->
       </div>
     </div>
+    <div>
+      <div class="page">
+        <el-pagination
+          :total="100"
+          layout="total,jumper,prev,pager,next">
+        </el-pagination>
+      </div>
+    </div>
   </div>
 </template>
 
