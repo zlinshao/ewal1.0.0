@@ -20,6 +20,9 @@ const HumanResource = () => import('@/components/humanResource/index.vue');
 const Recruitment = () => import('@/components/humanResource/recruitment/index.vue');//招聘中心
 const StaffRoster = () => import('@/components/humanResource/staffRoster/index.vue');//员工名册
 
+// 财务中心
+const Finance = () => import('@/components/finance/index.vue');
+
 Vue.use(Router);
 
 export default new Router({
@@ -85,6 +88,11 @@ export default new Router({
       path: '/staffRoster',
       name: '员工名册',
       component: StaffRoster
+    },
+    {
+      path: '/finance',
+      name: '财务账本',
+      component: Finance
     },
   ]
 })

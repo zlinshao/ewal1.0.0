@@ -132,14 +132,14 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #houseManagement .header {
+#theme_name #houseManagement > div .header {
   width: 100%;
   height: 80px;
   position: fixed;
   top: 81px;
   left: 0;
   z-index: 10; }
-  #theme_name #houseManagement .header span.btn {
+  #theme_name #houseManagement > div .header span.btn {
     display: inline-block;
     width: 42px;
     height: 50px;
@@ -150,54 +150,54 @@
     text-align: center;
     line-height: 30px;
     cursor: pointer; }
-  #theme_name #houseManagement .header span.title {
+  #theme_name #houseManagement > div .header span.title {
     margin-left: 20px;
     font-size: 30px; }
-  #theme_name #houseManagement .header span.set, #theme_name #houseManagement .header span.search {
+  #theme_name #houseManagement > div .header span.set, #theme_name #houseManagement > div .header span.search {
     width: 30px;
     height: 30px;
     cursor: pointer; }
-  #theme_name #houseManagement .header span.search {
+  #theme_name #houseManagement > div .header span.search {
     margin: 0 35px; }
-#theme_name #houseManagement .btn_show {
-  width: 30px;
-  height: 80px;
-  position: absolute;
-  bottom: 200px;
-  right: 0;
-  cursor: pointer;
-  z-index: 1; }
-#theme_name #houseManagement .house_info {
+#theme_name #houseManagement > div .house_info {
   height: 100%; }
-  #theme_name #houseManagement .house_info > div {
+  #theme_name #houseManagement > div .house_info > div {
     width: 100%; }
-  #theme_name #houseManagement .house_info .base_info {
+  #theme_name #houseManagement > div .house_info .base_info {
     padding: 10px; }
-    #theme_name #houseManagement .house_info .base_info > div {
+    #theme_name #houseManagement > div .house_info .base_info > div {
       width: 100%;
       padding: 30px; }
-    #theme_name #houseManagement .house_info .base_info .house_photo > div {
+    #theme_name #houseManagement > div .house_info .base_info .house_photo > div {
       width: 100%; }
-    #theme_name #houseManagement .house_info .base_info .house_photo .big_img > img {
-      width: 100%;
-      min-width: 520px;
-      max-height: 230px; }
-    #theme_name #houseManagement .house_info .base_info .house_photo .small_img {
+    #theme_name #houseManagement > div .house_info .base_info .house_photo .big_img {
+      position: relative; }
+      #theme_name #houseManagement > div .house_info .base_info .house_photo .big_img > img {
+        width: 100%;
+        min-width: 520px;
+        max-height: 230px; }
+      #theme_name #houseManagement > div .house_info .base_info .house_photo .big_img .sijiao {
+        width: 101%;
+        height: 101%;
+        position: absolute;
+        top: -2px;
+        left: -1px; }
+    #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img {
       position: relative;
       cursor: pointer;
       margin-top: 10px;
       overflow: hidden;
       min-height: 70px; }
-      #theme_name #houseManagement .house_info .base_info .house_photo .small_img .img_container {
+      #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .img_container {
         position: absolute;
         top: 0;
         left: 0;
         transition: all ease .5s; }
-        #theme_name #houseManagement .house_info .base_info .house_photo .small_img .img_container > img {
+        #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .img_container > img {
           max-width: 120px;
           max-height: 70px;
           margin-right: 10px; }
-      #theme_name #houseManagement .house_info .base_info .house_photo .small_img .btn {
+      #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .btn {
         width: 20px;
         height: 30px;
         position: absolute;
@@ -207,12 +207,82 @@
         color: white;
         opacity: 0;
         transition: all ease .2s; }
-      #theme_name #houseManagement .house_info .base_info .house_photo .small_img .left_btn {
+      #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .left_btn {
         left: 0; }
-      #theme_name #houseManagement .house_info .base_info .house_photo .small_img .right_btn {
+      #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .right_btn {
         right: 0; }
-      #theme_name #houseManagement .house_info .base_info .house_photo .small_img:hover .btn {
+      #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img:hover .btn {
         opacity: 1; }
+    #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title {
+      height: 30px; }
+      #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div {
+        width: 100%; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div > span {
+          margin-right: 20px; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div .address {
+          font-size: 18px; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div .mark {
+          width: 20px;
+          height: 20px;
+          vertical-align: middle; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div .look {
+          display: inline-block;
+          width: 25px;
+          height: 20px;
+          vertical-align: middle;
+          cursor: pointer; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div .status {
+          font-size: 16px;
+          color: red;
+          font-weight: bold; }
+    #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .h_type {
+      margin: 20px 0; }
+      #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .h_type .info {
+        padding: 5px 0; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .h_type .info > span {
+          font-size: 14px;
+          padding: 0 15px;
+          border-right: 2px solid #ACACAC; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .h_type .info > span:first-child {
+          padding-left: 0; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .h_type .info > span:last-child {
+          border: none; }
+      #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .h_type .le_text {
+        text-align: left; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .h_type .le_text > span {
+          font-size: 14px; }
+    #theme_name #houseManagement > div .house_info .base_info .house_detail .deploy {
+      text-align: left; }
+      #theme_name #houseManagement > div .house_info .base_info .house_detail .deploy > h3 {
+        font-size: 14px;
+        font-weight: bold; }
+      #theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info {
+        width: 100%;
+        margin-top: 20px;
+        flex-wrap: wrap; }
+        #theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info > span {
+          margin-right: 25px;
+          margin-top: 20px; }
+          #theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info > span > span {
+            width: 40px;
+            height: 40px;
+            text-align: center; }
+            #theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info > span > span > i {
+              width: 40px;
+              height: 40px; }
+          #theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info > span > b {
+            font-size: 14px; }
+  #theme_name #houseManagement > div .house_info .table_info > div {
+    width: 100%; }
+  #theme_name #houseManagement > div .house_info .table_info .info_type {
+    padding: 10px 0; }
+    #theme_name #houseManagement > div .house_info .table_info .info_type > span {
+      width: 100%;
+      padding: 8px 30px;
+      cursor: pointer;
+      font-size: 14px; }
+  #theme_name #houseManagement > div .house_info .table_info .table_list {
+    padding: 0 20px; }
 
 #theme_name.theme1 #houseManagement .header {
   background-color: #FFFFFF; }

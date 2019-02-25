@@ -317,11 +317,13 @@
       changeTabs(id) {
         this.chooseTab = id;
       },
+      // 当前点击
       tableClickRow(row) {
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
       },
+      // 点击过
       tableChooseRow({row, rowIndex}) {
         return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
       },

@@ -77,7 +77,7 @@
             English: 'Presidents',
           },
           {
-            url: '',
+            url: 'finance',
             title: '财务中心',
             English: 'Finacial Center',
           },

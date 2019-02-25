@@ -1,0 +1,35 @@
+@import "../common.scss";
+
+#theme_name {
+  #finance {
+    height: 100%;
+    > div {
+      width: 1200px;
+      height: 750px;
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #finance {
+
+  }
+}
+
+#theme_name.theme2 {
+  #finance {
+
+  }
+}
+
+#theme_name.theme3 {
+  #finance {
+
+  }
+}
+
+#theme_name.theme4 {
+  #finance {
+
+  }
+}
