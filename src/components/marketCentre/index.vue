@@ -1,7 +1,7 @@
 <template>
   <div id="marketCentre">
     <div class="container">
-      <market-menu-list :show-market="show_market" @close="handleCloseMenu"></market-menu-list>
+      <market-menu-list :show-market="show_market" :show-shadow="false" @close="handleCloseMenu"></market-menu-list>
     </div>
     <work-info :work-info="work_info" :event-data="event_data" :attend-data="attend_data" @change="handleChangeDate"></work-info>
   </div>
