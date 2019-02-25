@@ -2,6 +2,7 @@
 @import "./common.scss";
 
 #theme_name {
+  //表格头部
   .listTopCss {
     background-color: $colorFFF;
     height: 80px;
@@ -73,9 +74,92 @@
       }
     }
   }
+  //module灰底
+  .dialogVisible {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 80px;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 10;
+  }
+  //分页
+  footer.bottomPage {
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -100px;
+    background-color: $color2F2;
+    z-index: 6;
+    @include transition(bottom .5s);
+    .develop {
+      position: absolute;
+      top: -30px;
+      width: 80px;
+      cursor: pointer;
+      height: 30px;
+      opacity: 1;
+      @include transition(all .5s);
+      border-radius: 10px 10px 0 0;
+      background-color: $color2F2;
+      i {
+        -webkit-animation: bounce-up 1s linear infinite;
+        animation: bounce-up 1s linear infinite;
+        transform: rotateZ(-90deg);
+        @include transition(transform .5s);
+        text-align: center;
+        font-size: 24px;
+        color: $colorE33;
+      }
+    }
+    &:hover {
+      bottom: 0;
+      .develop {
+        opacity: 0;
+        i {
+          -webkit-animation: bounce-down .8s linear infinite;
+          animation: bounce-down .8s linear infinite;
+        }
+      }
+    }
+  }
+  //分页动画
+  @keyframes bounce-up {
+    25% {
+      transform: translateY(-2px) rotateZ(-90deg);
+    }
+    50% {
+      transform: translateY(0) rotateZ(-90deg);
+    }
+    75% {
+      transform: translateY(2px) rotateZ(-90deg);
+    }
+    100% {
+      transform: translateY(0) rotateZ(-90deg);
+    }
+  }
+  //分页动画
+  @keyframes bounce-down {
+    25% {
+      transform: translateY(-2px) rotateZ(-90deg);
+    }
+    50% {
+      transform: translateY(0) rotateZ(-90deg);
+    }
+    75% {
+      transform: translateY(2px) rotateZ(-90deg);
+    }
+    100% {
+      transform: translateY(0) rotateZ(-90deg);
+    }
+  }
 }
 
 #theme_name.theme1 {
+  //表格头部
   .listTopCss {
     .listTopLeft {
       p {
@@ -104,6 +188,7 @@
       }
     }
   }
+
 }
 
 #theme_name.theme2 {

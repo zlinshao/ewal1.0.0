@@ -21,7 +21,7 @@
     <div class="orderList" :style="{'height': orderListHeight + 'px'}">
       <el-table
         :data="tableData"
-        :height="orderListHeight - 100 + 'px'"
+        :height="orderListHeight -30 + 'px'"
         highlight-current-row
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
@@ -43,28 +43,39 @@
           :label="showData[item]">
         </el-table-column>
       </el-table>
-      <footer class="flex-center" style="height: 100px;">
-        <p>fhsdkfhsdak</p>
+      <footer class="flex-center bottomPage">
+        <div class="develop flex-center">
+          <i class="el-icon-d-arrow-right"></i>
+        </div>
+        <div class="page">
+          <el-pagination
+            :total="100"
+            layout="total,jumper,prev,pager,next">
+          </el-pagination>
+        </div>
       </footer>
     </div>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
-    <menu-list :menu-visible="showList" @close="showList = false"></menu-list>
+
+    <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue'
-  import MenuList from '../components/menu-list';
+  import MenuList from '../../common/menuList.vue';
+  import {customService} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
     components: {SearchHigh, MenuList},
     data() {
       return {
-        showList: false,
+        customService,
+        visibleStatus: false,
+        showSearch: false,
         orderListHeight: '',
         chooseTab: 1,
-        showSearch: false,
         selects: [
           {
             id: 1,
@@ -92,6 +103,104 @@
         },
         chooseRowIds: [],
         tableData: [
+          {
+            id: 10,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 20,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 30,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 11,
+            status: 2,
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄',
+          },
+          {
+            id: 12,
+            status: 3,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
+          {
+            id: 13,
+            status: 4,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
+          {
+            id: 23,
+            status: 4,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
+          {
+            id: 33,
+            status: 4,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
+          {
+            id: 10,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 20,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 30,
+            status: 1,
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+          },
+          {
+            id: 11,
+            status: 2,
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄',
+          },
+          {
+            id: 12,
+            status: 3,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
+          {
+            id: 13,
+            status: 4,
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+          },
           {
             id: 10,
             status: 1,
@@ -328,7 +437,8 @@
       },
       // 客服入口
       moduleList() {
-        this.showList = true;
+        this.visibleStatus = !this.visibleStatus;
+        this.$store.dispatch('route_animation');
       }
     },
   }

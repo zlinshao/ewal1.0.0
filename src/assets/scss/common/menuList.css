@@ -132,53 +132,48 @@
     background: #747474;
     border-radius: 4px; }
 
-.dialogVisible {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 80px;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10; }
-
-#theme_name #menuList .list {
-  height: 500px;
-  padding: 80px 150px;
-  border-bottom: 1px solid #F2F2F2; }
-  #theme_name #menuList .list .menu {
-    width: 100%;
-    transform: translateX(-3000px);
-    -webkit-transition: all 0.24s;
-    -moz-transition: all 0.24s;
-    -ms-transition: all 0.24s;
-    -o-transition: all 0.24s;
-    transition: all 0.24s; }
-    #theme_name #menuList .list .menu .childrenMenu {
-      cursor: pointer;
-      width: 60%;
-      height: 100%; }
-      #theme_name #menuList .list .menu .childrenMenu:hover {
-        color: #FFFFFF; }
-      #theme_name #menuList .list .menu .childrenMenu span {
-        font-family: 'jingDianXingShu';
-        font-size: 36px; }
-#theme_name #menuList .backdrop {
-  position: fixed;
-  top: 80px;
-  left: -100%;
-  width: 100%;
-  z-index: 12;
-  background-color: #FFFFFF;
-  border-color: transparent;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  -ms-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  transition: all 0.3s; }
-#theme_name #menuList .backdrop.hover {
-  left: 0; }
-#theme_name #menuList .menuList {
+#theme_name #menuList {
   background-color: #FFFFFF; }
+  #theme_name #menuList .list {
+    height: 500px;
+    padding: 80px 150px;
+    border-bottom: 1px solid #F2F2F2; }
+    #theme_name #menuList .list .menu {
+      width: 100%;
+      -webkit-transform: translateX(-3000px);
+      -moz-transform: translateX(-3000px);
+      -ms-transform: translateX(-3000px);
+      -o-transform: translateX(-3000px);
+      transform: translateX(-3000px);
+      -webkit-transition: all 0.24s;
+      -moz-transition: all 0.24s;
+      -ms-transition: all 0.24s;
+      -o-transition: all 0.24s;
+      transition: all 0.24s; }
+      #theme_name #menuList .list .menu .childrenMenu {
+        cursor: pointer;
+        width: 60%;
+        height: 100%; }
+        #theme_name #menuList .list .menu .childrenMenu:hover {
+          color: #FFFFFF; }
+        #theme_name #menuList .list .menu .childrenMenu span {
+          font-family: 'jingDianXingShu';
+          font-size: 36px; }
+  #theme_name #menuList .backdrop {
+    position: fixed;
+    top: 80px;
+    left: -100%;
+    width: 100%;
+    z-index: 12;
+    background-color: #FFFFFF;
+    border-color: transparent;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s; }
+  #theme_name #menuList .backdrop.hover {
+    left: 0; }
   #theme_name #menuList .menuList .menu {
     transform: translateX(0); }
   #theme_name #menuList .menuList .menu-1 {

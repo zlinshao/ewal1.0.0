@@ -216,15 +216,6 @@
     background: #747474;
     border-radius: 4px; }
 
-.dialogVisible {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 80px;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10; }
-
 #theme_name .listTopCss {
   background-color: #FFFFFF;
   height: 80px; }
@@ -286,7 +277,79 @@
     #theme_name .listTopCss .listTopRight .buttons:hover {
       background-color: #CF2E33;
       color: #FFFFFF; }
-
+#theme_name .dialogVisible {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 80px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10; }
+#theme_name footer.bottomPage {
+  height: 100px;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -100px;
+  background-color: #F2F2F2;
+  z-index: 6;
+  -webkit-transition: bottom 0.5s;
+  -moz-transition: bottom 0.5s;
+  -ms-transition: bottom 0.5s;
+  -o-transition: bottom 0.5s;
+  transition: bottom 0.5s; }
+  #theme_name footer.bottomPage .develop {
+    position: absolute;
+    top: -30px;
+    width: 80px;
+    cursor: pointer;
+    height: 30px;
+    opacity: 1;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    border-radius: 10px 10px 0 0;
+    background-color: #F2F2F2; }
+    #theme_name footer.bottomPage .develop i {
+      -webkit-animation: bounce-up 1s linear infinite;
+      animation: bounce-up 1s linear infinite;
+      transform: rotateZ(-90deg);
+      -webkit-transition: transform 0.5s;
+      -moz-transition: transform 0.5s;
+      -ms-transition: transform 0.5s;
+      -o-transition: transform 0.5s;
+      transition: transform 0.5s;
+      text-align: center;
+      font-size: 24px;
+      color: #CF2E33; }
+  #theme_name footer.bottomPage:hover {
+    bottom: 0; }
+    #theme_name footer.bottomPage:hover .develop {
+      opacity: 0; }
+      #theme_name footer.bottomPage:hover .develop i {
+        -webkit-animation: bounce-down .8s linear infinite;
+        animation: bounce-down .8s linear infinite; }
+@keyframes bounce-up {
+  25% {
+    transform: translateY(-2px) rotateZ(-90deg); }
+  50% {
+    transform: translateY(0) rotateZ(-90deg); }
+  75% {
+    transform: translateY(2px) rotateZ(-90deg); }
+  100% {
+    transform: translateY(0) rotateZ(-90deg); } }
+@keyframes bounce-down {
+  25% {
+    transform: translateY(-2px) rotateZ(-90deg); }
+  50% {
+    transform: translateY(0) rotateZ(-90deg); }
+  75% {
+    transform: translateY(2px) rotateZ(-90deg); }
+  100% {
+    transform: translateY(0) rotateZ(-90deg); } }
 #theme_name.theme1 .listTopCss .listTopLeft p {
   background-color: #DFDFDF; }
 #theme_name.theme1 .listTopCss .listTopLeft h1 {

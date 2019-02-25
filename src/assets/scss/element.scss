@@ -34,6 +34,9 @@
       }
     }
   }
+  .el-table::before {
+    height: 0;
+  }
   //input取消border
   .BorderNone {
     .el-input__inner {

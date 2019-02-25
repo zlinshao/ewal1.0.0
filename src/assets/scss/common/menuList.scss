@@ -2,13 +2,14 @@
 
 #theme_name {
   #menuList {
+    background-color: $colorFFF;
     .list {
       height: 500px;
       padding: 80px 150px;
       border-bottom: 1px solid $color2F2;
       .menu {
         width: 100%;
-        transform: translateX(-3000px);
+        @include transform(translateX(-3000px));
         @include transition(all .24s);
         .childrenMenu {
           cursor: pointer;
@@ -38,7 +39,6 @@
       left: 0;
     }
     .menuList {
-      background-color: #FFFFFF;
       .menu {
         transform: translateX(0);
       }
