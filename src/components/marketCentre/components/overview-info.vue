@@ -2,6 +2,7 @@
     <div id="overview_info" class="overview_info" :class="{'overview_show': overview_visible}">
       <div>
         <div class="container">
+          <div class="btn_show" @click="handleOpenInfo"></div>
           <ul class="date_change">
             <li @click="handleChangeDate(tmp.id)" v-for="tmp in date_change_list" :key="tmp.id" :class="{ 'mark_li' : isActive === tmp.id }">{{ tmp.val }}</li>
           </ul>
@@ -67,6 +68,10 @@
         },
         computed: {},
         methods: {
+          handleOpenInfo() {
+            this.overview_visible = true;
+            this.$emit('open');
+          },
           handleChangeDate(id) {
             this.isActive = id;
           },
@@ -193,9 +198,20 @@
 <style lang="scss" scoped>
   @import "../../../assets/scss/marketCentre/components/overview-info.scss";
 
+  @mixin marketImage($m,$n) {
+    $url: '../../../assets/image/marketCentre/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
   .overview_info {
     .container {
       background-color: $colorFFF;
+      .btn_show {
+        @include marketImage('shouqi.png','theme1');
+        background-size: cover;
+        background-color: $colorE33;
+        border-radius: 8px 0 0 8px;
+      }
     }
   }
 </style>

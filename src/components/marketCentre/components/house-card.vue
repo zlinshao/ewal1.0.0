@@ -83,6 +83,7 @@
             this.$emit('open',item);
           },
           handleScroll() {
+            console.log(111);
             this.$emit('close');
           },
           handleOpenControl(id) {
