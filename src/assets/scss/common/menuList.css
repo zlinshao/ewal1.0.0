@@ -148,11 +148,11 @@
   #theme_name #menuList .list .menu {
     width: 100%;
     transform: translateX(-3000px);
-    -webkit-transition: all 0.2s;
-    -moz-transition: all 0.2s;
-    -ms-transition: all 0.2s;
-    -o-transition: all 0.2s;
-    transition: all 0.2s; }
+    -webkit-transition: all 0.24s;
+    -moz-transition: all 0.24s;
+    -ms-transition: all 0.24s;
+    -o-transition: all 0.24s;
+    transition: all 0.24s; }
     #theme_name #menuList .list .menu .childrenMenu {
       cursor: pointer;
       width: 60%;

@@ -176,6 +176,52 @@
   right: 0;
   cursor: pointer;
   z-index: 1; }
+#theme_name #houseManagement .house_info {
+  height: 100%; }
+  #theme_name #houseManagement .house_info > div {
+    width: 100%; }
+  #theme_name #houseManagement .house_info .base_info {
+    padding: 10px; }
+    #theme_name #houseManagement .house_info .base_info > div {
+      width: 100%;
+      padding: 30px; }
+    #theme_name #houseManagement .house_info .base_info .house_photo > div {
+      width: 100%; }
+    #theme_name #houseManagement .house_info .base_info .house_photo .big_img > img {
+      width: 100%;
+      min-width: 520px;
+      max-height: 230px; }
+    #theme_name #houseManagement .house_info .base_info .house_photo .small_img {
+      position: relative;
+      cursor: pointer;
+      margin-top: 10px;
+      overflow: hidden;
+      min-height: 70px; }
+      #theme_name #houseManagement .house_info .base_info .house_photo .small_img .img_container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all ease .5s; }
+        #theme_name #houseManagement .house_info .base_info .house_photo .small_img .img_container > img {
+          max-width: 120px;
+          max-height: 70px;
+          margin-right: 10px; }
+      #theme_name #houseManagement .house_info .base_info .house_photo .small_img .btn {
+        width: 20px;
+        height: 30px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        line-height: 30px;
+        color: white;
+        opacity: 0;
+        transition: all ease .2s; }
+      #theme_name #houseManagement .house_info .base_info .house_photo .small_img .left_btn {
+        left: 0; }
+      #theme_name #houseManagement .house_info .base_info .house_photo .small_img .right_btn {
+        right: 0; }
+      #theme_name #houseManagement .house_info .base_info .house_photo .small_img:hover .btn {
+        opacity: 1; }
 
 #theme_name.theme1 #houseManagement .header {
   background-color: #FFFFFF; }
