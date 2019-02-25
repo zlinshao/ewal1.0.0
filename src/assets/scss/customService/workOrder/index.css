@@ -134,20 +134,5 @@
 
 #theme_name #workOrder {
   height: 100%; }
-  #theme_name #workOrder .orderList {
-    padding: 0 30px;
-    background-color: #FFFFFF;
-    margin-top: 9px;
-    font-size: 14px; }
-    #theme_name #workOrder .orderList .status {
-      display: flex;
-      display: -webkit-flex;
-      align-items: center;
-      justify-content: center; }
-      #theme_name #workOrder .orderList .status p {
-        width: 90px;
-        height: 30px;
-        line-height: 30px;
-        font-weight: bold; }
 
 /*# sourceMappingURL=index.css.map */

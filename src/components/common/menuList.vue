@@ -4,7 +4,7 @@
     <div class="justify-around list"
          :class="{'menuList':routeAnimation,'backdrop': backdrop,'hover':dialogVisible}">
       <div v-for="(item,index) in list.data" class="flex-center menu" :class="['menu-' + (index + 1)]">
-        <div class="childrenMenu flex-center" @click="routerLink('recruitment');dialogVisible = false">
+        <div class="childrenMenu flex-center" @click="moduleRouter(item.url)">
           <span class="writingMode">{{item.title}}</span>
         </div>
       </div>
@@ -41,6 +41,11 @@
       }
     },
     methods: {
+      moduleRouter(url) {
+        this.routerLink(url);
+        dialogVisible = false
+      },
+      // 点击底层关闭
       hidePanel(event) {
         let sp = document.getElementById("list");
         if (sp) {

@@ -11,8 +11,16 @@
 
 #theme_name {
   .el-table {
+    &::before {
+      height: 0;
+    }
+    background-color: transparent;
+    tr {
+      background-color: transparent;
+    }
     .tableHeader {
       th {
+        background-color: transparent;
         div {
           height: 40px;
           line-height: 40px;
@@ -34,9 +42,7 @@
       }
     }
   }
-  .el-table::before {
-    height: 0;
-  }
+
   //input取消border
   .BorderNone {
     .el-input__inner {

@@ -3,21 +3,7 @@
 #theme_name {
   #workOrder {
     height: 100%;
-    .orderList {
-      padding: 0 30px;
-      background-color: $colorFFF;
-      margin-top: 9px;
-      font-size: 14px;
-      .status {
-        @include flex('flex-center');
-        p {
-          width: 90px;
-          height: 30px;
-          line-height: 30px;
-          font-weight: bold;
-        }
-      }
-    }
+
   }
 }
 

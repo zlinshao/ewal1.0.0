@@ -220,17 +220,23 @@
   color: #CF2E33;
   background-color: #FFEAEA; }
 
-#theme_name .el-table .tableHeader th div {
-  height: 40px;
-  line-height: 40px;
-  color: #686874;
-  font-weight: bold; }
-#theme_name .el-table tbody tr.current-row td {
-  background-color: transparent !important; }
-#theme_name .el-table tbody tr:hover td {
-  background-color: transparent !important; }
-#theme_name .el-table::before {
-  height: 0; }
+#theme_name .el-table {
+  background-color: transparent; }
+  #theme_name .el-table::before {
+    height: 0; }
+  #theme_name .el-table tr {
+    background-color: transparent; }
+  #theme_name .el-table .tableHeader th {
+    background-color: transparent; }
+    #theme_name .el-table .tableHeader th div {
+      height: 40px;
+      line-height: 40px;
+      color: #686874;
+      font-weight: bold; }
+  #theme_name .el-table tbody tr.current-row td {
+    background-color: transparent !important; }
+  #theme_name .el-table tbody tr:hover td {
+    background-color: transparent !important; }
 #theme_name .BorderNone .el-input__inner {
   border: none;
   background-color: transparent !important; }

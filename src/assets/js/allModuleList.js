@@ -7,7 +7,7 @@ export const humanResource = {
       title: '三省六部',
     },
     {
-      url: '',
+      url: 'recruitment',
       title: '招兵买马',
     },
     {
@@ -34,7 +34,7 @@ export const customService = {
   type: 'customService',
   data: [
     {
-      url: '',
+      url: 'workOrder',
       title: '工单',
     },
     {
