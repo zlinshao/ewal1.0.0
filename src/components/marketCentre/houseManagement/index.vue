@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="btn_show" @click="overview_visible = true"></div>
-      <house-card :house-source="house_source" @close="handleCloseOverview"></house-card>
+      <house-card :house-source="house_source" @close="handleCloseOverview" @open="handleOpenCard"></house-card>
       <market-menu-list :show-market="show_market" @close="handleCloseMenu"></market-menu-list>
       <searchHigh :module="isHigh" :show-data="searchData" @close="handleCloseSearch"></searchHigh>
       <overview-info :overview-visible="overview_visible"></overview-info>
@@ -19,8 +19,30 @@
         :visible="lj_visible"
         :size="lj_size"
         @close="handleCloseLjDialog">
-        <div class="container">
-          this is content
+        <div class="house_info">
+          <div class="base_info flex">
+            <div class="house_photo">
+              <div class="big_img">
+                <img src="./swipe6.jpg" alt="">
+              </div>
+              <div class="small_img">
+                <div class="img_container items-center" ref="img_contain" :style="{'left': img_trams + '%'}">
+                  <img src="./swipe6.jpg" alt="">
+                  <img src="./swipe6.jpg" alt="">
+                  <img src="./swipe6.jpg" alt="">
+                  <img src="./swipe6.jpg" alt="">
+                  <img src="./swipe6.jpg" alt="">
+                  <img src="./swipe6.jpg" alt="">
+                </div>
+                <span class="btn left_btn" @click="handleTransLeft"><i class="el-icon-arrow-left"></i></span>
+                <span class="btn right_btn" @click="handleTransRight"><i class="el-icon-arrow-right"></i></span>
+              </div>
+            </div>
+            <div class="house_detail">
+              1111
+            </div>
+          </div>
+          <div>22222222222222</div>
         </div>
       </lj-dialog>
     </div>
@@ -48,7 +70,8 @@
                 keywords: 'keywords',
                 data: [],
               },
-              house_source: []
+              house_source: [],
+              img_trams: 0,
             }
         },
         mounted() {
@@ -238,6 +261,18 @@
         watch: {},
         computed: {},
         methods: {
+          handleOpenCard(item) {
+            this.lj_visible = true;
+            console.log(item);
+          },
+          handleTransLeft() {
+            this.img_trams -= 20;
+          },
+          handleTransRight() {
+            if (this.img_trams < 0) {
+              this.img_trams += 20;
+            }
+          },
           handleCloseMenu() {
             this.show_market = false;
           },
@@ -277,6 +312,24 @@
         background-size: cover;
         background-color: $colorE33;
         border-radius: 8px 0 0 8px;
+      }
+      .house_info {
+        > div {
+
+        }
+        .base_info {
+          border-bottom: 1px dashed #808080;
+          > div {
+
+          }
+          .house_photo {
+            .small_img {
+              .btn {
+                background-color: $color874;
+              }
+            }
+          }
+        }
       }
     }
   }

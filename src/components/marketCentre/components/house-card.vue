@@ -4,7 +4,7 @@
         <div class="content scroll_bar" @scroll.lazy="handleScroll">
           <div class="flex cards">
             <div v-for="item in house_info" class="justify-center">
-              <div class="card">
+              <div class="card" @click="handleOpenCard(item)">
                 <div class="photo">
                   <div class="picture">
                     <img class="picture" :src="item.url" alt="...">
@@ -79,6 +79,9 @@
         },
         computed: {},
         methods: {
+          handleOpenCard(item) {
+            this.$emit('open',item);
+          },
           handleScroll() {
             this.$emit('close');
           },
