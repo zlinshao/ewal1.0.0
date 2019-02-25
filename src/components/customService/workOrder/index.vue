@@ -18,10 +18,10 @@
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
-    <div class="orderList" :style="{'height': orderListHeight + 'px'}">
+    <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
         :data="tableData"
-        :height="orderListHeight -30 + 'px'"
+        :height="this.mainListHeight(30) + 'px'"
         highlight-current-row
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
@@ -74,7 +74,6 @@
         customService,
         visibleStatus: false,
         showSearch: false,
-        orderListHeight: '',
         chooseTab: 1,
         selects: [
           {
@@ -308,7 +307,6 @@
       }
     },
     mounted() {
-      this.orderListHeight = window.innerHeight - 170;
     },
     activated() {
     },
@@ -444,7 +442,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "../../../assets/scss/customService/workOrder/index.scss";
 
   @mixin workOrderImg($m, $n) {
@@ -454,7 +452,7 @@
 
   #theme_name.theme1 {
     #workOrder {
-      .orderList {
+      .mainListTable {
         .status1 {
           p {
             color: $colorFFF;

@@ -6,6 +6,9 @@ export default {
       } else {
         this.$router.push(url);
       }
+    };
+    Vue.prototype.mainListHeight = function (num = 0) {
+      return window.innerHeight - 170 - num;
     }
   }
 }
