@@ -3,7 +3,7 @@
       <div>
         <div class="header items-bet">
           <div class="items-center">
-            <span class="btn" @click="show_market = true">...</span>
+            <span class="btn" @click="show_market = true;show_shadow = true">...</span>
             <span class="title">房源管理</span>
           </div>
           <div class="items-center">
@@ -12,7 +12,7 @@
           </div>
         </div>
         <house-card :house-source="house_source" @close="handleCloseOverview" @open="handleOpenCard"></house-card>
-        <market-menu-list :show-market="show_market" @close="handleCloseMenu"></market-menu-list>
+        <market-menu-list :show-market="show_market" :show-shadow="show_shadow" @close="handleCloseMenu"></market-menu-list>
         <searchHigh :module="isHigh" :show-data="searchData" @close="handleCloseSearch"></searchHigh>
         <overview-info :overview-visible="overview_visible" @open="overview_visible = true"></overview-info>
         <lj-dialog
@@ -116,6 +116,7 @@
               lj_size: '',
               overview_visible:false,
               show_market: false,
+              show_shadow: false,
               isHigh: false,
               searchData: {
                 status: 'workOrder',
@@ -467,6 +468,7 @@
           },
           handleCloseMenu() {
             this.show_market = false;
+            this.show_shadow = false;
           },
           handleCloseSearch() {
             this.isHigh = false;
