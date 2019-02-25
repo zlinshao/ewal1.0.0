@@ -17,7 +17,7 @@
         props: ['visible','size'],
         data() {
             return {
-              dialog_visible: true,
+              dialog_visible: false,
               lj_size: 'small',
               style: {
                 mini: {
