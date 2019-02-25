@@ -29,8 +29,8 @@
                   height: 800 * 0.6 + 'px'
                 },
                 large: {
-                  width: 1200 * 0.8 + 'px',
-                  height: 800 * 0.8 + 'px'
+                  width: 1200 + 'px',
+                  height: 800 + 'px'
                 }
               }
             }
@@ -90,7 +90,7 @@
           }
           .wen_bottom ,.wen_top{
             @include lj_dialogImg('bianjiao.png','theme1');
-            background-size: cover;
+            background-size: contain;
           }
         }
       }

@@ -11,7 +11,6 @@
       background: rgba(0, 0, 0, .3);
       z-index: 99;
       .lj_container {
-        padding: 30px;
         position: relative;
         text-align: center;
         .jiao {
@@ -45,8 +44,8 @@
           cursor: pointer;
         }
         .wen_top,.wen_bottom {
-          width: 69px;
-          height: 68px;
+          width: 50px;
+          height: 30px;
           position: absolute;
           left: 50%;
           transform: translateX(-50%);
@@ -56,6 +55,8 @@
         }
         .wen_bottom {
           bottom: 0;
+          transform-origin: center center;
+          transform: rotate(180deg) translateX(100%);
         }
       }
     }

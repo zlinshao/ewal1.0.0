@@ -40,6 +40,71 @@
       cursor: pointer;
       z-index: 1;
     }
+    .house_info {
+      height: 100%;
+      > div {
+        width: 100%;
+      }
+      .base_info {
+        padding: 10px;
+        > div {
+          width: 100%;
+          padding: 30px;
+        }
+        .house_photo {
+          > div {
+            width: 100%;
+          }
+          .big_img {
+            > img {
+              width: 100%;
+              min-width: 520px;
+              max-height: 230px;
+            }
+          }
+          .small_img {
+            position: relative;
+            cursor: pointer;
+            margin-top: 10px;
+            overflow: hidden;
+            min-height: 70px;
+            .img_container {
+              position: absolute;
+              top: 0;
+              left: 0;
+              transition: all ease .5s;
+              > img {
+                max-width: 120px;
+                max-height: 70px;
+                margin-right: 10px;
+              }
+            }
+            .btn {
+              width: 20px;
+              height: 30px;
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              line-height: 30px;
+              color: white;
+              opacity: 0;
+              transition: all ease .2s;
+            }
+            .left_btn {
+              left: 0;
+            }
+            .right_btn {
+              right: 0;
+            }
+            &:hover {
+              .btn {
+                opacity: 1;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
