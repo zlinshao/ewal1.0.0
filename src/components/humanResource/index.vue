@@ -1,19 +1,21 @@
 <template>
   <div id="humanResource">
     <div>
-      <MenuList></MenuList>
+      <MenuList :list="humanResource" :module="true"></MenuList>
     </div>
   </div>
 </template>
 
 <script>
   import MenuList from '../common/menuList.vue'
-
+  import {humanResource} from '../../assets/js/allModuleList.js';
   export default {
     name: "index",
     components: {MenuList},
     data() {
-      return {}
+      return {
+        humanResource,
+      }
     },
     mounted() {
 
@@ -21,11 +23,7 @@
     activated() {
     },
     watch: {},
-    computed: {
-      routeAnimation() {
-        return this.$store.state.app.routeAnimation;
-      }
-    },
+    computed: {},
     methods: {},
   }
 </script>

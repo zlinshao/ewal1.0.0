@@ -5,7 +5,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>研发中心{{visibleStatus}}</h1>
+        <h1>研发中心</h1>
       </div>
       <div class="items-center listTopRight">
         <div class="icons add"><b>+</b></div>
@@ -27,20 +27,30 @@
         <b></b>
       </div>
     </div>
-    <MenuList></MenuList>
+    <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
+    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
   </div>
 </template>
 
 <script>
-  import MenuList from '../../common/menuList.vue'
+  import SearchHigh from '../../common/searchHigh.vue';
+  import MenuList from '../../common/menuList.vue';
+  import {recruitment} from '../../../assets/js/allSearchData.js';
+  import {humanResource} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: {MenuList},
+    components: {MenuList, SearchHigh},
     data() {
       return {
-        mainListHover: false,
+        recruitment,
+        humanResource,
         visibleStatus: false,
+        showSearch: false,
+        searchData: {
+          status: 'recruitment',
+          data: [],
+        },
       }
     },
     mounted() {
@@ -54,16 +64,16 @@
       }
     },
     methods: {
-      hidePanel(event) {
-        let sp = document.getElementById("menuList");
-        if (sp) {
-          if (!sp.contains(event.target)) {
-            this.visibleStatus = false;
-          }
+      hiddenModule(val) {
+        this.showSearch = false;
+        if (val !== 'close') {
+          console.log(val);
         }
       },
+      // 高级搜索
       highSearch() {
-
+        this.showSearch = true;
+        this.searchData.data = this.recruitment;
       },
       moduleList() {
         this.visibleStatus = !this.visibleStatus;

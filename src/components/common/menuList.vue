@@ -1,9 +1,11 @@
 <template>
-  <div id="menuList">
-    <div class="justify-around list" :class="{'menuList': routeAnimation}">
-      <div v-for="item in 6" class="flex-center menu" :class="['menu-' + item]">
+  <div id="menuList" :class="[list.type]">
+    <div :class="{'dialogVisible': backdrop && dialogVisible}" @click="dialogVisible = false"></div>
+    <div class="justify-around list"
+         :class="{'menuList':routeAnimation,'backdrop': backdrop,'hover':dialogVisible}">
+      <div v-for="(item,index) in list.data" class="flex-center menu" :class="['menu-' + (index + 1)]">
         <div class="childrenMenu flex-center" @click="routerLink('recruitment')">
-          <span class="writingMode">招兵买马</span>
+          <span class="writingMode">{{item.title}}</span>
         </div>
       </div>
     </div>
@@ -13,20 +15,41 @@
 <script>
   export default {
     name: "menu-list",
+    props: ['list', 'module', 'backdrop'],
     data() {
-      return {}
+      return {
+        dialogVisible: false,
+      }
     },
     mounted() {
     },
     activated() {
     },
-    watch: {},
+    watch: {
+      module(val) {
+        this.dialogVisible = val;
+      },
+      dialogVisible(val) {
+        if (!val) {
+          this.$emit('close');
+        }
+      }
+    },
     computed: {
       routeAnimation() {
         return this.$store.state.app.routeAnimation;
       }
     },
-    methods: {},
+    methods: {
+      hidePanel(event) {
+        let sp = document.getElementById("list");
+        if (sp) {
+          if (!sp.contains(event.target)) {
+            this.$emit('close');
+          }
+        }
+      },
+    },
   }
 </script>
 
@@ -39,7 +62,7 @@
   }
 
   #theme_name.theme1 {
-    #menuList {
+    #menuList.humanResource {
       .list {
         .menu-1, .menu-5 {
           .childrenMenu {
@@ -70,6 +93,20 @@
             @include menuImg('humanresourcehuidi4.png', 'theme1');
             &:hover {
               @include menuImg('humanresourcehongdi4.png', 'theme1');
+            }
+          }
+        }
+      }
+    }
+    #menuList.customService {
+      .list {
+        .menu {
+          .childrenMenu {
+            @include menuImg('customservicehuidi.png', 'theme1');
+            background-size: 40% 100%;
+            &:hover {
+              @include menuImg('customservicehongdi.png', 'theme1');
+              background-size: 40% 100%;
             }
           }
         }

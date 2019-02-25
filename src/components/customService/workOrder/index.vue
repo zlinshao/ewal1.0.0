@@ -194,7 +194,6 @@
 
         searchData: {
           status: 'workOrder',
-          keywords: 'keywords',
           data: [],
         },
       }

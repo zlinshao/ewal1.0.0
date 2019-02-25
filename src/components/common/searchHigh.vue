@@ -140,7 +140,8 @@
           for (let key of val.data) {
             this.reset[key.keyName] = key.dataType;
           }
-          this.reset[val.keywords] = '';
+          let word = val.keywords ? val.keywords : 'keywords';
+          this.reset[word] = '';
           this.resetting();
         },
         deep: true
