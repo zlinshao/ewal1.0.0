@@ -36,7 +36,6 @@ $color9F9: #F9F9F9;
   src: url("/static/font/BaiZhouRenZhe.otf");
 }
 
-
 @mixin inputColor($c) {
   input {
     background-color: transparent;
@@ -102,12 +101,9 @@ $color9F9: #F9F9F9;
   transition: $t;
 }
 
-@mixin transition2($t1,$t2) {
-  -webkit-transition: $t1,$t2;
-  -moz-transition: $t1,$t2;
-  -ms-transition: $t1,$t2;
-  -o-transition: $t1,$t2;
-  transition: $t1,$t2;
+@mixin delay($s) {
+  transition-delay: $s + s;
+  -webkit-transition-delay: $s + s;
 }
 
 @mixin transform($s) {
@@ -117,7 +113,6 @@ $color9F9: #F9F9F9;
   -o-transform: $s;
   transform: $s;
 }
-
 
 @mixin transOrigin($lf:0,$top:0,$z:0) {
   -webkit-transform-origin: $lf $top $z;
@@ -166,3 +161,12 @@ $color9F9: #F9F9F9;
   @include scroll;
 }
 
+.dialogVisible {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 80px;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 10;
+}

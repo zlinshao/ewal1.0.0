@@ -27,7 +27,7 @@
           </select>
         </div>
         <div class="items-center personal" @click="routerLink('login')">
-          <span>冯宝宝</span>
+          <span>冯宝宝{{routeAnimation}}</span>
           <p>
             <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
           </p>
@@ -38,7 +38,7 @@
     <div id="moduleList" :class="{'moduleList':moduleList}">
       <div class="justify-around">
         <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules"
-             @click="routerLink(item.url)">
+             @click="routerLink(item.url);moduleList = false;">
           <p></p>
           <div class="justify-center">
             <h1 class="writingMode items-center">
@@ -125,13 +125,19 @@
       $route: {
         handler(val, oldVal) {
           this.moduleList = false;
+          this.$store.dispatch('route_animation');
         },
         deep: true// 深度观察监听
       }
     },
-    computed: {},
+    computed: {
+      routeAnimation() {
+        return this.$store.state.app.routeAnimation;
+      }
+    },
     methods: {
       changeLoading() {
+        this.$store.dispatch('theme_name', this.theme_name);
         this.changeLoad = true;
         let that = this;
         setTimeout(function () {

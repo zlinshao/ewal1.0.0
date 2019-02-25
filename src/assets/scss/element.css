@@ -216,6 +216,19 @@
     background: #747474;
     border-radius: 4px; }
 
+.dialogVisible {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 80px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10; }
+
+.appTheme1 .el-option-1:hover, .appTheme1 .el-option-1.hover {
+  color: #CF2E33;
+  background-color: #FFEAEA; }
+
 #theme_name .el-table .tableHeader th div {
   height: 40px;
   line-height: 40px;
@@ -251,6 +264,10 @@
     font-size: 18px;
     color: inherit;
     padding-bottom: 1px; }
+#theme_name .el-select .el-input__inner:focus {
+  border-color: #CF2E33; }
+#theme_name .el-select .el-input.is-focus .el-input__inner {
+  border-color: #CF2E33; }
 #theme_name .page .el-pagination .el-input__inner {
   background-color: transparent; }
 #theme_name .page .el-pagination .el-input__inner:focus {

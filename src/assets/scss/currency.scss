@@ -97,6 +97,11 @@
       .add {
         background-color: $colorE33;
       }
+      .searchTerm {
+        > b {
+          padding-right: 15px;
+        }
+      }
     }
   }
 }

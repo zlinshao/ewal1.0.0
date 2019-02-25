@@ -8,10 +8,11 @@
         <h1>员工名册</h1>
       </div>
       <div class="items-center listTopRight">
-        <div>
-          <span>部门/人员</span>
-          <el-select v-model="value" clearable>
+        <div class="searchTerm">
+          <b>部门/人员</b>
+          <el-select v-model="value" clearable :popper-class="`appTheme${themeName}`">
             <el-option
+              :class="`el-option-${themeName}`"
               v-for="item in options"
               :key="item.value"
               :label="item.label"
@@ -63,7 +64,11 @@
     activated() {
     },
     watch: {},
-    computed: {},
+    computed: {
+      themeName() {
+        return this.$store.state.app.themeName;
+      }
+    },
     methods: {
       moduleList() {
 
