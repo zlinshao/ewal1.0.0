@@ -47,13 +47,13 @@
                       <span class="mark"></span>
                     </div>
                     <div style="text-align: right">
-                      <span class="look"></span>
+                      <span class="look" @click="look_visible = true"></span>
                       <span class="status">未出租</span>
                     </div>
                   </div>
                   <div class="h_type">
                     <div class="flex info">
-                      <span v-for="item in h_info">{{ item }}</span>
+                      <span v-for="item in h_info" :key="item.id">{{ item }}</span>
                     </div>
                     <div class="le_text">
                       <span>剩余时长：1年5月12天 当前空置12天 收房：2000/月</span>
@@ -96,6 +96,30 @@
             </div>
           </div>
         </lj-dialog>
+
+        <!--带看-->
+        <lj-dialog :visible="look_visible" :size="{width: 800 + 'px',height: '800' + 'px'}" @close="look_visible = false">
+          <div class="look_info">
+            <h3>查看带看记录</h3>
+            <div class="flex" style="margin-bottom: 30px">
+              <span class="items-column">
+                <span class="all">34</span>
+                <span class="txt">总带看次数</span>
+              </span>
+              <span class="items-column">
+                <span class="current">2</span>
+                <span class="txt">本期带看次数</span>
+              </span>
+            </div>
+            <el-table :data="look_data">
+              <el-table-column label="带看时间" prop="look_time" align="center"></el-table-column>
+              <el-table-column label="带看人" prop="look_man" align="center"></el-table-column>
+            </el-table>
+            <div class="page">
+              <el-pagination :total="100" layout="total,prev,pager,next"></el-pagination>
+            </div>
+          </div>
+        </lj-dialog>
       </div>
     </div>
 </template>
@@ -112,6 +136,7 @@
         components: { MarketMenuList ,searchHigh, HouseCard ,OverviewInfo,LjDialog },
         data() {
             return {
+              look_visible:false,
               lj_visible: false,
               lj_size: '',
               overview_visible:false,
@@ -264,6 +289,33 @@
                 {id: 1,time: '2019-01-02',num: '12312412',price: '2000',way: '月付',kong: '22天',long: '3年',start_time: '2019-03-01',end_time: '2019-11-11',people: '冯宝宝'},
                 {id: 1,time: '2019-01-02',num: '12312412',price: '2000',way: '月付',kong: '22天',long: '3年',start_time: '2019-03-01',end_time: '2019-11-11',people: '冯宝宝'},
                 {id: 1,time: '2019-01-02',num: '12312412',price: '2000',way: '月付',kong: '22天',long: '3年',start_time: '2019-03-01',end_time: '2019-11-11',people: '冯宝宝'},
+              ],
+              look_data: [
+                {
+                  id: 1,
+                  look_time: '2019-01-01',
+                  look_man: '冯宝宝'
+                },
+                {
+                  id: 2,
+                  look_time: '2019-01-01',
+                  look_man: '冯宝宝'
+                },
+                {
+                  id: 3,
+                  look_time: '2019-01-01',
+                  look_man: '冯宝宝'
+                },
+                {
+                  id: 4,
+                  look_time: '2019-01-01',
+                  look_man: '冯宝宝'
+                },
+                {
+                  id: 5,
+                  look_time: '2019-01-01',
+                  look_man: '冯宝宝'
+                }
               ]
             }
         },
@@ -446,8 +498,6 @@
             }
           ];
           this.overview_visible = true;
-          this.lj_visible = false;
-          this.lj_size = 'large'
         },
         activated() {
         },
@@ -455,8 +505,8 @@
         computed: {},
         methods: {
           handleOpenCard(item) {
+            this.lj_size = 'large';
             this.lj_visible = true;
-            console.log(item);
           },
           handleTransLeft() {
             this.img_trams -= 20;
@@ -628,6 +678,24 @@
             .page {
               margin-top: 20px;
             }
+          }
+        }
+        .look_info {
+          > div {
+            > span {
+              width: 100%;
+            }
+          }
+          .all {
+            color: $colorDFF;
+            font-size: 34px;
+          }
+          .current {
+            color: $colorC00;
+            font-size: 34px;
+          }
+          .txt {
+            font-size: 14px;
           }
         }
       }
