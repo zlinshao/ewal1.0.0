@@ -3,7 +3,7 @@
 #theme_name {
   .lj_dialog {
     > div {
-      position: absolute;
+      position: fixed;
       top: 81px;
       bottom: 0;
       left: 0;
@@ -11,7 +11,10 @@
       background: rgba(0, 0, 0, .3);
       z-index: 99;
       .lj_container {
-        position: relative;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
         text-align: center;
         padding: 20px 0;
         .close_btn {

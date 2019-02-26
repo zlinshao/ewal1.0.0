@@ -51,7 +51,7 @@
         props: ['houseSource'],
         data() {
             return {
-              show_control: 1,
+              show_control: 0,
               content_height: window.innerHeight - 171,
               house_info: [],
               tip_btn: [

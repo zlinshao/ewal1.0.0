@@ -55,8 +55,10 @@
               } else {
                 this.lj_size = 'other';
                 this.style.other = val;
-                if (parseInt(val.height) > parseInt(val.width)) {
-                  this.is_upright = true;
+                if (val.width.indexOf('%') !== -1) {
+                  if (parseInt(val.height) > parseInt(val.width)) {
+                    this.is_upright = true;
+                  }
                 }
               }
             },
@@ -86,7 +88,7 @@
       > div {
         .lj_container {
           @include lj_dialogImg('tankuang.png','theme1');
-          background-size: contain;
+          /*background-size: contain;*/
           .close_btn {
             @include lj_dialogImg('close.png','theme1');
             background-size: contain;
@@ -98,7 +100,6 @@
         }
         .show_upright {
           @include lj_dialogImg('shu.png','theme1');
-          background-size: contain;
         }
       }
     }

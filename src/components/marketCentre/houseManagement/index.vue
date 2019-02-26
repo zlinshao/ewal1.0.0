@@ -98,7 +98,7 @@
         </lj-dialog>
 
         <!--带看-->
-        <lj-dialog :visible="look_visible" :size="{width: 500 + 'px',height: '650' + 'px'}" @close="look_visible = false">
+        <lj-dialog :visible="look_visible" :size="{width: 800 + 'px',height: '800' + 'px'}" @close="look_visible = false">
           <div class="look_info">
             <h3>查看带看记录</h3>
             <div class="flex" style="margin-bottom: 30px">
