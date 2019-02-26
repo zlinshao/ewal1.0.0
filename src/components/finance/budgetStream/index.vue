@@ -1,11 +1,11 @@
 <template>
-  <div id="workOrder">
+  <div id="budgetStream">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center" @click="moduleList">
+        <p class="flex-center">
           <b>...</b>
         </p>
-        <h1>工单</h1>
+        <h1>收支流水</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -56,36 +56,30 @@
       </footer>
     </div>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
-
-    <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue'
-  import MenuList from '../../common/menuList.vue';
-  import {customService} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: {SearchHigh, MenuList},
+    components: {SearchHigh},
     data() {
       return {
-        customService,
-        visibleStatus: false,
         chooseTab: 1,
         selects: [
           {
             id: 1,
-            title: '待处理',
+            title: '流水',
           },
           {
             id: 2,
-            title: '跟进中',
+            title: '回滚',
           },
           {
             id: 3,
-            title: '已完成',
+            title: '归档',
           }
         ],
 
@@ -288,10 +282,8 @@
           },
         ],
         statuss: {
-          1: '特急',
-          2: '紧急',
-          3: '重要',
-          4: '一般',
+          1: '收入',
+          2: '支出',
         },
         showData: {
           date: '日期',
@@ -437,42 +429,24 @@
           console.log(val);
         }
       },
-      // 客服入口
-      moduleList() {
-        this.visibleStatus = !this.visibleStatus;
-        this.$store.dispatch('route_animation');
-      }
     },
   }
 </script>
 
-<style lang="scss">
-  @import "../../../assets/scss/customService/workOrder/index.scss";
+<style lang="scss" scoped>
+  @import "../../../assets/scss/finance/budgetStream/index.scss";
 
-  @mixin workOrderImg($m, $n) {
-    $url: '../../../assets/image/customService/workOrder/' + $n + '/' + $m;
+  @mixin budgetStreamImg($m, $n) {
+    $url: '../../assets/image/budgetStream/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
-    #workOrder {
+    #budgetStream {
       .mainListTable {
         .status1 {
           p {
-            color: $colorFFF;
-            @include workOrderImg('teji.png', 'theme1');
-          }
-        }
-        .status2 {
-          p {
-            color: #FFAD0D;
-            @include workOrderImg('jinji.png', 'theme1');
-          }
-        }
-        .status3 {
-          p {
-            color: #0C66FF;
-            @include workOrderImg('zhongyao.png', 'theme1');
+
           }
         }
       }
@@ -480,19 +454,19 @@
   }
 
   #theme_name.theme2 {
-    #workOrder {
+    #budgetStream {
 
     }
   }
 
   #theme_name.theme3 {
-    #workOrder {
+    #budgetStream {
 
     }
   }
 
   #theme_name.theme4 {
-    #workOrder {
+    #budgetStream {
 
     }
   }

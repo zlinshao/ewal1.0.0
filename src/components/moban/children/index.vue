@@ -26,7 +26,7 @@
   @import "../../../assets/scss/moban/children/index.scss";
 
   @mixin childrenImg($m, $n) {
-    $url: '../../../assets/image/moban/' + $n + '/' + $m;
+    $url: '../../../assets/image/moban/children/' + $n + '/' + $m;
     @include bgImage($url);
   }
 

@@ -1,15 +1,16 @@
 <template>
-  <div id="workOrder">
+  <div id="subject">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center" @click="moduleList">
+        <p class="flex-center">
           <b>...</b>
         </p>
-        <h1>工单</h1>
+        <h1>科目</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}<i></i>
+            {{item.title}}
+            <i></i>
           </span>
         </h2>
       </div>
@@ -28,19 +29,21 @@
         header-row-class-name="tableHeader"
         style="width: 100%">
         <el-table-column
-          align="center"
-          label="紧急程度">
-          <template slot-scope="scope">
-            <div class="status" :class="['status' + scope.row.status]">
-              <p>{{statuss[scope.row.status]}}</p>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
           v-for="item in Object.keys(showData)" :key="item"
           align="center"
           :prop="item"
           :label="showData[item]">
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="操作">
+          <template slot-scope="scope">
+            <div class="operate">
+              <el-button size="mini" type="primary" plain>编辑</el-button>
+              <el-button size="mini" type="warning" plain>迁移</el-button>
+              <el-button size="mini" type="danger" plain>禁用</el-button>
+            </div>
+          </template>
         </el-table-column>
       </el-table>
       <footer class="flex-center bottomPage">
@@ -55,40 +58,34 @@
         </div>
       </footer>
     </div>
-    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
-    <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
+    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue'
-  import MenuList from '../../common/menuList.vue';
   import {customService} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: {SearchHigh, MenuList},
+    components: {SearchHigh},
     data() {
       return {
         customService,
-        visibleStatus: false,
-        chooseTab: 1,
         selects: [
           {
             id: 1,
-            title: '待处理',
+            title: '科目管理',
           },
-          {
-            id: 2,
-            title: '跟进中',
-          },
-          {
-            id: 3,
-            title: '已完成',
-          }
         ],
-
+        chooseTab: 1,
+        showData: {
+          date: '日期',
+          name: '姓名',
+          address: '地址',
+        },
+        chooseRowIds: [],
         tableData: [
           {
             id: 10,
@@ -287,18 +284,6 @@
             address: '上海市普陀区金沙江路 1519 弄',
           },
         ],
-        statuss: {
-          1: '特急',
-          2: '紧急',
-          3: '重要',
-          4: '一般',
-        },
-        showData: {
-          date: '日期',
-          name: '姓名',
-          address: '地址',
-        },
-        chooseRowIds: [],
 
         showSearch: false,
         searchData: {
@@ -437,62 +422,38 @@
           console.log(val);
         }
       },
-      // 客服入口
-      moduleList() {
-        this.visibleStatus = !this.visibleStatus;
-        this.$store.dispatch('route_animation');
-      }
     },
   }
 </script>
 
-<style lang="scss">
-  @import "../../../assets/scss/customService/workOrder/index.scss";
+<style lang="scss" scoped>
+  @import "../../../assets/scss/finance/subject/index.scss";
 
-  @mixin workOrderImg($m, $n) {
-    $url: '../../../assets/image/customService/workOrder/' + $n + '/' + $m;
+  @mixin childrenImg($m, $n) {
+    $url: '../../../assets/image/finance/subject/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
-    #workOrder {
-      .mainListTable {
-        .status1 {
-          p {
-            color: $colorFFF;
-            @include workOrderImg('teji.png', 'theme1');
-          }
-        }
-        .status2 {
-          p {
-            color: #FFAD0D;
-            @include workOrderImg('jinji.png', 'theme1');
-          }
-        }
-        .status3 {
-          p {
-            color: #0C66FF;
-            @include workOrderImg('zhongyao.png', 'theme1');
-          }
-        }
-      }
+    #subject {
+
     }
   }
 
   #theme_name.theme2 {
-    #workOrder {
+    #subject {
 
     }
   }
 
   #theme_name.theme3 {
-    #workOrder {
+    #subject {
 
     }
   }
 
   #theme_name.theme4 {
-    #workOrder {
+    #subject {
 
     }
   }

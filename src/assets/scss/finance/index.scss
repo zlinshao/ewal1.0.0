@@ -6,14 +6,68 @@
     > div {
       width: 1200px;
       height: 750px;
+      padding: 95px 0;
+    }
+    .mainList {
+      width: 100%;
+      padding-right: 5px;
+      > div {
+        width: 100%;
+        cursor: pointer;
+        @include flex('flex-center');
+        p {
+          @include flex('flex-center');
+          span {
+            @include flex('flex-center');
+          }
+        }
+      }
+      .abacusUp {
+        min-height: 200px;
+        max-height: 200px;
+        p {
+          width: 60px;
+          height: 40px;
+          i {
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+      .abacusDown {
+        height: 410px;
+        p {
+          width: 60px;
+          height: 160px;
+          padding-top: 30px;
+          span {
+            font-family: 'jingDianXingShu';
+            letter-spacing: 20px;
+            font-size: 30px;
+          }
+        }
+      }
+      &:hover {
+        > div {
+          p {
+            color: $colorFFF;
+          }
+        }
+      }
+    }
+    .mainList.finance2 {
+      .abacusUp {
+        .icons {
+          width: 19px;
+          height: 19px;
+        }
+      }
     }
   }
 }
 
 #theme_name.theme1 {
-  #finance {
 
-  }
 }
 
 #theme_name.theme2 {
