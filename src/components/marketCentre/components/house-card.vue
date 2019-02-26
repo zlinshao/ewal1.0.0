@@ -1,10 +1,10 @@
 <template>
     <div id="houseCard">
       <div :style="{'height' : content_height + 'px'}">
-        <div class="content scroll_bar" @scroll.lazy="handleScroll">
+        <div class="content scroll_bar" @scroll="handleScroll">
           <div class="flex cards">
-            <div v-for="item in house_info" class="justify-center">
-              <div class="card" @click.prevent="handleOpenCard(item)">
+            <div v-for="item in house_info" :key="item.id" class="justify-center">
+              <div class="card" :class="['card_trans-' + item.id]" @dblclick.prevent="handleOpenCard(item)">
                 <div class="photo">
                   <div class="picture">
                     <img class="picture" :src="item.url" alt="...">
@@ -27,7 +27,7 @@
                     <span :class="['notice-' + item.notice ]" class="notice"></span>
                   </div>
                 </div>
-                <div class="control" @click.stop="" :class="{'show_control' : show_control === item.id }">
+                <div class="control flex-center" @click.stop="" :class="{'show_control' : show_control === item.id }">
                   <span v-for="tmp in tip_btn" :key="tmp.id" @click.stop="is_tip = tmp.id" :class="{'tip_btn': is_tip === tmp.id }">{{ tmp.val }}</span>
                   <div class="arrows"></div>
                 </div>
@@ -52,7 +52,7 @@
         data() {
             return {
               show_control: 1,
-              content_height: window.innerHeight-171,
+              content_height: window.innerHeight - 171,
               house_info: [],
               tip_btn: [
                 {id: 1,val: '跟进'},
@@ -170,7 +170,8 @@
             }
             .tip_btn {
               @include marketCentreImg('xzgj.png','theme1');
-              padding: 5px 25px;
+              background-size: contain;
+              padding: 4px 20px;
               color: $colorE33;
             }
           }

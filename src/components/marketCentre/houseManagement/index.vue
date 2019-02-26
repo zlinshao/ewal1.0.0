@@ -53,7 +53,7 @@
                   </div>
                   <div class="h_type">
                     <div class="flex info">
-                      <span v-for="item in h_info">{{ item }}</span>
+                      <span v-for="item in h_info" :key="item.id">{{ item }}</span>
                     </div>
                     <div class="le_text">
                       <span>剩余时长：1年5月12天 当前空置12天 收房：2000/月</span>

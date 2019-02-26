@@ -1,7 +1,7 @@
 <template>
   <div id="menu-list" class="menu_container" :class="{'show_container' : navVisible}">
     <div class="menu_list flex-center">
-      <div class="menu_contain" :class="{['a_delay-' + (key + 1)]:'...','menu_contain_show' : navVisible}" v-for="(item,key) in menu_list">
+      <div class="menu_contain" :class="{['a_delay-' + (key + 1)]:'...','menu_contain_show' : navVisible}" v-for="(item,key) in menu_list" :key="key">
         <span class="writingMode" :key="key" @click="handleRouterLink(item.url)">{{ item.title }}</span>
       </div>
     </div>
