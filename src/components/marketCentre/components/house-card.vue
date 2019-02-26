@@ -4,13 +4,13 @@
         <div class="content scroll_bar" @scroll.lazy="handleScroll">
           <div class="flex cards">
             <div v-for="item in house_info" class="justify-center">
-              <div class="card" @click="handleOpenCard(item)">
+              <div class="card" @click.prevent="handleOpenCard(item)">
                 <div class="photo">
                   <div class="picture">
                     <img class="picture" :src="item.url" alt="...">
                   </div>
                   <div class="bg">
-                    <div class="btn" @click="handleOpenControl(item.id)">...</div>
+                    <div class="btn" @click.stop="handleOpenControl(item.id)">...</div>
                     <div class="house_type">精装</div>
                   </div>
                   <span class="mark" :class="{'marked' : item.mark}"></span>
@@ -27,8 +27,8 @@
                     <span :class="['notice-' + item.notice ]" class="notice"></span>
                   </div>
                 </div>
-                <div class="control" :class="{'show_control' : show_control === item.id }">
-                  <span v-for="tmp in tip_btn" :key="tmp.id" @click="is_tip = tmp.id" :class="{'tip_btn': is_tip === tmp.id }">{{ tmp.val }}</span>
+                <div class="control" @click.stop="" :class="{'show_control' : show_control === item.id }">
+                  <span v-for="tmp in tip_btn" :key="tmp.id" @click.stop="is_tip = tmp.id" :class="{'tip_btn': is_tip === tmp.id }">{{ tmp.val }}</span>
                   <div class="arrows"></div>
                 </div>
               </div>
@@ -83,7 +83,6 @@
             this.$emit('open',item);
           },
           handleScroll() {
-            console.log(111);
             this.$emit('close');
           },
           handleOpenControl(id) {

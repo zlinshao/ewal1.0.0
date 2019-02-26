@@ -206,6 +206,21 @@
           }
         }
       }
+      .look_info {
+        width: 80%;
+        height: 100%;
+        padding: 10px;
+        text-align: left;
+        margin: 0 auto;
+        h3 {
+          font-size: 18px;
+          margin: 20px 30px;
+        }
+        .page {
+          text-align: center;
+          margin-top: 20px;
+        }
+      }
     }
   }
 }

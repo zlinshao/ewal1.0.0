@@ -1,7 +1,7 @@
 <template>
     <div id="lj_dialog" class="lj_dialog" v-if="dialog_visible">
       <div class="flex-center" @click.self="handleCloseDialog">
-        <div class="lj_container" :style="style[lj_size]">
+        <div class="lj_container" :style="style[lj_size]" :class="{'show_upright': is_upright}">
           <slot></slot>
           <span class="close_btn" @click="handleCloseDialog"></span>
           <span class="wen_top"></span>
@@ -19,18 +19,23 @@
             return {
               dialog_visible: false,
               lj_size: 'small',
+              is_upright: false,
               style: {
                 mini: {
                   width: 1200 * 0.4 + 'px',
                   height: 800 * 0.4 + 'px'
                 },
                 small: {
-                  width: 1200 * 0.6 + 'px',
-                  height: 800 * 0.6 + 'px'
+                  width: 1200 * 0.8 + 'px',
+                  height: 800 * 0.8 + 'px'
                 },
                 large: {
                   width: 1200 + 'px',
                   height: 800 + 'px'
+                },
+                other: {
+                  width: 0,
+                  height: 0
                 }
               }
             }
@@ -42,9 +47,20 @@
           visible(val) {
             this.dialog_visible = val;
           },
-          size(val) {
-            console.log(val);
-            this.lj_size = val;
+          size: {
+            handler(val) {
+              if (typeof val === 'string') {
+                this.lj_size = val;
+                this.is_upright = false;
+              } else {
+                this.lj_size = 'other';
+                this.style.other = val;
+                if (parseInt(val.height) > parseInt(val.width)) {
+                  this.is_upright = true;
+                }
+              }
+            },
+            deep: true
           }
         },
         computed: {},
@@ -69,21 +85,8 @@
     .lj_dialog {
       > div {
         .lj_container {
-          /*background-color: white;*/
           @include lj_dialogImg('tankuang.png','theme1');
           background-size: contain;
-          .j_lt {
-            @include lj_dialogImg('lt.png','theme1');
-          }
-          .j_rt {
-            @include lj_dialogImg('rt.png','theme1');
-          }
-          .j_lb {
-            @include lj_dialogImg('lb.png','theme1');
-          }
-          .j_rb {
-            @include lj_dialogImg('rb.png','theme1');
-          }
           .close_btn {
             @include lj_dialogImg('close.png','theme1');
             background-size: contain;
@@ -92,6 +95,10 @@
             @include lj_dialogImg('bianjiao.png','theme1');
             background-size: contain;
           }
+        }
+        .show_upright {
+          @include lj_dialogImg('shu.png','theme1');
+          background-size: contain;
         }
       }
     }
