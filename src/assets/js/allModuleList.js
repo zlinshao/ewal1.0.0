@@ -67,3 +67,30 @@ export const customService = {
     },
   ]
 };
+
+// 财务账本
+export const finance = {
+  type: 'finance',
+  data: [
+    {
+      url: 'workOrder',
+      title: '付款',
+    },
+    {
+      url: '',
+      title: '收款',
+    },
+    {
+      url: '',
+      title: '帐户',
+    },
+    {
+      url: 'subject',
+      title: '科目',
+    },
+    {
+      url: 'budgetStream',
+      title: '流水',
+    },
+  ]
+};

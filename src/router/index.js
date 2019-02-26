@@ -22,6 +22,8 @@ const StaffRoster = () => import('@/components/humanResource/staffRoster/index.v
 
 // 财务中心
 const Finance = () => import('@/components/finance/index.vue');
+const Subject = () => import('@/components/finance/subject/index.vue');//科目
+const BudgetStream = () => import('@/components/finance/budgetStream/index.vue');//收支流水
 
 Vue.use(Router);
 
@@ -93,6 +95,16 @@ export default new Router({
       path: '/finance',
       name: '财务账本',
       component: Finance
+    },
+    {
+      path: '/subject',
+      name: '科目',
+      component: Subject
+    },
+    {
+      path: '/budgetStream',
+      name: '收支流水',
+      component: BudgetStream
     },
   ]
 })
