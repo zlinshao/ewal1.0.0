@@ -303,6 +303,60 @@
       height: 30px;
       line-height: 30px;
       font-weight: bold; }
+#theme_name .dialog_container {
+  position: relative;
+  height: 100%; }
+  #theme_name .dialog_container .dialog_header {
+    text-align: left;
+    padding: 10px 15px; }
+  #theme_name .dialog_container .dialog_main {
+    height: auto;
+    overflow: hidden;
+    margin: 20px 0; }
+  #theme_name .dialog_container .dialog_footer {
+    width: 100%;
+    padding: 20px 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center; }
+    #theme_name .dialog_container .dialog_footer button {
+      min-width: 90px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px; }
+#theme_name .form_item_container {
+  display: flex;
+  padding: 5px 40px; }
+  #theme_name .form_item_container .item_label {
+    width: 40%;
+    display: flex;
+    align-items: center; }
+    #theme_name .form_item_container .item_label .item_icons {
+      width: 25px;
+      height: 25px;
+      vertical-align: middle;
+      background-color: #C0C0C0;
+      margin-right: 20px;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%; }
+      #theme_name .form_item_container .item_label .item_icons > i {
+        display: inline-block;
+        width: 50%;
+        height: 50%; }
+      #theme_name .form_item_container .item_label .item_icons:hover {
+        background-color: #CF2E33; }
+    #theme_name .form_item_container .item_label > span {
+      min-width: 60px;
+      color: #C0C0C0;
+      text-align-last: justify; }
+  #theme_name .form_item_container .item_content {
+    width: 60%;
+    text-align: left;
+    padding-left: 15px; }
+  #theme_name .form_item_container .all_width {
+    width: 100%; }
 #theme_name footer.bottomPage {
   height: 100px;
   width: 100%;

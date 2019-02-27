@@ -103,6 +103,71 @@
       }
     }
   }
+
+  .dialog_container {
+    position: relative;
+    height: 100%;
+    .dialog_header {
+      text-align: left;
+      padding: 10px 15px;
+    }
+    .dialog_main {
+      height: auto;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    .dialog_footer {
+      width: 100%;
+      padding: 20px 0;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      button {
+        min-width: 90px;
+        @include radius(5px)
+      }
+    }
+  }
+
+  .form_item_container {
+    display: flex;
+    padding: 5px 40px;
+    .item_label {
+      width: 40%;
+      display: flex;
+      align-items: center;
+      .item_icons {
+        width: 25px;
+        height: 25px;
+        vertical-align: middle;
+        background-color: $color0C0;
+        margin-right: 20px;
+        @include radius(50%);
+        > i {
+          display: inline-block;
+          width: 50%;
+          height: 50%;
+        }
+        &:hover {
+          background-color: $colorE33;
+        }
+      }
+      > span {
+        min-width: 60px;
+        color: $color0C0;
+        text-align-last: justify;
+      }
+    }
+    .item_content {
+      width: 60%;
+      text-align: left;
+      padding-left: 15px;
+    }
+    .all_width {
+      width: 100%;
+    }
+  }
   //分页
   footer.bottomPage {
     height: 100px;
@@ -174,18 +239,6 @@
     100% {
       transform: translateY(0) rotateZ(-90deg);
     }
-  }
-
-
-  //  弹框title
-  .dialog_header {
-    text-align: left;
-  }
-  //  弹框底部
-  .dialog_footer {
-    width: 100%;
-    height: 100px;
-    background-color: red;
   }
 }
 

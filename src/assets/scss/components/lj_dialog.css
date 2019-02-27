@@ -146,7 +146,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    padding: 20px 0; }
+    padding: 20px; }
     #theme_name .lj_dialog > div .lj_container .close_btn {
       width: 30px;
       height: 30px;
@@ -164,7 +164,6 @@
       top: -3px; }
     #theme_name .lj_dialog > div .lj_container .wen_bottom {
       bottom: -2px;
-      transform-origin: center center;
-      transform: rotate(180deg) translateX(100%); }
+      transform-origin: center center; }
 
 /*# sourceMappingURL=lj_dialog.css.map */

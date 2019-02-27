@@ -93,8 +93,12 @@
             @include lj_dialogImg('close.png','theme1');
             background-size: contain;
           }
-          .wen_bottom ,.wen_top{
+          .wen_top{
             @include lj_dialogImg('bianjiao.png','theme1');
+            background-size: contain;
+          }
+          .wen_bottom {
+            @include lj_dialogImg('bianjiao1.png','theme1');
             background-size: contain;
           }
         }

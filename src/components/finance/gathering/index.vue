@@ -65,19 +65,124 @@
       :size="{width: 500 + 'px',height: 600 + 'px'}"
       @close="receive_visible = false"
     >
+      <div class="dialog_container">
+        <div class="dialog_header flex">
+          <h3>应收入账</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form :model="receive_form" size="mini">
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_come"></i>
+                  </b>
+                  <span>款项来源</span>
+                </div>
+                <div class="item_content">
+                  <span>情缘雅居10-102</span>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons icon_account"></b>
+                  <span>账户</span>
+                </div>
+                <div class="item_content">
+                  <el-select class="all_width" v-model="receive_form.subject_name">
+                    <el-option label="中介费" value="1"></el-option>
+                    <el-option label="租房房租" value="2"></el-option>
+                  </el-select>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>款项科目</span>
+                </div>
+                <div class="item_content">
+                  <el-select class="all_width" v-model="receive_form.subject_name">
+                    <el-option label="中介费" value="1"></el-option>
+                    <el-option label="租房房租" value="2"></el-option>
+                  </el-select>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_money"></i>
+                  </b>
+                  <span>应收金额</span>
+                </div>
+                <div class="item_content">
+                  <span>2500.00</span>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item >
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_case"></i>
+                  </b>
+                  <span>实收金额</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="receive_form.money"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_payTime"></i>
+                  </b>
+                  <span>付款时间</span>
+                </div>
+                <div class="item_content">
+                  <el-date-picker
+                    class="all_width"
+                    v-model="receive_form.pay_time"
+                    placeholder="请选择付款时间"
+                    type="datetime"
+                  ></el-date-picker>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_mark"></i>
+                  </b>
+                  <span>备注</span>
+                </div>
+                <div class="item_content">
+                  <el-input
+                    v-model="receive_form.mark"
+                    type="textarea"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer flex-center">
+          <el-button size="small" type="danger">确定</el-button>
+          <el-button size="small" type="normal" @click="receive_visible = false">取消</el-button>
+        </div>
+      </div>
     </lj-dialog>
-
-    <div>
-      <div class="dialog_header">
-        <h3>应收入账</h3>
-      </div>
-      <div class="dialog_main">
-
-      </div>
-      <div class="dialog_footer">
-        ...
-      </div>
-    </div>
   </div>
 </template>
 
@@ -154,7 +259,14 @@
           status: 'gathering',
           data: [],
         },
-        chooseRowIds: []
+        chooseRowIds: [],
+        receive_form: {
+          account_num: '1',
+          subject_name: '1',
+          money: '',
+          pay_time: '',
+          mark: '',
+        }
       }
     },
     mounted() {
@@ -304,6 +416,11 @@
     @include bgImage($url);
   }
 
+  @mixin gatheringImg($m,$n) {
+    $url: '../../../assets/image/finance/gathering/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
   #theme_name {
     #gathering {
       > div {
@@ -311,6 +428,24 @@
           .home_icon {
             @include financeImg('yinhanglius.png', 'theme1');
           }
+        }
+        .icon_mark {
+          @include gatheringImg('beizhu.png','theme1');
+        }
+        .icon_money {
+          @include gatheringImg('yingshoukuanfenxi.png','theme1');
+        }
+        .icon_payTime {
+          @include gatheringImg('fukuan.png','theme1');
+        }
+        .icon_subject {
+          @include gatheringImg('kemuyue.png','theme1');
+        }
+        .icon_come {
+          @include gatheringImg('kemubianma.png','theme1');
+        }
+        .icon_case {
+          @include gatheringImg('qianbao.png','theme1');
         }
       }
     }
