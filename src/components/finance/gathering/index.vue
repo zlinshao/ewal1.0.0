@@ -14,25 +14,83 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons down"></div>
         <div class="icons home_icon"></div>
         <div class="icons add"><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
-
+    <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+      <el-table
+        :data="tableData"
+        :height="this.mainListHeight(30) + 'px'"
+        highlight-current-row
+        :row-class-name="tableChooseRow"
+        @cell-click="tableClickRow"
+        header-row-class-name="tableHeader"
+        style="width: 100%"
+      >
+        <el-table-column
+          v-for="item in Object.keys(showData)" :key="item"
+          align="center"
+          :prop="item"
+          :label="showData[item]">
+        </el-table-column>
+        <el-table-column
+          v-for="(item,key) in btn_group"
+          :key="key"
+          :label="item.val"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <el-button style="width: 80px" size="mini" :type="item.type" plain @click="handleClickBtn(item.key)">{{ item.val }}</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <footer class="flex-center bottomPage">
+        <div class="develop flex-center">
+          <i class="el-icon-d-arrow-right"></i>
+        </div>
+        <div class="page">
+          <el-pagination
+            :total="100"
+            layout="total,jumper,prev,pager,next">
+          </el-pagination>
+        </div>
+      </footer>
+    </div>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+
+    <lj-dialog
+      :visible="receive_visible"
+      :size="{width: 500 + 'px',height: 600 + 'px'}"
+      @close="receive_visible = false"
+    >
+    </lj-dialog>
+
+    <div>
+      <div class="dialog_header">
+        <h3>应收入账</h3>
+      </div>
+      <div class="dialog_main">
+
+      </div>
+      <div class="dialog_footer">
+        ...
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import SearchHigh from '../../common/searchHigh.vue'
+  import SearchHigh from '../../common/searchHigh.vue';
+  import LjDialog from '../../common/lj-dialog.vue';
 
   export default {
     name: "",
-    components: {SearchHigh},
+    components: {SearchHigh,LjDialog},
     data() {
       return {
+        receive_visible: false,
         showSearch: false,
         chooseTab: 1,
         selects: [
@@ -47,210 +105,56 @@
           {
             id: 3,
             title: '房款',
+          },
+          {
+            id: 4,
+            title: '其他收款'
           }
         ],
         tableData: [
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 23,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 33,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 23,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 33,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
+          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'}
+        ],
+        showData: {
+          gather_time: '收款时间',
+          subject_name: '款项名目',
+          receive_subject: '应收科目',
+          balance: '应收余额',
+          receive: '实收金额',
+          residue: '剩余金额',
+          polishing_time: '补齐时间',
+          status: '状态',
+          detail: '明细详情'
+        },
+        btn_group: [
+          {val: '跟进列表',key: 'record',type: 'success'},
+          {val: '备注',key: 'mark',type: 'danger'},
+          {val: '详情',key: 'info_detail',type: 'primary'},
+          {val: '操作',key: 'operator',type: 'warning'},
+          {val: '应收入账',key: 'should_receive',type: 'success'}
         ],
         searchData: {
           status: 'gathering',
           data: [],
         },
+        chooseRowIds: []
       }
     },
     mounted() {
@@ -260,14 +164,133 @@
     watch: {},
     computed: {},
     methods: {
+      handleClickBtn(key) {
+        console.log(key);
+        if (key === 'should_receive') {
+          this.receive_visible = true;
+        }
+      },
       changeTabs(id) {
         this.chooseTab = id;
       },
-      hiddenModule() {
-        this.showSearch = false;
+      // 当前点击
+      tableClickRow(row) {
+        let ids = this.chooseRowIds;
+        ids.push(row.id);
+        this.chooseRowIds = this.myUtils.arrayWeight(ids);
       },
+      // 点击过
+      tableChooseRow({row, rowIndex}) {
+        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+      },
+      // 高级搜索
       highSearch() {
         this.showSearch = true;
+        this.searchData.data = [
+          {
+            keyType: 'date',
+            title: '出生日期',
+            placeholder: '请选择日期',
+            keyName: 'date3',
+            dataType: '',
+          },
+          {
+            keyType: 'dateRange',
+            title: '创建时间',
+            placeholder: '请选择日期',
+            keyName: 'date1',
+            dataType: [],
+          },
+          {
+            keyType: 'dateRange',
+            title: '跟进时间',
+            placeholder: '请选择日期',
+            keyName: 'date2',
+            dataType: [],
+          },
+          {
+            keyType: 'radio',
+            title: '紧急程度',
+            keyName: 'radio',
+            dataType: '',
+            value: [
+              {
+                id: 12,
+                title: '特级',
+              },
+              {
+                id: 13,
+                title: '紧急',
+              },
+              {
+                id: 14,
+                title: '重要',
+              },
+              {
+                id: 15,
+                title: '一般',
+              }
+            ],
+          },
+          {
+            keyType: 'check',
+            title: '状态',
+            keyName: 'check',
+            dataType: [],
+            value: [
+              {
+                id: 22,
+                title: '已完成',
+              },
+              {
+                id: 23,
+                title: '未完成',
+              },
+            ],
+          },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
+          },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
+          },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
+          },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
+          },
+          {
+            keyType: 'organ',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'organ',
+            dataType: '',
+          },
+        ];
+      },
+      // 确认搜索
+      hiddenModule(val) {
+        this.showSearch = false;
+        if (val !== 'close') {
+          console.log(val);
+        }
       },
     },
   }
@@ -285,9 +308,6 @@
     #gathering {
       > div {
         .listTopRight {
-          .down {
-            @include financeImg('yingshoukuanfenxi.png', 'theme1');
-          }
           .home_icon {
             @include financeImg('yinhanglius.png', 'theme1');
           }
