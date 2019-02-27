@@ -25,6 +25,7 @@ const Finance = () => import('@/components/finance/index.vue');
 const AccountManage = () => import('@/components/finance/accountManage/index.vue');//帐户
 const Subject = () => import('@/components/finance/subject/index.vue');//科目
 const BudgetStream = () => import('@/components/finance/budgetStream/index.vue');//收支流水
+const Gathering = () => import('@/components/finance/gathering/index.vue'); //收款
 
 Vue.use(Router);
 
@@ -112,5 +113,10 @@ export default new Router({
       name: '收支流水',
       component: BudgetStream
     },
+    {
+      path: '/gathering',
+      name: '收款',
+      component: Gathering
+    }
   ]
 })

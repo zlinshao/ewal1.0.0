@@ -1,7 +1,7 @@
 <template>
     <div id="houseCard">
       <div :style="{'height' : content_height + 'px'}">
-        <div class="content scroll_bar" @scroll="handleScroll">
+        <div class="content scroll_bar" @scroll="handleScroll" @click="show_control = false">
           <div class="flex cards">
             <div v-for="item in house_info" :key="item.id" class="justify-center">
               <div class="card" :class="['card_trans-' + item.id]" @dblclick.prevent="handleOpenCard(item)">
@@ -51,7 +51,7 @@
         props: ['houseSource'],
         data() {
             return {
-              show_control: 0,
+              show_control: false,
               content_height: window.innerHeight - 171,
               house_info: [],
               tip_btn: [

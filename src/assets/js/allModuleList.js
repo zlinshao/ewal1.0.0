@@ -77,7 +77,7 @@ export const finance = {
       title: '付款',
     },
     {
-      url: '',
+      url: 'gathering',
       title: '收款',
     },
     {
