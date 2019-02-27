@@ -43,7 +43,7 @@
     methods: {
       moduleRouter(url) {
         this.routerLink(url);
-        dialogVisible = false
+        this.dialogVisible = false;
       },
       // 点击底层关闭
       hidePanel(event) {
