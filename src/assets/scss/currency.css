@@ -345,8 +345,6 @@
         display: inline-block;
         width: 50%;
         height: 50%; }
-      #theme_name .form_item_container .item_label .item_icons:hover {
-        background-color: #CF2E33; }
     #theme_name .form_item_container .item_label > span {
       min-width: 60px;
       color: #C0C0C0;
@@ -357,6 +355,8 @@
     padding-left: 15px; }
   #theme_name .form_item_container .all_width {
     width: 100%; }
+  #theme_name .form_item_container:hover .item_icons {
+    background-color: #CF2E33; }
 #theme_name footer.bottomPage {
   height: 100px;
   width: 100%;

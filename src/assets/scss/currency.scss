@@ -149,9 +149,6 @@
           width: 50%;
           height: 50%;
         }
-        &:hover {
-          background-color: $colorE33;
-        }
       }
       > span {
         min-width: 60px;
@@ -166,6 +163,9 @@
     }
     .all_width {
       width: 100%;
+    }
+    &:hover .item_icons {
+      background-color: $colorE33;
     }
   }
   //分页

@@ -88,7 +88,9 @@
             <el-form-item>
               <div class="form_item_container">
                 <div class="item_label">
-                  <b class="item_icons icon_account"></b>
+                  <b class="item_icons">
+                    <i class="icon_account"></i>
+                  </b>
                   <span>账户</span>
                 </div>
                 <div class="item_content">
@@ -451,6 +453,9 @@
         }
         .icon_case {
           @include gatheringImg('qianbao.png','theme1');
+        }
+        .icon_account {
+          @include gatheringImg('zhanghu.png','theme1');
         }
       }
     }
