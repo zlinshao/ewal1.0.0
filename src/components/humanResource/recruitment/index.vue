@@ -35,7 +35,7 @@
 <script>
   import SearchHigh from '../../common/searchHigh.vue';
   import MenuList from '../../common/menuList.vue';
-  import {recruitment} from '../../../assets/js/allSearchData.js';
+  import {recruitmentSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource} from '../../../assets/js/allModuleList.js';
 
   export default {
@@ -43,14 +43,11 @@
     components: {MenuList, SearchHigh},
     data() {
       return {
-        recruitment,
+        recruitmentSearch,
         humanResource,
         visibleStatus: false,
         showSearch: false,
-        searchData: {
-          status: 'recruitment',
-          data: [],
-        },
+        searchData: {},
       }
     },
     mounted() {
@@ -64,6 +61,7 @@
       }
     },
     methods: {
+      // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
@@ -73,7 +71,7 @@
       // 高级搜索
       highSearch() {
         this.showSearch = true;
-        this.searchData.data = this.recruitment;
+        this.searchData = this.recruitmentSearch;
       },
       moduleList() {
         this.visibleStatus = !this.visibleStatus;
