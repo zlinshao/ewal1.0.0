@@ -187,6 +187,206 @@
       </div>
     </lj-dialog>
 
+    <!--跟进记录-->
+    <lj-dialog
+      :visible="record_visible"
+      :size="'small'"
+      @close="record_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>跟进记录</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="address">情缘雅居10-102</div>
+          <div class="record">
+            <el-table
+              :data="record_data"
+            >
+              <el-table-column label="跟进时间" prop=""></el-table-column>
+              <el-table-column label="跟进发起人" prop=""></el-table-column>
+              <el-table-column label="当前跟进人" prop=""></el-table-column>
+              <el-table-column label="跟进类型" prop=""></el-table-column>
+              <el-table-column label="跟进状态" prop=""></el-table-column>
+              <el-table-column label="款项名目" prop=""></el-table-column>
+            </el-table>
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <div class="page">
+            <el-pagination
+              :total="1000"
+              layout="total,prev,pager,next"
+            ></el-pagination>
+          </div>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--备注列表-->
+    <lj-dialog
+      :visible="mark_visible"
+      :size="'small'"
+      @close="mark_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header flex">
+          <h3>备注列表</h3>
+          <span class="add_mark" @click="new_mark_visible = true">+</span>
+        </div>
+        <div class="dialog_main">
+          <div class="address">情缘雅居10-102</div>
+          <div class="record">
+            <el-table
+              :data="mark_data"
+            >
+              <el-table-column label="备注时间" prop=""></el-table-column>
+              <el-table-column label="备注内容" prop=""></el-table-column>
+              <el-table-column label="备注人" prop=""></el-table-column>
+              <el-table-column label="备注类型" prop=""></el-table-column>
+            </el-table>
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <div class="page">
+            <el-pagination
+              :total="1000"
+              layout="total,prev,pager,next"
+            ></el-pagination>
+          </div>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--新增备注-->
+    <lj-dialog
+      :visible="new_mark_visible"
+      :size="{width: 500 + 'px' ,height: 400 + 'px'}"
+      @close="new_mark_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增备注</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form :mode="new_mark" size="mini">
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_mark"></i>
+                  </b>
+                  <span>备注内容</span>
+                </div>
+                <div class="item_content">
+                  <el-input type="textarea" v-model="new_mark.content" :rows="4"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_mark"></i>
+                  </b>
+                  <span>备注类型</span>
+                </div>
+                <div class="item_content items-start">
+                  <el-button>工单</el-button>
+                  <el-button>维修单</el-button>
+                  <el-button>贴条</el-button>
+                  <el-button>贴条</el-button>
+                  <el-button>贴条</el-button>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger">确定</el-button>
+          <el-button size="small">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--登记收款-->
+    <lj-dialog
+      :visible="register_visible"
+      :size="{width: 500 + 'px',height: 400 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>登记记录</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form :model="register_from" size="mini">
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_come"></i>
+                  </b>
+                  <span>选择图片</span>
+                </div>
+                <div class="item_content">
+                  <span>...</span>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_account"></i>
+                  </b>
+                  <span>选择账户</span>
+                </div>
+                <div class="item_content">
+                  <el-select class="all_width" v-model="register_from.account">
+                    <el-option value="1" label="2104023483209"></el-option>
+                    <el-option value="1" label="2104023483209"></el-option>
+                  </el-select>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_account"></i>
+                  </b>
+                  <span>收款金额</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="register_from.money"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_account"></i>
+                  </b>
+                  <span>收款时间</span>
+                </div>
+                <div class="item_content">
+                  <el-date-picker
+                    class="all_width"
+                    v-model="register_from.time"
+                    typ="timetype"
+                  ></el-date-picker>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="mini" type="danger">迁移</el-button>
+          <el-button size="mini" @click="register_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
     <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
   </div>
 </template>
@@ -202,7 +402,22 @@
     data() {
       return {
         showFinMenuList: false,
-        receive_visible: false,
+        receive_visible: false, //应收入账
+        record_visible: false, //跟进记录
+        mark_visible: false, //备注列表
+        new_mark_visible: false, //新增备注
+        register_visible: false, //登记收款
+        register_size: '',
+        register_from: {
+          img: '',
+          account: '',
+          money: '2000.00',
+          time: ''
+        },
+        new_mark: {
+          content: '',
+          type: ''
+        },
         showSearch: false,
         chooseTab: 1,
         selects: [
@@ -257,9 +472,9 @@
         },
         btn_group: [
           {val: '跟进列表',key: 'record',type: 'success'},
-          {val: '备注',key: 'mark',type: 'danger'},
+          {val: '备注列表',key: 'mark',type: 'danger'},
           {val: '详情',key: 'info_detail',type: 'primary'},
-          {val: '操作',key: 'operator',type: 'warning'},
+          {val: '登记收款',key: 'register',type: 'warning'},
           {val: '应收入账',key: 'should_receive',type: 'success'}
         ],
         searchData: {
@@ -273,7 +488,9 @@
           money: '',
           pay_time: '',
           mark: '',
-        }
+        },
+        record_data: [],
+        mark_data: []
       }
     },
     mounted() {
@@ -287,6 +504,16 @@
         console.log(key);
         if (key === 'should_receive') {
           this.receive_visible = true;
+        }
+        if (key === 'record') {
+          this.record_visible = true;
+        }
+        if (key === 'mark') {
+          this.mark_visible = true;
+        }
+        if (key === 'register') {
+          this.register_size = 'mini';
+          this.register_visible = true;
         }
       },
       changeTabs(id) {
@@ -423,11 +650,6 @@
     @include bgImage($url);
   }
 
-  @mixin gatheringImg($m,$n) {
-    $url: '../../../assets/image/finance/gathering/' + $n + '/' + $m;
-    @include bgImage($url);
-  }
-
   #theme_name {
     #gathering {
       > div {
@@ -435,27 +657,6 @@
           .home_icon {
             @include financeImg('yinhanglius.png', 'theme1');
           }
-        }
-        .icon_mark {
-          @include gatheringImg('beizhu.png','theme1');
-        }
-        .icon_money {
-          @include gatheringImg('yingshoukuanfenxi.png','theme1');
-        }
-        .icon_payTime {
-          @include gatheringImg('fukuan.png','theme1');
-        }
-        .icon_subject {
-          @include gatheringImg('kemuyue.png','theme1');
-        }
-        .icon_come {
-          @include gatheringImg('kemubianma.png','theme1');
-        }
-        .icon_case {
-          @include gatheringImg('qianbao.png','theme1');
-        }
-        .icon_account {
-          @include gatheringImg('zhanghu.png','theme1');
         }
       }
     }

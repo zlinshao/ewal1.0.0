@@ -39,8 +39,8 @@
           label="操作">
           <template slot-scope="scope">
             <div class="operate">
-              <el-button size="mini" type="primary" plain>编辑</el-button>
-              <el-button size="mini" type="warning" plain>迁移</el-button>
+              <el-button size="mini" type="primary" plain @click="edit_visible = true">编辑</el-button>
+              <el-button size="mini" type="warning" plain @click="move_visible = true">迁移</el-button>
               <el-button size="mini" type="danger" plain>禁用</el-button>
             </div>
           </template>
@@ -60,17 +60,138 @@
     </div>
 
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+
+    <!--编辑科目-->
+    <lj-dialog
+      :visible="edit_visible"
+      :size="{width: 500 + 'px',height: 330 + 'px'}"
+      @close="edit_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>编辑</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form :model="edit_subject" size="mini">
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_come"></i>
+                  </b>
+                  <span>科目名称</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="edit_subject.name"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_type"></i>
+                  </b>
+                  <span>科目编号</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="edit_subject.num"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_type"></i>
+                  </b>
+                  <span>类别</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="edit_subject.num"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="mini" type="danger">修改</el-button>
+          <el-button size="mini" @click="edit_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--迁移-->
+    <lj-dialog
+      :visible="move_visible"
+      @close="move_visible = false"
+      :size="{width: 500 + 'px',height: 300 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>编辑</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form :model="move_subject" size="mini">
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_type"></i>
+                  </b>
+                  <span>原科目</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="move_subject.initial"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_type"></i>
+                  </b>
+                  <span>现科目</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="move_subject.now"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="mini" type="danger">修改</el-button>
+          <el-button size="mini" @click="move_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
   </div>
 </template>
 
 <script>
-  import SearchHigh from '../../common/searchHigh.vue'
+  import SearchHigh from '../../common/searchHigh.vue';
+  import LjDialog from '../../common/lj-dialog.vue';
 
   export default {
     name: "index",
-    components: {SearchHigh},
+    components: {SearchHigh,LjDialog},
     data() {
       return {
+        edit_visible: false, //编辑科目
+        edit_subject: {
+          name: '',
+          num: '',
+          type: ''
+        },
+        move_visible: false,
+        move_subject: {
+          initial: '',
+          now: ''
+        },
         selects: [
           {
             id: 1,

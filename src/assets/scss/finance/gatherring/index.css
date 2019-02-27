@@ -132,4 +132,23 @@
     background: #747474;
     border-radius: 4px; }
 
+#theme_name #gathering > div .address {
+  font-size: 18px; }
+#theme_name #gathering > div .record {
+  padding: 20px; }
+#theme_name #gathering > div .add_mark {
+  width: 30px;
+  height: 30px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #CF2E33;
+  font-size: 20px;
+  text-align: center;
+  color: white;
+  position: absolute;
+  right: 20px;
+  top: 0;
+  cursor: pointer; }
+
 /*# sourceMappingURL=index.css.map */
