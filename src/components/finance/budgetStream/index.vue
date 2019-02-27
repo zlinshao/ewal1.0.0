@@ -14,7 +14,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons add"><b>+</b></div>
+        <div class="icons bank"></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -114,28 +114,28 @@
           },
           {
             id: 12,
-            status: 3,
+            status: 1,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
           {
             id: 13,
-            status: 4,
+            status: 2,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
           {
             id: 23,
-            status: 4,
+            status: 2,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
           {
             id: 33,
-            status: 4,
+            status: 2,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
@@ -170,14 +170,14 @@
           },
           {
             id: 12,
-            status: 3,
+            status: 1,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
           {
             id: 13,
-            status: 4,
+            status: 2,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
@@ -212,28 +212,28 @@
           },
           {
             id: 12,
-            status: 3,
+            status: 1,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
           {
             id: 13,
-            status: 4,
+            status: 2,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
           {
             id: 23,
-            status: 4,
+            status: 2,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
           {
             id: 33,
-            status: 4,
+            status: 2,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
@@ -268,14 +268,14 @@
           },
           {
             id: 12,
-            status: 3,
+            status: 1,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
           },
           {
             id: 13,
-            status: 4,
+            status: 2,
             date: '2016-05-01',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1519 弄',
@@ -294,7 +294,7 @@
 
         showSearch: false,
         searchData: {
-          status: 'workOrder',
+          status: 'budgetStream',
           data: [],
         },
       }
@@ -437,16 +437,24 @@
   @import "../../../assets/scss/finance/budgetStream/index.scss";
 
   @mixin budgetStreamImg($m, $n) {
-    $url: '../../assets/image/budgetStream/' + $n + '/' + $m;
+    $url: '../../../assets/image/finance/budgetStream/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
     #budgetStream {
       .mainListTable {
+        .status {
+          color: $colorFFF;
+        }
         .status1 {
           p {
-
+            @include budgetStreamImg('shouru.png', 'theme1');
+          }
+        }
+        .status2 {
+          p {
+            @include budgetStreamImg('zhichu.png', 'theme1');
           }
         }
       }
