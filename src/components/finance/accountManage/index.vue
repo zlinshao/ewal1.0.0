@@ -2,7 +2,7 @@
   <div id="accountManage">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center">
+        <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
         <h1>帐户管理</h1>
@@ -48,19 +48,21 @@
         </div>
       </footer>
     </div>
-
+    <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue'
+  import FinMenuList from '../components/finMenuList.vue'
 
   export default {
     name: "index",
-    components: {SearchHigh},
+    components: {SearchHigh, FinMenuList},
     data() {
       return {
+        showFinMenuList: false,
         showData: {
           date: '日期',
           name: '姓名',
@@ -402,6 +404,9 @@
         if (val !== 'close') {
           console.log(val);
         }
+      },
+      moduleList() {
+        this.showFinMenuList = !this.showFinMenuList;
       },
     },
   }
