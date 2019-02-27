@@ -33,13 +33,13 @@
               </el-date-picker>
             </div>
             <div class="items-center" v-if="item.keyType === 'radio'">
-              <p @click="chooseRadio(item.keyName,key.id)" :class="{'highChoose': params[item.keyName] === key.id}"
+              <p class="radioSelection" @click="chooseRadio(item.keyName,key.id)" :class="{'highChoose': params[item.keyName] === key.id}"
                  v-for="key in item.value">
                 {{key.title}}
               </p>
             </div>
             <div class="items-center" v-if="item.keyType === 'check'">
-              <p @click="chooseCheck(item.keyName,key.id)"
+              <p class="radioSelection" @click="chooseCheck(item.keyName,key.id)"
                  :class="{'highChoose': params[item.keyName].includes(key.id)}"
                  v-for="key in item.value" v-if="params[item.keyName]">
                 {{key.title}}

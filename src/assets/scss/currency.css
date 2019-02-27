@@ -303,6 +303,22 @@
       height: 30px;
       line-height: 30px;
       font-weight: bold; }
+#theme_name .radioSelection {
+  width: 90px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  background-color: #FFFFFF;
+  margin: 0 20px 10px 0;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px; }
 #theme_name .dialog_container {
   position: relative;
   height: 100%; }
@@ -422,6 +438,9 @@
     transform: translateY(2px) rotateZ(-90deg); }
   100% {
     transform: translateY(0) rotateZ(-90deg); } }
+#theme_name.theme1 .highChoose {
+  background-color: #FFEAEA;
+  color: #CF2E33; }
 #theme_name.theme1 .listTopCss .listTopLeft p {
   background-color: #DFDFDF; }
 #theme_name.theme1 .listTopCss .listTopLeft h1 {

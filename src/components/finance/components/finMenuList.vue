@@ -66,7 +66,7 @@
       z-index: 12;
       background-color: $colorFFF;
       border-color: transparent;
-      @include transition(all .3s);
+      @include transition(all .5s);
       > div {
         width: 70%;
         padding: 0 5%;

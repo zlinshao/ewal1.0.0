@@ -103,6 +103,22 @@
       }
     }
   }
+  // radio check
+  .radioSelection {
+    width: 90px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    background-color: $colorFFF;
+    margin: 0 20px 10px 0;
+    @include radius(6px);
+  }
 
   .dialog_container {
     position: relative;
@@ -129,7 +145,6 @@
       }
     }
   }
-
   .form_item_container {
     display: flex;
     padding: 5px 40px;
@@ -243,6 +258,11 @@
 }
 
 #theme_name.theme1 {
+  // radio check
+  .highChoose {
+    background-color: #FFEAEA;
+    color: $colorE33;
+  }
   //表格头部
   .listTopCss {
     .listTopLeft {
