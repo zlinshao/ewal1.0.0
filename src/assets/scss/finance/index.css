@@ -136,6 +136,51 @@
   height: 100%; }
   #theme_name #finance > div {
     width: 1200px;
-    height: 750px; }
+    height: 750px;
+    padding: 95px 0; }
+  #theme_name #finance .mainList {
+    width: 100%;
+    padding-right: 5px; }
+    #theme_name #finance .mainList > div {
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      display: -webkit-flex;
+      align-items: center;
+      justify-content: center; }
+      #theme_name #finance .mainList > div p {
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center; }
+        #theme_name #finance .mainList > div p span {
+          display: flex;
+          display: -webkit-flex;
+          align-items: center;
+          justify-content: center; }
+    #theme_name #finance .mainList .abacusUp {
+      min-height: 200px;
+      max-height: 200px; }
+      #theme_name #finance .mainList .abacusUp p {
+        width: 60px;
+        height: 40px; }
+        #theme_name #finance .mainList .abacusUp p i {
+          width: 24px;
+          height: 24px; }
+    #theme_name #finance .mainList .abacusDown {
+      height: 410px; }
+      #theme_name #finance .mainList .abacusDown p {
+        width: 60px;
+        height: 160px;
+        padding-top: 30px; }
+        #theme_name #finance .mainList .abacusDown p span {
+          font-family: 'jingDianXingShu';
+          letter-spacing: 20px;
+          font-size: 30px; }
+    #theme_name #finance .mainList:hover > div p {
+      color: #FFFFFF; }
+  #theme_name #finance .mainList.finance2 .abacusUp .icons {
+    width: 19px;
+    height: 19px; }
 
 /*# sourceMappingURL=index.css.map */

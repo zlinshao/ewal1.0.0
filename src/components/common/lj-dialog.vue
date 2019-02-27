@@ -49,6 +49,7 @@
           },
           size: {
             handler(val) {
+              console.log(val);
               if (typeof val === 'string') {
                 this.lj_size = val;
                 this.is_upright = false;

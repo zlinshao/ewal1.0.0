@@ -1,6 +1,11 @@
 @import "./flex.scss";
 @import "./common.scss";
 
+@mixin gatheringImg($m,$n) {
+  $url: '../image/finance/gathering/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
 #theme_name {
   //表格头部
   .listTopCss {
@@ -126,6 +131,7 @@
     .dialog_header {
       text-align: left;
       padding: 10px 15px;
+      position: relative;
     }
     .dialog_main {
       height: auto;
@@ -164,9 +170,6 @@
           width: 50%;
           height: 50%;
         }
-        &:hover {
-          background-color: $colorE33;
-        }
       }
       > span {
         min-width: 60px;
@@ -178,9 +181,37 @@
       width: 60%;
       text-align: left;
       padding-left: 15px;
+      flex-wrap: wrap;
     }
     .all_width {
       width: 100%;
+    }
+    &:hover .item_icons {
+      background-color: $colorE33;
+    }
+    .icon_mark {
+      @include gatheringImg('beizhu.png','theme1');
+    }
+    .icon_money {
+      @include gatheringImg('yingshoukuanfenxi.png','theme1');
+    }
+    .icon_payTime {
+      @include gatheringImg('fukuan.png','theme1');
+    }
+    .icon_subject {
+      @include gatheringImg('kemuyue.png','theme1');
+    }
+    .icon_come {
+      @include gatheringImg('kemubianma.png','theme1');
+    }
+    .icon_case {
+      @include gatheringImg('qianbao.png','theme1');
+    }
+    .icon_account {
+      @include gatheringImg('zhanghu.png','theme1');
+    }
+    .icon_type {
+      @include gatheringImg('leibie.png','theme1');
     }
   }
   //分页

@@ -1,1 +1,27 @@
 @import '../../common.scss';
+
+#theme_name {
+  #gathering {
+    > div {
+      .address {
+        font-size: 18px;
+      }
+      .record {
+        padding: 20px;
+      }
+      .add_mark {
+        width: 30px;
+        height: 30px;
+        @include radius(5px);
+        background-color: $colorE33;
+        font-size: 20px;
+        text-align: center;
+        color: white;
+        position: absolute;
+        right: 20px;
+        top: 0;
+        cursor: pointer;
+      }
+    }
+  }
+}

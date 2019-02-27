@@ -3,7 +3,7 @@
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
-          <b>...</b>
+          <b @click="showFinMenuList = true">...</b>
         </p>
         <h1>帐户管理</h1>
       </div>
@@ -31,7 +31,7 @@
           label="操作">
           <template slot-scope="scope">
             <div class="operate">
-              <el-button size="mini" type="primary" plain>点击查看</el-button>
+              <el-button size="mini" type="primary" plain @click="info_visible = true">点击查看</el-button>
             </div>
           </template>
         </el-table-column>
@@ -50,18 +50,32 @@
     </div>
     <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+    <lj-dialog
+      :visible="info_visible"
+      :size="'large'"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>归档/充值</h3>
+        </div>
+        <div class="dialog_main"></div>
+        <div class="dialog_footer"></div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue'
   import FinMenuList from '../components/finMenuList.vue'
+  import LjDialog from '../../common/lj-dialog.vue';
 
   export default {
     name: "index",
-    components: {SearchHigh, FinMenuList},
+    components: {SearchHigh, FinMenuList,LjDialog},
     data() {
       return {
+        info_visible: false,
         showFinMenuList: false,
         showData: {
           date: '日期',
