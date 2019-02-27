@@ -3,7 +3,7 @@
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center">
-          <b>...</b>
+          <b @click="showFinMenuList = true">...</b>
         </p>
         <h1>收款</h1>
         <h2 class="items-center">
@@ -60,6 +60,7 @@
     </div>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
+    <!--应收入账-->
     <lj-dialog
       :visible="receive_visible"
       :size="{width: 500 + 'px',height: 600 + 'px'}"
@@ -183,18 +184,22 @@
         </div>
       </div>
     </lj-dialog>
+
+    <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue';
   import LjDialog from '../../common/lj-dialog.vue';
+  import FinMenuList from '../components/finMenuList.vue';
 
   export default {
     name: "",
-    components: {SearchHigh,LjDialog},
+    components: {SearchHigh,LjDialog,FinMenuList},
     data() {
       return {
+        showFinMenuList: false,
         receive_visible: false,
         showSearch: false,
         chooseTab: 1,
