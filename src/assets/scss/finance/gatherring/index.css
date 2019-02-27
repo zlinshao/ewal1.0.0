@@ -132,39 +132,4 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name .lj_dialog > div {
-  position: fixed;
-  top: 81px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 99; }
-  #theme_name .lj_dialog > div .lj_container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    padding: 20px; }
-    #theme_name .lj_dialog > div .lj_container .close_btn {
-      width: 30px;
-      height: 30px;
-      position: absolute;
-      right: -15px;
-      top: -15px;
-      cursor: pointer; }
-    #theme_name .lj_dialog > div .lj_container .wen_top, #theme_name .lj_dialog > div .lj_container .wen_bottom {
-      width: 50px;
-      height: 30px;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%); }
-    #theme_name .lj_dialog > div .lj_container .wen_top {
-      top: -3px; }
-    #theme_name .lj_dialog > div .lj_container .wen_bottom {
-      bottom: -2px;
-      transform-origin: center center;
-      transform: rotate(180deg) translateX(100%); }
-
-/*# sourceMappingURL=lj_dialog.css.map */
+/*# sourceMappingURL=index.css.map */
