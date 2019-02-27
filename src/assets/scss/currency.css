@@ -265,6 +265,9 @@
   #theme_name .listTopCss .listTopRight .search {
     background: url("../../assets/image/customService/theme1/search.png") no-repeat scroll center;
     background-size: 100% 100%; }
+  #theme_name .listTopCss .listTopRight .bank {
+    background: url("../../assets/image/finance/budgetStream/theme1/yinhangliushui.png") no-repeat scroll center;
+    background-size: 100% 100%; }
   #theme_name .listTopCss .listTopRight .icons {
     width: 30px;
     height: 30px; }

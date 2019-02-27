@@ -1,21 +1,13 @@
 <template>
-  <div id="subject">
+  <div id="accountManage">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center">
           <b>...</b>
         </p>
-        <h1>科目</h1>
-        <h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}
-            <i></i>
-          </span>
-        </h2>
+        <h1>帐户管理</h1>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons add"><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -39,9 +31,7 @@
           label="操作">
           <template slot-scope="scope">
             <div class="operate">
-              <el-button size="mini" type="primary" plain>编辑</el-button>
-              <el-button size="mini" type="warning" plain>迁移</el-button>
-              <el-button size="mini" type="danger" plain>禁用</el-button>
+              <el-button size="mini" type="primary" plain>点击查看</el-button>
             </div>
           </template>
         </el-table-column>
@@ -71,13 +61,6 @@
     components: {SearchHigh},
     data() {
       return {
-        selects: [
-          {
-            id: 1,
-            title: '科目管理',
-          },
-        ],
-        chooseTab: 1,
         showData: {
           date: '日期',
           name: '姓名',
@@ -425,33 +408,33 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../assets/scss/finance/subject/index.scss";
+  @import "../../../assets/scss/finance/accountManage/index.scss";
 
   @mixin childrenImg($m, $n) {
-    $url: '../../../assets/image/finance/subject/' + $n + '/' + $m;
+    $url: '../../../assets/image/finance/accountManage/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
-    #subject {
+    #accountManage {
 
     }
   }
 
   #theme_name.theme2 {
-    #subject {
+    #accountManage {
 
     }
   }
 
   #theme_name.theme3 {
-    #subject {
+    #accountManage {
 
     }
   }
 
   #theme_name.theme4 {
-    #subject {
+    #accountManage {
 
     }
   }

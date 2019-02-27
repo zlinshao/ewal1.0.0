@@ -73,7 +73,7 @@ export const finance = {
   type: 'finance',
   data: [
     {
-      url: 'workOrder',
+      url: '',
       title: '付款',
     },
     {
@@ -81,7 +81,7 @@ export const finance = {
       title: '收款',
     },
     {
-      url: '',
+      url: 'accountManage',
       title: '帐户',
     },
     {
