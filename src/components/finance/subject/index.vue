@@ -2,7 +2,7 @@
   <div id="subject">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center">
+        <p class="flex-center" @click="showFinMenuList = true">
           <b>...</b>
         </p>
         <h1>科目</h1>
@@ -58,6 +58,7 @@
         </div>
       </footer>
     </div>
+    <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
 
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
@@ -175,13 +176,15 @@
 <script>
   import SearchHigh from '../../common/searchHigh.vue';
   import LjDialog from '../../common/lj-dialog.vue';
+  import FinMenuList from '../components/finMenuList.vue'
 
   export default {
     name: "index",
-    components: {SearchHigh,LjDialog},
+    components: {SearchHigh, FinMenuList, LjDialog},
     data() {
       return {
         edit_visible: false, //编辑科目
+        showFinMenuList: false,
         edit_subject: {
           name: '',
           num: '',

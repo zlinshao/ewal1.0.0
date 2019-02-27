@@ -2,7 +2,7 @@
   <div id="staffRoster">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center" @click="moduleList">
+        <p class="flex-center">
           <b>...</b>
         </p>
         <h1>员工名册</h1>
@@ -318,9 +318,6 @@
       // 点击过
       tableChooseRow({row, rowIndex}) {
         return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-      },
-      moduleList() {
-
       },
     },
   }

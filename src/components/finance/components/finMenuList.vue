@@ -3,7 +3,7 @@
     <div :class="{'dialogVisible': dialogVisible}" @click="dialogVisible = false"></div>
     <div class="list flex-center" :class="{'backdrop': dialogVisible}">
       <div class="justify-around">
-        <div v-for="item in finance.data" @click="routerLink(item.url)">
+        <div v-for="item in finance.data" @click="moduleRouter(item.url)">
           <p>
             <span class="writingMode">{{item.title}}</span>
           </p>
@@ -41,8 +41,9 @@
     },
     computed: {},
     methods: {
-      moduleRouter(val) {
-
+      moduleRouter(url) {
+        this.routerLink(url);
+        this.$emit('close');
       }
     },
   }

@@ -2,8 +2,8 @@
   <div id="gathering">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center">
-          <b @click="showFinMenuList = true">...</b>
+        <p class="flex-center" @click="showFinMenuList = true">
+          <b>...</b>
         </p>
         <h1>收款</h1>
         <h2 class="items-center">
@@ -27,8 +27,7 @@
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
-        style="width: 100%"
-      >
+        style="width: 100%">
         <el-table-column
           v-for="item in Object.keys(showData)" :key="item"
           align="center"
@@ -39,8 +38,7 @@
           v-for="(item,key) in btn_group"
           :key="key"
           :label="item.val"
-          align="center"
-        >
+          align="center">
           <template slot-scope="scope">
             <el-button style="width: 80px" size="mini" :type="item.type" plain @click="handleClickBtn(item.key)">{{ item.val }}</el-button>
           </template>
@@ -64,8 +62,7 @@
     <lj-dialog
       :visible="receive_visible"
       :size="{width: 500 + 'px',height: 600 + 'px'}"
-      @close="receive_visible = false"
-    >
+      @close="receive_visible = false">
       <div class="dialog_container">
         <div class="dialog_header flex">
           <h3>应收入账</h3>
@@ -191,8 +188,7 @@
     <lj-dialog
       :visible="record_visible"
       :size="'small'"
-      @close="record_visible = false"
-    >
+      @close="record_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>跟进记录</h3>
@@ -227,8 +223,7 @@
     <lj-dialog
       :visible="mark_visible"
       :size="'small'"
-      @close="mark_visible = false"
-    >
+      @close="mark_visible = false">
       <div class="dialog_container">
         <div class="dialog_header flex">
           <h3>备注列表</h3>
@@ -262,8 +257,7 @@
     <lj-dialog
       :visible="new_mark_visible"
       :size="{width: 500 + 'px' ,height: 400 + 'px'}"
-      @close="new_mark_visible = false"
-    >
+      @close="new_mark_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>新增备注</h3>
@@ -312,8 +306,7 @@
     <!--登记收款-->
     <lj-dialog
       :visible="register_visible"
-      :size="{width: 500 + 'px',height: 400 + 'px'}"
-    >
+      :size="{width: 500 + 'px',height: 400 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>登记记录</h3>

@@ -2,8 +2,8 @@
   <div id="accountManage">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center" @click="moduleList">
-          <b @click="showFinMenuList = true">...</b>
+        <p class="flex-center" @click="showFinMenuList = true">
+          <b>...</b>
         </p>
         <h1>帐户管理</h1>
       </div>
@@ -72,7 +72,7 @@
 
   export default {
     name: "index",
-    components: {SearchHigh, FinMenuList,LjDialog},
+    components: {SearchHigh, FinMenuList, LjDialog},
     data() {
       return {
         info_visible: false,
@@ -418,9 +418,6 @@
         if (val !== 'close') {
           console.log(val);
         }
-      },
-      moduleList() {
-        this.showFinMenuList = !this.showFinMenuList;
       },
     },
   }

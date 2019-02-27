@@ -38,7 +38,7 @@
     <div id="moduleList" :class="{'moduleList':moduleList}">
       <div class="justify-around">
         <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules"
-             @click="routerLink(item.url);moduleList = false;">
+             @click="routerLink(item.url)">
           <p></p>
           <div class="justify-center">
             <h1 class="writingMode items-center">

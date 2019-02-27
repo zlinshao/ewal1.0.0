@@ -2,7 +2,7 @@
   <div id="budgetStream">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center">
+        <p class="flex-center" @click="showFinMenuList = true">
           <b>...</b>
         </p>
         <h1>收支流水</h1>
@@ -55,18 +55,21 @@
         </div>
       </footer>
     </div>
+    <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue'
+  import FinMenuList from '../components/finMenuList.vue'
 
   export default {
     name: "index",
-    components: {SearchHigh},
+    components: {SearchHigh, FinMenuList},
     data() {
       return {
+        showFinMenuList: false,
         chooseTab: 1,
         selects: [
           {
