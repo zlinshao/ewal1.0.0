@@ -21,27 +21,43 @@
     </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
-        :data="tableData"
+        :data="subjectData"
         :height="this.mainListHeight(30) + 'px'"
         highlight-current-row
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         style="width: 100%">
-        <el-table-column
-          v-for="item in Object.keys(showData)" :key="item"
-          align="center"
-          :prop="item"
-          :label="showData[item]">
+        <el-table-column label="编码" prop="subject_code" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.subject_code">{{ scope.row.subject_code }}</span>
+            <span v-else>/</span>
+          </template>
         </el-table-column>
+        <el-table-column label="名称" prop="title" align="center"></el-table-column>
+        <el-table-column label="类别" prop="er_type" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.er_type === 1">收入</span>
+            <span v-if="scope.row.er_type === 2">支出</span>
+            <span v-if="scope.row.er_type === 3">混合</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="款项数量" prop="" align="center"></el-table-column>
+        <el-table-column label="款项总金额" prop="" align="center"></el-table-column>
+        <el-table-column label="创建人" prop="creator_id" align="center"></el-table-column>
+        <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
         <el-table-column
           align="center"
-          label="操作">
+          label="操作"
+          min-width="100px"
+        >
           <template slot-scope="scope">
             <div class="operate">
-              <el-button size="mini" type="primary" plain @click="edit_visible = true">编辑</el-button>
+              <el-button size="mini" type="primary" plain @click="handleOpenEdit(scope.row)">编辑</el-button>
               <el-button size="mini" type="warning" plain @click="move_visible = true">迁移</el-button>
-              <el-button size="mini" type="danger" plain>禁用</el-button>
+              <el-button size="mini" :type="scope.row.is_enable === 2 ? 'danger' : 'success'" plain @click="handleUnUseSubject(scope.row)">
+                {{ scope.row.is_enable === 2 ? '禁用' : '启用'}}
+              </el-button>
             </div>
           </template>
         </el-table-column>
@@ -52,8 +68,12 @@
         </div>
         <div class="page">
           <el-pagination
-            :total="100"
-            layout="total,jumper,prev,pager,next">
+            :total="subjectCount"
+            :current-page="params.page"
+            :page-size="params.limit"
+            layout="total,jumper,prev,pager,next"
+            @current-change="handleChangePage"
+          >
           </el-pagination>
         </div>
       </footer>
@@ -78,12 +98,12 @@
               <div class="form_item_container">
                 <div class="item_label">
                   <b class="item_icons">
-                    <i class="icon_come"></i>
+                    <i class="icon_mark"></i>
                   </b>
                   <span>科目名称</span>
                 </div>
                 <div class="item_content">
-                  <el-input v-model="edit_subject.name"></el-input>
+                  <el-input placeholder="请输入" v-model="edit_subject.title"></el-input>
                 </div>
               </div>
             </el-form-item>
@@ -91,12 +111,12 @@
               <div class="form_item_container">
                 <div class="item_label">
                   <b class="item_icons">
-                    <i class="icon_type"></i>
+                    <i class="icon_come"></i>
                   </b>
                   <span>科目编号</span>
                 </div>
                 <div class="item_content">
-                  <el-input v-model="edit_subject.num"></el-input>
+                  <el-input placeholder="请输入" v-model="edit_subject.subject_code"></el-input>
                 </div>
               </div>
             </el-form-item>
@@ -109,14 +129,18 @@
                   <span>类别</span>
                 </div>
                 <div class="item_content">
-                  <el-input v-model="edit_subject.num"></el-input>
+                  <el-select class="all_width" placeholder="请选择" v-model="edit_subject.er_type">
+                    <el-option label="收入" :value="1"></el-option>
+                    <el-option label="支出" :value="2"></el-option>
+                    <el-option label="混合" :value="3"></el-option>
+                  </el-select>
                 </div>
               </div>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="mini" type="danger">修改</el-button>
+          <el-button size="mini" type="danger" @click="handleEditSubjectInfo">修改</el-button>
           <el-button size="mini" @click="edit_visible = false">取消</el-button>
         </div>
       </div>
@@ -169,6 +193,27 @@
       </div>
     </lj-dialog>
 
+    <!--禁用/启用-->
+    <lj-dialog
+      :visible="open_close_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="open_close_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确认</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">
+            {{ currentRow.is_enable === 2 ? '确认要禁用该科目吗？' : '确认要启用该科目吗？'}}
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="mini">确定</el-button>
+          <el-button size="mini" @click="open_close_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
 
   </div>
 </template>
@@ -183,12 +228,21 @@
     components: {SearchHigh, FinMenuList, LjDialog},
     data() {
       return {
+        params: {
+          er_type: '',
+          parent_id: '',
+          search: '',
+          page: 1,
+          limit: 12
+        },
+        open_close_visible: false,
+        open_close_size: '',
         edit_visible: false, //编辑科目
         showFinMenuList: false,
         edit_subject: {
-          name: '',
-          num: '',
-          type: ''
+          title: '',
+          subject_code: '',
+          er_type: ''
         },
         move_visible: false,
         move_subject: {
@@ -202,225 +256,72 @@
           },
         ],
         chooseTab: 1,
-        showData: {
-          date: '日期',
-          name: '姓名',
-          address: '地址',
-        },
         chooseRowIds: [],
-        tableData: [
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 23,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 33,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 23,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 33,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-        ],
-
+        subjectData: [],
+        subjectCount: 0,
         showSearch: false,
         searchData: {
           status: 'workOrder',
           data: [],
         },
+
+        currentRow: {},
       }
     },
     mounted() {
+      this.getSubjectList();
     },
     activated() {
     },
     watch: {},
     computed: {},
     methods: {
+      //编辑
+      handleOpenEdit(row) {
+        this.currentRow = row;
+        this.edit_subject.title = row.title;
+        this.edit_subject.er_type = row.er_type;
+        this.edit_subject.subject_code = row.subject_code;
+        this.edit_visible = true;
+      },
+      getSubjectList() {
+        this.$http.get(globalConfig.temporary_server + 'subject',this.params).then(res => {
+          if (res.code === 200) {
+            this.subjectData = res.data.data;
+            this.subjectCount = res.data.count;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleEditSubjectInfo() {
+        this.$http.put(globalConfig.temporary_server + `subject/${this.currentRow.id}`,this.edit_subject).then(res => {
+          if (res.code === 200) {
+            this.$notify.success({
+              title: '成功',
+              message: '修改成功'
+            });
+          } else {
+            this.$notify.warning({
+              title: '失败',
+              message: '修改失败'
+            });
+          }
+          this.edit_visible = false;
+          this.getSubjectList();
+        }).catch(err => {
+          console.log(err);
+        });
+      },
+      handleChangePage(page) {
+        this.params.page = page;
+        this.getSubjectList();
+      },
+      handleUnUseSubject(row) {
+        this.currentRow = row;
+        this.open_close_visible = true;
+        this.open_close_size = 'mini';
+      },
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;

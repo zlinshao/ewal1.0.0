@@ -9,6 +9,6 @@ export default {
     };
     Vue.prototype.mainListHeight = function (num = 0) {
       return window.innerHeight - 170 - num;
-    }
+    };
   }
 }
