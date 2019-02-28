@@ -1,11 +1,14 @@
 <template>
   <div id="recruitment">
+    <Upload :file="photo1"></Upload>
+    <Upload :file="photo2"></Upload>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>研发中心</h1>
+        {{photo1}}
+        <h1 @click="gggggg">研发中心</h1>
       </div>
       <div class="items-center listTopRight">
         <div class="icons add"><b>+</b></div>
@@ -35,12 +38,13 @@
 <script>
   import SearchHigh from '../../common/searchHigh.vue';
   import MenuList from '../../common/menuList.vue';
+  import Upload from '../../common/upload.vue';
   import {recruitmentSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: {MenuList, SearchHigh},
+    components: {MenuList, SearchHigh, Upload},
     data() {
       return {
         recruitmentSearch,
@@ -48,6 +52,14 @@
         visibleStatus: false,
         showSearch: false,
         searchData: {},
+        photo1: {
+          keyName: 'photo1',
+          setFile: [],
+        },
+        photo2: {
+          keyName: 'photo2',
+          setFile: [],
+        },
       }
     },
     mounted() {
@@ -61,6 +73,12 @@
       }
     },
     methods: {
+      gggggg() {
+        this.photo1 = {
+          keyName: 'photo1',
+          setFile: ['3', '2', '1'],
+        }
+      },
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;

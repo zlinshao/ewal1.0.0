@@ -240,26 +240,26 @@
 #theme_name .BorderNone .el-input__inner {
   border: none;
   background-color: transparent !important; }
-#theme_name .searchTerm .el-checkbox {
+#theme_name .el-checkbox {
   display: flex;
   display: -webkit-flex;
   align-items: center; }
-  #theme_name .searchTerm .el-checkbox .el-checkbox__inner {
+  #theme_name .el-checkbox .el-checkbox__inner {
     width: 21px;
     height: 21px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%; }
-    #theme_name .searchTerm .el-checkbox .el-checkbox__inner:after {
+    #theme_name .el-checkbox .el-checkbox__inner:after {
       display: none; }
-    #theme_name .searchTerm .el-checkbox .el-checkbox__inner:hover {
+    #theme_name .el-checkbox .el-checkbox__inner:hover {
       border-color: #D8D8D8; }
-  #theme_name .searchTerm .el-checkbox .el-checkbox__input.is-focus .el-checkbox__inner {
+  #theme_name .el-checkbox .el-checkbox__input.is-focus .el-checkbox__inner {
     border-color: #D8D8D8; }
-  #theme_name .searchTerm .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner {
+  #theme_name .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner {
     background-color: #CF2E33;
     border-color: #CF2E33; }
-  #theme_name .searchTerm .el-checkbox .el-checkbox__label {
+  #theme_name .el-checkbox .el-checkbox__label {
     font-size: 18px;
     color: inherit;
     padding-bottom: 1px; }

@@ -7,7 +7,6 @@
           <input type="text" v-model="params[showData.keywords]" placeholder="地址/合同编号">
           <span @click="subSearch">搜索</span>
         </div>
-        {{params}}
         <div class="highGrade">
           <h5>高级</h5>
           <div class="formData BorderNone" v-for="item in showData.data">

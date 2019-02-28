@@ -53,36 +53,34 @@
     }
   }
   //离职员工 check红色圆圈
-  .searchTerm {
-    .el-checkbox {
-      @include flex('items-center');
+  .el-checkbox {
+    @include flex('items-center');
+    .el-checkbox__inner {
+      width: 21px;
+      height: 21px;
+      @include radius(50%);
+      &:after {
+        display: none;
+      }
+      &:hover {
+        border-color: #D8D8D8;
+      }
+    }
+    .el-checkbox__input.is-focus {
       .el-checkbox__inner {
-        width: 21px;
-        height: 21px;
-        @include radius(50%);
-        &:after {
-          display: none;
-        }
-        &:hover {
-          border-color: #D8D8D8;
-        }
+        border-color: #D8D8D8;
       }
-      .el-checkbox__input.is-focus {
-        .el-checkbox__inner {
-          border-color: #D8D8D8;
-        }
+    }
+    .el-checkbox__input.is-checked {
+      .el-checkbox__inner {
+        background-color: $colorE33;
+        border-color: $colorE33;
       }
-      .el-checkbox__input.is-checked {
-        .el-checkbox__inner {
-          background-color: $colorE33;
-          border-color: $colorE33;
-        }
-      }
-      .el-checkbox__label {
-        font-size: 18px;
-        color: inherit;
-        padding-bottom: 1px;
-      }
+    }
+    .el-checkbox__label {
+      font-size: 18px;
+      color: inherit;
+      padding-bottom: 1px;
     }
   }
   .el-select {
