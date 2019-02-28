@@ -67,7 +67,6 @@ export default new Router({
       name: '工单',
       component: WorkOrder,
     },
-
     {
       path: '/marketCentre',
       name: '市场',
