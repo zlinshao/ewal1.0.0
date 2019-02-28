@@ -8,7 +8,7 @@
             <div class="subject_breadcrumb">
               <h5 @click="handleSearchAll">所有科目</h5>
               <div>
-                <span v-for="(item,key) in choose_subject" @click="handleLocation(item)">
+                <span v-for="(item,key) in choose_subject" @click="handleLocation(item,key)">
                   <span v-if="choose_subject.length > 1 && key !== 0">/</span>
                   {{ item.title }}
                 </span>
@@ -52,6 +52,7 @@
               subject_list: [],
               current_id: 0,
               current_choose: 0,
+              current_tier: 1
             }
         },
         mounted() {
@@ -60,23 +61,35 @@
         watch: {},
         computed: {},
         methods: {
-          handleLocation(item) {
-            this.choose_subject = [];
-            this.choose_subject.push(item);
+          handleLocation(item,key) {
+            console.log(item,key);
+            this.choose_subject.splice(key + 1);
+            console.log(this.choose_subject);
+            this.current_id = item.id;
+            if (this.current_tier > 1) {
+              this.getSubjectList('children');
+            } else {
+              this.getSubjectList('all');
+            }
           },
           handleChangeRadio(key) {
-            console.log(this.subject_list[key]);
-            this.choose_subject = [];
-            this.choose_subject.push(this.subject_list[key]);
+            if (this.current_tier <= 1) {
+              this.choose_subject.push(this.subject_list[key]);
+            } else {
+              this.choose_subject[this.current_tier - 1] = this.subject_list[key];
+            }
           },
           handleGetNext(item) {
-            this.choose_subject.push(item);
+            this.choose_subject[this.current_tier - 1] = item;
+            this.current_tier ++ ;
             this.current_id = item.id;
             this.getSubjectList('children');
           },
           handleSearchAll() {
             this.choose_subject = [];
             this.current_id = 0;
+            this.current_choose = 0;
+            this.current_tier = 1;
             this.getSubjectList();
           },
           getSubjectList(type = 'all') {
