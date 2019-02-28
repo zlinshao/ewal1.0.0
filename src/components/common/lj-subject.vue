@@ -6,28 +6,31 @@
           <h3>科目</h3>
           <div class="subject_main">
             <div class="subject_breadcrumb">
-              <h5>所有科目</h5>
+              <h5 @click="handleSearchAll">所有科目</h5>
               <div>
-                <span v-for="item in choose_subject">{{ item.val }}
-                  <span>/</span>
+                <span v-for="(item,key) in choose_subject" @click="handleLocation(item)">
+                  <span v-if="choose_subject.length > 1 && key !== 0">/</span>
+                  {{ item.title }}
                 </span>
               </div>
             </div>
-            <div class="subject_detail scroll_bar">
-              <div v-for="item in subject_list" class="flex">
+            <div v-if="subject_list.length > 0" class="subject_detail scroll_bar">
+              <div v-for="(item,key) in subject_list" class="flex">
                 <div>
                   <el-radio
                     v-model="current_choose"
                     :key="item.key"
-                    :label="item.title"
-                  ></el-radio>
+                    :label="item.id"
+                    @change="handleChangeRadio(key)"
+                  >{{ item.title }}</el-radio>
                 </div>
                 <div>
                   <span class="sub_icon"></span>
-                  <span>下级</span>
+                  <span @click="handleGetNext(item)">下级</span>
                 </div>
               </div>
             </div>
+            <div v-else class="txt_center">暂无科目数据</div>
           </div>
           <div class="subject_footer">
             <el-button size="small" type="danger">确定</el-button>
@@ -45,38 +48,45 @@
         data() {
             return {
               subject_visible: true,
-              choose_subject: [
-                {
-                  id: 1,
-                  val: '员工代缴'
-                },
-                {
-                  id: 2,
-                  val: '收房'
-                },
-                {
-                  id: 3,
-                  val: '租金'
-                }
-              ],
+              choose_subject: [],
               subject_list: [],
               current_id: 0,
               current_choose: 0,
             }
         },
         mounted() {
-          this.getSubjectList();
+          this.getSubjectList('all');
         },
         watch: {},
         computed: {},
         methods: {
-          getSubjectList() {
-            this.$http.get(globalConfig.temporary_server + `subject/subject_tree`,{
-              params: {id: this.current_id}
-            }).then(res => {
-              console.log(res.data.data);
+          handleLocation(item) {
+            this.choose_subject = [];
+            this.choose_subject.push(item);
+          },
+          handleChangeRadio(key) {
+            console.log(this.subject_list[key]);
+            this.choose_subject = [];
+            this.choose_subject.push(this.subject_list[key]);
+          },
+          handleGetNext(item) {
+            this.choose_subject.push(item);
+            this.current_id = item.id;
+            this.getSubjectList('children');
+          },
+          handleSearchAll() {
+            this.choose_subject = [];
+            this.current_id = 0;
+            this.getSubjectList();
+          },
+          getSubjectList(type = 'all') {
+            this.$http.get(globalConfig.temporary_server + `subject/subject_tree`,{id: this.current_id}).then(res => {
               if (res.code === 200) {
-                this.subject_list = res.data.data;
+                if (type === 'all') {
+                  this.subject_list = res.data.data;
+                } else if (type === 'children') {
+                  this.subject_list = res.data.data.children;
+                }
               } else {
                 this.subject_list = [];
               }
