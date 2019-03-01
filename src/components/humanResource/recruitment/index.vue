@@ -1,14 +1,13 @@
 <template>
   <div id="recruitment">
-    <Upload :file="photo1"></Upload>
-    <Upload :file="photo2"></Upload>
+    <!--<Upload :file="photo1"></Upload>-->
+    <!--<Upload :file="photo2"></Upload>-->
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        {{photo1}}
-        <h1 @click="gggggg">研发中心</h1>
+        <h1>研发中心</h1>
       </div>
       <div class="items-center listTopRight">
         <div class="icons add"><b>+</b></div>
@@ -73,12 +72,6 @@
       }
     },
     methods: {
-      gggggg() {
-        this.photo1 = {
-          keyName: 'photo1',
-          setFile: ['3', '2', '1'],
-        }
-      },
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;

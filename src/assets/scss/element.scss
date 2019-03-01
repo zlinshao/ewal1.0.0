@@ -10,6 +10,7 @@
 }
 
 #theme_name {
+  //表格================
   .el-table {
     &::before {
       height: 0;
@@ -44,7 +45,6 @@
       }
     }
   }
-
   //input取消border
   .BorderNone {
     .el-input__inner {
@@ -53,9 +53,13 @@
     }
   }
   //离职员工 check红色圆圈
-  .el-checkbox {
+  .el-checkout-group, .el-radio-group {
     @include flex('items-center');
-    .el-checkbox__inner {
+    flex-wrap: wrap;
+  }
+  .el-checkbox, .el-radio {
+    @include flex('items-center');
+    .el-checkbox__inner, .el-radio__inner {
       width: 21px;
       height: 21px;
       @include radius(50%);
@@ -66,23 +70,24 @@
         border-color: #D8D8D8;
       }
     }
-    .el-checkbox__input.is-focus {
-      .el-checkbox__inner {
+    .el-checkbox__input.is-focus, .el-radio__input.is-focus {
+      .el-checkbox__inner, .el-radio__inner {
         border-color: #D8D8D8;
       }
     }
-    .el-checkbox__input.is-checked {
-      .el-checkbox__inner {
+    .el-checkbox__input.is-checked, .el-radio__input.is-checked {
+      .el-checkbox__inner, .el-radio__inner {
         background-color: $colorE33;
         border-color: $colorE33;
       }
     }
-    .el-checkbox__label {
+    .el-checkbox__label, .el-radio__label {
       font-size: 18px;
       color: inherit;
       padding-bottom: 1px;
     }
   }
+  //select===============
   .el-select {
     .el-input__inner:focus {
       border-color: $colorE33;
@@ -93,7 +98,7 @@
       }
     }
   }
-  //分页
+  //分页=================
   .page {
     @mixin noBgColor {
       background-color: transparent;
