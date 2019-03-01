@@ -85,6 +85,16 @@ class Axios {
     })
   }
 
+  static delete(url, data = {}) {
+    return new Promise((resolve, reject) => {
+      axios.delete(url, data).then(response => {
+        resolve(response.data);
+      }).catch(err => {
+        console.log(err);
+      })
+    })
+  }
+
   static patch(url, data = {}) {
     return new Promise((resolve, reject) => {
       axios.patch(url, data).then(response => {

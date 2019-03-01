@@ -42,14 +42,14 @@
             <span v-if="scope.row.er_type === 3">混合</span>
           </template>
         </el-table-column>
-        <el-table-column label="款项数量" prop="" align="center"></el-table-column>
-        <el-table-column label="款项总金额" prop="" align="center"></el-table-column>
-        <el-table-column label="创建人" prop="creator_id" align="center"></el-table-column>
+        <el-table-column label="款项数量" prop="fund_amounts" align="center"></el-table-column>
+        <el-table-column label="款项总金额" prop="fund_total" align="center"></el-table-column>
+        <el-table-column label="创建人" prop="creator.name" align="center"></el-table-column>
         <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
         <el-table-column
           align="center"
           label="操作"
-          min-width="100px"
+          min-width="140px"
         >
           <template slot-scope="scope">
             <div class="operate">
@@ -58,6 +58,7 @@
               <el-button size="mini" :type="scope.row.is_enable === 2 ? 'danger' : 'success'" plain @click="handleUnUseSubject(scope.row)">
                 {{ scope.row.is_enable === 2 ? '禁用' : '启用'}}
               </el-button>
+              <el-button size="mini" type="danger" plain @click="handleDeleteSubject(scope.row)">删除</el-button>
             </div>
           </template>
         </el-table-column>
@@ -306,6 +307,25 @@
       </div>
     </lj-dialog>
 
+    <!--删除-->
+    <lj-dialog
+      :visible="del_subject_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="del_subject_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确认</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定要删除该科目吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="mini" @click="handleOkDelSubject">确定</el-button>
+          <el-button size="mini" @click="del_subject_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
     <!--科目-->
     <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"></lj-subject>
 
@@ -324,6 +344,7 @@
     components: {SearchHigh, FinMenuList, LjDialog,LjSubject},
     data() {
       return {
+        del_subject_visible: false,
         subjectSearch,
         url: globalConfig.temporary_server,
         subject_visible: false,
@@ -390,6 +411,31 @@
     watch: {},
     computed: {},
     methods: {
+      handleOkDelSubject() {
+        this.$http.delete(globalConfig.temporary_server + `subject/delete/${this.currentRow.id}`).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.$notify.success({
+              title: '成功',
+              message: res.msg
+            });
+            this.getSubjectList();
+          }else {
+            this.$notify.warning({
+              title: '失败',
+              message: res.msg
+            });
+            return false;
+          }
+          this.del_subject_visible = false;
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleDeleteSubject(row) {
+        this.currentRow = row;
+        this.del_subject_visible = true;
+      },
       handleOpenSubject(which) {
         this.which_subject = which;
         this.subject_visible = true;
