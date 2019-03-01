@@ -15,7 +15,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons add" @click="subject_visible = true"><b>+</b></div>
+        <div class="icons add"><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -54,7 +54,7 @@
           <template slot-scope="scope">
             <div class="operate">
               <el-button size="mini" type="primary" plain @click="handleOpenEdit(scope.row)">编辑</el-button>
-              <el-button size="mini" type="warning" plain @click="move_visible = true">迁移</el-button>
+              <el-button size="mini" type="warning" plain @click="handleMoveSubject(scope.row)">迁移</el-button>
               <el-button size="mini" :type="scope.row.is_enable === 2 ? 'danger' : 'success'" plain @click="handleUnUseSubject(scope.row)">
                 {{ scope.row.is_enable === 2 ? '禁用' : '启用'}}
               </el-button>
@@ -78,6 +78,7 @@
         </div>
       </footer>
     </div>
+
     <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
 
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
@@ -149,7 +150,7 @@
     <!--迁移-->
     <lj-dialog
       :visible="move_visible"
-      @close="move_visible = false"
+      @close="handleCancelMove"
       :size="{width: 500 + 'px',height: 300 + 'px'}"
     >
       <div class="dialog_container">
@@ -167,7 +168,7 @@
                   <span>原科目</span>
                 </div>
                 <div class="item_content">
-                  <el-input v-model="move_subject.initial"></el-input>
+                  <el-input disabled v-model="move_subject.initial"></el-input>
                 </div>
               </div>
             </el-form-item>
@@ -180,15 +181,15 @@
                   <span>现科目</span>
                 </div>
                 <div class="item_content">
-                  <el-input v-model="move_subject.now"></el-input>
+                  <el-input @focus="subject_visible = true" v-model="move_subject.title"></el-input>
                 </div>
               </div>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="mini" type="danger">修改</el-button>
-          <el-button size="mini" @click="move_visible = false">取消</el-button>
+          <el-button size="mini" type="danger" @click="handleOkMove">修改</el-button>
+          <el-button size="mini" @click="handleCancelMove">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -209,7 +210,7 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="mini">确定</el-button>
+          <el-button type="danger" size="mini" @click="handleOkUnuse">确定</el-button>
           <el-button size="mini" @click="open_close_visible = false">取消</el-button>
         </div>
       </div>
@@ -232,6 +233,7 @@
     components: {SearchHigh, FinMenuList, LjDialog,LjSubject},
     data() {
       return {
+        url: globalConfig.temporary_server,
         subject_visible: false,
         params: {
           er_type: '',
@@ -252,7 +254,8 @@
         move_visible: false,
         move_subject: {
           initial: '',
-          now: ''
+          parent_id: '',
+          title: ''
         },
         selects: [
           {
@@ -281,9 +284,40 @@
     watch: {},
     computed: {},
     methods: {
+      handleOkMove() {
+        this.$http.put(this.url + `subject/migrate/${this.currentRow.id}`,{parent_id: this.move_subject.parent_id}).then(res => {
+          if (res.code === 200) {
+            this.$notify.success({
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelMove();
+            this.getSubjectList();
+          }else {
+            this.$notify.warning({
+              title: '失败',
+              message: res.msg
+            });
+            return false;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleCancelMove() {
+        this.move_subject.title = '';
+        this.move_subject.parent_id = '';
+        this.move_visible = false;
+      },
+      handleMoveSubject(row) {
+        this.currentRow = row;
+        this.move_subject.initial = row.title;
+        this.move_visible = true;
+      },
       //科目确定
       handleConfirmSubject(val) {
-        console.log(val);
+        this.move_subject.parent_id = val.id;
+        this.move_subject.title = val.title;
       },
       //编辑
       handleOpenEdit(row) {
@@ -294,7 +328,7 @@
         this.edit_visible = true;
       },
       getSubjectList() {
-        this.$http.get(globalConfig.temporary_server + 'subject',this.params).then(res => {
+        this.$http.get(this.url + 'subject',this.params).then(res => {
           if (res.code === 200) {
             this.subjectData = res.data.data;
             this.subjectCount = res.data.count;
@@ -304,7 +338,7 @@
         })
       },
       handleEditSubjectInfo() {
-        this.$http.put(globalConfig.temporary_server + `subject/${this.currentRow.id}`,this.edit_subject).then(res => {
+        this.$http.put(this.url + `subject/${this.currentRow.id}`,this.edit_subject).then(res => {
           if (res.code === 200) {
             this.$notify.success({
               title: '成功',
@@ -322,6 +356,7 @@
           console.log(err);
         });
       },
+
       handleChangePage(page) {
         this.params.page = page;
         this.getSubjectList();
@@ -330,6 +365,26 @@
         this.currentRow = row;
         this.open_close_visible = true;
         this.open_close_size = 'mini';
+      },
+      handleOkUnuse() {
+        var is_enable = this.currentRow.is_enable === 1 ? 2 : 1;
+        this.$http.put(this.url + `subject/isEnable/${this.currentRow.id}`,{is_enable}).then(res => {
+          if (res.code === 200) {
+            this.$notify.success({
+              title: '成功',
+              message: '修改成功'
+            });
+          } else {
+            this.$notify.warning({
+              title: '失败',
+              message: '修改失败'
+            });
+          }
+          this.open_close_visible = false;
+          this.getSubjectList();
+        }).catch(err => {
+          console.log(err);
+        })
       },
       // tab切换
       changeTabs(id) {
