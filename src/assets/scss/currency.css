@@ -391,13 +391,16 @@
     background: url("../image/finance/gathering/theme1/kemubianma.png") no-repeat scroll center;
     background-size: 100% 100%; }
   #theme_name .form_item_container .icon_case {
-    background: url("../image/finance/gathering/theme1/qianbao.png") no-repeat scroll center;
+    background: url("../image/finance/gathering/theme1/money.png") no-repeat scroll center;
     background-size: 100% 100%; }
   #theme_name .form_item_container .icon_account {
     background: url("../image/finance/gathering/theme1/zhanghu.png") no-repeat scroll center;
     background-size: 100% 100%; }
   #theme_name .form_item_container .icon_type {
     background: url("../image/finance/gathering/theme1/leibie.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name .form_item_container .icon_bank {
+    background: url("../image/finance/gathering/theme1/yinhang.png") no-repeat scroll center;
     background-size: 100% 100%; }
 #theme_name footer.bottomPage {
   height: 100px;

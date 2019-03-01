@@ -15,7 +15,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons add" @click="subject_visible = true"><b>+</b></div>
+        <div class="icons add" @click="new_subject_visible = true"><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -42,22 +42,23 @@
             <span v-if="scope.row.er_type === 3">混合</span>
           </template>
         </el-table-column>
-        <el-table-column label="款项数量" prop="" align="center"></el-table-column>
-        <el-table-column label="款项总金额" prop="" align="center"></el-table-column>
-        <el-table-column label="创建人" prop="creator_id" align="center"></el-table-column>
+        <el-table-column label="款项数量" prop="fund_amounts" align="center"></el-table-column>
+        <el-table-column label="款项总金额" prop="fund_total" align="center"></el-table-column>
+        <el-table-column label="创建人" prop="creator.name" align="center"></el-table-column>
         <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
         <el-table-column
           align="center"
           label="操作"
-          min-width="100px"
+          min-width="140px"
         >
           <template slot-scope="scope">
             <div class="operate">
               <el-button size="mini" type="primary" plain @click="handleOpenEdit(scope.row)">编辑</el-button>
-              <el-button size="mini" type="warning" plain @click="move_visible = true">迁移</el-button>
+              <el-button size="mini" type="warning" plain @click="handleMoveSubject(scope.row)">迁移</el-button>
               <el-button size="mini" :type="scope.row.is_enable === 2 ? 'danger' : 'success'" plain @click="handleUnUseSubject(scope.row)">
                 {{ scope.row.is_enable === 2 ? '禁用' : '启用'}}
               </el-button>
+              <el-button size="mini" type="danger" plain @click="handleDeleteSubject(scope.row)">删除</el-button>
             </div>
           </template>
         </el-table-column>
@@ -78,6 +79,7 @@
         </div>
       </footer>
     </div>
+
     <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
 
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
@@ -149,7 +151,7 @@
     <!--迁移-->
     <lj-dialog
       :visible="move_visible"
-      @close="move_visible = false"
+      @close="handleCancelMove"
       :size="{width: 500 + 'px',height: 300 + 'px'}"
     >
       <div class="dialog_container">
@@ -167,7 +169,7 @@
                   <span>原科目</span>
                 </div>
                 <div class="item_content">
-                  <el-input v-model="move_subject.initial"></el-input>
+                  <el-input disabled v-model="move_subject.initial"></el-input>
                 </div>
               </div>
             </el-form-item>
@@ -180,15 +182,15 @@
                   <span>现科目</span>
                 </div>
                 <div class="item_content">
-                  <el-input v-model="move_subject.now"></el-input>
+                  <el-input @focus="handleOpenSubject('move_subject')" v-model="move_subject.title"></el-input>
                 </div>
               </div>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="mini" type="danger">修改</el-button>
-          <el-button size="mini" @click="move_visible = false">取消</el-button>
+          <el-button size="mini" type="danger" @click="handleOkMove">修改</el-button>
+          <el-button size="mini" @click="handleCancelMove">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -209,14 +211,124 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="mini">确定</el-button>
+          <el-button type="danger" size="mini" @click="handleOkUnuse">确定</el-button>
           <el-button size="mini" @click="open_close_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
+    <!--新增科目-->
+    <lj-dialog
+      :visible="new_subject_visible"
+      :size="{width: 500 + 'px', height: 460 + 'px'}"
+      @close="new_subject_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增科目</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form :model="new_subject" size="mini" :rules="add_subject_rules" ref="addSubject">
+            <el-form-item prop="parent_id">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>上级科目</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" @focus="handleOpenSubject('new_subject')" v-model="new_subject.parent_name"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="title">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_case"></i>
+                  </b>
+                  <span>科目名称</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="new_subject.title"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="subject_code">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_mark"></i>
+                  </b>
+                  <span>科目编码</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="new_subject.subject_code"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="er_type">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_type"></i>
+                  </b>
+                  <span>科目类型</span>
+                </div>
+                <div class="item_content">
+                  <el-select class="all_width" v-model="new_subject.er_type" placeholder="请选择">
+                    <el-option :value="1" label="收入"></el-option>
+                    <el-option :value="2" label="支出"></el-option>
+                    <el-option :value="3" label="混合"></el-option>
+                  </el-select>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="remark">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_mark"></i>
+                  </b>
+                  <span>备注</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="new_subject.remark" placeholder="请输入" type="textarea"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleSubjectAdd('addSubject')">新增</el-button>
+          <el-button size="small" @click="handleCancelAdd">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--删除-->
+    <lj-dialog
+      :visible="del_subject_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="del_subject_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确认</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定要删除该科目吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="mini" @click="handleOkDelSubject">确定</el-button>
+          <el-button size="mini" @click="del_subject_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
     <!--科目-->
     <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"></lj-subject>
+
   </div>
 </template>
 
@@ -225,13 +337,34 @@
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue'
   import LjSubject from '../../common/lj-subject.vue';
+  import {subjectSearch} from '../../../assets/js/allSearchData';
 
   export default {
     name: "index",
     components: {SearchHigh, FinMenuList, LjDialog,LjSubject},
     data() {
       return {
+        del_subject_visible: false,
+        subjectSearch,
+        url: globalConfig.temporary_server,
         subject_visible: false,
+        which_subject: '',
+        new_subject_visible: false,
+        new_subject: {
+          parent_id: '',
+          title: '',
+          er_type: '',
+          remark: '',
+          parent_name: '',
+          subject_code: ''
+        },
+        add_subject_rules: {
+          parent_id: [{ required: true,message: '请选择上级科目',trigger: 'blur'}],
+          title: [{ required: true,message: '请输入科目名称',trigger: 'blur'}],
+          subject_code: [{ required: true,message: '请输入科目编码',trigger: 'blur'}],
+          er_type: [{ required: true,message: '请选择科目类型',trigger: 'change'}],
+          remark: [{ required: true,message: '请输入备注',trigger: 'blur'}],
+        },
         params: {
           er_type: '',
           parent_id: '',
@@ -251,7 +384,8 @@
         move_visible: false,
         move_subject: {
           initial: '',
-          now: ''
+          parent_id: '',
+          title: ''
         },
         selects: [
           {
@@ -264,10 +398,7 @@
         subjectData: [],
         subjectCount: 0,
         showSearch: false,
-        searchData: {
-          status: 'workOrder',
-          data: [],
-        },
+        searchData: {},
 
         currentRow: {},
       }
@@ -280,9 +411,113 @@
     watch: {},
     computed: {},
     methods: {
+      handleOkDelSubject() {
+        this.$http.delete(globalConfig.temporary_server + `subject/delete/${this.currentRow.id}`).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.$notify.success({
+              title: '成功',
+              message: res.msg
+            });
+            this.getSubjectList();
+          }else {
+            this.$notify.warning({
+              title: '失败',
+              message: res.msg
+            });
+            return false;
+          }
+          this.del_subject_visible = false;
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleDeleteSubject(row) {
+        this.currentRow = row;
+        this.del_subject_visible = true;
+      },
+      handleOpenSubject(which) {
+        this.which_subject = which;
+        this.subject_visible = true;
+      },
+      handleSubjectAdd(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.$http.post(this.url + 'subject',this.new_subject).then(res => {
+              if (res.code === 200) {
+                this.$notify.success({
+                  title: '成功',
+                  message: res.msg
+                });
+                this.handleCancelAdd();
+                this.getSubjectList();
+              }else {
+                this.$notify.warning({
+                  title: '失败',
+                  message: res.msg
+                });
+                return false;
+              }
+            }).catch(err => {
+              console.log(err);
+            })
+          } else {
+            return false;
+          }
+        })
+      },
+      handleCancelAdd() {
+        this.$refs['addSubject'].resetFields();
+        this.new_subject.parent_name = '';
+        this.new_subject_visible = false;
+      },
+      handleOkMove() {
+        if (!this.move_subject.parent_id) {
+          this.$notify.warning({
+            title: '警告',
+            message: '请选择父级科目'
+          });
+          return false;
+        }
+        this.$http.put(this.url + `subject/migrate/${this.currentRow.id}`,{parent_id: this.move_subject.parent_id}).then(res => {
+          if (res.code === 200) {
+            this.$notify.success({
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelMove();
+            this.getSubjectList();
+          }else {
+            this.$notify.warning({
+              title: '失败',
+              message: res.msg
+            });
+            return false;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleCancelMove() {
+        this.move_subject.title = '';
+        this.move_subject.parent_id = '';
+        this.move_visible = false;
+      },
+      handleMoveSubject(row) {
+        this.currentRow = row;
+        this.move_subject.initial = row.title;
+        this.move_visible = true;
+      },
       //科目确定
       handleConfirmSubject(val) {
-        console.log(val);
+        if (this.which_subject === 'move_subject') {
+          this.move_subject.parent_id = val.id;
+          this.move_subject.title = val.title;
+        }
+        if (this.which_subject === 'new_subject') {
+          this.new_subject.parent_name = val.title;
+          this.new_subject.parent_id = val.id;
+        }
       },
       //编辑
       handleOpenEdit(row) {
@@ -303,7 +538,7 @@
         })
       },
       handleEditSubjectInfo() {
-        this.$http.put(globalConfig.temporary_server + `subject/${this.currentRow.id}`,this.edit_subject).then(res => {
+        this.$http.put(this.url + `subject/${this.currentRow.id}`,this.edit_subject).then(res => {
           if (res.code === 200) {
             this.$notify.success({
               title: '成功',
@@ -321,6 +556,7 @@
           console.log(err);
         });
       },
+
       handleChangePage(page) {
         this.params.page = page;
         this.getSubjectList();
@@ -329,6 +565,26 @@
         this.currentRow = row;
         this.open_close_visible = true;
         this.open_close_size = 'mini';
+      },
+      handleOkUnuse() {
+        var is_enable = this.currentRow.is_enable === 1 ? 2 : 1;
+        this.$http.put(this.url + `subject/isEnable/${this.currentRow.id}`,{is_enable}).then(res => {
+          if (res.code === 200) {
+            this.$notify.success({
+              title: '成功',
+              message: '修改成功'
+            });
+          } else {
+            this.$notify.warning({
+              title: '失败',
+              message: '修改失败'
+            });
+          }
+          this.open_close_visible = false;
+          this.getSubjectList();
+        }).catch(err => {
+          console.log(err);
+        })
       },
       // tab切换
       changeTabs(id) {
@@ -347,110 +603,14 @@
       // 高级搜索
       highSearch() {
         this.showSearch = true;
-        this.searchData.data = [
-          {
-            keyType: 'date',
-            title: '出生日期',
-            placeholder: '请选择日期',
-            keyName: 'date3',
-            dataType: '',
-          },
-          {
-            keyType: 'dateRange',
-            title: '创建时间',
-            placeholder: '请选择日期',
-            keyName: 'date1',
-            dataType: [],
-          },
-          {
-            keyType: 'dateRange',
-            title: '跟进时间',
-            placeholder: '请选择日期',
-            keyName: 'date2',
-            dataType: [],
-          },
-          {
-            keyType: 'radio',
-            title: '紧急程度',
-            keyName: 'radio',
-            dataType: '',
-            value: [
-              {
-                id: 12,
-                title: '特级',
-              },
-              {
-                id: 13,
-                title: '紧急',
-              },
-              {
-                id: 14,
-                title: '重要',
-              },
-              {
-                id: 15,
-                title: '一般',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '状态',
-            keyName: 'check',
-            dataType: [],
-            value: [
-              {
-                id: 22,
-                title: '已完成',
-              },
-              {
-                id: 23,
-                title: '未完成',
-              },
-            ],
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-        ];
+        this.searchData = subjectSearch;
       },
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
+          this.params.er_type = val.er_type;
+          this.getSubjectList();
         }
       },
     },

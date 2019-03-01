@@ -8,12 +8,13 @@
         <h1>帐户管理</h1>
       </div>
       <div class="items-center listTopRight">
+        <div class="icons add" @click="add_account_visible = true"><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
-        :data="tableData"
+        :data="accountData"
         :height="this.mainListHeight(30) + 'px'"
         highlight-current-row
         :row-class-name="tableChooseRow"
@@ -32,6 +33,8 @@
           <template slot-scope="scope">
             <div class="operate">
               <el-button size="mini" type="primary" plain @click="info_visible = true">点击查看</el-button>
+              <el-button size="mini" type="success" plain>更新</el-button>
+              <el-button size="mini" type="danger" plain>删除</el-button>
             </div>
           </template>
         </el-table-column>
@@ -42,14 +45,20 @@
         </div>
         <div class="page">
           <el-pagination
-            :total="100"
-            layout="total,jumper,prev,pager,next">
+            :current-page="params.page"
+            :page-size="params.limit"
+            :total="account_count"
+            layout="total,jumper,prev,pager,next"
+            @current-change="handleChangePage"
+          >
           </el-pagination>
         </div>
       </footer>
     </div>
     <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+
+    <!--点击查看-->
     <lj-dialog
       :visible="info_visible"
       :size="'large'"
@@ -60,6 +69,151 @@
         </div>
         <div class="dialog_main"></div>
         <div class="dialog_footer"></div>
+      </div>
+    </lj-dialog>
+
+    <!--新增账户-->
+    <lj-dialog
+      :visible="add_account_visible"
+      :size="{width: 500 + 'px',height: add_account.cate === 1 ? 700 + 'px' : 600 + 'px'}"
+      @close="handleCancelAdd"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增账户</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form :model="add_account" size="mini" ref="addAccount">
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_account"></i>
+                  </b>
+                  <span>账户名称</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="add_account.name" placeholder="请输入"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>所有人</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="add_account.account_owner" placeholder="请输入"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>账户类型</span>
+                </div>
+                <div class="item_content">
+                  <el-select class="all_width" v-model="add_account.cate" placeholder="请输入">
+                    <el-option v-for="(item,key) in cate" :value="parseInt(key)" :key="key" :label="item"></el-option>
+                  </el-select>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item v-if="add_account.cate === 1">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_bank"></i>
+                  </b>
+                  <span>银行</span>
+                </div>
+                <div class="item_content">
+                  <el-select class="all_width" v-model="add_account.bank" placeholder="请选择">
+                    <el-option v-for="(item,key) in banks" :value="item" :key="key" :label="item"></el-option>
+                  </el-select>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item v-if="add_account.cate === 1">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>支行</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="add_account.sub_bank" placeholder="请输入"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>账户账号</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="add_account.account_num" placeholder="请输入"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>初始金额</span>
+                </div>
+                <div class="item_content">
+                  <el-input type="number" v-model="add_account.amount_base" placeholder="请输入"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>账户范围</span>
+                </div>
+                <div class="item_content">
+                  <el-select class="all_width" v-model="add_account.scope" placeholder="请选择">
+                    <el-option :value="3" label="收款"></el-option>
+                    <el-option :value="5" label="付款"></el-option>
+                  </el-select>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_mark"></i>
+                  </b>
+                  <span>备注</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="add_account.remark" type="textarea" placeholder="请输入"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleSubmitAdd('addAccount')">确定</el-button>
+          <el-button size="small" @click="handleCancelAdd">取消</el-button>
+        </div>
       </div>
     </lj-dialog>
   </div>
@@ -75,227 +229,103 @@
     components: {SearchHigh, FinMenuList, LjDialog},
     data() {
       return {
+        add_account_visible: false,
+        add_account: {
+          name: '',
+          account_owner: '',
+          sub_bank: '',
+          cate: '',
+          bank: '',
+          account_num: '',
+          amount_base: '',
+          scope: '',
+          remark: ''
+        },
         info_visible: false,
         showFinMenuList: false,
         showData: {
-          date: '日期',
-          name: '姓名',
-          address: '地址',
+          name: '户名',
+          account_num: '卡号',
+          account_owner: '开户人',
+          amount_remain: '当前余额',
         },
         chooseRowIds: [],
-        tableData: [
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 23,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 33,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 23,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 33,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-        ],
+        accountData: [],
 
         showSearch: false,
-        searchData: {
-          status: 'workOrder',
-          data: [],
+        searchData: {},
+
+        params: {
+          page: 1,
+          limit: 12,
+          search: '',
+          cate: '',
+          account_owner: '',
+          account_num: '',
         },
+        cate: {},
+        banks: [],
+        account_count: 0,
       }
     },
     mounted() {
+      this.getAccountList();
     },
     activated() {
     },
     watch: {},
     computed: {},
     methods: {
+      handleChangePage(page) {
+        this.params.page = page;
+        this.getAccountList();
+      },
+      handleSubmitAdd() {
+        console.log(this.add_account);
+        this.add_account.amount_base = parseFloat(this.add_account.amount_base).toFixed(2);
+        this.$http.post(globalConfig.temporary_server + 'account',this.add_account).then(res => {
+          this.callbackSuccess(res);
+          this.add_account_visible = false;
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleCancelAdd() {
+        this.add_account_visible = false;
+      },
+      callbackSuccess(res) {
+        if (res.code === 200) {
+          this.$notify.success({
+            title: '成功',
+            message: res.msg
+          });
+          this.getAccountList();
+        } else {
+          this.$notify.warning({
+            title: '失败',
+            message: res.msg
+          });
+          return false;
+        }
+      },
+      getAccountList() {
+        this.$http.get(globalConfig.temporary_server + 'account',this.params).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.cate = res.data.cate;
+            this.banks = res.data.banks;
+            this.account_count = res.data.count;
+            this.accountData = res.data.data;
+          } else {
+            this.cate = {};
+            this.banks = [];
+            this.account_count = 0;
+            this.accountData = [];
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;

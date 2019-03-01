@@ -53,7 +53,8 @@
               subject_list: [],
               current_id: 0,
               current_choose: 0,
-              current_tier: 1
+              current_tier: 1,
+              current_key: 0,
             }
         },
         mounted() {
@@ -71,9 +72,9 @@
         methods: {
           //确定选择
           handleSubmitChoose() {
-            var key = this.choose_subject.length - 1;
-            if (this.choose_subject[key]) {
-              this.$emit('confirm',this.subject_list[key]);
+            if (this.choose_subject[this.current_tier - 1]) {
+              this.$emit('confirm',this.subject_list[this.current_key]);
+              this.handleCloseSubject();
             } else {
               this.$notify.warning({
                 title: '警告',
@@ -97,13 +98,13 @@
 
           //单选
           handleChangeRadio(key) {
+            this.current_key = key;
             if (this.current_tier <= 1) {
               this.choose_subject = [];
               this.choose_subject.push(this.subject_list[key]);
             } else {
               this.choose_subject.splice(this.current_tier - 1);
               this.choose_subject.push(this.subject_list[key]);
-              console.log(this.choose_subject);
             }
           },
 
@@ -116,12 +117,14 @@
           },
 
           //所有科目
-          handleSearchAll() {
+          handleSearchAll(type) {
             this.choose_subject = [];
             this.current_id = 0;
             this.current_choose = 0;
             this.current_tier = 1;
-            this.getSubjectList();
+            if (!type) {
+              this.getSubjectList();
+            }
           },
 
           //获取科目列表
@@ -142,6 +145,7 @@
           },
           handleCloseSubject() {
             this.subject_visible = false;
+            this.handleSearchAll('no');
             this.$emit('close');
           }
         },

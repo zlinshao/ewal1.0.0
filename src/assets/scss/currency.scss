@@ -205,13 +205,16 @@
       @include gatheringImg('kemubianma.png','theme1');
     }
     .icon_case {
-      @include gatheringImg('qianbao.png','theme1');
+      @include gatheringImg('money.png','theme1');
     }
     .icon_account {
       @include gatheringImg('zhanghu.png','theme1');
     }
     .icon_type {
       @include gatheringImg('leibie.png','theme1');
+    }
+    .icon_bank {
+      @include gatheringImg('yinhang.png','theme1');
     }
   }
   //分页
