@@ -272,6 +272,10 @@
   border-color: #CF2E33; }
 #theme_name .el-select .el-input.is-focus .el-input__inner {
   border-color: #CF2E33; }
+#theme_name .el-form-item--mini .el-form-item__error {
+  width: 100%;
+  padding-left: 50%;
+  text-align: left; }
 #theme_name .page .el-pagination .el-input__inner {
   background-color: transparent; }
 #theme_name .page .el-pagination .el-input__inner:focus {

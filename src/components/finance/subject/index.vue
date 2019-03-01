@@ -15,7 +15,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons add"><b>+</b></div>
+        <div class="icons add" @click="new_subject_visible = true"><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -181,7 +181,7 @@
                   <span>现科目</span>
                 </div>
                 <div class="item_content">
-                  <el-input @focus="subject_visible = true" v-model="move_subject.title"></el-input>
+                  <el-input @focus="handleOpenSubject('move_subject')" v-model="move_subject.title"></el-input>
                 </div>
               </div>
             </el-form-item>
@@ -216,6 +216,96 @@
       </div>
     </lj-dialog>
 
+    <!--新增科目-->
+    <lj-dialog
+      :visible="new_subject_visible"
+      :size="{width: 500 + 'px', height: 460 + 'px'}"
+      @close="new_subject_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增科目</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form :model="new_subject" size="mini" :rules="add_subject_rules" ref="addSubject">
+            <el-form-item prop="parent_id">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>上级科目</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" @focus="handleOpenSubject('new_subject')" v-model="new_subject.parent_name"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="title">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_case"></i>
+                  </b>
+                  <span>科目名称</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="new_subject.title"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="subject_code">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_mark"></i>
+                  </b>
+                  <span>科目编码</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="new_subject.subject_code"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="er_type">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_type"></i>
+                  </b>
+                  <span>科目类型</span>
+                </div>
+                <div class="item_content">
+                  <el-select class="all_width" v-model="new_subject.er_type" placeholder="请选择">
+                    <el-option :value="1" label="收入"></el-option>
+                    <el-option :value="2" label="支出"></el-option>
+                    <el-option :value="3" label="混合"></el-option>
+                  </el-select>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="remark">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_mark"></i>
+                  </b>
+                  <span>备注</span>
+                </div>
+                <div class="item_content">
+                  <el-input v-model="new_subject.remark" placeholder="请输入" type="textarea"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleSubjectAdd('addSubject')">新增</el-button>
+          <el-button size="small" @click="handleCancelAdd">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
     <!--科目-->
     <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"></lj-subject>
 
@@ -227,14 +317,33 @@
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue'
   import LjSubject from '../../common/lj-subject.vue';
+  import {subjectSearch} from '../../../assets/js/allSearchData';
 
   export default {
     name: "index",
     components: {SearchHigh, FinMenuList, LjDialog,LjSubject},
     data() {
       return {
+        subjectSearch,
         url: globalConfig.temporary_server,
         subject_visible: false,
+        which_subject: '',
+        new_subject_visible: false,
+        new_subject: {
+          parent_id: '',
+          title: '',
+          er_type: '',
+          remark: '',
+          parent_name: '',
+          subject_code: ''
+        },
+        add_subject_rules: {
+          parent_id: [{ required: true,message: '请选择上级科目',trigger: 'blur'}],
+          title: [{ required: true,message: '请输入科目名称',trigger: 'blur'}],
+          subject_code: [{ required: true,message: '请输入科目编码',trigger: 'blur'}],
+          er_type: [{ required: true,message: '请选择科目类型',trigger: 'change'}],
+          remark: [{ required: true,message: '请输入备注',trigger: 'blur'}],
+        },
         params: {
           er_type: '',
           parent_id: '',
@@ -268,10 +377,7 @@
         subjectData: [],
         subjectCount: 0,
         showSearch: false,
-        searchData: {
-          status: 'workOrder',
-          data: [],
-        },
+        searchData: {},
 
         currentRow: {},
       }
@@ -284,7 +390,49 @@
     watch: {},
     computed: {},
     methods: {
+      handleOpenSubject(which) {
+        this.which_subject = which;
+        this.subject_visible = true;
+      },
+      handleSubjectAdd(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.$http.post(this.url + 'subject',this.new_subject).then(res => {
+              if (res.code === 200) {
+                this.$notify.success({
+                  title: '成功',
+                  message: res.msg
+                });
+                this.handleCancelAdd();
+                this.getSubjectList();
+              }else {
+                this.$notify.warning({
+                  title: '失败',
+                  message: res.msg
+                });
+                return false;
+              }
+            }).catch(err => {
+              console.log(err);
+            })
+          } else {
+            return false;
+          }
+        })
+      },
+      handleCancelAdd() {
+        this.$refs['addSubject'].resetFields();
+        this.new_subject.parent_name = '';
+        this.new_subject_visible = false;
+      },
       handleOkMove() {
+        if (!this.move_subject.parent_id) {
+          this.$notify.warning({
+            title: '警告',
+            message: '请选择父级科目'
+          });
+          return false;
+        }
         this.$http.put(this.url + `subject/migrate/${this.currentRow.id}`,{parent_id: this.move_subject.parent_id}).then(res => {
           if (res.code === 200) {
             this.$notify.success({
@@ -316,8 +464,14 @@
       },
       //科目确定
       handleConfirmSubject(val) {
-        this.move_subject.parent_id = val.id;
-        this.move_subject.title = val.title;
+        if (this.which_subject === 'move_subject') {
+          this.move_subject.parent_id = val.id;
+          this.move_subject.title = val.title;
+        }
+        if (this.which_subject === 'new_subject') {
+          this.new_subject.parent_name = val.title;
+          this.new_subject.parent_id = val.id;
+        }
       },
       //编辑
       handleOpenEdit(row) {
@@ -328,7 +482,7 @@
         this.edit_visible = true;
       },
       getSubjectList() {
-        this.$http.get(this.url + 'subject',this.params).then(res => {
+        this.$http.get(globalConfig.temporary_server + 'subject',this.params).then(res => {
           if (res.code === 200) {
             this.subjectData = res.data.data;
             this.subjectCount = res.data.count;
@@ -403,110 +557,14 @@
       // 高级搜索
       highSearch() {
         this.showSearch = true;
-        this.searchData.data = [
-          {
-            keyType: 'date',
-            title: '出生日期',
-            placeholder: '请选择日期',
-            keyName: 'date3',
-            dataType: '',
-          },
-          {
-            keyType: 'dateRange',
-            title: '创建时间',
-            placeholder: '请选择日期',
-            keyName: 'date1',
-            dataType: [],
-          },
-          {
-            keyType: 'dateRange',
-            title: '跟进时间',
-            placeholder: '请选择日期',
-            keyName: 'date2',
-            dataType: [],
-          },
-          {
-            keyType: 'radio',
-            title: '紧急程度',
-            keyName: 'radio',
-            dataType: '',
-            value: [
-              {
-                id: 12,
-                title: '特级',
-              },
-              {
-                id: 13,
-                title: '紧急',
-              },
-              {
-                id: 14,
-                title: '重要',
-              },
-              {
-                id: 15,
-                title: '一般',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '状态',
-            keyName: 'check',
-            dataType: [],
-            value: [
-              {
-                id: 22,
-                title: '已完成',
-              },
-              {
-                id: 23,
-                title: '未完成',
-              },
-            ],
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-        ];
+        this.searchData = subjectSearch;
       },
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
+          this.params.er_type = val.er_type;
+          this.getSubjectList();
         }
       },
     },

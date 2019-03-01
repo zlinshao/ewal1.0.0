@@ -98,7 +98,13 @@
       }
     }
   }
-  //分页=================
+
+  .el-form-item--mini .el-form-item__error {
+    width: 100%;
+    padding-left: 50%;
+    text-align: left;
+  }
+    //分页=================
   .page {
     @mixin noBgColor {
       background-color: transparent;

@@ -203,3 +203,22 @@ export const workOrderSearch = {
     }
   ],
 };
+
+//科目
+export const subjectSearch = {
+  status: 'subject',
+  data: [
+    {
+      keyType: 'radio',
+      title: '科目类别',
+      placeholder: '请选择科目类别',
+      keyName: 'er_type',
+      dataType: '',
+      value: [
+        {id: 1,title: '收入'},
+        {id: 2,title: '支出'},
+        {id: 3,title: '混合'}
+      ]
+    },
+  ]
+};
