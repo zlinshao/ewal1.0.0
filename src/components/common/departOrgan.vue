@@ -1,14 +1,12 @@
 <template>
-  <div id="children">
-    <div>
-      children
-    </div>
+  <div id="departOrgan">
+    部门
   </div>
 </template>
 
 <script>
   export default {
-    name: "index",
+    name: "depart-organ",
     data() {
       return {}
     },
@@ -23,33 +21,33 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../assets/scss/moban/children/index.scss";
+  @import "../../assets/scss/common/departOrgan.scss";
 
-  @mixin childrenImg($m, $n) {
-    $url: '../../../assets/image/moban/' + $n + '/' + $m;
+  @mixin organImg($m, $n) {
+    $url: '../../assets/image/departOrgan/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
-    #children {
+    #departOrgan {
 
     }
   }
 
   #theme_name.theme2 {
-    #children {
+    #departOrgan {
 
     }
   }
 
   #theme_name.theme3 {
-    #children {
+    #departOrgan {
 
     }
   }
 
   #theme_name.theme4 {
-    #children {
+    #departOrgan {
 
     }
   }

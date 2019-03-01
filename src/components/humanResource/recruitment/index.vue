@@ -2,12 +2,19 @@
   <div id="recruitment">
     <!--<Upload :file="photo1"></Upload>-->
     <!--<Upload :file="photo2"></Upload>-->
+    <StaffOrgan :module="organModule"></StaffOrgan>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>研发中心</h1>
+        <h1 @click="organModule = true">研发中心</h1>
+        <h2 class="items-center">
+          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
+                :class="{'chooseTab': chooseTab === item.id}">
+            {{item.title}}<i></i>
+          </span>
+        </h2>
       </div>
       <div class="items-center listTopRight">
         <div class="icons add"><b>+</b></div>
@@ -36,6 +43,7 @@
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue';
+  import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
   import {recruitmentSearch} from '../../../assets/js/allSearchData.js';
@@ -43,11 +51,31 @@
 
   export default {
     name: "index",
-    components: {MenuList, SearchHigh, Upload},
+    components: {MenuList, SearchHigh, Upload, StaffOrgan},
     data() {
       return {
         recruitmentSearch,
         humanResource,
+        chooseTab: 1,
+        organModule: false,
+        selects: [
+          {
+            id: 1,
+            title: '组织结构图',
+          },
+          {
+            id: 2,
+            title: '部门管理',
+          },
+          {
+            id: 3,
+            title: '员工名册',
+          },
+          {
+            id: 4,
+            title: '离职管理',
+          }
+        ],
         visibleStatus: false,
         showSearch: false,
         searchData: {},
@@ -72,6 +100,10 @@
       }
     },
     methods: {
+      // tab切换
+      changeTabs(id) {
+        this.chooseTab = id;
+      },
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;
