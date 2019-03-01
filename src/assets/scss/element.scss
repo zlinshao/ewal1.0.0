@@ -60,8 +60,8 @@
   .el-checkbox, .el-radio {
     @include flex('items-center');
     .el-checkbox__inner, .el-radio__inner {
-      width: 21px;
-      height: 21px;
+      width: 18px;
+      height: 18px;
       @include radius(50%);
       &:after {
         display: none;
@@ -82,7 +82,7 @@
       }
     }
     .el-checkbox__label, .el-radio__label {
-      font-size: 18px;
+      font-size: 15px;
       color: inherit;
       padding-bottom: 1px;
     }

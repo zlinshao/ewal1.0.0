@@ -250,8 +250,8 @@
   display: -webkit-flex;
   align-items: center; }
   #theme_name .el-checkbox .el-checkbox__inner, #theme_name .el-checkbox .el-radio__inner, #theme_name .el-radio .el-checkbox__inner, #theme_name .el-radio .el-radio__inner {
-    width: 21px;
-    height: 21px;
+    width: 18px;
+    height: 18px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%; }
@@ -265,7 +265,7 @@
     background-color: #CF2E33;
     border-color: #CF2E33; }
   #theme_name .el-checkbox .el-checkbox__label, #theme_name .el-checkbox .el-radio__label, #theme_name .el-radio .el-checkbox__label, #theme_name .el-radio .el-radio__label {
-    font-size: 18px;
+    font-size: 15px;
     color: inherit;
     padding-bottom: 1px; }
 #theme_name .el-select .el-input__inner:focus {
