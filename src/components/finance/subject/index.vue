@@ -215,6 +215,8 @@
       </div>
     </lj-dialog>
 
+    <!--科目-->
+    <lj-subject></lj-subject>
   </div>
 </template>
 
@@ -222,10 +224,11 @@
   import SearchHigh from '../../common/searchHigh.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue'
+  import LjSubject from '../../common/lj-subject.vue';
 
   export default {
     name: "index",
-    components: {SearchHigh, FinMenuList, LjDialog},
+    components: {SearchHigh, FinMenuList, LjDialog,LjSubject},
     data() {
       return {
         params: {
@@ -459,7 +462,7 @@
 
   #theme_name.theme1 {
     #subject {
-
+      height: 100%;
     }
   }
 
