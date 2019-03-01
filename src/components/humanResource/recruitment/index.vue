@@ -1,14 +1,18 @@
 <template>
   <div id="recruitment">
-    <Upload :file="photo1"></Upload>
-    <Upload :file="photo2"></Upload>
+    <!--<Upload :file="photo1"></Upload>-->
+    <!--<Upload :file="photo2"></Upload>-->
+    <el-radio-group v-model="radio2">
+      <el-radio :label="3">备选项</el-radio>
+      <el-radio :label="6">备选项</el-radio>
+      <el-radio :label="9">备选项</el-radio>
+    </el-radio-group>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        {{photo1}}
-        <h1 @click="gggggg">研发中心</h1>
+        <h1>研发中心</h1>
       </div>
       <div class="items-center listTopRight">
         <div class="icons add"><b>+</b></div>
@@ -47,6 +51,7 @@
     components: {MenuList, SearchHigh, Upload},
     data() {
       return {
+        radio2: '',
         recruitmentSearch,
         humanResource,
         visibleStatus: false,
@@ -73,12 +78,6 @@
       }
     },
     methods: {
-      gggggg() {
-        this.photo1 = {
-          keyName: 'photo1',
-          setFile: ['3', '2', '1'],
-        }
-      },
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;
