@@ -33,8 +33,8 @@
             <div v-else class="txt_center">暂无科目数据</div>
           </div>
           <div class="subject_footer">
-            <el-button size="small" type="danger">确定</el-button>
-            <el-button size="small" @click="subject_visible = false">取消</el-button>
+            <el-button size="small" type="danger" @click="handleSubmitChoose">确定</el-button>
+            <el-button size="small" @click="handleCloseSubject">取消</el-button>
           </div>
           <div class="bg"></div>
         </div>
@@ -44,10 +44,11 @@
 
 <script>
     export default {
-        name: "",
+        name: "index",
+        props: ['visible'],
         data() {
             return {
-              subject_visible: true,
+              subject_visible: false,
               choose_subject: [],
               subject_list: [],
               current_id: 0,
@@ -58,13 +59,34 @@
         mounted() {
           this.getSubjectList('all');
         },
-        watch: {},
+        watch: {
+          visible(val) {
+            if (val) {
+              this.getSubjectList('all');
+            }
+            this.subject_visible = val;
+          }
+        },
         computed: {},
         methods: {
+          //确定选择
+          handleSubmitChoose() {
+            var key = this.choose_subject.length - 1;
+            if (this.choose_subject[key]) {
+              this.$emit('confirm',this.subject_list[key]);
+            } else {
+              this.$notify.warning({
+                title: '警告',
+                message: '尚未选择科目'
+              });
+              return false;
+            }
+          },
+
+          //面包屑定位
           handleLocation(item,key) {
-            console.log(item,key);
             this.choose_subject.splice(key + 1);
-            console.log(this.choose_subject);
+            this.current_choose = 0;
             this.current_id = item.id;
             if (this.current_tier > 1) {
               this.getSubjectList('children');
@@ -72,19 +94,28 @@
               this.getSubjectList('all');
             }
           },
+
+          //单选
           handleChangeRadio(key) {
             if (this.current_tier <= 1) {
+              this.choose_subject = [];
               this.choose_subject.push(this.subject_list[key]);
             } else {
-              this.choose_subject[this.current_tier - 1] = this.subject_list[key];
+              this.choose_subject.splice(this.current_tier - 1);
+              this.choose_subject.push(this.subject_list[key]);
+              console.log(this.choose_subject);
             }
           },
+
+          //下级
           handleGetNext(item) {
             this.choose_subject[this.current_tier - 1] = item;
             this.current_tier ++ ;
             this.current_id = item.id;
             this.getSubjectList('children');
           },
+
+          //所有科目
           handleSearchAll() {
             this.choose_subject = [];
             this.current_id = 0;
@@ -92,6 +123,8 @@
             this.current_tier = 1;
             this.getSubjectList();
           },
+
+          //获取科目列表
           getSubjectList(type = 'all') {
             this.$http.get(globalConfig.temporary_server + `subject/subject_tree`,{id: this.current_id}).then(res => {
               if (res.code === 200) {

@@ -15,7 +15,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons add"><b>+</b></div>
+        <div class="icons add" @click="subject_visible = true"><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -216,7 +216,7 @@
     </lj-dialog>
 
     <!--科目-->
-    <lj-subject></lj-subject>
+    <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"></lj-subject>
   </div>
 </template>
 
@@ -231,6 +231,7 @@
     components: {SearchHigh, FinMenuList, LjDialog,LjSubject},
     data() {
       return {
+        subject_visible: false,
         params: {
           er_type: '',
           parent_id: '',
@@ -279,6 +280,10 @@
     watch: {},
     computed: {},
     methods: {
+      //科目确定
+      handleConfirmSubject(val) {
+        console.log(val);
+      },
       //编辑
       handleOpenEdit(row) {
         this.currentRow = row;
