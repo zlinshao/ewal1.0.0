@@ -320,22 +320,34 @@
   -moz-border-radius: 6px;
   border-radius: 6px; }
 #theme_name .dialog_container {
-  position: relative;
-  height: 100%; }
+  height: 100%;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+  flex-direction: column; }
   #theme_name .dialog_container .dialog_header {
-    text-align: left;
-    padding: 10px 15px;
-    position: relative; }
+    padding: 10px 15px; }
   #theme_name .dialog_container .dialog_main {
-    height: auto;
+    height: 100%;
     overflow: hidden;
-    margin: 20px 0; }
+    margin: 20px 0;
+    overflow: auto; }
+    #theme_name .dialog_container .dialog_main::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      border-radius: 10px; }
+    #theme_name .dialog_container .dialog_main::-webkit-scrollbar-button {
+      height: 10px;
+      background-color: #e4e7ed;
+      border-radius: 10px; }
+    #theme_name .dialog_container .dialog_main::-webkit-scrollbar-track {
+      background: #e4e7ed; }
+    #theme_name .dialog_container .dialog_main::-webkit-scrollbar-thumb {
+      background: #747474;
+      border-radius: 4px; }
   #theme_name .dialog_container .dialog_footer {
     width: 100%;
     padding: 20px 0;
-    position: absolute;
-    bottom: 0;
-    left: 0;
     text-align: center; }
     #theme_name .dialog_container .dialog_footer button {
       min-width: 90px;

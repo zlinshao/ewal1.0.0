@@ -126,28 +126,25 @@
   }
 
   .dialog_container {
-    position: relative;
     height: 100%;
+    @include flex('justify-bet');
+    flex-direction: column;
     .dialog_header {
-      text-align: left;
       padding: 10px 15px;
-      position: relative;
     }
     .dialog_main {
-      height: auto;
+      height: 100%;
       overflow: hidden;
       margin: 20px 0;
+      @include scroll();
     }
     .dialog_footer {
       width: 100%;
       padding: 20px 0;
-      position: absolute;
-      bottom: 0;
-      left: 0;
       text-align: center;
       button {
         min-width: 90px;
-        @include radius(5px)
+        @include radius(5px);
       }
     }
   }
@@ -190,31 +187,31 @@
       background-color: $colorE33;
     }
     .icon_mark {
-      @include gatheringImg('beizhu.png','theme1');
+      @include gatheringImg('beizhu.png', 'theme1');
     }
     .icon_money {
-      @include gatheringImg('yingshoukuanfenxi.png','theme1');
+      @include gatheringImg('yingshoukuanfenxi.png', 'theme1');
     }
     .icon_payTime {
-      @include gatheringImg('fukuan.png','theme1');
+      @include gatheringImg('fukuan.png', 'theme1');
     }
     .icon_subject {
-      @include gatheringImg('kemuyue.png','theme1');
+      @include gatheringImg('kemuyue.png', 'theme1');
     }
     .icon_come {
-      @include gatheringImg('kemubianma.png','theme1');
+      @include gatheringImg('kemubianma.png', 'theme1');
     }
     .icon_case {
-      @include gatheringImg('money.png','theme1');
+      @include gatheringImg('money.png', 'theme1');
     }
     .icon_account {
-      @include gatheringImg('zhanghu.png','theme1');
+      @include gatheringImg('zhanghu.png', 'theme1');
     }
     .icon_type {
-      @include gatheringImg('leibie.png','theme1');
+      @include gatheringImg('leibie.png', 'theme1');
     }
     .icon_bank {
-      @include gatheringImg('yinhang.png','theme1');
+      @include gatheringImg('yinhang.png', 'theme1');
     }
   }
   //分页

@@ -71,10 +71,8 @@
           }
         }
         .dialog_main {
-          height: 100%;
           > div {
             width: 100%;
-            height: 100%;
             border: 1px solid $colorE33;
           }
         }
