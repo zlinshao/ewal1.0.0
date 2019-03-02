@@ -14,7 +14,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons bank"></div>
+        <div class="icons bank" @click="handleOpenBankRun"></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -32,7 +32,7 @@
           label="紧急程度">
           <template slot-scope="scope">
             <div class="status" :class="['status' + scope.row.status]">
-              <p>{{statuss[scope.row.status]}}</p>
+              <p>{{status[scope.row.status]}}</p>
             </div>
           </template>
         </el-table-column>
@@ -57,18 +57,70 @@
     </div>
     <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+    <lj-dialog
+      :visible="bank_run_visible"
+      :size="bank_run_size"
+      @close="bank_run_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header flex">
+          <h3>银行流水</h3>
+          <div>
+            <div class="icons"><b>+</b></div>
+            <div class="icons search"></div>
+          </div>
+        </div>
+        <div class="dialog_main">
+          <el-table
+            :data="bank_run_data"
+          >
+            <el-table-column prop="time" label="导入时间" align="center"></el-table-column>
+            <el-table-column prop="ci" label="流水导入批次" align="center"></el-table-column>
+            <el-table-column prop="num" label="包含账户数量" align="center"></el-table-column>
+            <el-table-column prop="run_num" label="流水数量" align="center"></el-table-column>
+            <el-table-column prop="operator" label="操作人" align="center"></el-table-column>
+            <el-table-column prop="" label="操作" align="center" min-width="120px">
+              <template slot-scope="scope">
+                <el-button size="mini" type="warning" plain>补充/移除</el-button>
+                <el-button size="mini" type="danger" plain>归档</el-button>
+                <el-button size="mini" type="primary" plain>详情</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="dialog_footer">
+          <div class="page">
+            <el-pagination
+              :total="1000"
+              layout="total,prev,pager,next"
+            ></el-pagination>
+          </div>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue'
   import FinMenuList from '../components/finMenuList.vue'
+  import LjDialog from '../../common/lj-dialog';
 
   export default {
     name: "index",
-    components: {SearchHigh, FinMenuList},
+    components: {SearchHigh, FinMenuList,LjDialog},
     data() {
       return {
+        bank_run_visible: false,
+        bank_run_size: '',
+        bank_run_data: [
+          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
+          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
+          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
+          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
+          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
+          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
+        ],
         showFinMenuList: false,
         chooseTab: 1,
         selects: [
@@ -284,7 +336,7 @@
             address: '上海市普陀区金沙江路 1519 弄',
           },
         ],
-        statuss: {
+        status: {
           1: '收入',
           2: '支出',
         },
@@ -309,6 +361,10 @@
     watch: {},
     computed: {},
     methods: {
+      handleOpenBankRun() {
+        this.bank_run_size = 'large';
+        this.bank_run_visible = true;
+      },
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;

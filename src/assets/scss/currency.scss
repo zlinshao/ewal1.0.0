@@ -131,12 +131,19 @@
     flex-direction: column;
     .dialog_header {
       padding: 10px 15px;
+      text-align: left;
+      > h3 {
+        font-size: 22px;
+      }
     }
     .dialog_main {
       height: 100%;
       overflow: hidden;
       margin: 20px 0;
       @include scroll();
+      .unUse-txt {
+        font-size: 18px;
+      }
     }
     .dialog_footer {
       width: 100%;

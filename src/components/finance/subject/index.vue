@@ -220,7 +220,7 @@
     <!--新增科目-->
     <lj-dialog
       :visible="new_subject_visible"
-      :size="{width: 500 + 'px', height: 460 + 'px'}"
+      :size="{width: 500 + 'px', height: 500 + 'px'}"
       @close="new_subject_visible = false"
     >
       <div class="dialog_container">
