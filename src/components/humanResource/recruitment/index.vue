@@ -2,7 +2,7 @@
   <div id="recruitment">
     <!--<Upload :file="photo1"></Upload>-->
     <!--<Upload :file="photo2"></Upload>-->
-    <StaffOrgan :module="organModule"></StaffOrgan>
+    <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
@@ -22,21 +22,16 @@
       </div>
     </div>
     <div class="departList">
-      <div class="flex-center borderLine lineTop">
-        <b></b>
-      </div>
-      <div class="flex-center mainList" :class="{'mainListHover': routeAnimation}">
-        <p v-for="item in 16">
+      <div class="items-bet mainList" :class="{'mainListHover': routeAnimation}">
+        <p v-for="item in 7">
           <span class="writingMode">
-            南京乐伽商业管理有限公司
+            新媒体运营中心
           </span>
         </p>
       </div>
-      <div class="flex-center borderLine lineBottom">
-        <b></b>
-      </div>
     </div>
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
+
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
   </div>
 </template>
@@ -120,6 +115,12 @@
         this.visibleStatus = !this.visibleStatus;
         this.$store.dispatch('route_animation');
       },
+      hiddenOrgan(val) {
+        this.organModule = false;
+        if (val !== 'close') {
+          console.log(val);
+        }
+      }
     },
   }
 </script>
@@ -127,14 +128,23 @@
 <style lang="scss" scoped>
   @import "../../../assets/scss/humanResource/recruitment/index.scss";
 
-  @mixin childrenImg($m, $n) {
+  @mixin recruitmentImg($m, $n) {
     $url: '../../../assets/image/humanResource/recruitment/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
     #recruitment {
-
+      .departList {
+        .mainList {
+          p {
+            border: 1px solid #CDCDCD;
+            &:hover {
+              border: 1px solid $colorE33;
+            }
+          }
+        }
+      }
     }
   }
 

@@ -141,6 +141,13 @@ $color0F0: #F0F0F0;
   box-shadow: $s;
 }
 
+@mixin backFace {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 .writingMode {
   @include writingMode;
 }
