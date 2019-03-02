@@ -29,12 +29,16 @@
         </el-table-column>
         <el-table-column
           align="center"
-          label="操作">
+          label="操作"
+        >
           <template slot-scope="scope">
             <div class="operate">
-              <el-button size="mini" type="primary" plain @click="info_visible = true">点击查看</el-button>
-              <el-button size="mini" type="success" plain>更新</el-button>
-              <el-button size="mini" type="danger" plain>删除</el-button>
+              <!--<el-button size="mini" type="primary" plain @click="info_visible = true">点击查看</el-button>-->
+              <el-button size="mini" type="success" plain @click="handleOpenUpdateAccount(scope.row)">更新</el-button>
+              <el-button size="mini" type="danger" plain @click="handleOpenDel(scope.row)">删除</el-button>
+              <el-button size="mini" type="warning" plain @click="handleOpenRecharge(scope.row)">充值</el-button>
+              <el-button size="mini" type="danger" plain @click="initial_visible = true;current_row = scope.row">归零</el-button>
+              <el-button size="mini" type="success" plain @click="handleOpenInfo(scope.row)">记录</el-button>
             </div>
           </template>
         </el-table-column>
@@ -61,30 +65,58 @@
     <!--点击查看-->
     <lj-dialog
       :visible="info_visible"
-      :size="'large'"
+      :size="info_size"
+      @close="handleCloseInfo"
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>归档/充值</h3>
+          <h3>
+            <span style="cursor: pointer" :class="{'isCheck': info_params.operation == key }" v-for="(tmp,key) in info_type" :key="key" @click="handleCheckoutType(tmp,key)">
+              <span v-if="key != 1" style="margin: 0 10px">/</span>
+              {{ tmp }}
+            </span>
+          </h3>
         </div>
-        <div class="dialog_main"></div>
-        <div class="dialog_footer"></div>
+        <div class="dialog_main">
+          <el-table
+            :data="infoData"
+          >
+            <el-table-column label="户名" prop="account.name" align="center"></el-table-column>
+            <el-table-column min-width="120px" label="账户" prop="account.account_num" align="center"></el-table-column>
+            <el-table-column label="归档金额" prop="" align="center" v-if="info_params.operation == 4"></el-table-column>
+            <el-table-column label="归档前账户金额" prop="desc.old_amount" v-if="info_params.operation == 4" align="center"></el-table-column>
+            <el-table-column label="开户人" prop="account.account_owner" align="center"></el-table-column>
+            <el-table-column label="部门" prop="" align="center" v-if="info_params.operation == 4"></el-table-column>
+            <el-table-column label="新增时间" prop="create_time" align="center" v-if="info_params.operation == 1"></el-table-column>
+            <el-table-column min-width="120px" label="归档时间" prop="create_time" align="center" v-if="info_params.operation == 4"></el-table-column>
+            <el-table-column label="操作人" prop="operator.name" align="center"></el-table-column>
+            <el-table-column label="备注" prop="account.remark" align="center"></el-table-column>
+          </el-table>
+        </div>
+        <div class="dialog_footer">
+          <div class="page">
+            <el-pagination
+              :total="info_count"
+              layout="total,prev,pager,next"
+            ></el-pagination>
+          </div>
+        </div>
       </div>
     </lj-dialog>
 
     <!--新增账户-->
     <lj-dialog
       :visible="add_account_visible"
-      :size="{width: 500 + 'px',height: add_account.cate === 1 ? 700 + 'px' : 600 + 'px'}"
+      :size="{width: 500 + 'px',height: add_account.cate === 1 ? 730 + 'px' : 620 + 'px'}"
       @close="handleCancelAdd"
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>新增账户</h3>
+          <h3>{{ current_row ? '更新账户' : '新增账户'}}</h3>
         </div>
         <div class="dialog_main">
-          <el-form :model="add_account" size="mini" ref="addAccount">
-            <el-form-item>
+          <el-form :model="add_account" :rules="add_account_rules" size="mini" ref="addAccount">
+            <el-form-item prop="name">
               <div class="form_item_container">
                 <div class="item_label">
                   <b class="item_icons">
@@ -97,7 +129,7 @@
                 </div>
               </div>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="account_owner">
               <div class="form_item_container">
                 <div class="item_label">
                   <b class="item_icons">
@@ -110,7 +142,7 @@
                 </div>
               </div>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="cate">
               <div class="form_item_container">
                 <div class="item_label">
                   <b class="item_icons">
@@ -153,7 +185,7 @@
                 </div>
               </div>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="account_num">
               <div class="form_item_container">
                 <div class="item_label">
                   <b class="item_icons">
@@ -166,7 +198,7 @@
                 </div>
               </div>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="amount_base">
               <div class="form_item_container">
                 <div class="item_label">
                   <b class="item_icons">
@@ -179,7 +211,7 @@
                 </div>
               </div>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="scope">
               <div class="form_item_container">
                 <div class="item_label">
                   <b class="item_icons">
@@ -211,11 +243,86 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="handleSubmitAdd('addAccount')">确定</el-button>
+          <el-button size="small" type="danger" @click="submitAdd('addAccount')">{{ current_row ? '更新' : '新增'}}</el-button>
           <el-button size="small" @click="handleCancelAdd">取消</el-button>
         </div>
       </div>
     </lj-dialog>
+
+    <!--删除账户-->
+    <lj-dialog
+      :visible="del_account_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @click="del_account_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确定</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定要删除该账户吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleDelAccount">确定</el-button>
+          <el-button size="small" @click="del_account_visible = false;current_row = ''">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--充值-->
+    <lj-dialog
+      :visible="account_recharge_visible"
+      :size="{width: 400 + 'px',height: 260 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>充值</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form :model="recharge" size="mini">
+            <el-form-item prop="amount">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_money"></i>
+                  </b>
+                  <span>充值金额</span>
+                </div>
+                <div class="item_content">
+                  <el-input class="all_width" v-model="recharge.amount" type="number" placeholder="请输入"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleOkRecharge">确定</el-button>
+          <el-button size="small" @click="account_recharge_visible = false;current_row = '';recharge.amount = ''">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--归零-->
+    <lj-dialog
+      :visible="initial_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="initial_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>归档账户</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">您确定归零该用户吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleInitialAccount" plain>确定</el-button>
+          <el-button size="small" @click="initial_visible = false;current_row = ''" plain>取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
   </div>
 </template>
 
@@ -229,6 +336,29 @@
     components: {SearchHigh, FinMenuList, LjDialog},
     data() {
       return {
+        //查看记录
+        info_size: '',
+        info_type: {
+          1: '新增',
+          2: '修改',
+          3: '删除',
+          4: '归档',
+          5: '充值'
+        },
+        infoData: [],
+        info_count: 0,
+        info_params: {
+          account_id: '',
+          operation: 1
+        },
+
+        //归零
+        initial_visible: false,
+
+        //删除
+        del_account_visible: false,
+
+        //新增/更新
         add_account_visible: false,
         add_account: {
           name: '',
@@ -241,6 +371,15 @@
           scope: '',
           remark: ''
         },
+        add_account_rules: {
+          name: [{required: true,message: '请输入账户名称',trigger: 'blur'}],
+          account_owner: [{required: true,message: '请输入账户所有人',trigger: 'blur'}],
+          cate: [{required: true,message: '请选择账户类型',trigger: 'change'}],
+          account_num: [{required: true,message: '请输入账户账号',trigger: 'blur'}],
+          amount_base: [{required: true,message: '请输入账户初始金额',trigger: 'blur'}],
+          scope: [{required: true,message: '请选择账户范围',trigger: 'change'}],
+        },
+
         info_visible: false,
         showFinMenuList: false,
         showData: {
@@ -255,6 +394,7 @@
         showSearch: false,
         searchData: {},
 
+        //列表参数
         params: {
           page: 1,
           limit: 12,
@@ -263,9 +403,18 @@
           account_owner: '',
           account_num: '',
         },
+
+        //参数
         cate: {},
         banks: [],
         account_count: 0,
+        current_row: '',
+
+        //充值
+        account_recharge_visible: false,
+        recharge: {
+          amount: ''
+        }
       }
     },
     mounted() {
@@ -276,13 +425,98 @@
     watch: {},
     computed: {},
     methods: {
+      handleCloseInfo() {
+        this.info_params.operation = '';
+        this.info_params.account_id = '';
+        this.info_visible = false;
+      },
+      getInfoList() {
+        this.infoData = [];
+        this.info_count = 0;
+        this.$http.get(globalConfig.temporary_server + 'account_change/log',this.info_params).then(res => {
+          if (res.code === 200) {
+            this.infoData = res.data.data;
+            this.info_count = res.data.count;
+          } else {
+            this.infoData = [];
+            this.info_count = 0;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleOpenInfo (row) {
+        this.info_size = 'large';
+        this.info_visible = true;
+        this.info_params.account_id = row.id;
+        this.getInfoList();
+      },
+      handleCheckoutType(tmp,key) {
+        this.info_params.operation = key;
+        this.getInfoList();
+      },
+      handleInitialAccount() {
+        this.$http.put(globalConfig.temporary_server + `account/archive/${this.current_row.id}`).then(res => {
+          this.callbackSuccess(res);
+          this.current_row = '';
+          this.initial_visible = false;
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleOkRecharge() {
+        this.recharge.amount = parseFloat(this.recharge.amount).toFixed(2);
+        this.$http.put(globalConfig.temporary_server + `account/recharge/${this.current_row.id}`,this.recharge).then(res => {
+          this.callbackSuccess(res);
+          this.current_row = '';
+          this.recharge.amount = '';
+          this.account_recharge_visible = false;
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleOpenRecharge(row) {
+        this.current_row = row;
+        this.account_recharge_visible = true;
+      },
+      handleDelAccount() {
+        this.$http.delete(globalConfig.temporary_server + `account/delete/${this.current_row.id}`).then(res => {
+          this.callbackSuccess(res);
+          this.current_row = '';
+          this.del_account_visible = false;
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleOpenDel(row) {
+        this.current_row = row;
+        this.del_account_visible = true;
+      },
+      handleOpenUpdateAccount(row) {
+        this.current_row = row;
+        for (var key in this.add_account) {
+          this.add_account[key] = row[key];
+        }
+        this.add_account_visible = true;
+        console.log(this.add_account);
+      },
       handleChangePage(page) {
         this.params.page = page;
         this.getAccountList();
       },
+      submitAdd(formName) {
+        this.$refs[formName].validate((valid => {
+          if (valid) {
+            this.add_account.amount_base = parseFloat(this.add_account.amount_base).toFixed(2);
+            if (this.current_row) {
+              this.handleUpdateAccount();
+            } else {
+              this.handleSubmitAdd();
+            }
+          }
+        }))
+      },
       handleSubmitAdd() {
-        console.log(this.add_account);
-        this.add_account.amount_base = parseFloat(this.add_account.amount_base).toFixed(2);
         this.$http.post(globalConfig.temporary_server + 'account',this.add_account).then(res => {
           this.callbackSuccess(res);
           this.add_account_visible = false;
@@ -290,7 +524,20 @@
           console.log(err);
         })
       },
+      handleUpdateAccount() {
+        this.$http.put(globalConfig.temporary_server + `account/${this.current_row.id}`,this.add_account).then(res => {
+          this.callbackSuccess(res);
+          this.handleCancelAdd();
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       handleCancelAdd() {
+        this.$refs['addAccount'].resetFields();
+        for (var key in this.add_account) {
+          this.add_account[key] = '';
+        }
+        this.current_row = '';
         this.add_account_visible = false;
       },
       callbackSuccess(res) {
@@ -299,6 +546,7 @@
             title: '成功',
             message: res.msg
           });
+          this.current_row = '';
           this.getAccountList();
         } else {
           this.$notify.warning({
@@ -310,7 +558,6 @@
       },
       getAccountList() {
         this.$http.get(globalConfig.temporary_server + 'account',this.params).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.cate = res.data.cate;
             this.banks = res.data.banks;
@@ -463,7 +710,9 @@
 
   #theme_name.theme1 {
     #accountManage {
-
+      .isCheck {
+        color: $colorE33;
+      }
     }
   }
 

@@ -326,7 +326,10 @@
   justify-content: space-between;
   flex-direction: column; }
   #theme_name .dialog_container .dialog_header {
-    padding: 10px 15px; }
+    padding: 10px 15px;
+    text-align: left; }
+    #theme_name .dialog_container .dialog_header > h3 {
+      font-size: 22px; }
   #theme_name .dialog_container .dialog_main {
     height: 100%;
     overflow: hidden;
@@ -345,6 +348,8 @@
     #theme_name .dialog_container .dialog_main::-webkit-scrollbar-thumb {
       background: #747474;
       border-radius: 4px; }
+    #theme_name .dialog_container .dialog_main .unUse-txt {
+      font-size: 18px; }
   #theme_name .dialog_container .dialog_footer {
     width: 100%;
     padding: 20px 0;

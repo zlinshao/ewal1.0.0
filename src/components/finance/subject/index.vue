@@ -87,7 +87,7 @@
     <!--编辑科目-->
     <lj-dialog
       :visible="edit_visible"
-      :size="{width: 500 + 'px',height: 330 + 'px'}"
+      :size="{width: 500 + 'px',height: 380 + 'px'}"
       @close="edit_visible = false"
     >
       <div class="dialog_container">
@@ -152,7 +152,7 @@
     <lj-dialog
       :visible="move_visible"
       @close="handleCancelMove"
-      :size="{width: 500 + 'px',height: 300 + 'px'}"
+      :size="{width: 500 + 'px',height: 320 + 'px'}"
     >
       <div class="dialog_container">
         <div class="dialog_header">
@@ -220,7 +220,7 @@
     <!--新增科目-->
     <lj-dialog
       :visible="new_subject_visible"
-      :size="{width: 500 + 'px', height: 460 + 'px'}"
+      :size="{width: 500 + 'px', height: 510 + 'px'}"
       @close="new_subject_visible = false"
     >
       <div class="dialog_container">
