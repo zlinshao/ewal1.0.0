@@ -23,11 +23,11 @@
         :data="landLordData"
         :height="this.mainListHeight(30) + 'px'"
       >
-        <el-table-column label="生成时间" prop="" align="center"></el-table-column>
+        <el-table-column label="生成时间" prop="create_time" align="center"></el-table-column>
         <el-table-column label="房屋地址" prop="address" align="center"></el-table-column>
         <el-table-column label="客户姓名" prop="customer_name" align="center"></el-table-column>
         <el-table-column label="手机号" prop="contact" align="center"></el-table-column>
-        <el-table-column label="收房月数" prop="" align="center"></el-table-column>
+        <el-table-column label="收房月数" prop="months" align="center"></el-table-column>
         <el-table-column label="付款方式" prop="" align="center"></el-table-column>
         <el-table-column label="月单价" prop="prices" align="center"></el-table-column>
         <el-table-column label="待签约日期" prop="" align="center"></el-table-column>
@@ -35,7 +35,11 @@
         <el-table-column label="客户付款方式" prop="" align="center"></el-table-column>
         <el-table-column label="账号" prop="account_num" align="center"></el-table-column>
         <el-table-column label="签约人" prop="" align="center"></el-table-column>
-        <el-table-column label="状态" prop="" align="center"></el-table-column>
+        <el-table-column label="状态" prop="" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.status === 1 ? '待处理' : '正常'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" prop="" align="center">
           <template slot-scope="scope">
             <el-button type="danger" plain size="mini" @click="handleDeleteLand(scope.row)">删除</el-button>
