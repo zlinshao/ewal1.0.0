@@ -208,11 +208,6 @@
         this.showSearch = false;
         if (val !== 'close') {
           console.log(val);
-          this.params.search = val.keywords;
-          for (var key in this.params) {
-            this.params[key] = val.key;
-          }
-          this.getAccountRunList();
         }
       },
     },

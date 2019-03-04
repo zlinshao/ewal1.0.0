@@ -226,6 +226,7 @@ export const subjectSearch = {
 //收支流水
 export const accountRunSearch = {
   status: 'budgetStream',
+  keywords: 'search',
   data: [
     {
       keyType: 'date',
