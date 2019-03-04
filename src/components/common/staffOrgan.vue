@@ -174,8 +174,9 @@
         let staff = this.checkedStaff;
         if (staff.length) {
           if (staff.includes(item.id)) {
-            this.checkedStaff.splice(staff.indexOf(item.id), 1);
-            this.chooseStaff.splice(staff.indexOf(item.id), 1);
+            let index = staff.indexOf(item.id);
+            this.checkedStaff.splice(index, 1);
+            this.chooseStaff.splice(index, 1);
           } else {
             this.checkedStaff.push(item.id);
             this.chooseStaff.push(item);
