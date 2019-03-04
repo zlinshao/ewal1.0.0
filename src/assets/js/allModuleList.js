@@ -29,6 +29,41 @@ export const humanResource = {
   ]
 };
 
+// 人力资源中心三省六部
+export const resourceDepart = {
+  type: 'resourceDepart',
+  data: [
+    {
+      url: '',
+      title: '乐伽大学',
+    },
+    {
+      url: '',
+      title: '财务中心',
+    },
+    {
+      url: '',
+      title: '人力资源中心',
+    },
+    {
+      url: '',
+      title: '研发中心',
+    },
+    {
+      url: '',
+      title: '运维中心',
+    },
+    {
+      url: '',
+      title: '新媒体运营中心',
+    },
+    {
+      url: '',
+      title: '事业部',
+    }
+  ]
+};
+
 // 客服体验中心
 export const customService = {
   type: 'customService',

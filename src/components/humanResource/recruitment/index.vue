@@ -23,9 +23,9 @@
     </div>
     <div class="departList">
       <div class="items-bet mainList" :class="{'mainListHover': routeAnimation}">
-        <p v-for="item in 7">
+        <p v-for="item in resourceDepart.data">
           <span class="writingMode">
-            新媒体运营中心
+            {{item.title}}
           </span>
         </p>
       </div>
@@ -42,7 +42,7 @@
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
   import {recruitmentSearch} from '../../../assets/js/allSearchData.js';
-  import {humanResource} from '../../../assets/js/allModuleList.js';
+  import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
@@ -51,6 +51,7 @@
       return {
         recruitmentSearch,
         humanResource,
+        resourceDepart,
         chooseTab: 1,
         organModule: false,
         selects: [
