@@ -34,7 +34,11 @@
         <el-table-column label="客户姓名" prop="customer.customer_name" align="center"></el-table-column>
         <el-table-column min-width="180px" label="地址" prop="address" align="center"></el-table-column>
         <el-table-column label="科目名称" prop="subject" align="center"></el-table-column>
-        <el-table-column label="类型" prop="cate" align="center"></el-table-column>
+        <el-table-column label="类型" prop="cate" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.cate === 1 ? '收入' : '支出'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column min-width="130px" label="账户名称" prop="name" align="center"></el-table-column>
         <el-table-column min-width="150px" label="卡号" prop="account_num" align="center"></el-table-column>
         <el-table-column label="应收金额" prop="amount_receivable" align="center"></el-table-column>
@@ -110,12 +114,15 @@
   import SearchHigh from '../../common/searchHigh.vue'
   import FinMenuList from '../components/finMenuList.vue'
   import LjDialog from '../../common/lj-dialog';
+  import {accountRunSearch} from '../../../assets/js/allSearchData.js';
 
   export default {
     name: "index",
     components: {SearchHigh, FinMenuList,LjDialog},
     data() {
       return {
+        accountRunSearch,
+        staff_visible: false,
         bank_run_visible: false,
         bank_run_size: '',
         bank_run_data: [
@@ -153,16 +160,11 @@
         chooseRowIds: [],
 
         showSearch: false,
-        searchData: {
-          status: 'budgetStream',
-          data: [],
-        },
+        searchData: {}
       }
     },
     mounted() {
       this.getAccountRunList();
-    },
-    activated() {
     },
     watch: {},
     computed: {},
@@ -186,10 +188,6 @@
         this.bank_run_size = 'large';
         this.bank_run_visible = true;
       },
-      // tab切换
-      changeTabs(id) {
-        this.chooseTab = id;
-      },
       // 当前点击
       tableClickRow(row) {
         let ids = this.chooseRowIds;
@@ -203,110 +201,18 @@
       // 高级搜索
       highSearch() {
         this.showSearch = true;
-        this.searchData.data = [
-          {
-            keyType: 'date',
-            title: '出生日期',
-            placeholder: '请选择日期',
-            keyName: 'date3',
-            dataType: '',
-          },
-          {
-            keyType: 'dateRange',
-            title: '创建时间',
-            placeholder: '请选择日期',
-            keyName: 'date1',
-            dataType: [],
-          },
-          {
-            keyType: 'dateRange',
-            title: '跟进时间',
-            placeholder: '请选择日期',
-            keyName: 'date2',
-            dataType: [],
-          },
-          {
-            keyType: 'radio',
-            title: '紧急程度',
-            keyName: 'radio',
-            dataType: '',
-            value: [
-              {
-                id: 12,
-                title: '特级',
-              },
-              {
-                id: 13,
-                title: '紧急',
-              },
-              {
-                id: 14,
-                title: '重要',
-              },
-              {
-                id: 15,
-                title: '一般',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '状态',
-            keyName: 'check',
-            dataType: [],
-            value: [
-              {
-                id: 22,
-                title: '已完成',
-              },
-              {
-                id: 23,
-                title: '未完成',
-              },
-            ],
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-        ];
+        this.searchData = this.accountRunSearch;
       },
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
           console.log(val);
+          this.params.search = val.keywords;
+          for (var key in this.params) {
+            this.params[key] = val.key;
+          }
+          this.getAccountRunList();
         }
       },
     },
