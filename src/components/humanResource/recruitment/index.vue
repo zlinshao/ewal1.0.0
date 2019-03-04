@@ -139,9 +139,9 @@
       .departList {
         .mainList {
           p {
-            border: 1px solid #CDCDCD;
+            @include recruitmentImg('recruitmenthui.png', 'theme1');
             &:hover {
-              border: 1px solid $colorE33;
+              @include recruitmentImg('recruitmenthong.png', 'theme1');
             }
           }
         }

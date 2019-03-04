@@ -57,7 +57,7 @@
             <div>
               <label>已选&nbsp;：</label>
               <div class="scroll_bar flex">
-                <div v-for="item in chooseStaff" class="lists">
+                <div v-for="(item,index) in chooseStaff" class="lists">
                   <h4>
                     <i class="el-icon-remove" @click="removeStaff(index)"></i>
                     <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
@@ -117,9 +117,11 @@
       handleCloseLjDialog() {
         this.$emit('close', 'close');
       },
+      // 确认
       staffInfo() {
         this.$emit('close', this.chooseStaff);
       },
+      // 右侧删除已选
       removeStaff(index) {
         this.checkedStaff.splice(index, 1);
         this.chooseStaff.splice(index, 1);
@@ -143,6 +145,7 @@
           }
         });
       },
+      // 更新数据
       getList(val = 1) {
         this.departList = [];
         this.staffList = [];
@@ -166,6 +169,7 @@
           })
         });
       },
+      // 选人
       checkStaff(item) {
         let staff = this.checkedStaff;
         if (staff.length) {
