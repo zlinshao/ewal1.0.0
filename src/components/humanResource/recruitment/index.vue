@@ -49,7 +49,7 @@
     <!--部门管理-->
     <div class="departList" v-if="chooseTab === 2">
       <div class="items-bet mainList" :class="{'mainListHover': routeAnimation}">
-        <p v-for="item in resourceDepart.data">
+        <p v-for="item in resourceDepart.data" @click="showDepartManage(item)">
           <span class="writingMode">
             {{item.title}}
           </span>
@@ -87,6 +87,9 @@
       </div>
     </lj-dialog>
 
+    <!--管理部门/员工管理-->
+    <DepartManage :module="departModule" @close="departModule = false"></DepartManage>
+
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
@@ -94,6 +97,7 @@
 </template>
 
 <script>
+  import DepartManage from './components/departManage.vue';
   import StaffRoster from './staffRoster/index.vue';
   import SearchHigh from '../../common/searchHigh.vue';
   import ljDialog from '../../common/lj-dialog.vue';
@@ -105,7 +109,7 @@
 
   export default {
     name: "index",
-    components: {StaffRoster, MenuList, ljDialog, SearchHigh, Upload, StaffOrgan},
+    components: {DepartManage, StaffRoster, MenuList, ljDialog, SearchHigh, Upload, StaffOrgan},
     data() {
       return {
         recruitmentSearch,
@@ -114,6 +118,7 @@
         organModule: false,//组织架构
 
         depart_visible: false,//新增部门
+        departModule: false,//部门管理
         lj_size: {},//新增部门
         departForm: {},//新增部门
         chooseTab: 2,//tab切换
@@ -196,6 +201,7 @@
           console.log(val);
         }
       },
+      // 新增部门
       showAddModule(val) {
         switch (val) {
           case 2:
@@ -206,6 +212,11 @@
             };
             break;
         }
+      },
+      // 部门管理
+      showDepartManage(val) {
+        this.departModule = true;
+        console.log(val);
       },
       // 高级搜索
       highSearch() {
