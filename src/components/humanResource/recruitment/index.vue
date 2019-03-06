@@ -8,7 +8,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="organModule = true">研发中心</h1>
+        <h1 @click="organModule = true">三省六部</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -16,12 +16,38 @@
           </span>
         </h2>
       </div>
-      <div class="items-center listTopRight">
-        <div class="icons add"><b>+</b></div>
-        <div class="icons search" @click="highSearch"></div>
+      <div class="items-center listTopRight" v-if="chooseTab === 3">
+        <div class="searchTerm">
+          <b>部门/人员</b>
+          <el-select v-model="value" clearable :popper-class="`appTheme${themeName}`">
+            <el-option
+              v-for="item in options"
+              :class="`el-option-${themeName}`"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="searchTerm">
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox label="1">离职员工</el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="buttons">设置报表</div>
+        <div class="buttons">导出报表</div>
+      </div>
+      <div class="items-center listTopRight" v-else>
+        <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab !== 1"><b>+</b></div>
+        <div class="icons search" @click="highSearch" v-show="chooseTab === 1"></div>
       </div>
     </div>
-    <div class="departList">
+    <!--组织架构-->
+    <div v-if="chooseTab === 1">
+      组织架构
+    </div>
+    <!--部门管理-->
+    <div class="departList" v-if="chooseTab === 2">
       <div class="items-bet mainList" :class="{'mainListHover': routeAnimation}">
         <p v-for="item in resourceDepart.data">
           <span class="writingMode">
@@ -30,6 +56,37 @@
         </p>
       </div>
     </div>
+    <!--员工名册-->
+    <div v-if="chooseTab === 3">
+      <StaffRoster></StaffRoster>
+    </div>
+
+    <!--新增部门-->
+    <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
+      <div class="dialog_container">
+        <div class="items-bet dialog_header">
+          <span>新增部门</span>
+        </div>
+        <div class="dialog_main flex-center borderNone">
+          <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible">
+            <el-form-item label="部门名称" required>
+              <el-input v-model="departForm.name" suffix-icon="el-icon-date"></el-input>
+            </el-form-item>
+            <el-form-item label="上级部门" required>
+              <el-input v-model="departForm.depart" suffix-icon="el-icon-date"></el-input>
+            </el-form-item>
+            <el-form-item label="部门负责人" required>
+              <el-input v-model="departForm.leader" suffix-icon="el-icon-date"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="footerBtn">
+          <div class="danger">确认</div>
+          <div class="default">取消</div>
+        </div>
+      </div>
+    </lj-dialog>
+
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
@@ -37,7 +94,9 @@
 </template>
 
 <script>
+  import StaffRoster from './staffRoster/index.vue';
   import SearchHigh from '../../common/searchHigh.vue';
+  import ljDialog from '../../common/lj-dialog.vue';
   import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
@@ -46,14 +105,18 @@
 
   export default {
     name: "index",
-    components: {MenuList, SearchHigh, Upload, StaffOrgan},
+    components: {StaffRoster, MenuList, ljDialog, SearchHigh, Upload, StaffOrgan},
     data() {
       return {
         recruitmentSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 1,
-        organModule: false,
+        organModule: false,//组织架构
+
+        depart_visible: false,//新增部门
+        lj_size: {},//新增部门
+        departForm: {},//新增部门
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -71,10 +134,32 @@
             id: 4,
             title: '离职管理',
           }
-        ],
-        visibleStatus: false,
-        showSearch: false,
-        searchData: {},
+        ],//tab切换
+        visibleStatus: false,//弹出部门
+        showSearch: false,//高级搜索
+        searchData: {},//搜索结果
+
+        checkList: '',//离职员工
+        options: [
+          {
+            value: '选项1',
+            label: '黄金糕'
+          }, {
+            value: '选项2',
+            label: '双皮奶'
+          }, {
+            value: '选项3',
+            label: '蚵仔煎'
+          }, {
+            value: '选项4',
+            label: '龙须面'
+          }, {
+            value: '选项5',
+            label: '北京烤鸭'
+          }
+        ],//部门人员
+        value: '',
+
         photo1: {
           keyName: 'photo1',
           setFile: [],
@@ -93,18 +178,33 @@
     computed: {
       routeAnimation() {
         return this.$store.state.app.routeAnimation;
+      },
+      themeName() {
+        return this.$store.state.app.themeName;
       }
     },
     methods: {
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;
+        this.$store.dispatch('route_animation');
       },
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
           console.log(val);
+        }
+      },
+      showAddModule(val) {
+        switch (val) {
+          case 2:
+            this.depart_visible = true;
+            this.lj_size = {
+              width: '540px',
+              height: '500px',
+            };
+            break;
         }
       },
       // 高级搜索
@@ -144,6 +244,24 @@
               @include recruitmentImg('recruitmenthong.png', 'theme1');
             }
           }
+        }
+      }
+      .dialog_container {
+        .dialog_header {
+          span {
+            font-size: 24px;
+          }
+        }
+        .dialog_main {
+          .depart_visible {
+            width: 80%;
+            height: 100%;
+            padding: 30px 20px 20px 0;
+            @include flex('bet-column');
+          }
+        }
+        .footerBtn {
+          margin-bottom: 40px;
         }
       }
     }

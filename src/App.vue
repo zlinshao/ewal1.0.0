@@ -27,7 +27,7 @@
           </select>
         </div>
         <div class="items-center personal" @click="routerLink('login')">
-          <span>冯宝宝{{routeAnimation}}</span>
+          <span>冯宝宝</span>
           <p>
             <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
           </p>

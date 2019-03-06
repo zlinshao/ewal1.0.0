@@ -220,6 +220,18 @@
   color: #CF2E33;
   background-color: #FFEAEA; }
 
+div.el-popover {
+  background-color: #CF2E33;
+  color: #FFFFFF;
+  min-width: 0;
+  padding: 12px;
+  border-color: transparent;
+  -webkit-transform: translateX(35%);
+  -moz-transform: translateX(35%);
+  -ms-transform: translateX(35%);
+  -o-transform: translateX(35%);
+  transform: translateX(35%); }
+
 #theme_name .el-table {
   background-color: transparent; }
   #theme_name .el-table::before {
@@ -237,9 +249,9 @@
     background-color: transparent !important; }
   #theme_name .el-table tbody tr:hover td {
     background-color: transparent !important; }
-#theme_name .BorderNone .el-input__inner {
+#theme_name .borderNone .el-input__inner {
   border: none;
-  background-color: transparent !important; }
+  background-color: #FFFFFF !important; }
 #theme_name .el-checkout-group, #theme_name .el-radio-group {
   display: flex;
   display: -webkit-flex;

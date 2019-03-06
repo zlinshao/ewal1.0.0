@@ -2,12 +2,21 @@
   <div id="staffOrgan">
     <lj-dialog
       :visible="lj_visible"
-      :size="lj_size"
+      :size="'small'"
       @close="handleCloseLjDialog">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <span>选择人员</span>
-          <span class="search"></span>
+          <div class="items-center">
+            <!--<el-input type="text" size="small" v-model="search"></el-input>-->
+            <span class="search"></span>
+            <!--<ul style="position: absolute;top: 30px;left: 0;right: 28px;">-->
+              <!--<li class="items-bet">-->
+                <!--<b>发货的是</b>-->
+                <!--<span>发的还是卡了</span>-->
+              <!--</li>-->
+            <!--</ul>-->
+          </div>
         </div>
         <div class="justify-bet dialog_main">
           <div class="flex depart">
@@ -30,7 +39,8 @@
                   <div class="items-center" @click="checkStaff(item)">
                     <h3></h3>
                     <h4>
-                      <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
+                      <img :src="item.avatar" v-if="item.avatar">
+                      <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg" v-else>
                     </h4>
                     <h5>
                       <span class="staffName">{{item.name}}</span>
@@ -60,13 +70,14 @@
                 <div v-for="(item,index) in chooseStaff" class="lists">
                   <h4>
                     <i class="el-icon-remove" @click="removeStaff(index)"></i>
-                    <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
+                    <img :src="item.avatar" v-if="item.avatar">
+                    <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg" v-else>
                   </h4>
                   <p>{{item.name}}</p>
                 </div>
               </div>
             </div>
-            <footer class="justify-center">
+            <footer class="footerBtn">
               <div class="danger" @click="staffInfo">确认</div>
               <div class="default" @click="handleCloseLjDialog">取消</div>
             </footer>
@@ -88,6 +99,7 @@
       return {
         url: globalConfig.organ_server,
         fullLoading: false,
+        search: '',
         crumbs: [
           {
             id: 1,
@@ -99,7 +111,6 @@
         checkedStaff: [],//左侧选中人员ID
         chooseStaff: [],//选中人员列表
         lj_visible: false,
-        lj_size: 'small',
       }
     },
     mounted() {
@@ -110,6 +121,9 @@
     watch: {
       module(val) {
         this.lj_visible = val;
+      },
+      search(val) {
+        this.searchStaff('', val);
       }
     },
     computed: {},
@@ -146,28 +160,32 @@
         });
       },
       // 更新数据
-      getList(val = 1) {
+      getList(org = 1) {
         this.departList = [];
         this.staffList = [];
         this.fullLoading = true;
         return new Promise((resolve, reject) => {
           this.$http.get(this.url + 'organization/organization', {
-            parent_id: val
+            parent_id: org
           }).then(res => {
-            this.fullLoading = false;
             resolve(true);
             if (res.code === '20000') {
               this.departList = res.data.data;
-              this.$http.get(this.url + 'staff/user', {
-                org_id: val
-              }).then(res => {
-                if (res.code === '20000') {
-                  this.staffList = res.data.data;
-                }
-              })
             }
+            this.searchStaff(org)
           })
         });
+      },
+      searchStaff(org, val = '') {
+        this.$http.get(this.url + 'staff/user', {
+          org_id: org,
+          search: val,
+        }).then(res => {
+          this.fullLoading = false;
+          if (res.code === '20000') {
+            this.staffList = res.data.data;
+          }
+        })
       },
       // 选人
       checkStaff(item) {
@@ -203,164 +221,7 @@
       .dialog_container {
         .dialog_header {
           .search {
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
             @include bgImage('../../assets/image/common/theme1/search.png');
-          }
-        }
-        .dialog_main {
-          margin: 10px;
-          overflow: hidden;
-          .colorChoose {
-            cursor: pointer;
-            color: $colorE33;
-          }
-          h4 {
-            width: 50px;
-            height: 50px;
-            img {
-              @include radius(50%);
-            }
-          }
-          > div {
-            width: 100%;
-            @include radius(6px);
-            background-color: $colorFFF;
-            text-align: left;
-          }
-          /*左侧*/
-          .depart {
-            flex-direction: column;
-            padding-bottom: 10px;
-            .crumbs {
-              padding: 20px 30px 30px;
-            }
-            .organList {
-              height: 100%;
-              padding: 0 30px;
-              ul {
-                li {
-                  padding: 15px 0;
-                  &:hover {
-                    color: $colorE33;
-                  }
-                  p {
-                    cursor: pointer;
-                  }
-                  .lowerLevel {
-                    text-align: right;
-                    padding-right: 10px;
-                    min-width: 100px;
-                  }
-                  h4 {
-                    margin: 0 10px;
-                  }
-                  h5 {
-                    .staffName {
-                      display: block;
-                    }
-                    font-size: 16px;
-                    text-align: left;
-                    span + span {
-                      font-size: 14px;
-                      margin-top: 5px;
-                      color: #C3C3C7;
-                    }
-                  }
-                }
-                .staff {
-                  &:hover {
-                    color: $colorE33;
-                    h5 {
-                      span + span {
-                        color: $colorE33;
-                      }
-                    }
-                  }
-                  h3 {
-                    width: 20px;
-                    height: 20px;
-                    @include radius(50%);
-                    border: 1px solid $colorFDF;
-                  }
-                  padding: 10px 0;
-                  div {
-                    cursor: pointer;
-                  }
-                }
-                .checkStaff {
-                  color: $colorE33;
-                  h5 {
-                    span + span {
-                      color: $colorE33;
-                    }
-                  }
-                  h3 {
-                    background-color: $colorE33;
-                    border: 1px solid $colorE33;
-                  }
-                }
-              }
-            }
-          }
-          /*右侧*/
-          .chooseStaff {
-            flex-direction: column;
-            margin-left: 20px;
-            padding: 20px 30px 0;
-            > div {
-              > label {
-                padding-bottom: 20px;
-                display: block;
-              }
-              height: 80%;
-              > div {
-                max-height: 100%;
-                flex-wrap: wrap;
-                .lists {
-                  text-align: center;
-                  width: 20%;
-                  margin-top: 20px;
-                  h4 {
-                    position: relative;
-                    margin: 0 auto;
-                    i {
-                      font-size: 18px;
-                      color: $colorE33;
-                      position: absolute;
-                      top: -6px;
-                      right: 0;
-                      cursor: pointer;
-                    }
-                  }
-                  p {
-                    margin-top: 6px;
-                  }
-                }
-              }
-            }
-            footer {
-              div {
-                width: 110px;
-                height: 40px;
-                line-height: 40px;
-                cursor: pointer;
-                text-align: center;
-                @include radius(6px);
-                &:hover {
-                  opacity: .8;
-                }
-              }
-              .danger {
-                margin-right: 20px;
-                color: $colorFFF;
-                background-color: $colorE33;
-              }
-              .default {
-                background-color: $colorFDF;
-              }
-            }
           }
         }
       }

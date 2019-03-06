@@ -8,7 +8,13 @@
         <h1>收支流水</h1>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons bank" @click="handleOpenBankRun"></div>
+        <el-popover
+          placement="bottom-end"
+          :visible-arrow="false"
+          trigger="hover"
+          content="银行流水">
+          <div slot="reference" class="icons bank" @click="handleOpenBankRun"></div>
+        </el-popover>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>

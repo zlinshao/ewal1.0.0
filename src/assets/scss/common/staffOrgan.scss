@@ -2,7 +2,149 @@
 
 #theme_name {
   #staffOrgan {
-
+    .dialog_container {
+      .dialog_header {
+        .search {
+          min-width: 28px;
+          max-width: 28px;
+          height: 30px;
+          cursor: pointer;
+        }
+      }
+      .dialog_main {
+        margin: 10px;
+        overflow: hidden;
+        .colorChoose {
+          cursor: pointer;
+          color: $colorE33;
+        }
+        h4 {
+          width: 50px;
+          height: 50px;
+          img {
+            @include radius(50%);
+          }
+        }
+        > div {
+          width: 100%;
+          @include radius(6px);
+          background-color: $colorFFF;
+          text-align: left;
+        }
+        /*左侧*/
+        .depart {
+          flex-direction: column;
+          padding-bottom: 10px;
+          .crumbs {
+            padding: 20px 30px 30px;
+          }
+          .organList {
+            height: 100%;
+            padding: 0 30px;
+            ul {
+              li {
+                padding: 15px 0;
+                &:hover {
+                  color: $colorE33;
+                }
+                p {
+                  cursor: pointer;
+                }
+                .lowerLevel {
+                  text-align: right;
+                  padding-right: 10px;
+                  min-width: 100px;
+                }
+                h4 {
+                  margin: 0 10px;
+                }
+                h5 {
+                  .staffName {
+                    display: block;
+                  }
+                  font-size: 16px;
+                  text-align: left;
+                  span + span {
+                    font-size: 14px;
+                    margin-top: 5px;
+                    color: #C3C3C7;
+                  }
+                }
+              }
+              .staff {
+                &:hover {
+                  color: $colorE33;
+                  h5 {
+                    span + span {
+                      color: $colorE33;
+                    }
+                  }
+                }
+                h3 {
+                  width: 20px;
+                  height: 20px;
+                  @include radius(50%);
+                  border: 1px solid $colorFDF;
+                }
+                padding: 10px 0;
+                div {
+                  cursor: pointer;
+                }
+              }
+              .checkStaff {
+                color: $colorE33;
+                h5 {
+                  span + span {
+                    color: $colorE33;
+                  }
+                }
+                h3 {
+                  background-color: $colorE33;
+                  border: 1px solid $colorE33;
+                }
+              }
+            }
+          }
+        }
+        /*右侧*/
+        .chooseStaff {
+          flex-direction: column;
+          margin-left: 20px;
+          padding: 20px 30px 0;
+          > div {
+            > label {
+              padding-bottom: 20px;
+              display: block;
+            }
+            height: 80%;
+            > div {
+              max-height: 100%;
+              flex-wrap: wrap;
+              .lists {
+                text-align: center;
+                width: 20%;
+                margin-top: 20px;
+                h4 {
+                  position: relative;
+                  margin: 0 auto;
+                  i {
+                    font-size: 18px;
+                    color: $colorE33;
+                    position: absolute;
+                    top: -6px;
+                    right: 0;
+                    cursor: pointer;
+                  }
+                }
+                p {
+                  margin-top: 6px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 

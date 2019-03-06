@@ -247,11 +247,12 @@
         height: 3px;
         margin-top: 6px;
         background-color: transparent; }
+  #theme_name .listTopCss .listTopRight > div, #theme_name .listTopCss .listTopRight > span {
+    margin-right: 40px; }
   #theme_name .listTopCss .listTopRight > div {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    margin-right: 40px;
     cursor: pointer; }
   #theme_name .listTopCss .listTopRight .add {
     display: flex;
@@ -359,6 +360,28 @@
       -webkit-border-radius: 5px;
       -moz-border-radius: 5px;
       border-radius: 5px; }
+  #theme_name .dialog_container .footerBtn {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center; }
+    #theme_name .dialog_container .footerBtn div + div {
+      margin-left: 20px; }
+    #theme_name .dialog_container .footerBtn div {
+      width: 110px;
+      height: 40px;
+      line-height: 40px;
+      cursor: pointer;
+      text-align: center;
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      border-radius: 6px; }
+      #theme_name .dialog_container .footerBtn div:hover {
+        opacity: .8; }
+    #theme_name .dialog_container .footerBtn .danger {
+      color: #FFFFFF;
+      background-color: #CF2E33; }
+    #theme_name .dialog_container .footerBtn .default {
+      background-color: #DFDFDF; }
 #theme_name .form_item_container {
   display: flex;
   padding: 5px 40px; }

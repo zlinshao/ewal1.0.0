@@ -46,9 +46,11 @@
       }
     }
     .listTopRight {
+      > div, > span {
+        margin-right: 40px;
+      }
       > div {
         @include radius(6px);
-        margin-right: 40px;
         cursor: pointer;
       }
       .add {
@@ -152,6 +154,30 @@
       button {
         min-width: 90px;
         @include radius(5px);
+      }
+    }
+    .footerBtn {
+      @include flex('justify-center');
+      div + div {
+        margin-left: 20px;
+      }
+      div {
+        width: 110px;
+        height: 40px;
+        line-height: 40px;
+        cursor: pointer;
+        text-align: center;
+        @include radius(6px);
+        &:hover {
+          opacity: .8;
+        }
+      }
+      .danger {
+        color: $colorFFF;
+        background-color: $colorE33;
+      }
+      .default {
+        background-color: $colorFDF;
       }
     }
   }

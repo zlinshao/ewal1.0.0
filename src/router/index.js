@@ -18,7 +18,7 @@ const HouseManagement = () => import('@/components/marketCentre/houseManagement/
 // 人力资源中心
 const HumanResource = () => import('@/components/humanResource/index.vue');
 const Recruitment = () => import('@/components/humanResource/recruitment/index.vue');//招聘中心
-const StaffRoster = () => import('@/components/humanResource/staffRoster/index.vue');//员工名册
+const StaffRoster = () => import('@/components/humanResource/recruitment/staffRoster/index.vue');//员工名册
 
 // 财务中心
 const Finance = () => import('@/components/finance/index.vue');
@@ -116,6 +116,6 @@ export default new Router({
       path: '/gathering',
       name: '收款',
       component: Gathering
-    }
+    },
   ]
 })
