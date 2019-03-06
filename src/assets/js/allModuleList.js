@@ -108,6 +108,10 @@ export const finance = {
   type: 'finance',
   data: [
     {
+      url: 'customer',
+      title: '客户'
+    },
+    {
       url: '',
       title: '付款',
     },

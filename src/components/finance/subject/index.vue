@@ -6,13 +6,6 @@
           <b>...</b>
         </p>
         <h1>科目</h1>
-        <h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}
-            <i></i>
-          </span>
-        </h2>
       </div>
       <div class="items-center listTopRight">
         <div class="icons add" @click="new_subject_visible = true"><b>+</b></div>
@@ -387,13 +380,6 @@
           parent_id: '',
           title: ''
         },
-        selects: [
-          {
-            id: 1,
-            title: '科目管理',
-          },
-        ],
-        chooseTab: 1,
         chooseRowIds: [],
         subjectData: [],
         subjectCount: 0,
