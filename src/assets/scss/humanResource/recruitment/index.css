@@ -181,5 +181,19 @@
       -webkit-transition-delay: 1s; }
   #theme_name #recruitment .departList .mainListHover p {
     transform: rotateY(0); }
+  #theme_name #recruitment .dialog_container .dialog_header span {
+    font-size: 24px; }
+  #theme_name #recruitment .dialog_container .dialog_main .depart_visible {
+    width: 80%;
+    height: 100%;
+    padding: 30px 20px 20px 0;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-direction: column;
+    justify-content: space-between; }
+  #theme_name #recruitment .dialog_container .footerBtn {
+    margin-bottom: 40px; }
 
 /*# sourceMappingURL=index.css.map */

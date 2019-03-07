@@ -42,10 +42,12 @@
         <div class="icons search" @click="highSearch" v-show="chooseTab === 1"></div>
       </div>
     </div>
+
     <!--组织架构-->
     <div v-if="chooseTab === 1">
       组织架构
     </div>
+
     <!--部门管理-->
     <div class="departList" v-if="chooseTab === 2">
       <div class="items-bet mainList" :class="{'mainListHover': routeAnimation}">
@@ -56,6 +58,7 @@
         </p>
       </div>
     </div>
+
     <!--员工名册-->
     <div v-if="chooseTab === 3">
       <StaffRoster></StaffRoster>
@@ -70,13 +73,19 @@
         <div class="dialog_main flex-center borderNone">
           <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible">
             <el-form-item label="部门名称" required>
-              <el-input v-model="departForm.name" suffix-icon="el-icon-date"></el-input>
+              <el-input v-model="departForm.name"></el-input>
             </el-form-item>
             <el-form-item label="上级部门" required>
-              <el-input v-model="departForm.depart" suffix-icon="el-icon-date"></el-input>
+              <div class="items-center iconInput">
+                <el-input v-model="departForm.depart"></el-input>
+                <p class="icons organization"></p>
+              </div>
             </el-form-item>
             <el-form-item label="部门负责人" required>
-              <el-input v-model="departForm.leader" suffix-icon="el-icon-date"></el-input>
+              <div class="items-center iconInput">
+                <el-input v-model="departForm.leader"></el-input>
+                <p class="icons user"></p>
+              </div>
             </el-form-item>
           </el-form>
         </div>
@@ -258,22 +267,17 @@
         }
       }
       .dialog_container {
-        .dialog_header {
-          span {
-            font-size: 24px;
-          }
-        }
         .dialog_main {
-          .depart_visible {
-            width: 80%;
-            height: 100%;
-            padding: 30px 20px 20px 0;
-            @include flex('bet-column');
+          .iconInput {
+            .organization {
+              @include bgImage('../../../assets/image/common/theme1/zuzhijiagou.png');
+            }
+            .user {
+              @include bgImage('../../../assets/image/common/theme1/yonghu.png');
+            }
           }
         }
-        .footerBtn {
-          margin-bottom: 40px;
-        }
+
       }
     }
   }

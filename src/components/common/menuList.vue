@@ -45,7 +45,7 @@
         this.routerLink(url);
         this.dialogVisible = false;
       },
-      // 点击当前以外的地方关闭
+      // 出自己以外的元素关闭
       hidePanel(event) {
         let sp = document.getElementById("list");
         if (sp) {

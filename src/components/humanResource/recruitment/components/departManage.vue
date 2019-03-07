@@ -3,7 +3,7 @@
     <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
-          <span>新增部门</span>
+          <span>部门管理</span>
         </div>
         <div class="dialog_main bet-column">
           <div class="items-bet mainTop">
@@ -15,7 +15,8 @@
               <b>+</b>
             </h2>
           </div>
-          <div class="scroll_bar staffManage" v-if="tabsManage === 1">
+          <div class="scroll_bar staffManage" id="scroll-body" v-if="tabsManage === 1"
+               @click="checkOverflow()">
             <div class="items-center" v-for="item in 40" @click="reviseStaff(item)">
               <p>
                 <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
@@ -24,13 +25,21 @@
                 <h4>法国电视</h4>
                 <h5>范德萨发生</h5>
               </div>
-              <h5 class="operate" v-show="staffId === item">
+              <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
                 <span>权限</span>
                 <span>禁用</span>
                 <span>修改</span>
                 <span>离职</span>
-                <b></b>
+                <b v-if="!operatePos"></b>
+                <i v-if="operatePos"></i>
               </h5>
+            </div>
+          </div>
+          <div class="scroll_bar orgManage" v-if="tabsManage === 2">
+            <div v-for="item in 30">
+              <p>
+                <span class="writingMode">符合都看傻了废话说多</span>
+              </p>
             </div>
           </div>
         </div>
@@ -52,6 +61,7 @@
         lj_size: {},
         tabsManage: 1,
         staffId: '',
+        operatePos: false,
       }
     },
     mounted() {
@@ -71,12 +81,23 @@
     },
     computed: {},
     methods: {
+      checkOverflow() {
+        let obj = document.getElementById("scroll-body");
+        this.operatePos = false;
+        this.$nextTick(function () {
+          this.operatePos = obj.offsetHeight - obj.clientHeight > 0;
+        })
+      },
       chooseManage(val) {
         this.tabsManage = val;
       },
       reviseStaff(val) {
+        if (this.staffId === val) {
+          this.staffId = '';
+          return;
+        }
         this.staffId = val;
-      }
+      },
     },
   }
 </script>
