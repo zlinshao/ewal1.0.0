@@ -10,5 +10,8 @@ export default {
     Vue.prototype.mainListHeight = function (num = 0) {
       return window.innerHeight - 170 - num;
     };
+    Vue.prototype.showLoading = function (status = true) {
+      return this.$store.dispatch('switch_loading',status);
+    }
   }
 }
