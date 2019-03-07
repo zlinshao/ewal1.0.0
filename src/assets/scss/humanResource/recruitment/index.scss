@@ -38,6 +38,24 @@
         }
       }
     }
+    .dialog_container {
+      .dialog_header {
+        span {
+          font-size: 24px;
+        }
+      }
+      .dialog_main {
+        .depart_visible {
+          width: 80%;
+          height: 100%;
+          padding: 30px 20px 20px 0;
+          @include flex('bet-column');
+        }
+      }
+      .footerBtn {
+        margin-bottom: 40px;
+      }
+    }
   }
 }
 

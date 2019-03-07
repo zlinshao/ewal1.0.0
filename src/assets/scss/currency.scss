@@ -7,6 +7,44 @@
 }
 
 #theme_name {
+  h5.operate {
+    position: absolute;
+    top: -55px;
+    padding: 10px 0;
+    @include radius(6px);
+    background-color: $color874;
+    @include flex('items-center');
+    span {
+      white-space: nowrap;
+      color: $colorFFF;
+      padding: 6px 30px;
+      &:hover {
+        cursor: pointer;
+        color: $colorE33;
+        @include bgImage('../../assets/image/common/theme1/xzgj.png');
+      }
+    }
+    b, i {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: $color874;
+      bottom: -5px;
+      transform: rotateZ(45deg);
+    }
+    b {
+      left: 60px;
+    }
+    i {
+      right: 60px;
+    }
+  }
+  h5.left.operate {
+    left: 0;
+  }
+  h5.right.operate {
+    right: 0;
+  }
   //表格头部
   .listTopCss {
     background-color: $colorFFF;
@@ -55,10 +93,10 @@
       }
       .add {
         @include flex('flex-center');
-        padding-bottom: 6px;
         b {
           color: $colorFFF;
           font-size: 30px;
+          padding-bottom: 6px;
         }
       }
       .search {
@@ -126,7 +164,7 @@
     margin: 0 20px 10px 0;
     @include radius(6px);
   }
-
+  //模态kuang
   .dialog_container {
     height: 100%;
     @include flex('justify-bet');
@@ -245,6 +283,16 @@
     }
     .icon_bank {
       @include gatheringImg('yinhang.png', 'theme1');
+    }
+  }
+  //input图标
+  .iconInput {
+    background-color: $colorFFF;
+    @include radius(4px);
+    padding-right: 15px;
+    .icons {
+      width: 20px;
+      height: 20px;
     }
   }
   //分页

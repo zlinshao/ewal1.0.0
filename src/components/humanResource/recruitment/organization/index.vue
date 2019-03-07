@@ -73,8 +73,8 @@
 <style lang="scss" scoped>
   @import "../../../../assets/scss/humanResource/recruitment/organization/index.scss";
 
-  @mixin mobanImg($m, $n) {
-    $url: '../../../assets/image/humanResource/recruitment/' + $n + '/' + $m;
+  @mixin organImg($m, $n) {
+    $url: '../../../../assets/image/humanResource/recruitment/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
