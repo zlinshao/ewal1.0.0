@@ -34,8 +34,9 @@
             <el-checkbox label="1">离职员工</el-checkbox>
           </el-checkbox-group>
         </div>
-        <div class="buttons">设置报表</div>
-        <div class="buttons">导出报表</div>
+        <div class="icons dimission"></div>
+        <div class="buttons button1">设置报表</div>
+        <div class="buttons button2">导出报表</div>
       </div>
       <div class="items-center listTopRight" v-else>
         <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab !== 1"><b>+</b></div>
@@ -216,8 +217,8 @@
           case 2:
             this.depart_visible = true;
             this.lj_size = {
-              width: '540px',
-              height: '500px',
+              width: '510px',
+              height: '450px',
             };
             break;
         }
@@ -254,6 +255,11 @@
     @include bgImage($url);
   }
 
+  @mixin commonImg($m, $n) {
+    $url: '../../../assets/image/common/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
   #theme_name.theme1 {
     #recruitment {
       .departList {
@@ -270,14 +276,13 @@
         .dialog_main {
           .iconInput {
             .organization {
-              @include bgImage('../../../assets/image/common/theme1/zuzhijiagou.png');
+              @include commonImg('zuzhijiagou.png', 'theme1');
             }
             .user {
-              @include bgImage('../../../assets/image/common/theme1/yonghu.png');
+              @include commonImg('yonghu.png', 'theme1');
             }
           }
         }
-
       }
     }
   }

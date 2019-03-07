@@ -6,6 +6,11 @@
   @include bgImage($url);
 }
 
+@mixin commonImg($m,$n) {
+  $url: '../../assets/image/common/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
 #theme_name {
   h5.operate {
     position: absolute;
@@ -91,6 +96,7 @@
         @include radius(6px);
         cursor: pointer;
       }
+      //增加
       .add {
         @include flex('flex-center');
         b {
@@ -99,9 +105,15 @@
           padding-bottom: 6px;
         }
       }
+      //搜索
       .search {
-        @include bgImage('../../assets/image/common/theme1/search.png');
+        @include commonImg('search.png', 'theme1');
       }
+      //离职管理
+      .dimission {
+        @include commonImg('lizhiguanli.png', 'theme1');
+      }
+      //bank流水
       .bank {
         @include bgImage('../../assets/image/finance/budgetStream/theme1/yinhangliushui.png');
       }
@@ -110,14 +122,24 @@
         height: 30px;
       }
       .buttons {
-        background-color: $colorFE0;
-        color: $color874;
         padding: 0 20px;
         height: 40px;
         line-height: 38px;
+      }
+      .button1 {
+        background-color: #FFF7E4;
+        color: #FFAD0B;
         &:hover {
-          background-color: $colorE33;
-          color: $colorFFF;
+          background-color: #FFAD0B;
+          color: #FFF7E4;
+        }
+      }
+      .button2 {
+        background-color: #CFF8EA;
+        color: #0BB07B;
+        &:hover {
+          background-color: #0BB07B;
+          color: #CFF8EA;
         }
       }
     }

@@ -3,19 +3,12 @@
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
         :data="tableData"
-        :height="this.mainListHeight(30) + 'px'"
         highlight-current-row
+        :height="this.mainListHeight(30) + 'px'"
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         style="width: 100%">
-        <el-table-column
-          align="center"
-          label="紧急程度">
-          <template slot-scope="scope">
-
-          </template>
-        </el-table-column>
         <el-table-column
           v-for="item in Object.keys(showData)" :key="item"
           align="center"
@@ -29,7 +22,11 @@
         </div>
         <div class="page">
           <el-pagination
-            :total="100"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="params.page"
+            :page-size="params.limit"
+            :total="counts"
             layout="total,jumper,prev,pager,next">
           </el-pagination>
         </div>
@@ -43,220 +40,50 @@
     name: "index",
     data() {
       return {
+        url: globalConfig.organ_server,
         checkList: [],
         showData: {
-          date: '日期',
           name: '姓名',
-          address: '地址',
+          date1: '部门',
+          date2: '面貌',
+          date3: '民族',
+          date4: '出生日期',
+          date5: '身份证号',
+          date6: '城市',
+          date7: '户口性质',
+          date8: '婚育情况',
+          date9: '家庭住址',
+          date10: '联系方式',
+          date11: '紧急联系人',
+          phone: '电话',
         },
         chooseRowIds: [],
-        tableData: [
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 23,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 33,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 23,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 33,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 10,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 20,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 30,
-            status: 1,
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄',
-          },
-          {
-            id: 11,
-            status: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄',
-          },
-          {
-            id: 12,
-            status: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-          {
-            id: 13,
-            status: 4,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-          },
-        ],
+        tableData: [],
+        counts: 0,
+        params: {
+          search: '',
+          page: 1,
+          limit: 36,
+          org_id: '',
+          position_id: '',
+        }
       }
     },
     mounted() {
+      this.getStaffList();
     },
     activated() {
     },
     watch: {},
     computed: {},
     methods: {
+      getStaffList() {
+        this.$http.get(this.url + 'staff/user', this.params).then(res => {
+          console.log(res.data.data);
+          this.tableData = res.data.data;
+          this.counts = res.data.count;
+        })
+      },
       // 当前点击
       tableClickRow(row) {
         let ids = this.chooseRowIds;
@@ -267,6 +94,14 @@
       tableChooseRow({row, rowIndex}) {
         return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
       },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        this.params.page = val;
+        this.getStaffList();
+        console.log(`当前页: ${val}`);
+      }
     },
   }
 </script>
