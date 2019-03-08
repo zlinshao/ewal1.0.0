@@ -289,6 +289,8 @@
     -moz-border-radius: 6px;
     border-radius: 6px;
     cursor: pointer; }
+  #theme_name .listTopCss .listTopRight h4 {
+    margin-right: 20px; }
   #theme_name .listTopCss .listTopRight .add {
     display: flex;
     display: -webkit-flex;

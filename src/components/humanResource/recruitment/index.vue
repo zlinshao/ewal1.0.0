@@ -16,31 +16,17 @@
           </span>
         </h2>
       </div>
-      <div class="items-center listTopRight" v-if="chooseTab === 3">
-        <div class="searchTerm">
-          <b>部门/人员</b>
-          <el-select v-model="value" clearable :popper-class="`appTheme${themeName}`">
-            <el-option
-              v-for="item in options"
-              :class="`el-option-${themeName}`"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="searchTerm">
+      <div class="items-center listTopRight">
+        <div class="searchTerm" v-if="chooseTab === 3">
           <el-checkbox-group v-model="checkList">
             <el-checkbox label="1">离职员工</el-checkbox>
           </el-checkbox-group>
         </div>
-        <div class="icons dimission"></div>
-        <div class="buttons button1">设置报表</div>
-        <div class="buttons button2">导出报表</div>
-      </div>
-      <div class="items-center listTopRight" v-else>
-        <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab !== 1"><b>+</b></div>
-        <div class="icons search" @click="highSearch" v-show="chooseTab === 1"></div>
+        <div class="icons dimission" v-if="chooseTab === 3"></div>
+        <div class="buttons button1" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
+        <div class="buttons button2" v-if="chooseTab === 3 || chooseTab === 4">导出报表</div>
+        <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
+        <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2"></div>
       </div>
     </div>
 
@@ -63,6 +49,11 @@
     <!--员工名册-->
     <div v-if="chooseTab === 3">
       <StaffRoster></StaffRoster>
+    </div>
+
+    <!--离职管理-->
+    <div v-if="chooseTab === 4">
+      <LeaveJob></LeaveJob>
     </div>
 
     <!--新增部门-->
@@ -108,21 +99,23 @@
 
 <script>
   import DepartManage from './components/departManage.vue';
-  import StaffRoster from './staffRoster/index.vue';
+  import StaffRoster from './staffRoster/index.vue';//员工名册
+  import LeaveJob from './leaveJob/index.vue';//离职管理
   import SearchHigh from '../../common/searchHigh.vue';
   import ljDialog from '../../common/lj-dialog.vue';
   import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
-  import {recruitmentSearch} from '../../../assets/js/allSearchData.js';
+  import {staffBookSearch,LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: {DepartManage, StaffRoster, MenuList, ljDialog, SearchHigh, Upload, StaffOrgan},
+    components: {DepartManage, StaffRoster, LeaveJob, MenuList, ljDialog, SearchHigh, Upload, StaffOrgan},
     data() {
       return {
-        recruitmentSearch,
+        staffBookSearch,
+        LeaveJobSearch,
         humanResource,
         resourceDepart,
         organModule: false,//组织架构
@@ -229,9 +222,20 @@
         console.log(val);
       },
       // 高级搜索
-      highSearch() {
+      highSearch(val) {
         this.showSearch = true;
-        this.searchData = this.recruitmentSearch;
+        switch (val) {
+          case 1:
+            this.searchData = this.staffBookSearch;
+            break;
+          case 3:
+            this.searchData = this.staffBookSearch;
+            break;
+          case 4:
+            this.searchData = this.LeaveJobSearch;
+            break;
+        }
+
       },
       moduleList() {
         this.visibleStatus = !this.visibleStatus;

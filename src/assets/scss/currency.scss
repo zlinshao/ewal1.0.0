@@ -96,6 +96,9 @@
         @include radius(6px);
         cursor: pointer;
       }
+      h4{
+        margin-right: 20px;
+      }
       //增加
       .add {
         @include flex('flex-center');
