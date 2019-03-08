@@ -37,13 +37,13 @@
             width="50">
           </el-table-column>
 
-          <el-table-column label="前缀"  align="center">
+          <el-table-column label="前缀" align="center">
             <template slot-scope="scope">
               <div class="statusBar flex-center">
-                <span  style="background-color: #14e731;"></span>
-                <span  style="background-color: #e6a23c;"></span>
-                <span  style="background-color: #f56c6c;"></span>
-                <span  style="background-color: #409eff;"></span>
+                <span style="background-color: #14e731;"></span>
+                <span style="background-color: #e6a23c;"></span>
+                <span style="background-color: #f56c6c;"></span>
+                <span style="background-color: #409eff;"></span>
               </div>
             </template>
           </el-table-column>
@@ -61,23 +61,24 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="操作" prop="" align="center">
+          <el-table-column label="操作" prop="" align="center" width="500">
             <template slot-scope="scope">
-              <el-popover
-                placement="top"
-                width="610"
-                trigger="click">
-                <el-button-group>
-                  <el-button type="info" plain size="small" @click="handleDetailsLord(scope.row,scope.$index)" icon="el-icon-view">详情</el-button>
-                  <el-button type="primary" plain size="small" @click="handleEditLord(scope.row,scope.$index)" icon="el-icon-edit">编辑</el-button>
-                  <el-button type="success" plain size="small" @click="handleMarkLord(scope.row)" icon="el-icon-location">恢复重复标记</el-button>
-                  <el-button type="warning" plain size="small" @click="handleProcessLord(scope.row)" icon="el-icon-info">生成待处理项</el-button>
-                  <el-button type="info" plain size="small" @click="handlePayDate(scope.row)" icon="el-icon-document">生成付款周期</el-button>
-                  <el-button type="danger" plain size="small" @click="handleDeleteLord(scope.row)" icon="el-icon-delete">删除</el-button>
-                </el-button-group>
-                <el-button slot="reference" type="primary" plain size="small" icon="el-icon-setting">设置</el-button>
-              </el-popover>
+              <el-button type="info" plain size="small" @click="handleDetailsLord(scope.row,scope.$index)"
+                         icon="el-icon-view">详情
+              </el-button>
+              <el-button type="primary" plain size="small" @click="handleEditLord(scope.row,scope.$index)"
+                         icon="el-icon-edit">编辑
+              </el-button>
+              <!--<el-button type="success" plain size="small" @click="handleMarkLord(scope.row)" icon="el-icon-location">恢复重复标记</el-button>-->
+              <el-button type="warning" plain size="small" @click="handleProcessLord(scope.row)" icon="el-icon-info">
+                生成待处理项
+              </el-button>
+              <!--<el-button type="info" plain size="small" @click="handlePayDate(scope.row)" icon="el-icon-document">生成付款周期</el-button>-->
+              <el-button type="danger" plain size="small" @click="handleDeleteLord(scope.row)" icon="el-icon-delete">
+                删除
+              </el-button>
             </template>
+
           </el-table-column>
         </el-table>
         <footer class="flex-center bottomPage">
@@ -149,153 +150,214 @@
     </lj-dialog>
 
     <!--编辑-->
-    <!--<lj-dialog :visible="edit_visible" :size="{width: 1200 + 'px',height: 600 + 'px'}" @close="edit_visible = false">-->
-    <!--<div class="dialog_container">-->
-    <!--<div class="dialog_header">-->
-    <!--<h3>编辑</h3>-->
-    <!--</div>-->
-    <!--<div class="dialog_main">-->
-    <!--<el-form ref="form" v-model="form" class="flex-center items-start" label-width="140px">-->
-    <!--<el-row :gutter="20" style="width: 100%">-->
-    <!--<el-col :span="8" >-->
-    <!--<h4 class="justify-start" style="margin-bottom: 20px">基本信息</h4>-->
-    <!--<div >-->
-    <!--<el-form-item  label="签约人">-->
-    <!--<el-input v-model="form.months" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="所属部门">-->
-    <!--<el-input v-model="form.months" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="负责人">-->
-    <!--<el-input v-model="form.months" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="客户姓名">-->
-    <!--<el-input v-model="form.customer_name" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="客户手机号">-->
-    <!--<el-input v-model="form.contact" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="房屋地址">-->
-    <!--<el-input v-model="form.address" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="收房月数">-->
-    <!--<el-input v-model="form.months" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="付款方式">-->
-    <!--<el-select v-model="form.pay_types" placeholder="请选择活动区域" label-width="140px">-->
-    <!--<el-option label="区域一" value="1"></el-option>-->
-    <!--<el-option label="区域二" value="2"></el-option>-->
-    <!--</el-select>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="">-->
-    <!--<el-checkbox >付款方式不唯一</el-checkbox>-->
-    <!--</el-form-item>-->
+    <lj-dialog :visible="edit_visible" :size="{width: 1200 + 'px',height: 600 + 'px'}" @close="edit_visible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>编辑</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form label-width="80px">
+            <el-row type="flex" class="row-bg" justify="space-around">
+              <el-col :span="7">
+                <el-form-item label="签约人">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="签约人">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="签约人">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="签约人">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="签约人">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="签约人">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="签约人">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+              </el-col>
 
-    <!--<el-form-item  label="月单价" label-width="140px">-->
-    <!--<el-input-number v-model="" controls-position="right"  :min="1" :max="100"></el-input-number>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="第一年" label-width="140px">-->
-    <!--<el-input-number v-model="" controls-position="right"  :min="1" :max="100"></el-input-number>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="第二年" label-width="140px">-->
-    <!--<el-input-number v-model="" controls-position="right"  :min="1" :max="100"></el-input-number>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="">-->
-    <!--<el-checkbox >付款方式不唯一</el-checkbox>-->
-    <!--</el-form-item>-->
+              <el-col :span="7">
+                <el-form-item label="账户类型">
+                  <el-select placeholder="请选择活动区域">
+                    <el-option label="银行卡" value="1"></el-option>
+                    <el-option label="支付宝" value="2"></el-option>
+                    <el-option label="微信" value="3"></el-option>
+                    <el-option label="存折" value="4"></el-option>
+                    <el-option label="现金" value="5"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="收款人">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="开户银行">
 
-    <!--<el-form-item  label="押金">-->
-    <!--<el-input v-model="form.deposit" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="保修期">-->
-    <!--<el-input v-model="form.warrenty" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="中介费">-->
-    <!--<el-input v-model="form.medi_cost" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="待签约日期">-->
-    <!--<el-date-picker-->
-    <!--v-model="value1"-->
-    <!--type="date"-->
-    <!--placeholder="选择日期">-->
-    <!--</el-date-picker>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="第一次房租日期">-->
-    <!--<el-date-picker-->
-    <!--v-model="form.first_pay_date"-->
-    <!--type="date"-->
-    <!--placeholder="选择日期">-->
-    <!--</el-date-picker>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="第二次房租日期">-->
-    <!--<el-date-picker-->
-    <!--v-model="form.first_pay_date"-->
-    <!--type="date"-->
-    <!--placeholder="选择日期">-->
-    <!--</el-date-picker>-->
-    <!--</el-form-item>-->
+                </el-form-item>
+                <el-form-item label="支行">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="账户">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+              </el-col>
 
-    <!--</div>-->
+              <el-col :span="7">
+                <el-form-item label="房租科目">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="押金科目">
+                  <el-input size="small"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <!--<el-form  class="flex-center items-start" label-width="140px">-->
+            <!--<el-row :gutter="20" style="width: 100%">-->
+              <!--<el-col :span="8">-->
+                <!--<h4 class="justify-start" style="margin-bottom: 20px">基本信息</h4>-->
+                <!--<div>-->
+                  <!--<el-form-item label="签约人">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="所属部门">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="负责人">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="客户姓名">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="客户手机号">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="房屋地址">-->
+                    <!--<el-input v-model="" size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="收房月数">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="付款方式">-->
+                    <!--<el-select  placeholder="请选择活动区域" label-width="140px">-->
+                      <!--<el-option label="区域一" value="1"></el-option>-->
+                      <!--<el-option label="区域二" value="2"></el-option>-->
+                    <!--</el-select>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="">-->
+                    <!--<el-checkbox>付款方式不唯一</el-checkbox>-->
+                  <!--</el-form-item>-->
 
+                  <!--<el-form-item label="月单价" label-width="140px">-->
+                    <!--<el-input-number  controls-position="right" :min="1" :max="100"></el-input-number>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="第一年" label-width="140px">-->
+                    <!--<el-input-number  controls-position="right" :min="1" :max="100"></el-input-number>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="第二年" label-width="140px">-->
+                    <!--<el-input-number  controls-position="right" :min="1" :max="100"></el-input-number>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="">-->
+                    <!--<el-checkbox>付款方式不唯一</el-checkbox>-->
+                  <!--</el-form-item>-->
 
-    <!--</el-col>-->
-    <!--<el-col :span="8" >-->
-    <!--<h4 class="justify-start" style="margin-bottom: 20px">客户信息</h4>-->
-    <!--<div>-->
-    <!--<el-form-item  label="账户类型">-->
-    <!--<el-select v-model="form.pay_types" placeholder="请选择活动区域">-->
-    <!--<el-option label="银行卡" value="1"></el-option>-->
-    <!--<el-option label="支付宝" value="2"></el-option>-->
-    <!--<el-option label="微信" value="3"></el-option>-->
-    <!--<el-option label="存折" value="4"></el-option>-->
-    <!--<el-option label="现金" value="5"></el-option>-->
-    <!--</el-select>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="收款人">-->
-    <!--<el-input v-model="form.months" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="开户银行">-->
-    <!--<el-select v-model="form.pay_types" placeholder="请选择活动区域">-->
-    <!--<el-option label="银行卡" value="1"></el-option>-->
-    <!--<el-option label="支付宝" value="2"></el-option>-->
-    <!--<el-option label="微信" value="3"></el-option>-->
-    <!--<el-option label="存折" value="4"></el-option>-->
-    <!--<el-option label="现金" value="5"></el-option>-->
-    <!--</el-select>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="支行">-->
-    <!--<el-input v-model="form.months" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="账户">-->
-    <!--<el-input v-model="form.months" size="small"></el-input>-->
-    <!--</el-form-item>-->
-    <!--</div>-->
-    <!--</el-col>-->
-    <!--<el-col :span="8" >-->
-    <!--<h4 class="justify-start" style="margin-bottom: 20px">账户信息</h4>-->
-    <!--<div>-->
-    <!--<el-form-item  label="房租科目">-->
-    <!--<el-input v-model="form.months" size="small" @focus="handleOpenSubject('new_subject')"></el-input>-->
-    <!--</el-form-item>-->
-    <!--<el-form-item  label="押金科目">-->
-    <!--<el-input v-model="form.months" size="small" @focus="handleOpenSubject('new_subject')"></el-input>-->
-    <!--</el-form-item>-->
-    <!--</div>-->
-    <!--</el-col>-->
-    <!--</el-row>-->
-    <!--</el-form>-->
+                  <!--<el-form-item label="押金">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="保修期">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="中介费">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="待签约日期">-->
+                    <!--<el-date-picker-->
 
-    <!--</div>-->
-    <!--<div class="dialog_footer">-->
-    <!--<el-button type="danger" plain size="small" @click="handleOkDel">确定</el-button>-->
-    <!--<el-button size="small" plain @click="edit_visible = false;current_row = ''">取消</el-button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</lj-dialog>-->
+                      <!--type="date"-->
+                      <!--placeholder="选择日期">-->
+                    <!--</el-date-picker>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="第一次房租日期">-->
+                    <!--<el-date-picker-->
 
+                      <!--type="date"-->
+                      <!--placeholder="选择日期">-->
+                    <!--</el-date-picker>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="第二次房租日期">-->
+                    <!--<el-date-picker-->
 
+                      <!--type="date"-->
+                      <!--placeholder="选择日期">-->
+                    <!--</el-date-picker>-->
+                  <!--</el-form-item>-->
+
+                <!--</div>-->
+
+              <!--</el-col>-->
+              <!--<el-col :span="8">-->
+                <!--<h4 class="justify-start" style="margin-bottom: 20px">客户信息</h4>-->
+                <!--<div>-->
+                  <!--<el-form-item label="账户类型">-->
+                    <!--<el-select  placeholder="请选择活动区域">-->
+                      <!--<el-option label="银行卡" value="1"></el-option>-->
+                      <!--<el-option label="支付宝" value="2"></el-option>-->
+                      <!--<el-option label="微信" value="3"></el-option>-->
+                      <!--<el-option label="存折" value="4"></el-option>-->
+                      <!--<el-option label="现金" value="5"></el-option>-->
+                    <!--</el-select>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="收款人">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="开户银行">-->
+                    <!--<el-select  placeholder="请选择活动区域">-->
+                      <!--<el-option label="银行卡" value="1"></el-option>-->
+                      <!--<el-option label="支付宝" value="2"></el-option>-->
+                      <!--<el-option label="微信" value="3"></el-option>-->
+                      <!--<el-option label="存折" value="4"></el-option>-->
+                      <!--<el-option label="现金" value="5"></el-option>-->
+                    <!--</el-select>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="支行">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="账户">-->
+                    <!--<el-input  size="small"></el-input>-->
+                  <!--</el-form-item>-->
+                <!--</div>-->
+              <!--</el-col>-->
+              <!--<el-col :span="8">-->
+                <!--<h4 class="justify-start" style="margin-bottom: 20px">账户信息</h4>-->
+                <!--<div>-->
+                  <!--<el-form-item label="房租科目">-->
+                    <!--<el-input  size="small" ></el-input>-->
+                  <!--</el-form-item>-->
+                  <!--<el-form-item label="押金科目">-->
+                    <!--<el-input  size="small" ></el-input>-->
+                  <!--</el-form-item>-->
+                <!--</div>-->
+              <!--</el-col>-->
+            <!--</el-row>-->
+          <!--</el-form>-->
+
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" plain size="small" >确定</el-button>
+          <el-button size="small" plain @click="edit_visible = false;current_row = ''">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--科目-->
     <lj-subject :visible="subject_visible" @close="subject_visible = false"
                 @confirm="handleConfirmSubject"></lj-subject>
+    <!--搜索-->
+    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
 
   </div>
@@ -305,7 +367,8 @@
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue';
   import LjSubject from '../../common/lj-subject.vue';
-  import {subjectSearch} from '../../../assets/js/allSearchData';
+  import {customerSearch} from '../../../assets/js/allSearchData';
+  import SearchHigh from '../../common/searchHigh.vue';
 
   export default {
     name: "index",
@@ -313,10 +376,12 @@
       LjDialog,
       FinMenuList,
       LjSubject,
+      SearchHigh
     },
     data() {
       return {
-        subjectSearch,
+        customerSearch,
+
         params: {
           search: '',
           startRange: '',
@@ -341,6 +406,10 @@
         details_visible: false,
         edit_visible: false,
         delete_visible: false,
+
+        showSearch: false,
+        searchData: {},
+
         subject_visible: false,
         which_subject: '',
         new_subject_visible: false,
@@ -416,6 +485,7 @@
 
         lordDataStatus: [],
 
+
       }
     },
     mounted() {
@@ -425,9 +495,7 @@
     },
     watch: {},
     computed: {
-      form() {
-        return this.lordDataDetail
-      }
+
     },
     methods: {
       callbackSuccess(res) {
@@ -455,7 +523,8 @@
       },
       //新增
       addLord() {
-        this.add_visible = true
+        this.edit_visible = true;
+
       },
       //详情
       handleDetailsLord(row, index) {
@@ -479,17 +548,17 @@
         })
       },
       //标记
-      handleMarkLord() {
-        this.$http.post(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore/' + row.id, {}).then(res => {
-          if (res.code == 200) {
-            this.$notify.success({
-              title: '成功',
-              message: res.msg
-            });
-          }
-        })
-
-      },
+      // handleMarkLord() {
+      //   this.$http.post(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore/' + row.id, {}).then(res => {
+      //     if (res.code == 200) {
+      //       this.$notify.success({
+      //         title: '成功',
+      //         message: res.msg
+      //       });
+      //     }
+      //   })
+      //
+      // },
       //处理项
       handleProcessLord(row) {
         this.$http.post(globalConfig.temporary_server + 'customer_collect/pending/' + row.id, {}).then(res => {
@@ -503,6 +572,15 @@
       },
       //搜索
       highSearch() {
+        this.showSearch = true;
+        this.searchData = customerSearch;
+      },
+      hiddenModule(val) {
+        this.showSearch = false;
+        if (val !== 'close') {
+          this.params.er_type = val.er_type;
+          this.getLordList();
+        }
       },
       //编辑
       handleEditLord(row, index) {
@@ -593,8 +671,11 @@
   #theme_name.theme1 {
     #customer {
       .statusBar {
-        span{
-          display: block;width: 10px;height: 10px;border-radius: 50%;
+        span {
+          display: block;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
         }
       }
 
