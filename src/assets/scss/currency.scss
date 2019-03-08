@@ -197,6 +197,9 @@
     .dialog_header {
       padding: 10px 15px;
       text-align: left;
+      span {
+        font-size: 24px;
+      }
       > h3 {
         font-size: 22px;
       }
@@ -220,6 +223,7 @@
       }
     }
     .footerBtn {
+      margin-bottom: 40px;
       @include flex('justify-center');
       div + div {
         margin-left: 20px;

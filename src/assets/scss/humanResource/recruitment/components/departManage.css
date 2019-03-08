@@ -132,8 +132,6 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #departManage .dialog_container .dialog_header span {
-  font-size: 24px; }
 #theme_name #departManage .dialog_container .dialog_main {
   flex-direction: column; }
   #theme_name #departManage .dialog_container .dialog_main .mainTop {

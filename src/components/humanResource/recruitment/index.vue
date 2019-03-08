@@ -23,7 +23,7 @@
           </el-checkbox-group>
         </div>
         <div class="icons dimission" v-if="chooseTab === 3"></div>
-        <div class="buttons button1" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
+        <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
         <div class="buttons button2" v-if="chooseTab === 3 || chooseTab === 4">导出报表</div>
         <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2"></div>
@@ -88,16 +88,22 @@
       </div>
     </lj-dialog>
 
+    <!--设置表单-->
+    <SetForms :module="SetFormVisible" :data="setFormData" @close="SetFormVisible = false"></SetForms>
+
     <!--管理部门/员工管理-->
     <DepartManage :module="departModule" @close="departModule = false"></DepartManage>
 
+    <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
+    <!--高级搜索-->
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
   </div>
 </template>
 
 <script>
+  import SetForms from './components/setForms.vue';//设置表单
   import DepartManage from './components/departManage.vue';
   import StaffRoster from './staffRoster/index.vue';//员工名册
   import LeaveJob from './leaveJob/index.vue';//离职管理
@@ -106,12 +112,12 @@
   import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
-  import {staffBookSearch,LeaveJobSearch} from '../../../assets/js/allSearchData.js';
+  import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: {DepartManage, StaffRoster, LeaveJob, MenuList, ljDialog, SearchHigh, Upload, StaffOrgan},
+    components: {SetForms, DepartManage, StaffRoster, LeaveJob, MenuList, ljDialog, SearchHigh, Upload, StaffOrgan},
     data() {
       return {
         staffBookSearch,
@@ -120,11 +126,14 @@
         resourceDepart,
         organModule: false,//组织架构
 
+        setFormData: {},
+        SetFormVisible: false,//设置表单
+
         depart_visible: false,//新增部门
         departModule: false,//部门管理
         lj_size: {},//新增部门
         departForm: {},//新增部门
-        chooseTab: 2,//tab切换
+        chooseTab: 3,//tab切换
         selects: [
           {
             id: 1,
@@ -236,6 +245,24 @@
             break;
         }
 
+      },
+      showSetForm() {
+        this.SetFormVisible = true;
+        this.setFormData = {
+          name: '姓名',
+          date1: '部门',
+          date2: '面貌',
+          date3: '民族',
+          date4: '出生日期',
+          date5: '身份证号',
+          date6: '城市',
+          date7: '户口性质',
+          date8: '婚育情况',
+          date9: '家庭住址',
+          date10: '联系方式',
+          date11: '紧急联系人',
+          phone: '电话',
+        };
       },
       moduleList() {
         this.visibleStatus = !this.visibleStatus;

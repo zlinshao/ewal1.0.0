@@ -376,6 +376,8 @@
   #theme_name .dialog_container .dialog_header {
     padding: 10px 15px;
     text-align: left; }
+    #theme_name .dialog_container .dialog_header span {
+      font-size: 24px; }
     #theme_name .dialog_container .dialog_header > h3 {
       font-size: 22px; }
   #theme_name .dialog_container .dialog_main {
@@ -408,6 +410,7 @@
       -moz-border-radius: 5px;
       border-radius: 5px; }
   #theme_name .dialog_container .footerBtn {
+    margin-bottom: 40px;
     display: flex;
     display: -webkit-flex;
     justify-content: center; }

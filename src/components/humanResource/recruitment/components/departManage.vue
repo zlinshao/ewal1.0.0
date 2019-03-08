@@ -248,9 +248,6 @@
             }
           }
         }
-        .footerBtn {
-          margin-bottom: 40px;
-        }
       }
     }
   }

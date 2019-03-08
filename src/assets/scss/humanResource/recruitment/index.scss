@@ -39,11 +39,6 @@
       }
     }
     .dialog_container {
-      .dialog_header {
-        span {
-          font-size: 24px;
-        }
-      }
       .dialog_main {
         .depart_visible {
           width: 88%;
@@ -51,9 +46,6 @@
           padding: 30px 0 20px;
           @include flex('bet-column');
         }
-      }
-      .footerBtn {
-        margin-bottom: 40px;
       }
     }
   }

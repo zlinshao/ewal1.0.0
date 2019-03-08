@@ -1,0 +1,59 @@
+@import "../../../common.scss";
+
+#theme_name {
+  #setForms {
+    .dialog_container {
+      .dialog_main {
+        text-align: left;
+        .tHeader {
+          padding: 0 60px;
+          &:after {
+            content: '';
+            display: block;
+            clear: both;
+          }
+          p {
+            width: 20%;
+            float: left;
+            padding-top: 30px;
+            i {
+              font-size: 20px;
+              margin-right: 6px;
+              cursor: pointer;
+              color: $colorE33;
+            }
+          }
+        }
+        .tBody {
+          margin: 50px 50px 0;
+          padding: 40px 10px 0;
+          border-top: 1px solid $color2D2;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #setForms {
+
+  }
+}
+
+#theme_name.theme2 {
+  #setForms {
+
+  }
+}
+
+#theme_name.theme3 {
+  #setForms {
+
+  }
+}
+
+#theme_name.theme4 {
+  #setForms {
+
+  }
+}
