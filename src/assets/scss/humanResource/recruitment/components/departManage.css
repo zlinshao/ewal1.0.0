@@ -132,68 +132,66 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #recruitment {
-  height: 100%;
-  background-color: #FFFFFF; }
-  #theme_name #recruitment .departList .mainList {
-    margin: 100px 200px 0; }
-    #theme_name #recruitment .departList .mainList p {
-      height: 480px;
-      width: 100%;
-      margin: 0 30px;
-      padding: 90px 0 60px;
-      text-align: center;
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
-      border-radius: 4px;
-      transform: rotateY(-180deg);
-      transition: transform 1s;
-      -webkit-backface-visibility: hidden;
-      -moz-backface-visibility: hidden;
-      -ms-backface-visibility: hidden;
-      backface-visibility: hidden; }
-      #theme_name #recruitment .departList .mainList p:hover {
-        cursor: pointer;
-        color: #CF2E33; }
-      #theme_name #recruitment .departList .mainList p span {
-        font-family: 'jingDianXingShu';
+#theme_name #departManage .dialog_container .dialog_header span {
+  font-size: 24px; }
+#theme_name #departManage .dialog_container .dialog_main {
+  flex-direction: column; }
+  #theme_name #departManage .dialog_container .dialog_main .mainTop {
+    height: 100px; }
+    #theme_name #departManage .dialog_container .dialog_main .mainTop span {
+      cursor: pointer;
+      padding: 8px 40px;
+      margin-right: 20px; }
+    #theme_name #departManage .dialog_container .dialog_main .mainTop .hover {
+      color: #FFFFFF; }
+    #theme_name #departManage .dialog_container .dialog_main .mainTop .add {
+      width: 30px;
+      height: 30px;
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #CF2E33;
+      display: flex;
+      display: -webkit-flex;
+      align-items: center;
+      justify-content: center; }
+      #theme_name #departManage .dialog_container .dialog_main .mainTop .add b {
+        padding-bottom: 6px;
+        color: #FFFFFF;
         font-size: 30px; }
-    #theme_name #recruitment .departList .mainList p:nth-child(1) {
-      transition-delay: 0.1428571429s;
-      -webkit-transition-delay: 0.1428571429s; }
-    #theme_name #recruitment .departList .mainList p:nth-child(2) {
-      transition-delay: 0.2857142857s;
-      -webkit-transition-delay: 0.2857142857s; }
-    #theme_name #recruitment .departList .mainList p:nth-child(3) {
-      transition-delay: 0.4285714286s;
-      -webkit-transition-delay: 0.4285714286s; }
-    #theme_name #recruitment .departList .mainList p:nth-child(4) {
-      transition-delay: 0.5714285714s;
-      -webkit-transition-delay: 0.5714285714s; }
-    #theme_name #recruitment .departList .mainList p:nth-child(5) {
-      transition-delay: 0.7142857143s;
-      -webkit-transition-delay: 0.7142857143s; }
-    #theme_name #recruitment .departList .mainList p:nth-child(6) {
-      transition-delay: 0.8571428571s;
-      -webkit-transition-delay: 0.8571428571s; }
-    #theme_name #recruitment .departList .mainList p:nth-child(7) {
-      transition-delay: 1s;
-      -webkit-transition-delay: 1s; }
-  #theme_name #recruitment .departList .mainListHover p {
-    transform: rotateY(0); }
-  #theme_name #recruitment .dialog_container .dialog_header span {
-    font-size: 24px; }
-  #theme_name #recruitment .dialog_container .dialog_main .depart_visible {
-    width: 88%;
-    height: 100%;
-    padding: 30px 0 20px;
-    display: flex;
-    display: -webkit-flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-direction: column;
-    justify-content: space-between; }
-  #theme_name #recruitment .dialog_container .footerBtn {
-    margin-bottom: 40px; }
+  #theme_name #departManage .dialog_container .dialog_main .staffManage, #theme_name #departManage .dialog_container .dialog_main .orgManage {
+    background-color: #FFFFFF;
+    height: 100%; }
+    #theme_name #departManage .dialog_container .dialog_main .staffManage > div, #theme_name #departManage .dialog_container .dialog_main .orgManage > div {
+      float: left; }
+  #theme_name #departManage .dialog_container .dialog_main .staffManage > div {
+    margin: 60px 0 0 36px;
+    position: relative;
+    cursor: pointer; }
+    #theme_name #departManage .dialog_container .dialog_main .staffManage > div p {
+      width: 58px;
+      height: 58px;
+      margin-right: 15px; }
+      #theme_name #departManage .dialog_container .dialog_main .staffManage > div p img {
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%; }
+    #theme_name #departManage .dialog_container .dialog_main .staffManage > div div h5 {
+      color: #D2D2D2;
+      margin-top: 6px; }
+  #theme_name #departManage .dialog_container .dialog_main .orgManage > div {
+    cursor: pointer;
+    padding: 6px;
+    width: 60px;
+    height: 220px;
+    border: 1px solid #686874;
+    background-color: #F2F2F2;
+    margin: 60px 0 0 60px; }
+    #theme_name #departManage .dialog_container .dialog_main .orgManage > div p {
+      height: 100%;
+      padding: 10px 0;
+      background-color: #FFFFFF;
+      border: 1px solid #686874; }
 
-/*# sourceMappingURL=index.css.map */
+/*# sourceMappingURL=departManage.css.map */

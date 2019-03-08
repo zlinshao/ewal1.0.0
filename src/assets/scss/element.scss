@@ -9,6 +9,15 @@
   }
 }
 
+div.el-popover {
+  background-color: $colorE33;
+  color: $colorFFF;
+  min-width: 0;
+  padding: 12px;
+  border-color: transparent;
+  @include transform(translateX(35%))
+}
+
 #theme_name {
   //表格================
   .el-table {
@@ -46,10 +55,10 @@
     }
   }
   //input取消border
-  .BorderNone {
+  .borderNone {
     .el-input__inner {
       border: none;
-      background-color: transparent !important;
+      background-color: $colorFFF !important;
     }
   }
   //离职员工 check红色圆圈
@@ -104,7 +113,7 @@
     padding-left: 50%;
     text-align: left;
   }
-    //分页=================
+  //分页=================
   .page {
     @mixin noBgColor {
       background-color: transparent;

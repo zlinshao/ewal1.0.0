@@ -9,7 +9,7 @@
         </div>
         <div class="highGrade">
           <h5>高级</h5>
-          <div class="formData BorderNone" v-for="item in showData.data">
+          <div class="formData borderNone" v-for="item in showData.data">
             <h5>{{item.title}}</h5>
             <div v-if="item.keyType === 'date'">
               <el-date-picker
@@ -137,7 +137,7 @@
           for (let key of val.data) {
             this.reset[key.keyName] = key.dataType;
           }
-          let word = val.keywords ? val.keywords : 'keywords';
+          let word = val.keywords ? val.keywords : 'search';
           this.reset[word] = '';
           this.resetting();
         },

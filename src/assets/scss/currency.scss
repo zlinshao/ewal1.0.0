@@ -6,7 +6,50 @@
   @include bgImage($url);
 }
 
+@mixin commonImg($m,$n) {
+  $url: '../../assets/image/common/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
 #theme_name {
+  h5.operate {
+    position: absolute;
+    top: -55px;
+    padding: 10px 0;
+    @include radius(6px);
+    background-color: $color874;
+    @include flex('items-center');
+    span {
+      white-space: nowrap;
+      color: $colorFFF;
+      padding: 6px 30px;
+      &:hover {
+        cursor: pointer;
+        color: $colorE33;
+        @include bgImage('../../assets/image/common/theme1/xzgj.png');
+      }
+    }
+    b, i {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: $color874;
+      bottom: -5px;
+      transform: rotateZ(45deg);
+    }
+    b {
+      left: 60px;
+    }
+    i {
+      right: 60px;
+    }
+  }
+  h5.left.operate {
+    left: 0;
+  }
+  h5.right.operate {
+    right: 0;
+  }
   //表格头部
   .listTopCss {
     background-color: $colorFFF;
@@ -46,22 +89,34 @@
       }
     }
     .listTopRight {
+      > div, > span {
+        margin-right: 40px;
+      }
       > div {
         @include radius(6px);
-        margin-right: 40px;
         cursor: pointer;
       }
+      h4{
+        margin-right: 20px;
+      }
+      //增加
       .add {
         @include flex('flex-center');
-        padding-bottom: 6px;
         b {
           color: $colorFFF;
           font-size: 30px;
+          padding-bottom: 6px;
         }
       }
+      //搜索
       .search {
-        @include bgImage('../../assets/image/common/theme1/search.png');
+        @include commonImg('search.png', 'theme1');
       }
+      //离职管理
+      .dimission {
+        @include commonImg('lizhiguanli.png', 'theme1');
+      }
+      //bank流水
       .bank {
         @include bgImage('../../assets/image/finance/budgetStream/theme1/yinhangliushui.png');
       }
@@ -70,14 +125,24 @@
         height: 30px;
       }
       .buttons {
-        background-color: $colorFE0;
-        color: $color874;
         padding: 0 20px;
         height: 40px;
         line-height: 38px;
+      }
+      .button1 {
+        background-color: #FFF7E4;
+        color: #FFAD0B;
         &:hover {
-          background-color: $colorE33;
-          color: $colorFFF;
+          background-color: #FFAD0B;
+          color: #FFF7E4;
+        }
+      }
+      .button2 {
+        background-color: #CFF8EA;
+        color: #0BB07B;
+        &:hover {
+          background-color: #0BB07B;
+          color: #CFF8EA;
         }
       }
     }
@@ -124,7 +189,7 @@
     margin: 0 20px 10px 0;
     @include radius(6px);
   }
-
+  //模态kuang
   .dialog_container {
     height: 100%;
     @include flex('justify-bet');
@@ -152,6 +217,30 @@
       button {
         min-width: 90px;
         @include radius(5px);
+      }
+    }
+    .footerBtn {
+      @include flex('justify-center');
+      div + div {
+        margin-left: 20px;
+      }
+      div {
+        width: 110px;
+        height: 40px;
+        line-height: 40px;
+        cursor: pointer;
+        text-align: center;
+        @include radius(6px);
+        &:hover {
+          opacity: .8;
+        }
+      }
+      .danger {
+        color: $colorFFF;
+        background-color: $colorE33;
+      }
+      .default {
+        background-color: $colorFDF;
       }
     }
   }
@@ -219,6 +308,16 @@
     }
     .icon_bank {
       @include gatheringImg('yinhang.png', 'theme1');
+    }
+  }
+  //input图标
+  .iconInput {
+    background-color: $colorFFF;
+    @include radius(4px);
+    padding-right: 15px;
+    .icons {
+      width: 20px;
+      height: 20px;
     }
   }
   //分页

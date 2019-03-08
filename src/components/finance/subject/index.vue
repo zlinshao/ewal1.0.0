@@ -514,8 +514,10 @@
         this.edit_visible = true;
       },
       getSubjectList() {
+        this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'subject',this.params).then(res => {
           if (res.code === 200) {
+            this.showLoading(false);
             this.subjectData = res.data.data;
             this.subjectCount = res.data.count;
           }

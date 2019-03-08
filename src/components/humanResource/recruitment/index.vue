@@ -8,7 +8,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="organModule = true">研发中心</h1>
+        <h1 @click="organModule = true">三省六部</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -17,19 +17,80 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons add"><b>+</b></div>
-        <div class="icons search" @click="highSearch"></div>
+        <div class="searchTerm" v-if="chooseTab === 3">
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox label="1">离职员工</el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="icons dimission" v-if="chooseTab === 3"></div>
+        <div class="buttons button1" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
+        <div class="buttons button2" v-if="chooseTab === 3 || chooseTab === 4">导出报表</div>
+        <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
+        <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2"></div>
       </div>
     </div>
-    <div class="departList">
+
+    <!--组织架构-->
+    <div v-if="chooseTab === 1">
+      组织架构
+    </div>
+
+    <!--部门管理-->
+    <div class="departList" v-if="chooseTab === 2">
       <div class="items-bet mainList" :class="{'mainListHover': routeAnimation}">
-        <p v-for="item in resourceDepart.data">
+        <p v-for="item in resourceDepart.data" @click="showDepartManage(item)">
           <span class="writingMode">
             {{item.title}}
           </span>
         </p>
       </div>
     </div>
+
+    <!--员工名册-->
+    <div v-if="chooseTab === 3">
+      <StaffRoster></StaffRoster>
+    </div>
+
+    <!--离职管理-->
+    <div v-if="chooseTab === 4">
+      <LeaveJob></LeaveJob>
+    </div>
+
+    <!--新增部门-->
+    <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
+      <div class="dialog_container">
+        <div class="items-bet dialog_header">
+          <span>新增部门</span>
+        </div>
+        <div class="dialog_main flex-center borderNone">
+          <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible">
+            <el-form-item label="部门名称" required>
+              <el-input v-model="departForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="上级部门" required>
+              <div class="items-center iconInput">
+                <el-input v-model="departForm.depart"></el-input>
+                <p class="icons organization"></p>
+              </div>
+            </el-form-item>
+            <el-form-item label="部门负责人" required>
+              <div class="items-center iconInput">
+                <el-input v-model="departForm.leader"></el-input>
+                <p class="icons user"></p>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="footerBtn">
+          <div class="danger">确认</div>
+          <div class="default">取消</div>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--管理部门/员工管理-->
+    <DepartManage :module="departModule" @close="departModule = false"></DepartManage>
+
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
@@ -37,23 +98,33 @@
 </template>
 
 <script>
+  import DepartManage from './components/departManage.vue';
+  import StaffRoster from './staffRoster/index.vue';//员工名册
+  import LeaveJob from './leaveJob/index.vue';//离职管理
   import SearchHigh from '../../common/searchHigh.vue';
+  import ljDialog from '../../common/lj-dialog.vue';
   import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
-  import {recruitmentSearch} from '../../../assets/js/allSearchData.js';
+  import {staffBookSearch,LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: {MenuList, SearchHigh, Upload, StaffOrgan},
+    components: {DepartManage, StaffRoster, LeaveJob, MenuList, ljDialog, SearchHigh, Upload, StaffOrgan},
     data() {
       return {
-        recruitmentSearch,
+        staffBookSearch,
+        LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 1,
-        organModule: false,
+        organModule: false,//组织架构
+
+        depart_visible: false,//新增部门
+        departModule: false,//部门管理
+        lj_size: {},//新增部门
+        departForm: {},//新增部门
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -71,10 +142,32 @@
             id: 4,
             title: '离职管理',
           }
-        ],
-        visibleStatus: false,
-        showSearch: false,
-        searchData: {},
+        ],//tab切换
+        visibleStatus: false,//弹出部门
+        showSearch: false,//高级搜索
+        searchData: {},//搜索结果
+
+        checkList: '',//离职员工
+        options: [
+          {
+            value: '选项1',
+            label: '黄金糕'
+          }, {
+            value: '选项2',
+            label: '双皮奶'
+          }, {
+            value: '选项3',
+            label: '蚵仔煎'
+          }, {
+            value: '选项4',
+            label: '龙须面'
+          }, {
+            value: '选项5',
+            label: '北京烤鸭'
+          }
+        ],//部门人员
+        value: '',
+
         photo1: {
           keyName: 'photo1',
           setFile: [],
@@ -93,12 +186,16 @@
     computed: {
       routeAnimation() {
         return this.$store.state.app.routeAnimation;
+      },
+      themeName() {
+        return this.$store.state.app.themeName;
       }
     },
     methods: {
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;
+        this.$store.dispatch('route_animation');
       },
       // 确认搜索
       hiddenModule(val) {
@@ -107,10 +204,38 @@
           console.log(val);
         }
       },
+      // 新增部门
+      showAddModule(val) {
+        switch (val) {
+          case 2:
+            this.depart_visible = true;
+            this.lj_size = {
+              width: '510px',
+              height: '450px',
+            };
+            break;
+        }
+      },
+      // 部门管理
+      showDepartManage(val) {
+        this.departModule = true;
+        console.log(val);
+      },
       // 高级搜索
-      highSearch() {
+      highSearch(val) {
         this.showSearch = true;
-        this.searchData = this.recruitmentSearch;
+        switch (val) {
+          case 1:
+            this.searchData = this.staffBookSearch;
+            break;
+          case 3:
+            this.searchData = this.staffBookSearch;
+            break;
+          case 4:
+            this.searchData = this.LeaveJobSearch;
+            break;
+        }
+
       },
       moduleList() {
         this.visibleStatus = !this.visibleStatus;
@@ -134,6 +259,11 @@
     @include bgImage($url);
   }
 
+  @mixin commonImg($m, $n) {
+    $url: '../../../assets/image/common/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
   #theme_name.theme1 {
     #recruitment {
       .departList {
@@ -142,6 +272,18 @@
             @include recruitmentImg('recruitmenthui.png', 'theme1');
             &:hover {
               @include recruitmentImg('recruitmenthong.png', 'theme1');
+            }
+          }
+        }
+      }
+      .dialog_container {
+        .dialog_main {
+          .iconInput {
+            .organization {
+              @include commonImg('zuzhijiagou.png', 'theme1');
+            }
+            .user {
+              @include commonImg('yonghu.png', 'theme1');
             }
           }
         }

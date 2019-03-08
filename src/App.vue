@@ -27,7 +27,7 @@
           </select>
         </div>
         <div class="items-center personal" @click="routerLink('login')">
-          <span>冯宝宝{{routeAnimation}}</span>
+          <span>冯宝宝</span>
           <p>
             <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
           </p>
@@ -58,6 +58,16 @@
     </div>
     <div class="flex-center changeLoad" v-if="changeLoad">
       正在切换
+    </div>
+
+    <div class="loading" v-show="all_loading">
+      <div class="content">
+        <div class="lang">
+          <span>
+            正在加载中...
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -119,8 +129,7 @@
         ],
       }
     },
-    mounted() {
-    },
+    mounted() { },
     watch: {
       $route: {
         handler(val, oldVal) {
@@ -133,6 +142,9 @@
     computed: {
       routeAnimation() {
         return this.$store.state.app.routeAnimation;
+      },
+      all_loading() {
+        return this.$store.state.app.loading;
       }
     },
     methods: {

@@ -3,6 +3,7 @@ const app = {
     personal: {},
     routeAnimation: false,
     themeName: '1',
+    loading: false
   },
   // 计算属性
   getter: {},
@@ -22,6 +23,9 @@ const app = {
     // 获取个人信息
     GET_PERSONAL(state, view) {
       state.personal = view;
+    },
+    SHOW_LOADING(state,status) {
+      state.loading = status;
     }
   },
   // 执行函数
@@ -37,6 +41,10 @@ const app = {
     // 获取个人信息
     get_personal({commit}, view) {
       commit('GET_PERSONAL', view);
+    },
+    //显示/隐藏loading
+    switch_loading({commit},status) {
+      commit('SHOW_LOADING',status);
     }
   }
 };
