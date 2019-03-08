@@ -49,6 +49,8 @@ axios.interceptors.response.use(response => {
         console.log(`连接错误${err.response.status}`)
     }
   } else {
+    this.showLoading(false);
+    this.routerLink('/network_error');
     console.log('连接到服务器失败')
   }
   return Promise.resolve(err.response);
