@@ -122,6 +122,7 @@ export default new Router({
       path: '/customer',
       name: '客户',
       component: Customer
-    }
+    },
+
   ]
 })

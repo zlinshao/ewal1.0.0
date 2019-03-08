@@ -7,7 +7,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     windowInnerWidth: window.innerWidth,
-    windowInnerHeight: window.innerHeight
+    windowInnerHeight: window.innerHeight,
   },
   modules: {
     app,
