@@ -301,6 +301,9 @@
   #theme_name .listTopCss .listTopRight .search {
     background: url("../../assets/image/common/theme1/search.png") no-repeat scroll center;
     background-size: 100% 100%; }
+  #theme_name .listTopCss .listTopRight .dimission {
+    background: url("../../assets/image/common/theme1/lizhiguanli.png") no-repeat scroll center;
+    background-size: 100% 100%; }
   #theme_name .listTopCss .listTopRight .bank {
     background: url("../../assets/image/finance/budgetStream/theme1/yinhangliushui.png") no-repeat scroll center;
     background-size: 100% 100%; }
@@ -308,14 +311,21 @@
     width: 30px;
     height: 30px; }
   #theme_name .listTopCss .listTopRight .buttons {
-    background-color: #DFDFE0;
-    color: #686874;
     padding: 0 20px;
     height: 40px;
     line-height: 38px; }
-    #theme_name .listTopCss .listTopRight .buttons:hover {
-      background-color: #CF2E33;
-      color: #FFFFFF; }
+  #theme_name .listTopCss .listTopRight .button1 {
+    background-color: #FFF7E4;
+    color: #FFAD0B; }
+    #theme_name .listTopCss .listTopRight .button1:hover {
+      background-color: #FFAD0B;
+      color: #FFF7E4; }
+  #theme_name .listTopCss .listTopRight .button2 {
+    background-color: #CFF8EA;
+    color: #0BB07B; }
+    #theme_name .listTopCss .listTopRight .button2:hover {
+      background-color: #0BB07B;
+      color: #CFF8EA; }
 #theme_name .dialogVisible {
   position: fixed;
   left: 0;
