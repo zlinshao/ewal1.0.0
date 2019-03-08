@@ -154,6 +154,24 @@ export const subjectSearch = {
     },
   ]
 };
+//客户搜索
+export const customerSearch = {
+  status: 'subject',
+  data: [
+    {
+      keyType: 'radio',
+      title: '客户类别',
+      placeholder: '请选择客户类别',
+      keyName: 'er_type',
+      dataType: '',
+      value: [
+        {id: 1,title: '房东'},
+        {id: 2,title: '租客'},
+        {id: 3,title: '其他'}
+      ]
+    },
+  ]
+};
 
 //收支流水
 export const accountRunSearch = {

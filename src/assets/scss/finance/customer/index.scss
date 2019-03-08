@@ -1,0 +1,42 @@
+@import "../../common.scss";
+
+#theme_name {
+  #customer {
+
+  }
+}
+
+#theme_name.theme1 {
+  #customer {
+      >div{
+        .status-icon{
+          i{
+            display:inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            margin-right: 8px;
+          }
+        }
+      }
+
+  }
+}
+
+#theme_name.theme2 {
+  #customer {
+
+  }
+}
+
+#theme_name.theme3 {
+  #customer {
+
+  }
+}
+
+#theme_name.theme4 {
+  #customer {
+
+  }
+}
