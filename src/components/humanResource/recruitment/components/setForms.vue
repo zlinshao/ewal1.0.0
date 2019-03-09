@@ -3,7 +3,7 @@
     <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
-          <span>部门管理</span>
+          <span>设置表单</span>
         </div>
         <div class="dialog_main">
           <div class="tHeader">

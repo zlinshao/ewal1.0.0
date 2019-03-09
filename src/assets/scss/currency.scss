@@ -14,7 +14,7 @@
 #theme_name {
   h5.operate {
     position: absolute;
-    top: -55px;
+    top: -60px;
     padding: 10px 0;
     @include radius(6px);
     background-color: $color874;
@@ -197,9 +197,6 @@
     .dialog_header {
       padding: 10px 15px;
       text-align: left;
-      span {
-        font-size: 24px;
-      }
       > h3 {
         font-size: 22px;
       }

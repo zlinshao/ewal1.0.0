@@ -60,7 +60,7 @@
     <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
-          <span>新增部门</span>
+          <h3>新增部门</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
           <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible">
@@ -129,11 +129,11 @@
         setFormData: {},
         SetFormVisible: false,//设置表单
 
+        departModule: false,//部门管理/员工管理
         depart_visible: false,//新增部门
-        departModule: false,//部门管理
         lj_size: {},//新增部门
         departForm: {},//新增部门
-        chooseTab: 3,//tab切换
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -188,6 +188,7 @@
       }
     },
     mounted() {
+      this.departModule = true;
     },
     activated() {
     },
@@ -196,9 +197,6 @@
       routeAnimation() {
         return this.$store.state.app.routeAnimation;
       },
-      themeName() {
-        return this.$store.state.app.themeName;
-      }
     },
     methods: {
       // tab切换
