@@ -5,7 +5,7 @@
         <div class="dialog_header">
           <h3>{{tabsManage === 'staff' ? '新增员工' : '新建职位'}}</h3>
         </div>
-        <div class="dialog_main bet-column departPosition">
+        <div class="dialog_main space-column departPosition">
           <div class="items-bet mainTop">
             <div class="items-bet">
               <span @click="chooseManage('staff')" :class="{'hover': tabsManage === 'staff'}">员工管理</span>
@@ -35,7 +35,7 @@
           </div>
           <div class="scroll_bar orgManage" v-if="tabsManage === 'position'">
             <div v-for="item in 30">
-              <p>
+              <p @click="positionVisible = true;position_size = 'small'">
                 <span class="writingMode">符合都看傻了废话说多</span>
               </p>
             </div>
@@ -152,6 +152,28 @@
         </div>
       </div>
     </lj-dialog>
+    <!--岗位管理===============================================================================================-->
+    <lj-dialog :visible="positionVisible" :size="position_size" @close="positionVisible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>产品</h3>
+        </div>
+        <div class="dialog_main positionContent space-column">
+          <div class="items-bet mainTop">
+            <div class="items-bet">
+              <span @click="chooseManage('staff')" :class="{'hover': tabsManage === 'staff'}">员工管理</span>
+              <span @click="chooseManage('position')" :class="{'hover': tabsManage === 'position'}">职位管理</span>
+            </div>
+            <h2 class="add" @click="add(tabsManage)">
+              <b>+</b>
+            </h2>
+          </div>
+          <div style="height: 100%">
+            1
+          </div>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -227,7 +249,6 @@
             }]
           }
         ],
-
         powerList: {
           power1: [{
             id: 1,
@@ -327,6 +348,9 @@
         },
         checkList: [],
         checkAll: false,
+
+        positionVisible: false,
+        position_size: '',
       }
     },
     mounted() {
@@ -350,14 +374,6 @@
       }
     },
     methods: {
-      // 权限切换
-      handleClick(val) {
-
-      },
-      // 权限子集切换
-      handleName(val) {
-        this.powerChildName = val;
-      },
       // 超出部分 反方向显示
       checkOverflow() {
         let obj = document.getElementById("scroll-body");
@@ -393,7 +409,7 @@
             break;
         }
       },
-      // 新增 员工/部门a
+      // 新增 员工/部门
       add(val) {
         this.addStaffVisible = true;
         switch (val) {
@@ -410,6 +426,14 @@
             };
             break;
         }
+      },
+      // 权限切换
+      handleClick(val) {
+
+      },
+      // 权限子集切换
+      handleName(val) {
+        this.powerChildName = val;
       },
       // 权限复选
       handleCheck(value) {
@@ -435,6 +459,7 @@
           this.checkList = [];
         }
       },
+      // 岗位管理
     },
   }
 </script>

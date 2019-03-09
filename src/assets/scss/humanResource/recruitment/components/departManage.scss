@@ -3,10 +3,10 @@
 #theme_name {
   #departManage {
     .dialog_container {
-      .departPosition {
-        flex-direction: column;
+      .departPosition, .positionContent {
         .mainTop {
           height: 100px;
+          padding: 0 20px;
           span {
             cursor: pointer;
             padding: 8px 40px;
@@ -29,6 +29,8 @@
             }
           }
         }
+      }
+      .departPosition {
         .staffManage, .orgManage {
           background-color: $colorFFF;
           height: 100%;
