@@ -265,7 +265,7 @@
     background-color: #ffffff;
     color: brown;
     text-align: center;
-    z-index: 101; }
+    z-index: 10; }
     #app .loading .content {
       width: 800px;
       height: 600px;

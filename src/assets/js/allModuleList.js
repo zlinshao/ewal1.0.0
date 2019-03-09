@@ -15,8 +15,8 @@ export const humanResource = {
       title: '赏罚分明',
     },
     {
-      url: '',
-      title: '派兵布阵',
+      url: 'militaryOrganization',
+      title: '排兵布阵',
     },
     {
       url: '',
