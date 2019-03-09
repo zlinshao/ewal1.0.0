@@ -17,6 +17,7 @@
     props: ['visible', 'size'],
     data() {
       return {
+        show_button: true,
         dialog_visible: false,
         lj_size: 'small',
         is_upright: false,

@@ -19,6 +19,7 @@ const HouseManagement = () => import('@/components/marketCentre/houseManagement/
 const HumanResource = () => import('@/components/humanResource/index.vue');
 const Recruitment = () => import('@/components/humanResource/recruitment/index.vue');//招聘中心
 const StaffRoster = () => import('@/components/humanResource/recruitment/staffRoster/index.vue');//员工名册
+const MilitaryOrganization = () => import('@/components/humanResource/militaryOrganization/index.vue'); //排班布阵
 
 // 财务中心
 const Finance = () => import('@/components/finance/index.vue');
@@ -92,6 +93,11 @@ export default new Router({
       path: '/staffRoster',
       name: '员工名册',
       component: StaffRoster
+    },
+    {
+      path: '/militaryOrganization',
+      name: '排兵布阵',
+      component: MilitaryOrganization
     },
     {
       path: '/finance',

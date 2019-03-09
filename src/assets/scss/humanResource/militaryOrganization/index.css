@@ -1,0 +1,46 @@
+/*
+Error: Invalid GBK character "\xE5"
+        on line 22 of index.scss
+
+17:       .main-container {
+18:         width: 100%;
+19:         height: calc(100% - 131px);
+20:         background-color: $color9F9;
+21:         position: relative;
+22:         //固定右边向导
+23:         .guidance {
+24:           position: absolute;
+25:           right: 0;
+26:           top: 50%;
+27:           transform: translateY(-50%);
+
+Backtrace:
+index.scss:22
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each_with_index'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:820:in `rescue in check_sass_encoding'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:816:in `check_sass_encoding'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:444:in `check_encoding!'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:400:in `_to_tree'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:307:in `render_with_sourcemap'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `each'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin.rb:82:in `update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:51:in `process_result'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:50:in `parse'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:18:in `parse!'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/bin/scss:13:in `<top (required)>'
+D:/Ruby24-x64/bin/scss:23:in `load'
+D:/Ruby24-x64/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid GBK character \"\xE5\"\A         on line 22 of index.scss\A \A 17:       .main-container {\A 18:         width: 100%;\A 19:         height: calc(100% - 131px);\A 20:         background-color: $color9F9;\A 21:         position: relative;\A 22:         //固定右边向导\A 23:         .guidance {\A 24:           position: absolute;\A 25:           right: 0;\A 26:           top: 50%;\A 27:           transform: translateY(-50%);"; }
