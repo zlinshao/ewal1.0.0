@@ -1,5 +1,6 @@
 <template>
   <div id="departManage">
+    <!--员工管理/部门管理-->
     <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -11,7 +12,7 @@
               <span @click="chooseManage('staff')" :class="{'hover': tabsManage === 'staff'}">员工管理</span>
               <span @click="chooseManage('position')" :class="{'hover': tabsManage === 'position'}">职位管理</span>
             </div>
-            <h2 class="add" @click="add(tabsManage)">
+            <h2 class="add" @click="operateModule(tabsManage)">
               <b>+</b>
             </h2>
           </div>
@@ -161,10 +162,10 @@
         <div class="dialog_main positionContent space-column">
           <div class="items-bet mainTop">
             <div class="items-bet">
-              <span @click="chooseManage('staff')" :class="{'hover': tabsManage === 'staff'}">员工管理</span>
-              <span @click="chooseManage('position')" :class="{'hover': tabsManage === 'position'}">职位管理</span>
+              <span @click="chooseManage('post','post')" :class="{'hover': tabsPost === 'post'}">岗位</span>
+              <span @click="chooseManage('person','post')" :class="{'hover': tabsPost === 'person'}">人员</span>
             </div>
-            <h2 class="add" @click="add(tabsManage)">
+            <h2 class="add" @click="operateModule(tabsPost)">
               <b>+</b>
             </h2>
           </div>
@@ -351,6 +352,7 @@
 
         positionVisible: false,
         position_size: '',
+        tabsPost: 'post',
       }
     },
     mounted() {
@@ -383,8 +385,12 @@
         })
       },
       // 员工/部门 切换
-      chooseManage(val) {
-        this.tabsManage = val;
+      chooseManage(val, status = '') {
+        if (status === 'post') {
+          this.tabsPost = val;
+        } else {
+          this.tabsManage = val;
+        }
       },
       reviseStaff(val) {
         if (this.staffId === val) {
@@ -397,34 +403,49 @@
       addStation() {
 
       },
-      // 操作
+      // 权限/禁用/修改/离职
       operateModule(val) {
         switch (val) {
           case 'power':
             this.powerVisible = true;
+            break;
+          case 'staff'://新增 员工
+          case 'position'://新增 职位
+            this.addStaffVisible = true;
+            break;
+          case 'post':
+          case 'person'://新增 部门
+            this.addStaffVisible = true;
+            break;
+        }
+        switch (val) {
+          case 'power'://权限
             this.power_size = {
               width: '1600px',
               height: '800px',
             };
             break;
-        }
-      },
-      // 新增 员工/部门
-      add(val) {
-        this.addStaffVisible = true;
-        switch (val) {
-          case 'staff':
+          case 'staff'://新增 员工
             this.staff_size = {
               width: '540px',
               height: '500px',
             };
             break;
-          case 'position':
+          case 'position'://新增 职位
             this.staff_size = {
               width: '510px',
               height: '480px',
             };
             break;
+        }
+      },
+
+      adds(val) {
+        switch (val) {
+
+        }
+        switch (val) {
+
         }
       },
       // 权限切换
