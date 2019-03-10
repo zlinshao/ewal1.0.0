@@ -78,16 +78,31 @@
         <!--培训管理-->
         <lj-dialog
           :visible="train_management_visible"
-          :size="{width: 500 + 'px',height: 600 + 'px'}"
+          :size="{width: 650 + 'px',height: 600 + 'px'}"
           @close="train_management_visible = false"
         >
           <div class="dialog_container">
-            <div class="dialog_header">
+            <div class="dialog_header flex">
               <h3>培训管理</h3>
               <div class="icons add"><b>+</b></div>
             </div>
             <div class="dialog_main">
+              <el-table
+                :data="train_management_list"
+                height="400px"
+              >
+                <el-table-column prop="name" label="培训名称" align="center"></el-table-column>
+                <el-table-column prop="lecturer" label="讲师" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                  <template slot-scope="scope">
+                    <span class="edit_btn">编辑</span>
+                    <span class="delete_btn">删除</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="new_train">
 
+              </div>
             </div>
             <div class="dialog_footer">
               <el-button size="mini" @click="train_management_visible = false">取消</el-button>
@@ -199,6 +214,15 @@
         isTrain: 1,
 
         train_management_visible: false,
+        train_management_list: [
+          {name: '文职入职培训',lecturer: '林依依'},
+          {name: '文职入职培训',lecturer: '林依依'},
+          {name: '文职入职培训',lecturer: '林依依'},
+          {name: '文职入职培训',lecturer: '林依依'},
+          {name: '文职入职培训',lecturer: '林依依'},
+          {name: '文职入职培训',lecturer: '林依依'},
+          {name: '文职入职培训',lecturer: '林依依'},
+        ],
 
         more_list: [
           {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},

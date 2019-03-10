@@ -152,8 +152,12 @@
       }
       .train_management {
         .icons {
-          width: 30px;
-          height: 30px;
+          width: 28px;
+          height: 28px;
+          background-color: $colorE33;
+          @include radius(5px);
+          margin-left: 75%;
+          cursor: pointer;
         }
         .add {
           @include flex('flex-center');
@@ -162,6 +166,23 @@
             font-size: 30px;
             padding-bottom: 6px;
           }
+        }
+        .edit_btn,.delete_btn {
+          cursor: pointer;
+        }
+        .edit_btn {
+          color: $colorE33;
+        }
+        .dialog_main {
+          position: relative;
+        }
+        .new_train {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 50px;
+          background-color: rebeccapurple;
         }
       }
     }
