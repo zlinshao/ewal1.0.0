@@ -374,10 +374,20 @@
   justify-content: space-between;
   flex-direction: column; }
   #theme_name .dialog_container .dialog_header {
-    padding: 10px 15px;
-    text-align: left; }
+    padding: 0 15px;
+    height: 40px;
+    text-align: left;
+    position: relative; }
     #theme_name .dialog_container .dialog_header > h3 {
       font-size: 22px; }
+    #theme_name .dialog_container .dialog_header .header_right {
+      width: 70%;
+      height: 100%;
+      position: absolute;
+      right: 15px;
+      top: 0;
+      text-align: right;
+      overflow: hidden; }
   #theme_name .dialog_container .dialog_main {
     height: 100%;
     overflow: hidden;
@@ -398,6 +408,8 @@
       border-radius: 4px; }
     #theme_name .dialog_container .dialog_main .unUse-txt {
       font-size: 18px; }
+    #theme_name .dialog_container .dialog_main .showPadding {
+      padding: 0 20px; }
   #theme_name .dialog_container .dialog_footer {
     width: 100%;
     padding: 20px 0;
@@ -498,6 +510,17 @@
   #theme_name .iconInput .icons {
     width: 20px;
     height: 20px; }
+#theme_name .resIcon {
+  margin: 0 auto;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 15px; }
+#theme_name .iconSuccess {
+  background: url("../../assets/image/common/theme1/success.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name .iconDelete {
+  background: url("../../assets/image/common/theme1/delete.png") no-repeat scroll center;
+  background-size: 100% 100%; }
 #theme_name footer.bottomPage {
   height: 100px;
   width: 100%;

@@ -195,10 +195,21 @@
     @include flex('justify-bet');
     flex-direction: column;
     .dialog_header {
-      padding: 10px 15px;
+      padding: 0 15px;
+      height: 40px;
       text-align: left;
+      position: relative;
       > h3 {
         font-size: 22px;
+      }
+      .header_right {
+        width: 70%;
+        height: 100%;
+        position: absolute;
+        right: 15px;
+        top: 0;
+        text-align: right;
+        overflow: hidden;
       }
     }
     .dialog_main {
@@ -208,6 +219,9 @@
       @include scroll();
       .unUse-txt {
         font-size: 18px;
+      }
+      .showPadding {
+        padding: 0 20px;
       }
     }
     .dialog_footer {
@@ -320,6 +334,20 @@
       height: 20px;
     }
   }
+  //成功图标
+  .resIcon {
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+  }
+  .iconSuccess {
+    @include commonImg('success.png','theme1');
+  }
+  .iconDelete {
+    @include commonImg('delete.png','theme1');
+  }
+  //失败图标
   //分页
   footer.bottomPage {
     height: 100px;

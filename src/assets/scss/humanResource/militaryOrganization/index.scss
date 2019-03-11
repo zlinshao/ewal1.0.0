@@ -180,10 +180,22 @@
           position: absolute;
           bottom: 0;
           left: 0;
-          width: 100%;
+          width: 97.5%;
           height: 50px;
-          background-color: rebeccapurple;
+          line-height: 50px;
+          justify-content: space-around;
+          background-color: $color9F9;
+          border-bottom: 1px solid $colorFDF;
+          border-top: 1px solid $colorFDF;
+          > span {
+            cursor: pointer;
+          }
         }
+      }
+      .train_detail {
+        width: 90%;
+        margin: 0 auto;
+        text-align: left;
       }
     }
   }
