@@ -15,7 +15,7 @@
       <div class="items-center">
         <div class="items-center funTop ">
           <span>待办</span>
-          <span>审批</span>
+          <span @click="openMessage">审批</span>
           <span @click="openNotify">更多</span>
         </div>
         <div>
@@ -71,13 +71,20 @@
       </div>
     </div>
 
-    <!--消息提示-->
+    <!--请求回调-->
     <div class="global_notify" :class="{'notify_show': global_notify.visible}">
       <div class="notify_icon" :class="['notify_icon__' + global_notify.type]"></div>
       <div class="notify_title" :class="['notify_title__' + global_notify.type]">{{ global_notify.title }}</div>
       <div class="message">{{ global_notify.message }}</div>
       <div class="subMessage">{{ global_notify.subMessage }}</div>
       <div class="close_btn" v-show="global_notify.showBtn" @click="handleCloseNotify">×</div>
+    </div>
+
+    <!--消息提示-->
+    <div class="global_message" v-show="global_message.visible">
+      <div class="notify_icon" :class="['notify_icon__' + global_message.type]"></div>
+      <div class="notify_title" :class="['notify_title__' + global_message.type]">{{ global_message.title }}</div>
+      <div class="message">{{ global_message.msg }}</div>
     </div>
 
   </div>
@@ -159,9 +166,18 @@
       },
       global_notify() {
         return this.$store.state.app.globalNotify;
+      },
+      global_message() {
+        return this.$store.state.app.globalMessage;
       }
     },
     methods: {
+      openMessage() {
+        this.$LjMessage('warning',{
+          title: '成功',
+          msg: '删除成功~'
+        });
+      },
       openNotify() {
         this.$LjNotify('success',{
           title: '成功',
@@ -199,19 +215,21 @@
   #app {
     .global_notify {
       @include notifyImg('bg.png','theme1/notify');
-
-      .notify_icon__success {
-        @include notifyImg('success.png','theme1/notify');
-      }
-      .notify_icon__error {
-        @include notifyImg('error.png','theme1/notify');
-      }
-      .notify_icon__info {
-        @include notifyImg('info.png','theme1/notify');
-      }
-      .notify_icon__warning {
-        @include notifyImg('warning.png','theme1/notify');
-      }
+    }
+    .notify_icon__success {
+      @include notifyImg('success.png','theme1/notify');
+    }
+    .notify_icon__error {
+      @include notifyImg('error.png','theme1/notify');
+    }
+    .notify_icon__info {
+      @include notifyImg('info.png','theme1/notify');
+    }
+    .notify_icon__warning {
+      @include notifyImg('warning.png','theme1/notify');
+    }
+    .global_message {
+      @include notifyImg('message_bg.png','theme1/notify');
     }
   }
 </style>

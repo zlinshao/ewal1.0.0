@@ -14,7 +14,7 @@ export default {
       return this.$store.dispatch('switch_loading',status);
     };
 
-    //消息提示
+    //操作提示
     Vue.prototype.$LjNotify = function (type = '',status = {},during = 3000) {
       switch (type) {
         case 'success':
@@ -52,7 +52,46 @@ export default {
         });
       }
       this.$store.dispatch('auto_close_notify',during);
-    }
+    };
 
+    //消息提示
+    Vue.prototype.$LjMessage = function (type = '',status = {},during = 2000) {
+      switch (type) {
+        case 'success':
+          this.$store.dispatch('open_message',{
+            type: 'success',
+            ...status
+          });
+          break;
+
+        case 'error':
+          this.$store.dispatch('open_message',{
+            type: 'error',
+            ...status
+          });
+          break;
+
+        case 'info':
+          this.$store.dispatch('open_message',{
+            type: 'info',
+            ...status
+          });
+          break;
+
+        case 'warning':
+          this.$store.dispatch('open_message', {
+            type: 'warning',
+            ...status
+          });
+          break;
+
+        default :
+        this.$store.dispatch('open_message',{
+          type: 'info',
+          ...status
+        });
+      }
+      this.$store.dispatch('auto_close_message',during);
+    }
   }
 }

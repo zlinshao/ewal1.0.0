@@ -11,6 +11,12 @@ const app = {
       message: '',
       subMessage: '',
       showBtn: false
+    },
+    globalMessage: {
+      visible: false,
+      type: '',
+      title: '',
+      msg: ''
     }
   },
   // 计算属性
@@ -51,6 +57,17 @@ const app = {
       setTimeout(() => {
         state.globalNotify.visible = false;
       },during)
+    },
+    OPEN_MESSAGE(state,status) {
+      state.globalMessage.visible = true;
+      state.globalMessage.msg = status.msg;
+      state.globalMessage.title = status.title;
+      state.globalMessage.type = status.type;
+    },
+    AUTO_CLOSE_MESSAGE(state,during) {
+      setTimeout(() => {
+        state.globalMessage.visible = false;
+      },during);
     }
   },
   // 执行函数
@@ -82,7 +99,14 @@ const app = {
     //固定时间关闭
     auto_close_notify({commit},status) {
       commit('AUTO_CLOSE_NOTIFY',status)
-    }
+    },
+    //打开消息
+    open_message({commit},status) {
+      commit('OPEN_MESSAGE',status);
+    },
+    auto_close_message({commit},status) {
+      commit('AUTO_CLOSE_MESSAGE',status);
+    },
   }
 };
 
