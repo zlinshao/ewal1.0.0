@@ -19,7 +19,6 @@
         height: calc(100% - 131px);
         background-color: $color9F9;
         position: relative;
-        //固定右边向导
         .guidance {
           position: absolute;
           right: 0;
@@ -60,7 +59,6 @@
             }
           }
         }
-        //  内容
         .content {
           width: 60%;
           height: 500px;

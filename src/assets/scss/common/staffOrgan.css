@@ -239,5 +239,7 @@
               cursor: pointer; }
           #theme_name #staffOrgan .dialog_container .dialog_main .chooseStaff > div > div .lists p {
             margin-top: 6px; }
+#theme_name #staffOrgan .dialog_container .footerBtn {
+  margin-bottom: 10px; }
 
 /*# sourceMappingURL=staffOrgan.css.map */

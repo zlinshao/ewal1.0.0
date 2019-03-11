@@ -114,7 +114,7 @@
       }
     },
     mounted() {
-      this.getList();
+      // this.getList();
     },
     activated() {
     },

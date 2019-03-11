@@ -132,66 +132,126 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #departManage .dialog_container .dialog_header span {
-  font-size: 24px; }
-#theme_name #departManage .dialog_container .dialog_main {
-  flex-direction: column; }
-  #theme_name #departManage .dialog_container .dialog_main .mainTop {
-    height: 100px; }
-    #theme_name #departManage .dialog_container .dialog_main .mainTop span {
-      cursor: pointer;
-      padding: 8px 40px;
-      margin-right: 20px; }
-    #theme_name #departManage .dialog_container .dialog_main .mainTop .hover {
-      color: #FFFFFF; }
-    #theme_name #departManage .dialog_container .dialog_main .mainTop .add {
-      width: 30px;
+#theme_name #departManage .dialog_container .departPosition .mainTop, #theme_name #departManage .dialog_container .positionContent .mainTop {
+  height: 100px;
+  padding: 0 20px; }
+  #theme_name #departManage .dialog_container .departPosition .mainTop span, #theme_name #departManage .dialog_container .positionContent .mainTop span {
+    cursor: pointer;
+    padding: 8px 40px;
+    margin-right: 20px; }
+  #theme_name #departManage .dialog_container .departPosition .mainTop .hover, #theme_name #departManage .dialog_container .positionContent .mainTop .hover {
+    color: #FFFFFF; }
+  #theme_name #departManage .dialog_container .departPosition .mainTop .add, #theme_name #departManage .dialog_container .positionContent .mainTop .add {
+    width: 30px;
+    height: 30px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #CF2E33;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center; }
+    #theme_name #departManage .dialog_container .departPosition .mainTop .add b, #theme_name #departManage .dialog_container .positionContent .mainTop .add b {
+      padding-bottom: 6px;
+      color: #FFFFFF;
+      font-size: 30px; }
+#theme_name #departManage .dialog_container .departPosition .staffManage, #theme_name #departManage .dialog_container .departPosition .orgManage {
+  background-color: #FFFFFF;
+  height: 100%; }
+  #theme_name #departManage .dialog_container .departPosition .staffManage > div, #theme_name #departManage .dialog_container .departPosition .orgManage > div {
+    float: left; }
+#theme_name #departManage .dialog_container .departPosition .staffManage > div {
+  margin: 60px 0 0 36px;
+  position: relative;
+  cursor: pointer; }
+  #theme_name #departManage .dialog_container .departPosition .staffManage > div p {
+    width: 58px;
+    height: 58px;
+    margin-right: 15px; }
+    #theme_name #departManage .dialog_container .departPosition .staffManage > div p img {
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%; }
+  #theme_name #departManage .dialog_container .departPosition .staffManage > div div h5 {
+    color: #D2D2D2;
+    margin-top: 6px; }
+#theme_name #departManage .dialog_container .departPosition .orgManage > div {
+  cursor: pointer;
+  padding: 6px;
+  width: 60px;
+  height: 220px;
+  border: 1px solid #686874;
+  background-color: #F2F2F2;
+  margin: 60px 0 0 60px; }
+  #theme_name #departManage .dialog_container .departPosition .orgManage > div p {
+    height: 100%;
+    padding: 10px 0;
+    background-color: #FFFFFF;
+    border: 1px solid #686874; }
+#theme_name #departManage .dialog_container .departPosition .depart_visible {
+  width: 88%;
+  height: 100%;
+  padding: 30px 0 20px;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+  #theme_name #departManage .dialog_container .departPosition .depart_visible .multi-input > div + div {
+    margin-top: 20px; }
+  #theme_name #departManage .dialog_container .departPosition .depart_visible .multi-input .first {
+    display: flex;
+    display: -webkit-flex;
+    align-items: center; }
+    #theme_name #departManage .dialog_container .departPosition .depart_visible .multi-input .first label {
+      min-width: 30px;
       height: 30px;
-      -webkit-border-radius: 6px;
-      -moz-border-radius: 6px;
-      border-radius: 6px;
-      cursor: pointer;
-      background-color: #CF2E33;
+      color: #CF2E33;
+      border: 1px solid #CF2E33;
+      border-radius: 50%;
+      line-height: 24px;
+      font-size: 30px;
+      margin-left: 15px;
+      cursor: pointer; }
+#theme_name #departManage .dialog_container .powerContent {
+  padding: 0 60px;
+  text-align: left; }
+  #theme_name #departManage .dialog_container .powerContent .powerHead {
+    margin: 20px 0 60px; }
+    #theme_name #departManage .dialog_container .powerContent .powerHead .inputLabel {
       display: flex;
       display: -webkit-flex;
-      align-items: center;
-      justify-content: center; }
-      #theme_name #departManage .dialog_container .dialog_main .mainTop .add b {
-        padding-bottom: 6px;
-        color: #FFFFFF;
-        font-size: 30px; }
-  #theme_name #departManage .dialog_container .dialog_main .staffManage, #theme_name #departManage .dialog_container .dialog_main .orgManage {
-    background-color: #FFFFFF;
-    height: 100%; }
-    #theme_name #departManage .dialog_container .dialog_main .staffManage > div, #theme_name #departManage .dialog_container .dialog_main .orgManage > div {
-      float: left; }
-  #theme_name #departManage .dialog_container .dialog_main .staffManage > div {
-    margin: 60px 0 0 36px;
-    position: relative;
-    cursor: pointer; }
-    #theme_name #departManage .dialog_container .dialog_main .staffManage > div p {
-      width: 58px;
-      height: 58px;
-      margin-right: 15px; }
-      #theme_name #departManage .dialog_container .dialog_main .staffManage > div p img {
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%; }
-    #theme_name #departManage .dialog_container .dialog_main .staffManage > div div h5 {
-      color: #D2D2D2;
-      margin-top: 6px; }
-  #theme_name #departManage .dialog_container .dialog_main .orgManage > div {
-    cursor: pointer;
-    padding: 6px;
-    width: 60px;
-    height: 220px;
-    border: 1px solid #686874;
-    background-color: #F2F2F2;
-    margin: 60px 0 0 60px; }
-    #theme_name #departManage .dialog_container .dialog_main .orgManage > div p {
-      height: 100%;
-      padding: 10px 0;
-      background-color: #FFFFFF;
-      border: 1px solid #686874; }
+      align-items: center; }
+      #theme_name #departManage .dialog_container .powerContent .powerHead .inputLabel h4 {
+        margin-right: 20px; }
+    #theme_name #departManage .dialog_container .powerContent .powerHead i {
+      font-size: 28px;
+      color: #CF2E33; }
+  #theme_name #departManage .dialog_container .powerContent .powerTabs {
+    margin-bottom: 30px; }
+    #theme_name #departManage .dialog_container .powerContent .powerTabs .childPower {
+      padding: 0 15px; }
+      #theme_name #departManage .dialog_container .powerContent .powerTabs .childPower span {
+        cursor: pointer;
+        margin-right: 30px; }
+      #theme_name #departManage .dialog_container .powerContent .powerTabs .childPower .hover {
+        color: #CF2E33; }
+  #theme_name #departManage .dialog_container .powerContent .powerMain {
+    height: 80%;
+    padding: 40px 0;
+    background-color: #FFFFFF; }
+    #theme_name #departManage .dialog_container .powerContent .powerMain > div:first-child {
+      padding: 0 40px; }
+    #theme_name #departManage .dialog_container .powerContent .powerMain > div .el-checkbox-group {
+      padding: 0 40px;
+      border-left: 1px dashed #D2D2D2; }
+      #theme_name #departManage .dialog_container .powerContent .powerMain > div .el-checkbox-group label {
+        margin-bottom: 15px; }
+#theme_name #departManage .dialog_container .footerBtn.right {
+  justify-content: flex-end;
+  padding-right: 60px; }
 
 /*# sourceMappingURL=departManage.css.map */

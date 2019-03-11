@@ -3,9 +3,12 @@
 
 //select重置
 .appTheme1 {
-  .el-option-1:hover, .el-option-1.hover {
+  .el-select-dropdown__item:hover, .el-select-dropdown__item.hover {
     color: $colorE33;
     background-color: #FFEAEA;
+  }
+  .el-select-dropdown__item.selected {
+    color: $colorE33;
   }
 }
 
@@ -19,6 +22,26 @@ div.el-popover {
 }
 
 #theme_name {
+  //tab切换
+  .el-tabs {
+    .el-tabs__active-bar {
+      background-color: transparent;
+    }
+    .el-tabs__item {
+      padding: 0 40px;
+      margin: 0 10px 20px;
+      height: 36px;
+      line-height: 36px;
+      @include bgImage("../image/humanResource/recruitment/departManage/theme1/huidi.png");
+      &:hover {
+        color: $color874;
+      }
+    }
+    .el-tabs__item.is-active {
+      color: $colorFFF;
+      @include bgImage("../image/humanResource/recruitment/departManage/theme1/hongdi.png");
+    }
+  }
   //表格================
   .el-table {
     &::before {
