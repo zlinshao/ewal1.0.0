@@ -3,7 +3,15 @@ const app = {
     personal: {},
     routeAnimation: false,
     themeName: '1',
-    loading: false
+    loading: false,
+    globalNotify: {
+      visible: false,
+      type: '',
+      title: '',
+      message: '',
+      subMessage: '',
+      showBtn: false
+    }
   },
   // 计算属性
   getter: {},
@@ -26,6 +34,23 @@ const app = {
     },
     SHOW_LOADING(state,status) {
       state.loading = status;
+    },
+    CLOSE_NOTIFY(state,status) {
+      console.log(status);
+      state.globalNotify.visible = status;
+    },
+    OPEN_NOTIFY(state,status) {
+      state.globalNotify.visible = true;
+      state.globalNotify.showBtn = status.showBtn;
+      state.globalNotify.message = status.message;
+      state.globalNotify.subMessage = status.subMessage;
+      state.globalNotify.title = status.title;
+      state.globalNotify.type = status.type;
+    },
+    AUTO_CLOSE_NOTIFY(state,during) {
+      setTimeout(() => {
+        state.globalNotify.visible = false;
+      },during)
     }
   },
   // 执行函数
@@ -45,6 +70,18 @@ const app = {
     //显示/隐藏loading
     switch_loading({commit},status) {
       commit('SHOW_LOADING',status);
+    },
+    //关闭提示框
+    close_notify({commit},status) {
+      commit('CLOSE_NOTIFY',status);
+    },
+    //打开消息提示
+    open_notify({commit},status) {
+      commit('OPEN_NOTIFY', status);
+    },
+    //固定时间关闭
+    auto_close_notify({commit},status) {
+      commit('AUTO_CLOSE_NOTIFY',status)
     }
   }
 };

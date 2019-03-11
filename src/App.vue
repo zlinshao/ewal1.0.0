@@ -16,7 +16,7 @@
         <div class="items-center funTop ">
           <span>待办</span>
           <span>审批</span>
-          <span>更多</span>
+          <span @click="openNotify">更多</span>
         </div>
         <div>
           <select v-model="theme_name" @change="changeLoading">
@@ -60,6 +60,7 @@
       正在切换
     </div>
 
+    <!--加载-->
     <div class="loading" v-show="all_loading">
       <div class="content">
         <div class="lang">
@@ -69,6 +70,16 @@
         </div>
       </div>
     </div>
+
+    <!--消息提示-->
+    <div class="global_notify" :class="{'notify_show': global_notify.visible}">
+      <div class="notify_icon" :class="['notify_icon__' + global_notify.type]"></div>
+      <div class="notify_title" :class="['notify_title__' + global_notify.type]">{{ global_notify.title }}</div>
+      <div class="message">{{ global_notify.message }}</div>
+      <div class="subMessage">{{ global_notify.subMessage }}</div>
+      <div class="close_btn" v-show="global_notify.showBtn" @click="handleCloseNotify">×</div>
+    </div>
+
   </div>
 </template>
 
@@ -145,9 +156,23 @@
       },
       all_loading() {
         return this.$store.state.app.loading;
+      },
+      global_notify() {
+        return this.$store.state.app.globalNotify;
       }
     },
     methods: {
+      openNotify() {
+        this.$LjNotify('success',{
+          title: '成功',
+          message: '请求成功了~',
+          subMessage: '这是一个子标题',
+        });
+      },
+      //关闭提示
+      handleCloseNotify() {
+        this.$store.dispatch('close_notify',false);
+      },
       changeLoading() {
         this.$store.dispatch('theme_name', this.theme_name);
         this.changeLoad = true;
@@ -165,4 +190,28 @@
 
 <style lang="scss" scoped>
   @import "./assets/scss/app/index.scss";
+
+  @mixin notifyImg($m,$n) {
+    $url: './assets/image/common/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
+  #app {
+    .global_notify {
+      @include notifyImg('bg.png','theme1/notify');
+
+      .notify_icon__success {
+        @include notifyImg('success.png','theme1/notify');
+      }
+      .notify_icon__error {
+        @include notifyImg('error.png','theme1/notify');
+      }
+      .notify_icon__info {
+        @include notifyImg('info.png','theme1/notify');
+      }
+      .notify_icon__warning {
+        @include notifyImg('warning.png','theme1/notify');
+      }
+    }
+  }
 </style>
