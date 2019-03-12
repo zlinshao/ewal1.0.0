@@ -14,6 +14,9 @@
           align="center"
           :prop="item"
           :label="showData[item]">
+          <template slot-scope="scope" v-if="item === 'date8' || item === 'date9' || item === 'date10' || item === 'date11'">
+            <el-button type="text">查看</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <footer class="flex-center bottomPage">
@@ -43,19 +46,18 @@
         url: globalConfig.organ_server,
         checkList: [],
         showData: {
-          name: '姓名',
-          date1: '部门',
-          date2: '面貌',
-          date3: '民族',
-          date4: '出生日期',
-          date5: '身份证号',
-          date6: '城市',
-          date7: '户口性质',
-          date8: '婚育情况',
-          date9: '家庭住址',
-          date10: '联系方式',
-          date11: '紧急联系人',
-          phone: '电话',
+          name: '部门',
+          date1: '岗位',
+          date2: '入职时间',
+          date3: '离职时间',
+          date4: '离职操作时间',
+          date5: '联系方式',
+          date6: '离职类型',
+          date7: '离职备注',
+          date8: '离职交接单',
+          date9: '合同',
+          date10: '离职短信',
+          date11: '离职证明',
         },
         chooseRowIds: [],
         tableData: [],
@@ -79,7 +81,6 @@
     methods: {
       getStaffList() {
         this.$http.get(this.url + 'staff/user', this.params).then(res => {
-          console.log(res.data.data);
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })

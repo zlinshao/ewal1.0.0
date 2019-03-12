@@ -1,13 +1,8 @@
 <template>
   <div id="organization">
-    <ul id="demo" >
-        <tree-item
-          class="item"
-          :item="treeData"
-          @make-folder="makeFolder"
-          @add-item="addItem">
-        </tree-item>
-    </ul>
+    <tree-item
+      :item="treeData">
+    </tree-item>
   </div>
 </template>
 
@@ -23,25 +18,25 @@
         treeData: {
           name: 'My Tree',
           children: [
-            { name: 'hello' },
-            { name: 'wat' },
+            {name: 'hello'},
+            {name: 'wat'},
             {
               name: 'child folder',
               children: [
                 {
                   name: 'child folder',
                   children: [
-                    { name: 'hello' },
-                    { name: 'wat' }
+                    {name: 'hello'},
+                    {name: 'wat'}
                   ]
                 },
-                { name: 'hello' },
-                { name: 'wat' },
+                {name: 'hello'},
+                {name: 'wat'},
                 {
                   name: 'child folder',
                   children: [
-                    { name: 'hello' },
-                    { name: 'wat' }
+                    {name: 'hello'},
+                    {name: 'wat'}
                   ]
                 }
               ]
@@ -57,15 +52,15 @@
     watch: {},
     computed: {},
     methods: {
-      makeFolder: function (item) {
-        Vue.set(item, 'children', []);
-        this.addItem(item)
-      },
-      addItem: function (item) {
-        item.children.push({
-          name: 'new stuff'
-        })
-      }
+      // makeFolder: function (item) {
+      //   this.set(item, 'children', []);
+      //   this.addItem(item);
+      // },
+      // addItem: function (item) {
+      //   item.children.push({
+      //     name: 'new stuff'
+      //   })
+      // }
     },
   }
 </script>

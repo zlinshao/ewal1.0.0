@@ -77,9 +77,9 @@
                 </div>
               </div>
             </div>
-            <footer class="footerBtn">
-              <div class="danger" @click="staffInfo">确认</div>
-              <div class="default" @click="handleCloseLjDialog">取消</div>
+            <footer class="dialog_footer">
+              <el-button type="danger" size="small" @click="staffInfo">确定</el-button>
+              <el-button type="info" size="small" @click="handleCloseLjDialog">取消</el-button>
             </footer>
           </div>
         </div>
@@ -114,7 +114,7 @@
       }
     },
     mounted() {
-      // this.getList();
+      this.getList();
     },
     activated() {
     },

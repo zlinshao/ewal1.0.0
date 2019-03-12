@@ -219,11 +219,11 @@
 #theme_name h5.operate {
   position: absolute;
   top: -60px;
-  padding: 10px 0;
+  padding: 6px 0;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
-  background-color: #686874;
+  background-color: #CF2E33;
   display: flex;
   display: -webkit-flex;
   align-items: center; }
@@ -240,7 +240,7 @@
     position: absolute;
     width: 10px;
     height: 10px;
-    background-color: #686874;
+    background-color: #CF2E33;
     bottom: -5px;
     transform: rotateZ(45deg); }
   #theme_name h5.operate b {

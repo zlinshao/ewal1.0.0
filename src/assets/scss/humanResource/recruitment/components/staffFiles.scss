@@ -60,13 +60,17 @@
               right: 30px;
               width: 30px;
               height: 30px;
+              background-color: $colorE33;
               cursor: pointer;
             }
-            .info > div {
-              margin-bottom: 20px;
-              label {
-                color: $color2D2;
-                margin-right: 15px;
+            .el-form {
+              width: 100%;
+              .info {
+                width: 100%;
+                padding: 0 20px;
+                > div {
+
+                }
               }
             }
             .grow {

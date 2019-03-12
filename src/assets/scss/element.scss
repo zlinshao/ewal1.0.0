@@ -93,9 +93,33 @@ div.el-popover {
   }
   //input取消border
   .borderNone {
-    .el-input__inner {
+    .el-input__inner, .el-textarea__inner {
       border: none;
       background-color: $colorFFF !important;
+    }
+  }
+  //获取焦点
+  .focusBorder {
+    .el-form-item__label {
+      color: $color2D2;
+    }
+    .el-input__inner:focus, .el-textarea__inner:focus {
+      border-color: $colorE33;
+      background-color: $colorFFF !important;
+    }
+  }
+  //input禁用
+  .inputDisabled {
+    .el-form-item__label {
+      color: $color2D2;
+    }
+    .is-disabled {
+      input {
+        cursor: default;
+        color: $color874;
+        border: none;
+        background-color: transparent;
+      }
     }
   }
   //离职员工 check红色圆圈

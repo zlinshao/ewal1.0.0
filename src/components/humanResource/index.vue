@@ -2,9 +2,6 @@
   <div id="humanResource">
     <div>
       <MenuList :list="humanResource" :module="true"></MenuList>
-      <div>
-
-      </div>
     </div>
   </div>
 </template>
