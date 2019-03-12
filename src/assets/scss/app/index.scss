@@ -211,6 +211,80 @@
       }
     }
   }
+  .global_notify {
+    width: 230px;
+    height: 250px;
+    position: fixed;
+    top: -950px;
+    right: 15px;
+    z-index: 10;
+    transition: all ease .5s;
+    overflow: hidden;
+    text-align: center;
+    padding: 30px 40px;
+    opacity: 0;
+
+    .close_btn {
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .subMessage {
+      font-size: 14px;
+      color: #D8D8D8;
+    }
+  }
+  .message {
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 400;
+  }
+  .notify_icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+
+  .notify_title {
+    font-size: 26px;
+    margin: 15px auto;
+    font-family: 'jingDianXingShu';
+  }
+  .notify_title__success {
+    color: #2ECF74;
+  }
+  .notify_title__error {
+    color: #CF2E33;
+  }
+  .notify_title__info {
+    color: #9AE863;
+  }
+  .notify_title__warning {
+    color: #FEC000;
+  }
+  .notify_show {
+    top: 95px;
+    opacity: 1;
+  }
+
+  .global_message {
+    width: 300px;
+    height: 180px;
+    background-color: #9CCC65;
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    padding: 20px;
+    z-index: 99;
+  }
 }
 
 #app.app1 {

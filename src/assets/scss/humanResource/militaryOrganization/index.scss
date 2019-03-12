@@ -150,8 +150,12 @@
       }
       .train_management {
         .icons {
-          width: 30px;
-          height: 30px;
+          width: 28px;
+          height: 28px;
+          background-color: $colorE33;
+          @include radius(5px);
+          margin-left: 75%;
+          cursor: pointer;
         }
         .add {
           @include flex('flex-center');
@@ -161,6 +165,35 @@
             padding-bottom: 6px;
           }
         }
+        .edit_btn,.delete_btn {
+          cursor: pointer;
+        }
+        .edit_btn {
+          color: $colorE33;
+        }
+        .dialog_main {
+          position: relative;
+        }
+        .new_train {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 97.5%;
+          height: 50px;
+          line-height: 50px;
+          justify-content: space-around;
+          background-color: $color9F9;
+          border-bottom: 1px solid $colorFDF;
+          border-top: 1px solid $colorFDF;
+          > span {
+            cursor: pointer;
+          }
+        }
+      }
+      .train_detail {
+        width: 90%;
+        margin: 0 auto;
+        text-align: left;
       }
     }
   }
