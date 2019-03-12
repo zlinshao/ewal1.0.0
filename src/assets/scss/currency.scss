@@ -15,9 +15,9 @@
   h5.operate {
     position: absolute;
     top: -60px;
-    padding: 10px 0;
+    padding: 6px 0;
     @include radius(6px);
-    background-color: $color874;
+    background-color: $colorE33;
     @include flex('items-center');
     span {
       white-space: nowrap;
@@ -33,7 +33,7 @@
       position: absolute;
       width: 10px;
       height: 10px;
-      background-color: $color874;
+      background-color: $colorE33;
       bottom: -5px;
       transform: rotateZ(45deg);
     }

@@ -184,12 +184,13 @@
         right: 30px;
         width: 30px;
         height: 30px;
+        background-color: #CF2E33;
         cursor: pointer; }
-      #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .info > div {
-        margin-bottom: 20px; }
-        #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .info > div label {
-          color: #D2D2D2;
-          margin-right: 15px; }
+      #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form {
+        width: 100%; }
+        #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form .info {
+          width: 100%;
+          padding: 0 20px; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow {
         width: 100%;
         height: 150px;

@@ -5,8 +5,7 @@
         <div class="dialog_header">
           <h3>员工档案</h3>
         </div>
-        <div class="dialog_main staffFiles space-column
-">
+        <div class="dialog_main staffFiles space-column">
           <div class="filesTop">
             <div class="items-center">
               <div>
@@ -26,13 +25,15 @@
               <p @click="filesInfo('grow')" :class="{'hover': filesStatus === 'grow'}">成长轨迹</p>
             </div>
             <div class="justify-around mainRight scroll_bar" v-if="filesStatus === 'info'">
-              <div v-for="key in 3" class="info">
-                <div v-for="item in 27" class="items-center">
-                  <label>紧急联系方式</label>
-                  <span>南京建邺区白龙江东街22号</span>
+              <el-form :model="filesForm" ref="filesForm" label-width="120px" class="justify-around"
+                       :class="[reviseInfo ? 'inputDisabled': 'focusBorder']">
+                <div v-for="key in 3" class="info">
+                  <el-form-item label="紧急联系人" v-for="item in 27" :key="item">
+                    <el-input v-model="filesForm.name" :disabled="reviseInfo" clearable></el-input>
+                  </el-form-item>
                 </div>
-              </div>
-              <b></b>
+              </el-form>
+              <b @click="reviseInfo = !reviseInfo"></b>
             </div>
             <div class="items-center mainRight" v-if="filesStatus === 'grow'">
               <div class="grow" :style="{'backgroundPosition': num[index]}" v-for="(item,index) in dates">
@@ -58,9 +59,13 @@
     props: ['module'],
     data() {
       return {
+        reviseInfo: true,
+        filesForm: {
+          name: '南京市白龙江东街22号'
+        },
         files_visible: false,
         files_size: {},
-        filesStatus: 'grow',
+        filesStatus: 'info',
         dates: ['【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】'],
       }
     },

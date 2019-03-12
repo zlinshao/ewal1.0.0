@@ -32,7 +32,7 @@
 
     <!--组织架构-->
     <div v-if="chooseTab === 1">
-      组织架构
+      <Organization></Organization>
     </div>
 
     <!--部门管理-->
@@ -104,6 +104,7 @@
 
 <script>
   import DepartManage from './components/departManage.vue';
+  import Organization from './organization/index.vue';
   import SetForms from './components/setForms.vue';//设置表单
   import StaffRoster from './staffRoster/index.vue';//员工名册
   import LeaveJob from './leaveJob/index.vue';//离职管理
@@ -117,7 +118,18 @@
 
   export default {
     name: "index",
-    components: {SetForms, DepartManage, StaffRoster, LeaveJob, MenuList, ljDialog, SearchHigh, Upload, StaffOrgan},
+    components: {
+      SetForms,
+      DepartManage,
+      StaffRoster,
+      LeaveJob,
+      MenuList,
+      ljDialog,
+      SearchHigh,
+      Upload,
+      StaffOrgan,
+      Organization
+    },
     data() {
       return {
         staffBookSearch,

@@ -275,10 +275,21 @@ div.el-popover {
     background-color: transparent !important; }
   #theme_name .el-table tbody tr:hover td {
     background-color: transparent !important; }
-#theme_name .borderNone .el-input__inner {
-  width: 100%;
+#theme_name .borderNone .el-input__inner, #theme_name .borderNone .el-textarea__inner {
   border: none;
   background-color: #FFFFFF !important; }
+#theme_name .focusBorder .el-form-item__label {
+  color: #D2D2D2; }
+#theme_name .focusBorder .el-input__inner:focus, #theme_name .focusBorder .el-textarea__inner:focus {
+  border-color: #CF2E33;
+  background-color: #FFFFFF !important; }
+#theme_name .inputDisabled .el-form-item__label {
+  color: #D2D2D2; }
+#theme_name .inputDisabled .is-disabled input {
+  cursor: default;
+  color: #686874;
+  border: none;
+  background-color: transparent; }
 #theme_name .el-checkout-group, #theme_name .el-radio-group {
   display: flex;
   display: -webkit-flex;

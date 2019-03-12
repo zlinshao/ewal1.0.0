@@ -279,7 +279,34 @@
         <div class="dialog_header">
           <h3>离职</h3>
         </div>
-        <div class="dialog_main"></div>
+        <div class="dialog_main flex-center borderNone">
+          <el-form :model="postForm" ref="postForm" label-width="120px" class="depart_visible">
+            <el-form-item label="岗位名称" required>
+              <el-input v-model="postForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="所属部门" required>
+              <div class="items-center iconInput">
+                <el-input v-model="postForm.depart"></el-input>
+                <p class="icons organization"></p>
+              </div>
+            </el-form-item>
+            <el-form-item label="所属职位" required>
+              <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入内容"
+                v-model="postForm.leader">
+              </el-input>
+            </el-form-item>
+            <div>
+              <el-checkbox-group v-model="checkLists" style="display: flex;justify-content: center;color: #D2D2D2;">
+                <el-checkbox label="发送离职群消息"></el-checkbox>
+                <el-checkbox label="发送离职短信"></el-checkbox>
+                <el-checkbox label="发送离职证明"></el-checkbox>
+              </el-checkbox-group>
+            </div>
+          </el-form>
+        </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small">确定</el-button>
           <el-button type="info" size="small">取消</el-button>
@@ -479,6 +506,7 @@
         // 离职
         leaveVisible: '',
         leave_size: {},
+        checkLists: [],
       }
     },
     mounted() {
@@ -574,7 +602,7 @@
           case 'leave'://新增 岗位
             this.leave_size = {
               width: '510px',
-              height: '450px',
+              height: '480px',
             };
             break;
         }
