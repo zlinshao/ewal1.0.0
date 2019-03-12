@@ -15,10 +15,11 @@
           </h2>
         </div>
         <div class="items-center listTopRight">
-          <div class="icons add"><b>+</b></div>
+          <div class="icons add" @click="new_train_visible = true"><b>+</b></div>
           <div class="icons search"></div>
         </div>
       </div>
+
       <div class="main-nav">
           <span
             v-for="item in active"
@@ -27,7 +28,9 @@
             @click="activeName = item.id"
           >{{ item.val }}</span>
       </div>
-      <div class="main-container">
+
+      <!--课程培训-->
+      <div class="main-container" :class="{'subject-train' : activeName === 2}">
         <div class="content flex">
           <div class="left-guide flex-center">
             <div
@@ -74,6 +77,44 @@
         </div>
       </div>
 
+      <!--考试设置-->
+      <div class="main-container exam-container"
+           :class="{'exam-setting': activeName === 2}">
+        <div class="content flex-center">
+          <div class="guidance">
+            <div class="subject items-center"
+                 v-for="tmp in exam_guide" :key="tmp.id"
+                 @click="is_exam_guide = tmp.id"
+                 :class="{'isGuidance': is_exam_guide === tmp.id}"
+            >
+              <div class="title flex-center">
+                <span class="writingMode">{{ tmp.val }}</span>
+              </div>
+              <div class="line"></div>
+            </div>
+          </div>
+          <div class="contain flex">
+            <div class="exam-paper flex-center">
+              <div v-for="item in exam_library" :key="item.id">
+                <div class="writingMode">
+                  {{ item.name }}
+                </div>
+                <div class="writingMode">
+                  {{ item.type }}
+                </div>
+              </div>
+            </div>
+            <div class="exam-control flex-center">
+              <div>
+                <span class="writingMode">新建题库</span>
+              </div>
+              <div>
+                <span class="writingMode">更多</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="train_management">
         <!--培训管理-->
         <lj-dialog
@@ -240,6 +281,98 @@
           </div>
         </div>
       </lj-dialog>
+
+      <!--新建培训-->
+      <lj-dialog
+        :visible="new_train_visible"
+        :size="{width: 520 + 'px',height: 670 + 'px'}"
+        @close="new_train_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>新建培训</h3>
+          </div>
+          <div class="dialog_main borderNone">
+            <el-form :model="new_train_params" style="text-align: left" size="small" label-width="100px">
+              <el-form-item label="培训类型">
+                <el-select v-model="new_train_params.train_type" placeholder="请选择培训类型" style="width: 320px">
+                  <el-option :value="1" label="入职培训"></el-option>
+                </el-select>
+                <span class="btn_add" @click="train_type_visible = true">+</span>
+              </el-form-item>
+              <el-form-item label="培训名称">
+                <el-select v-model="new_train_params.train_name" placeholder="请选择培训名称" style="width: 320px">
+                  <el-option :value="1" label="入职培训"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="培训地点">
+                <el-select v-model="new_train_params.train_place" placeholder="请选择培训地点" style="width: 320px">
+                  <el-option :value="1" label="入职培训"></el-option>
+                </el-select>
+                <span class="btn_add">+</span>
+              </el-form-item>
+              <el-form-item label="培训时间">
+                <el-date-picker v-model="new_train_params.train_time" placeholder="请选择培训时间" style="width: 320px"></el-date-picker>
+              </el-form-item>
+              <el-form-item label="讲师">
+                <el-select v-model="new_train_params.train_lecturer" style="width: 320px"></el-select>
+              </el-form-item>
+              <el-form-item label="参会人员">
+                <el-input v-model="new_train_params.train_people" placeholder="请选择参会人员" style="width: 320px"></el-input>
+              </el-form-item>
+              <el-form-item label="培训提醒">
+                培训开始前 <el-input style="width: 60px" v-model="new_train_params.train_notify_hour"></el-input> 小时 <el-input style="width: 60px" v-model="new_train_params.train_notify_minutes"></el-input> 分钟提醒
+              </el-form-item>
+              <el-form-item label="上传课件"></el-form-item>
+              <el-form-item label="添加试卷"></el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button size="small" type="danger">提交</el-button>
+            <el-button size="small" type="info" @click="new_train_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
+      <!--添加培训类型-->
+      <lj-dialog
+        :visible="train_type_visible"
+        :size="{width: 520 + 'px',height: 400 + 'px'}"
+        @close="train_type_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>添加培训类型</h3>
+            <div class="header_right">
+              <div class="btn_add">+</div>
+            </div>
+          </div>
+          <div class="dialog_main borderNone">
+            <el-form :model="train_type_params" size="small" label-width="110px" class="showPadding">
+              <el-form-item label="培训类型">
+                <el-input v-model="train_type_params.train_type" placeholder="请输入培训类型"></el-input>
+              </el-form-item>
+              <el-form-item label="培训地点">
+                <el-input v-model="train_type_params.train_place" placeholder="请输入培训地点"></el-input>
+              </el-form-item>
+              <el-form-item label="培训名称/讲师">
+                <p style="margin-bottom: 15px">
+                  <el-input style="width: 150px" v-model="train_type_params.train_name" placeholder="请输入培训名称"></el-input>
+                  <el-input style="width: 150px" v-model="train_type_params.train_lecturer" placeholder="讲师姓名"></el-input>
+                </p>
+                <p>
+                  <el-input style="width: 150px" v-model="train_type_params.train_name" placeholder="请输入培训名称"></el-input>
+                  <el-input style="width: 150px" v-model="train_type_params.train_lecturer" placeholder="讲师姓名"></el-input>
+                </p>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button size="small" type="danger">提交</el-button>
+            <el-button size="small" type="info" @click="train_type_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
@@ -260,7 +393,7 @@
         ], //模块列表
         chooseTab: 3, //当前选中模块
 
-        activeName: 1,
+        activeName: 2,
         active: [
           {id: 1, val: '课程培训'},
           {id: 2, val: '考试设置'},
@@ -379,6 +512,47 @@
 
         //培训详情
         train_detail_visible: false,
+
+        //新建培训
+        new_train_visible: false,
+        new_train_params: {
+          train_type: '',
+          train_name: '',
+          train_place: '',
+          train_time: '',
+          train_lecturer: '',
+          train_people: '',
+          train_notify_hour: '00',
+          train_notify_minutes: '05'
+        },
+
+        //添加培训类型
+        train_type_visible: false,
+        train_type_params: {
+          train_type: '',
+          train_name: '',
+          train_lecturer: '',
+          train_place: ''
+        },
+
+        //考试guide
+        is_exam_guide: 1,
+        exam_guide: [
+          {id: 1, val: '题库管理'},
+          {id: 2, val: '考试管理'}
+        ],
+
+        //题库
+        exam_library: [
+          { id: 1, name: '文职入职测试', type: '入职考试' },
+          { id: 2, name: '文职入职测试', type: '入职考试' },
+          { id: 3, name: '客服话术培训测试', type: '入职考试' },
+          { id: 4, name: '文职入职测试', type: '入职考试' },
+          { id: 5, name: '文职入职测试', type: '入职考试' },
+          { id: 6, name: '文职入职测试', type: '入职考试' },
+          { id: 7, name: '文职入职测试', type: '入职考试' },
+          { id: 8, name: '文职入职测试', type: '入职考试' },
+        ]
       }
     },
     mounted() {
@@ -487,6 +661,19 @@
                   > span {
                     color: $colorE33;
                   }
+                }
+              }
+            }
+          }
+        }
+        .exam-container {
+          .content {
+            @include militaryImg('ksszbj.png','theme1');
+            .exam-control {
+              > div {
+                @include militaryImg('btn_hui.png','theme1');
+                &:hover {
+                  @include militaryImg('btn_hong.png','theme1');
                 }
               }
             }

@@ -5,6 +5,8 @@
     height: 100%;
     > div {
       height: 100%;
+      position: relative;
+      overflow: hidden;
       .main-nav {
         padding: 15px 0;
         > span {
@@ -18,7 +20,10 @@
         width: 100%;
         height: calc(100% - 131px);
         background-color: $color9F9;
-        position: relative;
+        position: absolute;
+        left: 0;
+        top: 131px;
+        transition: all ease 1s;
         .guidance {
           position: absolute;
           right: 0;
@@ -147,6 +152,72 @@
             }
           }
         }
+      }
+      .subject-train {
+        transform: translateX(-100%);
+        z-index: 1;
+      }
+      .exam-container {
+        transform: translateX(100%);
+        .content {
+          .guidance {
+            width: 200px;
+            position: absolute;
+            left: -100px;
+            top: 60%;
+          }
+          .contain {
+            width: 80%;
+            height: 90%;
+            margin: 0 auto;
+            text-align: center;
+            .exam-paper {
+              width: 80%;
+              > div {
+                width: 80px;
+                height: 100%;
+                font-family: 'jingDianXingShu';
+                @include flex('flex-center');
+                flex-direction: column;
+                > div {
+                  font-size: 24px;
+                  font-family: 'jingDianXingShu';
+                  cursor: pointer;
+                  &:first-child {
+                    margin-bottom: 30px;
+                  }
+                }
+                &:hover {
+                  color: $colorE33;
+                }
+              }
+            }
+            .exam-control {
+              width: 20%;
+              flex-direction: column;
+              > div {
+                width: 40px;
+                height: 120px;
+                text-align: center;
+                cursor: pointer;
+                color: white;
+                @include flex('flex-center');
+                &:first-child {
+                  margin-bottom: 100px;
+                }
+                > span {
+                  display: inline-block;
+                  min-height: 70px;
+                  text-align-last: justify;
+                }
+              }
+            }
+          }
+        }
+      }
+      .exam-setting {
+        transform: translateX(0);
+        z-index: 2;
       }
       .train_management {
         .icons {
