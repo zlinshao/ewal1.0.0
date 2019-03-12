@@ -174,8 +174,8 @@
     methods: {
       openMessage() {
         this.$LjMessage('warning',{
-          title: '成功',
-          msg: '删除成功~'
+          title: '警告',
+          msg: '审批失败！'
         });
       },
       openNotify() {
