@@ -1,6 +1,6 @@
 <template>
   <div id="staffRoster">
-    <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+    <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}" @click="tableClickRow">
       <el-table
         :data="tableData"
         highlight-current-row
@@ -39,12 +39,16 @@
         </div>
       </footer>
     </div>
+    <StaffFiles :module="filesVisible" @close="filesVisible = false"></StaffFiles>
   </div>
 </template>
 
 <script>
+  import StaffFiles from '../components/staffFiles.vue'
+
   export default {
     name: "index",
+    components: {StaffFiles},
     data() {
       return {
         url: globalConfig.organ_server,
@@ -73,7 +77,8 @@
           limit: 36,
           org_id: '',
           position_id: '',
-        }
+        },
+        filesVisible: false,
       }
     },
     mounted() {
@@ -96,6 +101,7 @@
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
+        this.filesVisible = true;
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {

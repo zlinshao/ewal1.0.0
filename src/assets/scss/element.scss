@@ -42,6 +42,20 @@ div.el-popover {
       @include bgImage("../image/humanResource/recruitment/departManage/theme1/hongdi.png");
     }
   }
+  //button按钮
+  .el-button {
+    border-color: transparent;
+    &:hover {
+      opacity: .8;
+    }
+  }
+  .el-button--danger {
+    background-color: $colorE33;
+  }
+  .el-button--info {
+    color: $color874;
+    background-color: $colorFDF;
+  }
   //表格================
   .el-table {
     &::before {

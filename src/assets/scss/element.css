@@ -249,6 +249,15 @@ div.el-popover {
   color: #FFFFFF;
   background: url("../image/humanResource/recruitment/departManage/theme1/hongdi.png") no-repeat scroll center;
   background-size: 100% 100%; }
+#theme_name .el-button {
+  border-color: transparent; }
+  #theme_name .el-button:hover {
+    opacity: .8; }
+#theme_name .el-button--danger {
+  background-color: #CF2E33; }
+#theme_name .el-button--info {
+  color: #686874;
+  background-color: #DFDFDF; }
 #theme_name .el-table {
   background-color: transparent; }
   #theme_name .el-table::before {

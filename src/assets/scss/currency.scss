@@ -234,29 +234,29 @@
       }
     }
     .footerBtn {
-      margin-bottom: 40px;
-      @include flex('justify-center');
-      div + div {
-        margin-left: 20px;
-      }
-      div {
-        width: 110px;
-        height: 40px;
-        line-height: 40px;
-        cursor: pointer;
-        text-align: center;
-        @include radius(6px);
-        &:hover {
-          opacity: .8;
-        }
-      }
-      .danger {
-        color: $colorFFF;
-        background-color: $colorE33;
-      }
-      .default {
-        background-color: $colorFDF;
-      }
+      //margin-bottom: 40px;
+      //@include flex('justify-center');
+      //div + div {
+      //  margin-left: 20px;
+      //}
+      //div {
+      //  width: 110px;
+      //  height: 40px;
+      //  line-height: 40px;
+      //  cursor: pointer;
+      //  text-align: center;
+      //  @include radius(6px);
+      //  &:hover {
+      //    opacity: .8;
+      //  }
+      //}
+      //.danger {
+      //  color: $colorFFF;
+      //  background-color: $colorE33;
+      //}
+      //.default {
+      //  background-color: $colorFDF;
+      //}
     }
   }
   .form_item_container {
