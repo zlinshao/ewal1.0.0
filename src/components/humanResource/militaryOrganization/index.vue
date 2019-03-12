@@ -106,7 +106,7 @@
             </div>
             <div class="exam-control flex-center">
               <div>
-                <span class="writingMode">新建题库</span>
+                <span class="writingMode" @click="new_exam_library = true">新建题库</span>
               </div>
               <div>
                 <span class="writingMode">更多</span>
@@ -115,11 +115,12 @@
           </div>
         </div>
       </div>
+
       <div class="train_management">
         <!--培训管理-->
         <lj-dialog
           :visible="train_management_visible"
-          :size="{width: 650 + 'px',height: 600 + 'px'}"
+          :size="{width: 650 + 'px',height: 640 + 'px'}"
           @close="train_management_visible = false"
         >
           <div class="dialog_container">
@@ -143,7 +144,8 @@
               </el-table>
               <div class="new_train flex" v-show="is_add">
                 <el-input v-model="add_params.name" placeholder="请输入培训名称" size="small" style="width: 200px"></el-input>
-                <el-input v-model="add_params.lecturer" placeholder="请输入讲师名称" size="small" style="width: 200px"></el-input>
+                <el-input v-model="add_params.lecturer" placeholder="请输入讲师名称" size="small"
+                          style="width: 200px"></el-input>
                 <span @click="handleCancelAddTrain">删除</span>
               </div>
             </div>
@@ -181,8 +183,8 @@
               </el-form>
             </div>
             <div class="dialog_footer">
-              <el-button size="mini" type="danger" plain>提交</el-button>
-              <el-button size="mini" plain @click="edit_train_visible = false">取消</el-button>
+              <el-button size="mini" type="danger">提交</el-button>
+              <el-button size="mini" type="info" @click="edit_train_visible = false">取消</el-button>
             </div>
           </div>
         </lj-dialog>
@@ -225,12 +227,12 @@
               height="400px"
             >
               <el-table-column label="培训名称" prop="name" align="center"></el-table-column>
-              <el-table-column label="时间" prop="time" align="center" ></el-table-column>
+              <el-table-column label="时间" prop="time" align="center"></el-table-column>
               <el-table-column label="讲师" prop="lecturer" align="center"></el-table-column>
             </el-table>
           </div>
           <div class="dialog_footer">
-            <el-button size="mini" @click="more_visible = false">取消</el-button>
+            <el-button size="mini" type="info" @click="more_visible = false">取消</el-button>
           </div>
         </div>
       </lj-dialog>
@@ -277,7 +279,7 @@
             </el-form>
           </div>
           <div class="dialog_footer">
-            <el-button type="info" @click="train_detail_visible = false">取消</el-button>
+            <el-button type="info" size="mini" @click="train_detail_visible = false">取消</el-button>
           </div>
         </div>
       </lj-dialog>
@@ -312,7 +314,8 @@
                 <span class="btn_add">+</span>
               </el-form-item>
               <el-form-item label="培训时间">
-                <el-date-picker v-model="new_train_params.train_time" placeholder="请选择培训时间" style="width: 320px"></el-date-picker>
+                <el-date-picker v-model="new_train_params.train_time" placeholder="请选择培训时间"
+                                style="width: 320px"></el-date-picker>
               </el-form-item>
               <el-form-item label="讲师">
                 <el-select v-model="new_train_params.train_lecturer" style="width: 320px"></el-select>
@@ -321,7 +324,11 @@
                 <el-input v-model="new_train_params.train_people" placeholder="请选择参会人员" style="width: 320px"></el-input>
               </el-form-item>
               <el-form-item label="培训提醒">
-                培训开始前 <el-input style="width: 60px" v-model="new_train_params.train_notify_hour"></el-input> 小时 <el-input style="width: 60px" v-model="new_train_params.train_notify_minutes"></el-input> 分钟提醒
+                培训开始前
+                <el-input style="width: 60px" v-model="new_train_params.train_notify_hour"></el-input>
+                小时
+                <el-input style="width: 60px" v-model="new_train_params.train_notify_minutes"></el-input>
+                分钟提醒
               </el-form-item>
               <el-form-item label="上传课件"></el-form-item>
               <el-form-item label="添加试卷"></el-form-item>
@@ -357,12 +364,16 @@
               </el-form-item>
               <el-form-item label="培训名称/讲师">
                 <p style="margin-bottom: 15px">
-                  <el-input style="width: 150px" v-model="train_type_params.train_name" placeholder="请输入培训名称"></el-input>
-                  <el-input style="width: 150px" v-model="train_type_params.train_lecturer" placeholder="讲师姓名"></el-input>
+                  <el-input style="width: 150px" v-model="train_type_params.train_name"
+                            placeholder="请输入培训名称"></el-input>
+                  <el-input style="width: 150px" v-model="train_type_params.train_lecturer"
+                            placeholder="讲师姓名"></el-input>
                 </p>
                 <p>
-                  <el-input style="width: 150px" v-model="train_type_params.train_name" placeholder="请输入培训名称"></el-input>
-                  <el-input style="width: 150px" v-model="train_type_params.train_lecturer" placeholder="讲师姓名"></el-input>
+                  <el-input style="width: 150px" v-model="train_type_params.train_name"
+                            placeholder="请输入培训名称"></el-input>
+                  <el-input style="width: 150px" v-model="train_type_params.train_lecturer"
+                            placeholder="讲师姓名"></el-input>
                 </p>
               </el-form-item>
             </el-form>
@@ -370,6 +381,38 @@
           <div class="dialog_footer">
             <el-button size="small" type="danger">提交</el-button>
             <el-button size="small" type="info" @click="train_type_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
+      <!--新建题库-->
+      <lj-dialog
+        :visible="new_exam_library"
+        :size="{width: 400 + 'px',height: 320 + 'px'}"
+        @close="new_exam_library = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>新建题库</h3>
+          </div>
+          <div class="dialog_main">
+            <el-form :model="new_exam_form" size="mini" class="showPadding" label-width="80px">
+              <el-form-item label="试卷类型">
+                <el-select
+                  v-model="new_exam_form.paper_type"
+                  placeholder="请选择试卷类型">
+                  <el-option :value="1" label="入职考试"></el-option>
+                  <el-option :value="2" label="加薪考试"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="试卷名称">
+                <el-input v-model="new_exam_form.paper_name" placeholder="请输入试卷名称"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button size="mini" type="danger">确定</el-button>
+            <el-button size="mini" type="info" @click="new_exam_library = false">取消</el-button>
           </div>
         </div>
       </lj-dialog>
@@ -385,6 +428,13 @@
     components: {LjDialog},
     data() {
       return {
+        //新建题库
+        new_exam_library: false,
+        new_exam_form: {
+          paper_type: '',
+          paper_name: ''
+        },
+
         selects: [
           {id: 1, title: '排班'},
           {id: 2, title: '考勤'},
@@ -452,43 +502,43 @@
 
         train_management_visible: false,
         train_management_list: [
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
-          {name: '文职入职培训',lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
+          {name: '文职入职培训', lecturer: '林依依'},
         ],
 
         more_list: [
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
-          {name: '文职入职培训',time: '2019-01-20',lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
+          {name: '文职入职培训', time: '2019-01-20', lecturer: '林依依'},
         ],
         more_visible: false,
 
@@ -544,20 +594,18 @@
 
         //题库
         exam_library: [
-          { id: 1, name: '文职入职测试', type: '入职考试' },
-          { id: 2, name: '文职入职测试', type: '入职考试' },
-          { id: 3, name: '客服话术培训测试', type: '入职考试' },
-          { id: 4, name: '文职入职测试', type: '入职考试' },
-          { id: 5, name: '文职入职测试', type: '入职考试' },
-          { id: 6, name: '文职入职测试', type: '入职考试' },
-          { id: 7, name: '文职入职测试', type: '入职考试' },
-          { id: 8, name: '文职入职测试', type: '入职考试' },
+          {id: 1, name: '文职入职测试', type: '入职考试'},
+          {id: 2, name: '文职入职测试', type: '入职考试'},
+          {id: 3, name: '客服话术培训测试', type: '入职考试'},
+          {id: 4, name: '文职入职测试', type: '入职考试'},
+          {id: 5, name: '文职入职测试', type: '入职考试'},
+          {id: 6, name: '文职入职测试', type: '入职考试'},
+          {id: 7, name: '文职入职测试', type: '入职考试'},
+          {id: 8, name: '文职入职测试', type: '入职考试'},
         ]
       }
     },
     mounted() {
-    },
-    activated() {
     },
     watch: {},
     computed: {},
@@ -668,12 +716,12 @@
         }
         .exam-container {
           .content {
-            @include militaryImg('ksszbj.png','theme1');
+            @include militaryImg('ksszbj.png', 'theme1');
             .exam-control {
               > div {
-                @include militaryImg('btn_hui.png','theme1');
+                @include militaryImg('btn_hui.png', 'theme1');
                 &:hover {
-                  @include militaryImg('btn_hong.png','theme1');
+                  @include militaryImg('btn_hong.png', 'theme1');
                 }
               }
             }

@@ -94,6 +94,7 @@ div.el-popover {
   //input取消border
   .borderNone {
     .el-input__inner {
+      width: 100%;
       border: none;
       background-color: $colorFFF !important;
     }

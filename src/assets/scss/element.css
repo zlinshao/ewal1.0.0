@@ -276,6 +276,7 @@ div.el-popover {
   #theme_name .el-table tbody tr:hover td {
     background-color: transparent !important; }
 #theme_name .borderNone .el-input__inner {
+  width: 100%;
   border: none;
   background-color: #FFFFFF !important; }
 #theme_name .el-checkout-group, #theme_name .el-radio-group {
