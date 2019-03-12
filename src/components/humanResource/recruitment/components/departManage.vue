@@ -36,7 +36,7 @@
           </div>
           <div class="scroll_bar orgManage" v-if="tabsManage === 'position'">
             <div v-for="item in 30">
-              <p @click="positionVisible = true;position_size = 'small'">
+              <p @click="operateModule('position')">
                 <span class="writingMode">符合都看傻了废话说多</span>
               </p>
             </div>
@@ -122,7 +122,7 @@
                 <el-option label="混合" :value="3"></el-option>
               </el-select>
             </div>
-            <i class="el-icon-edit-outline"></i>
+            <i></i>
           </div>
           <div class="powerTabs">
             <el-tabs v-model="powerName" @tab-click="handleClick">
@@ -147,9 +147,9 @@
             </div>
           </div>
         </div>
-        <div class="dialog_footer footerBtn right">
-          <div class="danger">确定</div>
-          <div class="default">取消</div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="info" size="small">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -169,9 +169,120 @@
               <b>+</b>
             </h2>
           </div>
-          <div style="height: 100%">
-            1
+          <!--岗位-->
+          <div style="height: 100%" v-if="tabsPost === 'post'">
+            <div>
+              <div class="mainListTable">
+                <el-table
+                  :data="tableData"
+                  :row-class-name="tableChooseRow"
+                  @cell-click="tableClickRow"
+                  header-row-class-name="tableHeader"
+                  style="width: 100%">
+                  <el-table-column
+                    v-for="item in Object.keys(showData)" :key="item"
+                    align="center"
+                    :prop="item"
+                    :label="showData[item]">
+                  </el-table-column>
+                  <el-table-column
+                    align="center"
+                    label="操作">
+                    <template slot-scope="scope">
+
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+            <div>
+              <div class="mainListTable">
+                <el-table
+                  :data="tableData"
+                  :row-class-name="tableChooseRow"
+                  @cell-click="tableClickRow"
+                  header-row-class-name="tableHeader"
+                  style="width: 100%">
+                  <el-table-column
+                    v-for="item in Object.keys(showData)" :key="item"
+                    align="center"
+                    :prop="item"
+                    :label="showData[item]">
+                  </el-table-column>
+                  <el-table-column
+                    align="center"
+                    label="操作">
+                    <template slot-scope="scope">
+
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
           </div>
+          <!--人员-->
+          <div class="scroll_bar staffManage" id="scroll-body1" @click="checkOverflow()" v-if="tabsPost === 'person'">
+            <div v-for="item in 40">
+              <div class="items-center" @click="reviseStaff(item)">
+                <p>
+                  <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
+                </p>
+                <div>
+                  <h4>法国电视</h4>
+                  <h5>范德萨发生</h5>
+                </div>
+              </div>
+              <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
+                <span v-for="label in operateList" @click="operateModule(label.type)">{{label.label}}</span>
+                <b v-if="!operatePos"></b>
+                <i v-if="operatePos"></i>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </lj-dialog>
+    <!--新增岗位===============================================================================================-->
+    <lj-dialog :visible="addPostVisible" :size="post_size" @close="addPostVisible = false">
+      <div class="dialog_container">
+        <div class="items-bet dialog_header">
+          <h3>新建岗位</h3>
+        </div>
+        <div class="dialog_main flex-center borderNone">
+          <el-form :model="postForm" ref="postForm" label-width="120px" class="depart_visible">
+            <el-form-item label="岗位名称" required>
+              <el-input v-model="postForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="所属部门" required>
+              <div class="items-center iconInput">
+                <el-input v-model="postForm.depart"></el-input>
+                <p class="icons organization"></p>
+              </div>
+            </el-form-item>
+            <el-form-item label="所属职位" required>
+              <div class="items-center iconInput">
+                <el-input v-model="postForm.leader"></el-input>
+                <p class="icons user"></p>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="info" size="small">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+    <!--离职==================================================================================================-->
+    <lj-dialog :visible="leaveVisible" :size="leave_size" @close="leaveVisible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>离职</h3>
+        </div>
+        <div class="dialog_main"></div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="info" size="small">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -189,7 +300,7 @@
       return {
         addStaffVisible: '',
         departForm: {},
-
+        // 新建职位
         depart_visible: false,
         lj_size: '',
         staff_size: {},
@@ -202,17 +313,17 @@
             type: 'power',
             label: '权限',
           }, {
-            type: 'power',
+            type: 'disabled',
             label: '禁用',
           }, {
-            type: 'power',
+            type: 'revise',
             label: '修改',
           }, {
-            type: 'power',
+            type: 'leave',
             label: '离职',
           }
         ],//人员编辑项
-
+        // 权限管理
         powerVisible: false, //权限
         power_size: {},
         power: '',
@@ -349,10 +460,25 @@
         },
         checkList: [],
         checkAll: false,
-
+        // 岗位管理
         positionVisible: false,
         position_size: '',
         tabsPost: 'post',
+        chooseRowIds: [],
+        tableData: [],
+        showData: {
+          name: '姓名',
+          date1: '部门',
+          date2: '面貌',
+          date3: '民族',
+          phone: '电话',
+        },
+        addPostVisible: false, //新建岗位
+        post_size: {}, //新建岗位
+        postForm: {},
+        // 离职
+        leaveVisible: '',
+        leave_size: {},
       }
     },
     mounted() {
@@ -378,7 +504,7 @@
     methods: {
       // 超出部分 反方向显示
       checkOverflow() {
-        let obj = document.getElementById("scroll-body");
+        let obj = document.getElementById("scroll-body") || document.getElementById("scroll-body1");
         this.operatePos = false;
         this.$nextTick(function () {
           this.operatePos = obj.offsetHeight - obj.clientHeight > 0;
@@ -406,16 +532,21 @@
       // 权限/禁用/修改/离职
       operateModule(val) {
         switch (val) {
-          case 'power':
+          case 'power'://权限
             this.powerVisible = true;
             break;
+          case 'leave'://离职
+            this.leaveVisible = true;
+            break;
           case 'staff'://新增 员工
-          case 'position'://新增 职位
             this.addStaffVisible = true;
+            break;
+          case 'position'://岗位管理
+            this.positionVisible = true;
             break;
           case 'post':
           case 'person'://新增 部门
-            this.addStaffVisible = true;
+            this.addPostVisible = true;
             break;
         }
         switch (val) {
@@ -432,9 +563,18 @@
             };
             break;
           case 'position'://新增 职位
-            this.staff_size = {
+            this.position_size = 'small';
+            break;
+          case 'post'://新增 岗位
+            this.post_size = {
               width: '510px',
-              height: '480px',
+              height: '450px',
+            };
+            break;
+          case 'leave'://新增 岗位
+            this.leave_size = {
+              width: '510px',
+              height: '450px',
             };
             break;
         }
@@ -481,6 +621,16 @@
         }
       },
       // 岗位管理
+      // 当前点击
+      tableClickRow(row) {
+        let ids = this.chooseRowIds;
+        ids.push(row.id);
+        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+      },
+      // 点击过
+      tableChooseRow({row, rowIndex}) {
+        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+      },
     },
   }
 </script>
@@ -519,6 +669,13 @@
             }
             .user {
               @include commonImg('yonghu.png', 'theme1');
+            }
+          }
+        }
+        .powerContent {
+          .powerHead {
+            i {
+              @include commonImg('xiugai.png', 'theme1');
             }
           }
         }

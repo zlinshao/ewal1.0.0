@@ -30,7 +30,7 @@
           }
         }
       }
-      .departPosition {
+      .departPosition, .positionContent {
         .staffManage, .orgManage {
           background-color: $colorFFF;
           height: 100%;
@@ -116,8 +116,8 @@
             }
           }
           i {
-            font-size: 28px;
-            color: $colorE33;
+            width: 30px;
+            height: 30px;
           }
         }
         .powerTabs {

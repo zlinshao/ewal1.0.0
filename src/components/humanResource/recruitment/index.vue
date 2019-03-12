@@ -81,9 +81,9 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="footerBtn">
-          <div class="danger">确认</div>
-          <div class="default">取消</div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="info" size="small">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -103,8 +103,8 @@
 </template>
 
 <script>
-  import SetForms from './components/setForms.vue';//设置表单
   import DepartManage from './components/departManage.vue';
+  import SetForms from './components/setForms.vue';//设置表单
   import StaffRoster from './staffRoster/index.vue';//员工名册
   import LeaveJob from './leaveJob/index.vue';//离职管理
   import SearchHigh from '../../common/searchHigh.vue';
@@ -124,16 +124,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        organModule: false,//组织架构
-
-        setFormData: {},
-        SetFormVisible: false,//设置表单
-
-        departModule: false,//部门管理/员工管理
-        depart_visible: false,//新增部门
-        lj_size: {},//新增部门
-        departForm: {},//新增部门
-        chooseTab: 2,//tab切换
+        chooseTab: 3,//tab切换
         selects: [
           {
             id: 1,
@@ -152,6 +143,16 @@
             title: '离职管理',
           }
         ],//tab切换
+
+        organModule: false,//组织架构
+
+        setFormData: {},
+        SetFormVisible: false,//设置表单
+
+        departModule: false,//部门管理/员工管理
+        depart_visible: false,//新增部门
+        lj_size: {},//新增部门
+        departForm: {},//新增部门
         visibleStatus: false,//弹出部门
         showSearch: false,//高级搜索
         searchData: {},//搜索结果
@@ -188,7 +189,6 @@
       }
     },
     mounted() {
-      this.departModule = true;
     },
     activated() {
     },
