@@ -256,8 +256,14 @@
               font-family: 'jingDianXingShu';
               font-size: 22px; }
     #theme_name .militaryOrganization > div .train_management .icons {
-      width: 30px;
-      height: 30px; }
+      width: 28px;
+      height: 28px;
+      background-color: #CF2E33;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      margin-left: 75%;
+      cursor: pointer; }
     #theme_name .militaryOrganization > div .train_management .add {
       display: flex;
       display: -webkit-flex;
@@ -267,5 +273,28 @@
         color: #FFFFFF;
         font-size: 30px;
         padding-bottom: 6px; }
+    #theme_name .militaryOrganization > div .train_management .edit_btn, #theme_name .militaryOrganization > div .train_management .delete_btn {
+      cursor: pointer; }
+    #theme_name .militaryOrganization > div .train_management .edit_btn {
+      color: #CF2E33; }
+    #theme_name .militaryOrganization > div .train_management .dialog_main {
+      position: relative; }
+    #theme_name .militaryOrganization > div .train_management .new_train {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 97.5%;
+      height: 50px;
+      line-height: 50px;
+      justify-content: space-around;
+      background-color: #F9F9F9;
+      border-bottom: 1px solid #DFDFDF;
+      border-top: 1px solid #DFDFDF; }
+      #theme_name .militaryOrganization > div .train_management .new_train > span {
+        cursor: pointer; }
+    #theme_name .militaryOrganization > div .train_detail {
+      width: 90%;
+      margin: 0 auto;
+      text-align: left; }
 
 /*# sourceMappingURL=index.css.map */
