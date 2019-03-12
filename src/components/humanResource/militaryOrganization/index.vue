@@ -395,12 +395,12 @@
           <div class="dialog_header">
             <h3>新建题库</h3>
           </div>
-          <div class="dialog_main">
+          <div class="dialog_main borderNone">
             <el-form :model="new_exam_form" size="mini" class="showPadding" label-width="80px">
               <el-form-item label="试卷类型">
                 <el-select
                   v-model="new_exam_form.paper_type"
-                  placeholder="请选择试卷类型">
+                  placeholder="请选择试卷类型" style="width: 220px">
                   <el-option :value="1" label="入职考试"></el-option>
                   <el-option :value="2" label="加薪考试"></el-option>
                 </el-select>

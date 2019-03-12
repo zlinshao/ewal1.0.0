@@ -217,6 +217,7 @@
       overflow: hidden;
       margin: 20px 0;
       @include scroll();
+      @include flex('flex-center');
       .unUse-txt {
         font-size: 18px;
       }
