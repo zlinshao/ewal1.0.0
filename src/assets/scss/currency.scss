@@ -11,6 +11,20 @@
   @include bgImage($url);
 }
 
+@mixin btn_square($m) {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  background-color: $colorE33;
+  vertical-align: middle;
+  cursor: pointer;
+  @include radius($m);
+}
 #theme_name {
   h5.operate {
     position: absolute;
@@ -217,6 +231,7 @@
       overflow: hidden;
       margin: 20px 0;
       @include scroll();
+      @include flex('flex-center');
       .unUse-txt {
         font-size: 18px;
       }
@@ -343,19 +358,16 @@
     margin-bottom: 15px;
   }
   .btn_add {
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    @include radius(50%);
-    text-align: center;
-    line-height: 20px;
-    background-color: $colorE33;
-    vertical-align: middle;
-    //margin-left: 15px;
-    cursor: pointer;
+    @include btn_square(50%);
+  }
+
+  .btn_square_add {
+    @include btn_square(4px);
+    margin-right: 15px;
+  }
+  .btn_square_minus {
+    @include btn_square(4px);
+    background-color: $color2D2;
   }
 
   .iconSuccess {
