@@ -33,7 +33,8 @@
               </el-date-picker>
             </div>
             <div class="items-center" v-if="item.keyType === 'radio'">
-              <p class="radioSelection" @click="chooseRadio(item.keyName,key.id)" :class="{'highChoose': params[item.keyName] === key.id}"
+              <p class="radioSelection" @click="chooseRadio(item.keyName,key.id)"
+                 :class="{'highChoose': params[item.keyName] === key.id}"
                  v-for="key in item.value">
                 {{key.title}}
               </p>
@@ -139,6 +140,8 @@
           }
           let word = val.keywords ? val.keywords : 'search';
           this.reset[word] = '';
+          this.reset.page = val.page ? val.page : 1;
+          this.reset.limit = val.limit ? val.limit : 30;
           this.resetting();
         },
         deep: true

@@ -504,14 +504,46 @@
   font-size: 20px;
   font-weight: bold;
   color: white;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  border-radius: 50%;
   text-align: center;
   line-height: 20px;
   background-color: #CF2E33;
   vertical-align: middle;
-  cursor: pointer; }
+  cursor: pointer;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%; }
+#theme_name .btn_square_add {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  background-color: #CF2E33;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  margin-right: 15px; }
+#theme_name .btn_square_minus {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  background-color: #CF2E33;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #D2D2D2; }
 #theme_name .iconSuccess {
   background: url("../../assets/image/common/theme1/success.png") no-repeat scroll center;
   background-size: 100% 100%; }

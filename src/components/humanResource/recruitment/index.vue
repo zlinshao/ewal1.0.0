@@ -47,8 +47,8 @@
     </div>
 
     <!--员工名册-->
-    <div v-if="chooseTab === 3">
-      <StaffRoster></StaffRoster>
+    <div v-show="chooseTab === 3">
+      <StaffRoster :searchVal="searchFruit3"></StaffRoster>
     </div>
 
     <!--离职管理-->
@@ -136,7 +136,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 3,//tab切换
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -166,8 +166,11 @@
         lj_size: {},//新增部门
         departForm: {},//新增部门
         visibleStatus: false,//弹出部门
+
         showSearch: false,//高级搜索
-        searchData: {},//搜索结果
+        searchData: {},//搜索项
+        searchFruit3: {},//搜索结果
+        searchFruit4: {},//搜索结果
 
         checkList: '',//离职员工
         options: [
@@ -214,14 +217,20 @@
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;
+        this.$nextTick(function () {
+          switch (id) {
+            case 3:
+              this.searchFruit3 = this.handleSearch(this.staffBookSearch);
+              break;
+          }
+        });
         this.$store.dispatch('route_animation');
       },
-      // 确认搜索
-      hiddenModule(val) {
-        this.showSearch = false;
-        if (val !== 'close') {
-          console.log(val);
-        }
+      // 部门管理列表
+      getDepartList() {
+        // this.$http.get(globalConfig.organ_server + 'organization/organization').then(res => {
+        //   console.log(res)
+        // })
       },
       // 新增部门
       showAddModule(val) {
@@ -244,9 +253,6 @@
       highSearch(val) {
         this.showSearch = true;
         switch (val) {
-          case 1:
-            this.searchData = this.staffBookSearch;
-            break;
           case 3:
             this.searchData = this.staffBookSearch;
             break;
@@ -254,7 +260,20 @@
             this.searchData = this.LeaveJobSearch;
             break;
         }
-
+      },
+      // 确认搜索
+      hiddenModule(val) {
+        this.showSearch = false;
+        if (val !== 'close') {
+          switch (this.chooseTab) {
+            case 3:
+              this.searchFruit3 = val;
+              break;
+            case 4:
+              this.searchFruit4 = val;
+              break;
+          }
+        }
       },
       showSetForm() {
         this.SetFormVisible = true;
