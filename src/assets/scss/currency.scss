@@ -350,6 +350,13 @@
       height: 20px;
     }
   }
+  //form 表单 icons
+  .user {
+    @include commonImg('yonghu.png', 'theme1');
+  }
+  .organization {
+    @include commonImg('zuzhijiagou.png', 'theme1');
+  }
   //成功图标
   .resIcon {
     margin: 0 auto;

@@ -171,6 +171,7 @@
             height: 90%;
             margin: 0 auto;
             text-align: center;
+            transition: all ease 1s;
             .exam-paper {
               width: 80%;
               > div {
@@ -180,15 +181,27 @@
                 @include flex('flex-center');
                 flex-direction: column;
                 > div {
-                  font-size: 24px;
+                  font-size: 26px;
                   font-family: 'jingDianXingShu';
                   cursor: pointer;
                   &:first-child {
-                    margin-bottom: 30px;
+                    margin-bottom: 80px;
                   }
                 }
                 &:hover {
                   color: $colorE33;
+                }
+              }
+              .exam_span {
+                vertical-align: top;
+                > span {
+                  font-family: 'jingDianXingShu';
+                  &:first-child {
+                    font-size: 12px;
+                  }
+                  &:last-child {
+                    font-size: 26px;
+                  }
                 }
               }
             }

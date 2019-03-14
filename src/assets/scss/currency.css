@@ -492,6 +492,12 @@
   #theme_name .iconInput .icons {
     width: 20px;
     height: 20px; }
+#theme_name .user {
+  background: url("../../assets/image/common/theme1/yonghu.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name .organization {
+  background: url("../../assets/image/common/theme1/zuzhijiagou.png") no-repeat scroll center;
+  background-size: 100% 100%; }
 #theme_name .resIcon {
   margin: 0 auto;
   width: 80px;
