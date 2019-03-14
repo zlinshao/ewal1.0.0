@@ -27,7 +27,7 @@
               </span>
             </div>
             <div class="scroll_bar organList">
-              <ul v-if="departList.length > 0">
+              <ul v-if="departList.length > 0 || staffList.length > 0">
                 <li v-for="item in departList" class="items-bet">
                   <p class="line-clamp1">{{item.name}}</p>
                   <p class="lowerLevel" @click="clickDepart(item)">
@@ -159,7 +159,7 @@
           }
         });
       },
-      // 更新数据
+      // 部门
       getList(org = 1) {
         this.departList = [];
         this.staffList = [];
@@ -172,10 +172,11 @@
             if (res.code === '20000') {
               this.departList = res.data.data;
             }
-            this.searchStaff(org)
-          })
+          });
+          this.searchStaff(org);
         });
       },
+      // 部门人员
       searchStaff(org, val = '') {
         this.$http.get(this.url + 'staff/user', {
           org_id: org,

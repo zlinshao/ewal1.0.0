@@ -100,9 +100,9 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="footerBtn">
-          <div class="danger">确认</div>
-          <div class="default">取消</div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="info" size="small">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -562,6 +562,13 @@
         switch (val) {
           case 'power'://权限
             this.powerVisible = true;
+            this.$http.get(globalConfig.organ_server + 'organization/permission', {
+              system_id: 22,
+              limit: 999,
+              page: 1,
+            }).then(res => {
+              console.log(res)
+            });
             break;
           case 'leave'://离职
             this.leaveVisible = true;

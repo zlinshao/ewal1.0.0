@@ -3,7 +3,7 @@
     <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
-          <span>设置表单</span>
+          <h3>设置表单</h3>
         </div>
         <div class="dialog_main">
           <div class="tHeader">
@@ -19,8 +19,8 @@
           </div>
         </div>
         <div class="footerBtn">
-          <div class="danger">确认</div>
-          <div class="default">取消</div>
+          <el-button type="danger" size="small">确认</el-button>
+          <el-button type="info" size="small">取消</el-button>
         </div>
       </div>
     </lj-dialog>

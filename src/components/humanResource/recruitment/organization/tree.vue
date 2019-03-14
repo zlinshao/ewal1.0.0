@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class="aaaaaa">
     <div class="topLevel">
-      {{item.name}}
+      <!--<img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg" style="width: 60px;height: 60px;border-radius: 50%;">-->
+      <p>{{item.name}}</p>
     </div>
-    <div v-if="isFolder">
+    <div v-if="isFolder" class="cccccc" style="padding-left: 50px;">
       <tree-item
-        class="item"
+        class="dddddd"
         v-for="(child, index) in item.children"
         :key="index"
         :item="child">
@@ -38,5 +39,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+  div {
+    text-align: center;
+  }
 </style>

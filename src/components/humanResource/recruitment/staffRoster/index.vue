@@ -1,6 +1,6 @@
 <template>
   <div id="staffRoster">
-    <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}" @click="tableClickRow">
+    <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
         :data="tableData"
         highlight-current-row
@@ -48,6 +48,7 @@
 
   export default {
     name: "index",
+    props: ['searchVal'],
     components: {StaffFiles},
     data() {
       return {
@@ -74,7 +75,7 @@
         params: {
           search: '',
           page: 1,
-          limit: 36,
+          limit: 30,
           org_id: '',
           position_id: '',
         },
@@ -82,11 +83,18 @@
       }
     },
     mounted() {
-      this.getStaffList();
     },
     activated() {
     },
-    watch: {},
+    watch: {
+      searchVal: {//深度监听，可监听到对象、数组的变化
+        handler(val, oldVal) {
+          this.params = val;
+          this.getStaffList();
+        },
+        deep: true
+      },
+    },
     computed: {},
     methods: {
       getStaffList() {

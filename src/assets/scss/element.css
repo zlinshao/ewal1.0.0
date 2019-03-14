@@ -234,6 +234,12 @@ div.el-popover {
   -o-transform: translateX(35%);
   transform: translateX(35%); }
 
+#theme_name .el-select,
+#theme_name .el-date-editor.el-input,
+#theme_name .el-date-editor.el-input__inner,
+#theme_name .el-date-editor--datetimerange.el-input,
+#theme_name .el-date-editor--datetimerange.el-input__inner {
+  width: 100%; }
 #theme_name .el-tabs .el-tabs__active-bar {
   background-color: transparent; }
 #theme_name .el-tabs .el-tabs__item {

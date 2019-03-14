@@ -112,7 +112,7 @@ export const finance = {
       title: '客户'
     },
     {
-      url: '',
+      url: 'payment',
       title: '付款',
     },
     {
