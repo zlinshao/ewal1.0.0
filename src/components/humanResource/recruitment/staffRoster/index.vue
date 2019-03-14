@@ -89,8 +89,8 @@
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          console.log(val);
-          console.log(oldVal);
+          this.params = val;
+          this.getStaffList();
         },
         deep: true
       },
