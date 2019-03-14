@@ -156,7 +156,7 @@
                 <el-form-item>
                   <el-row :gutter="20">
                     <el-col :span="2">
-                      <span>题干</span>
+                      <span>{{'题干' + (index + 1)}}</span>
                     </el-col>
                     <el-col :span="22">
                       <el-input v-model="exam.exam_title" type="textarea" :rows="6" placeholder="请输入题干"></el-input>
