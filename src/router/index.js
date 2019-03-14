@@ -28,6 +28,7 @@ const Subject = () => import('@/components/finance/subject/index.vue');//科目
 const BudgetStream = () => import('@/components/finance/budgetStream/index.vue');//收支流水
 const Gathering = () => import('@/components/finance/gathering/index.vue'); //收款
 const Customer = () => import('@/components/finance/customer/index.vue'); //客户
+const Payment = () => import('@/components/finance/payment/index.vue'); //付款
 
 Vue.use(Router);
 
@@ -128,6 +129,11 @@ export default new Router({
       path: '/customer',
       name: '客户',
       component: Customer
+    },
+    {
+      path: '/payment',
+      name: '付款',
+      component: Payment
     },
 
   ]
