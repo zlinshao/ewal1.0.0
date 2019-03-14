@@ -560,7 +560,7 @@
     data() {
       return {
         //新建题库
-        show_edit_library: true,
+        show_edit_library: false,
         exam_type: 3,
         exam_form_choose: ['A','B','C','D','E','F','G','H','I','J','K','L'],
         exam_form: [
