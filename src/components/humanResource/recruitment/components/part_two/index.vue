@@ -52,7 +52,7 @@
       <!--添加面试人-->
       <lj-dialog
         :visible="add_interviewer_visible"
-        :size="{width: 500 + 'px',height: 520 + 'px'}"
+        :size="{width: 450 + 'px',height: 520 + 'px'}"
         @close="handleCloseAddInterviewer"
       >
         <div class="dialog_container">
@@ -106,6 +106,40 @@
           </div>
         </div>
       </lj-dialog>
+
+      <!--添加面试官-->
+      <lj-dialog
+        :visible="add_msg_visible"
+        :size="{width: 450 + 'px',height: 550 + 'px'}"
+        @close="handleCloseAddMsg"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>设置面试官</h3>
+          </div>
+          <div class="dialog_main borderNone">
+            <el-form :model="add_msg_form" label-width="80px" size="small">
+              <el-form-item label="岗位">
+                <el-input v-model="add_msg_form.position"></el-input>
+              </el-form-item>
+              <el-form-item label="部门">
+                <el-input v-model="add_msg_form.depart"></el-input>
+              </el-form-item>
+              <el-form-item label="面试官">
+                <el-input v-model="add_msg_form.offer1" style="margin-bottom: 20px"></el-input>
+                <el-input v-model="add_msg_form.offer2" style="margin-bottom: 20px"></el-input>
+                <el-input v-model="add_msg_form.offer3"></el-input>
+              </el-form-item>
+              <el-form-item label="上传试卷">
+
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="add_msg_visible = false">确定</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
@@ -115,7 +149,7 @@
   export default {
     name: "index",
     components: { LjDialog },
-    props: [ 'addInterviewerVisible' ],
+    props: [ 'addInterviewerVisible' ,'addOfferVisible'],
     data() {
       return {
         tableList: [
@@ -147,7 +181,18 @@
           time: '',
           resume: ''
         },
-        send_msg_offer: false
+        send_msg_offer: false,
+
+        //添加面试官
+        add_msg_visible: false,
+        add_msg_form: {
+          position: '',
+          depart: '',
+          offer1: '',
+          offer2: '',
+          offer3: '',
+          paper: ''
+        }
       }
     },
     mounted() {
@@ -158,9 +203,17 @@
       addInterviewerVisible(val) {
         this.add_interviewer_visible = val;
       },
+      addOfferVisible(val) {
+        this.add_msg_visible = val;
+      },
     },
     computed: {},
     methods: {
+      //关闭添加面试官
+      handleCloseAddMsg() {
+        this.add_msg_visible = false;
+        this.$emit('closeMsg');
+      },
       //关闭添加面试人
       handleCloseAddInterviewer() {
         this.add_interviewer_visible = false;

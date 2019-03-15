@@ -16,7 +16,7 @@
         </div>
         <div class="items-center listTopRight">
           <el-button size="mini" type="warning" plain v-if="chooseTab === 2" @click="ms_add_visible = true">添加面试人</el-button>
-          <el-button size="mini" type="success" plain v-if="chooseTab === 2" style="margin-right: 10px">添加面试官</el-button>
+          <el-button size="mini" type="success" plain v-if="chooseTab === 2" style="margin-right: 10px" @click="msg_add_visible = true">添加面试官</el-button>
           <div class="icons add" v-if="chooseTab === 1" @click="mb_add_visible = true"><b>+</b></div>
           <div class="icons search" @click="showSearch = true"></div>
         </div>
@@ -31,6 +31,8 @@
           v-if="chooseTab === 2"
           :add-interviewer-visible="ms_add_visible"
           @closeMs="ms_add_visible = false"
+          :add-offer-visible="msg_add_visible"
+          @closeMsg="msg_add_visible = false"
         ></part-two>
         <part-three v-if="chooseTab === 3"></part-three>
         <part-four v-if="chooseTab === 4"></part-four>
@@ -70,7 +72,10 @@
         mb_add_visible: false,
 
         //添加面试人
-        ms_add_visible: false
+        ms_add_visible: false,
+
+        //添加面试官
+        msg_add_visible: false
       }
     },
     mounted() {
