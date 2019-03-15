@@ -40,7 +40,7 @@
           :label="item.val"
           align="center">
           <template slot-scope="scope">
-            <el-button style="width: 80px" size="mini" :type="item.type" plain @click="handleClickBtn(item.key)">{{ item.val }}</el-button>
+            <el-button style="width: 80px" size="mini" :type="item.type"  @click="handleClickBtn(item.key)">{{ item.val }}</el-button>
           </template>
         </el-table-column>
       </el-table>

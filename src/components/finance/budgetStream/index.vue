@@ -55,14 +55,19 @@
         <el-table-column label="详细信息" prop="info" min-width="300px" align="center"></el-table-column>
         <el-table-column label="收/付款人员" prop="operator.name" align="center"></el-table-column>
       </el-table>
+      <!--分页-->
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
           <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="page">
           <el-pagination
-            :total="100"
-            layout="total,jumper,prev,pager,next">
+            :total="tableCount"
+            layout="total,jumper,prev,pager,next"
+            :current-page="params.page"
+            :page-size="params.limit"
+            @current-change="handleChangePage"
+          >
           </el-pagination>
         </div>
       </footer>
@@ -79,25 +84,25 @@
       <div class="dialog_container">
         <div class="dialog_header flex-center">
           <h3>银行流水</h3>
-          <div>
-            <span class="bank"></span>
-            <span class="search"></span>
-          </div>
+          <!--<div>-->
+            <!--<span class="bank"></span>-->
+            <!--<span class="search"></span>-->
+          <!--</div>-->
         </div>
         <div class="dialog_main">
           <el-table
             :data="bank_run_data"
           >
-            <el-table-column prop="time" label="导入时间" align="center"></el-table-column>
-            <el-table-column prop="ci" label="流水导入批次" align="center"></el-table-column>
-            <el-table-column prop="num" label="包含账户数量" align="center"></el-table-column>
-            <el-table-column prop="run_num" label="流水数量" align="center"></el-table-column>
+            <el-table-column prop="create_time" label="导入时间" align="center"></el-table-column>
+            <el-table-column prop="id" label="流水导入批次" align="center"></el-table-column>
+            <el-table-column prop="account_num" label="包含账户数量" align="center"></el-table-column>
+            <el-table-column prop="bank_flow_num" label="流水数量" align="center"></el-table-column>
             <el-table-column prop="operator" label="操作人" align="center"></el-table-column>
             <el-table-column prop="" label="操作" align="center" min-width="120px">
               <template slot-scope="scope">
-                <el-button size="mini" type="warning" plain>补充/移除</el-button>
-                <el-button size="mini" type="danger" plain>归档</el-button>
-                <el-button size="mini" type="primary" plain>详情</el-button>
+                <el-button size="mini" type="warning" v-if="status===4" @click="handleOpenBankRunUpdate(scope.row,scope.$index)">补充</el-button>
+                <el-button size="mini" type="danger" @click="handleOpenBankRunArchive(scope.row,scope.$index)">归档</el-button>
+                <el-button size="mini" type="primary"  @click="handleOpenBankRunDetail(scope.row,scope.$index)">详情</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -105,7 +110,7 @@
         <div class="dialog_footer">
           <div class="page">
             <el-pagination
-              :total="1000"
+              :total="bank_run_count"
               layout="total,prev,pager,next"
             ></el-pagination>
           </div>
@@ -113,6 +118,68 @@
       </div>
     </lj-dialog>
 
+    <!--银行流水详情-->
+    <lj-dialog
+      :visible="bank_run_detail_visible"
+      :size="{width: 700 + 'px',height: 640 + 'px'}"
+      @close="bank_run_detail_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header flex-center">
+          <h3>银行流水详情</h3>
+        </div>
+        <div class="dialog_main">
+          <el-table
+            :data="bank_run_detail_data"
+          >
+            <el-table-column prop="create_time" label="打款时间" align="center"></el-table-column>
+            <el-table-column prop="balance" label="金额" align="center"></el-table-column>
+            <el-table-column prop="remark" label="备注" align="center"></el-table-column>
+            <el-table-column prop="bank.name" label="所属银行" align="center"></el-table-column>
+          </el-table>
+        </div>
+        <div class="dialog_footer">
+          <div class="page">
+            <el-pagination
+              :total="bank_run_detail_count"
+              layout="total,prev,pager,next"
+            ></el-pagination>
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small"  @click="bank_run_detail_visible = false;current_row = ''">关闭</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+    <!--归档-->
+    <lj-dialog :visible="archive_visible" :size="{width: 400 + 'px',height: 250 + 'px'}" @close="archive_visible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>归档</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">归档后该批次流水无法补充或移除！</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger"  size="small" @click="handleBankRunArchive">确定</el-button>
+          <el-button type="info" size="small"  @click="archive_visible = false;current_row = ''">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+    <!--补充-->
+    <lj-dialog :visible="update_visible" :size="{width: 700 + 'px',height: 560 + 'px'}" @close="update_visible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>补充</h3>
+        </div>
+        <div class="dialog_main">
+
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger"  size="small" >导入</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -128,17 +195,25 @@
     data() {
       return {
         accountRunSearch,
+        current_row:'',
+
         staff_visible: false,
         bank_run_visible: false,
         bank_run_size: '',
-        bank_run_data: [
-          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
-          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
-          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
-          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
-          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
-          {time: '2019-01-01 15:12',ci: '4627894612847682746',num: 122,run_num: 1212,operator: '冯宝宝'},
-        ],
+        bank_run_data: [],
+        bank_run_count:0,
+
+        bank_run_detail_visible:false,
+        archive_visible:false,//归档
+        update_visible:false,//补充
+        bank_run_detail_data:[],
+        bank_run_detail_count:0,
+        detail_params: {
+          search: '',
+          page: 1,
+          limit: 6,
+          export: '',
+        },
 
 
         showFinMenuList: false,
@@ -175,9 +250,31 @@
     watch: {},
     computed: {},
     methods: {
+      //请求回调
+      callbackSuccess(res) {
+        if (res.code === 200) {
+          this.$LjNotify('success', {
+            title: '成功',
+            message: res.msg,
+            subMessage: '',
+          });
+          // this.getAccountRunList();
+        } else {
+          this.$LjNotify('error', {
+            title: '失败',
+            message: res.msg,
+            subMessage: '',
+          });
+        }
+      },
+      // 切换分页
+      handleChangePage(page) {
+        this.params.page = page;
+        this.getAccountRunList();
+      },
+      //收支流水
       getAccountRunList() {
         this.$http.get(globalConfig.temporary_server + 'fund_flow_record',this.params).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.tableData = res.data.data;
             this.tableCount = res.data.count;
@@ -193,7 +290,54 @@
       handleOpenBankRun() {
         this.bank_run_size = 'large';
         this.bank_run_visible = true;
+        this.getBankRun();
       },
+
+      handleOpenBankRunDetail(row,index){
+        this.bank_run_detail_visible = true;
+        this.getBankRunDetail(row.id);
+      },
+      //银行流水详情
+      getBankRunDetail(code){
+        this.$http.get(globalConfig.temporary_server + 'bank_fund_flow?batch_flow_code='+code,this.detail_params).then(res=>{
+          if(res.code===200){
+            this.bank_run_detail_data = res.data.data;
+            this.bank_run_detail_count = res.data.data.length;
+          }
+
+        })
+      },
+      //银行流水
+      getBankRun(){
+        this.$http.get(globalConfig.temporary_server + 'bank_batch_count',this.params).then(res=>{
+          if(res.code===200){
+            console.log(res.data.data);
+            this.bank_run_data = res.data.data;
+            this.bank_run_count = res.data.data.length;
+          }
+
+        })
+      },
+      handleOpenBankRunArchive(row,index){
+        this.archive_visible = true;
+        this.current_row = row;
+      },
+      //归档
+      handleBankRunArchive(){
+        this.$http.put(globalConfig.temporary_server + 'bank_batch_count/archive',{id:this.current_row.id}).then(res=>{
+          if(res.code===200){
+            this.callbackSuccess(res);
+            this.archive_visible = false;
+          }
+        })
+      },
+
+      //补充
+      handleOpenBankRunUpdate(row,index){
+        this.update_visible = true;
+        this.current_row = row;
+      },
+
       // 当前点击
       tableClickRow(row) {
         let ids = this.chooseRowIds;

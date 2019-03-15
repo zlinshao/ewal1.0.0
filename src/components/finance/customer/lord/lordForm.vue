@@ -46,7 +46,7 @@
               </div>
               <div class="item_content">
                 <el-select placeholder="请选择" v-model="form.pay_types_val">
-                  <el-option v-for="item in Object.keys(payTypes)" :label="payTypes[parseInt(item)]" :value="parseInt(item)"></el-option>
+                  <el-option v-for="item in Object.keys(payTypes)" :label="payTypes[parseInt(item)]" :value="parseInt(item)" :key="item"></el-option>
                 </el-select>
               </div>
             </div>
@@ -74,7 +74,7 @@
               </div>
               <div class="item_content">
                 <el-select placeholder="请选择" v-model="form.account_type">
-                  <el-option v-for="item in Object.keys(cate)" :label="cate[item]" :value="item"></el-option>
+                  <el-option v-for="item in Object.keys(cate)" :label="cate[item]" :value="item" :key="item"></el-option>
                 </el-select>
               </div>
             </div>
@@ -89,7 +89,7 @@
               </div>
               <div class="item_content">
                 <el-select placeholder="请选择银行" v-model="form.account_bank">
-                  <el-option v-for="item in banks" :label="item" :value="item"></el-option>
+                  <el-option v-for="item in banks" :label="item" :value="item" :key="item"></el-option>
                 </el-select>
               </div>
             </div>
