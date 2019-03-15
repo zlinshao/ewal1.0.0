@@ -108,10 +108,10 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../../assets/scss/humanResource/recruitment/components/staffFiles.scss";
+  @import "../../../../assets/scss/humanResource/departments/components/staffFiles.scss";
 
   @mixin filesImg($m, $n) {
-    $url: '../../../../assets/image/humanResource/recruitment/components/' + $n + '/' + $m;
+    $url: '../../../../assets/image/humanResource/departments/components/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
@@ -143,7 +143,7 @@
                 @include bgImage("../../../../assets/image/common/theme1/xiugai.png");
               }
               .grow {
-                background: url("../../../../assets/image/humanResource/recruitment/components/theme1/liuxian.png") no-repeat scroll;
+                background: url("../../../../assets/image/humanResource/departments/components/theme1/liuxian.png") no-repeat scroll;
               }
             }
           }

@@ -66,10 +66,10 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../../assets/scss/humanResource/recruitment/organization/index.scss";
+  @import "../../../../assets/scss/humanResource/departments/organization/index.scss";
 
   @mixin organImg($m, $n) {
-    $url: '../../../../assets/image/humanResource/recruitment/' + $n + '/' + $m;
+    $url: '../../../../assets/image/humanResource/departments/' + $n + '/' + $m;
     @include bgImage($url);
   }
 

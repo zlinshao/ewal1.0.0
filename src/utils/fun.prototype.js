@@ -1,5 +1,6 @@
 export default {
   install(Vue, options) {
+    // 路由跳转
     Vue.prototype.routerLink = function (url, data) {
       if (data) {
         this.$router.push({path: url, query: data});
@@ -12,6 +13,28 @@ export default {
     };
     Vue.prototype.showLoading = function (status = true) {
       return this.$store.dispatch('switch_loading', status);
+    };
+    // 克隆数据/JSON数据转换
+    Vue.prototype.jsonData = function (val, way = 'clone') {
+      let data;
+      switch (way) {
+        case 'clone':
+          data = JSON.parse(JSON.stringify(val));
+          break;
+        case 'string':
+          data = JSON.stringify(val);
+          break;
+        case 'parse':
+          data = JSON.parse(val);
+          break;
+        default:
+          this.$LjMessage('warning', {
+            title: '警告',
+            msg: '请传入转换类型！'
+          });
+          break;
+      }
+      return data;
     };
     // 搜索项处理
     Vue.prototype.handleSearch = function (data) {

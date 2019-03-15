@@ -17,8 +17,9 @@ const HouseManagement = () => import('@/components/marketCentre/houseManagement/
 
 // 人力资源中心
 const HumanResource = () => import('@/components/humanResource/index.vue');
-const Recruitment = () => import('@/components/humanResource/recruitment/index.vue');//招聘中心
-const StaffRoster = () => import('@/components/humanResource/recruitment/staffRoster/index.vue');//员工名册
+const Departments = () => import('@/components/humanResource/departments/index.vue');//三省六部
+const Recruitment = () => import('@/components/humanResource/recruitment/index.vue');//招兵买马
+const StaffRoster = () => import('@/components/humanResource/departments/staffRoster/index.vue');//员工名册
 const MilitaryOrganization = () => import('@/components/humanResource/militaryOrganization/index.vue'); //排班布阵
 
 // 财务中心
@@ -86,8 +87,13 @@ export default new Router({
       component: HumanResource
     },
     {
+      path: '/departments',
+      name: '三省六部',
+      component: Departments
+    },
+    {
       path: '/recruitment',
-      name: '招聘中心',
+      name: '招兵买马',
       component: Recruitment
     },
     {

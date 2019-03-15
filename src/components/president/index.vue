@@ -1,10 +1,13 @@
 <template>
   <div id="president">
-    <div class="items-center" :class="{'hhhhhhhh': hhhh}">
-      <p :class="['p' + item]" v-for="item in 9">帅</p>
+    <!--<div class="items-center" :class="{'hhhhhhhh': hhhh}">-->
+    <!--<p :class="['p' + item]" v-for="item in 9">帅</p>-->
+    <!--</div>-->
+    <!--<div @click="hhhh = true">发的发顺丰撒</div>-->
+    <!--<div @click="hhhh = false">ffffff</div>-->
+    <div v-for="item in jjjjjj">
+      {{item.label}}:{{item.keyVal}}
     </div>
-    <div @click="hhhh = true">发的发顺丰撒</div>
-    <div @click="hhhh = false">ffffff</div>
   </div>
 </template>
 
@@ -14,22 +17,91 @@
     data() {
       return {
         hhhh: false,
+        res: [
+          {
+            label: '姓名',
+            keyName: 'name',
+            keyVal: '',
+          },
+          {
+            label: '姓名1',
+            keyName: 'name1',
+            keyVal: '',
+          },
+          {
+            label: '所属部门',
+            keyName: 'depart',
+            keyVal: [],
+          },
+          {
+            label: '所属部门1',
+            keyName: 'depart1',
+            keyVal: [],
+          },
+          {
+            label: '所属部门2',
+            keyName: 'depart2',
+            keyVal: {},
+          },
+          {
+            label: '负责人',
+            keyName: 'leader',
+            keyVal: {},
+          },
+          {
+            label: '负责人1',
+            keyName: 'leader1',
+            keyVal: {},
+          },
+          {
+            label: '负责人2',
+            keyName: 'leader2',
+            keyVal: {},
+          },
+        ],
+        datas: {
+          name: '粉红色打开',
+          name1: null,
+          depart: [{
+            name: '南京一区一组'
+          }],
+          depart1: null,
+          depart2: 'null',
+          leader: {name: '符合贷款'},
+          leader1: undefined,
+          leader2: 'undefined',
+        },
+        jjjjjj: [],
       }
     },
     mounted() {
+      this.jjjjjj = this.filterData(this.res, this.datas);
     },
     activated() {
     },
     watch: {},
     computed: {},
-    methods: {},
+    methods: {
+      filterData(custom, getData) {
+        let data = this.jsonData(custom);
+        let dataType = [null, undefined, 'null', 'undefined'];
+        for (let item of data) {
+          if (!dataType.includes(getData[item.keyName])) {
+            item.keyVal = getData[item.keyName];
+          }else{
+            item.keyName = item.keyVal;
+          }
+        }
+        return data;
+      },
+    },
   }
 </script>
 
 <style lang="scss" scoped>
   @import "../../assets/scss/index/index.scss";
 
-  #president {
+  #president1 {
     div {
       position: relative;
       height: 300px;

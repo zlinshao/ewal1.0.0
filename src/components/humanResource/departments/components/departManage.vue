@@ -671,10 +671,10 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../../assets/scss/humanResource/recruitment/components/departManage.scss";
+  @import "../../../../assets/scss/humanResource/departments/components/departManage.scss";
 
   @mixin organImg($m, $n) {
-    $url: '../../../../assets/image/humanResource/recruitment/departManage/' + $n + '/' + $m;
+    $url: '../../../../assets/image/humanResource/departments/departManage/' + $n + '/' + $m;
     @include bgImage($url);
   }
 

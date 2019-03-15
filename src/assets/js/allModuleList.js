@@ -3,7 +3,7 @@ export const humanResource = {
   type: 'humanResource',
   data: [
     {
-      url: '',
+      url: 'departments',
       title: '三省六部',
     },
     {

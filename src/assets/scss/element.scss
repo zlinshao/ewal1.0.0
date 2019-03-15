@@ -40,14 +40,14 @@ div.el-popover {
       margin: 0 10px 20px;
       height: 36px;
       line-height: 36px;
-      @include bgImage("../image/humanResource/recruitment/departManage/theme1/huidi.png");
+      @include bgImage("../image/humanResource/departments/departManage/theme1/huidi.png");
       &:hover {
         color: $color874;
       }
     }
     .el-tabs__item.is-active {
       color: $colorFFF;
-      @include bgImage("../image/humanResource/recruitment/departManage/theme1/hongdi.png");
+      @include bgImage("../image/humanResource/departments/departManage/theme1/hongdi.png");
     }
   }
   //button按钮

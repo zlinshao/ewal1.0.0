@@ -231,7 +231,6 @@
       overflow: hidden;
       margin: 20px 0;
       @include scroll();
-      @include flex('flex-center');
       .unUse-txt {
         font-size: 18px;
       }
@@ -352,10 +351,9 @@
   }
   //成功图标
   .resIcon {
-    margin: 0 auto;
+    margin: 0 auto 15px;
     width: 80px;
     height: 80px;
-    margin-bottom: 15px;
   }
   .btn_add {
     @include btn_square(50%);
