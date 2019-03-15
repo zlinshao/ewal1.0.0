@@ -48,20 +48,61 @@
           </div>
         </footer>
       </div>
+
+      <!--添加面试人-->
       <lj-dialog
         :visible="add_interviewer_visible"
-        :size="{width: 500 + 'px',height: 500 + 'px'}"
+        :size="{width: 500 + 'px',height: 520 + 'px'}"
         @close="handleCloseAddInterviewer"
       >
         <div class="dialog_container">
           <div class="dialog_header">
             <h3>添加面试人</h3>
           </div>
-          <div class="dialog_main">
+          <div class="dialog_main borderNone">
+            <el-form :model="add_interviewer_form" size="small" label-width="100px">
+              <el-form-item label="岗位">
+                <el-input v-model="add_interviewer_form.position"></el-input>
+              </el-form-item>
+              <el-form-item label="姓名">
+                <el-input v-model="add_interviewer_form.name"></el-input>
+              </el-form-item>
+              <el-form-item label="来源">
+                <el-input v-model="add_interviewer_form.come"></el-input>
+              </el-form-item>
+              <el-form-item label="面试官">
+                <el-input v-model="add_interviewer_form.offer"></el-input>
+              </el-form-item>
+              <el-form-item label="预约面试时间">
+                <el-input v-model="add_interviewer_form.time"></el-input>
+              </el-form-item>
+              <el-form-item label="上传简历">
 
+              </el-form-item>
+            </el-form>
           </div>
           <div class="dialog_footer">
-            <el-button type="danger" size="small">发送面试任务</el-button>
+            <el-button type="danger" size="small" @click="send_msg_offer = true">发送面试任务</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
+      <!--确认发给面试人-->
+      <lj-dialog
+        :visible="send_msg_offer"
+        :size="{width: 400 + 'px',height: 250 + 'px'}"
+        @close="send_msg_offer = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>确定</h3>
+          </div>
+          <div class="dialog_main">
+            <div class="unUse-txt">确定发送面试任务给张琳琳吗？</div>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="send_msg_offer = false">完成</el-button>
+            <el-button type="info" size="small" @click="send_msg_offer = false">取消</el-button>
           </div>
         </div>
       </lj-dialog>
@@ -98,6 +139,15 @@
 
         //添加面试人
         add_interviewer_visible: false,
+        add_interviewer_form: {
+          position: '',
+          name: '',
+          come: '',
+          offer: '',
+          time: '',
+          resume: ''
+        },
+        send_msg_offer: false
       }
     },
     mounted() {
