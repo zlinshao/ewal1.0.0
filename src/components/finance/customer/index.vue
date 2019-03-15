@@ -28,28 +28,17 @@
     <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
     <!--房东-->
     <div v-if="chooseTab === 1">
-      <lord :lordStatus="flag"></lord>
+      <lord></lord>
     </div>
     <!--租客-->
     <div v-if="chooseTab === 2">
-      <renter :renterStatus="flag"></renter>
+      <renter></renter>
     </div>
-    <!--新增lord-->
-    <lj-dialog :visible="add_visible" :size="{width: 900 + 'px',height: 700 + 'px'}" @close="add_visible = false">
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>新增</h3>
-        </div>
-        <div class="dialog_main">
-          <lord-form></lord-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button type="danger" plain size="small" @click="handleOkDel">确定</el-button>
-          <el-button size="small" plain @click="add_visible = false;current_row = ''">取消</el-button>
-        </div>
-      </div>
+    <!--新增-->
+    <lj-dialog :visible="add_visible" :size="{width: 960 + 'px',height: 820 + 'px'}" @close="add_visible = false">
+      <lord-form v-if="chooseTab===1"  :formData="lord_form" :current_row="current_row"></lord-form>
+      <renter-form v-if="chooseTab===2" :formData="renter_form" :current_row="current_row"></renter-form>
     </lj-dialog>
-
   </div>
 </template>
 
@@ -60,12 +49,14 @@
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue';
   import LjSubject from '../../common/lj-subject.vue';
-  import LordForm from "./lord/lordForm";
+  import LordForm from "./lord/lordForm.vue";
+  import renterForm from "./renter/renterForm.vue";
 
   export default {
     name: "index",
     components: {
       LordForm,
+      renterForm,
       SearchHigh,
       LjDialog,
       FinMenuList,
@@ -92,6 +83,85 @@
           status: 'gathering',
           data: [],
         },
+        lord_form: {
+          "address": "",
+          "rental_subject": "",
+          "deposit_subject": "",
+          "departmentName": "",
+          "staffName": "",
+          "operatorName": "",
+          "leaderName": "",
+          "prices_val": "",
+          "pay_types_val": "",
+          "staff_id": "",
+          "department_id": "",
+          "leader_id": "",
+          "customer_name": "",
+          "contact": "",
+          "house_id": "",
+          "months": "",
+          "prices": [],
+          "pay_types": [],
+          "payType": '',
+          "deposit": "",
+          "medi_cost": "",
+          "warrenty": "",
+          "deal_date": "",
+          "first_pay_date": "",
+          "second_pay_date": "",
+          "remark": "",
+          "account_type": "",
+          "account_owner": "",
+          "account_subbank": "",
+          "account_bank": "",
+          "account_num": "",
+          "subject_id": {
+            "rental": "",
+            "deposit": ""
+          },
+          "v3_contract_id": "",
+          "cate": "",
+        },
+        renter_form: {
+          "address": "",
+          "rental_subject": "",
+          "deposit_subject": "",
+          "departmentName": "",
+          "staffName": "",
+          "operatorName": "",
+          "leaderName": "",
+          "prices_val": "",
+          "pay_types_val": "",
+          "staff_id": "",
+          "department_id": "",
+          "leader_id": "",
+          "customer_name": "",
+          "contact": "",
+          "house_id": "",
+          "months": "",
+          "prices": [],
+          "pay_types": [],
+          "payType": '',
+          "deposit": "",
+          "medi_cost": "",
+          "warrenty": "",
+          "deal_date": "",
+          "first_pay_date": "",
+          "second_pay_date": "",
+          "remark": "",
+          "account_type": "",
+          "account_owner": "",
+          "account_subbank": "",
+          "account_bank": "",
+          "account_num": "",
+          "subject_id": {
+            "rental": "",
+            "deposit": ""
+          },
+          "v3_contract_id": "",
+          "cate": "",
+        },
+
       }
     },
     mounted() {
@@ -111,6 +181,9 @@
       addCustomer(){
           this.add_visible = true;
           this.current_row = ''
+      },
+      submitForm(){
+
       },
       // 高级搜索
       highSearch() {

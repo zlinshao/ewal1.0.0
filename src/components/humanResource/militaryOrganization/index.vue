@@ -94,7 +94,7 @@
             </div>
           </div>
           <div class="contain flex">
-            <div class="exam-paper flex-center">
+            <div class="exam-paper flex-center" v-if="is_exam_guide === 1">
               <div v-for="item in exam_library" :key="item.id">
                 <div class="writingMode">
                   {{ item.name }}
@@ -104,12 +104,25 @@
                 </div>
               </div>
             </div>
+            <div class="exam-paper flex-center" v-else>
+              <div v-for="item in exam_list" :key="item.id" @click="exam_detail_visible = true">
+                <div class="exam_span">
+                  <span class="writingMode">{{ item.time }}</span>
+                  <span class="writingMode">{{ item.title }}</span>
+                </div>
+                <div class="writingMode">
+                  {{ item.status }}
+                </div>
+              </div>
+            </div>
             <div class="exam-control flex-center">
               <div>
-                <span class="writingMode" @click="new_exam_library = true">新建题库</span>
+                <span class="writingMode" @click="new_exam_library = true" v-if="is_exam_guide === 1">新建题库</span>
+                <span class="writingMode" @click="new_exam_visible = true" v-else>新建考试</span>
               </div>
               <div>
-                <span class="writingMode">更多</span>
+                <span class="writingMode" v-if="is_exam_guide === 1">更多</span>
+                <span class="writingMode" v-else>更多</span>
               </div>
             </div>
           </div>
@@ -547,6 +560,149 @@
           </div>
         </div>
       </lj-dialog>
+
+      <!--新建考试-->
+      <lj-dialog
+        :visible="new_exam_visible"
+        :size="{width: 600 + 'px',height: 650 + 'px'}"
+        @close="new_exam_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>新建考试</h3>
+            <div class="header_right">
+              <el-button size="mini" type="primary" plain>预览试卷</el-button>
+            </div>
+          </div>
+          <div class="dialog_main borderNone">
+            <el-form :model="new_exam_form_params" label-width="80px" style="width: 80%">
+              <el-form-item label="考试场次">
+                <el-input v-model="new_exam_form_params.exam_ci" placeholder="请输入场次"></el-input>
+              </el-form-item>
+              <el-form-item label="考试类型">
+                <el-select v-model="new_exam_form_params.exam_type" placeholder="请选择考试类型">
+                  <el-option :value="1" label="入职考试"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="试题类型">
+                <el-row :gutter="10">
+                  <el-col :span="10">
+                    <el-select v-model="new_exam_form_params.paper_type" placeholder="请选择题型">
+                      <el-option :value="1" label="入职考试"></el-option>
+                    </el-select>
+                  </el-col>
+                  <el-col :span="10">
+                    <el-input v-model="new_exam_form_params.paper_num" placeholder="请输入题数"></el-input>
+                  </el-col>
+                  <el-col :span="2">
+                    <div class="btn_add">+</div>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+              <el-form-item label="参加人员">
+                <div class="items-center iconInput">
+                  <el-input v-model="new_exam_form_params.exam_people" placeholder="请选择参考人员"></el-input>
+                  <p class="icons user"></p>
+                </div>
+              </el-form-item>
+              <el-form-item label="开考时间">
+                <el-date-picker v-model="new_exam_form_params.exam_start_time"
+                placeholder="请选择"></el-date-picker>
+              </el-form-item>
+              <el-form-item label="试卷时长">
+                <el-input v-model="new_exam_form_params.exam_during_time" placeholder="请输入分钟"></el-input>
+              </el-form-item>
+              <el-form-item label="开考后">
+                <el-input v-model="new_exam_form_params.exam_start_end" placeholder="请输入分钟"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button size="small" type="danger">提交</el-button>
+            <el-button size="small" type="info" @click="new_exam_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
+      <!--考试详情-->
+      <lj-dialog
+        :visible="exam_detail_visible"
+        :size="{width: 650 + 'px',height: 760 + 'px'}"
+        @close="exam_detail_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>南京新人训</h3>
+            <div class="header_right">
+              距离开考还有 <span class="time_over">01:15:21</span>
+            </div>
+            <div class="exam_detail_control">
+              <el-button size="mini" type="danger" @click="is_delete_exam = !is_delete_exam">删除本场考试</el-button>
+            </div>
+          </div>
+          <div class="dialog_main borderNone">
+            <el-form label-width="120px" style="margin-top: 50px;width: 80%;text-align: left">
+              <el-form-item label="考试场次">
+                <div>南京新人训</div>
+              </el-form-item>
+              <el-form-item label="试卷类型">
+                <div>入职考试</div>
+              </el-form-item>
+              <el-form-item label="试题设置">
+                <div>单选20 简答20 判断5 <span class="text_color">修改</span></div>
+              </el-form-item>
+              <el-form-item label="参加人员">
+                <div>...</div>
+              </el-form-item>
+              <el-form-item label="开考时间">
+                <div>2019-02-20 10:00:00 <span class="text_color">修改</span></div>
+              </el-form-item>
+              <el-form-item label="试卷时长">
+                <div>60分钟<span class="text_color">修改</span></div>
+              </el-form-item>
+              <el-form-item label="开考后">
+                <div>5分钟不能再登录考试系统<span class="text_color">修改</span></div>
+              </el-form-item>
+              <el-form-item label="删除本场考试" v-show="is_delete_exam">
+                <el-input v-model="delete_info" placeholder="请输入删除本场考试理由"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="exam_score_visible = true">确定</el-button>
+            <el-button type="info" size="small" @click="exam_detail_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
+      <!--考试得分-->
+      <lj-dialog
+        :visible="exam_score_visible"
+        :size="{width: 600 + 'px',height: 650 + 'px'}"
+        @close="exam_detail_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>文职入职测试</h3>
+            <div class="header_right">已结束</div>
+          </div>
+          <div class="dialog_main">
+            <el-table
+              :data="exam_score_list"
+              height="400px"
+            >
+              <el-table-column label="考试姓名" prop="name" align="center"></el-table-column>
+              <el-table-column label="单选题" prop="radio" align="center"></el-table-column>
+              <el-table-column label="判断题" prop="decide" align="center"></el-table-column>
+              <el-table-column label="简答题" prop="choose" align="center"></el-table-column>
+            </el-table>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="info" size="small" @click="exam_score_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
     </div>
   </div>
 </template>
@@ -559,8 +715,48 @@
     components: {LjDialog},
     data() {
       return {
+        //考试得分
+        exam_score_visible: false,
+        exam_score_list: [
+          { id:1, name: '冯宝宝',radio: 20 , decide: 15, choose: 30},
+          { id:1, name: '冯宝宝',radio: 20 , decide: 15, choose: 30},
+          { id:1, name: '冯宝宝',radio: 20 , decide: 15, choose: 30},
+          { id:1, name: '冯宝宝',radio: 20 , decide: 15, choose: 30},
+          { id:1, name: '冯宝宝',radio: 20 , decide: 15, choose: 30},
+          { id:1, name: '冯宝宝',radio: 20 , decide: 15, choose: 30},
+          { id:1, name: '冯宝宝',radio: 20 , decide: 15, choose: 30},
+        ],
+
+        //考试详情
+        exam_detail_visible: false,
+        delete_info: '',
+        is_delete_exam: false,
+
+        //新建考试
+        new_exam_visible: false,
+        new_exam_form_params: {
+          exam_ci: '',
+          exam_type: '',
+          paper_type: '',
+          paper_num: '',
+          exam_people: '',
+          exam_start_time: '',
+          exam_during_time: '',
+          exam_start_end: '',
+        },
+
+        //题库管理/考试管理
+        exam_list: [
+          { id: 1, title: '苏州新人训',time: '2019/03/01 10:10:00',status: '未开始'},
+          { id: 1, title: '苏州新人训',time: '2019/03/01 10:10:00',status: '未开始'},
+          { id: 1, title: '苏州新人训',time: '2019/03/01 10:10:00',status: '未开始'},
+          { id: 1, title: '苏州新人训',time: '2019/03/01 10:10:00',status: '未开始'},
+          { id: 1, title: '苏州新人训',time: '2019/03/01 10:10:00',status: '未开始'},
+          { id: 1, title: '苏州新人训',time: '2019/03/01 10:10:00',status: '未开始'}
+        ],
+
         //新建题库
-        show_edit_library: true,
+        show_edit_library: false,
         exam_type: 3,
         exam_form_choose: ['A','B','C','D','E','F','G','H','I','J','K','L'],
         exam_form: [
@@ -742,7 +938,7 @@
         },
 
         //考试guide
-        is_exam_guide: 1,
+        is_exam_guide: 2,
         exam_guide: [
           {id: 1, val: '题库管理'},
           {id: 2, val: '考试管理'}
@@ -908,6 +1104,21 @@
               }
             }
           }
+        }
+        .time_over {
+          color: $colorE33;
+          font-size: 18px;
+        }
+        .exam_detail_control {
+          width: 100%;
+          padding: 15px 0;
+          text-align: right;
+          border-bottom: 1px solid $color874;
+        }
+        .text_color {
+          margin-left: 15px;
+          cursor: pointer;
+          color: $colorE33;
         }
       }
     }

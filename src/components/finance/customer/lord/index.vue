@@ -6,13 +6,11 @@
       :height="this.mainListHeight(30) + 'px'"
       highlight-current-row
       header-row-class-name="tableHeader"
+      :row-class-name="tableChooseRow"
+      @cell-click="tableClickRow"
       style="width: 100%">
-      <el-table-column
-        type="selection"
-        width="50">
-      </el-table-column>
 
-      <el-table-column label="前缀" align="center">
+      <el-table-column label="前缀" align="center" width="150">
         <template slot-scope="scope">
           <div class="statusBar flex-center">
             <span v-if="LordStatus[scope.$index].is_contact===1" style="background-color: #14e731;"></span>
@@ -22,32 +20,26 @@
           </div>
         </template>
       </el-table-column>
-
       <el-table-column
         v-for="item in Object.keys(lordLabel)"
         :label="lordLabel[item]" :key="item"
         :prop="item"
         align="center">
       </el-table-column>
-
       <el-table-column label="状态" prop="" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.status === 1 ? '待处理' : '正常'}}</span>
         </template>
       </el-table-column>
-
       <el-table-column label="操作" prop="" align="center" width="500">
         <template slot-scope="scope">
-          <el-button type="success" size="small" @click="handleDetailsLord(scope.row,scope.$index)"
-                     icon="el-icon-view">详情
-          </el-button>
-          <el-button type="primary" size="small" @click="handleEditLord(scope.row,scope.$index)"
-                     icon="el-icon-edit">编辑
-          </el-button>
-          <el-button type="warning" size="small" @click="handleProcessLord(scope.row)" icon="el-icon-info">
-            生成待处理项
-          </el-button>
-          <el-button type="danger" size="small" @click="handleDeleteLord(scope.row)" icon="el-icon-delete">删除
+          <el-button v-for="(item,index) in btnData"
+                     :key="index"
+                     :type="item.type"
+                     :size="item.size"
+                     @click="clkCall(item.methods,scope.row,scope.$index)"
+                     :icon="item.icon">
+            {{item.label}}
           </el-button>
         </template>
       </el-table-column>
@@ -68,7 +60,7 @@
         </el-pagination>
       </div>
     </footer>
-    <!--删除lord-->
+    <!--删除-->
     <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}" @close="delete_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -78,8 +70,8 @@
           <div class="unUse-txt">确定删除该房东信息吗？</div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" plain size="small" @click="handleOkDel">确定</el-button>
-          <el-button size="small" plain @click="delete_visible = false;current_row = ''">取消</el-button>
+          <el-button type="danger"  size="small" @click="handleOkDel">确定</el-button>
+          <el-button type="info" size="small"  @click="delete_visible = false;current_row = ''">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -119,343 +111,22 @@
     <!--编辑-->
     <lj-dialog
       :visible="edit_visible"
-      :size="{width: 960 + 'px',height: 820 + 'px' }"
-      @close="edit_visible = false"
-    >
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>{{ current_row ? '编辑' : '新增'}}</h3>
-        </div>
-        <div class="dialog_main">
-          <el-form :model="form" size="mini" ref="formData">
-            <el-row type="flex" class="row-bg" justify="space-between">
-              <el-col :span="12">
-                <el-form-item prop="operatorName">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>签约人</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.operatorName" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="departmentName">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>所属部门</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.departmentName" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="staffName">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>负责人</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.staffName" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="customer_name">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>客户姓名</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.customer_name" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="contact">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>手机号</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.contact" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="address">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>房屋地址</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.address" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="months">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>收房月数</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.months" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-
-                <el-form-item prop="prices">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>月单价</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.prices" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="deposit">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>押金</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.deposit" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="warrenty">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>保修期</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.warrenty" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="medi_cost">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>中介费</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.medi_cost" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-
-              </el-col>
-              <el-col :span="12">
-                <el-form-item prop="account_type">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>账户类型</span>
-                    </div>
-                    <div class="item_content">
-                      <el-select class="all_width" v-model="form.account_type" placeholder="请输入">
-                        <el-option v-for="(item,key) in cate" :value="parseInt(key)" :key="key"
-                                   :label="item"></el-option>
-                      </el-select>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="account_owner">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>收款人</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.account_owner" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="account_bank">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>开户银行</span>
-                    </div>
-                    <div class="item_content">
-                      <el-select class="all_width" v-model="form.account_bank" placeholder="请选择">
-                        <el-option v-for="(item,key) in banks" :value="item" :key="key" :label="item"></el-option>
-                      </el-select>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="account_subbank">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>支行</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.account_subbank" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="account_num">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>账号</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.account_num" placeholder="请输入"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="pay_types_val">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>付款方式</span>
-                    </div>
-                    <div class="item_content">
-                      <el-select class="all_width" v-model="form.pay_types_val" placeholder="请输入">
-                        <el-option v-for="(item,key) in payTypes" :value="parseInt(key)" :key="key"
-                                   :label="item"></el-option>
-                      </el-select>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="deal_date">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>待签约</span>
-                    </div>
-                    <div class="item_content">
-                      <el-date-picker v-model="form.deal_date" type="date" placeholder="选择日期"></el-date-picker>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="first_pay_date">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>房租日期</span>
-                    </div>
-                    <div class="item_content">
-                      <el-date-picker v-model="form.first_pay_date" type="date" placeholder="选择日期"></el-date-picker>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="second_pay_date">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>房租日期</span>
-                    </div>
-                    <div class="item_content">
-                      <el-date-picker v-model="form.second_pay_date" type="date" placeholder="选择日期"></el-date-picker>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="rental_subject">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>房租科目</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.rental_subject" placeholder="请输入"
-                                @focus="handleOpenSubject('subject_rent')"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item prop="deposit_subject">
-                  <div class="form_item_container">
-                    <div class="item_label">
-                      <b class="item_icons">
-                        <i class="icon_account"></i>
-                      </b>
-                      <span>押金科目</span>
-                    </div>
-                    <div class="item_content">
-                      <el-input v-model="form.deposit_subject" placeholder="请输入"
-                                @focus="handleOpenSubject('subject_deposit')"></el-input>
-                    </div>
-                  </div>
-                </el-form-item>
-
-              </el-col>
-            </el-row>
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button type="danger" plain size="small" @click="postLordEditData('formData',lord_id)">确定</el-button>
-          <el-button size="small" plain @click="edit_visible = false;current_row = ''">取消</el-button>
-        </div>
-      </div>
+      :size="{width: 900 + 'px',height: 820 + 'px' }"
+      @close="edit_visible = false">
+      <lord-form :formData="form" :current_row="current_row"></lord-form>
     </lj-dialog>
 
 
-    <!--科目-->
-    <lj-subject :visible="subject_visible" @close="subject_visible = false"
-                @confirm="handleConfirmSubject"></lj-subject>
   </div>
 </template>
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjSubject from '../../../common/lj-subject.vue';
+  import LordForm from "./lordForm";
 
   export default {
     name: "index",
-    components: {LjDialog, LjSubject},
-    props: ['lordStatus'],
+    components: {LordForm, LjDialog, LjSubject},
     data() {
       return {
         params: {
@@ -467,7 +138,7 @@
           department_ids: '',
           export: '',
         },
-        myStatus:'',
+        chooseRowIds: [],
         lordLabel: {
           "create_time": "生成时间",
           "address": "房屋地址",
@@ -482,6 +153,12 @@
           "account_num": "账号",
           "operator.name": "签约人",
         },
+        btnData:[
+          {label:"查看",type:"success",icon:"el-icon-view",size:"small",methods:"handleDetailsLord"},
+          {label:"编辑",type:"primary",icon:"el-icon-edit",size:"small",methods:"handleEditLord"},
+          {label:"生成待处理项",type:"warning",icon:"el-icon-info",size:"small",methods:"handleProcessLord"},
+          {label:"删除",type:"danger",icon:"el-icon-delete",size:"small",methods:"handleDeleteLord"},
+        ],
 
         delete_visible: false,//删除
         edit_visible: false,//编辑
@@ -753,76 +430,7 @@
           parent_id: '',
           title: ''
         },
-        cate: {
-          "1": "银行卡",
-          "2": "支付宝",
-          "3": "微信",
-          "4": "银行卡(数据来自房管中心)"
-        },
-        payTypes: {
-          "1": "月付",
-          "2": "半月份",
-          "3": "季付",
-          "4": "半年付",
-          "5": "年付",
-        },
-        banks: [
-          "未知银行",
-          "中国工商银行",
-          "中国农业银行",
-          "中国银行",
-          "中国建设银行",
-          "交通银行",
-          "中信银行",
-          "中国光大银行",
-          "华夏银行",
-          "中国民生银行",
-          "广发银行",
-          "深圳发展银行",
-          "招商银行",
-          "兴业银行",
-          "上海浦东发展银行",
-          "恒丰银行",
-          "浙商银行",
-          "渤海银行",
-          "中国邮政储蓄银行",
-          "南京银行",
-          "江苏省紫金农商银行",
-          "农村合作信用社",
-          "安徽省农村信用社联合社",
-          "平安银行",
-          "江苏银行",
-          "苏州银行",
-          "广州银行",
-          "宁波银行",
-          "上海银行",
-          "北京银行",
-          "杭州银行",
-          "衢州银行",
-          "农村商业银行",
-          "浙江省农村信用社联合社杭州联合银行",
-          "浙江稠州银行",
-          "徽商银行",
-          "台州银行",
-          "浙江银行",
-          "重庆农村商业银行",
-          "浙江泰隆商业银行",
-          "上海农商银行",
-          "重庆银行",
-          "西安银行",
-          "昆山农商银行",
-          "昆仑银行",
-          "陕西农村信用合作社联合社",
-          "成都银行",
-          "江苏省信用社联合社",
-          "重庆三峡银行",
-          "江苏农村信用社联合社",
-          "江苏东吴农村商业银行",
-          "厦门银行",
-          "浙江民泰商业银行",
-          "江西银行",
-          "中原银行"
-        ]
+
       }
     },
     mounted() {
@@ -846,7 +454,20 @@
         this.params.page = page;
         this.getLordList();
       },
-
+      // 当前点击
+      tableClickRow(row) {
+        let ids = this.chooseRowIds;
+        ids.push(row.id);
+        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+      },
+      // 点击过
+      tableChooseRow({row, rowIndex}) {
+        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+      },
+      //操作项动态调用
+      clkCall(func,row,index){
+        this[func](row,index);
+      },
       callbackSuccess(res) {
         if (res.code === 200) {
           this.$LjNotify('success', {
@@ -865,10 +486,10 @@
       },
       //lord列表
       getLordList() {
-        // this.showLoading(true);
+        this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
           if (res.code === 200) {
-            // this.showLoading(false);
+            this.showLoading(false);
             this.lordLists = res.data.data;
             this.lordCount = res.data.count;
             for (let item of this.lordLists) {
@@ -923,15 +544,16 @@
       //获取详情
       getLordDetail(id) {
         this.showLoading(true);
-        this.$http.get(globalConfig.temporary_server + 'customer_collect/' + id, {}).then(res => {
+        this.$http.get(globalConfig.temporary_server + 'customer_collect/' + id,).then(res => {
           if (res.code == 200) {
             this.showLoading(false);
             this.lordDetail = JSON.parse(JSON.stringify(res.data.data));
-            console.log(this.lordDetail);
+            // console.log(this.lordDetail);
             this.lordDetailData = Object.assign({}, this.lordDetail, this.lordDetailList);
             for (let item of Object.keys(this.form)) {
               this.form[item] = this.lordDetailData[item];
             }
+            console.log(this.form);
           }
         })
       },
@@ -942,51 +564,16 @@
         this.getRowInfo(index);
         this.getLordDetail(this.current_row.id);
       },
-      //提交编辑
-      postLordEditData(data, id) {
-        console.log(data);
-        console.log(id);
-        // let form_data = this.$refs['formData'].$el;
-        // this.$refs[form].validate((valid) => {
-        // if(){
-        this.$http.put(globalConfig.temporary_server + 'customer_collect/' + id, this.form).then(res => {
-          this.callbackSuccess(res);
 
-        })
-        // }
-        // })
-      },
+
       //处理项
-      handleProcessLord(row) {
+      handleProcessLord(row,index) {
         this.$http.post(globalConfig.temporary_server + 'customer_collect/pending/' + row.id, {}).then(res => {
           this.callbackSuccess(res);
         })
       },
       //科目
-      handleOpenSubject(which) {
-        this.which_subject = which;
-        this.subject_visible = true;
-      },
-      //确认科目
-      handleConfirmSubject(val) {
-        if (this.which_subject === 'move_subject') {
-          this.move_subject.parent_id = val.id;
-          this.move_subject.title = val.title;
-        }
-        if (this.which_subject === 'subject_deposit') {
-          this.subject_deposit.parent_name = val.title;
-          this.subject_deposit.parent_id = val.id;
-          this.form.subject_id.deposit = val.id;
-          this.form.deposit_subject = val.title;
 
-        }
-        if (this.which_subject === 'subject_rent') {
-          this.subject_rent.parent_name = val.title;
-          this.subject_rent.parent_id = val.id;
-          this.form.subject_id.rental = val.id;
-          this.form.rental_subject = val.title;
-        }
-      },
       //删除lord
       handleOkDel() {
         this.$http.delete(globalConfig.temporary_server + 'customer_collect/delete/' + this.current_row.id).then(res => {
@@ -997,7 +584,7 @@
           console.log(err);
         })
       },
-      handleDeleteLord(row) {
+      handleDeleteLord(row,index) {
         this.current_row = row;
         this.delete_visible = true;
       },
