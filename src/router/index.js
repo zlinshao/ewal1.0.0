@@ -21,6 +21,7 @@ const Departments = () => import('@/components/humanResource/departments/index.v
 const Recruitment = () => import('@/components/humanResource/recruitment/index.vue');//招兵买马
 const StaffRoster = () => import('@/components/humanResource/departments/staffRoster/index.vue');//员工名册
 const MilitaryOrganization = () => import('@/components/humanResource/militaryOrganization/index.vue'); //排班布阵
+const Reward = () => import('@/components/humanResource/reward/index.vue') //赏罚分明
 
 // 财务中心
 const Finance = () => import('@/components/finance/index.vue');
@@ -95,6 +96,11 @@ export default new Router({
       path: '/recruitment',
       name: '招兵买马',
       component: Recruitment
+    },
+    {
+      path: '/reward',
+      name: '赏罚分明',
+      component: Reward
     },
     {
       path: '/staffRoster',
