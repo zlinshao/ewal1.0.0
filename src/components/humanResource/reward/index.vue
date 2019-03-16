@@ -40,7 +40,7 @@
 
     <!--扬善表单-->
     <div v-show="chooseTab === 1">
-      <RewardUp :searchVal="searchFruit1"></RewardUp>
+      <RewardUp :searchVal="searchFruit1" :reward_order_visible="reward_order_visible" :exchange_rules_visible="exchange_rules_visible"></RewardUp>
 
     </div>
     <work-info v-show="chooseTab" :work-info="work_info" :event-data="event_data"
@@ -49,63 +49,6 @@
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
 
-    <!--赏善令-->
-    <lj-dialog
-      :visible="reward_order"
-      :size="{width: 600 + 'px',height: 650 + 'px'}"
-      @close="reward_order = false"
-    >
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>赏善令</h3>
-          <!--<div class="header_right">-->
-            <!--<el-button size="mini" type="primary" plain>新增</el-button>-->
-          <!--</div>-->
-        </div>
-        <div class="dialog_main borderNone">
-          <el-form :model="reward_order_form" label-width="80px" style="width: 80%">
-            <el-form-item label="姓名">
-              <el-input v-model="reward_order_form.name" placeholder="选择人员自动获取"></el-input>
-            </el-form-item>
-            <el-form-item label="部门">
-              <el-input v-model="reward_order_form.department" placeholder="选择人员自动获取">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="岗位">
-              <el-input v-model="reward_order_form.station" placeholder="选择人员自动获取">
-              </el-input>
-            </el-form-item>
-
-            <el-form-item label="事件">
-              <div class="items-center iconInput">
-                <el-select v-model="reward_order_form.event" placeholder="请选择事件">
-                  <el-option :value="1" label="事件1"></el-option>
-                </el-select>
-              </div>
-            </el-form-item>
-              <el-form-item label="奖励类型">
-                <div class="items-center iconInput">
-                  <el-select v-model="reward_order_form.reward_type" placeholder="请选择奖励类型">
-                    <el-option :value="1" label="奖励1"></el-option>
-                  </el-select>
-                </div>
-              </el-form-item>
-            <el-form-item label="奖额">
-              <el-input v-model="reward_order_form.bonus" placeholder="请填写奖励金额">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="备注">
-              <el-input v-model="reward_order_form.remark" placeholder="请填写备注">
-              </el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button size="small" type="danger">提交</el-button>
-          <el-button size="small" type="info" @click="reward_order = false">取消</el-button>
-        </div>
-      </div>
-    </lj-dialog>
   </div>
 </template>
 
@@ -154,18 +97,8 @@
         searchFruit2: {},//惩恶搜索结果
 
         //乐伽dialog
-        //赏善令
-        reward_order: false,
-        reward_order_form: {
-          name: '',//姓名
-          department: '',//部门,
-          station: '',//岗位
-          event: '',//事件
-          reward_type: '',//奖励类型
-          bonus: '',//奖额
-          remark: '',//备注
-        },
-
+        reward_order_visible: false,
+        exchange_rules_visible:false,
 
         //侧滑栏数据
         show_market: false,
@@ -206,10 +139,10 @@
       },
 
       publish() {
-        this.reward_order = true;
+        this.reward_order_visible = !this.reward_order_visible;
       },
       exchange() {
-
+        this.exchange_rules_visible = !this.exchange_rules_visible;
       },
 
 
