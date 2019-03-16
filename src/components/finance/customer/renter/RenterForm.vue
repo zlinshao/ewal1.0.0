@@ -15,7 +15,7 @@
                 </b>
                 <span>{{item.label}}</span>
               </div>
-              <div class="item_content">
+              <div class="item_content" style="width: 220px">
                 <el-input  :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
               </div>
             </div>
@@ -28,8 +28,7 @@
                 </b>
                 <span>{{item.label}}</span>
               </div>
-              <div class="item_content">
-                <!--<el-input  :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>-->
+              <div class="item_content" style="width: 220px">
                 <el-date-picker
                   v-model="form[item.prop]" type="date" :placeholder="item.placeholder">
                 </el-date-picker>
@@ -44,7 +43,7 @@
                 </b>
                 <span>付款方式</span>
               </div>
-              <div class="item_content">
+              <div class="item_content" style="width: 220px">
                 <el-select placeholder="请选择" v-model="form.pay_types_val">
                   <el-option v-for="item in Object.keys(payTypes)" :label="payTypes[parseInt(item)]" :value="parseInt(item)" :key="item"></el-option>
                 </el-select>
@@ -59,7 +58,7 @@
                 </b>
                 <span>月单价</span>
               </div>
-              <div class="item_content">
+              <div class="item_content" style="width: 220px">
                 <el-input  placeholder="请选择" v-model="form.prices_val" type="number"></el-input>
               </div>
             </div>
@@ -72,7 +71,7 @@
                 </b>
                 <span>账户类型</span>
               </div>
-              <div class="item_content">
+              <div class="item_content" style="width: 220px">
                 <el-select placeholder="请选择" v-model="form.account_type">
                   <el-option v-for="item in Object.keys(cate)" :label="cate[item]" :value="item" :key="item"></el-option>
                 </el-select>
@@ -87,7 +86,7 @@
                 </b>
                 <span>开户银行</span>
               </div>
-              <div class="item_content">
+              <div class="item_content" style="width: 220px">
                 <el-select placeholder="请选择银行" v-model="form.account_bank">
                   <el-option v-for="item in banks" :label="item" :value="item" :key="item"></el-option>
                 </el-select>
@@ -102,7 +101,7 @@
                 </b>
                 <span>房租科目</span>
               </div>
-              <div class="item_content">
+              <div class="item_content" style="width: 220px">
                 <el-input  placeholder="请选择" v-model="form.rental_subject" @focus="handleOpenSubject('subject_rent')"></el-input>
               </div>
             </div>
@@ -115,8 +114,8 @@
                 </b>
                 <span>押金科目</span>
               </div>
-              <div class="item_content">
-                <el-input  placeholder="请选择" v-model="form.deposit_subject" @focus="handleOpenSubject('subject_deposit')"></el-input>
+              <div class="item_content" style="width: 220px">
+                <el-input  placeholder="请选择" v-model="form.deposit_subject" @focus="handleOpenSubject('subject_deposit')" ></el-input>
               </div>
             </div>
           </el-form-item>

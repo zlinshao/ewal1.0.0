@@ -31,6 +31,13 @@ const Gathering = () => import('@/components/finance/gathering/index.vue'); //�
 const Customer = () => import('@/components/finance/customer/index.vue'); //客户
 const Payment = () => import('@/components/finance/payment/index.vue'); //付款
 
+//新媒体
+const NewMedia = () => import('@/components/newMedia/index.vue');
+const Club = () => import('@/components/newMedia/club/index.vue');
+const HeadLines = () => import('@/components/newMedia/headLines/index.vue');
+const Humanity = () => import('@/components/newMedia/humanity/index.vue');
+const CompanyProfile = () => import('@/components/newMedia/companyProfile/index.vue');
+
 Vue.use(Router);
 
 export default new Router({
@@ -50,6 +57,31 @@ export default new Router({
       path: '/president',
       name: '总裁办',
       component: President
+    },
+    {
+      path:'/newMedia',
+      name:'新媒体运营中心',
+      component:NewMedia
+    },
+    {
+      path: '/club',
+      name: '俱乐部',
+      component: Club
+    },
+    {
+      path: '/headLines',
+      name: '企业头条',
+      component: HeadLines
+    },
+    {
+      path: '/humanity',
+      name: '乐伽人文',
+      component: Humanity
+    },
+    {
+      path: '/companyProfile',
+      name: '公司资料',
+      component: CompanyProfile
     },
     {
       path: '/jurisdiction',

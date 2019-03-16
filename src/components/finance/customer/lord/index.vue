@@ -10,7 +10,7 @@
       @cell-click="tableClickRow"
       style="width: 100%">
 
-      <el-table-column label="前缀" align="center" width="150">
+      <el-table-column label="前缀" align="center" width="80">
         <template slot-scope="scope">
           <div class="statusBar flex-center">
             <span v-if="LordStatus[scope.$index].is_contact===1" style="background-color: #14e731;"></span>
@@ -21,12 +21,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        v-for="item in Object.keys(lordLabel)"
-        :label="lordLabel[item]" :key="item"
-        :prop="item"
+        v-for="(item,index) in tableHeaderData"
+        :label="item.title" :key="index"
+        :prop="item.prop"
+        :width="item.width"
         align="center">
       </el-table-column>
-      <el-table-column label="状态" prop="" align="center">
+      <el-table-column label="状态" prop="" align="center" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.status === 1 ? '待处理' : '正常'}}</span>
         </template>
@@ -76,7 +77,7 @@
       </div>
     </lj-dialog>
     <!--详情-->
-    <lj-dialog :visible="details_visible" :size="{width: 1200 + 'px',height: 600 + 'px'}"
+    <lj-dialog :visible="details_visible" :size="{width: 960 + 'px',height: 560 + 'px'}"
                @close="details_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -85,20 +86,18 @@
         <div class="dialog_main">
           <el-row :gutter="20" style="width: 100%">
             <el-col :span="15" :offset="1">
-              <h3 class="justify-start" style="margin-bottom: 20px">基础信息</h3>
               <div class="justify-bet" style="flex-wrap: wrap">
                 <div class="" style="width:45%;padding: 10px 0;text-align: left"
-                     v-for="(item,index) in detailLabel.slice(0,17)" :key="index">
+                     v-for="(item,index) in tableDetailData.slice(0,17)" :key="index">
                   <span class="tablelabel">{{item.label}}</span>
                   <span>{{lordDetailData[item.prop]}}</span>
                 </div>
               </div>
             </el-col>
             <el-col :span="7" :offset="1">
-              <h3 class="justify-start" style="margin-bottom: 20px">客户账户信息</h3>
               <div class="justify-bet" style="flex-wrap: wrap">
                 <div class="" style="width:90%;padding: 10px 0;text-align: left"
-                     v-for="(item,index) in detailLabel.slice(17)" :key="index">
+                     v-for="(item,index) in tableDetailData.slice(17)" :key="index">
                   <span class="tablelabel">{{item.label}}</span>
                   <span>{{lordDetailData[item.prop]}}</span>
                 </div>
@@ -108,12 +107,14 @@
         </div>
       </div>
     </lj-dialog>
+
+
     <!--编辑-->
     <lj-dialog
       :visible="edit_visible"
       :size="{width: 900 + 'px',height: 820 + 'px' }"
       @close="edit_visible = false">
-      <lord-form :formData="form" :current_row="current_row"></lord-form>
+          <lord-form :formData="form" :current_row="current_row"></lord-form>
     </lj-dialog>
 
 
@@ -139,32 +140,54 @@
           export: '',
         },
         chooseRowIds: [],
-        lordLabel: {
-          "create_time": "生成时间",
-          "address": "房屋地址",
-          "customer_name": "客户姓名",
-          "contact": "客户手机号",
-          "months": "收房月数",
-          "pay_types": "付款方式",
-          "prices": "月单价",
-          "deal_date": "待签约日期",
-          "first_pay_date": "第一次打房租日期",
-          "account_type": "客户汇款方式",
-          "account_num": "账号",
-          "operator.name": "签约人",
-        },
+        tableHeaderData:[
+          {title:"生成时间",prop:"create_time",width:"80"},
+          {title:"房屋地址",prop:"address",width:"80"},
+          {title:"客户姓名",prop:"customer_name",width:"80"},
+          {title:"客户手机号",prop:"contact",width:"120"},
+          {title:"收房月数",prop:"months",width:"80"},
+          {title:"付款方式",prop:"pay_types",width:"80"},
+          {title:"月单价",prop:"prices",width:"80"},
+          {title:"待签约日期",prop:"deal_date",width:"100"},
+          {title:"第一次打房租日期",prop:"first_pay_date",width:"150"},
+          {title:"客户汇款方式",prop:"account_type",width:"120"},
+          {title:"账号",prop:"account_num",width:"110"},
+          {title:"签约人",prop:"operator.name",width:"100"},
+        ],
         btnData:[
           {label:"查看",type:"success",icon:"el-icon-view",size:"small",methods:"handleDetailsLord"},
           {label:"编辑",type:"primary",icon:"el-icon-edit",size:"small",methods:"handleEditLord"},
           {label:"生成待处理项",type:"warning",icon:"el-icon-info",size:"small",methods:"handleProcessLord"},
           {label:"删除",type:"danger",icon:"el-icon-delete",size:"small",methods:"handleDeleteLord"},
         ],
-
+        tableDetailData: [
+          {label: "客户姓名 :", prop: "customer_name"},
+          {label: "客户联系方式 :", prop: "contact"},
+          {label: "房屋地址 :", prop: "address"},
+          {label: "租房月数 :", prop: "months"},
+          {label: "付款方式 :", prop: "payType"},
+          {label: "月单价 :", prop: "prices_val"},
+          {label: "待签约日期 :", prop: "deal_date"},
+          {label: "空置期 :", prop: "freeze"},
+          {label: "第一次打房租日期 :", prop: "first_pay_date"},
+          {label: "第二次打房租日期 :", prop: "second_pay_date"},
+          {label: "负责人 :", prop: "leaderName"},
+          {label: "所属部门 :", prop: "departmentName"},
+          {label: "操作人 :", prop: "operatorName"},
+          {label: "签约人 :", prop: "staffName"},
+          {label: "房租科目 :", prop: "rental_subject"},
+          {label: "押金科目 :", prop: "deposit_subject"},
+          {label: "备注 :", prop: "remark"},
+          {label: "汇款方式 :", prop: "account_type"},
+          {label: "汇款人姓名 :", prop: "account_owner"},
+          {label: "开户行 :", prop: "account_bank"},
+          {label: "支行 :", prop: "account_subbank"},
+          {label: "账号 :", prop: "account_num"},
+        ],
         delete_visible: false,//删除
         edit_visible: false,//编辑
         details_visible: false,//详情
         is_disabled: true,//是否禁用
-
         current_row: '',
         lordLists: [],
         lordCount: 0,
@@ -328,6 +351,7 @@
           },
         ],
         lordPayTypes: '',
+
         lordDetailList: {
           departmentName: "",
           staffName: "",
@@ -376,37 +400,13 @@
           "v3_contract_id": "",
           "cate": "",
         },
-        detailLabel: [
-          {label: "客户姓名:", prop: "customer_name"},
-          {label: "客户联系方式:", prop: "contact"},
-          {label: "房屋地址:", prop: "address"},
-          {label: "租房月数:", prop: "months"},
-          {label: "付款方式:", prop: "payType"},
-          {label: "月单价:", prop: "pricesName"},
-          {label: "待签约日期:", prop: "deal_date"},
-          {label: "空置期:", prop: "freeze"},
-          {label: "第一次打房租日期:", prop: "first_pay_date"},
-          {label: "第二次打房租日期:", prop: "second_pay_date"},
-          {label: "负责人:", prop: "leaderName"},
-          {label: "所属部门:", prop: "departmentName"},
-          {label: "操作人:", prop: "operatorName"},
-          {label: "签约人:", prop: "staffName"},
-          {label: "房租科目:", prop: "rental_subject"},
-          {label: "押金科目:", prop: "deposit_subject"},
-          {label: "备注:", prop: "remark"},
-          {label: "汇款方式:", prop: "account_type"},
-          {label: "汇款人姓名:", prop: "account_owner"},
-          {label: "开户行:", prop: "account_bank"},
-          {label: "支行:", prop: "account_subbank"},
-          {label: "账号:", prop: "account_num"},
-        ],
+
         lordDetail: {},
         lordDetailData: {},
 
         subject_visible: false,
         which_subject: '',
         new_subject_visible: false,
-
         subject_deposit: {
           parent_id: '',
           title: '',
@@ -423,7 +423,6 @@
           parent_name: '',
           subject_code: ''
         },
-
         move_visible: false,
         move_subject: {
           initial: '',
@@ -440,16 +439,13 @@
 
     },
     watch: {
-      lordStatus(val) {
-        console.log(val);
-        this.myStatus = val;
-      }
     },
     created() {
 
     },
     computed: {},
     methods: {
+      //换页
       handleChangePage(page) {
         this.params.page = page;
         this.getLordList();
@@ -467,6 +463,7 @@
       //操作项动态调用
       clkCall(func,row,index){
         this[func](row,index);
+        // console.log(row);
       },
       callbackSuccess(res) {
         if (res.code === 200) {
@@ -534,12 +531,13 @@
         this.getLordDetail(this.current_row.id);
       },
       getRowInfo(index) {
+        // console.log(this.lordLists[index]);
         this.lordDetailList.departmentName = this.lordLists[index].department.name;
         this.lordDetailList.staffName = this.lordLists[index].staff.name;
         this.lordDetailList.leaderName = this.lordLists[index].leader.name;
         this.lordDetailList.operatorName = this.lordLists[index].operator.name;
-        this.lordDetailList.pay_types_val = this.lordLists[index].pay_types[0];
-        this.lordDetailList.prices_val = this.lordLists[index].prices[0];
+        this.lordDetailList.pay_types_val = String(this.lordLists[index].pay_types[0]);
+        this.lordDetailList.prices_val = parseFloat(this.lordLists[index].prices[0]);
       },
       //获取详情
       getLordDetail(id) {
@@ -547,13 +545,13 @@
         this.$http.get(globalConfig.temporary_server + 'customer_collect/' + id,).then(res => {
           if (res.code == 200) {
             this.showLoading(false);
-            this.lordDetail = JSON.parse(JSON.stringify(res.data.data));
+            this.lordDetail = res.data.data;
             // console.log(this.lordDetail);
             this.lordDetailData = Object.assign({}, this.lordDetail, this.lordDetailList);
             for (let item of Object.keys(this.form)) {
               this.form[item] = this.lordDetailData[item];
             }
-            console.log(this.form);
+            // console.log(this.form);
           }
         })
       },
@@ -694,7 +692,7 @@
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
+          // console.log(val);
         }
       },
     },
