@@ -2,7 +2,58 @@
 
 #theme_name {
   #recruitment {
-
+    > div {
+      position: relative;
+      .nav_container {
+        width: 100%;
+        height: calc(100% - 81px);
+        position: absolute;
+        top: 81px;
+        left: 0;
+        background-color: $color2F2;
+        z-index: 9;
+        transition: all ease 1s;
+        .nav_content {
+          padding: 50px 200px;
+          justify-content: space-between;
+          border-bottom: 1px solid $color0C0;
+          > div {
+            width: 20%;
+            max-width: 250px;
+            height: 400px;
+            text-align: center;
+            border: 1px solid $colorE33;
+            cursor: pointer;
+            &:hover {
+              color: $colorE33;
+            }
+            > p {
+              font-size: 24px;
+              font-family: 'jingDianXingShu';
+              margin: 30px 0;
+            }
+            .info_detail {
+              width: 90%;
+              height: 250px;
+              margin: 0 auto;
+            }
+            .info_footer {
+              width: 95%;
+              height: 50px;
+              margin: 10px auto;
+              line-height: 50px;
+            }
+          }
+        }
+        .nav_info {
+          width: 100%;
+        }
+      }
+      .hide_nav_container {
+        left: -1920px;
+        top: -1920px;
+      }
+    }
   }
 }
 

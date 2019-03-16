@@ -132,47 +132,23 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #recruitment > div {
-  position: relative; }
-  #theme_name #recruitment > div .nav_container {
+#theme_name #part_three {
+  height: 100%; }
+  #theme_name #part_three > div {
     width: 100%;
-    height: calc(100% - 81px);
-    position: absolute;
-    top: 81px;
-    left: 0;
-    background-color: #F2F2F2;
-    z-index: 9;
-    transition: all ease 1s; }
-    #theme_name #recruitment > div .nav_container .nav_content {
-      padding: 50px 200px;
-      justify-content: space-between;
-      border-bottom: 1px solid #C0C0C0; }
-      #theme_name #recruitment > div .nav_container .nav_content > div {
-        width: 20%;
-        max-width: 250px;
-        height: 400px;
-        text-align: center;
-        border: 1px solid #CF2E33;
-        cursor: pointer; }
-        #theme_name #recruitment > div .nav_container .nav_content > div:hover {
-          color: #CF2E33; }
-        #theme_name #recruitment > div .nav_container .nav_content > div > p {
-          font-size: 24px;
-          font-family: 'jingDianXingShu';
-          margin: 30px 0; }
-        #theme_name #recruitment > div .nav_container .nav_content > div .info_detail {
-          width: 90%;
-          height: 250px;
-          margin: 0 auto; }
-        #theme_name #recruitment > div .nav_container .nav_content > div .info_footer {
-          width: 95%;
-          height: 50px;
-          margin: 10px auto;
-          line-height: 50px; }
-    #theme_name #recruitment > div .nav_container .nav_info {
-      width: 100%; }
-  #theme_name #recruitment > div .hide_nav_container {
-    left: -1920px;
-    top: -1920px; }
+    height: 100%;
+    margin-top: 10px;
+    position: relative; }
+    #theme_name #part_three > div .container {
+      width: 60%;
+      height: 70%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+      #theme_name #part_three > div .container .content {
+        width: 85%;
+        height: 90%;
+        padding: 30px; }
 
-/*# sourceMappingURL=index.css.map */
+/*# sourceMappingURL=part_three.css.map */

@@ -1,0 +1,11 @@
+@import "../../../common.scss";
+
+#theme_name {
+  #part_two {
+    height: 100%;
+    > div {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

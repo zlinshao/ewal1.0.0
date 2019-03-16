@@ -1,0 +1,22 @@
+@import "../../../common.scss";
+
+#theme_name {
+  #part_four {
+    height: 100%;
+    > div {
+      width: 100%;
+      height: 100%;
+      margin-top: 10px;
+      position: relative;
+      .container {
+        width: 60%;
+        height: 70%;
+        .content {
+          width: 85%;
+          height: 90%;
+          padding: 30px;
+        }
+      }
+    }
+  }
+}
