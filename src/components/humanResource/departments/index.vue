@@ -2,7 +2,7 @@
   <div id="departments">
     <!--<Upload :file="photo1"></Upload>-->
     <!--<Upload :file="photo2"></Upload>-->
-    <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
+
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
@@ -29,6 +29,9 @@
         <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2"></div>
       </div>
     </div>
+
+    <!--组织架构选人-->
+    <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
 
     <!--组织架构-->
     <div v-if="chooseTab === 1">

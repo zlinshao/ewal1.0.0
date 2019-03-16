@@ -328,6 +328,7 @@
       }
     },
     mounted() {
+      this.getSoldiersList();
     },
     activated() {
     },
@@ -338,6 +339,14 @@
     },
     computed: {},
     methods: {
+      //获取人员需求列表
+      getSoldiersList() {
+        this.$http.get('recruitment/staff_needs',this.params).then(res => {
+          console.log(res);
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       //表格某一行双击
       tableDblClick(row) {
         console.log(row);

@@ -11,7 +11,7 @@ export const humanResource = {
       title: '招兵买马',
     },
     {
-      url: '',
+      url: 'reward',
       title: '赏罚分明',
     },
     {

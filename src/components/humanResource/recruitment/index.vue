@@ -1,6 +1,52 @@
 <template>
   <div id="recruitment">
     <div>
+      <div class="nav_container" :class="{'hide_nav_container': is_hide_nav_container}">
+        <div class="nav_content flex">
+          <div @click.self="handleGoModules(1)">
+            <p>募兵行列</p>
+            <div class="info_detail">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <span>web前端</span>
+                </el-col>
+                <el-col :span="12">
+                  <span>3名</span>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="info_footer">
+              <el-button size="mini" type="danger">添加需求</el-button>
+            </div>
+          </div>
+          <div @click.self="handleGoModules(2)">
+            <p>分取科士</p>
+            <div class="info_detail">
+
+            </div>
+            <div class="info_footer">
+              <el-button size="mini" type="danger">添加需求</el-button>
+            </div>
+          </div>
+          <div @click.self="handleGoModules(3)">
+            <p>殿试会师</p>
+            <div class="info_detail">
+
+            </div>
+          </div>
+          <div @click.self="handleGoModules(4)">
+            <p>榜上有名</p>
+            <div class="info_detail">
+
+            </div>
+          </div>
+        </div>
+        <div class="nav_info">
+
+        </div>
+      </div>
+
+
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
           <p class="flex-center">
@@ -62,7 +108,8 @@
           {id: 3, title: '殿试会师'},
           {id: 4, title: '榜上有名'}
         ], //模块列表
-        chooseTab: 2, //当前选中模块
+        chooseTab: 1, //当前选中模块
+        is_hide_nav_container: true,
 
         //搜索
         showSearch: false,
@@ -85,6 +132,10 @@
     watch: {},
     computed: {},
     methods: {
+      handleGoModules(choose) {
+        this.chooseTab = choose;
+        this.is_hide_nav_container  = true;
+      },
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;
@@ -114,6 +165,12 @@
         .recruitment_main {
           width: 100%;
           height: calc(100% - 90px);
+        }
+        .nav_container {
+          .nav_content {
+            > div {
+            }
+          }
         }
       }
     }
