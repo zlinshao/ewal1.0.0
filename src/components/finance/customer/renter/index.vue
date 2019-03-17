@@ -148,8 +148,8 @@
           "pay": "付款方式",
           "prices": "月单价",
           "deal_date": "待签约日期",
-          "first_pay_date": "租房状态",
-          "account_type": "租房类型",
+          "rent_status": "租房状态",
+          "rent_types": "租房类型",
           "operator.name": "签约人",
         },
 

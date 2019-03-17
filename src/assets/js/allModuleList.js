@@ -11,7 +11,7 @@ export const humanResource = {
       title: '招兵买马',
     },
     {
-      url: '',
+      url: 'reward',
       title: '赏罚分明',
     },
     {
@@ -133,3 +133,27 @@ export const finance = {
     },
   ]
 };
+
+//新媒体
+export const newMedia = {
+  type: 'newMedia',
+  data:[
+    {
+      url: 'club',
+      title: '俱乐部'
+    },
+    {
+      url: 'headLines',
+      title: '企业头条'
+    },
+    {
+      url: 'humanity',
+      title: '乐伽人文'
+    },
+    {
+      url: 'companyProfile',
+      title: '公司资料'
+    },
+  ]
+}
+

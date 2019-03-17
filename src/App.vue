@@ -115,7 +115,7 @@
             English: 'Personal Adminstration',
           },
           {
-            url: '',
+            url: '/newMedia',
             title: '新媒体运营中心',
             English: 'Social Media Center',
           },
