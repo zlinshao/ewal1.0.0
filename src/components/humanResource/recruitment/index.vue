@@ -169,6 +169,10 @@
         .nav_container {
           .nav_content {
             > div {
+              @include recruitmentImg('dikaunghui.png','theme1');
+              &:hover {
+                @include recruitmentImg('dikuangh.png','theme1');
+              }
             }
           }
         }
