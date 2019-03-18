@@ -545,6 +545,15 @@
   -moz-border-radius: 4px;
   border-radius: 4px;
   background-color: #D2D2D2; }
+#theme_name .btn_look {
+  width: 15px;
+  height: 19px;
+  margin-right: 5px;
+  display: inline-block;
+  background: url("../../assets/image/common/theme1/look.png") no-repeat scroll center;
+  background-size: 100% 100%;
+  background-size: contain;
+  vertical-align: middle; }
 #theme_name .iconSuccess {
   background: url("../../assets/image/common/theme1/success.png") no-repeat scroll center;
   background-size: 100% 100%; }

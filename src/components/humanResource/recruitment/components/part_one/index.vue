@@ -50,7 +50,7 @@
           <div class="dialog_header">
             <h3>{{is_control === 'add' ? '添加人员需求' : is_control === 'look' ? '查看人员信息' : '编辑人员需求'}}</h3>
             <div class="header_right" v-if="is_control === 'look'">
-              <div class="btn_add" @click="is_control = 'edit'">+</div>
+              <div class="btn_edit" @click="is_control = 'edit'"></div>
             </div>
           </div>
           <div class="dialog_main borderNone">
@@ -384,7 +384,7 @@
 <style lang="scss" scoped>
   @import "../../../../../assets/scss/humanResource/recruitment/components/part_one.scss";
 
-  @mixin part_three_img($m,$n) {
+  @mixin part_one_img($m,$n) {
     $url: '../../../../../assets/image/humanResource/recruitment/' + $n + '/' + $m;
     @include bgImage($url);
   }
@@ -392,7 +392,13 @@
   #theme_name {
     #part_one {
       > div {
-
+        .btn_edit {
+          display: inline-block;
+          width: 25px;
+          height: 25px;
+          cursor: pointer;
+          @include part_one_img('edit.png','theme1');
+        }
       }
     }
   }
