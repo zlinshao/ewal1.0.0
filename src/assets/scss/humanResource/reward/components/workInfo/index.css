@@ -132,67 +132,54 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #part_three {
-  height: 100%; }
-  #theme_name #part_three > div {
-    width: 100%;
-    height: 100%;
-    margin-top: 10px;
+#workInfo {
+  position: fixed;
+  height: 400px;
+  width: 100%;
+  right: -100%;
+  bottom: 0;
+  z-index: 10;
+  background-color: #fff;
+  transition: right 1s; }
+  #workInfo:hover {
+    right: 0; }
+  #workInfo .tip-icon {
+    position: absolute;
+    width: 30px;
+    height: 80px;
+    top: 160px;
+    left: -30px; }
+  #workInfo .info_container {
+    padding-top: 20px;
     position: relative; }
-    #theme_name #part_three > div .container {
-      width: 60%;
-      height: 70%;
+    #workInfo .info_container .date_change {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%); }
-      #theme_name #part_three > div .container .content {
-        width: 85%;
-        height: 90%;
-        padding: 30px; }
-    #theme_name #part_three > div .paper_resume {
-      width: 100%;
-      height: calc(100% + 90px);
-      position: absolute;
-      top: -90px;
-      left: 0;
-      background-color: #F2F2F2;
-      transition: all ease 1s; }
-      #theme_name #part_three > div .paper_resume .btn_group {
-        position: absolute;
-        top: 30px;
-        left: 0; }
-        #theme_name #part_three > div .paper_resume .btn_group > div {
-          width: 80px;
-          height: 40px;
-          background-color: #C0C0C0;
-          text-align: center;
-          line-height: 40px;
-          border-radius: 0 8px 8px 0;
-          cursor: pointer; }
-          #theme_name #part_three > div .paper_resume .btn_group > div:first-child {
-            margin-bottom: 20px; }
-        #theme_name #part_three > div .paper_resume .btn_group .is_select {
-          color: white;
-          background-color: #CF2E33; }
-      #theme_name #part_three > div .paper_resume .top_title {
-        width: 100%;
-        padding: 10px 100px;
-        border-bottom: 1px solid #C0C0C0; }
-        #theme_name #part_three > div .paper_resume .top_title > div {
-          width: 50%; }
-          #theme_name #part_three > div .paper_resume .top_title > div:first-child {
-            text-align: left;
-            line-height: 80px; }
-          #theme_name #part_three > div .paper_resume .top_title > div:last-child {
-            text-align: right;
-            line-height: 80px;
-            padding-right: 20%; }
-            #theme_name #part_three > div .paper_resume .top_title > div:last-child > span {
-              font-size: 18px;
-              color: #CF2E33; }
-    #theme_name #part_three > div .hide_resume {
-      top: -10px;
-      left: -1920px; }
+      top: 30px;
+      right: 0; }
+      #workInfo .info_container .date_change li {
+        width: 90px;
+        height: 40px;
+        color: #999999;
+        background-color: #DFDFDF;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 3px 0 0 3px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        cursor: pointer; }
+      #workInfo .info_container .date_change .mark_li {
+        background-color: #CF2E33;
+        color: white; }
+    #workInfo .info_container .day_info > div {
+      width: 25%;
+      padding-left: 30px; }
+    #workInfo .info_container .day_info > div > p {
+      font-size: 16px; }
+    #workInfo .info_container .day_info .event_info {
+      width: 80%; }
+    #workInfo .info_container .day_info .work_info {
+      height: 321px; }
+      #workInfo .info_container .day_info .work_info > p:not(:last-child) {
+        margin-bottom: 65px; }
 
-/*# sourceMappingURL=part_three.css.map */
+/*# sourceMappingURL=index.css.map */

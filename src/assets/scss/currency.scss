@@ -374,7 +374,15 @@
     @include btn_square(4px);
     background-color: $color2D2;
   }
-
+  .btn_look {
+    width: 15px;
+    height: 19px;
+    margin-right: 5px;
+    display: inline-block;
+    @include commonImg('look.png','theme1');
+    background-size: contain;
+    vertical-align: middle;
+  }
   .iconSuccess {
     @include commonImg('success.png','theme1');
   }
