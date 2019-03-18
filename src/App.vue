@@ -29,7 +29,7 @@
         <div class="items-center personal" @click="routerLink('login')">
           <span>冯宝宝</span>
           <p>
-            <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
+            <img src="http://b-ssl.duitang.com/uploads/item/201609/25/20160925204146_BSdiL.png">
           </p>
           <div>放大撒</div>
         </div>

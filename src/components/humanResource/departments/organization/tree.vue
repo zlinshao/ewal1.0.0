@@ -1,7 +1,7 @@
 <template>
   <div class="aaaaaa">
     <div class="topLevel">
-      <!--<img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg" style="width: 60px;height: 60px;border-radius: 50%;">-->
+      <!--<img src="http://b-ssl.duitang.com/uploads/item/201609/25/20160925204146_BSdiL.png" style="width: 60px;height: 60px;border-radius: 50%;">-->
       <p>{{item.name}}</p>
     </div>
     <div v-if="isFolder" class="cccccc" style="padding-left: 50px;">

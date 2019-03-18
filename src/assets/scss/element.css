@@ -296,25 +296,31 @@ div.el-popover {
   color: #686874;
   border: none;
   background-color: transparent; }
-#theme_name .el-checkout-group, #theme_name .el-radio-group {
+#theme_name .changeChoose .el-checkout-group, #theme_name .changeChoose .el-radio-group {
   display: flex;
   display: -webkit-flex;
   align-items: center;
   flex-wrap: wrap; }
-#theme_name .el-checkbox, #theme_name .el-radio {
+#theme_name .changeChoose .el-checkbox, #theme_name .changeChoose .el-radio {
   display: flex;
   display: -webkit-flex;
   align-items: center; }
-  #theme_name .el-checkbox .el-checkbox__inner, #theme_name .el-checkbox .el-radio__inner, #theme_name .el-radio .el-checkbox__inner, #theme_name .el-radio .el-radio__inner {
+  #theme_name .changeChoose .el-checkbox .el-checkbox__inner, #theme_name .changeChoose .el-checkbox .el-radio__inner, #theme_name .changeChoose .el-radio .el-checkbox__inner, #theme_name .changeChoose .el-radio .el-radio__inner {
     width: 18px;
     height: 18px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%; }
-    #theme_name .el-checkbox .el-checkbox__inner:after, #theme_name .el-checkbox .el-radio__inner:after, #theme_name .el-radio .el-checkbox__inner:after, #theme_name .el-radio .el-radio__inner:after {
+    #theme_name .changeChoose .el-checkbox .el-checkbox__inner:after, #theme_name .changeChoose .el-checkbox .el-radio__inner:after, #theme_name .changeChoose .el-radio .el-checkbox__inner:after, #theme_name .changeChoose .el-radio .el-radio__inner:after {
       display: none; }
-    #theme_name .el-checkbox .el-checkbox__inner:hover, #theme_name .el-checkbox .el-radio__inner:hover, #theme_name .el-radio .el-checkbox__inner:hover, #theme_name .el-radio .el-radio__inner:hover {
+    #theme_name .changeChoose .el-checkbox .el-checkbox__inner:hover, #theme_name .changeChoose .el-checkbox .el-radio__inner:hover, #theme_name .changeChoose .el-radio .el-checkbox__inner:hover, #theme_name .changeChoose .el-radio .el-radio__inner:hover {
       border-color: #D8D8D8; }
+#theme_name .el-checkbox, #theme_name .el-radio {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+  #theme_name .el-checkbox .el-checkbox__inner:hover, #theme_name .el-checkbox .el-radio__inner:hover, #theme_name .el-radio .el-checkbox__inner:hover, #theme_name .el-radio .el-radio__inner:hover {
+    border-color: #D8D8D8; }
   #theme_name .el-checkbox .el-checkbox__input.is-focus .el-checkbox__inner, #theme_name .el-checkbox .el-checkbox__input.is-focus .el-radio__inner, #theme_name .el-checkbox .el-radio__input.is-focus .el-checkbox__inner, #theme_name .el-checkbox .el-radio__input.is-focus .el-radio__inner, #theme_name .el-radio .el-checkbox__input.is-focus .el-checkbox__inner, #theme_name .el-radio .el-checkbox__input.is-focus .el-radio__inner, #theme_name .el-radio .el-radio__input.is-focus .el-checkbox__inner, #theme_name .el-radio .el-radio__input.is-focus .el-radio__inner {
     border-color: #D8D8D8; }
   #theme_name .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner, #theme_name .el-checkbox .el-checkbox__input.is-checked .el-radio__inner, #theme_name .el-checkbox .el-radio__input.is-checked .el-checkbox__inner, #theme_name .el-checkbox .el-radio__input.is-checked .el-radio__inner, #theme_name .el-radio .el-checkbox__input.is-checked .el-checkbox__inner, #theme_name .el-radio .el-checkbox__input.is-checked .el-radio__inner, #theme_name .el-radio .el-radio__input.is-checked .el-checkbox__inner, #theme_name .el-radio .el-radio__input.is-checked .el-radio__inner {

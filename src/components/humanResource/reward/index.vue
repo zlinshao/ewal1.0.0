@@ -32,23 +32,25 @@
         <div class="right flex-center" @click="chooseTab=2"><span class="gray">惩恶令</span></div>
       </div>
     </div>
-    <!--扬善-->
-    <div class="up" v-if="chooseTab==1"></div>
-
-    <!--惩恶-->
-    <div class="down" v-if="chooseTab==2">惩恶</div>
-
-    <!--扬善表单-->
-    <div v-show="chooseTab === 1">
+    <!--扬善组件-->
+    <div class="up" v-if="chooseTab==1">
       <RewardUp :searchVal="searchFruit1" :reward_order_visible="reward_order_visible" :exchange_rules_visible="exchange_rules_visible"></RewardUp>
-
     </div>
+
+    <!--惩恶组件-->
+    <div class="down" v-if="chooseTab==2">
+      <RewardDown :searchVal="searchFruit2" :reward_order_visible="reward_order_visible" ></RewardDown>
+    </div>
+
+
     <work-info v-show="chooseTab" :work-info="work_info" :event-data="event_data"
                @change="handleChangeDate"></work-info>
+
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
-
+    <!--高级搜索-->
+    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
   </div>
 </template>
 
@@ -56,9 +58,11 @@
   import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
-  import RewardUp from './rewardUp/index.vue';//扬善表单
+  import RewardUp from './rewardUp/index.vue';//扬善组件
+  import RewardDown from './rewardDown/index.vue';//惩恶组件
   import WorkInfo from './components/workInfo/work-info';
   import LjDialog from '../../common/lj-dialog.vue';
+  import SearchHigh from '../../common/searchHigh.vue';
   import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
@@ -70,8 +74,10 @@
       MenuList,
       Upload,
       RewardUp,
+      RewardDown,
       WorkInfo,
       LjDialog,
+      SearchHigh,
     },
     data() {
       return {
@@ -93,6 +99,11 @@
         organModule: false,//组织架构
         chooseTab: null,//tab切换
         visibleStatus: false,//弹出部门
+
+        showSearch: false,//高级搜索
+        searchData: {},//搜索项
+
+
         searchFruit1: {},//扬善搜索结果
         searchFruit2: {},//惩恶搜索结果
 
@@ -131,6 +142,34 @@
     watch: {},
     computed: {},
     methods: {
+      // 高级搜索
+      highSearch(val) {
+        this.showSearch = true;
+        switch (val) {
+          case 1:
+            this.searchData = this.staffBookSearch;
+            break;
+          case 2:
+            this.searchData = this.LeaveJobSearch;
+            break;
+        }
+      },
+
+      // 确认搜索
+      hiddenModule(val) {
+        this.showSearch = false;
+        if (val !== 'close') {
+          switch (this.chooseTab) {
+            case 1:
+              this.searchFruit1 = val;
+              break;
+            case 2:
+              this.searchFruit2 = val;
+              break;
+          }
+        }
+      },
+
       handleChangeDate(id) {
 
       },

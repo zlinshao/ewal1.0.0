@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+let url = globalConfig.organ_server;
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL = globalConfig.humanResource_server; // 域名
 
@@ -49,8 +50,6 @@ axios.interceptors.response.use(response => {
         console.log(`连接错误${err.response.status}`)
     }
   } else {
-    this.showLoading(false);
-    this.routerLink('/network_error');
     console.log('连接到服务器失败')
   }
   return Promise.resolve(err.response);
@@ -105,6 +104,17 @@ class Axios {
         console.log(err);
       })
     })
+  }
+
+  // 组织架构接口
+  static getOrganization(org) {
+    return new Promise((resolve, reject) => {
+      this.get(url + 'organization/organization', {
+        parent_id: org
+      }).then(res => {
+        resolve(res);
+      });
+    });
   }
 }
 

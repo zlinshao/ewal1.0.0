@@ -64,40 +64,15 @@ export const staffBookSearch = {
       ],
     },
     {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: '',
+      keyType: 'staff',
+      title: '员工',
+      placeholder: '请选择员工',
+      keyName: 'staff',
+      dataType: [],
+      value: {
+        num: ''
+      }
     },
-    {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: '',
-    },
-    {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: '',
-    },
-    {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: '',
-    },
-    {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: '',
-    }
   ],
 };
 
@@ -236,9 +211,9 @@ export const subjectSearch = {
       keyName: 'er_type',
       dataType: '',
       value: [
-        {id: 1,title: '收入'},
-        {id: 2,title: '支出'},
-        {id: 3,title: '混合'}
+        {id: 1, title: '收入'},
+        {id: 2, title: '支出'},
+        {id: 3, title: '混合'}
       ]
     },
   ]
@@ -254,9 +229,9 @@ export const customerSearch = {
       keyName: 'er_type',
       dataType: '',
       value: [
-        {id: 1,title: '房东'},
-        {id: 2,title: '租客'},
-        {id: 3,title: '其他'}
+        {id: 1, title: '房东'},
+        {id: 2, title: '租客'},
+        {id: 3, title: '其他'}
       ]
     },
   ]
@@ -288,8 +263,8 @@ export const accountRunSearch = {
       keyName: 'cate',
       dataType: '',
       value: [
-        {id: 1,title: '收入'},
-        {id: 2,title: '支出'},
+        {id: 1, title: '收入'},
+        {id: 2, title: '支出'},
       ]
     },
     {

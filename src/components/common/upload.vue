@@ -1,6 +1,5 @@
 <template>
   <div id="upLoad">
-    {{file}}
     <div class="flex">
       <div class="showFile" v-for="(item,index) in showFile" @click="removeFile(index)">
         <img :src="item.url" v-if="item.type === 'image'">
@@ -28,12 +27,13 @@
       }
     },
     mounted() {
+      this.$http.get(globalConfig.upload_sever + 'api/v1/token').then(res => {
+
+      })
     },
     activated() {
     },
-    watch: {
-
-    },
+    watch: {},
     computed: {},
     methods: {
       removeFile(index) {
