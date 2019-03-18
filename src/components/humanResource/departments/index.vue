@@ -1,6 +1,6 @@
 <template>
   <div id="departments">
-    <!--<Upload :file="photo1"></Upload>-->
+    <Upload :file="photo1"></Upload>
     <!--<Upload :file="photo2"></Upload>-->
 
     <div class="listTopCss items-bet">
