@@ -13,7 +13,7 @@
                 <h4>花费多少</h4>
               </div>
               <p>
-                <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg">
+                <img src="http://b-ssl.duitang.com/uploads/item/201609/25/20160925204146_BSdiL.png">
                 <b></b>
                 <i></i>
               </p>

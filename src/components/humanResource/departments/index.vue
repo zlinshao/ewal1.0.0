@@ -1,6 +1,6 @@
 <template>
   <div id="departments">
-    <!--<Upload :file="photo1"></Upload>-->
+    <Upload :file="photo1"></Upload>
     <!--<Upload :file="photo2"></Upload>-->
 
     <div class="listTopCss items-bet">
@@ -139,7 +139,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 2,//tab切换
+        chooseTab: 3,//tab切换
         selects: [
           {
             id: 1,

@@ -46,8 +46,9 @@
                 {{key.title}}
               </p>
             </div>
-            <div v-if="item.keyType === 'organ'">
-              <el-input v-model="params[item.keyName]" :placeholder="item.placeholder"></el-input>
+            <div v-if="item.keyType === 'staff'">
+              <el-input @focus="staffSearch(item.value, item.keyName)" v-model="showName[item.keyName]"
+                        :placeholder="item.placeholder"></el-input>
             </div>
           </div>
         </div>
@@ -57,16 +58,25 @@
         </footer>
       </div>
     </div>
+    <!--选择人员-->
+    <StaffOrgan :module="organModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
   </div>
 </template>
 
 <script>
+  import StaffOrgan from './departOrgan.vue'
+
   export default {
     name: "search-high",
     props: ['module', 'showData'],
+    components: {StaffOrgan},
     data() {
       return {
         showModule: false,
+        organModule: false,
+        organData: {},// 组织架构配置 选择数量 num
+        organKey: '',
+        showName: {},
         params: {},
         reset: {},
         pickerOptions1: {
@@ -164,6 +174,24 @@
           check.splice(check.indexOf(val), 1);
         } else {
           check.push(val);
+        }
+      },
+      // 选择人员
+      staffSearch(val = '', key) {
+        this.organModule = true;
+        this.organData = val;
+        this.organKey = key;
+      },
+      // 关闭 选择人员
+      hiddenOrgan(val) {
+        this.organModule = false;
+        if (val !== 'close') {
+          let arr = [];
+          for (let item of val) {
+            arr.push(item.name);
+            this.params[this.organKey].push(item.id);
+          }
+          this.showName[this.organKey] = arr.join(',');
         }
       },
       subSearch() {

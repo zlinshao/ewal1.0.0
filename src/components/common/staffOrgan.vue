@@ -11,10 +11,10 @@
             <!--<el-input type="text" size="small" v-model="search"></el-input>-->
             <span class="search"></span>
             <!--<ul style="position: absolute;top: 30px;left: 0;right: 28px;">-->
-              <!--<li class="items-bet">-->
-                <!--<b>发货的是</b>-->
-                <!--<span>发的还是卡了</span>-->
-              <!--</li>-->
+            <!--<li class="items-bet">-->
+            <!--<b>发货的是</b>-->
+            <!--<span>发的还是卡了</span>-->
+            <!--</li>-->
             <!--</ul>-->
           </div>
         </div>
@@ -40,7 +40,7 @@
                     <h3></h3>
                     <h4>
                       <img :src="item.avatar" v-if="item.avatar">
-                      <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg" v-else>
+                      <img src="http://b-ssl.duitang.com/uploads/item/201609/25/20160925204146_BSdiL.png" v-else>
                     </h4>
                     <h5>
                       <span class="staffName">{{item.name}}</span>
@@ -71,7 +71,7 @@
                   <h4>
                     <i class="el-icon-remove" @click="removeStaff(index)"></i>
                     <img :src="item.avatar" v-if="item.avatar">
-                    <img src="https://www.wsm.cn/uploads/allimg/161212/37-161212102446.jpg" v-else>
+                    <img src="http://b-ssl.duitang.com/uploads/item/201609/25/20160925204146_BSdiL.png" v-else>
                   </h4>
                   <p>{{item.name}}</p>
                 </div>
@@ -94,11 +94,14 @@
   export default {
     name: "staff-organ",
     components: {ljDialog},
-    props: ['module'],
+    props: ['module', 'organData'],
     data() {
       return {
         url: globalConfig.organ_server,
         fullLoading: false,
+        configure: {
+          num: '',
+        },
         search: '',
         crumbs: [
           {
@@ -124,6 +127,12 @@
       },
       search(val) {
         this.searchStaff('', val);
+      },
+      organData: {
+        handler(val, oldVal) {
+          this.configure.num = val ? (val.num ? val.num : '') : '';
+        },
+        deep: true
       }
     },
     computed: {},
@@ -164,15 +173,10 @@
         this.departList = [];
         this.staffList = [];
         this.fullLoading = true;
-        return new Promise((resolve, reject) => {
-          this.$http.get(this.url + 'organization/organization', {
-            parent_id: org
-          }).then(res => {
-            resolve(true);
-            if (res.code === '20000') {
-              this.departList = res.data.data;
-            }
-          });
+        this.$http.getOrganization(org).then(res => {
+          if (res.code === '20000') {
+            this.departList = res.data.data;
+          }
           this.searchStaff(org);
         });
       },
@@ -191,6 +195,10 @@
       // 选人
       checkStaff(item) {
         let staff = this.checkedStaff;
+        if (staff.length === this.configure.num) {
+          console.log('最多选择' + this.configure.num + '个');
+          return;
+        }
         if (staff.length) {
           if (staff.includes(item.id)) {
             let index = staff.indexOf(item.id);

@@ -1,22 +1,64 @@
 <template>
   <div id="departOrgan">
-    部门
+    <lj-dialog
+      :visible="depart_visible"
+      :size="depart_size"
+      @close="handleCloseLjDialog">
+
+    </lj-dialog>
   </div>
 </template>
 
 <script>
+  import ljDialog from './lj-dialog.vue';
+
   export default {
     name: "depart-organ",
+    components: {ljDialog},
+    props: ['module', 'organData'],
     data() {
-      return {}
+      return {
+        depart_visible: false,
+        depart_size: {},
+        departList: [],
+        configure: {}
+      }
     },
     mounted() {
+      this.getList();
     },
     activated() {
     },
-    watch: {},
+    watch: {
+      module(val) {
+        this.depart_visible = val;
+        this.depart_size = {
+          width: '600px',
+          height: '800px'
+        }
+      },
+      organData: {
+        handler(val, oldVal) {
+          this.configure.num = val ? (val.num ? val.num : '') : '';
+        },
+        deep: true
+      }
+    },
     computed: {},
-    methods: {},
+    methods: {
+      handleCloseLjDialog() {
+        this.$emit('close', 'close');
+      },
+      getList(org = 1) {
+        this.departList = [];
+        this.fullLoading = true;
+        this.$http.getOrganization(org).then(res => {
+          if (res.code === '20000') {
+            this.departList = res.data.data;
+          }
+        });
+      },
+    },
   }
 </script>
 
