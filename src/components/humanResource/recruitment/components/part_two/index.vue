@@ -28,7 +28,7 @@
           </el-table-column>
           <el-table-column label="修改" prop="" align="center">
             <template slot-scope="scope">
-              <el-button size="mini" type="success" plain>修改</el-button>
+              <span class="btn_edit"></span>
             </template>
           </el-table-column>
         </el-table>
@@ -240,7 +240,7 @@
 <style lang="scss" scoped>
   @import "../../../../../assets/scss/humanResource/recruitment/components/part_two.scss";
 
-  @mixin part_three_img($m,$n) {
+  @mixin part_two_img($m,$n) {
     $url: '../../../../../assets/image/humanResource/recruitment/' + $n + '/' + $m;
     @include bgImage($url);
   }
@@ -251,6 +251,13 @@
       > div {
         width: 100%;
         height: 100%;
+        .btn_edit {
+          display: inline-block;
+          width: 25px;
+          height: 25px;
+          cursor: pointer;
+          @include part_two_img('edit.png','theme1');
+        }
       }
     }
   }

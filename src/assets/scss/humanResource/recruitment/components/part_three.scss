@@ -21,6 +21,61 @@
           padding: 30px;
         }
       }
+      .paper_resume {
+        width: 100%;
+        height: calc(100% + 90px);
+        position: absolute;
+        top: -90px;
+        left: 0;
+        background-color: $color2F2;
+        transition: all ease 1s;
+        .btn_group {
+          position: absolute;
+          top: 30px;
+          left: 0;
+          > div {
+            width: 80px;
+            height: 40px;
+            background-color: $color0C0;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            &:first-child {
+              margin-bottom: 20px;
+            }
+          }
+          .is_select {
+            color: white;
+            background-color: $colorE33;
+          }
+        }
+        .top_title {
+          width: 100%;
+          padding: 10px 100px;
+          border-bottom: 1px solid $color0C0;
+          > div {
+            width: 50%;
+            &:first-child {
+              text-align: left;
+              line-height: 80px;
+            }
+            &:last-child {
+              text-align: right;
+              line-height: 80px;
+              padding-right: 20%;
+              > span {
+                font-size: 18px;
+                color: $colorE33;
+              }
+            }
+          }
+        }
+      }
+      .hide_resume {
+        top: -1080px;
+        left: -1920px;
+      }
     }
   }
 }

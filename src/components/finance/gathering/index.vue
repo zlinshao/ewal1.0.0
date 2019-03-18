@@ -14,8 +14,8 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons home_icon"></div>
-        <div class="icons add"><b>+</b></div>
+        <!--<div class="icons home_icon"></div>-->
+        <div class="icons add" @click="add_visible = true"><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -178,11 +178,124 @@
           </el-form>
         </div>
         <div class="dialog_footer flex-center">
-          <el-button size="small" type="danger">确定</el-button>
+          <el-button size="small" type="danger" @click="handleOkReceive">确定</el-button>
           <el-button size="small" type="normal" @click="receive_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
+
+    <!--新增应收款项-->
+    <lj-dialog :visible="add_visible" :size="{width: 500 + 'px',height: 700 + 'px'}" @close="add_visible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增</h3>
+        </div>
+        <div class="dialog_main">
+
+          <el-form :model="ruleForm" :rules="rules" ref="payForm"  class="demo-ruleForm" size="mini">
+            <el-form-item prop="name">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>客户名称</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="ruleForm.customer_id"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="name">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>客户身份</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="ruleForm.name"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="name">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>收款金额</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="ruleForm.amount_payable"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="name">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>科目</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="ruleForm.subject_val" @focus="handleOpenSubject('subject_deposit')"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="name">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>付款时间</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="ruleForm.pay_date"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="name">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>应收款详情</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="ruleForm.description" type="textarea"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item prop="name">
+              <div class="form_item_container">
+                <div class="item_label">
+                  <b class="item_icons">
+                    <i class="icon_subject"></i>
+                  </b>
+                  <span>备注</span>
+                </div>
+                <div class="item_content">
+                  <el-input placeholder="请输入" v-model="ruleForm.remark" type="textarea"></el-input>
+                </div>
+              </div>
+            </el-form-item>
+          </el-form>
+
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger"  size="small" @click="submitForm('ruleForm')">确定</el-button>
+          <el-button type="info" size="small"   @click="resetForm('ruleForm')">重置</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+    <!--科目-->
+    <lj-subject :visible="subject_visible" @close="subject_visible = false"
+                @confirm="handleConfirmSubject"></lj-subject>
 
     <!--跟进记录-->
     <lj-dialog
@@ -388,19 +501,84 @@
   import SearchHigh from '../../common/searchHigh.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue';
+  import LjSubject from '../../common/lj-subject.vue';
 
   export default {
     name: "",
-    components: {SearchHigh,LjDialog,FinMenuList},
+    components: {
+      SearchHigh,
+      LjDialog,
+      FinMenuList,
+      LjSubject
+    },
     data() {
       return {
+        params:{
+          is_del:'',
+          staff_ids:'',
+          department_ids:'',
+          status:'',
+          startRange:'',
+          endRange:'',
+          tag_status:'',
+          startTag:'',
+          endTag:'',
+          subject_id:'',
+          search:'',
+          minPrice:'',
+          maxPrice:'',
+          page:1,
+          limit:12,
+          export:'',
+
+        },
         showFinMenuList: false,
+        add_visible:false,
         receive_visible: false, //应收入账
         record_visible: false, //跟进记录
         mark_visible: false, //备注列表
         new_mark_visible: false, //新增备注
         register_visible: false, //登记收款
         register_size: '',
+
+        subject_visible:false,//科目
+        which_subject: '',
+        new_subject_visible: false,
+        subject_deposit: {
+          parent_id: '',
+          title: '',
+          er_type: '',
+          remark: '',
+          parent_name: '',
+          subject_code: ''
+        },
+        move_visible: false,
+        move_subject: {
+          initial: '',
+          parent_id: '',
+          title: ''
+        },
+
+        ruleForm:{
+          customer_id:'',//客户id
+          customer_account_type:'',//账号类型
+          customer_account_num:'',//账户号码
+          amount_payable:'',//金额
+          description:'',//描述
+          remark:'',
+          identity:'',//款项
+          pay_date:'',
+          subject_id:'',
+          subject_val:'',
+          complete_date:'',
+        },
+        rules:{
+          amount_payable: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+        },
+
         register_from: {
           img: '',
           account: '',
@@ -431,42 +609,22 @@
             title: '其他收款'
           }
         ],
-        tableData: [
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'},
-          {gather_time: '2019-02-10',subject_name: '情缘雅居10-102',receive_subject: '房款',balance: '10000',receive: '2000',residue: '8000',polishing_time: '2019-02-27',status: '待入账',detail: '巴拉巴拉'}
-        ],
+        tableData:[],
         showData: {
-          gather_time: '收款时间',
-          subject_name: '款项名目',
-          receive_subject: '应收科目',
-          balance: '应收余额',
-          receive: '实收金额',
-          residue: '剩余金额',
-          polishing_time: '补齐时间',
-          status: '状态',
-          detail: '明细详情'
+          "pay_date": '收款时间',
+          "subject.title": '应收科目',
+          "customer.address":"地址",
+          "amount_receivable": '应收余额',
+          "amount_received": '实收金额',
+          "balance": '剩余金额',
+          "complete_date": '补齐时间',
+          "description.description": '明细详情',
+          "remark":"备注",
+          "receTag":"催缴备注"
         },
         btn_group: [
           {val: '跟进列表',key: 'record',type: 'success'},
           {val: '备注列表',key: 'mark',type: 'danger'},
-          {val: '详情',key: 'info_detail',type: 'primary'},
           {val: '登记收款',key: 'register',type: 'warning'},
           {val: '应收入账',key: 'should_receive',type: 'success'}
         ],
@@ -481,18 +639,42 @@
           money: '',
           pay_time: '',
           mark: '',
+          account_id:'',//账户id
+          amount_received:'',//收款金额
+          pay_date:'',
+          remark:'',
         },
         record_data: [],
         mark_data: []
       }
     },
     mounted() {
+      this.getReceiveList();
     },
     activated() {
     },
     watch: {},
     computed: {},
     methods: {
+      //应收入账
+      handleOkReceive(){
+        this.$http.put(globalConfig.temporary_server + 'account_receivable/receive/' + this.row.id, this.form).then(res => {
+          this.callbackSuccess(res);
+        })
+
+      },
+      //收款列表
+      getReceiveList(){
+        this.showLoading(true);
+        this.$http.get(globalConfig.temporary_server + 'account_receivable', this.params).then(res => {
+          this.showLoading(false);
+          this.callbackSuccess(res);
+          if(res.code===200){
+            console.log(res.data.data);
+            this.tableData = res.data.data;
+          }
+        })
+      },
       handleClickBtn(key) {
         console.log(key);
         if (key === 'should_receive') {
@@ -526,95 +708,46 @@
       highSearch() {
         this.showSearch = true;
         this.searchData.data = [
-          {
-            keyType: 'date',
-            title: '出生日期',
-            placeholder: '请选择日期',
-            keyName: 'date3',
-            dataType: '',
-          },
+
           {
             keyType: 'dateRange',
-            title: '创建时间',
+            title: '应收日期',
             placeholder: '请选择日期',
             keyName: 'date1',
             dataType: [],
           },
           {
             keyType: 'dateRange',
-            title: '跟进时间',
+            title: '催缴日期',
             placeholder: '请选择日期',
             keyName: 'date2',
             dataType: [],
           },
           {
             keyType: 'radio',
-            title: '紧急程度',
+            title: '入账状态',
             keyName: 'radio',
             dataType: '',
             value: [
               {
                 id: 12,
-                title: '特级',
+                title: '待入账',
               },
               {
                 id: 13,
-                title: '紧急',
+                title: '带结清',
               },
               {
                 id: 14,
-                title: '重要',
+                title: '已结清',
               },
               {
                 id: 15,
-                title: '一般',
+                title: '已超额',
               }
             ],
           },
-          {
-            keyType: 'check',
-            title: '状态',
-            keyName: 'check',
-            dataType: [],
-            value: [
-              {
-                id: 22,
-                title: '已完成',
-              },
-              {
-                id: 23,
-                title: '未完成',
-              },
-            ],
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
+
           {
             keyType: 'organ',
             title: '部门',
@@ -629,6 +762,27 @@
         this.showSearch = false;
         if (val !== 'close') {
           console.log(val);
+        }
+      },
+      handleOpenSubject(which) {
+        this.which_subject = which;
+        this.subject_visible = true;
+      },
+      //科目确定
+      handleConfirmSubject(val) {
+        if (this.which_subject === 'move_subject') {
+          this.move_subject.parent_id = val.id;
+          this.move_subject.title = val.title;
+        }
+        if (this.which_subject === 'subject_deposit') {
+          this.subject_deposit.parent_name = val.title;
+          this.subject_deposit.parent_id = val.id;
+          this.ruleForm.subject_id = val.id;
+          this.ruleForm.subject_val = val.title;
+
+          this.formData.subject_id = val.id;
+          this.formData.subject_val = val.title;
+
         }
       },
     },
