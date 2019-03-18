@@ -51,8 +51,9 @@
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>兑换规则</h3>
-          <div class="header_right">
-          <el-button size="mini" type="primary" plain>新增</el-button>
+          <div class="header_right" @click="exchangeRulesFormHandler">
+            <!--<el-button size="mini" type="primary" plain>增加</el-button>-->
+            <div class="icon-add"><b>+</b></div>
           </div>
         </div>
         <div class="dialog_main borderNone">
@@ -63,7 +64,7 @@
             :row-class-name="tableChooseRow"
             @cell-click="tableClickRow"
             header-row-class-name="tableHeader"
-            @row-dblclick="tableDblClick"
+            @row-dblclick="exchangeTableDblClick"
             :row-style="{height:'40px'}"
             style="width: 100%">
             <el-table-column
@@ -97,6 +98,56 @@
         <div class="dialog_footer">
           <el-button size="small" type="danger">确定</el-button>
           <el-button size="small" type="info" @click="reward_order = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+    <!--兑换规则form-->
+    <lj-dialog
+      :visible="exchange_rules_form_visible"
+      :size="{width: 400 + 'px',height: 450 + 'px'}"
+      @close="exchange_rules_form_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>{{exchange_rules_form_title}}</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form :model="exchange_rules_form" label-width="80px" style="width: 80%">
+
+
+
+            <el-form-item label="兑换类型">
+              <div class="items-center iconInput">
+                <el-select v-model="exchange_rules_form.exchangeType" placeholder="请选择兑换类型">
+                  <el-option value="1" label="兑换类型1"></el-option>
+                </el-select>
+              </div>
+            </el-form-item>
+            <el-form-item label="兑换额">
+              <el-input v-model="exchange_rules_form.exchangeBonus" placeholder="请输入兑换额度">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="兑换物品">
+              <div class="items-center iconInput">
+                <el-select v-model="exchange_rules_form.exchangeObject" placeholder="请选择兑换物品">
+                  <el-option value="1" label="兑换物品1"></el-option>
+                </el-select>
+              </div>
+            </el-form-item>
+            <el-form-item label="状态">
+              <div class="items-center iconInput">
+                <el-select v-model="exchange_rules_form.exchangeStatus" placeholder="请选择状态">
+                  <el-option value="1" label="状态1"></el-option>
+                </el-select>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger">保存</el-button>
+          <el-button size="small" type="info" @click="exchange_rules_form_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -162,6 +213,8 @@
     </lj-dialog>
 
 
+
+
   </div>
 </template>
 
@@ -214,6 +267,7 @@
 
         //兑换规则
         exchange_rules:false,
+        exchange_rules_form_title:'新增兑换规则',
         exchangeRulesData: [],
         exchangeRulesShowData: {
           exchangeType: '兑换类型',
@@ -221,6 +275,15 @@
           exchangeObject: '兑换物品',
           exchangeStatus: '状态',
         },
+
+        exchange_rules_form_visible: false,//兑换规则form表单显示隐藏控制
+        exchange_rules_form: {
+          exchangeType: '',//兑换类型
+          exchangeBonus: '',//兑换额
+          exchangeObject: '',//兑换物品
+          exchangeStatus: '',//状态
+        }
+
 
         // work_info: [
         //   {work: '平均在线时长', val: '8 h'},
@@ -267,7 +330,11 @@
     },
     computed: {},
     methods: {
-
+      exchangeRulesFormHandler() {
+        this.exchange_rules_form_visible = true;
+        this.exchange_rules_form = {};
+        this.exchange_rules_form_title = "新增兑换规则";
+      },
 
 
       handleChangeDate(id) {
@@ -280,7 +347,7 @@
 
 
       initData() {
-
+        //扬善表格
         for (let i=0;i<9;i++) {
           let obj = {
             id: i+1,
@@ -290,12 +357,25 @@
             event:'攻城时因穿铠甲',
             bonus:'200金币',
             remark:'锁血打小怪掉金币',
-            //address: '上海市普陀区金沙江路 1518 弄'
           }
           this.tableData.push(obj)
         }
-        console.log(this.tableData);
+        //console.log(this.tableData);
         this.counts = 1000;
+
+
+        //兑换规则表格
+        //exchangeRulesData
+        for (let i=0;i<9;i++) {
+          let obj = {
+            id: i+1,
+            exchangeType: '兑换类型1',//兑换类型
+            exchangeBonus: '300',//兑换额
+            exchangeObject: '物品1',//兑换物品
+            exchangeStatus: '状态1',//状态
+          }
+          this.exchangeRulesData.push(obj)
+        }
       },
 
       getRewardUpList() {
@@ -323,6 +403,18 @@
           remark:'锁血打小怪掉金币',
         };
       },
+      //兑换规则表格某一行双击
+      exchangeTableDblClick(row) {
+        this.exchange_rules_form_visible = true;
+        this.exchange_rules_form_title = "编辑兑换规则";
+        this.exchange_rules_form= {
+          name: '张三',
+          exchangeType: '1',//兑换类型
+          exchangeBonus: '300',//兑换额
+          exchangeObject: '1',//兑换物品
+          exchangeStatus: '1',//状态
+        };
+      },
       // 点击过
       tableChooseRow({row, rowIndex}) {
         return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
@@ -341,6 +433,7 @@
 
 <style lang="scss" scoped>
   @import "../../../../assets/scss/humanResource/reward/rewardUp/index.scss";
+  /*@import "../../../../assets/scss/currency";*/
 
   @mixin childrenImg($m, $n) {
     $url: '../../../../assets/image/humanResource/reward/rewardUp/' + $n + '/' + $m;
@@ -349,6 +442,10 @@
 
   #theme_name.theme1 {
     #rewardUp {
+
+
+
+
       footer.common-page {
         height: 100px;
         width: 100%;
