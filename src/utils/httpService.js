@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let url = globalConfig.organ_server;
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL = globalConfig.server; // 域名
+axios.defaults.baseURL = globalConfig.humanResource_server; // 域名
 
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {

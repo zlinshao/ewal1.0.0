@@ -157,7 +157,8 @@
       top: -90px;
       left: 0;
       background-color: #F2F2F2;
-      transition: all ease 1s; }
+      transition: all ease 1s;
+      z-index: 101; }
       #theme_name #part_three > div .paper_resume .btn_group {
         position: absolute;
         top: 30px;
@@ -192,7 +193,7 @@
               font-size: 18px;
               color: #CF2E33; }
     #theme_name #part_three > div .hide_resume {
-      top: -10px;
+      top: -1080px;
       left: -1920px; }
 
 /*# sourceMappingURL=part_three.css.map */

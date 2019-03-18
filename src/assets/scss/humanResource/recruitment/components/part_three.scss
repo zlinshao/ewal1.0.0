@@ -29,6 +29,7 @@
         left: 0;
         background-color: $color2F2;
         transition: all ease 1s;
+        z-index: 101;
         .btn_group {
           position: absolute;
           top: 30px;
