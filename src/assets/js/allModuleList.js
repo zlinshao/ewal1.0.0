@@ -19,7 +19,7 @@ export const humanResource = {
       title: '排兵布阵',
     },
     {
-      url: '',
+      url: 'repository',
       title: '内务库房',
     },
     {
