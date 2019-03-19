@@ -132,10 +132,10 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name.theme1 #rewardUp .header_right {
+#theme_name.theme1 #rewardDown .header_right {
   display: flex;
   flex-direction: row-reverse; }
-  #theme_name.theme1 #rewardUp .header_right .icon-add {
+  #theme_name.theme1 #rewardDown .header_right .icon-add {
     width: 30px;
     height: 30px;
     display: inline-block;
@@ -145,7 +145,7 @@
     justify-content: center;
     cursor: pointer;
     background-color: #CF2E33; }
-    #theme_name.theme1 #rewardUp .header_right .icon-add b {
+    #theme_name.theme1 #rewardDown .header_right .icon-add b {
       color: #FFFFFF;
       font-size: 30px;
       margin-bottom: 6px; }

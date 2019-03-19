@@ -47,7 +47,7 @@
               </p>
             </div>
             <div v-if="item.keyType === 'staff'">
-              <el-input @focus="staffSearch(item.value, item.keyName)" v-model="showName[item.keyName]"
+              <el-input @focus="staffSearch(item.value, item.keyName)" readonly v-model="showName[item.keyName]"
                         :placeholder="item.placeholder"></el-input>
             </div>
           </div>
@@ -183,15 +183,11 @@
         this.organKey = key;
       },
       // 关闭 选择人员
-      hiddenOrgan(val) {
+      hiddenOrgan(ids, names) {
         this.organModule = false;
-        if (val !== 'close') {
-          let arr = [];
-          for (let item of val) {
-            arr.push(item.name);
-            this.params[this.organKey].push(item.id);
-          }
-          this.showName[this.organKey] = arr.join(',');
+        if (ids !== 'close') {
+          this.params[this.organKey] = ids;
+          this.showName[this.organKey] = names;
         }
       },
       subSearch() {

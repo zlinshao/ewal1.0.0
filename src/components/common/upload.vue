@@ -15,6 +15,7 @@
 
 <script>
   import * as qiniu from 'qiniu-js'
+  import {md5} from '../../../static/js/MD5.js'
 
   export default {
     name: "upload",
@@ -27,9 +28,7 @@
       }
     },
     mounted() {
-      this.$http.get(globalConfig.upload_sever + 'api/v1/token').then(res => {
 
-      })
     },
     activated() {
     },
@@ -45,8 +44,10 @@
         if (this.token) {
           this.startUpload();
         } else {
-          this.token = "WVFsBqOlI5mSEcTXeX2XXy3Nt3rP48-avs0R7m2V:jf1rq9hui9k2MIvckE2auV5GWYM=:eyJzY29wZSI6ImxlamlhLXRlc3QiLCJkZWFkbGluZSI6MTU1MDk4MTQ1M30=";
-          this.startUpload();
+          this.$http.get(globalConfig.upload_sever + 'api/v1/token').then(res => {
+            this.token = res.data.data;
+            this.startUpload();
+          })
         }
       },
       // 图片地址
@@ -63,9 +64,9 @@
         for (let file of files) {
           let reader = new FileReader();//构造FileReader对象
           let fileType = file.type;
-          let fileSize = file.size;
           let fileName = file.name;
-          let key = file.name;
+          let fileSize = file.size;
+          let key = "lejia" + md5(fileName + new Date().getTime()).toLowerCase() + "." + fileName.split(".")[1];
           if (fileType.includes('image')) {
             reader.readAsDataURL(file);
             reader.onload = function (event) {
@@ -84,21 +85,20 @@
           };
           let config = {
             useCdnDomain: true,
-            checkByMD5: true,
           };
           let observable = qiniu.upload(file, key, that.token, putExtra, config);
-          let subscription = observable.subscribe({
-            next(res) {
-              that.file.setFile.push('1');
+          let observer = {
+            next(res){
               console.log(res);
             },
-            error(err) {
+            error(err){
               console.log(err);
             },
-            complete(res) {
+            complete(res){
               console.log(res);
             }
-          })
+          };
+          let subscription = observable.subscribe(observer);
         }
       },
     },
