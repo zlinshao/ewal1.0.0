@@ -119,6 +119,17 @@
           <div class="dialog_footer"></div>
         </div>
       </lj-dialog>
+
+      <!--二维码-->
+      <lj-dialog
+        :visible="code_detail_visible"
+        :size="{width: 300 + 'px',height: 300 + 'px'}"
+        @close="code_detail_visible = false"
+      >
+        <div class="dialog_container">
+          <img :src="code_address" alt="code">
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
@@ -175,7 +186,11 @@
         ms_add_visible: false,
 
         //添加面试官
-        msg_add_visible: false
+        msg_add_visible: false,
+
+      //  二维码地址
+        code_address: '',
+        code_detail_visible: false,
       }
     },
     mounted() {
@@ -190,7 +205,17 @@
           id: row.id,
           position_id: row.depart.id
         }).then(res => {
-          console.log(res);
+          if (res.code === '20000') {
+            this.code_address = res.data;
+            this.code_detail_visible = true;
+          } else {
+            this.code_address = '';
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: '获取失败'
+            });
+            return false;
+          }
         }).catch(err => {
           console.log(err);
         })
