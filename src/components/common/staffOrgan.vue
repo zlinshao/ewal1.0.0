@@ -135,6 +135,7 @@
       organData: {
         handler(val, oldVal) {
           this.configure.num = val ? (val.num ? val.num : '') : '';
+          this.checkedStaff = val ? (val.arr ? val.arr : []) : [];
         },
         deep: true
       }
@@ -152,7 +153,7 @@
           names.push(item.name);
         }
         str = names.join(',');
-        this.$emit('close', ids, names, this.chooseStaff);
+        this.$emit('close', ids, str, this.chooseStaff);
       },
       // 右侧删除已选
       removeStaff(index) {
