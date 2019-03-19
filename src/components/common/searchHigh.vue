@@ -64,7 +64,7 @@
 </template>
 
 <script>
-  import StaffOrgan from './departOrgan.vue'
+  import StaffOrgan from './staffOrgan.vue'
 
   export default {
     name: "search-high",
