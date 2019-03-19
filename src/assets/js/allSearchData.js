@@ -70,7 +70,8 @@ export const staffBookSearch = {
       keyName: 'staff',
       dataType: [],
       value: {
-        num: ''
+        num: '',
+        arr: [3338,3337]
       }
     },
   ],

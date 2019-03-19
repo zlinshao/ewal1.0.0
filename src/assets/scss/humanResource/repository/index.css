@@ -91,7 +91,7 @@
 @font-face {
   font-family: 'jianyue';
   src: url("/static/font/BaiZhouRenZhe.otf"); }
-.writingMode {
+.writingMode, #theme_name #repository .repository-container .content > div span {
   writing-mode: vertical-rl;
   writing-mode: tb-rl; }
 
@@ -132,9 +132,43 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #departOrgan .dialog_main {
-  padding: 0 15px; }
-  #theme_name #departOrgan .dialog_main .checkboxBottom {
-    margin-top: 20px; }
+#theme_name #repository {
+  height: 100%;
+  background-color: #FFFFFF; }
+  #theme_name #repository .listTopRight .icons-font {
+    height: 30px;
+    width: 50px;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center; }
+    #theme_name #repository .listTopRight .icons-font b {
+      color: white;
+      font-size: 14px; }
+  #theme_name #repository .repository-container {
+    width: 100%;
+    height: calc(100% - 160px);
+    position: absolute;
+    left: 0;
+    top: 160px;
+    transition: all ease 1s; }
+    #theme_name #repository .repository-container .content {
+      height: calc(100% - 341px); }
+      #theme_name #repository .repository-container .content > div {
+        width: 300px;
+        height: 300px;
+        margin: 0 110px; }
+        #theme_name #repository .repository-container .content > div:hover {
+          cursor: pointer;
+          transform: scale(1.05);
+          transition: all 1s; }
+        #theme_name #repository .repository-container .content > div span {
+          color: #fff;
+          font-size: 32px;
+          font-family: 'jingDianXingShu';
+          position: relative;
+          left: -2px; }
+          #theme_name #repository .repository-container .content > div span.gray {
+            color: #686874; }
 
-/*# sourceMappingURL=departOrgan.css.map */
+/*# sourceMappingURL=index.css.map */
