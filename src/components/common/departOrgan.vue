@@ -9,7 +9,7 @@
           <h3>部门选择</h3>
         </div>
         <div class="dialog_main changeChoose scroll_bar">
-          <el-checkbox-group v-model="checkList">
+          <el-checkbox-group v-model="checkList" :max="configure.num">
             <el-checkbox v-for="item in departList" :label="item.id" :key="item.id"
                          class="checkboxBottom">{{item.name}}
             </el-checkbox>

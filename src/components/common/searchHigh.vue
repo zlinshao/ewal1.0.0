@@ -186,6 +186,8 @@
       hiddenOrgan(ids, names) {
         this.organModule = false;
         if (ids !== 'close') {
+          console.log(ids)
+          console.log(names)
           this.params[this.organKey] = ids;
           this.showName[this.organKey] = names;
         }
