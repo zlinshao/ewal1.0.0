@@ -14,11 +14,7 @@
             <el-table-column label="岗位" prop="position.name" align="center"></el-table-column>
             <el-table-column label="姓名" prop="name" align="center"></el-table-column>
             <el-table-column label="来源" prop="plaform_name" align="center"></el-table-column>
-            <el-table-column label="入职资料反馈" align="center">
-              <template slot-scope="scope">
-                <div>{{ entry_feedback[scope.row.entry_feedback]}}</div>
-              </template>
-            </el-table-column>
+            <el-table-column label="入职资料反馈" prop="info_status" align="center"></el-table-column>
             <el-table-column label="入职结果" align="center">
               <template slot-scope="scope">
                 <el-button size="mini" type="warning" plain @click="handleOpenEdit(scope.row)">{{ entry_feedback[scope.row.entry_feedback]}}</el-button>
@@ -32,49 +28,56 @@
           </el-table>
         </div>
       </div>
-    </div>
 
-    <!--编辑入职结果-->
-    <lj-dialog
-      :visible="edit_result_visible"
-      :size="{width: 400 + 'px',height: 520 + 'px'}"
-      @close="handleCancelEdit"
-    >
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>编辑入职结果</h3>
+      <!--编辑入职结果-->
+      <lj-dialog
+        :visible="edit_result_visible"
+        :size="{width: 400 + 'px',height: 520 + 'px'}"
+        @close="handleCancelEdit"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>编辑入职结果</h3>
+          </div>
+          <div class="dialog_main">
+            <el-form :model="edit_result_form" size="small" label-width="80px">
+              <el-form-item label="岗位">
+                <span>{{ edit_result_form.position }}</span>
+              </el-form-item>
+              <el-form-item label="姓名">
+                <span>{{ edit_result_form.name }}</span>
+              </el-form-item>
+              <el-form-item label="来源">
+                <span>{{ edit_result_form.platform }}</span>
+              </el-form-item>
+              <el-form-item label="入职资料">
+                <span>{{ edit_result_form.info_status }}</span>
+              </el-form-item>
+              <el-form-item label="入职结果">
+                <div class="changeChoose flex-center" style="margin-top: 10px">
+                  <el-radio v-model="edit_result_form.entry_feedback" :label="1">同意</el-radio>
+                  <el-radio v-model="edit_result_form.entry_feedback" :label="2">拒绝</el-radio>
+                </div>
+              </el-form-item>
+              <el-form-item label="" v-if="edit_result_form.entry_feedback === 2">
+                <el-select v-model="edit_result_form.unentry_reason" placeholder="请选择原因">
+                  <el-option :value="1" label="上班路程远"></el-option>
+                  <el-option :value="2" label="薪资低"></el-option>
+                  <el-option :value="3" label="将入职其他公司"></el-option>
+                  <el-option :value="4" label="暂不考虑离职"></el-option>
+                  <el-option :value="5" label="过期未回复"></el-option>
+                  <el-option :value="6" label="其他原因"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button size="small" type="danger" @click="handleOkEdit">确定</el-button>
+            <el-button size="small" type="info" @click="handleCancelEdit">取消</el-button>
+          </div>
         </div>
-        <div class="dialog_main">
-          <el-form :model="edit_result_form" size="small" label-width="80px" class="showPadding">
-            <el-form-item label="岗位">
-              <span>{{ edit_result_form.position }}</span>
-            </el-form-item>
-            <el-form-item label="姓名">
-              <span>{{ edit_result_form.name }}</span>
-            </el-form-item>
-            <el-form-item label="来源">
-              <span>{{ edit_result_form.platform }}</span>
-            </el-form-item>
-            <el-form-item label="入职资料">
-              <span>{{ edit_result_form.info }}</span>
-            </el-form-item>
-            <el-form-item label="入职结果">
-              <div class="changeChoose flex-center" style="margin-top: 10px">
-                <el-radio v-model="edit_result_form.entry_feedback" :label="1">同意</el-radio>
-                <el-radio v-model="edit_result_form.entry_feedback" :label="2">拒绝</el-radio>
-              </div>
-            </el-form-item>
-            <el-form-item label="" v-if="edit_result_form.entry_feedback === 2">
-              <el-select v-model="edit_result_form.resume" placeholder="请选择原因"></el-select>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button size="small" type="danger">确定</el-button>
-          <el-button size="small" type="info">取消</el-button>
-        </div>
-      </div>
-    </lj-dialog>
+      </lj-dialog>
+    </div>
   </div>
 </template>
 
@@ -87,14 +90,7 @@
     data() {
       return {
         //表格信息
-        tableList: [
-          {name: '冯宝宝', come: '智联', position: 'web前端工程师'},
-          {name: '冯宝宝', come: '智联', position: '客服专员'},
-          {name: '冯宝宝', come: '智联', position: 'PHP工程师'},
-          {name: '冯宝宝', come: '智联', position: '客服专员'},
-          {name: '冯宝宝', come: '智联', position: '客服专员'},
-          {name: '冯宝宝', come: '智联', position: '客服专员'},
-        ],
+        tableList: [],
         chooseRowIds: [], //图标点击
         entry_feedback: ['未反馈', '同意入职', '拒绝入职'],
 
@@ -104,10 +100,11 @@
           position: '',
           name: '',
           platform: '',
-          info: '',
+          info_status: '',
           entry_feedback: '',
-          resume: ''
+          unentry_reason: ''
         },
+        currentRow: ''
       }
     },
     mounted() {
@@ -118,11 +115,28 @@
     watch: {},
     computed: {},
     methods: {
+      handleOkEdit() {
+        if (this.edit_result_form.entry_feedback === 1) {
+
+        } else if (this.edit_result_form.entry_feedback === 2) {
+          this.$http.put(`recruitment/interviewer_process/entry_feedback/${this.currentRow.id}`,{
+            params: {
+              entry_feedback: this.edit_result_form.entry_feedback,
+              unentry_reason: this.edit_result_form.unentry_reason
+            }
+          }).then(res => {
+            console.log(res);
+          }).catch(err => {
+            console.log(err);
+          })
+        }
+      },
       handleOpenEdit(row) {
+        this.currentRow = row;
         this.edit_result_form.position = row.position.name;
         this.edit_result_form.name = row.name;
         this.edit_result_form.platform = row.plaform_name;
-        this.edit_result_form.info = row.info_status;
+        this.edit_result_form.info_status = row.info_status;
         this.edit_result_visible = true;
       },
       handleCancelEdit() {
