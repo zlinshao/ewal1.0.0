@@ -49,7 +49,7 @@
 
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
-          <p class="flex-center">
+          <p class="flex-center" @click="visibleStatus = true">
             <b>...</b>
           </p>
           <h1>招兵买马</h1>
@@ -83,8 +83,12 @@
         <part-three v-if="chooseTab === 3"></part-three>
         <part-four v-if="chooseTab === 4"></part-four>
       </div>
+
       <!--高级搜索-->
       <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+
+      <!--模块入口-->
+      <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
     </div>
   </div>
 </template>
@@ -95,12 +99,17 @@
   import PartTwo from './components/part_two/index.vue'; //分取科士
   import PartThree from './components/part_three/index.vue'; //殿试会师
   import PartFour from './components/part_four/index.vue'; //榜上有名
+  import MenuList from '../../common/menuList.vue';
+  import { humanResource } from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: { SearchHigh,PartOne,PartTwo,PartThree,PartFour },
+    components: { SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList},
     data() {
       return {
+        humanResource,
+        visibleStatus: false,
+
         //导航
         selects: [
           {id: 1, title: '募兵行列'},
@@ -108,7 +117,7 @@
           {id: 3, title: '殿试会师'},
           {id: 4, title: '榜上有名'}
         ], //模块列表
-        chooseTab: 1, //当前选中模块
+        chooseTab: 3, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索

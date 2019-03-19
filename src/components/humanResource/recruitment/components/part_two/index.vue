@@ -11,10 +11,14 @@
           header-row-class-name="tableHeader"
           style="width: 100%"
         >
-          <el-table-column label="岗位名称" prop="position" align="center"></el-table-column>
+          <el-table-column label="岗位名称" prop="position.name" align="center"></el-table-column>
           <el-table-column label="姓名" prop="name" align="center"></el-table-column>
-          <el-table-column label="来源" prop="come" align="center"></el-table-column>
-          <el-table-column label="预约面试时间" prop="time" align="center"></el-table-column>
+          <el-table-column label="来源" prop="come" align="center">
+            <template slot-scope="scope">
+              <span>{{ platform[scope.row.platform - 1] }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="预约面试时间" prop="interview_time" align="center"></el-table-column>
           <el-table-column label="已通知面试官" prop="offer" align="center"></el-table-column>
           <el-table-column label="简历" prop="" align="center">
             <template slot-scope="scope">
@@ -23,12 +27,12 @@
           </el-table-column>
           <el-table-column label="取消面试" prop="" align="center">
             <template slot-scope="scope">
-              <el-button size="mini" type="danger">取消面试</el-button>
+              <el-button size="mini" type="danger" @click="handleOpenCancel(scope.row)">取消面试</el-button>
             </template>
           </el-table-column>
           <el-table-column label="修改" prop="" align="center">
             <template slot-scope="scope">
-              <span class="btn_edit"></span>
+              <span class="btn_edit" @click="handleOpenEdit(scope.row)"></span>
             </template>
           </el-table-column>
         </el-table>
@@ -38,7 +42,7 @@
           </div>
           <div class="page">
             <el-pagination
-              :total="1000"
+              :total="tableCount"
               :current-page="params.page"
               :page-size="params.limit"
               layout="total,jumper,prev,pager,next"
@@ -68,16 +72,22 @@
                 <el-input v-model="add_interviewer_form.name"></el-input>
               </el-form-item>
               <el-form-item label="来源">
-                <el-input v-model="add_interviewer_form.come"></el-input>
+                <el-select v-model="add_interviewer_form.platform">
+                  <el-option v-for="(item,index) in platform" :value="index + 1" :label="item" :key="index"></el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="面试官">
-                <el-input v-model="add_interviewer_form.offer"></el-input>
+                <el-input v-model="add_interviewer_form.interviewer"></el-input>
               </el-form-item>
               <el-form-item label="预约面试时间">
-                <el-input v-model="add_interviewer_form.time"></el-input>
+                <el-date-picker
+                  v-model="add_interviewer_form.interview_time"
+                  format="yyyy-MM-dd HH:mm:ss"
+                  placeholder="请选择面试时间"
+                ></el-date-picker>
               </el-form-item>
               <el-form-item label="上传简历">
-
+                <Upload :file="upload_form"></Upload>
               </el-form-item>
             </el-form>
           </div>
@@ -140,31 +150,81 @@
           </div>
         </div>
       </lj-dialog>
+
+      <!--修改面试人信息-->
+      <lj-dialog
+        :visible="edit_interviewee_visible"
+        :size="{width: 400 + 'px',height: 450 + 'px'}"
+        @close="handleCancelEditInterviewee"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>修改</h3>
+          </div>
+          <div class="dialog_main">
+            <el-form v-model="add_interviewer_form" size="small" label-width="80px">
+              <el-form-item label="岗位名称">
+                <el-input v-model="add_interviewer_form.position"></el-input>
+              </el-form-item>
+              <el-form-item label="姓名">
+                <el-input v-model="add_interviewer_form.name"></el-input>
+              </el-form-item>
+              <el-form-item label="来源">
+                <el-select v-model="add_interviewer_form.platform">
+                  <el-option v-for="(item,index) in platform" :value="index + 1" :label="item" :key="index"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="预约时间">
+                <el-date-picker
+                  v-model="add_interviewer_form.interview_time"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  placeholder="请选择预约面试时间"
+                ></el-date-picker>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleSubmitEdit">提交</el-button>
+            <el-button type="info" size="small" @click="handleCancelEditInterviewee">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
+      <!--取消面试确定-->
+      <lj-dialog
+        :visible="cancel_interviewee_visible"
+        :size="{width: 400 + 'px',height: 250 + 'px'}"
+        @close="cancel_interviewee_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>确定</h3>
+          </div>
+          <div class="dialog_main">
+            <div class="unUse-txt">确定取消该场面试吗？</div>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleOkCancelInterview">确定</el-button>
+            <el-button type="info" size="small" @click="cancel_interviewee_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
 
 <script>
   import LjDialog from '../../../../common/lj-dialog.vue';
+  import Upload from '../../../../common/upload.vue';
+
   export default {
     name: "index",
-    components: { LjDialog },
+    components: { LjDialog ,Upload},
     props: [ 'addInterviewerVisible' ,'addOfferVisible'],
     data() {
       return {
-        tableList: [
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'},
-          {position: 'web前端工程师', name: '冯宝宝', come: 'boss直聘', time: '2019-05-20', offer: '张琳琳'}
-        ],
+        tableList: [],
+        tableCount:0 ,
         params: {
           page: 1,
           limit: 12
@@ -174,14 +234,28 @@
         //添加面试人
         add_interviewer_visible: false,
         add_interviewer_form: {
-          position: '',
+          position: 'Android开发工程师',
+          position_id: 124,
+
           name: '',
-          come: '',
-          offer: '',
-          time: '',
-          resume: ''
+          platform: '',
+
+          interviewer: '张琳琳',
+          interviewer_id: 3320,
+
+          interview_time: '',
+          resume_id: [],
         },
+        upload_form: {
+          keyName: 'resume_id',
+          setFile: [],
+        },
+        //修改面试人信息
+        edit_interviewee_visible: false,
+        currentRow: '',
+
         send_msg_offer: false,
+        platform: ['智联招聘', '前程无忧', '58同城', 'BOSS直聘', '猎聘网', '首席信才', '德胜人才', '校园招聘会', '社会招聘会', '推荐', '其他',],
 
         //添加面试官
         add_msg_visible: false,
@@ -192,10 +266,13 @@
           offer2: '',
           offer3: '',
           paper: ''
-        }
+        },
+        //取消面试
+        cancel_interviewee_visible: false
       }
     },
     mounted() {
+      this.getIntervieweeList();
     },
     activated() {
     },
@@ -209,6 +286,72 @@
     },
     computed: {},
     methods: {
+      handleOpenCancel(row) {
+        this.currentRow = row;
+        this.cancel_interviewee_visible = true;
+      },
+      handleOkCancelInterview() {
+        this.$http.get(`recruitment/interviewees/cancel_interview/${this.currentRow.id}`).then(res => {
+          this.handleSuccessCallback(res,'20030');
+          this.cancel_interviewee_visible = false;
+        })
+      },
+      handleSuccessCallback(res,code) {
+        if (res.code === code) {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+          this.getIntervieweeList();
+        } else {
+          this.$LjNotify('warning',{
+            title: '失败',
+            message: res.msg
+          })
+        }
+      },
+      //提交修改
+      handleSubmitEdit() {
+        this.$http.put(`recruitment/interviewees/${this.currentRow.id}`,this.add_interviewer_form).then(res => {
+          console.log(res);
+        })
+      },
+      handleOpenEdit(row) {
+        this.currentRow = row;
+        this.add_interviewer_form.name = row.name;
+        this.add_interviewer_form.interview_time = row.interview_time;
+        this.add_interviewer_form.platform = row.platform;
+        this.edit_interviewee_visible = true;
+      },
+      //取消修改面试人信息
+      handleCancelEditInterviewee() {
+        this.currentRow = '';
+        this.add_interviewer_form.name = '';
+        this.add_interviewer_form.interview_time = '';
+        this.add_interviewer_form.platform = '';
+        this.edit_interviewee_visible = false;
+      },
+      //获取面试人列表
+      getIntervieweeList() {
+        this.showLoading(true);
+        this.$http.get('recruitment/interviewer_process/reservationList',{
+          params: this.params
+        }).then(res => {
+          console.log(res);
+          if (res.code === "20000") {
+            this.tableList = res.data.data;
+            this.tableCount = res.data.count;
+          } else {
+            this.tableList = [];
+            this.tableCount = 0;
+          }
+          setTimeout(() => {
+            this.showLoading(false);
+          },1000)
+        }).catch(err => {
+          console.log(err);
+        });
+      },
       //关闭添加面试官
       handleCloseAddMsg() {
         this.add_msg_visible = false;
@@ -222,6 +365,7 @@
       //分页
       handleChangePage(page) {
         this.params.page = page;
+        this.getIntervieweeList();
       },
       // 当前点击
       tableClickRow(row) {

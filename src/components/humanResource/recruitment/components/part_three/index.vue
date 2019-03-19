@@ -16,9 +16,22 @@
               header-row-class-name="tableHeader"
             >
               <el-table-column label="姓名" prop="name" align="center"></el-table-column>
-              <el-table-column label="来源" prop="come" align="center"></el-table-column>
-              <el-table-column label="状态" prop="status" align="center"></el-table-column>
+              <el-table-column label="来源" prop="come" align="center">
+                <template slot-scope="scope">
+                  <span>{{ platform[scope.row.platform - 1] }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="状态" prop="result" align="center"></el-table-column>
             </el-table>
+          </div>
+          <div class="page bottom_page">
+            <el-pagination
+              :total="tableCount"
+              layout="total,prev,pager,next"
+              :current-page="params.page"
+              :page-size="params.limit"
+              style="text-align: center"
+            ></el-pagination>
           </div>
         </div>
       </div>
@@ -33,7 +46,7 @@
           <div class="dialog_header">
             <h3>{{ is_edit ? '修改面试结果' : '查看面试结果'}}</h3>
             <div class="header_right">
-              <div class="look_btn"><span class="btn_look"></span>查看简历及答案</div>
+              <div class="look_btn" @click="hide_resume = false"><span class="btn_look"></span>查看简历及答案</div>
             </div>
           </div>
           <div class="dialog_main borderNone">
@@ -111,15 +124,14 @@
     components: { LjDialog },
     data() {
       return {
-        tableList: [
-          {name: '冯宝宝', come: '智联', status: '资料审核通过，待入职'},
-          {name: '冯宝宝', come: '智联', status: '资料审核通过，待入职'},
-          {name: '冯宝宝', come: '智联', status: '资料审核通过，待入职'},
-          {name: '冯宝宝', come: '智联', status: '资料审核通过，待入职'},
-          {name: '冯宝宝', come: '智联', status: '资料审核通过，待入职'},
-          {name: '冯宝宝', come: '智联', status: '资料审核通过，待入职'},
-        ],
+        params: {
+          page: 1,
+          limit: 12
+        },
+        tableList: [],
+        tableCount: 0,
         chooseRowIds: [], //图标点击
+        platform: ['智联招聘', '前程无忧', '58同城', 'BOSS直聘', '猎聘网', '首席信才', '德胜人才', '校园招聘会', '社会招聘会', '推荐', '其他',],
 
         //查看面试结果
         interview_res_visible: false,
@@ -147,12 +159,30 @@
       }
     },
     mounted() {
+      this.getInterviewResList();
     },
     activated() {
     },
     watch: {},
     computed: {},
     methods: {
+      //面试结果列表
+      getInterviewResList() {
+        this.$http.get('recruitment/interviewer_process/resultList',{
+          params: this.params
+        }).then(res => {
+          console.log(res);
+          if (res.code === '20000') {
+            this.tableList = res.data.data;
+            this.tableCount = res.data.count;
+          } else {
+            this.tableList = [];
+            this.tableCount = 0;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       handleCheck(id) {
         this.is_sel = id;
       },
@@ -196,6 +226,12 @@
           color: $colorE33;
           font-size: 14px;
           cursor: pointer;
+        }
+        .bottom_page {
+          position: absolute;
+          bottom: 30px;
+          left: 50%;
+          transform: translateX(-50%);
         }
       }
     }

@@ -1,0 +1,80 @@
+@import "../../common.scss";
+
+#theme_name {
+  #repository {
+    height: 100%;
+    background-color: $colorFFF;
+    .listTopRight {
+      .icons-font {
+        height: 30px;
+        width: 50px;
+        @include flex('flex-center');
+        b {
+          color: white;
+          font-size: 14px;
+        }
+      }
+    }
+    .repository-container {
+      width: 100%;
+      height: calc(100% - 160px);
+      //background-color: $color9F9;
+      position: absolute;
+      left: 0;
+      top: 160px;
+      transition: all ease 1s;
+      .content {
+        height: calc(100% - 341px);
+        //@extend .flex-center;
+        > div {
+          width:300px;
+          height:300px;
+          margin: 0 110px;
+          &:hover {
+            cursor: pointer;
+            transform: scale(1.05);
+            transition: all 1s;
+          }
+          //border:1px solid rgba(207,46,51,1);
+          span {
+            @extend .writingMode;
+            color: #fff;
+            font-size: 32px;
+            font-family: 'jingDianXingShu';
+            position: relative;
+            left: -2px;
+            &.gray {
+              color: #686874;
+            }
+
+          }
+        }
+      }
+    }
+
+  }
+}
+
+#theme_name.theme1 {
+  #repository {
+
+  }
+}
+
+#theme_name.theme2 {
+  #repository {
+
+  }
+}
+
+#theme_name.theme3 {
+  #repository {
+
+  }
+}
+
+#theme_name.theme4 {
+  #repository {
+
+  }
+}

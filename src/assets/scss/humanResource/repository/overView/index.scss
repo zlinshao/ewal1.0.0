@@ -1,0 +1,59 @@
+@import "../../../common.scss";
+
+#theme_name {
+  #overView {
+
+  }
+}
+
+#theme_name.theme1 {
+  #overView {
+    .header_right {
+      display: flex;
+      flex-direction: row-reverse;
+      .icon-add {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        @include flex('flex-center');
+        cursor: pointer;
+        background-color: #CF2E33;
+        b {
+          color: $colorFFF;
+          font-size: 30px;
+          margin-bottom: 6px;
+        }
+      }
+    }
+
+    .mainListTable {
+      a {
+        cursor: pointer;
+      }
+    }
+
+    .el-radio .el-radio__inner {
+      width: 14px !important;
+      height: 14px !important;
+      border-radius: 0;
+    }
+  }
+}
+
+#theme_name.theme2 {
+  #overView {
+
+  }
+}
+
+#theme_name.theme3 {
+  #overView {
+
+  }
+}
+
+#theme_name.theme4 {
+  #overView {
+
+  }
+}
