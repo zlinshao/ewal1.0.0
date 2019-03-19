@@ -67,21 +67,21 @@
                 <span>{{ interview_form.offer }}</span>
               </el-form-item>
               <el-form-item label="面试结果">
-                <span>{{ interview_form.res }}</span>
+                <span>{{ interview_form.interview_result }}</span>
               </el-form-item>
               <el-form-item label="面试评价">
                 <span>{{ interview_form.comment }}</span>
               </el-form-item>
               <el-form-item label="面试结果" v-if="is_edit">
-                <el-input v-model="interview_form.res_1" placeholder="请输入"></el-input>
+                <el-input v-model="interview_form.interview_result" placeholder="请输入"></el-input>
               </el-form-item>
               <el-form-item label="更改原因" v-if="is_edit">
-                <el-input v-model="interview_form.cause" type="textarea" placeholder="请输入"></el-input>
+                <el-input v-model="interview_form.change_result" type="textarea" placeholder="请输入"></el-input>
               </el-form-item>
             </el-form>
           </div>
           <div class="dialog_footer" v-if="is_edit">
-            <el-button size="small" type="danger">确定</el-button>
+            <el-button size="small" type="danger" @click="handleSubmitChangeInterview">确定</el-button>
             <el-button size="small" type="info" @click="handleCloseInterview">取消</el-button>
           </div>
           <div class="dialog_footer" v-else>
@@ -142,11 +142,11 @@
           come: 'boss直聘',
           interview_time: '2019-02-11',
           offer: '张琳琳',
-          res: '优秀，可以',
           comment: '可以考虑录取',
-          res_1: '',
-          cause: '',
+          interview_result: '',
+          change_result: '',
         },
+        currentRow: '',
 
         //按钮
         btn_group: [
@@ -166,6 +166,31 @@
     watch: {},
     computed: {},
     methods: {
+      //确定修改面试结果
+      handleSubmitChangeInterview() {
+        this.$http.put(`recruitment/interviewers/edit_result/${this.currentRow.id}`,{
+          params: {
+            interview_result: this.interview_form.interview_result,
+            change_result: this.interview_form.change_result
+          }
+        }).then(res => {
+          if (res.code === '20030') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: '修改成功'
+            });
+            this.handleCloseInterview();
+            this.getInterviewResList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       //面试结果列表
       getInterviewResList() {
         this.$http.get('recruitment/interviewer_process/resultList',{
@@ -187,11 +212,28 @@
         this.is_sel = id;
       },
       handleCloseInterview() {
+        this.interview_form = {
+          position: '',
+          name: '',
+          come: '',
+          interview_time: '',
+          offer: '张琳琳',
+          res: '',
+          comment: '',
+          interview_result: '',
+          change_result: '',
+        };
         this.is_edit = false;
         this.interview_res_visible = false;
       },
       tableDblClick(row) {
-        console.log(row);
+        this.currentRow = row;
+        this.interview_form.position = row.position.name;
+        this.interview_form.name = row.name;
+        this.interview_form.come = this.platform[row.platform - 1];
+        this.interview_form.interview_time = row.interview_time;
+        this.interview_form.interview_result = row.interview_result;
+        this.interview_form.comment = row.interview_comment;
         this.interview_res_visible = true;
       },
       // 当前点击

@@ -117,7 +117,7 @@
           {id: 3, title: '殿试会师'},
           {id: 4, title: '榜上有名'}
         ], //模块列表
-        chooseTab: 3, //当前选中模块
+        chooseTab: 4, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索
