@@ -2,7 +2,12 @@
 
 #theme_name {
   #departOrgan {
-
+    .dialog_main {
+      padding: 0 15px;
+      .checkboxBottom {
+        margin-top: 20px;
+      }
+    }
   }
 }
 

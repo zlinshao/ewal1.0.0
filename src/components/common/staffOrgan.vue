@@ -40,7 +40,9 @@
                     <h3></h3>
                     <h4>
                       <img :src="item.avatar" v-if="item.avatar">
-                      <img src="http://b-ssl.duitang.com/uploads/item/201609/25/20160925204146_BSdiL.png" v-else>
+                      <img
+                        src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg"
+                        v-else>
                     </h4>
                     <h5>
                       <span class="staffName">{{item.name}}</span>
@@ -71,7 +73,9 @@
                   <h4>
                     <i class="el-icon-remove" @click="removeStaff(index)"></i>
                     <img :src="item.avatar" v-if="item.avatar">
-                    <img src="http://b-ssl.duitang.com/uploads/item/201609/25/20160925204146_BSdiL.png" v-else>
+                    <img
+                      src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg"
+                      v-else>
                   </h4>
                   <p>{{item.name}}</p>
                 </div>
@@ -142,7 +146,13 @@
       },
       // 确认
       staffInfo() {
-        this.$emit('close', this.chooseStaff);
+        let names = [], ids = [], str = '';
+        for (let item of this.chooseStaff) {
+          ids.push(item.id);
+          names.push(item.name);
+        }
+        str = names.join(',');
+        this.$emit('close', ids, names, this.chooseStaff);
       },
       // 右侧删除已选
       removeStaff(index) {

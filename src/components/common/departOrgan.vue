@@ -4,7 +4,22 @@
       :visible="depart_visible"
       :size="depart_size"
       @close="handleCloseLjDialog">
-
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>部门选择</h3>
+        </div>
+        <div class="dialog_main changeChoose scroll_bar">
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox v-for="item in departList" :label="item.id" :key="item.id"
+                         class="checkboxBottom">{{item.name}}
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="departInfo">确定</el-button>
+          <el-button type="info" size="small" @click="depart_visible = false">取消</el-button>
+        </div>
+      </div>
     </lj-dialog>
   </div>
 </template>
@@ -21,7 +36,8 @@
         depart_visible: false,
         depart_size: {},
         departList: [],
-        configure: {}
+        configure: {},
+        checkList: [],
       }
     },
     mounted() {
@@ -37,9 +53,15 @@
           height: '800px'
         }
       },
+      depart_visible(val) {
+        if (!val) {
+          this.$emit('close', 'close');
+        }
+      },
       organData: {
         handler(val, oldVal) {
           this.configure.num = val ? (val.num ? val.num : '') : '';
+          this.checkList = val ? (val.arr ? val.arr : []) : [];
         },
         deep: true
       }
@@ -57,6 +79,20 @@
             this.departList = res.data.data;
           }
         });
+      },
+      departInfo() {
+        let names = [], arr = [], str = '';
+        for (let item of this.checkList) {
+          for (let key of this.departList) {
+            if (item === key.id) {
+              arr.push(key);
+              names.push(key.name);
+            }
+          }
+
+        }
+        str = names.join(',');
+        this.$emit('close', this.checkList, str, arr);
       },
     },
   }
