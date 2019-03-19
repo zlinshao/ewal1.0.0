@@ -1,22 +1,12 @@
 <template>
-  <div id="staffOrgan">
+  <div id="postOrgan">
     <lj-dialog
       :visible="lj_visible"
       :size="'small'"
       @close="handleCloseLjDialog">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
-          <h3>选择人员</h3>
-          <div class="items-center">
-            <!--<el-input type="text" size="small" v-model="search"></el-input>-->
-            <span class="search"></span>
-            <!--<ul style="position: absolute;top: 30px;left: 0;right: 28px;">-->
-            <!--<li class="items-bet">-->
-            <!--<b>发货的是</b>-->
-            <!--<span>发的还是卡了</span>-->
-            <!--</li>-->
-            <!--</ul>-->
-          </div>
+          <h3>选择职位</h3>
         </div>
         <div class="justify-bet dialog_main">
           <div class="flex depart">
@@ -27,15 +17,15 @@
               </span>
             </div>
             <div class="scroll_bar organList">
-              <ul v-if="departList.length > 0 || staffList.length > 0">
+              <ul v-if="departList.length > 0 || dutyList.length > 0">
                 <li v-for="item in departList" class="items-bet">
                   <p class="line-clamp1">{{item.name}}</p>
                   <p class="lowerLevel" @click="clickDepart(item)">
                     <i class="el-icon-share"></i>下级
                   </p>
                 </li>
-                <li v-for="item in staffList" class="flex staff"
-                    :class="{'checkStaff': checkedStaff.includes(item.id)}">
+                <li v-for="item in dutyList" class="flex staff"
+                    :class="{'checkStaff': checkedDuty.includes(item.id)}">
                   <div class="items-center" @click="checkStaff(item)">
                     <h3></h3>
                     <h4>
@@ -60,7 +50,7 @@
                   element-loading-text="拼命加载中"
                   element-loading-spinner="el-icon-loading"
                   element-loading-background="rgba(255, 255, 255, 0)">
-                  <div v-if="staffList.length < 1 && !fullLoading">无相关数据</div>
+                  <div v-if="dutyList.length < 1 && !fullLoading">无相关数据</div>
                 </div>
               </div>
             </div>
@@ -69,7 +59,7 @@
             <div>
               <label>已选&nbsp;：</label>
               <div class="scroll_bar flex">
-                <div v-for="(item,index) in chooseStaff" class="lists">
+                <div v-for="(item,index) in chooseDuty" class="lists">
                   <h4>
                     <i class="el-icon-remove" @click="removeStaff(index)"></i>
                     <img :src="item.avatar" v-if="item.avatar">
@@ -96,7 +86,7 @@
   import ljDialog from './lj-dialog.vue';
 
   export default {
-    name: "staff-organ",
+    name: "post-organ",
     components: {ljDialog},
     props: ['module', 'organData'],
     data() {
@@ -114,10 +104,16 @@
             name: '乐伽商业管理有限公司',
           },
         ],
-        departList: [],//左侧部门
-        staffList: [],//当前部门人员
-        checkedStaff: [],//左侧选中人员ID
-        chooseStaff: [],//选中人员列表
+        departList: [],
+        dutyList: [],//当前部门人员
+        checkedDuty: [],//左侧选中人员ID
+        chooseDuty: [],//选中人员列表
+        params: {
+          search: '',
+          org_id: '',
+          page: 1,
+          limit: 999,
+        }
       }
     },
     mounted() {
@@ -129,36 +125,50 @@
       module(val) {
         this.lj_visible = val;
       },
-      search(val) {
-        this.searchStaff('', val);
-      },
       organData: {
         handler(val, oldVal) {
-          this.configure.num = val ? (val.num ? val.num : '') : '';
-          this.checkedStaff = val ? (val.arr ? val.arr : []) : [];
+
         },
         deep: true
       }
     },
     computed: {},
     methods: {
+      // 部门
+      getList(org = 1) {
+        this.departList = [];
+        this.fullLoading = true;
+        return new Promise(resolve => {
+          this.$http.getOrganization(org).then(res => {
+            this.fullLoading = false;
+            if (res.code === '20000') {
+              this.departList = res.data.data;
+            }
+            this.params.org_id = org;
+            this.$http.getDuty(this.params).then(res => {
+
+            });
+          });
+          resolve(true);
+        })
+      },
       handleCloseLjDialog() {
         this.$emit('close', 'close');
       },
       // 确认
       staffInfo() {
         let names = [], ids = [], str = '';
-        for (let item of this.chooseStaff) {
+        for (let item of this.chooseDuty) {
           ids.push(item.id);
           names.push(item.name);
         }
         str = names.join(',');
-        this.$emit('close', ids, str, this.chooseStaff);
+        this.$emit('close', ids, str, this.chooseDuty);
       },
       // 右侧删除已选
       removeStaff(index) {
-        this.checkedStaff.splice(index, 1);
-        this.chooseStaff.splice(index, 1);
+        this.checkedDuty.splice(index, 1);
+        this.chooseDuty.splice(index, 1);
       },
       // 下级事件
       clickDepart(val) {
@@ -179,36 +189,9 @@
           }
         });
       },
-      // 部门
-      getList(org = 1) {
-        this.departList = [];
-        this.staffList = [];
-        this.fullLoading = true;
-        return new Promise(resolve => {
-          this.$http.getOrganization(org).then(res => {
-            if (res.code === '20000') {
-              this.departList = res.data.data;
-            }
-            this.searchStaff(org);
-          });
-          resolve(true);
-        })
-      },
-      // 部门人员
-      searchStaff(org, val = '') {
-        this.$http.get(this.url + 'staff/user', {
-          org_id: org,
-          search: val,
-        }).then(res => {
-          this.fullLoading = false;
-          if (res.code === '20000') {
-            this.staffList = res.data.data;
-          }
-        })
-      },
       // 选人
       checkStaff(item) {
-        let staff = this.checkedStaff;
+        let staff = this.checkedDuty;
         if (staff.length === this.configure.num) {
           console.log('最多选择' + this.configure.num + '个');
           return;
@@ -216,15 +199,15 @@
         if (staff.length) {
           if (staff.includes(item.id)) {
             let index = staff.indexOf(item.id);
-            this.checkedStaff.splice(index, 1);
-            this.chooseStaff.splice(index, 1);
+            this.checkedDuty.splice(index, 1);
+            this.chooseDuty.splice(index, 1);
           } else {
-            this.checkedStaff.push(item.id);
-            this.chooseStaff.push(item);
+            this.checkedDuty.push(item.id);
+            this.chooseDuty.push(item);
           }
         } else {
-          this.checkedStaff.push(item.id);
-          this.chooseStaff.push(item);
+          this.checkedDuty.push(item.id);
+          this.chooseDuty.push(item);
         }
       }
     },
@@ -232,39 +215,28 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../assets/scss/common/staffOrgan.scss";
-
-  @mixin organImg($m, $n) {
-    $url: '../../assets/image/staffOrgan/' + $n + '/' + $m;
-    @include bgImage($url);
-  }
+  @import "../../assets/scss/common/postOrgan.scss";
 
   #theme_name.theme1 {
-    #staffOrgan {
-      .dialog_container {
-        .dialog_header {
-          .search {
-            @include bgImage('../../assets/image/common/theme1/search.png');
-          }
-        }
-      }
+    #postOrgan {
+
     }
   }
 
   #theme_name.theme2 {
-    #staffOrgan {
+    #postOrgan {
 
     }
   }
 
   #theme_name.theme3 {
-    #staffOrgan {
+    #postOrgan {
 
     }
   }
 
   #theme_name.theme4 {
-    #staffOrgan {
+    #postOrgan {
 
     }
   }

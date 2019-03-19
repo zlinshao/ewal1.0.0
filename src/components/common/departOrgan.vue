@@ -8,12 +8,20 @@
         <div class="dialog_header">
           <h3>部门选择</h3>
         </div>
-        <div class="dialog_main changeChoose scroll_bar">
+        <div class="dialog_main changeChoose scroll_bar" v-if="departList.length > 0">
           <el-checkbox-group v-model="checkList" :max="configure.num">
             <el-checkbox v-for="item in departList" :label="item.id" :key="item.id"
                          class="checkboxBottom">{{item.name}}
             </el-checkbox>
           </el-checkbox-group>
+        </div>
+        <div
+          class="flex-center"
+          v-loading="fullLoading"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(255, 255, 255, 0)" v-else>
+          <div v-if="departList.length < 1 && !fullLoading">无相关数据</div>
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="departInfo">确定</el-button>
@@ -34,6 +42,7 @@
     data() {
       return {
         depart_visible: false,
+        fullLoading: false,
         depart_size: {},
         departList: [],
         configure: {},
@@ -60,7 +69,7 @@
       },
       organData: {
         handler(val, oldVal) {
-          this.configure.num = val ? (val.num ? val.num : '') : '';
+          this.configure.num = val ? (val.num ? val.num : Infinity) : Infinity;
           this.checkList = val ? (val.arr ? val.arr : []) : [];
         },
         deep: true
@@ -75,6 +84,7 @@
         this.departList = [];
         this.fullLoading = true;
         this.$http.getOrganization(org).then(res => {
+          this.fullLoading = false;
           if (res.code === '20000') {
             this.departList = res.data.data;
           }
