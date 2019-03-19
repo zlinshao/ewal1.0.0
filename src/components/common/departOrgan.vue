@@ -108,12 +108,7 @@
 
   #theme_name.theme1 {
     #departOrgan {
-      .dialog_main {
-        padding: 0 15px;
-        .checkboxBottom {
-          margin-top: 20px;
-        }
-      }
+
     }
   }
 
