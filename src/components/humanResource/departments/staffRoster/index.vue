@@ -1,6 +1,6 @@
 <template>
   <div id="staffRoster">
-    <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+    <div class="mainListTable"  :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
         :data="tableData"
         highlight-current-row

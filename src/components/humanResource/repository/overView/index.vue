@@ -12,18 +12,18 @@
         :row-style="{height:'70px'}"
         style="width: 100%">
         <!--<el-table-column-->
-          <!--v-for="item in Object.keys(showData)" :key="item"-->
-          <!--align="center"-->
-          <!--:prop="item"-->
-          <!--:label="showData[item]">-->
+        <!--v-for="item in Object.keys(showData)" :key="item"-->
+        <!--align="center"-->
+        <!--:prop="item"-->
+        <!--:label="showData[item]">-->
         <!--</el-table-column>-->
 
 
         <el-table-column
-        key="name"
-        align="center"
-        prop="name"
-        label="物品名称">
+          key="name"
+          align="center"
+          prop="name"
+          label="物品名称">
         </el-table-column>
 
 
@@ -49,7 +49,7 @@
           <template slot-scope="scope">
             <a @click="borrow_table_visible = true">{{scope.row.borrowCounts}}</a>
             <!--<div slot="reference" class="name-wrapper">-->
-              <!--<el-tag size="medium">{{ scope.row.borrowCounts }}</el-tag>-->
+            <!--<el-tag size="medium">{{ scope.row.borrowCounts }}</el-tag>-->
             <!--</div>-->
           </template>
         </el-table-column>
@@ -62,7 +62,7 @@
           <template slot-scope="scope">
             <a @click="repair_table_visible = true">{{scope.row.repairCounts}}</a>
             <!--<div slot="reference" class="name-wrapper">-->
-              <!--<el-tag size="medium">{{ scope.row.repairCounts }}</el-tag>-->
+            <!--<el-tag size="medium">{{ scope.row.repairCounts }}</el-tag>-->
             <!--</div>-->
           </template>
         </el-table-column>
@@ -75,7 +75,7 @@
           <template slot-scope="scope">
             <a @click="useless_table_visible = true">{{scope.row.uselessCounts}}</a>
             <!--<div slot="reference" class="name-wrapper">-->
-              <!--<el-tag size="medium">{{ scope.row.uselessCounts }}</el-tag>-->
+            <!--<el-tag size="medium">{{ scope.row.uselessCounts }}</el-tag>-->
             <!--</div>-->
           </template>
         </el-table-column>
@@ -89,11 +89,11 @@
         </el-table-column>
 
         <!--<el-table-column-->
-          <!--align="center"-->
-          <!--label="操作">-->
-          <!--<template slot-scope="scope">-->
+        <!--align="center"-->
+        <!--label="操作">-->
+        <!--<template slot-scope="scope">-->
 
-          <!--</template>-->
+        <!--</template>-->
         <!--</el-table-column>-->
       </el-table>
       <footer class="flex-center bottomPage">
@@ -115,9 +115,9 @@
 
     <!--借/领用表格详情-->
     <lj-dialog
-    :visible="borrow_table_visible"
-    :size="{width: 900 + 'px',height: 700 + 'px'}"
-    @close="borrow_table_visible = false"
+      :visible="borrow_table_visible"
+      :size="{width: 900 + 'px',height: 700 + 'px'}"
+      @close="borrow_table_visible = false"
     >
       <div class="dialog_container">
         <div class="dialog_header">
@@ -285,12 +285,13 @@
         <div class="dialog_main borderNone">
           <el-form :model="in_repository_form" style="text-align: left" size="small" label-width="100px">
             <el-form-item label="物品">
-              <div class="items-center iconInput" style="width: 320px">
-              <el-input v-model="in_repository_form.goods" placeholder="请选择物品" style="width: 300px">
-              </el-input>
-              <p @click="choose_goods_table_visible = true" class="icons user"></p>
+              <div class="items-center iconInput choose-goods" @click="choose_goods_table_visible = true" style="width: 320px">
+                <el-input v-model="in_repository_form.goods" placeholder="请选择物品" style="width: 300px">
+                </el-input>
+                <p  class="choose-goods-icon"></p>
               </div>
-              <span class="btn_add" style="position: absolute;right: 13px;top: 3px;" @click="add_goods_form_visible = true">+</span>
+              <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
+                    @click="add_goods_form_visible = true">+</span>
             </el-form-item>
             <el-form-item label="数量">
               <el-input v-model="in_repository_form.goods" placeholder="请输入数量" style="width: 320px">
@@ -572,9 +573,13 @@
           <h3>入库详情</h3>
           <div class="header_right">
             <!--<el-input type="primary" size="small" ></el-input>-->
-            <div class="">
-              <i class="el-icon-search" style="position: absolute; top: 7px; right: 195px;"></i>
-              <input placeholder="搜索物品名称/品牌" type="text" style="border: 1px solid #ccc; border-radius:20px;width: 220px;height: 28px;padding: 2px 12px 2px 32px;" />
+            <!--<div class="lj-header-search">-->
+            <!--<i class="el-icon-search" style="position: absolute; top: 7px; right: 195px;"></i>-->
+            <!--<input placeholder="搜索物品名称/品牌" type="text" style="border: 1px solid #ccc; border-radius:20px;width: 220px;height: 28px;padding: 2px 12px 2px 32px;" />-->
+            <!--</div>-->
+            <div class="lj-header-search">
+              <i class="el-icon-search"></i>
+              <input placeholder="搜索物品名称/品牌" type="text"/>
             </div>
 
             <!--<div class="icon-add"><b>+</b></div>-->
@@ -602,7 +607,7 @@
               prop="qrCode"
               label="二维码">
               <template slot-scope="scope">
-                <span class="qr-code"></span>
+                <div @click="qr_code_table_visible = true" class="qr-code"></div>
               </template>
             </el-table-column>
             <el-table-column
@@ -629,18 +634,72 @@
     </lj-dialog>
 
 
+    <!--二维码table-->
+    <lj-dialog
+      :visible="qr_code_table_visible"
+      :size="{width: 850 + 'px',height: 800 + 'px'}"
+      @close="qr_code_table_visible = false"
+    >
+      <div class="dialog_container repository-overview">
+        <div class="dialog_header">
+          <h3>LG-显示器</h3>
+          <div class="header_right">
+
+          </div>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-table
+            :data="qrCodeData"
+            highlight-current-row
+            :height="this.mainListHeight(200) + 'px'"
+            :row-class-name="tableChooseRow"
+            @cell-click="tableClickRow"
+            header-row-class-name="tableHeader"
+            :row-style="{height:'62px'}"
+            style="width: 100%">
+            <el-table-column
+              key="repairId"
+              align="center"
+              prop="repairId"
+              label="维修编号">
+            </el-table-column>
+            <el-table-column
+              key="qrCode"
+              align="center"
+              prop="qrCode"
+              label="二维码">
+              <template slot-scope="scope">
+                <div @click="is_show_qr_code = true" class="qr-code" style="margin-left: 170px"></div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <lj-dialog-img v-model="is_show_qr_code">
+      <div class="qr-container">
+        <div class="qr-code-large"></div>
+        <div>201903191059</div>
+      </div>
+
+    </lj-dialog-img>
+
+
   </div>
 </template>
 
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
+  import LjDialogImg from '../components/lj-dialog-img';//用于显示二维码图片
 
 
   export default {
     name: "index",
-    props: ['searchVal','in_repository_visible'],
+    props: ['searchVal', 'in_repository_visible'],
     components: {
-      LjDialog
+      LjDialog,
+      LjDialogImg
     },
     data() {
       return {
@@ -670,8 +729,8 @@
           name: '姓名',
           applyType: '申请类型',
           applyTime: '申请日期',
-          takeTime:'领用日期',
-          returnTime:'归还日期'
+          takeTime: '领用日期',
+          returnTime: '归还日期'
         },
 
         //维修表单
@@ -679,22 +738,22 @@
         repairData: [],//维修表格数据
         repairShowData: {
           department: '部门',
-          name:'姓名',
-          repairId:'维修编号',
-          repairCost:'维修费用',
-          settlement:'结算方式',
+          name: '姓名',
+          repairId: '维修编号',
+          repairCost: '维修费用',
+          settlement: '结算方式',
         },
 
         //报废表单
-        useless_table_visible:false,//报废form表单控制
-        uselessData:[],//报废表单数据
+        useless_table_visible: false,//报废form表单控制
+        uselessData: [],//报废表单数据
         uselessShowData: {
-          department:'部门',
-          name:'姓名',
-          uselessId:'报废编号',
-          responsiblePerson:'任责人',
-          repairCost:'维修费用',
-          settlement:'结算方式',
+          department: '部门',
+          name: '姓名',
+          uselessId: '报废编号',
+          responsiblePerson: '任责人',
+          repairCost: '维修费用',
+          settlement: '结算方式',
         },
 
         /*
@@ -709,78 +768,85 @@
         //入库form
         in_repository: false,
         in_repository_form: {//入库form表单
-          goods:'',
-          counts:'',//数量
-          department:'',//部门
-          location:'',
-          purchasePerson:'',
-          price:'',//单价
-          totalPrice:'',//总价
-          remark:'',//备注
+          goods: '',
+          counts: '',//数量
+          department: '',//部门
+          location: '',
+          purchasePerson: '',
+          price: '',//单价
+          totalPrice: '',//总价
+          remark: '',//备注
         },
 
         //选择物品table
-        choose_goods_table_visible:false,
-        chooseGoodsData:[],//选择物品表单数据
+        choose_goods_table_visible: false,
+        chooseGoodsData: [],//选择物品表单数据
         chooseGoodsShowData: {
-          classify:'分类',//分类
-          name:'名称',//名称
-          brand:'品牌',//品牌
-          unit:'单位',//单位
-          counts:'预警数量',//预警数量
+          classify: '分类',//分类
+          name: '名称',//名称
+          brand: '品牌',//品牌
+          unit: '单位',//单位
+          counts: '预警数量',//预警数量
         },
 
         //添加物品
         add_goods_form_visible: false,
         add_goods_form: {
-          classify:'',//分类
-          brand:'',//品牌
-          name:'',//名称
-          unit:'',//单位
-          counts:'',//预警数量
-          remark:'',//备注
+          classify: '',//分类
+          brand: '',//品牌
+          name: '',//名称
+          unit: '',//单位
+          counts: '',//预警数量
+          remark: '',//备注
         },
 
         //添加分类
         add_classify_visible: false,
         add_classify_form: {
-          classify:'',//分类
+          classify: '',//分类
         },
 
         //添加品牌
         add_brand_visible: false,
         add_brand_form: {
-          name:'',//品牌名称
+          name: '',//品牌名称
         },
 
         //添加单位
         add_unit_visible: false,
         add_unit_form: {
-          name:'',//单位名称
+          name: '',//单位名称
         },
 
         //添加采购源
         add_resource_visible: false,
         add_resource_form: {
-          source:'',//采购源
+          source: '',//采购源
         },
 
 
         //入库详情
-        in_repository_table_visible:false,
-        inRepositoryData:[],//选择物品表单数据
+        in_repository_table_visible: false,
+        inRepositoryData: [],//选择物品table数据
         inRepositoryShowData: {
-          name:'物品名',
-          count:'数量',
-          price:'单价',
-          totalPrice:'总价',
-          location:'存放位置',
-          purchasePerson:'采购人',
-          resource:'采购源',
-          inRepositoryTime:'入库时间',
+          name: '物品名',
+          count: '数量',
+          price: '单价',
+          totalPrice: '总价',
+          location: '存放位置',
+          purchasePerson: '采购人',
+          resource: '采购源',
+          inRepositoryTime: '入库时间',
           //qrCode:'二维码',
           //remark:'备注',
         },
+
+        //二维码table
+        qr_code_table_visible: false,
+        qrCodeData: [],//二维码table数据
+
+        //显示二维码
+        is_show_qr_code: false,
         /*
         *  表单群组  end
         * */
@@ -821,20 +887,19 @@
       },
 
 
-
       initData() {
         //库房总览表格
-        const nameArr = ['LG-显示器','BenQ-显示器','美帝良心想-显示器','苹果-显示器','三星-显示器','现代-显示器','宏基-显示器','HP-显示器','小米-显示器'];
-        for (let i=0;i<nameArr.length;i++) {
+        const nameArr = ['LG-显示器', 'BenQ-显示器', '美帝良心想-显示器', '苹果-显示器', '三星-显示器', '现代-显示器', '宏基-显示器', 'HP-显示器', '小米-显示器'];
+        for (let i = 0; i < nameArr.length; i++) {
           let obj = {
-            id: i+1,
+            id: i + 1,
             name: nameArr[i],
-            totalCounts: 10+i,
-            stockCounts: 6+i,
+            totalCounts: 10 + i,
+            stockCounts: 6 + i,
             borrowCounts: 6,
             repairCounts: '4',
             uselessCounts: '1',
-            status:'预警',
+            status: '预警',
           }
           this.tableData.push(obj)
         }
@@ -844,29 +909,29 @@
 
         //借/领用表格数据初始化
         //borrowData
-        for (let i=0;i<9;i++) {
+        for (let i = 0; i < 9; i++) {
           let obj = {
-            id:i+1,
+            id: i + 1,
             department: '研发部',
             name: '张三',
             applyType: '借用',
             applyTime: '2019-03-18',
-            takeTime:'2019-03-25',
-            returnTime:'2020-02-06'
+            takeTime: '2019-03-25',
+            returnTime: '2020-02-06'
           }
           this.borrowData.push(obj)
         }
 
         //维修表格数据初始化
         //repairData
-        for (let i=0;i<3;i++) {
+        for (let i = 0; i < 3; i++) {
           let obj = {
-            id:i+1,
+            id: i + 1,
             department: '研发部',
-            name:'赵四',
-            repairId:'20190318155908',
-            repairCost:'500',
-            settlement:'工资扣除',
+            name: '赵四',
+            repairId: '20190318155908',
+            repairCost: '500',
+            settlement: '工资扣除',
           }
           this.repairData.push(obj)
         }
@@ -874,52 +939,64 @@
 
         //报废表格数据初始化
         //repairData
-        for (let i=0;i<3;i++) {
+        for (let i = 0; i < 3; i++) {
           let obj = {
-            id:i+1,
+            id: i + 1,
             department: '研发部',
-            name:'赵四',
-            uselessId:'20190318155908',
-            responsiblePerson:'赵铁柱',
-            repairCost:'500',
-            settlement:'工资扣除',
+            name: '赵四',
+            uselessId: '20190318155908',
+            responsiblePerson: '赵铁柱',
+            repairCost: '500',
+            settlement: '工资扣除',
           }
           this.uselessData.push(obj)
         }
 
 
-
         //选择物品表格数据初始化
         //chooseGoodsData
-        for (let i=0;i<6;i++) {
+        for (let i = 0; i < 6; i++) {
           let obj = {
-            id:i+1,
-            classify:'显示器',//分类
-            name:'LG-显示器',//名称
-            brand:'LG',//品牌
-            unit:'台',//单位
-            counts:'3',//预警数量
+            id: i + 1,
+            classify: '显示器',//分类
+            name: 'LG-显示器',//名称
+            brand: 'LG',//品牌
+            unit: '台',//单位
+            counts: '3',//预警数量
           }
           this.chooseGoodsData.push(obj)
         }
 
         //入库详情表格数据初始化
-        for (let i=0;i<8;i++) {
+        for (let i = 0; i < 8; i++) {
           let obj = {
-            id:i+1,
-            name:'张三',
-            count:20+i,
-            price:34,
-            totalPrice:35,
-            location:'南京一组',
-            purchasePerson:'赵四',
-            resource:'南京建邺',
-            inRepositoryTime:'20190318',
-            qrCode:'二维码',
-            remark:'备注备注',
+            id: i + 1,
+            name: '张三',
+            count: 20 + i,
+            price: 34,
+            totalPrice: 35,
+            location: '南京一组',
+            purchasePerson: '赵四',
+            resource: '南京建邺',
+            inRepositoryTime: '20190318',
+            qrCode: '二维码',
+            remark: '备注备注',
           }
           this.inRepositoryData.push(obj)
         }
+
+        //二维码table数据初始化
+        //qrCodeData
+        for (let i = 0; i < 7; i++) {
+          let obj = {
+            id: i + 1,
+            repairId: '20190319091956',
+            qrCode: '二维码',
+          }
+          this.qrCodeData.push(obj)
+        }
+
+
       },
 
       getRewardUpList() {
@@ -952,7 +1029,7 @@
       exchangeTableDblClick(row) {
         this.exchange_rules_form_visible = true;
         this.exchange_rules_form_title = "编辑兑换规则";
-        this.exchange_rules_form= {
+        this.exchange_rules_form = {
           name: '张三',
           exchangeType: '1',//兑换类型
           exchangeBonus: '300',//兑换额
@@ -973,43 +1050,39 @@
         console.log(`当前页: ${val}`);
       }
     },
+
   }
 </script>
 
 
 <style lang="scss" scoped>
   @import "../../../../assets/scss/humanResource/repository/overView/index.scss";
-  /*@import "../../../../assets/scss/currency";*/
 
   @mixin childrenImg($m, $n) {
-    $url: '../../../../assets/image/humanResource/reward/overView/' + $n + '/' + $m;
+    $url: '../../../../assets/image/humanResource/repository/overView/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
     #overView {
 
-      footer.common-page {
-        height: 100px;
-        width: 100%;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 100px;
-        //background-color: $color2F2;
-        z-index: 6;
-        .develop {
-          position: absolute;
-          top: -30px;
-          width: 80px;
-          cursor: pointer;
-          height: 30px;
-          opacity: 1;
-          border-radius: 10px 10px 0 0;
-          background-color: $color2F2;
-
+      .dialog_container {
+        .choose-goods-icon {
+          @include childrenImg('xz.png', 'theme1')
         }
       }
+
+      .qr-code {
+        @include childrenImg('ewm.png', 'theme1')
+      }
+
+      .qr-container {
+        .qr-code-large {
+          @include childrenImg('ewm.png', 'theme1')
+        }
+
+      }
+
     }
   }
 
