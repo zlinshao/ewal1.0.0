@@ -29,13 +29,18 @@
                     header-row-class-name="tableHeader"
                     style="width: 100%">
                 <el-table-column
-                        width="180"
                         show-overflow-tooltip
                         v-for="item in Object.keys(showData)" :key="item"
                         align="center"
                         :prop="item"
                         :label="showData[item]">
                 </el-table-column>
+                <el-table-column label="状态" prop="" align="center" width="80">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.status === 1 ? '待入账' : '已结清'}}</span>
+                    </template>
+                </el-table-column>
+
                 <el-table-column
                         width="100"
                         v-for="(item,key) in btn_group"
@@ -45,6 +50,17 @@
                     <template slot-scope="scope">
                         <el-button size="mini" :type="item.type" @click="handleClickBtn(item.key,scope.row)">
                             {{ item.val }}
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" prop="" align="center">
+                    <template slot-scope="scope">
+                        <el-button v-for="(item,index) in btnData"
+                                   :key="index"
+                                   :type="item.type"
+                                   size="mini"
+                                   @click="clkCall(item.methods,scope.row,scope.$index)">
+                            {{item.label}}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -67,6 +83,57 @@
         </div>
         <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
+        <!--删除-->
+        <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
+                   @close="delete_visible = false">
+            <div class="dialog_container">
+                <div class="dialog_header">
+                    <h3>删除</h3>
+                </div>
+                <div class="dialog_main">
+                    <div class="unUse-txt">确定删除该应收款项信息吗？</div>
+                </div>
+                <div class="dialog_footer">
+                    <el-button type="danger" size="small" @click="handleOkDel">确定</el-button>
+                    <el-button type="info" size="small" @click="delete_visible = false;current_row = ''">取消</el-button>
+                </div>
+            </div>
+        </lj-dialog>
+
+        <!--回滚-->
+        <lj-dialog :visible="recall_visible" :size="{width: 600 + 'px',height: 500 + 'px'}"
+                   @close="recall_visible = false;current_row = ''">
+            <div class="dialog_container">
+                <div class="dialog_header">
+                    <h3>回滚</h3>
+                </div>
+                <div class="dialog_main">
+                    <el-table
+                            :data="running_account_record"
+                            :row-class-name="tableChooseRow"
+                            @cell-click="tableClickRow"
+                            header-row-class-name="tableHeader"
+                            @selection-change="handleSelectionChange"
+                    >
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+
+                        <el-table-column  align="center" label="ID" prop="id">
+                        </el-table-column>
+                        <el-table-column  align="center" label="明细" prop="desc">
+                        </el-table-column>
+
+
+                    </el-table>
+                </div>
+                <div class="dialog_footer">
+                    <el-button type="danger" size="small" @click="handleOkRecall">确定</el-button>
+                    <el-button type="info" size="small" @click="recall_visible = false;current_row = '';">取消</el-button>
+                </div>
+            </div>
+        </lj-dialog>
         <!--应收入账-->
         <lj-dialog
                 :visible="receive_visible"
@@ -148,7 +215,7 @@
                                     <span>应收金额</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input v-model="receive_form.amount_receivable" type="number"></el-input>
+                                    <el-input v-model="amount_receivable" type="number"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -684,10 +751,16 @@
                     cate:'',
 
                 },
+                btnData: [
+                    {label: "回滚", type: "warning", icon: "el-icon-info", size: "small", methods: "handleProcess"},
+                    {label: "删除", type: "danger", icon: "el-icon-delete", size: "small", methods: "handleDelete"},
+                ],
                 current_address:'',
                 current_row:'',
                 showFinMenuList: false,
-                add_visible: false,
+                delete_visible:false,//删除
+                add_visible: false,//新增
+                recall_visible:false,//回滚
                 receive_visible: false, //应收入账
                 record_visible: false, //跟进记录
                 new_record_visible:false,//新增跟进
@@ -696,6 +769,8 @@
                 register_visible: false, //登记收款
                 register_size: '',
                 customer_visible:false,
+                running_account_record:[],//回滚数据
+                ra_ids:[],//回滚id
 
                 subject_visible: false,//科目
                 which_subject: '',
@@ -803,15 +878,17 @@
                     status: 'gathering',
                     data: [],
                 },
+
+                amount_receivable:'',//应收
                 chooseRowIds: [],
                 receive_form: {
-                    subject_name: '1',//科目
-
+                    // subject_name: '1',//科目
                     account_id: '',//账户id
                     amount_received: '',//收款金额
                     pay_date: '',//付款时间
                     remark: '',
-                    amount_receivable:'',//应收
+                    // amount_receivable:'',//应收
+
                 },
 
                 record_data: [],//跟进列表
@@ -834,6 +911,7 @@
                     {title: "微信", value: 3,},
                     {title: "银行卡(数据来自房管中心)", value: 4,},
                 ],
+                multipleSelection: [],//多选
             }
         },
         mounted() {
@@ -850,6 +928,92 @@
         },
         computed: {},
         methods: {
+            // 当前点击
+            tableClickRow(row) {
+                let ids = this.chooseRowIds;
+                ids.push(row.id);
+                this.chooseRowIds = this.myUtils.arrayWeight(ids);
+            },
+            // 点击过
+            tableChooseRow({row, rowIndex}) {
+                return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+            },
+            //操作项动态调用
+            clkCall(func, row, index) {
+                this[func](row, index);
+            },
+            //删除
+            handleOkDel() {
+                this.$http.delete(globalConfig.temporary_server + 'account_receivable/delete/' + this.current_row.id).then(res => {
+                    if(res.code===200){
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.delete_visible = false;
+                        this.current_row = '';
+                        this.getReceiveList();
+                    } else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
+
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            handleDelete(row, index) {
+                this.current_row = row;
+                this.delete_visible = true;
+            },
+            // 多选
+            handleSelectionChange(val){
+                this.ra_ids=[];
+                this.multipleSelection = val;
+                console.log(val);
+                for(let item in val){
+                    this.ra_ids.push(val[item].id);
+                }
+                console.log(this.ra_ids);
+            },
+            //显示回滚
+            handleProcess(row, index){
+                this.running_account_record=[];
+                this.current_row = row;
+                this.recall_visible = true;
+                for( let item in this.current_row.running_account_record){
+                  this.running_account_record.push({id:item,desc:this.current_row.running_account_record[item]});
+                }
+                console.log(this.running_account_record);
+            },
+
+            //确认回滚
+            handleOkRecall(){
+                this.$http.put(globalConfig.temporary_server + 'account_receivable/revert/'+this.current_row.id,{ra_id:this.ra_ids}).then(res => {
+
+                    if(res.code===200){
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.recall_visible = false;
+
+                    }else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
             //换页
             handleChangePage(page) {
                 this.params.page = page;
@@ -861,6 +1025,19 @@
             //跟进列表
             getReceivable_follow(){
                 this.$http.get(globalConfig.temporary_server + 'receivable_follow',).then(res => {
+                    console.log(res);
+                    if(res.code===200){
+                        this.record_data = res.data.data;
+                        this.record_data_count = res.data.count;
+                        console.log(res);
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            //新增跟进
+            postNewRecord(){
+                this.$http.get(globalConfig.temporary_server + 'receivable_follow',this.new_record).then(res => {
                     console.log(res);
                     if(res.code===200){
                         this.record_data = res.data.data;
@@ -896,6 +1073,12 @@
                         });
                         this.new_mark_visible = false;
                         this.getReceivable_tag(this.current_row.id);
+                    }else{
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
                     }
                 }).catch(err => {
                     console.log(err);
@@ -913,8 +1096,24 @@
             },
             //应收入账
             handleOkReceive() {
-                this.$http.put(globalConfig.temporary_server + 'account_receivable/receive/' + this.row.id, this.receive_form).then(res => {
-                    this.callbackSuccess(res);
+                console.log(this.current_row);
+                console.log(this.receive_form);
+                this.$http.put(globalConfig.temporary_server + 'account_receivable/receive/' + this.current_row.id, this.receive_form).then(res => {
+                    if (res.code === 200) {
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.receive_visible = false;
+                        this.getReceiveList();
+                    } else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
                 })
 
             },
@@ -959,7 +1158,7 @@
                     console.log(err);
                 })
             },
-            //收款列表
+            //加载收款列表
             getReceiveList() {
                 this.showLoading(true);
                 this.$http.get(globalConfig.temporary_server + 'account_receivable', this.params).then(res => {

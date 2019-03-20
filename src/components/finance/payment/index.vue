@@ -35,7 +35,7 @@
                         <span>{{ scope.row.status === 1 ? '待入账' : '已入账'}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" prop="" align="center" width="500">
+                <el-table-column label="操作" prop="" align="center" width="550">
                     <template slot-scope="scope">
                         <el-tooltip
                                 v-for="(item,index) in btnData" :key="index"
@@ -524,6 +524,41 @@
             </div>
         </lj-dialog>
 
+        <!--回滚-->
+        <lj-dialog :visible="recall_visible" :size="{width: 600 + 'px',height: 500 + 'px'}"
+                   @close="recall_visible = false;current_row = ''">
+            <div class="dialog_container">
+                <div class="dialog_header">
+                    <h3>回滚</h3>
+                </div>
+                <div class="dialog_main">
+                    <el-table
+                            :data="running_account_record"
+                            :row-class-name="tableChooseRow"
+                            @cell-click="tableClickRow"
+                            header-row-class-name="tableHeader"
+                            @selection-change="handleSelectionChange"
+                    >
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+
+                        <el-table-column  align="center" label="ID" prop="id">
+                        </el-table-column>
+                        <el-table-column  align="center" label="明细" prop="desc">
+                        </el-table-column>
+
+
+                    </el-table>
+                </div>
+                <div class="dialog_footer">
+                    <el-button type="danger" size="small" @click="handleOkRecall">确定</el-button>
+                    <el-button type="info" size="small" @click="recall_visible = false;current_row = '';">取消</el-button>
+                </div>
+            </div>
+        </lj-dialog>
+
     </div>
 </template>
 
@@ -562,6 +597,7 @@
                 delete_visible: false,//删除
                 add_visible: false,//新增
                 pay_visible: false,//应付金额
+                recall_visible:false,//回滚
                 payData_visible: false,//应付时间
                 complete_visible: false,//补齐时间
                 transfer_visible: false,//应付入账
@@ -569,6 +605,9 @@
                 show_subject: false,//科目
                 customer_visible: false,//客户列表
                 is_disabled:true,
+                multipleSelection: [],//多选
+                running_account_record:[],//回滚数据
+                ra_ids:[],
 
                 which_subject: '',
                 new_subject_visible: false,
@@ -671,7 +710,6 @@
                         content: "金额",
                         key: "pay_visible"
                     },
-
                     {
                         label: "",
                         type: "success",
@@ -710,6 +748,15 @@
                     },
                     {
                         label: "",
+                        type: "warning",
+                        icon: "el-icon-edit",
+                        size: "small",
+                        methods: "handleProcess",
+                        content: "回滚",
+                        key: "recall_visible"
+                    },
+                    {
+                        label: "",
                         type: "danger",
                         icon: "el-icon-delete",
                         size: "small",
@@ -719,6 +766,7 @@
                     },
                 ],
                 accountLists:[],
+                chooseRowIds:[],
             }
         },
         mounted() {
@@ -731,6 +779,16 @@
         },
         computed: {},
         methods: {
+            // 当前点击
+            tableClickRow(row) {
+                let ids = this.chooseRowIds;
+                ids.push(row.id);
+                this.chooseRowIds = this.myUtils.arrayWeight(ids);
+            },
+            // 点击过
+            tableChooseRow({row, rowIndex}) {
+                return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+            },
             //换页
             handleChangePage(page) {
                 this.params.page = page;
@@ -816,6 +874,7 @@
                     console.log(err);
                 })
             },
+            //获取账户list
             getAccount(){
                 this.$http.get(globalConfig.temporary_server + "account",this.params).then(res => {
                     if(res.code===200){
@@ -833,6 +892,40 @@
                     this.callbackSuccess(res);
                     this.transfer_visible = false;
                     this.current_row = '';
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            // 多选
+            handleSelectionChange(val){
+                this.ra_ids=[];
+                this.multipleSelection = val;
+                console.log(val);
+                for(let item in val){
+                    this.ra_ids.push(val[item].id);
+                }
+                console.log(this.ra_ids);
+            },
+
+            //确认回滚
+            handleOkRecall(){
+                this.$http.put(globalConfig.temporary_server + 'account_payable/revert/'+this.current_row.id,{running_account_ids:this.ra_ids}).then(res => {
+
+                    if(res.code===200){
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.recall_visible = false;
+
+                    }else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
                 }).catch(err => {
                     console.log(err);
                 })
@@ -878,6 +971,7 @@
 
             //删除
             handleOkDel(row) {
+                console.log(row.id);
                 this.$http.delete(globalConfig.temporary_server + 'account_payable/delete/' + row.id).then(res => {
                     this.callbackSuccess(res);
                     this.delete_visible = false;
@@ -897,6 +991,20 @@
                 }
                 if (key === "subject_visible") {
                     this.subject_visible = true;
+                }
+                //回滚
+                if (key === "recall_visible") {
+                    this.recall_visible = true;
+                    this.running_account_record=[];
+                    // this.current_row = row;
+                    this.recall_visible = true;
+                    console.log(row.running_account_record);
+                    for( let item in row.running_account_record){
+                        this.running_account_record.push({id:item,desc:this.current_row.running_account_record[item]});
+                    }
+                    console.log(this.running_account_record);
+
+
                 }
                 if (key === "pay_visible") {
                     this.pay_visible = true;

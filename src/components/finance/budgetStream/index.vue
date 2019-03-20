@@ -45,14 +45,14 @@
             <span>{{ scope.row.cate === 1 ? '收入' : '支出'}}</span>
           </template>
         </el-table-column>
-        <el-table-column min-width="130px" label="账户名称" prop="name" align="center"></el-table-column>
+        <el-table-column min-width="130px" label="账户名称" prop="name" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column min-width="150px" label="卡号" prop="account_num" align="center"></el-table-column>
         <el-table-column label="应收金额" prop="amount_receivable" align="center"></el-table-column>
         <el-table-column label="实收金额" prop="amount_received" align="center"></el-table-column>
         <el-table-column label="应付金额" prop="amount_payable" align="center"></el-table-column>
         <el-table-column label="实付金额" prop="amount_paid" align="center"></el-table-column>
-        <el-table-column label="账户余额" prop="amount_remain" align="center"></el-table-column>
-        <el-table-column label="详细信息" prop="info" min-width="300px" align="center"></el-table-column>
+        <el-table-column label="账户余额" prop="amount_remain" align="center" show-overflow-tooltip></el-table-column>
+        <el-table-column label="详细信息" prop="fund.description" min-width="300px" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column label="收/付款人员" prop="operator.name" align="center"></el-table-column>
       </el-table>
       <!--分页-->
@@ -94,7 +94,7 @@
             :data="bank_run_data"
           >
             <el-table-column prop="create_time" label="导入时间" align="center"></el-table-column>
-            <el-table-column prop="id" label="流水导入批次" align="center"></el-table-column>
+            <el-table-column prop="id" label="流水导入批次" align="center" show-overflow-tooltip></el-table-column>
             <el-table-column prop="account_num" label="包含账户数量" align="center"></el-table-column>
             <el-table-column prop="bank_flow_num" label="流水数量" align="center"></el-table-column>
             <el-table-column prop="operator" label="操作人" align="center"></el-table-column>

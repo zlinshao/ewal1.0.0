@@ -11,30 +11,40 @@
                 style="width: 100%">
 
             <el-table-column label="前缀" align="center" width="80">
-                <template slot-scope="scope">
+                <template slot-scope="scope"  >
                     <div class="statusBar flex-center">
-                        <span v-if="LordStatus[scope.$index].is_contact===1" style="background-color: #14e731;"></span>
-                        <span v-if="LordStatus[scope.$index].is_name===1" style="background-color: #e6a23c;"></span>
-                        <span v-if="LordStatus[scope.$index].is_address===2" style="background-color: #f56c6c;"></span>
-                        <span v-if="LordStatus[scope.$index].suppress_dup===0"
-                              style="background-color: #409eff;"></span>
+
+                            <span v-if="LordStatus[scope.$index]['is_contact']===1" style="background-color: #14e731;"></span>
+                            <span v-if="LordStatus[scope.$index]['is_name']===1" style="background-color: #e6a23c;"></span>
+                            <span v-if="LordStatus[scope.$index]['is_address']===2" style="background-color: #f56c6c;"></span>
+                            <span v-if="LordStatus[scope.$index]['suppress_dup']===0"
+                                  style="background-color: #409eff;"></span>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column
                     show-overflow-tooltip
-                    v-for="(item,index) in tableHeaderData"
-                    :label="item.title" :key="index"
-                    :prop="item.prop"
-                    :width="item.width"
+                    v-for="(item,index) in Object.keys(tableHeaderData)"
+                    :label="tableHeaderData[item]" :key="item"
+                    :prop="item"
                     align="center">
+            </el-table-column>
+            <el-table-column label="付款方式" prop="" align="center" width="80">
+                <template slot-scope="scope">
+                    <span>{{ scope.row.pay_types[0] === 1 ? '月份' : scope.row.pay_types[0] === 2?'双月付':scope.row.pay_types[0] === 3?'季付':scope.row.pay_types[0] === 4?'半年付':scope.row.pay_types[0] === 5?'年付':'/'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="月单价" prop="" align="center" width="80">
+                <template slot-scope="scope">
+                    <span>{{ scope.row.prices[0]}}</span>
+                </template>
             </el-table-column>
             <el-table-column label="状态" prop="" align="center" width="80">
                 <template slot-scope="scope">
                     <span>{{ scope.row.status === 1 ? '待处理' : '正常'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" prop="" align="center">
+            <el-table-column label="操作" prop="" align="center" width="360">
                 <template slot-scope="scope">
                     <el-button v-for="(item,index) in btnData"
                                :key="index"
@@ -116,7 +126,7 @@
                 :visible="edit_visible"
                 :size="{width: 900 + 'px',height: 820 + 'px' }"
                 @close="edit_visible = false">
-            <lord-form :formData="form" :current_row="current_row"></lord-form>
+            <lord-form :formData="form" :current_row="current_row" @updateList="updateLordList"></lord-form>
         </lj-dialog>
 
 
@@ -132,7 +142,7 @@
         components: {LordForm, LjDialog, LjSubject},
         data() {
             return {
-                params: {
+                params: {//查询参数
                     search: '',
                     startRange: '',
                     endRange: '',
@@ -141,34 +151,26 @@
                     department_ids: '',
                     export: '',
                 },
-                chooseRowIds: [],
-                tableHeaderData: [
-                    {title: "生成时间", prop: "create_time", width: "120"},
-                    {title: "房屋地址", prop: "address", width: "130"},
-                    {title: "客户姓名", prop: "customer_name", width: "80"},
-                    {title: "客户手机号", prop: "contact", width: "120"},
-                    {title: "收房月数", prop: "months", width: "80"},
-                    {title: "付款方式", prop: "pay_types", width: "80"},
-                    {title: "月单价", prop: "prices", width: "80"},
-                    {title: "待签约日期", prop: "deal_date", width: "100"},
-                    {title: "第一次打房租日期", prop: "first_pay_date", width: "150"},
-                    {title: "客户汇款方式", prop: "account_type", width: "120"},
-                    {title: "账号", prop: "account_num", width: "130"},
-                    {title: "签约人", prop: "operator.name", width: "80"},
-                ],
-                btnData: [
+                chooseRowIds: [],//列表ids
+                tableHeaderData: { //表头字段
+                    "create_time":"生成时间",
+                    "address":"房屋地址",
+                    "customer_name":"客户姓名",
+                    "contact":"客户手机号",
+                    "months":"收房月数",
+                    "deal_date":"待签约日期",
+                    "first_pay_date":"第一次打房租日期",
+                    "account_type":"客户汇款方式",
+                    "account_num":"账号",
+                    "operator.name":"签约人",
+                },
+                btnData: [//操作按钮
                     {label: "查看", type: "success", icon: "el-icon-view", size: "small", methods: "handleDetailsLord"},
                     {label: "编辑", type: "primary", icon: "el-icon-edit", size: "small", methods: "handleEditLord"},
-                    {
-                        label: "生成待处理项",
-                        type: "warning",
-                        icon: "el-icon-info",
-                        size: "small",
-                        methods: "handleProcessLord"
-                    },
+                    {label: "生成待处理项", type: "warning", icon: "el-icon-info", size: "small", methods: "handleProcessLord"},
                     {label: "删除", type: "danger", icon: "el-icon-delete", size: "small", methods: "handleDeleteLord"},
                 ],
-                tableDetailData: [
+                tableDetailData: [//详情字段
                     {label: "客户姓名 :", prop: "customer_name"},
                     {label: "客户联系方式 :", prop: "contact"},
                     {label: "房屋地址 :", prop: "address"},
@@ -192,173 +194,29 @@
                     {label: "支行 :", prop: "account_subbank"},
                     {label: "账号 :", prop: "account_num"},
                 ],
+                LordStatus:[
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0}
+
+                ],//前缀状态
                 delete_visible: false,//删除
                 edit_visible: false,//编辑
                 details_visible: false,//详情
                 is_disabled: true,//是否禁用
-                current_row: '',
-                lordLists: [],
+                current_row: '',//当前row
+                lordLists: [],//列表数据
                 lordCount: 0,
                 lordIds: [],
-                LordStatus: [
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                    {
-                        address: "新月饭店4-4-4",
-                        contact: "18949949837",
-                        create_time: "2019-02-21 18:05:20",
-                        customer_name: "嬴政",
-                        delete_time: null,
-                        id: 16314,
-                        is_address: 2,
-                        is_contact: 1,
-                        is_name: 2,
-                        suppress_dup: 0,
-                        update_time: "2019-02-21 18:05:20"
-                    },
-                ],
-                lordPayTypes: '',
 
                 lordDetailList: {
                     departmentName: "",
@@ -369,7 +227,7 @@
                     prices_val: "",
                 },
 
-                form: {
+                form: {//编辑字段
                     "address": "",
                     "rental_subject": "",
                     "deposit_subject": "",
@@ -457,6 +315,10 @@
                 this.params.page = page;
                 this.getLordList();
             },
+            updateLordList(val){
+                this.edit_visible = val;
+                this.getLordList();
+            },
             // 当前点击
             tableClickRow(row) {
                 let ids = this.chooseRowIds;
@@ -488,7 +350,7 @@
                     });
                 }
             },
-            //lord列表
+            //加载列表
             getLordList() {
                 this.showLoading(true);
                 this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
@@ -496,23 +358,6 @@
                         this.showLoading(false);
                         this.lordLists = res.data.data;
                         this.lordCount = res.data.count;
-                        for (let item of this.lordLists) {
-                            if (item.pay_types[0] === 1) {
-                                this.lordPayTypes = "月付"
-                            }
-                            if (item.pay_types[0] === 2) {
-                                this.lordPayTypes = "双月付"
-                            }
-                            if (item.pay_types[0] === 3) {
-                                this.lordPayTypes = "季付"
-                            }
-                            if (item.pay_types[0] === 4) {
-                                this.lordPayTypes = "半年付"
-                            }
-                            if (item.pay_types[0] === 5) {
-                                this.lordPayTypes = "年付"
-                            }
-                        }
                     } else {
                         this.lordLists = [];
                         this.lordCount = 0;
@@ -523,7 +368,18 @@
                     }
                     this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.lordIds}).then(res => {
                         if (res.code === 200) {
-                            this.LordStatus = JSON.parse(JSON.stringify(res.data.data));
+                            this.LordStatus =[];
+                            let statusData = res.data.data;
+                            for (let item in statusData){
+                                this.LordStatus.push({
+                                        is_contact:statusData[item].is_contact,
+                                        is_name:statusData[item].is_name,
+                                        is_address:statusData[item].is_address,
+                                        suppress_dup:statusData[item].suppress_dup
+                                    }
+                                )
+                            }
+                            console.log(this.LordStatus);
                         }
                     })
                 }).catch(err => {
@@ -537,8 +393,8 @@
                 this.getRowInfo(index);
                 this.getLordDetail(this.current_row.id);
             },
+            //行信息
             getRowInfo(index) {
-                // console.log(this.lordLists[index]);
                 this.lordDetailList.departmentName = this.lordLists[index].department.name;
                 this.lordDetailList.staffName = this.lordLists[index].staff.name;
                 this.lordDetailList.leaderName = this.lordLists[index].leader.name;
@@ -553,16 +409,14 @@
                     if (res.code == 200) {
                         this.showLoading(false);
                         this.lordDetail = res.data.data;
-                        // console.log(this.lordDetail);
                         this.lordDetailData = Object.assign({}, this.lordDetail, this.lordDetailList);
                         for (let item of Object.keys(this.form)) {
                             this.form[item] = this.lordDetailData[item];
                         }
-                        // console.log(this.form);
                     }
                 })
             },
-            //编辑
+            //打开编辑
             handleEditLord(row, index) {
                 this.current_row = row;
                 this.edit_visible = true;
@@ -571,15 +425,13 @@
             },
 
 
-            //处理项
+            //生成处理项
             handleProcessLord(row, index) {
                 this.$http.post(globalConfig.temporary_server + 'customer_collect/pending/' + row.id, {}).then(res => {
                     this.callbackSuccess(res);
                 })
             },
-            //科目
-
-            //删除lord
+            //删除房东
             handleOkDel() {
                 this.$http.delete(globalConfig.temporary_server + 'customer_collect/delete/' + this.current_row.id).then(res => {
                     this.callbackSuccess(res);
