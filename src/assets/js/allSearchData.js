@@ -284,3 +284,147 @@ export const accountRunSearch = {
     },
   ]
 };
+
+
+
+/*赏罚分明*/
+//赏善令
+export const rewardUpSearch = {
+  status: 'rewardUpSearch',
+};
+//惩恶令
+export const rewardDownSearch = {
+  status: 'rewardDownSearch',
+};
+/*内务库房*/
+
+//库房总览
+export const overViewSearch = {
+  status: 'overViewSearch',
+};
+
+//借用领用
+export const borrowReceiveSearch = {
+  status: 'borrowReceiveSearch',
+  data: [
+    {
+      keyType: 'organ',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'organ',
+      dataType: '',
+    },
+    {
+      keyType: 'radio',
+      title: '申请类型',
+      keyName: 'radio',
+      dataType: '',
+      value: [
+        {
+          id: 1,
+          title: '领用',
+        },
+        {
+          id: 2,
+          title: '借用',
+        },
+      ],
+    },
+
+    {
+      keyType: 'radio',
+      title: '申领状态',
+      keyName: 'radio',
+      dataType: '',
+      value: [
+        {
+          id: 3,
+          title: '待通知',
+        },
+        {
+          id: 4,
+          title: '待领取',
+        },
+        {
+          id: 5,
+          title: '部分领取',
+        },
+        {
+          id: 6,
+          title: '已领取',
+        },
+        {
+          id: 7,
+          title: '已归还',
+        },
+        {
+          id: 8,
+          title: '待归还',
+        },
+        {
+          id: 9,
+          title: '部分归还',
+        },
+        {
+          id: 10,
+          title: '放弃领取',
+        }
+      ],
+    },
+
+
+    {
+      keyType: 'dateRange',
+      title: '申领日期',
+      placeholder: '请选择日期',
+      keyName: 'date1',
+      dataType: [],
+    },
+
+
+    {
+      keyType: 'radio',
+      title: '物品状态',
+      keyName: 'radio',
+      dataType: '',
+      value: [
+        {
+          id: 11,
+          title: '待维修',
+        },
+        {
+          id: 12,
+          title: '维修中',
+        },
+        {
+          id: 13,
+          title: '已维修',
+        },
+        {
+          id: 14,
+          title: '维修报废',
+        },
+        {
+          id: 15,
+          title: '直接报废',
+        },
+        {
+          id: 16,
+          title: '部分维修',
+        },
+        {
+          id: 17,
+          title: '部分报废',
+        },
+        {
+          id: 18,
+          title: '完好',
+        },
+        {
+          id: 19,
+          title: '无',
+        }
+      ],
+    },
+  ],
+};
