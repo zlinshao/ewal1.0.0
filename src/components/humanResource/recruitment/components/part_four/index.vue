@@ -204,10 +204,13 @@
           <div class="dialog_main borderNone">
             <div class="changeChoose showPadding">
               <div class="flex" style="margin-bottom: 20px">
-                <el-radio v-model="send_choose" label="1">同时抄送密件给</el-radio>
-                <el-input v-model="send_man" size="mini" style="width: 100px" @focus="modules = true"></el-input>
+                <el-radio v-model="send_choose" :label="1">同时抄送密件给</el-radio>
+                <div class="items-center iconInput">
+                  <el-input v-model="send_man" size="mini" style="width: 100px" @focus="modules = true;send_choose = 1" clearable></el-input>
+                  <p class="icons user"></p>
+                </div>
               </div>
-              <el-radio v-model="send_choose" label="2">直接发送</el-radio>
+              <el-radio v-model="send_choose" :label="2" @change="send_man = '';send_id = ''">直接发送</el-radio>
             </div>
           </div>
           <div class="dialog_footer">
@@ -256,9 +259,13 @@
         //确定发送offer
         ok_send_offer: false,
         currentInfo: '',
-        send_choose: '',
+        send_choose: [],
+        send_id: '',
         send_man: '',
         modules: false,
+
+        //录入offer信息
+        write_offer_visible: false
       }
     },
     mounted() {
@@ -269,8 +276,10 @@
     watch: {},
     computed: {},
     methods: {
-      handleGetStaffInfo(id) {
-        console.log(id);
+      handleGetStaffInfo(id,name) {
+        this.send_id = id;
+        this.send_man = name;
+        this.modules = false;
       },
       handleOkSendOffer() {
         this.$http.get(`recruitment/interviewer_process/send_offer/${this.currentInfo.id}`).then(res => {
@@ -281,7 +290,9 @@
       },
       handleSendOffer(row) {
         this.currentInfo = row;
-        this.ok_send_offer = true;
+        // this.ok_send_offer = true;
+        const href = this.$router.resolve({path: '/offerDetail', query: row});
+        window.open(href, '_blank', 'width=1920,height=1080');
       },
       handleOkInterviewee() {
 
