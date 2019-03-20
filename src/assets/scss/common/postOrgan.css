@@ -306,14 +306,17 @@
         padding: 15px 0; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li:hover, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li:hover {
           color: #CF2E33; }
+        #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li b, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li b {
+          color: #c0c4cc;
+          padding-left: 6px; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li p, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li p {
           cursor: pointer; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li .lowerLevel, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li .lowerLevel {
           text-align: right;
           padding-right: 10px;
           min-width: 100px; }
-        #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li h4, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li h4 {
-          margin: 0 10px; }
+        #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li h3, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li h3 {
+          margin-right: 10px; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li h5, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li h5 {
           font-size: 16px;
           text-align: left; }

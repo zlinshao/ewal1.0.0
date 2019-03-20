@@ -58,8 +58,8 @@
       module(val) {
         this.depart_visible = val;
         this.depart_size = {
-          width: '600px',
-          height: '800px'
+          width: '500px',
+          height: '720px'
         }
       },
       depart_visible(val) {

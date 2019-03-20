@@ -19,31 +19,27 @@
             <div class="scroll_bar organList">
               <ul v-if="departList.length > 0 || dutyList.length > 0">
                 <li v-for="item in departList" class="items-bet">
-                  <p class="line-clamp1">{{item.name}}</p>
+                  <p class="line-clamp1">{{item.name}}<b>(部门)</b></p>
                   <p class="lowerLevel" @click="clickDepart(item)">
                     <i class="el-icon-share"></i>下级
                   </p>
                 </li>
-                <li v-for="item in dutyList" class="flex staff"
-                    :class="{'checkStaff': checkedDuty.includes(item.id)}">
-                  <div class="items-center" @click="checkStaff(item)">
+                <li v-for="item in dutyList" class="items-bet">
+                  <p class="line-clamp1" @click="getPositionList(item.id)">{{item.name}}<b>(职位)</b></p>
+                </li>
+                <li v-for="item in positionList" class="flex staff" v-if="positionList.length > 0"
+                    :class="{'checkStaff': checkedPosition.includes(item.id)}">
+                  <div class="items-center" @click="checkPosition(item)">
                     <h3></h3>
-                    <h4>
-                      <img :src="item.avatar" v-if="item.avatar">
-                      <img
-                        src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg"
-                        v-else>
-                    </h4>
                     <h5>
-                      <span class="staffName">{{item.name}}</span>
-                      <span v-for="key in item.org">
-                        {{key.name}}&nbsp;
+                      <span class="staffName">
+                        {{item.name}}<b>(岗位)</b>
                       </span>
                     </h5>
                   </div>
                 </li>
               </ul>
-              <div v-else>
+              <div>
                 <div
                   class="flex-center"
                   v-loading="fullLoading"
@@ -59,7 +55,7 @@
             <div>
               <label>已选&nbsp;：</label>
               <div class="scroll_bar flex">
-                <div v-for="(item,index) in chooseDuty" class="lists">
+                <div v-for="(item,index) in choosePosition" class="lists">
                   <h4>
                     <i class="el-icon-remove" @click="removeStaff(index)"></i>
                     <img :src="item.avatar" v-if="item.avatar">
@@ -94,9 +90,7 @@
         url: globalConfig.organ_server,
         lj_visible: false,
         fullLoading: false,
-        configure: {
-          num: '',
-        },
+        configure: {},
         search: '',
         crumbs: [
           {
@@ -105,12 +99,20 @@
           },
         ],
         departList: [],
-        dutyList: [],//当前部门人员
-        checkedDuty: [],//左侧选中人员ID
-        chooseDuty: [],//选中人员列表
-        params: {
+        dutyList: [],//职位列表
+        positionList: [],//岗位列表
+        checkedPosition: [],//左侧选中人员ID
+        choosePosition: [],//选中人员列表
+
+        paramsDuty: {
           search: '',
           org_id: '',
+          page: 1,
+          limit: 999,
+        },
+        paramsPosition: {
+          search: '',
+          duty_id: '',
           page: 1,
           limit: 999,
         }
@@ -127,7 +129,7 @@
       },
       organData: {
         handler(val, oldVal) {
-
+          this.configure.num = val ? (val.num ? val.num : '') : '';
         },
         deep: true
       }
@@ -137,20 +139,37 @@
       // 部门
       getList(org = 1) {
         this.departList = [];
+        this.dutyList = [];
+        this.positionList = [];
         this.fullLoading = true;
         return new Promise(resolve => {
           this.$http.getOrganization(org).then(res => {
-            this.fullLoading = false;
             if (res.code === '20000') {
               this.departList = res.data.data;
             }
-            this.params.org_id = org;
-            this.$http.getDuty(this.params).then(res => {
-
+            resolve(true);
+            // 职位
+            this.paramsDuty.org_id = org;
+            this.$http.getDuty(this.paramsDuty).then(res => {
+              this.fullLoading = false;
+              if (res.code === '20000') {
+                this.dutyList = res.data.data;
+              }
             });
           });
-          resolve(true);
         })
+      },
+      // 岗位
+      getPositionList(id) {
+        this.positionList = [];
+        this.fullLoading = true;
+        this.paramsPosition.duty_id = id;
+        this.$http.getPosition(this.paramsPosition).then(res => {
+          this.fullLoading = false;
+          if (res.code === '20000') {
+            this.positionList = res.data.data;
+          }
+        });
       },
       handleCloseLjDialog() {
         this.$emit('close', 'close');
@@ -158,17 +177,17 @@
       // 确认
       staffInfo() {
         let names = [], ids = [], str = '';
-        for (let item of this.chooseDuty) {
+        for (let item of this.choosePosition) {
           ids.push(item.id);
           names.push(item.name);
         }
         str = names.join(',');
-        this.$emit('close', ids, str, this.chooseDuty);
+        this.$emit('close', ids, str, this.choosePosition);
       },
       // 右侧删除已选
       removeStaff(index) {
-        this.checkedDuty.splice(index, 1);
-        this.chooseDuty.splice(index, 1);
+        this.checkedPosition.splice(index, 1);
+        this.choosePosition.splice(index, 1);
       },
       // 下级事件
       clickDepart(val) {
@@ -189,25 +208,25 @@
           }
         });
       },
-      // 选人
-      checkStaff(item) {
-        let staff = this.checkedDuty;
-        if (staff.length === this.configure.num) {
+      // 选岗位
+      checkPosition(item) {
+        let position = this.checkedPosition;
+        if (position.length === this.configure.num) {
           console.log('最多选择' + this.configure.num + '个');
           return;
         }
-        if (staff.length) {
-          if (staff.includes(item.id)) {
-            let index = staff.indexOf(item.id);
-            this.checkedDuty.splice(index, 1);
-            this.chooseDuty.splice(index, 1);
+        if (position.length) {
+          if (position.includes(item.id)) {
+            let index = position.indexOf(item.id);
+            this.checkedPosition.splice(index, 1);
+            this.choosePosition.splice(index, 1);
           } else {
-            this.checkedDuty.push(item.id);
-            this.chooseDuty.push(item);
+            this.checkedPosition.push(item.id);
+            this.choosePosition.push(item);
           }
         } else {
-          this.checkedDuty.push(item.id);
-          this.chooseDuty.push(item);
+          this.checkedPosition.push(item.id);
+          this.choosePosition.push(item);
         }
       }
     },

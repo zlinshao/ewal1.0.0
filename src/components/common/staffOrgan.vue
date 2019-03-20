@@ -115,9 +115,9 @@
           },
         ],
         departList: [],//左侧部门
-        staffList: [],//当前部门人员
+        staffList: [],//左侧人员
         checkedStaff: [],//左侧选中人员ID
-        chooseStaff: [],//选中人员列表
+        chooseStaff: [],//右侧 选中人员列表
       }
     },
     mounted() {
@@ -135,7 +135,6 @@
       organData: {
         handler(val, oldVal) {
           this.configure.num = val ? (val.num ? val.num : '') : '';
-          this.checkedStaff = val ? (val.arr ? val.arr : []) : [];
         },
         deep: true
       }
@@ -191,7 +190,7 @@
             }
             this.searchStaff(org);
           });
-          resolve(true);
+          resolve
         })
       },
       // 部门人员

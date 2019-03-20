@@ -124,6 +124,14 @@ class Axios {
       });
     });
   }
+  // 组织架构岗位
+  static getPosition(params) {
+    return new Promise((resolve, reject) => {
+      this.get(url + 'organization/position', params).then(res => {
+        resolve(res);
+      });
+    });
+  }
 }
 
 export default Axios
