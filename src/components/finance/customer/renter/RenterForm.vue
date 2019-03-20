@@ -16,8 +16,8 @@
                                 <span>{{item.label}}</span>
                             </div>
                             <div class="item_content" style="width: 230px">
-                                <el-input :placeholder="item.placeholder" v-model="form[item.prop]"
-                                          :disabled="is_disabled" @focus="clickCallback(item.label)"></el-input>
+                                <el-input :placeholder="item.placeholder" v-model="form[item.prop]" readonly
+                                          @focus="clickCallback(item.label)"></el-input>
                             </div>
                         </div>
                     </el-form-item>
@@ -156,7 +156,9 @@
         <lj-subject :visible="subject_visible" @close="subject_visible = false"
                     @confirm="handleConfirmSubject"></lj-subject>
 
-        <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
+        <StaffOrgan :module="staffModule"  @close="hiddenStaff"></StaffOrgan>
+        <DepartOrgan :module="departModule"  @close="hiddenDepart"></DepartOrgan>
+        <PostOrgan :module="postModule"  @close="hiddenPost"></PostOrgan>
     </div>
 
 </template>
@@ -164,23 +166,31 @@
 <script>
     import LjSubject from '../../../common/lj-subject.vue';
     import StaffOrgan from '../../../common/staffOrgan.vue';
+    import DepartOrgan from '../../../common/departOrgan.vue';
+    import PostOrgan from '../../../common/postOrgan.vue';
+
 
     export default {
         name: "renterForm",
         props: ['formData', 'current_row', 'edit_visible'],
         components: {
             LjSubject,
-            StaffOrgan
+            StaffOrgan,
+            DepartOrgan,
+            PostOrgan
         },
         data() {
             return {
-                organModule: false,//组织架构
+                postModule: false,//岗位
+                departModule: false,//部门
+                staffModule: false,//员工
+
                 form: this.formData,
                 row: this.current_row,
                 lordForm: [//表单字段
                     {
                         label: "签约人",
-                        prop: "operatorName",
+                        prop: "staffName",
                         type: "",
                         placeholder: "请输入签约人",
                     },
@@ -435,7 +445,8 @@
                 },
                 rulesForm: [
                     {}
-                ]
+                ],
+
 
 
             }
@@ -461,22 +472,39 @@
 
         },
         methods: {
-            clickCallback(label) {
-                if (label === "签约人") {
-                    this.organModule = true;
+            // 组织部门
+            hiddenDepart(ids, names, arr) {
+                console.log(ids,names,arr);
+                this.departModule = false;
+                if (ids !== 'close') {
+                    this.form.departmentName = names;
+                    this.form.department_id = ids;
+                    this.form.leaderName = arr[0].leader.name;
+                    this.form.leader_id = arr[0].leader_id;
                 }
-                if (label === "所属部门") {
-                    this.organModule = true;
-                }
-                if (label === "负责人") {
-                    this.organModule = true;
-                }
-
             },
-            hiddenOrgan(val) {
-                this.organModule = false;
-                if (val !== 'close') {
-                    console.log(val);
+            //员工
+            hiddenStaff(ids, names, arr){
+                this.staffModule = false;
+                console.log(ids,names,arr);
+                if (ids !== 'close') {
+                    this.form.staffName = names;
+                    this.form.staff_id = ids[0];
+                }
+            },
+            // 岗位
+            hiddenPost(ids, names, arr){
+                this.postModule = false;
+            },
+            clickCallback(val) {
+                if (val === "签约人") {
+                    this.staffModule = true;
+                }
+                if (val === "所属部门") {
+                    this.departModule = true;
+                }
+                if (val === "负责人") {
+                    this.staffModule = false;
                 }
             },
             callbackSuccess(res) {
@@ -486,7 +514,6 @@
                         message: res.msg,
                         subMessage: '',
                     });
-                    this.$emit("updateList",false);
                 } else {
                     this.$LjNotify('error', {
                         title: '失败',
@@ -525,12 +552,12 @@
                 for(let item of Object.keys(this.formParams)){
                     this.formParams[item] = this.form[item];
                 }
-                console.log(this.form);
                 console.log(this.formParams);
                 console.log(this.row.id);
                 if (this.row.id) {
                     this.$http.put(globalConfig.temporary_server + 'customer_renter/' + this.row.id, this.formParams).then(res => {
                         this.callbackSuccess(res);
+                        this.$emit("updateList",false)
 
                     })
                 }
