@@ -219,10 +219,12 @@
     mounted() {
       this.photo1.setFile = [
         {
+          type: 'image',
           id: 55,
           url: 'http://static.lejias.cn/lejia8e9013abd8af58047660bc8616f775a8.jpg',
         },
         {
+          type: 'image',
           id: 44,
           url: 'http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg',
         },

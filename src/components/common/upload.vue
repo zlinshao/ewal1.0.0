@@ -1,10 +1,11 @@
 <template>
   <div id="upLoad">
+    {{showFile}}
     <div class="flex">
       <div class="showFile" :style="uploadCss" v-for="(item,index) in showFile">
         <img :src="item.url" v-if="item.type === 'image'">
         <video :src="item.url" v-else></video>
-        <div class="progress">
+        <div class="progress" v-if="!item.url.includes('http://static.lejias.cn/')">
           <el-progress :text-inside="true" :stroke-width="20" :percentage="progress"></el-progress>
         </div>
         <div class="remove flex" @click="removeFile(index)">
@@ -28,8 +29,8 @@
     props: ['file'],
     data() {
       return {
-        ids: [],
         token: '',//上传凭证
+        ids: [],
         showFile: [],//本地文件地址
         isVideo: '',//是否视频
         progress: 0,
@@ -43,7 +44,10 @@
     watch: {
       file: {
         handler(val, oldVal) {
-          console.log(val)
+          for (let item of val.setFile) {
+            this.ids.push(item.id);
+            this.showFile.push(item);
+          }
         },
         deep: true
       }
@@ -51,7 +55,6 @@
     computed: {},
     methods: {
       removeFile(index) {
-        // this.file.setFile.splice(index, 1);
         this.showFile.splice(index, 1);
         this.ids.splice(index, 1);
         this.$emit('success', this.ids);
@@ -107,7 +110,6 @@
           let subscription = observable.subscribe({
             next(res) {
               that.progress = Math.floor(res.total.percent);
-              // console.log(res);
             },
             error(err) {
               console.log(err);
@@ -120,9 +122,8 @@
               data.type = fileType;
               data.size = fileSize;
               that.$http.uploadServer(data).then(res => {
-                console.log(res);
                 if (res.code === "110100") {
-                  that.ids.push(res.data.id);
+                  that.ids.push(Number(res.data.id));
                   that.$emit('success', that.ids);
                 }
               })
