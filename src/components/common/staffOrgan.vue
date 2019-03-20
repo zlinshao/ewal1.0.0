@@ -190,7 +190,7 @@
             }
             this.searchStaff(org);
           });
-          resolve
+          resolve(true)
         })
       },
       // 部门人员
