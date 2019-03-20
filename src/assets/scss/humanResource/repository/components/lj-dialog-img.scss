@@ -1,0 +1,25 @@
+@import "../../../common.scss";
+
+#theme_name {
+  #lj-dialog-img {
+    .flex-center {
+      position: fixed;
+      top: 81px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      background-color: rgba(0,0,0,0.3);
+      z-index: 103;
+      .lj-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        text-align: center;
+        padding: 30px;
+      }
+    }
+
+  }
+}
+

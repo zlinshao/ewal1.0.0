@@ -67,6 +67,7 @@
 
       .event_info {
         width: 80%;
+        @include flex('items-bet');
         //border: 1px solid #00FDFF;
       }
 
