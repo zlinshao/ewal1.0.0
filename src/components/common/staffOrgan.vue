@@ -6,7 +6,7 @@
       @close="handleCloseLjDialog">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
-          <span>选择人员</span>
+          <h3>选择人员</h3>
           <div class="items-center">
             <!--<el-input type="text" size="small" v-model="search"></el-input>-->
             <span class="search"></span>
@@ -102,6 +102,7 @@
     data() {
       return {
         url: globalConfig.organ_server,
+        lj_visible: false,
         fullLoading: false,
         configure: {
           num: '',
@@ -114,10 +115,9 @@
           },
         ],
         departList: [],//左侧部门
-        staffList: [],//当前部门人员
+        staffList: [],//左侧人员
         checkedStaff: [],//左侧选中人员ID
-        chooseStaff: [],//选中人员列表
-        lj_visible: false,
+        chooseStaff: [],//右侧 选中人员列表
       }
     },
     mounted() {
@@ -152,7 +152,7 @@
           names.push(item.name);
         }
         str = names.join(',');
-        this.$emit('close', ids, names, this.chooseStaff);
+        this.$emit('close', ids, str, this.chooseStaff);
       },
       // 右侧删除已选
       removeStaff(index) {
@@ -183,12 +183,15 @@
         this.departList = [];
         this.staffList = [];
         this.fullLoading = true;
-        this.$http.getOrganization(org).then(res => {
-          if (res.code === '20000') {
-            this.departList = res.data.data;
-          }
-          this.searchStaff(org);
-        });
+        return new Promise(resolve => {
+          this.$http.getOrganization(org).then(res => {
+            if (res.code === '20000') {
+              this.departList = res.data.data;
+            }
+            this.searchStaff(org);
+          });
+          resolve(true)
+        })
       },
       // 部门人员
       searchStaff(org, val = '') {

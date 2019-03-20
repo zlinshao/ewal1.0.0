@@ -47,7 +47,15 @@
               </p>
             </div>
             <div v-if="item.keyType === 'staff'">
-              <el-input @focus="staffSearch(item.value, item.keyName)" readonly v-model="showName[item.keyName]"
+              <el-input @focus="organSearch(item)" readonly v-model="showName[item.keyName]"
+                        :placeholder="item.placeholder"></el-input>
+            </div>
+            <div v-if="item.keyType === 'depart'">
+              <el-input @focus="organSearch(item)" readonly v-model="showName[item.keyName]"
+                        :placeholder="item.placeholder"></el-input>
+            </div>
+            <div v-if="item.keyType === 'position'">
+              <el-input @focus="organSearch(item)" readonly v-model="showName[item.keyName]"
                         :placeholder="item.placeholder"></el-input>
             </div>
           </div>
@@ -58,22 +66,27 @@
         </footer>
       </div>
     </div>
-    <!--选择人员-->
-    <StaffOrgan :module="organModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
+    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
+    <DepartOrgan :module="departModule" :organData="organData" @close="hiddenOrgan"></DepartOrgan>
+    <PostOrgan :module="postModule" :organData="organData" @close="hiddenOrgan"></PostOrgan>
   </div>
 </template>
 
 <script>
   import StaffOrgan from './staffOrgan.vue'
+  import DepartOrgan from './departOrgan.vue'
+  import PostOrgan from './postOrgan.vue'
 
   export default {
     name: "search-high",
     props: ['module', 'showData'],
-    components: {StaffOrgan},
+    components: {StaffOrgan, DepartOrgan, PostOrgan},
     data() {
       return {
         showModule: false,
-        organModule: false,
+        staffModule: false,
+        departModule: false,
+        postModule: false,
         organData: {},// 组织架构配置 选择数量 num
         organKey: '',
         showName: {},
@@ -176,15 +189,27 @@
           check.push(val);
         }
       },
-      // 选择人员
-      staffSearch(val = '', key) {
-        this.organModule = true;
-        this.organData = val;
-        this.organKey = key;
+      // 组织架构筛选
+      organSearch(val = {}) {
+        switch (val.keyType) {
+          case 'staff':
+            this.staffModule = true;
+            break;
+          case 'depart':
+            this.departModule = true;
+            break;
+          case 'position':
+            this.postModule = true;
+            break;
+        }
+        this.organData = val.value;
+        this.organKey = val.keyName;
       },
       // 关闭 选择人员
-      hiddenOrgan(ids, names) {
-        this.organModule = false;
+      hiddenOrgan(ids, names, arr) {
+        this.departModule = false;
+        this.staffModule = false;
+        this.postModule = false;
         if (ids !== 'close') {
           this.params[this.organKey] = ids;
           this.showName[this.organKey] = names;
@@ -194,7 +219,8 @@
         this.$emit('close', this.params);
       },
       resetting() {
-        this.params = JSON.parse(JSON.stringify(this.reset));
+        this.params = this.jsonData(this.reset);
+        this.showName = {};
       },
     },
   }

@@ -15,13 +15,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <!--<div class="searchTerm" v-if="chooseTab === 3">-->
-        <!--<el-checkbox-group v-model="checkList">-->
-        <!--<el-checkbox label="1">离职员工</el-checkbox>-->
-        <!--</el-checkbox-group>-->
-        <!--</div>-->
-        <div class="icons-font" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1|| chooseTab===2"><b>入库</b></div>
-        <!--<div class="icons-font" @click="exchange(chooseTab)" v-if="chooseTab === 1"><b>兑换</b></div>-->
+        <div class="icons-font" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>入库</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
       </div>
     </div>
@@ -39,9 +33,9 @@
       <OverView :searchVal="searchFruit1" :in_repository_visible="in_repository_visible" ></OverView>
     </div>
 
-    <!--惩恶组件-->
+    <!--借用领用-->
     <div class="down" v-if="chooseTab==2">
-      <!--<RewardDown :searchVal="searchFruit2" :reward_order_visible="reward_order_visible" ></RewardDown>-->
+      <borrow-receive :searchVal="searchFruit2"></borrow-receive>
     </div>
 
 
@@ -60,11 +54,11 @@
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
   import OverView from './overView/index.vue';//库房总览
-  // import RewardDown from './rewardDown/index.vue';//惩恶组件
+  import BorrowReceive from './borrowReceive/index';//借用领用
   import WorkInfo from '../../common/work-info';
   import LjDialog from '../../common/lj-dialog.vue';
   import SearchHigh from '../../common/searchHigh.vue';
-  import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
+  import {overViewSearch, borrowReceiveSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
 
@@ -75,15 +69,15 @@
       MenuList,
       Upload,
       OverView,
-      // RewardDown,
+      BorrowReceive,
       WorkInfo,
       LjDialog,
       SearchHigh,
     },
     data() {
       return {
-        staffBookSearch,
-        LeaveJobSearch,
+        overViewSearch,
+        borrowReceiveSearch,
         humanResource,
         resourceDepart,
         selects: [
@@ -108,8 +102,6 @@
         searchFruit1: {},//库房总览搜索结果
         searchFruit2: {},//借用领用搜索结果
 
-        //乐伽dialog
-        exchange_rules_visible:false,
 
         //入库控制
         in_repository_visible:false,
@@ -144,10 +136,10 @@
         this.showSearch = true;
         switch (val) {
           case 1:
-            this.searchData = this.staffBookSearch;
+            this.searchData = this.overViewSearch;
             break;
           case 2:
-            this.searchData = this.LeaveJobSearch;
+            this.searchData = this.borrowReceiveSearch;
             break;
         }
       },
@@ -177,9 +169,6 @@
       inRepositoryHandler() {
         this.in_repository_visible = !this.in_repository_visible;
       },
-      // exchange() {
-      //   this.exchange_rules_visible = !this.exchange_rules_visible;
-      // },
 
 
       // tab切换
@@ -212,7 +201,7 @@
   @import "../../../assets/scss/humanResource/repository/index.scss";
 
   @mixin repositoryImg($m, $n) {
-    $url: '../../../assets/image/humanResource/reward/' + $n + '/' + $m;
+    $url: '../../../assets/image/humanResource/repository/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
@@ -227,14 +216,14 @@
       .repository-container {
 
         .content {
-          @include repositoryImg('sffmbj.png', 'theme1');
+          //@include repositoryImg('sffmbj.png', 'theme1');
 
           .left {
-            @include repositoryImg('yslx.png', 'theme1')
+            @include repositoryImg('kfzlx.png', 'theme1')
           }
 
           .right {
-            @include repositoryImg('celw.png', 'theme1')
+            @include repositoryImg('lwkfw.png', 'theme1')
           }
         }
       }

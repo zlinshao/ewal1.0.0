@@ -91,7 +91,7 @@
 @font-face {
   font-family: 'jianyue';
   src: url("/static/font/BaiZhouRenZhe.otf"); }
-.writingMode, #theme_name #repository .repository-container .content > div span {
+.writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl; }
 
@@ -155,19 +155,22 @@
     #theme_name #repository .repository-container .content {
       height: calc(100% - 341px); }
       #theme_name #repository .repository-container .content > div {
-        width: 300px;
-        height: 300px;
+        width: 240px;
+        height: 160px;
         margin: 0 110px; }
         #theme_name #repository .repository-container .content > div:hover {
           cursor: pointer;
           transform: scale(1.05);
           transition: all 1s; }
         #theme_name #repository .repository-container .content > div span {
+          width: 80px;
+          word-wrap: break-word;
+          word-break: break-all;
           color: #fff;
           font-size: 32px;
           font-family: 'jingDianXingShu';
           position: relative;
-          left: -2px; }
+          left: 8px; }
           #theme_name #repository .repository-container .content > div span.gray {
             color: #686874; }
 

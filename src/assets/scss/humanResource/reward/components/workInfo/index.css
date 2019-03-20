@@ -176,7 +176,11 @@
     #workInfo .info_container .day_info > div > p {
       font-size: 16px; }
     #workInfo .info_container .day_info .event_info {
-      width: 80%; }
+      width: 80%;
+      display: flex;
+      display: -webkit-flex;
+      align-items: center;
+      justify-content: space-between; }
     #workInfo .info_container .day_info .work_info {
       height: 321px; }
       #workInfo .info_container .day_info .work_info > p:not(:last-child) {

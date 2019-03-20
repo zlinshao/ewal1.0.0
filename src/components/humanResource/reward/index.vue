@@ -34,16 +34,17 @@
     </div>
     <!--扬善组件-->
     <div class="up" v-if="chooseTab==1">
-      <RewardUp :searchVal="searchFruit1" :reward_order_visible="reward_order_visible" :exchange_rules_visible="exchange_rules_visible"></RewardUp>
+      <RewardUp :searchVal="searchFruit1" :reward_order_visible="reward_order_visible"
+                :exchange_rules_visible="exchange_rules_visible"></RewardUp>
     </div>
 
     <!--惩恶组件-->
     <div class="down" v-if="chooseTab==2">
-      <RewardDown :searchVal="searchFruit2" :reward_order_visible="reward_order_visible" ></RewardDown>
+      <RewardDown :searchVal="searchFruit2" :reward_order_visible="reward_order_visible"></RewardDown>
     </div>
 
 
-    <work-info v-show="chooseTab" :work-info="work_info" :event-data="event_data"
+    <work-info v-show="chooseTab" :work-info="work_info" :event-data-list="event_data_list"
                @change="handleChangeDate"></work-info>
 
     <!--模块入口-->
@@ -63,7 +64,7 @@
   import WorkInfo from './components/workInfo/work-info';
   import LjDialog from '../../common/lj-dialog.vue';
   import SearchHigh from '../../common/searchHigh.vue';
-  import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
+  import {rewardUpSearch, rewardDownSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
 
@@ -81,8 +82,8 @@
     },
     data() {
       return {
-        staffBookSearch,
-        LeaveJobSearch,
+        rewardUpSearch,
+        rewardDownSearch,
         humanResource,
         resourceDepart,
         selects: [
@@ -109,33 +110,74 @@
 
         //乐伽dialog
         reward_order_visible: false,
-        exchange_rules_visible:false,
+        exchange_rules_visible: false,
 
         //侧滑栏数据
         show_market: false,
         work_info: [
-          {work: '平均在线时长', val: '8 h'},
-          {work: '平均处理用时', val: '30 min'},
-          {work: '当日处理事件数', val: '16 件'},
-          {work: '本周处理事件数', val: '35 件'},
+          {work: '穿铠甲', val: '10'},
+          {work: '攻下小城池', val: '6'},
+          {work: '攻下大城池', val: '3'},
+          {work: '攻下国家', val: '3'},
         ],
+
+        event_data_list: [
+          {
+            title:'事件占有率:',
+            value:[
+              {value: 500, name: '一般'},
+              {value: 300, name: '特殊'},
+              {value: 200, name: '紧急'}
+            ]
+          },
+          {
+            title:'十佳萌新:',
+            value:[
+              {value: 500, name: '一般'},
+              {value: 300, name: '特殊'},
+              {value: 200, name: '紧急'}
+            ]
+          },
+          {
+            title:'十佳老司机:',
+            value:[
+              {value: 500, name: '一般'},
+              {value: 300, name: '特殊'},
+              {value: 200, name: '紧急'}
+            ]
+          },
+          {
+            title:'赏善令:',
+            value:[
+              {value: 500, name: '一般'},
+              {value: 300, name: '特殊'},
+              {value: 200, name: '紧急'}
+            ]
+          }
+        ],
+
+
+        // event_data_list: [
+        //   [{value: 500, name: '一般'},
+        //     {value: 300, name: '特殊'},
+        //     {value: 200, name: '紧急'},],
+        //   [{value: 400, name: '一般'},
+        //     {value: 300, name: '特殊'},
+        //     {value: 300, name: '紧急'},],
+        //   [{value: 200, name: '一般'},
+        //     {value: 400, name: '特殊'},
+        //     {value: 400, name: '紧急'},],
+        // ],
         event_data: [
-          [{value: 500, name: '一般'},
-            {value: 300, name: '特殊'},
-            {value: 200, name: '紧急'},],
-          [{value: 400, name: '一般'},
-            {value: 300, name: '特殊'},
-            {value: 300, name: '紧急'},],
-          [{value: 200, name: '一般'},
-            {value: 400, name: '特殊'},
-            {value: 400, name: '紧急'},],
+          {value: 500, name: '一般'},
+          {value: 300, name: '特殊'},
+          {value: 200, name: '紧急'}
         ],
       }
     },
     mounted() {
       this.show_market = true;
-      this.work_info[0].val = '7 h';
-      //this.event_data[0].value = 700;
+      //this.work_info[0].val = '7';
     },
     activated() {
     },
@@ -147,10 +189,10 @@
         this.showSearch = true;
         switch (val) {
           case 1:
-            this.searchData = this.staffBookSearch;
+            this.searchData = this.rewardUpSearch;
             break;
           case 2:
-            this.searchData = this.LeaveJobSearch;
+            this.searchData = this.rewardDownSearch;
             break;
         }
       },
