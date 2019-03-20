@@ -28,7 +28,9 @@
       }
     },
     mounted() {
-
+      this.$http.get(globalConfig.upload_sever + 'api/v1/token').then(res => {
+        this.token = res.data.data;
+      })
     },
     activated() {
     },
@@ -87,18 +89,17 @@
             useCdnDomain: true,
           };
           let observable = qiniu.upload(file, key, that.token, putExtra, config);
-          let observer = {
-            next(res){
+          let subscription = observable.subscribe({
+            next: (res) => {
               console.log(res);
             },
-            error(err){
+            error: (err) => {
               console.log(err);
             },
-            complete(res){
+            complete: (res) => {
               console.log(res);
             }
-          };
-          let subscription = observable.subscribe(observer);
+          });
         }
       },
     },

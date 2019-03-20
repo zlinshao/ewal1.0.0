@@ -132,46 +132,20 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #repository {
-  height: 100%;
-  background-color: #FFFFFF; }
-  #theme_name #repository .listTopRight .icons-font {
-    height: 30px;
-    width: 50px;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    justify-content: center; }
-    #theme_name #repository .listTopRight .icons-font b {
-      color: white;
-      font-size: 14px; }
-  #theme_name #repository .repository-container {
-    width: 100%;
-    height: calc(100% - 160px);
+#theme_name #lj-dialog-img .flex-center {
+  position: fixed;
+  top: 81px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 103; }
+  #theme_name #lj-dialog-img .flex-center .lj-container {
     position: absolute;
-    left: 0;
-    top: 160px;
-    transition: all ease 1s; }
-    #theme_name #repository .repository-container .content {
-      height: calc(100% - 341px); }
-      #theme_name #repository .repository-container .content > div {
-        width: 240px;
-        height: 160px;
-        margin: 0 110px; }
-        #theme_name #repository .repository-container .content > div:hover {
-          cursor: pointer;
-          transform: scale(1.05);
-          transition: all 1s; }
-        #theme_name #repository .repository-container .content > div span {
-          width: 80px;
-          word-wrap: break-word;
-          word-break: break-all;
-          color: #fff;
-          font-size: 32px;
-          font-family: 'jingDianXingShu';
-          position: relative;
-          left: 8px; }
-          #theme_name #repository .repository-container .content > div span.gray {
-            color: #686874; }
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 30px; }
 
-/*# sourceMappingURL=index.css.map */
+/*# sourceMappingURL=lj-dialog-img.css.map */

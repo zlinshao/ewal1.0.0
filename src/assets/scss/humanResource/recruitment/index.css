@@ -133,45 +133,40 @@
     border-radius: 4px; }
 
 #theme_name #recruitment > div {
-  position: relative; }
+  position: relative;
+  overflow: hidden; }
   #theme_name #recruitment > div .nav_container {
     width: 100%;
-    height: calc(100% - 81px);
+    height: 400px;
     position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #F2F2F2;
-    z-index: 9;
+    bottom: 0;
+    right: 0;
+    background-color: white;
+    border-top: 1px solid #F2F2F2;
+    z-index: 99;
     transition: all ease 1s; }
-    #theme_name #recruitment > div .nav_container .nav_content {
-      padding: 50px 200px;
-      justify-content: space-between;
-      border-bottom: 1px solid #C0C0C0; }
-      #theme_name #recruitment > div .nav_container .nav_content > div {
-        width: 20%;
-        max-width: 250px;
-        height: 400px;
-        text-align: center;
-        cursor: pointer; }
-        #theme_name #recruitment > div .nav_container .nav_content > div:hover {
-          color: #CF2E33; }
-        #theme_name #recruitment > div .nav_container .nav_content > div > p {
-          font-size: 24px;
-          font-family: 'jingDianXingShu';
-          margin: 30px 0; }
-        #theme_name #recruitment > div .nav_container .nav_content > div .info_detail {
-          width: 75%;
-          height: 200px;
-          margin: 0 auto; }
-        #theme_name #recruitment > div .nav_container .nav_content > div .info_footer {
-          width: 95%;
-          height: 50px;
-          margin: 10px auto;
-          line-height: 50px; }
     #theme_name #recruitment > div .nav_container .nav_info {
       width: 100%; }
+    #theme_name #recruitment > div .nav_container .show_btn, #theme_name #recruitment > div .nav_container .hide_btn {
+      width: 30px;
+      height: 80px;
+      background-color: #CF2E33;
+      position: absolute;
+      left: -30px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      text-align: center;
+      line-height: 80px;
+      font-size: 22px;
+      cursor: pointer;
+      border-radius: 6px 0 0 6px; }
+    #theme_name #recruitment > div .nav_container .hide_btn {
+      left: 0;
+      border-radius: 0 6px 6px 0; }
+    #theme_name #recruitment > div .nav_container .btn_hide {
+      display: none; }
   #theme_name #recruitment > div .hide_nav_container {
-    left: -1920px;
-    top: -1920px; }
+    right: -1920px; }
 
 /*# sourceMappingURL=index.css.map */

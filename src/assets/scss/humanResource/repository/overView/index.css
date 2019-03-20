@@ -151,9 +151,49 @@
       margin-bottom: 6px; }
 #theme_name.theme1 #overView .mainListTable a {
   cursor: pointer; }
-#theme_name.theme1 #overView .el-radio .el-radio__inner {
-  width: 14px !important;
-  height: 14px !important;
-  border-radius: 0; }
+#theme_name.theme1 #overView footer.common-page {
+  height: 100px;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 100px;
+  z-index: 6; }
+  #theme_name.theme1 #overView footer.common-page .develop {
+    position: absolute;
+    top: -30px;
+    width: 80px;
+    cursor: pointer;
+    height: 30px;
+    opacity: 1;
+    border-radius: 10px 10px 0 0;
+    background-color: #F2F2F2; }
+#theme_name.theme1 #overView .qr-code {
+  width: 30px;
+  height: 30px;
+  margin-left: 27px;
+  cursor: pointer; }
+#theme_name.theme1 #overView .dialog_container .choose-goods .choose-goods-icon {
+  cursor: pointer;
+  width: 20px;
+  height: 16px; }
+#theme_name.theme1 #overView .qr-container {
+  background-color: #fff;
+  padding: 15px; }
+  #theme_name.theme1 #overView .qr-container .qr-code-large {
+    width: 300px;
+    height: 300px; }
+  #theme_name.theme1 #overView .qr-container > :last-child {
+    padding: 15px; }
+#theme_name.theme1 #overView .repository-overview .lj-header-search .el-icon-search {
+  position: absolute;
+  top: 7px;
+  right: 195px; }
+#theme_name.theme1 #overView .repository-overview .lj-header-search input {
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  width: 220px;
+  height: 28px;
+  padding: 2px 12px 2px 32px; }
 
 /*# sourceMappingURL=index.css.map */
