@@ -5,4 +5,5 @@ globalConfig = {
   organ_server: 'http://gml.vaiwan.com/ewal/public/',
   upload_sever: 'http://recommend.ewal.lejias.cn/',
   humanResource_server: 'http://test.hr.api.ewal.lejias.cn/'
+
 };

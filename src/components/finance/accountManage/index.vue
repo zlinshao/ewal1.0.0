@@ -34,11 +34,11 @@
           <template slot-scope="scope">
             <div class="operate">
               <!--<el-button size="mini" type="primary" plain @click="info_visible = true">点击查看</el-button>-->
-              <el-button size="mini" type="success" plain @click="handleOpenUpdateAccount(scope.row)">更新</el-button>
-              <el-button size="mini" type="danger" plain @click="handleOpenDel(scope.row)">删除</el-button>
-              <el-button size="mini" type="warning" plain @click="handleOpenRecharge(scope.row)">充值</el-button>
-              <el-button size="mini" type="danger" plain @click="initial_visible = true;current_row = scope.row">归零</el-button>
-              <el-button size="mini" type="success" plain @click="handleOpenInfo(scope.row)">记录</el-button>
+              <el-button size="mini" type="success"  @click="handleOpenUpdateAccount(scope.row)">更新</el-button>
+              <el-button size="mini" type="danger"  @click="handleOpenDel(scope.row)">删除</el-button>
+              <el-button size="mini" type="warning"  @click="handleOpenRecharge(scope.row)">充值</el-button>
+              <el-button size="mini" type="danger"  @click="initial_visible = true;current_row = scope.row">归零</el-button>
+              <el-button size="mini" type="success"  @click="handleOpenInfo(scope.row)">记录</el-button>
             </div>
           </template>
         </el-table-column>
@@ -542,17 +542,19 @@
       },
       callbackSuccess(res) {
         if (res.code === 200) {
-          this.$notify.success({
-            title: '成功',
-            message: res.msg
-          });
+            this.$LjNotify('success', {
+                title: '成功',
+                message: res.msg,
+                subMessage: '',
+            });
           this.current_row = '';
           this.getAccountList();
         } else {
-          this.$notify.warning({
-            title: '失败',
-            message: res.msg
-          });
+            this.$LjNotify('error', {
+                title: '失败',
+                message: res.msg,
+                subMessage: '',
+            });
           return false;
         }
       },
@@ -651,34 +653,6 @@
                 title: '未完成',
               },
             ],
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
           },
           {
             keyType: 'organ',

@@ -9,7 +9,7 @@
             </div>
             <div class="items-center listTopRight">
                 <div class="icons home_icon"></div>
-                <div class="icons add" @click="add_visible = true"><b>+</b></div>
+                <div class="icons add" @click="add_visible=true;"><b>+</b></div>
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
@@ -22,6 +22,7 @@
                     style="width: 100%">
 
                 <el-table-column
+                        show-overflow-tooltip
                         v-for="item in Object.keys(paymentLabels)"
                         :label="paymentLabels[item]" :key="item"
                         :prop="item"
@@ -34,7 +35,7 @@
                         <span>{{ scope.row.status === 1 ? '待入账' : '已入账'}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" prop="" align="center" width="500">
+                <el-table-column label="操作" prop="" align="center" width="550">
                     <template slot-scope="scope">
                         <el-tooltip
                                 v-for="(item,index) in btnData" :key="index"
@@ -209,20 +210,55 @@
                 <div class="dialog_main">
 
                     <el-form :model="transferForm" :rules="rules" ref="transferForm" class="demo-ruleForm" size="mini">
-                        <el-form-item prop="name">
+                        <el-form-item >
                             <div class="form_item_container">
                                 <div class="item_label">
                                     <b class="item_icons">
                                         <i class="icon_subject"></i>
                                     </b>
-                                    <span>账号</span>
+                                    <span>付款方式</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="transferForm.customer_account_num"></el-input>
+                                    <el-select placeholder="请选择" v-model="params.cate" @change="getAccount">
+                                        <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
+                                                   :key="index"></el-option>
+                                    </el-select>
                                 </div>
                             </div>
                         </el-form-item>
-                        <el-form-item prop="name">
+                        <el-form-item >
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_subject"></i>
+                                    </b>
+                                    <span>付款账号</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-select placeholder="请选择" v-model="transferForm.account_id" :disabled="is_disabled">
+                                        <el-option v-for="(item,index) in accountLists" :label="item.name" :value="item.id"
+                                                   :key="index"></el-option>
+                                    </el-select>
+                                    <!--<el-input placeholder="请输入"-->
+                                              <!--v-model="transferForm.customer_account_num"-->
+                                    <!--&gt;</el-input>-->
+                                </div>
+                            </div>
+                        </el-form-item>
+                        <el-form-item >
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_subject"></i>
+                                    </b>
+                                    <span>客户账户</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-input placeholder="请输入" v-model="transferForm.customer_account_num" :disabled="true"></el-input>
+                                </div>
+                            </div>
+                        </el-form-item>
+                        <el-form-item >
                             <div class="form_item_container">
                                 <div class="item_label">
                                     <b class="item_icons">
@@ -231,14 +267,14 @@
                                     <span>账户类型</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-select placeholder="请选择" v-model="transferForm.customer_account_type">
+                                    <el-select placeholder="请选择" v-model="transferForm.customer_account_type" :disabled="true">
                                         <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
                                                    :key="index"></el-option>
                                     </el-select>
                                 </div>
                             </div>
                         </el-form-item>
-                        <el-form-item prop="name">
+                        <el-form-item >
                             <div class="form_item_container">
                                 <div class="item_label">
                                     <b class="item_icons">
@@ -251,7 +287,7 @@
                                 </div>
                             </div>
                         </el-form-item>
-                        <el-form-item prop="name">
+                        <el-form-item >
                             <div class="form_item_container">
                                 <div class="item_label">
                                     <b class="item_icons">
@@ -265,7 +301,7 @@
                                 </div>
                             </div>
                         </el-form-item>
-                        <el-form-item prop="name">
+                        <el-form-item >
                             <div class="form_item_container">
                                 <div class="item_label">
                                     <b class="item_icons">
@@ -281,7 +317,7 @@
                             </div>
                         </el-form-item>
 
-                        <el-form-item prop="name">
+                        <el-form-item >
                             <div class="form_item_container">
                                 <div class="item_label">
                                     <b class="item_icons">
@@ -338,9 +374,11 @@
                                     <span>客户身份</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-select placeholder="请选择" v-model="ruleForm.identity" :disabled="true">
-                                        <el-option v-for="(index,item) in types" :label="item.title" :value="item.val" :key="item"></el-option>
-                                    </el-select>
+                                    <el-input placeholder="请点击选择客户名称"
+                                              :disabled="true" :value="ruleForm.identity===1?'业主':ruleForm.identity===2 ?'租客':''"></el-input>
+                                    <!--<el-select placeholder="请选择" v-model="ruleForm.identity" :disabled="true">-->
+                                        <!--<el-option v-for="(item,index) in types" :label="item.title" :value="item.val" :key="item.val"></el-option>-->
+                                    <!--</el-select>-->
                                 </div>
                             </div>
                         </el-form-item>
@@ -486,6 +524,41 @@
             </div>
         </lj-dialog>
 
+        <!--回滚-->
+        <lj-dialog :visible="recall_visible" :size="{width: 600 + 'px',height: 500 + 'px'}"
+                   @close="recall_visible = false;current_row = ''">
+            <div class="dialog_container">
+                <div class="dialog_header">
+                    <h3>回滚</h3>
+                </div>
+                <div class="dialog_main">
+                    <el-table
+                            :data="running_account_record"
+                            :row-class-name="tableChooseRow"
+                            @cell-click="tableClickRow"
+                            header-row-class-name="tableHeader"
+                            @selection-change="handleSelectionChange"
+                    >
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+
+                        <el-table-column  align="center" label="ID" prop="id">
+                        </el-table-column>
+                        <el-table-column  align="center" label="明细" prop="desc">
+                        </el-table-column>
+
+
+                    </el-table>
+                </div>
+                <div class="dialog_footer">
+                    <el-button type="danger" size="small" @click="handleOkRecall">确定</el-button>
+                    <el-button type="info" size="small" @click="recall_visible = false;current_row = '';">取消</el-button>
+                </div>
+            </div>
+        </lj-dialog>
+
     </div>
 </template>
 
@@ -518,17 +591,23 @@
                     limit: 12,
                     department_ids: '',
                     export: '',
+                    cate:'',
                 },
                 current_row: '',
                 delete_visible: false,//删除
                 add_visible: false,//新增
                 pay_visible: false,//应付金额
+                recall_visible:false,//回滚
                 payData_visible: false,//应付时间
                 complete_visible: false,//补齐时间
                 transfer_visible: false,//应付入账
                 subject_visible: false,//科目
                 show_subject: false,//科目
                 customer_visible: false,//客户列表
+                is_disabled:true,
+                multipleSelection: [],//多选
+                running_account_record:[],//回滚数据
+                ra_ids:[],
 
                 which_subject: '',
                 new_subject_visible: false,
@@ -554,180 +633,14 @@
                     data: [],
                 },
 
-                tableLists: [
-                    {
-                        "id": 138004,
-                        "subject_id": 3,
-                        "description": {
-                            "customer": "张良方",
-                            "months": "2017-07-04~2020-07-04",
-                            "description": "月付2200",
-                            "staff": "刘育岑"
-                        },
-                        "staff_id": 249,
-                        "department_id": 66,
-                        "customer_id": 4098,
-                        "amount_payable": "2200.00",
-                        "amount_paid": "0.00",
-                        "balance": "2200.00",
-                        "pay_date": "2019-03-04",
-                        "complete_date": "2019-03-04",
-                        "status": 1,
-                        "create_time": "2017-09-09 17:30:56",
-                        "update_time": "2017-09-09 17:30:56",
-                        "delete_time": null,
-                        "running_account_record": null,
-                        "remark": "测试一下",
-                        "customer_account_num": "6236682000012399308",
-                        "customer_account_type": 1,
-                        "relative_payable": null,
-                        "pendable": 1,
-                        "mutable": 1,
-                        "aproach": 2,
-                        "tag": "",
-                        "identity": 1,
-                        "modified_field": "",
-                        "proof": {
-                            "table": "financial_customer_collect",
-                            "id": 4098,
-                            "rank": 20
-                        },
-                        "is_rank": null,
-                        "rank": null,
-                        "staff": {
-                            "id": 249,
-                            "name": "刘育岑",
-                            "avatar": "https://static.dingtalk.com/media/lADPBbCc1sdkMS7NA5_NBNc_1239_927.jpg",
-                            "phone": "18625200977",
-                            "email": null,
-                            "ding_user_id": "145110486021241399",
-                            "gender": 229,
-                            "is_on_job": null,
-                            "is_enable": null,
-                            "is_leader": 0,
-                            "qr_code": "",
-                            "created_at": "2017-07-06 11:51:08",
-                            "org": [],
-                            "position": [
-                                {
-                                    "id": 56,
-                                    "name": "片区经理",
-                                    "description": "片区经理",
-                                    "duty_id": 16,
-                                    "parent_id": 55,
-                                    "created_at": "2018-04-19 13:16:48",
-                                    "pivot": {
-                                        "position_id": 56,
-                                        "user_id": 249
-                                    }
-                                }
-                            ]
-                        },
-                        "customer": {
-                            "id": 4098,
-                            "customer_name": "张良方",
-                            "staff_id": 249,
-                            "department_id": 66,
-                            "leader_id": 19,
-                            "house_id": 4277,
-                            "address": "津西新天地1-707",
-                            "pay_types": [
-                                "1",
-                                "1",
-                                "1"
-                            ],
-                            "months": 36,
-                            "prices": [
-                                "2200",
-                                "2200",
-                                "2200"
-                            ],
-                            "deposit": "2200.00",
-                            "contact": "18115566969",
-                            "account_type": 1,
-                            "account_num": "6236682000012399308",
-                            "account_bank": 4,
-                            "account_subbank": "",
-                            "account_owner": "王子明",
-                            "account_history": [
-                                {
-                                    "account_type": 1,
-                                    "account_bank": 3,
-                                    "account_subbank": "",
-                                    "account_num": "6217906101009930038",
-                                    "account_owner": "王金娣",
-                                    "date": "2017-09-09 17:30:56"
-                                }
-                            ],
-                            "deal_date": "2017-07-04",
-                            "first_pay_date": "2017-08-04",
-                            "second_pay_date": "2017-09-04",
-                            "py_first": "jxxtd1_707zlf",
-                            "py_all": "jinxixintiandi1_707zhangliangfang",
-                            "subject_id": {
-                                "rental": "3",
-                                "deposit": "2"
-                            },
-                            "remark": "",
-                            "status": 2,
-                            "operator_id": 52,
-                            "freeze": 0,
-                            "create_time": "2017-09-04 21:13:04",
-                            "update_time": "2017-11-24 14:23:58",
-                            "delete_time": null,
-                            "salary_department_id": 0,
-                            "salary_leader_id": 0,
-                            "salary_candidate": 1,
-                            "salary_department_name": "运营",
-                            "salary_leader_name": "凉快",
-                            "mark_date": "0000-00-00",
-                            "generate_time": null,
-                            "suppress_dup": 1,
-                            "medi_cost": "0.00",
-                            "warrenty": 3,
-                            "mark_cg": 2,
-                            "mark_2nd": 2,
-                            "mark_jt": 2,
-                            "fail": 2,
-                            "locked": "",
-                            "v3_contract_id": 0,
-                            "chc_id": 0
-                        },
-                        "subject": {
-                            "id": 3,
-                            "parent_id": 18,
-                            "title": "房租",
-                            "er_type": 2,
-                            "remark": "",
-                            "creator_id": 2639,
-                            "create_time": "2017-08-15 04:21:43",
-                            "update_time": "2019-03-01 11:53:32",
-                            "delete_time": null,
-                            "is_enable": 2,
-                            "subject_code": "GH03",
-                            "parent_subject": {
-                                "id": 18,
-                                "parent_id": 0,
-                                "title": "前租客代缴",
-                                "er_type": 3,
-                                "remark": "",
-                                "creator_id": 2639,
-                                "create_time": "2017-12-14 04:10:33",
-                                "update_time": "2018-12-26 10:42:37",
-                                "delete_time": null,
-                                "is_enable": 2,
-                                "subject_code": null
-                            }
-                        }
-                    }
-                ],//列表数据
+                tableLists: [],
                 paymentLabels: {
                     "pay_date": "付款时间",
                     "customer.customer_name": "客户姓名",
                     "customer.address": "地址",
                     "subject.title": "支出科目",
                     "amount_payable": "应付金额",
-                    "amount_received": "实付金额",
+                    "amount_paid": "实付金额",
                     "balance": "剩余款项",
                     "complete_date": "补齐时间",
                     "customer.contact": "手机号",
@@ -797,7 +710,6 @@
                         content: "金额",
                         key: "pay_visible"
                     },
-
                     {
                         label: "",
                         type: "success",
@@ -836,6 +748,15 @@
                     },
                     {
                         label: "",
+                        type: "warning",
+                        icon: "el-icon-edit",
+                        size: "small",
+                        methods: "handleProcess",
+                        content: "回滚",
+                        key: "recall_visible"
+                    },
+                    {
+                        label: "",
                         type: "danger",
                         icon: "el-icon-delete",
                         size: "small",
@@ -844,10 +765,12 @@
                         key: "delete_visible"
                     },
                 ],
+                accountLists:[],
+                chooseRowIds:[],
             }
         },
         mounted() {
-            // this.getPaymentList();
+            this.getPaymentList();
         },
         activated() {
         },
@@ -856,6 +779,16 @@
         },
         computed: {},
         methods: {
+            // 当前点击
+            tableClickRow(row) {
+                let ids = this.chooseRowIds;
+                ids.push(row.id);
+                this.chooseRowIds = this.myUtils.arrayWeight(ids);
+            },
+            // 点击过
+            tableChooseRow({row, rowIndex}) {
+                return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+            },
             //换页
             handleChangePage(page) {
                 this.params.page = page;
@@ -869,7 +802,7 @@
                         message: res.msg,
                         subMessage: '',
                     });
-                    // this.getPaymentList();
+                    this.getPaymentList();
                 } else {
                     this.$LjNotify('error', {
                         title: '失败',
@@ -878,9 +811,9 @@
                     });
                 }
             },
-
             //修改金额
             handleOkPay(row, val) {
+                console.log(val);
                 this.$http.put(globalConfig.temporary_server + "account_payable/edit_pay_amount/" + row.id, {amount_payable: val}).then(res => {
                     this.callbackSuccess(res);
                     this.pay_visible = false;
@@ -941,13 +874,58 @@
                     console.log(err);
                 })
             },
+            //获取账户list
+            getAccount(){
+                this.$http.get(globalConfig.temporary_server + "account",this.params).then(res => {
+                    if(res.code===200){
+                       this.accountLists = res.data.data;
+                       this.is_disabled = false;
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
             //应付入账
-            handleOkTransfer(row, val) {
+            handleOkTransfer(row,val) {
                 console.log(val);
                 this.$http.put(globalConfig.temporary_server + "account_payable/transfer/" + row.id, val).then(res => {
                     this.callbackSuccess(res);
                     this.transfer_visible = false;
                     this.current_row = '';
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            // 多选
+            handleSelectionChange(val){
+                this.ra_ids=[];
+                this.multipleSelection = val;
+                console.log(val);
+                for(let item in val){
+                    this.ra_ids.push(val[item].id);
+                }
+                console.log(this.ra_ids);
+            },
+
+            //确认回滚
+            handleOkRecall(){
+                this.$http.put(globalConfig.temporary_server + 'account_payable/revert/'+this.current_row.id,{running_account_ids:this.ra_ids}).then(res => {
+
+                    if(res.code===200){
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.recall_visible = false;
+
+                    }else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
                 }).catch(err => {
                     console.log(err);
                 })
@@ -958,8 +936,7 @@
             },
             //确认选择
             handleChooseCustomer(){
-                if(this.current_customer != ''){
-                    console.log();
+                if(this.ruleForm.customer_id != ''){
                     this.$LjNotify('success', {
                         title: '成功',
                         message: "操作成功",
@@ -978,16 +955,12 @@
 
             //返回数据
             getCurrentCustomer(data){
-                console.log(JSON.stringify(data));
-                for(let item of Object.keys(this.ruleForm)){
-                    this.ruleForm[item] = data[item];
-                }
+                this.ruleForm = JSON.parse(data);
             },
 
-            //新增应付款项
+            //新增
             handleOkAdd() {
                 console.log(this.ruleForm);
-
                 this.$http.post(globalConfig.temporary_server + 'account_payable', this.ruleForm).then(res => {
                     this.callbackSuccess(res);
                     this.add_visible = false;
@@ -998,6 +971,7 @@
 
             //删除
             handleOkDel(row) {
+                console.log(row.id);
                 this.$http.delete(globalConfig.temporary_server + 'account_payable/delete/' + row.id).then(res => {
                     this.callbackSuccess(res);
                     this.delete_visible = false;
@@ -1010,12 +984,27 @@
             // 操作按钮回调
             handleClickBtn(func, row, index, key) {
                 this.current_row = row;
+                console.log(row);
                 if (key === "complete_visible") {
                     this.complete_visible = true;
                     this.formData.complete_date = this.current_row.complete_date;
                 }
                 if (key === "subject_visible") {
                     this.subject_visible = true;
+                }
+                //回滚
+                if (key === "recall_visible") {
+                    this.recall_visible = true;
+                    this.running_account_record=[];
+                    // this.current_row = row;
+                    this.recall_visible = true;
+                    console.log(row.running_account_record);
+                    for( let item in row.running_account_record){
+                        this.running_account_record.push({id:item,desc:this.current_row.running_account_record[item]});
+                    }
+                    console.log(this.running_account_record);
+
+
                 }
                 if (key === "pay_visible") {
                     this.pay_visible = true;
@@ -1044,22 +1033,21 @@
             },
 
             //加载列表
-            // getPaymentList() {
-            //   this.showLoading(true);
-            //   this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(res => {
-            //     if (res.code === 200) {
-            //       this.showLoading(false);
-            //       this.tableLists = res.data.data;
-            //       this.count = res.data.count;
-            //       console.log(this.tableLists);
-            //     } else {
-            //       this.tableLists = [];
-            //       this.count = 0;
-            //     }
-            //   }).catch(err => {
-            //     console.log(err);
-            //   })
-            // },
+            getPaymentList() {
+              this.showLoading(true);
+              this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(res => {
+                if (res.code === 200) {
+                  this.showLoading(false);
+                  this.tableLists = res.data.data;
+                  this.count = res.data.count;
+                } else {
+                  this.tableLists = [];
+                  this.count = 0;
+                }
+              }).catch(err => {
+                console.log(err);
+              })
+            },
 
             // 高级搜索
             highSearch() {
@@ -1125,34 +1113,6 @@
                                 title: '未完成',
                             },
                         ],
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
                     },
                     {
                         keyType: 'organ',
