@@ -1,7 +1,7 @@
 @import "../common.scss";
 
 #theme_name {
-  #staffOrgan, #departOrgan {
+  #staffOrgan, #postOrgan {
     .dialog_container {
       .dialog_header {
         .search {
@@ -21,6 +21,7 @@
         h4 {
           width: 50px;
           height: 50px;
+          margin-right: 10px;
           img {
             @include radius(50%);
           }
@@ -47,6 +48,10 @@
                 &:hover {
                   color: $colorE33;
                 }
+                b {
+                  color: #c0c4cc;
+                  padding-left: 6px;
+                }
                 p {
                   cursor: pointer;
                 }
@@ -55,8 +60,8 @@
                   padding-right: 10px;
                   min-width: 100px;
                 }
-                h4 {
-                  margin: 0 10px;
+                h3 {
+                  margin-right: 10px;
                 }
                 h5 {
                   .staffName {

@@ -106,12 +106,28 @@ class Axios {
     })
   }
 
-  // 组织架构接口
+  // 组织架构部门
   static getOrganization(org) {
     return new Promise((resolve, reject) => {
       this.get(url + 'organization/organization', {
         parent_id: org
       }).then(res => {
+        resolve(res);
+      });
+    });
+  }
+  // 组织架构职位
+  static getDuty(params) {
+    return new Promise((resolve, reject) => {
+      this.get(url + 'organization/duty', params).then(res => {
+        resolve(res);
+      });
+    });
+  }
+  // 组织架构岗位
+  static getPosition(params) {
+    return new Promise((resolve, reject) => {
+      this.get(url + 'organization/position', params).then(res => {
         resolve(res);
       });
     });

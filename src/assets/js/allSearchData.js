@@ -71,7 +71,27 @@ export const staffBookSearch = {
       dataType: [],
       value: {
         num: '',
-        arr: [3338,3337]
+      }
+    },
+    {
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'department',
+      dataType: [],
+      value: {
+        num: '',
+        arr: []
+      }
+    },
+    {
+      keyType: 'position',
+      title: '岗位',
+      placeholder: '请选择岗位',
+      keyName: 'position',
+      dataType: [],
+      value: {
+        num: '',
       }
     },
   ],

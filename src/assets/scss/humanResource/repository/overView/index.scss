@@ -32,10 +32,81 @@
       }
     }
 
-    .el-radio .el-radio__inner {
-      width: 14px !important;
-      height: 14px !important;
-      border-radius: 0;
+    footer.common-page {
+      height: 100px;
+      width: 100%;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 100px;
+      //background-color: $color2F2;
+      z-index: 6;
+
+      .develop {
+        position: absolute;
+        top: -30px;
+        width: 80px;
+        cursor: pointer;
+        height: 30px;
+        opacity: 1;
+        border-radius: 10px 10px 0 0;
+        background-color: $color2F2;
+
+      }
+    }
+
+    .qr-code {
+      width: 30px;
+      height: 30px;
+      margin-left: 27px;
+      cursor: pointer;
+    }
+
+
+
+    .dialog_container {
+      .choose-goods {
+        .choose-goods-icon {
+          cursor: pointer;
+          width: 20px;
+          height: 16px;
+        }
+      }
+
+
+    }
+
+
+    .qr-container {
+      background-color: #fff;
+      padding: 15px;
+      .qr-code-large {
+        width: 300px;
+        height: 300px;
+      }
+      & > :last-child {
+        padding: 15px;
+      }
+      //& > :last-child {
+      //  padding: 15px;
+      //}
+    }
+
+    .repository-overview {
+      .lj-header-search {
+        .el-icon-search {
+          position: absolute;
+          top: 7px;
+          right: 195px;
+        }
+        input {
+          border: 1px solid #ccc;
+          border-radius:20px;
+          width: 220px;
+          height: 28px;
+          padding: 2px 12px 2px 32px;
+        }
+      }
     }
   }
 }
