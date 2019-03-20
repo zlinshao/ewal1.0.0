@@ -2,48 +2,11 @@
   <div id="recruitment">
     <div>
       <div class="nav_container" :class="{'hide_nav_container': is_hide_nav_container}">
-        <div class="nav_content flex">
-          <div @click.self="handleGoModules(1)">
-            <p>募兵行列</p>
-            <div class="info_detail">
-              <el-row :gutter="20">
-                <el-col :span="12">
-                  <span>web前端</span>
-                </el-col>
-                <el-col :span="12">
-                  <span>3名</span>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="info_footer">
-              <el-button size="mini" type="danger">添加需求</el-button>
-            </div>
-          </div>
-          <div @click.self="handleGoModules(2)">
-            <p>分取科士</p>
-            <div class="info_detail">
-
-            </div>
-            <div class="info_footer">
-              <el-button size="mini" type="danger">添加需求</el-button>
-            </div>
-          </div>
-          <div @click.self="handleGoModules(3)">
-            <p>殿试会师</p>
-            <div class="info_detail">
-
-            </div>
-          </div>
-          <div @click.self="handleGoModules(4)">
-            <p>榜上有名</p>
-            <div class="info_detail">
-
-            </div>
-          </div>
-        </div>
         <div class="nav_info">
           <el-button type="primary" size="small" @click="handleSearchInterview">查看面试人数</el-button>
         </div>
+        <div class="show_btn" @click="is_hide_nav_container = false" :class="{'btn_hide': !is_hide_nav_container}"><</div>
+        <div class="hide_btn" @click="is_hide_nav_container = true" :class="{'btn_hide': is_hide_nav_container}"> > </div>
       </div>
 
 
@@ -67,6 +30,7 @@
           <div class="icons search" @click="showSearch = true"></div>
         </div>
       </div>
+
       <div class="recruitment_main">
         <part-one
           v-if="chooseTab === 1"
@@ -173,7 +137,7 @@
           {id: 4, title: '榜上有名'}
         ], //模块列表
         chooseTab: 4, //当前选中模块
-        is_hide_nav_container: false,
+        is_hide_nav_container: true,
 
         //搜索
         showSearch: false,
@@ -188,7 +152,7 @@
         //添加面试官
         msg_add_visible: false,
 
-      //  二维码地址
+        //  二维码地址
         code_address: '',
         code_detail_visible: false,
       }
@@ -270,14 +234,7 @@
           height: calc(100% - 90px);
         }
         .nav_container {
-          .nav_content {
-            > div {
-              @include recruitmentImg('dikaunghui.png','theme1');
-              &:hover {
-                @include recruitmentImg('dikuangh.png','theme1');
-              }
-            }
-          }
+
         }
       }
     }
