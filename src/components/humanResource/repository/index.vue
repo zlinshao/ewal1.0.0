@@ -58,7 +58,7 @@
   import WorkInfo from '../../common/work-info';
   import LjDialog from '../../common/lj-dialog.vue';
   import SearchHigh from '../../common/searchHigh.vue';
-  import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
+  import {overViewSearch, borrowReceiveSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
 
@@ -76,8 +76,8 @@
     },
     data() {
       return {
-        staffBookSearch,
-        LeaveJobSearch,
+        overViewSearch,
+        borrowReceiveSearch,
         humanResource,
         resourceDepart,
         selects: [
@@ -136,10 +136,10 @@
         this.showSearch = true;
         switch (val) {
           case 1:
-            this.searchData = this.staffBookSearch;
+            this.searchData = this.overViewSearch;
             break;
           case 2:
-            this.searchData = this.LeaveJobSearch;
+            this.searchData = this.borrowReceiveSearch;
             break;
         }
       },

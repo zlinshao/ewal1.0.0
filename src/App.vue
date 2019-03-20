@@ -147,7 +147,9 @@
         ],
       }
     },
-    mounted() { },
+    mounted() {
+
+    },
     watch: {
       $route: {
         handler(val, oldVal) {
