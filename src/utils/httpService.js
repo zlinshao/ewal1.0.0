@@ -108,6 +108,15 @@ class Axios {
     })
   }
 
+  // 上传文件
+  static uploadServer(data) {
+    return new Promise((resolve, reject) => {
+      this.post(globalConfig.upload_sever + 'api/v1/upload-direct', data).then(res => {
+        resolve(res);
+      });
+    });
+  }
+
   // 组织架构部门
   static getOrganization(org) {
     return new Promise((resolve, reject) => {
@@ -118,6 +127,7 @@ class Axios {
       });
     });
   }
+
   // 组织架构职位
   static getDuty(params) {
     return new Promise((resolve, reject) => {
@@ -126,6 +136,7 @@ class Axios {
       });
     });
   }
+
   // 组织架构岗位
   static getPosition(params) {
     return new Promise((resolve, reject) => {
