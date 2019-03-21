@@ -2,14 +2,29 @@
   <div id="upLoad">
     <transition-group name="list" tag="p" class="items-center">
       <div v-for="(item,index) in showFile" :key="JSON.stringify(item)" class="showFile" :style="uploadCss">
+        <!--图片-->
         <img :src="item.url" v-if="item.type.includes('image')">
-        <video :src="item.url" controls v-else></video>
+        <!--视频-->
+        <div v-if="item.type.includes('video')">
+          <!--<div class="playVideo" @click="videoPlay(index)">播放</div>-->
+          <video :id="'video' + file.keyName + index">
+            <source :src="item.url" type="video/ogg"/>
+            <source :src="item.url" type="video/mp4"/>
+            <source :src="item.url" type="video/webm"/>
+            <source :src="item.url" type="audio/ogg"/>
+            <source :src="item.url" type="audio/mpeg"/>
+          </video>
+        </div>
+        <!--进图条-->
         <div class="progress" :id="'progress' + file.keyName + index"
-             v-show="!item.url.includes('http://static.lejias.cn')"></div>
+             v-show="!item.url.includes('http://static.lejias.cn')">
+        </div>
+        <!--删除按钮-->
         <div class="remove flex" @click="removeFile(index)">
           <img src="../../assets/image/common/theme1/closeBtn.png">
         </div>
       </div>
+      <!--上传按钮-->
       <label class="uploadPic" :key="1" :style="uploadCss" :for="file.keyName">
         <img src="../../assets/image/common/theme1/upload.png">
         <input type="file" :id="file.keyName" hidden multiple @change="uploadPic">
@@ -53,6 +68,11 @@
     },
     computed: {},
     methods: {
+      videoPlay(index) {
+        let id = 'video' + this.file.keyName + index;
+        let myVideo = document.getElementById(id);
+        myVideo.play();
+      },
       removeFile(index) {
         this.showFile.splice(index, 1);
         this.ids.splice(index, 1);
