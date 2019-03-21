@@ -232,6 +232,22 @@ div.el-popover {
       }
     }
   }
+
+  #part_four {
+    .offer_container {
+      .el-input__inner {
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid #999;
+        padding: 0;
+        position: relative;
+        top: -10px;
+        text-align: center;
+        color: black;
+        font-weight: bold;
+      }
+    }
+  }
 }
 
 #theme_name.theme1 {

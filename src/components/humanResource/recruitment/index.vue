@@ -27,7 +27,7 @@
           <el-button size="mini" type="warning" plain v-if="chooseTab === 2" @click="ms_add_visible = true">添加面试人</el-button>
           <el-button size="mini" type="success" plain v-if="chooseTab === 2" style="margin-right: 10px" @click="msg_add_visible = true">添加面试官</el-button>
           <div class="icons add" v-if="chooseTab === 1" @click="mb_add_visible = true"><b>+</b></div>
-          <div class="icons search" @click="showSearch = true"></div>
+          <div class="icons search" @click="handleOpenSearch"></div>
         </div>
       </div>
 
@@ -36,6 +36,7 @@
           v-if="chooseTab === 1"
           :add-modules="mb_add_visible"
           @close="mb_add_visible = false"
+          :search-data="allSearch[chooseTab - 1]"
         ></part-one>
         <part-two
           v-if="chooseTab === 2"
@@ -43,6 +44,7 @@
           @closeMs="ms_add_visible = false"
           :add-offer-visible="msg_add_visible"
           @closeMsg="msg_add_visible = false"
+          :search-data="allSearch[chooseTab - 1]"
         ></part-two>
         <part-three v-if="chooseTab === 3"></part-three>
         <part-four v-if="chooseTab === 4"></part-four>
@@ -107,12 +109,14 @@
   import MenuList from '../../common/menuList.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import { humanResource } from '../../../assets/js/allModuleList.js';
+  import { recruitmentSearchList } from '../../../assets/js/allSearchData.js';
 
   export default {
     name: "index",
     components: { SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog},
     data() {
       return {
+        recruitmentSearchList,
         //今日面试人数
         today_interview_visible: false,
         interview_list: [],
@@ -125,18 +129,30 @@
           page: 1,
           limit: 12
         },
+        allSearch: [
+          {
+            search: '',
+            org_id: [],
+            position_id: []
+          },
+          {
 
+          },
+          {
+
+          }
+        ],
         humanResource,
         visibleStatus: false,
 
         //导航
         selects: [
           {id: 1, title: '募兵行列'},
-          {id: 2, title: '分取科士'},
+          {id: 2, title: '分科取士'},
           {id: 3, title: '殿试会师'},
           {id: 4, title: '榜上有名'}
         ], //模块列表
-        chooseTab: 4, //当前选中模块
+        chooseTab: 3, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索
@@ -164,6 +180,10 @@
     watch: {},
     computed: {},
     methods: {
+      handleOpenSearch() {
+        this.searchData = recruitmentSearchList[this.chooseTab];
+        this.showSearch = true;
+      },
       handleCreateCode(row) {
         this.$http.put(`recruitment/interviewer_process/get_qrcode/${row.id}`,{
           id: row.id,
@@ -199,17 +219,20 @@
           console.log(err);
         })
       },
-      handleGoModules(choose) {
-        this.chooseTab = choose;
-        this.is_hide_nav_container  = true;
-      },
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;
         this.$store.dispatch('route_animation');
       },
       //关闭搜索
-      hiddenModule() {
+      hiddenModule(val) {
+        console.log(val);
+        if (val !== 'close') {
+          for (var key in this.allSearch[this.chooseTab - 1]) {
+            this.allSearch[this.chooseTab - 1][key] = val[key];
+          }
+          console.log(this.allSearch[this.chooseTab - 1][key]);
+        }
         this.showSearch = false;
       },
     },

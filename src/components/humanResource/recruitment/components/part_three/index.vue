@@ -30,6 +30,7 @@
               layout="total,prev,pager,next"
               :current-page="params.page"
               :page-size="params.limit"
+              @current-change="handleChangePage"
               style="text-align: center"
             ></el-pagination>
           </div>
@@ -46,7 +47,7 @@
           <div class="dialog_header">
             <h3>{{ is_edit ? '修改面试结果' : '查看面试结果'}}</h3>
             <div class="header_right">
-              <div class="look_btn" @click="hide_resume = false"><span class="btn_look"></span>查看简历及答案</div>
+              <div class="look_btn" @click="handleLookDetailInfo"><span class="btn_look"></span>查看简历及答案</div>
             </div>
           </div>
           <div class="dialog_main borderNone">
@@ -64,10 +65,10 @@
                 <span>{{ interview_form.interview_time }}</span>
               </el-form-item>
               <el-form-item label="面试官">
-                <span>{{ interview_form.offer }}</span>
+                <span>{{ interview_form.interviewer.name }}</span>
               </el-form-item>
               <el-form-item label="面试结果">
-                <span>{{ interview_form.interview_result }}</span>
+                <span>{{ interview_form.result }}</span>
               </el-form-item>
               <el-form-item label="面试评价">
                 <span>{{ interview_form.comment }}</span>
@@ -103,13 +104,124 @@
 
         <!--内容-->
         <div class="top_title flex">
-          <div>文职入职测试</div>
-          <div>
-            本次考试得分 <span>85分</span>
-          </div>
+          <!--<div>文职入职测试</div>-->
+          <!--<div>-->
+            <!--本次考试得分 <span>85分</span>-->
+          <!--</div>-->
         </div>
         <div class="content">
-          ...
+          <div class="base_info flex">
+            <div class="writingMode">基本信息</div>
+            <div>
+              <el-form size="small" label-width="100px">
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-form-item label="应聘职位:">
+                      <span>{{ info.position && info.position.name }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="籍贯:">
+                      <span>{{ info.birthplace || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="婚育情况:">
+                      <span>{{ info.married_status_type || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-form-item label="到岗时间:">
+                      <span>{{ info.arrive_time || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="出生日期:">
+                      <span>{{ info.birthday || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="通信地址:">
+                      <span>{{ info.contact_address || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-form-item label="有无犯罪史:">
+                      <span>{{ info.crime_history_type || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="期待薪资:">
+                      <span>{{ info.real_salary }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="政治面貌:">
+                      <span>{{ info.political_status_type	 || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-form-item label="户口属地:">
+                      <span>{{ info.registered_residence || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="姓名:">
+                      <span>{{ info.name }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="手机:">
+                      <span>{{ info.phone	 || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-form-item label="邮箱:">
+                      <span>{{ info.e_mail || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="性别:">
+                      <span>{{ info.gender_type }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="身份证:">
+                      <span>{{ info.ID_number	 || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-form-item label="英语等级:">
+                      <span>{{ info.english_level_type	 || '/' }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="民族:">
+                      <span>{{ info.national_type }}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </div>
+          </div>
+          <div class="edu_info flex">
+            <div></div>
+            <div></div>
+          </div>
+          <div class="work_info">
+            <div></div>
+            <div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -126,7 +238,7 @@
       return {
         params: {
           page: 1,
-          limit: 12
+          limit: 7
         },
         tableList: [],
         tableCount: 0,
@@ -137,25 +249,41 @@
         interview_res_visible: false,
         is_edit: false,
         interview_form: {
-          position: 'web前端工程师',
-          name: '冯宝宝',
-          come: 'boss直聘',
-          interview_time: '2019-02-11',
-          offer: '张琳琳',
-          comment: '可以考虑录取',
-          interview_result: '',
+          position: '',
+          name: '',
+          come: '',
+          interview_time: '',
+          comment: '',
+          result: '',
           change_result: '',
+          interviewer: '',
         },
         currentRow: '',
 
         //按钮
         btn_group: [
-          {id: 1,val: '试卷'},
-          {id: 2,val: '简历'}
+          // {id: 1,val: '试卷'},
+          {id: 1,val: '简历'}
         ],
         is_sel: 1,
-        hide_resume: true
+        hide_resume: true,
 
+        //应聘者详细信息
+        info: '',
+        base_info: [
+          {
+            label: '应聘职位:',
+            key: 'position.name'
+          },
+          {
+            label: '籍贯',
+            key: 'birthplace'
+          },
+          {
+            label: '婚育情况',
+            key: 'crime_history_type'
+          }
+        ]
       }
     },
     mounted() {
@@ -166,6 +294,28 @@
     watch: {},
     computed: {},
     methods: {
+      handleLookDetailInfo() {
+        console.log(this.currentRow);
+        this.$http.get(`recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
+          console.log(res);
+          if (res.code === '20030') {
+            this.info = res.data;
+            this.hide_resume = false;
+          } else {
+            this.info = '';
+            this.$LjNotify('warning',{
+              title: '警告',
+              message: '获取信息失败'
+            })
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      handleChangePage(page) {
+        this.params.page = page;
+        this.getInterviewResList();
+      },
       //确定修改面试结果
       handleSubmitChangeInterview() {
         this.$http.put(`recruitment/interviewers/edit_result/${this.currentRow.id}`,{
@@ -193,9 +343,7 @@
       },
       //面试结果列表
       getInterviewResList() {
-        this.$http.get('recruitment/interviewer_process/resultList',{
-          params: this.params
-        }).then(res => {
+        this.$http.get('recruitment/interviewer_process/resultList',this.params).then(res => {
           console.log(res);
           if (res.code === '20000') {
             this.tableList = res.data.data;
@@ -212,17 +360,9 @@
         this.is_sel = id;
       },
       handleCloseInterview() {
-        this.interview_form = {
-          position: '',
-          name: '',
-          come: '',
-          interview_time: '',
-          offer: '张琳琳',
-          res: '',
-          comment: '',
-          interview_result: '',
-          change_result: '',
-        };
+        for (var key in this.interview_form) {
+          this.interview_form[key] = '';
+        }
         this.is_edit = false;
         this.interview_res_visible = false;
       },
@@ -232,8 +372,9 @@
         this.interview_form.name = row.name;
         this.interview_form.come = this.platform[row.platform - 1];
         this.interview_form.interview_time = row.interview_time;
-        this.interview_form.interview_result = row.interview_result;
+        this.interview_form.result = row.result;
         this.interview_form.comment = row.interview_comment;
+        this.interview_form.interviewer = row.interviewer;
         this.interview_res_visible = true;
       },
       // 当前点击

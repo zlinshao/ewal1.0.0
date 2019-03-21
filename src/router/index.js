@@ -23,7 +23,6 @@ const StaffRoster = () => import('@/components/humanResource/departments/staffRo
 const MilitaryOrganization = () => import('@/components/humanResource/militaryOrganization/index.vue'); //排班布阵
 const Reward = () => import('@/components/humanResource/reward/index.vue'); //赏罚分明
 const Repository = () => import('@/components/humanResource/repository/index.vue'); //内务库房
-const OfferDetail = () => import('@/components/humanResource/components/offer-detail.vue'); //录用通知书编辑
 
 
 // 财务中心
@@ -41,6 +40,10 @@ const Club = () => import('@/components/newMedia/club/index.vue');
 const HeadLines = () => import('@/components/newMedia/headLines/index.vue');
 const Humanity = () => import('@/components/newMedia/humanity/index.vue');
 const CompanyProfile = () => import('@/components/newMedia/companyProfile/index.vue');
+
+
+//待办
+const TodoList = () => import('@/components/todoList/index.vue');
 
 Vue.use(Router);
 
@@ -188,9 +191,9 @@ export default new Router({
       component: Payment
     },
     {
-      path: '/offerDetail',
-      name: '录用通知书',
-      component: OfferDetail
+      path: '/todoList',
+      name: '待办',
+      component: TodoList,
     }
   ]
 })
