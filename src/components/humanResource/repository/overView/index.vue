@@ -677,14 +677,15 @@
       </div>
     </lj-dialog>
 
-    <lj-dialog-img v-model="is_show_qr_code">
+
+    <!--</lj-dialog-img>-->
+    <lj-dialog-img :visible.sync="is_show_qr_code">
       <div class="qr-container">
         <div class="qr-code-large"></div>
         <div>201903191059</div>
       </div>
 
     </lj-dialog-img>
-
 
   </div>
 </template>

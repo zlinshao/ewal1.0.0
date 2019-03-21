@@ -21,18 +21,18 @@
         </p>
         <div class="icons home_icon"></div>
         <!--<div class="icons add" @click="addCustomer(chooseTab)"><b>+</b></div>-->
-        <div class="icons search" @click="highSearch"></div>
+        <div class="icons search" @click="highSearch(chooseTab)"></div>
       </div>
     </div>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
     <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
     <!--房东-->
     <div v-if="chooseTab === 1">
-      <lord></lord>
+      <lord :searchParams="search_params"></lord>
     </div>
     <!--租客-->
     <div v-if="chooseTab === 2">
-      <renter></renter>
+      <renter :searchParams="search_params"></renter>
     </div>
     <!--新增-->
     <lj-dialog :visible="add_visible" :size="{width: 960 + 'px',height: 820 + 'px'}" @close="add_visible = false">
@@ -75,14 +75,12 @@
           {iconColor: "#14e731", iconText: "手机"}, {iconColor: "#e6a23c", iconText: "姓名"},
           {iconColor: "#f56c6c", iconText: "地址"}, {iconColor: "#409eff", iconText: "待处理项"},
         ],
+        search_params:{},
         current_row:'',
         showSearch: false,
         showFinMenuList: false,
         add_visible:false,
-        searchData: {
-          status: 'gathering',
-          data: [],
-        },
+        searchData: {},//搜索项
         lord_form: {
           "address": "",
           "rental_subject": "",
@@ -182,11 +180,9 @@
           this.add_visible = true;
           this.current_row = ''
       },
-      submitForm(){
 
-      },
       // 高级搜索
-      highSearch() {
+      highSearch(val) {
         this.showSearch = true;
         this.searchData.data = [
           {
@@ -210,13 +206,7 @@
             keyName: 'date2',
             dataType: [],
           },
-          {
-            keyType: 'organ',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'organ',
-            dataType: '',
-          },
+
         ];
       },
       // 确认搜索
@@ -224,6 +214,7 @@
         this.showSearch = false;
         if (val !== 'close') {
           console.log(val);
+          this.search_params = val;
         }
       },
     },

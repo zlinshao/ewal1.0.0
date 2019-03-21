@@ -11,10 +11,10 @@
 <script>
   export default {
     name: "index",
-    props: ['value'],
+    props: ['visible'],
     watch: {
-      value(val) {
-        this.dialog_visible = this.value;
+      visible(val) {
+        this.dialog_visible = this.visible;
       }
     },
     data() {
@@ -25,7 +25,7 @@
     methods: {
       handleCloseDialog() {
         this.dialog_visible = false;
-        this.$emit('input',this.dialog_visible);
+        this.$emit('update:visible',this.dialog_visible);
       }
     },
 
@@ -34,5 +34,4 @@
 
 <style scoped lang="scss">
   @import "../../../../assets/scss/humanResource/repository/components/lj-dialog-img.scss";
-  /*@import "../../../../assets/scss/humanResource/repository/components/lj-dialog-img.scss";*/
 </style>

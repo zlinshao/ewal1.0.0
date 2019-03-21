@@ -11,7 +11,7 @@
         <div class="event_info">
           <div v-for="(item,index) in eventDataList">
           <span>{{item.title}}</span>
-          <div  :id="'events_charts'+index" style="width: 400px;height: 300px;"></div>
+          <div  :id="'events_charts'+index" style="width: 300px;height: 300px;"></div>
           </div>
 
         </div>
