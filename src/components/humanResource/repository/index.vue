@@ -6,7 +6,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="organModule = true">内务库房</h1>
+        <h1>内务库房</h1>
         <h2 class="items-center" v-if="chooseTab">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
