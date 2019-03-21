@@ -1,12 +1,11 @@
 <template>
   <div id="upLoad">
-    {{showFile}}
     <div class="flex">
       <div class="showFile" :style="uploadCss" v-for="(item,index) in showFile">
         <img :src="item.url" v-if="item.type === 'image'">
         <video :src="item.url" v-else></video>
-        <div class="progress" v-if="!item.url.includes('http://static.lejias.cn/')">
-          <el-progress :text-inside="true" :stroke-width="20" :percentage="progress"></el-progress>
+        <div class="progress" :id="'progress' + file.keyName + index">
+          {{progress['progress' + file.keyName + index]}}
         </div>
         <div class="remove flex" @click="removeFile(index)">
           <img src="../../assets/image/common/theme1/closeBtn.png">
@@ -33,8 +32,8 @@
         ids: [],
         showFile: [],//本地文件地址
         isVideo: '',//是否视频
-        progress: 0,
-        uploadCss: (this.file.size && this.file.size.width) || {width: '100px', height: '100px'},
+        progress: {},
+        uploadCss: this.file.size || {width: '100px', height: '100px'},
       }
     },
     mounted() {
@@ -47,6 +46,7 @@
           for (let item of val.setFile) {
             this.ids.push(item.id);
             this.showFile.push(item);
+            this.progress['progress' + item.id] = 0;
           }
         },
         deep: true
@@ -105,11 +105,16 @@
           };
           let config = {
             useCdnDomain: true,
+
           };
+          let pro = 'progress' + that.file.keyName + (Object.keys(that.progress).length);
+          that.progress[pro] = 0;
+          console.log(pro);
           let observable = qiniu.upload(file, key, that.token, putExtra, config);
           let subscription = observable.subscribe({
             next(res) {
-              that.progress = Math.floor(res.total.percent);
+              that.progress[pro] = Math.floor(res.total.percent);
+              console.log(that.progress);
             },
             error(err) {
               console.log(err);
@@ -148,11 +153,14 @@
       margin: 10px 10px 0 0;
       .progress {
         position: absolute;
-        left: 8px;
-        right: 8px;
-        top: 50%;
-        @include transform(translateY(-50%));
-        opacity: .8;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        color: $colorFFF;
+        background-color: rgba(0, 0, 0, .4);
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
       }
       .remove {
         cursor: pointer;

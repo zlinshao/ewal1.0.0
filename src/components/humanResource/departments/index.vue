@@ -198,17 +198,7 @@
 
         photo1: {
           keyName: 'photo1',
-          setFile: [
-            {
-              id: 55,
-              url: 'http://static.lejias.cn/lejia8e9013abd8af58047660bc8616f775a8.jpg',
-            },
-            {
-              id: 44,
-              url: 'http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg',
-            },
-          ],
-          size: {},
+          setFile: [],
         },
         photo2: {
           keyName: 'photo2',
