@@ -1,6 +1,7 @@
 // 员工名册
 export const staffBookSearch = {
   status: 'staffBookSearch',
+  placeholder: '请输入地址',
   data: [
     {
       keyType: 'date',

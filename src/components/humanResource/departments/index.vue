@@ -1,6 +1,8 @@
 <template>
   <div id="departments">
-    <Upload :file="photo1" @success="getImgIds"></Upload>
+    <div v-for="item in photo">
+      <Upload :file="item" @success="getImgIds"></Upload>
+    </div>
     <!--<Upload :file="photo2"></Upload>-->
 
     <div class="listTopCss items-bet">
@@ -196,18 +198,19 @@
         ],//部门人员
         value: '',
 
-        photo1: {
-          keyName: 'photo1',
-          setFile: [],
-        },
-        photo2: {
-          keyName: 'photo2',
-          setFile: {},
-        },
+        photo: [
+          {
+            keyName: 'photo1',
+            setFile: [],
+          }, {
+            keyName: 'photo2',
+            setFile: [],
+          }
+        ],
       }
     },
     mounted() {
-      this.photo1.setFile = [
+      this.photo[0].setFile = [
         {
           type: 'image',
           id: 55,

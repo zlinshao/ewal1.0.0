@@ -4,7 +4,7 @@
     <div class="searchContent" :class="{'showSearchContent': showModule}">
       <div class="scroll_bar">
         <div class="items-center searchInput">
-          <input type="text" v-model="params[showData.keywords]" placeholder="地址/合同编号">
+          <input type="text" v-model="params[showData.keywords]" :placeholder="showData.placeholder || '请输入搜索内容'">
           <span @click="subSearch">搜索</span>
         </div>
         <div class="highGrade">

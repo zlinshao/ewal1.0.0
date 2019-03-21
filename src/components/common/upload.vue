@@ -1,21 +1,20 @@
 <template>
   <div id="upLoad">
-    <div class="flex">
-      <div class="showFile" :style="uploadCss" v-for="(item,index) in showFile">
-        <img :src="item.url" v-if="item.type === 'image'">
-        <video :src="item.url" v-else></video>
-        <div class="progress" :id="'progress' + file.keyName + index">
-          {{progress['progress' + file.keyName + index]}}
-        </div>
+    <transition-group name="list" tag="p" class="items-center">
+      <div v-for="(item,index) in showFile" :key="JSON.stringify(item)" class="showFile" :style="uploadCss">
+        <img :src="item.url" v-if="item.type.includes('image')">
+        <video :src="item.url" controls v-else></video>
+        <div class="progress" :id="'progress' + file.keyName + index"
+             v-show="!item.url.includes('http://static.lejias.cn')"></div>
         <div class="remove flex" @click="removeFile(index)">
           <img src="../../assets/image/common/theme1/closeBtn.png">
         </div>
       </div>
-      <label class="uploadPic" :style="uploadCss" :for="file.keyName">
+      <label class="uploadPic" :key="1" :style="uploadCss" :for="file.keyName">
         <img src="../../assets/image/common/theme1/upload.png">
         <input type="file" :id="file.keyName" hidden multiple @change="uploadPic">
       </label>
-    </div>
+    </transition-group>
   </div>
 </template>
 
@@ -32,7 +31,7 @@
         ids: [],
         showFile: [],//本地文件地址
         isVideo: '',//是否视频
-        progress: {},
+        progress: [],
         uploadCss: this.file.size || {width: '100px', height: '100px'},
       }
     },
@@ -46,7 +45,7 @@
           for (let item of val.setFile) {
             this.ids.push(item.id);
             this.showFile.push(item);
-            this.progress['progress' + item.id] = 0;
+            this.progress.push(0);
           }
         },
         deep: true
@@ -57,7 +56,9 @@
       removeFile(index) {
         this.showFile.splice(index, 1);
         this.ids.splice(index, 1);
-        this.$emit('success', this.ids);
+        this.progress.splice(index, 1);
+        let status = this.ids.length === this.showFile.length;
+        this.$emit('success', [this.file.keyName, this.ids, status]);
       },
       // 获取token
       uploadPic() {
@@ -107,14 +108,12 @@
             useCdnDomain: true,
 
           };
-          let pro = 'progress' + that.file.keyName + (Object.keys(that.progress).length);
-          that.progress[pro] = 0;
-          console.log(pro);
+          that.progress.push(0);
+          let pro = 'progress' + that.file.keyName + (that.progress.length - 1);
           let observable = qiniu.upload(file, key, that.token, putExtra, config);
           let subscription = observable.subscribe({
             next(res) {
-              that.progress[pro] = Math.floor(res.total.percent);
-              console.log(that.progress);
+              document.getElementById(pro).innerText = Math.floor(res.total.percent) + '%';
             },
             error(err) {
               console.log(err);
@@ -129,7 +128,8 @@
               that.$http.uploadServer(data).then(res => {
                 if (res.code === "110100") {
                   that.ids.push(Number(res.data.id));
-                  that.$emit('success', that.ids);
+                  let status = that.ids.length === that.showFile.length;
+                  that.$emit('success', [that.file.keyName, that.ids, status]);
                 }
               })
             }
@@ -144,9 +144,24 @@
   @import "../../assets/scss/common.scss";
 
   #upLoad {
+    video {
+      width: 100%;
+      height: 100%;
+    }
+    width: 100%;
+    .list-enter-active, .list-leave-active {
+      transition: all 1s;
+    }
+    .list-enter, .list-leave-to {
+      opacity: 0;
+      transform: translateY(30px);
+    }
     .showFile, .uploadPic {
       overflow: hidden;
       @include radius(6px);
+    }
+    .items-center {
+      flex-wrap: wrap;
     }
     .showFile {
       position: relative;
@@ -157,7 +172,8 @@
         left: 0;
         right: 0;
         color: $colorFFF;
-        background-color: rgba(0, 0, 0, .4);
+        background-color: rgba(0, 0, 0, .5);
+        opacity: .8;
         height: 30px;
         line-height: 30px;
         text-align: center;
