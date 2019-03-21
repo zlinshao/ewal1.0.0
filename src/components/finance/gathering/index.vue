@@ -619,7 +619,7 @@
         <!--登记收款-->
         <lj-dialog
                 :visible="register_visible"
-                :size="{width: 500 + 'px',height: 400 + 'px'}"
+                :size="{width: 500 + 'px',height: 500 + 'px'}"
                 @close="register_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
@@ -636,7 +636,8 @@
                                     <span>选择图片</span>
                                 </div>
                                 <div class="item_content">
-                                    <span class="el-icon-plus" style="padding: 6px;background:rgba(255,255,255,1);border-radius:4px;"></span>
+                                    <!--<span class="el-icon-plus" style="padding: 6px;background:rgba(255,255,255,1);border-radius:4px;"></span>-->
+                                    <Upload :file="photo1" @success="getImgIds"></Upload>
                                 </div>
                             </div>
                         </el-form-item>
@@ -649,7 +650,7 @@
                                     <span>选择账户</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-select class="all_width" v-model="register_from.account">
+                                    <el-select class="all_width" v-model="register_from.account_id">
                                         <el-option value="1" label="2104023483209"></el-option>
                                         <el-option value="1" label="2104023483209"></el-option>
                                     </el-select>
@@ -665,7 +666,7 @@
                                     <span>收款金额</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input v-model="register_from.money"></el-input>
+                                    <el-input v-model="register_from.amount"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -680,7 +681,7 @@
                                 <div class="item_content">
                                     <el-date-picker
                                             class="all_width"
-                                            v-model="register_from.time"
+                                            v-model="register_from.collection_time"
                                     ></el-date-picker>
                                 </div>
                             </div>
@@ -688,7 +689,7 @@
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="mini" type="danger">迁移</el-button>
+                    <el-button size="mini" type="danger" @click="registrate">迁移</el-button>
                     <el-button size="mini" @click="register_visible = false">取消</el-button>
                 </div>
             </div>
@@ -718,6 +719,7 @@
     import FinMenuList from '../components/finMenuList.vue';
     import LjSubject from '../../common/lj-subject.vue';
     import CustomerLists from '../components/customerLists.vue';
+    import Upload from '../../common/upload.vue';
 
 
     export default {
@@ -727,10 +729,29 @@
             LjDialog,
             FinMenuList,
             LjSubject,
-            CustomerLists
+            CustomerLists,
+            Upload
         },
         data() {
             return {
+                photo1: {
+                    keyName: 'photo1',
+                    setFile: [
+                        {
+                            id: 55,
+                            url: 'http://static.lejias.cn/lejia8e9013abd8af58047660bc8616f775a8.jpg',
+                        },
+                        {
+                            id: 44,
+                            url: 'http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg',
+                        },
+                    ],
+                    size: {},
+                },
+                photo2: {
+                    keyName: 'photo2',
+                    setFile: {},
+                },
                 params: {
                     is_del: '',
                     staff_ids: '',
@@ -812,10 +833,13 @@
                 ],
 
                 register_from: {
-                    img: '',
-                    account: '',
-                    money: '2000.00',
-                    time: ''
+                    fund_id:'',
+                    collect_img:[],
+                    account_id: '',
+                    amount: '2000.00',
+                    collection_time: '',
+                    address:'',
+                    remark:'',
                 },
                 new_mark: {
                     content: '',
@@ -839,18 +863,18 @@
                         id: 1,
                         title: '定金',
                     },
-                    {
-                        id: 2,
-                        title: '尾款',
-                    },
-                    {
-                        id: 3,
-                        title: '房款',
-                    },
-                    {
-                        id: 4,
-                        title: '其他收款'
-                    }
+                    // {
+                    //     id: 2,
+                    //     title: '尾款',
+                    // },
+                    // {
+                    //     id: 3,
+                    //     title: '房款',
+                    // },
+                    // {
+                    //     id: 4,
+                    //     title: '其他收款'
+                    // }
                 ],
                 tableData: [],
                 count:0,
@@ -928,6 +952,29 @@
         },
         computed: {},
         methods: {
+            getImgIds(val) {
+                console.log(val);
+            },
+            // 迁移
+            registrate(){
+                this.$http.put(globalConfig.temporary_server + 'registration/2',this.register_from).then(res=>{
+                    if(res.code===200){
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.register_visible = false;
+                    }
+                    else{
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
+                })
+            },
             // 当前点击
             tableClickRow(row) {
                 let ids = this.chooseRowIds;

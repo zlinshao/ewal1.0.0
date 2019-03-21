@@ -31,7 +31,7 @@
             </el-table-column>
             <el-table-column label="付款方式" prop="" align="center" width="80">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.pay_types[0] === 1 ? '月份' : scope.row.pay_types[0] === 2?'双月付':scope.row.pay_types[0] === 3?'季付':scope.row.pay_types[0] === 4?'半年付':scope.row.pay_types[0] === 5?'年付':'/'}}</span>
+                    <span>{{ parseInt(scope.row.pay_types[0]) === 1 ? '月份' : parseInt(scope.row.pay_types[0]) === 2?'双月付':parseInt(scope.row.pay_types[0]) === 3?'季付':parseInt(scope.row.pay_types[0]) === 4?'半年付':parseInt(scope.row.pay_types[0]) === 5?'年付':'/'}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="月单价" prop="" align="center" width="80">
@@ -140,10 +140,11 @@
     export default {
         name: "index",
         components: {LordForm, LjDialog, LjSubject},
+        props:['searchParams'],
         data() {
             return {
                 params: {//查询参数
-                    search: '',
+                    search: this.searchParams.undefined,//关键字
                     startRange: '',
                     endRange: '',
                     page: 1,
@@ -304,7 +305,16 @@
         activated() {
 
         },
-        watch: {},
+        watch: {
+            params:{
+                handler(val) {
+                    if(val){
+                        this.getLordList();
+                    }
+                },
+                deep:true
+            }
+        },
         created() {
 
         },

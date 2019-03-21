@@ -4,7 +4,7 @@
             <h3>{{current_row===''?'新增': '编辑'}}</h3>
         </div>
         <div class="dialog_main">
-            <el-form :model="form" size="mini" ref="formData">
+            <el-form :model="form" size="mini" ref="formData" :rules="renterRulesForm">
                 <el-row type="flex" class="row-bg" justify="space-between" style="flex-wrap: wrap">
 
                     <el-form-item v-for="(item,index) in lordForm.slice(0,4)" :key="'lord1'+index" :prop="item.prop">
@@ -149,10 +149,9 @@
             </el-form>
         </div>
         <div class="dialog_footer">
-            <el-button type="danger" size="small" @click="postLordEditData()">确定</el-button>
+            <el-button type="danger" size="small" @click="postLordEditData('formData')">确定</el-button>
             <el-button type="info" size="small" @click="edit_visible = false;current_row = ''">取消</el-button>
         </div>
-
         <lj-subject :visible="subject_visible" @close="subject_visible = false"
                     @confirm="handleConfirmSubject"></lj-subject>
 
@@ -257,7 +256,7 @@
                     },
                     {
                         label: "月单价",
-                        prop: "months",
+                        prop: "prices",
                         type: "number",
                         placeholder: "请输入月单价",
                     },
@@ -443,9 +442,71 @@
                     },
                     "v3_contract_id": "",
                 },
-                rulesForm: [
-                    {}
-                ],
+                renterRulesForm: {
+                    staffName: [
+                        { required: true, message: '请选择签约人', trigger: 'change' },
+                    ],
+                    departmentName: [
+                        { required: true, message: '请选择所属部门', trigger: 'change' },
+                    ],
+                    leaderName: [
+                        { required: true, message: '请选择负责人', trigger: 'change' },
+                    ],
+                    address: [
+                        { required: true, message: '请选择房屋地址', trigger: 'change' },
+                    ],
+                    customer_name: [
+                        { required: true, message: '请输入客户姓名', trigger: 'blur' },
+                    ],
+                    contact: [
+                        { required: true, message: '请输入手机号', trigger: 'blur' },
+                    ],
+                    months: [
+                        { required: true, message: '请输入收房月数', trigger: 'blur' },
+                    ],
+                    deposit: [
+                        { required: true, message: '请输入押金', trigger: 'blur' },
+                    ],
+                    warrenty: [
+                        { required: true, message: '请输入保修期', trigger: 'blur' },
+                    ],
+                    medi_cost: [
+                        { required: true, message: '请输入中介费', trigger: 'blur' },
+                    ],
+                    pay_types_val: [
+                        { required: true, message: '请选择付款方式', trigger: 'change' },
+                    ],
+                    prices_val: [
+                        { required: true, message: '请输入月单价', trigger: 'blur' },
+                    ],
+                    deal_date: [
+                        { required: true, message: '请选择待签约日期', trigger: 'change' },
+                    ],
+                    first_pay_date: [
+                        { required: true, message: '请选择待一次打款日期', trigger: 'change' },
+                    ],
+                    second_pay_date: [
+                        { required: true, message: '请选择待二次打款日期', trigger: 'change' },
+                    ],
+                    account_type: [
+                        { required: true, message: '请选择账户类型', trigger: 'change' },
+                    ],
+                    account_bank: [
+                        { required: true, message: '请选择开户银行', trigger: 'change' },
+                    ],
+                    account_owner: [
+                        { required: true, message: '请输入收款人', trigger: 'blur' },
+                    ],
+                    account_subbank: [
+                        { required: true, message: '请输入支行名称', trigger: 'blur' },
+                    ],
+                    deposit_subject: [
+                        { required: true, message: '请选择押金科目', trigger: 'change' },
+                    ],
+                    rental_subject: [
+                        { required: true, message: '请选择房租科目', trigger: 'change' },
+                    ],
+                },
 
 
 
@@ -548,20 +609,23 @@
             },
 
             //编辑确认
-            postLordEditData() {
+            postLordEditData(formName) {
                 for(let item of Object.keys(this.formParams)){
                     this.formParams[item] = this.form[item];
                 }
                 console.log(this.formParams);
                 console.log(this.row.id);
-                if (this.row.id) {
-                    this.$http.put(globalConfig.temporary_server + 'customer_renter/' + this.row.id, this.formParams).then(res => {
-                        this.callbackSuccess(res);
-                        this.$emit("updateList",false)
-
-                    })
-                }
-
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.$http.put(globalConfig.temporary_server + 'customer_renter/' + this.row.id, this.formParams).then(res => {
+                            this.callbackSuccess(res);
+                            this.$emit("updateList",false)
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
             },
         },
     }
