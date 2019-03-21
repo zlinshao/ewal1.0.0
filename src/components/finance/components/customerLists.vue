@@ -24,25 +24,16 @@
                 style="width: 100%">
             <el-table-column label="客户身份" prop="" align="center">
                 <template slot-scope="scope">
-                    <span>{{ customer.identity === 1 ? '业主' : '租客'}}</span>
+                    <span>{{ scope.row.identity === 1 ? '业主' : '租客'}}</span>
                 </template>
             </el-table-column>
             <el-table-column
-                    show-overflow-tooltip
                     v-for="(item,index) in tableHeaderData"
                     :label="item.title" :key="index"
                     :prop="item.prop"
                     align="center">
             </el-table-column>
         </el-table>
-        <div class="dialog_footer">
-            <div class="page">
-                <el-pagination
-                        :total="count"
-                        layout="total,prev,pager,next"
-                ></el-pagination>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -81,15 +72,11 @@
                     {title:"备注",prop:"remark",width:"80"},
                 ],
                 tableData:[],
-                count:0,
-
-                current_identity:1,
-
-
             }
         },
         mounted(){
-            this.getCustomerLists(1);
+            this.getCustomerLists();
+            this.tableData = this.tableData1;
         },
         methods:{
             // 当前点击
@@ -97,37 +84,36 @@
                 let ids = this.chooseRowIds;
                 ids.push(row.id);
                 this.chooseRowIds = this.myUtils.arrayWeight(ids);
-                this.customer.customer_name = row.customer_name;
-                this.customer.address = row.address;
+                for(let item of Object.keys(this.customer)){
+                    this.customer[item] = row[item];
+                }
                 this.customer.customer_id = row.id;
-                this.$emit("getCustomer",JSON.stringify(this.customer));
+
+                this.$emit("getCustomer",this.customer);
             },
             // 点击过
             tableChooseRow({row, rowIndex}) {
                 return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
             },
+            //获取客户列表
             getCustomerLists(type){
                 if(type===1){
-                    this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
+                    this.$http.post(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
                         if(res.code===200){
                             this.tableData = res.data.data;
-                            this.count = res.data.count;
-                            this.customer.identity = 1;
-                        }
-                    }).catch(err => {
-                        console.log(err);
-                    });
-                }else if(type===2){
-                    this.$http.get(globalConfig.temporary_server + 'customer_renter', this.params).then(res => {
-                        if(res.code===200){
-                            this.tableData = res.data.data;
-                            this.count = res.data.count;
-                            this.customer.identity = 2;
                         }
                     }).catch(err => {
                         console.log(err);
                     });
 
+                }else if(type===2){
+                    this.$http.post(globalConfig.temporary_server + 'customer_renter', this.params).then(res => {
+                        if(res.code===200){
+                            this.tableData = res.data.data;
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                    });
                 }else {
                     this.tableData = '';
                 }

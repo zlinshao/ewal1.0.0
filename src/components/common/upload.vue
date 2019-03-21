@@ -1,12 +1,18 @@
 <template>
   <div id="upLoad">
     <div class="flex">
-      <div class="showFile" v-for="(item,index) in showFile" @click="removeFile(index)">
+      <div class="showFile" :style="uploadCss" v-for="(item,index) in showFile">
         <img :src="item.url" v-if="item.type === 'image'">
         <video :src="item.url" v-else></video>
+        <div class="progress" :id="'progress' + file.keyName + index">
+          {{progress['progress' + file.keyName + index]}}
+        </div>
+        <div class="remove flex" @click="removeFile(index)">
+          <img src="../../assets/image/common/theme1/closeBtn.png">
+        </div>
       </div>
-      <label class="uploadPic" :for="file.keyName">
-        <img src="../../assets/image/common/theme1/humanresourcehongdi2.png">
+      <label class="uploadPic" :style="uploadCss" :for="file.keyName">
+        <img src="../../assets/image/common/theme1/upload.png">
         <input type="file" :id="file.keyName" hidden multiple @change="uploadPic">
       </label>
     </div>
@@ -23,23 +29,35 @@
     data() {
       return {
         token: '',//上传凭证
+        ids: [],
         showFile: [],//本地文件地址
-        isVideo: '',//是否视频z
+        isVideo: '',//是否视频
+        progress: {},
+        uploadCss: this.file.size || {width: '100px', height: '100px'},
       }
     },
     mounted() {
-      this.$http.get(globalConfig.upload_sever + 'api/v1/token').then(res => {
-        this.token = res.data.data;
-      })
     },
     activated() {
     },
-    watch: {},
+    watch: {
+      file: {
+        handler(val, oldVal) {
+          for (let item of val.setFile) {
+            this.ids.push(item.id);
+            this.showFile.push(item);
+            this.progress['progress' + item.id] = 0;
+          }
+        },
+        deep: true
+      }
+    },
     computed: {},
     methods: {
       removeFile(index) {
-        this.file.setFile.splice(index, 1);
         this.showFile.splice(index, 1);
+        this.ids.splice(index, 1);
+        this.$emit('success', this.ids);
       },
       // 获取token
       uploadPic() {
@@ -87,17 +105,33 @@
           };
           let config = {
             useCdnDomain: true,
+
           };
+          let pro = 'progress' + that.file.keyName + (Object.keys(that.progress).length);
+          that.progress[pro] = 0;
+          console.log(pro);
           let observable = qiniu.upload(file, key, that.token, putExtra, config);
           let subscription = observable.subscribe({
-            next: (res) => {
-              console.log(res);
+            next(res) {
+              that.progress[pro] = Math.floor(res.total.percent);
+              console.log(that.progress);
             },
-            error: (err) => {
+            error(err) {
               console.log(err);
             },
-            complete: (res) => {
-              console.log(res);
+            complete(res) {
+              let data = {};
+              data.url = globalConfig.domain + res.key;
+              data.name = res.key;
+              data.raw_name = res.key;
+              data.type = fileType;
+              data.size = fileSize;
+              that.$http.uploadServer(data).then(res => {
+                if (res.code === "110100") {
+                  that.ids.push(Number(res.data.id));
+                  that.$emit('success', that.ids);
+                }
+              })
             }
           });
         }
@@ -111,17 +145,45 @@
 
   #upLoad {
     .showFile, .uploadPic {
-      width: 100px;
-      height: 100px;
-      cursor: pointer;
       overflow: hidden;
       @include radius(6px);
     }
     .showFile {
+      position: relative;
       margin: 10px 10px 0 0;
+      .progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        color: $colorFFF;
+        background-color: rgba(0, 0, 0, .4);
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+      }
+      .remove {
+        cursor: pointer;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 35px;
+        height: 35px;
+        @include radius(50%);
+        background-color: $colorE33;
+        align-items: flex-end;
+        img {
+          margin: 0 0 7px 7px;
+          width: 12px;
+          height: 12px;
+        }
+      }
     }
     .uploadPic {
+      cursor: pointer;
       margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #EBEEF5;
     }
   }
 

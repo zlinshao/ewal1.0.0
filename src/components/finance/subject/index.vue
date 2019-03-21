@@ -46,12 +46,12 @@
         >
           <template slot-scope="scope">
             <div class="operate">
-              <el-button size="mini" type="primary" plain @click="handleOpenEdit(scope.row)">编辑</el-button>
-              <el-button size="mini" type="warning" plain @click="handleMoveSubject(scope.row)">迁移</el-button>
-              <el-button size="mini" :type="scope.row.is_enable === 2 ? 'danger' : 'success'" plain @click="handleUnUseSubject(scope.row)">
+              <el-button size="mini" type="primary"  @click="handleOpenEdit(scope.row)">编辑</el-button>
+              <el-button size="mini" type="warning"  @click="handleMoveSubject(scope.row)">迁移</el-button>
+              <el-button size="mini" :type="scope.row.is_enable === 2 ? 'danger' : 'success'"  @click="handleUnUseSubject(scope.row)">
                 {{ scope.row.is_enable === 2 ? '禁用' : '启用'}}
               </el-button>
-              <el-button size="mini" type="danger" plain @click="handleDeleteSubject(scope.row)">删除</el-button>
+              <el-button size="mini" type="danger"  @click="handleDeleteSubject(scope.row)">删除</el-button>
             </div>
           </template>
         </el-table-column>
@@ -431,17 +431,19 @@
           if (valid) {
             this.$http.post(this.url + 'subject',this.new_subject).then(res => {
               if (res.code === 200) {
-                this.$notify.success({
-                  title: '成功',
-                  message: res.msg
-                });
+                  this.$LjNotify('success', {
+                      title: '成功',
+                      message: res.msg,
+                      subMessage: '',
+                  });
                 this.handleCancelAdd();
                 this.getSubjectList();
               }else {
-                this.$notify.warning({
-                  title: '失败',
-                  message: res.msg
-                });
+                  this.$LjNotify('error', {
+                      title: '失败',
+                      message: res.msg,
+                      subMessage: '',
+                  });
                 return false;
               }
             }).catch(err => {
@@ -467,17 +469,19 @@
         }
         this.$http.put(this.url + `subject/migrate/${this.currentRow.id}`,{parent_id: this.move_subject.parent_id}).then(res => {
           if (res.code === 200) {
-            this.$notify.success({
-              title: '成功',
-              message: res.msg
-            });
+              this.$LjNotify('success', {
+                  title: '成功',
+                  message: res.msg,
+                  subMessage: '',
+              });
             this.handleCancelMove();
             this.getSubjectList();
           }else {
-            this.$notify.warning({
-              title: '失败',
-              message: res.msg
-            });
+              this.$LjNotify('success', {
+                  title: '失败',
+                  message: res.msg,
+                  subMessage: '',
+              });
             return false;
           }
         }).catch(err => {
@@ -528,15 +532,17 @@
       handleEditSubjectInfo() {
         this.$http.put(this.url + `subject/${this.currentRow.id}`,this.edit_subject).then(res => {
           if (res.code === 200) {
-            this.$notify.success({
-              title: '成功',
-              message: '修改成功'
-            });
+              this.$LjNotify('success', {
+                  title: '成功',
+                  message: res.msg,
+                  subMessage: '',
+              });
           } else {
-            this.$notify.warning({
-              title: '失败',
-              message: '修改失败'
-            });
+              this.$LjNotify('success', {
+                  title: '失败',
+                  message: res.msg,
+                  subMessage: '',
+              });
           }
           this.edit_visible = false;
           this.getSubjectList();
@@ -558,15 +564,17 @@
         var is_enable = this.currentRow.is_enable === 1 ? 2 : 1;
         this.$http.put(this.url + `subject/isEnable/${this.currentRow.id}`,{is_enable}).then(res => {
           if (res.code === 200) {
-            this.$notify.success({
-              title: '成功',
-              message: '修改成功'
-            });
+              this.$LjNotify('success', {
+                  title: '成功',
+                  message: res.msg,
+                  subMessage: '',
+              });
           } else {
-            this.$notify.warning({
-              title: '失败',
-              message: '修改失败'
-            });
+              this.$LjNotify('success', {
+                  title: '失败',
+                  message: res.msg,
+                  subMessage: '',
+              });
           }
           this.open_close_visible = false;
           this.getSubjectList();

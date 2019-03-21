@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-let url = globalConfig.humanResource_server;
-axios.defaults.timeout = 5000;
+
+let url = globalConfig.organ_server;
+axios.defaults.timeout = 10000;
+
 axios.defaults.baseURL = globalConfig.humanResource_server; // 域名
 
 //响应拦截器即异常处理
@@ -106,6 +108,15 @@ class Axios {
     })
   }
 
+  // 上传文件
+  static uploadServer(data) {
+    return new Promise((resolve, reject) => {
+      this.post(globalConfig.upload_sever + 'api/v1/upload-direct', data).then(res => {
+        resolve(res);
+      });
+    });
+  }
+
   // 组织架构部门
   static getOrganization(org) {
     return new Promise((resolve, reject) => {
@@ -116,6 +127,7 @@ class Axios {
       });
     });
   }
+
   // 组织架构职位
   static getDuty(params) {
     return new Promise((resolve, reject) => {
@@ -124,6 +136,7 @@ class Axios {
       });
     });
   }
+
   // 组织架构岗位
   static getPosition(params) {
     return new Promise((resolve, reject) => {
