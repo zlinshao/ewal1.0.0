@@ -148,11 +148,11 @@
         //导航
         selects: [
           {id: 1, title: '募兵行列'},
-          {id: 2, title: '分取科士'},
+          {id: 2, title: '分科取士'},
           {id: 3, title: '殿试会师'},
           {id: 4, title: '榜上有名'}
         ], //模块列表
-        chooseTab: 2, //当前选中模块
+        chooseTab: 3, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索
@@ -226,12 +226,12 @@
       },
       //关闭搜索
       hiddenModule(val) {
+        console.log(val);
         if (val !== 'close') {
-          console.log(val);
           for (var key in this.allSearch[this.chooseTab - 1]) {
             this.allSearch[this.chooseTab - 1][key] = val[key];
           }
-          console.log(this.allSearch[this.chooseTab - 1]);
+          console.log(this.allSearch[this.chooseTab - 1][key]);
         }
         this.showSearch = false;
       },
