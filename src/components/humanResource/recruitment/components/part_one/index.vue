@@ -13,7 +13,6 @@
           style="width: 100%">
           <el-table-column label="岗位" prop="position.name" align="center"></el-table-column>
           <el-table-column label="部门" prop="org.name" align="center"></el-table-column>
-          <el-table-column label="职位" prop="duty.name" align="center"></el-table-column>
           <el-table-column label="所需人数" prop="number" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.number.min }} ~ {{ scope.row.number.max }}</span>
@@ -80,13 +79,10 @@
           <div class="dialog_main borderNone">
             <el-form :disabled="is_control === 'look'" :model="control_mb_form" :rules="control_mb_form_rules" label-width="80px" style="width: 90%;margin: 0 auto" size="small">
               <el-form-item label="部门" prop="org_id">
-                <el-input v-model="control_mb_form.depart"></el-input>
+                <el-input v-model="control_mb_form.depart" placeholder="请选择" readonly @focus="depart_visible = true;organ_data.num = 1"></el-input>
               </el-form-item>
-              <el-form-item label="职位" prop="position_id">
-                <el-input v-model="control_mb_form.position"></el-input>
-              </el-form-item>
-              <el-form-item label="岗位" prop="duty_id">
-                <el-input v-model="control_mb_form.duty"></el-input>
+              <el-form-item label="岗位" prop="position">
+                <el-input v-model="control_mb_form.position" placeholder="请选择" readonly @focus="position_visible = true"></el-input>
               </el-form-item>
               <el-form-item label="所需人数" prop="number">
                 <el-input v-model="control_mb_form.number.min" style="width: 49%" placeholder="请输入至少需求人数"></el-input>
@@ -157,19 +153,35 @@
           </div>
         </div>
       </lj-dialog>
+
+      <!--岗位-->
+      <postOrgan :module="position_visible" @close="handleSelPosition"></postOrgan>
+
+      <!--部门-->
+      <departOrgan :module="depart_visible" :organ-data="organ_data" @close="handleSelDepart"></departOrgan>
     </div>
   </div>
 </template>
 
 <script>
   import LjDialog from '../../../../common/lj-dialog.vue';
+  import postOrgan from '../../../../common/postOrgan.vue';
+  import departOrgan from '../../../../common/departOrgan.vue';
 
   export default {
     name: "index",
-    props: ['addModules'],
-    components: { LjDialog },
+    props: ['addModules','searchData'],
+    components: { LjDialog,postOrgan ,departOrgan},
     data() {
       return {
+        //部门
+        depart_visible: false,
+        organ_data: {
+          num: ''
+        },
+        //岗位
+        position_visible: false,
+
         //需求列表
         soldiersData: [],
         soldiersCount: 0,
@@ -187,12 +199,10 @@
         is_control: 'add', //look // edit
         control_info_visible: false,
         control_mb_form: {
-          depart: '研发中心',
-          duty: 'Android',
-          position: 'Android开发工程师',
-          org_id: 141,
-          duty_id: 40,
-          position_id: 124,
+          depart: '',
+          org_id: [],
+          position: '',
+          position_id: '',
           number: {
             min: '',
             max: ''
@@ -231,9 +241,31 @@
       addModules(val) {
         this.control_info_visible = val;
       },
+      searchData: {
+        handler(val) {
+          this.params = Object.assign(this.params,{},val);
+          this.getSoldiersList();
+        },
+        deep: true
+      }
     },
     computed: {},
     methods: {
+      handleSelPosition(id,name) {
+        if (id !== 'close') {
+          this.control_mb_form.position = name;
+          this.control_mb_form.position_id = id;
+        }
+        this.position_visible = false;
+      },
+      handleSelDepart(id,name) {
+        if (id !== 'close') {
+          console.log(id,name);
+          this.control_mb_form.depart = name;
+          this.control_mb_form.org_id = id;
+        }
+        this.depart_visible = false;
+      },
       //停止招聘
       handleStopNeed() {
         this.$http.get(`recruitment/staff_needs/stop/${this.dblCurrentRow.id}`).then(res => {
@@ -333,13 +365,11 @@
       handleCancelAddMb() {
         this.is_control = 'add';
         this.control_mb_form = {
-          depart: '研发中心',
-          duty: 'Android',
-          position: 'Android开发工程师',
+          depart: '',
+          position: '',
 
-          org_id: 141,
-          duty_id: 40,
-          position_id: 124,
+          org_id: '',
+          position_id: '',
           number: {
             min: '',
             max: ''

@@ -66,7 +66,7 @@
           <div class="dialog_main borderNone">
             <el-form :model="add_interviewer_form" size="small" label-width="100px">
               <el-form-item label="岗位">
-                <el-input v-model="add_interviewer_form.position"></el-input>
+                <el-input v-model="add_interviewer_form.position" @focus="position_visible = true"></el-input>
               </el-form-item>
               <el-form-item label="姓名">
                 <el-input v-model="add_interviewer_form.name"></el-input>
@@ -130,7 +130,7 @@
           <div class="dialog_main borderNone">
             <el-form :model="add_msg_form" label-width="80px" size="small">
               <el-form-item label="岗位">
-                <el-input v-model="add_msg_form.position"></el-input>
+                <el-input v-model="add_msg_form.position" readonly></el-input>
               </el-form-item>
               <el-form-item label="部门">
                 <el-input v-model="add_msg_form.depart"></el-input>
@@ -209,6 +209,9 @@
           </div>
         </div>
       </lj-dialog>
+
+      <!--岗位-->
+      <postOrgan :module="position_visible" :organ-data="position_data" @close="handleSelPosition"></postOrgan>
     </div>
   </div>
 </template>
@@ -216,13 +219,18 @@
 <script>
   import LjDialog from '../../../../common/lj-dialog.vue';
   import Upload from '../../../../common/upload.vue';
+  import postOrgan from '../../../../common/postOrgan.vue';
 
   export default {
     name: "index",
-    components: { LjDialog ,Upload},
+    components: { LjDialog ,Upload,postOrgan},
     props: [ 'addInterviewerVisible' ,'addOfferVisible'],
     data() {
       return {
+        //岗位选择
+        position_visible: false,
+        position_data: {},
+
         tableList: [],
         tableCount:0 ,
         params: {
@@ -234,8 +242,8 @@
         //添加面试人
         add_interviewer_visible: false,
         add_interviewer_form: {
-          position: 'Android开发工程师',
-          position_id: 124,
+          position: '',
+          position_id: '',
 
           name: '',
           platform: '',
@@ -286,6 +294,13 @@
     },
     computed: {},
     methods: {
+      handleSelPosition(id,name) {
+        if (id !== 'close') {
+          this.add_interviewer_form.position = name;
+          this.add_interviewer_form.position_id = id;
+        }
+        this.position_visible = false;
+      },
       handleOpenCancel(row) {
         this.currentRow = row;
         this.cancel_interviewee_visible = true;
