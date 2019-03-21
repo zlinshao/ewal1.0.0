@@ -17,6 +17,8 @@
           >{{ item.val }}</span>
     </div>
 
+
+
     <!--课程培训-->
     <div class="main-container" :class="{'subject-train' : activeName === 2}">
       <div class="content flex">

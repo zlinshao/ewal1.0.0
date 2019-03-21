@@ -2,7 +2,7 @@
   <div id="salary" class="salary">
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
-        <div class="icons add" @click="new_train_visible = true"><b>+</b></div>
+        <!--<div class="icons add" @click="new_train_visible = true"><b>+</b></div>-->
       </div>
 
     </div>
@@ -17,7 +17,7 @@
           >{{ item.val }}</span>
     </div>
 
-    <div style="background-color: red;" class="salary-container">
+    <div style="background-color: white;" class="salary-container">
 
     </div>
   </div>

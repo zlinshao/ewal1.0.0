@@ -42,6 +42,10 @@ const HeadLines = () => import('@/components/newMedia/headLines/index.vue');
 const Humanity = () => import('@/components/newMedia/humanity/index.vue');
 const CompanyProfile = () => import('@/components/newMedia/companyProfile/index.vue');
 
+
+//待办
+const TodoList = () => import('@/components/todoList/index.vue');
+
 Vue.use(Router);
 
 export default new Router({
@@ -191,6 +195,11 @@ export default new Router({
       path: '/offerDetail',
       name: '录用通知书',
       component: OfferDetail
+    },
+    {
+      path: '/todoList',
+      name: '待办',
+      component: TodoList,
     }
   ]
 })

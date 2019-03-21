@@ -14,7 +14,7 @@
       </div>
       <div class="items-center">
         <div class="items-center funTop ">
-          <span>待办</span>
+          <span @click="routerLink('/todoList')">待办</span>
           <span @click="openMessage">审批</span>
           <span @click="openNotify">更多</span>
         </div>
