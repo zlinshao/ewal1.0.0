@@ -1,0 +1,70 @@
+@import "../../../common.scss";
+
+#theme_name {
+  .salary {
+    .listTopCss {
+      height: 0;
+      .search-toolbar {
+        position: fixed;
+        top: 106px;
+        right: 70px;
+        height: 30px;
+        @include flex('justify-end');
+        width: 40%;
+        > div {
+          width: 30px;
+          height: 30px;
+          //margin-right: 50px;
+        }
+      }
+    }
+
+    .main-nav {
+      margin-left: 50px;
+      padding: 15px 0;
+
+      > span {
+        padding: 5px 30px;
+        margin: 0 10px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+    }
+
+    .salary-container {
+      width: 100%;
+      height: calc(100% - 131px);
+      //background-color: $color9F9;
+      position: absolute;
+      left: 0;
+      transition: all ease 1s;
+      .content {
+        height: 100%;
+        //@extend .flex-center;
+        > div {
+          width:300px;
+          height:300px;
+          margin: 0 110px;
+          &:hover {
+            cursor: pointer;
+            transform: scale(1.05);
+            transition: all 1s;
+          }
+          //border:1px solid rgba(207,46,51,1);
+          span {
+            @extend .writingMode;
+            color: #fff;
+            font-size: 32px;
+            font-family: 'jingDianXingShu';
+            position: relative;
+            left: -2px;
+            &.gray {
+              color: #686874;
+            }
+
+          }
+        }
+      }
+    }
+  }
+}
