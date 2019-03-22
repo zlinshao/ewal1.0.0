@@ -63,11 +63,18 @@
     watch: {
       file: {
         handler(val, oldVal) {
-          for (let item of val.setFile) {
-            this.ids.push(Number(item.id));
-            this.showFile.push(item);
-            this.progress.push(0);
+          if (val.setFile.length > 0) {
+            for (let item of val.setFile) {
+              this.ids.push(Number(item.id));
+              this.showFile.push(item);
+              this.progress.push(0);
+            }
+          } else {
+            this.ids = [];
+            this.showFile = [];
+            this.progress = [];
           }
+          this.$emit('success', [this.file.keyName, this.ids, true]);
         },
         deep: true
       }

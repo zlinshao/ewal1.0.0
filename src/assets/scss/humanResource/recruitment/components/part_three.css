@@ -195,20 +195,20 @@
         width: 80%;
         height: 100%;
         margin: 0 auto; }
-        #theme_name #part_three > div .paper_resume .content .base_info {
+        #theme_name #part_three > div .paper_resume .content .base_info, #theme_name #part_three > div .paper_resume .content .edu_info, #theme_name #part_three > div .paper_resume .content .work_info {
           width: 100%;
           border-bottom: 1px solid #999999;
           padding-bottom: 30px; }
-          #theme_name #part_three > div .paper_resume .content .base_info > div:first-child {
+          #theme_name #part_three > div .paper_resume .content .base_info > div:first-child, #theme_name #part_three > div .paper_resume .content .edu_info > div:first-child, #theme_name #part_three > div .paper_resume .content .work_info > div:first-child {
             width: 10%;
-            height: 100%;
             padding-top: 50px;
             line-height: 200px;
             font-size: 24px; }
-          #theme_name #part_three > div .paper_resume .content .base_info > div:last-child {
+          #theme_name #part_three > div .paper_resume .content .base_info > div:last-child, #theme_name #part_three > div .paper_resume .content .edu_info > div:last-child, #theme_name #part_three > div .paper_resume .content .work_info > div:last-child {
             width: 90%;
-            height: 100%;
             padding-top: 40px; }
+        #theme_name #part_three > div .paper_resume .content .work_info {
+          border: none; }
     #theme_name #part_three > div .hide_resume {
       top: -1080px;
       left: -1920px; }

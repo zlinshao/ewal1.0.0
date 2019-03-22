@@ -74,7 +74,9 @@
                 <span>{{ interview_form.comment }}</span>
               </el-form-item>
               <el-form-item label="面试结果" v-if="is_edit">
-                <el-input v-model="interview_form.interview_result" placeholder="请输入"></el-input>
+                <el-select v-model="interview_form.interview_result" placeholder="请输入">
+                  <el-option v-for="item in interview_res" :value="item.key" :label="item.val" :key="item.key"></el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="更改原因" v-if="is_edit">
                 <el-input v-model="interview_form.change_result" type="textarea" placeholder="请输入"></el-input>
@@ -215,12 +217,81 @@
             </div>
           </div>
           <div class="edu_info flex">
-            <div></div>
-            <div></div>
+            <div class="writingMode">学历信息</div>
+            <div v-if="info.education_history && info.education_history.length > 0">
+              <el-form label-width="120px" size="small" v-for="item in info.education_history" :key="item.id">
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-form-item label="起止时间:">
+                      <span>{{ item.start_time }} ~ {{ item.end_time }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="学校名称:">
+                      <span>{{ item.school || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="专业:">
+                      <span>{{ item.major || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="8">
+                    <el-form-item label="学历:">
+                      <span>{{ item.education || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="学习形式:">
+                      <span>{{ item.learning_ways || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </div>
           </div>
-          <div class="work_info">
-            <div></div>
-            <div></div>
+          <div class="work_info flex">
+            <div class="writingMode">工作履历</div>
+            <div v-if="info.work_history && info.work_history.length > 0">
+                <el-form label-width="120px" size="small" v-for="item in info.work_history" :key="item.id">
+                  <el-row :gutter="20">
+                    <el-col :span="8">
+                      <el-form-item label="起止时间:">
+                        <span>{{ item.start_time }} ~ {{ item.end_time }}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="工作单位:">
+                        <span>{{ item.work_place || '/'}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="职务:">
+                        <span>{{ item.position || '/'}}</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="8">
+                      <el-form-item label="月薪:">
+                        <span>{{ item.salary || '/'}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="证明人:">
+                        <span>{{ item.witness || '/'}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="证明人电话:">
+                        <span>{{ item.witness_phone || '/'}}</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+              </div>
           </div>
         </div>
       </div>
@@ -234,6 +305,7 @@
   export default {
     name: "index",
     components: { LjDialog },
+    props: ['searchData'],
     data() {
       return {
         params: {
@@ -283,6 +355,24 @@
             label: '婚育情况',
             key: 'crime_history_type'
           }
+        ],
+        interview_res: [
+          {
+            key: 0,
+            val: '未通过'
+          },
+          {
+            key: 1,
+            val: '通过'
+          },
+          {
+            key: 2,
+            val: '进入二轮面试'
+          },
+          {
+            key: 3,
+            val: '通过待定'
+          },
         ]
       }
     },
@@ -291,11 +381,19 @@
     },
     activated() {
     },
-    watch: {},
+    watch: {
+      searchData: {
+        handler(val) {
+          console.log(val);
+          this.params = Object.assign(this.params,{},val);
+          this.getInterviewResList();
+        },
+        deep: true
+      }
+    },
     computed: {},
     methods: {
       handleLookDetailInfo() {
-        console.log(this.currentRow);
         this.$http.get(`recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
           console.log(res);
           if (res.code === '20030') {
@@ -319,10 +417,8 @@
       //确定修改面试结果
       handleSubmitChangeInterview() {
         this.$http.put(`recruitment/interviewers/edit_result/${this.currentRow.id}`,{
-          params: {
-            interview_result: this.interview_form.interview_result,
-            change_result: this.interview_form.change_result
-          }
+          interview_result: this.interview_form.interview_result,
+          change_result: this.interview_form.change_result
         }).then(res => {
           if (res.code === '20030') {
             this.$LjNotify('success',{
@@ -358,6 +454,7 @@
       },
       handleCheck(id) {
         this.is_sel = id;
+        this.hide_resume = true;
       },
       handleCloseInterview() {
         for (var key in this.interview_form) {

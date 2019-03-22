@@ -8,11 +8,19 @@ class myUtils {
     return str === null || str.length === 0 || str === '';
   }
 
+  // 清空图片
+  static emptyPic(val) {
+    for (let item of val) {
+      item.setFile = [];
+    }
+  }
+
   // 判断是否为Number类型
   static isNum(num) {
     if (num === '') return false;
     return !Number.isNaN(Number(num));
   }
+
   // 去重
   static arrayWeight(array) {
     let temp = [];
