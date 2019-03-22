@@ -1,6 +1,8 @@
 <template>
   <div id="departments">
-    <Upload :file="photo1" @success="getImgIds"></Upload>
+    <div v-for="item in photo">
+      <Upload :file="item" @success="getImgIds"></Upload>
+    </div>
     <!--<Upload :file="photo2"></Upload>-->
 
     <div class="listTopCss items-bet">
@@ -196,29 +198,45 @@
         ],//部门人员
         value: '',
 
-        photo1: {
-          keyName: 'photo1',
-          setFile: [],
-        },
-        photo2: {
-          keyName: 'photo2',
-          setFile: {},
-        },
+        photo: [
+          {
+            keyName: 'photo1',
+            setFile: [],
+          }, {
+            keyName: 'photo2',
+            setFile: [],
+          }
+        ],
       }
     },
     mounted() {
-      this.photo1.setFile = [
+      let setFile = [
         {
-          type: 'image',
-          id: 55,
-          url: 'http://static.lejias.cn/lejia8e9013abd8af58047660bc8616f775a8.jpg',
+          "name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "display_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "raw_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "info": {"ext": "doc", "host": "static.lejias.cn", "mime": "doc", "size": 7, "bucket": "lejia-test"},
+          "user_id": null,
+          "uri": "http://static.lejias.cn/lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "hash": "",
+          "created_at": "2019-03-22 10:30:27",
+          "updated_at": "2019-03-22 10:30:27",
+          "id": "33"
         },
         {
-          type: 'image',
-          id: 44,
-          url: 'http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg',
+          "name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "display_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "raw_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "info": {"ext": "image", "host": "static.lejias.cn", "mime": "image", "size": 7, "bucket": "lejia-test"},
+          "user_id": null,
+          "uri": "http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg",
+          "hash": "",
+          "created_at": "2019-03-22 10:30:27",
+          "updated_at": "2019-03-22 10:30:27",
+          "id": "44"
         },
-      ]
+      ];
+      this.photo[0].setFile = this.myUtils.filterFiles(setFile);
     },
     activated() {
     },
