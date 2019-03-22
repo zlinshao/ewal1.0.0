@@ -14,7 +14,7 @@
       </div>
       <div class="items-center">
         <div class="items-center funTop ">
-          <span @click="routerLink('/todoList')">待办</span>
+          <span @click="todoListHandler">待办</span>
           <span @click="openMessage">审批</span>
           <span @click="openNotify">更多</span>
         </div>
@@ -87,12 +87,19 @@
       <div class="message">{{ global_message.msg }}</div>
     </div>
 
+    <todo-list></todo-list>
+
   </div>
 </template>
 
 <script>
+  import TodoList from './components/todoList/index';
+
   export default {
     name: 'App',
+    components: {
+      TodoList
+    },
     data() {
       return {
         theme_name: '1',
@@ -145,6 +152,7 @@
             English: 'Intellectual Property Protection',
           },
         ],
+
       }
     },
     mounted() {
@@ -171,9 +179,15 @@
       },
       global_message() {
         return this.$store.state.app.globalMessage;
-      }
+      },
+
     },
     methods: {
+      todoListHandler() {
+        //this.routerLink('/todoList');
+        this.$store.dispatch('change_todo_list_visible');
+      },
+
       openMessage() {
         this.$LjMessage('warning',{
           title: '警告',
