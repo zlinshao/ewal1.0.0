@@ -46,8 +46,8 @@
           @closeMsg="msg_add_visible = false"
           :search-data="allSearch[chooseTab - 1]"
         ></part-two>
-        <part-three v-if="chooseTab === 3"></part-three>
-        <part-four v-if="chooseTab === 4"></part-four>
+        <part-three v-if="chooseTab === 3" :search-data="allSearch[chooseTab - 1]"></part-three>
+        <part-four v-if="chooseTab === 4" :search-data="allSearch[chooseTab - 1]"></part-four>
       </div>
 
       <!--高级搜索-->
@@ -136,10 +136,14 @@
             position_id: []
           },
           {
-
+            search: '',
+            org_id: [],
+            position_id: []
           },
           {
-
+            search: '',
+            org_id: [],
+            position_id: []
           }
         ],
         humanResource,
@@ -152,7 +156,7 @@
           {id: 3, title: '殿试会师'},
           {id: 4, title: '榜上有名'}
         ], //模块列表
-        chooseTab: 3, //当前选中模块
+        chooseTab: 4, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索
@@ -225,13 +229,12 @@
         this.$store.dispatch('route_animation');
       },
       //关闭搜索
-      hiddenModule(val) {
-        console.log(val);
+      hiddenModule(val,item,search) {
         if (val !== 'close') {
+          console.log(search);
           for (var key in this.allSearch[this.chooseTab - 1]) {
             this.allSearch[this.chooseTab - 1][key] = val[key];
           }
-          console.log(this.allSearch[this.chooseTab - 1][key]);
         }
         this.showSearch = false;
       },

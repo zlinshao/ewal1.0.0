@@ -349,10 +349,17 @@
         this.$http.get(`recruitment/interviewees/get_resume_url/${row.interviewee_id}`).then(res => {
           console.log(res);
           if (res.code === '20020') {
-            if (res.data.url.endsWith('.pdf')) {
-              window.open(res.data.url);
+            if (res.data.url) {
+              if (res.data.url.endsWith('.pdf')) {
+                window.open(res.data.url);
+              } else {
+                window.open(`https://view.officeapps.live.com/op/view.aspx?src=${res.data.url}`);
+              }
             } else {
-              window.open(`https://view.officeapps.live.com/op/view.aspx?src=${res.data.url}`);
+              this.$LjNotify('warning',{
+                title: '警告',
+                message: '暂无路径'
+              })
             }
           } else {
             this.$LjNotify('warning',{
