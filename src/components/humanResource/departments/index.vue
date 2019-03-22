@@ -210,30 +210,33 @@
       }
     },
     mounted() {
-      this.photo[0].setFile = [
+      let setFile = [
         {
-          type: 'image',
-          id: 55,
-          url: 'http://static.lejias.cn/lejia8e9013abd8af58047660bc8616f775a8.jpg',
+          "name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "display_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "raw_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "info": {"ext": "doc", "host": "static.lejias.cn", "mime": "doc", "size": 7, "bucket": "lejia-test"},
+          "user_id": null,
+          "uri": "http://static.lejias.cn/lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "hash": "",
+          "created_at": "2019-03-22 10:30:27",
+          "updated_at": "2019-03-22 10:30:27",
+          "id": "33"
         },
         {
-          type: 'image',
-          id: 44,
-          url: 'http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg',
+          "name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "display_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "raw_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "info": {"ext": "image", "host": "static.lejias.cn", "mime": "image", "size": 7, "bucket": "lejia-test"},
+          "user_id": null,
+          "uri": "http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg",
+          "hash": "",
+          "created_at": "2019-03-22 10:30:27",
+          "updated_at": "2019-03-22 10:30:27",
+          "id": "44"
         },
       ];
-      this.photo[1].setFile = [
-        {
-          type: 'video',
-          id: 56,
-          url: 'http://static.lejias.cn/lejiacaf736f48d9f8d10d3c1e80b823f2d65.mp4',
-        },
-        {
-          type: 'video',
-          id: 47,
-          url: 'http://static.lejias.cn/lejiafd2426341ebee3a7e1d2cd1ea86d5f72.mov',
-        },
-      ]
+      this.photo[0].setFile = this.myUtils.filterFiles(setFile);
     },
     activated() {
     },

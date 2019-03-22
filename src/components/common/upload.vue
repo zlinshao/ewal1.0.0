@@ -3,21 +3,27 @@
     <transition-group name="list" tag="p" class="items-center">
       <div v-for="(item,index) in showFile" :key="JSON.stringify(item)" class="showFile" :style="uploadCss">
         <!--图片-->
-        <img :src="item.url" v-if="item.type.includes('image')">
+        <img :src="item.uri" v-if="item.type.includes('image')">
         <!--视频-->
-        <div v-if="item.type.includes('video')">
+        <div v-else-if="item.type.includes('video')">
           <!--<div class="playVideo" @click="videoPlay(index)">播放</div>-->
           <video :id="'video' + file.keyName + index">
-            <source :src="item.url" type="video/ogg"/>
-            <source :src="item.url" type="video/mp4"/>
-            <source :src="item.url" type="video/webm"/>
-            <source :src="item.url" type="audio/ogg"/>
-            <source :src="item.url" type="audio/mpeg"/>
+            <source :src="item.uri" type="video/ogg"/>
+            <source :src="item.uri" type="video/mp4"/>
+            <source :src="item.uri" type="video/webm"/>
+            <source :src="item.uri" type="audio/ogg"/>
+            <source :src="item.uri" type="audio/mpeg"/>
           </video>
         </div>
+        <!--其它类型-->
+        <img src="../../assets/image/file/xls.png" v-else-if="item.type.includes('xls')">
+        <img src="../../assets/image/file/doc.png" v-else-if="item.type.includes('doc')">
+        <img src="../../assets/image/file/txt.png" v-else-if="item.type.includes('text')">
+        <img src="../../assets/image/file/pdf.png" v-else-if="item.type.includes('pdf')">
+        <img src="../../assets/image/file/file.png" v-else>
         <!--进图条-->
         <div class="progress" :id="'progress' + file.keyName + index"
-             v-show="!item.url.includes('http://static.lejias.cn')">
+             v-show="!item.uri.includes('http://static.lejias.cn')">
         </div>
         <!--删除按钮-->
         <div class="remove flex" @click="removeFile(index)">
@@ -92,11 +98,13 @@
         }
       },
       // 图片地址
-      showPhoto(val, type = 'image') {
+      showPhoto(val, type, name) {
         let data = {};
-        data.url = val;
+        data.uri = val;
         data.type = type;
+        data.name = name;
         this.showFile.push(data);
+        console.log(this.showFile)
       },
       // 开始上传
       startUpload() {
@@ -104,21 +112,39 @@
         let files = document.getElementById(that.file.keyName).files;
         for (let file of files) {
           let reader = new FileReader();//构造FileReader对象
-          let fileType = file.type;
+          let fileType = '';
           let fileName = file.name;
           let fileSize = file.size;
           let key = "lejia" + md5(fileName + new Date().getTime()).toLowerCase() + "." + fileName.split(".")[1];
-          if (fileType.includes('image')) {
-            reader.readAsDataURL(file);
-            reader.onload = function (event) {
-              that.showPhoto(event.target.result);
-            };
-          } else {
-            reader.readAsDataURL(file);
-            reader.onload = function (event) {
-              that.showPhoto(event.target.result, 'video');
-            };
-          }
+          reader.readAsDataURL(file);
+          reader.onload = function (event) {
+            if (file.type.includes('image') || file.type.includes('video')) {
+              if (file.type.includes('image')) {
+                fileType = 'image';
+                that.showPhoto(event.target.result, 'image', fileName);
+              } else {
+                fileType = 'video';
+                that.showPhoto(event.target.result, 'video', fileName);
+              }
+            } else {
+              if (fileName.includes('.xls')) {
+                fileType = 'xls';
+                that.showPhoto(event.target.result, 'xls', fileName);
+              } else if (fileName.includes('.doc') || fileName.includes('.rtf')) {
+                fileType = 'doc';
+                that.showPhoto(event.target.result, 'doc', fileName);
+              } else if (fileName.includes('.txt')) {
+                fileType = 'text';
+                that.showPhoto(event.target.result, 'txt', fileName);
+              } else if (fileName.includes('.pdf')) {
+                fileType = 'pdf';
+                that.showPhoto(event.target.result, 'pdf', fileName);
+              } else {
+                fileType = 'file';
+                that.showPhoto(event.target.result, 'file', fileName);
+              }
+            }
+          };
           let putExtra = {
             fname: fileName,
             params: {},
@@ -139,6 +165,7 @@
               console.log(err);
             },
             complete(res) {
+              console.log(res);
               let data = {};
               data.url = globalConfig.domain + res.key;
               data.name = res.key;
