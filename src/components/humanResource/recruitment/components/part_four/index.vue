@@ -83,7 +83,7 @@
       <!--员工资料-->
       <lj-dialog
         :visible="interviewee_info_visible"
-        :size="{width: 1000 + 'px',height: 700 + 'px'}"
+        :size="{width: 1000 + 'px',height: 750 + 'px'}"
         @close="handleCloseLookInfo"
       >
         <div class="dialog_container">
@@ -91,144 +91,186 @@
             <h3>员工资料</h3>
           </div>
           <div class="dialog_main a_color borderNone">
-            <el-form label-width="120px" size="small" style="width: 100%">
-              <el-row>
-                <el-col :span="8">
-                 <el-form-item label="姓名">
-                    <el-input v-model="interview_info_detail.name"></el-input>
-                 </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="性别">
-                    <div class="changeChoose" style="margin-top: 8px">
-                      <el-radio-group v-model="interview_info_detail.gender">
-                        <el-radio :value="1" label="男"></el-radio>
-                        <el-radio :value="2" label="女"></el-radio>
-                      </el-radio-group>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="手机号">
-                    <el-input v-model="interview_info_detail.phone"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row style="margin-bottom: 10px">
-                <el-col :span="8">
-                  <el-form-item label="身份证号">
-                    <el-input v-model="interview_info_detail.ID_number"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="生日">
-                    <el-date-picker v-model="interview_info_detail.birthday" type="date" value-format="yyyy-MM-dd">
-                    </el-date-picker>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="婚姻状况">
-                    <div class="changeChoose" style="margin-top: 8px">
-                      <el-radio-group v-model="interview_info_detail.married_status">
-                        <el-radio value="1" label="已婚"></el-radio>
-                        <el-radio value="2" label="未婚"></el-radio>
-                      </el-radio-group>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row style="margin-bottom: 10px">
-                <el-col :span="16">
-                  <el-form-item label="家庭住址">
-                    <el-input v-model="interview_info_detail.birthplace"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="部门">
-                    <el-input v-model="interview_info_detail.depart"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row style="margin-bottom: 10px">
-                <el-col :span="8">
-                  <el-form-item label="岗位">
-                    <el-input v-model="interview_info_detail.position.name"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="银行卡号">
-                    <el-input v-model="interview_info_detail.bank_num"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="开户行">
-                    <el-input v-model="interview_info_detail.account_bank"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row style="margin-bottom: 10px">
-                <el-col :span="8">
-                  <el-form-item label="支行">
-                    <el-input v-model="interview_info_detail.branch_bank"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="开户名">
-                    <el-input v-model="interview_info_detail.bank_num"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="入职时间">
-                    <el-input v-model="interview_info_detail.arrive_time"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row style="margin-bottom: 10px">
-                <el-col :span="8">
-                  <el-form-item label="薪资">
-                    <el-input v-model="interview_info_detail.real_salary"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="推荐人">
-                    <el-input v-model="interview_info_detail.bank_num"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="等级">
-                    <el-input v-model="interview_info_detail.account_bank"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row style="margin-bottom: 10px">
-                <el-col :span="8">
-                  <el-form-item label="入职途径">
-                    <el-input v-model="interview_info_detail.branch_bank"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="社保卡号">
-                    <el-input v-model="interview_info_detail.society_number"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="入职材料">
-                    <div class="changeChoose">
-                      <el-checkbox-group v-model="interviewee_info.other" style="width: 100%;margin-top: 8px" class="flex">
-                        <el-checkbox label="意外险"></el-checkbox>
-                        <el-checkbox label="五险"></el-checkbox>
-                        <el-checkbox label="身份证复印件"></el-checkbox>
-                        <el-checkbox label="应聘表"></el-checkbox>
-                        <el-checkbox label="学籍在线验证报告"></el-checkbox>
-                        <el-checkbox label="原单位离职证明"></el-checkbox>
-                      </el-checkbox-group>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
+            <el-tabs v-model="activeName">
+              <el-tab-pane label="基本信息" name="first">
+                <el-form label-width="120px" size="small" style="width: 100%">
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="姓名">
+                        <el-input v-model="interview_info_detail.name"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="性别">
+                        <div class="changeChoose" style="margin-top: 8px">
+                          <el-radio-group v-model="interview_info_detail.gender">
+                            <el-radio :label="1">男</el-radio>
+                            <el-radio :label="2">女</el-radio>
+                          </el-radio-group>
+                        </div>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="手机号">
+                        <el-input v-model="interview_info_detail.phone"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="身份证号">
+                        <el-input v-model="interview_info_detail.ID_number"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="生日">
+                        <el-date-picker v-model="interview_info_detail.birthday" type="date" value-format="yyyy-MM-dd">
+                        </el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="婚姻状况">
+                        <div class="changeChoose" style="margin-top: 8px">
+                          <el-radio-group v-model="interview_info_detail.married_status">
+                            <el-radio :label="1">已婚</el-radio>
+                            <el-radio :label="2">未婚</el-radio>
+                          </el-radio-group>
+                        </div>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="16">
+                      <el-form-item label="家庭住址">
+                        <el-input v-model="interview_info_detail.birthplace"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="部门">
+                        <el-input v-model="interview_info_detail.depart"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="岗位">
+                        <el-input v-model="interview_info_detail.position.name"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="银行卡号">
+                        <el-input v-model="interview_info_detail.bank_num"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="开户行">
+                        <el-input v-model="interview_info_detail.account_bank"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="支行">
+                        <el-input v-model="interview_info_detail.branch_bank"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="开户名">
+                        <el-input v-model="interview_info_detail.bank_num"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="入职时间">
+                        <el-input v-model="interview_info_detail.arrive_time"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="薪资">
+                        <el-input v-model="interview_info_detail.real_salary"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="推荐人">
+                        <el-input v-model="interview_info_detail.bank_num"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="等级">
+                        <el-input v-model="interview_info_detail.account_bank"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="入职途径">
+                        <el-input v-model="interview_info_detail.branch_bank"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="社保卡号">
+                        <el-input v-model="interview_info_detail.society_number"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="24">
+                      <el-form-item label="入职材料">
+                        <div class="changeChoose">
+                          <el-checkbox-group v-model="interviewee_info.other" style="width: 100%;margin-top: 8px" class="flex">
+                            <el-checkbox label="意外险"></el-checkbox>
+                            <el-checkbox label="五险"></el-checkbox>
+                            <el-checkbox label="身份证复印件"></el-checkbox>
+                            <el-checkbox label="应聘表"></el-checkbox>
+                            <el-checkbox label="学籍在线验证报告"></el-checkbox>
+                            <el-checkbox label="原单位离职证明"></el-checkbox>
+                          </el-checkbox-group>
+                        </div>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+              </el-tab-pane>
+              <el-tab-pane label="学历信息" name="second">
+                <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.education_history.length > 0">
+                  <div v-for="item in interview_info_detail.education_history" :key="item.id">
+                    <el-row>
+                      <el-col :span="8">
+                        <el-form-item label="起始时间:">
+                          <span>{{ item.start_time }} ~ {{ item.end_time }}</span>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="学校名称:">
+                          <span>{{item.school}}</span>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="专业:">
+                          <span>{{ item.major }}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="8">
+                        <el-form-item label="学历:">
+                          <span>{{ item.education }}</span>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="学习形式:">
+                          <span>{{item.learning_ways }}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-form>
+              </el-tab-pane>
+              <el-tab-pane label="工作履历" name="third">
+
+              </el-tab-pane>
+            </el-tabs>
           </div>
           <div class="dialog_footer">
             <el-button size="small" type="danger" @click="ok_interviewee_visible = true">入职</el-button>
@@ -456,7 +498,10 @@
           real_salary: '',
           society_number: '',
           other: [],
-        }
+          education_history: [],
+          work_history: []
+        },
+        activeName: 'first',
       }
     },
     mounted() {
@@ -547,8 +592,9 @@
               this.interviewee_info = res.data;
               console.log(this.interviewee_info);
               for (var key in this.interview_info_detail) {
-                this.interview_info_detail[key] = res.data[key];
+                this.interview_info_detail[key] = res.data[key] ? res.data[key] : null;
               }
+              console.log(this.interview_info_detail);
               this.interviewee_info_visible = true;
             } else {
               this.interviewee_info = '';
