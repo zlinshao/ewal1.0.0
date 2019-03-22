@@ -3,9 +3,9 @@
     <transition-group name="list" tag="p" class="items-center">
       <div v-for="(item,index) in showFile" :key="JSON.stringify(item)" class="showFile" :style="uploadCss">
         <!--图片-->
-        <img :src="item.uri" v-if="item.type.includes('image')">
+        <img :src="item.uri" v-if="item.info.mime.includes('image')">
         <!--视频-->
-        <div v-else-if="item.type.includes('video')">
+        <div v-else-if="item.info.mime.includes('video')">
           <!--<div class="playVideo" @click="videoPlay(index)">播放</div>-->
           <video :id="'video' + file.keyName + index">
             <source :src="item.uri" type="video/ogg"/>
@@ -16,10 +16,10 @@
           </video>
         </div>
         <!--其它类型-->
-        <img src="../../assets/image/file/xls.png" v-else-if="item.type.includes('xls')">
-        <img src="../../assets/image/file/doc.png" v-else-if="item.type.includes('doc')">
-        <img src="../../assets/image/file/txt.png" v-else-if="item.type.includes('text')">
-        <img src="../../assets/image/file/pdf.png" v-else-if="item.type.includes('pdf')">
+        <img src="../../assets/image/file/xls.png" v-else-if="item.info.mime.includes('xls')">
+        <img src="../../assets/image/file/doc.png" v-else-if="item.info.mime.includes('doc')">
+        <img src="../../assets/image/file/txt.png" v-else-if="item.info.mime.includes('text')">
+        <img src="../../assets/image/file/pdf.png" v-else-if="item.info.mime.includes('pdf')">
         <img src="../../assets/image/file/file.png" v-else>
         <!--进图条-->
         <div class="progress" :id="'progress' + file.keyName + index"
@@ -64,7 +64,7 @@
       file: {
         handler(val, oldVal) {
           for (let item of val.setFile) {
-            this.ids.push(item.id);
+            this.ids.push(Number(item.id));
             this.showFile.push(item);
             this.progress.push(0);
           }
@@ -100,11 +100,11 @@
       // 图片地址
       showPhoto(val, type, name) {
         let data = {};
+        data.info = {};
         data.uri = val;
-        data.type = type;
+        data.info.mime = type;
         data.name = name;
         this.showFile.push(data);
-        console.log(this.showFile)
       },
       // 开始上传
       startUpload() {

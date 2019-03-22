@@ -236,7 +236,7 @@
           "id": "44"
         },
       ];
-      this.photo[0].setFile = this.myUtils.filterFiles(setFile);
+      this.photo[0].setFile = setFile;
     },
     activated() {
     },

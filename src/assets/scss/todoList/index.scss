@@ -1,0 +1,156 @@
+@import "../common.scss";
+
+#todo_list {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 24;
+  background-color: $color2F2;
+  height: 100%;
+  @include transform(scale(0));
+  @include transOrigin(50%);
+  @include transition(all .6s linear);
+  opacity: 0;
+
+  &.todo-list {
+    @include transOrigin(50%);
+    @include transition(all .6s linear);
+    @include transform(scale(1));
+    opacity: 1;
+  }
+  .pendant-container {
+    width: 100%;
+
+    height: 600px;
+    .pendant {
+      height: 180px;
+      width: 100%;
+      position: relative;
+
+      .horizontal {
+        height: 3px;
+        width: 100%;
+        background-color: #E1E4E8;
+        position: absolute;
+        top: 100px;
+      }
+
+      .todo-list-title {
+        @include flex("flex-center");
+        position: absolute;
+        width: 120px;
+        height: 30px;
+        top: 85px;
+        left: 50px;
+        cursor: default;
+        background-color: $colorFFF;
+        font-family: "jingDianXingShu";
+        font-size: 24px;
+      }
+
+      .item-list {
+        @include flex('items-bet');
+        position: absolute;
+        width: 70%;
+        height: 50px;
+        top: 115px;
+        left: 250px;
+
+        .item-detail {
+          width: 50px;
+          height: 80px;
+          //background-color: $colorE33;
+          position: relative;
+          cursor: pointer;
+          span {
+            font-family: jingDianXingShu;
+            position: absolute;
+            top: -4px;
+            left: 19px;
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            color: #93939B;
+            z-index: 0;
+            text-align: center;
+            //background-color: $colorFFF;
+            font-size: 10px;
+            &:before {
+              content: '';
+              position: absolute;
+              top: 0; right: 0; bottom: 0; left: 0;
+              z-index: -1;
+              //border: 2px solid $colorE33;
+              background-color: $colorFFF;
+              transform: rotateZ(45deg);
+            }
+          }
+          i {
+            font-size: 20px;
+            font-family: jingDianXingShu;
+            @include writingMode;
+            position: absolute;
+            top: 30px;
+            left: 13px;
+            &.multi-font {
+              left: 3px;
+            }
+          }
+
+          &.checked {
+            span {
+              color: $colorE33;
+            }
+            i {
+              color: $colorE33;
+            }
+          }
+        }
+      }
+
+      .search-bar {
+        width: 100%;
+        //background-color: red;
+        height: 40px;
+        top: 200px;
+        @include flex('justify-end');
+        position: absolute;
+
+        > div {
+          width: 40px;
+          height: 40px;
+          background-color: red;
+          margin-right: 30px;
+        }
+      }
+    }
+  }
+
+
+}
+
+#theme_name.theme1 {
+  #todoList {
+
+  }
+}
+
+#theme_name.theme2 {
+  #todoList {
+
+  }
+}
+
+#theme_name.theme3 {
+  #todoList {
+
+  }
+}
+
+#theme_name.theme4 {
+  #todoList {
+
+  }
+}
