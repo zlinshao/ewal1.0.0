@@ -210,7 +210,7 @@
       }
     },
     mounted() {
-      let setFile = [
+      this.photo[0].setFile = [
         {
           "name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
           "display_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
@@ -236,7 +236,6 @@
           "id": "44"
         },
       ];
-      this.photo[0].setFile = setFile;
     },
     activated() {
     },

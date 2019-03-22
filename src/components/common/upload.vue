@@ -68,6 +68,7 @@
             this.showFile.push(item);
             this.progress.push(0);
           }
+          this.$emit('success', [this.file.keyName, this.ids, true]);
         },
         deep: true
       }
