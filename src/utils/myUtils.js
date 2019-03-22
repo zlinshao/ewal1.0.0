@@ -13,7 +13,13 @@ class myUtils {
     if (num === '') return false;
     return !Number.isNaN(Number(num));
   }
-
+  // 获取文件增加类型
+  static filterFiles(val) {
+    for (let item of val) {
+      item.type = item.info.mime;
+    }
+    return val;
+  }
   // 去重
   static arrayWeight(array) {
     let temp = [];

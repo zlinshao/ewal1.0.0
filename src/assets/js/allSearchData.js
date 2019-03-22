@@ -1,6 +1,7 @@
 // 员工名册
 export const staffBookSearch = {
   status: 'staffBookSearch',
+  placeholder: '请输入地址',
   data: [
     {
       keyType: 'date',
@@ -447,4 +448,62 @@ export const borrowReceiveSearch = {
       ],
     },
   ],
+};
+
+//招兵买马
+export const recruitmentSearchList = {
+  1: {
+    status: 'recruitmentSearchList',
+    keywords: 'search',
+    data: [
+      {
+        keyType: 'depart',
+        title: '部门',
+        placeholder: '请选择部门',
+        keyName: 'org_id',
+        dataType: [],
+        value: {
+          num: '',
+          arr: []
+        }
+      },
+      {
+        keyType: 'position',
+        title: '岗位',
+        placeholder: '请选择岗位',
+        keyName: 'position_id',
+        dataType: [],
+        value: {
+          num: '',
+        }
+      },
+    ]
+  },
+  2: {
+    status: 'recruitmentSearchList',
+    keywords: 'search',
+    data: [
+      {
+        keyType: 'depart',
+        title: '部门',
+        placeholder: '请选择部门',
+        keyName: 'org_id',
+        dataType: [],
+        value: {
+          num: '',
+          arr: []
+        }
+      },
+      {
+        keyType: 'position',
+        title: '岗位',
+        placeholder: '请选择岗位',
+        keyName: 'position_id',
+        dataType: [],
+        value: {
+          num: '',
+        }
+      },
+    ]
+  },
 };
