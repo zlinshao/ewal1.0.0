@@ -83,7 +83,7 @@
       <!--员工资料-->
       <lj-dialog
         :visible="interviewee_info_visible"
-        :size="{width: 1000 + 'px',height: 600 + 'px'}"
+        :size="{width: 1000 + 'px',height: 700 + 'px'}"
         @close="handleCloseLookInfo"
       >
         <div class="dialog_container">
@@ -92,7 +92,7 @@
           </div>
           <div class="dialog_main a_color borderNone">
             <el-form label-width="120px" size="small" style="width: 100%">
-              <el-row style="margin-bottom: 10px">
+              <el-row>
                 <el-col :span="8">
                  <el-form-item label="姓名">
                     <el-input v-model="interview_info_detail.name"></el-input>
@@ -173,13 +173,58 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="银行卡号">
+                  <el-form-item label="开户名">
                     <el-input v-model="interview_info_detail.bank_num"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="开户行">
+                  <el-form-item label="入职时间">
+                    <el-input v-model="interview_info_detail.arrive_time"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row style="margin-bottom: 10px">
+                <el-col :span="8">
+                  <el-form-item label="薪资">
+                    <el-input v-model="interview_info_detail.real_salary"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="推荐人">
+                    <el-input v-model="interview_info_detail.bank_num"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="等级">
                     <el-input v-model="interview_info_detail.account_bank"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row style="margin-bottom: 10px">
+                <el-col :span="8">
+                  <el-form-item label="入职途径">
+                    <el-input v-model="interview_info_detail.branch_bank"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="社保卡号">
+                    <el-input v-model="interview_info_detail.society_number"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="入职材料">
+                    <div class="changeChoose">
+                      <el-checkbox-group v-model="interviewee_info.other" style="width: 100%;margin-top: 8px" class="flex">
+                        <el-checkbox label="意外险"></el-checkbox>
+                        <el-checkbox label="五险"></el-checkbox>
+                        <el-checkbox label="身份证复印件"></el-checkbox>
+                        <el-checkbox label="应聘表"></el-checkbox>
+                        <el-checkbox label="学籍在线验证报告"></el-checkbox>
+                        <el-checkbox label="原单位离职证明"></el-checkbox>
+                      </el-checkbox-group>
+                    </div>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -410,6 +455,7 @@
           arrive_time: '',
           real_salary: '',
           society_number: '',
+          other: [],
         }
       }
     },
