@@ -1,6 +1,7 @@
 @import "../common.scss";
 
 #todo_list {
+  overflow: auto;
   position: fixed;
   top: 80px;
   left: 0;
@@ -8,7 +9,7 @@
   bottom: 0;
   z-index: 24;
   background-color: $color2F2;
-  height: 100%;
+  //height: 100%;
   @include transform(scale(0));
   @include transOrigin(50%);
   @include transition(all .6s linear);
@@ -20,12 +21,12 @@
     @include transform(scale(1));
     opacity: 1;
   }
+
   .pendant-container {
     width: 100%;
-
-    height: 600px;
+    //height: 400px;
     .pendant {
-      height: 180px;
+      height: 220px;
       width: 100%;
       position: relative;
 
@@ -34,7 +35,7 @@
         width: 100%;
         background-color: #E1E4E8;
         position: absolute;
-        top: 100px;
+        top: 80px;
       }
 
       .todo-list-title {
@@ -42,7 +43,7 @@
         position: absolute;
         width: 120px;
         height: 30px;
-        top: 85px;
+        top: 65px;
         left: 50px;
         cursor: default;
         background-color: $colorFFF;
@@ -55,7 +56,7 @@
         position: absolute;
         width: 70%;
         height: 50px;
-        top: 115px;
+        top: 95px;
         left: 250px;
 
         .item-detail {
@@ -64,6 +65,7 @@
           //background-color: $colorE33;
           position: relative;
           cursor: pointer;
+
           span {
             font-family: jingDianXingShu;
             position: absolute;
@@ -77,16 +79,21 @@
             text-align: center;
             //background-color: $colorFFF;
             font-size: 10px;
+
             &:before {
               content: '';
               position: absolute;
-              top: 0; right: 0; bottom: 0; left: 0;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
               z-index: -1;
               //border: 2px solid $colorE33;
               background-color: $colorFFF;
               transform: rotateZ(45deg);
             }
           }
+
           i {
             font-size: 20px;
             font-family: jingDianXingShu;
@@ -94,6 +101,7 @@
             position: absolute;
             top: 30px;
             left: 13px;
+
             &.multi-font {
               left: 3px;
             }
@@ -103,6 +111,7 @@
             span {
               color: $colorE33;
             }
+
             i {
               color: $colorE33;
             }
@@ -113,16 +122,66 @@
       .search-bar {
         width: 100%;
         //background-color: red;
-        height: 40px;
-        top: 200px;
+        height: 30px;
+        top: 180px;
         @include flex('justify-end');
         position: absolute;
+        padding-right: 50px;
 
+        .search-bar-item {
+          width: 30px;
+          height: 30px;
+          //background-color: red;
+          cursor: pointer;
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+
+  .todo-list-container {
+    height: calc(100% - 300px);
+    @include flex('flex-center');
+    padding-bottom: 150px;
+    margin: 0 50px 50px;
+    flex-wrap: wrap;
+    //background-color: red;
+    .todo-list-container-top, .todo-list-container-bottom {
+      @include flex('flex-center');
+      .todo-list-item {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        cursor: pointer;
+        //background-color: red;
+        margin-right: 30px;
+        margin-bottom: 30px;
         > div {
-          width: 40px;
-          height: 40px;
-          background-color: red;
-          margin-right: 30px;
+          width: 100%;
+
+        }
+        .todo-list-item-title {
+          text-align: center;
+          margin-top: 40px;
+          font-size:16px ;
+        }
+
+        .todo-list-item-content {
+          position: relative;
+          text-align: left;
+          margin-left: 90px;
+          margin-top: 16px;
+          width: 120px;
+          font-size: 12px;
+          i {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            //background-color: red;
+            left: -30px;
+            top: 2px;
+          }
         }
       }
     }

@@ -1,0 +1,39 @@
+@import "../../../../common";
+
+#interview_dialog {
+  #lj_dialog {
+    #interview_form {
+      .header_right {
+        span {
+          cursor: pointer!important;
+        }
+      }
+    }
+
+  }
+
+}
+
+#theme_name.theme1 {
+  #interview_dialog {
+
+  }
+}
+
+#theme_name.theme2 {
+  #interview_dialog {
+
+  }
+}
+
+#theme_name.theme3 {
+  #interview_dialog {
+
+  }
+}
+
+#theme_name.theme4 {
+  #interview_dialog {
+
+  }
+}
