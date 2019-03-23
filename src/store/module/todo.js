@@ -63,6 +63,7 @@ const todo = {
         user: '张无忌',
         date: '2019-03-22',
         location: '艺术家工厂',
+        onClick:'humanResource_interview_evaluate',//click事件控制lj-dialog显示隐藏
       },
       {
         id: 3,
@@ -130,6 +131,7 @@ const todo = {
 
     //人力资源中心 待办模块
     humanResource_interview_visible: false,//面试界面显示隐藏
+    humanResource_interview_evaluate_visible: false,//面试评价界面显示隐藏
 
 
   },
@@ -147,6 +149,10 @@ const todo = {
     CHANGE_HUMANRESOURCE_INTERVIEW_VISIBLE(state) {
       state.humanResource_interview_visible = !state.humanResource_interview_visible;
     },
+    //切换面试评价
+    CHANGE_HUMANRESOURCE_INTERVIEW_EVALUATE_VISIBLE(state) {
+      state.humanResource_interview_evaluate_visible = !state.humanResource_interview_evaluate_visible;
+    },
   },
   // 执行函数
   actions: {
@@ -158,6 +164,10 @@ const todo = {
     //改变面试待办事项显示隐藏
     change_humanResource_interview_visible({commit},status) {
       commit('CHANGE_HUMANRESOURCE_INTERVIEW_VISIBLE',status);
+    },
+    //改变面试评价事项显示隐藏
+    change_humanResource_interview_evaluate_visible({commit},status) {
+      commit('CHANGE_HUMANRESOURCE_INTERVIEW_EVALUATE_VISIBLE',status);
     }
   }
 };

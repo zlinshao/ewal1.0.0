@@ -1,11 +1,43 @@
 @import "../../../../common";
 
-#interview_dialog {
+#interview_dialog_list {
   #lj_dialog {
-    #interview_form {
-      .header_right {
-        span {
-          cursor: pointer!important;
+    #interview_form,#interview_form_result  {
+      .dialog_header {
+        .header_right {
+          span {
+            cursor: pointer!important;
+          }
+        }
+      }
+
+      .dialog_main {
+        .interview_dialog_form {
+          .interview_dialog_form_row {
+            width: 100%;
+            margin: 10px;
+            text-align: left;
+            .interview_dialog_form_label {
+              display: inline-block;
+              color: #C8C8CC;
+              text-align: right;
+              width: 190px;
+              padding-right: 30px;
+            }
+            > span {
+              font-size: 14px;
+              padding: 0 50px;
+              color: $color000;
+
+              &.interview_dialog_form_checkbox {
+                display: inline-block;
+                .el-radio {
+                  display: inline-block !important;
+                }
+              }
+
+            }
+          }
         }
       }
     }
@@ -15,25 +47,25 @@
 }
 
 #theme_name.theme1 {
-  #interview_dialog {
+  #interview_dialog_list {
 
   }
 }
 
 #theme_name.theme2 {
-  #interview_dialog {
+  #interview_dialog_list {
 
   }
 }
 
 #theme_name.theme3 {
-  #interview_dialog {
+  #interview_dialog_list {
 
   }
 }
 
 #theme_name.theme4 {
-  #interview_dialog {
+  #interview_dialog_list {
 
   }
 }
