@@ -515,6 +515,8 @@
         this.currentRow = '';
         this.add_interviewer_form.name = '';
         this.add_interviewer_form.interview_time = '';
+        this.add_interviewer_form.position_id = [];
+        this.add_interviewer_form.position = '';
         this.add_interviewer_form.platform = '';
         this.edit_interviewee_visible = false;
       },
@@ -553,6 +555,8 @@
         for (var key in this.add_interviewer_form) {
           this.add_interviewer_form[key] = '';
         }
+        this.add_interviewer_form.position_id = [];
+        this.add_interviewer_form.position = '';
         this.add_interviewer_visible = false;
         this.$emit('closeMs');
       },

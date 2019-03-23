@@ -145,7 +145,7 @@
             <h3>确定</h3>
           </div>
           <div class="dialog_main">
-            <div class="unUse-txt">确定删除该招聘需求吗？</div>
+            <div class="unUse-txt">确定结束该招聘需求吗？</div>
           </div>
           <div class="dialog_footer">
             <el-button type="danger" size="small" @click="handleStopNeed">确定</el-button>
@@ -317,13 +317,13 @@
               message: res.msg
             });
             this.getSoldiersList();
+            this.handleCancelAddMb();
           } else {
             this.$LjNotify('warning',{
               title: '失败',
               message: res.msg
             });
           }
-          this.handleCancelAddMb();
         }).catch(err => {
           console.log(err);
         })
@@ -357,6 +357,10 @@
         this.control_mb_form.gender = row.gender;
         this.control_mb_form.experience = row.experience;
         this.control_mb_form.publish_status = row.publish_status;
+        this.control_mb_form.org_id = row.org_id;
+        this.control_mb_form.depart = row.org.name;
+        this.control_mb_form.position = row.position.name;
+        this.control_mb_form.position_id = row.position_id;
         this.is_control = 'look';
         this.control_info_visible = true;
       },

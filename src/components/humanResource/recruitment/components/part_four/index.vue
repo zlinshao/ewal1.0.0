@@ -475,7 +475,167 @@
       <div class="labour_contract" :class="{'hide_labour_contract': labour_contract_visible}">
         <h1>南京市劳务合同书</h1>
         <h4>（2015修订版）</h4>
+        <el-form size="small" style="text-align: left">
+          <el-form-item class="item_margin">
+            <div class="flex" style="margin-top: 50px">
+              <div style="width: 150px">甲方（单位全称）</div>
+              <el-input v-model="labour_form.company_name"></el-input>
+            </div>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 80px">单位类型</div>
+                  <el-input value="有限责任公司"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 280px">法定代表人（或负责人）</div>
+                  <el-input v-model="labour_form.leader_name"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">登记注册地</div>
+                  <el-input v-model="labour_form.register_place"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 50px">邮编</div>
+                  <el-input v-model="labour_form.postal_code"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">实际经营地</div>
+                  <el-input v-model="labour_form.real_place"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 50px">邮编</div>
+                  <el-input v-model="labour_form.postal_code"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">联系部门</div>
+                  <el-input value="人力资源部"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 80px">联系电话</div>
+                  <el-input v-model="labour_form.telephone"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin" style="margin-top: 50px">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 180px">乙方（职工）姓名</div>
+                  <el-input v-model="labour_form.name"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">性别</div>
+                  <el-input v-model="labour_form.gender"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">出生年月</div>
+                  <el-input v-model="labour_form.birthday"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">工作地点</div>
+                  <el-input v-model="labour_form.work_space"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <div class="flex">
+              <div style="width: 250px">在本单位工作起始时间</div>
+              <el-input v-model="labour_form.begin_date"></el-input>
+            </div>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">合同履行地</div>
+                  <el-input v-model="labour_form.work_address"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">岗位</div>
+                  <el-input v-model="labour_form.position"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">合同编号前缀</div>
+                  <el-input v-model="labour_form.number_prefix"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+        </el-form>
+        <div class="flex-center">
+          <el-button size="small" type="danger" @click="ok_send_contract = true">发送</el-button>
+          <el-button size="small" type="info" @click="labour_contract_visible = true">取消</el-button>
+        </div>
       </div>
+
+      <!--确定发送劳务合同-->
+      <lj-dialog
+        :visible="ok_send_contract"
+        :size="{width: 400 + 'px',height: 250 + 'px'}"
+        @close="ok_send_contract = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>确定</h3>
+          </div>
+          <div class="dialog_main">
+            <div class="unUse-txt">确定发送该劳务合同吗？</div>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleConfirmContract">确定</el-button>
+            <el-button type="info" size="small" @click="ok_send_contract = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
 
       <StaffOrgan :module="modules" @close="handleGetStaffInfo"></StaffOrgan>
 
@@ -599,10 +759,27 @@
         work_success: false,
 
         //劳务合同
-        labour_contract_visible: false,
+        labour_contract_visible: true,
         labour_form: {
           company_name: '',
-        }
+          birthday: '',
+          contact_address: '',
+          phone: '',
+          register_place: '', //注册地
+          real_place: '', //经营地
+          telephone: '',//公司电话
+          name: '',
+          gender: '',
+          begin_date: '',
+          position: '',
+          ID_number: '',
+          work_address: '',
+          work_space: '',
+          number_prefix: '',
+          postal_code: '',
+          leader_name: '',
+        },
+        ok_send_contract: false
       }
     },
     mounted() {
@@ -613,6 +790,30 @@
     watch: {},
     computed: {},
     methods: {
+      handleConfirmContract() {
+        this.labour_form.send = 1;
+        this.labour_form.type = 1;
+        this.$http.post('recruitment/interviewer_process/view_contract',this.labour_form).then(res => {
+          if (res.code === '20000') {
+            this.$LjMessage('success',{
+              title: '成功',
+              msg: '发送成功'
+            });
+            setTimeout(() => {
+              this.labour_contract_visible = true;
+              this.ok_send_contract = false;
+            })
+          }else {
+            this.$LjMessage('warning',{
+              title: '失败',
+              msg: '发送失败'
+            });
+            return false;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       handleGetPosition(id,name) {
         this.interview_info_detail.position_id = id;
         this.interview_info_detail.position.name = name;
@@ -685,7 +886,6 @@
       },
       handleOkSendOffer() {
         this.$http.put(`recruitment/interviewer_process/send_offer/${this.currentInfo.interviewee_id}`,this.offer_info_form).then(res => {
-          console.log(res);
           if (res.code === "20000") {
             this.$LjNotify('success',{
               title: '成功',
@@ -707,15 +907,36 @@
         this.currentInfo = row;
         this.write_offer_visible = true;
       },
+      getLabourInfo() {
+        this.$http.get(`recruitment/interviewer_process/get_contract_info/${this.currentRow.interviewee_id}`).then(res => {
+          if (res.code === '20010') {
+            this.labour_form = res.data;
+            this.ok_interviewee_visible = false;
+            setTimeout(() => {
+              this.handleCancelEdit();
+              this.interviewee_info_visible = false;
+            },1000);
+            setTimeout(() => {
+              this.labour_contract_visible = false;
+            },2000)
+          } else {
+            this.$LjNotify('warning',{
+              title: '获取劳务合同失败，请重试'
+            });
+            return false;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       handleOkInterviewee() {
         this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,this.interview_info_detail).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.$LjNotify('success',{
               title: '成功',
               message: '入职成功'
             });
-            this.ok_interviewee_visible = false;
+            this.getLabourInfo();
             this.work_success = true;
           } else {
             this.$LjNotify('warning',{
