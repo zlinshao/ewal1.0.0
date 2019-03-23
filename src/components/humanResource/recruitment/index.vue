@@ -3,7 +3,6 @@
     <div>
       <div class="nav_container" :class="{'hide_nav_container': is_hide_nav_container}">
         <div class="nav_info flex-center">
-          <el-button type="primary" size="small" @click="handleSearchInterview">查看面试人数</el-button>
           <div></div>
           <div></div>
           <div></div>
@@ -33,6 +32,7 @@
           </h2>
         </div>
         <div class="items-center listTopRight">
+          <el-button type="success" size="small" @click="handleSearchInterview" style="margin-right: 20px">查看面试人数</el-button>
           <el-button size="mini" type="warning" plain v-if="chooseTab === 2" @click="ms_add_visible = true">添加面试人</el-button>
           <el-button size="mini" type="success" plain v-if="chooseTab === 2" style="margin-right: 10px" @click="msg_add_visible = true">添加面试官</el-button>
           <div class="icons add" v-if="chooseTab === 1" @click="mb_add_visible = true"><b>+</b></div>
@@ -68,7 +68,7 @@
       <!--今日面试人数-->
       <lj-dialog
         :visible="today_interview_visible"
-        :size="{width: 650 + 'px',height: 500 + 'px'}"
+        :size="{width: 650 + 'px',height: 600 + 'px'}"
         @close="today_interview_visible = false"
       >
         <div class="dialog_container">
@@ -78,7 +78,7 @@
           <div class="dialog_main">
             <el-table
               :data="interview_list"
-              height="450px"
+              height="400px"
             >
               <el-table-column label="部门" prop="depart.name" align="center"></el-table-column>
               <el-table-column label="岗位" prop="position.name" align="center" min-width="100px"></el-table-column>
@@ -153,6 +153,11 @@
             search: '',
             org_id: [],
             position_id: []
+          },
+          {
+            search: '',
+            org_id: [],
+            position_id: []
           }
         ],
         humanResource,
@@ -165,7 +170,7 @@
           {id: 3, title: '殿试会师'},
           {id: 4, title: '榜上有名'}
         ], //模块列表
-        chooseTab: 1, //当前选中模块
+        chooseTab: 4, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索
@@ -229,7 +234,7 @@
         })
       },
       handleSearchInterview() {
-        this.$http.get('recruitment/interviewer_process/intervieweeListForFront',this.params).then(res => {
+        this.$http.get('recruitment/interviewer_process/intervieweeListForFront').then(res => {
           console.log(res);
           if (res.code === '20000') {
             this.interview_list = res.data.data;
@@ -251,7 +256,6 @@
       //关闭搜索
       hiddenModule(val,item,search) {
         if (val !== 'close') {
-          console.log(search);
           for (var key in this.allSearch[this.chooseTab - 1]) {
             this.allSearch[this.chooseTab - 1][key] = val[key];
           }

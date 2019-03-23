@@ -656,6 +656,7 @@
 
   export default {
     name: "index",
+    props:['searchData'],
     components: {LjDialog, StaffOrgan,DepartOrgan,PostOrgan},
     data() {
       return {
@@ -663,6 +664,10 @@
         tableList: [],
         chooseRowIds: [], //图标点击
         entry_feedback: ['未反馈', '同意入职', '拒绝入职'],
+        params: {
+          page: 1,
+          limit: 12
+        },
 
         // 编辑入职结果
         edit_result_visible: false,
@@ -787,7 +792,14 @@
     },
     activated() {
     },
-    watch: {},
+    watch: {
+      searchData: {
+        handler(val) {
+          this.params = Object.assign(this.params,{},val);
+        },
+        deep: true
+      },
+    },
     computed: {},
     methods: {
       handleConfirmContract() {
@@ -975,10 +987,8 @@
           })
         } else if (this.edit_result_form.entry_feedback === 2) {
           this.$http.put(`recruitment/interviewer_process/entry_feedback/${this.currentRow.id}`, {
-            params: {
-              entry_feedback: this.edit_result_form.entry_feedback,
-              unentry_reason: this.edit_result_form.unentry_reason
-            }
+            entry_feedback: this.edit_result_form.entry_feedback,
+            unentry_reason: this.edit_result_form.unentry_reason
           }).then(res => {
             if (res.code === '20000') {
               this.$LjNotify('success', {
@@ -1019,7 +1029,7 @@
       },
       //获取表格数据
       getTableList() {
-        this.$http.get('recruitment/interviewer_process/interviewedList').then(res => {
+        this.$http.get('recruitment/interviewer_process/interviewedList',this.params).then(res => {
           if (res.code === '20000') {
             this.tableList = res.data.data;
           } else {

@@ -19,7 +19,7 @@
             </template>
           </el-table-column>
           <el-table-column label="预约面试时间" prop="interview_time" align="center"></el-table-column>
-          <el-table-column label="已通知面试官" prop="offer" align="center"></el-table-column>
+          <el-table-column label="已通知面试官" prop="interviewer.name" align="center"></el-table-column>
           <el-table-column label="简历" prop="" align="center">
             <template slot-scope="scope">
               <el-button size="mini" type="success" plain @click="handleLookOffer(scope.row)">查看简历</el-button>
@@ -352,7 +352,6 @@
     methods: {
       getPapers() {
         this.$http.get(globalConfig.organ_server + 'train/exam?type=1').then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.paper = res.data.data;
           } else {
@@ -364,7 +363,6 @@
       },
       handleLookOffer(row) {
         this.$http.get(`recruitment/interviewees/get_resume_url/${row.interviewee_id}`).then(res => {
-          console.log(res);
           if (res.code === '20020') {
             if (res.data.url) {
               if (res.data.url.endsWith('.pdf')) {
@@ -436,12 +434,12 @@
         }
         this.depart_visible = false;
       },
-      handleGetFile(id){
+      handleGetFile(val){
         if (this.is_paper === 'offer') {
-          this.add_msg_form.paper_id = id;
+          this.add_msg_form.paper_id = val[1];
         }
         if (this.is_paper === 'interview') {
-          this.add_interviewer_form.resume_id = id;
+          this.add_interviewer_form.resume_id = val[1];
         }
       },
       handleSelPosition(id,name) {
