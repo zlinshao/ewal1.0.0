@@ -19,7 +19,7 @@
             </template>
           </el-table-column>
           <el-table-column label="预约面试时间" prop="interview_time" align="center"></el-table-column>
-          <el-table-column label="已通知面试官" prop="offer" align="center"></el-table-column>
+          <el-table-column label="已通知面试官" prop="interviewer.name" align="center"></el-table-column>
           <el-table-column label="简历" prop="" align="center">
             <template slot-scope="scope">
               <el-button size="mini" type="success" plain @click="handleLookOffer(scope.row)">查看简历</el-button>
@@ -143,9 +143,10 @@
                 <el-input v-model="add_msg_form.offer2" @focus="staff_visible = true;is_staff = 'second'" readonly placeholder="请选择" style="margin-bottom: 20px"></el-input>
                 <el-input v-model="add_msg_form.offer3" @focus="staff_visible = true;is_staff = 'third'" readonly placeholder="请选择"></el-input>
               </el-form-item>
-              <el-form-item>
-                <el-button type="success" size="small" style="width: 100%">添加试卷</el-button>
-                <!--<Upload :file="upload_form" @success="handleGetFile"></Upload>-->
+              <el-form-item label="添加试卷">
+                <el-select v-model="add_msg_form.paper_id" clearable>
+                  <el-option v-for="item in paper" :value="item.id" :label="item.name" :key="item.id"></el-option>
+                </el-select>
               </el-form-item>
             </el-form>
           </div>
@@ -317,11 +318,15 @@
 
         //岗位获取面试官
         interview_list: [],
-        selected_interview: ''
+        selected_interview: '',
+
+        //试卷
+        paper: []
       }
     },
     mounted() {
       this.getIntervieweeList();
+      this.getPapers();
     },
     activated() {
     },
@@ -345,9 +350,19 @@
     },
     computed: {},
     methods: {
+      getPapers() {
+        this.$http.get(globalConfig.organ_server + 'train/exam?type=1').then(res => {
+          if (res.code === '20000') {
+            this.paper = res.data.data;
+          } else {
+            this.paper = [];
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       handleLookOffer(row) {
         this.$http.get(`recruitment/interviewees/get_resume_url/${row.interviewee_id}`).then(res => {
-          console.log(res);
           if (res.code === '20020') {
             if (res.data.url) {
               if (res.data.url.endsWith('.pdf')) {
@@ -419,12 +434,12 @@
         }
         this.depart_visible = false;
       },
-      handleGetFile(id){
+      handleGetFile(val){
         if (this.is_paper === 'offer') {
-          this.add_msg_form.paper_id = id;
+          this.add_msg_form.paper_id = val[1];
         }
         if (this.is_paper === 'interview') {
-          this.add_interviewer_form.resume_id = id;
+          this.add_interviewer_form.resume_id = val[1];
         }
       },
       handleSelPosition(id,name) {
@@ -498,6 +513,8 @@
         this.currentRow = '';
         this.add_interviewer_form.name = '';
         this.add_interviewer_form.interview_time = '';
+        this.add_interviewer_form.position_id = [];
+        this.add_interviewer_form.position = '';
         this.add_interviewer_form.platform = '';
         this.edit_interviewee_visible = false;
       },
@@ -536,6 +553,8 @@
         for (var key in this.add_interviewer_form) {
           this.add_interviewer_form[key] = '';
         }
+        this.add_interviewer_form.position_id = [];
+        this.add_interviewer_form.position = '';
         this.add_interviewer_visible = false;
         this.$emit('closeMs');
       },
