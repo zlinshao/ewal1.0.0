@@ -10,7 +10,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="organModule = true">三省六部</h1>
+        <h1 @click="myUtils.emptyPic(photo)">三省六部</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -211,6 +211,32 @@
     },
     mounted() {
       this.photo[0].setFile = [
+        {
+          "name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "display_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "raw_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "info": {"ext": "doc", "host": "static.lejias.cn", "mime": "doc", "size": 7, "bucket": "lejia-test"},
+          "user_id": null,
+          "uri": "http://static.lejias.cn/lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "hash": "",
+          "created_at": "2019-03-22 10:30:27",
+          "updated_at": "2019-03-22 10:30:27",
+          "id": "33"
+        },
+        {
+          "name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "display_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "raw_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
+          "info": {"ext": "image", "host": "static.lejias.cn", "mime": "image", "size": 7, "bucket": "lejia-test"},
+          "user_id": null,
+          "uri": "http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg",
+          "hash": "",
+          "created_at": "2019-03-22 10:30:27",
+          "updated_at": "2019-03-22 10:30:27",
+          "id": "44"
+        },
+      ];
+      this.photo[1].setFile = [
         {
           "name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",
           "display_name": "lejia11ed446b5e6adfbf6b322c9c2703e1a6.rtf",

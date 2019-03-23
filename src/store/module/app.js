@@ -18,54 +18,6 @@ const app = {
       title: '',
       msg: ''
     },
-    todo_list_visible: false,//待办事项显示/隐藏
-    todo_list_toolbar: [
-      {
-        id:1,
-        content:'全部',
-        tipCount:'13',
-      },
-      {
-        id:2,
-        content:'面试',
-        tipCount:'',
-      },
-      {
-        id:3,
-        content:'入职资料',
-        tipCount:'3',
-      },
-      {
-        id:4,
-        content:'考勤核对',
-        tipCount:'',
-      },
-      {
-        id:5,
-        content:'培训考试',
-        tipCount:'',
-      },
-      {
-        id:6,
-        content:'缴纳罚款',
-        tipCount:'3',
-      },
-      {
-        id:7,
-        content:'物品领取',
-        tipCount:'13',
-      },
-      {
-        id:8,
-        content:'会议任务',
-        tipCount:'',
-      },
-      {
-        id:9,
-        content:'其他',
-        tipCount:'',
-      },
-    ]
   },
   // 计算属性
   getter: {},
@@ -117,10 +69,7 @@ const app = {
         state.globalMessage.visible = false;
       },during);
     },
-    //切换待办事项显示隐藏
-    CHANGE_TODO_LIST_VISIBLE(state) {
-      state.todo_list_visible = !state.todo_list_visible;
-    },
+
   },
   // 执行函数
   actions: {
@@ -159,10 +108,7 @@ const app = {
     auto_close_message({commit},status) {
       commit('AUTO_CLOSE_MESSAGE',status);
     },
-    //改变待办事项显示隐藏
-    change_todo_list_visible({commit},status) {
-      commit('CHANGE_TODO_LIST_VISIBLE',status);
-    }
+
   }
 };
 
