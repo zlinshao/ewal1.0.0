@@ -23,7 +23,7 @@ export const humanResource = {
       title: '内务库房',
     },
     {
-      url: '',
+      url: 'discussPolitics',
       title: '奏事议政',
     }
   ]

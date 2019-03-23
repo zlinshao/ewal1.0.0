@@ -1,5 +1,10 @@
 @import "../common.scss";
 
+#theme_name {
+  height: auto !important;
+  padding-top: 0 !important;
+}
+
 #todo_list {
   overflow: auto;
   position: fixed;
