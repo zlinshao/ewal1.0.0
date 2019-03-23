@@ -2,11 +2,20 @@
   <div id="recruitment">
     <div>
       <div class="nav_container" :class="{'hide_nav_container': is_hide_nav_container}">
-        <div class="nav_info">
+        <div class="nav_info flex-center">
           <el-button type="primary" size="small" @click="handleSearchInterview">查看面试人数</el-button>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
         <div class="show_btn" @click="is_hide_nav_container = false" :class="{'btn_hide': !is_hide_nav_container}"><</div>
         <div class="hide_btn" @click="is_hide_nav_container = true" :class="{'btn_hide': is_hide_nav_container}"> > </div>
+
+        <div class="time_type">
+          <div @click="handleCheckTimeType(item.id)" :class="{'current_choose_time': current_time === item.id}" v-for="item in time_type" :key="item.id">{{ item.val }}</div>
+        </div>
       </div>
 
 
@@ -156,7 +165,7 @@
           {id: 3, title: '殿试会师'},
           {id: 4, title: '榜上有名'}
         ], //模块列表
-        chooseTab: 4, //当前选中模块
+        chooseTab: 1, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索
@@ -175,6 +184,14 @@
         //  二维码地址
         code_address: '',
         code_detail_visible: false,
+
+        //时间周期
+        time_type: [
+          {id: 1,val: '当日'},
+          {id: 2,val: '本周'},
+          {id: 3,val: '本月'},
+        ],
+        current_time: 1
       }
     },
     mounted() {
@@ -184,6 +201,9 @@
     watch: {},
     computed: {},
     methods: {
+      handleCheckTimeType(id) {
+        this.current_time = id;
+      },
       handleOpenSearch() {
         this.searchData = recruitmentSearchList[this.chooseTab];
         this.showSearch = true;

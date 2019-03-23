@@ -213,5 +213,20 @@
   #theme_name #part_four .hide_offer_container {
     top: -1920px;
     left: -1920px; }
+  #theme_name #part_four .labour_contract {
+    width: 800px;
+    height: 1100px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 30px;
+    text-align: center;
+    color: black; }
+    #theme_name #part_four .labour_contract .item_margin {
+      margin-bottom: 55px; }
+  #theme_name #part_four .hide_labour_contract {
+    top: -1920px;
+    right: -1920px; }
 
 /*# sourceMappingURL=part_four.css.map */

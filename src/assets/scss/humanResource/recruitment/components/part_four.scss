@@ -101,5 +101,24 @@
       top: -1920px;
       left: -1920px;
     }
+
+    .labour_contract {
+      width: 800px;
+      height: 1100px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 30px;
+      text-align: center;
+      color: black;
+      .item_margin {
+        margin-bottom: 55px;
+      }
+    }
+    .hide_labour_contract {
+      top: -1920px;
+      right: -1920px;
+    }
   }
 }

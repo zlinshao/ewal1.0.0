@@ -132,7 +132,12 @@
     background: #747474;
     border-radius: 4px; }
 
+#theme_name {
+  height: auto !important;
+  padding-top: 0 !important; }
+
 #todo_list {
+  overflow: auto;
   position: fixed;
   top: 80px;
   left: 0;
@@ -140,7 +145,6 @@
   bottom: 0;
   z-index: 24;
   background-color: #F2F2F2;
-  height: 100%;
   -webkit-transform: scale(0);
   -moz-transform: scale(0);
   -ms-transform: scale(0);
@@ -175,10 +179,9 @@
     transform: scale(1);
     opacity: 1; }
   #todo_list .pendant-container {
-    width: 100%;
-    height: 600px; }
+    width: 100%; }
     #todo_list .pendant-container .pendant {
-      height: 180px;
+      height: 220px;
       width: 100%;
       position: relative; }
       #todo_list .pendant-container .pendant .horizontal {
@@ -186,7 +189,7 @@
         width: 100%;
         background-color: #E1E4E8;
         position: absolute;
-        top: 100px; }
+        top: 80px; }
       #todo_list .pendant-container .pendant .todo-list-title {
         display: flex;
         display: -webkit-flex;
@@ -195,7 +198,7 @@
         position: absolute;
         width: 120px;
         height: 30px;
-        top: 85px;
+        top: 65px;
         left: 50px;
         cursor: default;
         background-color: #FFFFFF;
@@ -209,7 +212,7 @@
         position: absolute;
         width: 70%;
         height: 50px;
-        top: 115px;
+        top: 95px;
         left: 250px; }
         #todo_list .pendant-container .pendant .item-list .item-detail {
           width: 50px;
@@ -254,16 +257,58 @@
             color: #CF2E33; }
       #todo_list .pendant-container .pendant .search-bar {
         width: 100%;
-        height: 40px;
-        top: 200px;
+        height: 30px;
+        top: 180px;
         display: flex;
         display: -webkit-flex;
         justify-content: flex-end;
-        position: absolute; }
-        #todo_list .pendant-container .pendant .search-bar > div {
-          width: 40px;
-          height: 40px;
-          background-color: red;
-          margin-right: 30px; }
+        position: absolute;
+        padding-right: 50px; }
+        #todo_list .pendant-container .pendant .search-bar .search-bar-item {
+          width: 30px;
+          height: 30px;
+          cursor: pointer;
+          margin-right: 20px; }
+  #todo_list .todo-list-container {
+    height: calc(100% - 300px);
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 150px;
+    margin: 0 50px 50px;
+    flex-wrap: wrap; }
+    #todo_list .todo-list-container .todo-list-container-top, #todo_list .todo-list-container .todo-list-container-bottom {
+      display: flex;
+      display: -webkit-flex;
+      align-items: center;
+      justify-content: center; }
+      #todo_list .todo-list-container .todo-list-container-top .todo-list-item, #todo_list .todo-list-container .todo-list-container-bottom .todo-list-item {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        cursor: pointer;
+        margin-right: 30px;
+        margin-bottom: 30px; }
+        #todo_list .todo-list-container .todo-list-container-top .todo-list-item > div, #todo_list .todo-list-container .todo-list-container-bottom .todo-list-item > div {
+          width: 100%; }
+        #todo_list .todo-list-container .todo-list-container-top .todo-list-item .todo-list-item-title, #todo_list .todo-list-container .todo-list-container-bottom .todo-list-item .todo-list-item-title {
+          text-align: center;
+          margin-top: 40px;
+          font-size: 16px; }
+        #todo_list .todo-list-container .todo-list-container-top .todo-list-item .todo-list-item-content, #todo_list .todo-list-container .todo-list-container-bottom .todo-list-item .todo-list-item-content {
+          position: relative;
+          text-align: left;
+          margin-left: 90px;
+          margin-top: 16px;
+          width: 120px;
+          font-size: 12px; }
+          #todo_list .todo-list-container .todo-list-container-top .todo-list-item .todo-list-item-content i, #todo_list .todo-list-container .todo-list-container-bottom .todo-list-item .todo-list-item-content i {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            left: -30px;
+            top: 2px; }
 
 /*# sourceMappingURL=index.css.map */

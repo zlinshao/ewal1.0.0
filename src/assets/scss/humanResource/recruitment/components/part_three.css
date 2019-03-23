@@ -150,6 +150,8 @@
         width: 85%;
         height: 90%;
         padding: 30px; }
+        #theme_name #part_three > div .container .content .content_header {
+          height: 30px; }
     #theme_name #part_three > div .paper_resume {
       width: 100%;
       height: calc(100% + 90px);
