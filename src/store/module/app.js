@@ -18,6 +18,8 @@ const app = {
       title: '',
       msg: ''
     },
+
+    dialogZIndex:99,//dialog对话框
   },
   // 计算属性
   getter: {},
@@ -69,6 +71,10 @@ const app = {
         state.globalMessage.visible = false;
       },during);
     },
+    //增加zIndex
+    ADD_DIALOG_Z_INDEX(state) {
+      ++state.dialogZIndex;
+    },
 
   },
   // 执行函数
@@ -108,6 +114,9 @@ const app = {
     auto_close_message({commit},status) {
       commit('AUTO_CLOSE_MESSAGE',status);
     },
+    add_dialog_z_index({commit},status) {
+      commit('ADD_DIALOG_Z_INDEX',status);
+    }
 
   }
 };

@@ -10,7 +10,6 @@
         }
       }
     }
-
     .discuss-politics-container {
       //background-color: red;
       height: calc(100% - 80px);
@@ -105,7 +104,7 @@
                       &:before {
                         content:'';
                         position: absolute;
-                        top: 0; right: 0; bottom: 0; left: 0;
+                        top: 0; right: -2px; bottom: 0; left: 0;
                         z-index: -1;
                         border-radius: 50%;
                         background-color: $colorE33;
@@ -119,6 +118,7 @@
                     width: 100%;
                     position: absolute;
                     top: 30px;
+                    text-align: center;
 
                     > div {
                       margin: 5px;
@@ -159,6 +159,7 @@
             font-size: 20px;
             margin-top: 20px;
             height: 50px;
+            cursor: pointer;
             span {
               position: absolute;
               bottom: 0;
@@ -166,6 +167,7 @@
           }
 
           .timeline {
+            padding-top: 20px ;
             .timeline-item-container {
               &.prev {
                 > div {
@@ -214,6 +216,72 @@
             }
           }
         }
+      }
+    }
+
+
+
+
+    .dialog_container {
+      .weekly_form_container {
+        font-size: 14px;
+        width: calc(100% - 40px);
+        height: 100%;
+
+        .form-item {
+          width: 100%;
+          padding: 10px 0;
+          vertical-align: center;
+          .form-item-title {
+            text-align: right;
+          }
+          .form-item-content {
+            //height: 100%;
+            position: relative;
+            text-align: left;
+            font-weight: 700;
+            
+            .form-item-content-span-red {
+              color: #D1373C;
+            }
+            
+            .form-item-content-span-input {
+              display: inline-block;
+              height: 19px;
+              width: 40px;
+              background-color: #fff;
+              text-align: center;
+            }
+
+            .icons-upload {
+              width: 40px;
+              height: 40px;
+              cursor: pointer;
+              position: absolute;
+              top: -10px;
+            }
+          }
+        }
+
+        //会议个数dialog
+
+      }
+      .meeting-counts-container {
+        width: calc(100% - 80px);
+        height: 100%;
+        .form-item {
+          font-family: MicrosoftYaHei;
+          margin: 20px 0;
+          cursor: pointer;
+          .form-item-title {
+            text-align: right;
+          }
+          .form-item-content {
+            text-align: left;
+            font-weight: 700;
+          }
+        }
+
       }
     }
   }
