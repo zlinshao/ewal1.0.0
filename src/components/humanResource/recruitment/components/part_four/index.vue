@@ -807,21 +807,23 @@
         this.labour_form.type = 1;
         this.$http.post('recruitment/interviewer_process/view_contract',this.labour_form).then(res => {
           if (res.code === '20000') {
-            this.$LjMessage('success',{
+            this.$LjNotify('success',{
               title: '成功',
-              msg: '发送成功'
+              message: res.msg
             });
             setTimeout(() => {
               this.labour_contract_visible = true;
-              this.ok_send_contract = false;
-            })
+            },1000)
           }else {
-            this.$LjMessage('warning',{
+            this.$LjNotify('warning',{
               title: '失败',
-              msg: '发送失败'
+              message: res.msg
             });
             return false;
           }
+          setTimeout(() => {
+            this.ok_send_contract = false;
+          },1000)
         }).catch(err => {
           console.log(err);
         })
@@ -919,8 +921,9 @@
         this.currentInfo = row;
         this.write_offer_visible = true;
       },
-      getLabourInfo() {
-        this.$http.get(`recruitment/interviewer_process/get_contract_info/${this.currentRow.interviewee_id}`).then(res => {
+      getLabourInfo(id) {
+        this.$http.get(`recruitment/interviewer_process/get_contract_info/${id}`).then(res => {
+          console.log(res);
           if (res.code === '20010') {
             this.labour_form = res.data;
             this.ok_interviewee_visible = false;
@@ -943,12 +946,12 @@
       },
       handleOkInterviewee() {
         this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,this.interview_info_detail).then(res => {
-          if (res.code === '20000') {
+          if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
               message: '入职成功'
             });
-            this.getLabourInfo();
+            this.getLabourInfo(res.data.user_id);
             this.work_success = true;
           } else {
             this.$LjNotify('warning',{
