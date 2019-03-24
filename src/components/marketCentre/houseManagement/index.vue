@@ -7,14 +7,19 @@
             <span class="title">房源管理</span>
           </div>
           <div class="items-center">
+            <el-button type="danger" size="mini" @click="house_filter_visible = true" style="margin-right: 20px">搜索房源</el-button>
             <span class="set" @click="lj_visible = true"></span>
             <span class="search" @click="isHigh = true"></span>
           </div>
         </div>
+
         <house-card :house-source="house_source" @close="handleCloseOverview" @open="handleOpenCard"></house-card>
         <market-menu-list :show-market="show_market" :show-shadow="show_shadow" @close="handleCloseMenu"></market-menu-list>
         <searchHigh :module="isHigh" :show-data="searchData" @close="handleCloseSearch"></searchHigh>
+
         <overview-info :overview-visible="overview_visible" @open="overview_visible = true"></overview-info>
+
+        <!--房屋详情-->
         <lj-dialog
           :visible="lj_visible"
           :size="lj_size"
@@ -120,6 +125,9 @@
             </div>
           </div>
         </lj-dialog>
+
+        <!--搜索房源-->
+        <HouseFilter :visible="house_filter_visible" @close="house_filter_visible = false"></HouseFilter>
       </div>
     </div>
 </template>
@@ -130,12 +138,16 @@
   import HouseCard from '../components/house-card.vue';
   import OverviewInfo from '../components/overview-info.vue';
   import LjDialog from '../../common/lj-dialog.vue';
+  import HouseFilter from '../components/house-filter.vue';
 
     export default {
         name: "index",
-        components: { MarketMenuList ,searchHigh, HouseCard ,OverviewInfo,LjDialog },
+        components: { MarketMenuList ,searchHigh, HouseCard ,OverviewInfo,LjDialog ,HouseFilter},
         data() {
             return {
+              //搜索房源visible
+              house_filter_visible: false,
+
               look_visible:false,
               lj_visible: false,
               lj_size: '',
@@ -497,7 +509,7 @@
               url: require('../../../assets/image/marketCentre/theme1/test/swipe1.jpg')
             }
           ];
-          this.overview_visible = true;
+          this.overview_visible = false;
         },
         activated() {
         },
@@ -505,7 +517,10 @@
         computed: {},
         methods: {
           handleOpenCard(item) {
-            this.lj_size = 'large';
+            this.lj_size = {
+              width: 1220 + 'px',
+              height: 800 + 'px'
+            };
             this.lj_visible = true;
           },
           handleTransLeft() {

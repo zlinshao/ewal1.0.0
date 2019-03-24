@@ -154,7 +154,9 @@
           background-size: 50% 50%;
           background-repeat: no-repeat;
           position: relative;
-          animation: zhuan linear 1s; }
+          transform: translateY(-100%);
+          transition: all ease 1s;
+          opacity: 0; }
           #houseCard > div .content > div.cards > div .card .photo {
             width: 100%;
             height: 160px;
@@ -235,7 +237,7 @@
             top: -55px;
             left: 15%;
             color: white;
-            opacity: 0;
+            display: none;
             transition: all ease 1s;
             text-align: center;
             user-select: none;
@@ -254,55 +256,91 @@
               bottom: -10px;
               left: 20%; }
           #houseCard > div .content > div.cards > div .card .show_control {
-            opacity: 1; }
+            display: block; }
         #houseCard > div .content > div.cards > div .card_trans-1 {
-          animation-delay: 0.1s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0.25s; }
         #houseCard > div .content > div.cards > div .card_trans-2 {
-          animation-delay: 0.2s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0.5s; }
         #houseCard > div .content > div.cards > div .card_trans-3 {
-          animation-delay: 0.3s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0.75s; }
         #houseCard > div .content > div.cards > div .card_trans-4 {
-          animation-delay: 0.4s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 1s; }
         #houseCard > div .content > div.cards > div .card_trans-5 {
-          animation-delay: 0.5s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 1.25s; }
         #houseCard > div .content > div.cards > div .card_trans-6 {
-          animation-delay: 0.6s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 1.5s; }
         #houseCard > div .content > div.cards > div .card_trans-7 {
-          animation-delay: 0.7s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 1.75s; }
         #houseCard > div .content > div.cards > div .card_trans-8 {
-          animation-delay: 0.8s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 2s; }
         #houseCard > div .content > div.cards > div .card_trans-9 {
-          animation-delay: 0.9s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 2.25s; }
         #houseCard > div .content > div.cards > div .card_trans-10 {
-          animation-delay: 1s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 2.5s; }
         #houseCard > div .content > div.cards > div .card_trans-11 {
-          animation-delay: 1.1s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 2.75s; }
         #houseCard > div .content > div.cards > div .card_trans-12 {
-          animation-delay: 1.2s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 3s; }
         #houseCard > div .content > div.cards > div .card_trans-13 {
-          animation-delay: 1.3s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 3.25s; }
         #houseCard > div .content > div.cards > div .card_trans-14 {
-          animation-delay: 1.4s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 3.5s; }
         #houseCard > div .content > div.cards > div .card_trans-15 {
-          animation-delay: 1.5s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 3.75s; }
         #houseCard > div .content > div.cards > div .card_trans-16 {
-          animation-delay: 1.6s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 4s; }
         #houseCard > div .content > div.cards > div .card_trans-17 {
-          animation-delay: 1.7s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 4.25s; }
         #houseCard > div .content > div.cards > div .card_trans-18 {
-          animation-delay: 1.8s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 4.5s; }
         #houseCard > div .content > div.cards > div .card_trans-19 {
-          animation-delay: 1.9s; }
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 4.75s; }
     #houseCard > div .content .page {
       text-align: center;
       margin: 20px auto; }
 
 @keyframes zhuan {
   0% {
-    transform: translateY(-100%);
-    opacity: 0; }
+    transform: translateY(-100%); }
   100% {
-    transform: translateY(0);
-    opacity: 1; } }
+    transform: translateY(0); } }
 
 /*# sourceMappingURL=house-card.css.map */
