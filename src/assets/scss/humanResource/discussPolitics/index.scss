@@ -2,7 +2,220 @@
 
 #theme_name {
   #discussPolitics {
+    height: 100%;
+    .listTopCss {
+      .listTopLeft {
+        .date-value-container {
+          width: 140px;
+        }
+      }
+    }
 
+    .discuss-politics-container {
+      //background-color: red;
+      height: calc(100% - 80px);
+      .calendar-container {
+
+        height: 100%;
+        @include flex();
+        //padding-left: 100px;
+        .container-left {
+          flex: 75%;
+          margin-bottom: 10px;
+          .calendar-week {
+            margin-top: 20px;
+            height: 50px;
+            .ui-container {
+              padding-left: calc(70px + 2%);
+              margin: 0 70px;
+              @include flex('');
+              .calendar-week-item {
+                display: inline-block;
+                height: 50px;
+                width: 14%;
+                .calendar-week-item-container {
+                  position: relative;
+                  width: 50px;
+                  height: 50px;
+
+                  .week-item-date {
+                    font-family: MicrosoftYaHei;
+                    position: absolute;
+                    bottom: 0;
+                    cursor: default;
+                    &.weekday {
+                      color: $colorE33;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .calendar-day {
+            margin-top: 20px;
+            height: 550px;
+
+            //margin-bottom: 40px;
+            .ui-container {
+              padding-left: calc(70px + 2%);
+              margin: 0 70px;
+              @include flex('');
+              flex-wrap: wrap;
+              background-color: $colorFFF;
+              .calendar-day-item {
+                border: 1px solid #F9F9F9;
+                display: inline-block;
+                height: 110px;
+                width: 14%;
+                .calendar-day-item-container {
+                  position: relative;
+                  width: 100%;
+                  height: 100%;
+                  .calendar-day-item-container-date {
+                    position: absolute;
+                    cursor: default;
+                    top: 10px;
+                    left: 4px;
+                    width: 20px;
+                    height: 20px;
+                    font-size: 15px;
+                    text-align: right;
+                    //padding: 6px;
+                    color: $color000;
+                    border-radius: 50%;
+                    &.gray {
+                      color: #DCDCDC;
+                    }
+                    &.current {
+                      background-color: $colorE33;
+                      color: $colorFFF;
+                    }
+                    i {
+                      @include flex('flex-center');
+                      width: 16px;
+                      height: 16px;
+                      position: absolute;
+                      top: -12px;
+                      right: -12px;
+                      font-size: 10px;
+                      z-index: 1;
+                      color: $colorFFF;
+
+                      &:before {
+                        content:'';
+                        position: absolute;
+                        top: 0; right: 0; bottom: 0; left: 0;
+                        z-index: -1;
+                        border-radius: 50%;
+                        background-color: $colorE33;
+                        //border: 2px solid $colorE33;
+                        //transform: rotateZ(45deg);
+                      }
+                    }
+                  }
+                  .calendar-day-item-container-content {
+                    height: 65px;
+                    width: 100%;
+                    position: absolute;
+                    top: 30px;
+
+                    > div {
+                      margin: 5px;
+                      font-size: 12px;
+                      padding: 3px 5px;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                      cursor: pointer;
+                      border-radius: 6px;
+                      background-color: #cccccc;
+                      
+                      &.danger {
+                        color: #FF8248;
+                        background-color: #FFE8DE;
+                      }
+                      &.default {
+                        background-color: #E2FFEE;
+                        color: #50E38F;
+                      }
+                      &.warning {
+                        background-color: #FFF4D4;
+                        color: #FFCD35;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        .container-right {
+          flex: 25%;
+          //background-color: green;
+
+          .monthTitle {
+            position: relative;
+            font-size: 20px;
+            margin-top: 20px;
+            height: 50px;
+            span {
+              position: absolute;
+              bottom: 0;
+            }
+          }
+
+          .timeline {
+            .timeline-item-container {
+              &.prev {
+                > div {
+                  color: #A5A5A5;
+                }
+              }
+              
+              .timeline-item-container-content-item {
+                position: relative;
+                margin: 5px;
+                font-size: 14px;
+                font-weight: 700;
+                color: #464646;
+                font-family: MicrosoftYaHei;
+                //padding: 3px 5px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                cursor: default;
+                border-radius: 6px;
+                
+                span.icons-delete {
+                  display: inline-block;
+                  width: 20px;
+                  height: 20px;
+                  cursor: pointer;
+                  //background-color: red;
+                  position: absolute;
+                  right: 0;
+                }
+                //background-color: #cccccc;
+
+                /*&.danger {
+                  color: #FF8248;
+                  background-color: #FFE8DE;
+                }
+                &.default {
+                  background-color: #E2FFEE;
+                  color: #50E38F;
+                }
+                &.warning {
+                  background-color: #FFF4D4;
+                  color: #FFCD35;
+                }*/
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
