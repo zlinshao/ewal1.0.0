@@ -21,30 +21,6 @@
       </div>
       <div class="todo-list-container">
         <!--渲染todo_list数据   可优化//todo-->
-        <!--<div class="todo-list-container-top">
-          <div v-for="(item,index) in todo_list_container_top" @click="container_checked = (item.id)"
-               class="todo-list-item"
-               :class="{'checked':container_checked==item.id}">
-            <div class="todo-list-item-title">{{item.title}}</div>
-
-            <div v-for="(value,key) in item" v-if="!(key=='id'||key=='title'||key=='onClick')" class="todo-list-item-content">
-            <i :class="'todo-list-item-content-icon-'+key"></i>
-              {{value}}
-            </div>
-
-          </div>
-        </div>
-        <div class="todo-list-container-bottom">
-          <div v-for="(item,index) in todo_list_container_bottom" @click="container_checked = (item.id)"
-               class="todo-list-item"
-               :class="{'checked':container_checked==item.id}">
-            <div class="todo-list-item-title">{{item.title}}</div>
-            <div v-for="(value,key) in item" v-if="!(key=='id'||key=='title'||key=='onClick')" class="todo-list-item-content">
-              <i :class="'todo-list-item-content-icon-'+key"></i>
-              {{value}}
-            </div>
-          </div>
-        </div>-->
         <div :class="{'todo-list-container-top':listIndex==0,'todo-list-container-bottom':listIndex==1}"
              v-for="(listItem,listIndex) in todo_list_container_arr">
           <div v-for="(item,index) in todo_list_container_arr[listIndex]" @click="container_checked = (item.id);todoListVisibleTrigger(item.onClick)"
@@ -59,7 +35,18 @@
         </div>
 
       </div>
-
+      <footer class="flex-center common-page">
+        <div class="page">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="params.page"
+            :page-size="params.limit"
+            :total="counts"
+            layout="total,jumper,prev,pager,next">
+          </el-pagination>
+        </div>
+      </footer>
 
       <interview-dialog></interview-dialog>
     </div>
@@ -99,19 +86,45 @@
     },
     data() {
       return {
+        counts: 1000,
+        params: {
+          search: '',
+          page: 1,
+          limit: 30,
+          org_id: '',
+          position_id: '',
+        },
+
+
+
         checked: 1,//选择哪个toolbar
         container_checked: -1,//选择哪个列表数据容器,
         todo_list_container_arr: [],
       }
     },
     methods: {
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        this.params.page = val;
+        console.log(`当前页: ${val}`);
+      },
       trigger(val) {
         console.log(val);
       }
     }
   }
 </script>
-
+<!--<style lang="scss">
+  #todo_list {
+    footer.common-page {
+      .el-input__inner {
+        border: 1px solid #CF2E33 !important;
+      }
+    }
+  }
+</style>-->
 <style scoped lang="scss">
   @import "../../assets/scss/todoList/index.scss";
 

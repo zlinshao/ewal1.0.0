@@ -49,15 +49,41 @@
                     {{item.date}}
                     <i v-if="item.tips">{{item.tips}}</i>
                   </span>
-                  <div class="calendar-day-item-container-content"></div>
+                  <div class="calendar-day-item-container-content">
+                    <div @click="handleDialog(contentItem)" :class="[contentItem.type=='default'?'default':contentItem.type=='warning'?'warning':'danger']" :title="contentItem.content" v-for="contentItem in item.todoList">
+                      {{contentItem.content}}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
           </div>
         </div>
-        <div class="container-right">
+        <div class="container-right scroll_bar">
+          <div class="monthTitle">
+            <span>{{monthContent}}</span>
+          </div>
 
+          <div class="timeline">
+
+            <el-timeline>
+              <el-timeline-item
+               :key="index"
+                :color="item.todoType=='default'?'#50E38F':item.todoType=='warning'?'#FFDC75':'#FF7A3C'"
+                v-if="item.todoList&&item.todoList.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime" placement="top">
+                <el-card>
+                  <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
+                    <div class="timeline-item-container-content-item" @click="handleDialog(contentItem)" :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoList">
+                      {{contentItem.content}}
+                      <span title="删除" @click.stop="contentDelete(index,contentItemIndex)" class="icons-delete"></span>
+                    </div>
+                  </div>
+                </el-card>
+              </el-timeline-item>
+            </el-timeline>
+
+          </div>
         </div>
       </div>
     </div>
@@ -91,197 +117,9 @@
 
         dateValue: new Date(),
         weekList: ['一', '二', '三', '四', '五', '六', '日'],
-        /*daysList: [
-          {
-            id: '1',
-            today: false,
-            date: '30',
-            type: 'prev',
-          },
-          {
-            id: '2',
-            today: false,
-            date: '1',
-            type: 'cur',
-          },
-          {
-            id: '3',
-            today: false,
-            date: '2',
-            type: 'cur',
-          },
-          {
-            id: '4',
-            today: false,
-            date: '3',
-            type: 'cur',
-          },
-          {
-            id: '5',
-            today: false,
-            date: '4',
-            type: 'cur',
-          },
-          {
-            id: '6',
-            today: false,
-            date: '5',
-            type: 'cur',
-          },
-          {
-            id: '7',
-            today: false,
-            date: '6',
-            type: 'cur',
-          }, {
-            id: '8',
-            today: false,
-            date: '7',
-            type: 'cur',
-          },
-          {
-            id: '9',
-            today: true,
-            date: '8',
-            type: 'cur',
-          },
-          {
-            id: '10',
-            today: false,
-            date: '9',
-            type: 'cur',
-          },
-          {
-            id: '11',
-            today: false,
-            date: '10',
-            type: 'cur',
-          },
-          {
-            id: '12',
-            today: false,
-            date: '11',
-            type: 'cur',
-          }, {
-            id: '13',
-            today: false,
-            date: '12',
-            type: 'cur',
-          }, {
-            id: '14',
-            today: false,
-            date: '13',
-            type: 'cur',
-          }, {
-            id: '15',
-            today: false,
-            date: '14',
-            type: 'cur',
-          }, {
-            id: '16',
-            today: false,
-            date: '15',
-            type: 'cur',
-          }, {
-            id: '17',
-            today: false,
-            date: '16',
-            type: 'cur',
-          }, {
-            id: '18',
-            today: false,
-            date: '17',
-            type: 'cur',
-          }, {
-            id: '19',
-            today: false,
-            date: '18',
-            type: 'cur',
-          }, {
-            id: '20',
-            today: false,
-            date: '19',
-            type: 'cur',
-          }, {
-            id: '21',
-            today: false,
-            date: '20',
-            type: 'cur',
-          }, {
-            id: '22',
-            today: false,
-            date: '21',
-            type: 'cur',
-          }, {
-            id: '23',
-            today: false,
-            date: '22',
-            type: 'cur',
-          }, {
-            id: '24',
-            today: false,
-            date: '23',
-            type: 'cur',
-          }, {
-            id: '25',
-            today: false,
-            date: '24',
-            type: 'cur',
-          }, {
-            id: '26',
-            today: false,
-            date: '25',
-            type: 'cur',
-          }, {
-            id: '27',
-            today: false,
-            date: '26',
-            type: 'cur',
-          }, {
-            id: '28',
-            today: false,
-            date: '27',
-            type: 'cur',
-          }, {
-            id: '29',
-            today: false,
-            date: '28',
-            type: 'cur',
-          }, {
-            id: '30',
-            today: false,
-            date: '29',
-            type: 'cur',
-          }, {
-            id: '31',
-            today: false,
-            date: '30',
-            type: 'cur',
-          }, {
-            id: '32',
-            today: false,
-            date: '31',
-            type: 'cur',
-          }, {
-            id: '33',
-            today: false,
-            date: '1',
-            type: 'next',
-          }, {
-            id: '34',
-            today: false,
-            date: '2',
-            type: 'next',
-          }, {
-            id: '35',
-            today: false,
-            date: '3',
-            type: 'next',
-          },
-
-
-        ]*/
-        daysList: []
+        monthList:['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+        daysList: [],
+        monthContent:''
 
       }
     },
@@ -300,15 +138,34 @@
     },
     computed: {},
     methods: {
+      contentDelete(index,todoListIndex) {
+        //console.log(this.daysList);
+        this.daysList[index].todoList.splice(todoListIndex,1);
+
+        //this.initDaysList();//重新渲染数据
+      },
+
+      //处理会议点击事件
+      handleDialog(item) {
+        console.log(item);
+      },
+
+
       moduleList() {
         this.visibleStatus = !this.visibleStatus;
         this.$store.dispatch('route_animation');
       },
 
       initDaysList(date) {
-        let daysList = [...this.getPrevMonthRestList(date),...this.getCurrentMonthList(date),...this.getNextMonthRestList(date)];
-        daysList.forEach((item,index) => {item.id = ++index;})
-        this.daysList = daysList;
+        if(date) {
+          let daysList = [...this.getPrevMonthRestList(date),...this.getCurrentMonthList(date),...this.getNextMonthRestList(date)];
+          daysList.forEach((item,index) => {item.id = ++index;})
+          this.daysList = daysList;
+        }else {
+          this.monthContent='';
+          this.daysList = [];
+        }
+
       },
       //获取date月当月天总数,参数二可获取其他月天总数(需传特定值)
       getDaysCount(date, setmonth = 0) {
@@ -343,8 +200,20 @@
           let obj = {
             datetime: this.getDateTimeByDay(date, i, -1),
             today: false,
-            type: 'prev',
+            type: 'curr',
             tips:'3',
+            todoType:'default',//严重程度 用来区分时间线颜色
+            todoList: [
+              {
+                id:1,
+                content:'09:00-11:00 周会',
+                type:'danger'
+              },{
+                id:2,
+                content:'09:00-11:00 周会',
+                type:'default'
+              }
+            ],
             date: i
           };
           arr.push(obj);
@@ -354,6 +223,8 @@
 
       getCurrentMonthList(date) {
         let days = this.getDaysCount(date);
+        let months = this.getCurrentMonth(date);
+        this.monthContent = this.monthList[months-1];
         let arr = [];
         let curDay = this.getCurrentDay();
         for (let i = 1; i <= days; i++) {
@@ -445,4 +316,17 @@
 
 <style scoped lang="scss">
   @import "../../../assets/scss/humanResource/discussPolitics/index";
+
+  @mixin discussPoliticsImg($m, $n) {
+    $url: '../../../assets/image/humanResource/discussPolitics/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
+  #theme_name {
+    #discussPolitics {
+      .icons-delete {
+        @include discussPoliticsImg('shanchu.png','theme1')
+      }
+    }
+  }
 </style>

@@ -119,7 +119,31 @@
                     width: 100%;
                     position: absolute;
                     top: 30px;
-                    background-color: #cccccc;
+
+                    > div {
+                      margin: 5px;
+                      font-size: 12px;
+                      padding: 3px 5px;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                      cursor: pointer;
+                      border-radius: 6px;
+                      background-color: #cccccc;
+                      
+                      &.danger {
+                        color: #FF8248;
+                        background-color: #FFE8DE;
+                      }
+                      &.default {
+                        background-color: #E2FFEE;
+                        color: #50E38F;
+                      }
+                      &.warning {
+                        background-color: #FFF4D4;
+                        color: #FFCD35;
+                      }
+                    }
                   }
                 }
               }
@@ -128,7 +152,67 @@
         }
         .container-right {
           flex: 25%;
-          background-color: green;
+          //background-color: green;
+
+          .monthTitle {
+            position: relative;
+            font-size: 20px;
+            margin-top: 20px;
+            height: 50px;
+            span {
+              position: absolute;
+              bottom: 0;
+            }
+          }
+
+          .timeline {
+            .timeline-item-container {
+              &.prev {
+                > div {
+                  color: #A5A5A5;
+                }
+              }
+              
+              .timeline-item-container-content-item {
+                position: relative;
+                margin: 5px;
+                font-size: 14px;
+                font-weight: 700;
+                color: #464646;
+                font-family: MicrosoftYaHei;
+                //padding: 3px 5px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                cursor: default;
+                border-radius: 6px;
+                
+                span.icons-delete {
+                  display: inline-block;
+                  width: 20px;
+                  height: 20px;
+                  cursor: pointer;
+                  //background-color: red;
+                  position: absolute;
+                  right: 0;
+                }
+                //background-color: #cccccc;
+
+                /*&.danger {
+                  color: #FF8248;
+                  background-color: #FFE8DE;
+                }
+                &.default {
+                  background-color: #E2FFEE;
+                  color: #50E38F;
+                }
+                &.warning {
+                  background-color: #FFF4D4;
+                  color: #FFCD35;
+                }*/
+              }
+            }
+          }
         }
       }
     }
