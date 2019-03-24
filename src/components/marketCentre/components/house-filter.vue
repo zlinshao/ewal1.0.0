@@ -96,7 +96,8 @@
                           <div class="office_content" v-for="office in office_resource" :key="office.id">
                             <el-checkbox :label="office.id">
                               <div class="checkbox_content flex">
-                                <div style="width: 350px">{{ office.val }}</div>
+                                <div style="width: 200px">{{ office.val }}</div>
+                                <div style="width: 150px">{{ office.city }}</div>
                                 <div style="width: 100px;text-align: right">{{ office.num }}套</div>
                               </div>
                             </el-checkbox>
@@ -113,8 +114,9 @@
                     <div class="office_choose scroll_bar">
                       <div>
                         <div class="flex" v-for="(office,index) in show_office" :key="office.id">
-                          <div style="width: 60%;text-align: left">{{ office.val }}</div>
-                          <div style="width: 30%;text-align: left">{{ office.num }}套</div>
+                          <div style="width: 40%;text-align: left">{{ office.val }}</div>
+                          <div style="width: 35%;text-align: left">{{ office.city }}</div>
+                          <div style="width: 15%;text-align: left">{{ office.num }}套</div>
                           <div class="delete_choose" @click="handleDeleteOffice(index)">－</div>
                         </div>
                       </div>
@@ -152,24 +154,24 @@
         house_choose_items: [],
         house_resource: [
           { id: 1, val: '仙居雅苑1-301'},
-          { id: 2, val: '仙居雅苑1-302'},
-          { id: 3, val: '仙居雅苑1-303'},
-          { id: 4, val: '仙居雅苑1-304'},
-          { id: 5, val: '仙居雅苑1-305'},
-          { id: 6, val: '仙居雅苑1-306'},
-          { id: 7, val: '仙居雅苑1-307'},
-          { id: 8, val: '仙居雅苑1-308'},
-          { id: 9, val: '仙居雅苑1-309'},
-          { id: 10, val: '仙居雅苑1-309'},
-          { id: 11, val: '仙居雅苑1-309'},
-          { id: 12, val: '仙居雅苑1-309'},
-          { id: 13, val: '仙居雅苑1-309'},
-          { id: 14, val: '仙居雅苑1-309'},
-          { id: 15, val: '仙居雅苑1-309'},
-          { id: 16, val: '仙居雅苑1-309'},
-          { id: 17, val: '仙居雅苑1-309'},
-          { id: 18, val: '仙居雅苑1-309'},
-          { id: 19, val: '仙居雅苑1-319'},
+          { id: 2, val: '仙居雅苑1-302',city: '南京市建邺区高庙路'},
+          { id: 3, val: '仙居雅苑1-303',city: '南京市建邺区高庙路'},
+          { id: 4, val: '仙居雅苑1-304',city: '南京市建邺区高庙路'},
+          { id: 5, val: '仙居雅苑1-305',city: '南京市建邺区高庙路'},
+          { id: 6, val: '仙居雅苑1-306',city: '南京市建邺区高庙路'},
+          { id: 7, val: '仙居雅苑1-307',city: '南京市建邺区高庙路'},
+          { id: 8, val: '仙居雅苑1-308',city: '南京市建邺区高庙路'},
+          { id: 9, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 10, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 11, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 12, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 13, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 14, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 15, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 16, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 17, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 18, val: '仙居雅苑1-309',city: '南京市建邺区高庙路'},
+          { id: 19, val: '仙居雅苑1-319',city: '南京市建邺区高庙路'},
         ],
         hide_header_search: true, //隐藏搜索条件
 
@@ -196,21 +198,21 @@
         ],
 
         office_resource: [
-          {id: 1, val: '仙居雅苑小区1',num: 98},
-          {id: 2, val: '时光澔韵',num: 918},
-          {id: 3, val: '紫金华府',num: 98},
-          {id: 4, val: '仙居雅苑小区2',num: 198},
-          {id: 5, val: '仙居雅苑小区2',num: 980},
-          {id: 6, val: '仙居雅苑小区2',num: 908},
-          {id: 7, val: '仙居雅苑小区2',num: 918},
-          {id: 8, val: '仙居雅苑小区2',num: 928},
-          {id: 9, val: '仙居雅苑小区2',num: 938},
-          {id: 10, val: '仙居雅苑小区2',num: 198},
-          {id: 11, val: '仙居雅苑小区2',num: 298},
-          {id: 12, val: '仙居雅苑小区2',num: 398},
-          {id: 13, val: '仙居雅苑小区2',num: 398},
-          {id: 14, val: '仙居雅苑小区2',num: 398},
-          {id: 15, val: '仙居雅苑小区2',num: 398},
+          {id: 1, val: '仙居雅苑小区1',num: 98,city: '南京市-建邺区-高庙路'},
+          {id: 2, val: '时光澔韵',num: 918,city: '南京市-建邺区-高庙路'},
+          {id: 3, val: '紫金华府',num: 98,city: '南京市建邺区高庙路'},
+          {id: 4, val: '仙居雅苑小区2',num: 198,city: '南京市建邺区高庙路'},
+          {id: 5, val: '仙居雅苑小区2',num: 980,city: '南京市建邺区高庙路'},
+          {id: 6, val: '仙居雅苑小区2',num: 908,city: '南京市建邺区高庙路'},
+          {id: 7, val: '仙居雅苑小区2',num: 918,city: '南京市建邺区高庙路'},
+          {id: 8, val: '仙居雅苑小区2',num: 928,city: '南京市建邺区高庙路'},
+          {id: 9, val: '仙居雅苑小区2',num: 938,city: '南京市建邺区高庙路'},
+          {id: 10, val: '仙居雅苑小区2',num: 198,city: '南京市建邺区高庙路'},
+          {id: 11, val: '仙居雅苑小区2',num: 298,city: '南京市建邺区高庙路'},
+          {id: 12, val: '仙居雅苑小区2',num: 398,city: '南京市建邺区高庙路'},
+          {id: 13, val: '仙居雅苑小区2',num: 398,city: '南京市建邺区高庙路'},
+          {id: 14, val: '仙居雅苑小区2',num: 398,city: '南京市建邺区高庙路'},
+          {id: 15, val: '仙居雅苑小区2',num: 398,city: '南京市建邺区高庙路'},
         ],
         office_choose: [], //已选择小区
         show_office: [],
