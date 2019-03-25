@@ -19,7 +19,7 @@ const app = {
       msg: ''
     },
 
-    dialogZIndex:99,//dialog对话框
+    dialogZIndex:200,//dialog对话框
   },
   // 计算属性
   getter: {},

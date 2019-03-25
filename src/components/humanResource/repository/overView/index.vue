@@ -42,12 +42,12 @@
         </el-table-column>
 
         <el-table-column
-          key="borrowCounts"
+          key="borrowReceiveCounts"
           align="center"
-          prop="borrowCounts"
+          prop="borrowReceiveCounts"
           label="领/借数量">
           <template slot-scope="scope">
-            <a @click="borrow_table_visible = true">{{scope.row.borrowCounts}}</a>
+            <a @click="borrow_table_visible = true">{{scope.row.borrowReceiveCounts}}</a>
             <!--<div slot="reference" class="name-wrapper">-->
             <!--<el-tag size="medium">{{ scope.row.borrowCounts }}</el-tag>-->
             <!--</div>-->
@@ -469,14 +469,14 @@
         <div class="dialog_main borderNone">
           <el-form :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
             <el-form-item label="分类名称">
-              <el-input v-model="add_classify_form.classify" placeholder="必填" style="width: 320px">
+              <el-input v-model="add_classify_form.name" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
 
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger">保存</el-button>
+          <el-button @click="addClassify" size="small" type="danger">保存</el-button>
           <el-button size="small" type="info" @click="add_classify_visible = false">取消</el-button>
         </div>
       </div>
@@ -521,7 +521,7 @@
         </div>
         <div class="dialog_main borderNone">
           <el-form :model="add_unit_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="品牌名称">
+            <el-form-item label="单位名称">
               <el-input v-model="add_unit_form.name" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
@@ -704,7 +704,7 @@
     },
     data() {
       return {
-        url: globalConfig.organ_server,
+        url: globalConfig.humanResource_server,
         checkList: [],
 
         chooseRowIds: [],
@@ -804,7 +804,12 @@
         //添加分类
         add_classify_visible: false,
         add_classify_form: {
-          classify: '',//分类
+          "name": '',
+          "parent_id": 1,
+          "type": 1,
+          "brand_id": 2,
+          "unit_id": 4,
+          "warning_number": 1
         },
 
         //添加品牌
@@ -855,7 +860,8 @@
       }
     },
     mounted() {
-      this.initData();
+      //this.initData();
+      this.getRepositoryList();
     },
     activated() {
     },
@@ -863,7 +869,7 @@
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
           this.params = val;
-          this.getRewardUpList();
+          this.getRepositoryList();
         },
         deep: true
       },
@@ -878,7 +884,40 @@
     },
     computed: {},
     methods: {
+      addClassify() {
+        //console.log(this.add_classify_form);
+        this.$http.post(this.url + 'eam/category',this.add_classify_form).then(res=> {
+          console.log(res);
+        });
+      },
 
+
+      getRepositoryList() {
+        this.$http.get(this.url + 'eam/eam', this.params).then(res => {
+          console.log(res)
+          debugger
+          //this.tableData = res.data.data;
+          if(res.msg=='查询成功') {
+            for(let item of res.data.data) {
+              console.log(item);
+              let obj = {
+                id: item.id,
+                name: item.goods.name,
+                totalCounts: parseInt(item.number) ,//总数量
+                stockCounts: parseInt(item.now_number) ,//库存数量
+                borrowReceiveCounts: `${parseInt(item.receive_number)}/${parseInt(item.borrow_number)}`,
+                repairCounts: parseInt(item.repair_number),
+                uselessCounts: parseInt(item.scrap_number),
+                status: parseInt(item.number)>parseInt(item.goods.warning_number)?'正常':'预警',
+              }
+              this.tableData.push(obj)
+            }
+
+          }
+
+          this.counts = res.data.count;
+        })
+      },
 
       handleChangeDate(id) {
 
@@ -890,14 +929,14 @@
 
       initData() {
         //库房总览表格
-        const nameArr = ['LG-显示器', 'BenQ-显示器', '美帝良心想-显示器', '苹果-显示器', '三星-显示器', '现代-显示器', '宏基-显示器', 'HP-显示器', '小米-显示器'];
+        /*const nameArr = ['LG-显示器', 'BenQ-显示器', '美帝良心想-显示器', '苹果-显示器', '三星-显示器', '现代-显示器', '宏基-显示器', 'HP-显示器', '小米-显示器'];
         for (let i = 0; i < nameArr.length; i++) {
           let obj = {
             id: i + 1,
             name: nameArr[i],
             totalCounts: 10 + i,
             stockCounts: 6 + i,
-            borrowCounts: 6,
+            borrowReceiveCounts: 6,
             repairCounts: '4',
             uselessCounts: '1',
             status: '预警',
@@ -905,7 +944,7 @@
           this.tableData.push(obj)
         }
         //console.log(this.tableData);
-        this.counts = 1000;
+        this.counts = 1000;*/
 
 
         //借/领用表格数据初始化
@@ -999,13 +1038,6 @@
 
 
       },
-
-      getRewardUpList() {
-        this.$http.get(this.url + 'overView/xxx', this.params).then(res => {
-          this.tableData = res.data.data;
-          this.counts = res.data.count;
-        })
-      },
       // 当前点击
       tableClickRow(row) {
         let ids = this.chooseRowIds;
@@ -1047,7 +1079,7 @@
       },
       handleCurrentChange(val) {
         this.params.page = val;
-        this.getRewardUpList();
+        this.getRepositoryList();
         console.log(`当前页: ${val}`);
       }
     },

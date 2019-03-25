@@ -13,18 +13,7 @@
             placeholder="选择月">
           </el-date-picker>
         </div>
-        <!--<h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}<i></i>
-          </span>
-        </h2>-->
       </div>
-      <!--<div class="items-center listTopRight">-->
-      <!--<div class="icons-font" @click="publish(chooseTab)" v-if="chooseTab === 1|| chooseTab===2"><b>发榜</b></div>-->
-      <!--<div class="icons-font" @click="exchange(chooseTab)" v-if="chooseTab === 1"><b>兑换</b></div>-->
-      <!--<div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>-->
-      <!--</div>-->
     </div>
 
     <div class="main-container discuss-politics-container">
@@ -42,7 +31,7 @@
           </div>
           <div class="calendar-day">
             <div class="ui-container">
-              <div v-for="item in daysList" class="calendar-day-item">
+              <div @click="add_meeting_dialog_visible = true" v-for="item in daysList" class="calendar-day-item">
                 <div class="calendar-day-item-container">
                   <span :class="{'gray':item.type=='prev'||item.type=='next','current':item.today}"
                         class="calendar-day-item-container-date">
@@ -50,9 +39,11 @@
                     <i v-if="item.tips">{{item.tips}}</i>
                   </span>
                   <div class="calendar-day-item-container-content">
-                    <div @click="handleDialog(contentItem)"
+                    <div @click.stop="handleDialog(contentItem)"
                          :class="[contentItem.type=='default'?'default':contentItem.type=='warning'?'warning':'danger']"
-                         :title="contentItem.content" v-for="contentItem in item.todoList">
+                         :title="contentItem.content"
+                         v-for="(contentItem,index) in item.todoList"
+                         v-if="index<2">
                       {{contentItem.content}}
                     </div>
                   </div>
@@ -64,7 +55,7 @@
         </div>
         <div class="container-right scroll_bar">
           <div @click="meeting_counts_dialog_visible = true" class="monthTitle">
-            <span>{{monthContent}}</span>
+            <span title="本月会议数">{{monthContent}}</span>
           </div>
           <!--时间线-->
           <div class="timeline">
@@ -214,7 +205,6 @@
     </lj-dialog>
 
 
-
     <!--会议个数详情dialog  -->
     <lj-dialog :visible="meeting_counts_dialog_visible"
                :size="{width: 800 + 'px',height: 600 + 'px'}"
@@ -247,6 +237,248 @@
     </lj-dialog>
 
 
+
+    <!--新建会议-->
+    <lj-dialog
+      :visible="add_meeting_dialog_visible"
+      :size="{width: 520 + 'px',height: 670 + 'px'}"
+      @close="add_meeting_dialog_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新建会议</h3>
+        </div>
+        <div class="dialog_main borderNone add-meeting-container">
+          <el-form :model="add_meeting_form" style="text-align: left" size="small" label-width="100px">
+
+            <el-form-item label="会议主题">
+              <el-input v-model="add_meeting_form.meetingTheme" placeholder="请输入会议主题" style="width: 320px">
+              </el-input>
+            </el-form-item>
+
+            <el-form-item label="会议室">
+              <el-select v-model="add_meeting_form.meetingRoom" placeholder="请选择会议室" style="width: 320px">
+                <el-option :value="1" label="会议室1"></el-option>
+              </el-select>
+              <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
+                    @click="add_meeting_room_dialog_visible = true">+</span>
+            </el-form-item>
+
+            <el-form-item label="会议类型">
+              <el-select v-model="add_meeting_form.meetingType" placeholder="请选择会议类型" style="width: 320px">
+                <el-option :value="1" label="会议类型1"></el-option>
+              </el-select>
+              <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
+                    @click="add_meeting_type_dialog_visible = true">+</span>
+            </el-form-item>
+
+            <el-form-item label="会议时间">
+             <date-time-picker :width="320" date-type="timerange"></date-time-picker>
+            </el-form-item>
+
+            <el-form-item label="主持人">
+              <el-input v-model="add_meeting_form.compere" placeholder="请输入主持人" style="width: 320px">
+              </el-input>
+            </el-form-item>
+
+            <el-form-item label="应到人数">
+              <el-input v-model="add_meeting_form.counts" placeholder="请输入应到人数" style="width: 320px">
+              </el-input>
+            </el-form-item>
+
+
+            <el-form-item label="会议提醒">
+              <div class="form-item-content">
+                会议开始前<span class="span-input">3</span>小时<span class="span-input">20</span>分钟提醒
+              </div>
+            </el-form-item>
+
+            <el-form-item label="选择人员">
+              <el-input @focus="organSearch(item)" v-model="showName.staff" placeholder="请选择人员" readonly></el-input>
+            </el-form-item>
+
+            <el-form-item label="上传附件">
+              <div class="icons-upload"></div>
+            </el-form-item>
+
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger">提交</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+
+    <!--添加会议室-->
+    <lj-dialog
+      :visible="add_meeting_room_dialog_visible"
+      :size="{width: 500 + 'px',height: 300 + 'px'}"
+      @close="add_meeting_room_dialog_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>添加会议室</h3>
+        </div>
+        <div class="dialog_main borderNone add-meeting-room-container">
+          <el-form :model="add_meeting_room_form" style="text-align: left" size="small" label-width="100px">
+            <el-form-item label="会议室名称">
+              <el-input v-model="add_meeting_room_form.meetingRoom" placeholder="必填" style="width: 300px">
+              </el-input>
+            </el-form-item>
+            <div @click="view_meeting_room_dialog_visible = true" class="right-tip">查看会议室</div>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger">保存</el-button>
+          <el-button size="small" type="info" @click="add_meeting_room_dialog_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+    <!--查看会议室dialog-->
+    <lj-dialog
+      :visible="view_meeting_room_dialog_visible"
+      :size="{width: 500 + 'px',height: 700 + 'px'}"
+      @close="view_meeting_room_dialog_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>会议室名称</h3>
+        </div>
+        <div class="dialog_main borderNone view-meeting-room-container">
+          <div class="meeting-room-list">
+            <div class="meeting-room-row">
+              <el-row>
+                <el-col :span="12">
+                  <div class="item-title">大会议室</div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="item-content">
+                    <span class="icons-delete-red"></span>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="meeting-room-row">
+              <el-row>
+                <el-col :span="12">
+                  <div class="item-title">大会议室</div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="item-content">
+                    <span class="icons-delete-red"></span>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="meeting-room-row">
+              <el-row>
+                <el-col :span="12">
+                  <div class="item-title">大会议室</div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="item-content">
+                    <span class="icons-delete-red"></span>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+
+    <!--添加会议类型-->
+    <lj-dialog
+      :visible="add_meeting_type_dialog_visible"
+      :size="{width: 500 + 'px',height: 300 + 'px'}"
+      @close="add_meeting_type_dialog_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>添加会议类型</h3>
+        </div>
+        <div class="dialog_main borderNone add-meeting-type-container">
+          <el-form :model="add_meeting_type_form" style="text-align: left" size="small" label-width="100px">
+            <el-form-item label="会议类型名称">
+              <el-input v-model="add_meeting_type_form.meetingType" placeholder="必填" style="width: 300px">
+              </el-input>
+            </el-form-item>
+            <div @click="view_meeting_type_dialog_visible = true" class="right-tip">查看会议类型</div>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger">保存</el-button>
+          <el-button size="small" type="info" @click="add_meeting_type_dialog_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+    <!--查看会议类型dialog-->
+    <lj-dialog
+      :visible="view_meeting_type_dialog_visible"
+      :size="{width: 500 + 'px',height: 700 + 'px'}"
+      @close="view_meeting_type_dialog_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>会议类型名称</h3>
+        </div>
+        <div class="dialog_main borderNone view-meeting-type-container">
+          <div class="meeting-type-list">
+            <div class="meeting-type-row">
+              <el-row>
+                <el-col :span="12">
+                  <div class="item-title">会议类型</div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="item-content">
+                    <span class="icons-delete-red"></span>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="meeting-type-row">
+              <el-row>
+                <el-col :span="12">
+                  <div class="item-title">会议类型</div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="item-content">
+                    <span class="icons-delete-red"></span>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="meeting-type-row">
+              <el-row>
+                <el-col :span="12">
+                  <div class="item-title">会议类型</div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="item-content">
+                    <span class="icons-delete-red"></span>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <work-info :work-info="work_info" :event-data-list="event_data_list"
+               @change="handleChangeDate"></work-info>
+
+    <!--组织架构选人-->
+    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
+
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
@@ -256,6 +488,9 @@
 <script>
   import MenuList from '../../common/menuList.vue';
   import LjDialog from '../../common/lj-dialog.vue';
+  import DateTimePicker from '../../common/lightweightComponents/datetimepicker';
+  import StaffOrgan from '../../common/staffOrgan.vue';
+  import WorkInfo from '../components/work-info';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
   export default {
@@ -263,13 +498,72 @@
     components: {
       MenuList,
       LjDialog,
+      DateTimePicker,
+      StaffOrgan,
+      WorkInfo,
     },
     data() {
       return {
         humanResource,
         resourceDepart,
 
-        organModule: false,//组织架构
+
+        //侧滑栏数据
+        show_market: false,
+        work_info: [
+          {work: '穿铠甲', val: '10'},
+          {work: '攻下小城池', val: '6'},
+          {work: '攻下大城池', val: '3'},
+          {work: '攻下国家', val: '3'},
+        ],
+
+        event_data_list: [
+          {
+            title:'事件占有率:',
+            value:[
+              {value: 500, name: '一般'},
+              {value: 300, name: '特殊'},
+              {value: 200, name: '紧急'}
+            ]
+          },
+          {
+            title:'十佳萌新:',
+            value:[
+              {value: 500, name: '一般'},
+              {value: 300, name: '特殊'},
+              {value: 200, name: '紧急'}
+            ]
+          },
+          {
+            title:'十佳老司机:',
+            value:[
+              {value: 500, name: '一般'},
+              {value: 300, name: '特殊'},
+              {value: 200, name: '紧急'}
+            ]
+          },
+          {
+            title:'赏善令:',
+            value:[
+              {value: 500, name: '一般'},
+              {value: 300, name: '特殊'},
+              {value: 200, name: '紧急'}
+            ]
+          }
+        ],
+        event_data: [
+          {value: 500, name: '一般'},
+          {value: 300, name: '特殊'},
+          {value: 200, name: '紧急'}
+        ],
+
+
+
+
+
+        staffModule: false,//组织架构
+        organData: {},
+        showName: {},
         //chooseTab: null,//tab切换
         visibleStatus: false,//弹出部门
 
@@ -328,6 +622,40 @@
           },
         ],
 
+
+        //新建会议
+        add_meeting_dialog_visible: false,
+        add_meeting_form: {//会议form表单
+          meetingTheme: '',//会议主题
+          meetingRoom: '',//会议室
+          meetingType: '',//会议类型
+          meetingTime:'',//会议时间
+          compere:'',//主持人
+          counts:'',//应到人数
+          meetingTips:{},//会议提醒
+          chooseMember:'',//选择人员
+          upload:'',//上传附件
+        },
+
+
+        //添加会议室dialog
+        add_meeting_room_dialog_visible: false,
+        add_meeting_room_form: {
+          meetingRoom: '',//会议室
+        },
+
+        //查看会议室dialog
+        view_meeting_room_dialog_visible: false,
+
+        //添加会议类型dialog
+        add_meeting_type_dialog_visible: false,
+        add_meeting_type_form: {
+          meetingType: '',//会议类型
+        },
+
+        //查看会议类型dialog
+        view_meeting_type_dialog_visible: false,
+
       }
     },
     mounted() {
@@ -345,6 +673,24 @@
     },
     computed: {},
     methods: {
+      handleChangeDate(id) {
+
+      },
+      hiddenOrgan(ids, names, arr) {
+        this.staffModule = false;
+        if (ids !== 'close') {
+          //this.params[this.organKey] = ids;
+          this.showName['staff'] = names;
+        }
+      },
+      // 组织架构筛选
+      organSearch(val = {}) {
+        this.staffModule = true;
+        this.organData = val.value;
+        this.organKey = val.keyName;
+      },
+
+
       contentDelete(index, todoListIndex) {
         //console.log(this.daysList);
         this.daysList[index].todoList.splice(todoListIndex, 1);
@@ -377,6 +723,16 @@
         }
 
       },
+
+
+
+
+
+
+      /*下面为不需要业务的代码*/
+
+
+
       //获取date月当月天总数,参数二可获取其他月天总数(需传特定值)
       getDaysCount(date, setmonth = 0) {
         let curDate = new Date(date);
@@ -410,7 +766,7 @@
           let obj = {
             datetime: this.getDateTimeByDay(date, i, -1),
             today: false,
-            type: 'prev',
+            type: 'prev',//用来区分 上月本月下月字体颜色 本月黑 上下月灰
             tips: '3',
             todoType: 'default',//严重程度 用来区分时间线颜色
             todoList: [
@@ -422,7 +778,12 @@
                 id: 2,
                 content: '09:00-11:00 周会',
                 type: 'default'
-              }
+              },
+              {
+                id: 3,
+                content: '09:00-11:00 周会',
+                type: 'danger'
+              },
             ],
             date: i
           };
@@ -536,6 +897,9 @@
     #discussPolitics {
       .icons-delete {
         @include discussPoliticsImg('shanchu.png', 'theme1')
+      }
+      .icons-delete-red {
+        @include discussPoliticsImg('shanchu1.png', 'theme1')
       }
       .icons-upload {
         @include discussPoliticsImg('ckfj.png','theme1')
