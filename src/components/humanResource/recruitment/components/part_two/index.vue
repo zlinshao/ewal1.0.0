@@ -66,8 +66,8 @@
           <div class="dialog_main borderNone">
             <el-form :model="add_interviewer_form" size="small" label-width="100px">
               <el-form-item label="岗位">
-                <el-select v-model="add_interviewer_form.position" placeholder="请选择" @change="handleGetOffer">
-                  <el-option v-for="(tmp,idx) in position_list" :value="tmp.position.name" :label="tmp.position.name" :key="idx"></el-option>
+                <el-select v-model="add_interviewer_form.position_id" placeholder="请选择" @change="handleGetOffer">
+                  <el-option v-for="(tmp,idx) in position_list" :value="tmp.position_id" :label="tmp.position.name" :key="idx"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="姓名">
@@ -459,7 +459,6 @@
         }
       },
       handleGetOffer(id) {
-        this.add_interviewer_form.position_id = id;
         this.interview_list = [];
         this.$http.get('recruitment/interviewers',{
           position_id: id

@@ -1,22 +1,20 @@
 <template>
   <div id="recruitment">
     <div>
-      <div class="nav_container" :class="{'hide_nav_container': is_hide_nav_container}">
-        <div class="nav_info flex-center">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-        <div class="show_btn" @click="is_hide_nav_container = false" :class="{'btn_hide': !is_hide_nav_container}"><</div>
-        <div class="hide_btn" @click="is_hide_nav_container = true" :class="{'btn_hide': is_hide_nav_container}"> > </div>
-
-        <div class="time_type">
-          <div @click="handleCheckTimeType(item.id)" :class="{'current_choose_time': current_time === item.id}" v-for="item in time_type" :key="item.id">{{ item.val }}</div>
-        </div>
-      </div>
-
+      <!--<div class="nav_container" :class="{'hide_nav_container': is_hide_nav_container}">-->
+        <!--<div class="nav_info flex-center">-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+          <!--<div></div>-->
+        <!--</div>-->
+        <!--<div class="show_btn" @click="is_hide_nav_container = false" :class="{'btn_hide': !is_hide_nav_container}"><</div>-->
+        <!--<div class="hide_btn" @click="is_hide_nav_container = true" :class="{'btn_hide': is_hide_nav_container}"> > </div>-->
+        <!--<div class="time_type">-->
+          <!--<div @click="handleCheckTimeType(item.id)" :class="{'current_choose_time': current_time === item.id}" v-for="item in time_type" :key="item.id">{{ item.val }}</div>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
@@ -32,9 +30,10 @@
           </h2>
         </div>
         <div class="items-center listTopRight">
-          <el-button type="success" size="small" @click="handleSearchInterview" style="margin-right: 20px">查看面试人数</el-button>
+          <el-button type="success" size="mini" plain @click="handleSearchInterview" style="margin-right: 20px">查看面试人数</el-button>
           <el-button size="mini" type="warning" plain v-if="chooseTab === 2" @click="ms_add_visible = true">添加面试人</el-button>
           <el-button size="mini" type="success" plain v-if="chooseTab === 2" style="margin-right: 10px" @click="msg_add_visible = true">添加面试官</el-button>
+          <el-button size="mini" type="primary" plain v-if="chooseTab === 2" style="margin-right: 10px" @click="handleOpenLookOffer">查看面试官</el-button>
           <div class="icons add" v-if="chooseTab === 1" @click="mb_add_visible = true"><b>+</b></div>
           <div class="icons search" @click="handleOpenSearch"></div>
         </div>
@@ -105,6 +104,38 @@
           <img :src="code_address" alt="code">
         </div>
       </lj-dialog>
+
+      <!--查看面试官-->
+      <lj-dialog
+        :visible="office_visible"
+        :size="{width: 650 + 'px',height: 600 + 'px'}"
+        @close="office_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>查看面试官</h3>
+          </div>
+          <div class="dialog_main">
+            <el-table
+              :data="office_data"
+              :default-sort = "{prop: 'org.name', order: 'descending'}"
+            >
+              <el-table-column label="岗位" prop="position.name" align="center"></el-table-column>
+              <el-table-column label="部门" prop="org.name" align="center" sortable></el-table-column>
+              <el-table-column label="面试官" align="center" min-width="120px">
+                <template slot-scope="scope">
+                  <span v-for="(item,idx) in scope.row.interviewer">{{ item.real_name }}<a v-if="idx !== scope.row.interviewer.length - 1">/</a></span>
+                </template>
+              </el-table-column>
+              <el-table-column label="创建人" prop="creator.real_name" align="center"></el-table-column>
+              <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+            </el-table>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="mini" @click="office_visible = false">关闭</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
@@ -125,6 +156,11 @@
     components: { SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog},
     data() {
       return {
+        //查看面试官
+        office_visible: false,
+        office_data: [],
+        office_count: 0,
+
         recruitmentSearchList,
         //今日面试人数
         today_interview_visible: false,
@@ -206,6 +242,25 @@
     watch: {},
     computed: {},
     methods: {
+      handleOpenLookOffer() {
+        this.$http.get('recruitment/interviewers').then(res => {
+          console.log(res);
+          if (res.code === '20000') {
+            this.office_data = res.data.data;
+            this.office_count = res.data.count;
+            this.office_visible = true;
+          } else {
+            this.office_data = [];
+            this.office_count = 0;
+            this.$LjNotify('warning',{
+              title: '警告',
+              message: '获取面试官列表失败'
+            })
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       handleCheckTimeType(id) {
         this.current_time = id;
       },
