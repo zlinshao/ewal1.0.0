@@ -27,7 +27,7 @@
                     <span :class="['notice-' + item.notice ]" class="notice"></span>
                   </div>
                 </div>
-                <div class="control flex-center" @click.stop="" :class="{'show_control' : show_control === item.id }">
+                <div class="control flex-center" @click.stop="" v-if="show_control === item.id ">
                   <span v-for="tmp in tip_btn" :key="tmp.id" @click.stop="is_tip = tmp.id" :class="{'tip_btn': is_tip === tmp.id }">{{ tmp.val }}</span>
                   <div class="arrows"></div>
                 </div>
@@ -47,7 +47,7 @@
 
 <script>
     export default {
-        name: "",
+        name: "index",
         props: ['houseSource'],
         data() {
             return {

@@ -228,20 +228,26 @@
                         <el-input v-model="interview_info_detail.branch_bank_code" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="银行卡">
+                        <a v-if="interviewee_info.bank_card_image_url && interviewee_info.bank_card_image_url.indexOf('.pdf') !== -1" :href="interviewee_info.bank_card_image_url" target="_blank">点击查看</a>
+                        <img style="width: 30px;height: 30px;cursor: pointer" v-else-if="interviewee_info.bank_card_image_url && interviewee_info.bank_card_image_url.indexOf('.pdf') === -1" :src="interviewee_info.bank_card_image_url" data-magnify="" data-caption="图片查看器" :data-src="interviewee_info.bank_card_image_url" alt="">
+                        <a v-else>暂无</a>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="学籍报告">
+                        <a v-if="interviewee_info.report_url && interviewee_info.report_url.indexOf('.pdf') !== -1" :href="interviewee_info.report_url" target="_blank">点击查看</a>
+                        <img style="width: 30px;height: 30px;cursor: pointer" v-if="interviewee_info.report_url" :src="interviewee_info.report_url" data-magnify="" data-caption="图片查看器" :data-src="interviewee_info.report_url" alt="">
+                        <a v-else>暂无</a>
+                      </el-form-item>
+                    </el-col>
                   </el-row>
                   <el-row>
-                    <el-col :span="24">
-                      <el-form-item label="入职材料">
-                        <div class="changeChoose">
-                          <el-checkbox-group v-model="interviewee_info.entry_materials" style="width: 100%;margin-top: 8px" class="flex">
-                            <el-checkbox :label="1">意外险</el-checkbox>
-                            <el-checkbox :label="2">五险</el-checkbox>
-                            <el-checkbox :label="3">身份证复印件</el-checkbox>
-                            <el-checkbox :label="4">应聘表</el-checkbox>
-                            <el-checkbox :label="5">学籍在线验证报告</el-checkbox>
-                            <el-checkbox :label="6">原单位离职证明</el-checkbox>
-                          </el-checkbox-group>
-                        </div>
+                    <el-col :span="8">
+                      <el-form-item label="原单位离职证明">
+                        <img style="width: 30px;height: 30px;cursor: pointer" v-if="interviewee_info.leaveproof_image_url" :src="interviewee_info.leaveproof_image_url" data-magnify="" data-caption="图片查看器" :data-src="interviewee_info.leaveproof_image_url" alt="">
+                        <a v-else>暂无</a>
                       </el-form-item>
                     </el-col>
                   </el-row>

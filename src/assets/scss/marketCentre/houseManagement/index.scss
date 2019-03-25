@@ -76,7 +76,9 @@
                 > img {
                   max-width: 120px;
                   max-height: 70px;
-                  margin-right: 10px;
+                  &:not(:last-child) {
+                    margin-right: 10px;
+                  }
                 }
               }
               .btn {
@@ -219,6 +221,20 @@
         .page {
           text-align: center;
           margin-top: 20px;
+        }
+      }
+      .price_min_container,.suggest_price_container {
+        > div {
+          &:first-child {
+            width: 120px;
+            height: 30px;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+            line-height: 30px;
+            margin-bottom: 20px;
+            font-size: 14px;
+          }
         }
       }
     }

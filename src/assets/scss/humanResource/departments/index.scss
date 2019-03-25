@@ -22,8 +22,13 @@
             color: $colorE33;
           }
           span {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 380px;
             font-family: 'jingDianXingShu';
             font-size: 30px;
+            white-space: nowrap;
           }
         }
         @for $i from 1 through 7 {

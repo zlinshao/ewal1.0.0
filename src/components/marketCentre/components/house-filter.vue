@@ -218,9 +218,7 @@
         show_office: [],
       }
     },
-    mounted() {
-      this.dialog_visible = true
-    },
+    mounted() {},
     watch: {
       visible(val) {
         this.dialog_visible = val;
