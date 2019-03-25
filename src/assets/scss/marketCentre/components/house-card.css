@@ -234,10 +234,9 @@
           #houseCard > div .content > div.cards > div .card .control {
             width: 150%;
             position: absolute;
-            top: -55px;
+            top: -45px;
             left: 15%;
             color: white;
-            display: none;
             transition: all ease 1s;
             text-align: center;
             user-select: none;
@@ -255,8 +254,6 @@
               position: absolute;
               bottom: -10px;
               left: 20%; }
-          #houseCard > div .content > div.cards > div .card .show_control {
-            display: block; }
         #houseCard > div .content > div.cards > div .card_trans-1 {
           opacity: 1;
           transform: translateY(0);

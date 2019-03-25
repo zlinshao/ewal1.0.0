@@ -295,6 +295,15 @@
   #theme_name #houseManagement > div .look_info .page {
     text-align: center;
     margin-top: 20px; }
+#theme_name #houseManagement > div .price_min_container > div:first-child, #theme_name #houseManagement > div .suggest_price_container > div:first-child {
+  width: 120px;
+  height: 30px;
+  margin: 0 auto;
+  text-align: center;
+  color: white;
+  line-height: 30px;
+  margin-bottom: 20px;
+  font-size: 14px; }
 
 #theme_name.theme1 #houseManagement .header {
   background-color: #FFFFFF; }

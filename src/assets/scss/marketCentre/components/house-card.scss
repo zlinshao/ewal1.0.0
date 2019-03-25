@@ -126,10 +126,9 @@
             .control {
               width: 150%;
               position: absolute;
-              top: -55px;
+              top: -45px;
               left: 15%;
               color: white;
-              display: none;
               transition: all ease 1s;
               text-align: center;
               user-select: none;
@@ -149,9 +148,6 @@
                 bottom: -10px;
                 left: 20%;
               }
-            }
-            .show_control {
-              display: block;
             }
           }
           @for $i from 1 to 20 {
