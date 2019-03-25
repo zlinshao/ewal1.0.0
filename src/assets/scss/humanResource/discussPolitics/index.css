@@ -1,297 +1,46 @@
-.flex {
-  display: flex;
-  display: -webkit-flex; }
+/*
+Error: Invalid GBK character "\xE4"
+        on line 266 of index.scss
 
-.bet-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-direction: column;
-  justify-content: space-between; }
+261:               top: -10px;
+262:             }
+263:           }
+264:         }
+265: 
+266:         //会议个数dialog
+267: 
+268:       }
+269:       .meeting-counts-container {
+270:         width: calc(100% - 80px);
+271:         height: 100%;
 
-.bet-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-direction: column;
-  justify-content: space-between; }
-
-.space-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: center; }
-
-.items-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  align-items: center; }
-
-.flex-center {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: center; }
-
-.items-bet {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: space-between; }
-
-.items-center {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center; }
-
-.items-start {
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-start; }
-
-.items-end {
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-end; }
-
-.justify-center {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: center; }
-
-.justify-around {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: space-around; }
-
-.justify-bet {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: space-between; }
-
-.justify-start {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: flex-start; }
-
-.justify-end {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: flex-end; }
-
-@font-face {
-  font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf"); }
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
-@font-face {
-  font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf"); }
-.writingMode {
-  writing-mode: vertical-rl;
-  writing-mode: tb-rl; }
-
-.line-clamp1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1; }
-
-.line-clamp2 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; }
-
-.line-clamp3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; }
-
-.scroll_bar {
-  overflow: auto; }
-  .scroll_bar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-button {
-    height: 10px;
-    background-color: #e4e7ed;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-track {
-    background: #e4e7ed; }
-  .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
-    border-radius: 4px; }
-
-#theme_name #discussPolitics {
-  height: 100%; }
-  #theme_name #discussPolitics .listTopCss .listTopLeft .date-value-container {
-    width: 140px; }
-  #theme_name #discussPolitics .discuss-politics-container {
-    height: calc(100% - 80px); }
-    #theme_name #discussPolitics .discuss-politics-container .calendar-container {
-      height: 100%;
-      display: flex;
-      display: -webkit-flex; }
-      #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left {
-        flex: 75%;
-        margin-bottom: 10px; }
-        #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-week {
-          margin-top: 20px;
-          height: 50px; }
-          #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-week .ui-container {
-            padding-left: calc(70px + 2%);
-            margin: 0 70px;
-            display: flex;
-            display: -webkit-flex; }
-            #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-week .ui-container .calendar-week-item {
-              display: inline-block;
-              height: 50px;
-              width: 14%; }
-              #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-week .ui-container .calendar-week-item .calendar-week-item-container {
-                position: relative;
-                width: 50px;
-                height: 50px; }
-                #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-week .ui-container .calendar-week-item .calendar-week-item-container .week-item-date {
-                  font-family: MicrosoftYaHei;
-                  position: absolute;
-                  bottom: 0;
-                  cursor: default; }
-                  #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-week .ui-container .calendar-week-item .calendar-week-item-container .week-item-date.weekday {
-                    color: #CF2E33; }
-        #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day {
-          margin-top: 20px;
-          height: 550px; }
-          #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container {
-            padding-left: calc(70px + 2%);
-            margin: 0 70px;
-            display: flex;
-            display: -webkit-flex;
-            flex-wrap: wrap;
-            background-color: #FFFFFF; }
-            #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item {
-              border: 1px solid #F9F9F9;
-              display: inline-block;
-              height: 110px;
-              width: 14%; }
-              #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container {
-                position: relative;
-                width: 100%;
-                height: 100%; }
-                #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-date {
-                  position: absolute;
-                  cursor: default;
-                  top: 10px;
-                  left: 4px;
-                  width: 20px;
-                  height: 20px;
-                  font-size: 15px;
-                  text-align: right;
-                  color: #000000;
-                  border-radius: 50%; }
-                  #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-date.gray {
-                    color: #DCDCDC; }
-                  #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-date.current {
-                    background-color: #CF2E33;
-                    color: #FFFFFF; }
-                  #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-date i {
-                    display: flex;
-                    display: -webkit-flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 16px;
-                    height: 16px;
-                    position: absolute;
-                    top: -12px;
-                    right: -12px;
-                    font-size: 10px;
-                    z-index: 1;
-                    color: #FFFFFF; }
-                    #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-date i:before {
-                      content: '';
-                      position: absolute;
-                      top: 0;
-                      right: 0;
-                      bottom: 0;
-                      left: 0;
-                      z-index: -1;
-                      border-radius: 50%;
-                      background-color: #CF2E33; }
-                #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-content {
-                  height: 65px;
-                  width: 100%;
-                  position: absolute;
-                  top: 30px; }
-                  #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-content > div {
-                    margin: 5px;
-                    font-size: 12px;
-                    padding: 3px 5px;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    cursor: pointer;
-                    border-radius: 6px;
-                    background-color: #cccccc; }
-                    #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-content > div.danger {
-                      color: #FF8248;
-                      background-color: #FFE8DE; }
-                    #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-content > div.default {
-                      background-color: #E2FFEE;
-                      color: #50E38F; }
-                    #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-left .calendar-day .ui-container .calendar-day-item .calendar-day-item-container .calendar-day-item-container-content > div.warning {
-                      background-color: #FFF4D4;
-                      color: #FFCD35; }
-      #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-right {
-        flex: 25%; }
-        #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-right .monthTitle {
-          position: relative;
-          font-size: 20px;
-          margin-top: 20px;
-          height: 50px; }
-          #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-right .monthTitle span {
-            position: absolute;
-            bottom: 0; }
-        #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-right .timeline .timeline-item-container.prev > div {
-          color: #A5A5A5; }
-        #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-right .timeline .timeline-item-container .timeline-item-container-content-item {
-          position: relative;
-          margin: 5px;
-          font-size: 14px;
-          font-weight: 700;
-          color: #464646;
-          font-family: MicrosoftYaHei;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          cursor: default;
-          border-radius: 6px;
-          /*&.danger {
-            color: #FF8248;
-            background-color: #FFE8DE;
-          }
-          &.default {
-            background-color: #E2FFEE;
-            color: #50E38F;
-          }
-          &.warning {
-            background-color: #FFF4D4;
-            color: #FFCD35;
-          }*/ }
-          #theme_name #discussPolitics .discuss-politics-container .calendar-container .container-right .timeline .timeline-item-container .timeline-item-container-content-item span.icons-delete {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            position: absolute;
-            right: 0; }
-
-/*# sourceMappingURL=index.css.map */
+Backtrace:
+index.scss:266
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each_with_index'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:820:in `rescue in check_sass_encoding'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:816:in `check_sass_encoding'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:444:in `check_encoding!'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:400:in `_to_tree'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:307:in `render_with_sourcemap'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `each'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin.rb:82:in `update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:51:in `process_result'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:50:in `parse'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:18:in `parse!'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/bin/scss:13:in `<top (required)>'
+D:/Ruby24-x64/bin/scss:23:in `load'
+D:/Ruby24-x64/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid GBK character \"\xE4\"\A         on line 266 of index.scss\A \A 261:               top: -10px;\A 262:             }\A 263:           }\A 264:         }\A 265: \A 266:         //会议个数dialog\A 267: \A 268:       }\A 269:       .meeting-counts-container {\A 270:         width: calc(100% - 80px);\A 271:         height: 100%;"; }

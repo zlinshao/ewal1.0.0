@@ -4,7 +4,8 @@
     <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>{{tabsManage === 'staff' ? '新增员工' : '新建职位'}}</h3>
+          <!--<h3>{{tabsManage === 'staff' ? '新增员工' : '新建职位'}}</h3>-->
+          <h3>{{ departInfo.name }}</h3>
         </div>
         <div class="dialog_main space-column departPosition">
           <div class="items-bet mainTop">
@@ -17,14 +18,15 @@
             </h2>
           </div>
           <div class="scroll_bar staffManage" id="scroll-body" v-if="tabsManage === 'staff'" @click="checkOverflow()">
-            <div v-for="item in 40">
+            <div v-for="item in staffList">
               <div class="items-center" @click="reviseStaff(item)">
                 <p>
-                  <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+                  <img :src="item.avatar" alt="" v-if="item.avatar">
+                  <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
                 </p>
                 <div>
-                  <h4>法国电视</h4>
-                  <h5>范德萨发生</h5>
+                  <h4>{{ item.name }}</h4>
+                  <h5>{{ item.position[0].name }}</h5>
                 </div>
               </div>
               <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
@@ -35,9 +37,9 @@
             </div>
           </div>
           <div class="scroll_bar orgManage" v-if="tabsManage === 'position'">
-            <div v-for="item in 30">
+            <div v-for="item in positionList">
               <p @click="operateModule('position')">
-                <span class="writingMode">符合都看傻了废话说多</span>
+                <span class="writingMode">{{ item.name }}</span>
               </p>
             </div>
           </div>
@@ -52,48 +54,42 @@
         </div>
         <div class="dialog_main flex-center borderNone">
           <!--员工-->
-          <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible"
+          <el-form :model="staffForm" ref="departForm" label-width="120px" class="depart_visible"
                    v-if="tabsManage === 'staff'">
             <el-form-item label="部门名称" required>
-              <el-input v-model="departForm.name"></el-input>
+              <el-input v-model="staffForm.name"></el-input>
             </el-form-item>
             <el-form-item label="上级部门" required>
               <div class="items-center iconInput">
-                <el-input v-model="departForm.depart"></el-input>
+                <el-input v-model="staffForm.depart"></el-input>
                 <p class="icons organization"></p>
               </div>
             </el-form-item>
-            <el-form-item label="部门负责人" required>
+            <el-form-item label="岗位" required>
               <div class="items-center iconInput">
-                <el-input v-model="departForm.leader"></el-input>
+                <el-input v-model="staffForm.position"></el-input>
                 <p class="icons position"></p>
-              </div>
-            </el-form-item>
-            <el-form-item label="部门负责人" required>
-              <div class="items-center iconInput">
-                <el-input v-model="departForm.leader"></el-input>
-                <p class="icons user"></p>
               </div>
             </el-form-item>
           </el-form>
           <!--职位-->
-          <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible" v-else>
+          <el-form :model="positionForm" ref="departForm" label-width="120px" class="depart_visible" v-else>
             <el-form-item label="职位名称" required>
-              <el-input v-model="departForm.name"></el-input>
+              <!--<el-input v-model="departForm.name"></el-input>-->
             </el-form-item>
             <el-form-item label="所属部门" required>
               <div class="items-center iconInput">
-                <el-input v-model="departForm.depart"></el-input>
+                <!--<el-input v-model="departForm.depart"></el-input>-->
                 <p class="icons organization"></p>
               </div>
             </el-form-item>
             <el-form-item label="关联岗位" required>
               <div class="multi-input">
                 <div class="first">
-                  <el-input v-model="departForm.leader"></el-input>
+                  <!--<el-input v-model="departForm.leader"></el-input>-->
                   <label @click="addStation">+</label>
                 </div>
-                <el-input v-model="departForm.leader"></el-input>
+                <!--<el-input v-model="departForm.leader"></el-input>-->
               </div>
               <div>
               </div>
@@ -222,14 +218,14 @@
           </div>
           <!--人员-->
           <div class="scroll_bar staffManage" id="scroll-body1" @click="checkOverflow()" v-if="tabsPost === 'person'">
-            <div v-for="item in 40">
+            <div v-for="item in staffList">
               <div class="items-center" @click="reviseStaff(item)">
                 <p>
                   <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
                 </p>
                 <div>
-                  <h4>法国电视</h4>
-                  <h5>范德萨发生</h5>
+                  <h4>{{ item.name }}</h4>
+                  <h5>{{ position[0].name }}</h5>
                 </div>
               </div>
               <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
@@ -321,12 +317,33 @@
 
   export default {
     name: "depart-manage",
-    props: ['module'],
+    props: ['module','info'],
     components: {ljDialog},
     data() {
       return {
+        departInfo: '',
+        staffParams: {
+          search: '',
+          page: 1,
+          limit: 999,
+          org_id: '',
+          position_id: ''
+        },
+        staffList: [],
+        positionList: [],
+
         addStaffVisible: '',
-        departForm: {},
+        staffForm: {
+          name: '',
+          org_id: '',
+          depart: '',
+          position: '',
+          position_id: '',
+        },
+        positionForm: {
+
+        },
+
         // 新建职位
         depart_visible: false,
         lj_size: '',
@@ -514,6 +531,16 @@
     activated() {
     },
     watch: {
+      info: {
+        handler(val) {
+          this.departInfo = val;
+          console.log(val);
+          this.staffParams.org_id = val.id;
+          this.getStaffList();
+          this.getPositionList();
+        },
+        deep: true
+      },
       module(val) {
         this.depart_visible = val;
         this.lj_size = 'large'
@@ -530,6 +557,27 @@
       }
     },
     methods: {
+      //获取职位礼拜
+      getPositionList() {
+        this.$http.get('organization/duty',this.staffParams).then(res => {
+          console.log(res);
+          if (res.code === '20000') {
+            this.positionList = res.data.data;
+          } else {
+            this.positionList = [];
+          }
+        })
+      },
+      //获取员工列表
+      getStaffList() {
+        this.$http.get('staff/user',this.staffParams).then(res => {
+          if (res.code === '20000') {
+            this.staffList = res.data.data;
+          } else {
+            this.staffList = [];
+          }
+        })
+      },
       // 超出部分 反方向显示
       checkOverflow() {
         let obj = document.getElementById("scroll-body") || document.getElementById("scroll-body1");

@@ -9,12 +9,19 @@
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         style="width: 100%">
-        <el-table-column
-          v-for="item in Object.keys(showData)" :key="item"
-          align="center"
-          :prop="item"
-          :label="showData[item]">
-        </el-table-column>
+        <el-table-column label="姓名" prop="name"></el-table-column>
+        <el-table-column label="部门" prop="org[0].name"></el-table-column>
+        <el-table-column label="面貌" prop=""></el-table-column>
+        <el-table-column label="民族" prop=""></el-table-column>
+        <el-table-column label="出生年月" prop=""></el-table-column>
+        <el-table-column label="身份证号" prop=""></el-table-column>
+        <el-table-column label="城市" prop=""></el-table-column>
+        <el-table-column label="户口性质" prop=""></el-table-column>
+        <el-table-column label="婚育情况" prop=""></el-table-column>
+        <el-table-column label="家庭住址" prop=""></el-table-column>
+        <el-table-column label="联系方式" prop=""></el-table-column>
+        <el-table-column label="紧急联系人" prop=""></el-table-column>
+        <el-table-column label="手机号" prop="phone"></el-table-column>
         <el-table-column
           align="center"
           label="操作">
@@ -54,21 +61,6 @@
       return {
         url: globalConfig.organ_server,
         checkList: [],
-        showData: {
-          name: '姓名',
-          date1: '部门',
-          date2: '面貌',
-          date3: '民族',
-          date4: '出生日期',
-          date5: '身份证号',
-          date6: '城市',
-          date7: '户口性质',
-          date8: '婚育情况',
-          date9: '家庭住址',
-          date10: '联系方式',
-          date11: '紧急联系人',
-          phone: '电话',
-        },
         chooseRowIds: [],
         tableData: [],
         counts: 0,
@@ -83,6 +75,7 @@
       }
     },
     mounted() {
+      this.getStaffList();
     },
     activated() {
     },
@@ -99,6 +92,7 @@
     methods: {
       getStaffList() {
         this.$http.get(this.url + 'staff/user', this.params).then(res => {
+          console.log(res);
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })
