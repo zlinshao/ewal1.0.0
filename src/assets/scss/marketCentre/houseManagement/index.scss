@@ -76,7 +76,9 @@
                 > img {
                   max-width: 120px;
                   max-height: 70px;
-                  margin-right: 10px;
+                  &:not(:last-child) {
+                    margin-right: 10px;
+                  }
                 }
               }
               .btn {

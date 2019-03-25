@@ -195,8 +195,9 @@
         transition: all ease .5s; }
         #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .img_container > img {
           max-width: 120px;
-          max-height: 70px;
-          margin-right: 10px; }
+          max-height: 70px; }
+          #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .img_container > img:not(:last-child) {
+            margin-right: 10px; }
       #theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .btn {
         width: 20px;
         height: 30px;

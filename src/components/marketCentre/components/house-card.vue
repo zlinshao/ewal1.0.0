@@ -47,7 +47,7 @@
 
 <script>
     export default {
-        name: "",
+        name: "index",
         props: ['houseSource'],
         data() {
             return {

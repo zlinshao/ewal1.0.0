@@ -9,7 +9,7 @@
           <div class="items-center">
             <el-button type="danger" size="mini" @click="house_filter_visible = true" style="margin-right: 20px">搜索房源</el-button>
             <span class="set" @click="set_price_visible = true"></span>
-            <span class="search" @click="isHigh = true"></span>
+            <span class="search" @click="handleOpenHighSearch"></span>
           </div>
         </div>
 
@@ -569,6 +569,10 @@
         watch: {},
         computed: {},
         methods: {
+          //打开高级设置
+          handleOpenHighSearch() {
+            this.isHigh = true;
+          },
           //关闭设置
           handleCloseSetHouse() {
             this.set_price_visible = false;
@@ -585,9 +589,11 @@
             this.lj_visible = true;
           },
           handleTransLeft() {
+            console.log(this.$refs['img_contain']);
             this.img_trams -= 20;
           },
           handleTransRight() {
+            console.log(this.$refs['img_contain']);
             if (this.img_trams < 0) {
               this.img_trams += 20;
             }
