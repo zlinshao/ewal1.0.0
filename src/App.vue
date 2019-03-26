@@ -115,7 +115,7 @@
             English: 'Personal Adminstration',
           },
           {
-            url: '/newMedia',
+            url: '/mediaCenter',
             title: '新媒体运营中心',
             English: 'Social Media Center',
           },
@@ -130,7 +130,7 @@
             English: 'Customer Service',
           },
           {
-            url: '',
+            url: '/leJiaCollege',
             title: '乐伽大学',
             English: 'Lejia College',
           },

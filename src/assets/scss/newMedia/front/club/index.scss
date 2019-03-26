@@ -1,0 +1,151 @@
+@import "../../../common.scss";
+#theme_name{
+  #club{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    .listTopCss{
+      width: 100%;
+      height: 80px;
+      position: fixed;
+      top: 81px;
+      left: 0;
+      z-index: 10;
+    };
+    .mainList{
+      width: 100%;
+      padding-top: 120px;
+      >div{
+        width: 90%;
+        flex-wrap: wrap;
+      }
+      .list{
+
+        width: 48%;
+        height: 630px;
+        border-radius: 8px;
+        position: relative;
+        background:rgba(255,255,255,1);
+        margin-bottom: 30px;
+        //模态背景
+        .list_modal{
+          width: 100%;
+          height: 630px;
+          border-radius: 8px;
+          position: absolute;
+          top:0;
+          left:0;
+          background:rgba(0,0,0,1);
+          opacity: .1;
+          z-index: 1;
+        }
+        .list_img{
+          width: 100%;
+          height: 430px;
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+
+        }
+        .list_status{
+          width: 100%;
+          height: 117px;
+          padding: 30px 0px 10px 30px;
+          border-bottom: 1px solid #F0F0F0;
+          .list_status_left{
+            .list_status_title{
+              font-family: "jingDianXingShu";
+              font-size: 30px;
+            }
+          }
+          .list_status_right{
+            width: 126px;
+            height: 40px;
+            font-family: jingDianXingShu;
+            font-size: 26px;
+            color:#686874
+          }
+          .status_start{
+            color:#ffffff;
+          }
+        }
+        .list_view{
+          width: 100%;
+          padding-left: 30px;
+          padding-right: 30px;
+          padding-top: 30px;
+          p{
+            span{
+              margin-left: 4px;
+              font-family: jingDianXingShu;
+            }
+          }
+
+          .list_date_icon{
+            display: block;
+            width: 20px;
+            height: 20px;
+
+          }
+          .list_view_icon{
+            display: block;
+            width: 20px;
+            height: 20px;
+
+          }
+        }
+
+      }
+    };
+
+    .action_info{
+      width: 100%;
+      >div{
+        width: 100%;
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    };
+    .action_name{
+      border-bottom: 1px solid #F2F2F2;
+      width: 92%;
+      height: 80px;
+      div{
+        line-height: 80px;
+        display: inline-block;
+      }
+      .action_left{
+        font-family:"MicrosoftYaHei-Bold";
+        color:rgba(104,104,116,1);
+        font-weight: bold;
+
+      }
+      .action_right{
+        margin-left: 100px;
+      }
+      .action_address{
+        padding-top: 20px;
+        line-height: 24px;
+        border-bottom: 0;
+      }
+
+
+
+    };
+    .top_right_img{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      span{
+        font-family: "jingDianXingShu";
+        color:rgba(255,255,255,1);
+        font-size: 17px;
+        margin-top: 6px;
+      }
+    }
+  }
+
+}

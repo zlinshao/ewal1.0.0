@@ -1,0 +1,106 @@
+@import "../../../common.scss";
+#theme_name {
+  #hotNews {
+
+    .menu_lists {
+      .menu {
+        width: 100%;
+        height: 100%;
+        padding:100px 100px 30px 100px;
+        column-count: 4;
+        column-gap: 50px;
+        .menu_box {
+          width: 400px;
+          height: auto;
+          margin-bottom: 30px;
+          box-sizing: border-box;
+          break-inside: avoid;
+          background: #FFFFFF;
+          border-radius: 8px;
+          cursor: pointer;
+          &:hover{
+            opacity: .7;
+          }
+          .top{
+            width: 400px;
+            height: 230px;
+            img{
+              border-top-left-radius: 8px;
+              border-top-right-radius: 8px;
+            }
+          }
+          .middle{
+            padding: 20px;
+            .title{
+              font-size: 18px;
+              color: #686874;
+              text-align: justify;
+            }
+            .operate-icons{
+              margin-top: 8px;
+              span{
+                font-size: 14px;
+                color:#999999;
+                margin-right: 10px;
+              }
+              i{
+                display: block;
+                width: 20px;
+                height: 20px;
+                margin-right: 4px;
+
+              }
+            }
+            .desc{
+              font-size: 14px;
+              color: #686874;
+              text-indent: 2em;
+              margin-top: 8px;
+              text-align: justify;
+              font-family: "Microsoft YaHei Light";
+            }
+          }
+          .bottom{
+            width: 400px;
+            height: 90px;
+            padding: 20px;
+            border-top:1px solid #EDEDED;
+            .bot-left{
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              h3{
+                color: #686874;
+                margin-left: 20px;
+                font-size: 14px;
+                margin-bottom: 5px;
+              }
+              p{
+                color: #999999;
+                margin-left: 20px;
+                font-size: 14px;
+              }
+              img{
+                width: 50px;
+                width: 50px;
+                border-radius: 50%;
+              }
+            }
+            .bot-right{
+              display: flex;
+              align-items: flex-end;
+              span{
+                color: #999999;
+                font-size: 14px;
+              }
+            }
+          }
+
+
+        }
+      }
+    }
+
+
+  }
+}
