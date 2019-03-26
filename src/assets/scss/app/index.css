@@ -262,6 +262,7 @@
     left: 0;
     bottom: 0;
     right: 0;
+    background-color: #ffffff;
     color: brown;
     text-align: center;
     z-index: 10; }
@@ -291,7 +292,7 @@
     position: fixed;
     top: -950px;
     right: 15px;
-    z-index: 101;
+    z-index: 999;
     transition: all ease .5s;
     overflow: hidden;
     text-align: center;

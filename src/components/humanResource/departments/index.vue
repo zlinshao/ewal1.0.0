@@ -15,9 +15,22 @@
       </div>
       <div class="items-center listTopRight">
         <div class="searchTerm" v-if="chooseTab === 3">
-          <el-checkbox-group v-model="checkList">
-            <el-checkbox label="1">离职员工</el-checkbox>
-          </el-checkbox-group>
+          <el-radio-group v-model="checkList" @change="handleChangeParams">
+            <el-row :gutter="10">
+              <el-col :span="6">
+                <el-radio :label="1">离职员工</el-radio>
+              </el-col>
+              <el-col :span="6">
+                <el-radio :label="2">在职员工</el-radio>
+              </el-col>
+              <el-col :span="6">
+                <el-radio :label="3">禁用员工</el-radio>
+              </el-col>
+              <el-col :span="6">
+                <el-radio :label="4">非禁用员工</el-radio>
+              </el-col>
+            </el-row>
+          </el-radio-group>
         </div>
         <div class="icons dimission" v-if="chooseTab === 3"></div>
         <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
@@ -60,7 +73,7 @@
 
     <!--员工名册-->
     <div v-show="chooseTab === 3">
-      <StaffRoster :searchVal="searchFruit3"></StaffRoster>
+      <StaffRoster :searchVal="searchFruit3" :search-params="staff_params"></StaffRoster>
     </div>
 
     <!--离职管理-->
@@ -165,7 +178,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 3,//tab切换
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -199,7 +212,7 @@
           name: '',
           leader: '',
           leader_id: '',
-          parent_id: '',
+          parent_id: 1,
           parent: ''
         },//新增部门
         visibleStatus: false,//弹出部门
@@ -209,7 +222,11 @@
         searchFruit3: {},//搜索结果
         searchFruit4: {},//搜索结果
 
-        checkList: '',//离职员工
+        checkList: [],//离职员工
+        staff_params: {
+          is_on_job: '',
+          is_enable: '',
+        },
         options: [
           {
             value: '选项1',
@@ -241,6 +258,18 @@
       },
     },
     methods: {
+      //更改params
+      handleChangeParams(val) {
+        this.staff_params = {
+          is_on_job: '',
+          is_enable: ''
+        };
+        if (val === 1 || val === 2) {
+          this.staff_params.is_on_job = val - 1;
+        } else if(val === 3 || val === 4 ){
+          this.staff_params.is_enable = val - 3;
+        }
+      },
       //取消添加部门
       handleCancelAddDepart() {
        for (var key in this.departForm) {

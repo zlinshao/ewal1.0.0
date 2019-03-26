@@ -9,24 +9,28 @@
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         style="width: 100%">
-        <el-table-column label="姓名" prop="name"></el-table-column>
-        <el-table-column label="部门" prop="org[0].name"></el-table-column>
-        <el-table-column label="面貌" prop=""></el-table-column>
-        <el-table-column label="出生年月" prop=""></el-table-column>
-        <el-table-column label="身份证号" prop=""></el-table-column>
-        <el-table-column label="城市" prop=""></el-table-column>
-        <el-table-column label="婚育情况" prop=""></el-table-column>
-        <el-table-column label="家庭住址" prop=""></el-table-column>
-        <el-table-column label="联系方式" prop=""></el-table-column>
-        <el-table-column label="紧急联系人" prop=""></el-table-column>
-        <el-table-column label="手机号" prop="phone"></el-table-column>
-        <el-table-column
-          align="center"
-          label="操作">
+        <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+        <el-table-column label="部门" prop="org[0].name" align="center"></el-table-column>
+        <!--<el-table-column label="面貌" prop="political_status" align="center"></el-table-column>-->
+        <el-table-column label="出生年月" prop="staff.birthday" align="center"></el-table-column>
+        <el-table-column label="身份证号" prop="staff.id_num" align="center"></el-table-column>
+        <!--<el-table-column label="城市" prop="" align="center"></el-table-column>-->
+        <el-table-column label="婚育情况" prop="staff.marital_status" align="center">
           <template slot-scope="scope">
-
+            <span>{{ scope.row.staff.marital_status === 1 ? '未婚' :  '已婚'}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="家庭住址" prop="staff.home_addr" align="center"></el-table-column>
+        <el-table-column label="紧急联系人" prop="" align="center"></el-table-column>
+        <el-table-column label="紧急联系方式" prop="staff.emergency_call" align="center"></el-table-column>
+        <el-table-column label="手机号" prop="phone" align="center"></el-table-column>
+        <!--<el-table-column-->
+          <!--align="center"-->
+          <!--label="操作">-->
+          <!--<template slot-scope="scope">-->
+
+          <!--</template>-->
+        <!--</el-table-column>-->
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -54,7 +58,7 @@
 
   export default {
     name: "index",
-    props: ['searchVal'],
+    props: ['searchVal','searchParams'],
     components: {StaffFiles},
     data() {
       return {
@@ -79,6 +83,13 @@
     activated() {
     },
     watch: {
+      searchParams: {
+        handler(val) {
+          this.params = Object.assign({},this.params,val);
+          this.getStaffList();
+        },
+        deep: true
+      },
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
           this.params = val;
