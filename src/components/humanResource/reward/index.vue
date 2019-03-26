@@ -150,19 +150,6 @@
             ]
           }
         ],
-
-
-        // event_data_list: [
-        //   [{value: 500, name: '一般'},
-        //     {value: 300, name: '特殊'},
-        //     {value: 200, name: '紧急'},],
-        //   [{value: 400, name: '一般'},
-        //     {value: 300, name: '特殊'},
-        //     {value: 300, name: '紧急'},],
-        //   [{value: 200, name: '一般'},
-        //     {value: 400, name: '特殊'},
-        //     {value: 400, name: '紧急'},],
-        // ],
         event_data: [
           {value: 500, name: '一般'},
           {value: 300, name: '特殊'},

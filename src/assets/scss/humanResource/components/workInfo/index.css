@@ -1,0 +1,189 @@
+.flex {
+  display: flex;
+  display: -webkit-flex; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #747474;
+    border-radius: 4px; }
+
+#workInfo {
+  position: fixed;
+  height: 400px;
+  width: 100%;
+  right: -100%;
+  bottom: 0;
+  z-index: 10;
+  background-color: #fff;
+  transition: right 1s; }
+  #workInfo:hover {
+    right: 0; }
+  #workInfo .tip-icon {
+    position: absolute;
+    width: 30px;
+    height: 80px;
+    top: 160px;
+    left: -30px; }
+  #workInfo .info_container {
+    padding-top: 20px;
+    position: relative; }
+    #workInfo .info_container .date_change {
+      position: absolute;
+      top: 30px;
+      right: 0; }
+      #workInfo .info_container .date_change li {
+        width: 90px;
+        height: 40px;
+        color: #999999;
+        background-color: #DFDFDF;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 3px 0 0 3px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        cursor: pointer; }
+      #workInfo .info_container .date_change .mark_li {
+        background-color: #CF2E33;
+        color: white; }
+    #workInfo .info_container .day_info > div {
+      width: 25%;
+      padding-left: 30px; }
+    #workInfo .info_container .day_info > div > p {
+      font-size: 16px; }
+    #workInfo .info_container .day_info .event_info {
+      width: 80%;
+      display: flex;
+      display: -webkit-flex;
+      align-items: center;
+      justify-content: space-between; }
+    #workInfo .info_container .day_info .work_info {
+      height: 321px; }
+      #workInfo .info_container .day_info .work_info > p:not(:last-child) {
+        margin-bottom: 65px; }
+
+/*# sourceMappingURL=index.css.map */
