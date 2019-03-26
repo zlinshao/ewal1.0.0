@@ -9,19 +9,28 @@
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         style="width: 100%">
-        <el-table-column
-          v-for="item in Object.keys(showData)" :key="item"
-          align="center"
-          :prop="item"
-          :label="showData[item]">
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="操作">
+        <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+        <el-table-column label="部门" prop="org[0].name" align="center"></el-table-column>
+        <!--<el-table-column label="面貌" prop="political_status" align="center"></el-table-column>-->
+        <el-table-column label="出生年月" prop="staff.birthday" align="center"></el-table-column>
+        <el-table-column label="身份证号" prop="staff.id_num" align="center"></el-table-column>
+        <!--<el-table-column label="城市" prop="" align="center"></el-table-column>-->
+        <el-table-column label="婚育情况" prop="staff.marital_status" align="center">
           <template slot-scope="scope">
-
+            <span>{{ scope.row.staff.marital_status === 1 ? '未婚' :  '已婚'}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="家庭住址" prop="staff.home_addr" align="center"></el-table-column>
+        <el-table-column label="紧急联系人" prop="" align="center"></el-table-column>
+        <el-table-column label="紧急联系方式" prop="staff.emergency_call" align="center"></el-table-column>
+        <el-table-column label="手机号" prop="phone" align="center"></el-table-column>
+        <!--<el-table-column-->
+          <!--align="center"-->
+          <!--label="操作">-->
+          <!--<template slot-scope="scope">-->
+
+          <!--</template>-->
+        <!--</el-table-column>-->
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -39,6 +48,7 @@
         </div>
       </footer>
     </div>
+
     <StaffFiles :module="filesVisible" @close="filesVisible = false"></StaffFiles>
   </div>
 </template>
@@ -48,27 +58,12 @@
 
   export default {
     name: "index",
-    props: ['searchVal'],
+    props: ['searchVal','searchParams'],
     components: {StaffFiles},
     data() {
       return {
         url: globalConfig.organ_server,
         checkList: [],
-        showData: {
-          name: '姓名',
-          date1: '部门',
-          date2: '面貌',
-          date3: '民族',
-          date4: '出生日期',
-          date5: '身份证号',
-          date6: '城市',
-          date7: '户口性质',
-          date8: '婚育情况',
-          date9: '家庭住址',
-          date10: '联系方式',
-          date11: '紧急联系人',
-          phone: '电话',
-        },
         chooseRowIds: [],
         tableData: [],
         counts: 0,
@@ -83,10 +78,18 @@
       }
     },
     mounted() {
+      this.getStaffList();
     },
     activated() {
     },
     watch: {
+      searchParams: {
+        handler(val) {
+          this.params = Object.assign({},this.params,val);
+          this.getStaffList();
+        },
+        deep: true
+      },
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
           this.params = val;
@@ -99,6 +102,7 @@
     methods: {
       getStaffList() {
         this.$http.get(this.url + 'staff/user', this.params).then(res => {
+          console.log(res);
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })

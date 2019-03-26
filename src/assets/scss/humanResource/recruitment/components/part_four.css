@@ -137,7 +137,6 @@
   #theme_name #part_four > div {
     width: 100%;
     height: 100%;
-    margin-top: 10px;
     position: relative; }
     #theme_name #part_four > div .container {
       width: 60%;
@@ -162,5 +161,71 @@
         background-color: #999999;
         vertical-align: top;
         cursor: pointer; }
+  #theme_name #part_four .offer_container {
+    width: 800px;
+    height: 1200px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 30px;
+    text-align: center;
+    color: black; }
+    #theme_name #part_four .offer_container > h1 {
+      color: black;
+      margin-top: 80px;
+      margin-bottom: 10px;
+      font-weight: bold; }
+    #theme_name #part_four .offer_container > h4 {
+      font-weight: bold; }
+    #theme_name #part_four .offer_container .content {
+      width: 90%;
+      height: 100%;
+      margin: 0 auto;
+      text-align: left;
+      padding: 80px 30px; }
+      #theme_name #part_four .offer_container .content p {
+        margin-bottom: 20px; }
+      #theme_name #part_four .offer_container .content .name {
+        display: inline-block;
+        width: 120px;
+        border-bottom: 1px solid #686874;
+        margin-right: 5px;
+        text-align: center;
+        box-sizing: border-box;
+        color: black;
+        font-weight: bold; }
+      #theme_name #part_four .offer_container .content .kong {
+        display: inline-block;
+        width: 40px; }
+      #theme_name #part_four .offer_container .content .btn {
+        color: #CF2E33;
+        margin: 50px 0;
+        cursor: pointer; }
+      #theme_name #part_four .offer_container .content strong {
+        font-weight: bold;
+        color: black; }
+      #theme_name #part_four .offer_container .content .footer > div {
+        width: 50%;
+        line-height: 80px;
+        text-align: right; }
+  #theme_name #part_four .hide_offer_container {
+    top: -1920px;
+    left: -1920px; }
+  #theme_name #part_four .labour_contract {
+    width: 800px;
+    height: 1100px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 30px;
+    text-align: center;
+    color: black; }
+    #theme_name #part_four .labour_contract .item_margin {
+      margin-bottom: 55px; }
+  #theme_name #part_four .hide_labour_contract {
+    top: -1920px;
+    right: -1920px; }
 
 /*# sourceMappingURL=part_four.css.map */

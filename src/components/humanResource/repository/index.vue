@@ -6,7 +6,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="organModule = true">内务库房</h1>
+        <h1>内务库房</h1>
         <h2 class="items-center" v-if="chooseTab">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -25,7 +25,7 @@
         <div class="left flex-center" @click="chooseTab=1"><span>库房总览</span></div>
         <div class="right flex-center" @click="chooseTab=2"><span class="gray">借用领用</span></div>
       </div>
-      <work-info v-show="!chooseTab" :work-info="work_info" :event-data="event_data"
+      <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
                  @change="handleChangeDate"></work-info>
     </div>
     <!--库房总览-->
@@ -119,12 +119,14 @@
           {value: 300, name: '特殊'},
           {value: 200, name: '紧急'},
         ],
+        attend_data:[10,5,2]
       }
     },
     mounted() {
       this.show_market = true;
       this.work_info[0].val = '7 h';
       this.event_data[0].value = 700;
+      this.attend_data[0] = 9;
     },
     activated() {
     },

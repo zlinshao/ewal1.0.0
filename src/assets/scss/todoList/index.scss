@@ -1,0 +1,248 @@
+@import "../common.scss";
+
+#theme_name {
+  height: auto !important;
+  padding-top: 0 !important;
+}
+
+#todo_list {
+  overflow: auto;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 24;
+  background-color: $color2F2;
+  //height: 100%;
+  @include transform(scale(0));
+  @include transOrigin(50%);
+  @include transition(all .6s linear);
+  opacity: 0;
+
+  &.todo-list {
+    @include transOrigin(50%);
+    @include transition(all .6s linear);
+    @include transform(scale(1));
+    opacity: 1;
+  }
+
+  .pendant-container {
+    width: 100%;
+    //height: 400px;
+    .pendant {
+      height: 220px;
+      width: 100%;
+      position: relative;
+
+      .horizontal {
+        height: 3px;
+        width: 100%;
+        background-color: #E1E4E8;
+        position: absolute;
+        top: 80px;
+      }
+
+      .todo-list-title {
+        @include flex("flex-center");
+        position: absolute;
+        width: 120px;
+        height: 30px;
+        top: 65px;
+        left: 50px;
+        cursor: default;
+        background-color: $colorFFF;
+        font-family: "jingDianXingShu";
+        font-size: 24px;
+      }
+
+      .item-list {
+        @include flex('items-bet');
+        position: absolute;
+        width: 70%;
+        height: 50px;
+        top: 95px;
+        left: 250px;
+
+        .item-detail {
+          width: 50px;
+          height: 80px;
+          //background-color: $colorE33;
+          position: relative;
+          cursor: pointer;
+
+          span {
+            font-family: jingDianXingShu;
+            position: absolute;
+            top: -4px;
+            left: 19px;
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            color: #93939B;
+            z-index: 0;
+            text-align: center;
+            //background-color: $colorFFF;
+            font-size: 10px;
+
+            &:before {
+              content: '';
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              z-index: -1;
+              //border: 2px solid $colorE33;
+              background-color: $colorFFF;
+              transform: rotateZ(45deg);
+            }
+          }
+
+          i {
+            font-size: 20px;
+            font-family: jingDianXingShu;
+            @include writingMode;
+            position: absolute;
+            top: 30px;
+            left: 13px;
+
+            &.multi-font {
+              left: 3px;
+            }
+          }
+
+          &.checked {
+            span {
+              color: $colorE33;
+            }
+
+            i {
+              color: $colorE33;
+            }
+          }
+        }
+      }
+
+      .search-bar {
+        width: 100%;
+        //background-color: red;
+        height: 30px;
+        top: 180px;
+        @include flex('justify-end');
+        position: absolute;
+        padding-right: 50px;
+
+        .search-bar-item {
+          width: 30px;
+          height: 30px;
+          //background-color: red;
+          cursor: pointer;
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+
+  .todo-list-container {
+    //height: calc(100% - 300px);
+    @include flex('flex-center');
+    //padding-bottom: 50px;
+    margin: 0 50px;
+    flex-wrap: wrap;
+    //background-color: red;
+    .todo-list-container-top, .todo-list-container-bottom {
+      @include flex('flex-center');
+
+      .todo-list-item {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        cursor: pointer;
+        //background-color: red;
+        margin-right: 30px;
+        //margin-bottom: 30px;
+        > div {
+          width: 100%;
+
+        }
+
+        .todo-list-item-title {
+          text-align: center;
+          margin-top: 40px;
+          font-size: 16px;
+        }
+
+        .todo-list-item-content {
+          position: relative;
+          text-align: left;
+          margin-left: 90px;
+          margin-top: 16px;
+          width: 120px;
+          font-size: 12px;
+
+          i {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            //background-color: red;
+            left: -30px;
+            top: 2px;
+          }
+        }
+      }
+    }
+  }
+
+  footer.common-page {
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    //background-color: $color2F2;
+    z-index: 6;
+
+    .develop {
+      position: absolute;
+      top: -30px;
+      width: 80px;
+      cursor: pointer;
+      height: 30px;
+      opacity: 1;
+      border-radius: 10px 10px 0 0;
+      background-color: $color2F2;
+
+    }
+
+
+  }
+
+
+}
+
+#theme_name.theme1 {
+  #todoList {
+
+  }
+}
+
+#theme_name.theme2 {
+  #todoList {
+
+  }
+}
+
+#theme_name.theme3 {
+  #todoList {
+
+  }
+}
+
+#theme_name.theme4 {
+  #todoList {
+
+  }
+}

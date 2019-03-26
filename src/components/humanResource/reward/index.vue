@@ -6,7 +6,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="organModule = true">赏罚分明</h1>
+        <h1>赏罚分明</h1>
         <h2 class="items-center" v-if="chooseTab">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -15,11 +15,6 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <!--<div class="searchTerm" v-if="chooseTab === 3">-->
-        <!--<el-checkbox-group v-model="checkList">-->
-        <!--<el-checkbox label="1">离职员工</el-checkbox>-->
-        <!--</el-checkbox-group>-->
-        <!--</div>-->
         <div class="icons-font" @click="publish(chooseTab)" v-if="chooseTab === 1|| chooseTab===2"><b>发榜</b></div>
         <div class="icons-font" @click="exchange(chooseTab)" v-if="chooseTab === 1"><b>兑换</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
@@ -155,19 +150,6 @@
             ]
           }
         ],
-
-
-        // event_data_list: [
-        //   [{value: 500, name: '一般'},
-        //     {value: 300, name: '特殊'},
-        //     {value: 200, name: '紧急'},],
-        //   [{value: 400, name: '一般'},
-        //     {value: 300, name: '特殊'},
-        //     {value: 300, name: '紧急'},],
-        //   [{value: 200, name: '一般'},
-        //     {value: 400, name: '特殊'},
-        //     {value: 400, name: '紧急'},],
-        // ],
         event_data: [
           {value: 500, name: '一般'},
           {value: 300, name: '特殊'},

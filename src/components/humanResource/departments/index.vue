@@ -1,14 +1,11 @@
 <template>
   <div id="departments">
-    <Upload :file="photo1" @success="getImgIds"></Upload>
-    <!--<Upload :file="photo2"></Upload>-->
-
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="organModule = true">三省六部</h1>
+        <h1 @click="myUtils.emptyPic(photo)">三省六部</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -18,9 +15,22 @@
       </div>
       <div class="items-center listTopRight">
         <div class="searchTerm" v-if="chooseTab === 3">
-          <el-checkbox-group v-model="checkList">
-            <el-checkbox label="1">离职员工</el-checkbox>
-          </el-checkbox-group>
+          <el-radio-group v-model="checkList" @change="handleChangeParams">
+            <el-row :gutter="10">
+              <el-col :span="6">
+                <el-radio :label="1">离职员工</el-radio>
+              </el-col>
+              <el-col :span="6">
+                <el-radio :label="2">在职员工</el-radio>
+              </el-col>
+              <el-col :span="6">
+                <el-radio :label="3">禁用员工</el-radio>
+              </el-col>
+              <el-col :span="6">
+                <el-radio :label="4">非禁用员工</el-radio>
+              </el-col>
+            </el-row>
+          </el-radio-group>
         </div>
         <div class="icons dimission" v-if="chooseTab === 3"></div>
         <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
@@ -30,9 +40,6 @@
       </div>
     </div>
 
-    <!--组织架构选人-->
-    <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
-
     <!--组织架构-->
     <div v-if="chooseTab === 1">
       <Organization></Organization>
@@ -41,17 +48,32 @@
     <!--部门管理-->
     <div class="departList" v-if="chooseTab === 2">
       <div class="items-bet mainList" :class="{'mainListHover': routeAnimation}">
-        <p v-for="item in resourceDepart.data" @click="showDepartManage(item)">
-          <span class="writingMode">
-            {{item.title}}
+        <p v-for="item in departList" @click="showDepartManage(item)">
+          <span class="writingMode" :title="item.name">
+            {{item.name}}
           </span>
         </p>
       </div>
+      <footer class="flex-center bottomPage">
+        <div class="develop flex-center">
+          <i class="el-icon-d-arrow-right"></i>
+        </div>
+        <div class="page">
+          <el-pagination
+            :total="departCount"
+            :current-page="params.page"
+            :page-size="params.limit"
+            layout="total,jumper,prev,pager,next"
+            @current-change="handleChangePage"
+          >
+          </el-pagination>
+        </div>
+      </footer>
     </div>
 
     <!--员工名册-->
     <div v-show="chooseTab === 3">
-      <StaffRoster :searchVal="searchFruit3"></StaffRoster>
+      <StaffRoster :searchVal="searchFruit3" :search-params="staff_params"></StaffRoster>
     </div>
 
     <!--离职管理-->
@@ -72,21 +94,21 @@
             </el-form-item>
             <el-form-item label="上级部门" required>
               <div class="items-center iconInput">
-                <el-input v-model="departForm.depart"></el-input>
+                <el-input v-model="departForm.parent" readonly @focus="chooseDepart = true"></el-input>
                 <p class="icons organization"></p>
               </div>
             </el-form-item>
             <el-form-item label="部门负责人" required>
               <div class="items-center iconInput">
-                <el-input v-model="departForm.leader"></el-input>
+                <el-input v-model="departForm.leader" readonly @focus="organModule = true"></el-input>
                 <p class="icons user"></p>
               </div>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="handleSubmitAddDepart">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancelAddDepart">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -95,13 +117,19 @@
     <SetForms :module="SetFormVisible" :data="setFormData" @close="SetFormVisible = false"></SetForms>
 
     <!--管理部门/员工管理-->
-    <DepartManage :module="departModule" @close="departModule = false"></DepartManage>
+    <DepartManage :module="departModule" :info="departInfo" @close="departModule = false"></DepartManage>
 
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
     <!--高级搜索-->
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+
+    <!--组织架构选人-->
+    <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
+
+    <!--部门选择-->
+    <DepartOrgan :module="chooseDepart" @close="handleGetDepart"></DepartOrgan>
   </div>
 </template>
 
@@ -116,6 +144,7 @@
   import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
+  import DepartOrgan from '../../common/departOrgan.vue'
   import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
@@ -131,15 +160,25 @@
       SearchHigh,
       Upload,
       StaffOrgan,
-      Organization
+      Organization,
+      DepartOrgan
     },
     data() {
       return {
+        departList: [], //部门列表
+        departCount: 0,
+        params: {
+          page: 1,
+          limit: 7,
+          parent_id: 1
+        },
+        chooseDepart: false,
+
         staffBookSearch,
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 3,//tab切换
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -165,9 +204,17 @@
         SetFormVisible: false,//设置表单
 
         departModule: false,//部门管理/员工管理
+        departInfo: '',
+
         depart_visible: false,//新增部门
         lj_size: {},//新增部门
-        departForm: {},//新增部门
+        departForm: {
+          name: '',
+          leader: '',
+          leader_id: '',
+          parent_id: 1,
+          parent: ''
+        },//新增部门
         visibleStatus: false,//弹出部门
 
         showSearch: false,//高级搜索
@@ -175,7 +222,11 @@
         searchFruit3: {},//搜索结果
         searchFruit4: {},//搜索结果
 
-        checkList: '',//离职员工
+        checkList: [],//离职员工
+        staff_params: {
+          is_on_job: '',
+          is_enable: '',
+        },
         options: [
           {
             value: '选项1',
@@ -195,42 +246,10 @@
           }
         ],//部门人员
         value: '',
-
-        photo1: {
-          keyName: 'photo1',
-          setFile: [
-            {
-              id: 55,
-              url: 'http://static.lejias.cn/lejia8e9013abd8af58047660bc8616f775a8.jpg',
-            },
-            {
-              id: 44,
-              url: 'http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg',
-            },
-          ],
-          size: {},
-        },
-        photo2: {
-          keyName: 'photo2',
-          setFile: {},
-        },
       }
     },
     mounted() {
-      this.photo1.setFile = [
-        {
-          type: 'image',
-          id: 55,
-          url: 'http://static.lejias.cn/lejia8e9013abd8af58047660bc8616f775a8.jpg',
-        },
-        {
-          type: 'image',
-          id: 44,
-          url: 'http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg',
-        },
-      ]
-    },
-    activated() {
+      this.getDepartList();
     },
     watch: {},
     computed: {
@@ -239,8 +258,54 @@
       },
     },
     methods: {
-      getImgIds(val) {
-        console.log(val);
+      //更改params
+      handleChangeParams(val) {
+        this.staff_params = {
+          is_on_job: '',
+          is_enable: ''
+        };
+        if (val === 1 || val === 2) {
+          this.staff_params.is_on_job = val - 1;
+        } else if(val === 3 || val === 4 ){
+          this.staff_params.is_enable = val - 3;
+        }
+      },
+      //取消添加部门
+      handleCancelAddDepart() {
+       for (var key in this.departForm) {
+         this.departForm[key] = '';
+       }
+       this.depart_visible = false;
+      },
+      //确定添加部门
+      handleSubmitAddDepart() {
+        this.$http.post(globalConfig.organ_server + 'organization/organization',this.departForm).then(res => {
+          console.log(res);
+          if (res.code === '20010') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.getDepartList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '警告',
+              message: res.msg
+            })
+          }
+          this.handleCancelAddDepart();
+        })
+      },
+      handleGetDepart(val,name) {
+        this.chooseDepart = false;
+        if (val !== 'close') {
+          this.departForm.parent_id = val;
+          this.departForm.parent = name;
+        }
+      },
+      handleChangePage(page) {
+        this.params.page = page;
+        this.getDepartList();
       },
       // tab切换
       changeTabs(id) {
@@ -256,9 +321,15 @@
       },
       // 部门管理列表
       getDepartList() {
-        // this.$http.get(globalConfig.organ_server + 'organization/organization').then(res => {
-        //   console.log(res)
-        // })
+        this.$http.get(globalConfig.organ_server + 'organization/organization',this.params).then(res => {
+          if (res.code === '20000') {
+            this.departList = res.data.data;
+            this.departCount = res.data.count;
+          } else {
+            this.departList = [];
+            this.departCount = 0;
+          }
+        })
       },
       // 新增部门
       showAddModule(val) {
@@ -275,7 +346,7 @@
       // 部门管理
       showDepartManage(val) {
         this.departModule = true;
-        console.log(val);
+        this.departInfo = val;
       },
       // 高级搜索
       highSearch(val) {
@@ -325,10 +396,11 @@
         this.visibleStatus = !this.visibleStatus;
         this.$store.dispatch('route_animation');
       },
-      hiddenOrgan(val) {
+      hiddenOrgan(val,name) {
         this.organModule = false;
         if (val !== 'close') {
-          console.log(val);
+          this.departForm.leader_id = val;
+          this.departForm.leader = name;
         }
       }
     },

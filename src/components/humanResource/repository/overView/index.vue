@@ -27,6 +27,7 @@
         </el-table-column>
 
 
+
         <el-table-column
           key="totalCounts"
           align="center"
@@ -42,12 +43,12 @@
         </el-table-column>
 
         <el-table-column
-          key="borrowCounts"
+          key="borrowReceiveCounts"
           align="center"
-          prop="borrowCounts"
+          prop="borrowReceiveCounts"
           label="领/借数量">
           <template slot-scope="scope">
-            <a @click="borrow_table_visible = true">{{scope.row.borrowCounts}}</a>
+            <a @click="borrow_table_visible = true">{{scope.row.borrowReceiveCounts}}</a>
             <!--<div slot="reference" class="name-wrapper">-->
             <!--<el-tag size="medium">{{ scope.row.borrowCounts }}</el-tag>-->
             <!--</div>-->
@@ -285,10 +286,10 @@
         <div class="dialog_main borderNone">
           <el-form :model="in_repository_form" style="text-align: left" size="small" label-width="100px">
             <el-form-item label="物品">
-              <div class="items-center iconInput choose-goods" @click="choose_goods_table_visible = true" style="width: 320px">
+              <div class="items-center iconInput choose-goods" @click="initGoodsList" style="width: 320px">
                 <el-input v-model="in_repository_form.goods" placeholder="请选择物品" style="width: 300px">
                 </el-input>
-                <p  class="choose-goods-icon"></p>
+                <p class="choose-goods-icon"></p>
               </div>
               <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
                     @click="add_goods_form_visible = true">+</span>
@@ -319,9 +320,10 @@
               </el-input>
             </el-form-item>
             <el-form-item label="采购源">
-              <el-input v-model="in_repository_form.resource" placeholder="请选择采购源" style="width: 320px">
-              </el-input>
-              <span class="btn_add" @click="add_resource_visible = true">+</span>
+              <dropdown-list ref="categoryDropdown5" :url="`${this.url}eam/category`" title="必选" code="5" v-model="add_goods_form.resource"></dropdown-list>
+              <!--<el-input v-model="in_repository_form.resource" placeholder="请选择采购源" style="width: 320px">
+              </el-input>-->
+              <span class="btn_add" @click="addCategory(5)">+</span>
             </el-form-item>
 
             <el-form-item label="备注">
@@ -408,35 +410,26 @@
         </div>
         <div class="dialog_main borderNone">
           <el-form :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="分类">
-              <el-select v-model="add_goods_form.classify" placeholder="必选" style="width: 320px">
-                <el-option value="1" label="分类1"></el-option>
-                <el-option value="2" label="分类2"></el-option>
-              </el-select>
-              <span class="btn_add" @click="add_classify_visible = true">+</span>
+            <el-form-item label="分类" required>
+              <dropdown-list ref="categoryDropdown1" :url="`${this.url}eam/category`" title="必选" code="1" v-model="add_goods_form.classify"></dropdown-list>
+              <span class="btn_add" @click="addCategory(1)">+</span>
             </el-form-item>
-            <el-form-item label="品牌">
-              <el-select v-model="add_goods_form.brand" placeholder="必选" style="width: 320px">
-                <el-option value="1" label="品牌1"></el-option>
-                <el-option value="2" label="品牌2"></el-option>
-              </el-select>
-              <span class="btn_add" @click="add_brand_visible = true">+</span>
+            <el-form-item label="品牌" required>
+              <dropdown-list ref="categoryDropdown2" :url="`${this.url}eam/category`" title="必选" code="3" v-model="add_goods_form.brand"></dropdown-list>
+              <span class="btn_add" @click="addCategory(3)">+</span>
             </el-form-item>
 
-            <el-form-item label="名称">
+            <el-form-item label="名称" required>
               <el-input v-model="add_goods_form.name" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
 
-            <el-form-item label="单位">
-              <el-select v-model="add_goods_form.unit" placeholder="必选" style="width: 320px">
-                <el-option value="1" label="单位1"></el-option>
-                <el-option value="2" label="单位2"></el-option>
-              </el-select>
-              <span class="btn_add" @click="add_unit_visible = true">+</span>
+            <el-form-item label="单位" required>
+              <dropdown-list ref="categoryDropdown4" :url="`${this.url}eam/category`" title="必选" code="4" v-model="add_goods_form.unit"></dropdown-list>
+              <span class="btn_add" @click="addCategory(4)">+</span>
             </el-form-item>
 
-            <el-form-item label="预警数量">
+            <el-form-item label="预警数量" required>
               <el-input v-model="add_goods_form.counts" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
@@ -450,116 +443,40 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger">提交</el-button>
+          <el-button size="small" type="danger" @click="saveGoods">提交</el-button>
           <el-button size="small" type="info" @click="add_goods_form_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
-    <!--添加分类-->
+    <!--添加目录dialog-->
     <lj-dialog
-      :visible="add_classify_visible"
+      :visible="add_category_visible"
       :size="{width: 550 + 'px',height: 300 + 'px'}"
-      @close="add_classify_visible = false"
+      @close="add_category_visible = false"
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>添加分类</h3>
+          <h3>{{add_category_form_tip.title}}</h3>
         </div>
         <div class="dialog_main borderNone">
           <el-form :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="分类名称">
-              <el-input v-model="add_classify_form.classify" placeholder="必填" style="width: 320px">
+            <el-form-item :label="add_category_form_tip.label">
+              <el-input v-model="add_category_form.name" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
 
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger">保存</el-button>
-          <el-button size="small" type="info" @click="add_classify_visible = false">取消</el-button>
+          <el-button @click="saveCategory" size="small" type="danger">保存</el-button>
+          <el-button size="small" type="info" @click="add_category_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
 
-    <!--添加品牌-->
-    <lj-dialog
-      :visible="add_brand_visible"
-      :size="{width: 550 + 'px',height: 300 + 'px'}"
-      @close="add_brand_visible = false"
-    >
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>添加品牌</h3>
-        </div>
-        <div class="dialog_main borderNone">
-          <el-form :model="add_brand_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="品牌名称">
-              <el-input v-model="add_brand_form.name" placeholder="必填" style="width: 320px">
-              </el-input>
-            </el-form-item>
 
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button size="small" type="danger">保存</el-button>
-          <el-button size="small" type="info" @click="add_brand_visible = false">取消</el-button>
-        </div>
-      </div>
-    </lj-dialog>
-
-    <!--添加单位-->
-    <lj-dialog
-      :visible="add_unit_visible"
-      :size="{width: 550 + 'px',height: 300 + 'px'}"
-      @close="add_unit_visible = false"
-    >
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>添加单位</h3>
-        </div>
-        <div class="dialog_main borderNone">
-          <el-form :model="add_unit_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="品牌名称">
-              <el-input v-model="add_unit_form.name" placeholder="必填" style="width: 320px">
-              </el-input>
-            </el-form-item>
-
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button size="small" type="danger">保存</el-button>
-          <el-button size="small" type="info" @click="add_unit_visible = false">取消</el-button>
-        </div>
-      </div>
-    </lj-dialog>
-
-    <!--添加采购源-->
-    <lj-dialog
-      :visible="add_resource_visible"
-      :size="{width: 550 + 'px',height: 300 + 'px'}"
-      @close="add_resource_visible = false"
-    >
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>添加采购源</h3>
-        </div>
-        <div class="dialog_main borderNone">
-          <el-form :model="add_resource_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="采购源">
-              <el-input v-model="add_resource_form.source" placeholder="请输入采购源" style="width: 320px">
-              </el-input>
-            </el-form-item>
-
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button size="small" type="danger">保存</el-button>
-          <el-button size="small" type="info" @click="add_resource_visible = false">取消</el-button>
-        </div>
-      </div>
-    </lj-dialog>
 
 
     <!--入库详情table-->
@@ -677,7 +594,9 @@
       </div>
     </lj-dialog>
 
-    <lj-dialog-img v-model="is_show_qr_code">
+
+    <!--</lj-dialog-img>-->
+    <lj-dialog-img :visible.sync="is_show_qr_code">
       <div class="qr-container">
         <div class="qr-code-large"></div>
         <div>201903191059</div>
@@ -685,12 +604,13 @@
 
     </lj-dialog-img>
 
-
   </div>
 </template>
 
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
+  //import DropdownList from '../../components/dropdown-list';
+  import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import LjDialogImg from '../components/lj-dialog-img';//用于显示二维码图片
 
 
@@ -699,11 +619,12 @@
     props: ['searchVal', 'in_repository_visible'],
     components: {
       LjDialog,
-      LjDialogImg
+      LjDialogImg,
+      DropdownList
     },
     data() {
       return {
-        url: globalConfig.organ_server,
+        url: globalConfig.humanResource_server,
         checkList: [],
 
         chooseRowIds: [],
@@ -800,28 +721,15 @@
           remark: '',//备注
         },
 
-        //添加分类
-        add_classify_visible: false,
-        add_classify_form: {
-          classify: '',//分类
+        //添加目录结构
+        add_category_visible: false,
+        add_category_form: {
+          name: '',
+          type: 1,
         },
-
-        //添加品牌
-        add_brand_visible: false,
-        add_brand_form: {
-          name: '',//品牌名称
-        },
-
-        //添加单位
-        add_unit_visible: false,
-        add_unit_form: {
-          name: '',//单位名称
-        },
-
-        //添加采购源
-        add_resource_visible: false,
-        add_resource_form: {
-          source: '',//采购源
+        add_category_form_tip: {
+          title: '添加分类',
+          label: "分类名称",
         },
 
 
@@ -854,7 +762,8 @@
       }
     },
     mounted() {
-      this.initData();
+      //this.initData();
+      this.getRepositoryList();
     },
     activated() {
     },
@@ -862,7 +771,7 @@
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
           this.params = val;
-          this.getRewardUpList();
+          this.getRepositoryList();
         },
         deep: true
       },
@@ -877,7 +786,140 @@
     },
     computed: {},
     methods: {
+      initGoodsList() {
+        this.choose_goods_table_visible = true;
+        let params = {type: 2};
+        this.$http.get(this.url + 'eam/category', params).then(res => {
+          if(res.code=='20000') {
+            for(let item of res.data.data) {
+              //console.log(item);
+              debugger
+              let obj = {
+                id: item.id,
+                name: item.name,
+                classify: item.parent.name,
+                /*totalCounts: parseInt(item.number) ,//总数量
+                stockCounts: parseInt(item.now_number) ,//库存数量
+                borrowReceiveCounts: `${parseInt(item.receive_number)}/${parseInt(item.borrow_number)}`,
+                repairCounts: parseInt(item.repair_number),
+                uselessCounts: parseInt(item.scrap_number),
+                status: parseInt(item.number)>parseInt(item.goods.warning_number)?'正常':'预警',*/
+              }
+              this.chooseGoodsData.push(obj)
+            }
 
+          }
+
+          this.counts = res.data.count;
+        })
+      },
+
+
+      saveGoods() {
+        let params = {
+          name:this.add_goods_form.name,
+          parent_id:this.add_goods_form.classify,
+          type:2,
+          brand_id:this.add_goods_form.brand,
+          unit_id: this.add_goods_form.unit,
+          warning_number: this.add_goods_form.counts,
+          remarks: this.add_goods_form.remark
+        };
+        this.$http.post(`${this.url}eam/category`,params).then(res=> {
+          debugger
+          if(res.code=='20010') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg,
+            });
+            this.add_goods_form_visible = false;
+            this.add_goods_form = {};
+          }else {
+            this.$LjNotify('error',{
+              title: '失败',
+              message: res.msg,
+            });
+          }
+          console.log(res);
+        });
+      },
+
+      //添加category
+      addCategory(index) {
+        this.add_category_visible = true;
+        switch (index) {
+          case 1:
+            this.add_category_form.type = 1;//
+            this.add_category_form_tip.title = '添加分类';
+            this.add_category_form_tip.label = '分类名称';
+            break;
+          case 3:
+            this.add_category_form.type = 3;//
+            this.add_category_form_tip.title = '添加品牌';
+            this.add_category_form_tip.label = '品牌名称';
+            break;
+          case 4:
+            this.add_category_form.type = 4;//
+            this.add_category_form_tip.title = '添加单位';
+            this.add_category_form_tip.label = '单位名称';
+            break;
+          case 5:
+            this.add_category_form.type = 5;//
+            this.add_category_form_tip.title = '添加采购源';
+            this.add_category_form_tip.label = '采购源';
+            break;
+
+        }
+      },
+
+      //保存( 分类-1 品牌-3 单位-4 采购源-5 )的目录
+      saveCategory() {
+        this.$http.post(this.url + 'eam/category',this.add_category_form).then(res=> {
+          if(res.code=='20010') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg,
+              //subMessage: res.msg,
+            });
+            this.add_category_visible = false;
+            this.$refs['categoryDropdown'+this.add_category_form.type].update();
+            this.add_category_form = {};
+          }else {
+            this.$LjNotify('error',{
+              title: '失败',
+              message: res.msg,
+              //subMessage: res.msg,
+            });
+          }
+        });
+      },
+
+
+      getRepositoryList() {
+        this.$http.get(this.url + 'eam/eam', this.params).then(res => {
+          //console.log(res)
+          //debugger
+          //this.tableData = res.data.data;
+          if(res.code=='20000') {
+            for(let item of res.data.data) {
+              //console.log(item);
+              let obj = {
+                id: item.id,
+                name: item.goods.name,
+                totalCounts: parseInt(item.number) || '',//总数量
+                stockCounts: parseInt(item.now_number) ,//库存数量
+                borrowReceiveCounts: `${parseInt(item.receive_number)}/${parseInt(item.borrow_number)}`,
+                repairCounts: parseInt(item.repair_number),
+                uselessCounts: parseInt(item.scrap_number),
+                status: parseInt(item.number)>parseInt(item.goods.warning_number)?'正常':'预警',
+              }
+              this.tableData.push(obj)
+            }
+          }
+
+          this.counts = res.data.count;
+        })
+      },
 
       handleChangeDate(id) {
 
@@ -889,14 +931,14 @@
 
       initData() {
         //库房总览表格
-        const nameArr = ['LG-显示器', 'BenQ-显示器', '美帝良心想-显示器', '苹果-显示器', '三星-显示器', '现代-显示器', '宏基-显示器', 'HP-显示器', '小米-显示器'];
+        /*const nameArr = ['LG-显示器', 'BenQ-显示器', '美帝良心想-显示器', '苹果-显示器', '三星-显示器', '现代-显示器', '宏基-显示器', 'HP-显示器', '小米-显示器'];
         for (let i = 0; i < nameArr.length; i++) {
           let obj = {
             id: i + 1,
             name: nameArr[i],
             totalCounts: 10 + i,
             stockCounts: 6 + i,
-            borrowCounts: 6,
+            borrowReceiveCounts: 6,
             repairCounts: '4',
             uselessCounts: '1',
             status: '预警',
@@ -904,7 +946,7 @@
           this.tableData.push(obj)
         }
         //console.log(this.tableData);
-        this.counts = 1000;
+        this.counts = 1000;*/
 
 
         //借/领用表格数据初始化
@@ -998,13 +1040,6 @@
 
 
       },
-
-      getRewardUpList() {
-        this.$http.get(this.url + 'overView/xxx', this.params).then(res => {
-          this.tableData = res.data.data;
-          this.counts = res.data.count;
-        })
-      },
       // 当前点击
       tableClickRow(row) {
         let ids = this.chooseRowIds;
@@ -1046,7 +1081,7 @@
       },
       handleCurrentChange(val) {
         this.params.page = val;
-        this.getRewardUpList();
+        this.getRepositoryList();
         console.log(`当前页: ${val}`);
       }
     },

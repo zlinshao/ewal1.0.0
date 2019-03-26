@@ -454,19 +454,26 @@
     >
       <div class="dialog_container borrow-receive-dialog">
         <div class="dialog_header">
+          {{form}}
           <span class="notify-size">物品图片</span>
         </div>
         <div class="dialog_main  borrow-receive-img-dialog">
-          <div class="repair-img-container">
-            <span>维修照片</span>
-            <div class="icons-img"></div>
-            <div class="icons-img"></div>
-            <div class="icons-add"></div>
+          <div class="repair-img-container" v-for="item in photo">
+            <span>{{item.title}}</span>
+            <Upload :file="item" @success="getImgIds"></Upload>
           </div>
-          <div class="scrap-img-container">
-            <span>报废照片</span>
-            <div class="icons-add"></div>
-          </div>
+          <!--<div class="repair-img-container">-->
+            <!--<span>维修照片</span>-->
+            <!--&lt;!&ndash;<div class="icons-img"></div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="icons-img"></div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="icons-add"></div>&ndash;&gt;-->
+            <!--<Upload :file="item" @success="getImgIds"></Upload>-->
+          <!--</div>-->
+          <!--<div class="scrap-img-container">-->
+            <!--<Upload :file="item" @success="getImgIds"></Upload>-->
+            <!--&lt;!&ndash;<span>报废照片</span>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="icons-add"></div>&ndash;&gt;-->
+          <!--</div>-->
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger">确定</el-button>
@@ -481,6 +488,7 @@
 
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
+  import Upload from '../../../common/upload.vue';
   import LjDialogImg from '../components/lj-dialog-img';//用于显示图片
 
 
@@ -489,7 +497,8 @@
     props: ['searchVal', 'in_repository_visible'],
     components: {
       LjDialog,
-      LjDialogImg
+      LjDialogImg,
+      Upload
     },
     data() {
       return {
@@ -506,7 +515,30 @@
           org_id: '',
           position_id: '',
         },
+        form:{
+          photo1: [],
+          photo2: [],
+        },
 
+        photo: [
+          {
+            title:'报备图片',
+            keyName: 'photo1',
+            setFile: [],
+            size: {
+              width:'60px',
+              height:'60px'
+            }
+          }, {
+            title:'维修图片',
+            keyName: 'photo2',
+            setFile: [],
+            size: {
+              width:'60px',
+              height:'60px'
+            }
+          }
+        ],
         /*
             *表单群组  begin
         */
@@ -572,7 +604,10 @@
     },
     computed: {},
     methods: {
-
+      getImgIds(val) {
+        this.form[val[0]] = val[1];
+        console.log(val);
+      },
       initData() {
         //借用领用表格
 

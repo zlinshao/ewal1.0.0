@@ -358,6 +358,22 @@ div.el-popover {
   background-color: transparent; }
 #theme_name .page .el-pagination .btn-next, #theme_name .page .el-pagination .btn-prev {
   background-color: transparent; }
+#theme_name #part_four .offer_container .el-input__inner, #theme_name #part_four .labour_contract .el-input__inner {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #999;
+  padding: 0;
+  position: relative;
+  top: -10px;
+  text-align: center;
+  color: black;
+  font-weight: bold; }
+#theme_name #part_four .labour_contract .el-input__inner {
+  text-align: left;
+  padding-left: 20px; }
+#theme_name #part_four .labour_contract .el-form-item__label {
+  color: black;
+  text-align: left; }
 
 #theme_name.theme1 .el-table tbody tr.current-row td {
   color: #CF2E33; }

@@ -1,0 +1,156 @@
+.flex {
+  display: flex;
+  display: -webkit-flex; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #747474;
+    border-radius: 4px; }
+
+#interview_dialog_list #lj_dialog #interview_form .dialog_header .header_right span, #interview_dialog_list #lj_dialog #interview_form_result .dialog_header .header_right span {
+  cursor: pointer !important; }
+#interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row {
+  width: 100%;
+  margin: 10px;
+  text-align: left; }
+  #interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row .interview_dialog_form_label, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row .interview_dialog_form_label {
+    display: inline-block;
+    color: #C8C8CC;
+    text-align: right;
+    width: 190px;
+    padding-right: 30px; }
+  #interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row > span, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row > span {
+    font-size: 14px;
+    padding: 0 50px;
+    color: #000000; }
+    #interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row > span.interview_dialog_form_checkbox, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row > span.interview_dialog_form_checkbox {
+      display: inline-block; }
+      #interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row > span.interview_dialog_form_checkbox .el-radio, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row > span.interview_dialog_form_checkbox .el-radio {
+        display: inline-block !important; }
+
+/*# sourceMappingURL=index.css.map */

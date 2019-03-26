@@ -19,6 +19,9 @@
           width: 85%;
           height: 90%;
           padding: 30px;
+          .content_header {
+            height: 30px;
+          }
         }
       }
       .paper_resume {
@@ -54,7 +57,7 @@
         .top_title {
           width: 100%;
           padding: 10px 100px;
-          border-bottom: 1px solid $color0C0;
+          //border-bottom: 1px solid $color0C0;
           > div {
             width: 50%;
             &:first-child {
@@ -70,6 +73,32 @@
                 color: $colorE33;
               }
             }
+          }
+        }
+        .content {
+          width: 80%;
+          height: 100%;
+          //padding: 50px;
+          margin: 0 auto;
+          .base_info,.edu_info,.work_info {
+            width: 100%;
+            border-bottom: 1px solid #999999;
+            padding-bottom: 30px;
+            > div {
+              &:first-child {
+                width: 10%;
+                padding-top: 50px;
+                line-height: 200px;
+                font-size: 24px;
+              }
+              &:last-child {
+                width: 90%;
+                padding-top: 40px;
+              }
+            }
+          }
+          .work_info {
+            border: none;
           }
         }
       }

@@ -1,5 +1,5 @@
 <template>
-  <div id="lj_dialog" class="lj_dialog" v-if="dialog_visible">
+  <div id="lj_dialog" ref="dialog_ref" class="lj_dialog" v-if="dialog_visible">
     <div class="flex-center" @click.self="handleCloseDialog">
       <div class="lj_container" :style="style[lj_size]" :class="{'show_upright': is_upright}">
         <slot></slot>
@@ -38,16 +38,29 @@
             width: 0,
             height: 0
           }
-        }
+        },
       }
     },
     mounted() {
+
     },
     activated() {
     },
     watch: {
       visible(val) {
         this.dialog_visible = val;
+        this.$store.dispatch('add_dialog_z_index');
+        this.$nextTick( () => {
+          if(this.$refs.dialog_ref) {
+            this.$refs.dialog_ref.style.zIndex = this.dialogZIndex;
+          }
+        })
+        /*`有一点小问题 在同一个dialog点击隐藏后继续点击显示 不会浮在最上层 */
+        /*if (val) {
+          this.$nextTick( () => {
+            this.$refs.dialog_ref.style.zIndex = this.dialogZIndex;
+          })
+        }*/
       },
       size: {
         handler(val) {
@@ -67,7 +80,11 @@
         deep: true
       }
     },
-    computed: {},
+    computed: {
+      dialogZIndex() {
+        return this.$store.state.app.dialogZIndex;
+      },
+    },
     methods: {
       handleCloseDialog() {
         this.dialog_visible = false;

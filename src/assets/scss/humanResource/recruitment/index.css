@@ -146,7 +146,14 @@
     z-index: 99;
     transition: all ease 1s; }
     #theme_name #recruitment > div .nav_container .nav_info {
-      width: 100%; }
+      width: 100%;
+      height: 100%;
+      padding: 30px; }
+      #theme_name #recruitment > div .nav_container .nav_info > div {
+        width: 25%;
+        height: 100%; }
+        #theme_name #recruitment > div .nav_container .nav_info > div:not(:first-child) {
+          margin-left: 30px; }
     #theme_name #recruitment > div .nav_container .show_btn, #theme_name #recruitment > div .nav_container .hide_btn {
       width: 30px;
       height: 80px;
@@ -166,6 +173,23 @@
       border-radius: 0 6px 6px 0; }
     #theme_name #recruitment > div .nav_container .btn_hide {
       display: none; }
+    #theme_name #recruitment > div .nav_container .time_type {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%); }
+      #theme_name #recruitment > div .nav_container .time_type > div {
+        width: 80px;
+        height: 40px;
+        background-color: #C0C0C0;
+        border-radius: 5px 0 0 5px;
+        margin-bottom: 10px;
+        text-align: center;
+        cursor: pointer;
+        line-height: 40px; }
+      #theme_name #recruitment > div .nav_container .time_type .current_choose_time {
+        background-color: #CF2E33;
+        color: white; }
   #theme_name #recruitment > div .hide_nav_container {
     right: -1920px; }
 
