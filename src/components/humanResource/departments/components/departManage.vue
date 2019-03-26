@@ -46,7 +46,268 @@
         </div>
       </div>
     </lj-dialog>
-    <!--新增员工/新建职位=======================================================================================-->
+
+    <!--新增员工-->
+    <lj-dialog
+      :visible="add_newStaff_visible"
+      :size="{width: 1200 + 'px',height: 800 + 'PX'}"
+      @close="handleCancelAddStaff"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增员工</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-tabs v-model="activeName">
+            <el-tab-pane label="基本信息" name="first">
+              <el-form label-width="120px" size="small" style="width: 100%">
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="姓名">
+                      <el-input v-model="interview_info_detail.name" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="性别">
+                      <div class="changeChoose" style="margin-top: 8px">
+                        <el-radio-group v-model="interview_info_detail.gender">
+                          <el-radio :label="1">男</el-radio>
+                          <el-radio :label="2">女</el-radio>
+                        </el-radio-group>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="手机号">
+                      <el-input v-model="interview_info_detail.phone" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="身份证号">
+                      <el-input v-model="interview_info_detail.ID_number" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="生日">
+                      <el-date-picker placeholder="请选择" v-model="interview_info_detail.birthday" type="date" value-format="yyyy-MM-dd">
+                      </el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="婚姻状况">
+                      <div class="changeChoose" style="margin-top: 8px">
+                        <el-radio-group v-model="interview_info_detail.married_status" placeholder="请选择">
+                          <el-radio :label="1">已婚</el-radio>
+                          <el-radio :label="2">未婚</el-radio>
+                        </el-radio-group>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="16">
+                    <el-form-item label="家庭住址">
+                      <el-input v-model="interview_info_detail.birthplace" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="部门">
+                      <el-input placeholder="请选择" readonly @focus="" v-model="interview_info_detail.org.name"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="岗位">
+                      <el-input readonly @focus="" v-model="interview_info_detail.position.name" placeholder="请选择"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="银行卡号">
+                      <el-input v-model="interview_info_detail.bank_num" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="开户行">
+                      <el-input v-model="interview_info_detail.account_bank" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="支行">
+                      <el-input v-model="interview_info_detail.branch_bank" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="开户名">
+                      <el-input v-model="interview_info_detail.account_name" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="入职时间">
+                      <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.registion_date" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="薪资">
+                      <el-input v-model="interview_info_detail.real_salary" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="推荐人">
+                      <el-input readonly v-model="interview_info_detail.recommender_name" @focus=""></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="入职 等级">
+                      <el-select v-model="interview_info_detail.level" placeholder="请选择">
+                        <el-option label="实习" :value="0"></el-option>
+                        <el-option label="正式" :value="1"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="入职途径">
+                      <el-input v-model="interview_info_detail.platform" readonly></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="社保卡号">
+                      <el-input v-model="interview_info_detail.society_number" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="紧急联系人/号码">
+                      <el-input v-model="interview_info_detail.emergency_call" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="支行行号">
+                      <el-input v-model="interview_info_detail.branch_bank_code" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="银行卡">
+
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="学籍报告">
+
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="原单位离职证明">
+
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="学历信息" name="second">
+              <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.education_history.length > 0">
+                <div v-for="item in interview_info_detail.education_history" :key="item.id">
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="起始时间:">
+                        <span>{{ item.start_time }} ~ {{ item.end_time }}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="学校名称:">
+                        <el-input v-model="item.school" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="专业:">
+                        <el-input v-model="item.major"  placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="学历:">
+                        <el-select v-model="item.education" placeholder="请选择">
+                          <el-option :value="1" label="高中及以上"></el-option>
+                          <el-option :value="2" label="大专及以上"></el-option>
+                          <el-option :value="3" label="本科及以上"></el-option>
+                          <el-option :value="4" label="不限"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="学习形式:">
+                        <el-select v-model="item.learn_type" placeholder="请选择">
+                          <el-option :value="1">全日制</el-option>
+                          <el-option :value="2">其他</el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </div>
+              </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="工作履历" name="third">
+              <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.work_history.length > 0">
+                <div v-for="item in interview_info_detail.work_history" :key="item.id">
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="起始时间:">
+                        <span>{{ item.start_time }} ~ {{ item.end_time }}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="岗位:">
+                        <span>{{item.position}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="工作单位:">
+                        <span>{{ item.work_place }}</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="薪资:">
+                        <span>{{ item.salary }}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="证明人:">
+                        <span>{{ item.witness }}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="证明人电话:">
+                        <span>{{item.witness_phone }}</span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </div>
+              </el-form>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="mini">提交</el-button>
+          <el-button type="info" size="mini" @click="handleCancelAddStaff">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--新建职位=======================================================================================-->
     <lj-dialog :visible="addStaffVisible" :size="staff_size" @close="addStaffVisible = false">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
@@ -321,6 +582,60 @@
     components: {ljDialog},
     data() {
       return {
+        //新增员工
+        add_newStaff_visible: false,
+        activeName: 'first',
+        interview_info_detail: {
+          name: '',
+          gender: '',
+          phone: '',
+          ID_number: '',
+          birthday: '',
+          married_status: '',
+          birthplace: '',
+          org: {
+            id: '',
+            name: ''
+          },
+          position: {
+            id: '',
+            name: ''
+          },
+          bank_num: '',
+          account_bank: '',
+          branch_bank: '',
+          account_name: '',
+          registion_date: '',
+          real_salary: '',
+          recommender_name: '',
+          level: '',
+          platform: '',
+          society_number: '',
+          emergency_call: '',
+          branch_bank_code: '',
+          education_history: [
+            {
+              start_time: '',
+              end_time: '',
+              school: '',
+              major: '',
+              eduction: '',
+              learn_type: '',
+            }
+          ],
+          work_history: [
+            {
+              work_place: '',
+              start_time: '',
+              end_time: '',
+              position: '',
+              salary: '',
+              witness: '',
+              witness_phone: ''
+            }
+          ]
+        },
+
         departInfo: '',
         staffParams: {
           search: '',
@@ -557,6 +872,9 @@
       }
     },
     methods: {
+      handleCancelAddStaff() {
+
+      },
       //获取职位礼拜
       getPositionList() {
         this.$http.get('organization/duty',this.staffParams).then(res => {
@@ -607,6 +925,7 @@
       },
       // 权限/禁用/修改/离职
       operateModule(val) {
+        console.log(val);
         switch (val) {
           case 'power'://权限
             this.powerVisible = true;
@@ -622,7 +941,7 @@
             this.leaveVisible = true;
             break;
           case 'staff'://新增 员工
-            this.addStaffVisible = true;
+            this.add_newStaff_visible = true;
             break;
           case 'position'://岗位管理
             this.positionVisible = true;

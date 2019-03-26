@@ -12,11 +12,9 @@
         <el-table-column label="姓名" prop="name"></el-table-column>
         <el-table-column label="部门" prop="org[0].name"></el-table-column>
         <el-table-column label="面貌" prop=""></el-table-column>
-        <el-table-column label="民族" prop=""></el-table-column>
         <el-table-column label="出生年月" prop=""></el-table-column>
         <el-table-column label="身份证号" prop=""></el-table-column>
         <el-table-column label="城市" prop=""></el-table-column>
-        <el-table-column label="户口性质" prop=""></el-table-column>
         <el-table-column label="婚育情况" prop=""></el-table-column>
         <el-table-column label="家庭住址" prop=""></el-table-column>
         <el-table-column label="联系方式" prop=""></el-table-column>
@@ -46,6 +44,7 @@
         </div>
       </footer>
     </div>
+
     <StaffFiles :module="filesVisible" @close="filesVisible = false"></StaffFiles>
   </div>
 </template>
