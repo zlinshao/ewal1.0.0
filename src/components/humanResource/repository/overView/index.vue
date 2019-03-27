@@ -346,7 +346,7 @@
       :size="{width: 900 + 'px',height: 800 + 'px'}"
       @close="choose_goods_table_visible = false"
     >
-      <div class="dialog_container">
+      <div class="dialog_container choose-goods-table-detail">
         <div class="dialog_header">
           <h3>选择物品</h3>
           <div class="header_right">
@@ -358,16 +358,18 @@
           <el-table
             :data="chooseGoodsData"
             highlight-current-row
+            @selection-change="handleSelectionChange"
             :height="this.mainListHeight(300) + 'px'"
             :row-class-name="tableChooseRow"
             @cell-click="tableClickRow"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
             style="width: 100%">
-            <!--<el-table-column
+            <el-table-column
+              v-if="tableSettingData.goods.isShowMulti"
               type="selection"
               width="55">
-            </el-table-column>-->
+            </el-table-column>
             <el-table-column
               v-for="item in Object.keys(chooseGoodsShowData)" :key="item"
               align="center"
@@ -388,6 +390,13 @@
             </div>
           </footer>
         </div>
+
+        <div class="close-btn-container">
+          <el-button v-if="!tableSettingData.goods.isShowMulti" size="small" type="danger" @click="tableSettingData.goods.isShowMulti = true;">删除</el-button>
+          <el-button v-if="tableSettingData.goods.isShowMulti" size="small" type="primary" @click="deleteGoods">确认</el-button>
+          <el-button v-if="tableSettingData.goods.isShowMulti" size="small" type="info" @click="tableSettingData.goods.isShowMulti=false">取消</el-button>
+        </div>
+
 
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="chooseGoods">确定</el-button>
@@ -682,7 +691,9 @@
               limit: 8,
             },
             chooseRowIds: [],
-            currentSelection: {}//当前选择行
+            currentSelection: {},//当前选择行,
+            multiSelection:[],//多选行
+            isShowMulti:false,//是否显示多选
           },
         },
 
@@ -898,20 +909,48 @@
         }
       },
 
+      async deleteGoods() {
+        debugger
 
-      getGoodsList() {
+        let goodsList = this.tableSettingData['goods']?.multiSelection;
+        if(goodsList && goodsList.length>0) {
+          for (let item of goodsList) {
+            await this.$http.delete(`${this.url}eam/category/${item.id}`).then(res=> {
+              //debugger
+              //console.log(res);
+              if(res.code=='20040') {
+                this.$LjNotify('success',{
+                  title:'成功',
+                  message:'删除成功'
+                });
+              }
+            }).catch(err=> {
+              this.$LjNotify('error',{
+                title:'失败',
+                message:'删除失败'
+              });
+            });
+          }
+          this.tableSettingData.goods.isShowMulti=false
+          await this.getGoodsList();
+        }
+      },
+
+
+      async getGoodsList() {
+        debugger
         this.choose_goods_table_visible = true;
         this.currentTable = 'goods';
         this.chooseGoodsData = [];
         let params = {type: 2, ...this.tableSettingData[this.currentTable].params};
-        this.$http.get(this.url + 'eam/category', params).then(res => {
+        await this.$http.get(this.url + 'eam/category', params).then(res => {
           if (res.code == '20000') {
             for (let item of res.data.data) {
               //console.log(item);
               //debugger
               let obj = {
                 id: item.id,
-                name: item.name,
+                name: item.id+item.name,
                 classify: item?.parent?.name || '',
                 brand: item?.brand?.name || '',
                 unit: item?.unit?.name || '',
@@ -1163,6 +1202,20 @@
       tableDblClick(row) {
         console.log(row);
         this.in_repository_table_visible = true;
+      },
+      //table多选时触发的事件
+      handleSelectionChange(val) {
+        switch (this.currentTable) {
+          case 'repository':
+            console.log('re'+val);
+            break;
+          case 'goods':
+            this.tableSettingData[this.currentTable].multiSelection = val;
+            break;
+          default:
+            break;
+        }
+        console.log(val);
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {
