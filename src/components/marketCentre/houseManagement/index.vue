@@ -189,6 +189,7 @@
         components: { MarketMenuList ,searchHigh, HouseCard ,OverviewInfo,LjDialog ,HouseFilter},
         data() {
             return {
+              market_server: globalConfig.market_server,
               //设置
               set_price_visible: false,
 
@@ -209,9 +210,10 @@
               },
 
               house_source: [], //房源列表
+              house_count: 0,
               house_params: {
                 page: 1,
-                limit: 12
+                limit: 20
               },
 
               img_trams: 0,
@@ -385,6 +387,7 @@
             }
         },
         mounted() {
+          this.getHouseResource();
           this.house_source = [
             {
               id: 1,
@@ -564,8 +567,6 @@
           ];
           this.overview_visible = false;
         },
-        activated() {
-        },
         watch: {},
         computed: {},
         methods: {
@@ -579,7 +580,16 @@
           },
           //获取房源列表
           getHouseResource() {
-
+            this.$http.get(this.market_server + 'v1.0/market/house',this.house_params).then(res => {
+              console.log(res);
+              if (res.code === 200) {
+                this.house_source = res.data.data;
+                this.house_count = res.data.all_count;
+              } else {
+                this.house_source = [];
+                this.house_count = 0;
+              }
+            })
           },
           handleOpenCard(item) {
             this.lj_size = {

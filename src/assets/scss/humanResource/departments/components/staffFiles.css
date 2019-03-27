@@ -190,7 +190,10 @@
         width: 100%; }
         #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form .info {
           width: 100%;
-          padding: 0 20px; }
+          padding: 0 20px;
+          flex-wrap: wrap; }
+          #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form .info .item_margin {
+            margin-top: 15px; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow {
         width: 100%;
         height: 150px;

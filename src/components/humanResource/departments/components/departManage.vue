@@ -29,7 +29,7 @@
                 </div>
               </div>
               <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-                <span v-for="label in operateList" @click="operateModule(label.type)">{{label.label}}</span>
+                <span v-for="label in operateList" @click="operateModule(label.type,item)">{{label.label}}</span>
                 <b v-if="!operatePos"></b>
                 <i v-if="operatePos"></i>
               </h5>
@@ -70,8 +70,8 @@
                     <el-form-item label="性别">
                       <div class="changeChoose" style="margin-top: 8px">
                         <el-radio-group v-model="interview_info_detail.gender">
-                          <el-radio label="0">男</el-radio>
-                          <el-radio label="1">女</el-radio>
+                          <el-radio :label="0">男</el-radio>
+                          <el-radio :label="1">女</el-radio>
                         </el-radio-group>
                       </div>
                     </el-form-item>
@@ -227,7 +227,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
-                    <el-form-item label="政治面貌">
+                    <el-form-item label="学历">
                       <el-select v-model="interview_info_detail.education" placeholder="请输入">
                         <el-option :value="0" label="高中及以上"></el-option>
                         <el-option :value="1" label="大专及以上"></el-option>
@@ -380,7 +380,7 @@
     </lj-dialog>
 
     <!--新建职位=======================================================================================-->
-    <lj-dialog :visible="addStaffVisible" :size="{width: 500 + 'px',height: 400 + 'px'}" @close="addStaffVisible = false">
+    <lj-dialog :visible="addStaffVisible" :size="{width: 500 + 'px',height: 400 + 'px'}" @close="addStaffVisible = false;positionForm.name = ''">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>新建职位</h3>
@@ -401,7 +401,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleSubmitAddDuty">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="info" size="small" @click="addStaffVisible = false;positionForm.name = ''">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -562,22 +562,25 @@
           <h3>离职</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
-          <el-form :model="postForm" ref="postForm" label-width="120px" class="depart_visible">
-            <el-form-item label="岗位名称" required>
-              <el-input v-model="postForm.name"></el-input>
+          <el-form :model="outForm" ref="postForm" label-width="120px" class="depart_visible">
+            <el-form-item label="离职日期" required>
+              <el-date-picker type="date" value-format="yyyy-MM-dd"  v-model="outForm.is_on_job"></el-date-picker>
             </el-form-item>
-            <el-form-item label="所属部门" required>
-              <div class="items-center iconInput">
-                <el-input v-model="postForm.depart"></el-input>
-                <p class="icons organization"></p>
-              </div>
+            <el-form-item label="离职原因" required>
+              <el-select v-model="outForm.dismiss_reason.dismiss_type">
+                <el-option :value="1" label="主动离职"></el-option>
+                <el-option :value="2" label="旷工离职"></el-option>
+                <el-option :value="3" label="劝退"></el-option>
+                <el-option :value="4" label="开除"></el-option>
+                <el-option :value="5" label="其他"></el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item label="所属职位" required>
+            <el-form-item label="具体描述" required>
               <el-input
                 type="textarea"
                 :rows="2"
                 placeholder="请输入内容"
-                v-model="postForm.leader">
+                v-model="outForm.dismiss_reason.dismiss_mess">
               </el-input>
             </el-form-item>
             <div>
@@ -590,13 +593,33 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="handleSubmitOut">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancelOut">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
     <PositionOrgan :module="modules" @close="handleGetPosition"></PositionOrgan>
+
+    <!--禁用-->
+    <lj-dialog
+      :visible="disable_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="disable_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>禁用</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定禁用该员工吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleOkDisable">确定</el-button>
+          <el-button type="info" size="small" @click="disable_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -610,43 +633,52 @@
     components: {ljDialog,PositionOrgan},
     data() {
       return {
+        //离职
+        outForm: {
+          type: 'dimission',
+          is_on_job: '',
+          dismiss_reason: {
+            dismiss_mess: '',
+            dismiss_type: ''
+          }
+        },
         modules: false,
         positionStaffList: [],
         //新增员工
         add_newStaff_visible: false,
         activeName: 'first',
         interview_info_detail: {
-          graduation_time: '2019-01-01',
-          name: '冯宝宝',
-          gender: 1,
-          phone: '15123121232',
-          id_num: '340222199601014022',
-          birthday: '1996-01-01',
-          marital_status: 1,
-          fertility_status: 1,
-          home_addr: '江苏南京',
-          origin_addr: '江苏南京',
-          position_level: 1,
+          graduation_time: '',
+          name: '',
+          gender: '',
+          phone: '',
+          id_num: '',
+          birthday: '',
+          marital_status: '',
+          fertility_status: '',
+          home_addr: '',
+          origin_addr: '',
+          position_level: '',
           org_id: [],
           depart: '',
           position: '',
-          position_id: [57],
-          bank_num: '632131236213',
-          account_bank: '中国银行',
-          branch_bank: '新街口支行',
-          account_name: '冯宝宝',
-          enroll: '2019-03-01',
-          real_salary: '200000',
+          position_id: [],
+          bank_num: '',
+          account_bank: '',
+          branch_bank: '',
+          account_name: '',
+          enroll: '',
+          real_salary: '',
           recommender_name: '',
-          political_status: 1,
-          education: 1,
-          level: 1,
-          platform: '1',
-          society_number: '18031231',
-          emergency_call: '15212312311',
-          branch_bank_code: '12321313',
-          school: '安师大',
-          major: '计算机',
+          political_status: '',
+          education: '',
+          level: '',
+          platform: '',
+          society_number: '',
+          emergency_call: '',
+          branch_bank_code: '',
+          school: '',
+          major: '',
           education_history: [
             {
               start_end_time: '',
@@ -886,7 +918,14 @@
           depart: '',
           org_id: '',
           description: '',
-        }
+        },
+
+        //禁用
+        disable_visible: false,
+        currentStaff: '',
+
+        //修改员工
+        is_edit: false,
       }
     },
     mounted() {
@@ -921,6 +960,54 @@
       }
     },
     methods: {
+      handleCancelOut() {
+        this.outForm = {
+          type: 'dimission',
+          is_on_job: '',
+          dismiss_reason: {
+            dismiss_mess: '',
+            dismiss_type: ''
+          }
+        };
+        this.leaveVisible = false;
+      },
+      handleSubmitOut() {
+        this.$http.put(`staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
+          if (res.code === '20030') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelOut();
+            this.getStaffList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleOkDisable() {
+        this.$http.put(`staff/user/${this.currentStaff.id}`,{
+          type: 'enable'
+        }).then(res => {
+          console.log(res);
+          if (res.code === '20030') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.disable_visible = false;
+            this.getStaffList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
       handleGetPosition(id,name) {
         if (id !== 'close') {
           this.interview_info_detail.position = name;
@@ -929,8 +1016,39 @@
         this.modules = false;
       },
       handleSubmitAddStaff() {
+        if (this.is_edit) {
+          this.interview_info_detail.type = 'update';
+          this.$http.put(`staff/user/${this.currentStaff.id}`,this.interview_info_detail).then(res => {
+            if (res.code === '20030') {
+              this.$LjNotify('success',{
+                title: '成功',
+                message: res.msg
+              });
+              this.handleCancelAddStaff();
+              this.getStaffList();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
+          });
+          return false;
+        }
         this.$http.post('staff/user',this.interview_info_detail).then(res => {
-          console.log(res);
+          if (res.code === '20010') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelAddStaff();
+            this.getStaffList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
         })
       },
       handleSubmitAddDuty() {
@@ -1011,6 +1129,59 @@
         })
       },
       handleCancelAddStaff() {
+        this.is_edit = false;
+        this.interview_info_detail = {
+          graduation_time: '',
+          name: '',
+          gender: '',
+          phone: '',
+          id_num: '',
+          birthday: '',
+          marital_status: '',
+          fertility_status: '',
+          home_addr: '',
+          origin_addr: '',
+          position_level: '',
+          org_id: [],
+          depart: '',
+          position: '',
+          position_id: [],
+          bank_num: '',
+          account_bank: '',
+          branch_bank: '',
+          account_name: '',
+          enroll: '',
+          real_salary: '',
+          recommender_name: '',
+          political_status: '',
+          education: '',
+          level: '',
+          platform: '',
+          society_number: '',
+          emergency_call: '',
+          branch_bank_code: '',
+          school: '',
+          major: '',
+          education_history: [
+            {
+              start_end_time: '',
+              school: '',
+              major: '',
+              eduction: '',
+              learn_type: '',
+            }
+          ],
+          work_history: [
+            {
+              work_place: '',
+              start_end_time: '',
+              position: '',
+              salary: '',
+              witness: '',
+              witness_phone: ''
+            }
+          ]
+        };
         this.add_newStaff_visible = false;
       },
       //获取职位列表
@@ -1059,7 +1230,7 @@
         }
       },
       getPositionList() {
-        this.$http.get(globalConfig.organ_server + 'organization/position',{
+        this.$http.get('organization/position',{
           duty_id: this.currentDutyInfo.id,
           page: 1,
           limit: 999
@@ -1075,12 +1246,36 @@
       },
       // 权限/禁用/修改/离职
       operateModule(val,item) {
-        console.log(val);
-        this.currentDutyInfo = item;
+        if (val === 'revise') {
+          console.log(item);
+          this.currentStaff = item;
+          this.is_edit = true;
+          this.add_newStaff_visible = true;
+          for (var key in this.interview_info_detail) {
+            this.interview_info_detail[key] = item.staff[key] || '';
+          }
+          this.interview_info_detail.name = item.name;
+          this.interview_info_detail.position = item.position[0].name;
+          this.interview_info_detail.position_id = [];
+          this.interview_info_detail.org_id = [];
+          this.interview_info_detail.position_id.push(item.position[0].id);
+          this.interview_info_detail.org_id.push(item.org[0].id);
+          this.interview_info_detail.depart = item.org[0].name;
+          this.interview_info_detail.work_history = item.staff.work_history || [];
+          this.interview_info_detail.education_history = item.staff.education_history || [];
+          this.interview_info_detail.phone = item.phone;
+          this.interview_info_detail.gender = item.gender;
+        }
+        if (val === 'disabled') {
+          this.currentStaff = item;
+          console.log(item);
+        } else {
+          this.currentDutyInfo = item;
+        }
         switch (val) {
           case 'power'://权限
             this.powerVisible = true;
-            this.$http.get(globalConfig.organ_server + 'organization/permission', {
+            this.$http.get('organization/permission', {
               system_id: 22,
               limit: 999,
               page: 1,
@@ -1089,6 +1284,7 @@
             });
             break;
           case 'leave'://离职
+            this.currentStaff = item;
             this.leaveVisible = true;
             break;
           case 'staff'://新增 员工
@@ -1111,6 +1307,9 @@
             break;
           case 'person'://新增 部门
             this.addPostVisible = true;
+            break;
+          case 'disabled': // 禁用
+            this.disable_visible = true;
             break;
         }
         switch (val) {
