@@ -797,7 +797,8 @@
               let obj = {
                 id: item.id,
                 name: item.name,
-                classify: item.parent.name,
+                //classify: item.parent.name,
+                classify: item?.parent?.name||'一个测试数据',
                 /*totalCounts: parseInt(item.number) ,//总数量
                 stockCounts: parseInt(item.now_number) ,//库存数量
                 borrowReceiveCounts: `${parseInt(item.receive_number)}/${parseInt(item.borrow_number)}`,
