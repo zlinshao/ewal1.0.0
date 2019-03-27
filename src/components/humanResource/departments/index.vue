@@ -399,7 +399,7 @@
       hiddenOrgan(val,name) {
         this.organModule = false;
         if (val !== 'close') {
-          this.departForm.leader_id = val;
+          this.departForm.leader_id = val[0];
           this.departForm.leader = name;
         }
       }

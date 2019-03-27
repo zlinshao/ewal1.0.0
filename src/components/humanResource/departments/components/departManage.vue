@@ -627,7 +627,7 @@
           home_addr: '江苏南京',
           origin_addr: '江苏南京',
           position_level: 1,
-          org_id: [317],
+          org_id: [],
           depart: '',
           position: '',
           position_id: [57],
