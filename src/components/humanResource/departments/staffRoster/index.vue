@@ -11,10 +11,8 @@
         style="width: 100%">
         <el-table-column label="姓名" prop="name" align="center"></el-table-column>
         <el-table-column label="部门" prop="org[0].name" align="center"></el-table-column>
-        <!--<el-table-column label="面貌" prop="political_status" align="center"></el-table-column>-->
         <el-table-column label="出生年月" prop="staff.birthday" align="center"></el-table-column>
         <el-table-column label="身份证号" prop="staff.id_num" align="center"></el-table-column>
-        <!--<el-table-column label="城市" prop="" align="center"></el-table-column>-->
         <el-table-column label="婚育情况" prop="staff.marital_status" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.staff.marital_status === 1 ? '未婚' :  '已婚'}}</span>
@@ -49,7 +47,7 @@
       </footer>
     </div>
 
-    <StaffFiles :module="filesVisible" @close="filesVisible = false"></StaffFiles>
+    <StaffFiles :module="filesVisible" @close="filesVisible = false" :detail-info="staff_detail_info"></StaffFiles>
   </div>
 </template>
 
@@ -62,7 +60,6 @@
     components: {StaffFiles},
     data() {
       return {
-        url: globalConfig.organ_server,
         checkList: [],
         chooseRowIds: [],
         tableData: [],
@@ -75,6 +72,9 @@
           position_id: '',
         },
         filesVisible: false,
+
+        //员工详情
+        staff_detail_info: ''
       }
     },
     mounted() {
@@ -101,10 +101,26 @@
     computed: {},
     methods: {
       getStaffList() {
-        this.$http.get(this.url + 'staff/user', this.params).then(res => {
+        this.$http.get('staff/user', this.params).then(res => {
           console.log(res);
           this.tableData = res.data.data;
           this.counts = res.data.count;
+        })
+      },
+      //获取当前员工详情
+      getStaffDetail(id) {
+        this.$http.get(`staff/user/${id}`).then(res => {
+          if (res.code === '20020') {
+            this.staff_detail_info = res.data;
+            this.filesVisible = true;
+          } else {
+            this.staff_detail_info = '';
+            this.$LjNotify('warning',{
+              title: '警告',
+              message: '获取员工详情失败'
+            });
+            return false;
+          }
         })
       },
       // 当前点击
@@ -112,7 +128,8 @@
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
-        this.filesVisible = true;
+
+        this.getStaffDetail(row.id);
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {
