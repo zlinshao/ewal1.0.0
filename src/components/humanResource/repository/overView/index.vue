@@ -381,10 +381,10 @@
             <div class="page">
               <el-pagination
                 @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="params.page"
-                :page-size="params.limit"
-                :total="counts"
+                @current-change="goodsHandleCurrentChange"
+                :current-page="goodsParams.page"
+                :page-size="goodsParams.limit"
+                :total="goodsCounts"
                 layout="total,jumper,prev,pager,next">
               </el-pagination>
             </div>
@@ -638,6 +638,15 @@
           position_id: '',
         },
 
+        goodsParams: {
+          search: '',
+          page: 1,
+          limit: 8,
+          //org_id: '',
+          //position_id: '',
+        },
+        goodsCounts:0,
+
         /*
             *表单群组  begin
         */
@@ -788,7 +797,8 @@
     methods: {
       initGoodsList() {
         this.choose_goods_table_visible = true;
-        let params = {type: 2};
+        this.chooseGoodsData = [];
+        let params = {type: 2,...this.goodsParams};
         debugger
         this.$http.get(this.url + 'eam/category', params).then(res => {
           if(res.code=='20000') {
@@ -798,8 +808,11 @@
               let obj = {
                 id: item.id,
                 name: item.name,
-                //classify: item.parent.name,
+                //classify: item.parent.name,,
                 classify: item?.parent?.name||'',
+                brand: item?.brand?.name||'',
+                unit: item?.unit?.name||'',
+                counts:item?.warning_number
                 /*totalCounts: parseInt(item.number) ,//总数量
                 stockCounts: parseInt(item.now_number) ,//库存数量
                 borrowReceiveCounts: `${parseInt(item.receive_number)}/${parseInt(item.borrow_number)}`,
@@ -809,10 +822,8 @@
               }
               this.chooseGoodsData.push(obj)
             }
-
           }
-
-          this.counts = res.data.count;
+          this.goodsCounts = res.data.count;
         })
       },
 
@@ -828,7 +839,7 @@
           remarks: this.add_goods_form.remark
         };
         this.$http.post(`${this.url}eam/category`,params).then(res=> {
-          debugger
+          //debugger
           if(res.code=='20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -898,11 +909,8 @@
 
 
       getRepositoryList() {
-        debugger
         this.$http.get(this.url + 'eam/eam', this.params).then(res => {
-          //console.log(res)
           //debugger
-          //this.tableData = res.data.data;
           if(res.code=='20000') {
             for(let item of res.data.data) {
               //console.log(item);
@@ -1085,6 +1093,11 @@
       handleCurrentChange(val) {
         this.params.page = val;
         this.getRepositoryList();
+        console.log(`当前页: ${val}`);
+      },
+      goodsHandleCurrentChange(val) {
+        this.goodsParams.page = val;
+        this.initGoodsList();
         console.log(`当前页: ${val}`);
       }
     },
