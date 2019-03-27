@@ -789,16 +789,17 @@
       initGoodsList() {
         this.choose_goods_table_visible = true;
         let params = {type: 2};
+        debugger
         this.$http.get(this.url + 'eam/category', params).then(res => {
           if(res.code=='20000') {
             for(let item of res.data.data) {
               //console.log(item);
-              debugger
+              //debugger
               let obj = {
                 id: item.id,
                 name: item.name,
                 //classify: item.parent.name,
-                classify: item?.parent?.name||'一个测试数据',
+                classify: item?.parent?.name||'',
                 /*totalCounts: parseInt(item.number) ,//总数量
                 stockCounts: parseInt(item.now_number) ,//库存数量
                 borrowReceiveCounts: `${parseInt(item.receive_number)}/${parseInt(item.borrow_number)}`,
@@ -897,6 +898,7 @@
 
 
       getRepositoryList() {
+        debugger
         this.$http.get(this.url + 'eam/eam', this.params).then(res => {
           //console.log(res)
           //debugger
