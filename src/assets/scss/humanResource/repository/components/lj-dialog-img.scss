@@ -2,6 +2,11 @@
 
 #theme_name {
   #lj-dialog-img {
+    position: fixed;
+    //top: 81px;
+    bottom: 0;
+    left: 0;
+    right: 0;
     .flex-center {
       position: fixed;
       top: 81px;
