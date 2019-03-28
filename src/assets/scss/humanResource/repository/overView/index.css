@@ -132,10 +132,10 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name.theme1 #overView .header_right {
+#theme_name #overView .header_right {
   display: flex;
   flex-direction: row-reverse; }
-  #theme_name.theme1 #overView .header_right .icon-add {
+  #theme_name #overView .header_right .icon-add {
     width: 30px;
     height: 30px;
     display: inline-block;
@@ -145,13 +145,13 @@
     justify-content: center;
     cursor: pointer;
     background-color: #CF2E33; }
-    #theme_name.theme1 #overView .header_right .icon-add b {
+    #theme_name #overView .header_right .icon-add b {
       color: #FFFFFF;
       font-size: 30px;
       margin-bottom: 6px; }
-#theme_name.theme1 #overView .mainListTable a {
+#theme_name #overView .mainListTable a {
   cursor: pointer; }
-#theme_name.theme1 #overView footer.common-page {
+#theme_name #overView footer.common-page {
   height: 100px;
   width: 100%;
   position: fixed;
@@ -159,7 +159,7 @@
   right: 0;
   bottom: 100px;
   z-index: 6; }
-  #theme_name.theme1 #overView footer.common-page .develop {
+  #theme_name #overView footer.common-page .develop {
     position: absolute;
     top: -30px;
     width: 80px;
@@ -168,28 +168,32 @@
     opacity: 1;
     border-radius: 10px 10px 0 0;
     background-color: #F2F2F2; }
-#theme_name.theme1 #overView .qr-code {
+#theme_name #overView .qr-code {
   width: 30px;
   height: 30px;
   margin-left: 27px;
   cursor: pointer; }
-#theme_name.theme1 #overView .dialog_container .choose-goods .choose-goods-icon {
+#theme_name #overView .dialog_container .choose-goods .choose-goods-icon {
   cursor: pointer;
   width: 20px;
   height: 16px; }
-#theme_name.theme1 #overView .qr-container {
+#theme_name #overView .dialog_container.choose-goods-table-detail .close-btn-container {
+  position: absolute;
+  left: 40px;
+  bottom: 220px; }
+#theme_name #overView .qr-container {
   background-color: #fff;
   padding: 15px; }
-  #theme_name.theme1 #overView .qr-container .qr-code-large {
+  #theme_name #overView .qr-container .qr-code-large {
     width: 300px;
     height: 300px; }
-  #theme_name.theme1 #overView .qr-container > :last-child {
+  #theme_name #overView .qr-container > :last-child {
     padding: 15px; }
-#theme_name.theme1 #overView .repository-overview .lj-header-search .el-icon-search {
+#theme_name #overView .repository-overview .lj-header-search .el-icon-search {
   position: absolute;
   top: 7px;
   right: 195px; }
-#theme_name.theme1 #overView .repository-overview .lj-header-search input {
+#theme_name #overView .repository-overview .lj-header-search input {
   border: 1px solid #ccc;
   border-radius: 20px;
   width: 220px;

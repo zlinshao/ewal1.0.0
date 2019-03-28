@@ -1,0 +1,125 @@
+@import "../../../../common.scss";
+#theme_name {
+  #leJiaStars{
+    .star_info {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      .star_info_left {
+        width: 200px;
+        height: 100%;
+        margin-left: 200px;
+        position: relative;
+
+        .star_info_avatar {
+          width: 140px;
+          height: 140px;
+          border-radius: 50%;
+          position: absolute;
+          top: 40%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          img{
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+          }
+
+        }
+
+        .star_info_title {
+          width: 38px;
+          height: 110px;
+          position: absolute;
+          z-index: 10;
+          top: 27%;
+          left: 30%;
+          transform: translate(-50%, -50%);
+
+          span {
+            font-family: jingDianXingShu;
+            font-size: 16px;
+            color: #ffffff
+          }
+        }
+
+        .star_info_name {
+          width: 38px;
+          height: 110px;
+          position: absolute;
+          z-index: 10;
+          top: 56%;
+          left: 54%;
+          transform: translate(-50%, -50%);
+
+          span {
+            font-family: jingDianXingShu;
+            font-size: 16px;
+          }
+        }
+
+        .star_info_department {
+          width: 38px;
+          height: 110px;
+          position: absolute;
+          z-index: 10;
+          top: 61%;
+          left: 73%;
+          transform: translate(-50%, -50%);
+
+          span {
+            font-family: jingDianXingShu;
+            font-size: 16px;
+          }
+        }
+
+      }
+
+      .star_info_right {
+        width: 1200px;
+        height: 100%;
+        color: #ffffff;
+        margin-left: 200px;
+        .main_info {
+          width: 100%;
+          height: 600px;
+          padding-right: 200px;
+          h5{
+            width: 100%;
+            text-align: right;
+            cursor: pointer;
+            span{
+              display:block ;
+              width: 20px;
+              height: 20px;
+              margin-right: 4px;
+            }
+          }
+
+
+          h3 {
+            margin-bottom: 30px;
+          }
+
+          p {
+            line-height: 27px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            text-align: justify;
+          }
+
+          > div {
+            img {
+              display: block;
+              width: 480px;
+              height: 220px;
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+}

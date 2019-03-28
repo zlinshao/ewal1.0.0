@@ -1,0 +1,298 @@
+@import "../../../common.scss";
+
+#theme_name {
+  #leJiaHumanity {
+    .mainList {
+      width: 100%;
+      height: 100%;
+      .star_info {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        .star_info_left {
+          width: 200px;
+          height: 100%;
+          margin-left: 200px;
+          position: relative;
+
+          .star_info_avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            img{
+              width: 140px;
+              height: 140px;
+              border-radius: 50%;
+            }
+
+          }
+
+          .star_info_title {
+            width: 38px;
+            height: 110px;
+            position: absolute;
+            z-index: 10;
+            top: 27%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+
+            span {
+              font-family: jingDianXingShu;
+              font-size: 16px;
+              color: #ffffff
+            }
+          }
+
+          .star_info_name {
+            width: 38px;
+            height: 110px;
+            position: absolute;
+            z-index: 10;
+            top: 56%;
+            left: 54%;
+            transform: translate(-50%, -50%);
+
+            span {
+              font-family: jingDianXingShu;
+              font-size: 16px;
+            }
+          }
+
+          .star_info_department {
+            width: 38px;
+            height: 110px;
+            position: absolute;
+            z-index: 10;
+            top: 61%;
+            left: 73%;
+            transform: translate(-50%, -50%);
+
+            span {
+              font-family: jingDianXingShu;
+              font-size: 16px;
+            }
+          }
+
+        }
+
+        .star_info_right {
+          width: 1200px;
+          height: 100%;
+          color: #ffffff;
+          margin-left: 200px;
+          .main_info {
+            width: 100%;
+            height: 600px;
+            padding-right: 200px;
+            h5{
+              width: 100%;
+              text-align: right;
+              cursor: pointer;
+              span{
+                display:block ;
+                width: 20px;
+                height: 20px;
+                margin-right: 4px;
+              }
+            }
+
+
+            h3 {
+              margin-bottom: 30px;
+            }
+
+            p {
+              line-height: 27px;
+              margin-top: 30px;
+              margin-bottom: 30px;
+              text-align: justify;
+            }
+
+            > div {
+              img {
+                display: block;
+                width: 480px;
+                height: 220px;
+              }
+            }
+          }
+        }
+
+      }
+
+      .staff_info {
+        width: 100%;
+        height: 100%;
+        padding-top: 80px;
+
+        .staff_list_top {
+          width: 324px;
+          height: 98px;
+          margin: 0 auto;
+          text-align: center;
+
+          span {
+            color: #ffffff;
+            font-family: jingDianXingShu;
+            line-height: 98px;
+            font-size: 30px;
+            letter-spacing: 2px;
+          }
+        }
+
+        .staff_list_info {
+          width: 100%;
+          padding-left: 200px;
+          padding-right: 200px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+
+          .staff_box{
+            width: 25%;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            >p{
+              width: 314px;
+              text-align: center;
+              span{
+                margin-right:10px;
+              }
+            }
+
+            >div {
+              width: 314px;
+              height: 377px;
+              cursor: pointer;
+              position: relative;
+              .img-modal{
+                width: 216px;
+                height: 309px;
+                background: rgba(0, 0, 0, 0.6);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+                span{
+                  display: block;
+                  width: 76px;
+                  height: 76px;
+                  border-radius: 50%;
+                }
+
+              }
+              img {
+                width: 216px;
+                height: 309px;
+              }
+
+            }
+          }
+
+
+        }
+
+      }
+
+      .birthday_info {
+        width: 100%;
+        height: 100%;
+        padding-left: 200px;
+        padding-right: 200px;
+        .today_birthday {
+          width: 100%;
+          .today_birthday_list {
+            width: 100%;
+            padding-top: 50px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            .birthday_box{
+              width:20%;
+              height: auto;
+              .birthday_box_info{
+                width: 200px;
+                >img{
+                  $myHeight: 250px;
+                  $genHaoSan: 1.73205080;
+                  width: calc(($myHeight*$genHaoSan)/2);
+                  height: $myHeight;
+                  clip-path: polygon(0 25%, 50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%);
+                }
+                >div{
+                  margin-top: 10px;
+                  span{
+                    font-family: jingDianXingShu;
+                    font-size: 14px;
+                  }
+                }
+              }
+
+
+            }
+          };
+
+        }
+
+      }
+
+
+    }
+
+    .dialog_header{
+      .write_wishes{
+        display: block;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+      }
+      span{
+        color:#CF2E33;
+        font-size: 14px;
+        margin-left: 10px;
+      }
+    }
+    .dialog_main{
+      .wishes-lists{
+        padding: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        >img{
+          width: 50px;
+          height:50px;
+        }
+        >div{
+          text-align: left;
+          margin-left: 20px;
+          color:#202020;
+          h3{
+            font-size: 18px;
+          }
+          p{
+            line-height: 26px;
+          }
+        }
+      }
+    }
+    .form_item_container{
+      align-items: flex-start;
+      .item_content{
+        width: 100%;
+      }
+    }
+
+  }
+}

@@ -1,0 +1,47 @@
+@import "../common.scss";
+
+#theme_name {
+  #leJiaCollege {
+    > div {
+      .leJiaCollege-menu {
+        padding-right: 230px;
+        padding-left: 230px;
+        padding-top: 300px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        .leJiaCollege-menu-info {
+          width: 14.28%;
+          height: auto;
+
+          >div{
+            width: 100px;
+            height: 300px;
+            cursor: pointer;
+
+            span{
+              font-family: jingDianXingShu;
+
+            }
+            span:nth-child(1){
+              color:#D2D2D2;
+              font-size: 12px;
+              margin-right: 2px;
+            }
+            span:nth-child(2){
+              color:#686874;
+              font-size:24px;
+
+
+            }
+          }
+
+
+
+        }
+      }
+    }
+
+  }
+}
