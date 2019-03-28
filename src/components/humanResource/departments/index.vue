@@ -194,7 +194,8 @@
         value: '',
       }
     },
-    mounted() {},
+    mounted() {
+    },
     watch: {},
     computed: {
       routeAnimation() {
@@ -288,7 +289,7 @@
         this.visibleStatus = !this.visibleStatus;
         this.$store.dispatch('route_animation');
       },
-      hiddenOrgan(val) {
+      hiddenOrgan(ids, names, arr) {
         this.organModule = false;
         if (val !== 'close') {
           console.log(val);
