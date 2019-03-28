@@ -2,12 +2,15 @@
     <div id="hotNewsDetail">
         <div class="detail-header">
             <div class="detail-header-title">
-                <h1>热门导读详情</h1>
+                <h1>{{this.$route.query.type ===1 ? '热门导读详情':this.$route.query.type ===2 ? '乐伽新闻详情':this.$route.query.type ===3?'公告详情':''}}</h1>
+
             </div>
         </div>
         <!--:style="{'height': this.mainListHeight() + 'px'}"-->
         <div class="detail-main">
-            <h3 class="menu-title">热门导读推荐</h3>
+            <h3 class="menu-title">
+                {{this.$route.query.type ===1 ? '热门导读推荐':this.$route.query.type ===2 ? '热门新闻推荐':this.$route.query.type ===3?'其他公告':''}}
+            </h3>
             <div class="detail-content">
                 <div class="detail-content-left">
                     <div class="detail-left-list">
@@ -291,6 +294,7 @@
         components:{
             LjDialog
         },
+
         data(){
             return{
                 comment_visible:false,
@@ -385,11 +389,20 @@
                         desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
                         content:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内'
                     }
-                ]
+                ],
+
+                chooseTabType:'',
 
             }
         },
+        watch:{
+            '$route':'getPath'
+        },
         methods:{
+            //获取路由参数
+            getPath(){
+                console.log(this.$route.query.type);
+            },
             handleChange(){
 
             },
@@ -399,7 +412,12 @@
                 }else {
                     this.is_show_reply = false;
                 }
+            },
+
+            handleOkDel(){
+
             }
+
         }
 
     }

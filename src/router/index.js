@@ -23,7 +23,7 @@ const StaffRoster = () => import('@/components/humanResource/departments/staffRo
 const MilitaryOrganization = () => import('@/components/humanResource/militaryOrganization/index.vue'); //排班布阵
 const Reward = () => import('@/components/humanResource/reward/index.vue'); //赏罚分明
 const Repository = () => import('@/components/humanResource/repository/index.vue'); //内务库房
-const DiscussPolitics = () => import('@/components/humanResource/discussPolitics/index.vue'); //奏事议政
+// const DiscussPolitics = () => import('@/components/humanResource/discussPolitics/index.vue'); //奏事议政
 
 
 // 财务中心
@@ -43,17 +43,17 @@ const Profile = () => import('@/components/newMedia/front/profile/index.vue');//
 
 //前台资料
 const Video = () => import('@/components/newMedia/components/video.vue');
-const Document = () => import('@/components/newMedia/components/document.vue');
+const Document = () => import('@/components/newMedia/components/video.vue');
 
 //前台乐伽人文
-const LejiaStars = () => import('@/components/newMedia/components/lejiaStars.vue');
-const Birthday = () => import('@/components/newMedia/components/birthday.vue');
-const ExcellentStaff = () => import('@/components/newMedia/components/excellentStaff.vue');
+const LeJiaStars = () => import('@/components/newMedia/front/humanity/components/common.vue');
+const Birthday = () => import('@/components/newMedia/front/humanity/components/common.vue');
+const ExcellentStaff = () => import('@/components/newMedia/front/humanity/components/common.vue');
 
 //前台企业头条
 const News = () => import('@/components/newMedia/components/headLines/index.vue');
-const LejiaNews = () => import('@/components/newMedia/components/news.vue');
-const Notice = () => import('@/components/newMedia/components/news.vue');
+const LejiaNews = () => import('@/components/newMedia/components/headLines/index.vue');
+const Notice = () => import('@/components/newMedia/components/headLines/index.vue');
 
 //热门导读详情
 const NewsDetail = () => import('@/components/newMedia/components/newsDetail.vue');
@@ -77,13 +77,13 @@ const IndustryDynamic = ()=>import('@/components/leJiaCollege/industryDynamic/in
 const JobTraining = ()=>import('@/components/leJiaCollege/jobTraining/index.vue');//工作培训
 const PostPlanning = ()=>import('@/components/leJiaCollege/postPlanning/index.vue');//岗位规划
 const PracticalProblems = ()=>import('@/components/leJiaCollege/practicalProblems/index.vue');//实践问题
-const VideoLearning = ()=>import('@/components/leJiaCollege/videoLearning/index.vue');//c
+const VideoLearning = ()=>import('@/components/leJiaCollege/videoLearning/index.vue');//视频学习
 
 
 
 
 //待办
-const TodoList = () => import('@/components/todoList/index.vue');
+// const TodoList = () => import('@/components/todoList/index.vue');
 
 Vue.use(Router);
 
@@ -223,7 +223,7 @@ export default new Router({
         {
             path: '/lejiaStars',
             name: '乐伽之星',
-            component: LejiaStars
+            component: LeJiaStars
         },
         {
             path: '/excellentStaff',
@@ -355,11 +355,11 @@ export default new Router({
             name: '付款',
             component: Payment
         },
-        {
-            path: '/offerDetail',
-            name: '录用通知书',
-            component: OfferDetail
-        }
+        // {
+        //     path: '/offerDetail',
+        //     name: '录用通知书',
+        //     component: OfferDetail
+        // }
     ]
 
 })

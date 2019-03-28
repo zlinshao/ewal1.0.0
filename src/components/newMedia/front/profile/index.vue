@@ -14,7 +14,7 @@
         </div>
         <div class="mainList flex-center">
             <div class="menu_images flex-center justify-bet">
-                <div v-for="(item,index) in profileType" class="menu_img_type flex-center"  @click="routerLink(item.url)" :key="index">
+                <div v-for="(item,index) in profileType" class="menu_img_type flex-center"  @click="routerLink(item.url,{type:item.type})" :key="index">
                     <span class="writingMode">{{item.title}}    {{item.letter}}</span>
                 </div>
             </div>
@@ -117,11 +117,13 @@
                         url: 'video',
                         title: '视频',
                         letter:'Video',
+                        type:1,
                     },
                     {
                         url: 'document',
                         title: '文档',
                         letter:'Document',
+                        type:2,
                     },
                 ],
                 showFinMenuList: false,

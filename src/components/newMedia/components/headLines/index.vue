@@ -21,7 +21,7 @@
 
         <div class="mainList">
             <keep-alive>
-                <component :is="tabView"></component>
+                <component :is="tabView" :chooseTabType="chooseTab"></component>
             </keep-alive>
         </div>
     </div>
@@ -31,40 +31,45 @@
 <script>
     import mediaList from '../../components/mediaList.vue';
     import hotNews from '../news.vue';
+    import leJiaNews from '../leJiaNews.vue';
+    import noticeNews from '../noticeNews.vue';
 
     export default {
         name: "index",
         components: {
             mediaList,
             hotNews,
+            noticeNews,
+            leJiaNews,
 
         },
         data(){
             return{
-                chooseTab: 1,
+                chooseTab:1,
                 showFinMenuList:false,
                 selects:[
                     {id:1,title:"热门导读",url:'hotNews'},
-                    {id:2,title:"乐伽新闻",url:'hotNews'},
-                    {id:3,title:"公告",url:'hotNews'}
+                    {id:2,title:"乐伽新闻",url:'leJiaNews'},
+                    {id:3,title:"公告",url:'noticeNews'}
                 ],
                 tabView:'hotNews',
-                routerDetail: {
-                    title: '热门导读详情',
-                    url:'/newsDetail'
-                },
             }
         },
         watch:{
-
+            '$route':'getPath'
         },
         mounted(){
 
         },
         methods:{
+            getPath(){
+                console.log(this.$route.query.type);
+                this.chooseTab = this.$route.query.type;
+            },
             changeTabs(id,url) {
                 this.chooseTab = id;
                 this.tabView  = url;
+                console.log(this.chooseTab);
             },
         }
     }

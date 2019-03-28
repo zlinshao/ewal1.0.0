@@ -15,18 +15,14 @@
             </div>
 
             <div class="items-center listTopRight">
-                <p class="status-icon" v-for="item in statusBar">
-          <span style="margin-left: 16px"><i
-                  :style="{'background-color':item.iconColor}"></i><span>{{item.iconText}}</span></span>
-                </p>
                 <div class="icons home_icon"></div>
                 <div class="icons add" @click="addCustomer(chooseTab)"><b>+</b></div>
             </div>
         </div>
         <!--乐伽之星-->
         <div v-if="chooseTab === 1">
-            <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px'}">
-                <div class="star_info flex-center justify-bet">
+            <div class="mainList" >
+                <div class="star_info flex-center justify-bet" :style="{'height': this.mainListHeight(-9) + 'px'}">
                     <div class="star_info_left">
                         <div class="star_info_title writingMode flex-center"><span>乐伽之星</span></div>
                         <div class="star_info_avatar"></div>

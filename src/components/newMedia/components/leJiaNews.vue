@@ -117,7 +117,7 @@
 <script>
 
     export default {
-        name:'hotNews',
+        name:'leJiaNews',
         props:['chooseTabType'],
         data() {
             return {
@@ -136,7 +136,6 @@
                         time: '2018-02-12 14:04:12',
                         id: 1,
                     },
-
                     {
                         imgUrl: "../../../assets/image/newMedia/theme1/active.png",
                         title: "天上掉下个了林妹妹哈哈哈",
@@ -228,32 +227,6 @@
                         time: '2018-02-12 14:04:12',
                         id: 8,
                     },
-                    {
-                        imgUrl: "../../../assets/image/newMedia/theme1/active.png",
-                        title: "天上掉下个了林妹妹",
-                        view: "222",
-                        point: "333",
-                        comment: '444',
-                        desc: '天上掉下个了林妹妹天上掉下个了林妹妹天上掉下个了林妹妹天上掉下个了林妹妹天上掉下个了林妹妹天上掉下个了林妹妹',
-                        avatar: '../../../assets/image/newMedia/theme1/avatar.png',
-                        name: '丽丽',
-                        department: '南京二区一组',
-                        time: '2018-02-12 14:04:12',
-                        id: 9,
-                    },
-                    {
-                        imgUrl: "../../../assets/image/newMedia/theme1/active.png",
-                        title: "天上掉下个了林妹妹",
-                        view: "222",
-                        point: "333",
-                        comment: '444',
-                        desc: '天上掉下个了林妹妹天上掉下个了林妹妹天上掉下个了林妹妹天上掉下个了林妹妹天上掉下个了林妹妹天上掉下个了林妹妹',
-                        avatar: '../../../assets/image/newMedia/theme1/avatar.png',
-                        name: '丽丽',
-                        department: '南京二区一组',
-                        time: '2018-02-12 14:04:12',
-                        id: 10,
-                    },
 
                 ],//列表总数据
                 columnData0:[],//管道1数据
@@ -291,7 +264,7 @@
             },
 
             chooseTabAlert(val){
-               console.log(val)
+                console.log(val)
             },
 
 

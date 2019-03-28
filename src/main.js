@@ -16,8 +16,8 @@ import 'echarts/theme/macarons.js'
 import './assets/scss/rest.css'
 import './assets/scss/element.css'
 import './assets/scss/currency.css'
-import './assets/magnify/jquery.magnify.css';
-import './assets/magnify/jquery.magnify.js';
+// import './assets/magnify/jquery.magnify.css';
+// import './assets/magnify/jquery.magnify.js';
 
 Vue.use(Boss);
 Vue.use(Vuex);

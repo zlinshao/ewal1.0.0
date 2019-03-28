@@ -7,42 +7,42 @@
                 </p>
                 <h1>公司资料</h1>
                 <h2 class="items-center">
-                    <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                            :class="{'chooseTab': chooseTab === item.id}">
-                        {{item.title}}<i></i>
-                    </span>
+          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
+                :class="{'chooseTab': chooseTab === item.id}">
+            {{item.title}}<i></i>
+          </span>
                 </h2>
             </div>
+
             <div class="items-center listTopRight">
-                <div class="icons add" @click="add_action_visible = true"><b>+</b></div>
+                <p class="status-icon" v-for="item in statusBar">
+          <span style="margin-left: 16px"><i
+                  :style="{'background-color':item.iconColor}"></i><span>{{item.iconText}}</span></span>
+                </p>
+
             </div>
         </div>
         <!--video-->
-        <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="chooseTab === 1">
-            <div class="video-lists">
-                <div class="video-lists-info flex-center" v-for="(item,index) in videoData" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
-                    <div class="video-box">
-                        <div class="video-top">
-                            <div><video src="" poster="../../../assets/image/newMedia/theme1/active.png"></video></div>
-                            <div></div>
-                            <div v-if="seen&&index===current"></div>
-                        </div>
-                        <div class="video-bottom">
-                            <p>{{item.title}}</p>
-                            <p>{{item.time}}</p>
+        <div v-if="chooseTab === 1" class="menu_video justify-center">
+            <div class="menu_profile_video">
+                <div class="video_box">
+                    <div class="video_poster" @mouseenter="showModal = true" @mouseleave="showModal = false">
+                        <div class="video_start"></div>
+                        <div class="video_modal"  v-if="showModal"></div>
+                    </div>
+                    <div class="video_bottom">
+                        <div class="video_title">乐伽大学培训视频</div>
+                        <div class="video_tips justify-bet">
+                            <span class="video_time">41414141414141</span>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
         <!--file-->
-        <div v-if="chooseTab === 2" class="mainList">
-            <div class="document-lists">
-                <div class="document-lists-info flex-center">
-                    暂无数据
-                </div>
+        <div v-if="chooseTab === 2">
+            <div class="menu_profile_file">
+                999
             </div>
         </div>
 
@@ -99,7 +99,7 @@
                                     <span>资料名称</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input></el-input>
+                                    <el-input ></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -112,7 +112,7 @@
                                     <span>查看权限</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input></el-input>
+                                    <el-input ></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -132,7 +132,7 @@
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small">确定</el-button>
+                    <el-button type="danger" size="small" >确定</el-button>
                     <el-button type="info" size="small" @click="edit_visible = false;current_row = ''">取消</el-button>
                 </div>
             </div>
@@ -151,91 +151,24 @@
             mediaList,
             LjDialog,
         },
-        data() {
-            return {
-                showFinMenuList: false,
-                delete_visible: false,
-                edit_visible: false,
+        data(){
+            return{
+                showFinMenuList:false,
+                delete_visible:false,
+                edit_visible:false,
+                showModal:false,
                 chooseTab: 1,
-                seen:true,//模态是否可见
-                current:'',
-
-                selects: [
-                    {id: 1, title: "视频"}, {id: 2, title: "文档"}
+                selects:[
+                    {id:1,title:"视频"},{id:2,title:"文档"}
                 ],
-                videoData: [//视频列表
-                    {
-                        poster: '',
-                        title: '天下掉个林妹妹',
-                        time: '2019.01.12 13:14',
-                        id: 1
-                    },
-                    {
-                        poster: '',
-                        title: '天下掉个林妹妹',
-                        time: '2019-01-10',
-                        id: 2
-                    },
-                    {
-                        poster: '',
-                        title: '天下掉个林妹妹',
-                        time: '2019-01-10',
-                        id: 3
-                    },
-                    {
-                        poster: '',
-                        title: '天下掉个林妹妹',
-                        time: '2019-01-10',
-                        id: 4
-                    },
-                    {
-                        poster: '',
-                        title: '天下掉个林妹妹',
-                        time: '2019-01-10',
-                        id: 5
-                    },
-                    {
-                        poster: '',
-                        title: '天下掉个林妹妹',
-                        time: '2019-01-10',
-                        id: 6
-                    },
-                    {
-                        poster: '',
-                        title: '天下掉个林妹妹',
-                        time: '2019-01-10',
-                        id: 7
-                    },
-                    {
-                        poster: '',
-                        title: '天下掉个林妹妹',
-                        time: '2019-01-10',
-                        id: 8
-                    },
+                videoData:[//视频列表
+
                 ],
             }
         },
-        watch:{
-            '$route':'getPath'
-        },
-        methods: {
+        methods:{
             changeTabs(id) {
                 this.chooseTab = id;
-            },
-            //获取路由参数
-            getPath(){
-                console.log(this.$route.query.type);
-                this.chooseTab = this.$route.query.type;
-            },
-            onMousteIn: function (index) {
-                this.seen = true; //鼠标移入显示
-                this.current = index;
-                console.log(index,this.seen)
-            },
-            onMousteOut: function (index) {
-                this.seen = false; //鼠标移出隐藏
-                this.current = null;
-                console.log(index,this.seen)
             },
 
         }
@@ -243,45 +176,47 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../../assets/scss/newMedia/components/video.scss";
-
+    @import "../../../../../assets/scss/newMedia/components/video.scss";
     @mixin profile_video($n, $m) {
         $url: '../../../assets/image/newMedia/' + $n + '/' + $m;
         @include bgImage($url);
     }
 
-    #theme_name.theme1 {
-        #profile_video {
-            .mainList {
-                .video-lists {
-                    .video-lists-info {
-                        .video-box {
-                            .video-top {
-
-                                div:nth-child(2) {
-                                    @include profile_video('theme1', 'defalut-grey.png');
-
-                                }
+    #theme_name.theme1{
+        #profile_video{
+            .listTopCss{
+            };
+            .menu_video{
+                .menu_profile_video{
+                    .video_box{
+                        .video_poster{
+                            @include profile_video('theme1','active.png');
+                            .video_start{
+                                @include profile_video('theme1','defalut-grey.png');
                                 &:hover{
-                                    div:nth-child(2){
-                                        @include profile_video('theme1', 'start.png')
-                                    }
-
+                                    @include profile_video('theme1','start.png');
                                 }
+                            }
+                        }
+                        .video_bottom{
+
+                            .video_title{
 
                             }
-                            .video-bottom {
-                                p:first-child{
-                                }
-                                p:last-child{
-                                }
+                            .video_time{
 
+                            }
+                            .video_operate{
+                                .edit{
+                                    @include profile_video('theme1','bianji.png')
+                                }
+                                .delete{
+                                    @include profile_video('theme1','shanchu.png')
+                                }
                             }
                         }
                     }
                 }
-
-
             }
 
         }
