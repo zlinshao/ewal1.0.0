@@ -165,9 +165,16 @@
             padding: 5px 0;
             margin-bottom: 20px; }
             #house-filter > div .left_container .house-address > div .checkbox_item .choose_txt, #house-filter > div .right_container .house-address > div .checkbox_item .choose_txt {
-              width: 90%;
+              width: 95%;
               text-align: left;
               color: black; }
+      #house-filter > div .left_container .footer_page, #house-filter > div .right_container .footer_page {
+        position: absolute;
+        bottom: -40px;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background-color: rebeccapurple; }
       #house-filter > div .left_container .right_address, #house-filter > div .right_container .right_address {
         max-height: 420px; }
       #house-filter > div .left_container .footer_btn, #house-filter > div .right_container .footer_btn {

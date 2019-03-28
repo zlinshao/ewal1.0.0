@@ -100,6 +100,10 @@ export const customService = {
       url: '',
       title: '房屋',
     },
+    {
+      url: '',
+      title: '小区',
+    },
   ]
 };
 

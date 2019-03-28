@@ -7,24 +7,25 @@
               <div class="card" :class="['card_trans-' + item.id]" @dblclick.prevent="handleOpenCard(item)">
                 <div class="photo">
                   <div class="picture">
-                    <img class="picture" :src="item.url" alt="...">
+                    <!--<img class="picture" :src="item.url" alt="...">-->
+                    <img class="picture" src="./swipe1.jpg" alt="...">
                   </div>
                   <div class="bg">
                     <div class="btn" @click.stop="handleOpenControl(item.id)">...</div>
-                    <div class="house_type">精装</div>
+                    <div class="house_type">{{ item.decorate }}</div>
                   </div>
-                  <span class="mark" :class="{'marked' : item.mark}"></span>
+                  <span class="mark" :class="{'marked' : item.quality === 1}"></span>
                 </div>
                 <div class="info">
-                  <span class="address">{{ item.address }}</span>
+                  <span class="address">{{ item.name }}</span>
                   <div class="text">
-                    <p><b class="type_icon"></b>{{ item.type }}</p>
-                    <p><b class="info_icon"></b>{{ item.info }}</p>
-                    <p><b class="price_icon"></b>{{ item.price }}</p>
+                    <p><b class="type_icon"></b>{{ item.hk }}</p>
+                    <p><b class="info_icon"></b>空置{{ item.warning_current_days }}天 / 剩余 {{ item.month }}月</p>
+                    <p><b class="price_icon"></b>建议{{ item.suggest_price }}/月 {{ item.month }}月付</p>
                   </div>
                   <div class="notice_info flex-center">
-                    <span class="notice_type">{{ item.notice_type }}</span>
-                    <span :class="['notice-' + item.notice ]" class="notice"></span>
+                    <span class="notice_type">{{ item.house_status_name }}</span>
+                    <span :class="['notice-' + item.warning_status ]" class="notice"></span>
                   </div>
                 </div>
                 <div class="control flex-center" @click.stop="" v-if="show_control === item.id ">

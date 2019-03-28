@@ -17,16 +17,19 @@
         <div class="searchTerm" v-if="chooseTab === 3">
           <el-radio-group v-model="checkList" @change="handleChangeParams">
             <el-row :gutter="10">
-              <el-col :span="6">
+              <el-col :span="4">
+                <el-radio :label="0">全部</el-radio>
+              </el-col>
+              <el-col :span="5">
                 <el-radio :label="1">离职员工</el-radio>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="5">
                 <el-radio :label="2">在职员工</el-radio>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="5">
                 <el-radio :label="3">禁用员工</el-radio>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="5">
                 <el-radio :label="4">非禁用员工</el-radio>
               </el-col>
             </el-row>
@@ -47,7 +50,7 @@
 
     <!--部门管理-->
     <div class="departList" v-if="chooseTab === 2">
-      <div class="items-bet mainList" :class="{'mainListHover': routeAnimation}">
+      <div class="items-start mainList" :class="{'mainListHover': routeAnimation}">
         <p v-for="item in departList" @click="showDepartManage(item)">
           <span class="writingMode" :title="item.name">
             {{item.name}}
@@ -178,7 +181,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 2,//tab切换
+        chooseTab: 3,//tab切换
         selects: [
           {
             id: 1,
@@ -211,8 +214,8 @@
         departForm: {
           name: '',
           leader: '',
-          leader_id: '',
-          parent_id: 1,
+          leader_id: [],
+          parent_id: [1],
           parent: ''
         },//新增部门
         visibleStatus: false,//弹出部门
@@ -264,6 +267,12 @@
           is_on_job: '',
           is_enable: ''
         };
+        if (val === 0) {
+          this.staff_params = {
+            is_on_job: '',
+            is_enable: ''
+          };
+        }
         if (val === 1 || val === 2) {
           this.staff_params.is_on_job = val - 1;
         } else if(val === 3 || val === 4 ){
@@ -272,14 +281,18 @@
       },
       //取消添加部门
       handleCancelAddDepart() {
-       for (var key in this.departForm) {
-         this.departForm[key] = '';
-       }
+       this.departForm = {
+         name: '',
+         leader: '',
+         leader_id: [],
+         parent_id: [1],
+         parent: ''
+       };
        this.depart_visible = false;
       },
       //确定添加部门
       handleSubmitAddDepart() {
-        this.$http.post(globalConfig.organ_server + 'organization/organization',this.departForm).then(res => {
+        this.$http.post('organization/organization',this.departForm).then(res => {
           console.log(res);
           if (res.code === '20010') {
             this.$LjNotify('success',{
@@ -321,7 +334,7 @@
       },
       // 部门管理列表
       getDepartList() {
-        this.$http.get(globalConfig.organ_server + 'organization/organization',this.params).then(res => {
+        this.$http.get('organization/organization',this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;
             this.departCount = res.data.count;
