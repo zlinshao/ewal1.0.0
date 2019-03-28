@@ -7,7 +7,6 @@
             <span class="title">房源管理</span>
           </div>
           <div class="items-center">
-            <el-button type="danger" size="mini" @click="house_filter_visible = true" style="margin-right: 20px">搜索房源</el-button>
             <span class="set" @click="set_price_visible = true"></span>
             <span class="search" @click="handleOpenHighSearch"></span>
           </div>
@@ -130,7 +129,7 @@
         </lj-dialog>
 
         <!--搜索房源-->
-        <HouseFilter :visible="house_filter_visible" @close="house_filter_visible = false"></HouseFilter>
+        <HouseFilter :visible="house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
 
         <!--设置-->
         <lj-dialog
@@ -145,33 +144,34 @@
             <div class="dialog_main">
               <div class="price_min_container">
                 <div>最低价格</div>
-                <el-form label-width="80px">
+                <el-form :model="set_price_form" label-width="80px">
                   <el-form-item label="地址">
-                    <el-input placeholder="请选择"></el-input>
+                    <el-input placeholder="请选择" v-model="set_price_form.bottom_name" @focus="handleOpenChooseHouse('bottom')"></el-input>
                   </el-form-item>
                   <el-form-item label="最低价">
-                    <el-input placeholder="请输入"></el-input>
+                    <el-input placeholder="请输入" v-model="set_price_form.bottom_price"></el-input>
                   </el-form-item>
                 </el-form>
               </div>
               <div class="suggest_price_container">
                 <div>建议价格</div>
-                <el-form label-width="80px">
+                <el-form :model="set_price_form" label-width="80px">
                   <el-form-item label="地址">
-                    <el-input placeholder="请选择"></el-input>
+                    <el-input placeholder="请选择" v-model="set_price_form.suggest_name" @focus="handleOpenChooseHouse('suggest')"></el-input>
                   </el-form-item>
                   <el-form-item label="最低价">
-                    <el-input placeholder="请输入"></el-input>
+                    <el-input placeholder="请输入" v-model="set_price_form.suggest_price"></el-input>
                   </el-form-item>
                 </el-form>
               </div>
             </div>
             <div class="dialog_footer">
-              <el-button size="mini" type="danger">确定</el-button>
-              <el-button size="mini" type="info">取消</el-button>
+              <el-button size="mini" type="danger" @click="handleSubmitSetPrice">确定</el-button>
+              <el-button size="mini" type="info" @click="handleCancelSetPrice">取消</el-button>
             </div>
           </div>
         </lj-dialog>
+
       </div>
     </div>
 </template>
@@ -192,6 +192,14 @@
               market_server: globalConfig.market_server,
               //设置
               set_price_visible: false,
+              set_price_form: {
+                bottom_price: '',
+                bottom_id: [],
+                suggest_price: '',
+                suggest_id: [],
+                bottom_name: '',
+                suggest_name: ''
+              },
 
               //搜索房源visible
               house_filter_visible: false,
@@ -204,8 +212,8 @@
               show_shadow: false,
               isHigh: false,
               searchData: {
-                status: 'workOrder',
-                keywords: 'keywords',
+                status: 'houseManagement',
+                keywords: 'search',
                 data: [],
               },
 
@@ -213,7 +221,15 @@
               house_count: 0,
               house_params: {
                 page: 1,
-                limit: 20
+                limit: 20,
+                status: '',
+                room: '',
+                warningStatus: '',
+                decoration: '',
+                area: '',
+                suggestPrice: '',
+                quality: '',
+                house_identity: ''
               },
 
               img_trams: 0,
@@ -383,195 +399,255 @@
                   look_time: '2019-01-01',
                   look_man: '冯宝宝'
                 }
-              ]
+              ],
+
+              currentSelType: '',
             }
         },
         mounted() {
           this.getHouseResource();
-          this.house_source = [
-            {
-              id: 1,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '已出租',
-              notice: 1,
-              mark: true,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe6.jpg')
-            },
-            {
-              id: 2,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 2,
-              mark: false,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe5.jpg')
-            },
-            {
-              id: 3,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 1,
-              mark: true,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe4.jpg')
-            },{
-              id: 4,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 1,
-              mark: true,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe4.jpg')
-            },{
-              id: 5,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 2,
-              mark: true,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe3.jpg')
-            },{
-              id: 6,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 3,
-              mark: true,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe2.jpg')
-            },{
-              id: 7,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 2,
-              mark: true,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe1.jpg')
-            },{
-              id: 8,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 3,
-              mark: true,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe2.jpg')
-            },{
-              id: 9,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 1,
-              mark: true,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe3.jpg')
-            },{
-              id: 10,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 2,
-              mark: false,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe3.jpg')
-            }
-            ,{
-              id: 11,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 3,
-              mark: false,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe5.jpg')
-            }
-            ,{
-              id: 12,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 1,
-              mark: false,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe6.jpg')
-            },{
-              id: 13,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 2,
-              mark: false,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe5.jpg')
-            },{
-              id: 14,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 3,
-              mark: false,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe4.jpg')
-            },{
-              id: 15,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 1,
-              mark: false,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe3.jpg')
-            },{
-              id: 16,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 2,
-              mark: false,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe2.jpg')
-            },{
-              id: 17,
-              address: '东方兰园12-304',
-              type: '两室1厅1卫',
-              info: '空置120天/剩余3月',
-              price: '建议2600元/月 3月付',
-              notice_type: '未出租',
-              notice: 1,
-              mark: false,
-              url: require('../../../assets/image/marketCentre/theme1/test/swipe1.jpg')
-            }
-          ];
+          this.house_source = [];
           this.overview_visible = false;
         },
         watch: {},
         computed: {},
         methods: {
+          handleCancelSetPrice() {
+            this.set_price_form = {
+              bottom_price: '',
+              bottom_id: [],
+              suggest_price: '',
+              suggest_id: [],
+              suggest_name: ''
+            };
+            this.set_price_visible = false;
+          },
+          handleSubmitSetPrice() {
+            this.$http.post(this.market_server + '/v1.0/market/house/houseBottSuggPrice',this.set_price_form).then(res => {
+              console.log(res);
+              if (res.code === 200) {
+                this.$LjNotify('success',{
+                  title: '成功',
+                  message: res.message
+                });
+                this.handleCancelSetPrice();
+                this.getHouseResource();
+              } else {
+                this.$LjNotify('warning',{
+                  title: '失败',
+                  message: res.message
+                })
+              }
+            })
+          },
+          //确定选择房源
+          handleGetHouseResource(house) {
+            if (house) {
+              if (this.currentSelType === 'bottom') {
+                this.set_price_form.bottom_name = '';
+                this.set_price_form.bottom_id = [];
+                house.map(item => {
+                  this.set_price_form.bottom_name += item.house_name + ',';
+                  this.set_price_form.bottom_id.push(item.house_id);
+                });
+                this.set_price_form.bottom_name = this.set_price_form.bottom_name.substring(0,this.set_price_form.bottom_name.length - 1);
+              } else {
+                this.set_price_form.suggest_name = '';
+                this.set_price_form.suggest_id = [];
+                house.map(item => {
+                  this.set_price_form.suggest_name += item.house_name;
+                  this.set_price_form.suggest_id.push(item.house_id);
+                });
+                this.set_price_form.suggest_name = this.set_price_form.suggest_name.substr(0,this.set_price_form.suggest_name.length - 1);
+              }
+            }
+            this.house_filter_visible = false;
+          },
+          //打开搜索房屋
+          handleOpenChooseHouse(type){
+            this.currentSelType = type;
+            this.house_filter_visible = true;
+          },
           //打开高级设置
           handleOpenHighSearch() {
+            this.searchData.data = [
+              {
+                keyType: 'radio',
+                title: '房屋状态',
+                keyName: 'status',
+                dataType: '',
+                value: [
+                  {
+                    id: 1,
+                    title: '未出租',
+                  },
+                  {
+                    id: 2,
+                    title: '预订',
+                  },
+                  {
+                    id: 3,
+                    title: '已出租',
+                  },
+                  {
+                    id: 4,
+                    title: '已完成',
+                  }
+                ],
+              },
+              {
+                keyType: 'radio',
+                title: '户型',
+                keyName: 'room',
+                dataType: '',
+                value: [
+                  {
+                    id: 1,
+                    title: '一室',
+                  },
+                  {
+                    id: 2,
+                    title: '两室',
+                  },
+                  {
+                    id: 3,
+                    title: '三室',
+                  },
+                  {
+                    id: 4,
+                    title: '四室',
+                  },
+                  {
+                    id: 5,
+                    title: '其他',
+                  }
+                ],
+              },
+              {
+                keyType: 'radio',
+                title: '预警状态',
+                keyName: 'warning_status',
+                dataType: '',
+                value: [
+                  {
+                    id: 1,
+                    title: '正常',
+                  },
+                  {
+                    id: 2,
+                    title: '黄色预警',
+                  },
+                  {
+                    id: 3,
+                    title: '橙色预警',
+                  },
+                  {
+                    id: 4,
+                    title: '红色预警',
+                  }
+                ],
+              },
+              {
+                keyType: 'radio',
+                title: '建议价格',
+                keyName: 'suggest_price',
+                dataType: '',
+                value: [
+                  {
+                    id: 1,
+                    title: '2000以下',
+                  },
+                  {
+                    id: 2,
+                    title: '2000~3000',
+                  },
+                  {
+                    id: 3,
+                    title: '3000~4000',
+                  },
+                  {
+                    id: 4,
+                    title: '4000以上',
+                  }
+                ],
+              },
+              {
+                keyType: 'radio',
+                title: '装修',
+                keyName: 'decoration',
+                dataType: '',
+                value: [
+                  {
+                    id: 405,
+                    title: '精装',
+                  },
+                  {
+                    id: 406,
+                    title: '简装',
+                  },
+                  {
+                    id: 407,
+                    title: '豪装',
+                  },
+                  {
+                    id: 408,
+                    title: '毛坯',
+                  }
+                ],
+              },
+              {
+                keyType: 'radio',
+                title: '面积',
+                keyName: 'area',
+                dataType: '',
+                value: [
+                  {
+                    id: 1,
+                    title: '100以下',
+                  },
+                  {
+                    id: 2,
+                    title: '100~150',
+                  },
+                  {
+                    id: 3,
+                    title: '150以上',
+                  },
+                ],
+              },
+              {
+                keyType: 'radio',
+                title: '用途',
+                keyName: 'house_identity',
+                dataType: '',
+                value: [
+                  {
+                    id: 419,
+                    title: '住宅',
+                  },
+                  {
+                    id: 420,
+                    title: '公寓',
+                  },
+                  {
+                    id: 421,
+                    title: '商用两住',
+                  },
+                  {
+                    id: 422,
+                    title: '别墅'
+                  },
+                  {
+                    id: 423,
+                    title: '平房'
+                  },
+                  {
+                    id: 424,
+                    title: '其他'
+                  }
+                ],
+              }
+            ];
             this.isHigh = true;
           },
           //关闭设置
@@ -612,7 +688,12 @@
             this.show_market = false;
             this.show_shadow = false;
           },
-          handleCloseSearch() {
+          handleCloseSearch(search) {
+            if (search !== 'close') {
+              console.log(search);
+              this.house_params = Object.assign({},this.house_params,search);
+              this.getHouseResource();
+            }
             this.isHigh = false;
           },
           handleCloseOverview() {

@@ -21,8 +21,8 @@
                     <div class="house-address scroll_bar">
                       <div>
                         <el-checkbox-group v-model="house_choose" @change="handleChangeItem">
-                          <div class="checkbox_item" v-for="item in house_resource">
-                            <el-checkbox :label="item.house_id">{{ item.house_name }}</el-checkbox>
+                          <div class="checkbox_item" v-for="(item,index) in house_resource">
+                            <el-checkbox :label="index">{{ item.house_name }}</el-checkbox>
                           </div>
                         </el-checkbox-group>
                       </div>
@@ -43,8 +43,8 @@
                     </div>
                     <!--底部按钮-->
                     <div class="footer_btn flex-center">
-                      <el-button type="danger" size="small">确定</el-button>
-                      <el-button type="info" size="small" @click="handleCancelChoose">取消</el-button>
+                      <el-button type="danger" size="small" @click="handleSubmitChoose('house')">确定</el-button>
+                      <el-button type="info" size="small" @click="handleCancelChoose('house')">取消</el-button>
                     </div>
                   </div>
                 </div>
@@ -97,7 +97,7 @@
                             <el-checkbox :label="index">
                               <div class="checkbox_content flex">
                                 <div style="width: 200px">{{ office.house_name }}</div>
-                                <div style="width: 150px">{{ office.city }}</div>
+                                <div style="width: 150px;text-align: center">{{ office.city_name }}</div>
                                 <div style="width: 100px;text-align: right">{{ office.num }}套</div>
                               </div>
                             </el-checkbox>
@@ -115,15 +115,15 @@
                       <div>
                         <div class="flex" v-for="(office,index) in show_office" :key="index">
                           <div style="width: 40%;text-align: left">{{ office.house_name }}</div>
-                          <div style="width: 35%;text-align: left">{{ office.city }}</div>
+                          <div style="width: 35%;text-align: center">{{ office.city_name }}</div>
                           <div style="width: 15%;text-align: left">{{ office.num }}套</div>
                           <div class="delete_choose" @click="handleDeleteOffice(index)">－</div>
                         </div>
                       </div>
                     </div>
                     <div class="footer_btn">
-                      <el-button type="danger" size="small">确定</el-button>
-                      <el-button type="info" size="small">取消</el-button>
+                      <el-button type="danger" size="small" @click="handleSubmitChoose('office')">确定</el-button>
+                      <el-button type="info" size="small" @click="handleCancelChoose('office')">取消</el-button>
                     </div>
                   </div>
                 </div>
@@ -216,6 +216,15 @@
     },
     computed: {},
     methods: {
+      handleSubmitChoose(type) {
+        if (type === 'house') {
+          this.$emit('close',this.house_choose_items);
+          this.handleResetHouse();
+        } else {
+          this.$emit('close',this.show_office);
+          this.handleResetOffice();
+        }
+      },
       //搜索
       handleGoSearch() {
         this.show_search = true;
@@ -229,7 +238,6 @@
       //获取房屋
       getHouseList() {
         this.$http.get(this.market_server + '/v1.0/market/house/searchVH',this.params).then(res => {
-          console.log(res);
           if (res.code === 200) {
             if (this.activeName === 'first') {
               this.house_resource = res.data.data;
@@ -276,9 +284,14 @@
         this.house_config.type = id;
       },
       //取消
-      handleCancelChoose() {
-        this.handleResetHouse();
+      handleCancelChoose(type) {
+        if (type === 'house') {
+          this.handleResetHouse();
+        } else {
+          this.handleResetOffice();
+        }
         this.dialog_visible = false;
+        this.$emit('close');
       },
       //删除一个
       handleDeleteItem(house,idx) {
@@ -313,14 +326,14 @@
         var choose_len = this.house_choose.length;
         this.choose_all = house_len === choose_len;
       },
+      handleResetOffice() {
+        this.office_choose = [];
+        this.show_office = [];
+      },
       handleResetHouse() {
         this.choose_all = false;
         this.house_choose_items.length = 0;
         this.house_choose = [];
-      },
-      handleCloseDialog() {
-        this.dialog_visible = false;
-        this.$emit('close');
       },
       handleClick(tab) {
         if (tab.name === 'first') {
