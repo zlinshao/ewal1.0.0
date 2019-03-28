@@ -14,6 +14,7 @@ const WorkOrder = () => import('@/components/customService/workOrder/index.vue')
 // 市场
 const MarketCentre = () => import('@/components/marketCentre/index.vue');
 const HouseManagement = () => import('@/components/marketCentre/houseManagement/index.vue');//房源管理
+const ContractManagement = () => import('@/components/marketCentre/contractManagement/index.vue'); //合同管理
 
 // 人力资源中心
 const HumanResource = () => import('@/components/humanResource/index.vue');
@@ -284,6 +285,11 @@ export default new Router({
             path: '/houseManagement',
             name: '房源管理',
             component: HouseManagement
+        },
+        {
+            path: '/contractManagement',
+            name: '合同管理',
+            component: ContractManagement
         },
         {
             path: '/humanResource',

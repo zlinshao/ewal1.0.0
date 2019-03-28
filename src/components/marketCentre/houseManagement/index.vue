@@ -12,7 +12,7 @@
           </div>
         </div>
 
-        <house-card :house-source="house_source" @close="handleCloseOverview" @open="handleOpenCard"></house-card>
+        <house-card :house-source="house_source" :info="house_params" @close="handleCloseOverview" @open="handleOpenCard" @change="handleChangePage"></house-card>
         <market-menu-list :show-market="show_market" :show-shadow="show_shadow" @close="handleCloseMenu"></market-menu-list>
         <searchHigh :module="isHigh" :show-data="searchData" @close="handleCloseSearch"></searchHigh>
 
@@ -208,6 +208,11 @@
               lj_visible: false,
               lj_size: '',
               overview_visible:false,
+              overview_info: {
+                data1: {},
+                data2: [],
+                data3: []
+              },
               show_market: false,
               show_shadow: false,
               isHigh: false,
@@ -218,18 +223,19 @@
               },
 
               house_source: [], //房源列表
-              house_count: 0,
               house_params: {
+                search: '',
                 page: 1,
                 limit: 20,
-                status: '',
-                room: '',
-                warningStatus: '',
-                decoration: '',
-                area: '',
-                suggestPrice: '',
-                quality: '',
-                house_identity: ''
+                count: 0,
+                status: [],
+                room: [],
+                warningStatus: [],
+                decoration: [],
+                area: [],
+                suggestPrice: [],
+                quality: [],
+                house_identity: []
               },
 
               img_trams: 0,
@@ -407,11 +413,18 @@
         mounted() {
           this.getHouseResource();
           this.house_source = [];
-          this.overview_visible = false;
+          this.overview_visible = true;
         },
         watch: {},
         computed: {},
         methods: {
+          getOverviewInfo() {
+
+          },
+          handleChangePage(page) {
+            this.house_params.page = page;
+            this.getHouseResource();
+          },
           handleCancelSetPrice() {
             this.set_price_form = {
               bottom_price: '',
@@ -472,10 +485,10 @@
           handleOpenHighSearch() {
             this.searchData.data = [
               {
-                keyType: 'radio',
+                keyType: 'check',
                 title: '房屋状态',
                 keyName: 'status',
-                dataType: '',
+                dataType: [],
                 value: [
                   {
                     id: 1,
@@ -496,10 +509,10 @@
                 ],
               },
               {
-                keyType: 'radio',
+                keyType: 'check',
                 title: '户型',
                 keyName: 'room',
-                dataType: '',
+                dataType: [],
                 value: [
                   {
                     id: 1,
@@ -524,10 +537,10 @@
                 ],
               },
               {
-                keyType: 'radio',
+                keyType: 'check',
                 title: '预警状态',
                 keyName: 'warning_status',
-                dataType: '',
+                dataType: [],
                 value: [
                   {
                     id: 1,
@@ -548,10 +561,10 @@
                 ],
               },
               {
-                keyType: 'radio',
+                keyType: 'check',
                 title: '建议价格',
                 keyName: 'suggest_price',
-                dataType: '',
+                dataType: [],
                 value: [
                   {
                     id: 1,
@@ -572,10 +585,10 @@
                 ],
               },
               {
-                keyType: 'radio',
+                keyType: 'check',
                 title: '装修',
                 keyName: 'decoration',
-                dataType: '',
+                dataType: [],
                 value: [
                   {
                     id: 405,
@@ -596,10 +609,10 @@
                 ],
               },
               {
-                keyType: 'radio',
+                keyType: 'check',
                 title: '面积',
                 keyName: 'area',
-                dataType: '',
+                dataType: [],
                 value: [
                   {
                     id: 1,
@@ -616,10 +629,10 @@
                 ],
               },
               {
-                keyType: 'radio',
+                keyType: 'check',
                 title: '用途',
                 keyName: 'house_identity',
-                dataType: '',
+                dataType: [],
                 value: [
                   {
                     id: 419,
@@ -660,10 +673,10 @@
               console.log(res);
               if (res.code === 200) {
                 this.house_source = res.data.data;
-                this.house_count = res.data.all_count;
+                this.house_params.count = res.data.all_count;
               } else {
                 this.house_source = [];
-                this.house_count = 0;
+                this.house_params.count = 0;
               }
             })
           },
@@ -690,7 +703,6 @@
           },
           handleCloseSearch(search) {
             if (search !== 'close') {
-              console.log(search);
               this.house_params = Object.assign({},this.house_params,search);
               this.getHouseResource();
             }

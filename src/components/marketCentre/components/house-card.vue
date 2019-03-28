@@ -2,7 +2,7 @@
     <div id="houseCard">
       <div :style="{'height' : content_height + 'px'}">
         <div class="content scroll_bar" @scroll="handleScroll" @click="show_control = false">
-          <div class="flex cards">
+          <div class="flex cards" v-if="house_info.length > 0">
             <div v-for="item in house_info" :key="item.id" class="justify-center">
               <div class="card" :class="['card_trans-' + item.id]" @dblclick.prevent="handleOpenCard(item)">
                 <div class="photo">
@@ -35,10 +35,16 @@
               </div>
             </div>
           </div>
+          <div class="none_info" v-else>
+            暂无房源数据
+          </div>
           <div class="page">
             <el-pagination
-              :total="100"
-              layout="total,jumper,prev,pager,next"
+              :total="params.count"
+              :current-page="params.page"
+              :page-size="params.limit"
+              layout="total,prev,pager,next"
+              @current-change="handleChangePage"
             ></el-pagination>
           </div>
         </div>
@@ -49,7 +55,7 @@
 <script>
     export default {
         name: "index",
-        props: ['houseSource'],
+        props: ['houseSource','info'],
         data() {
             return {
               show_control: false,
@@ -63,7 +69,12 @@
                 {id: 5,val: '标记'},
                 {id: 6,val: '密码'}
               ],
-              is_tip: 0
+              is_tip: 0,
+              params: {
+                count: 0,
+                page: 1,
+                limit: 20
+              }
             }
         },
         mounted() {
@@ -74,6 +85,12 @@
           houseSource: {
             handler(val) {
               this.house_info = val;
+            },
+            deep: true
+          },
+          info: {
+            handler(val) {
+              this.params = val;
             },
             deep: true
           }
@@ -89,7 +106,11 @@
           handleOpenControl(id) {
             this.show_control = id;
             this.is_tip = 0;
-          }
+          },
+          handleChangePage(page) {
+            this.params.page = page;
+            this.$emit('change',page);
+          },
         },
     }
 </script>

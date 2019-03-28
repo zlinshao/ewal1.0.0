@@ -1,0 +1,221 @@
+.flex {
+  display: flex;
+  display: -webkit-flex; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #747474;
+    border-radius: 4px; }
+
+#theme_name #leJiaStars .star_info {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row; }
+  #theme_name #leJiaStars .star_info .star_info_left {
+    width: 200px;
+    height: 100%;
+    margin-left: 200px;
+    position: relative; }
+    #theme_name #leJiaStars .star_info .star_info_left .star_info_avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+      #theme_name #leJiaStars .star_info .star_info_left .star_info_avatar img {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%; }
+    #theme_name #leJiaStars .star_info .star_info_left .star_info_title {
+      width: 38px;
+      height: 110px;
+      position: absolute;
+      z-index: 10;
+      top: 27%;
+      left: 30%;
+      transform: translate(-50%, -50%); }
+      #theme_name #leJiaStars .star_info .star_info_left .star_info_title span {
+        font-family: jingDianXingShu;
+        font-size: 16px;
+        color: #ffffff; }
+    #theme_name #leJiaStars .star_info .star_info_left .star_info_name {
+      width: 38px;
+      height: 110px;
+      position: absolute;
+      z-index: 10;
+      top: 56%;
+      left: 54%;
+      transform: translate(-50%, -50%); }
+      #theme_name #leJiaStars .star_info .star_info_left .star_info_name span {
+        font-family: jingDianXingShu;
+        font-size: 16px; }
+    #theme_name #leJiaStars .star_info .star_info_left .star_info_department {
+      width: 38px;
+      height: 110px;
+      position: absolute;
+      z-index: 10;
+      top: 61%;
+      left: 73%;
+      transform: translate(-50%, -50%); }
+      #theme_name #leJiaStars .star_info .star_info_left .star_info_department span {
+        font-family: jingDianXingShu;
+        font-size: 16px; }
+  #theme_name #leJiaStars .star_info .star_info_right {
+    width: 1200px;
+    height: 100%;
+    color: #ffffff;
+    margin-left: 200px; }
+    #theme_name #leJiaStars .star_info .star_info_right .main_info {
+      width: 100%;
+      height: 600px;
+      padding-right: 200px; }
+      #theme_name #leJiaStars .star_info .star_info_right .main_info h5 {
+        width: 100%;
+        text-align: right;
+        cursor: pointer; }
+        #theme_name #leJiaStars .star_info .star_info_right .main_info h5 span {
+          display: block;
+          width: 20px;
+          height: 20px;
+          margin-right: 4px; }
+      #theme_name #leJiaStars .star_info .star_info_right .main_info h3 {
+        margin-bottom: 30px; }
+      #theme_name #leJiaStars .star_info .star_info_right .main_info p {
+        line-height: 27px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        text-align: justify; }
+      #theme_name #leJiaStars .star_info .star_info_right .main_info > div img {
+        display: block;
+        width: 480px;
+        height: 220px; }
+
+/*# sourceMappingURL=leJiaStars.css.map */
