@@ -5,6 +5,6 @@ globalConfig = {
     temporary_server:'http://test.financial.api.ewal.lejias.cn/api/',
   organ_server: 'http://gml.vaiwan.com/ewal/public/',
   upload_sever: 'http://recommend.ewal.lejias.cn/',
-  humanResource_server: 'http://test.hr.api.ewal.lejias.cn/'
-
+  humanResource_server: 'http://test.hr.api.ewal.lejias.cn/',
+  market_server: 'http://test.market.api.ewal.lejias.cn/'
 };

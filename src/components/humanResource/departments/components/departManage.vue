@@ -4,7 +4,7 @@
     <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>{{tabsManage === 'staff' ? '新增员工' : '新建职位'}}</h3>
+          <h3>{{ departInfo && departInfo.name }}</h3>
         </div>
         <div class="dialog_main space-column departPosition">
           <div class="items-bet mainTop">
@@ -17,92 +17,391 @@
             </h2>
           </div>
           <div class="scroll_bar staffManage" id="scroll-body" v-if="tabsManage === 'staff'" @click="checkOverflow()">
-            <div v-for="item in 40">
+            <div v-for="item in staffList">
               <div class="items-center" @click="reviseStaff(item)">
                 <p>
-                  <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+                  <img :src="item.avatar" alt="" v-if="item.avatar">
+                  <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
                 </p>
                 <div>
-                  <h4>法国电视</h4>
-                  <h5>范德萨发生</h5>
+                  <h4>{{ item.name }}</h4>
+                  <h5>{{ item.position[0].name }}</h5>
                 </div>
               </div>
               <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-                <span v-for="label in operateList" @click="operateModule(label.type)">{{label.label}}</span>
+                <span v-for="label in operateList" @click="operateModule(label.type,item)">{{label.label}}</span>
                 <b v-if="!operatePos"></b>
                 <i v-if="operatePos"></i>
               </h5>
             </div>
           </div>
           <div class="scroll_bar orgManage" v-if="tabsManage === 'position'">
-            <div v-for="item in 30">
-              <p @click="operateModule('position')">
-                <span class="writingMode">符合都看傻了废话说多</span>
+            <div v-for="item in dutyList">
+              <p @click="operateModule('positionManagement',item)">
+                <span class="writingMode">{{ item.name }}</span>
               </p>
             </div>
           </div>
         </div>
       </div>
     </lj-dialog>
-    <!--新增员工/新建职位=======================================================================================-->
-    <lj-dialog :visible="addStaffVisible" :size="staff_size" @close="addStaffVisible = false">
+
+    <!--新增员工-->
+    <lj-dialog
+      :visible="add_newStaff_visible"
+      :size="{width: 1200 + 'px',height: 800 + 'PX'}"
+      @close="handleCancelAddStaff"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增员工</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-tabs v-model="activeName">
+            <el-tab-pane label="基本信息" name="first">
+              <el-form label-width="120px" size="small" style="width: 100%">
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="姓名">
+                      <el-input v-model="interview_info_detail.name" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="性别">
+                      <div class="changeChoose" style="margin-top: 8px">
+                        <el-radio-group v-model="interview_info_detail.gender">
+                          <el-radio :label="0">男</el-radio>
+                          <el-radio :label="1">女</el-radio>
+                        </el-radio-group>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="手机号">
+                      <el-input v-model="interview_info_detail.phone" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="身份证号">
+                      <el-input v-model="interview_info_detail.id_num" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="生日">
+                      <el-date-picker placeholder="请选择" v-model="interview_info_detail.birthday" type="date" value-format="yyyy-MM-dd">
+                      </el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="婚姻状况">
+                      <div class="changeChoose" style="margin-top: 8px">
+                        <el-radio-group v-model="interview_info_detail.marital_status" placeholder="请选择">
+                          <el-radio label="0">已婚</el-radio>
+                          <el-radio label="1">未婚</el-radio>
+                        </el-radio-group>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="16">
+                    <el-form-item label="家庭住址">
+                      <el-input v-model="interview_info_detail.home_addr" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="部门">
+                      <el-input placeholder="请选择" readonly @focus="" v-model="interview_info_detail.depart"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="岗位">
+                      <el-input v-model="interview_info_detail.position" @focus="modules = true" placeholder="请选择"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="银行卡号">
+                      <el-input v-model="interview_info_detail.bank_num" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="开户行">
+                      <el-input v-model="interview_info_detail.account_bank" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="支行">
+                      <el-input v-model="interview_info_detail.branch_bank" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="开户名">
+                      <el-input v-model="interview_info_detail.account_name" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="入职时间">
+                      <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.enroll" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="薪资">
+                      <el-input v-model="interview_info_detail.real_salary" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="推荐人">
+                      <el-input readonly v-model="interview_info_detail.recommender_name" @focus=""></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="入职 等级">
+                      <el-select v-model="interview_info_detail.level" placeholder="请选择">
+                        <el-option label="实习" :value="0"></el-option>
+                        <el-option label="正式" :value="1"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="入职途径">
+                      <el-select v-model="interview_info_detail.platform">
+                        <el-option :value="1" label="智联招聘"></el-option>
+                        <el-option :value="2" label="前程无忧"></el-option>
+                        <el-option :value="3" label="58同城"></el-option>
+                        <el-option :value="4" label="BOSS直聘"></el-option>
+                        <el-option :value="5" label="猎聘网"></el-option>
+                        <el-option :value="6" label="首席信才"></el-option>
+                        <el-option :value="7" label="德盛人才"></el-option>
+                        <el-option :value="8" label="校园招聘会"></el-option>
+                        <el-option :value="9" label="其他"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="社保卡号">
+                      <el-input v-model="interview_info_detail.society_number" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="紧急联系人/号码">
+                      <el-input v-model="interview_info_detail.emergency_call" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="支行行号">
+                      <el-input v-model="interview_info_detail.branch_bank_code" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="籍贯">
+                      <el-input v-model="interview_info_detail.origin_addr" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="生育情况">
+                      <el-select v-model="interview_info_detail.fertility_status" placeholder="请输入">
+                        <el-option :value="0" label="已育"></el-option>
+                        <el-option :value="1" label="未育"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="政治面貌">
+                      <el-select v-model="interview_info_detail.political_status" placeholder="请输入">
+                        <el-option :value="0" label="群众"></el-option>
+                        <el-option :value="1" label="团员"></el-option>
+                        <el-option :value="2" label="党员"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="学历">
+                      <el-select v-model="interview_info_detail.education" placeholder="请输入">
+                        <el-option :value="0" label="高中及以上"></el-option>
+                        <el-option :value="1" label="大专及以上"></el-option>
+                        <el-option :value="2" label="本科及以上"></el-option>
+                        <el-option :value="3" label="不限"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="毕业院校">
+                      <el-input v-model="interview_info_detail.school" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="专业">
+                      <el-input v-model="interview_info_detail.major" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="毕业时间">
+                      <el-date-picker format="yyyy-DD-mm" type="date" v-model="interview_info_detail.graduation_time" placeholder="请选择"></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="职级">
+                      <el-select v-model="interview_info_detail.position_level">
+                        <el-option :value="1" label="P1"></el-option>
+                        <el-option :value="2" label="P2"></el-option>
+                        <el-option :value="3" label="P3"></el-option>
+                        <el-option :value="4" label="P4"></el-option>
+                        <el-option :value="5" label="P5"></el-option>
+                        <el-option :value="6" label="P6"></el-option>
+                        <el-option :value="7" label="P7"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="学历信息" name="second">
+              <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.education_history.length > 0">
+                <div v-for="item in interview_info_detail.education_history" :key="item.id">
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="起始时间:">
+                        <el-date-picker
+                          v-model="item.start_end_time"
+                          type="daterange"
+                          range-separator="至"
+                          start-placeholder="开始日期"
+                          end-placeholder="结束日期">
+                        </el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="学校名称:">
+                        <el-input v-model="item.school" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="专业:">
+                        <el-input v-model="item.major"  placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="学历:">
+                        <el-select v-model="item.education" placeholder="请选择">
+                          <el-option :value="1" label="高中及以上"></el-option>
+                          <el-option :value="2" label="大专及以上"></el-option>
+                          <el-option :value="3" label="本科及以上"></el-option>
+                          <el-option :value="4" label="不限"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="学习形式:">
+                        <el-select v-model="item.learn_type" placeholder="请选择">
+                          <el-option :value="1">全日制</el-option>
+                          <el-option :value="2">其他</el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </div>
+              </el-form>
+              <div style="text-align: right">
+                <el-button type="success" size="mini" style="width: 120px" @click="handleAddEducation">添加</el-button>
+                <el-button type="danger" size="mini" style="width: 120px" v-if="interview_info_detail.education_history.length > 1" @click="handleDelEducation">删除</el-button>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="工作履历" name="third">
+              <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.work_history.length > 0">
+                <div v-for="item in interview_info_detail.work_history" :key="item.id">
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="起始时间:">
+                        <el-date-picker
+                          v-model="item.start_end_time"
+                          type="daterange"
+                          range-separator="至"
+                          start-placeholder="开始日期"
+                          end-placeholder="结束日期">
+                        </el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="岗位:">
+                        <el-input v-model="item.position" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="工作单位:">
+                        <el-input v-model="item.work_place" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="薪资:">
+                        <el-input v-model="item.salary" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="证明人:">
+                        <el-input v-model="item.witness" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="证明人电话:">
+                        <el-input v-model="item.witness_phone" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </div>
+              </el-form>
+              <div style="text-align: right">
+                <el-button type="success" size="mini" style="width: 120px" @click="handleAddWork">添加</el-button>
+                <el-button type="danger" size="mini" style="width: 120px" v-if="interview_info_detail.work_history.length > 1" @click="handleDelWork">删除</el-button>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="mini" @click="handleSubmitAddStaff">提交</el-button>
+          <el-button type="info" size="mini" @click="handleCancelAddStaff">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--新建职位=======================================================================================-->
+    <lj-dialog :visible="addStaffVisible" :size="{width: 500 + 'px',height: 400 + 'px'}" @close="addStaffVisible = false;positionForm.name = ''">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
-          <h3>{{tabsManage === 'staff' ? '新增员工' : '新建职位'}}</h3>
+          <h3>新建职位</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
-          <!--员工-->
-          <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible"
-                   v-if="tabsManage === 'staff'">
-            <el-form-item label="部门名称" required>
-              <el-input v-model="departForm.name"></el-input>
-            </el-form-item>
-            <el-form-item label="上级部门" required>
-              <div class="items-center iconInput">
-                <el-input v-model="departForm.depart"></el-input>
-                <p class="icons organization"></p>
-              </div>
-            </el-form-item>
-            <el-form-item label="部门负责人" required>
-              <div class="items-center iconInput">
-                <el-input v-model="departForm.leader"></el-input>
-                <p class="icons position"></p>
-              </div>
-            </el-form-item>
-            <el-form-item label="部门负责人" required>
-              <div class="items-center iconInput">
-                <el-input v-model="departForm.leader"></el-input>
-                <p class="icons user"></p>
-              </div>
-            </el-form-item>
-          </el-form>
           <!--职位-->
-          <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible" v-else>
+          <el-form :model="positionForm" ref="departForm" label-width="120px" class="depart_visible">
             <el-form-item label="职位名称" required>
-              <el-input v-model="departForm.name"></el-input>
+              <el-input v-model="positionForm.name"></el-input>
             </el-form-item>
             <el-form-item label="所属部门" required>
               <div class="items-center iconInput">
-                <el-input v-model="departForm.depart"></el-input>
+                <el-input v-model="positionForm.depart"></el-input>
                 <p class="icons organization"></p>
-              </div>
-            </el-form-item>
-            <el-form-item label="关联岗位" required>
-              <div class="multi-input">
-                <div class="first">
-                  <el-input v-model="departForm.leader"></el-input>
-                  <label @click="addStation">+</label>
-                </div>
-                <el-input v-model="departForm.leader"></el-input>
-              </div>
-              <div>
               </div>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="handleSubmitAddDuty">确定</el-button>
+          <el-button type="info" size="small" @click="addStaffVisible = false;positionForm.name = ''">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -157,15 +456,14 @@
     <lj-dialog :visible="positionVisible" :size="position_size" @close="positionVisible = false">
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>产品</h3>
+          <h3>{{ currentDutyInfo && currentDutyInfo.name }}</h3>
         </div>
         <div class="dialog_main positionContent space-column">
           <div class="items-bet mainTop">
             <div class="items-bet">
-              <span @click="chooseManage('post','post')" :class="{'hover': tabsPost === 'post'}">岗位</span>
-              <span @click="chooseManage('person','post')" :class="{'hover': tabsPost === 'person'}">人员</span>
+              <span class="hover">岗位</span>
             </div>
-            <h2 class="add" @click="operateModule(tabsPost)">
+            <h2 class="add" @click="addPostVisible = true">
               <b>+</b>
             </h2>
           </div>
@@ -174,62 +472,43 @@
             <div>
               <div class="mainListTable">
                 <el-table
-                  :data="tableData"
+                  :data="positionList"
                   :row-class-name="tableChooseRow"
                   @cell-click="tableClickRow"
                   header-row-class-name="tableHeader"
+                  height="250px"
                   style="width: 100%">
-                  <el-table-column
-                    v-for="item in Object.keys(showData)" :key="item"
-                    align="center"
-                    :prop="item"
-                    :label="showData[item]">
-                  </el-table-column>
-                  <el-table-column
-                    align="center"
-                    label="操作">
-                    <template slot-scope="scope">
-
-                    </template>
-                  </el-table-column>
+                  <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+                  <el-table-column label="人数" prop="users_count" align="center"></el-table-column>
+                  <el-table-column label="部门" prop="duty.org.name" align="center"></el-table-column>
                 </el-table>
               </div>
             </div>
             <div>
               <div class="mainListTable">
                 <el-table
-                  :data="tableData"
+                  :data="positionStaffList"
                   :row-class-name="tableChooseRow"
-                  @cell-click="tableClickRow"
                   header-row-class-name="tableHeader"
+                  height="250px"
                   style="width: 100%">
-                  <el-table-column
-                    v-for="item in Object.keys(showData)" :key="item"
-                    align="center"
-                    :prop="item"
-                    :label="showData[item]">
-                  </el-table-column>
-                  <el-table-column
-                    align="center"
-                    label="操作">
-                    <template slot-scope="scope">
-
-                    </template>
-                  </el-table-column>
+                  <el-table-column label="员工姓名" prop="name" align="center"></el-table-column>
+                  <el-table-column label="手机号" prop="phone" align="center"></el-table-column>
+                  <el-table-column label="入职时间" prop="created_at" align="center"></el-table-column>
                 </el-table>
               </div>
             </div>
           </div>
           <!--人员-->
           <div class="scroll_bar staffManage" id="scroll-body1" @click="checkOverflow()" v-if="tabsPost === 'person'">
-            <div v-for="item in 40">
+            <div v-for="item in staffList">
               <div class="items-center" @click="reviseStaff(item)">
                 <p>
                   <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
                 </p>
                 <div>
-                  <h4>法国电视</h4>
-                  <h5>范德萨发生</h5>
+                  <h4>{{ item.name }}</h4>
+                  <h5>{{ position[0].name }}</h5>
                 </div>
               </div>
               <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
@@ -243,33 +522,36 @@
       </div>
     </lj-dialog>
     <!--新增岗位===============================================================================================-->
-    <lj-dialog :visible="addPostVisible" :size="post_size" @close="addPostVisible = false">
+    <lj-dialog :visible="addPostVisible" :size="{width: 500 + 'px',height: 550 + 'px'}" @close="handleCancelAdd">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>新建岗位</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
-          <el-form :model="postForm" ref="postForm" label-width="120px" class="depart_visible">
+          <el-form :model="add_position_form" ref="postForm" label-width="120px" class="depart_visible">
             <el-form-item label="岗位名称" required>
-              <el-input v-model="postForm.name"></el-input>
+              <el-input v-model="add_position_form.name" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="岗位描述" required>
+              <el-input v-model="add_position_form.description" type="textarea" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="所属部门" required>
               <div class="items-center iconInput">
-                <el-input v-model="postForm.depart"></el-input>
+                <el-input v-model="add_position_form.depart" readonly></el-input>
                 <p class="icons organization"></p>
               </div>
             </el-form-item>
             <el-form-item label="所属职位" required>
               <div class="items-center iconInput">
-                <el-input v-model="postForm.leader"></el-input>
+                <el-input v-model="add_position_form.duty_name" readonly></el-input>
                 <p class="icons user"></p>
               </div>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="handleSubmitAddPosition">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancelAdd">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -280,22 +562,25 @@
           <h3>离职</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
-          <el-form :model="postForm" ref="postForm" label-width="120px" class="depart_visible">
-            <el-form-item label="岗位名称" required>
-              <el-input v-model="postForm.name"></el-input>
+          <el-form :model="outForm" ref="postForm" label-width="120px" class="depart_visible">
+            <el-form-item label="离职日期" required>
+              <el-date-picker type="date" value-format="yyyy-MM-dd"  v-model="outForm.is_on_job"></el-date-picker>
             </el-form-item>
-            <el-form-item label="所属部门" required>
-              <div class="items-center iconInput">
-                <el-input v-model="postForm.depart"></el-input>
-                <p class="icons organization"></p>
-              </div>
+            <el-form-item label="离职原因" required>
+              <el-select v-model="outForm.dismiss_reason.dismiss_type">
+                <el-option :value="1" label="主动离职"></el-option>
+                <el-option :value="2" label="旷工离职"></el-option>
+                <el-option :value="3" label="劝退"></el-option>
+                <el-option :value="4" label="开除"></el-option>
+                <el-option :value="5" label="其他"></el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item label="所属职位" required>
+            <el-form-item label="具体描述" required>
               <el-input
                 type="textarea"
                 :rows="2"
                 placeholder="请输入内容"
-                v-model="postForm.leader">
+                v-model="outForm.dismiss_reason.dismiss_mess">
               </el-input>
             </el-form-item>
             <div>
@@ -308,8 +593,30 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="handleSubmitOut">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancelOut">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <PositionOrgan :module="modules" @close="handleGetPosition"></PositionOrgan>
+
+    <!--禁用-->
+    <lj-dialog
+      :visible="disable_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="disable_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>禁用</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定禁用该员工吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleOkDisable">确定</el-button>
+          <el-button type="info" size="small" @click="disable_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -317,16 +624,107 @@
 </template>
 
 <script>
-  import ljDialog from '../../../common/lj-dialog.vue'
+  import ljDialog from '../../../common/lj-dialog.vue';
+  import PositionOrgan from '../../../common/postOrgan.vue';
 
   export default {
     name: "depart-manage",
-    props: ['module'],
-    components: {ljDialog},
+    props: ['module','info'],
+    components: {ljDialog,PositionOrgan},
     data() {
       return {
+        //离职
+        outForm: {
+          type: 'dimission',
+          is_on_job: '',
+          dismiss_reason: {
+            dismiss_mess: '',
+            dismiss_type: ''
+          }
+        },
+        modules: false,
+        positionStaffList: [],
+        //新增员工
+        add_newStaff_visible: false,
+        activeName: 'first',
+        interview_info_detail: {
+          graduation_time: '',
+          name: '',
+          gender: '',
+          phone: '',
+          id_num: '',
+          birthday: '',
+          marital_status: '',
+          fertility_status: '',
+          home_addr: '',
+          origin_addr: '',
+          position_level: '',
+          org_id: [],
+          depart: '',
+          position: '',
+          position_id: [],
+          bank_num: '',
+          account_bank: '',
+          branch_bank: '',
+          account_name: '',
+          enroll: '',
+          real_salary: '',
+          recommender_name: '',
+          political_status: '',
+          education: '',
+          level: '',
+          platform: '',
+          society_number: '',
+          emergency_call: '',
+          branch_bank_code: '',
+          school: '',
+          major: '',
+          education_history: [
+            {
+              start_end_time: '',
+              school: '',
+              major: '',
+              eduction: '',
+              learn_type: '',
+            }
+          ],
+          work_history: [
+            {
+              work_place: '',
+              start_end_time: '',
+              position: '',
+              salary: '',
+              witness: '',
+              witness_phone: ''
+            }
+          ]
+        },
+
+        departInfo: '',
+        staffParams: {
+          search: '',
+          page: 1,
+          limit: 999,
+          org_id: '',
+          position_id: ''
+        },
+        staffList: [],
+        dutyList: [],
+
         addStaffVisible: '',
-        departForm: {},
+        staffForm: {
+          name: '',
+          org_id: '',
+          depart: '',
+          position: '',
+          position_id: '',
+        },
+        positionForm: {
+          name: '',
+          org_id: '',
+          depart: '',
+        },
+
         // 新建职位
         depart_visible: false,
         lj_size: '',
@@ -507,6 +905,27 @@
         leaveVisible: '',
         leave_size: {},
         checkLists: [],
+
+        //岗位列表
+        positionList: [],
+        currentDutyInfo: '',
+
+        //新增岗位
+        add_position_form: {
+          name: '',
+          duty_id: '',
+          duty_name: '',
+          depart: '',
+          org_id: '',
+          description: '',
+        },
+
+        //禁用
+        disable_visible: false,
+        currentStaff: '',
+
+        //修改员工
+        is_edit: false,
       }
     },
     mounted() {
@@ -514,6 +933,17 @@
     activated() {
     },
     watch: {
+      info: {
+        handler(val) {
+          this.departInfo = val;
+          this.interview_info_detail.depart = val.name;
+          this.interview_info_detail.org_id.push(val.id);
+          this.staffParams.org_id = val.id;
+          this.getStaffList();
+          this.getDutyList();
+        },
+        deep: true
+      },
       module(val) {
         this.depart_visible = val;
         this.lj_size = 'large'
@@ -530,6 +960,251 @@
       }
     },
     methods: {
+      handleCancelOut() {
+        this.outForm = {
+          type: 'dimission',
+          is_on_job: '',
+          dismiss_reason: {
+            dismiss_mess: '',
+            dismiss_type: ''
+          }
+        };
+        this.leaveVisible = false;
+      },
+      handleSubmitOut() {
+        this.$http.put(`staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
+          if (res.code === '20030') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelOut();
+            this.getStaffList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleOkDisable() {
+        this.$http.put(`staff/user/${this.currentStaff.id}`,{
+          type: 'enable'
+        }).then(res => {
+          console.log(res);
+          if (res.code === '20030') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.disable_visible = false;
+            this.getStaffList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleGetPosition(id,name) {
+        if (id !== 'close') {
+          this.interview_info_detail.position = name;
+          this.interview_info_detail.position_id= id;
+        }
+        this.modules = false;
+      },
+      handleSubmitAddStaff() {
+        if (this.is_edit) {
+          this.interview_info_detail.type = 'update';
+          this.$http.put(`staff/user/${this.currentStaff.id}`,this.interview_info_detail).then(res => {
+            if (res.code === '20030') {
+              this.$LjNotify('success',{
+                title: '成功',
+                message: res.msg
+              });
+              this.handleCancelAddStaff();
+              this.getStaffList();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
+          });
+          return false;
+        }
+        this.$http.post('staff/user',this.interview_info_detail).then(res => {
+          if (res.code === '20010') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelAddStaff();
+            this.getStaffList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleSubmitAddDuty() {
+        this.$http.post('organization/duty',this.positionForm).then(res => {
+          console.log(res);
+          if (res.code === '20010') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.addStaffVisible = false;
+            this.getDutyList();
+            this.positionForm = {
+              name: '',
+              depart: '',
+              org_id: ''
+            }
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleAddEducation() {
+        this.interview_info_detail.education_history.push({
+          start_end_time: '',
+          school: '',
+          major: '',
+          eduction: '',
+          learn_type: '',
+        })
+      },
+      handleDelEducation() {
+        this.interview_info_detail.education_history.pop()
+      },
+      handleAddWork() {
+        this.interview_info_detail.work_history.push({
+          work_place: '',
+          start_end_time: '',
+          position: '',
+          salary: '',
+          witness: '',
+          witness_phone: ''
+        })
+      },
+      handleDelWork() {
+        this.interview_info_detail.work_history.pop()
+      },
+      handleCancelAdd() {
+        this.add_position_form = {
+          name: '',
+          duty_id: '',
+          duty_name: '',
+          depart: '',
+          org_id: '',
+          description: '',
+        };
+        this.addPostVisible = false;
+      },
+      handleSubmitAddPosition() {
+        this.$http.post('organization/position',this.add_position_form).then(res => {
+          console.log(res);
+          if (res.code === '20010') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelAdd();
+            this.getPositionList();
+          }else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleCancelAddStaff() {
+        this.is_edit = false;
+        this.interview_info_detail = {
+          graduation_time: '',
+          name: '',
+          gender: '',
+          phone: '',
+          id_num: '',
+          birthday: '',
+          marital_status: '',
+          fertility_status: '',
+          home_addr: '',
+          origin_addr: '',
+          position_level: '',
+          org_id: [],
+          depart: '',
+          position: '',
+          position_id: [],
+          bank_num: '',
+          account_bank: '',
+          branch_bank: '',
+          account_name: '',
+          enroll: '',
+          real_salary: '',
+          recommender_name: '',
+          political_status: '',
+          education: '',
+          level: '',
+          platform: '',
+          society_number: '',
+          emergency_call: '',
+          branch_bank_code: '',
+          school: '',
+          major: '',
+          education_history: [
+            {
+              start_end_time: '',
+              school: '',
+              major: '',
+              eduction: '',
+              learn_type: '',
+            }
+          ],
+          work_history: [
+            {
+              work_place: '',
+              start_end_time: '',
+              position: '',
+              salary: '',
+              witness: '',
+              witness_phone: ''
+            }
+          ]
+        };
+        this.add_newStaff_visible = false;
+      },
+      //获取职位列表
+      getDutyList() {
+        this.$http.get('organization/duty',this.staffParams).then(res => {
+          console.log(res);
+          if (res.code === '20000') {
+            this.dutyList = res.data.data;
+          } else {
+            this.dutyList = [];
+          }
+        })
+      },
+      //获取员工列表
+      getStaffList() {
+        this.$http.get('staff/user',this.staffParams).then(res => {
+          if (res.code === '20000') {
+            this.staffList = res.data.data;
+          } else {
+            this.staffList = [];
+          }
+        })
+      },
       // 超出部分 反方向显示
       checkOverflow() {
         let obj = document.getElementById("scroll-body") || document.getElementById("scroll-body1");
@@ -540,6 +1215,7 @@
       },
       // 员工/部门 切换
       chooseManage(val, status = '') {
+        console.log(val);
         if (status === 'post') {
           this.tabsPost = val;
         } else {
@@ -553,16 +1229,53 @@
           this.staffId = val;
         }
       },
-      // 新增关联岗位
-      addStation() {
-
+      getPositionList() {
+        this.$http.get('organization/position',{
+          duty_id: this.currentDutyInfo.id,
+          page: 1,
+          limit: 999
+        }).then(res => {
+          console.log(res);
+          if (res.code === '20000') {
+            this.positionList = res.data.data;
+            this.positionVisible = true;
+          } else {
+            this.positionList = [];
+          }
+        })
       },
       // 权限/禁用/修改/离职
-      operateModule(val) {
+      operateModule(val,item) {
+        if (val === 'revise') {
+          console.log(item);
+          this.currentStaff = item;
+          this.is_edit = true;
+          this.add_newStaff_visible = true;
+          for (var key in this.interview_info_detail) {
+            this.interview_info_detail[key] = item.staff[key] || '';
+          }
+          this.interview_info_detail.name = item.name;
+          this.interview_info_detail.position = item.position[0].name;
+          this.interview_info_detail.position_id = [];
+          this.interview_info_detail.org_id = [];
+          this.interview_info_detail.position_id.push(item.position[0].id);
+          this.interview_info_detail.org_id.push(item.org[0].id);
+          this.interview_info_detail.depart = item.org[0].name;
+          this.interview_info_detail.work_history = item.staff.work_history || [];
+          this.interview_info_detail.education_history = item.staff.education_history || [];
+          this.interview_info_detail.phone = item.phone;
+          this.interview_info_detail.gender = item.gender;
+        }
+        if (val === 'disabled') {
+          this.currentStaff = item;
+          console.log(item);
+        } else {
+          this.currentDutyInfo = item;
+        }
         switch (val) {
           case 'power'://权限
             this.powerVisible = true;
-            this.$http.get(globalConfig.organ_server + 'organization/permission', {
+            this.$http.get('organization/permission', {
               system_id: 22,
               limit: 999,
               page: 1,
@@ -571,17 +1284,32 @@
             });
             break;
           case 'leave'://离职
+            this.currentStaff = item;
             this.leaveVisible = true;
             break;
           case 'staff'://新增 员工
-            this.addStaffVisible = true;
+            this.add_newStaff_visible = true;
             break;
           case 'position'://岗位管理
-            this.positionVisible = true;
+            this.positionForm.depart = this.departInfo.name || '';
+            this.positionForm.org_id = this.departInfo.id || '';
+            this.addStaffVisible = true;
+            break;
+          case 'positionManagement'://岗位管理
+            this.getPositionList();
             break;
           case 'post':
+            this.add_position_form.depart = this.departInfo.name || '';
+            this.add_position_form.org_id = this.departInfo.id || '';
+            this.add_position_form.duty_id = this.currentDutyInfo.id || '';
+            this.add_position_form.duty_name = this.currentDutyInfo.name || '';
+            this.addPostVisible = true;
+            break;
           case 'person'://新增 部门
             this.addPostVisible = true;
+            break;
+          case 'disabled': // 禁用
+            this.disable_visible = true;
             break;
         }
         switch (val) {
@@ -598,12 +1326,21 @@
             };
             break;
           case 'position'://新增 职位
-            this.position_size = 'small';
+            this.position_size = {
+              width: 800 + 'px',
+              height: 700 + 'px'
+            };
+            break;
+          case 'positionManagement'://新增 职位
+            this.position_size = {
+              width: 800 + 'px',
+              height: 700 + 'px'
+            };
             break;
           case 'post'://新增 岗位
             this.post_size = {
               width: '510px',
-              height: '450px',
+              height: '500px',
             };
             break;
           case 'leave'://新增 岗位
@@ -615,14 +1352,6 @@
         }
       },
 
-      adds(val) {
-        switch (val) {
-
-        }
-        switch (val) {
-
-        }
-      },
       // 权限切换
       handleClick(val) {
 
@@ -658,6 +1387,7 @@
       // 岗位管理
       // 当前点击
       tableClickRow(row) {
+        this.positionStaffList = row.users;
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);

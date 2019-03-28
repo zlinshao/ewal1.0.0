@@ -25,12 +25,10 @@
               <p @click="filesInfo('grow')" :class="{'hover': filesStatus === 'grow'}">成长轨迹</p>
             </div>
             <div class="justify-around mainRight scroll_bar" v-if="filesStatus === 'info'">
-              <el-form :model="filesForm" ref="filesForm" label-width="120px" class="justify-around"
+              <el-form :model="staffDetail" ref="filesForm" label-width="120px" :disabled="reviseInfo" class="justify-around"
                        :class="[reviseInfo ? 'inputDisabled': 'focusBorder']">
-                <div v-for="key in 3" class="info">
-                  <el-form-item label="紧急联系人" v-for="item in 27" :key="item">
-                    <el-input v-model="filesForm.name" :disabled="reviseInfo" clearable></el-input>
-                  </el-form-item>
+                <div class="info flex borderNone">
+
                 </div>
               </el-form>
               <b @click="reviseInfo = !reviseInfo"></b>
@@ -56,13 +54,26 @@
   export default {
     name: "staff-files",
     components: {ljDialog},
-    props: ['module'],
+    props: ['module','detailInfo'],
     data() {
       return {
+        staffDetail: {
+          name: '',
+          id_num: '',
+          phone: '',
+          position: {
+            id: '',
+            name: ''
+          },
+          org: {
+            id: '',
+            name: ''
+          },
+          email: '',
+          gender: '',
+        }, //员工详情
+
         reviseInfo: true,
-        filesForm: {
-          name: '南京市白龙江东街22号'
-        },
         files_visible: false,
         files_size: {},
         filesStatus: 'info',
@@ -85,6 +96,18 @@
         if (!val) {
           this.$emit('close', 'close');
         }
+      },
+      detailInfo: {
+        handler(val) {
+          for (var key in this.staffDetail) {
+            this.staffDetail[key] = val.staff[key];
+          }
+          this.staffDetail.name = val.name;
+          this.staffDetail.email = val.email;
+          this.staffDetail.gender = val.gender;
+          console.log(val);
+        },
+        deep: true
       }
     },
     computed: {

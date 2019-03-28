@@ -43,7 +43,6 @@
     name: "index",
     data() {
       return {
-        url: globalConfig.organ_server,
         checkList: [],
         showData: {
           name: '部门',
@@ -80,7 +79,7 @@
     computed: {},
     methods: {
       getStaffList() {
-        this.$http.get(this.url + 'staff/user', this.params).then(res => {
+        this.$http.get('staff/user', this.params).then(res => {
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })

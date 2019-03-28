@@ -228,20 +228,26 @@
                         <el-input v-model="interview_info_detail.branch_bank_code" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="银行卡">
+                        <a v-if="interviewee_info.bank_card_image_url && interviewee_info.bank_card_image_url.indexOf('.pdf') !== -1" :href="interviewee_info.bank_card_image_url" target="_blank">点击查看</a>
+                        <img style="width: 30px;height: 30px;cursor: pointer" v-else-if="interviewee_info.bank_card_image_url && interviewee_info.bank_card_image_url.indexOf('.pdf') === -1" :src="interviewee_info.bank_card_image_url" data-magnify="" data-caption="图片查看器" :data-src="interviewee_info.bank_card_image_url" alt="">
+                        <a v-else>暂无</a>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="学籍报告">
+                        <a v-if="interviewee_info.report_url && interviewee_info.report_url.indexOf('.pdf') !== -1" :href="interviewee_info.report_url" target="_blank">点击查看</a>
+                        <img style="width: 30px;height: 30px;cursor: pointer" v-if="interviewee_info.report_url" :src="interviewee_info.report_url" data-magnify="" data-caption="图片查看器" :data-src="interviewee_info.report_url" alt="">
+                        <a v-else>暂无</a>
+                      </el-form-item>
+                    </el-col>
                   </el-row>
                   <el-row>
-                    <el-col :span="24">
-                      <el-form-item label="入职材料">
-                        <div class="changeChoose">
-                          <el-checkbox-group v-model="interviewee_info.entry_materials" style="width: 100%;margin-top: 8px" class="flex">
-                            <el-checkbox :label="1">意外险</el-checkbox>
-                            <el-checkbox :label="2">五险</el-checkbox>
-                            <el-checkbox :label="3">身份证复印件</el-checkbox>
-                            <el-checkbox :label="4">应聘表</el-checkbox>
-                            <el-checkbox :label="5">学籍在线验证报告</el-checkbox>
-                            <el-checkbox :label="6">原单位离职证明</el-checkbox>
-                          </el-checkbox-group>
-                        </div>
+                    <el-col :span="8">
+                      <el-form-item label="原单位离职证明">
+                        <img style="width: 30px;height: 30px;cursor: pointer" v-if="interviewee_info.leaveproof_image_url" :src="interviewee_info.leaveproof_image_url" data-magnify="" data-caption="图片查看器" :data-src="interviewee_info.leaveproof_image_url" alt="">
+                        <a v-else>暂无</a>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -656,6 +662,7 @@
 
   export default {
     name: "index",
+    props:['searchData'],
     components: {LjDialog, StaffOrgan,DepartOrgan,PostOrgan},
     data() {
       return {
@@ -663,6 +670,10 @@
         tableList: [],
         chooseRowIds: [], //图标点击
         entry_feedback: ['未反馈', '同意入职', '拒绝入职'],
+        params: {
+          page: 1,
+          limit: 12
+        },
 
         // 编辑入职结果
         edit_result_visible: false,
@@ -787,7 +798,14 @@
     },
     activated() {
     },
-    watch: {},
+    watch: {
+      searchData: {
+        handler(val) {
+          this.params = Object.assign(this.params,{},val);
+        },
+        deep: true
+      },
+    },
     computed: {},
     methods: {
       handleConfirmContract() {
@@ -795,21 +813,23 @@
         this.labour_form.type = 1;
         this.$http.post('recruitment/interviewer_process/view_contract',this.labour_form).then(res => {
           if (res.code === '20000') {
-            this.$LjMessage('success',{
+            this.$LjNotify('success',{
               title: '成功',
-              msg: '发送成功'
+              message: res.msg
             });
             setTimeout(() => {
               this.labour_contract_visible = true;
-              this.ok_send_contract = false;
-            })
+            },1000)
           }else {
-            this.$LjMessage('warning',{
+            this.$LjNotify('warning',{
               title: '失败',
-              msg: '发送失败'
+              message: res.msg
             });
             return false;
           }
+          setTimeout(() => {
+            this.ok_send_contract = false;
+          },1000)
         }).catch(err => {
           console.log(err);
         })
@@ -907,8 +927,9 @@
         this.currentInfo = row;
         this.write_offer_visible = true;
       },
-      getLabourInfo() {
-        this.$http.get(`recruitment/interviewer_process/get_contract_info/${this.currentRow.interviewee_id}`).then(res => {
+      getLabourInfo(id) {
+        this.$http.get(`recruitment/interviewer_process/get_contract_info/${id}`).then(res => {
+          console.log(res);
           if (res.code === '20010') {
             this.labour_form = res.data;
             this.ok_interviewee_visible = false;
@@ -931,12 +952,12 @@
       },
       handleOkInterviewee() {
         this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,this.interview_info_detail).then(res => {
-          if (res.code === '20000') {
+          if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
               message: '入职成功'
             });
-            this.getLabourInfo();
+            this.getLabourInfo(res.data.user_id);
             this.work_success = true;
           } else {
             this.$LjNotify('warning',{
@@ -975,10 +996,8 @@
           })
         } else if (this.edit_result_form.entry_feedback === 2) {
           this.$http.put(`recruitment/interviewer_process/entry_feedback/${this.currentRow.id}`, {
-            params: {
-              entry_feedback: this.edit_result_form.entry_feedback,
-              unentry_reason: this.edit_result_form.unentry_reason
-            }
+            entry_feedback: this.edit_result_form.entry_feedback,
+            unentry_reason: this.edit_result_form.unentry_reason
           }).then(res => {
             if (res.code === '20000') {
               this.$LjNotify('success', {
@@ -1019,7 +1038,7 @@
       },
       //获取表格数据
       getTableList() {
-        this.$http.get('recruitment/interviewer_process/interviewedList').then(res => {
+        this.$http.get('recruitment/interviewer_process/interviewedList',this.params).then(res => {
           if (res.code === '20000') {
             this.tableList = res.data.data;
           } else {

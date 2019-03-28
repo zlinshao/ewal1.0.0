@@ -7,14 +7,19 @@
             <span class="title">房源管理</span>
           </div>
           <div class="items-center">
-            <span class="set" @click="lj_visible = true"></span>
-            <span class="search" @click="isHigh = true"></span>
+            <el-button type="danger" size="mini" @click="house_filter_visible = true" style="margin-right: 20px">搜索房源</el-button>
+            <span class="set" @click="set_price_visible = true"></span>
+            <span class="search" @click="handleOpenHighSearch"></span>
           </div>
         </div>
+
         <house-card :house-source="house_source" @close="handleCloseOverview" @open="handleOpenCard"></house-card>
         <market-menu-list :show-market="show_market" :show-shadow="show_shadow" @close="handleCloseMenu"></market-menu-list>
         <searchHigh :module="isHigh" :show-data="searchData" @close="handleCloseSearch"></searchHigh>
+
         <overview-info :overview-visible="overview_visible" @open="overview_visible = true"></overview-info>
+
+        <!--房屋详情-->
         <lj-dialog
           :visible="lj_visible"
           :size="lj_size"
@@ -98,7 +103,10 @@
         </lj-dialog>
 
         <!--带看-->
-        <lj-dialog :visible="look_visible" :size="{width: 800 + 'px',height: '800' + 'px'}" @close="look_visible = false">
+        <lj-dialog
+          :visible="look_visible"
+          :size="{width: 600 + 'px',height: '800' + 'px'}"
+          @close="look_visible = false">
           <div class="look_info">
             <h3>查看带看记录</h3>
             <div class="flex" style="margin-bottom: 30px">
@@ -120,6 +128,50 @@
             </div>
           </div>
         </lj-dialog>
+
+        <!--搜索房源-->
+        <HouseFilter :visible="house_filter_visible" @close="house_filter_visible = false"></HouseFilter>
+
+        <!--设置-->
+        <lj-dialog
+          :visible="set_price_visible"
+          :size="{width: 450 + 'px',height: 550 + 'px'}"
+          @close="handleCloseSetHouse"
+        >
+          <div class="dialog_container borderNone">
+            <div class="dialog_header">
+              <h3>设置</h3>
+            </div>
+            <div class="dialog_main">
+              <div class="price_min_container">
+                <div>最低价格</div>
+                <el-form label-width="80px">
+                  <el-form-item label="地址">
+                    <el-input placeholder="请选择"></el-input>
+                  </el-form-item>
+                  <el-form-item label="最低价">
+                    <el-input placeholder="请输入"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div class="suggest_price_container">
+                <div>建议价格</div>
+                <el-form label-width="80px">
+                  <el-form-item label="地址">
+                    <el-input placeholder="请选择"></el-input>
+                  </el-form-item>
+                  <el-form-item label="最低价">
+                    <el-input placeholder="请输入"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+            </div>
+            <div class="dialog_footer">
+              <el-button size="mini" type="danger">确定</el-button>
+              <el-button size="mini" type="info">取消</el-button>
+            </div>
+          </div>
+        </lj-dialog>
       </div>
     </div>
 </template>
@@ -130,12 +182,20 @@
   import HouseCard from '../components/house-card.vue';
   import OverviewInfo from '../components/overview-info.vue';
   import LjDialog from '../../common/lj-dialog.vue';
+  import HouseFilter from '../components/house-filter.vue';
 
     export default {
         name: "index",
-        components: { MarketMenuList ,searchHigh, HouseCard ,OverviewInfo,LjDialog },
+        components: { MarketMenuList ,searchHigh, HouseCard ,OverviewInfo,LjDialog ,HouseFilter},
         data() {
             return {
+              market_server: globalConfig.market_server,
+              //设置
+              set_price_visible: false,
+
+              //搜索房源visible
+              house_filter_visible: false,
+
               look_visible:false,
               lj_visible: false,
               lj_size: '',
@@ -148,7 +208,14 @@
                 keywords: 'keywords',
                 data: [],
               },
-              house_source: [],
+
+              house_source: [], //房源列表
+              house_count: 0,
+              house_params: {
+                page: 1,
+                limit: 20
+              },
+
               img_trams: 0,
               h_info: {
                 a: '2室1厅1卫',
@@ -320,6 +387,7 @@
             }
         },
         mounted() {
+          this.getHouseResource();
           this.house_source = [
             {
               id: 1,
@@ -497,21 +565,45 @@
               url: require('../../../assets/image/marketCentre/theme1/test/swipe1.jpg')
             }
           ];
-          this.overview_visible = true;
-        },
-        activated() {
+          this.overview_visible = false;
         },
         watch: {},
         computed: {},
         methods: {
+          //打开高级设置
+          handleOpenHighSearch() {
+            this.isHigh = true;
+          },
+          //关闭设置
+          handleCloseSetHouse() {
+            this.set_price_visible = false;
+          },
+          //获取房源列表
+          getHouseResource() {
+            this.$http.get(this.market_server + 'v1.0/market/house',this.house_params).then(res => {
+              console.log(res);
+              if (res.code === 200) {
+                this.house_source = res.data.data;
+                this.house_count = res.data.all_count;
+              } else {
+                this.house_source = [];
+                this.house_count = 0;
+              }
+            })
+          },
           handleOpenCard(item) {
-            this.lj_size = 'large';
+            this.lj_size = {
+              width: 1220 + 'px',
+              height: 800 + 'px'
+            };
             this.lj_visible = true;
           },
           handleTransLeft() {
+            console.log(this.$refs['img_contain']);
             this.img_trams -= 20;
           },
           handleTransRight() {
+            console.log(this.$refs['img_contain']);
             if (this.img_trams < 0) {
               this.img_trams += 20;
             }
@@ -696,6 +788,13 @@
           }
           .txt {
             font-size: 14px;
+          }
+        }
+        .price_min_container,.suggest_price_container {
+          > div {
+            &:first-child {
+              @include houseManagementImg('hongdi.png','theme1');
+            }
           }
         }
       }

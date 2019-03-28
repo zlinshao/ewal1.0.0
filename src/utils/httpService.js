@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-let url = globalConfig.organ_server;
+let url = globalConfig.server;
 axios.defaults.timeout = 10000;
 
 axios.defaults.baseURL = globalConfig.humanResource_server; // 域名

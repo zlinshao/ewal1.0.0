@@ -1072,7 +1072,7 @@
             }
 
             .right-content {
-              .trainActive {
+              .trainActive, .list:hover {
                 .content-top {
                   > span {
                     color: white;

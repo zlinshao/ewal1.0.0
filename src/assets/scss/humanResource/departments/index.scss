@@ -10,6 +10,7 @@
         p {
           height: 480px;
           width: 100%;
+          max-width: 150px;
           margin: 0 30px;
           padding: 90px 0 60px;
           text-align: center;
@@ -22,8 +23,13 @@
             color: $colorE33;
           }
           span {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 380px;
             font-family: 'jingDianXingShu';
             font-size: 30px;
+            white-space: nowrap;
           }
         }
         @for $i from 1 through 7 {

@@ -145,14 +145,15 @@
   }
 
   .todo-list-container {
-    height: calc(100% - 300px);
+    //height: calc(100% - 300px);
     @include flex('flex-center');
-    padding-bottom: 150px;
-    margin: 0 50px 50px;
+    //padding-bottom: 50px;
+    margin: 0 50px;
     flex-wrap: wrap;
     //background-color: red;
     .todo-list-container-top, .todo-list-container-bottom {
       @include flex('flex-center');
+
       .todo-list-item {
         position: relative;
         width: 250px;
@@ -160,15 +161,16 @@
         cursor: pointer;
         //background-color: red;
         margin-right: 30px;
-        margin-bottom: 30px;
+        //margin-bottom: 30px;
         > div {
           width: 100%;
 
         }
+
         .todo-list-item-title {
           text-align: center;
           margin-top: 40px;
-          font-size:16px ;
+          font-size: 16px;
         }
 
         .todo-list-item-content {
@@ -178,6 +180,7 @@
           margin-top: 16px;
           width: 120px;
           font-size: 12px;
+
           i {
             position: absolute;
             width: 14px;
@@ -190,6 +193,31 @@
         }
       }
     }
+  }
+
+  footer.common-page {
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    //background-color: $color2F2;
+    z-index: 6;
+
+    .develop {
+      position: absolute;
+      top: -30px;
+      width: 80px;
+      cursor: pointer;
+      height: 30px;
+      opacity: 1;
+      border-radius: 10px 10px 0 0;
+      background-color: $color2F2;
+
+    }
+
+
   }
 
 

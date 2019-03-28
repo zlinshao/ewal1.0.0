@@ -19,7 +19,7 @@
             </template>
           </el-table-column>
           <el-table-column label="预约面试时间" prop="interview_time" align="center"></el-table-column>
-          <el-table-column label="已通知面试官" prop="offer" align="center"></el-table-column>
+          <el-table-column label="已通知面试官" prop="interviewer.name" align="center"></el-table-column>
           <el-table-column label="简历" prop="" align="center">
             <template slot-scope="scope">
               <el-button size="mini" type="success" plain @click="handleLookOffer(scope.row)">查看简历</el-button>
@@ -66,7 +66,9 @@
           <div class="dialog_main borderNone">
             <el-form :model="add_interviewer_form" size="small" label-width="100px">
               <el-form-item label="岗位">
-                <el-input v-model="add_interviewer_form.position" placeholder="请选择" @focus="position_visible = true;is_select = 'interview'"></el-input>
+                <el-select v-model="add_interviewer_form.position_id" placeholder="请选择" @change="handleGetOffer">
+                  <el-option v-for="(tmp,idx) in position_list" :value="tmp.position_id" :label="tmp.position.name" :key="idx"></el-option>
+                </el-select>
               </el-form-item>
               <el-form-item label="姓名">
                 <el-input v-model="add_interviewer_form.name" placeholder="请选择"></el-input>
@@ -133,7 +135,7 @@
           <div class="dialog_main borderNone">
             <el-form :model="add_msg_form" label-width="80px" size="small">
               <el-form-item label="岗位">
-                <el-input v-model="add_msg_form.position" clearable placeholder="请选择" @focus="position_visible = true;is_select = 'offer'"></el-input>
+                <el-input v-model="add_msg_form.position" clearable placeholder="请选择" @focus="position_visible = true"></el-input>
               </el-form-item>
               <el-form-item label="部门">
                 <el-input v-model="add_msg_form.org_name" clearable placeholder="请选择" @focus="depart_visible = true"></el-input>
@@ -312,7 +314,6 @@
         },
         //取消面试
         cancel_interviewee_visible: false,
-        is_select: '',
         is_paper: '',
         is_staff: '',
 
@@ -321,7 +322,10 @@
         selected_interview: '',
 
         //试卷
-        paper: []
+        paper: [],
+
+        //需求岗位列表
+        position_list: []
       }
     },
     mounted() {
@@ -332,11 +336,12 @@
     },
     watch: {
       addInterviewerVisible(val) {
-        this.is_paper = 'interview';
         this.add_interviewer_visible = val;
+        if (val) {
+          this.getPositionList();
+        }
       },
       addOfferVisible(val) {
-        this.is_paper = 'offer';
         this.add_msg_visible = val;
       },
       searchData: {
@@ -350,9 +355,19 @@
     },
     computed: {},
     methods: {
+      getPositionList() {
+        this.$http.get('recruitment/staff_needs/position/get').then(res => {
+          if (res.code === '20030') {
+            this.position_list = res.data;
+          } else {
+            this.position_list = [];
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       getPapers() {
         this.$http.get(globalConfig.organ_server + 'train/exam?type=1').then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.paper = res.data.data;
           } else {
@@ -364,7 +379,6 @@
       },
       handleLookOffer(row) {
         this.$http.get(`recruitment/interviewees/get_resume_url/${row.interviewee_id}`).then(res => {
-          console.log(res);
           if (res.code === '20020') {
             if (res.data.url) {
               if (res.data.url.endsWith('.pdf')) {
@@ -436,38 +450,31 @@
         }
         this.depart_visible = false;
       },
-      handleGetFile(id){
+      handleGetFile(val){
         if (this.is_paper === 'offer') {
-          this.add_msg_form.paper_id = id;
+          this.add_msg_form.paper_id = val[1];
         }
         if (this.is_paper === 'interview') {
-          this.add_interviewer_form.resume_id = id;
+          this.add_interviewer_form.resume_id = val[1];
         }
       },
+      handleGetOffer(id) {
+        this.interview_list = [];
+        this.$http.get('recruitment/interviewers',{
+          position_id: id
+        }).then(res => {
+          if (res.code === '20000') {
+            this.interview_list = res.data.data[0];
+          } else {
+            this.interview_list = [];
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       handleSelPosition(id,name) {
-        if (id !== 'close') {
-          if (this.is_select === 'offer') {
-            this.add_msg_form.position = name;
-            this.add_msg_form.position_id = id;
-          }
-          if (this.is_select === 'interview') {
-            this.add_interviewer_form.position = name;
-            this.add_interviewer_form.position_id = id;
-            this.$http.get('recruitment/interviewers',{
-              position_id: id
-            }).then(res => {
-              console.log(res);
-              if (res.code === '20000') {
-                this.interview_list = res.data.data[0];
-              } else {
-                this.interview_list = [];
-              }
-            }).catch(err => {
-              console.log(err);
-            })
-          }
-        }
-        this.is_select = '';
+        this.add_msg_form.position = name;
+        this.add_msg_form.position_id = id;
         this.position_visible = false;
       },
       handleOpenCancel(row) {

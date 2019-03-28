@@ -513,6 +513,14 @@
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%; }
+#theme_name .search {
+  display: inline-block;
+  width: 30px;
+  height: 32px;
+  cursor: pointer;
+  background: url("../../assets/image/common/theme1/search.png") no-repeat scroll center;
+  background-size: 100% 100%;
+  vertical-align: middle; }
 #theme_name .btn_square_add {
   display: inline-block;
   width: 25px;
