@@ -1241,50 +1241,6 @@
         //console.log(`当前页: ${val}`);
       },
 
-
-      /*// 当前点击
-      tableClickRow(row) {
-        let ids = this.chooseRowIds;
-        ids.push(row.id);
-        this.chooseRowIds = this.myUtils.arrayWeight(ids);
-      },
-
-      //表格某一行双击
-      tableDblClick(row) {
-        console.log(row);
-        this.in_repository_table_visible = true;
-      },
-      // 点击过
-      tableChooseRow({row, rowIndex}) {
-        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-      },
-      handleSizeChange(val) {
-        //console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        this.params.page = val;
-        this.getRepositoryList();
-        //console.log(`当前页: ${val}`);
-      },*/
-
-
-      /*goodsTableClickRow(row) {
-        let ids = this.chooseRowIds;
-        ids.push(row.id);
-        this.chooseRowIds = this.myUtils.arrayWeight(ids);
-      },
-      goodsHandleCurrentChange(val) {
-        this.goodsParams.page = val;
-        this.getGoodsList();
-        //console.log(`当前页: ${val}`);
-      },
-      goodsHandleSizeChange(val) {
-        //console.log(`每页 ${val} 条`);
-      },
-      // 点击过
-      goodsTableChooseRow({row, rowIndex}) {
-        return this.goodsChooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-      },*/
     },
 
   }
