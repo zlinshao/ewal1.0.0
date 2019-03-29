@@ -132,20 +132,25 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #lj-dialog-img .flex-center {
+#theme_name #lj-dialog-img {
   position: fixed;
-  top: 81px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 103; }
-  #theme_name #lj-dialog-img .flex-center .lj-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    padding: 30px; }
+  bottom: 0;
+  left: 0;
+  right: 0; }
+  #theme_name #lj-dialog-img .flex-center {
+    position: fixed;
+    top: 81px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 103; }
+    #theme_name #lj-dialog-img .flex-center .lj-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      padding: 30px; }
 
 /*# sourceMappingURL=lj-dialog-img.css.map */

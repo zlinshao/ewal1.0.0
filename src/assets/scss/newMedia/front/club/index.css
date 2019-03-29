@@ -1,0 +1,45 @@
+/*
+Error: Invalid GBK character "\xE4"
+        on line 116 of index.scss
+
+111:         }
+112: 
+113:       }
+114: 
+115:     };
+116:     //俱乐部详情
+117:     .club-detail{
+118:       p{
+119:         text-align: left;
+120:         padding: 20px;
+121:         width: 100%;
+
+Backtrace:
+index.scss:116
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1043:in `rescue in block in find_encoding_error'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1040:in `block in find_encoding_error'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each_with_index'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `find_encoding_error'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:767:in `check_sass_encoding'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:444:in `check_encoding!'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:400:in `_to_tree'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:307:in `render_with_sourcemap'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `each'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin.rb:82:in `update_stylesheets'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:340:in `watch_or_update'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:51:in `process_result'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:52:in `parse'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:19:in `parse!'
+C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/bin/scss:13:in `<top (required)>'
+C:/App/Ruby24-x64/bin/scss:23:in `load'
+C:/App/Ruby24-x64/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid GBK character \"\xE4\"\A         on line 116 of index.scss\A \A 111:         }\A 112: \A 113:       }\A 114: \A 115:     };\A 116:     //俱乐部详情\A 117:     .club-detail{\A 118:       p{\A 119:         text-align: left;\A 120:         padding: 20px;\A 121:         width: 100%;"; }

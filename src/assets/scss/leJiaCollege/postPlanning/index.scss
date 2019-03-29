@@ -1,0 +1,126 @@
+@import "../../common.scss";
+
+#theme_name {
+  #postPlanning {
+    > div {
+    }
+
+    .mainList {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      padding-left:340px;
+      padding-top: 120px;
+      padding-bottom: 120px;
+
+      .main-right {
+        .right-list {
+          height: auto;
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translate(0, -50%);
+
+          span {
+            display: block;
+            width: 180px;
+            height: 40px;
+            margin-top: 24px;
+            font-family: jingDianXingShu;
+            font-size: 18px;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+
+            &:hover {
+              color: #FFFFFF;
+              -webkit-transform: scale(1.5);
+              -moz-transform: scale(1.5);
+              -o-transform: scale(1.5);
+            }
+
+          }
+
+        }
+      }
+      .tab{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 1200px;
+        height: 100%;
+        justify-content: space-between;
+        //border: 1px solid #F03D3D;
+
+      }
+      .main-left {
+        width: 40%;
+        height: 100%;
+        .left-top,.left-bottom{
+          width: 100%;
+          height: 50%;
+          //border: 1px solid #F03D3D;
+          display: flex;
+          flex-direction: row;
+          div:nth-child(1){
+            width: 20%;
+            //border: 1px solid #FFAD0B;
+            span{
+              width: 50px;
+              height: 80%;
+              //border:1px solid #000000;
+              font-family: jingDianXingShu;
+              color:#FFFFFF;
+              font-size: 18px;
+              letter-spacing: 1px;
+            }
+          }
+          div:nth-child(2){
+            width: 80%;
+            //border: 1px solid #FF7131;
+            padding-top: 50px;
+            display: flex;
+            flex-direction: column;
+            span{
+              font-family: jingDianXingShu;
+              font-size: 18px;
+              margin-top: 20px;
+            }
+          }
+        }
+      }
+      .main-middle{
+        width: 60%;
+        height: 100%;
+        >div{
+          width: 70%;
+          height: 90%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .spacial-tab{
+            width: 200px;
+            height: 40px;
+            color: #FFFFFF!important;
+            line-height: 40px;
+          }
+          span{
+            font-family: jingDianXingShu;
+            font-size: 18px;
+            text-align: center;
+            line-height: 30px;
+            margin-bottom: 30px;
+          }
+          span:nth-child(1){
+            color:#CF2E33;
+
+          }
+
+        }
+      }
+    }
+
+
+  }
+}

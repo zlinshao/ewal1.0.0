@@ -1,0 +1,185 @@
+@import "../../../common.scss";
+
+#theme_name {
+  .form_item_container{
+    .item_label{
+      width: 20%;
+    }
+    .item_content{
+      width: 80%;
+    }
+  }
+  #club {
+    .mainList {
+      width: 100%;
+      .list {
+        width: 100%;
+        padding-right: 80px;
+        padding-left: 80px;
+        padding-top: 30px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .list-info {
+          width: 50%;
+          padding: 20px;
+
+          .list-box {
+            width: 800px;
+            height: 100%;
+            background: #FFFFFF;
+            border-radius: 8px;
+            position: relative;
+            .list-modal{
+              width: 100%;
+              height: 100%;
+              background: #000000;
+              opacity: .5;
+              border-radius: 8px;
+              position: absolute;
+              top: 0;
+              left: 0;
+            }
+            .list-top {
+              img {
+                width: 100%;
+                height: 400px;
+                border-top-right-radius: 8px;
+                border-top-left-radius: 8px;
+              }
+            }
+
+            .list-middle {
+              width: 100%;
+              margin-bottom: 20px;
+              margin-top: 20px;
+              .list-middle-info{
+                padding-left: 30px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .list-middle-left {
+                  display: flex;
+                  flex-direction: column;
+                  span:nth-child(1){
+                    font-family: jingDianXingShu;
+                    font-size: 30px;
+                    margin-bottom: 10px;
+                  }
+                  span:nth-child(2){
+                    font-size: 14px;
+                    color: #DFDFE0;
+                  }
+                }
+                .list-middle-right{
+                  width: 126px;
+                  height: 40px;
+                  text-align: center;
+                  span{
+                    font-family: jingDianXingShu;
+                    font-size: 26px;
+                    line-height: 40px;
+                  }
+                }
+                .end{
+                  span{
+                    color:#686874;
+                  }
+                }
+                .process{
+                  span{
+                    color:#FFFFFF;
+                  }
+                }
+
+              }
+            }
+            .list-bottom{
+              width: 100%;
+              border-top:1px solid #F0F0F0;
+              padding-left: 30px;
+              padding-right: 30px;
+              .list-bottom-info{
+                padding-top: 20px;
+                padding-bottom: 20px;
+                span{
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  i{
+                    width: 20px;
+                    height: 20px;
+                    display: block;
+                    margin-right: 6px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+    }
+  ;
+
+    .action_info {
+      width: 100%;
+
+      > div {
+        width: 100%;
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  ;
+
+    .action_name {
+      border-bottom: 1px solid #F2F2F2;
+      width: 92%;
+      height: 80px;
+
+      div {
+        line-height: 80px;
+        display: inline-block;
+      }
+
+      .action_left {
+        font-family: "MicrosoftYaHei-Bold";
+        color: rgba(104, 104, 116, 1);
+        font-weight: bold;
+
+      }
+
+      .action_right {
+        margin-left: 100px;
+      }
+
+      .action_address {
+        padding-top: 20px;
+        line-height: 24px;
+        border-bottom: 0;
+      }
+
+
+    }
+  ;
+
+    .top_right_img {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      span {
+        font-family: "jingDianXingShu";
+        color: rgba(255, 255, 255, 1);
+        font-size: 17px;
+        margin-top: 6px;
+      }
+    }
+  }
+
+}

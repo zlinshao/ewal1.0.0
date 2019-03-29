@@ -143,7 +143,7 @@ export const newMedia = {
   type: 'newMedia',
   data:[
     {
-      url: 'club',
+      url: 'backClub',
       title: '俱乐部'
     },
     {
@@ -151,13 +151,73 @@ export const newMedia = {
       title: '企业头条'
     },
     {
-      url: 'humanity',
+      url: 'leJiaHumanity',
       title: '乐伽人文'
     },
     {
-      url: 'companyProfile',
+      url: '/profileHome',
       title: '公司资料'
     },
   ]
-}
+};
+//资料类型
+export const profileType = {
+    type:'profileType',
+    data:[
+        {
+            url: 'video',
+            title: '视频',
+        },
+        {
+            url: 'document',
+            title: '文档'
+        },
+    ]
+
+
+};
+//资料类型
+export const humanity = {
+    type:'humanity',
+    data:[
+        {
+            url: 'lejiaStars',
+            title: '乐伽之星',
+            letter:"Lejia Star"
+        },
+        {
+            url: 'excellentStaff',
+            title: '优秀员工',
+            letter:"Excellent Employee"
+        },
+        {
+            url: 'birthday',
+            title: '寿星墙  ',
+            letter:"Birthday"
+        },
+    ]
+
+};
+//企业头条
+export const headLines = {
+    type:'headLines',
+    data:[
+        {
+            url: '',
+            title: '热门导读',
+            letter:"Hot News"
+        },
+        {
+            url: '',
+            title: '乐伽新闻',
+            letter:"Excellent Employee"
+        },
+        {
+            url: '',
+            title: '公告  ',
+            letter:"Birthday"
+        },
+    ]
+
+};
 

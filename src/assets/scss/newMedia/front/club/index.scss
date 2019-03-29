@@ -1,0 +1,165 @@
+@import "../../../common.scss";
+#theme_name{
+  #club{
+    width: 100%;
+    .mainList{
+      width: 100%;
+      padding-top: 30px;
+      padding-left: 175px;
+      padding-right: 175px;
+      .club-lists{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .club-lists-info{
+          width: 50%;
+          padding: 20px 30px;
+          .club-box{
+            width: 100%;
+            background: #FFFFFF;
+            position: relative;
+            border-radius: 8px;
+            cursor: pointer;
+            .club-box-top{
+              width: 100%;
+              img{
+                width: 100%;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+              }
+            }
+            .club-box-middle{
+              width: 100%;
+              padding-left: 30px;
+              padding-top:20px ;
+              padding-bottom: 20px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
+              div:first-child{
+                p:first-child{
+                  font-family: jingDianXingShu;
+                  font-size: 28px;
+                  color:#686874
+                }
+                p:last-child{
+                  margin-top: 10px;
+                  span{
+                    font-size: 14px;
+                    color:#999999;
+                  }
+                }
+              }
+
+              div:last-child{
+                span{
+                  padding: 6px 20px;
+                  font-family: jingDianXingShu;
+                  font-size: 26px;
+
+                }
+              }
+
+            }
+            .club-box-bottom{
+              width: 100%;
+              padding: 10px 30px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
+              border-top: 1px solid #F0F0F0;
+              span{
+                color: #999999;
+                font-size: 14px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                i{
+                  font-style: normal;
+                  display: inline-block;
+                  width: 20px;
+                  height: 20px;
+                  margin-right: 6px;
+                }
+              }
+              span:last-child{
+                i:first-child{
+                  width: 100px;
+                  height: 30px;
+                  text-align: center;
+                  line-height: 30px;
+                }
+              }
+            }
+            .club-modal{
+                width: 100%;
+                height: 100%;
+                border-radius: 8px;
+                position: absolute;
+                top:0;
+                left:0;
+                background:rgba(0,0,0,1);
+                opacity: .5;
+
+
+
+            }
+          }
+        }
+
+      }
+
+    };
+    //俱乐部详情
+    .club-detail{
+      p{
+        text-align: left;
+        padding: 20px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        border-top:1px solid #F2F2F2;
+
+        sapn{
+          display: inline-block;
+          text-align: justify;
+        }
+        span:first-child{
+          width:20% ;
+          height: 100%;
+        }
+        span:last-child{
+          width:80% ;
+          height: 100%;
+          text-align: justify;
+
+        }
+      }
+      p:first-child{
+        border-top:0
+      }
+
+    }
+    .dengLong{
+      width: 60px;
+      height: 140px;
+      position: absolute;
+      top: 0;
+      right:50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      p:first-child{
+        font-size: 18px;
+        font-family: jingDianXingShu;
+      }
+
+    }
+  }
+
+}
