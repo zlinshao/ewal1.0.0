@@ -526,7 +526,7 @@
             <!--</div>-->
             <div class="lj-header-search">
               <i class="el-icon-search"></i>
-              <input placeholder="搜索物品名称/品牌" type="text"/>
+              <input placeholder="搜索采购人" type="text"/>
             </div>
 
             <!--<div class="icon-add"><b>+</b></div>-->
@@ -955,7 +955,9 @@
             this.$LjNotify('success',{
               title:'成功',
               message:'添加成功',
-            })
+            });
+            this.in_repository = false;
+            this.getRepositoryList();
           }
         });
       },
@@ -1120,6 +1122,7 @@
         this.currentTable = 'repository';
         this.$http.get(this.url + 'eam/eam', this.tableSettingData[this.currentTable].params).then(res => {
           //debugger
+          console.log(res);
           if (res.code == '20000') {
             for (let item of res.data.data) {
               //console.log(item);
@@ -1171,14 +1174,12 @@
 
       //获取维修表格详情
       getRepairList(item) {
-        //debugger
         this.currentTable = 'repair';
         this.tableSettingData.repair.table_dialog_visible = true;
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].tableData = [];
         let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 3}};
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
-          debugger
           if (res.code == '20000') {
             for (let item of res.data.data) {
               //console.log(item);
@@ -1200,30 +1201,23 @@
 
       //获取报废表格详情
       getUselessList(item) {
-        //debugger
         this.currentTable = 'useless';
         this.tableSettingData[this.currentTable].table_dialog_visible = true;
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].tableData = [];
         let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 4}};
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
-          debugger
           if (res.code == '20000') {
             for (let item of res.data.data) {
               //console.log(item);
               let obj = {
                 id: item.id,
-                department: item?.user?.org[0]?.name || '',
-                name: item?.user?.name || '',
-
+                department: item?.user?.org[0]?.name || '-',
+                name: item?.user?.name || '-',
                 uselessId: '报废编号',
                 responsiblePerson: '任责人',
                 repairCost: '维修费用',
                 settlement: '结算方式',
-
-
-                /*repairCost: item?.repair_price,
-                settlement:item?.payment_type==1?'现金结算':'工资扣款',*/
               }
               this.tableSettingData[this.currentTable].tableData.push(obj)
             }
@@ -1403,8 +1397,6 @@
           default:
             break;
         }
-        //this.getRepositoryList();
-        //console.log(`当前页: ${val}`);
       },
 
     },

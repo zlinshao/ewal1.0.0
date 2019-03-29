@@ -1,0 +1,10 @@
+@import "../../common.scss";
+
+#theme_name {
+  #orgChoose {
+    display: inline-block;
+    .iconInput {
+      @include flex('flex-center');
+    }
+  }
+}
