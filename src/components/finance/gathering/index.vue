@@ -7,10 +7,10 @@
                 </p>
                 <h1>收款</h1>
                 <h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}<i></i>
-          </span>
+            <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
+                  :class="{'chooseTab': chooseTab === item.id}">
+              {{item.title}}<i></i>
+            </span>
                 </h2>
             </div>
             <div class="items-center listTopRight">

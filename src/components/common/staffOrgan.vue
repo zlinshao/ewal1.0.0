@@ -101,7 +101,7 @@
     props: ['module', 'organData'],
     data() {
       return {
-        url: globalConfig.server,
+        url: globalConfig.humanResource_server,
         lj_visible: false,
         fullLoading: false,
         configure: {

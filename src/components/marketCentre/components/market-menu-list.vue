@@ -28,7 +28,7 @@
               market_list: [
                 {
                   title: '合同管理',
-                  url: '',
+                  url: '/contractManagement',
                   id: 1
                 },
                 {

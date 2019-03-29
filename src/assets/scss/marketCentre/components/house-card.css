@@ -141,7 +141,8 @@
     padding: 0 200px;
     position: relative; }
     #houseCard > div .content > div.cards {
-      flex-wrap: wrap; }
+      flex-wrap: wrap;
+      min-height: 650px; }
       #houseCard > div .content > div.cards > div {
         min-width: 20%; }
         #houseCard > div .content > div.cards > div .card {
@@ -291,6 +292,11 @@
           animation-delay: 4.5s; }
         #houseCard > div .content > div.cards > div .card_trans-19 {
           animation-delay: 4.75s; }
+    #houseCard > div .content > div.none_info {
+      text-align: center;
+      min-height: 60px;
+      font-size: 22px;
+      font-family: 'jingDianXingShu'; }
     #houseCard > div .content .page {
       text-align: center;
       margin: 20px auto; }

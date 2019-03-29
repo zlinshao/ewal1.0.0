@@ -11,7 +11,7 @@
         <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}">
             <div class="club-lists">
                 <div class="club-lists-info" v-for="(item,index) in clubData">
-                    <div class="club-box">
+                    <div class="club-box"  @click="handleClubDetail(item.status,item.id)">
                         <div class="club-box-top"><img src="../../../../assets/image/newMedia/theme1/active.png" alt=""></div>
                         <div class="club-box-middle">
                             <div>
@@ -24,50 +24,40 @@
                         </div>
                         <div class="club-box-bottom">
                             <span><i></i>{{item.day}}</span>
-                            <span><i :class="item.status===1?'post':'unPost'"  @click.stop="look_visible = true">{{item.status===1?'已报名':'我要报名'}}</i><i></i>{{item.viewCount}}</span>
+                            <span><i :class="item.status===1?'post':'unPost'"  @click="look_visible = true;clubStatus=item.status">{{item.status===1?'已报名':'我要报名'}}</i><i></i>{{item.viewCount}}</span>
                         </div>
                         <div class="club-modal" v-if="item.status===1"></div>
-
                     </div>
                 </div>
             </div>
-
-
         </div>
         <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
-        <!--详情-->
-        <lj-dialog :visible="look_visible" :size="{width:1200 + 'px',height: '620' + 'px'}" @close="look_visible = false">
-            <div class="action_info">
-                <h3 class="justify-start">活动详情</h3>
-                <div>
-                    <div class="action_name" >
-                        <div class="action_left" style="width: 70px;float: left">活动名称</div>
-                        <div class="action_right" style="width: 860px;text-align: left;float: left">！sdfdsfds发个广告所发生的</div>
-                    </div>
-                    <div class="action_name" >
-                        <div class="action_left" style="width: 70px;float: left">活动时间</div>
-                        <div class="action_right" style="width: 860px;text-align: left;float: left">sdfdsfds发个广告所发生的！</div>
-                    </div>
-                    <div class="action_name" >
-                        <div class="action_left" style="width: 70px;float: left">活动地址</div>
-                        <div class="action_right" style="width: 860px;text-align: left;float: left">sdfdsfds发个广告所发生的！</div>
-                    </div>
-                    <div class="action_name" style="border-bottom: 0">
-                        <div class="action_left" style="width: 70px;float: left">活动地址</div>
-                        <div class="action_right action_address" style="width: 860px;text-align: left;float: left;height: 100px">第三届乐伽羽毛球大赛火热报名中！第三届乐伽羽毛球大赛火热报名中第三届乐伽第三届乐伽羽毛球大赛火热报名中羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽第三届乐伽羽毛球大赛火热报名中羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中</div>
-                    </div>
 
+        <!--详情-->
+        <lj-dialog :visible="look_visible" :size="{width: 1000 + 'px',height: 650 + 'px'}"
+                   @close="look_visible = false" style="position: relative">
+            <div class="dialog_container" style="padding-top: 20px">
+                <div class="dialog_header">
+                    <h3>活动详情</h3>
+                </div>
+                <div class="dialog_main">
+                    <div class="club-detail">
+                        <p v-for="item in clubDetail">
+                            <span>{{item.title}}</span>
+                            <span>{{item.content}}</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="dialog_footer" v-show="clubStatus===2">
+                    <el-button type="danger" size="small" @click="">我要报名</el-button>
+                    <el-button type="info" size="small" @click="look_visible = false;current_row = ''">取消</el-button>
                 </div>
             </div>
-            <div style="position: absolute;bottom:50px;left:0;right:0;">
-                <el-button type="danger" size="" @click="end_action_visible = true">结束活动</el-button>
-            </div>
-            <div class="top_right_img" style="width:60px;height:140px;position: absolute;top:0;right:90px;">
-                <span>已报名</span>
-                <span>333</span>
-            </div>
 
-
+            <div class="dengLong">
+                <p>已报名</p>
+                <p>666</p>
+            </div>
         </lj-dialog>
 
     </div>
@@ -87,6 +77,13 @@
         },
         data() {
             return {
+                clubStatus:'',
+                clubDetail:[
+                    {title:'活动名称',content:'第三届乐伽羽毛球大赛火热报名中！'},
+                    {title:'活动时间',content:'2018.02.10-2108.02.16'},
+                    {title:'活动地点',content:'大会议室'},
+                    {title:'活动内容',content:'这个是内容吃吃吃吃吃答 答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的等待等待的点点滴滴答 滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答的等待滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的 滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的等待滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴 答答的的等待这个是内容吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃 答的滴滴答答滴滴答答滴滴答答滴滴答答的多的滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答 的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的等待等待的点点滴滴答 滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答的等待滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的 滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的等待滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴 答答的的等待的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答答答滴滴答答滴滴答滴滴答答的 滴滴答答滴滴答答滴滴答答滴滴答滴滴'},
+                ],
                 showFinMenuList: false,
                 showModal:false,
                 showData:{
@@ -106,6 +103,7 @@
                         endTime:'2018.04.12',
                         viewCount:118,
                         day:'8天前',
+                        id:1
 
                     },
                     {
@@ -116,6 +114,7 @@
                         endTime:'2018.04.12',
                         viewCount:118,
                         day:'8天前',
+                        id:2
 
                     },
                     {
@@ -126,6 +125,7 @@
                         endTime:'2018.04.12',
                         viewCount:118,
                         day:'8天前',
+                        id:3
 
                     },
                     {
@@ -136,7 +136,7 @@
                         endTime:'2018.04.12',
                         viewCount:118,
                         day:'8天前',
-
+                        id:4
                     },
                     {
                         actionImg:'',
@@ -146,17 +146,19 @@
                         endTime:'2018.04.12',
                         viewCount:118,
                         day:'8天前',
-
+                        id:5
                     },
                 ],
                 look_visible:false,//详情
                 end_visible:false,//结束
                 add_visible:false,//新增
-
             }
         },
         methods:{
-
+            handleClubDetail(status,id){
+                this.clubStatus = status;
+                this.look_visible= true;
+            }
         }
     }
 </script>
@@ -243,6 +245,10 @@
                 }
 
             }
+        }
+
+        .dengLong{
+            @include clubImg('theme1','denglong.png');
         }
 
 
