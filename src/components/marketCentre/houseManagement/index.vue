@@ -198,7 +198,9 @@
                 suggest_price: '',
                 suggest_id: [],
                 bottom_name: '',
-                suggest_name: ''
+                suggest_name: '',
+                bottom_type: '',
+                suggest_type: ''
               },
 
               //搜索房源visible
@@ -431,13 +433,14 @@
               bottom_id: [],
               suggest_price: '',
               suggest_id: [],
-              suggest_name: ''
+              suggest_name: '',
+              bottom_type: '',
+              suggest_type: ''
             };
             this.set_price_visible = false;
           },
           handleSubmitSetPrice() {
             this.$http.post(this.market_server + '/v1.0/market/house/houseBottSuggPrice',this.set_price_form).then(res => {
-              console.log(res);
               if (res.code === 200) {
                 this.$LjNotify('success',{
                   title: '成功',
@@ -464,8 +467,10 @@
                 house.map(item => {
                   this.set_price_form.bottom_name += item.house_name + ',';
                   if (type === 'house') {
+                    this.set_price_form.bottom_type = 1;
                     this.set_price_form.bottom_id.push(item.house_id);
                   } else {
+                    this.set_price_form.bottom_type = 2;
                     this.set_price_form.bottom_id.push(item.village_id);
                   }
                 });
@@ -476,8 +481,10 @@
                 house.map(item => {
                   this.set_price_form.suggest_name += item.house_name;
                   if (type === 'house') {
+                    this.set_price_form.suggest_type = 1;
                     this.set_price_form.suggest_id.push(item.house_id);
                   } else {
+                    this.set_price_form.suggest_type = 2;
                     this.set_price_form.suggest_id.push(item.village_id);
                   }
                 });

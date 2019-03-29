@@ -5,7 +5,7 @@
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
           <p class="flex-center">
-            <b>...</b>
+            <b @click="show_market = true;show_shadow = true">...</b>
           </p>
           <h1>合同管理</h1>
           <h2 class="items-center">
@@ -69,17 +69,22 @@
     </div>
 
     <SearchHigh :module="highVisible" :show-data="searchData" @close="handleCloseHigh"></SearchHigh>
+    <MarketMenuList :show-market="show_market" :show-shadow="show_shadow" @close="handleCloseMenu"></MarketMenuList>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue';
+  import MarketMenuList from '../components/market-menu-list.vue';
 
   export default {
     name: "index",
-    components: { SearchHigh },
+    components: { SearchHigh,MarketMenuList },
     data() {
       return {
+        show_market: false,
+        show_shadow: false,
+
         market_server: globalConfig.market_server,
         selects: [
           {
@@ -124,6 +129,10 @@
     watch: {},
     computed: {},
     methods: {
+      handleCloseMenu() {
+        this.show_market = false;
+        this.show_shadow = false;
+      },
       //获取合同列表
       getContractList() {
         this.params.contract_type = this.chooseTab;
