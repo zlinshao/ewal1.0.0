@@ -101,7 +101,6 @@
       //更新状态
       update() {
         let queryParams = this.getQueryParams();
-        this.dropdown_list = caches;
         this.request(queryParams);
       }
     },

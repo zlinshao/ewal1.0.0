@@ -13,7 +13,7 @@
             </div>
           </div>
           <div class="search-bar">
-            <div class="search-bar-item icons-category"></div>
+<!--            <div class="search-bar-item icons-category"></div>-->
             <div class="search-bar-item icons-add"></div>
             <div class="search-bar-item icons-search"></div>
           </div>

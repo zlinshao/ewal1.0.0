@@ -1,6 +1,6 @@
 <template>
   <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
-    <el-input @focus="staffModule = true" v-model="inputContent"></el-input>
+    <el-input @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
     <StaffOrgan :module="staffModule" :organ-data="organData" @close="hiddenOrgan"></StaffOrgan>
   </div>
 </template>
@@ -10,7 +10,7 @@
 
   export default {
     name: "UserChoose",
-    props:['value','width','num'],
+    props: ['value', 'width', 'num','title'],
     components: {
       StaffOrgan
     },
@@ -20,7 +20,7 @@
         organData: {
           //num:1,
         },// 组织架构配置 选择数量 num
-        inputContent:'',
+        inputContent: '',
         dropdownListWidth: 320
       }
     },
@@ -35,7 +35,7 @@
       },
       num: {
         handler(val, oldVal) {
-          if(val) {
+          if (val) {
             this.organData.num = parseInt(val);
           }
         },
@@ -48,13 +48,15 @@
         this.staffModule = false;
         if (ids !== 'close') {
           this.inputContent = names;
-          this.$emit('input',ids);
+          this.$emit('input', ids);
         }
       },
     }
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  #userChoose {
+    display: inline-block;
+  }
 </style>
