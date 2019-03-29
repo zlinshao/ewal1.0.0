@@ -293,20 +293,20 @@
                 <p class="choose-goods-icon"></p>
               </div>
               <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
-                    @click="add_goods_form_visible = true">+</span>
+                    @click="add_goods_form_visible = true;">+</span>
             </el-form-item>
             <el-form-item label="数量">
-              <el-input v-model="in_repository_form.counts" placeholder="请输入数量" style="width: 320px">
+              <el-input v-model.number="in_repository_form.counts" placeholder="请输入数量" style="width: 320px">
               </el-input>
             </el-form-item>
             <el-form-item label="存放位置">
-              <el-select @change="handleInRepositorySelectionChange" v-model="in_repository_form.department"
+              <el-select v-model="in_repository_form.department"
                          placeholder="存储类型" style="width: 120px;display: inline-block">
                 <el-option :value="'user'" label="人员"></el-option>
                 <el-option :value="'org'" label="部门"></el-option>
               </el-select >
-              <user-choose v-if="in_repository_form.department=='user'" v-model="in_repository_form.location" width="196" num="1"></user-choose>
-              <org-choose v-if="in_repository_form.department=='org'" v-model="in_repository_form.location" width="196" num="1"></org-choose>
+              <user-choose v-if="in_repository_form.department==='user'" v-model="in_repository_form.location" width="196" num="1" title="请选择人员"></user-choose>
+              <org-choose v-if="in_repository_form.department==='org'" v-model="in_repository_form.location" width="196" num="1" title="请选择部门"></org-choose>
               <!--<el-select @change="handleInRepositorySelectionChange" v-model="in_repository_form.department" placeholder="存储类型" style="width: 120px">
                 <el-option :value="'user'" label="人员"></el-option>
                 <el-option :value="'org'" label="部门"></el-option>
@@ -315,22 +315,22 @@
                          :placeholder="in_repository_placeholder"></el-input>-->
             </el-form-item>
             <el-form-item label="采购人">
-              <user-choose v-model="in_repository_form.purchasePerson" num="1"></user-choose>
+              <user-choose v-model="in_repository_form.purchasePerson" num="1" title="请选择采购人"></user-choose>
               <!--<el-select v-model="in_repository_form.purchasePerson" placeholder="请输入采购人" style="width: 320px">
                 <el-option :value="1" label="采购人1"></el-option>
               </el-select>-->
             </el-form-item>
             <el-form-item label="单价">
-              <el-input v-model="in_repository_form.price" placeholder="请输入单价" style="width: 320px">
+              <el-input v-model.number="in_repository_form.price" placeholder="请输入单价" style="width: 320px">
               </el-input>
             </el-form-item>
             <el-form-item label="总价">
-              <el-input v-model="in_repository_form.totalPrice" placeholder="请输入总价" style="width: 320px">
+              <el-input v-model.number="in_repository_form.totalPrice" placeholder="请输入总价" style="width: 320px">
               </el-input>
             </el-form-item>
             <el-form-item label="采购源">
               <dropdown-list ref="categoryDropdown5" :url="`${this.url}eam/category`" title="必选" code="5"
-                             v-model="add_goods_form.resource"></dropdown-list>
+                             v-model="in_repository_form.resource"></dropdown-list>
               <!--<el-input v-model="in_repository_form.resource" placeholder="请选择采购源" style="width: 320px">
               </el-input>-->
               <span class="btn_add" @click="addCategory(5)">+</span>
@@ -446,7 +446,7 @@
               <span class="btn_add" @click="addCategory(1)">+</span>
             </el-form-item>
             <el-form-item label="品牌" required>
-              <dropdown-list ref="categoryDropdown2" :url="`${this.url}eam/category`" title="必选" code="3"
+              <dropdown-list ref="categoryDropdown3" :url="`${this.url}eam/category`" title="必选" code="3"
                              v-model="add_goods_form.brand"></dropdown-list>
               <span class="btn_add" @click="addCategory(3)">+</span>
             </el-form-item>
@@ -463,7 +463,7 @@
             </el-form-item>
 
             <el-form-item label="预警数量" required>
-              <el-input v-model="add_goods_form.counts" placeholder="必填" style="width: 320px">
+              <el-input v-model.number="add_goods_form.counts" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
 
@@ -838,6 +838,7 @@
           purchasePerson: '',
           price: '',//单价
           totalPrice: '',//总价
+          resource:'',//采购源
           remark: '',//备注
         },
 
@@ -928,46 +929,33 @@
     },
     computed: {},
     methods: {
-      //处理入库表单 选择人员/部门切换组件功能
-      handleInRepositorySelectionChange() {
-        this.staffModule = false;
-        this.departModule = false;
-        if (this.in_repository_form?.department == 'org') {
-          this.in_repository_placeholder = '请选择部门';
-        } else {
-          this.in_repository_placeholder = '请选择人员';
-        }
-      },
 
       //入库表单提交
       inRepository() {
         debugger
         console.log(this.in_repository_form);
-        /*this.in_repository_form = {
-          goods: '',
-        };*/
 
         let params = {
-          category_id: 5,
-          number: 16,
-          unit_price: 3000,
-          total_price: 36000,
-          source_id: 6,
-          purchaser_id: 289,
-          location_type: 'user',
-          location_id: [289],
-          /*picture: [
-            21321,
-            3421,
-            3211
-          ]*/
+          category_id: this.in_repository_form.goods,
+          number: this.in_repository_form.counts,
+          unit_price: this.in_repository_form.price,
+          total_price: this.in_repository_form.totalPrice,
+          source_id: this.in_repository_form.resource,
+          purchaser_id: this.in_repository_form.purchasePerson.join(),
+          location_type: this.in_repository_form.department,
+          location_id: this.in_repository_form.location,
+          remark: this.in_repository_form.remark,
         };
-
-        this.$http.post(`${this.url}eam/storage`, params).then(res => {
+        let urls = `${this.url}eam/storage`;
+        debugger
+        this.$http.post(urls, params).then(res => {
           debugger
           console.log(res);
-          if (res.code == '20020') {
-            this.$LjNotify()
+          if (res.code.endsWith('0')) {
+            this.$LjNotify('success',{
+              title:'成功',
+              message:'添加成功',
+            })
           }
         });
       },
@@ -1005,6 +993,7 @@
                   message: '删除成功'
                 });
               }
+              this.$refs.categoryDropdown2.update();//更新
             }).catch(err => {
               this.$LjNotify('error', {
                 title: '失败',
@@ -1039,8 +1028,9 @@
               }
               this.chooseGoodsData.push(obj)
             }
+            this.tableSettingData[this.currentTable].counts = res.data.count;
           }
-          this.tableSettingData[this.currentTable].counts = res.data.count;
+
         })
       },
 
@@ -1070,7 +1060,8 @@
               message: res.msg,
             });
           }
-          console.log(res);
+          this.$refs.categoryDropdown2.update();//更新
+          //console.log(res);
         });
       },
 
@@ -1164,12 +1155,12 @@
               //console.log(item);
               let obj = {
                 id: item.id,
-                department: item?.user?.org[0]?.name || '',
+                department: item?.user?.org[0]?.name || '-',
                 name: item?.user?.name || '',
                 applyType: item?.goods?.type == '1' ? '领用' : '借用',
-                applyTime: item?.process?.apply_time || '',
-                takeTime: item?.receive_time || '',
-                returnTime: item?.return_date || '',
+                applyTime: item?.process?.apply_time || '-',
+                takeTime: item?.receive_time || '-',
+                returnTime: item?.return_date || '-',
               }
               this.tableSettingData[this.currentTable].tableData.push(obj)
             }

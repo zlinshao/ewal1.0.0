@@ -1,6 +1,6 @@
 <template>
   <div id="orgChoose" :style="{width:`${this.dropdownListWidth}px`}">
-    <el-input @focus="departModule = true" v-model="inputContent"></el-input>
+    <el-input @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
     <DepartOrgan :module="departModule" :organ-data="organData" @close="hiddenOrgan"></DepartOrgan>
   </div>
 </template>
@@ -10,7 +10,7 @@
 
   export default {
     name: "OrgChoose",
-    props: ['value', 'width', 'num'],
+    props: ['value', 'width', 'num','title'],
     components: {
       DepartOrgan
     },
