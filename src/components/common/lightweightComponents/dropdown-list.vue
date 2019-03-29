@@ -3,7 +3,7 @@
     <el-select
       :popper-class="'appTheme' + themeName"
       :value="dropdown_code" @input="handleInputEvent" clearable :placeholder="title"
-               @change="changeSelection">
+      @change="changeSelection">
       <el-option v-for="item in dropdown_list"
                  :key="item.id"
                  :label="item.name"
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+  import storage from '../../../utils/storage';
+
   export default {
     name: "dropdown-list",
     props: {
@@ -21,7 +23,8 @@
       width: [Number, String],//宽度
       code: [String, Number],
       title: String,
-      url: [String]  //请求地址
+      url: [String],  //请求地址
+      params: [Object, String],
     },
     data() {
       return {
@@ -62,23 +65,43 @@
       changeSelection(val) {
         this.$emit('change-selection', val);
       },
-      getDropdownList() {
-        //debugger
-        //this.$http.get(`${this.url}eam/category`,
-        this.$http.get(this.url,
-          {
-            'type': this.code
-          }).then((res) => {
-          if (res.code == "20000") {
+      getQueryParams() {
+        let queryParams;
+        if (this.code) {
+          queryParams = {'type': this.code};
+        } else if (this.params) {
+          queryParams = this.params;
+        } else {
+          queryParams = {};
+        }
+        return queryParams;
+      },
+      request(queryParams) {
+        this.$http.get(this.url, queryParams).then((res) => {
+          if (res.code.endsWith('0')) {
             this.dropdown_list = res.data.data;
+            let keys = this.url + JSON.stringify(queryParams);
+            storage.set(keys, this.dropdown_list);
           } else {
             console.log("获取类型失败");
           }
         });
       },
+      getDropdownList() {
+        //this.$http.get(`${this.url}eam/category`,
+        let queryParams = this.getQueryParams();
+        let keys = this.url + JSON.stringify(queryParams);
+        let caches = storage.get(keys);
+        if (caches) {
+          this.dropdown_list = caches;
+        } else {
+          this.request(queryParams);
+        }
+      },
       //更新状态
       update() {
-        this.getDropdownList();
+        let queryParams = this.getQueryParams();
+        this.request(queryParams);
       }
     },
     mounted() {

@@ -147,7 +147,8 @@
       font-family: jingDianXingShu; }
 #theme_name #hotNewsDetail .detail-main {
   padding-top: 100px;
-  padding-left: 100px; }
+  padding-left: 100px;
+  overflow: hidden; }
   #theme_name #hotNewsDetail .detail-main > h3 {
     font-family: jingDianXingShu;
     font-size: 28px;

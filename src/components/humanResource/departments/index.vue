@@ -55,6 +55,12 @@
           <span class="writingMode" :title="item.name">
             {{item.name}}
           </span>
+          <a class="control flex-center">
+            <i class="el-icon-delete" @click.self.stop="handleDelDepart(item)"></i>
+            <i class="el-icon-edit" @click.self.stop="handleOpenEditDepart(item)"></i>
+            <i class="el-icon-back" @click.self.stop="handleOpenBackParent(item)"></i>
+            <i class="el-icon-view" @click.self.stop="handleOpenLookInfo(item)"></i>
+          </a>
         </p>
       </div>
       <footer class="flex-center bottomPage">
@@ -88,7 +94,7 @@
     <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
-          <h3>新增部门</h3>
+          <h3>{{ is_edit_depart ? '编辑部门' : '添加部门'}}</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
           <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible">
@@ -133,6 +139,22 @@
 
     <!--部门选择-->
     <DepartOrgan :module="chooseDepart" @close="handleGetDepart"></DepartOrgan>
+
+    <!--确定删除部门-->
+    <lj-dialog :visible="del_depart_visible" :size="{width: 400 + 'px',height: 250 + 'px'}">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确定</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定删除该部门吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleSubmitDel">确定</el-button>
+          <el-button type="info" size="small" @click="del_depart_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -168,6 +190,11 @@
     },
     data() {
       return {
+        del_depart_visible: false,
+        del_depart: '',
+        is_edit_depart: false,
+        edit_depart: '',
+
         departList: [], //部门列表
         departCount: 0,
         params: {
@@ -261,6 +288,51 @@
       },
     },
     methods: {
+      handleOpenLookInfo(val) {
+        this.departModule = true;
+        this.departInfo = val;
+      },
+      //返回上级
+      handleOpenBackParent(item) {
+        this.params.parent_id = item.parent_org && item.parent_org.parent_id || 1;
+        this.getDepartList();
+      },
+      handleOpenEditDepart(item) {
+        this.edit_depart = item;
+        this.departForm.name = item.name;
+        this.departForm.leader = item.leader && item.leader.name || '';
+        this.departForm.leader_id = item.leader_id;
+        this.departForm.parent = item.parent_org && item.parent_org.name || '';
+        this.departForm.parent_id = item.parent_id;
+        this.is_edit_depart = true;
+        this.lj_size = {
+          width: '510px',
+          height: '450px',
+        };
+        this.depart_visible = true;
+      },
+      handleSubmitDel() {
+        this.$http.delete(`organization/organization/${this.del_depart.id}`).then(res => {
+          if (res.code === '20040') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.del_depart_visible = false;
+            this.getDepartList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      //删除部门
+      handleDelDepart(item) {
+        this.del_depart = item;
+        this.del_depart_visible = true;
+      },
       //更改params
       handleChangeParams(val) {
         this.staff_params = {
@@ -288,12 +360,19 @@
          parent_id: [1],
          parent: ''
        };
+       this.is_edit_depart = false;
        this.depart_visible = false;
       },
       //确定添加部门
       handleSubmitAddDepart() {
+        if (this.is_edit_depart) {
+          this.$http.put(`organization/organization/${this.edit_depart.id}`,this.departForm).then(res => {
+            this.getDepartList();
+            this.handleCancelAddDepart();
+          });
+          return false;
+        }
         this.$http.post('organization/organization',this.departForm).then(res => {
-          console.log(res);
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -333,14 +412,11 @@
         this.$store.dispatch('route_animation');
       },
       // 部门管理列表
-      getDepartList() {
+      getDepartList(val) {
         this.$http.get('organization/organization',this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;
             this.departCount = res.data.count;
-          } else {
-            this.departList = [];
-            this.departCount = 0;
           }
         })
       },
@@ -358,8 +434,8 @@
       },
       // 部门管理
       showDepartManage(val) {
-        this.departModule = true;
-        this.departInfo = val;
+        this.params.parent_id = val.id;
+        this.getDepartList(val);
       },
       // 高级搜索
       highSearch(val) {
