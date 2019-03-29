@@ -72,7 +72,8 @@
           this.configure.num = val ? (val.num ? val.num : Infinity) : Infinity;
           this.checkList = val ? (val.arr ? val.arr : []) : [];
         },
-        deep: true
+        deep: true,
+        immediate: true
       }
     },
     computed: {},

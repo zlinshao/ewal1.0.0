@@ -1,8 +1,7 @@
 <template>
-  <div id="userChoose">
-    <el-input @focus="staffModule = true" v-model="input"></el-input>
-
-    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
+  <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
+    <el-input @focus="staffModule = true" v-model="inputContent"></el-input>
+    <StaffOrgan :module="staffModule" :organ-data="organData" @close="hiddenOrgan"></StaffOrgan>
   </div>
 </template>
 
@@ -11,32 +10,45 @@
 
   export default {
     name: "UserChoose",
-    props:['value'],
+    props:['value','width','num'],
     components: {
       StaffOrgan
     },
     data() {
       return {
         staffModule: false,
-        organData: {},// 组织架构配置 选择数量 num
-        organKey: '',
-
-
-
+        organData: {
+          //num:1,
+        },// 组织架构配置 选择数量 num
+        inputContent:'',
+        dropdownListWidth: 320
+      }
+    },
+    watch: {
+      width: {
+        handler(val, oldVal) {
+          if (val) {
+            this.dropdownListWidth = val;
+          }
+        },
+        immediate: true//第一次绑定也执行
+      },
+      num: {
+        handler(val, oldVal) {
+          if(val) {
+            this.organData.num = parseInt(val);
+          }
+        },
+        immediate: true//第一次绑定也执行
       }
     },
     methods: {
-      // 关闭 选择人员
+      // 关闭 选择部门
       hiddenOrgan(ids, names, arr) {
-        //debugger
-        console.log(ids,names,arr);
-
         this.staffModule = false;
         if (ids !== 'close') {
-          debugger
-
-          this.params[this.organKey] = ids;
-          this.showName[this.organKey] = names;
+          this.inputContent = names;
+          this.$emit('input',ids);
         }
       },
     }

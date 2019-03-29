@@ -299,7 +299,8 @@
               </el-input>
             </el-form-item>
             <el-form-item label="存放位置">
-
+<!--            <user-choose v-model="in_repository_form.location" num="1"></user-choose>-->
+            <org-choose v-model="in_repository_form.location" num="1"></org-choose>
               <!--<el-select @change="handleInRepositorySelectionChange" v-model="in_repository_form.department" placeholder="存储类型" style="width: 120px">
                 <el-option :value="'user'" label="人员"></el-option>
                 <el-option :value="'org'" label="部门"></el-option>
@@ -427,8 +428,10 @@
         <div class="dialog_main borderNone">
           <el-form :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
             <el-form-item label="分类" required>
-              <dropdown-list ref="categoryDropdown1" :url="`${this.url}eam/category`" title="必选" code="1"
+              <dropdown-list ref="categoryDropdown1" :url="`${this.url}eam/category`" title="必选" :params="{'type':'1'}"
                              v-model="add_goods_form.classify"></dropdown-list>
+<!--              <dropdown-list ref="categoryDropdown1" :url="`${this.url}eam/category`" title="必选" code="1"-->
+<!--                             v-model="add_goods_form.classify"></dropdown-list>-->
               <span class="btn_add" @click="addCategory(1)">+</span>
             </el-form-item>
             <el-form-item label="品牌" required>
@@ -631,15 +634,18 @@
   import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import LjDialogImg from '../components/lj-dialog-img';//用于显示二维码图片
   import OrgChoose from '../../../common/lightweightComponents/OrgChoose';
+  import UserChoose from "../../../common/lightweightComponents/UserChoose";
 
 
   export default {
     name: "index",
     props: ['searchVal', 'in_repository_visible'],
     components: {
+      UserChoose,
       LjDialog,
       LjDialogImg,
       DropdownList,
+      OrgChoose
     },
     data() {
       return {
@@ -927,9 +933,10 @@
       //入库表单提交
       inRepository() {
         debugger
-        this.in_repository_form = {
+        console.log(this.in_repository_form);
+        /*this.in_repository_form = {
           goods: '',
-        };
+        };*/
 
         let params = {
           category_id: 5,
