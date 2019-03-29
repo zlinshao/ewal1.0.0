@@ -264,7 +264,8 @@
 
         <div class="dialog_footer">
           <el-button size="small" type="danger">确定</el-button>
-          <el-button size="small" type="info" @click="tableSettingData.useless.table_dialog_visible = false">取消</el-button>
+          <el-button size="small" type="info" @click="tableSettingData.useless.table_dialog_visible = false">取消
+          </el-button>
         </div>
       </div>
     </lj-dialog>
@@ -295,12 +296,17 @@
                     @click="add_goods_form_visible = true">+</span>
             </el-form-item>
             <el-form-item label="数量">
-              <el-input v-model="in_repository_form.goods" placeholder="请输入数量" style="width: 320px">
+              <el-input v-model="in_repository_form.counts" placeholder="请输入数量" style="width: 320px">
               </el-input>
             </el-form-item>
             <el-form-item label="存放位置">
-<!--            <user-choose v-model="in_repository_form.location" num="1"></user-choose>-->
-            <org-choose v-model="in_repository_form.location" num="1"></org-choose>
+              <el-select @change="handleInRepositorySelectionChange" v-model="in_repository_form.department"
+                         placeholder="存储类型" style="width: 120px;display: inline-block">
+                <el-option :value="'user'" label="人员"></el-option>
+                <el-option :value="'org'" label="部门"></el-option>
+              </el-select >
+              <user-choose v-if="in_repository_form.department=='user'" v-model="in_repository_form.location" width="196" num="1"></user-choose>
+              <org-choose v-if="in_repository_form.department=='org'" v-model="in_repository_form.location" width="196" num="1"></org-choose>
               <!--<el-select @change="handleInRepositorySelectionChange" v-model="in_repository_form.department" placeholder="存储类型" style="width: 120px">
                 <el-option :value="'user'" label="人员"></el-option>
                 <el-option :value="'org'" label="部门"></el-option>
@@ -309,9 +315,10 @@
                          :placeholder="in_repository_placeholder"></el-input>-->
             </el-form-item>
             <el-form-item label="采购人">
-              <el-select v-model="in_repository_form.purchasePerson" placeholder="请输入采购人" style="width: 320px">
+              <user-choose v-model="in_repository_form.purchasePerson" num="1"></user-choose>
+              <!--<el-select v-model="in_repository_form.purchasePerson" placeholder="请输入采购人" style="width: 320px">
                 <el-option :value="1" label="采购人1"></el-option>
-              </el-select>
+              </el-select>-->
             </el-form-item>
             <el-form-item label="单价">
               <el-input v-model="in_repository_form.price" placeholder="请输入单价" style="width: 320px">
@@ -428,10 +435,14 @@
         <div class="dialog_main borderNone">
           <el-form :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
             <el-form-item label="分类" required>
+
+
               <dropdown-list ref="categoryDropdown1" :url="`${this.url}eam/category`" title="必选" :params="{'type':'1'}"
                              v-model="add_goods_form.classify"></dropdown-list>
-<!--              <dropdown-list ref="categoryDropdown1" :url="`${this.url}eam/category`" title="必选" code="1"-->
-<!--                             v-model="add_goods_form.classify"></dropdown-list>-->
+
+
+              <!--              <dropdown-list ref="categoryDropdown1" :url="`${this.url}eam/category`" title="必选" code="1"-->
+              <!--                             v-model="add_goods_form.classify"></dropdown-list>-->
               <span class="btn_add" @click="addCategory(1)">+</span>
             </el-form-item>
             <el-form-item label="品牌" required>
@@ -624,8 +635,6 @@
     </lj-dialog-img>
 
 
-
-
   </div>
 </template>
 
@@ -766,7 +775,7 @@
 
         formSettingData: {
           inRepository: {
-            placeholder:'请选择人员',
+            placeholder: '请选择人员',
           }
         },
 
@@ -820,7 +829,7 @@
 
         //入库form
         in_repository: false,
-        in_repository_placeholder:'请选择人员',
+        in_repository_placeholder: '请选择人员',
         in_repository_form: {//入库form表单
           goods: '',
           counts: '',//数量
@@ -923,9 +932,9 @@
       handleInRepositorySelectionChange() {
         this.staffModule = false;
         this.departModule = false;
-        if(this.in_repository_form?.department=='org') {
+        if (this.in_repository_form?.department == 'org') {
           this.in_repository_placeholder = '请选择部门';
-        }else {
+        } else {
           this.in_repository_placeholder = '请选择人员';
         }
       },
@@ -1176,7 +1185,7 @@
         this.tableSettingData.repair.table_dialog_visible = true;
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].tableData = [];
-        let params = {...this.tableSettingData[this.currentTable].params,...{goods_status:3}};
+        let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 3}};
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
           debugger
           if (res.code == '20000') {
@@ -1187,7 +1196,7 @@
                 department: item?.user?.org[0]?.name || '',
                 name: item?.user?.name || '',
                 repairCost: item?.repair_price,
-                settlement:item?.payment_type==1?'现金结算':'工资扣款',
+                settlement: item?.payment_type == 1 ? '现金结算' : '工资扣款',
               }
               this.tableSettingData[this.currentTable].tableData.push(obj)
             }
@@ -1205,7 +1214,7 @@
         this.tableSettingData[this.currentTable].table_dialog_visible = true;
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].tableData = [];
-        let params = {...this.tableSettingData[this.currentTable].params,...{goods_status:4}};
+        let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 4}};
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
           debugger
           if (res.code == '20000') {
@@ -1233,7 +1242,6 @@
 
         })
       },
-
 
 
       handleChangeDate(id) {

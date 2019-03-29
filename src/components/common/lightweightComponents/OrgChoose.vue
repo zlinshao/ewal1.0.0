@@ -10,7 +10,7 @@
 
   export default {
     name: "OrgChoose",
-    props:['value','width','num'],
+    props: ['value', 'width', 'num'],
     components: {
       DepartOrgan
     },
@@ -20,7 +20,7 @@
         organData: {
           //num:1,
         },// 组织架构配置 选择数量 num
-        inputContent:'',
+        inputContent: '',
         dropdownListWidth: 320
       }
     },
@@ -35,7 +35,7 @@
       },
       num: {
         handler(val, oldVal) {
-          if(val) {
+          if (val) {
             this.organData.num = parseInt(val);
           }
         },
@@ -48,13 +48,15 @@
         this.departModule = false;
         if (ids !== 'close') {
           this.inputContent = names;
-          this.$emit('input',ids);
+          this.$emit('input', ids);
         }
       },
     }
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  #orgChoose {
+    display: inline-block;
+  }
 </style>
