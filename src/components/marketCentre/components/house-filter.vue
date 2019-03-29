@@ -218,10 +218,10 @@
     methods: {
       handleSubmitChoose(type) {
         if (type === 'house') {
-          this.$emit('close',this.house_choose_items);
+          this.$emit('close',this.house_choose_items,type);
           this.handleResetHouse();
         } else {
-          this.$emit('close',this.show_office);
+          this.$emit('close',this.show_office,type);
           this.handleResetOffice();
         }
       },

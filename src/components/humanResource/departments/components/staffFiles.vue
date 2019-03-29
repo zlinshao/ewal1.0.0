@@ -25,7 +25,7 @@
               <p @click="filesInfo('grow')" :class="{'hover': filesStatus === 'grow'}">成长轨迹</p>
             </div>
             <div class="justify-around mainRight scroll_bar" v-if="filesStatus === 'info'">
-              <el-form :model="staffDetail" ref="filesForm" label-width="120px" :disabled="reviseInfo" class="justify-around"
+              <el-form :model="staffDetail" ref="filesForm" label-width="120px" class="justify-around"
                        :class="[reviseInfo ? 'inputDisabled': 'focusBorder']" style="width: 100%">
                 <div class="info borderNone">
                   <el-row :gutter="10">
@@ -35,38 +35,13 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="身份证">
-                        <el-input v-model="staffDetail.id_num"></el-input>
+                      <el-form-item label="岗位">
+                        <!--<el-input v-model="staffDetail.position.name"></el-input>-->
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="有无就业证">
-                        <el-select>
-                          <el-option :value="0" label="有"></el-option>
-                          <el-option :value="1" label="无"></el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="在职状态">
-                        <el-input v-model="staffDetail.work_status"></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="6">
-                      <el-form-item label="手机">
-                        <el-input v-model="staffDetail.phone"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="学历背景">
-                        <el-select v-model="staffDetail.education">
-                          <el-option :value="1" label="高中及以上"></el-option>
-                          <el-option :value="2" label="大专及以上"></el-option>
-                          <el-option :value="3" label="本科及以上"></el-option>
-                          <el-option :value="4" label="其他"></el-option>
-                        </el-select>
+                      <el-form-item label="部门">
+                        <!--<el-input v-model="staffDetail.org.name"></el-input>-->
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -83,18 +58,70 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="通讯地址">
-                        <!--<el-input v-model="staffDetail."></el-input>-->
+                      <el-form-item label="性别">
+                        <div class="flex changeChoose" style="margin-top: 10px">
+                          <el-radio :label="0" v-model="staffDetail.gender">男</el-radio>
+                          <el-radio :label="1" v-model="staffDetail.gender">女</el-radio>
+                        </div>
                       </el-form-item>
                     </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
                     <el-col :span="6">
-                      <el-form-item label="有无犯罪史">
-                        <el-select>
-                          <el-option :value="0">无</el-option>
-                          <el-option :value="1">有</el-option>
+                      <el-form-item label="身份证">
+                        <el-input v-model="staffDetail.id_num"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="年龄">
+                        <el-input v-model="staffDetail.email"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="政治面貌">
+                        <el-select v-model="staffDetail.political_status">
+                          <el-option :value="0" label="党员"></el-option>
+                          <el-option :value="1" label="团员"></el-option>
+                          <el-option :value="2" label="群众"></el-option>
                         </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="手机">
+                        <el-input v-model="staffDetail.phone"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="在职状态">
+                        <el-input v-model="staffDetail.work_status"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="毕业院校">
+                        <el-input v-model="staffDetail.school"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="学历背景">
+                        <el-select v-model="staffDetail.education">
+                          <el-option :value="1" label="高中及以上"></el-option>
+                          <el-option :value="2" label="大专及以上"></el-option>
+                          <el-option :value="3" label="本科及以上"></el-option>
+                          <el-option :value="4" label="其他"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="籍贯">
+                        <el-input v-model="staffDetail.origin_addr"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="城市">
+                        <el-input v-model="staffDetail.email"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="区域">
+                        <!--<el-input v-model="staffDetail."></el-input>-->
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -108,20 +135,10 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="客户满意度">
-                        <!--<el-input v-model="staffDetail."></el-input>-->
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="6">
-                      <el-form-item label="籍贯">
-
-                      </el-form-item>
+                      <el-form-item label="户口性质"></el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="email">
-                        <el-input v-model="staffDetail.email"></el-input>
+                      <el-form-item label="通讯地址">
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -130,20 +147,92 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
+                      <el-form-item label="入职时间">
+                        <el-date-picker v-model="staffDetail.enroll" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="转正时间">
+                        <el-date-picker v-model="staffDetail.forward_time" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="薪资">
+                        <el-input v-model="staffDetail.salary"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="银行卡号">
+                        <el-input v-model="staffDetail.bank_num"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="开户行">
+                        <el-input v-model="staffDetail.account_bank"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="支行">
+                        <el-input v-model="staffDetail.branch_bank"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="开户名">
+                        <el-input v-model="staffDetail.account_name"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="第一次签合同时间">
+                        <el-date-picker v-model="staffDetail.agreement_first_time" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="第一次合同到期时间">
+                        <el-date-picker v-model="staffDetail.agreement_first_end_time" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="第二次签合同时间">
+                        <el-date-picker v-model="staffDetail.agreement_second_time" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="介绍人">
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="有无就业证">
+                        <el-select>
+                          <el-option :value="0" label="有"></el-option>
+                          <el-option :value="1" label="无"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="有无犯罪史">
+                        <div class="flex changeChoose" style="margin-top: 10px">
+                          <el-radio :label="0" v-model="staffDetail.gender">有</el-radio>
+                          <el-radio :label="1" v-model="staffDetail.gender">无</el-radio>
+                        </div>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="客户满意度">
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="email">
+                        <el-input v-model="staffDetail.email"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
                       <el-form-item label="英语等级">
                         <el-input v-model="staffDetail.english_level"></el-input>
                       </el-form-item>
                     </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="6">
-                      <el-form-item label="政治面貌">
-
-                      </el-form-item>
-                    </el-col>
                     <el-col :span="6">
                       <el-form-item label="婚育状况">
-                        <el-input v-model="staffDetail.email"></el-input>
+                        <!--<el-input v-model="staffDetail.email"></el-input>-->
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -152,96 +241,37 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="入职时间">
-                        <!--<el-input v-model="staffDetail."></el-input>-->
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="6">
-                      <el-form-item label="试用期时间">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="城市">
-                        <el-input v-model="staffDetail.email"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="转正时间">
-                        <el-input v-model="staffDetail.forward_time"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="区域">
-                        <!--<el-input v-model="staffDetail."></el-input>-->
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="6">
-                      <el-form-item label="实际转正">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="部门">
-                        <el-input v-model="staffDetail.email"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="合同开始时间">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="介绍人">
-                        <!--<el-input v-model="staffDetail."></el-input>-->
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="6">
-                      <el-form-item label="工龄">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="年龄">
-                        <el-input v-model="staffDetail.email"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
                       <el-form-item label="入职渠道">
-                        <el-input v-model="staffDetail.entry_way"></el-input>
+                        <!--<el-input v-model="staffDetail.dismiss_time.entry_type"></el-input>-->
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="试卷照片">
-                        <!--<el-input v-model="staffDetail."></el-input>-->
+                      <el-form-item label="紧急联系人电话">
+                        <el-input v-model="staffDetail.emergency_call"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="离职时间"></el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="离职时原因">
+                        <!--<el-input v-model="staffDetail.dismiss_time.entry_mess"></el-input>-->
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row :gutter="10">
-                    <el-col :span="6">
-                      <el-form-item label="合同照片">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="身份证照片">
-                        <el-input v-model="staffDetail.email"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="银行卡照片">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="毕业证照片">
-                        <!--<el-input v-model="staffDetail."></el-input>-->
+                    <el-col :span="24">
+                      <el-form-item label="入职材料">
+                        <el-checkbox-group class="flex changeChoose" style="margin-top: 10px;">
+                          <el-checkbox :label="1">意外险</el-checkbox>
+                          <el-checkbox :label="2">五险</el-checkbox>
+                          <el-checkbox :label="3">身份证复印件</el-checkbox>
+                          <el-checkbox :label="4">银行卡照片</el-checkbox>
+                          <el-checkbox :label="5">劳动合同</el-checkbox>
+                          <el-checkbox :label="6">应聘表</el-checkbox>
+                          <el-checkbox :label="6">学籍验证报告</el-checkbox>
+                          <el-checkbox :label="7">上家单位离职证明</el-checkbox>
+                        </el-checkbox-group>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -294,7 +324,17 @@
           english_level: '',
           work_status: '',
           birthday: '',
-          entry_way: ''
+          dismiss_time: {
+            entry_mess: '',
+            entry_type: '',
+          },
+          agreement_first_time: '',
+          agreement_first_end_time: '',
+          agreement_second_time: '',
+          emergency_call: '',
+          account_name: '',
+          branch_bank: '',
+          account_bank: ''
         }, //员工详情
         currentStaffInfo: '',
 
@@ -305,10 +345,7 @@
         dates: ['【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】'],
       }
     },
-    mounted() {
-    },
-    activated() {
-    },
+    mounted() {},
     watch: {
       module(val) {
         this.files_visible = val;
