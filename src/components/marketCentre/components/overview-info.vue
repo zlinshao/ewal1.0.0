@@ -10,10 +10,10 @@
         </ul>
         <div class="details flex-center">
           <div class="items-column">
-            <p>共计房源：750套</p>
-            <p>低质量数量：50套</p>
-            <p>平均组放价：750套</p>
-            <p>平均收房价：750套</p>
+            <p>共计房源：{{ left_info.houseNum && left_info.houseNum.value }}套</p>
+            <p>低质量数量：{{ left_info.quality && left_info.quality.value }}套</p>
+            <p>平均租房价：{{ left_info.rentAvg && left_info.rentAvg.value }}套</p>
+            <p>平均收房价：{{ left_info.lordAvg && left_info.lordAvg.value }}套</p>
           </div>
           <div>
             <span>房源预警占比：</span>
@@ -38,29 +38,17 @@
         market_server: globalConfig.market_server,
         isActive: 1,
         overview_visible: false,
+        left_info: {},
         date_change_list: [
           {id: 1, val: '当日'},
           {id: 2, val: '本周'},
           {id: 3, val: '本月'},
         ],
-        notice_info: [
-          {name: '红色预警', value: 500},
-          {name: '橙色预警', value: 300},
-          {name: '黄色预警', value: 200},
-          {name: '正常', value: 1000},
-        ],
-        renter_info: [
-          {name: '待入住', value: 1000},
-          {name: '已预订', value: 300},
-          {name: '已出租', value: 200},
-          {name: '未出租', value: 900},
-        ]
+        notice_info: [],
+        renter_info: []
       }
     },
-    mounted() {
-      this.init_notice_chart();
-      this.init_renter_chart();
-    },
+    mounted() {},
     activated() {
     },
     watch: {
@@ -75,8 +63,19 @@
     methods: {
       //获取房屋信息
       getHouseInfo() {
-        this.$http.get(this.market_server + 'v1.0/market/house/warningHouse').then(res => {
+        this.$http.get(this.market_server + 'v1.0/market/house/houseAnalysis').then(res => {
           console.log(res);
+          if (res.code === 200) {
+            this.left_info = res.data.num;
+            this.notice_info = res.data.warning;
+            this.renter_info = res.data.rent;
+            this.init_notice_chart();
+            this.init_renter_chart();
+          } else {
+            this.left_info = {};
+            this.notice_info = [];
+            this.renter_info = [];
+          }
         })
       },
       handleOpenInfo() {
@@ -97,7 +96,7 @@
             y: 'middle',
             data: [
               {
-                name: '红色预警',
+                name: '未知',
                 icon: 'circle'
               },
               {
@@ -109,7 +108,7 @@
                 icon: 'circle'
               },
               {
-                name: '正常',
+                name: '红色预警',
                 icon: 'circle'
               },
             ]

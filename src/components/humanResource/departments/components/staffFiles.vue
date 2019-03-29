@@ -116,12 +116,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="城市">
-                        <el-input v-model="staffDetail.email"></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="区域">
-                        <!--<el-input v-model="staffDetail."></el-input>-->
+                        <el-input v-model="staffDetail.city"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -131,14 +126,17 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="户口属地">
-
+                        <el-input v-model="staffDetail.city"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="户口性质"></el-form-item>
+                      <el-form-item label="户口性质">
+                        <el-input v-if="staffDetail.household_register"></el-input>
+                      </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="通讯地址">
+
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -202,7 +200,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="有无就业证">
-                        <el-select>
+                        <el-select v-model="staffDetail.employment_permit">
                           <el-option :value="0" label="有"></el-option>
                           <el-option :value="1" label="无"></el-option>
                         </el-select>
@@ -211,8 +209,8 @@
                     <el-col :span="6">
                       <el-form-item label="有无犯罪史">
                         <div class="flex changeChoose" style="margin-top: 10px">
-                          <el-radio :label="0" v-model="staffDetail.gender">有</el-radio>
-                          <el-radio :label="1" v-model="staffDetail.gender">无</el-radio>
+                          <el-radio :label="0" v-model="staffDetail.criminal_history">有</el-radio>
+                          <el-radio :label="1" v-model="staffDetail.criminal_history">无</el-radio>
                         </div>
                       </el-form-item>
                     </el-col>
@@ -232,7 +230,10 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="婚育状况">
-                        <!--<el-input v-model="staffDetail.email"></el-input>-->
+                        <div class="flex changeChoose" style="margin-top: 10px">
+                          <el-radio :label="0" v-model="staffDetail.marital_status">无</el-radio>
+                          <el-radio :label="1" v-model="staffDetail.marital_status">已婚</el-radio>
+                        </div>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -334,7 +335,14 @@
           emergency_call: '',
           account_name: '',
           branch_bank: '',
-          account_bank: ''
+          account_bank: '',
+          city: '',
+          criminal_history: '',
+          household_register: '',
+          employment_permit: '',
+          recommender: '',
+          recommender_name: '',
+          marital_status: ''
         }, //员工详情
         currentStaffInfo: '',
 
@@ -361,6 +369,7 @@
       },
       detailInfo: {
         handler(val) {
+          console.log(val);
           this.currentStaffInfo = val;
           for (var key in this.staffDetail) {
             this.staffDetail[key] = val.staff[key];

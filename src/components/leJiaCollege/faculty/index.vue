@@ -8,7 +8,6 @@
                     </div>
                     <div class="faculty-box-middle">
                         <div>
-                            <div class="img-border"></div>
                             <img src="../../../assets/image/newMedia/theme1/staff.png" alt="">
                         </div>
                     </div>
@@ -240,6 +239,9 @@
                 this.params.page = page;
                 // this.getLordList();
             },
+            handleOkDel(){
+
+            },
             onMousteIn: function (index) {
                 this.is_show = true; //鼠标移入显示
                 this.current = index;
@@ -274,12 +276,14 @@
                             }
                         }
                         .faculty-box-middle{
-                            .img-border{
-                                @include leJiaCollegeImg('theme1','faculty-grey.png');
-                                &:hover{
-                                    @include leJiaCollegeImg('theme1','faculty-red.png');
-                                }
+                            >div{
+
+                            };
+                            @include leJiaCollegeImg('theme1','faculty-grey.png');
+                            &:hover{
+                                @include leJiaCollegeImg('theme1','faculty-red.png');
                             }
+
 
                         }
                         .faculty-box-bottom{

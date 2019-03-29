@@ -21,6 +21,9 @@
           &:hover {
             cursor: pointer;
             color: $colorE33;
+            a.control {
+              display: inline-block;
+            }
           }
           span {
             display: inline-block;
@@ -30,6 +33,21 @@
             font-family: 'jingDianXingShu';
             font-size: 30px;
             white-space: nowrap;
+          }
+          a.control {
+            width: 100%;
+            height: 50px;
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            display: none;
+            justify-content: space-between;
+            i {
+              color: #999999;
+              &:hover {
+                color: $colorE33;
+              }
+            }
           }
         }
         @for $i from 1 through 7 {

@@ -35,10 +35,25 @@
 </template>
 
 <script>
+    import jobTraining from '../jobTraining/index.vue';
+    import faculty from '../faculty/index.vue';
+    import industryDynamic from '../industryDynamic/index.vue';
+    import postPlanning from '../postPlanning/index.vue';
+    import practicalProblems from '../practicalProblems/index.vue';
+    import videoLearning from '../videoLearning/index.vue';
     export default {
         name: "practicalProblems",
+        components:{
+            jobTraining,
+            industryDynamic,
+            postPlanning,
+            practicalProblems,
+            videoLearning,
+            faculty,
+        },
         data(){
             return{
+                chooseTab:7,
                 problemCount:0,
                 params: {//查询参数
                     search:'',
