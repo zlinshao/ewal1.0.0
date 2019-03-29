@@ -113,64 +113,52 @@
       }
 
     };
-
-    .action_info {
-      width: 100%;
-
-      > div {
+    //俱乐部详情
+    .club-detail{
+      p{
+        text-align: left;
+        padding: 20px;
         width: 100%;
-        margin-top: 30px;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        flex-direction: row;
+        border-top:1px solid #F2F2F2;
+
+        sapn{
+          display: inline-block;
+          text-align: justify;
+        }
+        span:first-child{
+          width:20% ;
+          height: 100%;
+        }
+        span:last-child{
+          width:80% ;
+          height: 100%;
+          text-align: justify;
+
+        }
       }
-    }
-  ;
-
-    .action_name {
-      border-bottom: 1px solid #F2F2F2;
-      width: 92%;
-      height: 80px;
-
-      div {
-        line-height: 80px;
-        display: inline-block;
+      p:first-child{
+        border-top:0
       }
-
-      .action_left {
-        font-family: "MicrosoftYaHei-Bold";
-        color: rgba(104, 104, 116, 1);
-        font-weight: bold;
-
-      }
-
-      .action_right {
-        margin-left: 100px;
-      }
-
-      .action_address {
-        padding-top: 20px;
-        line-height: 24px;
-        border-bottom: 0;
-      }
-
 
     }
-  ;
-
-    .top_right_img {
+    .dengLong{
+      width: 60px;
+      height: 140px;
+      position: absolute;
+      top: 0;
+      right:50px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-
-      span {
-        font-family: "jingDianXingShu";
-        color: rgba(255, 255, 255, 1);
-        font-size: 17px;
-        margin-top: 6px;
+      justify-content: center;
+      color: #FFFFFF;
+      p:first-child{
+        font-size: 18px;
+        font-family: jingDianXingShu;
       }
+
     }
   }
 
