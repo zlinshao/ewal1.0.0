@@ -1,0 +1,21 @@
+#theme_name{
+  #common{
+    .listTopRight{
+      >div{
+        background: #cf2e33;
+        border-radius: 4px;
+        padding: 5px 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        b{
+          display: inline-block;
+          font-size: 14px;
+          color:#ffffff
+
+        }
+      }
+
+    }
+  }
+}
