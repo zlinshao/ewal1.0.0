@@ -64,11 +64,10 @@ export default {
       this.$store.dispatch('auto_close_message', during);
     }
     //全局触发待办事项对话框显示隐藏
-    Vue.prototype.todoListVisibleTrigger = function(val) {
-      if(val) {
-        this.$store.dispatch('change_'+val+'_visible');
+    Vue.prototype.todoListVisibleTrigger = function (val) {
+      if (val) {
+        this.$store.dispatch('change_' + val + '_visible');
       }
-
     }
   }
 }

@@ -18,6 +18,9 @@ import './assets/scss/element.css'
 import './assets/scss/currency.css'
 // import './assets/magnify/jquery.magnify.css';
 // import './assets/magnify/jquery.magnify.js';
+import Confirm from '@/components/common/lightweightComponents/Confirm';
+
+
 
 Vue.use(Boss);
 Vue.use(Vuex);
@@ -26,8 +29,12 @@ Vue.use(ElementUI);
 Vue.prototype.$echarts = echarts;
 Vue.prototype.myUtils = myUtils;
 
+
 Vue.config.productionTip = false;
 Vue.prototype.$http = Axios;
+
+Vue.prototype.$LjConfirm = Confirm.install;
+
 
 /* eslint-disable no-new */
 new Vue({

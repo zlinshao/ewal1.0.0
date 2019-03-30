@@ -88,7 +88,6 @@
     </div>
 
     <todo-list></todo-list>
-
   </div>
 </template>
 
@@ -98,7 +97,7 @@
   export default {
     name: 'App',
     components: {
-      TodoList
+      TodoList,
     },
     data() {
       return {

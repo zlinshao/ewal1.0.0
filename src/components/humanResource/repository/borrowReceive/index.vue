@@ -115,13 +115,8 @@
         <div class="dialog_main borderNone notify-borrow-receive">
           <el-form :model="is_notify_form" style="text-align: left" size="small" label-width="160px">
             <el-form-item label="是否发送领取通知给">
-
-              <div class="items-center iconInput">
-                <el-input v-model="is_notify_form.name"></el-input>
-                <div class="icons user"></div>
-              </div>
+              <user-choose title="请选择人员" v-model="is_notify_form.name" width="200" num="1"></user-choose>
             </el-form-item>
-
           </el-form>
         </div>
         <div class="dialog_footer">
@@ -490,6 +485,7 @@
   import LjDialog from '../../../common/lj-dialog.vue';
   import Upload from '../../../common/upload.vue';
   import LjDialogImg from '../components/lj-dialog-img';//用于显示图片
+  import UserChoose from '../../../common/lightweightComponents/UserChoose';
 
 
   export default {
@@ -498,7 +494,8 @@
     components: {
       LjDialog,
       LjDialogImg,
-      Upload
+      Upload,
+      UserChoose,
     },
     data() {
       return {

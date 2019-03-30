@@ -1,6 +1,12 @@
 <template>
   <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
-    <el-input @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
+    <div class="iconInput">
+      <el-input @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <p class="icons user"></p>
+    </div>
+
+
+
     <StaffOrgan :module="staffModule" :organ-data="organData" @close="hiddenOrgan"></StaffOrgan>
   </div>
 </template>
@@ -56,7 +62,5 @@
 </script>
 
 <style scoped lang="scss">
-  #userChoose {
-    display: inline-block;
-  }
+  @import "../../../assets/scss/common/lightweightComponents/UserChoose";
 </style>

@@ -1,6 +1,10 @@
 <template>
-  <div id="orgChoose" :style="{width:`${this.dropdownListWidth}px`}">
-    <el-input @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
+  <div id="orgChoose"  :style="{width:`${this.dropdownListWidth}px`}">
+    <div class="iconInput">
+      <el-input @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <p class="icons organization"></p>
+    </div>
+
     <DepartOrgan :module="departModule" :organ-data="organData" @close="hiddenOrgan"></DepartOrgan>
   </div>
 </template>
@@ -56,7 +60,8 @@
 </script>
 
 <style scoped lang="scss">
-  #orgChoose {
-    display: inline-block;
-  }
+
+  @import "../../../assets/scss/common/lightweightComponents/OrgChoose";
+
+
 </style>
