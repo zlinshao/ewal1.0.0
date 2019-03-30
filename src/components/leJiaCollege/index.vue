@@ -2,7 +2,7 @@
     <div id="leJiaCollege">
         <div class="mainList" :style="{'height': this.mainListHeight(-89) + 'px'}">
             <div class="leJiaCollege-menu">
-                <div class="leJiaCollege-menu-info flex-center" v-for="(item,index) in profileType">
+                <div class="leJiaCollege-menu-info flex-center" v-for="(item,index) in menuType">
                     <div  @click="routerLink(item.url,{type:item.type,url:item.url})" :key="index" class="flex-center">
                         <span class="writingMode">{{item.letter}}</span>
                         <span class="writingMode">{{item.title}}</span>
@@ -17,10 +17,11 @@
     export default {
         name: "index",
         components: {
+
         },
         data() {
             return {
-                profileType:[
+                menuType:[
                     {
                         url: 'examArrangement',
                         title: '考试安排',

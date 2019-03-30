@@ -24,11 +24,7 @@
             </div>
         </div>
         <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
-
-
     </div>
-
-
 </template>
 
 <script>
