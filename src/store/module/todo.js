@@ -168,7 +168,7 @@ const todo = {
     //改变面试评价事项显示隐藏
     change_humanResource_interview_evaluate_visible({commit},status) {
       commit('CHANGE_HUMANRESOURCE_INTERVIEW_EVALUATE_VISIBLE',status);
-    }
+    },
   }
 };
 

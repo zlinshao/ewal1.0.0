@@ -15,6 +15,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
+        <div class="icons-font" @click="demo"><b>测试</b></div>
         <div class="icons-font" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>入库</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
       </div>
@@ -133,6 +134,18 @@
     watch: {},
     computed: {},
     methods: {
+      demo() {
+        this.$ljConfirm({
+          confirmText:'确定',
+          cancelText:'取消',
+          icon:'delete',
+        }).then(() => {
+          //点是
+          alert('是');
+        }).catch(() => {
+          //点否
+        });
+      },
       // 高级搜索
       highSearch(val) {
         this.showSearch = true;
