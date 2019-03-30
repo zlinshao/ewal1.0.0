@@ -22,7 +22,11 @@
       <!--表格中部-->
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
 
-        <el-table height="780px" :data="contractList">
+        <el-table
+          height="780px"
+          :data="contractList"
+          @row-dblclick="handleGetDetail"
+        >
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
           <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
@@ -114,17 +118,60 @@
     <!--资料补齐-->
     <lj-dialog
       :visible="data_polishing_visible"
-      :size="{width: 650 + 'px',height: 700 + 'px'}"
-      @close=""
+      :size="{width: 550 + 'px',height: 600 + 'px'}"
+      @close="handleCancelPolishing"
     >
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>补齐资料</h3>
         </div>
-        <div class="dialog_main"></div>
+        <div class="dialog_main">
+          <el-form label-width="80px" class="showPadding">
+            <el-form-item :label="selfLabel(idx)" v-for="(tmp,idx) in polishing_params" :key="idx">
+              <Upload :file="upload_file[idx]" @success="handleGetFile"></Upload>
+            </el-form-item>
+          </el-form>
+        </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="handleConfirmPolishing">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancelPolishing">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--合同详情-->
+    <lj-dialog
+      :visible="contract_detail_visible"
+      :size="{width: 1200 + 'px',height: 800 + 'px'}"
+      @close=""
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>合同详情</h3>
+          <div class="header_right">
+            合同编号
+          </div>
+        </div>
+        <div class="dialog_main">
+          <p>房屋地址</p>
+          <div class="base_house_info">
+
+          </div>
+
+          <p>收款账户</p>
+          <div class="account_info">
+
+          </div>
+
+          <p>签约人及产权人信息</p>
+          <div class="have_info">
+
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <div style="text-align: right">
+            <el-button type="danger" size="small">补齐资料</el-button>
+          </div>
         </div>
       </div>
     </lj-dialog>
@@ -135,17 +182,25 @@
   import SearchHigh from '../../common/searchHigh.vue';
   import MarketMenuList from '../components/market-menu-list.vue';
   import LjDialog from '../../common/lj-dialog.vue';
+  import Upload from '../../common/upload.vue';
 
   export default {
     name: "index",
-    components: { SearchHigh,MarketMenuList,LjDialog},
+    components: { SearchHigh,MarketMenuList,LjDialog,Upload},
     data() {
       return {
+        //合同详情
+        contract_detail_visible: false,
+
         //资料补齐
+        upload_file: {
+
+        },
+        currentRow: '',
         data_polishing_visible: false,
         polishing_params: {},
-        polishing_data: {
-          1: {
+        polishing_data: [
+          {
             identity_photo: '证件照片',
             bank_photo: '银行卡照片',
             photo: '合同照片',
@@ -160,19 +215,19 @@
             water_card_photo: '水卡照片',
             electricity_card_photo: '电卡照片',
             gas_card_photo: '气卡照片',
-            2: {
-              checkin_photo: '交接单照片',
-              certificate_photo: '截图凭证',
-              deposit_photo: '押金收条',
-              identity_photo: '证件照片',
-              photo: '合同照片',
-              bank_photo: '银行卡照片',
-              water_photo: '水表照片',
-              electricity_photo: '电表照片',
-              gas_photo: '气表照片'
-            }
           },
-        },
+          {
+            checkin_photo: '交接单照片',
+            certificate_photo: '截图凭证',
+            deposit_photo: '押金收条',
+            identity_photo: '证件照片',
+            photo: '合同照片',
+            bank_photo: '银行卡照片',
+            water_photo: '水表照片',
+            electricity_photo: '电表照片',
+            gas_photo: '气表照片'
+          }
+        ],
         //查看回访记录
         backInfo_visible: false,
         backInfo: '',
@@ -224,13 +279,74 @@
     watch: {},
     computed: {},
     methods: {
-      handleOpenPolishing(row) {
+      //双击详情
+      handleGetDetail(row) {
         console.log(row);
-        if (row.needComplete) {
+        this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+          console.log(res);
+          this.contract_detail_visible = true;
+        })
+      },
+      handleConfirmPolishing() {
+        var form = new FormData();
+        form.append('complete_content',this.polishing_params);
+        this.$http.post(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`,form).then(res => {
+          if (res.code === 200) {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.message
+            });
+            this.handleCancelPolishing();
+            this.getContractList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.message
+            })
+          }
+        })
+      },
+      //取消补齐
+      handleCancelPolishing() {
+        this.polishing_params = {};
+        this.upload_file = {};
+        this.currentRow = '';
+        this.data_polishing_visible = false;
+      },
+      handleGetFile(item) {
+        if (item !== 'close') {
+          this.polishing_params[item[0]] = item[1];
+        }
+      },
+      selfLabel(idx) {
+        return this.polishing_data[this.chooseTab - 1][idx];
+      },
+      handleOpenPolishing(row) {
+        this.currentRow = row;
+        if (row.needComplete && row.needComplete.length > 0) {
+          var obj = {};
+          var param = {};
           row.needComplete.map(item => {
-            console.log(item)
+            obj[item] = '';
+            param[item] = {
+              keyName: item,
+              setFile: [],
+              size: {
+                width: '50px',
+                height: '50px'
+              }
+            }
           });
-          console.log(this.polishing_params);
+          this.polishing_params = Object.assign({},this.polishing_params,obj);
+          this.upload_file = Object.assign({},param);
+          this.data_polishing_visible = true;
+          console.log(this.upload_file);
+        } else {
+          this.$LjNotify('info',{
+            title: '提示',
+            message: "暂无需要补齐的资料"
+          });
+          return false;
         }
       },
       handleLookBackInfo(item) {
@@ -254,7 +370,6 @@
         this.params.contract_type = this.chooseTab;
         this.showLoading(true);
         this.$http.get(this.market_server + 'v1.0/market/contract',this.params).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.contractList = res.data.data;
             this.contractCount = res.data.count;

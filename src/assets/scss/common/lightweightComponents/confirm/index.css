@@ -1,0 +1,194 @@
+.flex {
+  display: flex;
+  display: -webkit-flex; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #747474;
+    border-radius: 4px; }
+
+.confirm-theme {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100% !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  z-index: 9999; }
+  .confirm-theme .confirm-modal {
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; }
+    .confirm-theme .confirm-modal .confirm-modal-container {
+      width: 400px;
+      height: 240px;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #FFFFFF;
+      display: flex;
+      display: -webkit-flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-direction: column;
+      justify-content: space-between; }
+      .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-title {
+        height: 50px;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: left; }
+        .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-title span {
+          padding: 18px;
+          font-size: 26px; }
+      .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content {
+        flex: 1;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center; }
+        .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content span.content-row {
+          font-size: 22px; }
+        .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content i.content-icon {
+          display: inline-block;
+          width: 100px;
+          height: 100px; }
+      .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-footer {
+        margin: 20px;
+        height: 32px;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: space-around; }
+        .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-footer button {
+          min-width: 90px;
+          border-radius: 5px; }
+
+/*# sourceMappingURL=index.css.map */
