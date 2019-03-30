@@ -12,8 +12,8 @@
           <div class="items-column">
             <p>共计房源：{{ left_info.houseNum && left_info.houseNum.value }}套</p>
             <p>低质量数量：{{ left_info.quality && left_info.quality.value }}套</p>
-            <p>平均租房价：{{ left_info.rentAvg && left_info.rentAvg.value }}套</p>
-            <p>平均收房价：{{ left_info.lordAvg && left_info.lordAvg.value }}套</p>
+            <p>平均租房价：{{ left_info.rentAvg && left_info.rentAvg.value.toFixed(2) }}元/套</p>
+            <p>平均收房价：{{ left_info.lordAvg && left_info.lordAvg.value.toFixed(2) }}元/套</p>
           </div>
           <div>
             <span>房源预警占比：</span>
@@ -79,6 +79,8 @@
         })
       },
       handleOpenInfo() {
+        this.init_renter_chart();
+        this.init_notice_chart();
         this.overview_visible = true;
         this.$emit('open');
       },
@@ -88,7 +90,7 @@
       init_notice_chart() {
         var notice = this.$echarts.init(document.getElementById('notice_chart'));
         notice.setOption({
-          color: ['#CF2E33', '#FFAD0D', '#FFEB00', '#D8D8D8'],
+          color: ['#CF2E33', '#FFAD0D', '#FFEB00', '#D8D8D8','#808080'],
           legend: {
             show: true,
             orient: 'vertical',
@@ -96,7 +98,7 @@
             y: 'middle',
             data: [
               {
-                name: '未知',
+                name: '正常',
                 icon: 'circle'
               },
               {
@@ -109,6 +111,10 @@
               },
               {
                 name: '红色预警',
+                icon: 'circle'
+              },
+              {
+                name: '未知',
                 icon: 'circle'
               },
             ]
@@ -154,6 +160,14 @@
             y: 'middle',
             data: [
               {
+                name: '未出租',
+                icon: 'rect'
+              },
+              {
+                name: '已出租',
+                icon: 'rect'
+               },
+              {
                 name: '待入住',
                 icon: 'rect'
               },
@@ -162,11 +176,7 @@
                 icon: 'rect'
               },
               {
-                name: '已出租',
-                icon: 'rect'
-              },
-              {
-                name: '未出租',
+                name: '未知',
                 icon: 'rect'
               },
             ]

@@ -208,7 +208,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 3,//tab切换
+        chooseTab: 4,//tab切换
         selects: [
           {
             id: 1,

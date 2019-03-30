@@ -44,8 +44,8 @@
           <el-table-column label="操作" align="center" min-width="180px">
             <template slot-scope="scope">
               <el-button type="primary" plain size="mini">查看审核记录</el-button>
-              <el-button type="warning" plain size="mini">查看回访记录</el-button>
-              <el-button type="success" plain size="mini">补齐资料</el-button>
+              <el-button type="warning" plain size="mini" @click="handleLookBackInfo(scope.row)">查看回访记录</el-button>
+              <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -70,18 +70,113 @@
 
     <SearchHigh :module="highVisible" :show-data="searchData" @close="handleCloseHigh"></SearchHigh>
     <MarketMenuList :show-market="show_market" :show-shadow="show_shadow" @close="handleCloseMenu"></MarketMenuList>
+
+    <!--查看回访记录-->
+    <LjDialog
+      :visible="backInfo_visible"
+      :size="{width: 600 + 'px',height: 500 + 'px'}"
+      @close=""
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>。。。</h3>
+          <div class="header_right">
+            回访记录
+          </div>
+        </div>
+        <div class="dialog_main">
+          <div class="back_info scroll_bar">
+            <div>
+              <div class="content flex" v-for="item in 10">
+                <div>
+                  <a>黄梅</a><br>
+                  <span>2019.01.16</span>
+                </div>
+                <div class="flex-center">
+                  <div class="circle flex-center">
+                    <a></a>
+                  </div>
+                  <div class="line" v-if="item !== 10"></div>
+                </div>
+                <div>
+                  <a>未接通</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small">确定</el-button>
+        </div>
+      </div>
+    </LjDialog>
+
+    <!--资料补齐-->
+    <lj-dialog
+      :visible="data_polishing_visible"
+      :size="{width: 650 + 'px',height: 700 + 'px'}"
+      @close=""
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>补齐资料</h3>
+        </div>
+        <div class="dialog_main"></div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="info" size="small">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue';
   import MarketMenuList from '../components/market-menu-list.vue';
+  import LjDialog from '../../common/lj-dialog.vue';
 
   export default {
     name: "index",
-    components: { SearchHigh,MarketMenuList },
+    components: { SearchHigh,MarketMenuList,LjDialog},
     data() {
       return {
+        //资料补齐
+        data_polishing_visible: false,
+        polishing_params: {},
+        polishing_data: {
+          1: {
+            identity_photo: '证件照片',
+            bank_photo: '银行卡照片',
+            photo: '合同照片',
+            water_photo: '水表照片',
+            electricity_photo: '电表照片',
+            gas_photo: '气表照片',
+            checkin_photo: '交接单照片',
+            auth_photo: '委托书照片',
+            deposit_photo: '押金照片',
+            promise: '承诺书照片',
+            property_photo: '房产证照片',
+            water_card_photo: '水卡照片',
+            electricity_card_photo: '电卡照片',
+            gas_card_photo: '气卡照片',
+            2: {
+              checkin_photo: '交接单照片',
+              certificate_photo: '截图凭证',
+              deposit_photo: '押金收条',
+              identity_photo: '证件照片',
+              photo: '合同照片',
+              bank_photo: '银行卡照片',
+              water_photo: '水表照片',
+              electricity_photo: '电表照片',
+              gas_photo: '气表照片'
+            }
+          },
+        },
+        //查看回访记录
+        backInfo_visible: false,
+        backInfo: '',
+
         show_market: false,
         show_shadow: false,
 
@@ -129,6 +224,27 @@
     watch: {},
     computed: {},
     methods: {
+      handleOpenPolishing(row) {
+        console.log(row);
+        if (row.needComplete) {
+          row.needComplete.map(item => {
+            console.log(item)
+          });
+          console.log(this.polishing_params);
+        }
+      },
+      handleLookBackInfo(item) {
+        console.log(item);
+        return false;
+        if (item.record) {
+          this.backInfo = item.record;
+        } else {
+          this.$LjNotify('warning',{
+            title: '警告',
+            message: '暂无回访信息'
+          })
+        }
+      },
       handleCloseMenu() {
         this.show_market = false;
         this.show_shadow = false;

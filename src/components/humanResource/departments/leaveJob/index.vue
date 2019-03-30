@@ -67,6 +67,7 @@
           limit: 36,
           org_id: '',
           position_id: '',
+          is_on_job: 0
         }
       }
     },
@@ -80,6 +81,7 @@
     methods: {
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {
+          console.log(res);
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })

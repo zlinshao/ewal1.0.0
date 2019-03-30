@@ -279,11 +279,11 @@
                 </div>
               </el-form>
               <b @click="reviseInfo = !reviseInfo"></b>
-            </div>
+            </div>`
             <div class="items-center mainRight" v-if="filesStatus === 'grow'">
               <div class="grow" :style="{'backgroundPosition': num[index]}" v-for="(item,index) in dates">
                 <div :class="[(index%2 === 0) ? 'tops' :  'bottoms']">
-                  <p><i></i>{{item}}<i></i></p>
+                  <p><i></i>【{{item.created_at}} {{item.zh}}】<i></i></p>
                   <span><i></i></span>
                 </div>
               </div>
@@ -350,7 +350,7 @@
         files_visible: false,
         files_size: {},
         filesStatus: 'info',
-        dates: ['【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】', '【2018年8月24日 入职】'],
+        dates: [],
       }
     },
     mounted() {},
@@ -403,8 +403,16 @@
         }
       },
       getStaffGrowInfo(id) {
-        this.$http.get(`staff/user/growth/${id}`).then(res => {
+        this.$http.get(`staff/user/${id}/growth`,{
+          page:1,
+          limit:999
+        }).then(res => {
           console.log(res);
+          if (res.code === '20000') {
+            this.dates = res.data.data;
+          } else {
+            this.dates = [];
+          }
         })
       }
     },

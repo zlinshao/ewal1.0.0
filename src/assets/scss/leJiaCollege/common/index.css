@@ -1,0 +1,13 @@
+#theme_name #common .listTopRight > div {
+  background: #cf2e33;
+  border-radius: 4px;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center; }
+  #theme_name #common .listTopRight > div b {
+    display: inline-block;
+    font-size: 14px;
+    color: #ffffff; }
+
+/*# sourceMappingURL=index.css.map */
