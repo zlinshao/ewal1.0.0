@@ -40,7 +40,7 @@ export default {
       confirmText: "确定",
       cancelText: "取消",
       icon:'',//图标 -后期加
-      type: "",
+      //type: "",
       promiseStatus: null
     };
   },

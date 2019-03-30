@@ -135,11 +135,36 @@
     computed: {},
     methods: {
       demo() {
-        this.$ljConfirm({
+
+        this.$LjConfirm({
+          icon:'delete'
+        }).then(()=> {
+          //点确定执行的方法
+        }).catch(() => {
+          //点取消执行的方法
+          //一般情况下可以省略catch方法
+        })
+
+
+        /*this.$LjConfirm(
+          /!*{
           confirmText:'确定',
           cancelText:'取消',
           icon:'delete',
-        }).then(() => {
+        }*!/
+        ).then(() => {
+          //点是
+          alert('是');
+        }).catch(() => {
+          //点否
+        });*/
+
+
+        this.$LjConfirm(
+          {
+          icon:'delete',
+        }
+        ).then(() => {
           //点是
           alert('是');
         }).catch(() => {

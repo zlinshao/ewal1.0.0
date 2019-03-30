@@ -33,7 +33,7 @@ Vue.prototype.myUtils = myUtils;
 Vue.config.productionTip = false;
 Vue.prototype.$http = Axios;
 
-Vue.prototype.$ljConfirm = Confirm.install;
+Vue.prototype.$LjConfirm = Confirm.install;
 
 
 /* eslint-disable no-new */
