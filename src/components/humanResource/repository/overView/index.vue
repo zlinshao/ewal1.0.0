@@ -530,6 +530,7 @@
               <i class="el-icon-search"></i>
               <input
                 v-model="tableSettingData.inRepository.searchParams"
+                @keydown.enter="getInRepositoryList(tableSettingData.inRepository.currentSelection.category_id,tableSettingData.inRepository.searchParams)"
                 placeholder="搜索采购人" type="text"/>
             </div>
 
@@ -650,7 +651,6 @@
   import LjDialog from '../../../common/lj-dialog.vue';
   import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import LjDialogImg from '../components/lj-dialog-img';//用于显示二维码图片
-  //import _ from '../../../../utils/lodash';
   import OrgChoose from '../../../common/lightweightComponents/OrgChoose';
   import UserChoose from "../../../common/lightweightComponents/UserChoose";
 
@@ -778,6 +778,10 @@
               //search: '',
               page: 1,
               limit: 5,
+              init() {
+                this.page =1;
+                this.limit = 5;
+              }
             },
             chooseRowIds: [],
             currentSelection: {},//当前选择行
@@ -977,35 +981,10 @@
         //immediate:true//第一次绑定也执行
       },
 
-      'tableSettingData.inRepository.searchParams': {
-        handler(val, oldVal) {
-          /*_.debounce(function() {
-            console.log('change');
-          },1000)*/
-         /* this.$nextTick(function () {
-
-          })*/
-        },
-        immediate: true
-      }
     },
     computed: {},
     methods: {
 
-
-      /*debounce(fn, delay) {
-        debugger
-        let timer = null
-        return function () {
-          let context = this
-          let args = arguments
-          clearTimeout(timer)
-          timer = setTimeout(function () {
-            fn.apply(context, args)
-          }, delay)
-        }
-      },
-*/
       //入库表单提交
       inRepository() {
         debugger
@@ -1307,10 +1286,12 @@
       },
 
       //获取入库详情table表格数据
-      getInRepositoryList(categoryId) {
+      getInRepositoryList(categoryId,searchParams) {
+        debugger
         this.currentTable = 'inRepository';
         this.tableSettingData[this.currentTable].tableData = [];
-        let params = {category_id: categoryId};
+        if(searchParams) this.tableSettingData[this.currentTable].params.init();
+        let params = {category_id: categoryId,search:searchParams};
         let finalParams = {...params, ...this.tableSettingData[this.currentTable].params};
         this.$http.get(`${this.url}eam/storage`, finalParams).then(res => {
           if (res.code.endsWith('0')) {

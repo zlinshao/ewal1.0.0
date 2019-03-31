@@ -104,7 +104,7 @@
         in_repository_visible:false,
 
         //侧滑栏数据
-        show_market: false,
+        //show_market: false,
         work_info: [
           {work: '平均在线时长', val: '8 h'},
           {work: '平均处理用时', val: '30 min'},
@@ -120,7 +120,7 @@
       }
     },
     mounted() {
-      this.show_market = true;
+      //this.show_market = true;
       this.work_info[0].val = '7 h';
       this.event_data[0].value = 700;
       this.attend_data[0] = 9;
@@ -146,6 +146,7 @@
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;
+        //debugger
         if (val !== 'close') {
           switch (this.chooseTab) {
             case 1:
@@ -162,7 +163,7 @@
 
       },
       handleCloseMenu() {
-        this.show_market = false;
+        //this.show_market = false;
       },
       //入库按钮点击事件
       inRepositoryHandler() {

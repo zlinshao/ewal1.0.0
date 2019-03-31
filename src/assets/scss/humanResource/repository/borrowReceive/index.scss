@@ -89,10 +89,10 @@
           display: flex;
           //bottom: 150px;
           .detail-item {
+
             & > :last-child {
               margin-right: 50px;
             }
-
             flex: 1;
 
             & > :nth-child(1) {
@@ -110,7 +110,9 @@
               height: 30px;
             }
 
-
+            &.select-list {
+              @include flex('flex-center');
+            }
           }
 
           & > :nth-child(2) {

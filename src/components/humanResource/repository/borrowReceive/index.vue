@@ -2,7 +2,7 @@
   <div id="borrowReceive">
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
-        :data="tableData"
+        :data="tableSettingData.borrowReceive.tableData"
         highlight-current-row
         :height="this.mainListHeight(30) + 'px'"
         :row-class-name="tableChooseRow"
@@ -92,9 +92,9 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="params.page"
-            :page-size="params.limit"
-            :total="counts"
+            :current-page="tableSettingData.borrowReceive.params.page"
+            :page-size="tableSettingData.borrowReceive.params.limit"
+            :total="tableSettingData.borrowReceive.counts"
             layout="total,jumper,prev,pager,next">
           </el-pagination>
         </div>
@@ -134,29 +134,29 @@
     >
       <div class="dialog_container repository-overview">
         <div class="dialog_header">
-          <h3>编号SP00012 详情</h3>
+          <h3>{{tableSettingData.borrowReceive.formData.approvalId}} 详情</h3>
           <div class="header_right">
 
             <div class="detail-container">
               <div class="detail-item">
                 <span>审批编号</span>
-                <span>SP00012</span>
+                <span>{{tableSettingData.borrowReceive.formData.approvalId}}</span>
               </div>
               <div class="detail-item">
                 <span>申请人</span>
-                <span>张无极</span>
+                <span>{{tableSettingData.borrowReceive.formData.applyPerson}}</span>
               </div>
               <div class="detail-item">
                 <span>部门</span>
-                <span>研发中心-开发</span>
+                <span>{{tableSettingData.borrowReceive.formData.department}}</span>
               </div>
               <div class="detail-item">
                 <span>申请类型</span>
-                <span>借用</span>
+                <span>{{tableSettingData.borrowReceive.formData.applyType}}</span>
               </div>
               <div class="detail-item">
                 <span>申请日期</span>
-                <span>2019-01-12</span>
+                <span>{{tableSettingData.borrowReceive.formData.applyTime}}</span>
               </div>
             </div>
           </div>
@@ -206,39 +206,40 @@
               </div>
               <div class="detail-item total-price">
                 <span>总费用</span>
-                <input type="text" disabled value="2000"></input>
+                <input type="text" disabled :value="tableSettingData.borrowReceive.formData.repairPrice"></input>
                 <span class="tip">元</span>
               </div>
-              <div class="detail-item">
+              <div class="detail-item select-list">
                 <span>任责人</span>
                 <select disabled>
-                  <option value="1">个人</option>
+                  <option value="1">{{tableSettingData.borrowReceive.formData.responsibleType}}</option>
                 </select>
                 <select disabled>
-                  <option value="1">员工</option>
+                  <option value="1">{{tableSettingData.borrowReceive.formData.responsibleName}}</option>
                 </select>
               </div>
               <div class="detail-item">
                 <span>付款方式</span>
                 <select disabled>
-                  <option value="1">工资扣除</option>
+                  <option value="1">{{tableSettingData.borrowReceive.formData.costType}}</option>
                 </select>
               </div>
             </div>
           </div>
-
         </div>
-
 
         <div v-if="chooseDetailTabs == 2" class="goods-detail dialog_main borderNone">
           <div class="search-toolbar">
             <div v-show="!is_show_selection">
               <div>
-                <el-tag @click="is_show_selection = true; batch_set_return_time_visible = true" size="medium">批量设置归还日期</el-tag>
+                <el-tag @click="is_show_selection = true; batch_set_return_time_visible = true" size="medium">批量设置归还日期
+                </el-tag>
               </div>
 
               <div>
-                <el-tag @click="is_show_selection = true;batch_set_receive_person_visible = true" size="medium">批量设置领取人</el-tag>
+                <el-tag @click="is_show_selection = true;batch_set_receive_person_visible = true" size="medium">
+                  批量设置领取人
+                </el-tag>
               </div>
 
               <div>
@@ -247,10 +248,12 @@
             </div>
 
             <div v-show="is_show_selection" class="button-group">
-              <div @click="is_show_selection = false;batch_set_return_time_visible = false;batch_set_receive_person_visible =false;">
+              <div
+                @click="is_show_selection = false;batch_set_return_time_visible = false;batch_set_receive_person_visible =false;">
                 取消
               </div>
-              <div @click="is_show_selection = false;batch_set_return_time_visible = false;batch_set_receive_person_visible = false">
+              <div
+                @click="is_show_selection = false;batch_set_return_time_visible = false;batch_set_receive_person_visible = false">
                 保存
               </div>
               <!--批量设置归还日期-->
@@ -258,7 +261,7 @@
                 <el-date-picker
                   size="mini"
                   placeholder="点击选择归还日期"
-                   type="date">
+                  type="date">
                 </el-date-picker>
               </div>
               <!--批量设置领取人-->
@@ -267,7 +270,7 @@
                   size="mini"
                   placeholder="点击选择领取人/部门">
                 </el-input>
-                <div class="icons-ry" ></div>
+                <div class="icons-ry"></div>
               </div>
 
             </div>
@@ -433,10 +436,10 @@
 
     <!--//是否显示图片-->
     <!--<lj-dialog-img v-model="is_show_photo_dialog">-->
-      <!--<div class="photo-container">-->
-        <!--<div class="photo-img-large"></div>-->
-        <!--<div>201903191059</div>-->
-      <!--</div>-->
+    <!--<div class="photo-container">-->
+    <!--<div class="photo-img-large"></div>-->
+    <!--<div>201903191059</div>-->
+    <!--</div>-->
 
     <!--</lj-dialog-img>-->
 
@@ -458,16 +461,16 @@
             <Upload :file="item" @success="getImgIds"></Upload>
           </div>
           <!--<div class="repair-img-container">-->
-            <!--<span>维修照片</span>-->
-            <!--&lt;!&ndash;<div class="icons-img"></div>&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="icons-img"></div>&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="icons-add"></div>&ndash;&gt;-->
-            <!--<Upload :file="item" @success="getImgIds"></Upload>-->
+          <!--<span>维修照片</span>-->
+          <!--&lt;!&ndash;<div class="icons-img"></div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="icons-img"></div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="icons-add"></div>&ndash;&gt;-->
+          <!--<Upload :file="item" @success="getImgIds"></Upload>-->
           <!--</div>-->
           <!--<div class="scrap-img-container">-->
-            <!--<Upload :file="item" @success="getImgIds"></Upload>-->
-            <!--&lt;!&ndash;<span>报废照片</span>&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="icons-add"></div>&ndash;&gt;-->
+          <!--<Upload :file="item" @success="getImgIds"></Upload>-->
+          <!--&lt;!&ndash;<span>报废照片</span>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="icons-add"></div>&ndash;&gt;-->
           <!--</div>-->
         </div>
         <div class="dialog_footer">
@@ -499,7 +502,7 @@
     },
     data() {
       return {
-        url: globalConfig.organ_server,
+        url: globalConfig.humanResource_server,
         checkList: [],
 
         chooseRowIds: [],
@@ -512,27 +515,59 @@
           org_id: '',
           position_id: '',
         },
-        form:{
+
+        currentTable: '',
+        tableSettingData: {
+          borrowReceive: {//入库详情列表
+            counts: 0,
+            params: {
+              //search: '',
+              page: 1,
+              limit: 5,
+              init() {
+                this.page = 1;
+                this.limit = 5;
+              }
+            },
+            chooseRowIds: [],
+            currentSelection: {},//当前选择行
+
+            table_dialog_visible: false,//form表单控制
+            table_dialog_title: '',
+            tableData: [],//表格数据
+            formData:[],//详情表格数据
+            tableShowData: {},
+            searchParams: '',// dialog中的模糊搜索
+
+
+            applyStatus: ['待通知', '待领取', '部分已领取', '已领取', '放弃领取', '待归还', '部分已归还', '已归还'],
+            goodsStatus: ['无', '待维修', '维修中', '已维修', '报废'],
+            responsible: ['','个人','部门','公司']
+          },
+        },
+
+
+        form: {
           photo1: [],
           photo2: [],
         },
 
         photo: [
           {
-            title:'报备图片',
+            title: '报备图片',
             keyName: 'photo1',
             setFile: [],
             size: {
-              width:'60px',
-              height:'60px'
+              width: '60px',
+              height: '60px'
             }
           }, {
-            title:'维修图片',
+            title: '维修图片',
             keyName: 'photo2',
             setFile: [],
             size: {
-              width:'60px',
-              height:'60px'
+              width: '60px',
+              height: '60px'
             }
           }
         ],
@@ -561,7 +596,7 @@
 
         is_show_selection: false,//是否显示多选框
         batch_set_return_time_visible: false,//批量设置归还日期
-        batch_set_receive_person_visible:false,//批量设置领取人
+        batch_set_receive_person_visible: false,//批量设置领取人
 
         //照片table
         photo_table_visible: false,
@@ -579,6 +614,7 @@
     },
     mounted() {
       this.initData();
+      this.getBorrowReceiveList();
     },
     activated() {
     },
@@ -608,7 +644,7 @@
       initData() {
         //借用领用表格
 
-        for (let i = 0; i < 9; i++) {
+       /* for (let i = 0; i < 9; i++) {
           let as = Math.random() * 10 > 3 ? "待通知" : Math.random() * 10 > 6 ? "待领取" : "部分领取";
           let obj = {
             id: i + 1,
@@ -621,10 +657,10 @@
             applyStatus: as,
             goodsStatus: '部分维修'
           }
-          this.tableData.push(obj)
+          this.tableSettingData.borrowReceive.tableData.push(obj)
         }
         //console.log(this.tableData);
-        this.counts = 1000;
+        this.tableSettingData.borrowReceive.counts = 1000;*/
 
         //eventsDetailData
         //借领用详情table数据初始化 1事项详情
@@ -673,9 +709,31 @@
       },
 
       getBorrowReceiveList() {
-        this.$http.get(this.url + 'borrowReceive/xxx', this.params).then(res => {
-          this.tableData = res.data.data;
-          this.counts = res.data.count;
+        this.currentTable = 'borrowReceive';
+        this.$http.get(this.url + 'eam/process', this.tableSettingData[this.currentTable].params).then(res => {
+          //debugger
+          console.log(res);
+          if (res.code.endsWith('0')) {
+            for (let item of res.data.data) {
+              let obj = {
+                approvalId: item.process_number || '-',//审批编号
+                counts: item.number || 0,//领/借数量
+                applyType: item.type == 1 ? '领用' : '借用',//申请类型
+                applyPerson: item.user?.name || '-',//申请人
+                department: item.user?.org[0]?.name || '-',//部门
+                applyTime: item.apply_time || '-',//申请日期
+                applyStatus: this.tableSettingData[this.currentTable].applyStatus[item.apply_status],//申请状态
+                goodsStatus: this.tableSettingData[this.currentTable].goodsStatus[item.goods_status],//物品状态
+                repairPrice: item.repair_price||0,//维修总费用
+                scrapPrice:item.scrap_price||0,//报废总费用
+                responsibleType: this.tableSettingData[this.currentTable].responsible[item.responsible?.type],//任责人类型
+                responsibleName: item.responsible?.name||'-',//任责人
+                costType: item.costType||'-'//付款类型
+              };
+              this.tableSettingData[this.currentTable].tableData.push(obj);
+            }
+            this.tableSettingData[this.currentTable].counts = res.data.count;
+          }
         })
       },
       // 当前点击
@@ -686,7 +744,9 @@
       },
       //表格某一行双击
       tableDblClick(row) {
+        debugger
         this.borrow_receive_table_visible = true;
+        this.tableSettingData.borrowReceive.formData = row;
       },
 
       // 点击过
@@ -717,12 +777,13 @@
 
 <style lang="scss">
   .goods-detail {
-    .button-group{
+    .button-group {
       .el-input {
         display: inline-block;
       }
+
       .el-input__inner {
-        border: 1px solid #ccc!important;
+        border: 1px solid #ccc !important;
         //height: 30px !important;
       }
     }
@@ -748,7 +809,7 @@
       .dialog_container {
         .goods-detail {
           .icons-ry {
-            @include childrenImg('ry.png','theme1')
+            @include childrenImg('ry.png', 'theme1')
           }
         }
 
@@ -776,15 +837,14 @@
         //图片dialog
         .borrow-receive-img-dialog {
           .icons-img {
-            @include childrenImg('tp.png','theme1')
+            @include childrenImg('tp.png', 'theme1')
           }
+
           .icons-add {
-            @include childrenImg('tj.png','theme1')
+            @include childrenImg('tj.png', 'theme1')
           }
         }
       }
-
-
 
 
       /*.photo-img {
