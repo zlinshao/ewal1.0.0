@@ -78,7 +78,14 @@
           align="center"
           prop="status"
           label="状态">
-
+          <template slot-scope="scope">
+            <span v-if="scope.row.status>=1">{{scope.row.status>=10?'正常':'预警'}}</span>
+            <span class="font-red" v-if="scope.row.status<1">预警</span>
+<!--            <a @click="getUselessList(scope.row)">{{scope.row.uselessCounts}}</a>-->
+            <!--<div slot="reference" class="name-wrapper">-->
+            <!--<el-tag size="medium">{{ scope.row.uselessCounts }}</el-tag>-->
+            <!--</div>-->
+          </template>
         </el-table-column>
 
         <!--<el-table-column-->
@@ -1194,7 +1201,9 @@
                 borrowReceiveCounts: `${parseInt(item?.receive_number)}/${parseInt(item?.borrow_number)}`,
                 repairCounts: parseInt(item?.repair_number),
                 uselessCounts: parseInt(item?.scrap_number),
-                status: parseInt(item?.number) > parseInt(item?.goods?.warning_number) ? '正常' : '预警',
+                //status: parseInt(item?.number) - parseInt(item?.goods?.warning_number) > 10 ? '正常' : '预警',
+                //status: parseInt(item?.number) > 10 ? '正常' : '预警',
+                status: parseInt(item?.number),
               }
               this.tableSettingData[this.currentTable].tableData.push(obj)
             }

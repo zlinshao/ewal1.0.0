@@ -165,7 +165,7 @@
           <div @click="chooseDetailTabs = 1" :class="chooseDetailTabs==1?'sidebar-bg-checked':'sidebar-bg'">
             <span>事项详情</span>
           </div>
-          <div @click="chooseDetailTabs = 2" :class="chooseDetailTabs==2?'sidebar-bg-checked':'sidebar-bg'">
+          <div @click="getGoodsDetailList(tableSettingData[currentTable].currentSelection)" :class="chooseDetailTabs==2?'sidebar-bg-checked':'sidebar-bg'">
             <span>物品详情</span>
           </div>
         </div>
@@ -278,7 +278,7 @@
 
           </div>
           <el-table
-            :data="goodsDetailData"
+            :data="tableSettingData.goods.tableData"
             highlight-current-row
             :height="this.mainListHeight(280) + 'px'"
             :row-class-name="tableChooseRow"
@@ -338,7 +338,7 @@
               prop="goodsImg"
               label="物品照片">
               <template slot-scope="scope">
-                <div @click="is_show_photo_dialog = true" class="photo-img"></div>
+                <div @click="showPictureList" class="photo-img"></div>
               </template>
             </el-table-column>
 
@@ -376,9 +376,9 @@
               <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="params.page"
-                :page-size="params.limit"
-                :total="counts"
+                :current-page="tableSettingData.goods.params.page"
+                :page-size="tableSettingData.goods.params.limit"
+                :total="tableSettingData.goods.counts"
                 layout="total,jumper,prev,pager,next">
               </el-pagination>
             </div>
@@ -452,7 +452,7 @@
     >
       <div class="dialog_container borrow-receive-dialog">
         <div class="dialog_header">
-          {{form}}
+<!--          {{form}}-->
           <span class="notify-size">物品图片</span>
         </div>
         <div class="dialog_main  borrow-receive-img-dialog">
@@ -518,7 +518,33 @@
 
         currentTable: '',
         tableSettingData: {
-          borrowReceive: {//入库详情列表
+          borrowReceive: {//借/领table列表
+            counts: 0,
+            params: {
+              //search: '',
+              page: 1,
+              limit: 5,
+              init() {
+                this.page = 1;
+                this.limit = 5;
+              }
+            },
+            chooseRowIds: [],
+            currentSelection: {},//当前选择行
+
+            table_dialog_visible: false,//form表单控制
+            table_dialog_title: '',
+            tableData: [],//表格数据
+            formData:[],//详情表格数据
+            tableShowData: {},
+            searchParams: '',// dialog中的模糊搜索
+
+
+            applyStatus: ['待通知', '待领取', '部分已领取', '已领取', '放弃领取', '待归还', '部分已归还', '已归还'],
+            goodsStatus: ['无', '待维修', '维修中', '已维修', '报废'],
+            responsible: ['','个人','部门','公司']
+          },
+          goods: {//物品详情列表
             counts: 0,
             params: {
               //search: '',
@@ -556,7 +582,46 @@
           {
             title: '报备图片',
             keyName: 'photo1',
-            setFile: [],
+            setFile: [
+              {
+                "id": 123,
+                "name": "lejia7f87dea5d2f218312028484e56211173.jpg",
+                "display_name": "lejia7f87dea5d2f218312028484e56211173.jpg",
+                "raw_name": "lejia7f87dea5d2f218312028484e56211173.jpg",
+                "info": {
+                  "ext": "image\/jpeg",
+                  "host": "static.lejias.cn",
+                  "mime": "image\/jpeg",
+                  "size": 51251,
+                  "bucket": "lejia-test"
+                },
+                "currentPlace": null,
+                "user_id": null,
+                "uri": "http:\/\/static.lejias.cn\/lejia7f87dea5d2f218312028484e56211173.jpg",
+                "created_at": "2019-03-21 11:32:02",
+                "updated_at": "2019-03-21 11:32:02",
+                "deleted_at": null
+              },
+              {
+                "id": 213,
+                "name": "lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
+                "display_name": "lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
+                "raw_name": "lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
+                "info": {
+                  "ext": "image\/jpeg",
+                  "host": "static.lejias.cn",
+                  "mime": "image\/jpeg",
+                  "size": 400542,
+                  "bucket": "lejia-test"
+                },
+                "currentPlace": null,
+                "user_id": null,
+                "uri": "http:\/\/static.lejias.cn\/lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
+                "created_at": "2019-03-21 20:04:42",
+                "updated_at": "2019-03-21 20:04:42",
+                "deleted_at": null
+              }
+            ],
             size: {
               width: '60px',
               height: '60px'
@@ -674,7 +739,7 @@
           this.eventsDetailData.push(obj)
         }
 
-        //goodsDetailData
+        /*//goodsDetailData
         //借领用详情table数据初始化 2物品详情
         for (let i = 0; i < 5; i++) {
           let obj = {
@@ -690,8 +755,8 @@
             receivePerson: '张三',//领取人
             returnTime: '--',//归还日期
           }
-          this.goodsDetailData.push(obj)
-        }
+          this.tableSettingData.goods.tableData.push(obj)
+        }*/
 
 
         //photoData
@@ -711,11 +776,11 @@
       getBorrowReceiveList() {
         this.currentTable = 'borrowReceive';
         this.$http.get(this.url + 'eam/process', this.tableSettingData[this.currentTable].params).then(res => {
-          //debugger
           console.log(res);
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let obj = {
+                id: item.id,
                 approvalId: item.process_number || '-',//审批编号
                 counts: item.number || 0,//领/借数量
                 applyType: item.type == 1 ? '领用' : '借用',//申请类型
@@ -736,17 +801,70 @@
           }
         })
       },
+
+      //获取事项详情list
+      getItemsDetailList() {
+        this.chooseDetailTabs = 1;
+      },
+
+      //获取物品详情list
+      getGoodsDetailList(row) {
+        debugger
+        this.chooseDetailTabs = 2;
+        this.currentTable = 'goods';
+        this.$http.get(this.url + 'eam/process/'+row.id, this.tableSettingData[this.currentTable].params).then(res => {
+          debugger
+          console.log(res);
+          if (res.code.endsWith('0')) {
+            for (let item of res.data.goods_list) {
+              //item = item.goods_list;
+              let obj = {
+                id: item.id,//物品id
+                goodsName: item.goods?.name||'',//物品名称
+                borrowReceiveStatus: this.tableSettingData.borrowReceive.applyStatus[item.status||0],//领还状态applyStatus
+                receiveTime: item.receive_time||'-',//领取日期
+                goodsId: item.goods_number||'-',//物品编号
+                //goodsStatus:this.tableSettingData.borrowReceive.goodsStatus[item.status||0],
+                goodsStatus:'尚无',
+                goodsImg: item.picture,//图片
+                repairCost: item.repair_cost||0,//维修费用
+                scrapCost: item.scrap_cost||0,//报废费用
+                receivePerson: item.user?.name||'-',//领取人
+                returnTime: item.return_date||'-',//归还日期
+              };
+              this.tableSettingData[this.currentTable].tableData.push(obj);
+            }
+            this.tableSettingData[this.currentTable].counts = res.data.count;
+          }
+        })
+      },
+
+      showPictureList() {
+        this.is_show_photo_dialog = true;
+
+      },
+
+
+
+
       // 当前点击
       tableClickRow(row) {
-        let ids = this.chooseRowIds;
+        //debugger
+        this.tableSettingData[this.currentTable].currentSelection = row;
+        let ids = this.tableSettingData[this.currentTable].chooseRowIds;
         ids.push(row.id);
-        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+        this.ids = this.myUtils.arrayWeight(ids);
       },
       //表格某一行双击
       tableDblClick(row) {
-        debugger
-        this.borrow_receive_table_visible = true;
-        this.tableSettingData.borrowReceive.formData = row;
+        switch (this.currentTable) {
+          case 'borrowReceive':
+            this.borrow_receive_table_visible = true;
+            this.tableSettingData[this.currentTable].formData = row;
+            this.tableSettingData[this.currentTable].currentSelection = row;
+            break;
+        }
+
       },
 
       // 点击过
