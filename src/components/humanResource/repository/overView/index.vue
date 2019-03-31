@@ -528,7 +528,9 @@
             <!--</div>-->
             <div class="lj-header-search">
               <i class="el-icon-search"></i>
-              <input v-model="tableSettingData.inRepository.searchParams" debounce="4000" placeholder="搜索采购人" type="text"/>
+              <input
+                v-model="tableSettingData.inRepository.searchParams"
+                placeholder="搜索采购人" type="text"/>
             </div>
 
             <!--<div class="icon-add"><b>+</b></div>-->
@@ -648,6 +650,7 @@
   import LjDialog from '../../../common/lj-dialog.vue';
   import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import LjDialogImg from '../components/lj-dialog-img';//用于显示二维码图片
+  //import _ from '../../../../utils/lodash';
   import OrgChoose from '../../../common/lightweightComponents/OrgChoose';
   import UserChoose from "../../../common/lightweightComponents/UserChoose";
 
@@ -975,8 +978,13 @@
       },
 
       'tableSettingData.inRepository.searchParams': {
-        handler(val,oldVal) {
-          console.log("变化");
+        handler(val, oldVal) {
+          /*_.debounce(function() {
+            console.log('change');
+          },1000)*/
+         /* this.$nextTick(function () {
+
+          })*/
         },
         immediate: true
       }
@@ -984,6 +992,20 @@
     computed: {},
     methods: {
 
+
+      /*debounce(fn, delay) {
+        debugger
+        let timer = null
+        return function () {
+          let context = this
+          let args = arguments
+          clearTimeout(timer)
+          timer = setTimeout(function () {
+            fn.apply(context, args)
+          }, delay)
+        }
+      },
+*/
       //入库表单提交
       inRepository() {
         debugger
