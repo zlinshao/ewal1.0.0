@@ -138,6 +138,7 @@
     import videoLearning from '../videoLearning/index.vue';
     import {leJiaCollegeMenu} from '../../../assets/js/allModuleList.js';
     import LjDialog from '../../common/lj-dialog.vue';
+    import postPlanningIndex from '../postPlanning/index.vue';
     export default {
         name: "common",
         components:{
@@ -148,7 +149,8 @@
             videoLearning,
             faculty,
             examArrangement,
-            LjDialog
+            LjDialog,
+            postPlanningIndex,
         },
 
         data() {

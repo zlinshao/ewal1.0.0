@@ -5,13 +5,18 @@
                 <span
                         v-for="item in selects"
                         class="flex-center"
-                        @click="routerLink(item.url,{type:4,url:'postPlanningLists',id:item.id})"
+                        @click="routerLink(item.url,{type:4,url:'postPlanningLists',id:item.id,tab:1})"
                 >
                     <i class="writingMode">{{item.title}}</i>
                 </span>
             </div>
             <div class="right-tab">
-                <span v-for="item in rightTabs"><i class="writingMode">{{item.title}}</i></span>
+                <div v-for="item in tabs" @click="routerLink(item.url,{type:4,url:'postPlanningLists',id:item.id,tab:2,switchTabs:item.tab})">
+                    <span>
+                        <i class="writingMode">{{item.title}}</i>
+                    </span>
+                    <span></span>
+                </div>
             </div>
         </div>
     </div>
@@ -32,9 +37,9 @@
                     {id:7,title:'储备片区经理',url:'reserveAreaManager'},
                     {id:8,title:'市场专员',url:'sales'},
                 ],
-                rightTabs:[
-                    {id:1,title:'新人训'},
-                    {id:2,title:'储备培训'},
+                tabs:[
+                    {id:1,title:'新人训',url:'newTraining',tab:1},
+                    {id:2,title:'储备培训',url:'reserveTraining',tab:2},
                 ],
             }
         },
@@ -51,7 +56,22 @@
     #theme_name.theme1{
         #menu{
            .mainList{
-               @include leJiaCollegeImg('theme1','train-bg.png')
+               @include leJiaCollegeImg('theme1','train-bg.png');
+               .menu-list{
+                   @for $i from 1 through 8{
+                       span:nth-child(#{$i}){
+                           @include leJiaCollegeImg('theme1','post#{$i}.png');
+                           &:hover{
+                               @include leJiaCollegeImg('theme1','hoverpost#{$i}.png');
+                               color:#FFFFFF;
+                           }
+
+
+
+                       }
+                   }
+
+               }
            }
         }
     }

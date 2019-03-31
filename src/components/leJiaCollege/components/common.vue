@@ -16,12 +16,11 @@
             <div class="items-center listTopRight">
                 <div  @click.stop="add_video = true" v-show="chooseTab===3"><b>添加视频</b></div>
                 <div  @click.stop="add_faculty = true" v-show="chooseTab===5"><b>添加讲师</b></div>
-                <!--<div  @click="add_visible = true"><b>{{chooseTab===3?'添加视频':chooseTab===5?'添加讲师':''}}</b></div>-->
             </div>
         </div>
         <div class="mainList">
             <keep-alive>
-                <div :is="tabView" :tabId = 'tabId'></div>
+                <div :is="tabView" :tabId = 'tabId' :getTab="tab" :switchTab="selectTab"></div>
             </keep-alive>
         </div>
 
@@ -152,36 +151,39 @@
             LjDialog,
             postPlanningLists,
         },
-
         data() {
             return {
                 leJiaCollegeMenu,
                 chooseTab: 1,
                 showFinMenuList:false,
-                tabView:'examArrangement',
+                tabView:'examArrangement',//显示组件
                 add_video:false,//新增视频
                 add_faculty:false,//新增讲师
                 videoForm:{
                     name:''
                 },
                 tabId:'',
+                tab:'',
+                selectTab:0,
             }
         },
         watch:{
-            '$route':'getPath',
+            '$route' (to, from) {
+                this.tabView = this.$route.query.url;
+                this.chooseTab = this.$route.query.type;
+                if(from.path==='/newTraining'||from.path==='/reserveTraining'){
+                    this.chooseTab = 4;
+                }
+                this.tabId = this.$route.query.id;
+                this.tab = this.$route.query.tab;
+                this.selectTab = this.$route.query.switchTabs;
+                console.log(this.selectTab);
+            }
         },
         methods:{
-
             changeTabs(id,url) {
                 this.chooseTab = id;
                 this.tabView = url;
-            },
-            getPath(){
-
-                this.tabView = this.$route.query.url;
-                this.chooseTab = this.$route.query.type;
-                // console.log(this.chooseTab);
-                this.tabId = this.$route.query.id;
             },
             handleOkDel(){
 

@@ -89,6 +89,8 @@ const ReserveDistrictManager = ()=> import('@/components/leJiaCollege/components
 const AreaManager = ()=> import('@/components/leJiaCollege/components/common.vue');//片区经理
 const ReserveAreaManager = ()=> import('@/components/leJiaCollege/components/common.vue');//储备片区经理
 const Sales = ()=> import('@/components/leJiaCollege/components/common.vue');//市场专员
+const NewTrainning = ()=> import('@/components/leJiaCollege/components/common.vue');//新人训
+const ReserveTrainning = ()=> import('@/components/leJiaCollege/components/common.vue');//储备培训
 
 //待办
 // const TodoList = () => import('@/components/todoList/index.vue');
@@ -139,6 +141,16 @@ export default new Router({
             path: '/videoLearning',
             name: '视频学习',
             component: VideoLearning
+        },
+        {
+            path:'/newTraining',
+            name:'新人训',
+            component:NewTrainning
+        },
+        {
+            path:'/reserveTraining',
+            name:'储备培训',
+            component:ReserveTrainning
         },
 
         {

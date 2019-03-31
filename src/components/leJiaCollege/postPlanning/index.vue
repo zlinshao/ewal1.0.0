@@ -1,6 +1,6 @@
 <template>
     <div id="postPlanning">
-        <div class="mainList justify-bet" :style="{'height': this.mainListHeight(-9) + 'px'}">
+        <div class="mainList justify-bet" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="getTab===1">
             <div class="edit_btn">
                 <span @click="">编 辑</span>
             </div>
@@ -197,23 +197,27 @@
                 </div>
             </div>
         </div>
-
-        <!--<div class="mainList justify-bet mainList-train" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="false">-->
-            <!--<div class="train_btn">-->
-                <!--<span @click="is_train = false;is_store = true"><i class="writingMode">新人训</i></span>-->
-                <!--<span @click="is_store = false;is_train = true"><i class="writingMode">储备培训</i></span>-->
-            <!--</div>-->
-            <!--<div class="edit_btn">-->
-                <!--<span @click="">编 辑</span>-->
-            <!--</div>-->
-            <!--<div class="train-box" v-if="is_train">-->
-                <!--<span @click="" v-for="item in newTrainData"><i>{{item.title}}</i></span>-->
-            <!--</div>-->
-
-            <!--<div class="train-box" v-if="is_store">-->
-                <!--<span @click="" v-for="item in storeData"><i>{{item.title}}</i></span>-->
-            <!--</div>-->
-        <!--</div>-->
+        <!--新人训储备培训-->
+        <div class="mainList justify-bet mainList-train" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="getTab===2">
+            <div class="train_btn">
+                <span v-for="item in tabSelects"
+                      @click="changeTabs(item.id)"
+                      :class="chooseTab === item.id ? 'chooseTab':'defaultTab'">
+                    <i class="writingMode">{{item.title}}</i>
+                </span>
+            </div>
+            <div class="edit_btn">
+                <span @click="">编 辑</span>
+            </div>
+            <!--新人训-->
+            <div class="train-box" v-if="chooseTab===1">
+                <span @click="" v-for="item in newTrainData"><i>{{item.title}}</i></span>
+            </div>
+            <!--储备培训-->
+            <div class="train-box" v-if="chooseTab===2">
+                <span @click="" v-for="item in storeData"><i>{{item.title}}</i></span>
+            </div>
+        </div>
 
     </div>
 </template>
@@ -225,10 +229,15 @@
         components:{
             LjDialog
         },
-        props:['tabId'],
+        props:['tabId','getTab','switchTab'],
         data(){
             return{
                 tab:this.tabId,
+                chooseTab:this.switchTab,//chooseTab初始值
+                tabSelects:[
+                    {id:1,title:'新人训'},
+                    {id:2,title:'储备培训'},
+                ],
                 newTrainData:[
                     {id:1,title:'企业介绍及条例宣贯'},
                     {id:2,title:'薪酬计算及晋升'},
@@ -255,16 +264,34 @@
                 ],
             }
         },
-        watch:{
-            "$route":"getPath"
+        computed:{
+            // chooseTab:function () {
+            //
+            // }
         },
+
+        watch:{
+            switchTab:{
+                handler(newVal,oldVal){
+                    console.log(newVal);
+                    this.chooseTab = newVal;
+                },
+                deep:true
+            },
+            "$route":"getPath",
+
+        },
+
         methods:{
-            selectTab(val){
+            selectTab(val){//切换menu
                 this.tab = val;
             },
-            getPath(){
+            getPath(){//获取路由参数
                 this.tab = this.$route.query.id;
-            }
+            },
+            changeTabs(id) {//切换tab
+                this.chooseTab = id;
+            },
         },
 
 
@@ -288,12 +315,23 @@
             @include leJiaCollegeImg('theme1', 'postPlanning-bg.png');
             .train_btn{
                 span{
-                    @include leJiaCollegeImg('theme1', 'new-train-grey.png');
                     &:hover{
                         @include leJiaCollegeImg('theme1', 'new-train-red.png');
                     }
+
                 }
+
+                .chooseTab{
+                    @include leJiaCollegeImg('theme1', 'new-train-red.png');
+                    color:#FFFFFF;
+                }
+                .defaultTab{
+                    @include leJiaCollegeImg('theme1', 'new-train-grey.png');
+                }
+
+
             }
+
             .train-box{
                 span{
                     @include leJiaCollegeImg('theme1', 'new-train-tab-grey.png');
