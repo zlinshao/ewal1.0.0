@@ -21,7 +21,7 @@
         </div>
         <div class="mainList">
             <keep-alive>
-                <div :is="tabView" :tabId = 'tabId'></div>
+                <component :is="tabView"></component>
             </keep-alive>
         </div>
 
@@ -42,8 +42,8 @@
                             <el-input v-model="videoForm.name" size="small"></el-input>
                         </el-form-item>
                         <el-form-item label="上传视频">
-                        <el-input v-model="videoForm.name" size="small"></el-input>
-                    </el-form-item>
+                            <el-input v-model="videoForm.name" size="small"></el-input>
+                        </el-form-item>
 
                     </el-form>
                 </div>
@@ -134,7 +134,6 @@
     import faculty from '../faculty/index.vue';
     import industryDynamic from '../industryDynamic/index.vue';
     import postPlanning from '../postPlanning/menu.vue';
-    import postPlanningLists from '../postPlanning/index.vue';
     import practicalProblems from '../practicalProblems/index.vue';
     import videoLearning from '../videoLearning/index.vue';
     import {leJiaCollegeMenu} from '../../../assets/js/allModuleList.js';
@@ -149,8 +148,7 @@
             videoLearning,
             faculty,
             examArrangement,
-            LjDialog,
-            postPlanningLists,
+            LjDialog
         },
 
         data() {
@@ -163,8 +161,7 @@
                 add_faculty:false,//新增讲师
                 videoForm:{
                     name:''
-                },
-                tabId:'',
+                }
             }
         },
         watch:{
@@ -177,11 +174,9 @@
                 this.tabView = url;
             },
             getPath(){
-
+                console.log(this.$route.query.url);
                 this.tabView = this.$route.query.url;
                 this.chooseTab = this.$route.query.type;
-                // console.log(this.chooseTab);
-                this.tabId = this.$route.query.id;
             },
             handleOkDel(){
 

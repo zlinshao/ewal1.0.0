@@ -15,7 +15,7 @@
         <el-table-column label="身份证号" prop="staff.id_num" align="center"></el-table-column>
         <el-table-column label="婚育情况" prop="staff.marital_status" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.staff.marital_status === 1 ? '未婚' :  '已婚'}}</span>
+            <span>{{ scope.row.staff && scope.row.staff.marital_status === 1 ? '未婚' :  '已婚' || '未知'}}</span>
           </template>
         </el-table-column>
         <el-table-column label="家庭住址" prop="staff.home_addr" align="center"></el-table-column>

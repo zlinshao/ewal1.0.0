@@ -3,7 +3,53 @@
 #theme_name {
   #contractManagement {
     > div {
-
+      .back_info {
+        width: 100%;
+        overflow: hidden;
+        > div {
+          width: 100%;
+          background-color: white;
+          padding: 30px;
+          .content {
+            min-height: 100px;
+            div {
+              width: 100%;
+              max-height: 40px;
+              &:first-child {
+                text-align: right;
+              }
+              &:last-child {
+                text-align: left;
+              }
+              &:nth-child(2) {
+                position: relative;
+                .circle {
+                  width: 20px;
+                  height: 20px;
+                  border: 1px solid $colorE33;
+                  box-sizing: border-box;
+                  border-radius: 50%;
+                  a {
+                    width: 10px;
+                    height: 10px;
+                    background-color: $colorE33;
+                    border-radius: 50%;
+                  }
+                }
+                .line {
+                  width: 1px;
+                  height: 100px;
+                  position: absolute;
+                  top: 45px;
+                  left: 50%;
+                  background-color: $colorE33;
+                  transform: translateX(-50%);
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
