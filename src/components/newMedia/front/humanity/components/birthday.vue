@@ -1,8 +1,7 @@
 <template>
     <div id="birthday">
-        <div class="mainList scroll_bar"  :style="{'height': this.mainListHeight(-9) + 'px'}">
+        <div class="mainList scroll_bar"  :style="{'height': this.mainListHeight(-9) + 'px'}"  v-if="show">
             <div class="birthday_info">
-
                 <div class="today_birthday">
                     <div class="today_birthday_title">
                         <div>
@@ -10,17 +9,46 @@
                         </div>
                     </div>
                     <div class="today_birthday_list">
-                        <div class="birthday_box" v-for="(item,index) in todayBirthday.slice(0,3)">
-                            <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
-                            <div class="">
-                                <span class="writingMode">{{item.depart}}</span>
-                                <span class="writingMode">{{item.name}}</span>
+                        <div class="birthday_box-left">
+                            <div class="birthday_box" v-for="(item,index) in todayBirthday.slice(0,3)">
+                                <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
+                                <div class="">
+                                    <span class="writingMode">{{item.depart}}</span>
+                                    <span class="writingMode">{{item.name}}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="today_birthday_btn" @click="wishes_visible = true"><span>送上祝福</span></div>
-                </div>
+                        <div class="birthday_box-right">
+                            <div class="outer-container">
+                                <div class="inner-container">
+                                    <div class="element">
+                                        <div class="wishes-list" v-for="(item,index) in todayBirthday">
+                                            <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
+                                            <div>
+                                                <p>赵小刀</p>
+                                                <p>祝李莫愁生日快乐！年年有今日～岁岁有今朝～哈哈！生日快乐！ ～岁岁有今朝～～哈哈！生日快乐！</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--透明图层-->
+                            <div class="hide-box">
+                            </div>
+                        </div>
+                        <div class="wishes-btn">
+                            <div>
+                                <p>编写</p>
+                                <p>祝福</p>
+                            </div>
+                            <div>
+                                <p>所有</p>
+                                <p>祝福</p>
+                            </div>
+                        </div>
 
+                    </div>
+                </div>
                 <div class="months_birthday">
                     <div class="months_birthday_title"><span>本月寿星</span></div>
                     <div class="months_birthday_list">
@@ -33,7 +61,71 @@
                         </div>
                     </div>
                 </div>
-                <div class="switch_icon_box flex-center">
+                <div class="switch_icon_box flex-center"  @click="show = false">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mainList scroll_bar hide-mainList"  :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="!show">
+            <div class="birthday_info">
+                <div class="today_birthday hide-all-today">
+                    <div class="today_birthday_title">
+                        <div>
+                            <span>今日寿星</span>
+                        </div>
+                    </div>
+                    <div class="today_birthday_list">
+                        <div class="birthday_box-left">
+                            <div class="outer-container">
+                                <div class="inner-container">
+                                    <div class="element">
+                                        <div class="box-info" v-for="(item,index) in todayBirthday">
+                                            <div class="birthday_box" >
+                                                <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
+                                                <div class="">
+                                                    <span class="writingMode">{{item.depart}}</span>
+                                                    <span class="writingMode">{{item.name}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="birthday_box-right">
+                            <div class="outer-container">
+                                <div class="inner-container">
+                                    <div class="element">
+                                        <div class="wishes-list" v-for="(item,index) in todayBirthday">
+                                            <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
+                                            <div>
+                                                <p>赵小刀</p>
+                                                <p>祝李莫愁生日快乐！年年有今日～岁岁有今朝～哈哈！生日快乐！ ～岁岁有今朝～～哈哈！生日快乐！</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--透明图层-->
+                            <div class="hide-box">
+                            </div>
+                        </div>
+                        <div class="wishes-btn">
+                            <div>
+                                <p>编写</p>
+                                <p>祝福</p>
+                            </div>
+                            <div>
+                                <p>所有</p>
+                                <p>祝福</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="months_birthday hide-all-months"></div>
+                <div class="switch_icon_box flex-center  hide-switch" @click="show = true">
                     <span></span>
                 </div>
             </div>
@@ -115,6 +207,7 @@
                 wishes_visible:false,
                 edit_wishes_visible:false,
                 chooseTab: 1,
+                show:true,
                 selects: [
                     {id: 1, title: "乐伽之星"}, {id: 2, title: "优秀员工"}, {id: 3, title: "寿星墙"}
                 ],
@@ -133,6 +226,12 @@
                     },
                 ],
                 todayBirthday:[
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                    {name:'齐达内',depart:'南京二区一组',avatar:""},
                     {name:'齐达内',depart:'南京二区一组',avatar:""},
                     {name:'齐达内',depart:'南京二区一组',avatar:""},
                     {name:'齐达内',depart:'南京二区一组',avatar:""},

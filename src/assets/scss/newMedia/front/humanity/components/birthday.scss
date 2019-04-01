@@ -12,8 +12,7 @@
         .today_birthday {
           width: 100%;
           height: 50%;
-          padding-left: 200px;
-          //padding-right: 200px;
+          padding-left: 100px;
           padding-top: 50px;
           display: flex;
           flex-direction: row;
@@ -21,13 +20,13 @@
 
           .today_birthday_title {
             width: 200px;
-            height:200px;
-            //border:1px solid #ff4545;
+            height: 200px;
 
-            >div{
+            > div {
               width: 100px;
               height: 100px;
               position: relative;
+
               span {
                 display: block;
                 width: 64px;
@@ -41,82 +40,176 @@
               }
             }
 
-          };
+          }
+        ;
+
           .today_birthday_list {
             width: 100%;
-            //border:1px solid #FF7131;
             display: flex;
             flex-direction: row;
-            padding-left: 150px;
-            padding-right: 350px;
-            //flex-wrap: wrap;
-            justify-content: space-around;
-            .birthday_box{
-              width: 180px;
-              >img{
-                $myHeight: 200px;
-                $genHaoSan: 1.73205080;
-                width: calc(($myHeight*$genHaoSan)/2);
-                height: $myHeight;
-                clip-path: polygon(0 25%, 50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%);
+
+            .birthday_box-left {
+              width: 55%;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              padding-right: 100px;
+              border-right: 1px solid #BDBDBD;
+
+              .birthday_box {
+                width: 24%;
+
+
+                > img {
+                  $myHeight: 220px;
+                  $genHaoSan: 1.73205080;
+                  width: calc(($myHeight * $genHaoSan) / 2);
+                  height: $myHeight;
+                  clip-path: polygon(0 25%, 50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%);
+                }
+
+                > div {
+                  margin-top: 10px;
+
+                  span {
+                    font-family: jingDianXingShu;
+                    font-size: 14px;
+                  }
+                }
+              };
+
+            }
+
+            .birthday_box-right {
+              width:38%;
+              height: 95%;
+              padding-right: 40px;
+              padding-left: 40px;
+              position: relative;
+              .hide-box{
+                width: 100%;
+                height: 80px;
+                background: #F4F4F4;
+                //background-image: -webkit-gradient(linear,left top, left bottom,from(#F4F4F4),color-stop(100%, #FDFDFD));
+                opacity: .8;
+                position: absolute;
+                bottom: 0;
+                left: 0;
               }
-              >div{
-                margin-top: 10px;
-                span{
-                  font-family: jingDianXingShu;
-                  font-size: 14px;
+
+
+              .element,
+              .outer-container {
+                width: 100%;
+                height: 300px;
+              }
+              .element{
+                .wishes-list{
+                  display: flex;
+                  flex-direction: row;
+                  align-items: flex-start;
+                  margin-top: 20px;
+                  margin-bottom: 20px;
+                  img{
+                    width: 50px;
+                    height: 50px;
+                    margin-right: 10px;
+                  }
+                  >div{
+                    p{
+                      font-size: 14px;
+                    }
+                    p:first-child{
+                      color:#202020;
+                      font-weight: bold;
+                    }
+                  }
                 }
               }
+
+              .outer-container {
+                position: relative;
+                overflow: hidden;
+              }
+
+              .inner-container {
+                position: absolute;
+                left: 0;
+                overflow-x: hidden;
+                overflow-y: scroll;
+              }
+
+              .inner-container::-webkit-scrollbar {
+                display: none;
+              }
+            }
+            .wishes-btn{
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              div{
+                border-radius: 50%;
+                height: 60px;
+                width: 60px;
+                //border:1px solid #999999;
+                margin-bottom: 30px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: #FFFFFF;
+                box-shadow: #DFDFDF 0px 0px 5px 5px;
+                p{
+                  font-family: jingDianXingShu;
+                  font-size: 20px;
+                  color: #000000;
+                }
+
+              }
             }
 
-          };
-          .today_birthday_btn{
-            cursor: pointer;
-            width:10%;
-            height: 30px;
-            //border:1px solid #F6DE46;
-            text-align: center;
-            background: #DFDFDF;
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-            span{
-              font-family: jingDianXingShu;
-              font-size: 14px;
-              line-height: 30px;
-
-            }
           }
+        ;
+
         }
-        .months_birthday{
+        .months_birthday {
           width: 100%;
           padding: 30px 200px;
-          background:#E8E8E8;
-          .months_birthday_title{
+          background: #E8E8E8;
+
+          .months_birthday_title {
             margin-bottom: 30px;
-            span{
+
+            span {
               font-size: 30px;
               font-family: jingDianXingShu;
             }
           }
-          .months_birthday_list{
+
+          .months_birthday_list {
             width: 100%;
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
-            .birthday_box{
-              width: calc(100%/7);
+
+            .birthday_box {
+              width: calc(100% / 7);
               display: flex;
               flex-direction: column;
               align-items: center;
               padding: 20px;
-              >img{
-                width: 160px;
-                height: 160px;
+
+              > img {
+                width: 150px;
+                height: 150px;
                 border-radius: 50%;
               }
-              >div{
+
+              > div {
                 margin-top: 10px;
-                span{
+
+                span {
                   font-family: jingDianXingShu;
                   font-size: 14px;
                 }
@@ -124,70 +217,311 @@
             }
           }
         }
-        .switch_icon_box{
+        .switch_icon_box {
           cursor: pointer;
           width: 40px;
           height: 40px;
           background: #FFFFFF;
           position: absolute;
           top: 0;
-          left:0;
+          left: 0;
           bottom: 0;
-          right:0;
+          right: 0;
           margin: auto;
           transform: rotate(45deg);
-          span{
+
+          span {
             display: block;
             width: 28px;
             height: 28px;
           }
         }
 
+        //展现所有今日寿星
+        .hide-all-today {
+          //padding-top: 20px;
+          height:95%;
+          .element,
+          .outer-container {
+            width: 100%;
+            height: 660px;
+          }
+          //滚动
+          .element{
+            .wishes-list{
+              display: flex;
+              flex-direction: row;
+              align-items: flex-start;
+              margin-top: 20px;
+              margin-bottom: 20px;
+              img{
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
+              }
+              >div{
+                p{
+                  font-size: 14px;
+                }
+                p:first-child{
+                  color:#202020;
+                  font-weight: bold;
+                }
+              }
+            }
+          }
 
+          .outer-container {
+            position: relative;
+            overflow: hidden;
+          }
+
+          .inner-container {
+            position: absolute;
+            left: 0;
+            overflow-x: hidden;
+            overflow-y: scroll;
+          }
+
+          .inner-container::-webkit-scrollbar {
+            display: none;
+          }
+          .element{
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: flex-start;
+            padding-top: 30px;
+            .box-info{
+              width: 33%;
+              padding:0 30px 0 30px;
+
+              .birthday_box {
+
+                > img {
+                  $myHeight: 220px;
+                  $genHaoSan: 1.73205080;
+                  width: calc(($myHeight * $genHaoSan) / 2);
+                  height: $myHeight;
+                  clip-path: polygon(0 25%, 50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%);
+                }
+
+                > div {
+                  margin-top: 10px;
+
+                  span {
+                    font-family: jingDianXingShu;
+                    font-size: 14px;
+                  }
+                }
+              };
+            }
+          }
+          //end
+
+          .today_birthday_title {
+            > div {
+              span {
+              }
+            }
+
+          };
+          .today_birthday_list {
+
+            .birthday_box-left {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: flex-start;
+              .birthday_box-info{
+                width: 33%;
+                padding:0 30px 30px 30px;
+              }
+              .birthday_box {
+                width: 90%;
+                > img {
+                  $myHeight: 220px;
+                  $genHaoSan: 1.73205080;
+                  width: calc(($myHeight * $genHaoSan) / 2);
+                  height: $myHeight;
+                  clip-path: polygon(0 25%, 50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%);
+                }
+
+                > div {
+                  margin-top: 10px;
+
+                  span {
+                    font-family: jingDianXingShu;
+                    font-size: 14px;
+                  }
+                }
+              };
+
+            }
+
+            .birthday_box-right {
+              width:38%;
+              padding-right: 40px;
+              padding-left: 40px;
+              position: relative;
+              .hide-box{
+                width: 100%;
+                height: 80px;
+                background: #F4F4F4;
+                //background-image: -webkit-gradient(linear,left top, left bottom,from(#F4F4F4),color-stop(100%, #FDFDFD));
+                opacity: .8;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+              }
+
+
+              .element,
+              .outer-container {
+                width: 100%;
+                height: 660px;
+              }
+              .element{
+                .wishes-list{
+                  display: flex;
+                  flex-direction: row;
+                  align-items: flex-start;
+                  margin-top: 20px;
+                  margin-bottom: 20px;
+                  img{
+                    width: 50px;
+                    height: 50px;
+                    margin-right: 10px;
+                  }
+                  >div{
+                    p{
+                      font-size: 14px;
+                    }
+                    p:first-child{
+                      color:#202020;
+                      font-weight: bold;
+                    }
+                  }
+                }
+              }
+
+              .outer-container {
+                position: relative;
+                overflow: hidden;
+              }
+
+              .inner-container {
+                position: absolute;
+                left: 0;
+                overflow-x: hidden;
+                overflow-y: scroll;
+              }
+
+              .inner-container::-webkit-scrollbar {
+                display: none;
+              }
+            }
+            .wishes-btn{
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              div{
+                border-radius: 50%;
+                height: 60px;
+                width: 60px;
+                //border:1px solid #999999;
+                margin-bottom: 30px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: #FFFFFF;
+                box-shadow: #DFDFDF 0px 0px 5px 5px;
+                p{
+                  font-family: jingDianXingShu;
+                  font-size: 20px;
+                  color: #000000;
+                }
+
+              }
+            }
+
+          }
+        ;
+
+        }
+        .hide-all-months{
+          width: 100%;
+          height: 5%;
+          background: #E8E8E8;
+        }
+        .hide-switch {
+          cursor: pointer;
+          width: 40px;
+          height: 40px;
+          background: #FFFFFF;
+          position: absolute;
+          top: 95%;
+          left: 0;
+          //bottom: 0;
+          right: 0;
+          margin: auto;
+          margin-top: -20px;
+          transform: rotate(45deg);
+
+          span {
+            display: block;
+            width: 28px;
+            height: 28px;
+          }
+        }
+        //end
       }
-
-
     }
 
-    .dialog_header{
-      .write_wishes{
+    .dialog_header {
+      .write_wishes {
         display: block;
         width: 40px;
         height: 40px;
         cursor: pointer;
       }
-      span{
-        color:#CF2E33;
+      span {
+        color: #CF2E33;
         font-size: 14px;
         margin-left: 10px;
       }
     }
-    .dialog_main{
-      .wishes-lists{
+    .dialog_main {
+      .wishes-lists {
         padding: 20px;
         display: flex;
         flex-direction: row;
         align-items: flex-start;
-        >img{
+
+        > img {
           width: 50px;
-          height:50px;
+          height: 50px;
         }
-        >div{
+
+        > div {
           text-align: left;
           margin-left: 20px;
-          color:#202020;
-          h3{
+          color: #202020;
+
+          h3 {
             font-size: 18px;
           }
-          p{
+
+          p {
             line-height: 26px;
           }
         }
       }
     }
-    .form_item_container{
+    .form_item_container {
       align-items: flex-start;
-      .item_content{
+      .item_content {
         width: 100%;
       }
     }
