@@ -9,12 +9,32 @@
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         style="width: 100%">
-        <el-table-column
-          v-for="item in Object.keys(showData)" :key="item"
-          align="center"
-          :prop="item"
-          :label="showData[item]">
-          <template slot-scope="scope" v-if="item === 'date8' || item === 'date9' || item === 'date10' || item === 'date11'">
+        <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+        <el-table-column label="岗位" prop="position" align="center">
+          <template slot-scope="scope">
+            <div v-if="scope.row.position && scope.row.position.length > 0">
+              <span v-for="item in scope.row.position">{{ item.name }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="入职时间" prop="staff.enroll" align="center"></el-table-column>
+        <el-table-column label="离职时间" prop="staff.enroll" align="center"></el-table-column>
+        <el-table-column label="离职操作时间" prop="staff.enroll" align="center"></el-table-column>
+        <el-table-column label="联系方式" prop="phone" align="center"></el-table-column>
+        <el-table-column label="离职类型" prop="dismiss_time.entry_type" align="center"></el-table-column>
+        <el-table-column label="离职备注" prop="dismiss_time.entry_mess" align="center"></el-table-column>
+        <el-table-column label="离职交接单" align="center">
+          <template slot-scope="scope">
+            <el-button type="text">查看</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="合同" align="center">
+          <template slot-scope="scope">
+            <el-button type="text">查看</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="离职短信" align="center">
+          <template slot-scope="scope">
             <el-button type="text">查看</el-button>
           </template>
         </el-table-column>
@@ -41,23 +61,10 @@
 <script>
   export default {
     name: "index",
+    props: ['exportInfo'],
     data() {
       return {
         checkList: [],
-        showData: {
-          name: '部门',
-          date1: '岗位',
-          date2: '入职时间',
-          date3: '离职时间',
-          date4: '离职操作时间',
-          date5: '联系方式',
-          date6: '离职类型',
-          date7: '离职备注',
-          date8: '离职交接单',
-          date9: '合同',
-          date10: '离职短信',
-          date11: '离职证明',
-        },
         chooseRowIds: [],
         tableData: [],
         counts: 0,
@@ -67,7 +74,8 @@
           limit: 36,
           org_id: '',
           position_id: '',
-          is_on_job: 0
+          is_on_job: 1,
+          export: 0
         }
       }
     },
@@ -76,7 +84,15 @@
     },
     activated() {
     },
-    watch: {},
+    watch: {
+      exportInfo(val) {
+        console.log(val);
+        if (val === 4) {
+          this.params.export = 1;
+          this.getStaffList();
+        }
+      },
+    },
     computed: {},
     methods: {
       getStaffList() {

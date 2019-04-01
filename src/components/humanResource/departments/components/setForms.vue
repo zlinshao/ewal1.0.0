@@ -11,11 +11,7 @@
               <i class="el-icon-remove"></i>
               <b>{{showData[item]}}</b>
             </p>
-            <p><i class="el-icon-circle-plus"></i></p>
-          </div>
-          <div class="flex tBody">
-            <div>幅度萨芬萨</div>
-            <div>放大撒发生打</div>
+            <!--<p><i class="el-icon-circle-plus"></i></p>-->
           </div>
         </div>
         <div class="footerBtn">

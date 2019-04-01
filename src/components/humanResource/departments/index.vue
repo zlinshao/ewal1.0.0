@@ -37,7 +37,7 @@
         </div>
         <div class="icons dimission" v-if="chooseTab === 3"></div>
         <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
-        <div class="buttons button2" v-if="chooseTab === 3 || chooseTab === 4">导出报表</div>
+        <div class="buttons button2" v-if="chooseTab === 3 || chooseTab === 4" @click="handleExportInfo">导出报表</div>
         <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2"></div>
       </div>
@@ -82,12 +82,49 @@
 
     <!--员工名册-->
     <div v-show="chooseTab === 3">
-      <StaffRoster :searchVal="searchFruit3" :search-params="staff_params"></StaffRoster>
+      <StaffRoster :searchVal="searchFruit3" :export-info="exportInfo" :search-params="staff_params"></StaffRoster>
     </div>
 
     <!--离职管理-->
     <div v-if="chooseTab === 4">
-      <LeaveJob></LeaveJob>
+      <LeaveJob :export-info="exportInfo"></LeaveJob>
+    </div>
+
+    <!--权限管理-->
+    <div v-if="chooseTab === 5">
+      <!--系统-->
+      <div style="padding: 10px 0">
+        <el-table
+          :data="system_list"
+          height="400px"
+        >
+          <el-table-column label="ID" prop="id" align="center"></el-table-column>
+          <el-table-column label="系统标识" prop="sign" align="center"></el-table-column>
+          <el-table-column label="系统名称" prop="name" align="center"></el-table-column>
+          <el-table-column label="系统描述" prop="description" align="center"></el-table-column>
+          <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+          <el-table-column label="新增模块" align="center">
+            <template slot-scope="scope">
+              <el-button type="text">新增模块</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="编辑" align="center">
+            <template slot-scope="scope">
+              <el-button type="text">编辑</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="删除" align="center">
+            <template slot-scope="scope">
+              <el-button type="text">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          :total="system_list_count"
+          layout="total,prev,pager,next"
+          style="text-align: right"
+        ></el-pagination>
+      </div>
     </div>
 
     <!--新增部门-->
@@ -190,6 +227,15 @@
     },
     data() {
       return {
+        //权限管理
+        power_params: {
+          search: '',
+          parent_id: '',
+          is_permissions: ''
+        },
+        system_list: [],
+        system_list_count: 0,
+
         del_depart_visible: false,
         del_depart: '',
         is_edit_depart: false,
@@ -208,7 +254,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 4,//tab切换
+        chooseTab: 5,//tab切换
         selects: [
           {
             id: 1,
@@ -225,6 +271,10 @@
           {
             id: 4,
             title: '离职管理',
+          },
+          {
+            id: 5,
+            title: '权限管理'
           }
         ],//tab切换
 
@@ -276,10 +326,14 @@
           }
         ],//部门人员
         value: '',
+
+        //导出报表
+        exportInfo: ''
       }
     },
     mounted() {
       this.getDepartList();
+      this.getPowerList();
     },
     watch: {},
     computed: {
@@ -288,6 +342,23 @@
       },
     },
     methods: {
+      //权限管理
+      getPowerList() {
+        this.$http.get('organization/system',this.power_params).then(res => {
+          console.log(res);
+          if (res.code === '20000') {
+            this.system_list = res.data.data;
+            this.system_list_count = res.data.count;
+          } else {
+            this.system_list = [];
+            this.system_list_count = 0;
+          }
+        })
+      },
+      //导出报表
+      handleExportInfo() {
+        this.exportInfo = this.chooseTab;
+      },
       handleOpenLookInfo(val) {
         this.departModule = true;
         this.departInfo = val;
@@ -407,6 +478,8 @@
             case 3:
               this.searchFruit3 = this.handleSearch(this.staffBookSearch);
               break;
+            case 5:
+              this.getPowerList();
           }
         });
         this.$store.dispatch('route_animation');

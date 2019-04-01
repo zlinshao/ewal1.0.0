@@ -102,7 +102,6 @@
     methods: {
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {
-          console.log(res);
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })

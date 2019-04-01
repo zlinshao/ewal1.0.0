@@ -415,13 +415,12 @@
           <div class="powerHead items-bet">
             <div class="inputLabel">
               <h4>权限类型</h4>
-              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="power">
+              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="power" size="small">
                 <el-option label="收入" :value="1"></el-option>
                 <el-option label="支出" :value="2"></el-option>
                 <el-option label="混合" :value="3"></el-option>
               </el-select>
             </div>
-            <i></i>
           </div>
           <div class="powerTabs">
             <el-tabs v-model="powerName" @tab-click="handleClick">
@@ -620,6 +619,7 @@
         </div>
       </div>
     </lj-dialog>
+
   </div>
 </template>
 
@@ -633,6 +633,7 @@
     components: {ljDialog,PositionOrgan},
     data() {
       return {
+
         //离职
         outForm: {
           type: 'dimission',
@@ -960,6 +961,9 @@
       }
     },
     methods: {
+      handleOpenPowerManagement() {
+
+      },
       handleCancelOut() {
         this.outForm = {
           type: 'dimission',

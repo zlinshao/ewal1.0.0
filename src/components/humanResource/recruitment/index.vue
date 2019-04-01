@@ -129,6 +129,11 @@
               </el-table-column>
               <el-table-column label="创建人" prop="creator.real_name" align="center"></el-table-column>
               <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+              <el-table-column label="编辑">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="handleEditOffer(scope.row)">编辑</el-button>
+                </template>
+              </el-table-column>
             </el-table>
           </div>
           <div class="dialog_footer">
@@ -136,6 +141,51 @@
           </div>
         </div>
       </lj-dialog>
+
+      <!--编辑面试官-->
+      <lj-dialog
+        :visible="edit_offer_visible"
+        :size="{width: 500 + 'px',height: 600 + 'px'}"
+        @close="handleCancelEdit"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>编辑编辑面试官</h3>
+          </div>
+          <div class="dialog_main borderNone">
+            <el-form label-width="120px">
+              <el-form-item label="面试官一">
+                <el-input v-model="edit_offer.interviewer_first" readonly @focus="handleOpenStaff('first')"></el-input>
+              </el-form-item>
+              <el-form-item label="面试官二">
+                <el-input v-model="edit_offer.interviewer_second" readonly  @focus="handleOpenStaff('second')"></el-input>
+              </el-form-item>
+              <el-form-item label="面试官三">
+                <el-input v-model="edit_offer.interviewer_third" readonly  @focus="handleOpenStaff('third')"></el-input>
+              </el-form-item>
+              <el-form-item label="部门">
+                <el-input v-model="edit_offer.depart" readonly @focus="depart_visible = true"></el-input>
+              </el-form-item>
+              <el-form-item label="岗位">
+                <el-input v-model="edit_offer.position_name" readonly @focus="position_visible = true"></el-input>
+              </el-form-item>
+              <el-form-item label="试卷">
+                <Upload :file="upload_form" @success="handleSuccessUpload"></Upload>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleSubmitEditOffer">确定</el-button>
+            <el-button type="info" size="small" @click="handleCancelEdit">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
+      <DepartOrgan :module="depart_visible" @close="handleGetDepart"></DepartOrgan>
+
+      <StaffOrgan :module="staff_visible" @close="handleGetStaff"></StaffOrgan>
+
+      <PositionOrgan :module="position_visible" @close="handleGetPosition"></PositionOrgan>
     </div>
   </div>
 </template>
@@ -151,11 +201,47 @@
   import { humanResource } from '../../../assets/js/allModuleList.js';
   import { recruitmentSearchList } from '../../../assets/js/allSearchData.js';
 
+  import DepartOrgan from '../../common/departOrgan.vue';
+  import StaffOrgan from '../../common/staffOrgan.vue';
+  import PositionOrgan from '../../common/postOrgan.vue';
+  import Upload from '../../common/upload.vue';
+
   export default {
     name: "index",
-    components: { SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog},
+    components: { Upload,SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog,DepartOrgan,StaffOrgan,PositionOrgan},
     data() {
       return {
+        //编辑面试官
+        edit_offer_visible: false,
+        edit_offer: {
+          interviewer_first_id: '',
+          interviewer_second_id: '',
+          interviewer_third_id: '',
+          interviewer_first: '',
+          interviewer_second: '',
+          interviewer_third: '',
+          org_id: '',
+          paper_id: '',
+          position_id: '',
+          user_id: '',
+          depart: '',
+          position_name: '',
+        },
+        currentRow: '',
+        depart_visible: false,
+        staff_visible: false,
+        position_visible: false,
+        interview_type: '',
+
+        upload_form: {
+          keyName: 'paper_id',
+          setFile: [],
+          size: {
+            width: '50px',
+            height: '50px'
+          }
+        },
+
         //查看面试官
         office_visible: false,
         office_data: [],
@@ -206,7 +292,7 @@
           {id: 3, title: '殿试会师'},
           {id: 4, title: '榜上有名'}
         ], //模块列表
-        chooseTab: 1, //当前选中模块
+        chooseTab: 2, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索
@@ -242,6 +328,98 @@
     watch: {},
     computed: {},
     methods: {
+      handleCancelEdit() {
+        this.edit_offer = {
+          interviewer_first_id: '',
+          interviewer_second_id: '',
+          interviewer_third_id: '',
+          interviewer_first: '',
+          interviewer_second: '',
+          interviewer_third: '',
+          org_id: '',
+          paper_id: '',
+          position_id: '',
+          user_id: '',
+          depart: '',
+          position_name: '',
+        };
+        this.edit_offer_visible = false;
+      },
+      handleSuccessUpload(file) {
+        if (file !== 'close') {
+          console.log(file);
+        }
+      },
+      handleGetDepart(id,name){
+        if (id !== 'close') {
+          this.edit_offer.depart = name;
+          this.edit_offer.org_id = id;
+        }
+        this.depart_visible = false;
+      } ,
+      handleGetStaff(id,name) {
+        if (id !== 'close') {
+          switch (this.interview_type) {
+            case 'first':
+              this.edit_offer.interviewer_first = name;
+              this.edit_offer.interviewer_first_id = id;
+              break;
+            case 'second':
+              this.edit_offer.interviewer_second = name;
+              this.edit_offer.interviewer_second_id = id;
+              break;
+            case 'third':
+              this.edit_offer.interviewer_third = name;
+              this.edit_offer.interviewer_third_id = id;
+              break;
+          }
+        }
+        this.staff_visible = false;
+      },
+      handleGetPosition(id,name) {
+        if (id !== 'close') {
+          this.edit_offer.position_name = name;
+          this.edit_offer.position_id = id;
+        }
+        this.position_visible = false;
+      },
+      handleOpenStaff(type) {
+        this.interview_type = type;
+        this.staff_visible = true;
+      },
+      handleSubmitEditOffer() {
+        this.$http.put(`recruitment/interviewers/${this.currentRow.id}`,this.edit_offer).then(res => {
+          console.log(res);
+          if (res.code === '20030') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelEdit();
+            this.handleOpenLookOffer();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleEditOffer(row) {
+        this.currentRow = row;
+        this.edit_offer.interviewer_first_id = row.interviewer_first_id;
+        this.edit_offer.interviewer_second_id = row.interviewer_second_id;
+        this.edit_offer.interviewer_third_id = row.interviewer_third_id;
+        this.edit_offer.interviewer_first = row.interviewer[0] ? row.interviewer[0].real_name : '';
+        this.edit_offer.interviewer_second = row.interviewer[1] ? row.interviewer[1].real_name : '';
+        this.edit_offer.interviewer_third = row.interviewer[2] ? row.interviewer[2].real_name : '';
+        this.edit_offer.depart = row.org ? row.org.name : '';
+        this.edit_offer.org_id = row.org_id;
+        this.edit_offer.position_name = row.position ? row.position.name: '';
+        this.edit_offer.position_id = row.position_id;
+        this.edit_offer.paper_id = row.paper_id;
+        this.edit_offer_visible = true;
+      },
       handleOpenLookOffer() {
         this.$http.get('recruitment/interviewers').then(res => {
           console.log(res);

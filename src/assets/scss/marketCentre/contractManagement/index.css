@@ -169,5 +169,28 @@
             left: 50%;
             background-color: #CF2E33;
             transform: translateX(-50%); }
+#theme_name #contractManagement .base_house_info,
+#theme_name #contractManagement .account_info,
+#theme_name #contractManagement .have_info,
+#theme_name #contractManagement .other_info {
+  background-color: white;
+  padding: 10px 20px;
+  margin: 10px 0;
+  position: relative; }
+  #theme_name #contractManagement .base_house_info .type,
+  #theme_name #contractManagement .account_info .type,
+  #theme_name #contractManagement .have_info .type,
+  #theme_name #contractManagement .other_info .type {
+    width: 50px;
+    height: 30px;
+    background-color: #67C23A;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    border-radius: 0 5px 5px 0;
+    font-family: 'jingDianXingShu'; }
 
 /*# sourceMappingURL=index.css.map */
