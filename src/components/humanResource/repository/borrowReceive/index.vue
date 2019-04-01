@@ -490,6 +490,8 @@
   import LjDialogImg from '../components/lj-dialog-img';//用于显示图片
   import UserChoose from '../../../common/lightweightComponents/UserChoose';
 
+  import {DROPDOWN_CONSTANT} from '@/assets/js/allConstantData';
+
 
   export default {
     name: "index",
@@ -787,13 +789,14 @@
                 applyPerson: item.user?.name || '-',//申请人
                 department: item.user?.org[0]?.name || '-',//部门
                 applyTime: item.apply_time || '-',//申请日期
-                applyStatus: this.tableSettingData[this.currentTable].applyStatus[item.apply_status],//申请状态
-                goodsStatus: this.tableSettingData[this.currentTable].goodsStatus[item.goods_status],//物品状态
+                applyStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.apply_status],//申请状态
+                goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status],//物品状态
                 repairPrice: item.repair_price||0,//维修总费用
                 scrapPrice:item.scrap_price||0,//报废总费用
-                responsibleType: this.tableSettingData[this.currentTable].responsible[item.responsible?.type],//任责人类型
+                responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type],//任责人类型
                 responsibleName: item.responsible?.name||'-',//任责人
-                costType: item.costType||'-'//付款类型
+                //costType: item.responsible?.payment_type||0//付款类型-结算方式
+                costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type||0],//付款类型-结算方式
               };
               this.tableSettingData[this.currentTable].tableData.push(obj);
             }
@@ -821,7 +824,7 @@
               let obj = {
                 id: item.id,//物品id
                 goodsName: item.goods?.name||'',//物品名称
-                borrowReceiveStatus: this.tableSettingData.borrowReceive.applyStatus[item.status||0],//领还状态applyStatus
+                borrowReceiveStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.status||0],//领还状态applyStatus
                 receiveTime: item.receive_time||'-',//领取日期
                 goodsId: item.goods_number||'-',//物品编号
                 //goodsStatus:this.tableSettingData.borrowReceive.goodsStatus[item.status||0],

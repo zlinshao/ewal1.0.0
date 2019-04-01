@@ -6,7 +6,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>内务库房</h1>
+        <h1 @click="demo">内务库房</h1>
         <h2 class="items-center" v-if="chooseTab">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -43,10 +43,12 @@
 
     <!--高级搜索-->
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+    <lj-upload size="80" title="报备图片" v-model="photoArray"></lj-upload>
   </div>
 </template>
 
 <script>
+  import LjUpload from '../../common/lightweightComponents/lj-upload';
   import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
@@ -70,9 +72,13 @@
       WorkInfo,
       LjDialog,
       SearchHigh,
+      LjUpload,
     },
     data() {
       return {
+        photoArray:[123,213],
+
+
         overViewSearch,
         borrowReceiveSearch,
         humanResource,
@@ -130,6 +136,11 @@
     watch: {},
     computed: {},
     methods: {
+      demo() {
+        console.log(this.photoArray);
+      },
+
+
        // 高级搜索
       highSearch(val) {
         this.showSearch = true;
