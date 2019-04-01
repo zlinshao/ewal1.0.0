@@ -206,6 +206,11 @@
         cursor: pointer;
         width: 30px;
         height: 30px; }
+      #theme_name #borrowReceive .dialog_container .detail-bottom-container .detail-bottom .detail-item.select-list {
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center; }
     #theme_name #borrowReceive .dialog_container .detail-bottom-container .detail-bottom > :nth-child(2).total-price input {
       width: 70px;
       height: 24px;
@@ -292,17 +297,18 @@
       display: inline-block; }
 #theme_name #borrowReceive .dialog_container.borrow-receive-dialog {
   background-color: #FFFFFF; }
-  #theme_name #borrowReceive .dialog_container.borrow-receive-dialog .borrow-receive-img-dialog > div {
+  #theme_name #borrowReceive .dialog_container.borrow-receive-dialog .borrow-receive-img-dialog .repair-img-container {
     width: 100%;
-    height: 50px;
-    text-align: left;
-    padding-left: 60px; }
-    #theme_name #borrowReceive .dialog_container.borrow-receive-dialog .borrow-receive-img-dialog > div > div {
-      cursor: pointer;
+    padding-left: 60px;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center; }
+    #theme_name #borrowReceive .dialog_container.borrow-receive-dialog .borrow-receive-img-dialog .repair-img-container span {
       display: inline-block;
-      width: 40px;
-      height: 40px;
-      background-color: #F9F9F9; }
+      width: 100px;
+      height: 30px;
+      line-height: 30px; }
 #theme_name #borrowReceive .photo-img {
   width: 40px;
   height: 40px;

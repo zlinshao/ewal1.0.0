@@ -132,74 +132,70 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #overView .header_right {
-  display: flex;
-  flex-direction: row-reverse; }
-  #theme_name #overView .header_right .icon-add {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: #CF2E33; }
-    #theme_name #overView .header_right .icon-add b {
-      color: #FFFFFF;
-      font-size: 30px;
-      margin-bottom: 6px; }
-#theme_name #overView .mainListTable a {
-  cursor: pointer; }
-#theme_name #overView .mainListTable .font-red {
-  color: #CF2E33; }
-#theme_name #overView footer.common-page {
-  height: 100px;
+#theme_name #menu .mainList {
   width: 100%;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 100px;
-  z-index: 6; }
-  #theme_name #overView footer.common-page .develop {
+  height: 100%;
+  position: relative; }
+  #theme_name #menu .mainList .menu-list {
+    width: 100%;
+    height: 100%;
+    padding-left: 15%;
+    padding-right: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center; }
+    #theme_name #menu .mainList .menu-list span {
+      display: block;
+      cursor: pointer;
+      width: 70px;
+      height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; }
+      #theme_name #menu .mainList .menu-list span i {
+        font-style: normal;
+        font-family: jingDianXingShu;
+        font-size: 24px;
+        letter-spacing: 2px; }
+  #theme_name #menu .mainList .right-tab {
     position: absolute;
-    top: -30px;
-    width: 80px;
-    cursor: pointer;
-    height: 30px;
-    opacity: 1;
-    border-radius: 10px 10px 0 0;
-    background-color: #F2F2F2; }
-#theme_name #overView .qr-code {
-  width: 30px;
-  height: 30px;
-  margin-left: 27px;
-  cursor: pointer; }
-#theme_name #overView .dialog_container .choose-goods .choose-goods-icon {
-  cursor: pointer;
-  width: 20px;
-  height: 16px; }
-#theme_name #overView .dialog_container.choose-goods-table-detail .close-btn-container {
-  position: absolute;
-  left: 40px;
-  bottom: 220px; }
-#theme_name #overView .qr-container {
-  background-color: #fff;
-  padding: 15px; }
-  #theme_name #overView .qr-container .qr-code-large {
-    width: 300px;
-    height: 300px; }
-  #theme_name #overView .qr-container > :last-child {
-    padding: 15px; }
-#theme_name #overView .repository-overview .lj-header-search .el-icon-search {
-  position: absolute;
-  top: 7px;
-  right: 195px; }
-#theme_name #overView .repository-overview .lj-header-search input {
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  width: 220px;
-  height: 28px;
-  padding: 2px 12px 2px 32px; }
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%); }
+    #theme_name #menu .mainList .right-tab div {
+      display: flex;
+      flex-direction: row;
+      align-items: center; }
+      #theme_name #menu .mainList .right-tab div span:first-child {
+        display: block;
+        padding: 5px;
+        border: 1px solid #DFDFDF;
+        margin-bottom: 15px;
+        text-align: center;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; }
+        #theme_name #menu .mainList .right-tab div span:first-child i {
+          font-style: normal;
+          letter-spacing: 2px;
+          border: 1px solid #DFDFDF;
+          padding: 10px 3px;
+          font-family: jingDianXingShu; }
+      #theme_name #menu .mainList .right-tab div span:last-child {
+        display: inline-block;
+        width: 50px;
+        height: 1px;
+        border: 1px solid #DFDFDF; }
+      #theme_name #menu .mainList .right-tab div:hover span:first-child {
+        border: 1px solid #ff4545; }
+        #theme_name #menu .mainList .right-tab div:hover span:first-child i {
+          border: 1px solid #ff4545;
+          color: #ff4545; }
+      #theme_name #menu .mainList .right-tab div:hover span:last-child {
+        border: 1px solid #ff4545; }
 
-/*# sourceMappingURL=index.css.map */
+/*# sourceMappingURL=menu.css.map */

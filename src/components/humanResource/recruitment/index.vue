@@ -150,10 +150,16 @@
       >
         <div class="dialog_container">
           <div class="dialog_header">
-            <h3>编辑编辑面试官</h3>
+            <h3>编辑面试官</h3>
           </div>
           <div class="dialog_main borderNone">
             <el-form label-width="120px">
+              <el-form-item label="部门">
+                <el-input v-model="edit_offer.depart" disabled @focus="depart_visible = true"></el-input>
+              </el-form-item>
+              <el-form-item label="岗位">
+                <el-input v-model="edit_offer.position_name" disabled @focus="position_visible = true"></el-input>
+              </el-form-item>
               <el-form-item label="面试官一">
                 <el-input v-model="edit_offer.interviewer_first" readonly @focus="handleOpenStaff('first')"></el-input>
               </el-form-item>
@@ -162,12 +168,6 @@
               </el-form-item>
               <el-form-item label="面试官三">
                 <el-input v-model="edit_offer.interviewer_third" readonly  @focus="handleOpenStaff('third')"></el-input>
-              </el-form-item>
-              <el-form-item label="部门">
-                <el-input v-model="edit_offer.depart" readonly @focus="depart_visible = true"></el-input>
-              </el-form-item>
-              <el-form-item label="岗位">
-                <el-input v-model="edit_offer.position_name" readonly @focus="position_visible = true"></el-input>
               </el-form-item>
               <el-form-item label="试卷">
                 <Upload :file="upload_form" @success="handleSuccessUpload"></Upload>

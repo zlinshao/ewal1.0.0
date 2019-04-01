@@ -416,19 +416,22 @@
             <div class="inputLabel">
               <h4>权限类型</h4>
               <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="power" size="small">
-                <el-option label="收入" :value="1"></el-option>
-                <el-option label="支出" :value="2"></el-option>
-                <el-option label="混合" :value="3"></el-option>
+                <el-option value="index" label="index"></el-option>
+                <el-option value="read" label="read"></el-option>
+                <el-option value="add" label="add"></el-option>
+                <el-option value="update" label="update"></el-option>
+                <el-option value="delete" label="delete"></el-option>
+                <el-option value="other" label="other"></el-option>
               </el-select>
             </div>
           </div>
           <div class="powerTabs">
             <el-tabs v-model="powerName" @tab-click="handleClick">
-              <el-tab-pane :label="item.tabName" :name="item.status" v-for="(item,index) in powerNames" :key="index">
-                <p class="childPower">
-                  <span :class="{'hover':powerChildName === key.name}" v-for="key in item.value"
-                        @click="handleName(key.name)">{{key.name}}</span>
-                </p>
+              <el-tab-pane :label="item.name" :name="item.id" v-for="(item,index) in powerNames" :key="index">
+                <!--<p class="childPower">-->
+                  <!--<span :class="{'hover':powerChildName === key.name}" v-for="key in item.value"-->
+                        <!--@click="handleName(key.name)">{{key.name}}</span>-->
+                <!--</p>-->
               </el-tab-pane>
             </el-tabs>
           </div>
@@ -755,38 +758,7 @@
         power: '',
         powerName: '1',//部门
         powerChildName: '三省六部',//部门模块
-        powerNames: [
-          {
-            tabName: '人力资源',
-            status: '1',
-            value: [{
-              name: '三省六部',
-            }, {
-              name: '招兵买马',
-            }, {
-              name: '排兵布阵',
-            }, {
-              name: '赏罚分明',
-            }, {
-              name: '奏事议政',
-            }, {
-              name: '内务库房',
-            }]
-          },
-          {
-            tabName: '财务中心',
-            status: '2',
-            value: [{
-              name: '收款',
-            }, {
-              name: '科目',
-            }, {
-              name: '流水',
-            }, {
-              name: '入账',
-            }]
-          }
-        ],
+        powerNames: [],
         powerList: {
           power1: [{
             id: 1,
@@ -927,6 +899,13 @@
 
         //修改员工
         is_edit: false,
+
+        //获取系统列表
+        system_params: {
+          limit: 999,
+          parent_id: '',
+          is_permissions: ''
+        }
       }
     },
     mounted() {
@@ -946,8 +925,9 @@
         deep: true
       },
       module(val) {
+        this.getSystemList();
         this.depart_visible = val;
-        this.lj_size = 'large'
+        this.lj_size = 'large';
       },
       depart_visible(val) {
         if (!val) {
@@ -961,8 +941,15 @@
       }
     },
     methods: {
-      handleOpenPowerManagement() {
-
+      getSystemList() {
+        this.$http.get('organization/system',this.system_params).then(res => {
+          console.log(res);
+          if (res.code === '20000') {
+            this.powerNames = res.data.data;
+          } else {
+            this.powerNames = [];
+          }
+        })
       },
       handleCancelOut() {
         this.outForm = {
@@ -1358,7 +1345,7 @@
 
       // 权限切换
       handleClick(val) {
-
+        console.log(val);
       },
       // 权限子集切换
       handleName(val) {
