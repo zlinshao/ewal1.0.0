@@ -16,11 +16,12 @@
             <div class="items-center listTopRight">
                 <div  @click.stop="add_video = true" v-show="chooseTab===3"><b>添加视频</b></div>
                 <div  @click.stop="add_faculty = true" v-show="chooseTab===5"><b>添加讲师</b></div>
+                <!--<div  @click="add_visible = true"><b>{{chooseTab===3?'添加视频':chooseTab===5?'添加讲师':''}}</b></div>-->
             </div>
         </div>
         <div class="mainList">
             <keep-alive>
-                <div :is="tabView" :tabId = 'tabId' :getTab="tab" :switchTab="selectTab"></div>
+                <component :is="tabView"></component>
             </keep-alive>
         </div>
 
@@ -41,8 +42,8 @@
                             <el-input v-model="videoForm.name" size="small"></el-input>
                         </el-form-item>
                         <el-form-item label="上传视频">
-                        <el-input v-model="videoForm.name" size="small"></el-input>
-                    </el-form-item>
+                            <el-input v-model="videoForm.name" size="small"></el-input>
+                        </el-form-item>
 
                     </el-form>
                 </div>
@@ -133,11 +134,11 @@
     import faculty from '../faculty/index.vue';
     import industryDynamic from '../industryDynamic/index.vue';
     import postPlanning from '../postPlanning/menu.vue';
-    import postPlanningLists from '../postPlanning/index.vue';
     import practicalProblems from '../practicalProblems/index.vue';
     import videoLearning from '../videoLearning/index.vue';
     import {leJiaCollegeMenu} from '../../../assets/js/allModuleList.js';
     import LjDialog from '../../common/lj-dialog.vue';
+    import postPlanningIndex from '../postPlanning/index.vue';
     export default {
         name: "common",
         components:{
@@ -149,41 +150,35 @@
             faculty,
             examArrangement,
             LjDialog,
-            postPlanningLists,
+            postPlanningIndex,
         },
+
         data() {
             return {
                 leJiaCollegeMenu,
                 chooseTab: 1,
                 showFinMenuList:false,
-                tabView:'examArrangement',//显示组件
+                tabView:'examArrangement',
                 add_video:false,//新增视频
                 add_faculty:false,//新增讲师
                 videoForm:{
                     name:''
-                },
-                tabId:'',
-                tab:'',
-                selectTab:0,
+                }
             }
         },
         watch:{
-            '$route' (to, from) {
-                this.tabView = this.$route.query.url;
-                this.chooseTab = this.$route.query.type;
-                if(from.path==='/newTraining'||from.path==='/reserveTraining'){
-                    this.chooseTab = 4;
-                }
-                this.tabId = this.$route.query.id;
-                this.tab = this.$route.query.tab;
-                this.selectTab = this.$route.query.switchTabs;
-                console.log(this.selectTab);
-            }
+            '$route':'getPath',
         },
         methods:{
+
             changeTabs(id,url) {
                 this.chooseTab = id;
                 this.tabView = url;
+            },
+            getPath(){
+                console.log(this.$route.query.url);
+                this.tabView = this.$route.query.url;
+                this.chooseTab = this.$route.query.type;
             },
             handleOkDel(){
 

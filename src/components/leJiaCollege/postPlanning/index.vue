@@ -1,23 +1,16 @@
 <template>
     <div id="postPlanning">
-
-        <div class="mainList justify-bet" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="!is_train">
+        <div class="mainList justify-bet" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="getTab===1">
             <div class="edit_btn">
                 <span @click="">编 辑</span>
             </div>
-
-            <div class="train_btn">
-                <span @click="is_train = true"><i class="writingMode">新人训</i></span>
-                <span @click=""><i class="writingMode">储备培训</i></span>
-            </div>
-
-            <div class="tab" v-if="tab===1&&is_train">
+            <div class="tab" v-if="tab===1">
                 <div class="slogan">
                     <span><i class="writingMode">共 创 未 来。</i></span>
                     <span><i class="writingMode">携 手 并 进，</i></span>
                 </div>
             </div>
-            <div class="tab" v-if="tab===2&&is_train">
+            <div class="tab" v-if="tab===2">
                 <div class="main-middle flex-center">
                     <div>
                         <span class="spacial-tab">业绩提成</span>
@@ -27,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab" v-if="tab===3&&is_train">
+            <div class="tab" v-if="tab===3">
                 <div class="main-left" >
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -55,7 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab" v-if="tab===4&&is_train">
+            <div class="tab" v-if="tab===4">
                 <div class="main-left" >
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -83,7 +76,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab" v-if="tab===5&&is_train">
+            <div class="tab" v-if="tab===5">
                 <div class="main-left" >
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -111,7 +104,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab" v-if="tab===6&&is_train">
+            <div class="tab" v-if="tab===6">
                 <div class="main-left" >
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -139,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab" v-if="tab===7&&is_train">
+            <div class="tab" v-if="tab===7">
                 <div class="main-left" >
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -167,7 +160,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab" v-if="tab===8&&is_train">
+            <div class="tab" v-if="tab===8">
                 <div class="main-left" >
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
@@ -195,7 +188,7 @@
                     </div>
                 </div>
             </div>
-            <div class="main-right"  v-if="is_train">
+            <div class="main-right">
                 <div class="right-list">
                 <span
                         v-for="item in selects"
@@ -204,20 +197,24 @@
                 </div>
             </div>
         </div>
-
-        <div class="mainList justify-bet mainList-train" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="is_train">
+        <!--新人训储备培训-->
+        <div class="mainList justify-bet mainList-train" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="getTab===2">
             <div class="train_btn">
-                <span @click="is_train = false;is_store = true"><i class="writingMode">新人训</i></span>
-                <span @click="is_store = false;is_train = true"><i class="writingMode">储备培训</i></span>
+                <span v-for="item in tabSelects"
+                      @click="changeTabs(item.id)"
+                      :class="chooseTab === item.id ? 'chooseTab':'defaultTab'">
+                    <i class="writingMode">{{item.title}}</i>
+                </span>
             </div>
             <div class="edit_btn">
                 <span @click="">编 辑</span>
             </div>
-            <div class="train-box" v-if="is_train">
+            <!--新人训-->
+            <div class="train-box" v-if="chooseTab===1">
                 <span @click="" v-for="item in newTrainData"><i>{{item.title}}</i></span>
             </div>
-
-            <div class="train-box" v-if="is_store">
+            <!--储备培训-->
+            <div class="train-box" v-if="chooseTab===2">
                 <span @click="" v-for="item in storeData"><i>{{item.title}}</i></span>
             </div>
         </div>
@@ -226,13 +223,21 @@
 </template>
 
 <script>
+    import LjDialog from '../../common/lj-dialog.vue';
     export default {
-        name: "postPlanning",
+        name: "postPlanningLists",
+        components:{
+            LjDialog
+        },
+        props:['tabId','getTab','switchTab'],
         data(){
             return{
-                tab:1,
-                is_train:true,
-                is_store:true,
+                tab:this.tabId,
+                chooseTab:this.switchTab,//chooseTab初始值
+                tabSelects:[
+                    {id:1,title:'新人训'},
+                    {id:2,title:'储备培训'},
+                ],
                 newTrainData:[
                     {id:1,title:'企业介绍及条例宣贯'},
                     {id:2,title:'薪酬计算及晋升'},
@@ -259,11 +264,37 @@
                 ],
             }
         },
+        computed:{
+            // chooseTab:function () {
+            //
+            // }
+        },
+
+        watch:{
+            switchTab:{
+                handler(newVal,oldVal){
+                    console.log(newVal);
+                    this.chooseTab = newVal;
+                },
+                deep:true
+            },
+            "$route":"getPath",
+
+        },
+
         methods:{
-            selectTab(val){
+            selectTab(val){//切换menu
                 this.tab = val;
-            }
-        }
+            },
+            getPath(){//获取路由参数
+                this.tab = this.$route.query.id;
+            },
+            changeTabs(id) {//切换tab
+                this.chooseTab = id;
+            },
+        },
+
+
     }
 </script>
 
@@ -284,12 +315,23 @@
             @include leJiaCollegeImg('theme1', 'postPlanning-bg.png');
             .train_btn{
                 span{
-                    @include leJiaCollegeImg('theme1', 'new-train-grey.png');
                     &:hover{
                         @include leJiaCollegeImg('theme1', 'new-train-red.png');
                     }
+
                 }
+
+                .chooseTab{
+                    @include leJiaCollegeImg('theme1', 'new-train-red.png');
+                    color:#FFFFFF;
+                }
+                .defaultTab{
+                    @include leJiaCollegeImg('theme1', 'new-train-grey.png');
+                }
+
+
             }
+
             .train-box{
                 span{
                     @include leJiaCollegeImg('theme1', 'new-train-tab-grey.png');

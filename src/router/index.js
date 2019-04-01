@@ -52,12 +52,12 @@ const Birthday = () => import('@/components/newMedia/front/humanity/components/c
 const ExcellentStaff = () => import('@/components/newMedia/front/humanity/components/common.vue');
 
 //前台企业头条
-const News = () => import('@/components/newMedia/components/headLines/index.vue');
-const LejiaNews = () => import('@/components/newMedia/components/headLines/index.vue');
-const Notice = () => import('@/components/newMedia/components/headLines/index.vue');
+const News = () => import('@/components/newMedia/front/hotNews/components/common.vue');
+const LeJiaNews = () => import('@/components/newMedia/front/hotNews/components/common.vue');
+const Notice = () => import('@/components/newMedia/front/hotNews/components/common.vue');
 
 //热门导读详情
-const NewsDetail = () => import('@/components/newMedia/components/newsDetail.vue');
+const NewsDetail = () => import('@/components/newMedia/front/hotNews/components/detail.vue');
 //优秀员工详情
 const StaffDetail = () => import('@/components/newMedia/components/staffDetail.vue');
 
@@ -80,8 +80,17 @@ const PostPlanning = ()=>import('@/components/leJiaCollege/components/common.vue
 const PracticalProblems = ()=>import('@/components/leJiaCollege/components/common.vue');//实践问题
 const VideoLearning = ()=>import('@/components/leJiaCollege/components/common.vue');//视频学习
 
-
-
+// 岗位规划
+const Partner = ()=> import('@/components/leJiaCollege/components/common.vue');//合伙人
+const GeneralManager = ()=> import('@/components/leJiaCollege/components/common.vue');//城市总
+const ViceManager = ()=> import('@/components/leJiaCollege/components/common.vue');//城市副总
+const DistrictManager = ()=> import('@/components/leJiaCollege/components/common.vue');//区域经理
+const ReserveDistrictManager = ()=> import('@/components/leJiaCollege/components/common.vue');//储备区域经理
+const AreaManager = ()=> import('@/components/leJiaCollege/components/common.vue');//片区经理
+const ReserveAreaManager = ()=> import('@/components/leJiaCollege/components/common.vue');//储备片区经理
+const Sales = ()=> import('@/components/leJiaCollege/components/common.vue');//市场专员
+const NewTrainning = ()=> import('@/components/leJiaCollege/components/common.vue');//新人训
+const ReserveTrainning = ()=> import('@/components/leJiaCollege/components/common.vue');//储备培训
 
 //待办
 // const TodoList = () => import('@/components/todoList/index.vue');
@@ -93,10 +102,11 @@ export default new Router({
     mode: 'history',
     routes: [
         {
-            path: '/examArrangement',
-            name: '考试安排',
-            component: ExamArrangement
+          path:'/' ,
+          name:'首页',
+          component:HomePage
         },
+
         {
             path: '/faculty',
             name: '师资力量',
@@ -118,6 +128,11 @@ export default new Router({
             component: PostPlanning
         },
         {
+            path: '/examArrangement',
+            name: '考试安排',
+            component: ExamArrangement
+        },
+        {
             path: '/practicalProblems',
             name: '实践问题',
             component: PracticalProblems
@@ -127,12 +142,60 @@ export default new Router({
             name: '视频学习',
             component: VideoLearning
         },
+        {
+            path:'/newTraining',
+            name:'新人训',
+            component:NewTrainning
+        },
+        {
+            path:'/reserveTraining',
+            name:'储备培训',
+            component:ReserveTrainning
+        },
 
         {
-            path: '/',
-            name: '首页',
-            component: HomePage
+            path: '/partner',
+            name: '合伙人',
+            component: Partner
         },
+        {
+            path: '/generalManager',
+            name: '城市总',
+            component: GeneralManager
+        },
+        {
+            path: '/viceManager',
+            name: '城市副总',
+            component: ViceManager
+        },
+        {
+            path: '/districtManager',
+            name: '区域经理',
+            component: DistrictManager
+        },
+        {
+            path: '/reserveDistrictManager',
+            name: '储备区域经理',
+            component: ReserveDistrictManager
+        },
+        {
+            path: '/areaManager',
+            name: '片区经理',
+            component: AreaManager
+        },
+        {
+            path: '/reserveAreaManager',
+            name: '储备片区经理',
+            component: ReserveAreaManager
+        },
+        {
+            path: '/sales',
+            name: '市场专员',
+            component: Sales
+        },
+
+
+
         {
             path: '/leJiaCollege',
             name: '乐伽大学',
@@ -161,7 +224,7 @@ export default new Router({
         },
         {
             path: '/headLines',
-            name: '企业头条',
+            name: '热门头条',
             component: BackNews
         },
         {
@@ -213,7 +276,7 @@ export default new Router({
         {
             path: '/lejiaNews',
             name: '乐伽新闻',
-            component: LejiaNews
+            component: LeJiaNews
         },
         {
             path: '/notice',

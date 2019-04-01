@@ -6,7 +6,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>内务库房</h1>
+        <h1 @click="demo">内务库房</h1>
         <h2 class="items-center" v-if="chooseTab">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -15,7 +15,6 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons-font" @click="demo"><b>测试</b></div>
         <div class="icons-font" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>入库</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
       </div>
@@ -39,18 +38,17 @@
       <borrow-receive :searchVal="searchFruit2"></borrow-receive>
     </div>
 
-
-
-
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
     <!--高级搜索-->
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+    <lj-upload size="80" title="报备图片" v-model="photoArray"></lj-upload>
   </div>
 </template>
 
 <script>
+  import LjUpload from '../../common/lightweightComponents/lj-upload';
   import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
@@ -74,9 +72,13 @@
       WorkInfo,
       LjDialog,
       SearchHigh,
+      LjUpload,
     },
     data() {
       return {
+        photoArray:[123,213],
+
+
         overViewSearch,
         borrowReceiveSearch,
         humanResource,
@@ -108,7 +110,7 @@
         in_repository_visible:false,
 
         //侧滑栏数据
-        show_market: false,
+        //show_market: false,
         work_info: [
           {work: '平均在线时长', val: '8 h'},
           {work: '平均处理用时', val: '30 min'},
@@ -124,7 +126,7 @@
       }
     },
     mounted() {
-      this.show_market = true;
+      //this.show_market = true;
       this.work_info[0].val = '7 h';
       this.event_data[0].value = 700;
       this.attend_data[0] = 9;
@@ -135,43 +137,11 @@
     computed: {},
     methods: {
       demo() {
-
-        this.$LjConfirm({
-          icon:'delete'
-        }).then(()=> {
-          //点确定执行的方法
-        }).catch(() => {
-          //点取消执行的方法
-          //一般情况下可以省略catch方法
-        })
-
-
-        /*this.$LjConfirm(
-          /!*{
-          confirmText:'确定',
-          cancelText:'取消',
-          icon:'delete',
-        }*!/
-        ).then(() => {
-          //点是
-          alert('是');
-        }).catch(() => {
-          //点否
-        });*/
-
-
-        this.$LjConfirm(
-          {
-          icon:'delete',
-        }
-        ).then(() => {
-          //点是
-          alert('是');
-        }).catch(() => {
-          //点否
-        });
+        console.log(this.photoArray);
       },
-      // 高级搜索
+
+
+       // 高级搜索
       highSearch(val) {
         this.showSearch = true;
         switch (val) {
@@ -187,6 +157,7 @@
       // 确认搜索
       hiddenModule(val) {
         this.showSearch = false;
+        //debugger
         if (val !== 'close') {
           switch (this.chooseTab) {
             case 1:
@@ -203,7 +174,7 @@
 
       },
       handleCloseMenu() {
-        this.show_market = false;
+        //this.show_market = false;
       },
       //入库按钮点击事件
       inRepositoryHandler() {

@@ -76,7 +76,8 @@
           }
           this.$emit('success', [this.file.keyName, this.ids, true]);
         },
-        deep: true
+        deep: true,
+        immediate: true,
       }
     },
     computed: {},

@@ -1,36 +1,61 @@
 <template>
     <div id="star">
-        <div class="mainList" >
-                <div class="star_info flex-center justify-bet" :style="{'height': this.mainListHeight(-9) + 'px'}">
-                    <div class="star_info_left">
-                        <div class="star_info_title writingMode flex-center"><span>乐伽之星</span></div>
-                        <div class="star_info_avatar"></div>
-                        <div class="star_info_name writingMode flex-center"><span >李妮</span>
-                        </div>
-                        <div class="star_info_department writingMode flex-center"><span>南京二区一组</span>
-                        </div>
-                    </div>
-                    <div class="star_info_middle">
-                        <div class="main_info">
-                            <h3>的说法都是发生的快速打开</h3>
-                            <p>is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价</p>
-                            <div class="justify-bet">
-                                <span></span>
-                                <span></span>
+        <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px'}">
+            <div class="star_info">
+                <div class="star_info_left">
+                    <div class="star_info_title writingMode flex-center"><span>乐伽之星</span></div>
+                    <div class="star_info_avatar"><img src="../../../../../assets/image/newMedia/theme1/staff.png"
+                                                       alt=""></div>
+                    <div class="star_info_name writingMode flex-center"><span>李妮</span></div>
+                    <div class="star_info_department writingMode flex-center"><span>南京二区一组</span></div>
+                </div>
+
+                <div class="star_info_right flex-center">
+                    <div class="main_info scroll_bar">
+                        <div class="detail-content-middle">
+                            <div class="middle-info">
+                                <h1>{{detailData.title}}</h1>
+                                <p class="desc">{{detailData.desc}}</p>
+                                <div class="middle-img justify-bet">
+                                    <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
+                                    <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
+                                </div>
+                                <p class="content">{{detailData.content}}</p>
                             </div>
-                            <p>is德国his的韩国is德国his的韩国帅is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价</p>
-                        </div>
-                    </div>
-                    <div class="star_info_right">
-                        <div class="right_btns">
-                            <i></i>
-                            <i></i>
-                            <i></i>
-                            <i></i>
+                            <div class="detail-content-right flex-center">
+                                <div class="right-info-icons">
+                                    <div class="icon-list" @click="comment_visible = true">
+                                        <i class="icon-bg collect-icon"></i>
+
+                                    </div>
+                                    <div class="icon-list">
+                                        <i class="icon-bg point-icon"></i>
+
+                                    </div>
+                                    <div class="icon-list">
+                                        <i class="icon-bg commit-icon"></i>
+
+                                    </div>
+                                    <div class="icon-list share-navbar">
+                                    <span class="share-navbar-box flex-center justify-around"
+                                          v-if="share_navbar_visible"
+                                          id="div1"
+
+                                    >
+                                        <i class="sina-icon"></i>
+                                        <i class="wechat-icon"></i>
+                                        <i class="link-icon"></i>
+                                    </span>
+                                        <i class="icon-bg share-icon" @mouseenter="share_navbar_visible = true"
+                                        ></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         <!--祝福-->
         <lj-dialog :visible="wishes_visible" :size="{width: 900 + 'px',height: 600 + 'px'}"
                    @close="wishes_visible = false">
@@ -200,6 +225,18 @@
                 wishes_visible:false,
                 edit_wishes_visible:false,
                 chooseTab: 1,
+                detailData:{
+                    title:'这是一则导读标题内标题内容标题内容标题内',
+                    view:222,
+                    point:333,
+                    comment:444,
+                    name:'来来来',
+                    department:'南京二区房东租',
+                    time:'2018-02-12 14:04:12',
+                    avatar:'../../../assets/image/newMedia/theme1/avatar.png',
+                    desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
+                    content:'小编认为，其实我们每个人都有一个大小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻想着自己行走于市井之间，救死扶伤。长大后，经历过现实的洗礼磨练，发现自己怎么可能成为一代大侠？这辈子看来是实现不了了...... 不！小编要告诉你！大侠不仅仅存在在武侠小说里，其实在咱们乐伽就有一位大侠！小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻想着自己行走于市井之间，救死扶伤。长大后，经历过现实的洗礼磨练，发现自己怎么可能成为一代大侠？这辈子看来是实现不了了...... 不！小编要告诉你！大侠不仅仅存在在武侠小说里，其实在咱们乐伽就有一位大侠！'
+                },
                 selects: [
                     {id: 1, title: "乐伽之星"}, {id: 2, title: "优秀员工"}, {id: 3, title: "寿星墙"}
                 ],
@@ -281,7 +318,19 @@
                     .star_info_right{
                         >div{
                             i{
+
+                            }
+                            .collect-icon{
+                                @include starImg('theme1','shoucang.png');
+                            }
+                            .commit-icon{
+                                @include starImg('theme1','pinglun.png');
+                            }
+                            .point-icon{
                                 @include starImg('theme1','dianzan.png');
+                            }
+                            .share-icon{
+                                @include starImg('theme1','zhuanfa.png');
                             }
                         }
                     }

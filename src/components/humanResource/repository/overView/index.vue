@@ -2,12 +2,12 @@
   <div id="overView">
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
-        :data="tableData"
+        :data="tableSettingData.repository.tableData"
         highlight-current-row
         :height="this.mainListHeight(30) + 'px'"
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
-        @row-dblclick="tableDblClick"
+        @row-dblclick="currentTable='inRepository';tableDblClick($event);"
         header-row-class-name="tableHeader"
         :row-style="{height:'70px'}"
         style="width: 100%">
@@ -78,7 +78,14 @@
           align="center"
           prop="status"
           label="状态">
-
+          <template slot-scope="scope">
+            <span v-if="scope.row.status>=1">{{scope.row.status>=10?'正常':'预警'}}</span>
+            <span class="font-red" v-if="scope.row.status<1">预警</span>
+<!--            <a @click="getUselessList(scope.row)">{{scope.row.uselessCounts}}</a>-->
+            <!--<div slot="reference" class="name-wrapper">-->
+            <!--<el-tag size="medium">{{ scope.row.uselessCounts }}</el-tag>-->
+            <!--</div>-->
+          </template>
         </el-table-column>
 
         <!--<el-table-column-->
@@ -96,7 +103,7 @@
         <div class="page">
           <el-pagination
             @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+            @current-change="handleCurrentChange($event,'repository')"
             :current-page="tableSettingData.repository.params.page"
             :page-size="tableSettingData.repository.params.limit"
             :total="tableSettingData.repository.counts"
@@ -141,7 +148,7 @@
             <div class="page">
               <el-pagination
                 @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
+                @current-change="handleCurrentChange($event,'borrowReceive')"
                 :current-page="tableSettingData['borrowReceive'].params.page"
                 :page-size="tableSettingData['borrowReceive'].params.limit"
                 :total="tableSettingData['borrowReceive'].counts"
@@ -197,7 +204,7 @@
             <div class="page">
               <el-pagination
                 @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
+                @current-change="handleCurrentChange($event,'repair')"
                 :current-page="tableSettingData.repair.params.page"
                 :page-size="tableSettingData.repair.params.limit"
                 :total="tableSettingData.repair.counts"
@@ -252,7 +259,7 @@
             <div class="page">
               <el-pagination
                 @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
+                @current-change="handleCurrentChange($event,'useless')"
                 :current-page="params.page"
                 :page-size="params.limit"
                 :total="counts"
@@ -304,9 +311,11 @@
                          placeholder="存储类型" style="width: 120px;display: inline-block">
                 <el-option :value="'user'" label="人员"></el-option>
                 <el-option :value="'org'" label="部门"></el-option>
-              </el-select >
-              <user-choose v-if="in_repository_form.department==='user'" v-model="in_repository_form.location" width="196" num="1" title="请选择人员"></user-choose>
-              <org-choose v-if="in_repository_form.department==='org'" v-model="in_repository_form.location" width="196" num="1" title="请选择部门"></org-choose>
+              </el-select>
+              <user-choose v-if="in_repository_form.department==='user'" v-model="in_repository_form.location"
+                           width="196" num="1" title="请选择人员"></user-choose>
+              <org-choose v-if="in_repository_form.department==='org'" v-model="in_repository_form.location" width="196"
+                          num="1" title="请选择部门"></org-choose>
               <!--<el-select @change="handleInRepositorySelectionChange" v-model="in_repository_form.department" placeholder="存储类型" style="width: 120px">
                 <el-option :value="'user'" label="人员"></el-option>
                 <el-option :value="'org'" label="部门"></el-option>
@@ -526,7 +535,10 @@
             <!--</div>-->
             <div class="lj-header-search">
               <i class="el-icon-search"></i>
-              <input placeholder="搜索采购人" type="text"/>
+              <input
+                v-model="tableSettingData.inRepository.searchParams"
+                @keydown.enter="getInRepositoryList(tableSettingData.inRepository.currentSelection.category_id,tableSettingData.inRepository.searchParams)"
+                placeholder="搜索采购人" type="text"/>
             </div>
 
             <!--<div class="icon-add"><b>+</b></div>-->
@@ -534,7 +546,7 @@
         </div>
         <div class="dialog_main borderNone">
           <el-table
-            :data="inRepositoryData"
+            :data="tableSettingData.inRepository.tableData"
             highlight-current-row
             :height="this.mainListHeight(200) + 'px'"
             :row-class-name="tableChooseRow"
@@ -543,10 +555,10 @@
             :row-style="{height:'62px'}"
             style="width: 100%">
             <el-table-column
-              v-for="item in Object.keys(inRepositoryShowData)" :key="item"
+              v-for="item in Object.keys(tableSettingData.inRepository.tableShowData)" :key="item"
               align="center"
               :prop="item"
-              :label="inRepositoryShowData[item]">
+              :label="tableSettingData.inRepository.tableShowData[item]">
             </el-table-column>
             <el-table-column
               key="qrCode"
@@ -554,7 +566,7 @@
               prop="qrCode"
               label="二维码">
               <template slot-scope="scope">
-                <div @click="qr_code_table_visible = true" class="qr-code"></div>
+                <div @click="getQrCodeList(scope.row.id)" class="qr-code"></div>
               </template>
             </el-table-column>
             <el-table-column
@@ -568,10 +580,10 @@
             <div class="page">
               <el-pagination
                 @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="params.page"
-                :page-size="params.limit"
-                :total="counts"
+                @current-change="handleCurrentChange($event,'inRepository')"
+                :current-page="tableSettingData.inRepository.params.page"
+                :page-size="tableSettingData.inRepository.params.limit"
+                :total="tableSettingData.inRepository.counts"
                 layout="total,jumper,prev,pager,next">
               </el-pagination>
             </div>
@@ -583,9 +595,9 @@
 
     <!--二维码table-->
     <lj-dialog
-      :visible="qr_code_table_visible"
+      :visible="tableSettingData.qrCode.table_dialog_visible"
       :size="{width: 850 + 'px',height: 800 + 'px'}"
-      @close="qr_code_table_visible = false"
+      @close="tableSettingData.qrCode.table_dialog_visible = false"
     >
       <div class="dialog_container repository-overview">
         <div class="dialog_header">
@@ -596,7 +608,7 @@
         </div>
         <div class="dialog_main borderNone">
           <el-table
-            :data="qrCodeData"
+            :data="tableSettingData.qrCode.tableData"
             highlight-current-row
             :height="this.mainListHeight(200) + 'px'"
             :row-class-name="tableChooseRow"
@@ -616,7 +628,9 @@
               prop="qrCode"
               label="二维码">
               <template slot-scope="scope">
-                <div @click="is_show_qr_code = true" class="qr-code" style="margin-left: 170px"></div>
+                <div @click="showQrCode(scope.row)" class="qr-code" style="margin-left: 170px">
+                  <!--                  <img :src="scope.row.qrCode" alt="">-->
+                </div>
               </template>
             </el-table-column>
           </el-table>
@@ -626,10 +640,12 @@
 
 
     <!--</lj-dialog-img>-->
-    <lj-dialog-img :visible.sync="is_show_qr_code">
+    <lj-dialog-img :visible.sync="tableSettingData.qrCode.form.form_dialog_visible">
       <div class="qr-container">
-        <div class="qr-code-large"></div>
-        <div>201903191059</div>
+        <div class="qr-code-large">
+          <img :src="tableSettingData.qrCode.form.formData.qrCode" alt="">
+        </div>
+        <div>{{tableSettingData.qrCode.form.formData.goods_number}}</div>
       </div>
 
     </lj-dialog-img>
@@ -659,24 +675,15 @@
     data() {
       return {
         url: globalConfig.humanResource_server,
-        checkList: [],
 
-
-        staffModule: false,
-        departModule: false,
-        postModule: false,
-        organData: {},// 组织架构配置 选择数量 num
-        organKey: '',
-
-
-        tableData: [],
+        //tableData: [],
         counts: 0,
         params: {
           search: '',
           page: 1,
           limit: 30,
         },
-        chooseRowIds: [],
+        //chooseRowIds: [],
 
 
         currentTable: '',
@@ -686,8 +693,9 @@
             params: {
               search: '',
               page: 1,
-              limit: 10,
+              limit: 5,
             },
+            tableData: [],
             chooseRowIds: [],
             currentSelection: {}//当前选择行
           },
@@ -771,6 +779,59 @@
               settlement: '结算方式',
             },
           },
+          inRepository: {//入库详情列表
+            counts: 0,
+            params: {
+              //search: '',
+              page: 1,
+              limit: 5,
+              init() {
+                this.page =1;
+                this.limit = 5;
+              }
+            },
+            chooseRowIds: [],
+            currentSelection: {},//当前选择行
+
+            table_dialog_visible: false,//form表单控制
+            table_dialog_title: '',
+            tableData: [],//表格数据
+            tableShowData: {
+              name: '物品名',
+              count: '数量',
+              price: '单价',
+              totalPrice: '总价',
+              location: '存放位置',
+              purchasePerson: '采购人',
+              resource: '采购源',
+              inRepositoryTime: '入库时间',
+              //qrCode:'二维码',
+              //remark:'备注',
+            },
+            searchParams: '',//入库详情table dialog中的模糊搜索
+          },
+          qrCode: {//二維碼详情列表
+            counts: 0,
+            params: {
+              //search: '',
+              page: 1,
+              limit: 5,
+            },
+            chooseRowIds: [],
+            currentSelection: {},//当前选择行
+
+            table_dialog_visible: false,//form表单控制
+            table_dialog_title: '',
+            tableData: [],//表格数据
+            form: {//二维码表单
+              form_dialog_visible: false,
+              formData: {
+                id: '',
+                repairId: '',//维修编号
+                qrCode: ''
+              }
+            }
+          },
         },
 
         formSettingData: {
@@ -838,7 +899,7 @@
           purchasePerson: '',
           price: '',//单价
           totalPrice: '',//总价
-          resource:'',//采购源
+          resource: '',//采购源
           remark: '',//备注
         },
 
@@ -892,9 +953,9 @@
           //remark:'备注',
         },
 
-        //二维码table
+        /*//二维码table
         qr_code_table_visible: false,
-        qrCodeData: [],//二维码table数据
+        qrCodeData: [],//二维码table数据*/
 
         //显示二维码
         is_show_qr_code: false,
@@ -926,6 +987,7 @@
         //deep:true,
         //immediate:true//第一次绑定也执行
       },
+
     },
     computed: {},
     methods: {
@@ -952,9 +1014,9 @@
           debugger
           console.log(res);
           if (res.code.endsWith('0')) {
-            this.$LjNotify('success',{
-              title:'成功',
-              message:'添加成功',
+            this.$LjNotify('success', {
+              title: '成功',
+              message: '添加成功',
             });
             this.in_repository = false;
             this.getRepositoryList();
@@ -983,29 +1045,32 @@
       //删除物品
       async deleteGoods() {
         //debugger
-        let goodsList = this.tableSettingData['goods']?.multiSelection;
-        if (goodsList && goodsList.length > 0) {
-          for (let item of goodsList) {
-            await this.$http.delete(`${this.url}eam/category/${item.id}`).then(res => {
-              //debugger
-              //console.log(res);
-              if (res.code == '20040') {
-                this.$LjNotify('success', {
-                  title: '成功',
-                  message: '删除成功'
+        this.$LjConfirm().then(async () => {
+          let goodsList = this.tableSettingData['goods']?.multiSelection;
+          if (goodsList && goodsList.length > 0) {
+            for (let item of goodsList) {
+              await this.$http.delete(`${this.url}eam/category/${item.id}`).then(res => {
+                //debugger
+                //console.log(res);
+                if (res.code == '20040') {
+                  this.$LjNotify('success', {
+                    title: '成功',
+                    message: '删除成功'
+                  });
+                }
+                this.$refs.categoryDropdown2.update();//更新
+              }).catch(err => {
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: '删除失败'
                 });
-              }
-              this.$refs.categoryDropdown2.update();//更新
-            }).catch(err => {
-              this.$LjNotify('error', {
-                title: '失败',
-                message: '删除失败'
               });
-            });
+            }
+            this.tableSettingData.goods.isShowMulti = false
+            await this.getGoodsList();
           }
-          this.tableSettingData.goods.isShowMulti = false
-          await this.getGoodsList();
-        }
+        });
+
       },
 
 
@@ -1120,6 +1185,7 @@
 
       getRepositoryList() {
         this.currentTable = 'repository';
+        this.tableSettingData[this.currentTable].tableData = [];
         this.$http.get(this.url + 'eam/eam', this.tableSettingData[this.currentTable].params).then(res => {
           //debugger
           console.log(res);
@@ -1128,16 +1194,18 @@
               //console.log(item);
               let obj = {
                 id: item.id,
-                category_id: item?.category_id,
-                name: item.goods.name,
-                totalCounts: parseInt(item.number) || '',//总数量
-                stockCounts: parseInt(item.now_number),//库存数量
-                borrowReceiveCounts: `${parseInt(item.receive_number)}/${parseInt(item.borrow_number)}`,
-                repairCounts: parseInt(item.repair_number),
-                uselessCounts: parseInt(item.scrap_number),
-                status: parseInt(item.number) > parseInt(item.goods.warning_number) ? '正常' : '预警',
+                category_id: item?.category_id || '-',
+                name: item?.goods?.name || '-',
+                totalCounts: parseInt(item?.number) || '-',//总数量
+                stockCounts: parseInt(item?.now_number),//库存数量
+                borrowReceiveCounts: `${parseInt(item?.receive_number)}/${parseInt(item?.borrow_number)}`,
+                repairCounts: parseInt(item?.repair_number),
+                uselessCounts: parseInt(item?.scrap_number),
+                //status: parseInt(item?.number) - parseInt(item?.goods?.warning_number) > 10 ? '正常' : '预警',
+                //status: parseInt(item?.number) > 10 ? '正常' : '预警',
+                status: parseInt(item?.number),
               }
-              this.tableData.push(obj)
+              this.tableSettingData[this.currentTable].tableData.push(obj)
             }
             this.tableSettingData[this.currentTable].counts = res.data.count;
           }
@@ -1223,12 +1291,76 @@
             }
             this.tableSettingData[this.currentTable].counts = res.data.count;
           }
-
-
         })
       },
 
+      //获取入库详情table表格数据
+      getInRepositoryList(categoryId,searchParams) {
+        debugger
+        this.currentTable = 'inRepository';
+        this.tableSettingData[this.currentTable].tableData = [];
+        if(searchParams) this.tableSettingData[this.currentTable].params.init();
+        let params = {category_id: categoryId,search:searchParams};
+        let finalParams = {...params, ...this.tableSettingData[this.currentTable].params};
+        this.$http.get(`${this.url}eam/storage`, finalParams).then(res => {
+          if (res.code.endsWith('0')) {
+            for (let item of res.data.data) {
+              let obj = {
+                id: item.id || '-',
+                name: item.goods?.name || '-',
+                count: item.number || 0,
+                price: item.unit_price || 0,
+                totalPrice: item.total_price || 0,
+                location: item.location?.location?.name || '-',
+                purchasePerson: item?.purchaser?.name || '-',
+                resource: item.source?.name || '-',
+                inRepositoryTime: item.created_at || '-',
+                remark: item.remark || '-'
+              };
+              this.tableSettingData[this.currentTable].tableData.push(obj);
+            }
+            this.tableSettingData[this.currentTable].counts = res.data.count;
+          }
+        });
+      },
 
+      //获取二维码列表table表格数据
+      getQrCodeList(inRepoId) {
+        console.log(inRepoId);
+        this.currentTable = 'qrCode';
+        this.tableSettingData.qrCode.table_dialog_visible = true
+        this.tableSettingData[this.currentTable].tableData = [];
+        //let params = {category_id:categoryId};
+        //let finalParams = {...params,...this.tableSettingData[this.currentTable].params};
+        this.$http.get(`${this.url}eam/storage/${inRepoId}/qrcode`).then(res => {
+          //debugger
+          //console.log(res);
+          if (res.code.endsWith('0')) {
+            for (let item of res.data.data) {
+              let obj = {
+                id: item.id || Date.now(),
+                repairId: item?.goods_number || '-',
+                qrCode: item?.img?.replace('/\\', '')
+              };
+              this.tableSettingData[this.currentTable].tableData.push(obj);
+            }
+            //this.tableSettingData[this.currentTable].counts = res.data.count;
+          }
+        });
+      },
+
+      showQrCode(row) {
+        debugger
+        this.tableSettingData.qrCode.form.form_dialog_visible = true;
+        this.tableSettingData.qrCode.form.formData.qrCode = row.qrCode;
+        this.tableSettingData.qrCode.form.formData.goods_number = row.repairId;//维修编号
+
+      },
+
+
+      /*demo() {
+      },
+*/
       handleChangeDate(id) {
 
       },
@@ -1318,7 +1450,7 @@
         }*/
 
         //入库详情表格数据初始化
-        for (let i = 0; i < 8; i++) {
+        /*for (let i = 0; i < 8; i++) {
           let obj = {
             id: i + 1,
             name: '张三',
@@ -1333,18 +1465,18 @@
             remark: '备注备注',
           }
           this.inRepositoryData.push(obj)
-        }
+        }*/
 
         //二维码table数据初始化
         //qrCodeData
-        for (let i = 0; i < 7; i++) {
+        /*for (let i = 0; i < 7; i++) {
           let obj = {
             id: i + 1,
             repairId: '20190319091956',
             qrCode: '二维码',
           }
           this.qrCodeData.push(obj)
-        }
+        }*/
 
 
       },
@@ -1358,9 +1490,12 @@
         this.ids = this.myUtils.arrayWeight(ids);
       },
 
-      //表格某一行双击
+      //表格某一行双击 ->特指 inRepository表格  即入库详情列表表格
       tableDblClick(row) {
-        console.log(row);
+        //console.log(row);
+        let categoryId = row.category_id;//物品编号 通过物品编号获取所有的入库记录
+        this.tableSettingData[this.currentTable].currentSelection = row;
+        this.getInRepositoryList(categoryId);
         this.in_repository_table_visible = true;
       },
       //table多选时触发的事件
@@ -1384,8 +1519,11 @@
       handleSizeChange(val) {
         //console.log(`每页 ${val} 条`);
       },
-      handleCurrentChange(val) {
-
+      handleCurrentChange(val, type) {
+        debugger
+        if (type) {
+          this.currentTable = type;
+        }
         this.tableSettingData[this.currentTable].params.page = val;
         switch (this.currentTable) {
           case 'repository':
@@ -1393,6 +1531,10 @@
             break;
           case 'goods':
             this.getGoodsList();
+            break;
+          case 'inRepository':
+            let categoryId = this.tableSettingData[this.currentTable].currentSelection.category_id;
+            this.getInRepositoryList(categoryId);
             break;
           default:
             break;
