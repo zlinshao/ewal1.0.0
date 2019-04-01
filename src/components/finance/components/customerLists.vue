@@ -11,7 +11,7 @@
                 <el-input  placeholder="请输入查询内容" size="mini" v-model="customer_keywords"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="getCustomerLists(customer_type)" size="mini">查询</el-button>
+                <el-button type="danger" @click="getCustomerLists(customer_type)" size="mini">查询</el-button>
             </el-form-item>
         </el-form>
         <!--列表-->

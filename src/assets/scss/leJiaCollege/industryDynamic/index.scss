@@ -43,15 +43,16 @@
              display: flex;
              flex-direction: row;
              justify-content: space-between;
-             padding-left: 130px;
-             padding-right: 130px;
+             padding-left: 30%;
+             padding-right: 30%;
              position: absolute;
              bottom: 6px;
              left: 50%;
              transform: translate(-50%,0);
              i{
+               cursor: pointer;
                display: block;
-               width: 80px;
+               width: 40%;
                line-height: 36px;
                font-style: normal;
                color: #FFFFFF;
