@@ -226,10 +226,8 @@
       display: -webkit-flex;
       align-items: center; }
       #theme_name #departManage .dialog_container .powerContent .powerHead .inputLabel h4 {
-        margin-right: 20px; }
-    #theme_name #departManage .dialog_container .powerContent .powerHead i {
-      width: 30px;
-      height: 30px; }
+        width: 120px;
+        margin-right: 10px; }
   #theme_name #departManage .dialog_container .powerContent .powerTabs {
     margin-bottom: 30px; }
     #theme_name #departManage .dialog_container .powerContent .powerTabs .childPower {

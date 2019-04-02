@@ -63,8 +63,8 @@ const StaffDetail = () => import('@/components/newMedia/components/staffDetail.v
 
 //新媒体后台
 const MediaCenter = () => import('@/components/newMedia/index.vue');
-const BackVideo = () => import('@/components/newMedia/back/profile/video.vue');
-const BackDocument = () => import('@/components/newMedia/back/profile/file.vue');
+const BackVideo = () => import('@/components/newMedia/back/profile/common.vue');
+const BackDocument = () => import('@/components/newMedia/back/profile/common.vue');
 const ProfileHome = () => import('@/components/newMedia/back/profile/index.vue');
 const BackNews = () => import('@/components/newMedia/back/news/index.vue');
 const LeJiaHumanity = () => import('@/components/newMedia/back/lejiaHumanity/index.vue');

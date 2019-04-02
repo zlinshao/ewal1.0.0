@@ -69,5 +69,20 @@ export default {
         this.$store.dispatch('change_' + val + '_visible');
       }
     }
+    //中央事件总线
+    const Bus = new Vue({
+        methods:{
+            emit(event,...args){
+                this.$emit(event,...args)
+            },
+            on(event,callback){
+                this.$on(event,callback)
+            },
+            off(event,callback){
+                this.$off(event,callback)
+            }
+        }
+    })
+    Vue.prototype.$bus = Bus;
   }
 }

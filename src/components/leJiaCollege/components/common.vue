@@ -14,8 +14,9 @@
                 </h2>
             </div>
             <div class="items-center listTopRight">
-                <div  @click.stop="add_video = true" v-show="chooseTab===3"><b>添加视频</b></div>
-                <div  @click.stop="add_faculty = true" v-show="chooseTab===5"><b>添加讲师</b></div>
+                <div  @click.stop="add" v-show="chooseTab===3"><b>添加视频</b></div>
+                <div  @click.stop="add" v-show="chooseTab===5"><b>添加讲师</b></div>
+                <div  @click.stop="add" v-show="chooseTab===6"><b>添加行业动态</b></div>
             </div>
         </div>
         <div class="mainList">
@@ -23,107 +24,6 @@
                 <div :is="tabView" :tabId = 'tabId' :getTab="tab" :switchTab="selectTab"></div>
             </keep-alive>
         </div>
-
-
-        <!--新增视频-->
-        <lj-dialog :visible="add_video" :size="{width: 400 + 'px',height: 400 + 'px'}"
-                   @close="add_video = false">
-            <div class="dialog_container">
-                <div class="dialog_header">
-                    <h3>新增视频</h3>
-                </div>
-                <div class="dialog_main">
-                    <el-form ref="form" :model="videoForm" label-width="80px"  size="small">
-                        <el-form-item label="活动名称">
-                            <el-input v-model="videoForm.name" size="small"></el-input>
-                        </el-form-item>
-                        <el-form-item label="可见岗位">
-                            <el-input v-model="videoForm.name" size="small"></el-input>
-                        </el-form-item>
-                        <el-form-item label="上传视频">
-                        <el-input v-model="videoForm.name" size="small"></el-input>
-                    </el-form-item>
-
-                    </el-form>
-                </div>
-                <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="handleOkDel">确定</el-button>
-                    <el-button type="info" size="small" @click="add_video = false">取消</el-button>
-                </div>
-            </div>
-        </lj-dialog>
-
-        <!--新增导师-->
-        <lj-dialog :visible="add_faculty" :size="{width: 500 + 'px',height: 500 + 'px'}"
-                   @close="add_faculty = false">
-            <div class="dialog_container">
-                <div class="dialog_header">
-                    <h3>新增讲师详情</h3>
-                </div>
-                <div class="dialog_main">
-                    <el-form size="mini">
-                        <el-form-item>
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_account"></i>
-                                    </b>
-                                    <span>讲师头像</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input ></el-input>
-
-                                </div>
-                            </div>
-                        </el-form-item>
-                        <el-form-item>
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_account"></i>
-                                    </b>
-                                    <span>讲师姓名</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input ></el-input>
-                                </div>
-                            </div>
-                        </el-form-item>
-                        <el-form-item>
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_account"></i>
-                                    </b>
-                                    <span>点评摘要</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input ></el-input>
-                                </div>
-                            </div>
-                        </el-form-item>
-                        <el-form-item>
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_account"></i>
-                                    </b>
-                                    <span>讲师介绍</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input type="textarea" :rows="4"></el-input>
-                                </div>
-                            </div>
-                        </el-form-item>
-                    </el-form>
-                </div>
-                <div class="dialog_footer">
-                    <el-button type="danger" size="small" >确定</el-button>
-                    <el-button type="info" size="small" @click="add_faculty = false;current_row = ''">取消</el-button>
-                </div>
-            </div>
-        </lj-dialog>
-
     </div>
 </template>
 
@@ -159,12 +59,30 @@
                 tabView:'examArrangement',//显示组件
                 add_video:false,//新增视频
                 add_faculty:false,//新增讲师
+                add_visible:false,
                 videoForm:{
                     name:''
                 },
                 tabId:'',
                 tab:'',
                 selectTab:0,
+
+                form:{
+                    title:'号外看对方的开始减肥',
+                    content:'结果收到了公司的规划管理和公司工会',
+                    id:1
+                },
+                rules:{
+                    title: [
+                        { required: true, message: '请输入标题名称', trigger: 'blur' },
+                        { min: 10, max: 30, message: '长度在 10 到 30 个字符', trigger: 'blur' }
+                    ],
+                    content: [
+                        { required: true, message: '请输入动态内容', trigger: 'blur' },
+                        { min: 0, max: 300, message: '长度在 300 个字符', trigger: 'blur' }
+                    ],
+
+                }
             }
         },
         watch:{
@@ -187,6 +105,10 @@
             },
             handleOkDel(){
 
+            },
+            add(){
+                this.add_visible = true;
+                this.$bus.emit('add', this.add_visible);
             }
         }
     }

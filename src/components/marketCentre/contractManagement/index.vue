@@ -83,7 +83,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>。。。</h3>
+          <h3>{{ currentRow.house_name }}</h3>
           <div class="header_right">
             回访记录
           </div>
@@ -91,19 +91,22 @@
         <div class="dialog_main">
           <div class="back_info scroll_bar">
             <div>
-              <div class="content flex" v-for="item in 10">
+              <div class="content flex" v-for="(item,key) in backInfo">
                 <div>
-                  <a>黄梅</a><br>
-                  <span>2019.01.16</span>
+                  <a>{{ item.add_user }}</a><br>
+                  <span>{{ item.time }}</span>
                 </div>
                 <div class="flex-center">
                   <div class="circle flex-center">
                     <a></a>
                   </div>
-                  <div class="line" v-if="item !== 10"></div>
+                  <div class="line" v-if="key !== backInfo.length -1"></div>
                 </div>
                 <div>
-                  <a>未接通</a>
+                  <a>{{ item.record }}</a><br>
+                  <p v-if="item.star">
+                    <el-rate v-model="item.star" disabled></el-rate>
+                  </p>
                 </div>
               </div>
             </div>
@@ -149,24 +152,130 @@
         <div class="dialog_header">
           <h3>合同详情</h3>
           <div class="header_right">
-            合同编号
+            {{ contractDetail.contract_number }}
           </div>
         </div>
         <div class="dialog_main">
-          <p>房屋地址</p>
+          <p style="text-align: left">房屋地址</p>
           <div class="base_house_info">
+            <el-form label-width="120px">
+              <el-row :gutter="10">
+                <el-col :span="8">
+                  <el-form-item label="签约时间">
+                    <span>{{ contractDetail.sign_at }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="价格">
+                    <div v-if="contractDetail.month_price && contractDetail.month_price.length > 0">
+                      <p v-for="(item,key) in contractDetail.month_price" :key="key">
+                        {{ item.price }}元 {{ item.period }}个月
+                      </p>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="签约时长">
+                    <span>{{ contractDetail.sign_month && contractDetail.sign_month.moth_to_year }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="押金(元)">
+                    <span>{{ contractDetail.deposit_payed }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="违约金"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="付款方式">
+                    <span>{{ contractDetail.pay_way }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="打房租日期"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="空置期"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="房东承担费用"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="可否装修"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="可否添加物品"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="是否渠道"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="公司合同"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="备注条款"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="开单人"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="部门"></el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
 
+            <div class="type">{{ currentRow.type }}</div>
           </div>
 
-          <p>收款账户</p>
+          <p style="text-align: left">收款账户</p>
           <div class="account_info">
-
+            <el-form label-width="120px">
+              <el-row :gutter="10">
+                <el-col :span="8">
+                  <el-form-item label="收款人"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="账号"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="支行"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="与房东关系"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="中国银行"></el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
 
-          <p>签约人及产权人信息</p>
+          <p style="text-align: left">签约人及产权人信息</p>
           <div class="have_info">
-
+            <el-form label-width="120px">
+              <el-row :gutter="10">
+                <el-col :span="8">
+                  <el-form-item label="姓名"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="联系方式"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="身份证号"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="姓名"></el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="身份证号"></el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
+
+          <p style="text-align: left">附件信息</p>
+          <div class="other_info"></div>
         </div>
         <div class="dialog_footer">
           <div style="text-align: right">
@@ -191,6 +300,7 @@
       return {
         //合同详情
         contract_detail_visible: false,
+        contractDetail: '',
 
         //资料补齐
         upload_file: {
@@ -230,7 +340,15 @@
         ],
         //查看回访记录
         backInfo_visible: false,
-        backInfo: '',
+        backInfo: [
+          {
+            uid: 1111,
+            star: 4,
+            time: '2019-02-01',
+            record: '已回访',
+            add_user: '张三'
+          }
+        ],
 
         show_market: false,
         show_shadow: false,
@@ -246,7 +364,7 @@
             title: '租房'
           }
         ],
-        chooseTab: 1,
+        chooseTab: 2,
 
         params: {
           page: 1,
@@ -281,10 +399,16 @@
     methods: {
       //双击详情
       handleGetDetail(row) {
-        console.log(row);
+        this.currentRow = row;
+        console.log(row,'row');
         this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
-          console.log(res);
           this.contract_detail_visible = true;
+          if (res.code === 200) {
+            this.contractDetail = res.data;
+            console.log(this.contractDetail);
+          } else {
+            this.contractDetail = '';
+          }
         })
       },
       handleConfirmPolishing() {
@@ -351,15 +475,16 @@
       },
       handleLookBackInfo(item) {
         console.log(item);
-        return false;
-        if (item.record) {
-          this.backInfo = item.record;
-        } else {
-          this.$LjNotify('warning',{
-            title: '警告',
-            message: '暂无回访信息'
-          })
-        }
+        this.currentRow = item;
+        this.backInfo_visible = true;
+        // if (item.record) {
+        //   this.backInfo = item.record;
+        // } else {
+        //   this.$LjNotify('warning',{
+        //     title: '警告',
+        //     message: '暂无回访信息'
+        //   })
+        // }
       },
       handleCloseMenu() {
         this.show_market = false;
