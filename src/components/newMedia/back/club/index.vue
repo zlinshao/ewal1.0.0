@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div style="position: absolute;bottom:50px;left:0;right:0;" v-if="showData.status===2">
-                <el-button type="danger" size="" @click="end_action_visible = true">结束活动</el-button>
+                <el-button type="danger" size="" >结束活动</el-button>
             </div>
             <div class="top_right_img" style="width:60px;height:140px;position: absolute;top:0;right:90px;">
                 <span>已报名</span>
@@ -76,8 +76,8 @@
         </lj-dialog>
 
         <!--确认结束-->
-        <lj-dialog :visible="end_action_visible" :size="{width: 500 + 'px',height: 250 + 'px'}"
-                   @close="end_action_visible = false">
+        <lj-dialog :visible="end_visible" :size="{width: 500 + 'px',height: 250 + 'px'}"
+                   @close="end_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>结束活动</h3>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="dialog_footer">
                     <el-button type="danger" size="small" @click="handleOkDel">确定</el-button>
-                    <el-button type="info" size="small" @click="end_action_visible = false;current_row = ''">取消</el-button>
+                    <el-button type="info" size="small" @click="end_visible = false;current_row = ''">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -195,12 +195,22 @@
                 current_id:'',
                 params: {//查询参数
                     search: '',
-                    startRange: '',
-                    endRange: '',
-                    page: 1,
-                    limit: 10,
-                    department_ids: '',
-                    export: '',
+                    // startRange: '',
+                    // endRange: '',
+                    // page: 1,
+                    // limit: 10,
+                    // department_ids: '',
+                    // export: '',
+                    total:'',//总页数
+                    current_page:'',//当前页数
+                    per_page:10,//一页多少条
+                    last_page:'',//最后一页的条数
+                    first_page_url:'',//第一页的URL
+                    last_page_url:'',//最后一页的URL
+                    prev_page_url:'',//上一页的URL
+                    next_page_url:'',//下一页的URL
+                    from:'',//当前页 数据第一项的编号
+                    to:'',//当前页 数据最后一项的编号
                 },
                 showData:{
                     img:"",
@@ -296,6 +306,9 @@
                     this.showData[item] = this.dataLists[index][item];
                 }
             },
+            handleOkDel(){
+
+            },
             //新增活动
             add(){
                 this.add_visible = true;
@@ -317,10 +330,8 @@
 
             //获取列表
             getDataLists(){
-                this.$http.get('', this.params).then(res => {
-                    if(res.code===200){
-                        this.dataLists  = res.data.data;
-                    }
+                this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
+                    console.log(res)
                 })
             },
 
