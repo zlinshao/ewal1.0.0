@@ -299,16 +299,7 @@
   background-color: #FFFFFF; }
   #theme_name #borrowReceive .dialog_container.borrow-receive-dialog .borrow-receive-img-dialog .repair-img-container {
     width: 100%;
-    padding-left: 60px;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    justify-content: center; }
-    #theme_name #borrowReceive .dialog_container.borrow-receive-dialog .borrow-receive-img-dialog .repair-img-container span {
-      display: inline-block;
-      width: 100px;
-      height: 30px;
-      line-height: 30px; }
+    padding-left: 60px; }
 #theme_name #borrowReceive .photo-img {
   width: 40px;
   height: 40px;

@@ -118,9 +118,10 @@
           }
         }
         .powerTabs {
-          margin-bottom: 30px;
+          margin-bottom: 10px;
           .childPower {
-            padding: 0 15px;
+            padding: 0 10px;
+            min-height: 30px;
             span {
               cursor: pointer;
               margin-right: 30px;
@@ -132,6 +133,7 @@
         }
         .powerMain {
           height: 80%;
+          min-height: 400px;
           padding: 40px 0;
           background-color: $colorFFF;
           > div:first-child {

@@ -415,41 +415,47 @@
           <div class="powerHead items-bet">
             <div class="inputLabel">
               <h4>权限类型</h4>
-              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="power" size="small">
-                <el-option value="index" label="index"></el-option>
-                <el-option value="read" label="read"></el-option>
-                <el-option value="add" label="add"></el-option>
-                <el-option value="update" label="update"></el-option>
-                <el-option value="delete" label="delete"></el-option>
-                <el-option value="other" label="other"></el-option>
+              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.type" size="small">
+                <el-option value="position" label="岗位"></el-option>
+                <el-option value="user" label="用户"></el-option>
+                <el-option value="ban" label="黑名单"></el-option>
+                <el-option value="all" label="全部"></el-option>
               </el-select>
             </div>
           </div>
           <div class="powerTabs">
             <el-tabs v-model="powerName" @tab-click="handleClick">
-              <el-tab-pane :label="item.name" :name="item.id" v-for="(item,index) in powerNames" :key="index">
-                <!--<p class="childPower">-->
-                  <!--<span :class="{'hover':powerChildName === key.name}" v-for="key in item.value"-->
-                        <!--@click="handleName(key.name)">{{key.name}}</span>-->
-                <!--</p>-->
+              <el-tab-pane :label="item.name" :name="item.id.toString()" v-for="(item,index) in powerNames" :key="index">
+                <p class="childPower" v-if="module_list.length > 0">
+                  <span :class="{'hover':powerChildName === tmp.id}" v-for="tmp in module_list"
+                        @click="handleName(tmp)">{{tmp.name}}</span>
+                </p>
+                <p class="childPower" v-else>
+                  <span>暂无数据</span>
+                </p>
               </el-tab-pane>
             </el-tabs>
           </div>
-          <div class="flex powerMain scroll_bar">
-            <div>
-              <el-checkbox v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
+          <div v-if="module_list.length > 0">
+            <div class="flex powerMain scroll_bar" v-for="item in module_list" v-if="item.id === powerChildName">
+              <div>
+                <el-checkbox v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
+              </div>
+              <div v-for="(item,key) in power_list">
+                <el-checkbox-group v-model="checkList" @change="handleCheck">
+                  <el-checkbox v-for="tmp in power_list[key]" :label="tmp.id" :key="tmp.id">
+                    {{tmp.name}}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </div>
             </div>
-            <div v-for="item in Object.keys(powerList)">
-              <el-checkbox-group v-model="checkList" @change="handleCheck">
-                <el-checkbox v-for="key in powerList[item]" :label="key.id" :key="key.id">
-                  {{key.label}}
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
+          </div>
+          <div v-else>
+            <div class="powerMain" style="padding-left: 10px">暂无数据</div>
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="danger" size="small" @click="handleSubmitSetPower">确定</el-button>
           <el-button type="info" size="small">取消</el-button>
         </div>
       </div>
@@ -755,107 +761,10 @@
         // 权限管理
         powerVisible: false, //权限
         power_size: {},
-        power: '',
         powerName: '1',//部门
-        powerChildName: '三省六部',//部门模块
+        powerChildName: '',//部门模块
         powerNames: [],
-        powerList: {
-          power1: [{
-            id: 1,
-            label: '查看组织架构'
-          }, {
-            id: 2,
-            label: '查看员工档案'
-          }, {
-            id: 3,
-            label: '查看成长轨迹'
-          }, {
-            id: 4,
-            label: '查看离职短信'
-          }, {
-            id: 5,
-            label: '查看离职交接单'
-          }, {
-            id: 6,
-            label: '查看员工名册'
-          }],
-          power2: [{
-            id: 11,
-            label: '查看组织架构'
-          }, {
-            id: 21,
-            label: '查看员工档案'
-          }, {
-            id: 31,
-            label: '查看成长轨迹'
-          }, {
-            id: 41,
-            label: '查看离职短信'
-          }, {
-            id: 51,
-            label: '查看离职交接单'
-          }, {
-            id: 61,
-            label: '查看员工名册'
-          }],
-          power3: [{
-            id: 12,
-            label: '查看组织架构'
-          }, {
-            id: 22,
-            label: '查看员工档案'
-          }, {
-            id: 32,
-            label: '查看成长轨迹'
-          }, {
-            id: 42,
-            label: '查看离职短信'
-          }, {
-            id: 52,
-            label: '查看离职交接单'
-          }, {
-            id: 62,
-            label: '查看员工名册'
-          }],
-          power4: [{
-            id: 13,
-            label: '查看组织架构'
-          }, {
-            id: 23,
-            label: '查看员工档案'
-          }, {
-            id: 33,
-            label: '查看成长轨迹'
-          }, {
-            id: 43,
-            label: '查看离职短信'
-          }, {
-            id: 53,
-            label: '查看离职交接单'
-          }, {
-            id: 63,
-            label: '查看员工名册'
-          }],
-          power5: [{
-            id: 16,
-            label: '查看组织架构'
-          }, {
-            id: 26,
-            label: '查看员工档案'
-          }, {
-            id: 36,
-            label: '查看成长轨迹'
-          }, {
-            id: 46,
-            label: '查看离职短信'
-          }, {
-            id: 56,
-            label: '查看离职交接单'
-          }, {
-            id: 66,
-            label: '查看员工名册'
-          }],
-        },
+        powerList: {},
         checkList: [],
         checkAll: false,
         // 岗位管理
@@ -905,7 +814,32 @@
           limit: 999,
           parent_id: '',
           is_permissions: ''
-        }
+        },
+        module_params: {
+          limit: 999,
+          parent_id: '',
+          is_permissions: ''
+        },
+        module_list: [],
+
+        power_params: {
+          limit: 999,
+          system_id: '',
+          type: 1
+        },
+        power_list: [],
+
+        //个人权限
+        self_power_params: {
+          user_id: 3057,
+          system_id: '',
+          type: 'user',
+          type_id: 3057,
+          position_id: '',
+
+          permission_id: '',
+          permission_field_id: '',
+        },
       }
     },
     mounted() {
@@ -941,11 +875,83 @@
       }
     },
     methods: {
-      getSystemList() {
-        this.$http.get('organization/system',this.system_params).then(res => {
+      handleSubmitSetPower() {
+        console.log(this.checkList);
+      },
+      getSelfPower(id) {
+        this.self_power_params.system_id = id;
+        this.$http.get('organization/permission/all',this.self_power_params).then(res => {
+          console.log(res);
+        })
+      },
+      // 权限切换
+      handleClick(val) {
+        console.log(val);
+        var id = parseInt(val.name);
+        this.getModuleList(id);
+      },
+      // 权限子集切换
+      handleName(val) {
+        this.powerChildName = val.id;
+        this.getPowerList(val.id);
+        this.getSelfPower(val.id);
+      },
+      // 权限复选
+      handleCheck(value) {
+        let checkCount = value.length;
+        let list = this.power_list;
+        let count = 0;
+        for (let item of  Object.keys(list)) {
+          count = count + list[item].length;
+        }
+        this.checkAll = checkCount === count;
+      },
+      // 全选
+      handleCheckAll(val) {
+        if (val) {
+          this.checkList = [];
+          let list = this.power_list;
+          var keys = Object.keys(list);
+          for (var key of keys) {
+            console.log(key);
+            for (var i =0;i<list[key].length;i++) {
+              this.checkList.push(list[key][i].id);
+            }
+          }
+        } else {
+          this.checkList = [];
+        }
+      },
+      getPowerList(id) {
+        this.power_params.system_id = id;
+        this.$http.get('organization/permission',this.power_params).then(res => {
           console.log(res);
           if (res.code === '20000') {
+            this.power_list = res.data.data;
+          } else {
+            this.power_list = [];
+          }
+        })
+      },
+      getModuleList(id) {
+        this.module_params.parent_id = id;
+        this.$http.get('organization/system',this.module_params).then(res => {
+          if (res.code === '20000') {
+            this.module_list = res.data.data;
+            this.getPowerList(res.data.data[0].id);
+            this.getSelfPower(res.data.data[0].id);
+            this.powerChildName = res.data.data[0].id;
+          } else {
+            this.module_list = [];
+          }
+        })
+      },
+      getSystemList() {
+        this.$http.get('organization/system',this.system_params).then(res => {
+          if (res.code === '20000') {
             this.powerNames = res.data.data;
+            this.getModuleList(res.data.data[0].id);
+            this.powerName = res.data.data[0].id.toString();
           } else {
             this.powerNames = [];
           }
@@ -1266,13 +1272,6 @@
         switch (val) {
           case 'power'://权限
             this.powerVisible = true;
-            this.$http.get('organization/permission', {
-              system_id: 22,
-              limit: 999,
-              page: 1,
-            }).then(res => {
-              console.log(res)
-            });
             break;
           case 'leave'://离职
             this.currentStaff = item;
@@ -1340,39 +1339,6 @@
               height: '480px',
             };
             break;
-        }
-      },
-
-      // 权限切换
-      handleClick(val) {
-        console.log(val);
-      },
-      // 权限子集切换
-      handleName(val) {
-        this.powerChildName = val;
-      },
-      // 权限复选
-      handleCheck(value) {
-        let checkCount = value.length;
-        let list = this.powerList;
-        let count = 0;
-        for (let item of  Object.keys(list)) {
-          count = count + item.length;
-        }
-        this.checkAll = checkCount === count;
-      },
-      // 全选
-      handleCheckAll(val) {
-        if (val) {
-          this.checkList = [];
-          let list = this.powerList;
-          for (let item of Object.keys(list)) {
-            for (let key of list[item]) {
-              this.checkList.push(key.id);
-            }
-          }
-        } else {
-          this.checkList = [];
         }
       },
       // 岗位管理
