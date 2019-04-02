@@ -415,7 +415,7 @@
           <div class="powerHead items-bet">
             <div class="inputLabel">
               <h4>权限类型</h4>
-              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.permission_type" size="small">
+              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.permission_type" size="small" @change="handleChangePowerType">
                 <el-option value="position" label="岗位"></el-option>
                 <el-option value="user" label="用户"></el-option>
                 <el-option value="ban" label="黑名单"></el-option>
@@ -437,18 +437,19 @@
             </el-tabs>
           </div>
           <div v-if="module_list.length > 0">
-            <div class="flex powerMain scroll_bar" v-for="item in module_list" v-if="item.id === powerChildName">
-              <div>
+            <div class="flex powerMain scroll_bar changeChoose" v-for="item in module_list" v-if="item.id === powerChildName">
+              <div v-if="power_list">
                 <el-checkbox v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
               </div>
+              <div v-else>暂无权限</div>
               <div v-for="(item,key) in power_list">
                 <el-checkbox-group v-model="checkList" @change="handleCheck">
                   <el-row v-for="(tmp,idx) in power_list[key]" :key="idx">
                     <el-col :span="12">
-                      <el-button type="text" size="mini" @click="handleSearchField(tmp)">查看</el-button>
+                      <el-button type="text" size="large" @click="handleSearchField(tmp)" icon="el-icon-view" style="color: #CF2E33;font-size: 18px"></el-button>
                     </el-col>
                     <el-col :span="12">
-                      <el-checkbox :label="tmp.id" :key="tmp.id" style="margin-top: 5px">
+                      <el-checkbox :label="tmp.id" :key="tmp.id" style="margin-top: 13px">
                         {{tmp.name}}
                       </el-checkbox>
                     </el-col>
@@ -457,7 +458,7 @@
               </div>
             </div>
             <div style="border-top: 1px solid #e6f1fe;background-color: white;">
-             <div v-if="show_field_list.length > 0">
+             <div v-if="show_field_list.length > 0" class="changeChoose">
                <el-checkbox-group v-model="field_list" @change="handleCheckField">
                  <div class="flex" style="height: 40px;line-height: 40px;padding-left: 10px">
                    <el-checkbox v-for="(tmp,idx) in show_field_list" :key="idx" :label="tmp.id">{{ tmp.name }}</el-checkbox>
@@ -470,7 +471,10 @@
             </div>
           </div>
           <div v-else>
-            <div class="powerMain" style="padding-left: 10px">暂无数据</div>
+            <div class="powerMain" style="padding-left: 30px">暂无权限</div>
+            <div style="height: 40px;line-height: 40px;font-size: 14px;padding-left: 10px">
+              暂无字段权限
+            </div>
           </div>
         </div>
         <div class="dialog_footer">
@@ -857,6 +861,7 @@
         },
         //设置权限
         set_power: {
+          system_id: '',
           type_id: 3057,
           permission_type: 'user',
           permission_id: '',
@@ -898,15 +903,20 @@
       }
     },
     methods: {
+      handleChangePowerType(type) {
+        console.log(type);
+      },
       handleCheckField(val) {
-        if (val.length === this.current_field.fields.length) {
-          this.checkList.push(this.current_field.id);
-        } else {
-          if (this.checkList.indexOf(this.current_field.id) !== -1) {
-            var idx = this.checkList.indexOf(this.current_field.id);
-            this.checkList.splice(idx,1);
+        console.log(val);
+        if (val.length > 0) {
+          if (this.checkList.indexOf(this.current_field.id) === -1) {
+            this.checkList.push(this.current_field.id);
           }
+        } else {
+          var idx = this.checkList.indexOf(this.current_field.id);
+          this.checkList.splice(idx,1);
         }
+        console.log(this.checkList);
       },
       //查看该权限下的字段
       handleSearchField(tmp) {
@@ -960,7 +970,10 @@
       },
       // 权限子集切换
       handleName(val) {
+        this.checkAll = false;
+        this.show_field_list = [];
         this.powerChildName = val.id;
+        this.set_power.system_id = val.id;
         this.getPowerList(val.id);
         this.getSelfPower(val.id);
       },
@@ -990,13 +1003,13 @@
       handleCheckAll(val) {
         if (val) {
           this.checkList = [];
+          this.field_list = [];
           let list = this.power_list;
           var keys = Object.keys(list);
           for (var key of keys) {
             for (var i =0;i<list[key].length;i++) {
               this.checkList.push(list[key][i].id);
               if (list[key][i].fields && list[key][i].fields.length > 0) {
-                this.field_list = [];
                 for (let tmp of list[key][i].fields) {
                   this.field_list.push(tmp.id);
                 }
@@ -1012,6 +1025,7 @@
       getPowerList(id) {
         this.power_params.system_id = id;
         this.$http.get('organization/permission',this.power_params).then(res => {
+          console.log(res);
           if (res.code === '20000') {
             this.power_list = res.data.data;
             let count = 0;
@@ -1020,7 +1034,7 @@
             }
             this.checkAll = this.checkList.length === count;
           } else {
-            this.power_list = [];
+            this.power_list = '';
           }
         })
       },

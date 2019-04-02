@@ -35,7 +35,7 @@
             </el-row>
           </el-radio-group>
         </div>
-        <div class="icons dimission" v-if="chooseTab === 3"></div>
+        <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
         <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
         <div class="buttons button2" v-if="chooseTab === 3 || chooseTab === 4" @click="handleExportInfo">导出报表</div>
         <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
@@ -899,6 +899,9 @@
         this.getPowerBottomList(row.id);
       },
       handleClickSystem(row) {
+        this.module_list = [];
+        this.power_list = [];
+        this.field_list = [];
         this.getModuleList(row.id);
       },
       getModuleList(id) {
@@ -923,6 +926,7 @@
             this.system_list = [];
             this.module_list = [];
             this.power_list = [];
+            this.field_list = [];
           }
         })
       },
