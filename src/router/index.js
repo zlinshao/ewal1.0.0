@@ -24,7 +24,7 @@ const StaffRoster = () => import('@/components/humanResource/departments/staffRo
 const MilitaryOrganization = () => import('@/components/humanResource/militaryOrganization/index.vue'); //排班布阵
 const Reward = () => import('@/components/humanResource/reward/index.vue'); //赏罚分明
 const Repository = () => import('@/components/humanResource/repository/index.vue'); //内务库房
-// const DiscussPolitics = () => import('@/components/humanResource/discussPolitics/index.vue'); //奏事议政
+const DiscussPolitics = () => import('@/components/humanResource/discussPolitics/index.vue'); //奏事议政
 
 
 // 财务中心
@@ -378,6 +378,11 @@ export default new Router({
             path: '/repository',
             name: '内务库房',
             component: Repository
+        },
+        {
+          path: '/discussPolitics',
+          name:'奏事议政',
+          component: DiscussPolitics
         },
         {
             path: '/staffRoster',
