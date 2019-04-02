@@ -7,7 +7,7 @@
         :height="this.mainListHeight(30) + 'px'"
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
-        @row-dblclick="tableDblClick"
+        @row-dblclick="tableDblClick($event,'borrowReceive')"
         header-row-class-name="tableHeader"
         :row-style="{height:'70px'}"
         style="width: 100%">
@@ -128,9 +128,9 @@
 
     <!--借用领用详情table-->
     <lj-dialog
-      :visible="borrow_receive_table_visible"
+      :visible="tableSettingData.borrowReceive.table_dialog_visible"
       :size="{width: 1250 + 'px',height: 700 + 'px'}"
-      @close="borrow_receive_table_visible = false"
+      @close="tableSettingData.borrowReceive.table_dialog_visible = false"
     >
       <div class="dialog_container repository-overview">
         <div class="dialog_header">
@@ -390,7 +390,6 @@
       </div>
     </lj-dialog>
 
-
     <!--照片table-->
     <lj-dialog
       :visible="photo_table_visible"
@@ -448,8 +447,10 @@
         </div>
         <div class="dialog_main  borrow-receive-img-dialog">
           <div class="repair-img-container">
-            <lj-upload title="维修图片"></lj-upload>
-            <lj-upload title="报废图片"></lj-upload>
+            <lj-upload title="维修图片"
+                       v-model="tableSettingData.goods.form.photo.formData.picture.repair_pic"></lj-upload>
+            <lj-upload title="报废图片"
+                       v-model="tableSettingData.goods.form.photo.formData.picture.scrap_pic"></lj-upload>
           </div>
         </div>
         <div class="dialog_footer">
@@ -554,7 +555,10 @@
               photo: {
                 is_show_photo_dialog: false,//是否显示图片
                 formData: {
-
+                  picture: {
+                    repair_pic: [],
+                    scrap_pic: [],
+                  }
                 }
               }
             }
@@ -744,11 +748,17 @@
                 id: item.id,//物品id
                 goodsName: item.goods?.name || '',//物品名称
                 borrowReceiveStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.status || 0],//领还状态applyStatus
+                status: item.status || 0,
+                category_id: item.category_id || 0,//物品id
                 receiveTime: item.receive_time || '-',//领取日期
+                receive_time: item.receive_time || '-',//领取日期
                 goodsId: item.goods_number || '-',//物品编号
+                goods_number: item.goods_number || '-',//物品编号
                 //goodsStatus:this.tableSettingData.borrowReceive.goodsStatus[item.status||0],
-                goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status||0],
-                goodsImg: item.picture,//图片
+                goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status || 0],
+                goods_status: item.goods_status || 0,//物品状态
+                //goodsImg: item.picture,//图片
+                picture: item.picture,//图片
                 repairCost: item.repair_cost || 0,//维修费用
                 scrapCost: item.scrap_cost || 0,//报废费用
                 receivePerson: item.user?.name || '-',//领取人
@@ -761,27 +771,43 @@
         })
       },
 
+
+      //打开照片dialog
       showPictureList() {
-        let shorts = this.tableSettingData.goods.form.photo;
-        shorts.is_show_photo_dialog = true;
-        shorts.formData = this.tableSettingData.goods.currentSelection;
         //debugger
-        /*let s = this.tableSettingData.goods.currentSelection.goodsImg;
-        let  repairTemp = s.repair_pic;
-        let  scarpTemp = s.scrap_pic;
-        let rep = repairTemp[Object.keys(repairTemp)[0]];
-        let sca = repairTemp[Object.keys(scarpTemp)[0]];
+        let _this = this;
+        setTimeout(() => {
+          //let shorts = this.tableSettingData.goods.form.photo;
+          _this.tableSettingData.goods.form.photo.is_show_photo_dialog = true;
+          _this.tableSettingData.goods.form.photo.formData = this.tableSettingData.goods.currentSelection;
+          //debugger
+        }, 100);
 
-        this.tableSettingData.goods.form.photo.formData.picture = s;
-        this.tableSettingData.goods.form.photo.formData.repairPic = rep;
-        this.tableSettingData.goods.form.photo.formData.scrapPic = sca;*/
       },
 
+      //保存照片
       savePictureList() {
-        let shorts = this.tableSettingData.goods.form.photo.formData;
-        this.$http.put(`${this.url}/eam/process`)
+        let ids = this.tableSettingData.borrowReceive.currentSelection.id;
+        let form = this.tableSettingData.goods.form.photo.formData;
+        let params = {
+          goods: [form]
+        }
+        this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
+          //debugger
+          if(res.code.endsWith('0')) {
+            this.$LjNotify('success',{
+              title:'成功',
+              message:'添加照片成功',
+            });
+            this.tableSettingData.goods.form.photo.is_show_photo_dialog = false;
+          } else {
+            this.$LjNotify('error',{
+              title:'失败',
+              message:'添加照片失败',
+            })
+          }
+        });
       },
-
 
       // 当前点击
       tableClickRow(row) {
@@ -791,15 +817,16 @@
         this.ids = this.myUtils.arrayWeight(ids);
       },
       //表格某一行双击
-      tableDblClick(row) {
-        switch (this.currentTable) {
-          case 'borrowReceive':
-            this.borrow_receive_table_visible = true;
-            this.tableSettingData[this.currentTable].formData = row;
-            this.tableSettingData[this.currentTable].currentSelection = row;
-            break;
+      tableDblClick(row,currentTable) {
+        if(currentTable) {
+          switch (currentTable) {
+            case 'borrowReceive':
+              this.tableSettingData[currentTable].table_dialog_visible = true;
+              this.tableSettingData[currentTable].formData = row;
+              this.tableSettingData[currentTable].currentSelection = row;
+              break;
+          }
         }
-
       },
 
       // 点击过

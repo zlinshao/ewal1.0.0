@@ -18,7 +18,7 @@ import './assets/scss/element.css'
 import './assets/scss/currency.css'
 // import './assets/magnify/jquery.magnify.css';
 // import './assets/magnify/jquery.magnify.js';
-import Confirm from '@/components/common/lightweightComponents/Confirm';
+import Confirm from '@/components/common/lightweightComponents/Confirm/index.js';
 
 
 
