@@ -20,7 +20,7 @@
             :style="{'background-color':item.iconColor}"></i><span>{{item.iconText}}</span></span>
         </p>
         <div class="icons home_icon"></div>
-        <!--<div class="icons add" @click="addCustomer(chooseTab)"><b>+</b></div>-->
+        <div><el-button type="danger" size="small" @click="cancelRemark">取消重复标记</el-button></div>
         <div class="icons search" @click="highSearch(chooseTab)"></div>
       </div>
     </div>
@@ -217,6 +217,12 @@
           this.search_params = val;
         }
       },
+
+        //取消重复标记
+        cancelRemark(){
+          alert(111)
+          this.$bus.emit('cancelRemarkFun',1);
+        }
     },
   }
 </script>

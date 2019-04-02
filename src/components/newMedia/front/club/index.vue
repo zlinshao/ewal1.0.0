@@ -11,12 +11,12 @@
         <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}">
             <div class="club-lists">
                 <div class="club-lists-info" v-for="(item,index) in clubData">
-                    <div class="club-box"  @click="handleClubDetail(item.status,item.id)">
+                    <div class="club-box"  @click="handleClubDetail(item.is_enter,item.id,index)">
                         <div class="club-box-top"><img src="../../../../assets/image/newMedia/theme1/active.png" alt=""></div>
                         <div class="club-box-middle">
                             <div>
-                                <p>{{item.title}}</p>
-                                <p><span>{{item.startTime}}</span><span>-</span><span>{{item.endTime}}</span></p>
+                                <p>{{item.name}}</p>
+                                <p><span>{{item.created_at}}</span></p>
                             </div>
                             <div>
                                 <span class="" :class="item.status===1?'end':'active'">{{item.status===1?'已结束':'进行中'}}</span>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="club-box-bottom">
                             <span><i></i>{{item.day}}</span>
-                            <span><i :class="item.status===1?'post':'unPost'"  @click="look_visible = true;clubStatus=item.status">{{item.status===1?'已报名':'我要报名'}}</i><i></i>{{item.viewCount}}</span>
+                            <span><i :class="item.status===1?'post':'unPost'"  @click="look_visible = true;clubStatus=item.status">{{item.status===1?'已报名':'我要报名'}}</i><i></i>{{item.click}}</span>
                         </div>
                         <div class="club-modal" v-if="item.status===1"></div>
                     </div>
@@ -42,10 +42,14 @@
                 </div>
                 <div class="dialog_main">
                     <div class="club-detail">
-                        <p v-for="item in clubDetail">
-                            <span>{{item.title}}</span>
-                            <span>{{item.content}}</span>
-                        </p>
+                        <p><span>活动名称</span><span>{{showData.name}}</span></p>
+                        <p><span>活动时间</span><span>{{showData.start_time}}-{{showData.over_time}}</span></p>
+                        <p><span>活动地点</span><span>{{showData.address}}</span></p>
+                        <p><span>活动内容</span><span>{{showData.content}}</span></p>
+                        <!--<p v-for="item in clubDetail">-->
+                            <!--<span>{{item.name}}</span>-->
+                            <!--<span>{{item.content}}</span>-->
+                        <!--</p>-->
                     </div>
                 </div>
                 <div class="dialog_footer" v-show="clubStatus===2">
@@ -56,7 +60,7 @@
 
             <div class="dengLong">
                 <p>已报名</p>
-                <p>666</p>
+                <p>{{showData.click}}</p>
             </div>
         </lj-dialog>
 
@@ -78,87 +82,67 @@
         data() {
             return {
                 clubStatus:'',
-                clubDetail:[
-                    {title:'活动名称',content:'第三届乐伽羽毛球大赛火热报名中！'},
-                    {title:'活动时间',content:'2018.02.10-2108.02.16'},
-                    {title:'活动地点',content:'大会议室'},
-                    {title:'活动内容',content:'这个是内容吃吃吃吃吃答 答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的等待等待的点点滴滴答 滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答的等待滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的 滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的等待滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴 答答的的等待这个是内容吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃吃 答的滴滴答答滴滴答答滴滴答答滴滴答答的多的滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答 的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的等待等待的点点滴滴答 滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答的等待滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的 滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的等待滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴 答答的的等待的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答的滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答滴滴答答答答滴滴答答滴滴答滴滴答答的 滴滴答答滴滴答答滴滴答答滴滴答滴滴'},
-                ],
+                // clubDetail:[
+                //     {title:'活动名称',content:''},
+                //     {title:'活动时间',content:''},
+                //     {title:'活动地点',content:''},
+                //     {title:'活动内容',content:''},
+                // ],
                 showFinMenuList: false,
                 showModal:false,
                 showData:{
-                    imgUrl:"",
-                    title:"给你看个isis的故事",
-                    start_time:"12-22-11",
-                    end_time:"11-22-3",
-                    status:1,
-                    statusImg:"",
+                    name:'',
+                    start_time:'',
+                    over_time:'',
+                    address:'',
+                    content:'',
                 },
-                clubData:[
-                    {
-                        actionImg:'',
-                        title:'一期一会的创意畅谈',
-                        status:2,
-                        startTime:'2018.02.12',
-                        endTime:'2018.04.12',
-                        viewCount:118,
-                        day:'8天前',
-                        id:1
-
-                    },
-                    {
-                        actionImg:'',
-                        title:'一期一会的创意畅谈',
-                        status:1,
-                        startTime:'2018.02.12',
-                        endTime:'2018.04.12',
-                        viewCount:118,
-                        day:'8天前',
-                        id:2
-
-                    },
-                    {
-                        actionImg:'',
-                        title:'一期一会的创意畅谈',
-                        status:2,
-                        startTime:'2018.02.12',
-                        endTime:'2018.04.12',
-                        viewCount:118,
-                        day:'8天前',
-                        id:3
-
-                    },
-                    {
-                        actionImg:'',
-                        title:'一期一会的创意畅谈',
-                        status:1,
-                        startTime:'2018.02.12',
-                        endTime:'2018.04.12',
-                        viewCount:118,
-                        day:'8天前',
-                        id:4
-                    },
-                    {
-                        actionImg:'',
-                        title:'一期一会的创意畅谈',
-                        status:2,
-                        startTime:'2018.02.12',
-                        endTime:'2018.04.12',
-                        viewCount:118,
-                        day:'8天前',
-                        id:5
-                    },
-                ],
+                current_id:'',
+                clubData:[],
                 look_visible:false,//详情
                 end_visible:false,//结束
                 add_visible:false,//新增
             }
         },
+        mounted(){
+          this.getDataLists()
+        },
         methods:{
-            handleClubDetail(status,id){
+            callbackSuccess(res) {
+                if (res.code === 200) {
+                    this.$LjNotify('success', {
+                        title: '成功',
+                        message: res.msg,
+                        subMessage: '',
+                    });
+                    this.getDataLists();
+                } else {
+                    this.$LjNotify('error', {
+                        title: '失败',
+                        message: res.msg,
+                        subMessage: '',
+                    });
+                }
+            },
+            handleClubDetail(status,id,index){
                 this.clubStatus = status;
                 this.look_visible= true;
-            }
+                this.current_id = id;
+                this.$http.get(globalConfig.newMedia_sever+'/api/club/event/'+id,).then(res => {
+                    if(res.status===200){
+                        this.showData = res.data.data[index];
+                        console.log(res)
+                    }
+
+                })
+            },
+            getDataLists(){
+                this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
+                    if(res.status===200){
+                        this.clubData = res.data.data;
+                    }
+                })
+            },
         }
     }
 </script>
