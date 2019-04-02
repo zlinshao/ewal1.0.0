@@ -165,7 +165,8 @@
           <div @click="chooseDetailTabs = 1" :class="chooseDetailTabs==1?'sidebar-bg-checked':'sidebar-bg'">
             <span>事项详情</span>
           </div>
-          <div @click="getGoodsDetailList(tableSettingData[currentTable].currentSelection)" :class="chooseDetailTabs==2?'sidebar-bg-checked':'sidebar-bg'">
+          <div @click="getGoodsDetailList(tableSettingData[currentTable].currentSelection)"
+               :class="chooseDetailTabs==2?'sidebar-bg-checked':'sidebar-bg'">
             <span>物品详情</span>
           </div>
         </div>
@@ -434,48 +435,28 @@
     </lj-dialog>
 
 
-    <!--//是否显示图片-->
-    <!--<lj-dialog-img v-model="is_show_photo_dialog">-->
-    <!--<div class="photo-container">-->
-    <!--<div class="photo-img-large"></div>-->
-    <!--<div>201903191059</div>-->
-    <!--</div>-->
-
-    <!--</lj-dialog-img>-->
-
-
     <!--图片dialog-->
     <lj-dialog
-      :visible="is_show_photo_dialog"
-      :size="{width: 450 + 'px',height: 350 + 'px'}"
-      @close="is_show_photo_dialog = false"
+      :visible="tableSettingData.goods.form.photo.is_show_photo_dialog"
+      :size="{width: 650 + 'px',height: 350 + 'px'}"
+      @close="tableSettingData.goods.form.photo.is_show_photo_dialog = false"
     >
       <div class="dialog_container borrow-receive-dialog">
         <div class="dialog_header">
-<!--          {{form}}-->
+          <!--          {{form}}-->
           <span class="notify-size">物品图片</span>
         </div>
         <div class="dialog_main  borrow-receive-img-dialog">
-          <div class="repair-img-container" v-for="item in photo">
-            <span>{{item.title}}</span>
-            <Upload :file="item" @success="getImgIds"></Upload>
+          <div class="repair-img-container">
+            <lj-upload title="维修图片"></lj-upload>
+            <lj-upload title="报废图片"></lj-upload>
           </div>
-          <!--<div class="repair-img-container">-->
-          <!--<span>维修照片</span>-->
-          <!--&lt;!&ndash;<div class="icons-img"></div>&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="icons-img"></div>&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="icons-add"></div>&ndash;&gt;-->
-          <!--<Upload :file="item" @success="getImgIds"></Upload>-->
-          <!--</div>-->
-          <!--<div class="scrap-img-container">-->
-          <!--<Upload :file="item" @success="getImgIds"></Upload>-->
-          <!--&lt;!&ndash;<span>报废照片</span>&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="icons-add"></div>&ndash;&gt;-->
-          <!--</div>-->
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger">确定</el-button>
-          <el-button size="small" type="info" @click="is_show_photo_dialog = false">取消</el-button>
+          <el-button size="small" type="danger" @click="savePictureList">确定</el-button>
+          <el-button size="small" type="info" @click="tableSettingData.goods.form.photo.is_show_photo_dialog = false">
+            取消
+          </el-button>
         </div>
       </div>
     </lj-dialog>
@@ -486,7 +467,8 @@
 
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
-  import Upload from '../../../common/upload.vue';
+  //import Upload from '../../../common/upload.vue';
+  import LjUpload from '../../../common/lightweightComponents/lj-upload';
   import LjDialogImg from '../components/lj-dialog-img';//用于显示图片
   import UserChoose from '../../../common/lightweightComponents/UserChoose';
 
@@ -499,8 +481,9 @@
     components: {
       LjDialog,
       LjDialogImg,
-      Upload,
+      //Upload,
       UserChoose,
+      LjUpload,
     },
     data() {
       return {
@@ -537,14 +520,14 @@
             table_dialog_visible: false,//form表单控制
             table_dialog_title: '',
             tableData: [],//表格数据
-            formData:[],//详情表格数据
+            formData: {},//详情表格数据
             tableShowData: {},
             searchParams: '',// dialog中的模糊搜索
 
 
             applyStatus: ['待通知', '待领取', '部分已领取', '已领取', '放弃领取', '待归还', '部分已归还', '已归还'],
             goodsStatus: ['无', '待维修', '维修中', '已维修', '报废'],
-            responsible: ['','个人','部门','公司']
+            responsible: ['', '个人', '部门', '公司']
           },
           goods: {//物品详情列表
             counts: 0,
@@ -560,84 +543,24 @@
             chooseRowIds: [],
             currentSelection: {},//当前选择行
 
-            table_dialog_visible: false,//form表单控制
+            table_dialog_visible: false,//table表单控制
             table_dialog_title: '',
             tableData: [],//表格数据
-            formData:[],//详情表格数据
+            formData: {},//详情表格数据
             tableShowData: {},
             searchParams: '',// dialog中的模糊搜索
 
+            form: {
+              photo: {
+                is_show_photo_dialog: false,//是否显示图片
+                formData: {
 
-            applyStatus: ['待通知', '待领取', '部分已领取', '已领取', '放弃领取', '待归还', '部分已归还', '已归还'],
-            goodsStatus: ['无', '待维修', '维修中', '已维修', '报废'],
-            responsible: ['','个人','部门','公司']
+                }
+              }
+            }
           },
         },
 
-
-        form: {
-          photo1: [],
-          photo2: [],
-        },
-
-        photo: [
-          {
-            title: '报备图片',
-            keyName: 'photo1',
-            setFile: [
-              {
-                "id": 123,
-                "name": "lejia7f87dea5d2f218312028484e56211173.jpg",
-                "display_name": "lejia7f87dea5d2f218312028484e56211173.jpg",
-                "raw_name": "lejia7f87dea5d2f218312028484e56211173.jpg",
-                "info": {
-                  "ext": "image\/jpeg",
-                  "host": "static.lejias.cn",
-                  "mime": "image\/jpeg",
-                  "size": 51251,
-                  "bucket": "lejia-test"
-                },
-                "currentPlace": null,
-                "user_id": null,
-                "uri": "http:\/\/static.lejias.cn\/lejia7f87dea5d2f218312028484e56211173.jpg",
-                "created_at": "2019-03-21 11:32:02",
-                "updated_at": "2019-03-21 11:32:02",
-                "deleted_at": null
-              },
-              {
-                "id": 213,
-                "name": "lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
-                "display_name": "lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
-                "raw_name": "lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
-                "info": {
-                  "ext": "image\/jpeg",
-                  "host": "static.lejias.cn",
-                  "mime": "image\/jpeg",
-                  "size": 400542,
-                  "bucket": "lejia-test"
-                },
-                "currentPlace": null,
-                "user_id": null,
-                "uri": "http:\/\/static.lejias.cn\/lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
-                "created_at": "2019-03-21 20:04:42",
-                "updated_at": "2019-03-21 20:04:42",
-                "deleted_at": null
-              }
-            ],
-            size: {
-              width: '60px',
-              height: '60px'
-            }
-          }, {
-            title: '维修图片',
-            keyName: 'photo2',
-            setFile: [],
-            size: {
-              width: '60px',
-              height: '60px'
-            }
-          }
-        ],
         /*
             *表单群组  begin
         */
@@ -668,8 +591,6 @@
         //照片table
         photo_table_visible: false,
         photoData: [],//照片table数据
-
-        is_show_photo_dialog: false,//是否显示图片
 
 
         /*
@@ -704,30 +625,26 @@
     },
     computed: {},
     methods: {
-      getImgIds(val) {
-        this.form[val[0]] = val[1];
-        console.log(val);
-      },
       initData() {
         //借用领用表格
 
-       /* for (let i = 0; i < 9; i++) {
-          let as = Math.random() * 10 > 3 ? "待通知" : Math.random() * 10 > 6 ? "待领取" : "部分领取";
-          let obj = {
-            id: i + 1,
-            approvalId: 20190319 + i,
-            counts: 10 + i,
-            applyType: '领用',
-            applyPerson: '张三',
-            department: '部门',
-            applyTime: '2019-03-19',
-            applyStatus: as,
-            goodsStatus: '部分维修'
-          }
-          this.tableSettingData.borrowReceive.tableData.push(obj)
-        }
-        //console.log(this.tableData);
-        this.tableSettingData.borrowReceive.counts = 1000;*/
+        /* for (let i = 0; i < 9; i++) {
+           let as = Math.random() * 10 > 3 ? "待通知" : Math.random() * 10 > 6 ? "待领取" : "部分领取";
+           let obj = {
+             id: i + 1,
+             approvalId: 20190319 + i,
+             counts: 10 + i,
+             applyType: '领用',
+             applyPerson: '张三',
+             department: '部门',
+             applyTime: '2019-03-19',
+             applyStatus: as,
+             goodsStatus: '部分维修'
+           }
+           this.tableSettingData.borrowReceive.tableData.push(obj)
+         }
+         //console.log(this.tableData);
+         this.tableSettingData.borrowReceive.counts = 1000;*/
 
         //eventsDetailData
         //借领用详情table数据初始化 1事项详情
@@ -775,6 +692,7 @@
 
       },
 
+      //获取借用领用详情list
       getBorrowReceiveList() {
         this.currentTable = 'borrowReceive';
         this.$http.get(this.url + 'eam/process', this.tableSettingData[this.currentTable].params).then(res => {
@@ -791,12 +709,12 @@
                 applyTime: item.apply_time || '-',//申请日期
                 applyStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.apply_status],//申请状态
                 goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status],//物品状态
-                repairPrice: item.repair_price||0,//维修总费用
-                scrapPrice:item.scrap_price||0,//报废总费用
+                repairPrice: item.repair_price || 0,//维修总费用
+                scrapPrice: item.scrap_price || 0,//报废总费用
                 responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type],//任责人类型
-                responsibleName: item.responsible?.name||'-',//任责人
+                responsibleName: item.responsible?.name || '-',//任责人
                 //costType: item.responsible?.payment_type||0//付款类型-结算方式
-                costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type||0],//付款类型-结算方式
+                costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type || 0],//付款类型-结算方式
               };
               this.tableSettingData[this.currentTable].tableData.push(obj);
             }
@@ -815,7 +733,8 @@
         debugger
         this.chooseDetailTabs = 2;
         this.currentTable = 'goods';
-        this.$http.get(this.url + 'eam/process/'+row.id, this.tableSettingData[this.currentTable].params).then(res => {
+        this.tableSettingData[this.currentTable].tableData = [];//清空上次数据
+        this.$http.get(this.url + 'eam/process/' + row.id, this.tableSettingData[this.currentTable].params).then(res => {
           debugger
           console.log(res);
           if (res.code.endsWith('0')) {
@@ -823,36 +742,49 @@
               //item = item.goods_list;
               let obj = {
                 id: item.id,//物品id
-                goodsName: item.goods?.name||'',//物品名称
-                borrowReceiveStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.status||0],//领还状态applyStatus
-                receiveTime: item.receive_time||'-',//领取日期
-                goodsId: item.goods_number||'-',//物品编号
+                goodsName: item.goods?.name || '',//物品名称
+                borrowReceiveStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.status || 0],//领还状态applyStatus
+                receiveTime: item.receive_time || '-',//领取日期
+                goodsId: item.goods_number || '-',//物品编号
                 //goodsStatus:this.tableSettingData.borrowReceive.goodsStatus[item.status||0],
-                goodsStatus:'尚无',
+                goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status||0],
                 goodsImg: item.picture,//图片
-                repairCost: item.repair_cost||0,//维修费用
-                scrapCost: item.scrap_cost||0,//报废费用
-                receivePerson: item.user?.name||'-',//领取人
-                returnTime: item.return_date||'-',//归还日期
+                repairCost: item.repair_cost || 0,//维修费用
+                scrapCost: item.scrap_cost || 0,//报废费用
+                receivePerson: item.user?.name || '-',//领取人
+                returnTime: item.return_date || '-',//归还日期
               };
               this.tableSettingData[this.currentTable].tableData.push(obj);
             }
-            this.tableSettingData[this.currentTable].counts = res.data.count;
+            this.tableSettingData[this.currentTable].counts = res.data.goods_list?.length;
           }
         })
       },
 
       showPictureList() {
-        this.is_show_photo_dialog = true;
+        let shorts = this.tableSettingData.goods.form.photo;
+        shorts.is_show_photo_dialog = true;
+        shorts.formData = this.tableSettingData.goods.currentSelection;
+        //debugger
+        /*let s = this.tableSettingData.goods.currentSelection.goodsImg;
+        let  repairTemp = s.repair_pic;
+        let  scarpTemp = s.scrap_pic;
+        let rep = repairTemp[Object.keys(repairTemp)[0]];
+        let sca = repairTemp[Object.keys(scarpTemp)[0]];
 
+        this.tableSettingData.goods.form.photo.formData.picture = s;
+        this.tableSettingData.goods.form.photo.formData.repairPic = rep;
+        this.tableSettingData.goods.form.photo.formData.scrapPic = sca;*/
       },
 
-
+      savePictureList() {
+        let shorts = this.tableSettingData.goods.form.photo.formData;
+        this.$http.put(`${this.url}/eam/process`)
+      },
 
 
       // 当前点击
       tableClickRow(row) {
-        //debugger
         this.tableSettingData[this.currentTable].currentSelection = row;
         let ids = this.tableSettingData[this.currentTable].chooseRowIds;
         ids.push(row.id);
@@ -885,16 +817,6 @@
     },
   }
 </script>
-
-<!--<style>-->
-<!--.ruzhu-mess .el-form-item__label{-->
-<!--font-size:16px!important;-->
-<!--}-->
-<!--.zhuanye-mess .el-form-item__label,.zhuanye-mess .color-t{-->
-<!--font-size:16px!important;-->
-<!--color:#606266;-->
-<!--}-->
-<!--</style>-->
 
 <style lang="scss">
   .goods-detail {

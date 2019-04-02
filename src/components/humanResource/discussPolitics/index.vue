@@ -725,13 +725,7 @@
       },
 
 
-
-
-
-
       /*下面为不需要业务的代码*/
-
-
 
       //获取date月当月天总数,参数二可获取其他月天总数(需传特定值)
       getDaysCount(date, setmonth = 0) {
@@ -838,7 +832,6 @@
         }
         return arr;
       },
-
 
       //通过当日几号和月份传入获取日期格式
       getDateTimeByDay(date, dayIndex, setMonth = 0) {

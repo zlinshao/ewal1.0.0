@@ -1,7 +1,7 @@
 <template>
   <div id="lj_upload">
     <div class="upload-container">
-      <span class="upload-title">{{title}}</span>
+      <span v-if="title" class="upload-title">{{title}}</span>
       <upload :file="photoData" @success="handleSuccess"></upload>
     </div>
   </div>
@@ -20,15 +20,17 @@
         handler(val,oldVal) {
           //debugger
           //this.getPhotoInfoList(val);
-          console.log(val);
+          //console.log(val);
         },
         immediate: true
       },
       size: {
         handler(val,oldVal) {
-          debugger
-          this.photoData.size.width = val+'px';
-          this.photoData.size.height = val+'px';
+          if(val) {
+            this.photoData.size.width = val+'px';
+            this.photoData.size.height = val+'px';
+          }
+
         },
         immediate: true
       },
@@ -61,7 +63,10 @@
       }
     },
     mounted() {
-      this.getPhotoInfoList(this.value);
+      if(this.value) {
+        this.getPhotoInfoList(this.value);
+      }
+
     },
     methods: {
       handleSuccess(val) {
@@ -94,7 +99,7 @@
 
       .upload-title {
         display: inline-block;
-        width: 100px;
+        width: 120px;
         height: 60px;
         line-height: 60px;
       }
