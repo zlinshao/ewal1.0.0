@@ -415,7 +415,7 @@
           <div class="powerHead items-bet">
             <div class="inputLabel">
               <h4>权限类型</h4>
-              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.type" size="small">
+              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.permission_type" size="small" @change="handleChangePowerType">
                 <el-option value="position" label="岗位"></el-option>
                 <el-option value="user" label="用户"></el-option>
                 <el-option value="ban" label="黑名单"></el-option>
@@ -437,21 +437,44 @@
             </el-tabs>
           </div>
           <div v-if="module_list.length > 0">
-            <div class="flex powerMain scroll_bar" v-for="item in module_list" v-if="item.id === powerChildName">
-              <div>
+            <div class="flex powerMain scroll_bar changeChoose" v-for="item in module_list" v-if="item.id === powerChildName">
+              <div v-if="power_list">
                 <el-checkbox v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
               </div>
+              <div v-else>暂无权限</div>
               <div v-for="(item,key) in power_list">
                 <el-checkbox-group v-model="checkList" @change="handleCheck">
-                  <el-checkbox v-for="tmp in power_list[key]" :label="tmp.id" :key="tmp.id">
-                    {{tmp.name}}
-                  </el-checkbox>
+                  <el-row v-for="(tmp,idx) in power_list[key]" :key="idx">
+                    <el-col :span="12">
+                      <el-button type="text" size="large" @click="handleSearchField(tmp)" icon="el-icon-view" style="color: #CF2E33;font-size: 18px"></el-button>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-checkbox :label="tmp.id" :key="tmp.id" style="margin-top: 13px">
+                        {{tmp.name}}
+                      </el-checkbox>
+                    </el-col>
+                  </el-row>
                 </el-checkbox-group>
+              </div>
+            </div>
+            <div style="border-top: 1px solid #e6f1fe;background-color: white;">
+             <div v-if="show_field_list.length > 0" class="changeChoose">
+               <el-checkbox-group v-model="field_list" @change="handleCheckField">
+                 <div class="flex" style="height: 40px;line-height: 40px;padding-left: 10px">
+                   <el-checkbox v-for="(tmp,idx) in show_field_list" :key="idx" :label="tmp.id">{{ tmp.name }}</el-checkbox>
+                 </div>
+               </el-checkbox-group>
+             </div>
+              <div v-else style="height: 40px;line-height: 40px;font-size: 14px;padding-left: 10px">
+                暂无字段权限
               </div>
             </div>
           </div>
           <div v-else>
-            <div class="powerMain" style="padding-left: 10px">暂无数据</div>
+            <div class="powerMain" style="padding-left: 30px">暂无权限</div>
+            <div style="height: 40px;line-height: 40px;font-size: 14px;padding-left: 10px">
+              暂无字段权限
+            </div>
           </div>
         </div>
         <div class="dialog_footer">
@@ -642,7 +665,8 @@
     components: {ljDialog,PositionOrgan},
     data() {
       return {
-
+        show_field_list: [],
+        field_list: [],
         //离职
         outForm: {
           type: 'dimission',
@@ -764,7 +788,6 @@
         powerName: '1',//部门
         powerChildName: '',//部门模块
         powerNames: [],
-        powerList: {},
         checkList: [],
         checkAll: false,
         // 岗位管理
@@ -834,12 +857,17 @@
           user_id: 3057,
           system_id: '',
           type: 'user',
-          type_id: 3057,
           position_id: '',
-
+        },
+        //设置权限
+        set_power: {
+          system_id: '',
+          type_id: 3057,
+          permission_type: 'user',
           permission_id: '',
           permission_field_id: '',
         },
+        current_field: '', //点击查看当前权限
       }
     },
     mounted() {
@@ -875,34 +903,99 @@
       }
     },
     methods: {
-      handleSubmitSetPower() {
+      handleChangePowerType(type) {
+        console.log(type);
+      },
+      handleCheckField(val) {
+        console.log(val);
+        if (val.length > 0) {
+          if (this.checkList.indexOf(this.current_field.id) === -1) {
+            this.checkList.push(this.current_field.id);
+          }
+        } else {
+          var idx = this.checkList.indexOf(this.current_field.id);
+          this.checkList.splice(idx,1);
+        }
         console.log(this.checkList);
+      },
+      //查看该权限下的字段
+      handleSearchField(tmp) {
+        this.current_field = tmp;
+        this.show_field_list = tmp.fields || [];
+      },
+      handleSubmitSetPower() {
+        this.set_power.permission_id = this.checkList;
+        this.set_power.permission_field_id = this.field_list;
+        this.$http.post('organization/permission/set',this.set_power).then(res => {
+          if (res.code === '20000') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
       },
       getSelfPower(id) {
         this.self_power_params.system_id = id;
         this.$http.get('organization/permission/all',this.self_power_params).then(res => {
-          console.log(res);
+          if (res.code === '20000') {
+            var field = [];
+            var permission = [];
+            if (res.data.field && res.data.field.length > 0) {
+              for (let item of res.data.field) {
+                field.push(item.id);
+              }
+            }
+            if (res.data.permission && res.data.permission.length > 0) {
+              for (let tmp of res.data.permission) {
+                permission.push(tmp.id);
+              }
+            }
+            this.$nextTick(() => {
+              this.checkList = permission;
+              this.field_list = field;
+            });
+          }
         })
       },
       // 权限切换
       handleClick(val) {
-        console.log(val);
         var id = parseInt(val.name);
         this.getModuleList(id);
       },
       // 权限子集切换
       handleName(val) {
+        this.checkAll = false;
+        this.show_field_list = [];
         this.powerChildName = val.id;
+        this.set_power.system_id = val.id;
         this.getPowerList(val.id);
         this.getSelfPower(val.id);
       },
       // 权限复选
       handleCheck(value) {
+        this.field_list = [];
         let checkCount = value.length;
         let list = this.power_list;
         let count = 0;
         for (let item of  Object.keys(list)) {
           count = count + list[item].length;
+          for (let tmp of list[item]) {
+            for (let i=0;i<value.length;i++) {
+              if (tmp.id === value[i]) {
+                if (tmp.fields) {
+                  for (let field of tmp.fields) {
+                    this.field_list.push(field.id);
+                  }
+                }
+              }
+            }
+          }
         }
         this.checkAll = checkCount === count;
       },
@@ -910,16 +1003,23 @@
       handleCheckAll(val) {
         if (val) {
           this.checkList = [];
+          this.field_list = [];
           let list = this.power_list;
           var keys = Object.keys(list);
           for (var key of keys) {
-            console.log(key);
             for (var i =0;i<list[key].length;i++) {
               this.checkList.push(list[key][i].id);
+              if (list[key][i].fields && list[key][i].fields.length > 0) {
+                for (let tmp of list[key][i].fields) {
+                  this.field_list.push(tmp.id);
+                }
+              }
             }
           }
         } else {
           this.checkList = [];
+          this.field_list = [];
+          this.show_field_list = [];
         }
       },
       getPowerList(id) {
@@ -928,8 +1028,13 @@
           console.log(res);
           if (res.code === '20000') {
             this.power_list = res.data.data;
+            let count = 0;
+            for (var key in this.power_list) {
+              count = count + this.power_list[key].length;
+            }
+            this.checkAll = this.checkList.length === count;
           } else {
-            this.power_list = [];
+            this.power_list = '';
           }
         })
       },
@@ -989,7 +1094,6 @@
         this.$http.put(`staff/user/${this.currentStaff.id}`,{
           type: 'enable'
         }).then(res => {
-          console.log(res);
           if (res.code === '20030') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1050,7 +1154,6 @@
       },
       handleSubmitAddDuty() {
         this.$http.post('organization/duty',this.positionForm).then(res => {
-          console.log(res);
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1109,7 +1212,6 @@
       },
       handleSubmitAddPosition() {
         this.$http.post('organization/position',this.add_position_form).then(res => {
-          console.log(res);
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1184,7 +1286,6 @@
       //获取职位列表
       getDutyList() {
         this.$http.get('organization/duty',this.staffParams).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.dutyList = res.data.data;
           } else {
@@ -1212,7 +1313,6 @@
       },
       // 员工/部门 切换
       chooseManage(val, status = '') {
-        console.log(val);
         if (status === 'post') {
           this.tabsPost = val;
         } else {
@@ -1232,7 +1332,6 @@
           page: 1,
           limit: 999
         }).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.positionList = res.data.data;
             this.positionVisible = true;
@@ -1244,7 +1343,6 @@
       // 权限/禁用/修改/离职
       operateModule(val,item) {
         if (val === 'revise') {
-          console.log(item);
           this.currentStaff = item;
           this.is_edit = true;
           this.add_newStaff_visible = true;
@@ -1265,7 +1363,6 @@
         }
         if (val === 'disabled') {
           this.currentStaff = item;
-          console.log(item);
         } else {
           this.currentDutyInfo = item;
         }
@@ -1306,7 +1403,7 @@
           case 'power'://权限
             this.power_size = {
               width: '1600px',
-              height: '800px',
+              height: '840px',
             };
             break;
           case 'staff'://新增 员工

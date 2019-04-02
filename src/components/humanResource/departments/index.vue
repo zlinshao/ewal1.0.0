@@ -35,7 +35,7 @@
             </el-row>
           </el-radio-group>
         </div>
-        <div class="icons dimission" v-if="chooseTab === 3"></div>
+        <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
         <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
         <div class="buttons button2" v-if="chooseTab === 3 || chooseTab === 4" @click="handleExportInfo">导出报表</div>
         <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
@@ -142,6 +142,7 @@
             <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
+                <el-button type="success" size="mini" @click="handleOpenAddField(scope.row)">添加字段权限</el-button>
                 <el-button type="warning" size="mini" @click="handleOpenEdit('power',scope.row)">编辑</el-button>
                 <el-button type="danger" size="mini" @click="handleDelControl('power',scope.row)">删除</el-button>
               </template>
@@ -150,7 +151,17 @@
         </el-card>
         <el-card style="margin-top: 20px">
           <el-table :data="field_list" height="400px">
-
+            <el-table-column label="项目名称" prop="app_name" align="center"></el-table-column>
+            <el-table-column label="控制器全称" prop="controller" align="center"></el-table-column>
+            <el-table-column label="方法名称" prop="method" align="center"></el-table-column>
+            <el-table-column label="权限字段标识" prop="sign" align="center"></el-table-column>
+            <el-table-column label="权限字段名称" prop="name" align="center"></el-table-column>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button type="warning" size="mini" @click="handleOpenEditField(scope.row)">编辑</el-button>
+                <el-button type="danger" size="mini" @click="handleOpenDelField(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </div>
@@ -353,6 +364,62 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!--新增字段权限-->
+    <lj-dialog
+      :visible="new_field_visible"
+      :size="{width: 400 + 'px',height: 550 + 'px'}"
+      @close=""
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>{{ is_edit_field ? '修改权限字段' : '新增权限字段'}}</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form label-width="120px">
+            <el-form-item label="项目名称">
+              <el-input v-model="field_form.app_name"></el-input>
+            </el-form-item>
+            <el-form-item label="控制器全称">
+              <el-input v-model="field_form.controller"></el-input>
+            </el-form-item>
+            <el-form-item label="方法名称">
+              <el-input v-model="field_form.method"></el-input>
+            </el-form-item>
+            <el-form-item label="权限字段标识">
+              <el-input v-model="field_form.sign"></el-input>
+            </el-form-item>
+            <el-form-item label="权限字段名称">
+              <el-input v-model="field_form.name"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleSubmitOk">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancel">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--删除字段-->
+    <lj-dialog
+      :visible="del_field_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="del_field_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确定</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定删除该字段权限吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleSubmitDelField">确定</el-button>
+          <el-button type="info" size="small" @click="del_field_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -390,6 +457,19 @@
       return {
         //权限字段管理
         field_list: [],
+        new_field_visible: false,
+        current_field: '',
+        field_form: {
+          permission_id: '',
+          app_name: '',
+          controller: '',
+          method: '',
+          sign: '',
+          name: ''
+        },
+        is_edit_field: false,
+        current_power: '',
+        del_field_visible: false,
 
         //新增模块
         new_module_visible: false,
@@ -463,7 +543,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 5,//tab切换
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -551,7 +631,86 @@
       },
     },
     methods: {
+      handleOpenDelField(row) {
+        this.current_field = row;
+        this.del_field_visible = true;
+      },
+      handleSubmitDelField() {
+        this.$http.delete(`organization/permission_field/${this.current_field.id}`).then(res => {
+          if (res.code === '20040') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.getFieldList(this.current_power.id);
+            this.del_field_visible = false;
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleOpenEditField(row) {
+        this.current_field = row;
+        for (var key in this.field_form) {
+          this.field_form[key] = row[key];
+        }
+        this.is_edit_field = true;
+        this.new_field_visible = true;
+      },
+      handleCancel() {
+        for (var key in this.field_form) {
+          this.field_form[key] = '';
+        }
+        this.is_edit_field = false;
+        this.new_field_visible = false;
+      },
+      handleSubmitOk() {
+        if (this.is_edit_field) {
+          this.$http.put(`organization/permission_field/${this.current_field.id}`,this.field_form).then(res => {
+            console.log(res);
+            if (res.code === '20030') {
+              this.$LjNotify('success',{
+                title: '成功',
+                message: res.msg
+              });
+              this.handleCancel();
+              this.getFieldList(this.current_power.id);
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
+          });
+          return false;
+        }
+        this.$http.post('organization/permission_field',this.field_form).then(res => {
+          console.log(res);
+          if (res.code === '20010') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancel();
+            this.getFieldList(this.current_power.id);
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleOpenAddField(row) {
+        this.current_field = row;
+        this.field_form.permission_id = row.id;
+        this.new_field_visible = true;
+      },
       handleClickPower(row) {
+        this.current_power = row;
         this.getFieldList(row.id);
       },
       getFieldList(permission_id) {
@@ -559,7 +718,11 @@
           permission_id,
           limit: 999
         }).then(res => {
-          console.log(res);
+          if (res.code === '20000') {
+            this.field_list = res.data.data;
+          } else {
+            this.field_list = [];
+          }
         })
       },
       handleOpenAddPower(row) {
@@ -724,7 +887,6 @@
       getPowerBottomList(id) {
         this.bottom_params.system_id = id;
         this.$http.get('organization/permission',this.bottom_params).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.power_list = res.data.data;
             this.getFieldList(res.data.data[0].id);
@@ -737,6 +899,9 @@
         this.getPowerBottomList(row.id);
       },
       handleClickSystem(row) {
+        this.module_list = [];
+        this.power_list = [];
+        this.field_list = [];
         this.getModuleList(row.id);
       },
       getModuleList(id) {
@@ -754,12 +919,14 @@
       getPowerList() {
         this.power_params.parent_id = '';
         this.$http.get('organization/system',this.power_params).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.system_list = res.data.data;
             this.getModuleList(res.data.data[0].id);
           } else {
             this.system_list = [];
+            this.module_list = [];
+            this.power_list = [];
+            this.field_list = [];
           }
         })
       },
