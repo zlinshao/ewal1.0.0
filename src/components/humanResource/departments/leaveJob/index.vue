@@ -25,19 +25,19 @@
         <el-table-column label="离职备注" prop="dismiss_time.entry_mess" align="center"></el-table-column>
         <el-table-column label="离职交接单" align="center">
           <template slot-scope="scope">
-            <el-button type="text">查看</el-button>
+            <el-button type="text" @click="handleLooResignation(scope.row,'resignation_form')">查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="合同" align="center">
-          <template slot-scope="scope">
-            <el-button type="text">查看</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column label="离职短信" align="center">
-          <template slot-scope="scope">
-            <el-button type="text">查看</el-button>
-          </template>
-        </el-table-column>
+        <!--<el-table-column label="合同" align="center">-->
+          <!--<template slot-scope="scope">-->
+            <!--<el-button type="text">查看</el-button>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+        <!--<el-table-column label="离职短信" align="center">-->
+          <!--<template slot-scope="scope">-->
+            <!--<el-button type="text">查看</el-button>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -54,13 +54,33 @@
           </el-pagination>
         </div>
       </footer>
+
+      <LjDialog
+        :visible="look_info_visible"
+        :size="{width: 700 + 'px',height: 400 + 'px'}"
+        @close="handleCloseLookInfo"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>查看信息</h3>
+          </div>
+          <div class="dialog_main">
+
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleCloseLookInfo">确定</el-button>
+          </div>
+        </div>
+      </LjDialog>
     </div>
   </div>
 </template>
 
 <script>
+  import LjDialog from '../../../common/lj-dialog.vue';
   export default {
     name: "index",
+    components: { LjDialog },
     props: ['exportInfo'],
     data() {
       return {
@@ -76,7 +96,10 @@
           position_id: '',
           is_on_job: 1,
           export: 0
-        }
+        },
+
+        look_info: [],
+        look_info_visible: false
       }
     },
     mounted() {
@@ -95,6 +118,21 @@
     },
     computed: {},
     methods: {
+      handleCloseLookInfo() {
+        this.look_info = [];
+        this.look_info_visible = false;
+      },
+      handleLooResignation(row,type) {
+        if (row.staff && row.staff[type]) {
+          this.look_info = row.staff[type] || [];
+          this.look_info_visible = true;
+        } else {
+          this.$LjNotify('warning',{
+            title: '提示',
+            message: '暂无该信息'
+          })
+        }
+      },
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {
           console.log(res);

@@ -129,7 +129,7 @@
     <!--借用领用详情table-->
     <lj-dialog
       :visible="tableSettingData.borrowReceive.table_dialog_visible"
-      :size="{width: 1250 + 'px',height: 700 + 'px'}"
+      :size="{width: 1500 + 'px',height: 700 + 'px'}"
       @close="tableSettingData.borrowReceive.table_dialog_visible = false"
     >
       <div class="dialog_container repository-overview">
@@ -165,7 +165,7 @@
           <div @click="chooseDetailTabs = 1" :class="chooseDetailTabs==1?'sidebar-bg-checked':'sidebar-bg'">
             <span>事项详情</span>
           </div>
-          <div @click="getGoodsDetailList(tableSettingData[currentTable].currentSelection)"
+          <div @click="getGoodsDetailList()"
                :class="chooseDetailTabs==2?'sidebar-bg-checked':'sidebar-bg'">
             <span>物品详情</span>
           </div>
@@ -229,32 +229,32 @@
           </div>
         </div>
 
-        <div v-if="chooseDetailTabs == 2" class="goods-detail dialog_main borderNone">
+        <div v-if="chooseDetailTabs == 2" id="goods_detail" class="goods-detail dialog_main borderNone">
           <div class="search-toolbar">
-            <div v-show="!is_show_selection">
+            <div v-show="!tableSettingData.goods.showSaveCancel">
               <div>
                 <el-tag @click="is_show_selection = true; batch_set_return_time_visible = true" size="medium">批量设置归还日期
                 </el-tag>
               </div>
 
               <div>
-                <el-tag @click="is_show_selection = true;batch_set_receive_person_visible = true" size="medium">
+                <el-tag @click="batchSetReceivePerson" size="medium">
                   批量设置领取人
                 </el-tag>
               </div>
 
               <div>
-                <el-tag @click="is_show_selection = true" size="medium">修改详情</el-tag>
+                <el-tag @click="modifyDetail" size="medium">修改详情</el-tag>
               </div>
             </div>
 
-            <div v-show="is_show_selection" class="button-group">
+            <div v-show="tableSettingData.goods.showSaveCancel" class="button-group">
               <div
-                @click="is_show_selection = false;batch_set_return_time_visible = false;batch_set_receive_person_visible =false;">
+                @click="btnCancel">
                 取消
               </div>
               <div
-                @click="is_show_selection = false;batch_set_return_time_visible = false;batch_set_receive_person_visible = false">
+                @click="btnSave">
                 保存
               </div>
               <!--批量设置归还日期-->
@@ -293,50 +293,63 @@
             <!--:prop="item"-->
             <!--:label="goodsDetailShowData[item]">-->
             <!--</el-table-column>-->
-            <el-table-column v-if="false"
+            <el-table-column v-if="tableSettingData.goods.is_show_selection"
                              type="selection"
                              width="55">
             </el-table-column>
             <el-table-column
-              key="goodsName"
+              key="name"
               align="center"
-              prop="goodsName"
+              prop="name"
               label="物品名称">
             </el-table-column>
 
             <el-table-column
-              key="borrowReceiveStatus"
+              key="status"
               align="center"
-              prop="borrowReceiveStatus"
+              min-width="120px"
+              prop="status"
               label="领/还状态">
+              <template slot-scope="scope">
+                <div :class="{editable:tableSettingData.goods.modifyAll}">
+                  <dropdown-list :disabled="!tableSettingData.goods.modifyAll"  width="120" :arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS" v-model="scope.row.status"></dropdown-list>
+                </div>
+
+              </template>
             </el-table-column>
 
             <el-table-column
-              key="receiveTime"
+              key="receive_time"
               align="center"
-              prop="receiveTime"
+              prop="receive_time"
               label="领取日期">
             </el-table-column>
 
             <el-table-column
               width="140px"
-              key="goodsId"
+              key="goods_number"
               align="center"
-              prop="goodsId"
+              prop="goods_number"
               label="物品编号">
             </el-table-column>
 
             <el-table-column
-              key="goodsStatus"
+              key="goods_status"
               align="center"
-              prop="goodsStatus"
+              min-width="100px"
+              prop="goods_status"
               label="物品状态">
+              <template slot-scope="scope">
+                <div :class="{editable:tableSettingData.goods.modifyAll}">
+                  <dropdown-list :disabled="!tableSettingData.goods.modifyAll" width="100" :arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS" v-model="scope.row.goods_status"></dropdown-list>
+                </div>
+              </template>
             </el-table-column>
 
             <el-table-column
-              key="goodsImg"
+              key="picture"
               align="center"
-              prop="goodsImg"
+              prop="picture"
               label="物品照片">
               <template slot-scope="scope">
                 <div @click="showPictureList" class="photo-img"></div>
@@ -344,31 +357,60 @@
             </el-table-column>
 
             <el-table-column
-              key="repairCost"
+              key="repair_price"
               align="center"
-              prop="repairCost"
+              width="140px"
+              prop="repair_price"
               label="维修费用">
+              <template slot-scope="scope">
+                <div :class="{editable:tableSettingData.goods.modifyAll}">
+                  <el-input :disabled="!tableSettingData.goods.modifyAll" clearable v-model="scope.row.repair_price"></el-input>
+                </div>
+              </template>
             </el-table-column>
 
             <el-table-column
-              key="scrapCost"
+              key="scrap_price"
               align="center"
-              prop="scrapCost"
+              width="140px"
+              prop="scrap_price"
               label="报废费用">
+              <template slot-scope="scope">
+                <div :class="{editable:tableSettingData.goods.modifyAll}">
+                  <el-input align="center" :disabled="!tableSettingData.goods.modifyAll" clearable v-model="scope.row.scrap_price"></el-input>
+                </div>
+              </template>
             </el-table-column>
 
             <el-table-column
-              key="receivePerson"
+              key="username"
               align="center"
-              prop="receivePerson"
+              width="140px"
+              prop="username"
               label="领取人">
+              <template slot-scope="scope">
+                <div :class="{editable:tableSettingData.goods.modifyAll}">
+<!--                  <div v-if="!tableSettingData.goods.modifyAll">{{scope.row.username}}</div>-->
+                  <user-choose :disabled="!tableSettingData.goods.modifyAll" num="1" width="140" title="请选择人员" v-model="scope.row.receive_user_id"></user-choose>
+                </div>
+
+
+              </template>
             </el-table-column>
 
             <el-table-column
-              key="returnTime"
+              key="return_date"
               align="center"
-              prop="returnTime"
+              min-width="160px"
+              prop="return_date"
               label="归还日期">
+              <template slot-scope="scope">
+                <div :class="{editable:tableSettingData.goods.modifyAll}">
+                  <el-date-picker format="yyyy-MM-dd" :disabled="!tableSettingData.goods.modifyAll" style="width: 160px" v-model="scope.row.return_date" type="date"></el-date-picker>
+                </div>
+
+
+              </template>
             </el-table-column>
 
           </el-table>
@@ -376,7 +418,7 @@
             <div class="page">
               <el-pagination
                 @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
+                @current-change="handleCurrentChange($event,'goods')"
                 :current-page="tableSettingData.goods.params.page"
                 :page-size="tableSettingData.goods.params.limit"
                 :total="tableSettingData.goods.counts"
@@ -467,12 +509,13 @@
 </template>
 
 <script>
+  import utils from '../../../../utils/myUtils';
   import LjDialog from '../../../common/lj-dialog.vue';
   //import Upload from '../../../common/upload.vue';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
   import LjDialogImg from '../components/lj-dialog-img';//用于显示图片
   import UserChoose from '../../../common/lightweightComponents/UserChoose';
-
+  import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import {DROPDOWN_CONSTANT} from '@/assets/js/allConstantData';
 
 
@@ -483,11 +526,13 @@
       LjDialog,
       LjDialogImg,
       //Upload,
-      UserChoose,
       LjUpload,
+      DropdownList,
+      UserChoose,
     },
     data() {
       return {
+        DROPDOWN_CONSTANT,
         url: globalConfig.humanResource_server,
         checkList: [],
 
@@ -510,10 +555,11 @@
               //search: '',
               page: 1,
               limit: 5,
-              init() {
-                this.page = 1;
-                this.limit = 5;
-              }
+
+            },
+            init() {
+              this.params.page = 1;
+              this.params.limit = 5;
             },
             chooseRowIds: [],
             currentSelection: {},//当前选择行
@@ -535,11 +581,12 @@
             params: {
               //search: '',
               page: 1,
-              limit: 5,
-              init() {
-                this.page = 1;
-                this.limit = 5;
-              }
+              limit: 1,
+
+            },
+            init() {
+              this.params.page = 1;
+              this.params.limit = 5;
             },
             chooseRowIds: [],
             currentSelection: {},//当前选择行
@@ -561,7 +608,12 @@
                   }
                 }
               }
-            }
+            },
+
+            showSaveCancel: false,
+            modifyAll: false,//修改详情
+            is_show_selection: false,//是否显示多选框
+
           },
         },
 
@@ -614,7 +666,6 @@
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
           this.params = val;
-          this.getRewardUpList();
         },
         deep: true
       },
@@ -732,41 +783,38 @@
         this.chooseDetailTabs = 1;
       },
 
+
       //获取物品详情list
-      getGoodsDetailList(row) {
-        debugger
+      getGoodsDetailList() {
+        //debugger
+        let ids = this.tableSettingData.borrowReceive.currentSelection.id;
         this.chooseDetailTabs = 2;
         this.currentTable = 'goods';
         this.tableSettingData[this.currentTable].tableData = [];//清空上次数据
-        this.$http.get(this.url + 'eam/process/' + row.id, this.tableSettingData[this.currentTable].params).then(res => {
+        //this.$http.get(this.url + 'eam/process/' + row.id, this.tableSettingData[this.currentTable].params).then(res => {
+        this.$http.get(`${this.url}eam/process/${ids}/goods`, this.tableSettingData[this.currentTable].params).then(res => {
           debugger
           console.log(res);
           if (res.code.endsWith('0')) {
-            for (let item of res.data.goods_list) {
-              //item = item.goods_list;
+            for (let item of res.data.data) {
               let obj = {
                 id: item.id,//物品id
-                goodsName: item.goods?.name || '',//物品名称
-                borrowReceiveStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.status || 0],//领还状态applyStatus
-                status: item.status || 0,
+                name: item.goods?.name || '',//物品名称
+                status: item.status || 0,//领还状态
                 category_id: item.category_id || 0,//物品id
-                receiveTime: item.receive_time || '-',//领取日期
-                receive_time: item.receive_time || '-',//领取日期
-                goodsId: item.goods_number || '-',//物品编号
+                receive_time: utils.formatDate(item.receive_time) || '-',//领取日期
                 goods_number: item.goods_number || '-',//物品编号
-                //goodsStatus:this.tableSettingData.borrowReceive.goodsStatus[item.status||0],
-                goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status || 0],
                 goods_status: item.goods_status || 0,//物品状态
-                //goodsImg: item.picture,//图片
                 picture: item.picture,//图片
-                repairCost: item.repair_cost || 0,//维修费用
-                scrapCost: item.scrap_cost || 0,//报废费用
-                receivePerson: item.user?.name || '-',//领取人
-                returnTime: item.return_date || '-',//归还日期
+                repair_price: item.repair_price || 0,//维修费用
+                scrap_price: item.scrap_price || 0,//报废费用
+                username: item.user?.name || '-',//领取人name
+                receive_user_id: item.user_id,//领取人id
+                return_date: item.return_date,//归还日期
               };
               this.tableSettingData[this.currentTable].tableData.push(obj);
             }
-            this.tableSettingData[this.currentTable].counts = res.data.goods_list?.length;
+            this.tableSettingData[this.currentTable].counts = res.data.count;
           }
         })
       },
@@ -780,9 +828,7 @@
           //let shorts = this.tableSettingData.goods.form.photo;
           _this.tableSettingData.goods.form.photo.is_show_photo_dialog = true;
           _this.tableSettingData.goods.form.photo.formData = this.tableSettingData.goods.currentSelection;
-          //debugger
         }, 100);
-
       },
 
       //保存照片
@@ -794,20 +840,77 @@
         }
         this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
           //debugger
-          if(res.code.endsWith('0')) {
-            this.$LjNotify('success',{
-              title:'成功',
-              message:'添加照片成功',
+          if (res.code.endsWith('0')) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: '添加照片成功',
             });
             this.tableSettingData.goods.form.photo.is_show_photo_dialog = false;
           } else {
-            this.$LjNotify('error',{
-              title:'失败',
-              message:'添加照片失败',
+            this.$LjNotify('error', {
+              title: '失败',
+              message: '添加照片失败',
             })
           }
         });
       },
+
+      //修改详情
+      modifyDetail() {
+        //this.is_show_selection = true;
+        let control = this.tableSettingData.goods;
+        control.modifyAll = true;
+        control.showSaveCancel = true;
+      },
+
+      btnCancel() {
+        let control = this.tableSettingData.goods;
+        control.showSaveCancel = false;
+        control.modifyAll = false;
+        this.batch_set_return_time_visible = false;
+        this.batch_set_receive_person_visible =false;
+      },
+
+      //保存
+      btnSave() {
+        debugger
+        //is_show_selection = false;batch_set_return_time_visible = false;batch_set_receive_person_visible = false
+        let ids = this.tableSettingData.borrowReceive.currentSelection.id;
+        let control = this.tableSettingData.goods;
+        if(control.modifyAll) {//批量修改
+          let postArr = this.tableSettingData.goods.tableData;//要修改的数据
+          for (let item of postArr) {
+            debugger
+            delete item['receive_time'];
+            item['receive_user_id'] = typeof item['receive_user_id']==='Array'?item['receive_user_id'][0]:item['receive_user_id'];
+            item['return_date'] =utils.formatDate(item['return_date']);
+            // item['return_date'] =item['return_date']?utils.formatDate(item['return_date']):item['return_date'];
+            let params = {goods:[item]};
+            this.$http.put(`${this.url}/eam/process/${ids}`,params).then(res=> {
+              debugger
+              if(res.code.endsWith('0')) {
+                this.$LjNotify('success',{
+                  title:'成功',
+                  message:'修改成功'
+                });
+                control.showSaveCancel = false;
+              }
+            });
+          }
+
+        }
+      },
+
+      //批量设置领取人
+      batchSetReceivePerson() {
+        let control = this.tableSettingData.goods;
+        control.showSaveCancel = true;
+        control.is_show_selection = true;
+        //this.is_show_selection = true;
+        //this.batch_set_receive_person_visible = true
+      },
+
+
 
       // 当前点击
       tableClickRow(row) {
@@ -817,8 +920,8 @@
         this.ids = this.myUtils.arrayWeight(ids);
       },
       //表格某一行双击
-      tableDblClick(row,currentTable) {
-        if(currentTable) {
+      tableDblClick(row, currentTable) {
+        if (currentTable) {
           switch (currentTable) {
             case 'borrowReceive':
               this.tableSettingData[currentTable].table_dialog_visible = true;
@@ -836,17 +939,43 @@
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
-      handleCurrentChange(val) {
-        this.params.page = val;
-        this.getBorrowReceiveList();
-        console.log(`当前页: ${val}`);
+      handleCurrentChange(val,currentTable) {
+        debugger
+        switch (currentTable) {
+          case 'borrowReceive':
+            this.params.page = val;
+            this.getBorrowReceiveList();
+            break;
+          case 'goods':
+            this.tableSettingData[currentTable].params.page = val;
+            this.getGoodsDetailList();
+            break;
+          default :
+              break;
+        }
+
+
+
+        //console.log(`当前页: ${val}`);
       }
     },
   }
 </script>
 
 <style lang="scss">
+  #theme_name.theme1 .el-table tbody tr.current-row td #userChoose{
+    color: #000000 !important;
+  }
+  #theme_name.theme1 .el-table tbody tr:hover td #userChoose{
+    color: #000000 !important;
+  }
+
+
   .goods-detail {
+    .el-input__inner {
+      text-align: center !important;
+      //height: 30px !important;
+    }
     .button-group {
       .el-input {
         display: inline-block;
@@ -857,7 +986,17 @@
         //height: 30px !important;
       }
     }
+    #userChoose .el-table tbody tr.current-row td {
+      color: #000 !important;
+    }
+  }
 
+  #goods_detail {
+    .editable {
+      .el-input__inner {
+        background-color: #F9F9F9 !important;
+      }
+    }
   }
 </style>
 
