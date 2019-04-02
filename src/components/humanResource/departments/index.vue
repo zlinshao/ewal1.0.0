@@ -120,9 +120,9 @@
             @row-click="handleClickModule"
           >
             <el-table-column label="ID" prop="id" align="center"></el-table-column>
-            <el-table-column label="系统标识" prop="sign" align="center"></el-table-column>
-            <el-table-column label="系统名称" prop="name" align="center"></el-table-column>
-            <el-table-column label="系统描述" prop="description" align="center"></el-table-column>
+            <el-table-column label="模块标识" prop="sign" align="center"></el-table-column>
+            <el-table-column label="模块名称" prop="name" align="center"></el-table-column>
+            <el-table-column label="模块描述" prop="description" align="center"></el-table-column>
             <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
@@ -134,7 +134,7 @@
           </el-table>
         </el-card>
         <el-card>
-          <el-table :data="power_list" height="400px">
+          <el-table :data="power_list" height="400px" @row-click="handleClickPower">
             <el-table-column label="ID" prop="id" align="center"></el-table-column>
             <el-table-column label="权限标示" prop="sign" align="center"></el-table-column>
             <el-table-column label="权限名称" prop="name" align="center"></el-table-column>
@@ -146,6 +146,11 @@
                 <el-button type="danger" size="mini" @click="handleDelControl('power',scope.row)">删除</el-button>
               </template>
             </el-table-column>
+          </el-table>
+        </el-card>
+        <el-card style="margin-top: 20px">
+          <el-table :data="field_list" height="400px">
+
           </el-table>
         </el-card>
       </div>
@@ -383,6 +388,9 @@
     },
     data() {
       return {
+        //权限字段管理
+        field_list: [],
+
         //新增模块
         new_module_visible: false,
         new_module_form: {
@@ -455,7 +463,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 2,//tab切换
+        chooseTab: 5,//tab切换
         selects: [
           {
             id: 1,
@@ -543,6 +551,17 @@
       },
     },
     methods: {
+      handleClickPower(row) {
+        this.getFieldList(row.id);
+      },
+      getFieldList(permission_id) {
+        this.$http.get('organization/permission_field',{
+          permission_id,
+          limit: 999
+        }).then(res => {
+          console.log(res);
+        })
+      },
       handleOpenAddPower(row) {
         this.new_power_form.system_id = row.id;
         this.new_power_visible = true;
@@ -708,6 +727,7 @@
           console.log(res);
           if (res.code === '20000') {
             this.power_list = res.data.data;
+            this.getFieldList(res.data.data[0].id);
           } else {
             this.power_list = [];
           }
