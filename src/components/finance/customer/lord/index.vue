@@ -8,20 +8,32 @@
                 header-row-class-name="tableHeader"
                 :row-class-name="tableChooseRow"
                 @cell-click="tableClickRow"
+                @selection-change="handleSelectionChange"
                 style="width: 100%">
+            <el-table-column
+                    class="changeChoose"
+                    type="selection"
+                    width="50">
+            </el-table-column>
 
             <el-table-column label="前缀" align="center" width="80">
-                <template slot-scope="scope"  >
-                    <div class="statusBar flex-center">
+                <template slot-scope="scope">
+                    <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===1">
+                        <!--<span><i class="el-icon-edit"></i>忽略重复</span>--><i class="el-icon-view"></i>忽略重复
+                    </div>
+                    <div  class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
+                        <!--<span v-if="LordStatus[scope.$index]['is_contact']===1" style="background-color: #14e731;"></span>-->
+                        <!--<span v-if="LordStatus[scope.$index]['is_name']===1" style="background-color: #e6a23c;"></span>-->
+                        <!--<span v-if="LordStatus[scope.$index]['is_address']===2" style="background-color: #f56c6c;"></span>-->
+                        <span  style="background-color: #14e731;"></span>
+                        <span  style="background-color: #e6a23c;"></span>
+                        <span  style="background-color: #f56c6c;"></span>
 
-                            <span v-if="LordStatus[scope.$index]['is_contact']===1" style="background-color: #14e731;"></span>
-                            <span v-if="LordStatus[scope.$index]['is_name']===1" style="background-color: #e6a23c;"></span>
-                            <span v-if="LordStatus[scope.$index]['is_address']===2" style="background-color: #f56c6c;"></span>
-                            <span v-if="LordStatus[scope.$index]['suppress_dup']===0"
-                                  style="background-color: #409eff;"></span>
+                        <span v-if="freeze[scope.$index]===1" style="background-color: #409eff;"></span>
                     </div>
                 </template>
             </el-table-column>
+
             <el-table-column
                     show-overflow-tooltip
                     v-for="(item,index) in Object.keys(tableHeaderData)"
@@ -44,7 +56,7 @@
                     <span>{{ scope.row.status === 1 ? '待处理' : '正常'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" prop="" align="center" width="360">
+            <el-table-column label="操作" prop="" align="center" width="450">
                 <template slot-scope="scope">
                     <el-button v-for="(item,index) in btnData"
                                :key="index"
@@ -168,6 +180,7 @@
                 btnData: [//操作按钮
                     {label: "查看", type: "success", icon: "el-icon-view", size: "small", methods: "handleDetailsLord"},
                     {label: "编辑", type: "primary", icon: "el-icon-edit", size: "small", methods: "handleEditLord"},
+                    {label: "恢复重复标记", type: "warning", icon: "el-icon-info", size: "small", methods: "handleReturnRemark"},
                     {label: "生成待处理项", type: "warning", icon: "el-icon-info", size: "small", methods: "handleProcessLord"},
                     {label: "删除", type: "danger", icon: "el-icon-delete", size: "small", methods: "handleDeleteLord"},
                 ],
@@ -297,10 +310,23 @@
                     title: ''
                 },
 
+                ra_ids:[],
+                multipleSelection: [],//多选
+
+                freeze:[],//待处理
+
+
+
             }
         },
         mounted() {
             this.getLordList();
+        },
+        created(){
+            this.$bus.on('cancelRemarkFun',this.handleRemark)
+        },
+        beforeDestroy(){
+            this.$bus.off('cancelRemarkFun',this.handleRemark);
         },
         activated() {
 
@@ -315,11 +341,10 @@
                 deep:true
             }
         },
-        created() {
 
-        },
         computed: {},
         methods: {
+
             //换页
             handleChangePage(page) {
                 this.params.page = page;
@@ -338,6 +363,16 @@
             // 点击过
             tableChooseRow({row, rowIndex}) {
                 return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+            },
+            // 多选
+            handleSelectionChange(val){
+                this.ra_ids=[];
+                this.multipleSelection = val;
+                console.log(val);
+                for(let item in val){
+                    this.ra_ids.push(val[item].id);
+                }
+                console.log(this.ra_ids);
             },
             //操作项动态调用
             clkCall(func, row, index) {
@@ -374,8 +409,11 @@
                     }
                 }).then(() => {
                     for (let item of this.lordLists) {
-                        this.lordIds.push(item.id)
+                        this.freeze= [];
+                        this.lordIds.push(item.id);
+                        this.freeze.push(item.freeze);
                     }
+                    //前缀状态
                     this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.lordIds}).then(res => {
                         if (res.code === 200) {
                             this.LordStatus =[];
@@ -385,7 +423,7 @@
                                         is_contact:statusData[item].is_contact,
                                         is_name:statusData[item].is_name,
                                         is_address:statusData[item].is_address,
-                                        suppress_dup:statusData[item].suppress_dup
+                                        suppress_dup:statusData[item].suppress_dup,//0不或略，1忽略
                                     }
                                 )
                             }
@@ -441,6 +479,19 @@
                     this.callbackSuccess(res);
                 })
             },
+            //忽略重复标记
+            handleRemark(val){
+                this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {ids:this.ra_ids,operate:1}).then(res => {
+                    this.callbackSuccess(res);
+                })
+            },
+            //恢复重复标记
+            handleReturnRemark(row,index){
+                this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {ids:this.ra_ids,operate:2}).then(res => {
+                    this.callbackSuccess(res);
+                })
+            },
+
             //删除房东
             handleOkDel() {
                 this.$http.delete(globalConfig.temporary_server + 'customer_collect/delete/' + this.current_row.id).then(res => {

@@ -16,23 +16,23 @@
             <div class="list">
                 <div class="list-info flex-center" v-for="(item,index) in dataLists">
                     <div class="list-box"  @click="detail(item.id,index)">
-                        <div class="list-modal" v-if="item.status ===1"></div>
+                        <div class="list-modal" v-if="item.is_enter ===1"></div>
                         <div class="list-top"><img src="../../../../assets/image/newMedia/theme1/active.png" alt=""></div>
                         <div class="list-middle">
                             <div class="list-middle-info">
                                 <div class="list-middle-left">
-                                    <span>{{item.title}}</span>
-                                    <span>{{item.time}}</span>
+                                    <span>{{item.name}}</span>
+                                    <span>{{item.created_at}}</span>
                                 </div>
-                                <div class="list-middle-right" :class="item.status ===1 ? 'end':'process'">
-                                    <span>{{item.status ===1 ? '已结束':'进行中'}}</span>
+                                <div class="list-middle-right" :class="item.is_enter ===1 ? 'end':'process'">
+                                    <span>{{endTimes[index]===1? '已结束':'进行中'}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="list-bottom">
                             <div class="list-bottom-info justify-bet">
                                 <span><i></i><span>{{item.day}}</span></span>
-                                <span><i></i><span>{{item.view}}</span></span>
+                                <span><i></i><span>{{item.click}}</span></span>
                             </div>
                         </div>
                     </div>
@@ -47,12 +47,12 @@
                 <div>
                     <div class="action_name" >
                         <div class="action_left" style="width: 70px;float: left">活动名称</div>
-                        <div class="action_right" style="width: 860px;text-align: left;float: left">{{showData.title}}</div>
+                        <div class="action_right" style="width: 860px;text-align: left;float: left">{{showData.name}}</div>
                     </div>
                     <div class="action_name" >
                         <div class="action_left" style="width: 70px;float: left">活动时间</div>
                         <div class="action_right" style="width: 860px;text-align: left;float: left">
-                            <span>{{showData.time[0]}}-{{showData.time[1]}}</span>
+                            <span>{{showData.start_time}}-{{showData.over_time}}</span>
                         </div>
                     </div>
                     <div class="action_name" >
@@ -66,12 +66,12 @@
 
                 </div>
             </div>
-            <div style="position: absolute;bottom:50px;left:0;right:0;" v-if="showData.status===2">
+            <div style="position: absolute;bottom:50px;left:0;right:0;" v-if="showData.is_enter===2">
                 <el-button type="danger" size="" >结束活动</el-button>
             </div>
             <div class="top_right_img" style="width:60px;height:140px;position: absolute;top:0;right:90px;">
                 <span>已报名</span>
-                <span>{{showData.view}}</span>
+                <span>{{showData.click}}</span>
             </div>
         </lj-dialog>
 
@@ -112,7 +112,7 @@
                                     <span>活动名称</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input  v-model="showData.title"></el-input>
+                                    <el-input  v-model="showData.name"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="item_content">
                                     <el-date-picker
-                                            v-model="showData.time"
+                                            v-model="actionTime"
                                             type="datetimerange"
                                             range-separator="至"
                                             start-placeholder="开始日期"
@@ -193,6 +193,7 @@
                 end_visible:false,//结束活动
                 add_visible:false,//新增活动
                 current_id:'',
+                current_time:'',
                 params: {//查询参数
                     search: '',
                     // startRange: '',
@@ -213,98 +214,53 @@
                     to:'',//当前页 数据最后一项的编号
                 },
                 showData:{
-                    img:"",
-                    title:"",
-                    start_time:"",
-                    end_time:"",
-                    status:'',
-                    statusImg:"",
+                    name:'',
+                    start_time:'',
+                    over_time:'',
                     address:'',
                     content:'',
-                    time:[],
-                    view:'',
                 },
-                dataLists:[//列表
-                    {
-                        id:1,
-                        img:'',
-                        title:'第三届乐伽羽毛球大赛火热报名中',
-                        address:'人民大会堂',
-                        content:'第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中',
-                        time:['2018.02.12','2018.04.12'],
-                        status:1,
-                        start_time:"12-22-11",
-                        end_time:"11-22-3",
-                        day:8,
-                        view:333
-                    },
-                    {
-                        id:1,
-                        img:'',
-                        title:'第三届乐伽羽毛球大赛火热报名中',
-                        address:'人民大会堂',
-                        content:'第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中',
-                        time:['2018.02.12','2018.04.12'],
-                        status:2,
-                        start_time:"12-22-11",
-                        end_time:"11-22-3",
-                        day:8,
-                        view:333
-                    },
-                    {
-                        id:2,
-                        img:'',
-                        title:'第三届乐伽羽毛球大赛火热报名中',
-                        address:'人民大会堂',
-                        content:'第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中',
-                        time:['2018.02.12','2018.04.12'],
-                        status:2,
-                        start_time:"12-22-11",
-                        end_time:"11-22-3",
-                        day:8,
-                        view:666
-                    },
-                    {
-                        id:1,
-                        img:'',
-                        title:'第三届乐伽羽毛球大赛火热报名中',
-                        address:'人民大会堂',
-                        content:'第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中',
-                        time:['2018.02.12','2018.04.12'],
-                        status:2,
-                        start_time:"12-22-11",
-                        end_time:"11-22-3",
-                        day:8,
-                        view:333
-                    },
-                    {
-                        id:1,
-                        img:'',
-                        title:'第三届乐伽羽毛球大赛火热报名中',
-                        address:'人民大会堂',
-                        content:'第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中第三届乐伽羽毛球大赛火热报名中',
-                        time:['2018.02.12','2018.04.12'],
-                        status:2,
-                        start_time:"12-22-11",
-                        end_time:"11-22-3",
-                        day:8,
-                        view:333
-                    },
+                actionTime:[],
+                dataLists:[],//列表
+
+                endTimes:[
+
                 ],
+
             }
         },
         mounted(){
-          this.getDataLists()
+          this.getDataLists();
         },
 
         methods:{
-            //详情弹框
+            callbackSuccess(res) {
+                if (res.code === 200) {
+                    this.$LjNotify('success', {
+                        title: '成功',
+                        message: res.msg,
+                        subMessage: '',
+                    });
+                    this.getDataLists();
+                } else {
+                    this.$LjNotify('error', {
+                        title: '失败',
+                        message: res.msg,
+                        subMessage: '',
+                    });
+                }
+            },
+            //详情
             detail(id,index){
                 this.detail_visible = true;
                 this.current_id = id;
-                for(let item of Object.keys(this.showData)){
-                    this.showData[item] = this.dataLists[index][item];
-                }
+                this.$http.get(globalConfig.newMedia_sever+'/api/club/event/'+id,).then(res => {
+                    if(res.status===200){
+                        this.showData = res.data.data[index];
+                        console.log(res)
+                    }
+
+                })
             },
             handleOkDel(){
 
@@ -317,21 +273,43 @@
                     this.showData[item] = '';
                 }
             },
+            //发布
+            submit(){
+                this.showData.start_time = this.actionTime[0];
+                this.showData.over_time = this.actionTime[1];
+                console.log(this.showData);
+                this.$http.post(globalConfig.newMedia_sever+'/api/club/event',this.showData).then(res => {
+                    if(res.status===200){
+                        console.log(res)
+                    }
+                })
+            },
             //预览
             preview(){
                 this.detail_visible = true;
             },
-            //发布
-            submit(){
-                this.$http.post('', this.showData).then(res => {
 
-                })
-            },
 
             //获取列表
             getDataLists(){
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
-                    console.log(res)
+                    if(res.status===200){
+                        this.dataLists = res.data.data;
+
+                        for(let item of res.data.data){
+                            // this.endTimes.push({over_time:item.over_time});
+                            var yourtime = item.over_time.replace("-","/");
+                            var d2=new Date();
+                            var d1 = new Date(Date.parse(yourtime));
+                            if(d1>d2){
+                                this.endTimes.push(1);
+                            }else {
+                                this.endTimes.push(2);
+                            }
+                        }
+                        console.log(this.endTimes);
+
+                    }
                 })
             },
 

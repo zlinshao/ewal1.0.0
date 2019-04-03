@@ -1,6 +1,7 @@
 <template>
   <div id="drop_down_list" :style="{width:`${this.dropdownListWidth}px`}">
     <el-select
+      :disabled="disabled"
       :popper-class="'appTheme' + themeName"
       :value="dropdown_code" @input="handleInputEvent" clearable :placeholder="title"
       @change="changeSelection">
@@ -25,6 +26,8 @@
       title: String,
       url: [String],  //请求地址
       params: [Object, String],
+      arr:[Object,Array],
+      disabled:[Boolean]
     },
     data() {
       return {
@@ -88,15 +91,29 @@
         });
       },
       getDropdownList() {
-        //this.$http.get(`${this.url}eam/category`,
-        let queryParams = this.getQueryParams();
-        let keys = this.url + JSON.stringify(queryParams);
-        let caches = storage.get(keys);
-        if (caches) {
-          this.dropdown_list = caches;
+        if(this.arr) {
+          let myArr = [];
+          this.arr.forEach((item,index)=> {
+            let myItem = {
+              id:index+1,
+              name:item
+            }
+            myArr.push(myItem);
+          })
+          this.dropdown_list = myArr;
+
         } else {
-          this.request(queryParams);
+          //this.$http.get(`${this.url}eam/category`,
+          let queryParams = this.getQueryParams();
+          let keys = this.url + JSON.stringify(queryParams);
+          let caches = storage.get(keys);
+          if (caches) {
+            this.dropdown_list = caches;
+          } else {
+            this.request(queryParams);
+          }
         }
+
       },
       //更新状态
       update() {

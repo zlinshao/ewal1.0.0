@@ -1,7 +1,7 @@
 <template>
   <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div class="iconInput">
-      <el-input @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <el-input :disabled="disabled" @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p class="icons user"></p>
     </div>
 
@@ -16,12 +16,13 @@
 
   export default {
     name: "UserChoose",
-    props: ['value', 'width', 'num','title'],
+    props: ['value', 'width', 'num','title','disabled'],
     components: {
       StaffOrgan
     },
     data() {
       return {
+        url: globalConfig.humanResource_server,
         staffModule: false,
         organData: {
           //num:1,
@@ -31,6 +32,20 @@
       }
     },
     watch: {
+      value: {
+        handler(val, oldVal) {
+          if (val) {
+            debugger
+            this.$http.get(`${this.url}/staff/user/${val}`).then(res=> {
+              if(res.code.endsWith('0')) {
+                this.inputContent = res.data.name;
+              }
+
+            });
+          }
+        },
+        immediate: true//第一次绑定也执行
+      },
       width: {
         handler(val, oldVal) {
           if (val) {
