@@ -95,23 +95,6 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
-                    <el-form-item label="婚姻状况">
-                      <div class="changeChoose" style="margin-top: 8px">
-                        <el-radio-group v-model="interview_info_detail.marital_status" placeholder="请选择">
-                          <el-radio label="0">已婚</el-radio>
-                          <el-radio label="1">未婚</el-radio>
-                        </el-radio-group>
-                      </div>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="16">
-                    <el-form-item label="家庭住址">
-                      <el-input v-model="interview_info_detail.home_addr" placeholder="请输入"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
                     <el-form-item label="部门">
                       <el-input placeholder="请选择" readonly @focus="" v-model="interview_info_detail.depart"></el-input>
                     </el-form-item>
@@ -123,6 +106,46 @@
                       <el-input v-model="interview_info_detail.position" @focus="modules = true" placeholder="请选择"></el-input>
                     </el-form-item>
                   </el-col>
+                  <el-col :span="16">
+                    <el-form-item label="家庭住址">
+                      <el-input v-model="interview_info_detail.home_addr" placeholder="请输入"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="婚姻状况">
+                      <div class="changeChoose" style="margin-top: 8px">
+                        <el-radio-group v-model="interview_info_detail.marital_status" placeholder="请选择">
+                          <el-radio label="0">已婚</el-radio>
+                          <el-radio label="1">未婚</el-radio>
+                        </el-radio-group>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="入职等级">
+                      <el-select v-model="interview_info_detail.level" placeholder="请选择">
+                        <el-option label="实习" :value="0"></el-option>
+                        <el-option label="正式" :value="1"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="职级">
+                      <el-select v-model="interview_info_detail.position_level">
+                        <el-option :value="1" label="P1"></el-option>
+                        <el-option :value="2" label="P2"></el-option>
+                        <el-option :value="3" label="P3"></el-option>
+                        <el-option :value="4" label="P4"></el-option>
+                        <el-option :value="5" label="P5"></el-option>
+                        <el-option :value="6" label="P6"></el-option>
+                        <el-option :value="7" label="P7"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
                   <el-col :span="8">
                     <el-form-item label="银行卡号">
                       <el-input v-model="interview_info_detail.bank_num" placeholder="请输入"></el-input>
@@ -133,25 +156,18 @@
                       <el-input v-model="interview_info_detail.account_bank" placeholder="请输入"></el-input>
                     </el-form-item>
                   </el-col>
-                </el-row>
-                <el-row>
                   <el-col :span="8">
                     <el-form-item label="支行">
                       <el-input v-model="interview_info_detail.branch_bank" placeholder="请输入"></el-input>
                     </el-form-item>
                   </el-col>
+                </el-row>
+                <el-row>
                   <el-col :span="8">
                     <el-form-item label="开户名">
                       <el-input v-model="interview_info_detail.account_name" placeholder="请输入"></el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="入职时间">
-                      <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.enroll" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
                   <el-col :span="8">
                     <el-form-item label="薪资">
                       <el-input v-model="interview_info_detail.real_salary" placeholder="请输入"></el-input>
@@ -162,16 +178,13 @@
                       <el-input readonly v-model="interview_info_detail.recommender_name" @focus=""></el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="入职 等级">
-                      <el-select v-model="interview_info_detail.level" placeholder="请选择">
-                        <el-option label="实习" :value="0"></el-option>
-                        <el-option label="正式" :value="1"></el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
                 </el-row>
                 <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="入职时间">
+                      <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.enroll" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                    </el-form-item>
+                  </el-col>
                   <el-col :span="8">
                     <el-form-item label="入职途径">
                       <el-select v-model="interview_info_detail.platform">
@@ -192,13 +205,13 @@
                       <el-input v-model="interview_info_detail.society_number" placeholder="请输入"></el-input>
                     </el-form-item>
                   </el-col>
+                </el-row>
+                <el-row>
                   <el-col :span="8">
                     <el-form-item label="紧急联系人/号码">
                       <el-input v-model="interview_info_detail.emergency_call" placeholder="请输入"></el-input>
                     </el-form-item>
                   </el-col>
-                </el-row>
-                <el-row>
                   <el-col :span="8">
                     <el-form-item label="支行行号">
                       <el-input v-model="interview_info_detail.branch_bank_code" placeholder="请输入"></el-input>
@@ -249,19 +262,6 @@
                   <el-col :span="8">
                     <el-form-item label="毕业时间">
                       <el-date-picker format="yyyy-DD-mm" type="date" v-model="interview_info_detail.graduation_time" placeholder="请选择"></el-date-picker>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="职级">
-                      <el-select v-model="interview_info_detail.position_level">
-                        <el-option :value="1" label="P1"></el-option>
-                        <el-option :value="2" label="P2"></el-option>
-                        <el-option :value="3" label="P3"></el-option>
-                        <el-option :value="4" label="P4"></el-option>
-                        <el-option :value="5" label="P5"></el-option>
-                        <el-option :value="6" label="P6"></el-option>
-                        <el-option :value="7" label="P7"></el-option>
-                      </el-select>
                     </el-form-item>
                   </el-col>
                 </el-row>
