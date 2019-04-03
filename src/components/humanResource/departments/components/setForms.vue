@@ -7,16 +7,16 @@
         </div>
         <div class="dialog_main">
           <div class="tHeader">
-            <p v-for="item in showData">
-              <i class="el-icon-remove"></i>
+            <p v-for="(item,index) in showData">
+              <i class="el-icon-remove" @click="handleClickRemove(item,index)"></i>
               <b>{{ item.val }}</b>
             </p>
             <!--<p><i class="el-icon-circle-plus"></i></p>-->
           </div>
         </div>
         <div class="footerBtn">
-          <el-button type="danger" size="small">确认</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="handleSubmitForm">确认</el-button>
+          <el-button type="info" size="small" @click="handleClickCancel">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -56,7 +56,19 @@
       }
     },
     computed: {},
-    methods: {},
+    methods: {
+      handleClickRemove(item,index) {
+        this.$emit('remove',item,index);
+      },
+      handleSubmitForm() {
+        this.$emit('submit');
+        this.$emit('close');
+      },
+      handleClickCancel() {
+        this.depart_visible = false;
+        this.$emit('close');
+      },
+    },
   }
 </script>
 
