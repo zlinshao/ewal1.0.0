@@ -132,6 +132,7 @@ const todo = {
     //人力资源中心 待办模块
     humanResource_interview_visible: false,//面试界面显示隐藏
     humanResource_interview_evaluate_visible: false,//面试评价界面显示隐藏
+    humanResource_repository_visible: false,//内务库房
 
 
   },

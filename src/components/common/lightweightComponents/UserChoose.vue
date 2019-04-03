@@ -35,7 +35,6 @@
       value: {
         handler(val, oldVal) {
           if (val) {
-            debugger
             this.$http.get(`${this.url}/staff/user/${val}`).then(res=> {
               if(res.code.endsWith('0')) {
                 this.inputContent = res.data.name;
