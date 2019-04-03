@@ -132,7 +132,7 @@ const todo = {
     //人力资源中心 待办模块
     humanResource_interview_visible: false,//面试界面显示隐藏
     humanResource_interview_evaluate_visible: false,//面试评价界面显示隐藏
-    humanResource_repository_visible: false,//内务库房
+    humanResource_repository_visible: false,//内务库房页面显示隐藏
 
 
   },
@@ -154,6 +154,10 @@ const todo = {
     CHANGE_HUMANRESOURCE_INTERVIEW_EVALUATE_VISIBLE(state) {
       state.humanResource_interview_evaluate_visible = !state.humanResource_interview_evaluate_visible;
     },
+    //切换内务库房待办
+    CHANGE_HUMANRESOURCE_REPOSITORY_VISIBLE(state) {
+      state.humanResource_repository_visible = !state.humanResource_repository_visible;
+    },
   },
   // 执行函数
   actions: {
@@ -169,6 +173,10 @@ const todo = {
     //改变面试评价事项显示隐藏
     change_humanResource_interview_evaluate_visible({commit},status) {
       commit('CHANGE_HUMANRESOURCE_INTERVIEW_EVALUATE_VISIBLE',status);
+    },
+    //改变内务库房待办显示隐藏
+    change_humanResource_repository_visible({commit},status) {
+      commit('CHANGE_HUMANRESOURCE_REPOSITORY_VISIBLE',status);
     },
   }
 };

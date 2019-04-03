@@ -18,7 +18,6 @@
         <!--:label="showData[item]">-->
         <!--</el-table-column>-->
 
-
         <el-table-column
           key="approvalId"
           align="center"
@@ -801,6 +800,7 @@
       //获取事项详情list
       getItemsDetailList() {
         this.chooseDetailTabs = 1;
+        this.$http.get(`${this.url}/eam/process`);
       },
 
 
@@ -811,7 +811,6 @@
         this.chooseDetailTabs = 2;
         this.currentTable = 'goods';
         this.tableSettingData[this.currentTable].tableData = [];//清空上次数据
-        //this.$http.get(this.url + 'eam/process/' + row.id, this.tableSettingData[this.currentTable].params).then(res => {
         this.$http.get(`${this.url}eam/process/${ids}/goods`, this.tableSettingData[this.currentTable].params).then(res => {
           debugger
           console.log(res);

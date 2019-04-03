@@ -1,5 +1,10 @@
 <template>
+<!--  <img-slider></img-slider>-->
+
   <div id="repository">
+    <!--<div>
+      <img-slider></img-slider>
+    </div>-->
     <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
@@ -52,6 +57,7 @@
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
   import OverView from './overView/index.vue';//库房总览
+  import ImgSlider from '../../common/lightweightComponents/ImgSlider';
   import BorrowReceive from './borrowReceive/index';//借用领用
   import WorkInfo from '../../common/work-info';
   import LjDialog from '../../common/lj-dialog.vue';
@@ -72,6 +78,7 @@
       LjDialog,
       SearchHigh,
       LjUpload,
+      ImgSlider,
     },
     data() {
       return {
