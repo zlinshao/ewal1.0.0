@@ -45,11 +45,18 @@
           <el-table-column label="开单人" prop="sign_user" align="center"></el-table-column>
           <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
           <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
-          <el-table-column label="操作" align="center" min-width="180px">
+          <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
+          <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" plain size="mini">查看审核记录</el-button>
-              <el-button type="warning" plain size="mini" @click="handleLookBackInfo(scope.row)">查看回访记录</el-button>
-              <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
+              <!--<el-button type="primary" plain size="mini">查看审核记录</el-button>-->
+              <!--<el-button type="warning" plain size="mini" @click="handleLookBackInfo(scope.row)">查看回访记录</el-button>-->
+              <div>
+                <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
+                <div class="control_container flex" :class="{'show_control_container': show_control === scope.row.contract_id}">
+                  <span v-for="tmp in choose_list" :key="tmp.id" :class="{'choose': current_choose_control === tmp.id }" @click="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
+                </div>
+                <div class="writingMode point_btn" @click="handleShowControl(scope.row)">···</div>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -79,7 +86,7 @@
     <LjDialog
       :visible="backInfo_visible"
       :size="{width: 600 + 'px',height: 500 + 'px'}"
-      @close=""
+      @close="handleCloseLookBackInfo"
     >
       <div class="dialog_container">
         <div class="dialog_header">
@@ -113,7 +120,7 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="danger" size="small" @click="handleCloseLookBackInfo">确定</el-button>
         </div>
       </div>
     </LjDialog>
@@ -128,8 +135,14 @@
         <div class="dialog_header">
           <h3>补齐资料</h3>
         </div>
-        <div class="dialog_main">
+        <div class="dialog_main borderNone">
           <el-form label-width="80px" class="showPadding">
+            <el-form-item label="房产证号">
+              <el-input v-model="property_number" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="丘号">
+              <el-input v-model="mound_number" placeholder="请输入"></el-input>
+            </el-form-item>
             <el-form-item :label="selfLabel(idx)" v-for="(tmp,idx) in polishing_params" :key="idx">
               <Upload :file="upload_file[idx]" @success="handleGetFile"></Upload>
             </el-form-item>
@@ -152,7 +165,10 @@
         <div class="dialog_header">
           <h3>合同详情</h3>
           <div class="header_right">
-            {{ contractDetail.contract_number }}
+            <span>
+              {{ contractDetail.contract_number }}
+            </span>
+            <el-button type="danger" size="mini" @click="handleRewrite">作废重签</el-button>
           </div>
         </div>
         <div class="dialog_main">
@@ -196,7 +212,9 @@
                   <el-form-item label="打房租日期"></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="空置期"></el-form-item>
+                  <el-form-item label="空置期">
+                    <span>{{ contractDetail.ready_days }}</span>
+                  </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="房东承担费用"></el-form-item>
@@ -275,15 +293,43 @@
           </div>
 
           <p style="text-align: left">附件信息</p>
-          <div class="other_info"></div>
-        </div>
-        <div class="dialog_footer">
-          <div style="text-align: right">
-            <el-button type="danger" size="small">补齐资料</el-button>
+          <div class="other_info">
+            <div style="text-align: right">
+              <el-button type="danger" size="mini" @click="handleOpenPolishing(currentRow)">补齐资料</el-button>
+            </div>
           </div>
         </div>
       </div>
     </lj-dialog>
+
+    <!--作废重签-->
+    <lj-dialog
+      :visible="rewrite_visible"
+      :size="{width: 400 + 'px',height: 300 + 'px'}"
+      @close="handleCancelRewrite"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>作废重签</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form label-width="80px">
+            <el-form-item label="备注">
+              <el-input v-model="rewrite_note" type="textarea"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="mini" @click="handleSubmitRewrite">确定</el-button>
+          <el-button type="info" size="mini" @click="handleCancelRewrite">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--添加标记-->
+    <lj-dialog
+      :visible="add_mark_visible"
+    ></lj-dialog>
   </div>
 </template>
 
@@ -298,6 +344,24 @@
     components: { SearchHigh,MarketMenuList,LjDialog,Upload},
     data() {
       return {
+        //添加标记
+        add_mark_visible: false,
+        mark_form: {
+
+        },
+
+        show_control: '',
+        current_choose_control: '',
+        choose_list: [
+          {id: 1,val: '审核记录'},
+          {id: 2,val: '回访记录'},
+          {id: 3,val: '添加标记'},
+        ],
+
+        //作废重签
+        rewrite_visible: false,
+        rewrite_note: '',
+
         //合同详情
         contract_detail_visible: false,
         contractDetail: '',
@@ -309,6 +373,8 @@
         currentRow: '',
         data_polishing_visible: false,
         polishing_params: {},
+        property_number: '',
+        mound_number: '',
         polishing_data: [
           {
             identity_photo: '证件照片',
@@ -397,14 +463,69 @@
     watch: {},
     computed: {},
     methods: {
+      handleCloseLookBackInfo() {
+        this.currentRow = '';
+        this.backInfo_visible = false;
+      },
+      handleClickSpan(tmp,item) {
+        this.current_choose_control = tmp.id;
+        console.log(item);
+        switch (tmp.id) {
+          case 1:
+            break;
+          case 2:
+            this.currentRow = item;
+            this.backInfo_visible = true;
+            // if (item.record) {
+            //   this.backInfo = item.record;
+            // } else {
+            //   this.$LjNotify('warning',{
+            //     title: '警告',
+            //     message: '暂无回访信息'
+            //   })
+            // }
+            break;
+          case 3:
+            break;
+        }
+      },
+      handleShowControl(row) {
+        console.log(row);
+        this.show_control = row.contract_id;
+      },
+      handleSubmitRewrite() {
+        this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`,{
+          note: this.rewrite_note
+        }).then(res => {
+          if (res.code === 200) {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelRewrite();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleCancelRewrite() {
+        this.rewrite_note = '';
+        this.rewrite_visible = false;
+      },
+      handleRewrite() {
+        this.rewrite_visible = true;
+      },
       //双击详情
       handleGetDetail(row) {
         this.currentRow = row;
         console.log(row,'row');
         this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
-          this.contract_detail_visible = true;
           if (res.code === 200) {
             this.contractDetail = res.data;
+            this.contract_detail_visible = true;
             console.log(this.contractDetail);
           } else {
             this.contractDetail = '';
@@ -414,6 +535,8 @@
       handleConfirmPolishing() {
         var form = new FormData();
         form.append('complete_content',this.polishing_params);
+        form.append('property_number',this.property_number);
+        form.append('mound_number',this.mound_number);
         this.$http.post(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`,form).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success',{
@@ -433,6 +556,8 @@
       //取消补齐
       handleCancelPolishing() {
         this.polishing_params = {};
+        this.mound_number = '';
+        this.property_number = '';
         this.upload_file = {};
         this.currentRow = '';
         this.data_polishing_visible = false;
@@ -473,19 +598,6 @@
           return false;
         }
       },
-      handleLookBackInfo(item) {
-        console.log(item);
-        this.currentRow = item;
-        this.backInfo_visible = true;
-        // if (item.record) {
-        //   this.backInfo = item.record;
-        // } else {
-        //   this.$LjNotify('warning',{
-        //     title: '警告',
-        //     message: '暂无回访信息'
-        //   })
-        // }
-      },
       handleCloseMenu() {
         this.show_market = false;
         this.show_shadow = false;
@@ -496,6 +608,7 @@
         this.showLoading(true);
         this.$http.get(this.market_server + 'v1.0/market/contract',this.params).then(res => {
           if (res.code === 200) {
+            console.log(res.data.data);
             this.contractList = res.data.data;
             this.contractCount = res.data.count;
           } else {
@@ -598,7 +711,11 @@
   #theme_name.theme1 {
     #contractManagement {
       > div {
-
+        .control_container {
+          .choose {
+            @include bgImage('../../../assets/image/components/theme1/xzgj.png');
+          }
+        }
       }
     }
   }
