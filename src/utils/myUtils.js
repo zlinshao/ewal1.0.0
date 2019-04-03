@@ -38,8 +38,6 @@ class myUtils {
     }
     return temp;
   }
-<<<<<<< HEAD
-
   //时间格式化
     static  dateFormat(){
         var myDate = new Date();
@@ -75,8 +73,6 @@ class myUtils {
         };
         return new Date().Format("yyyy-MM-dd hh:mm:ss");
     }
-=======
-  //格式化日期
   static formatDate(v, format='yyyy-MM-dd') {
     if (!v) return null;
     let d = v;
@@ -105,7 +101,6 @@ class myUtils {
     }
     return format;
   }
->>>>>>> 192de31632392f5f6b0545b8bcf6eebe5164f9be
 }
 
 
