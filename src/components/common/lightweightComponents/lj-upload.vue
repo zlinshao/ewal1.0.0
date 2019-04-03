@@ -78,6 +78,7 @@
       },
 
       getPhotoInfoList(val) {
+        debugger
         let params = {"id":val};
         this.$http.post(`${this.url}public/pic`,params).then(res=> {
           //debugger
