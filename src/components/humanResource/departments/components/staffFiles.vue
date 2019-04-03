@@ -1,6 +1,6 @@
 <template>
   <div id="staffFiles">
-    <lj-dialog :visible="files_visible" :size="files_size" @close="files_visible = false">
+    <lj-dialog :visible="files_visible" :size="files_size" @close="files_visible = false;reviseInfo = false">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>员工档案</h3>
@@ -25,7 +25,8 @@
               <p @click="filesInfo('grow')" :class="{'hover': filesStatus === 'grow'}">成长轨迹</p>
             </div>
             <div class="justify-around mainRight scroll_bar" v-if="filesStatus === 'info'">
-              <el-form :model="staffDetail" ref="filesForm" label-width="120px" class="justify-around"
+              <b @click="reviseInfo = !reviseInfo"></b>
+              <el-form :model="staffDetail" ref="filesForm" :disabled="reviseInfo" label-width="120px" class="justify-around"
                        :class="[reviseInfo ? 'inputDisabled': 'focusBorder']" style="width: 100%">
                 <div class="info borderNone">
                   <el-row :gutter="10">
@@ -36,12 +37,12 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="岗位">
-                        <!--<el-input v-model="staffDetail.position.name"></el-input>-->
+                        <el-input v-model="staffDetail.position_name" readonly @focus="post_visible = true"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="部门">
-                        <!--<el-input v-model="staffDetail.org.name"></el-input>-->
+                        <el-input v-model="staffDetail.org_name" readonly @focus="depart_visible = true"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -72,15 +73,16 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="年龄">
-                        <el-input v-model="staffDetail.email"></el-input>
+                        <el-input v-model="staffDetail.age"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="政治面貌">
                         <el-select v-model="staffDetail.political_status">
-                          <el-option :value="0" label="党员"></el-option>
-                          <el-option :value="1" label="团员"></el-option>
-                          <el-option :value="2" label="群众"></el-option>
+                          <el-option :value="1" label="群众"></el-option>
+                          <el-option :value="2" label="团员"></el-option>
+                          <el-option :value="3" label="党员"></el-option>
+                          <el-option :value="4" label="其他"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -102,10 +104,11 @@
                     <el-col :span="6">
                       <el-form-item label="学历背景">
                         <el-select v-model="staffDetail.education">
-                          <el-option :value="1" label="高中及以上"></el-option>
-                          <el-option :value="2" label="大专及以上"></el-option>
-                          <el-option :value="3" label="本科及以上"></el-option>
-                          <el-option :value="4" label="其他"></el-option>
+                          <el-option :value="1" label="高中及以下"></el-option>
+                          <el-option :value="2" label="大专"></el-option>
+                          <el-option :value="3" label="本科"></el-option>
+                          <el-option :value="4" label="本科及以上"></el-option>
+                          <el-option :value="5" label="其他"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -121,7 +124,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="民族">
-
+                        <el-input v-model="staffDetail.national"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -134,11 +137,11 @@
                         <el-input v-if="staffDetail.household_register"></el-input>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="通讯地址">
+                    <!--<el-col :span="6">-->
+                      <!--<el-form-item label="通讯地址">-->
 
-                      </el-form-item>
-                    </el-col>
+                      <!--</el-form-item>-->
+                    <!--</el-col>-->
                     <el-col :span="6">
                       <el-form-item label="出生日期">
                         <el-input v-model="staffDetail.birthday"></el-input>
@@ -146,12 +149,12 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="入职时间">
-                        <el-date-picker v-model="staffDetail.enroll" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                        <el-date-picker v-model="staffDetail.enroll" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="转正时间">
-                        <el-date-picker v-model="staffDetail.forward_time" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                        <el-date-picker v-model="staffDetail.forward_time" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -181,21 +184,22 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="第一次签合同时间">
-                        <el-date-picker v-model="staffDetail.agreement_first_time" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                        <el-date-picker v-model="staffDetail.agreement_first_time" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="第一次合同到期时间">
-                        <el-date-picker v-model="staffDetail.agreement_first_end_time" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                        <el-date-picker v-model="staffDetail.agreement_first_end_time" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="第二次签合同时间">
-                        <el-date-picker v-model="staffDetail.agreement_second_time" type="date" value-format="yyyy-DD-mm"></el-date-picker>
+                        <el-date-picker v-model="staffDetail.agreement_second_time" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="介绍人">
+                        <el-input v-model="staffDetail.recommender_name" @focus="staff_visible = true"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -214,10 +218,10 @@
                         </div>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="客户满意度">
-                      </el-form-item>
-                    </el-col>
+                    <!--<el-col :span="6">-->
+                      <!--<el-form-item label="客户满意度">-->
+                      <!--</el-form-item>-->
+                    <!--</el-col>-->
                     <el-col :span="6">
                       <el-form-item label="email">
                         <el-input v-model="staffDetail.email"></el-input>
@@ -231,7 +235,7 @@
                     <el-col :span="6">
                       <el-form-item label="婚育状况">
                         <div class="flex changeChoose" style="margin-top: 10px">
-                          <el-radio :label="0" v-model="staffDetail.marital_status">无</el-radio>
+                          <el-radio :label="0" v-model="staffDetail.marital_status">未婚</el-radio>
                           <el-radio :label="1" v-model="staffDetail.marital_status">已婚</el-radio>
                         </div>
                       </el-form-item>
@@ -252,7 +256,9 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="离职时间"></el-form-item>
+                      <el-form-item label="离职时间">
+
+                      </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="离职时原因">
@@ -263,7 +269,7 @@
                   <el-row :gutter="10">
                     <el-col :span="24">
                       <el-form-item label="入职材料">
-                        <el-checkbox-group class="flex changeChoose" style="margin-top: 10px;">
+                        <el-checkbox-group class="flex changeChoose" style="margin-top: 10px;" v-model="staffDetail.entry_materials">
                           <el-checkbox :label="1">意外险</el-checkbox>
                           <el-checkbox :label="2">五险</el-checkbox>
                           <el-checkbox :label="3">身份证复印件</el-checkbox>
@@ -278,8 +284,7 @@
                   </el-row>
                 </div>
               </el-form>
-              <b @click="reviseInfo = !reviseInfo"></b>
-            </div>`
+            </div>
             <div class="items-center mainRight" v-if="filesStatus === 'grow'">
               <div class="grow" :style="{'backgroundPosition': num[index]}" v-for="(item,index) in dates">
                 <div :class="[(index%2 === 0) ? 'tops' :  'bottoms']">
@@ -290,32 +295,48 @@
             </div>
           </div>
         </div>
+        <div class="dialog_footer" v-if="!reviseInfo">
+          <el-button type="danger" size="small" @click="handleSubmitUpdate">确定</el-button>
+        </div>
       </div>
     </lj-dialog>
+
+    <DepartOrgan :module="depart_visible" @close="handleGetDepart"></DepartOrgan>
+
+    <PostOrgan :module="post_visible" @close="handleGetPost"></PostOrgan>
+
+    <StaffOrgan :module="staff_visible" @close="handleGetStaff"></StaffOrgan>
   </div>
 </template>
 
 <script>
   import ljDialog from '../../../common/lj-dialog.vue';
+  import DepartOrgan from '../../../common/departOrgan.vue';
+  import PostOrgan from '../../../common/postOrgan.vue';
+  import StaffOrgan from '../../../common/staffOrgan.vue';
 
   export default {
          name: "staff-files",
-    components: {ljDialog},
+    components: {ljDialog,DepartOrgan,PostOrgan,StaffOrgan},
     props: ['module','detailInfo'],
     data() {
       return {
+        staff_visible: false,
+        depart_visible: false,
+        post_visible: false,
+
         staffDetail: {
+          id: '',
+          national: '',
           name: '',
           id_num: '',
           phone: '',
-          position: {
-            id: '',
-            name: ''
-          },
-          org: {
-            id: '',
-            name: ''
-          },
+
+          position_id: [], //岗位id
+          position_name: '', //岗位名称
+          org_id: [], //部门id
+          org_name: '', //部门名称
+
           email: '',
           gender: '',
           education: '',
@@ -325,6 +346,7 @@
           english_level: '',
           work_status: '',
           birthday: '',
+          age: '',
           dismiss_time: {
             entry_mess: '',
             entry_type: '',
@@ -342,7 +364,8 @@
           employment_permit: '',
           recommender: '',
           recommender_name: '',
-          marital_status: ''
+          marital_status: '',
+          entry_materials: '',
         }, //员工详情
         currentStaffInfo: '',
 
@@ -369,16 +392,30 @@
       },
       detailInfo: {
         handler(val) {
-          console.log(val);
           this.currentStaffInfo = val;
           for (var key in this.staffDetail) {
-            this.staffDetail[key] = val.staff[key];
+            this.staffDetail[key] = key in val ? val[key] : val.staff && key in val.staff ? val.staff[key] : '';
           }
-          this.staffDetail.name = val.name || '';
-          this.staffDetail.email = val.email || '';
-          this.staffDetail.gender = val.gender || '';
-          this.staffDetail.phone = val.phone || '';
-          console.log(val);
+          if (val.position && val.position.length > 0) {
+            this.staffDetail.position_id = [];
+            for (let item of val.position) {
+              this.staffDetail.position_id.push(item.id);
+              this.staffDetail.position_name += item.name + ',';
+            }
+            this.staffDetail.position_name = this.staffDetail.position_name.substring(0,this.staffDetail.position_name.length - 1);
+          }
+          if (val.org && val.org.length > 0) {
+            this.staffDetail.org_id = [];
+            for (let item of val.org) {
+              this.staffDetail.org_id.push(item.id);
+              this.staffDetail.org_name += item.name + ',';
+            }
+            this.staffDetail.org_name = this.staffDetail.org_name.substring(0,this.staffDetail.org_name.length - 1);
+          }
+          if (this.staffDetail.birthday) {
+            this.staffDetail.age = Math.ceil((new Date() - new Date(this.staffDetail.birthday)) / 1000 / 60 / 60 / 24 / 365);
+            console.log(this.staffDetail.age);
+          }
         },
         deep: true
       }
@@ -396,6 +433,48 @@
       }
     },
     methods: {
+      handleSubmitUpdate() {
+        this.$http.put(`staff/user/${this.currentStaffInfo.id}`,{
+          type: 'update',
+          ...this.staffDetail
+        }).then(res => {
+          console.log(res);
+          if (res.code === '20030') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.reviseInfo = false;
+            this.files_visible = false;
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleGetStaff(id,name) {
+        if (id !== 'close') {
+          this.staffDetail.recommender_name = name;
+          this.staffDetail.recommender = id;
+        }
+        this.staff_visible = false;
+      },
+      handleGetPost(id,name) {
+        if (id !== 'close') {
+          this.staffDetail.position_name = name;
+          this.staffDetail.position_id = id;
+        }
+        this.post_visible = false;
+      },
+      handleGetDepart(id,name) {
+        if (id !== 'close') {
+          this.staffDetail.org_name = name;
+          this.staffDetail.org_id = id;
+        }
+        this.depart_visible = false;
+      },
       filesInfo(val) {
         this.filesStatus = val;
         if (val === 'grow') {

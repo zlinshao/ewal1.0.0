@@ -54,7 +54,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>新增员工</h3>
+          <h3>{{ is_edit ? '修改员工' : '新增员工'}}</h3>
         </div>
         <div class="dialog_main borderNone">
           <el-tabs v-model="activeName">
