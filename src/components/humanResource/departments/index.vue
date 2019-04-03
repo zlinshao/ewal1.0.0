@@ -543,7 +543,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 2,//tab切换
+        chooseTab: 3,//tab切换
         selects: [
           {
             id: 1,
@@ -1113,21 +1113,49 @@
       },
       showSetForm() {
         this.SetFormVisible = true;
-        this.setFormData = {
-          name: '姓名',
-          date1: '部门',
-          date2: '面貌',
-          date3: '民族',
-          date4: '出生日期',
-          date5: '身份证号',
-          date6: '城市',
-          date7: '户口性质',
-          date8: '婚育情况',
-          date9: '家庭住址',
-          date10: '联系方式',
-          date11: '紧急联系人',
-          phone: '电话',
-        };
+        this.setFormData = [
+          { key: 'name',val: '姓名'},
+          { key: 'position',val: '岗位'},
+          { key: 'gender',val: '性别'},
+          { key: 'origin_addr',val: '籍贯'},
+          { key: 'political_status',val: '政治面貌'},
+          { key: 'birthday',val: '出生年月'},
+          { key: 'city',val: '城市'},
+          { key: 'date7',val: '家庭住址'},
+          { key: 'home_addr',val: '联系方式'},
+          { key: 'id_num',val: '身份证'},
+          { key: 'emergency_call',val: '紧急联系人'},
+          { key: 'staff.household_register',val: '户口性质'},
+          { key: 'staff.national',val: '民族'},
+          { key: 'staff.marital_fertility_status',val: '婚育情况'},
+          { key: 'staff.education',val: '学历'},
+          { key: 'staff.school',val: '毕业院校'},
+          { key: 'staff.graduation_time',val: '毕业时间'},
+          { key: 'staff.major',val: '专业'},
+          { key: 'enroll',val: '入职时间'},
+          { key: 'phone9',val: '试用期时间'},
+          { key: 'phone10',val: '转正时间'},
+          { key: 'phone11',val: '转正提醒'},
+          { key: 'phone12',val: '劳务合同'},
+          { key: 'phone13',val: '合同开始时间'},
+          { key: 'phone14',val: '合同结束时间'},
+          { key: 'phone15',val: '劳动合同到期'},
+          { key: 'phone16',val: '社保缴纳情况'},
+          { key: 'phone21',val: '社保开始时间'},
+          { key: 'phone22',val: '意外险缴纳情况'},
+          { key: 'bank_num',val: '银行卡号'},
+          { key: 'account_name',val: '户主'},
+          { key: 'account_bank',val: '开户行'},
+          { key: 'phone31',val: '入职渠道'},
+          { key: 'phone32',val: '入职承诺书'},
+          { key: 'phone33',val: '在职证明'},
+          { key: 'phone34',val: '收入证明'},
+          { key: 'phone45',val: '入职须知'},
+          { key: 'phone43',val: '保密协议'},
+          { key: 'phone333',val: '授权委托书'},
+          { key: 'phone3333',val: '大学生无法缴纳社保知晓书'},
+          { key: 'phone222',val: '实习协议'},
+        ];
       },
       moduleList() {
         this.visibleStatus = !this.visibleStatus;

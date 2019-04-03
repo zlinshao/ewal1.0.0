@@ -7,9 +7,9 @@
         </div>
         <div class="dialog_main">
           <div class="tHeader">
-            <p v-for="item in Object.keys(showData)">
+            <p v-for="item in showData">
               <i class="el-icon-remove"></i>
-              <b>{{showData[item]}}</b>
+              <b>{{ item.val }}</b>
             </p>
             <!--<p><i class="el-icon-circle-plus"></i></p>-->
           </div>
