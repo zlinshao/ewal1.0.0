@@ -200,7 +200,7 @@
     </lj-dialog>
 
     <!--设置表单-->
-    <SetForms :module="SetFormVisible" :data="setFormData" @close="SetFormVisible = false"></SetForms>
+    <SetForms :module="SetFormVisible" :data="setFormData" @close="SetFormVisible = false" @remove="handleRemoveItem" @submit="handleSubmitForm"></SetForms>
 
     <!--管理部门/员工管理-->
     <DepartManage :module="departModule" :info="departInfo" @close="departModule = false"></DepartManage>
@@ -631,6 +631,12 @@
       },
     },
     methods: {
+      handleSubmitForm() {
+        console.log(this.setFormData);
+      },
+      handleRemoveItem(item,index) {
+        this.setFormData.splice(index,1);
+      },
       handleOpenDelField(row) {
         this.current_field = row;
         this.del_field_visible = true;
@@ -1132,6 +1138,7 @@
           { key: 'staff.school',val: '毕业院校'},
           { key: 'staff.graduation_time',val: '毕业时间'},
           { key: 'staff.major',val: '专业'},
+          { key: 'staff.position_level',val: '职级'},
           { key: 'enroll',val: '入职时间'},
           { key: 'phone9',val: '试用期时间'},
           { key: 'phone10',val: '转正时间'},
