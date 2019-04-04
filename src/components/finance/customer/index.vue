@@ -185,27 +185,21 @@
       highSearch(val) {
         this.showSearch = true;
         this.searchData.data = [
-          {
-            keyType: 'date',
-            title: '生成日期',
-            placeholder: '请选择日期',
-            keyName: 'date3',
-            dataType: '',
-          },
+          // {
+          //   keyType: 'date',
+          //   title: '生成日期',
+          //   placeholder: '请选择日期',
+          //   keyName: 'date3',
+          //   dataType: '',
+          // },
           {
             keyType: 'dateRange',
-            title: '待签约日期',
+            title: '起止日期',
             placeholder: '请选择日期',
             keyName: 'date1',
             dataType: [],
           },
-          {
-            keyType: 'dateRange',
-            title: '第一次打房租日期',
-            placeholder: '请选择日期',
-            keyName: 'date2',
-            dataType: [],
-          },
+
 
         ];
       },
@@ -213,14 +207,14 @@
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
+          // console.log(val);
           this.search_params = val;
+          this.$bus.emit('getParams',this.search_params);
         }
       },
 
         //取消重复标记
         cancelRemark(){
-          alert(111)
           this.$bus.emit('cancelRemarkFun',1);
         }
     },

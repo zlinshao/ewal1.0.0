@@ -39,6 +39,23 @@
                 </div>
             </div>
         </div>
+
+        <!--分页-->
+        <footer class="flex-center bottomPage">
+            <div class="develop flex-center">
+                <i class="el-icon-d-arrow-right"></i>
+            </div>
+            <div class="page">
+                <el-pagination
+                        :total="count"
+                        layout="total,jumper,prev,pager,next"
+                        :current-page="params.page"
+                        :page-size="params.limit"
+                        @current-change="handleChangePage"
+                >
+                </el-pagination>
+            </div>
+        </footer>
         <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
         <!--详情-->
         <lj-dialog :visible="detail_visible" :size="{width:1200 + 'px',height: '620' + 'px'}" @close="detail_visible = false">
@@ -128,6 +145,7 @@
                                     <el-date-picker
                                             v-model="actionTime"
                                             type="datetimerange"
+                                            value-format="yyyy-MM-dd HH:mm:ss"
                                             range-separator="至"
                                             start-placeholder="开始日期"
                                             end-placeholder="结束日期">
@@ -194,6 +212,7 @@
                 add_visible:false,//新增活动
                 current_id:'',
                 current_time:'',
+                count:0,//总条数
                 params: {//查询参数
                     search: '',
                     // startRange: '',
@@ -220,7 +239,7 @@
                     address:'',
                     content:'',
                 },
-                actionTime:[],
+                actionTime:[],//活动时间
                 dataLists:[],//列表
 
                 endTimes:[
@@ -234,8 +253,12 @@
         },
 
         methods:{
+            handleChangePage(page) {
+                this.params.current_page = page;
+                this.getDataLists();
+            },
             callbackSuccess(res) {
-                if (res.code === 200) {
+                if (res.status === 200) {
                     this.$LjNotify('success', {
                         title: '成功',
                         message: res.msg,
@@ -279,14 +302,15 @@
                 this.showData.over_time = this.actionTime[1];
                 console.log(this.showData);
                 this.$http.post(globalConfig.newMedia_sever+'/api/club/event',this.showData).then(res => {
-                    if(res.status===200){
-                        console.log(res)
-                    }
+                    this.add_visible  = false;
+                    this.callbackSuccess(res);
                 })
             },
             //预览
             preview(){
                 this.detail_visible = true;
+                this.showData.start_time = this.actionTime[0];
+                this.showData.over_time = this.actionTime[1];
             },
 
 
@@ -295,6 +319,7 @@
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
                     if(res.status===200){
                         this.dataLists = res.data.data;
+                        this.count = res.data.total;
 
                         for(let item of res.data.data){
                             // this.endTimes.push({over_time:item.over_time});

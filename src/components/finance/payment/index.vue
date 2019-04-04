@@ -646,9 +646,9 @@
                     "customer.contact": "手机号",
                     "description.description": "明细详情",
                     "remark": "备注",
-                    "customer.salary_leader_name": "负责人",
+                    "leader.name": "负责人",
                     "staff.name": "开单人",
-                    "customer.salary_department_name": "部门"
+                    "org.name": "部门"
                 },
                 count: 0,
                 ruleForm: {

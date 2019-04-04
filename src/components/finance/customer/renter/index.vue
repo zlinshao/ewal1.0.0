@@ -8,14 +8,23 @@
                 header-row-class-name="tableHeader"
                 :row-class-name="tableChooseRow"
                 @cell-click="tableClickRow"
+                @selection-change="handleSelectionChange"
                 style="width: 100%">
-            <el-table-column label="前缀" align="center">
+            <el-table-column
+                    class="changeChoose"
+                    type="selection"
+                    width="50">
+            </el-table-column>
+            <el-table-column label="前缀" align="center" width="90">
                 <template slot-scope="scope">
-                    <div class="statusBar flex-center">
-                        <span v-if="renterStatus[scope.$index].is_contact===1" style="background-color: #14e731;"></span>
-                        <span v-if="renterStatus[scope.$index].is_name===1" style="background-color: #e6a23c;"></span>
-                        <span v-if="renterStatus[scope.$index].is_address===2" style="background-color: #f56c6c;"></span>
-                        <span v-if="renterStatus[scope.$index].suppress_dup===0" style="background-color: #409eff;"></span>
+                    <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===1">
+                        <i class="el-icon-view"></i>忽略重复
+                    </div>
+                    <div  class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
+                        <span  style="background-color: #14e731;"></span>
+                        <span  style="background-color: #e6a23c;"></span>
+                        <span  style="background-color: #f56c6c;"></span>
+                        <span v-if="freeze[scope.$index]===1" style="background-color: #409eff;"></span>
                     </div>
                 </template>
             </el-table-column>
@@ -26,30 +35,20 @@
                     :prop="item"
                     align="center">
             </el-table-column>
-            <el-table-column label="付款方式" prop="" align="center" width="80">
-                <template slot-scope="scope">
-                    <span>{{ parseInt(scope.row.pay[0]) === 1 ? '月份' : parseInt(scope.row.pay[0]) === 2?'双月付':parseInt(scope.row.pay[0]) === 3?'季付':parseInt(scope.row.pay[0]) === 4?'半年付':parseInt(scope.row.pay[0]) === 5?'年付':'/'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="月单价" prop="" align="center" width="80">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.prices[0]}}</span>
-                </template>
+            <el-table-column label="付款方式/月单价" prop="prices" align="center" width="180"  show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="状态" prop="" align="center">
                 <template slot-scope="scope">
                     <span>{{ scope.row.status === 1 ? '待处理' : '正常'}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" prop="" align="center" width="400">
+            <el-table-column label="操作" prop="" align="center" width="500">
                 <template slot-scope="scope">
-                    <el-button v-for="(item,index) in btnData"
-                               :key="index"
-                               :type="item.type"
-                               :size="item.size"
-                               @click="clickCall(item.methods,scope.row,scope.$index)">
-                        {{item.label}}
-                    </el-button>
+                    <el-button type="success" size="small" @click="handleDetailsRenter(scope.row,scope.$index)">查看</el-button>
+                    <el-button type="primary" size="small" @click="handleEditRenter(scope.row,scope.$index)">编辑</el-button>
+                    <el-button type="warning" size="small" @click="handleReturnRemark(scope.row,scope.$index)">恢复重复标记</el-button>
+                    <el-button type="info" size="small" @click="scope.row.freeze===0 ? handleProcessRenter(scope.row,scope.$index):handleCancelProcessRenter(scope.row,scope.$index)">{{scope.row.freeze === 0 ? '生成待处理项':'取消待处理项'}}</el-button>
+                    <el-button type="danger" size="small" @click="handleDeleteRenter(scope.row,scope.$index)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -136,10 +135,11 @@
     export default {
         name: "index",
         components: {RenterForm, LjDialog, LjSubject},
+        props:['searchParams'],
         data() {
             return {
                 params: {//查询参数
-                    search: '',
+                    search: this.searchParams.undefined,//关键字,
                     startRange: '',
                     endRange: '',
                     page: 1,
@@ -147,6 +147,22 @@
                     department_ids: '',
                     export: '',
                 },
+                LordStatus:[
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0}
+
+                ],//前缀状态
+                freeze:[],//待处理
                 chooseRowIds: [],
                 renterLabel: {//列表字段
                     "create_time": "生成时间",
@@ -159,12 +175,6 @@
                     "rent_types": "租房类型",
                     "staff.name": "签约人",
                 },
-                btnData: [//按钮
-                    {label: "查看", type: "success", icon: "el-icon-view", size: "small", methods: "handleDetailsRenter"},
-                    {label: "编辑", type: "primary", icon: "el-icon-edit", size: "small", methods: "handleEditRenter"},
-                    {label: "生成待处理项", type: "warning", icon: "el-icon-info", size: "small", methods: "handleProcessRenter"},
-                    {label: "删除", type: "danger", icon: "el-icon-delete", size: "small", methods: "handleDeleteRenter"},
-                ],
 
                 delete_visible: false,//删除
                 edit_visible: false,//编辑
@@ -244,7 +254,8 @@
                     {label: "房屋地址:", prop: "address"},
                     {label: "租房月数:", prop: "months"},
                     // {label: "付款方式:", prop: "payType"},
-                    {label: "月单价:", prop: "prices_val"},
+                    // {label: "月单价:", prop: "prices_val"},
+                    {label:'付款方式/月单价:',prop:'prices'},
                     {label: "租房状态:", prop: "rent_status"},
                     {label: "租房类型:", prop: "rent_types"},
                     {label: "第一次打房租日期:", prop: "first_pay_date"},
@@ -253,8 +264,8 @@
                     {label: "所属部门:", prop: "departmentName"},
                     {label: "操作人:", prop: "operatorName"},
                     {label: "签约人:", prop: "staffName"},
-                    {label: "房租科目:", prop: "rental_subject"},
-                    {label: "押金科目:", prop: "deposit_subject"},
+                    // {label: "房租科目:", prop: "rental_subject"},
+                    // {label: "押金科目:", prop: "deposit_subject"},
                     {label: "备注:", prop: "remark"},
                     // {label: "汇款方式:", prop: "account_type"},
                     {label: "汇款人姓名:", prop: "account_owner"},
@@ -362,6 +373,8 @@
                     "江西银行",
                     "中原银行"
                 ],
+                ra_ids:[],
+                multipleSelection: [],//多选
 
             }
         },
@@ -374,14 +387,44 @@
         watch: {
 
         },
-        created() {
-
+        created(){
+            this.$bus.on('cancelRemarkFun',this.handleRemarkRenter);
+            this.$bus.on('getParams',this.handleParamsRenter);
+        },
+        beforeDestroy(){
+            this.$bus.off('cancelRemarkFun',this.handleRemarkRenter);
+            this.$bus.off('getParams',this.handleParamsRenter);
         },
         computed: {},
         methods: {
+            // 搜索参数
+            handleParamsRenter(val){
+                // alert(val.undefined);
+                if(val.undefined){
+                    this.params.search = val.undefined;
+                } else {
+                    this.params.search = ''
+                }
+                if(val.data1){
+                    this.params.startRange = val.data1[0];
+                    this.params.endRange = val.data1[1];
+                }
+
+
+            },
             updateRenterList(val){
                 this.edit_visible = val;
                 this.getRenterList();
+            },
+            // 多选
+            handleSelectionChange(val){
+                this.ra_ids=[];
+                this.multipleSelection = val;
+                console.log(val);
+                for(let item in val){
+                    this.ra_ids.push(val[item].id);
+                }
+                console.log(this.ra_ids);
             },
             handleChangePage(page) {
                 this.params.page = page;
@@ -397,10 +440,7 @@
             tableChooseRow({row, rowIndex}) {
                 return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
             },
-            //操作项
-            clickCall(func, row, index) {
-                this[func](row, index);
-            },
+
             callbackSuccess(res) {
                 if (res.code === 200) {
                     this.$LjNotify('success', {
@@ -425,6 +465,12 @@
                         this.showLoading(false);
                         this.renterLists = res.data.data;
                         this.renterCount = res.data.count;
+                        this.freeze= [];
+                        for (let item of this.renterLists) {
+
+                            this.freeze.push(item.freeze);
+
+                        }
                     } else {
                         this.renterLists = [];
                         this.renterCount = 0;
@@ -455,8 +501,8 @@
                 this.renterDetailList.staffName = this.renterLists[index].staff.name;
                 this.renterDetailList.leaderName = this.renterLists[index].leader.name;
                 this.renterDetailList.operatorName = this.renterLists[index].staff.name;
-                this.renterDetailList.pay_types_val = this.renterLists[index].pay[0];
-                this.renterDetailList.prices_val = this.renterLists[index].prices[0];
+                // this.renterDetailList.pay_types_val = this.renterLists[index].pay[0];
+                // this.renterDetailList.prices_val = this.renterLists[index].prices[0];
                 console.log(this.renterDetailList);
                 console.log(this.renterLists[index]);
             },
@@ -468,6 +514,7 @@
                         this.showLoading(false);
                         this.renterDetail = res.data.data;
                         console.log(this.renterDetail);
+
 
                         this.renterDetailData = Object.assign({}, this.renterDetail, this.renterDetailList);
                         console.log(this.renterDetailData);
@@ -491,12 +538,37 @@
                 this.getRenterDetail(this.current_row.id);
             },
 
-            //处理项
+            //生成待处理项
             handleProcessRenter(row, index) {
                 this.$http.post(globalConfig.temporary_server + 'customer_renter/pending/' + row.id, {}).then(res => {
                     this.callbackSuccess(res);
                 })
             },
+            //取消待处理项
+            handleCancelProcessRenter(row, index) {
+                this.$http.put(globalConfig.temporary_server + 'account_pending/recover' , {customer_id:row.id,identity:2}).then(res => {
+                    this.callbackSuccess(res);
+                })
+            },
+            //忽略重复标记
+            handleRemarkRenter(val){
+                this.$http.put(globalConfig.temporary_server + 'customer_renter_repeat/is_ignore', {ids:this.ra_ids,operate:1}).then(res => {
+                    this.callbackSuccess(res);
+                    if(res.code===200){
+
+                    }
+                })
+            },
+            //恢复重复标记
+            handleReturnRemark(row,index){
+                this.ra_ids=[];
+                this.ra_ids.push(row.id);
+                this.$http.put(globalConfig.temporary_server + 'customer_renter_repeat/is_ignore', {ids:this.ra_ids,operate:2}).then(res => {
+                    this.callbackSuccess(res);
+
+                })
+            },
+
             //科目
             handleOpenSubject(which) {
                 this.which_subject = which;
@@ -536,115 +608,7 @@
                 this.current_row = row;
                 this.delete_visible = true;
             },
-            // 高级搜索
-            highSearch() {
-                this.showSearch = true;
-                this.searchData.data = [
-                    {
-                        keyType: 'date',
-                        title: '出生日期',
-                        placeholder: '请选择日期',
-                        keyName: 'date3',
-                        dataType: '',
-                    },
-                    {
-                        keyType: 'dateRange',
-                        title: '创建时间',
-                        placeholder: '请选择日期',
-                        keyName: 'date1',
-                        dataType: [],
-                    },
-                    {
-                        keyType: 'dateRange',
-                        title: '跟进时间',
-                        placeholder: '请选择日期',
-                        keyName: 'date2',
-                        dataType: [],
-                    },
-                    {
-                        keyType: 'radio',
-                        title: '紧急程度',
-                        keyName: 'radio',
-                        dataType: '',
-                        value: [
-                            {
-                                id: 12,
-                                title: '特级',
-                            },
-                            {
-                                id: 13,
-                                title: '紧急',
-                            },
-                            {
-                                id: 14,
-                                title: '重要',
-                            },
-                            {
-                                id: 15,
-                                title: '一般',
-                            }
-                        ],
-                    },
-                    {
-                        keyType: 'check',
-                        title: '状态',
-                        keyName: 'check',
-                        dataType: [],
-                        value: [
-                            {
-                                id: 22,
-                                title: '已完成',
-                            },
-                            {
-                                id: 23,
-                                title: '未完成',
-                            },
-                        ],
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                ];
-            },
-            // 确认搜索
-            hiddenModule(val) {
-                this.showSearch = false;
-                if (val !== 'close') {
-                    console.log(val);
-                }
-            },
+
         },
     }
 </script>

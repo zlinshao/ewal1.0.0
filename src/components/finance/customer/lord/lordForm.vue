@@ -4,146 +4,113 @@
             <h3>{{current_row===''?'新增': '编辑'}}</h3>
         </div>
         <div class="dialog_main">
-            <el-form :model="form" size="mini" ref="formData" :rules="rulesForm">
-                <el-row type="flex" class="row-bg" justify="space-between" style="flex-wrap: wrap">
-
-                    <el-form-item v-for="(item,index) in lordForm.slice(0,4)" :key="'lord1'+index" :prop="item.prop">
-                        <div class="form_item_container">
-                            <div class="item_label">
-                                <b class="item_icons">
-                                    <i class="icon_account"></i>
-                                </b>
-                                <span>{{item.label}}</span>
-                            </div>
-                            <div class="item_content" style="width: 230px">
-                                <el-input :placeholder="item.placeholder" v-model="form[item.prop]" readonly
-                                          @focus="clickCallback(item.label)"></el-input>
-                            </div>
-                        </div>
-                    </el-form-item>
-                    <el-form-item v-for="(item,index) in lordForm.slice(4,10)" :key="'lord2'+index" :prop="item.prop">
-                        <div class="form_item_container">
-                            <div class="item_label">
-                                <b class="item_icons">
-                                    <i class="icon_account"></i>
-                                </b>
-                                <span>{{item.label}}</span>
-                            </div>
-                            <div class="item_content" style="width: 230px">
-                                <el-input :placeholder="item.placeholder" v-model="form[item.prop]" :type="item.type"></el-input>
-                            </div>
-                        </div>
-                    </el-form-item>
-                    <el-form-item v-for="(item,index) in lordForm.slice(12,15)" :key="'lord'+index" :prop="item.prop">
-                        <div class="form_item_container">
-                            <div class="item_label">
-                                <b class="item_icons">
-                                    <i class="icon_account"></i>
-                                </b>
-                                <span>{{item.label}}</span>
-                            </div>
-                            <div class="item_content" style="width: 230px">
+            <el-form :model="formData" size="mini" ref="formData" :rules="rulesForm" label-width="150px">
+                <el-row>
+                    <el-col :span="8">
+                        <div class="">
+                            <el-form-item label="签约人">
+                                <el-input v-model="formData.operator" style="width: 200px"></el-input>
+                            </el-form-item>
+                            <el-form-item label="所属部门">
+                                <el-input v-model="formData.department" style="width: 200px"></el-input>
+                            </el-form-item>
+                            <el-form-item label="负责人">
+                                <el-input v-model="formData.leader" style="width: 200px"></el-input>
+                            </el-form-item>
+                            <el-form-item label="客户姓名">
+                                <el-input v-model="formData.customer_name" style="width: 200px"></el-input>
+                            </el-form-item>
+                            <el-form-item label="客户手机号">
+                                <el-input v-model="formData.contact" style="width: 200px"></el-input>
+                            </el-form-item>
+                            <el-form-item label="房屋地址">
+                                <el-input v-model="formData.address" style="width: 200px"></el-input>
+                            </el-form-item>
+                            <el-form-item label="收房月数">
+                                <el-input v-model="formData.months" style="width: 200px" type="number"></el-input>
+                            </el-form-item>
+                            <el-form-item label="押金">
+                                <el-input v-model="formData.deposit" style="width: 200px" type="number"></el-input>
+                            </el-form-item>
+                            <el-form-item label="签约日期">
                                 <el-date-picker
-                                        v-model="form[item.prop]" type="date" :placeholder="item.placeholder">
+                                        v-model="formData.deal_date" type="date" placeholder="" style="width: 200px">
                                 </el-date-picker>
-                            </div>
+                            </el-form-item>
+                            <el-form-item label="第一次打房租日期">
+                                <el-date-picker
+                                        v-model="formData.first_pay_date" type="date" placeholder=""
+                                        style="width: 200px">
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="第二次打房租日期">
+                                <el-date-picker
+                                        v-model="formData.second_pay_date" type="date" placeholder=""
+                                        style="width: 200px">
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="备注">
+                                <el-input v-model="formData.remark" style="width: 200px"></el-input>
+                            </el-form-item>
                         </div>
-                    </el-form-item>
-                    <el-form-item prop="pay_types_val">
-                        <div class="form_item_container">
-                            <div class="item_label">
-                                <b class="item_icons">
-                                    <i class="icon_account"></i>
-                                </b>
-                                <span>付款方式</span>
-                            </div>
-                            <div class="item_content" style="width: 230px">
-                                <keep-alive>
-                                    <el-select placeholder="请选择" v-model="form.pay_types_val">
-                                        <el-option label="月付" value="1"></el-option>
-                                        <el-option label="双月付" value="2"></el-option>
-                                        <el-option label="季付" value="3"></el-option>
-                                        <el-option label="半年付" value="4"></el-option>
-                                        <el-option label="年付" value="5"></el-option>
+                    </el-col>
+                    <el-col :span="8">
+                        <div class="" style="width: 100%">
+                            <el-form-item label="付款周期一"><el-button size="mini"  type="danger" @click="addPrices" style="cursor: pointer;position: absolute;right:-50px;top:0;">添加更多</el-button></el-form-item>
+                            <div v-for="(item,index) in prices" :key="item.key" style="width: 100%;display: flex;flex-direction: column;justify-content: center" >
+                                <el-form-item label="起止时间" >
+                                    <el-date-picker
+                                            v-model="item.times"
+                                            type="daterange"
+                                            range-separator="至"
+                                            start-placeholder="开始日期"
+                                            end-placeholder="结束日期"
+                                            style="width: 200px">
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="付款周期" >
+                                    <el-input v-model="item.pay_way" style="width: 200px" type="number"></el-input>
+                                </el-form-item>
+                                <el-form-item label="月单价" >
+                                    <el-input v-model="item.pay_way" style="width: 200px" type="number"></el-input>
+                                </el-form-item>
+                                <el-form-item label="付款方式" style="position: relative">
+                                    <el-select placeholder="请选择付款方式" v-model="item.pay_way" style="width: 200px;">
+                                        <el-option v-for="item in payTypes" :label="item.val" :value="item.id"
+                                                   :key="item"></el-option>
                                     </el-select>
-                                </keep-alive>
+                                    <!--<el-button size="mini"  type="danger" @click="addPrices" style="cursor: pointer;position: absolute;right:-50px;top:0;">删除</el-button>-->
+                                </el-form-item>
 
                             </div>
+
                         </div>
-                    </el-form-item>
-                    <el-form-item prop="prices_val">
-                        <div class="form_item_container">
-                            <div class="item_label">
-                                <b class="item_icons">
-                                    <i class="icon_account"></i>
-                                </b>
-                                <span>月单价</span>
-                            </div>
-                            <div class="item_content" style="width: 230px">
-                                <el-input placeholder="请选择" v-model="form.prices_val" type="number"></el-input>
-                            </div>
-                        </div>
-                    </el-form-item>
-                    <el-form-item prop="account_type">
-                        <div class="form_item_container">
-                            <div class="item_label">
-                                <b class="item_icons">
-                                    <i class="icon_account"></i>
-                                </b>
-                                <span>账户类型</span>
-                            </div>
-                            <div class="item_content" style="width: 230px">
-                                <el-select placeholder="请选择" v-model="form.account_type">
+                    </el-col>
+                    <el-col :span="8">
+                        <div class="">
+                            <el-form-item label="账户类型" prop="account_type">
+                                <el-select placeholder="请选择" v-model="formData.account_type" style="width: 200px">
                                     <el-option v-for="item in Object.keys(cate)" :label="cate[item]" :value="item"
                                                :key="item"></el-option>
                                 </el-select>
-                            </div>
-                        </div>
-                    </el-form-item>
-                    <el-form-item prop="account_bank">
-                        <div class="form_item_container">
-                            <div class="item_label">
-                                <b class="item_icons">
-                                    <i class="icon_account"></i>
-                                </b>
-                                <span>开户银行</span>
-                            </div>
-                            <div class="item_content" style="width: 230px">
-                                <el-select placeholder="请选择银行" v-model="form.account_bank">
+                            </el-form-item>
+                            <el-form-item label="账户所属人">
+                                <el-input v-model="formData.account_owner" style="width: 200px"></el-input>
+                            </el-form-item>
+                            <el-form-item label="开户银行" prop="account_bank">
+                                <el-select placeholder="请选择银行" v-model="formData.account_bank" style="width: 200px">
                                     <el-option v-for="item in banks" :label="item" :value="item"
                                                :key="item"></el-option>
                                 </el-select>
-                            </div>
+                            </el-form-item>
+                            <el-form-item label="支行">
+                                <el-input v-model="formData.account_subbank" style="width: 200px"></el-input>
+                            </el-form-item>
+                            <el-form-item label="账号">
+                                <el-input v-model="formData.account_num" style="width: 200px"></el-input>
+                            </el-form-item>
                         </div>
-                    </el-form-item>
-                    <el-form-item prop="rental_subject">
-                        <div class="form_item_container">
-                            <div class="item_label">
-                                <b class="item_icons">
-                                    <i class="icon_account"></i>
-                                </b>
-                                <span>房租科目</span>
-                            </div>
-                            <div class="item_content" style="width: 230px">
-                                <el-input placeholder="请选择" v-model="form.rental_subject"
-                                          @focus="handleOpenSubject('subject_rent')"></el-input>
-                            </div>
-                        </div>
-                    </el-form-item>
-                    <el-form-item prop="deposit_subject">
-                        <div class="form_item_container">
-                            <div class="item_label">
-                                <b class="item_icons">
-                                    <i class="icon_account"></i>
-                                </b>
-                                <span>押金科目</span>
-                            </div>
-                            <div class="item_content" style="width: 230px">
-                                <el-input placeholder="请选择" v-model="form.deposit_subject"
-                                          @focus="handleOpenSubject('subject_deposit')"></el-input>
-                            </div>
-                        </div>
-                    </el-form-item>
+                    </el-col>
 
                 </el-row>
             </el-form>
@@ -153,28 +120,22 @@
             <el-button type="info" size="small" @click="edit_visible = false;current_row = ''">取消</el-button>
         </div>
 
-        <lj-subject :visible="subject_visible" @close="subject_visible = false"
-                    @confirm="handleConfirmSubject"></lj-subject>
-
-        <StaffOrgan :module="staffModule"  @close="hiddenStaff"></StaffOrgan>
-        <DepartOrgan :module="departModule"  @close="hiddenDepart"></DepartOrgan>
-        <PostOrgan :module="postModule"  @close="hiddenPost"></PostOrgan>
+        <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
+        <DepartOrgan :module="departModule" @close="hiddenDepart"></DepartOrgan>
+        <PostOrgan :module="postModule" @close="hiddenPost"></PostOrgan>
     </div>
 
 </template>
 
 <script>
-    import LjSubject from '../../../common/lj-subject.vue';
     import StaffOrgan from '../../../common/staffOrgan.vue';
     import DepartOrgan from '../../../common/departOrgan.vue';
     import PostOrgan from '../../../common/postOrgan.vue';
-
 
     export default {
         name: "lordForm",
         props: ['formData', 'current_row', 'edit_visible'],
         components: {
-            LjSubject,
             StaffOrgan,
             DepartOrgan,
             PostOrgan
@@ -184,176 +145,20 @@
                 postModule: false,//岗位
                 departModule: false,//部门
                 staffModule: false,//员工
-
-                form: this.formData,
+                form: '',//回显参数
                 row: this.current_row,
-                lordForm: [//表单字段
-                    {
-                        label: "签约人",
-                        prop: "staffName",
-                        type: "",
-                        placeholder: "请输入签约人",
-                    },
-                    {
-                        label: "所属部门",
-                        prop: "departmentName",
-                        type: "",
-                        placeholder: "请输入所属部门",
-                    },
-                    {
-                        label: "负责人",
-                        prop: "leaderName",
-                        type: "",
-                        placeholder: "请输入负责人",
-                    },
-                    {
-                        label: "房屋地址",
-                        prop: "address",
-                        type: "",
-                        placeholder: "请输入房屋地址",
-                    },
-                    {
-                        label: "客户姓名",
-                        prop: "customer_name",
-                        type: "text",
-                        placeholder: "请输入客户姓名",
-                    },
-                    {
-                        label: "手机号",
-                        prop: "contact",
-                        type: "number",
-                        placeholder: "请输入手机号",
-                    },
-
-                    {
-                        label: "收房月数",
-                        prop: "months",
-                        type: "number",
-                        placeholder: "请输入收房月数",
-                    },
-                    {
-                        label: "押金",
-                        prop: "deposit",
-                        type: "number",
-                        placeholder: "请输入押金",
-                    },
-                    {
-                        label: "保修期",
-                        prop: "warrenty",
-                        type: "number",
-                        placeholder: "请输入保修期",
-                    },
-                    {
-                        label: "中介费",
-                        prop: "medi_cost",
-                        type: "number",
-                        placeholder: "请输入中介费",
-                    },
-                    {
-                        label: "付款方式",
-                        prop: "pay_types",
-                        type: "",
-                        placeholder: "请输入付款方式",
-                    },
-                    {
-                        label: "月单价",
-                        prop: "months",
-                        type: "number",
-                        placeholder: "请输入月单价",
-                    },
-                    {
-                        label: "待签约",
-                        prop: "deal_date",
-                        type: "",
-                        placeholder: "请输入待签约时间",
-                    },
-                    {
-                        label: "一次打款",
-                        prop: "first_pay_date",
-                        type: "",
-                        placeholder: "请输入第一次打房租日期",
-                    },
-                    {
-                        label: "二次打款",
-                        prop: "second_pay_date",
-                        type: "",
-                        placeholder: "请输入第二次打房租日期",
-                    },
-
-                    {
-                        label: "账户类型",
-                        prop: "account_type",
-                        type: "",
-                        placeholder: "请输入账户类型",
-                    },
-                    {
-                        label: "开户银行",
-                        prop: "account_bank",
-                        type: "",
-                        placeholder: "请输入开户银行",
-                    },
-                    {
-                        label: "收款人",
-                        prop: "account_owner",
-                        type: "",
-                        placeholder: "请输入收款人",
-                    },
-                    {
-                        label: "支行",
-                        prop: "account_subbank",
-                        type: "",
-                        placeholder: "请输入支行",
-                    },
-                    {
-                        label: "押金科目",
-                        prop: "deposit_subject",
-                        type: "",
-                        placeholder: "请输入押金科目",
-                    },
-                    {
-                        label: "房租科目",
-                        prop: "rental_subject",
-                        type: "",
-                        placeholder: "请输入房租科目",
-                    },
-                ],
-                subject_visible: false,
-                which_subject: '',
-                new_subject_visible: false,
-                subject_deposit: {
-                    parent_id: '',
-                    title: '',
-                    er_type: '',
-                    remark: '',
-                    parent_name: '',
-                    subject_code: ''
-                },
-                subject_rent: {
-                    parent_id: '',
-                    title: '',
-                    er_type: '',
-                    remark: '',
-                    parent_name: '',
-                    subject_code: ''
-                },
-                move_visible: false,
-                move_subject: {
-                    initial: '',
-                    parent_id: '',
-                    title: ''
-                },
                 cate: {
                     "1": "银行卡",
                     "2": "支付宝",
                     "3": "微信",
                     "4": "银行卡(数据来自房管中心)"
                 },
-                types: [
-                    {title: "月付", value: 1},
-                    {title: "半月份", value: 2},
-                    {title: "季付", value: 3},
-                    {title: "半年付", value: 4},
-                    {title: "年付", value: 5}
+                payTypes:[
+                    {id:1,val:'月付'} ,
+                    {id:2,val:'双月付'} ,
+                    {id:3,val:'季付'} ,
+                    {id:4,val:'半年付'} ,
+                    {id:5,val:'年付'} ,
                 ],
                 banks: [
                     "未知银行",
@@ -412,105 +217,87 @@
                     "江西银行",
                     "中原银行"
                 ],
-
-                customer_id: '',
-
-                formParams: {
-                    "staff_id": "",
-                    "department_id": "",
-                    "leader_id": "",
-                    "customer_name": "",
-                    "contact": "",
-                    "house_id": "",
-                    "months": "",
-                    "prices": [],
-                    "pay_types": [],
-                    "deposit": "",
-                    "medi_cost": "",
-                    "warrenty": "",
-                    "deal_date": "",
-                    "first_pay_date": "",
-                    "second_pay_date": "",
-                    "remark": "",
-                    "account_type": "",
-                    "account_owner": "",
-                    "account_subbank": "",
-                    "account_bank": "",
-                    "account_num": "",
-                    "subject_id": {
-                        "rental": "",
-                        "deposit": ""
-                    },
-                    "v3_contract_id": "",
-                },
+                formParams: {},
                 rulesForm: {
-                    staffName: [
-                        { required: true, message: '请选择签约人', trigger: 'change' },
+                    staff_id: [
+                        {required: true, message: '请选择签约人', trigger: 'change'},
                     ],
-                    departmentName: [
-                        { required: true, message: '请选择所属部门', trigger: 'change' },
+                    department_id: [
+                        {required: true, message: '请选择所属部门', trigger: 'change'},
                     ],
-                    leaderName: [
-                        { required: true, message: '请选择负责人', trigger: 'change' },
+                    leader_id: [
+                        {required: true, message: '请选择负责人', trigger: 'change'},
                     ],
-                    address: [
-                        { required: true, message: '请选择房屋地址', trigger: 'change' },
+                    house_id: [
+                        {required: true, message: '请选择房屋地址', trigger: 'change'},
                     ],
                     customer_name: [
-                        { required: true, message: '请输入客户姓名', trigger: 'blur' },
+                        {required: true, message: '请输入客户姓名', trigger: 'blur'},
                     ],
                     contact: [
-                        { required: true, message: '请输入手机号', trigger: 'blur' },
+                        {required: true, message: '请输入手机号', trigger: 'blur'},
                     ],
                     months: [
-                        { required: true, message: '请输入收房月数', trigger: 'blur' },
+                        {required: true, message: '请输入收房月数', trigger: 'blur'},
                     ],
                     deposit: [
-                        { required: true, message: '请输入押金', trigger: 'blur' },
+                        {required: true, message: '请输入押金', trigger: 'blur'},
                     ],
-                    warrenty: [
-                        { required: true, message: '请输入保修期', trigger: 'blur' },
-                    ],
-                    medi_cost: [
-                        { required: true, message: '请输入中介费', trigger: 'blur' },
-                    ],
-                    pay_types_val: [
-                        { required: true, message: '请选择付款方式', trigger: 'change' },
-                    ],
-                    prices_val: [
-                        { required: true, message: '请输入月单价', trigger: 'blur' },
-                    ],
+
                     deal_date: [
-                        { required: true, message: '请选择待签约日期', trigger: 'change' },
+                        {required: true, message: '请选择待签约日期', trigger: 'change'},
                     ],
                     first_pay_date: [
-                        { required: true, message: '请选择待一次打款日期', trigger: 'change' },
+                        {required: true, message: '请选择待一次打款日期', trigger: 'change'},
                     ],
                     second_pay_date: [
-                        { required: true, message: '请选择待二次打款日期', trigger: 'change' },
+                        {required: true, message: '请选择待二次打款日期', trigger: 'change'},
                     ],
                     account_type: [
-                        { required: true, message: '请选择账户类型', trigger: 'change' },
+                        {required: true, message: '请选择账户类型', trigger: 'change'},
                     ],
                     account_bank: [
-                        { required: true, message: '请选择开户银行', trigger: 'change' },
+                        {required: true, message: '请选择开户银行', trigger: 'change'},
                     ],
                     account_owner: [
-                        { required: true, message: '请输入收款人', trigger: 'blur' },
+                        {required: true, message: '请输入收款人', trigger: 'blur'},
                     ],
                     account_subbank: [
-                        { required: true, message: '请输入支行名称', trigger: 'blur' },
+                        {required: true, message: '请输入支行名称', trigger: 'blur'},
                     ],
-                    deposit_subject: [
-                        { required: true, message: '请选择押金科目', trigger: 'change' },
+                    account_num: [
+                        {required: true, message: '请输入支行名称', trigger: 'blur'},
                     ],
-                    rental_subject: [
-                        { required: true, message: '请选择房租科目', trigger: 'change' },
+                    remark: [
+                        {required: true, message: '请选择押金科目', trigger: 'change'},
                     ],
+
                 },
 
+                // 付款周期,月单价
+                prices: [
+                    {
+                        "period": "12",//付款周期
+                        "pay_way": "3",//付款方式
+                        "end_date": "2021-03-15",
+                        "begin_date": "2020-03-15",
+                        "month_unit_price": "3100",//月单价
+                        'times':['2021-03-15','2020-03-15']
+                    },
+                ],
+
+                times: [],
 
 
+            }
+        },
+        watch: {
+            formData: {
+                handler(val) {
+                    this.form = val;
+                    console.log(val)
+                },
+                deep: true,
             }
         },
         mounted() {
@@ -525,7 +312,7 @@
             }
         },
         watch: {
-            form: {
+            formData: {
                 handler(val) {
                     console.log(val)
                 },
@@ -534,9 +321,20 @@
 
         },
         methods: {
+            //增加付款周期
+            addPrices(){
+                this.prices.push({
+                    period:'',
+                    pay_way:'',
+                    end_date:'',
+                    begin_date:'',
+                    month_unit_price:'',
+                    key: Date.now(),
+                })
+            },
             // 组织部门
             hiddenDepart(ids, names, arr) {
-                console.log(ids,names,arr);
+                console.log(ids, names, arr);
                 this.departModule = false;
                 if (ids !== 'close') {
                     this.form.departmentName = names;
@@ -546,16 +344,16 @@
                 }
             },
             //员工
-            hiddenStaff(ids, names, arr){
+            hiddenStaff(ids, names, arr) {
                 this.staffModule = false;
-                console.log(ids,names,arr);
+                console.log(ids, names, arr);
                 if (ids !== 'close') {
                     this.form.staffName = names;
                     this.form.staff_id = ids[0];
                 }
             },
             // 岗位
-            hiddenPost(ids, names, arr){
+            hiddenPost(ids, names, arr) {
                 this.postModule = false;
             },
             clickCallback(val) {
@@ -584,34 +382,10 @@
                     });
                 }
             },
-            handleOpenSubject(which) {
-                this.which_subject = which;
-                this.subject_visible = true;
-            },
-            //确认科目
-            handleConfirmSubject(val) {
-                if (this.which_subject === 'move_subject') {
-                    this.move_subject.parent_id = val.id;
-                    this.move_subject.title = val.title;
-                }
-                if (this.which_subject === 'subject_deposit') {
-                    this.subject_deposit.parent_name = val.title;
-                    this.subject_deposit.parent_id = val.id;
-                    this.form.subject_id.deposit = val.id;
-                    this.form.deposit_subject = val.title;
-
-                }
-                if (this.which_subject === 'subject_rent') {
-                    this.subject_rent.parent_name = val.title;
-                    this.subject_rent.parent_id = val.id;
-                    this.form.subject_id.rental = val.id;
-                    this.form.rental_subject = val.title;
-                }
-            },
 
             //编辑确认
             postLordEditData(formName) {
-                for(let item of Object.keys(this.formParams)){
+                for (let item of Object.keys(this.formParams)) {
                     this.formParams[item] = this.form[item];
                 }
                 console.log(this.formParams);
@@ -620,7 +394,7 @@
                     if (valid) {
                         this.$http.put(globalConfig.temporary_server + 'customer_collect/' + this.row.id, this.formParams).then(res => {
                             this.callbackSuccess(res);
-                            this.$emit("updateList",false)
+                            this.$emit("updateList", false)
                         })
                     } else {
                         console.log('error submit!!');
