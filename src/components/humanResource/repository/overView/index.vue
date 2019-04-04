@@ -177,7 +177,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>LGD显示器 维修详情</h3>
+          <h3>{{tableSettingData.borrowReceive.table_dialog_title}} 维修详情</h3>
           <div class="header_right">
             <!--<el-button size="mini" type="primary" plain>增加</el-button>-->
             <!--<div class="icon-add"><b>+</b></div>-->
@@ -232,7 +232,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>LGD显示器 报废详情</h3>
+          <h3>{{tableSettingData.borrowReceive.table_dialog_title}} 报废详情</h3>
           <div class="header_right">
             <!--<el-button size="mini" type="primary" plain>增加</el-button>-->
             <!--<div class="icon-add"><b>+</b></div>-->
@@ -655,6 +655,7 @@
 </template>
 
 <script>
+  import {DROPDOWN_CONSTANT} from '@/assets/js/allConstantData';
   import LjDialog from '../../../common/lj-dialog.vue';
   import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import LjDialogImg from '../components/lj-dialog-img';//用于显示二维码图片
@@ -674,6 +675,7 @@
     },
     data() {
       return {
+        DROPDOWN_CONSTANT,
         url: globalConfig.humanResource_server,
 
         //tableData: [],
@@ -773,10 +775,10 @@
             tableShowData: {
               department: '部门',
               name: '姓名',
-              //uselessId: '报废编号',
+              goods_number: '报废编号',
               responsiblePerson: '任责人',
-              repairCost: '维修费用',
-              settlement: '结算方式',
+              repair_price: '维修费用',
+              payment_type: '结算方式',
             },
           },
           inRepository: {//入库详情列表
@@ -981,7 +983,6 @@
       },
       in_repository_visible: {
         handler(val, oldVal) {
-          //console.log(val,oldVal);
           this.in_repository = !this.in_repository;
         },
         //deep:true,
@@ -994,9 +995,6 @@
 
       //入库表单提交
       inRepository() {
-        debugger
-        console.log(this.in_repository_form);
-
         let params = {
           category_id: this.in_repository_form.goods,
           number: this.in_repository_form.counts,
@@ -1009,10 +1007,7 @@
           remark: this.in_repository_form.remark,
         };
         let urls = `${this.url}eam/storage`;
-        debugger
         this.$http.post(urls, params).then(res => {
-          debugger
-          console.log(res);
           if (res.code.endsWith('0')) {
             this.$LjNotify('success', {
               title: '成功',
@@ -1027,8 +1022,6 @@
 
       //选择物品后将名字渲染到入库表单的选择物品字段上
       chooseGoods() {
-        //debugger
-        //console.log(this.tableSettingData[this.currentTable].currentSelection);
         let id = this.tableSettingData[this.currentTable].currentSelection?.id || '';
         if (id) {
           this.in_repository_form.goods = id;
@@ -1044,14 +1037,11 @@
 
       //删除物品
       async deleteGoods() {
-        //debugger
         this.$LjConfirm().then(async () => {
           let goodsList = this.tableSettingData['goods']?.multiSelection;
           if (goodsList && goodsList.length > 0) {
             for (let item of goodsList) {
               await this.$http.delete(`${this.url}eam/category/${item.id}`).then(res => {
-                //debugger
-                //console.log(res);
                 if (res.code == '20040') {
                   this.$LjNotify('success', {
                     title: '成功',
@@ -1075,7 +1065,6 @@
 
 
       async getGoodsList() {
-        //debugger
         this.choose_goods_table_visible = true;
         this.currentTable = 'goods';
         this.chooseGoodsData = [];
@@ -1083,8 +1072,6 @@
         await this.$http.get(this.url + 'eam/category', params).then(res => {
           if (res.code == '20000') {
             for (let item of res.data.data) {
-              //console.log(item);
-              //debugger
               let obj = {
                 id: item.id,
                 name: item.id + item.name,
@@ -1113,7 +1100,6 @@
           remarks: this.add_goods_form.remark
         };
         this.$http.post(`${this.url}eam/category`, params).then(res => {
-          //debugger
           if (res.code == '20010') {
             this.$LjNotify('success', {
               title: '成功',
@@ -1128,7 +1114,6 @@
             });
           }
           this.$refs.categoryDropdown2.update();//更新
-          //console.log(res);
         });
       },
 
@@ -1187,11 +1172,8 @@
         this.currentTable = 'repository';
         this.tableSettingData[this.currentTable].tableData = [];
         this.$http.get(this.url + 'eam/eam', this.tableSettingData[this.currentTable].params).then(res => {
-          //debugger
-          console.log(res);
           if (res.code == '20000') {
             for (let item of res.data.data) {
-              //console.log(item);
               let obj = {
                 id: item.id,
                 category_id: item?.category_id || '-',
@@ -1214,16 +1196,13 @@
 
       //获取领/借表格详情
       getBorrowReceiveList(item) {
-        //debugger
         this.tableSettingData.borrowReceive.table_dialog_visible = true;
         this.currentTable = 'borrowReceive';
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].tableData = [];
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, this.tableSettingData[this.currentTable].params).then(res => {
-          //debugger
           if (res.code == '20000') {
             for (let item of res.data.data) {
-              //console.log(item);
               let obj = {
                 id: item.id,
                 department: item?.user?.org[0]?.name || '-',
@@ -1250,7 +1229,6 @@
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
           if (res.code == '20000') {
             for (let item of res.data.data) {
-              //console.log(item);
               let obj = {
                 id: item.id,
                 department: item?.user?.org[0]?.name || '',
@@ -1262,30 +1240,29 @@
             }
             this.tableSettingData[this.currentTable].counts = res.data.count;
           }
-
-
         })
       },
 
       //获取报废表格详情
       getUselessList(item) {
+        debugger
         this.currentTable = 'useless';
         this.tableSettingData[this.currentTable].table_dialog_visible = true;
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].tableData = [];
         let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 4}};
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
+
           if (res.code == '20000') {
             for (let item of res.data.data) {
-              //console.log(item);
               let obj = {
                 id: item.id,
                 department: item?.user?.org[0]?.name || '-',
                 name: item?.user?.name || '-',
-                uselessId: '报废编号',
-                responsiblePerson: '任责人',
-                repairCost: '维修费用',
-                settlement: '结算方式',
+                goods_number: item.goods_number||'-',
+                responsiblePerson: item.process?.responsible?.responsible_info?.name||'-',//任责人
+                repair_price: item?.process?.responsible?.repair_price || 0,//维修费用
+                payment_type: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.process?.responsible?.payment_type||0],
               }
               this.tableSettingData[this.currentTable].tableData.push(obj)
             }
@@ -1296,7 +1273,6 @@
 
       //获取入库详情table表格数据
       getInRepositoryList(categoryId,searchParams) {
-        debugger
         this.currentTable = 'inRepository';
         this.tableSettingData[this.currentTable].tableData = [];
         if(searchParams) this.tableSettingData[this.currentTable].params.init();
@@ -1326,15 +1302,12 @@
 
       //获取二维码列表table表格数据
       getQrCodeList(inRepoId) {
-        console.log(inRepoId);
         this.currentTable = 'qrCode';
         this.tableSettingData.qrCode.table_dialog_visible = true
         this.tableSettingData[this.currentTable].tableData = [];
         //let params = {category_id:categoryId};
         //let finalParams = {...params,...this.tableSettingData[this.currentTable].params};
         this.$http.get(`${this.url}eam/storage/${inRepoId}/qrcode`).then(res => {
-          //debugger
-          //console.log(res);
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let obj = {
@@ -1350,7 +1323,6 @@
       },
 
       showQrCode(row) {
-        debugger
         this.tableSettingData.qrCode.form.form_dialog_visible = true;
         this.tableSettingData.qrCode.form.formData.qrCode = row.qrCode;
         this.tableSettingData.qrCode.form.formData.goods_number = row.repairId;//维修编号
@@ -1385,7 +1357,6 @@
           }
           this.tableData.push(obj)
         }
-        //console.log(this.tableData);
         this.counts = 1000;*/
 
 
@@ -1492,7 +1463,6 @@
 
       //表格某一行双击 ->特指 inRepository表格  即入库详情列表表格
       tableDblClick(row) {
-        //console.log(row);
         let categoryId = row.category_id;//物品编号 通过物品编号获取所有的入库记录
         this.tableSettingData[this.currentTable].currentSelection = row;
         this.getInRepositoryList(categoryId);
@@ -1502,7 +1472,6 @@
       handleSelectionChange(val) {
         switch (this.currentTable) {
           case 'repository':
-            console.log('re' + val);
             break;
           case 'goods':
             this.tableSettingData[this.currentTable].multiSelection = val;
@@ -1510,17 +1479,14 @@
           default:
             break;
         }
-        console.log(val);
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {
         return this.tableSettingData[this.currentTable].chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
       },
       handleSizeChange(val) {
-        //console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val, type) {
-        debugger
         if (type) {
           this.currentTable = type;
         }

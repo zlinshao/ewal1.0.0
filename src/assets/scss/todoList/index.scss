@@ -151,6 +151,9 @@
     margin: 0 50px;
     flex-wrap: wrap;
     //background-color: red;
+    .todo-list-container-top {
+      margin-bottom: 20px;
+    }
     .todo-list-container-top, .todo-list-container-bottom {
       @include flex('flex-center');
 

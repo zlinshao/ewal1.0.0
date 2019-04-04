@@ -68,7 +68,7 @@
           label="申请状态">
           <template slot-scope="scope">
             <div v-if="scope.row.applyStatus=='待通知'" slot="reference" class="name-wrapper">
-              <el-tag @click="is_notify_visible = true" size="medium">{{ scope.row.applyStatus }}</el-tag>
+              <el-tag @click="setPerson(scope.row)" size="medium">{{ scope.row.applyStatus }}</el-tag>
             </div>
             <div v-else>{{scope.row.applyStatus}}</div>
           </template>
@@ -114,12 +114,12 @@
         <div class="dialog_main borderNone notify-borrow-receive">
           <el-form :model="is_notify_form" style="text-align: left" size="small" label-width="160px">
             <el-form-item label="是否发送领取通知给">
-              <user-choose title="请选择人员" v-model="is_notify_form.name" width="200" num="1"></user-choose>
+              <user-choose title="请选择人员" v-model="is_notify_form.user_id" width="200" num="1"></user-choose>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger">确定</el-button>
+          <el-button size="small" type="danger" @click="sendReceiveNotify">确定</el-button>
           <el-button size="small" type="info" @click="is_notify_visible = false">取消</el-button>
         </div>
       </div>
@@ -177,7 +177,7 @@
             :row-class-name="tableChooseRow"
             @cell-click="tableClickRow"
             header-row-class-name="tableHeader"
-            :row-style="{height:'62px'}"
+            :row-style="{height:'40px'}"
             style="width: 100%">
             <el-table-column
               v-for="item in Object.keys(tableSettingData.items.tableShowData)" :key="item"
@@ -202,7 +202,8 @@
             <div class="detail-bottom">
               <div class="detail-item" style="position: relative">
                 <span style="position: absolute;right: 95px">照片/视频</span>
-                <div @click="tableSettingData.items.photo_table_dialog_visible = true" class="icons tp"></div>
+<!--                <div @click="tableSettingData.items.photo_table_dialog_visible = true" class="icons tp"></div>-->
+                <div @click="tableSettingData.items.is_show_photo_detail_dialog = true" class="icons tp"></div>
               </div>
               <div class="detail-item total-price">
                 <span>总费用</span>
@@ -291,7 +292,7 @@
             @selection-change="handleSelectionChange"
             @cell-click="tableClickRow"
             header-row-class-name="tableHeader"
-            :row-style="{height:'62px'}"
+            :row-style="{height:'40px'}"
             style="width: 100%">
             <!--<el-table-column-->
             <!--v-for="item in Object.keys(goodsDetailShowData)" :key="item"-->
@@ -447,7 +448,7 @@
     </lj-dialog>
 
     <!--照片table-->
-    <lj-dialog
+    <!--<lj-dialog
       :visible="tableSettingData.items.photo_table_dialog_visible"
       :size="{width: 850 + 'px',height: 800 + 'px'}"
       @close="tableSettingData.items.photo_table_dialog_visible = false"
@@ -487,7 +488,7 @@
           </el-table>
         </div>
       </div>
-    </lj-dialog>
+    </lj-dialog>-->
 
 
     <!--事项详情中图片展示dialog-->
@@ -501,7 +502,7 @@
           <span class="notify-size">物品图片</span>
         </div>
         <div class="dialog_main  borrow-receive-img-dialog">
-          <img-slider :arr-ids="tableSettingData.items.photo_detail_arr"></img-slider>
+          <img-slider :ids="tableSettingData.borrowReceive.formData.receive_picture"></img-slider>
         </div>
 
       </div>
@@ -570,7 +571,7 @@
       return {
         DROPDOWN_CONSTANT,
         url: globalConfig.humanResource_server,
-        checkList: [],
+        //checkList: [],
 
         chooseRowIds: [],
         tableData: [],
@@ -633,9 +634,9 @@
             },
             searchParams: '',// dialog中的模糊搜索
 
-            photo_table_dialog_visible: false,
+            //photo_table_dialog_visible: false,
             is_show_photo_detail_dialog: false,
-            photo_detail_arr:[123,21321,213,4224740],//要显示的图片数组
+            photo_detail_arr:[21321,213,4224740],//要显示的图片数组
           },
           photo: {},//照片
           goods: {//物品详情列表
@@ -690,31 +691,11 @@
 
         is_notify_visible: false,
         is_notify_form: {
-          name: '张三丰',//要发送人的姓名
+          user_id: 0,//要发送人的姓名
+          id:0,//流程id
         },
 
         chooseDetailTabs: 1,//1事项详情 2物品详情
-
-        //借/领用详情table  -->1事项详情
-        eventsDetailData: [],
-        eventsDetailShowData: {
-          goodsName: '物品名称',//物品名称
-          applyCounts: '申领数量',//申领数量
-          receiveCounts: '待领数量',//待领数量
-        },
-
-        //借/领用详情table  -->2物品详情
-        goodsDetailData: [],
-
-        /*is_show_selection: false,//是否显示多选框
-        batch_set_return_time_visible: false,//批量设置归还日期
-        batch_set_receive_person_visible: false,//批量设置领取人*/
-
-        //照片table
-        //photo_table_visible: false,
-        photoData: [],//照片table数据
-
-
         /*
             *表单群组  end
         */
@@ -723,7 +704,6 @@
       }
     },
     mounted() {
-      this.initData();
       this.getBorrowReceiveList();
     },
     activated() {
@@ -743,76 +723,40 @@
     },
     computed: {},
     methods: {
-      initData() {
-        //借用领用表格
 
-        /* for (let i = 0; i < 9; i++) {
-           let as = Math.random() * 10 > 3 ? "待通知" : Math.random() * 10 > 6 ? "待领取" : "部分领取";
-           let obj = {
-             id: i + 1,
-             approvalId: 20190319 + i,
-             counts: 10 + i,
-             applyType: '领用',
-             applyPerson: '张三',
-             department: '部门',
-             applyTime: '2019-03-19',
-             applyStatus: as,
-             goodsStatus: '部分维修'
-           }
-           this.tableSettingData.borrowReceive.tableData.push(obj)
-         }
-         //console.log(this.tableData);
-         this.tableSettingData.borrowReceive.counts = 1000;*/
-
-        //eventsDetailData
-        //借领用详情table数据初始化 1事项详情
-        for (let i = 0; i < 5; i++) {
-          let obj = {
-            id: i + 1,
-            goodsName: 'LG-显示器',//物品名称
-            applyCounts: '20',//申领数量
-            receiveCounts: '15',//待领数量
+      //发送领取通知
+      sendReceiveNotify() {
+        let id = this.is_notify_form.id;
+        let user_id = this.is_notify_form.user_id;
+        let params = {user_id:user_id};
+        this.$http.get(`${this.url}/eam/process/${id}/todo`,params).then(res=> {
+          if(res.code.endsWith('0')) {
+            this.$LjNotify('success',{
+              title:'成功',
+              message:'发送成功',
+            });
+            this.is_notify_visible = false;
+            this.getBorrowReceiveList();
+          }else {
+            this.$LjNotify('error',{
+              title:'失败',
+              message:'发送失败',
+            });
           }
-          this.eventsDetailData.push(obj)
-        }
+        });
+      },
 
-        /*//goodsDetailData
-        //借领用详情table数据初始化 2物品详情
-        for (let i = 0; i < 5; i++) {
-          let obj = {
-            id: i + 1,
-            goodsName: 'LG-显示器',//物品名称
-            borrowReceiveStatus: '待领取',//领/还状态
-            receiveTime: '2019-03-20',//领取日期
-            goodsId: '20190320100745',//物品编号
-            goodsStatus: '无',//物品状态
-            goodsImg: 'img',//物品照片
-            repairCost: '无',//维修费用
-            scrapCost: '无',//报废费用
-            receivePerson: '张三',//领取人
-            returnTime: '--',//归还日期
-          }
-          this.tableSettingData.goods.tableData.push(obj)
-        }*/
-
-
-        //photoData
-        //照片表格数据初始化
-        for (let i = 0; i < 7; i++) {
-          let obj = {
-            id: i + 1,
-            receiveTime: '20190319091956',
-            photo: '领取照片',
-          }
-          this.photoData.push(obj)
-        }
-
-
+      setPerson(row) {
+        console.log(row);
+        this.is_notify_visible = true;
+        this.is_notify_form.user_id = row.user_id;
+        this.is_notify_form.id = row.id;//流程id
       },
 
       //获取借用领用详情list
       getBorrowReceiveList() {
         this.currentTable = 'borrowReceive';
+        this.tableSettingData[this.currentTable].tableData = [];
         this.$http.get(this.url + 'eam/process', this.tableSettingData[this.currentTable].params).then(res => {
           console.log(res);
           if (res.code.endsWith('0')) {
@@ -829,10 +773,12 @@
                 goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status],//物品状态
                 repairPrice: item.repair_price || 0,//维修总费用
                 scrapPrice: item.scrap_price || 0,//报废总费用
-                responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type],//任责人类型
-                responsibleName: item.responsible?.name || '-',//任责人
+                responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type]||'-',//任责人类型
+                responsibleName: item.responsible?.responsible_info?.name||'-',//任责人
                 //costType: item.responsible?.payment_type||0//付款类型-结算方式
                 costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type || 0],//付款类型-结算方式
+                receive_picture: item.receive_picture||[],
+                user_id:item.user_id,
               };
               this.tableSettingData[this.currentTable].tableData.push(obj);
             }
@@ -846,6 +792,7 @@
         let ids = this.tableSettingData.borrowReceive.currentSelection.id;
         this.currentTable = 'items';
         this.chooseDetailTabs = 1;
+        this.tableSettingData[this.currentTable].tableData = [];
         this.$http.get(`${this.url}/eam/process/${ids}/collection`,this.tableSettingData[this.currentTable].params).then(res=> {
           debugger
           if(res.code.endsWith('0')) {
@@ -1096,7 +1043,6 @@
         console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val, currentTable) {
-        debugger
         switch (currentTable) {
           case 'borrowReceive':
             this.params.page = val;
@@ -1109,9 +1055,6 @@
           default :
             break;
         }
-
-
-        //console.log(`当前页: ${val}`);
       }
     },
   }

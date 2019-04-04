@@ -93,7 +93,7 @@
         type:Array,
         //default: () => [],
       },
-      arrIds: {
+      ids: {
         type: Array
       }
     },
@@ -101,7 +101,7 @@
       return {
         url:globalConfig.humanResource_server,
         sliders: [
-          {
+          /*{
             "id": 123,
             "name": "lejia7f87dea5d2f218312028484e56211173.jpg",
             "display_name": "lejia7f87dea5d2f218312028484e56211173.jpg",
@@ -176,7 +176,7 @@
             "created_at": "2019-04-03 18:30:12",
             "updated_at": "2019-04-03 18:30:12",
             "deleted_at": null
-          }
+          }*/
         ],
 
         /*sliders: [
@@ -211,7 +211,7 @@
       }
     },
     watch: {
-      arrIds: {
+      ids: {
         handler(val,oldVal) {
           if(val) {
             this.getPictureUrl(val);

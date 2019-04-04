@@ -1,12 +1,13 @@
 <template>
   <div id="drop_down_list" :style="{width:`${this.dropdownListWidth}px`}">
     <el-select
+      :size="size"
       :disabled="disabled"
       :popper-class="'appTheme' + themeName"
       :value="dropdown_code" @input="handleInputEvent" clearable :placeholder="title"
       @change="changeSelection">
       <el-option v-for="item in dropdown_list"
-                 :key="item.id"
+                 :key="item.value"
                  :label="item.name"
                  :value="item.id">
       </el-option>
@@ -27,7 +28,11 @@
       url: [String],  //请求地址
       params: [Object, String],
       arr:[Object,Array],
-      disabled:[Boolean]
+      disabled:[Boolean],
+      size: {
+        type:[String],
+        default:'',
+      },//高度
     },
     data() {
       return {
@@ -40,7 +45,13 @@
     watch: {
       value: {
         handler(val, oldVal) {
-          this.dropdown_code = Number(this.value) || '';
+          if(this.arr) {
+            this.dropdown_code = Number(this.value);
+          }else {
+            this.dropdown_code = Number(this.value) || '';
+          }
+
+
         },
         immediate: true//第一次绑定也执行
       },
@@ -51,6 +62,14 @@
           }
         },
         immediate: true//第一次绑定也执行
+      },
+      height: {
+        handler(val,oldVal) {
+          if(val) {
+
+          }
+        },
+        immediate: true,
       },
 
     },
@@ -95,7 +114,7 @@
           let myArr = [];
           this.arr.forEach((item,index)=> {
             let myItem = {
-              id:index+1,
+              id:index,
               name:item
             }
             myArr.push(myItem);
