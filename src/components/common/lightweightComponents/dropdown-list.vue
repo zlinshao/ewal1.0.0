@@ -33,6 +33,10 @@
         type:[String],
         default:'',
       },//高度
+      root: {//接口返回数据data层级   //默认2级
+        type:[String,Number],
+        default: 2,
+      }
     },
     data() {
       return {
@@ -45,6 +49,10 @@
     watch: {
       value: {
         handler(val, oldVal) {
+          if(val==='') {
+            this.dropdown_code = '';
+            return;
+          }
           if(this.arr) {
             this.dropdown_code = Number(this.value);
           }else {
@@ -124,7 +132,7 @@
         } else {
           //this.$http.get(`${this.url}eam/category`,
           let queryParams = this.getQueryParams();
-          let keys = this.url + JSON.stringify(queryParams);
+          let keys = this.url + (JSON.stringify(queryParams)=='{}'?'':JSON.stringify(queryParams));
           let caches = storage.get(keys);
           if (caches) {
             this.dropdown_list = caches;

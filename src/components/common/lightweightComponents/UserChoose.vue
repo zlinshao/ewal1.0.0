@@ -6,17 +6,17 @@
     </div>
 
 
-
     <StaffOrgan :module="staffModule" :organ-data="organData" @close="hiddenOrgan"></StaffOrgan>
   </div>
 </template>
 
 <script>
   import StaffOrgan from '../staffOrgan';
+  import storage from '../../../utils/storage';
 
   export default {
     name: "UserChoose",
-    props: ['value', 'width', 'num','title','disabled'],
+    props: ['value', 'width', 'num', 'title', 'disabled'],
     components: {
       StaffOrgan
     },
@@ -35,11 +35,20 @@
       value: {
         handler(val, oldVal) {
           if (val) {
-            this.$http.get(`${this.url}/staff/user/${val}`).then(res=> {
-              if(res.code.endsWith('0')) {
+            if (val.constructor == Array) {
+              return;
+            }
+            let username = storage.get(`user-id${val}`);
+            if (username) {
+              this.inputContent = username;
+              return;
+            }
+            this.$http.get(`${this.url}/staff/user/${val}`).then(res => {
+              debugger
+              if (res.code.endsWith('0')) {
                 this.inputContent = res.data.name;
+                storage.set(`user-id${val}`, res.data.name);
               }
-
             });
           }
         },

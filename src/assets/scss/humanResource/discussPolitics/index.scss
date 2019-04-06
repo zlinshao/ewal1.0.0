@@ -13,7 +13,6 @@
     }
 
     .discuss-politics-container {
-      //background-color: red;
       height: calc(100% - 80px);
 
       .calendar-container {
@@ -83,20 +82,49 @@
                   height: 100%;
 
                   &:hover {
-                    .calendar-day-item-container-date {
+                    .calendar-day-item-container-date:not(.current) {
                       background-color: $colorE33;
-                      color: $colorFFF;
+                      color: $colorFFF !important;
 
                       &.current {
-
                         color: #fff;
                         background-color: $colorE33 !important;
-
                       }
                     }
                   }
 
-                  .calendar-day-item-container-date {
+
+                  .calendar-day-item-container-tip {
+                    position: absolute;
+                    top: 8px;
+                    left: 5px;
+                    .calendar-day-item-container-date {
+                      //position: absolute;
+                      cursor: default;
+                      //top: 10px;
+                      //left: 4px;
+                      width: 24px;
+                      height: 24px;
+                      font-size: 14px;
+                      @include flex('flex-center');
+                      //padding: 6px;
+                      color: $color000;
+                      border-radius: 50%;
+
+                      &.gray {
+                        color: #DCDCDC;
+                      }
+
+                      &.current {
+                        font-size: 20px;
+                        font-weight: 700;
+                        color: $colorE33;
+                        background-color: #fff !important;
+                      }
+                    }
+                  }
+
+                  /*.calendar-day-item-container-date {
                     position: absolute;
                     cursor: default;
                     top: 10px;
@@ -147,7 +175,7 @@
                         //transform: rotateZ(45deg);
                       }
                     }
-                  }
+                  }*/
 
                   .calendar-day-item-container-content {
                     height: 65px;
@@ -333,15 +361,15 @@
 
       }
 
-      .add-meeting-container {
+      /*.add-meeting-container {
         .span-input {
           display: inline-block;
-          height: 19px;
+          height: 34px;
           width: 40px;
           background-color: #fff;
           text-align: center;
         }
-      }
+      }*/
 
       .add-meeting-room-container, .add-meeting-type-container {
         .right-tip {

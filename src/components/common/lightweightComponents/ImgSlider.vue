@@ -3,7 +3,8 @@
     <div class="window" :style="{width: width+'px',height: height+'px'}" @mouseover="stop" @mouseleave="play">
       <ul class="container" :style="containerStyle">
         <li>
-          <div v-if="sliders[sliders.length - 1].info.ext.includes('video')" class="video-container" :style="{width: width+'px',height: height+'px'}">
+          <div v-if="sliders[sliders.length-1]&&sliders[sliders.length - 1].info.ext.includes('video')"
+               class="video-container" :style="{width: width+'px',height: height+'px'}">
             <video @click.self="videoControl" ref="videoDom" style="width: 100%; height:100%; object-fit: fill">
               <source :src="sliders[sliders.length - 1].uri" type="video/mp4">
               <source :src="sliders[sliders.length - 1].uri" type="video/ogg">
@@ -13,11 +14,14 @@
               <div @click.self="audioPlay($event)" class="play"></div>
             </div>
           </div>
-          <img v-if="sliders[sliders.length - 1].info.ext.includes('image')" :style="{width:imgWidth+'px'}" :src="sliders[sliders.length - 1].uri" alt="">
+          <img v-if="sliders[sliders.length-1]&&sliders[sliders.length - 1].info.ext.includes('image')"
+               :style="{width:imgWidth+'px'}" :src="sliders[sliders.length - 1].uri" alt="">
         </li>
         <li v-for="(item, index) in sliders" :key="index">
-          <img :style="{width:imgWidth+'px',height: height+'px'}" v-if="item.info.ext.includes('image')" :src="item.uri" alt="">
-          <div v-if="item.info.ext.includes('video')" class="video-container" :style="{width: width+'px',height: height+'px'}">
+          <img :style="{width:imgWidth+'px',height: height+'px'}" v-if="item.info.ext.includes('image')" :src="item.uri"
+               alt="">
+          <div v-if="item.info.ext.includes('video')" class="video-container"
+               :style="{width: width+'px',height: height+'px'}">
             <video @click.self="videoControl" ref="videoDom" style="width: 100%; height:100%; object-fit: fill">
               <source id="mp4_src" :src="item.uri" type="video/mp4">
               <source id="ogg_src" :src="item.uri" type="video/ogg">
@@ -29,8 +33,10 @@
           </div>
         </li>
         <li>
-          <img v-if="sliders[0].info.ext.includes('image')" :style="{width:imgWidth+'px'}" :src="sliders[0].uri" alt="">
-          <div v-if="sliders[0].info.ext.includes('video')" class="video-container" :style="{width: width+'px',height: height+'px'}">
+          <img v-if="sliders[0] && sliders[0].info.ext.includes('image')" :style="{width:imgWidth+'px'}"
+               :src="sliders[0].uri" alt="">
+          <div v-if="sliders[0] && sliders[0].info.ext.includes('video')" class="video-container"
+               :style="{width: width+'px',height: height+'px'}">
             <video @click.self="videoControl" ref="videoDom" style="width: 100%; height:100%; object-fit: fill">
               <source :src="sliders[0].uri" type="video/mp4">
               <source :src="sliders[0].uri" type="video/ogg">
@@ -90,7 +96,7 @@
         default: 400,
       },
       arr: {
-        type:Array,
+        type: Array,
         //default: () => [],
       },
       ids: {
@@ -99,7 +105,7 @@
     },
     data() {
       return {
-        url:globalConfig.humanResource_server,
+        url: globalConfig.humanResource_server,
         sliders: [
           /*{
             "id": 123,
@@ -212,8 +218,8 @@
     },
     watch: {
       ids: {
-        handler(val,oldVal) {
-          if(val) {
+        handler(val, oldVal) {
+          if (val) {
             this.getPictureUrl(val);
           }
         },
@@ -221,8 +227,8 @@
       },
 
       arr: {
-        handler(val,oldVal) {
-          if(val) {
+        handler(val, oldVal) {
+          if (val) {
             this.sliders = val;
           }
         },
@@ -253,10 +259,10 @@
     methods: {
       //获取图片
       getPictureUrl(val) {
-        let params = {"id":val};
-        this.$http.post(`${this.url}public/pic`,params).then(res=> {
+        let params = {"id": val};
+        this.$http.post(`${this.url}public/pic`, params).then(res => {
           //debugger
-          if(res.code.endsWith('0')) {
+          if (res.code.endsWith('0')) {
             this.sliders = res.data;
           }
         }).catch();
@@ -363,6 +369,7 @@
       @include flex('flex-center');
       width: 100%;
       height: 100%;
+
       .play {
         width: 70px;
         height: 70px;

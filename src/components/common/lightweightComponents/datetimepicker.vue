@@ -16,14 +16,18 @@
     </el-time-picker>
 
     <el-date-picker
+      :startTime="startTime"
+      :endTime="endTime"
       v-if="dateType=='datetimerange'"
       v-model="timeValue"
       :type="dateType"
+      @change="handleChange"
+      format="MM-dd hh:mm"
       :picker-options="pickerOptionsTime"
       range-separator="至"
       start-placeholder="开始时间"
       end-placeholder="结束时间"
-      :default-time="['00:00:00','23:59:59']">
+      :default-time="['08:00:00','12:00:00']">
     </el-date-picker>
     <!--
     :startTime="startTime"
@@ -56,7 +60,7 @@
         required: false
       },
       dateType: {// date  time daterange timerange datetimerange
-        type:String,
+        type: String,
         required: true,
       },
       width: {
@@ -160,6 +164,15 @@
               }
             },
             {
+              text: '最近两小时',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 2);
+                picker.$emit('pick', [start, end]);
+              }
+            },
+            {
               text: '最近三小时',
               onClick(picker) {
                 const end = new Date();
@@ -168,8 +181,13 @@
                 picker.$emit('pick', [start, end]);
               }
             },
-            ]
+          ]
         }
+      }
+    },
+    methods: {
+      handleChange() {
+        //this.$emit(input,this.timeValue);
       }
     },
   }
