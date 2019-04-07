@@ -7,11 +7,16 @@
                 </p>
                 <h1>收款</h1>
                 <h2 class="items-center">
-            <!--<span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"-->
-                  <!--:class="{'chooseTab': chooseTab === item.id}">-->
-              <!--{{item.title}}<i></i>-->
-            <!--</span>-->
-                   <span>请选择科目</span>
+                    <!--<span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"-->
+                    <!--:class="{'chooseTab': chooseTab === item.id}">-->
+                    <!--{{item.title}}<i></i>-->
+                    <!--</span>-->
+                    <span class="items-column">请选择收款类型</span>
+
+                    <el-checkbox-group v-model="checkList">
+                        <el-checkbox label="定金"></el-checkbox>
+                        <el-checkbox label="房租"></el-checkbox>
+                    </el-checkbox-group>
                 </h2>
             </div>
             <div class="items-center listTopRight">
@@ -121,9 +126,9 @@
                                 width="55">
                         </el-table-column>
 
-                        <el-table-column  align="center" label="ID" prop="id">
+                        <el-table-column align="center" label="ID" prop="id">
                         </el-table-column>
-                        <el-table-column  align="center" label="明细" prop="desc">
+                        <el-table-column align="center" label="明细" prop="desc">
                         </el-table-column>
 
 
@@ -159,7 +164,7 @@
                                 </div>
                             </div>
                         </el-form-item>
-                        <el-form-item >
+                        <el-form-item>
                             <div class="form_item_container">
                                 <div class="item_label">
                                     <b class="item_icons">
@@ -185,27 +190,28 @@
                                 </div>
                                 <div class="item_content">
                                     <el-select class="all_width" v-model="receive_form.account_id">
-                                        <el-option v-for="(item,index) in accountLists" :label="item.name" :value="item.id"
+                                        <el-option v-for="(item,index) in accountLists" :label="item.name"
+                                                   :value="item.id"
                                                    :key="index"></el-option>
                                     </el-select>
                                 </div>
                             </div>
                         </el-form-item>
                         <!--<el-form-item>-->
-                            <!--<div class="form_item_container">-->
-                                <!--<div class="item_label">-->
-                                    <!--<b class="item_icons">-->
-                                        <!--<i class="icon_subject"></i>-->
-                                    <!--</b>-->
-                                    <!--<span>款项科目</span>-->
-                                <!--</div>-->
-                                <!--<div class="item_content">-->
-                                    <!--<el-select class="all_width" v-model="receive_form.subject_name">-->
-                                        <!--<el-option label="中介费" value="1"></el-option>-->
-                                        <!--<el-option label="租房房租" value="2"></el-option>-->
-                                    <!--</el-select>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                        <!--<div class="form_item_container">-->
+                        <!--<div class="item_label">-->
+                        <!--<b class="item_icons">-->
+                        <!--<i class="icon_subject"></i>-->
+                        <!--</b>-->
+                        <!--<span>款项科目</span>-->
+                        <!--</div>-->
+                        <!--<div class="item_content">-->
+                        <!--<el-select class="all_width" v-model="receive_form.subject_name">-->
+                        <!--<el-option label="中介费" value="1"></el-option>-->
+                        <!--<el-option label="租房房租" value="2"></el-option>-->
+                        <!--</el-select>-->
+                        <!--</div>-->
+                        <!--</div>-->
                         <!--</el-form-item>-->
                         <el-form-item>
                             <div class="form_item_container">
@@ -310,7 +316,8 @@
                                 </div>
                                 <div class="item_content">
                                     <el-input placeholder="请点击选择客户名称"
-                                              :disabled="true" :value="ruleForm.identity===1?'业主':ruleForm.identity===2?'租客':''"></el-input>
+                                              :disabled="true"
+                                              :value="ruleForm.identity===1?'业主':ruleForm.identity===2?'租客':''"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -407,7 +414,7 @@
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>跟进记录</h3>
-                    <span class="add_mark" @click="new_record_visible = true">+</span>
+                    <span class="add_mark" @click="add_record_visible = true">+</span>
                 </div>
                 <div class="dialog_main">
                     <div class="address">{{current_address}}</div>
@@ -415,9 +422,12 @@
                         <el-table
                                 :data="record_data"
                         >
-                            <el-table-column label="跟进时间" prop="create_time" show-overflow-tooltip align="center"></el-table-column>
-                            <el-table-column label="跟进发起人" prop="creator.name" align="center" show-overflow-tooltip></el-table-column>
-                            <el-table-column label="当前跟进人" prop="flow_staff.name" align="center" show-overflow-tooltip></el-table-column>
+                            <el-table-column label="跟进时间" prop="create_time" show-overflow-tooltip
+                                             align="center"></el-table-column>
+                            <el-table-column label="跟进发起人" prop="creator.name" align="center"
+                                             show-overflow-tooltip></el-table-column>
+                            <el-table-column label="当前跟进人" prop="flow_staff.name" align="center"
+                                             show-overflow-tooltip></el-table-column>
                             <el-table-column label="跟进类型" prop="" align="center" show-overflow-tooltip>
                                 <template slot-scope="scope">
                                     <span>{{scope.row.flow_up_type===3 ? '贴条': scope.row.flow_up_type===5 ?'换锁':'/'}}</span>
@@ -428,7 +438,8 @@
                                     <span>{{scope.row.flow_up_status===3 ? '已响应' :scope.row.flow_up_status ===5 ? '未响应':'/'}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="款项名目" prop="address" align="center" show-overflow-tooltip></el-table-column>
+                            <el-table-column label="款项名目" prop="address" align="center"
+                                             show-overflow-tooltip></el-table-column>
                         </el-table>
                     </div>
                 </div>
@@ -445,9 +456,9 @@
 
         <!--新增跟进任务-->
         <lj-dialog
-                :visible="new_record_visible"
+                :visible="add_record_visible"
                 :size="{width: 500 + 'px' ,height: 520 + 'px'}"
-                @close="new_record_visible = false">
+                @close="add_record_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>新增跟进</h3>
@@ -463,7 +474,7 @@
                                     <span>跟进人</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input  v-model="new_record.flow_staff_id"></el-input>
+                                    <el-input v-model="new_record.flow_staff_id"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -478,7 +489,8 @@
                                 <div class="item_content">
                                     <!--<el-input  v-model="new_record.content"></el-input>-->
                                     <el-select v-model="new_record.flow_up_type">
-                                        <el-option v-for="(item,index) in categoryList" :key="index" :label="item.title" :value="item.value"></el-option>
+                                        <el-option v-for="(item,index) in categoryList" :key="index" :label="item.title"
+                                                   :value="item.value"></el-option>
                                     </el-select>
                                 </div>
                             </div>
@@ -492,7 +504,7 @@
                                     <span>应收款项</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input  v-model="new_record.content" type="number"></el-input>
+                                    <el-input v-model="new_record.content" type="number"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -518,7 +530,7 @@
                                     <span>地址</span>
                                 </div>
                                 <div class="item_content justify-start">
-                                    <el-input  v-model="new_record.address"></el-input>
+                                    <el-input v-model="new_record.address"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -526,7 +538,7 @@
                 </div>
                 <div class="dialog_footer">
                     <el-button size="small" type="danger" @click="postNewRecord()">确定</el-button>
-                    <el-button size="small" @click="new_record_visible=false;">取消</el-button>
+                    <el-button size="small" @click="add_record_visible=false;">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -603,7 +615,8 @@
                                             v-for="(index,item) in categoryList"
                                             :key="item" style="margin-bottom: 10px"
                                             @click="getCategory(index.value)"
-                                    >{{index.title}}</el-button>
+                                    >{{index.title}}
+                                    </el-button>
 
                                 </div>
                             </div>
@@ -617,10 +630,10 @@
             </div>
         </lj-dialog>
 
-        <!--登记收款-->
+        <!--更新登记-->
         <lj-dialog
                 :visible="register_visible"
-                :size="{width: 500 + 'px',height: 500 + 'px'}"
+                :size="{width: 500 + 'px',height: 580 + 'px'}"
                 @close="register_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
@@ -637,8 +650,7 @@
                                     <span>选择图片</span>
                                 </div>
                                 <div class="item_content">
-                                    <!--<span class="el-icon-plus" style="padding: 6px;background:rgba(255,255,255,1);border-radius:4px;"></span>-->
-                                    <Upload :file="photo1" @success="getImgIds"></Upload>
+                                    <Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>
                                 </div>
                             </div>
                         </el-form-item>
@@ -648,12 +660,42 @@
                                     <b class="item_icons">
                                         <i class="icon_account"></i>
                                     </b>
-                                    <span>选择账户</span>
+                                    <span>房屋地址</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-input v-model="register_from.address"></el-input>
+                                </div>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_subject"></i>
+                                    </b>
+                                    <span>付款方式</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-select placeholder="请选择" v-model="params.cate" @change="getAccount">
+                                        <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
+                                                   :key="index"></el-option>
+                                    </el-select>
+                                </div>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_account"></i>
+                                    </b>
+                                    <span>账户</span>
                                 </div>
                                 <div class="item_content">
                                     <el-select class="all_width" v-model="register_from.account_id">
-                                        <el-option value="1" label="2104023483209"></el-option>
-                                        <el-option value="1" label="2104023483209"></el-option>
+                                        <el-option v-for="(item,index) in accountLists" :label="item.name"
+                                                   :value="item.id"
+                                                   :key="index"></el-option>
                                     </el-select>
                                 </div>
                             </div>
@@ -690,7 +732,7 @@
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="mini" type="danger" @click="registrate">迁移</el-button>
+                    <el-button size="mini" type="danger" @click="registrate()">迁移</el-button>
                     <el-button size="mini" @click="register_visible = false">取消</el-button>
                 </div>
             </div>
@@ -704,10 +746,10 @@
                     <h3>请选择客户</h3>
                 </div>
                 <div class="dialog_main">
-                    <customer-lists  @getCustomer="getCurrentCustomer"></customer-lists>
+                    <customer-lists @getCustomer="getCurrentCustomer"></customer-lists>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="handleChooseCustomer"  >确定</el-button>
+                    <el-button type="danger" size="small" @click="handleChooseCustomer">确定</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -737,6 +779,7 @@
         data() {
             return {
                 gatheringSearchList,
+                checkList:[],
                 photo1: {
                     keyName: 'photo1',
                     setFile: [
@@ -772,29 +815,29 @@
                     page: 1,
                     limit: 12,
                     export: '',
-                    cate:'',
+                    cate: '',
 
                 },
                 btnData: [
                     {label: "回滚", type: "warning", icon: "el-icon-info", size: "small", methods: "handleProcess"},
                     {label: "删除", type: "danger", icon: "el-icon-delete", size: "small", methods: "handleDelete"},
                 ],
-                current_address:'',
-                current_row:'',
+                current_address: '',
+                current_row: '',
                 showFinMenuList: false,
-                delete_visible:false,//删除
+                delete_visible: false,//删除
                 add_visible: false,//新增
-                recall_visible:false,//回滚
+                recall_visible: false,//回滚
                 receive_visible: false, //应收入账
                 record_visible: false, //跟进记录
-                new_record_visible:false,//新增跟进
+                add_record_visible: false,//新增跟进
                 mark_visible: false, //备注列表
                 new_mark_visible: false, //新增备注
                 register_visible: false, //登记收款
                 register_size: '',
-                customer_visible:false,
-                running_account_record:[],//回滚数据
-                ra_ids:[],//回滚id
+                customer_visible: false,
+                running_account_record: [],//回滚数据
+                ra_ids: [],//回滚id
 
                 subject_visible: false,//科目
                 which_subject: '',
@@ -822,7 +865,7 @@
                     identity: '',//款项
                     pay_date: '',//付款时间
                     subject_id: '',
-                    customer_name:'',
+                    customer_name: '',
                 },
                 rules: {
                     amount_payable: [
@@ -830,34 +873,34 @@
                         {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
                     ],
                 },
-                types:[
-                    {title:"业主",value:1},
-                    {title:"租客",value:2}
+                types: [
+                    {title: "业主", value: 1},
+                    {title: "租客", value: 2}
                 ],
 
                 register_from: {
-                    fund_id:'',
-                    collect_img:[],
+                    fund_id: '',
+                    collect_img: [],
                     account_id: '',
                     amount: '2000.00',
                     collection_time: '',
-                    address:'',
-                    remark:'',
+                    address: '',
+                    remark: '',
                 },
                 new_mark: {
                     content: '',
                     category: '',
                 },
-                categoryList:[
-                    {title:"违约",value:1} ,
-                    {title:"延期",value:2} ,
-                    {title:"贴条",value:3} ,
-                    {title:"换锁",value:4} ,
-                    {title:"维修",value:5} ,
-                    {title:"资金",value:6} ,
-                    {title:"炸单",value:7} ,
-                    {title:"调房",value:8} ,
-                    {title:"特殊情况",value:9} ,
+                categoryList: [
+                    {title: "违约", value: 1},
+                    {title: "延期", value: 2},
+                    {title: "贴条", value: 3},
+                    {title: "换锁", value: 4},
+                    {title: "维修", value: 5},
+                    {title: "资金", value: 6},
+                    {title: "炸单", value: 7},
+                    {title: "调房", value: 8},
+                    {title: "特殊情况", value: 9},
                 ],
                 showSearch: false,
                 chooseTab: 1,
@@ -880,7 +923,7 @@
                     // }
                 ],
                 tableData: [],
-                count:0,
+                count: 0,
 
                 showData: {
                     "pay_date": '收款时间',
@@ -898,12 +941,12 @@
                     {val: '跟进列表', key: 'record', type: 'success',},
                     {val: '催缴备注', key: 'mark', type: 'danger',},
                     // {val: '详情', key: 'detail', type: 'primary',},
-                    {val: '登记收款', key: 'register', type: 'warning',},
+                    {val: '更新登记', key: 'register', type: 'warning',},
                     {val: '应收入账', key: 'should_receive', type: 'success',}
                 ],
                 searchData: {},
 
-                amount_receivable:'',//应收
+                amount_receivable: '',//应收
                 chooseRowIds: [],
                 receive_form: {
                     // subject_name: '1',//科目
@@ -916,19 +959,19 @@
                 },
 
                 record_data: [],//跟进列表
-                record_data_count:0,
-                mark_data:[],
-                mark_data_count:0,
-                new_record:{
-                    flow_staff_id:'',//跟进人id
-                    flow_up_type:'',//跟进类型
-                    fund_id:'',//收款id
-                    remark:'',
-                    address:'',
+                record_data_count: 0,
+                mark_data: [],
+                mark_data_count: 0,
+                new_record: {
+                    flow_staff_id: '',//跟进人id
+                    flow_up_type: '',//跟进类型
+                    fund_id: '',//收款id
+                    remark: '',
+                    address: '',
 
                 },
-                registerData:[],//登记列表
-                accountLists:[],
+                registerData: [],//登记列表
+                accountLists: [],
                 cate: [
                     {title: "银行卡", value: 1,},
                     {title: "支付宝", value: 2,},
@@ -936,6 +979,20 @@
                     {title: "银行卡(数据来自房管中心)", value: 4,},
                 ],
                 multipleSelection: [],//多选
+                //上传
+                // upload_visible: false,
+                uploadFile: {
+                    keyName: 'album',
+                    setFile: [],
+                    size: {
+                        width: '50px',
+                        height: '50px'
+                    }
+                },
+                upload_form: {
+                    album: [],
+                    album_file: [],
+                }, //所有上传文件
             }
         },
         mounted() {
@@ -944,29 +1001,55 @@
         activated() {
         },
         watch: {
-            new_mark:{
-                handler(val){
+            new_mark: {
+                handler(val) {
                     console.log(val)
-                }
+                },
+                deep:true
+            },
+            checkList:{
+                handler(val) {
+                    console.log(val);
+                    for(let item of val){
+                        if(item==='定金'){
+                            this.params.is_deposit = 2;
+                        }
+                        if(item==='房租'){
+                            this.params.is_tail_fund = 2;
+
+                        }
+                        this.getReceiveList()
+
+                    }
+                } ,
+                deep:true
             }
         },
         computed: {},
         methods: {
-            getImgIds(val) {
-                console.log(val);
+            //上传回调
+            handleSuccessUpload(item) {
+                this.register_from.collect_img = [];
+                if (item !== 'close') {
+                    this.upload_form[item[0]] = item[1];
+
+                    this.register_from.collect_img = item[1];
+                }
+                console.log(item);
             },
-            // 迁移
-            registrate(){
-                this.$http.put(globalConfig.temporary_server + 'registration/2',this.register_from).then(res=>{
-                    if(res.code===200){
+            // 更新登记收款
+            registrate() {
+                this.register_from.fund_id = this.current_row.id;
+                console.log(this.register_from);
+                this.$http.put(globalConfig.temporary_server + 'registration/2', this.register_from).then(res => {
+                    if (res.code === 200) {
                         this.$LjNotify('success', {
                             title: '成功',
                             message: res.msg,
                             subMessage: '',
                         });
                         this.register_visible = false;
-                    }
-                    else{
+                    } else {
                         this.$LjNotify('error', {
                             title: '失败',
                             message: res.msg,
@@ -992,7 +1075,7 @@
             //删除
             handleOkDel() {
                 this.$http.delete(globalConfig.temporary_server + 'account_receivable/delete/' + this.current_row.id).then(res => {
-                    if(res.code===200){
+                    if (res.code === 200) {
                         this.$LjNotify('success', {
                             title: '成功',
                             message: res.msg,
@@ -1018,31 +1101,31 @@
                 this.delete_visible = true;
             },
             // 多选
-            handleSelectionChange(val){
-                this.ra_ids=[];
+            handleSelectionChange(val) {
+                this.ra_ids = [];
                 this.multipleSelection = val;
                 console.log(val);
-                for(let item in val){
+                for (let item in val) {
                     this.ra_ids.push(val[item].id);
                 }
                 console.log(this.ra_ids);
             },
             //显示回滚
-            handleProcess(row, index){
-                this.running_account_record=[];
+            handleProcess(row, index) {
+                this.running_account_record = [];
                 this.current_row = row;
                 this.recall_visible = true;
-                for( let item in this.current_row.running_account_record){
-                  this.running_account_record.push({id:item,desc:this.current_row.running_account_record[item]});
+                for (let item in this.current_row.running_account_record) {
+                    this.running_account_record.push({id: item, desc: this.current_row.running_account_record[item]});
                 }
                 console.log(this.running_account_record);
             },
 
             //确认回滚
-            handleOkRecall(){
-                this.$http.put(globalConfig.temporary_server + 'account_receivable/revert/'+this.current_row.id,{ra_id:this.ra_ids}).then(res => {
+            handleOkRecall() {
+                this.$http.put(globalConfig.temporary_server + 'account_receivable/revert/' + this.current_row.id, {ra_id: this.ra_ids}).then(res => {
 
-                    if(res.code===200){
+                    if (res.code === 200) {
                         this.$LjNotify('success', {
                             title: '成功',
                             message: res.msg,
@@ -1050,7 +1133,7 @@
                         });
                         this.recall_visible = false;
 
-                    }else {
+                    } else {
                         this.$LjNotify('error', {
                             title: '失败',
                             message: res.msg,
@@ -1066,14 +1149,14 @@
                 this.params.page = page;
                 this.getReceiveList();
             },
-            getCategory(val){
+            getCategory(val) {
                 this.new_mark.category = val;
             },
             //跟进列表
-            getReceivable_follow(){
+            getReceivable_follow() {
                 this.$http.get(globalConfig.temporary_server + 'receivable_follow',).then(res => {
                     console.log(res);
-                    if(res.code===200){
+                    if (res.code === 200) {
                         this.record_data = res.data.data;
                         this.record_data_count = res.data.count;
                         console.log(res);
@@ -1083,44 +1166,17 @@
                 })
             },
             //新增跟进
-            postNewRecord(){
-                this.$http.get(globalConfig.temporary_server + 'receivable_follow',this.new_record).then(res => {
-                    console.log(res);
-                    if(res.code===200){
-                        this.record_data = res.data.data;
-                        this.record_data_count = res.data.count;
-                        console.log(res);
-                    }
-                }).catch(err => {
-                    console.log(err);
-                })
-            },
-            //催缴备注列表
-            getReceivable_tag(id){
-                this.$http.get(globalConfig.temporary_server + 'receivable_tag',{fund_id:id}).then(res => {
-                    console.log(res);
-                    if(res.code===200){
-                        this.mark_data = res.data.data;
-                        this.mark_data_count = res.data.count;
-                        console.log(res)
-                    }
-                }).catch(err => {
-                    console.log(err);
-                })
-            },
-            //新增催缴备注
-            postReceivable_tag(){
-                this.$http.post(globalConfig.temporary_server + 'account_receivable/urge_tag/'+this.current_row.id,this.new_mark).then(res => {
-                    console.log(res);
-                    if(res.code===200){
+            postNewRecord() {
+                this.$http.post(globalConfig.temporary_server + 'receivable_follow', this.new_record).then(res => {
+                    if (res.code === 200) {
                         this.$LjNotify('success', {
                             title: '成功',
                             message: res.msg,
                             subMessage: '',
                         });
-                        this.new_mark_visible = false;
-                        this.getReceivable_tag(this.current_row.id);
-                    }else{
+                        this.add_record_visible = false;
+                        this.getReceivable_follow();
+                    } else {
                         this.$LjNotify('error', {
                             title: '失败',
                             message: res.msg,
@@ -1131,11 +1187,46 @@
                     console.log(err);
                 })
             },
-            getAccount(){
-                this.$http.get(globalConfig.temporary_server + "account",this.params).then(res => {
-                    if(res.code===200){
+            //催缴备注列表
+            getReceivable_tag(id) {
+                this.$http.get(globalConfig.temporary_server + 'receivable_tag', {fund_id: id}).then(res => {
+                    console.log(res);
+                    if (res.code === 200) {
+                        this.mark_data = res.data.data;
+                        this.mark_data_count = res.data.count;
+                        console.log(res)
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            //新增催缴备注
+            postReceivable_tag() {
+                this.$http.post(globalConfig.temporary_server + 'account_receivable/urge_tag/' + this.current_row.id, this.new_mark).then(res => {
+                    console.log(res);
+                    if (res.code === 200) {
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.new_mark_visible = false;
+                        this.getReceivable_tag(this.current_row.id);
+                    } else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+            getAccount() {
+                this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
+                    if (res.code === 200) {
                         this.accountLists = res.data.data;
-
                     }
                 }).catch(err => {
                     console.log(err);
@@ -1170,22 +1261,22 @@
                 this.customer_visible = true;
             },
             //返回数据
-            getCurrentCustomer(data){
+            getCurrentCustomer(data) {
                 console.log(JSON.stringify(data));
-                for(let item of Object.keys(this.ruleForm)){
+                for (let item of Object.keys(this.ruleForm)) {
                     this.ruleForm[item] = data[item];
                 }
             },
             //确认选择
-            handleChooseCustomer(){
-                if(this.ruleForm.customer_id != ''){
+            handleChooseCustomer() {
+                if (this.ruleForm.customer_id != '') {
                     this.$LjNotify('success', {
                         title: '成功',
                         message: "操作成功",
                         subMessage: '',
                     });
                     this.customer_visible = false;
-                }else{
+                } else {
                     this.$LjNotify('success', {
                         title: '提示',
                         message: "请选择客户",
@@ -1216,7 +1307,7 @@
                     }
                 })
             },
-            handleClickBtn(key,row) {
+            handleClickBtn(key, row) {
                 this.current_row = row;
                 this.current_address = row.customer.address;
                 if (key === 'should_receive') {
@@ -1262,14 +1353,14 @@
                 if (val !== 'close') {
                     console.log(val);
                 }
-                for(let item of Object.keys(this.params)){
-                    if(val){
+                for (let item of Object.keys(this.params)) {
+                    if (val) {
                         this.params[item] = val[item];
-                        if(val.gatherDate){
+                        if (val.gatherDate) {
                             this.params.startRange = val.gatherDate[0];
                             this.params.endRange = val.gatherDate[1];
                         }
-                        if(val.tagDate){
+                        if (val.tagDate) {
                             this.params.startTag = val.tagDate[0];
                             this.params.endTag = val.tagDate[1];
                         }
