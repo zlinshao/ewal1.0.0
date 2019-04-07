@@ -21,25 +21,27 @@
                     <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===1">
                         <i class="el-icon-view"></i>忽略重复
                     </div>
-                    <div  class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
-                        <span  style="background-color: #14e731;"></span>
-                        <span  style="background-color: #e6a23c;"></span>
-                        <span  style="background-color: #f56c6c;"></span>
+                    <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
+                        <span style="background-color: #14e731;" v-if="LordStatus[scope.$index]['is_contact']===0"></span>
+                        <span style="background-color: #e6a23c;" v-if="LordStatus[scope.$index]['is_name']===1"></span>
+                        <span style="background-color: #f56c6c;" v-if="LordStatus[scope.$index]['is_address']===2"></span>
                         <span v-if="freeze[scope.$index]===1" style="background-color: #409eff;"></span>
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="create_time" label="生成时间" show-overflow-tooltip  align="center"></el-table-column>
+            <el-table-column prop="create_time" label="生成时间" show-overflow-tooltip align="center"></el-table-column>
             <el-table-column prop="address" label="房屋地址" show-overflow-tooltip align="center"></el-table-column>
             <el-table-column prop="customer_name" label="客户姓名" show-overflow-tooltip align="center"></el-table-column>
             <el-table-column prop="contact" label="客户手机号" show-overflow-tooltip align="center"></el-table-column>
             <el-table-column prop="months" label="收房月数" show-overflow-tooltip align="center"></el-table-column>
             <el-table-column prop="deal_date" label="待签约日期" show-overflow-tooltip align="center"></el-table-column>
-            <el-table-column prop="first_pay_date" label="第一次打房租日期" show-overflow-tooltip align="center"  width="150"></el-table-column>
+            <el-table-column prop="first_pay_date" label="第一次打房租日期" show-overflow-tooltip align="center"
+                             width="150"></el-table-column>
             <el-table-column prop="account_type" label="客户汇款方式" show-overflow-tooltip align="center"></el-table-column>
-            <el-table-column label="付款方式/月单价" prop="prices" align="center"  show-overflow-tooltip  width="150"></el-table-column>
-            <el-table-column label="账号" prop="account_num" align="center"  show-overflow-tooltip ></el-table-column>
-            <el-table-column label="签约人" prop="operator.name" align="center"  show-overflow-tooltip ></el-table-column>
+            <el-table-column label="付款方式/月单价" prop="prices" align="center" show-overflow-tooltip
+                             width="150"></el-table-column>
+            <el-table-column label="账号" prop="account_num" align="center" show-overflow-tooltip></el-table-column>
+            <el-table-column label="签约人" prop="operator.name" align="center" show-overflow-tooltip></el-table-column>
 
             <el-table-column label="状态" prop="" align="center" width="80">
                 <template slot-scope="scope">
@@ -49,11 +51,18 @@
 
             <el-table-column label="操作" prop="" align="center" width="500">
                 <template slot-scope="scope">
-                    <el-button type="success" size="small" @click="handleDetailsLord(scope.row,scope.$index)">查看</el-button>
-                    <el-button type="primary" size="small" @click="handleEditLord(scope.row,scope.$index)">编辑</el-button>
-                    <el-button type="warning" size="small" @click="handleReturnRemark(scope.row,scope.$index)">恢复重复标记</el-button>
-                    <el-button type="info" size="small" @click="scope.row.freeze===0 ? handleProcessLord(scope.row,scope.$index):handleCancelProcessLord(scope.row,scope.$index)">{{scope.row.freeze === 0 ? '生成待处理项':'取消待处理项'}}</el-button>
-                    <el-button type="danger" size="small" @click="handleDeleteLord(scope.row,scope.$index)">删除</el-button>
+                    <el-button type="success" size="small" @click="handleDetailsLord(scope.row,scope.$index)">查看
+                    </el-button>
+                    <el-button type="primary" size="small" @click="handleEditLord(scope.row,scope.$index)">编辑
+                    </el-button>
+                    <el-button type="warning" size="small" @click="handleReturnRemark(scope.row,scope.$index)">恢复重复标记
+                    </el-button>
+                    <el-button type="info" size="small"
+                               @click="scope.row.freeze===0 ? handleProcessLord(scope.row,scope.$index):handleCancelProcessLord(scope.row,scope.$index)">
+                        {{scope.row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
+                    </el-button>
+                    <el-button type="danger" size="small" @click="handleDeleteLord(scope.row,scope.$index)">删除
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -126,8 +135,11 @@
                 :visible="edit_visible"
                 :size="{width: 1200 + 'px',height: 800 + 'px' }"
                 @close="edit_visible = false">
-            <lord-form :formData="lordDetailData" :current_row="current_row" @updateList="updateLordList"></lord-form>
+            <lord-form :form="lordDetailData" :current_row="current_row" @updateList="updateLordList" :address="set_price_form.bottom_name" :addressIds="set_price_form.bottom_id"></lord-form>
         </lj-dialog>
+
+        <!--搜索房源-->
+        <HouseFilter :visible="house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
 
 
     </div>
@@ -136,14 +148,16 @@
     import LjDialog from '../../../common/lj-dialog.vue';
     import LjSubject from '../../../common/lj-subject.vue';
     import LordForm from "./lordForm";
+    import HouseFilter from '../../../marketCentre/components/house-filter.vue';
+
     export default {
         name: "index",
-        components: {LordForm, LjDialog, LjSubject},
-        props:['searchParams'],
+        components: {LordForm, LjDialog, LjSubject,HouseFilter},
+        props: ['searchParams'],
         data() {
             return {
                 params: {//查询参数
-                    search: this.searchParams.undefined,
+                    search: '',
                     startRange: '',
                     endRange: '',
                     page: 1,
@@ -153,6 +167,8 @@
                 },
                 chooseRowIds: [],//列表ids
                 tableDetailData: [//详情
+                    {label: "签约人 :", prop: "staff"},
+                    {label: "所属部门 :", prop: "department"},
                     {label: "客户姓名 :", prop: "customer_name"},
                     {label: "客户联系方式 :", prop: "contact"},
                     {label: "房屋地址 :", prop: "address"},
@@ -165,7 +181,7 @@
                     {label: "负责人 :", prop: "leader"},
                     {label: "所属部门 :", prop: "department"},
                     {label: "操作人 :", prop: "operator"},
-                    {label: "签约人 :", prop: "staff"},
+
                     {label: "备注 :", prop: "remark"},
                     {label: "汇款方式 :", prop: "account_type"},
                     {label: "汇款人姓名 :", prop: "account_owner"},
@@ -173,7 +189,7 @@
                     {label: "支行 :", prop: "account_subbank"},
                     {label: "账号 :", prop: "account_num"},
                 ],
-                LordStatus:[
+                LordStatus: [
                     {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
                     {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
                     {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
@@ -196,60 +212,95 @@
                 lordLists: [],//列表数据
                 lordCount: 0,
                 lordIds: [],
-                ra_ids:[],
+                ra_ids: [],
                 multipleSelection: [],//多选
-                freeze:[],//待处理
+                freeze: [],//待处理
 
-                lordDetailData:{
-                    leader:'',
-                    department:'',
-                    operator:'',
-                    staff:'',
+                lordDetailData: {
+                    leader: '',
+                    department: '',
+                    operator: '',
+                    staff: '',
                 },
-
-
+                statusLists:[],
+                house_filter_visible:false,
+                set_price_form: {
+                    bottom_price: '',
+                    bottom_id: [],
+                    suggest_price: '',
+                    suggest_id: [],
+                    bottom_name: '',
+                    suggest_name: '',
+                    bottom_type: '',
+                    suggest_type: ''
+                },
 
             }
         },
         mounted() {
             this.getLordList();
         },
-        created(){
-            this.$bus.on('cancelRemarkFun',this.handleRemark);//取消重复标记
-            this.$bus.on('getParams',this.handleParams);//搜索参数
+        created() {
+            this.$bus.on('cancelRemarkFun', this.handleRemark);//取消重复标记
+            this.$bus.on('getParams', this.handleParams);//搜索参数
+            this.$bus.on('chooseHouse', this.handleChooseHouse);//搜索房屋
         },
-        beforeDestroy(){
-            this.$bus.off('cancelRemarkFun',this.handleRemark);
-            this.$bus.on('getParams',this.handleParams);
+        beforeDestroy() {
+            this.$bus.off('cancelRemarkFun', this.handleRemark);
+            this.$bus.off('getParams', this.handleParams);
+            this.$bus.off('chooseHouse', this.handleChooseHouse);//搜索房屋
         },
         activated() {
 
         },
         watch: {
-            params:{
-                handler(val) {
-                    if(val){
-                        this.getLordList();
-                    }
-                },
-                deep:true
-            }
+
         },
 
         computed: {},
         methods: {
+            //房屋
+            handleChooseHouse(val){
+                this.house_filter_visible = val
+            },
+            //确定选择房源
+            handleGetHouseResource(house,type) {
+                console.log(house);
+                console.log(type);
+                if (house) {
+                        this.set_price_form.bottom_name = '';
+                        this.set_price_form.bottom_id = [];
+                        house.map(item => {
+                            this.set_price_form.bottom_name += item.house_name + ',';
+                            if (type === 'house') {
+                                this.set_price_form.bottom_type = 1;
+                                this.set_price_form.bottom_id.push(item.house_id);
+                            } else {
+                                this.set_price_form.bottom_type = 2;
+                                this.set_price_form.bottom_id.push(item.village_id);
+                            }
+                        });
+                        this.set_price_form.bottom_name = this.set_price_form.bottom_name.substring(0,this.set_price_form.bottom_name.length - 1);
+
+                }
+                this.house_filter_visible = false;
+
+                console.log(this.addressInfo)
+
+            },
             // 搜索参数
-            handleParams(val){
-                if(val.undefined){
+            handleParams(val) {
+                if (val.undefined) {
                     this.params.search = val.undefined;
                 } else {
                     this.params.search = ''
                 }
-                if(val.data1){
-                    this.params.startRange = val.data1[0];
-                    this.params.endRange = val.data1[1];
+                if (val.date1) {
+                    this.params.startRange = val.date1[0];
+                    this.params.endRange = val.date1[1];
                 }
-
+                console.log(val);
+                this.getLordList();
             },
 
             //换页
@@ -257,7 +308,7 @@
                 this.params.page = page;
                 this.getLordList();
             },
-            updateLordList(val){
+            updateLordList(val) {
                 this.edit_visible = val;
                 this.getLordList();
             },
@@ -272,11 +323,11 @@
                 return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
             },
             // 多选
-            handleSelectionChange(val){
-                this.ra_ids=[];
+            handleSelectionChange(val) {
+                this.ra_ids = [];
                 this.multipleSelection = val;
                 console.log(val);
-                for(let item in val){
+                for (let item in val) {
                     this.ra_ids.push(val[item].id);
                 }
                 console.log(this.ra_ids);
@@ -303,12 +354,19 @@
                 this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
                     if (res.code === 200) {
                         this.showLoading(false);
-                        this.lordLists = res.data.data;
+                        this.lordLists = res.data.data.sort(
+                            function (a,b) {
+                                return a.id-b.id
+                            }
+                        );
+
+                        console.log(this.lordLists);
                         this.lordCount = res.data.count;
-                        this.freeze= [];
+                        this.freeze = [];
                         for (let item of this.lordLists) {
                             this.freeze.push(item.freeze);
                         }
+
                     } else {
                         this.lordLists = [];
                         this.lordCount = 0;
@@ -320,17 +378,12 @@
                     //前缀状态
                     this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.lordIds}).then(res => {
                         if (res.code === 200) {
-                            this.LordStatus =[];
                             let statusData = res.data.data;
-                            for (let item in statusData){
-                                this.LordStatus.push({
-                                        is_contact:statusData[item].is_contact,
-                                        is_name:statusData[item].is_name,
-                                        is_address:statusData[item].is_address,
-                                        suppress_dup:statusData[item].suppress_dup,//0不或略，1忽略
-                                    }
-                                )
-                            }
+                            this.LordStatus = statusData.sort(
+                                function (a,b) {
+                                    return a.id-b.id
+                                }
+                            );
                         }
                     })
                 }).catch(err => {
@@ -342,6 +395,7 @@
                 this.current_row = row;
                 this.details_visible = true;
                 this.getRowInfo(index);
+                console.log(row.id);
             },
             //行信息
             getRowInfo(index) {
@@ -360,6 +414,9 @@
                 this.edit_visible = true;
                 this.getRowInfo(index);
                 this.getLordDetail(this.current_row.id);
+                this.set_price_form.bottom_name = '';
+                this.set_price_form.bottom_id = '';
+
             },
             //获取详情
             getLordDetail(id) {
@@ -382,35 +439,43 @@
                 })
             },
 
-            //生成处理项
+            //生成待处理项
             handleProcessLord(row, index) {
-                this.$http.post(globalConfig.temporary_server + 'customer_collect/pending/' + row.id, {}).then(res => {
+                this.$http.post(globalConfig.temporary_server + 'customer_collect/pending/' + row.id,).then(res => {
                     this.callbackSuccess(res);
                 })
             },
             //取消待处理项
             handleCancelProcessLord(row, index) {
-                this.$http.put(globalConfig.temporary_server + 'account_pending/recover' , {customer_id:row.id,identity:1}).then(res => {
+
+                this.$http.put(globalConfig.temporary_server + 'account_pending/recover', {
+                    customer_id: row.id,
+                    identity: 1
+                }).then(res => {
                     this.callbackSuccess(res);
+                    console.log(row.id);
                 })
             },
             //忽略重复标记
-            handleRemark(val){
+            handleRemark(val) {
                 // alert(this.ra_ids);
-                this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {ids:this.ra_ids,operate:1}).then(res => {
+                this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {
+                    ids: this.ra_ids,
+                    operate: 1
+                }).then(res => {
                     this.callbackSuccess(res);
-                    if(res.code===200){
 
-                    }
                 })
             },
             //恢复重复标记
-            handleReturnRemark(row,index){
-                this.ra_ids=[];
+            handleReturnRemark(row, index) {
+                this.ra_ids = [];
                 this.ra_ids.push(row.id);
-                this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {ids:this.ra_ids,operate:2}).then(res => {
+                this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {
+                    ids: this.ra_ids,
+                    operate: 2
+                }).then(res => {
                     this.callbackSuccess(res);
-
                 })
             },
 

@@ -9,13 +9,13 @@
                     <el-col :span="8">
                         <div class="">
                             <el-form-item label="签约人">
-                                <el-input v-model="formData.operator" style="width: 200px"></el-input>
+                                <el-input v-model="formData.staff" style="width: 200px" @focus="clickCallback('签约人')" readonly></el-input>
                             </el-form-item>
                             <el-form-item label="所属部门">
-                                <el-input v-model="formData.department" style="width: 200px"></el-input>
+                                <el-input v-model="formData.department" style="width: 200px" @focus="clickCallback('所属部门')" readonly></el-input>
                             </el-form-item>
                             <el-form-item label="负责人">
-                                <el-input v-model="formData.leader" style="width: 200px"></el-input>
+                                <el-input v-model="formData.leader" style="width: 200px" @focus="clickCallback('负责人')" readonly></el-input>
                             </el-form-item>
                             <el-form-item label="客户姓名">
                                 <el-input v-model="formData.customer_name" style="width: 200px"></el-input>
@@ -24,7 +24,7 @@
                                 <el-input v-model="formData.contact" style="width: 200px"></el-input>
                             </el-form-item>
                             <el-form-item label="房屋地址">
-                                <el-input v-model="formData.address" style="width: 200px"></el-input>
+                                <el-input placeholder="请选择" v-model="address"  @focus="handleOpenChooseHouse" style="width: 200px"></el-input>
                             </el-form-item>
                             <el-form-item label="收房月数">
                                 <el-input v-model="formData.months" style="width: 200px" type="number"></el-input>
@@ -56,7 +56,7 @@
                     </el-col>
                     <el-col :span="8">
                         <div class="" style="width: 100%">
-                            <el-form-item label="付款周期一"><el-button size="mini"  type="danger" @click="addPrices" style="cursor: pointer;position: absolute;right:-50px;top:0;">添加更多</el-button></el-form-item>
+                            <el-form-item label="付款周期一"><el-button size="mini"  type="danger" @click="addPrices" style="cursor: pointer;position: absolute;right:-50px;top:0;">添加</el-button></el-form-item>
                             <div v-for="(item,index) in prices" :key="item.key" style="width: 100%;display: flex;flex-direction: column;justify-content: center" >
                                 <el-form-item label="起止时间" >
                                     <el-date-picker
@@ -69,17 +69,17 @@
                                     </el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="付款周期" >
-                                    <el-input v-model="item.pay_way" style="width: 200px" type="number"></el-input>
+                                    <el-input v-model="item.period" style="width: 200px" type="number"></el-input>
                                 </el-form-item>
                                 <el-form-item label="月单价" >
-                                    <el-input v-model="item.pay_way" style="width: 200px" type="number"></el-input>
+                                    <el-input v-model="item.month_unit_price" style="width: 200px" type="number"></el-input>
                                 </el-form-item>
                                 <el-form-item label="付款方式" style="position: relative">
                                     <el-select placeholder="请选择付款方式" v-model="item.pay_way" style="width: 200px;">
-                                        <el-option v-for="item in payTypes" :label="item.val" :value="item.id"
-                                                   :key="item"></el-option>
+                                        <el-option v-for="(item,index) in payTypes" :label="item.val" :value="item.id" :key="index"
+                                                   ></el-option>
                                     </el-select>
-                                    <!--<el-button size="mini"  type="danger" @click="addPrices" style="cursor: pointer;position: absolute;right:-50px;top:0;">删除</el-button>-->
+                                    <el-button size="mini"  class="el-icon-circle-close-outline"  type="danger" @click="reducePrices(index)" style="cursor: pointer;position: absolute;right:-50px;top:0;"></el-button>
                                 </el-form-item>
 
                             </div>
@@ -123,6 +123,7 @@
         <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
         <DepartOrgan :module="departModule" @close="hiddenDepart"></DepartOrgan>
         <PostOrgan :module="postModule" @close="hiddenPost"></PostOrgan>
+
     </div>
 
 </template>
@@ -134,18 +135,17 @@
 
     export default {
         name: "lordForm",
-        props: ['formData', 'current_row', 'edit_visible'],
+        props: ['form', 'current_row', 'edit_visible','address','addressIds'],
         components: {
             StaffOrgan,
             DepartOrgan,
-            PostOrgan
+            PostOrgan,
         },
         data() {
             return {
                 postModule: false,//岗位
                 departModule: false,//部门
                 staffModule: false,//员工
-                form: '',//回显参数
                 row: this.current_row,
                 cate: {
                     "1": "银行卡",
@@ -217,7 +217,43 @@
                     "江西银行",
                     "中原银行"
                 ],
-                formParams: {},
+                formParams: {
+                    "staff_id": 2639,//签约人姓名
+                    "department_id": 211,//部门id
+                    "leader_id": 99,//部门领导id
+                    "customer_name": "解兆飞",//客户姓名
+                    "contact": "18155371677",//联系方式
+                    "house_id": this.addressIds,//房屋id
+                    "address": "大师傅士大夫山豆根刚刚",//房屋地址
+                    "months": "24",//签约月数
+                    "prices": [//月单价
+                        {
+                            "period": "12",
+                            "pay_way": "2",
+                            "end_date": "2020-03-15",
+                            "begin_date": "2019-03-15",
+                            "month_unit_price": "3000"
+                        },
+                        {
+                            "period": "12",
+                            "pay_way": "3",
+                            "end_date": "2021-03-15",
+                            "begin_date": "2020-03-15",
+                            "month_unit_price": "3100"
+                        }
+                    ],
+                    "deposit": "2000",//押金
+                    "deal_date": "2019-03-15",//签约日期
+                    "first_pay_date": "2019-03-24",//第一次打房租日期
+                    "second_pay_date": "2019-04-10",//第二次打房租日期
+                    "remark": "萨达撒",//备注
+                    "account_type": 1,//账户类型
+                    "account_owner": "解兆飞",//账户所属人姓名
+                    "account_subbank": "啊士大夫",//支行
+                    "account_bank": 1,//银行
+                    "account_num": "6215584301001597693",//银行账户账号
+                    // "v3_contract_id": "15698",//合同id
+                },
                 rulesForm: {
                     staff_id: [
                         {required: true, message: '请选择签约人', trigger: 'change'},
@@ -273,51 +309,30 @@
                     ],
 
                 },
-
                 // 付款周期,月单价
                 prices: [
                     {
                         "period": "12",//付款周期
-                        "pay_way": "3",//付款方式
+                        "pay_way": 3,//付款方式
                         "end_date": "2021-03-15",
                         "begin_date": "2020-03-15",
                         "month_unit_price": "3100",//月单价
                         'times':['2021-03-15','2020-03-15']
                     },
                 ],
-
                 times: [],
-
+                staffName:'',
+                formData: this.form,
 
             }
         },
-        watch: {
-            formData: {
-                handler(val) {
-                    this.form = val;
-                    console.log(val)
-                },
-                deep: true,
-            }
-        },
+
         mounted() {
+            console.log(this.formData)
         },
         computed: {
-            is_disabled() {
-                if (this.row) {
-                    return true
-                } else {
-                    return false
-                }
-            }
         },
         watch: {
-            formData: {
-                handler(val) {
-                    console.log(val)
-                },
-                deep: true
-            },
 
         },
         methods: {
@@ -332,15 +347,38 @@
                     key: Date.now(),
                 })
             },
+            //减少付款周期
+            reducePrices(index){
+                // alert(index);
+                var i = this.prices.length;
+                if(i<=1){
+                    this.$LjNotify('error', {
+                        title: '提示',
+                        message: '请至少保留一项付款方式',
+                        subMessage: '',
+                    });
+
+                }else {
+                    this.prices.splice(index,1);
+                }
+
+
+            },
+            //打开搜索房屋
+            handleOpenChooseHouse(){
+                this.house_filter_visible = true;
+                this.$bus.emit('chooseHouse',this.house_filter_visible)
+            },
+
             // 组织部门
             hiddenDepart(ids, names, arr) {
                 console.log(ids, names, arr);
                 this.departModule = false;
                 if (ids !== 'close') {
-                    this.form.departmentName = names;
-                    this.form.department_id = ids;
-                    this.form.leaderName = arr[0].leader.name;
-                    this.form.leader_id = arr[0].leader_id;
+                    this.formData.department_id = ids;
+                    this.formData.leaderName = arr[0].leader.name;
+                    this.formData.leader_id = arr[0].leader_id;
+                    this.formData.department  = names;
                 }
             },
             //员工
@@ -348,8 +386,8 @@
                 this.staffModule = false;
                 console.log(ids, names, arr);
                 if (ids !== 'close') {
-                    this.form.staffName = names;
-                    this.form.staff_id = ids[0];
+                    this.formData.staff = names;
+                    this.formData.staff_id = ids[0];
                 }
             },
             // 岗位

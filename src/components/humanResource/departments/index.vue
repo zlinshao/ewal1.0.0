@@ -14,27 +14,6 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="searchTerm" v-if="chooseTab === 3">
-          <el-radio-group v-model="checkList" @change="handleChangeParams">
-            <el-row :gutter="10">
-              <el-col :span="4">
-                <el-radio :label="0">全部</el-radio>
-              </el-col>
-              <el-col :span="5">
-                <el-radio :label="1">离职员工</el-radio>
-              </el-col>
-              <el-col :span="5">
-                <el-radio :label="2">在职员工</el-radio>
-              </el-col>
-              <el-col :span="5">
-                <el-radio :label="3">禁用员工</el-radio>
-              </el-col>
-              <el-col :span="5">
-                <el-radio :label="4">非禁用员工</el-radio>
-              </el-col>
-            </el-row>
-          </el-radio-group>
-        </div>
         <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
         <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
         <div class="buttons button2" v-if="chooseTab === 3 || chooseTab === 4" @click="handleExportInfo">导出报表</div>
@@ -82,12 +61,12 @@
 
     <!--员工名册-->
     <div v-show="chooseTab === 3">
-      <StaffRoster :searchVal="searchFruit3" :export-info="exportInfo" :search-params="staff_params"></StaffRoster>
+      <StaffRoster :searchVal="searchFruit3" :export-data="export_data" :export-info="exportInfo" :search-params="staff_params"></StaffRoster>
     </div>
 
     <!--离职管理-->
     <div v-if="chooseTab === 4">
-      <LeaveJob :export-info="exportInfo"></LeaveJob>
+      <LeaveJob :export-info="exportInfo" :export-data="export_data" :searchVal="searchFruit4"></LeaveJob>
     </div>
 
     <!--权限管理-->
@@ -95,6 +74,9 @@
       <!--系统-->
       <div style="padding: 10px 0;margin-bottom: 30px">
         <el-card>
+          <div style="text-align: right">
+            <div class="btn_square_add" @click="add_system_visible = true"><b>+</b></div>
+          </div>
           <el-table
             :data="system_list"
             height="400px"
@@ -298,7 +280,7 @@
     <!--新增模块-->
     <lj-dialog
       :visible="new_module_visible"
-      :size="{width: 400 + 'px',height: 450 + 'px'}"
+      :size="{width: 450 + 'px',height: 450 + 'px'}"
       @close="handleCancelAddModule"
     >
       <div class="dialog_container">
@@ -368,7 +350,7 @@
     <!--新增字段权限-->
     <lj-dialog
       :visible="new_field_visible"
-      :size="{width: 400 + 'px',height: 550 + 'px'}"
+      :size="{width: 450 + 'px',height: 550 + 'px'}"
       @close=""
     >
       <div class="dialog_container">
@@ -378,19 +360,19 @@
         <div class="dialog_main borderNone">
           <el-form label-width="120px">
             <el-form-item label="项目名称">
-              <el-input v-model="field_form.app_name"></el-input>
+              <el-input v-model="field_form.app_name" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="控制器全称">
-              <el-input v-model="field_form.controller"></el-input>
+              <el-input v-model="field_form.controller" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="方法名称">
-              <el-input v-model="field_form.method"></el-input>
+              <el-input v-model="field_form.method" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="权限字段标识">
-              <el-input v-model="field_form.sign"></el-input>
+              <el-input v-model="field_form.sign" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="权限字段名称">
-              <el-input v-model="field_form.name"></el-input>
+              <el-input v-model="field_form.name" placeholder="请输入"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -417,6 +399,36 @@
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleSubmitDelField">确定</el-button>
           <el-button type="info" size="small" @click="del_field_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--添加系统-->
+    <lj-dialog
+      :visible="add_system_visible"
+      :size="{width: 450 + 'px',height: 450 + 'px'}"
+      @close="handleCancelAddSys"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>添加系统</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form label-width="120px" :model="system_form">
+            <el-form-item label="系统模块名称">
+              <el-input v-model="system_form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="模块标识">
+              <el-input v-model="system_form.sign"></el-input>
+            </el-form-item>
+            <el-form-item label="模块描述">
+              <el-input v-model="system_form.description" type="textarea"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleSubmitAddSys">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancelAddSys">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -455,6 +467,17 @@
     },
     data() {
       return {
+        //导出
+        export_data: [],
+        //添加系统
+        add_system_visible: false,
+        system_form: {
+          name: '',
+          sign: '',
+          description: '',
+          parent_id: null,
+        },
+
         //权限字段管理
         field_list: [],
         new_field_visible: false,
@@ -543,7 +566,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 3,//tab切换
+        chooseTab: 4,//tab切换
         selects: [
           {
             id: 1,
@@ -591,7 +614,6 @@
         searchFruit3: {},//搜索结果
         searchFruit4: {},//搜索结果
 
-        checkList: [],//离职员工
         staff_params: {
           is_on_job: '',
           is_enable: '',
@@ -623,6 +645,50 @@
     mounted() {
       this.getDepartList();
       this.getPowerList();
+      this.export_data = [
+        { key: 'name',val: '姓名'},
+        { key: 'position',val: '岗位'},
+        { key: 'gender',val: '性别'},
+        { key: 'staff.origin_addr',val: '籍贯'},
+        { key: 'staff.political_status',val: '政治面貌'},
+        { key: 'staff.birthday',val: '出生年月'},
+        { key: 'staff.city',val: '城市'},
+        { key: 'staff.origin_addr',val: '家庭住址'},
+        { key: 'phone',val: '联系方式'},
+        { key: 'staff.id_num',val: '身份证'},
+        { key: 'staff.emergency_call',val: '紧急联系人'},
+        { key: 'staff.household_register',val: '户口性质'},
+        { key: 'staff.national',val: '民族'},
+        { key: 'staff.marital_fertility_status',val: '婚育情况'},
+        { key: 'staff.education',val: '学历'},
+        { key: 'staff.school',val: '毕业院校'},
+        { key: 'staff.graduation_time',val: '毕业时间'},
+        { key: 'staff.major',val: '专业'},
+        { key: 'staff.position_level',val: '职级'},
+        { key: 'staff.enroll',val: '入职时间'},
+        // { key: 'phone9',val: '试用期时间'},
+        // { key: 'phone10',val: '转正时间'},
+        // { key: 'phone11',val: '转正提醒'},
+        // { key: 'phone12',val: '劳务合同'},
+        // { key: 'phone13',val: '合同开始时间'},
+        // { key: 'phone14',val: '合同结束时间'},
+        // { key: 'phone15',val: '劳动合同到期'},
+        // { key: 'phone16',val: '社保缴纳情况'},
+        // { key: 'phone21',val: '社保开始时间'},
+        // { key: 'phone22',val: '意外险缴纳情况'},
+        { key: 'staff.bank_num',val: '银行卡号'},
+        { key: 'staff.account_name',val: '户主'},
+        { key: 'staff.account_bank',val: '开户行'},
+        // { key: 'phone31',val: '入职渠道'},
+        { key: 'staff.commitment_number',val: '入职承诺书'},
+        { key: 'staff.employ_proof_number',val: '在职证明'},
+        { key: 'staff.income_proof_number',val: '收入证明'},
+        { key: 'staff.notice_number',val: '入职须知'},
+        { key: 'staff.secret_number',val: '保密协议编号'},
+        // { key: 'phone333',val: '授权委托书'},
+        { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书'},
+        { key: 'staff.internship_number',val: '实习协议'},
+      ]
     },
     watch: {},
     computed: {
@@ -631,8 +697,34 @@
       },
     },
     methods: {
+      //取消添加系统
+      handleCancelAddSys() {
+        this.add_system_visible = false;
+        for (var key in this.system_form) {
+          this.system_form[key] = '';
+        }
+        this.system_form.parent_id = null;
+      },
+      //添加系统
+      handleSubmitAddSys() {
+        this.$http.post('organization/system',this.system_form).then(res => {
+          if (res.code === '20010') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelAddSys();
+            this.getPowerList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
       handleSubmitForm() {
-        console.log(this.setFormData);
+        this.export_data = this.setFormData;
       },
       handleRemoveItem(item,index) {
         this.setFormData.splice(index,1);
@@ -985,24 +1077,6 @@
         this.del_depart = item;
         this.del_depart_visible = true;
       },
-      //更改params
-      handleChangeParams(val) {
-        this.staff_params = {
-          is_on_job: '',
-          is_enable: ''
-        };
-        if (val === 0) {
-          this.staff_params = {
-            is_on_job: '',
-            is_enable: ''
-          };
-        }
-        if (val === 1 || val === 2) {
-          this.staff_params.is_on_job = val - 1;
-        } else if(val === 3 || val === 4 ){
-          this.staff_params.is_enable = val - 3;
-        }
-      },
       //取消添加部门
       handleCancelAddDepart() {
        this.departForm = {
@@ -1043,7 +1117,7 @@
       handleGetDepart(val,name) {
         this.chooseDepart = false;
         if (val !== 'close') {
-          this.departForm.parent_id = val;
+          this.departForm.parent_id.push(val);
           this.departForm.parent = name;
         }
       },
@@ -1107,6 +1181,7 @@
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
+          console.log(val);
           switch (this.chooseTab) {
             case 3:
               this.searchFruit3 = val;
@@ -1123,14 +1198,14 @@
           { key: 'name',val: '姓名'},
           { key: 'position',val: '岗位'},
           { key: 'gender',val: '性别'},
-          { key: 'origin_addr',val: '籍贯'},
-          { key: 'political_status',val: '政治面貌'},
-          { key: 'birthday',val: '出生年月'},
-          { key: 'city',val: '城市'},
-          { key: 'date7',val: '家庭住址'},
-          { key: 'home_addr',val: '联系方式'},
-          { key: 'id_num',val: '身份证'},
-          { key: 'emergency_call',val: '紧急联系人'},
+          { key: 'staff.origin_addr',val: '籍贯'},
+          { key: 'staff.political_status',val: '政治面貌'},
+          { key: 'staff.birthday',val: '出生年月'},
+          { key: 'staff.city',val: '城市'},
+          { key: 'staff.origin_addr',val: '家庭住址'},
+          { key: 'phone',val: '联系方式'},
+          { key: 'staff.id_num',val: '身份证'},
+          { key: 'staff.emergency_call',val: '紧急联系人'},
           { key: 'staff.household_register',val: '户口性质'},
           { key: 'staff.national',val: '民族'},
           { key: 'staff.marital_fertility_status',val: '婚育情况'},
@@ -1139,29 +1214,29 @@
           { key: 'staff.graduation_time',val: '毕业时间'},
           { key: 'staff.major',val: '专业'},
           { key: 'staff.position_level',val: '职级'},
-          { key: 'enroll',val: '入职时间'},
-          { key: 'phone9',val: '试用期时间'},
-          { key: 'phone10',val: '转正时间'},
-          { key: 'phone11',val: '转正提醒'},
-          { key: 'phone12',val: '劳务合同'},
-          { key: 'phone13',val: '合同开始时间'},
-          { key: 'phone14',val: '合同结束时间'},
-          { key: 'phone15',val: '劳动合同到期'},
-          { key: 'phone16',val: '社保缴纳情况'},
-          { key: 'phone21',val: '社保开始时间'},
-          { key: 'phone22',val: '意外险缴纳情况'},
-          { key: 'bank_num',val: '银行卡号'},
-          { key: 'account_name',val: '户主'},
-          { key: 'account_bank',val: '开户行'},
-          { key: 'phone31',val: '入职渠道'},
-          { key: 'phone32',val: '入职承诺书'},
-          { key: 'phone33',val: '在职证明'},
-          { key: 'phone34',val: '收入证明'},
-          { key: 'phone45',val: '入职须知'},
-          { key: 'phone43',val: '保密协议'},
-          { key: 'phone333',val: '授权委托书'},
-          { key: 'phone3333',val: '大学生无法缴纳社保知晓书'},
-          { key: 'phone222',val: '实习协议'},
+          { key: 'staff.enroll',val: '入职时间'},
+          // { key: 'phone9',val: '试用期时间'},
+          // { key: 'phone10',val: '转正时间'},
+          // { key: 'phone11',val: '转正提醒'},
+          // { key: 'phone12',val: '劳务合同'},
+          // { key: 'phone13',val: '合同开始时间'},
+          // { key: 'phone14',val: '合同结束时间'},
+          // { key: 'phone15',val: '劳动合同到期'},
+          // { key: 'phone16',val: '社保缴纳情况'},
+          // { key: 'phone21',val: '社保开始时间'},
+          // { key: 'phone22',val: '意外险缴纳情况'},
+          { key: 'staff.bank_num',val: '银行卡号'},
+          { key: 'staff.account_name',val: '户主'},
+          { key: 'staff.account_bank',val: '开户行'},
+          // { key: 'phone31',val: '入职渠道'},
+          { key: 'staff.commitment_number',val: '入职承诺书'},
+          { key: 'staff.employ_proof_number',val: '在职证明'},
+          { key: 'staff.income_proof_number',val: '收入证明'},
+          { key: 'staff.notice_number',val: '入职须知'},
+          { key: 'staff.secret_number',val: '保密协议编号'},
+          // { key: 'phone333',val: '授权委托书'},
+          { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书'},
+          { key: 'staff.internship_number',val: '实习协议'},
         ];
       },
       moduleList() {
