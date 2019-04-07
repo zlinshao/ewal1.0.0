@@ -1,5 +1,5 @@
 <template>
-  <div id="lj_comment" :style="{width:width+'px'}">
+  <div id="lj_comment" class="scroll_bar" :style="{width:width+'px'}">
     <div class="comment-container">
         <div class="comment-item" v-for="item in commentList">
           <div class="comment-item-left">
@@ -83,7 +83,7 @@
       width: 100%;
       .comment-item {
         width: 100%;
-        min-height: 100px;
+        min-height: 80px;
         margin: 10px 0;
         display: flex;
         &:not(:last-child) {
@@ -93,14 +93,14 @@
         .comment-item-left {
 
           max-height: 100%;
-          width: 100px;
+          width: 80px;
           display: flex;
           justify-content: center;
           align-items: center;
           img {
             display: block;
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             overflow: hidden;
           }
@@ -123,8 +123,6 @@
             .comment-item-right-up-right {
               //padding-right: 20px;
             }
-
-
           }
           .comment-item-right-down {
             flex: 1;
