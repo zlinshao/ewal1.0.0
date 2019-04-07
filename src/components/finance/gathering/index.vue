@@ -7,10 +7,11 @@
                 </p>
                 <h1>收款</h1>
                 <h2 class="items-center">
-            <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                  :class="{'chooseTab': chooseTab === item.id}">
-              {{item.title}}<i></i>
-            </span>
+            <!--<span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"-->
+                  <!--:class="{'chooseTab': chooseTab === item.id}">-->
+              <!--{{item.title}}<i></i>-->
+            <!--</span>-->
+                   <span>请选择科目</span>
                 </h2>
             </div>
             <div class="items-center listTopRight">
@@ -720,6 +721,7 @@
     import LjSubject from '../../common/lj-subject.vue';
     import CustomerLists from '../components/customerLists.vue';
     import Upload from '../../common/upload.vue';
+    import {gatheringSearchList} from "../../../assets/js/allSearchData.js";
 
 
     export default {
@@ -734,6 +736,7 @@
         },
         data() {
             return {
+                gatheringSearchList,
                 photo1: {
                     keyName: 'photo1',
                     setFile: [
@@ -898,10 +901,7 @@
                     {val: '登记收款', key: 'register', type: 'warning',},
                     {val: '应收入账', key: 'should_receive', type: 'success',}
                 ],
-                searchData: {
-                    status: 'gathering',
-                    data: [],
-                },
+                searchData: {},
 
                 amount_receivable:'',//应收
                 chooseRowIds: [],
@@ -1254,55 +1254,7 @@
             // 高级搜索
             highSearch() {
                 this.showSearch = true;
-                this.searchData.data = [
-
-                    {
-                        keyType: 'dateRange',
-                        title: '应收日期',
-                        placeholder: '请选择日期',
-                        keyName: 'date1',
-                        dataType: [],
-                    },
-                    {
-                        keyType: 'dateRange',
-                        title: '催缴日期',
-                        placeholder: '请选择日期',
-                        keyName: 'date2',
-                        dataType: [],
-                    },
-                    {
-                        keyType: 'radio',
-                        title: '入账状态',
-                        keyName: 'radio',
-                        dataType: '',
-                        value: [
-                            {
-                                id: 12,
-                                title: '待入账',
-                            },
-                            {
-                                id: 13,
-                                title: '带结清',
-                            },
-                            {
-                                id: 14,
-                                title: '已结清',
-                            },
-                            {
-                                id: 15,
-                                title: '已超额',
-                            }
-                        ],
-                    },
-
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                ];
+                this.searchData = this.gatheringSearchList;
             },
             // 确认搜索
             hiddenModule(val) {
@@ -1310,6 +1262,23 @@
                 if (val !== 'close') {
                     console.log(val);
                 }
+                for(let item of Object.keys(this.params)){
+                    if(val){
+                        this.params[item] = val[item];
+                        if(val.gatherDate){
+                            this.params.startRange = val.gatherDate[0];
+                            this.params.endRange = val.gatherDate[1];
+                        }
+                        if(val.tagDate){
+                            this.params.startTag = val.tagDate[0];
+                            this.params.endTag = val.tagDate[1];
+                        }
+
+
+                    }
+
+                }
+                this.getReceiveList();
             },
             handleOpenSubject(which) {
                 this.which_subject = which;

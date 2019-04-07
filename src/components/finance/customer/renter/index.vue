@@ -17,13 +17,13 @@
             </el-table-column>
             <el-table-column label="前缀" align="center" width="90">
                 <template slot-scope="scope">
-                    <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===1">
+                    <div class="statusBar flex-center" v-if="renterStatus[scope.$index]['suppress_dup']===1">
                         <i class="el-icon-view"></i>忽略重复
                     </div>
-                    <div  class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
-                        <span  style="background-color: #14e731;"></span>
-                        <span  style="background-color: #e6a23c;"></span>
-                        <span  style="background-color: #f56c6c;"></span>
+                    <div class="statusBar flex-center" v-if="renterStatus[scope.$index]['suppress_dup']===0">
+                        <span style="background-color: #14e731;" v-if="renterStatus[scope.$index]['is_contact']===0"></span>
+                        <span style="background-color: #e6a23c;" v-if="renterStatus[scope.$index]['is_name']===1"></span>
+                        <span style="background-color: #f56c6c;" v-if="renterStatus[scope.$index]['is_address']===2"></span>
                         <span v-if="freeze[scope.$index]===1" style="background-color: #409eff;"></span>
                     </div>
                 </template>
@@ -120,26 +120,29 @@
         <!--编辑-->
         <lj-dialog
                 :visible="edit_visible"
-                :size="{width: 900 + 'px',height: 820 + 'px' }"
+                :size="{width: 1200 + 'px',height: 820 + 'px' }"
                 @close="edit_visible = false">
-            <renter-form :formData="renter_form" :current_row="current_row" @updateList="updateRenterList"></renter-form>
+            <renter-form :form="renter_form" :current_row="current_row" @updateList="updateRenterList" :address="set_price_form.bottom_name" :addressIds="set_price_form.bottom_id"></renter-form>
         </lj-dialog>
+
+        <!--搜索房源-->
+        <HouseFilter :visible="house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
 
     </div>
 </template>
 <script>
     import LjDialog from '../../../common/lj-dialog.vue';
-    import LjSubject from '../../../common/lj-subject.vue';
     import RenterForm from "./renterForm";
+    import HouseFilter from '../../../marketCentre/components/house-filter.vue';
 
     export default {
         name: "index",
-        components: {RenterForm, LjDialog, LjSubject},
+        components: {RenterForm, LjDialog,HouseFilter},
         props:['searchParams'],
         data() {
             return {
                 params: {//查询参数
-                    search: this.searchParams.undefined,//关键字,
+                    search: '',
                     startRange: '',
                     endRange: '',
                     page: 1,
@@ -147,21 +150,17 @@
                     department_ids: '',
                     export: '',
                 },
-                LordStatus:[
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-                    {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0}
-
-                ],//前缀状态
+                house_filter_visible:false,
+                set_price_form: {
+                    bottom_price: '',
+                    bottom_id: [],
+                    suggest_price: '',
+                    suggest_id: [],
+                    bottom_name: '',
+                    suggest_name: '',
+                    bottom_type: '',
+                    suggest_type: ''
+                },
                 freeze:[],//待处理
                 chooseRowIds: [],
                 renterLabel: {//列表字段
@@ -253,8 +252,6 @@
                     {label: "客户联系方式:", prop: "contact"},
                     {label: "房屋地址:", prop: "address"},
                     {label: "租房月数:", prop: "months"},
-                    // {label: "付款方式:", prop: "payType"},
-                    // {label: "月单价:", prop: "prices_val"},
                     {label:'付款方式/月单价:',prop:'prices'},
                     {label: "租房状态:", prop: "rent_status"},
                     {label: "租房类型:", prop: "rent_types"},
@@ -264,8 +261,6 @@
                     {label: "所属部门:", prop: "departmentName"},
                     {label: "操作人:", prop: "operatorName"},
                     {label: "签约人:", prop: "staffName"},
-                    // {label: "房租科目:", prop: "rental_subject"},
-                    // {label: "押金科目:", prop: "deposit_subject"},
                     {label: "备注:", prop: "remark"},
                     // {label: "汇款方式:", prop: "account_type"},
                     {label: "汇款人姓名:", prop: "account_owner"},
@@ -275,34 +270,6 @@
                 ],
                 renterDetail: {},
                 renterDetailData: {},
-
-                subject_visible: false,
-                which_subject: '',
-                new_subject_visible: false,
-
-                subject_deposit: {
-                    parent_id: '',
-                    title: '',
-                    er_type: '',
-                    remark: '',
-                    parent_name: '',
-                    subject_code: ''
-                },
-                subject_rent: {
-                    parent_id: '',
-                    title: '',
-                    er_type: '',
-                    remark: '',
-                    parent_name: '',
-                    subject_code: ''
-                },
-
-                move_visible: false,
-                move_subject: {
-                    initial: '',
-                    parent_id: '',
-                    title: ''
-                },
                 cate: {
                     "1": "银行卡",
                     "2": "支付宝",
@@ -376,6 +343,7 @@
                 ra_ids:[],
                 multipleSelection: [],//多选
 
+
             }
         },
         mounted() {
@@ -390,13 +358,43 @@
         created(){
             this.$bus.on('cancelRemarkFun',this.handleRemarkRenter);
             this.$bus.on('getParams',this.handleParamsRenter);
+            this.$bus.on('chooseHouse', this.handleChooseHouse);//搜索房屋
         },
         beforeDestroy(){
             this.$bus.off('cancelRemarkFun',this.handleRemarkRenter);
             this.$bus.off('getParams',this.handleParamsRenter);
+            this.$bus.off('chooseHouse', this.handleChooseHouse);//搜索房屋
         },
         computed: {},
         methods: {
+            handleChooseHouse(val){
+                this.house_filter_visible = val
+            },
+            //确定选择房源
+            handleGetHouseResource(house,type) {
+                console.log(house);
+                console.log(type);
+                if (house) {
+                    this.set_price_form.bottom_name = '';
+                    this.set_price_form.bottom_id = [];
+                    house.map(item => {
+                        this.set_price_form.bottom_name += item.house_name + ',';
+                        if (type === 'house') {
+                            this.set_price_form.bottom_type = 1;
+                            this.set_price_form.bottom_id.push(item.house_id);
+                        } else {
+                            this.set_price_form.bottom_type = 2;
+                            this.set_price_form.bottom_id.push(item.village_id);
+                        }
+                    });
+                    this.set_price_form.bottom_name = this.set_price_form.bottom_name.substring(0,this.set_price_form.bottom_name.length - 1);
+
+                }
+                this.house_filter_visible = false;
+
+                console.log(this.addressInfo)
+
+            },
             // 搜索参数
             handleParamsRenter(val){
                 // alert(val.undefined);
@@ -405,10 +403,11 @@
                 } else {
                     this.params.search = ''
                 }
-                if(val.data1){
-                    this.params.startRange = val.data1[0];
-                    this.params.endRange = val.data1[1];
+                if(val.date1){
+                    this.params.startRange = val.date1[0];
+                    this.params.endRange = val.date1[1];
                 }
+                this.getRenterList();
 
 
             },
@@ -463,7 +462,13 @@
                 this.$http.get(globalConfig.temporary_server + 'customer_renter', this.params).then(res => {
                     if (res.code === 200) {
                         this.showLoading(false);
-                        this.renterLists = res.data.data;
+                        // this.renterLists = res.data.data;
+                        this.renterLists = res.data.data.sort(
+                            function (a,b) {
+                                return a.id-b.id
+                            }
+                        );
+                        console.log(this.renterLists);
                         this.renterCount = res.data.count;
                         this.freeze= [];
                         for (let item of this.renterLists) {
@@ -481,7 +486,12 @@
                     }
                     this.$http.get(globalConfig.temporary_server + 'customer_renter_repeat', {id: this.renterIds}).then(res => {
                         if (res.code === 200) {
-                            this.renterStatus = res.data.data;
+                            // this.renterStatus = res.data.data;
+                            this.renterStatus = res.data.data.sort(
+                                function (a,b) {
+                                    return a.id-b.id
+                                }
+                            );
                             console.log(this.renterStatus);
                         }
                     })
@@ -569,31 +579,6 @@
                 })
             },
 
-            //科目
-            handleOpenSubject(which) {
-                this.which_subject = which;
-                this.subject_visible = true;
-            },
-            //确认科目
-            handleConfirmSubject(val) {
-                if (this.which_subject === 'move_subject') {
-                    this.move_subject.parent_id = val.id;
-                    this.move_subject.title = val.title;
-                }
-                if (this.which_subject === 'subject_deposit') {
-                    this.subject_deposit.parent_name = val.title;
-                    this.subject_deposit.parent_id = val.id;
-                    this.renter_form.subject_id.deposit = val.id;
-                    this.renter_form.deposit_subject = val.title;
-
-                }
-                if (this.which_subject === 'subject_rent') {
-                    this.subject_rent.parent_name = val.title;
-                    this.subject_rent.parent_id = val.id;
-                    this.renter_form.subject_id.rental = val.id;
-                    this.renter_form.rental_subject = val.title;
-                }
-            },
             //删除renter
             handleOkRenter() {
                 this.$http.delete(globalConfig.temporary_server + 'customer_renter/delete/' + this.current_row.id).then(res => {

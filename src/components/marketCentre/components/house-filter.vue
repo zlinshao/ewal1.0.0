@@ -1,7 +1,7 @@
 <template>
   <div id="house-filter">
     <div>
-      <lj-dialog :visible.sync="dialog_visible" :size="{width: 1200 + 'px',height: 830 + 'px'}" @close="dialog_visible = false">
+      <lj-dialog :visible.sync="dialog_visible"  @close="dialog_visible = false">
         <div class="dialog_container">
           <div class="dialog_header">
             <h3>请选择房屋地址</h3>
@@ -209,6 +209,7 @@
     watch: {
       visible(val) {
         this.dialog_visible = val;
+        console.log(val);
         if (val) {
           this.getHouseList();
         }

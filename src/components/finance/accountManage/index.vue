@@ -243,7 +243,7 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="submitAdd('addAccount')">{{ current_row ? '更新' : '新增'}}</el-button>
+          <el-button size="small" type="danger" @click="submitAdd('addAccount',add_account)">{{ current_row ? '更新' : '新增'}}</el-button>
           <el-button size="small" @click="handleCancelAdd">取消</el-button>
         </div>
       </div>
@@ -316,8 +316,8 @@
           <div class="unUse-txt">您确定归零该用户吗？</div>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="handleInitialAccount" plain>确定</el-button>
-          <el-button size="small" @click="initial_visible = false;current_row = ''" plain>取消</el-button>
+          <el-button size="small" type="danger" @click="handleInitialAccount" >确定</el-button>
+          <el-button size="small" @click="initial_visible = false;current_row = ''" >取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -492,6 +492,7 @@
         this.current_row = row;
         this.del_account_visible = true;
       },
+        //更新弹出
       handleOpenUpdateAccount(row) {
         this.current_row = row;
         for (var key in this.add_account) {
@@ -504,7 +505,7 @@
         this.params.page = page;
         this.getAccountList();
       },
-      submitAdd(formName) {
+      submitAdd(formName,val) {
         this.$refs[formName].validate((valid => {
           if (valid) {
             this.add_account.amount_base = parseFloat(this.add_account.amount_base).toFixed(2);
@@ -524,10 +525,12 @@
           console.log(err);
         })
       },
+
       handleUpdateAccount() {
         this.$http.put(globalConfig.temporary_server + `account/${this.current_row.id}`,this.add_account).then(res => {
           this.callbackSuccess(res);
           this.handleCancelAdd();
+
         }).catch(err => {
           console.log(err);
         })
