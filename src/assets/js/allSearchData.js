@@ -2,83 +2,45 @@
 export const staffBookSearch = {
   status: 'staffBookSearch',
   placeholder: '请输入地址',
+  keywords: 'search',
   data: [
     {
-      keyType: 'date',
-      title: '出生日期',
-      placeholder: '请选择日期',
-      keyName: 'date3',
+      keyType: 'radio',
+      title: '离职',
+      keyName: 'is_on_job',
       dataType: '',
-    },
-    {
-      keyType: 'dateRange',
-      title: '创建时间',
-      placeholder: '请选择日期',
-      keyName: 'date1',
-      dataType: [],
-    },
-    {
-      keyType: 'dateRange',
-      title: '跟进时间',
-      placeholder: '请选择日期',
-      keyName: 'date2',
-      dataType: [],
+      value: [
+        {
+          id: 0,
+          title: '否',
+        },
+        {
+          id: 1,
+          title: '是',
+        },
+      ],
     },
     {
       keyType: 'radio',
-      title: '紧急程度',
-      keyName: 'radio',
+      title: '禁用',
+      keyName: 'is_enable',
       dataType: '',
       value: [
         {
-          id: 12,
-          title: '特级',
+          id: 0,
+          title: '否'
         },
         {
-          id: 13,
-          title: '紧急',
-        },
-        {
-          id: 14,
-          title: '重要',
-        },
-        {
-          id: 15,
-          title: '一般',
+          id: 1,
+          title: '是'
         }
-      ],
-    },
-    {
-      keyType: 'check',
-      title: '状态',
-      keyName: 'check',
-      dataType: [],
-      value: [
-        {
-          id: 22,
-          title: '已完成',
-        },
-        {
-          id: 23,
-          title: '未完成',
-        },
-      ],
-    },
-    {
-      keyType: 'staff',
-      title: '员工',
-      placeholder: '请选择员工',
-      keyName: 'staff',
-      dataType: [],
-      value: {
-        num: '',
-      }
+      ]
     },
     {
       keyType: 'depart',
       title: '部门',
       placeholder: '请选择部门',
-      keyName: 'department',
+      keyName: 'org_id',
       dataType: [],
       value: {
         num: '',
@@ -89,7 +51,7 @@ export const staffBookSearch = {
       keyType: 'position',
       title: '岗位',
       placeholder: '请选择岗位',
-      keyName: 'position',
+      keyName: 'position_id',
       dataType: [],
       value: {
         num: '',
@@ -101,20 +63,44 @@ export const staffBookSearch = {
 // 离职管理
 export const LeaveJobSearch = {
   status: 'LeaveJobSearch',
+  keywords: 'search',
   data: [
     {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
+      keyType: 'radio',
+      title: '禁用',
+      keyName: 'is_enable',
       dataType: '',
+      value: [
+        {
+          id: 0,
+          title: '否'
+        },
+        {
+          id: 1,
+          title: '是'
+        }
+      ]
     },
     {
-      keyType: 'dateRange',
-      title: '离职日期',
-      placeholder: '请选择日期',
-      keyName: 'date1',
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'org_id',
       dataType: [],
+      value: {
+        num: '',
+        arr: []
+      }
+    },
+    {
+      keyType: 'position',
+      title: '岗位',
+      placeholder: '请选择岗位',
+      keyName: 'position_id',
+      dataType: [],
+      value: {
+        num: '',
+      }
     },
   ],
 };

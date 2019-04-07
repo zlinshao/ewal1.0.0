@@ -13,16 +13,17 @@
         <el-table-column label="岗位" prop="position" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.position && scope.row.position.length > 0">
-              <span v-for="item in scope.row.position">{{ item.name }}</span>
+              <span v-for="(item,idx) in scope.row.position">{{ item.name }}<a v-if="idx !== scope.row.position.length - 1">;</a></span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="入职时间" prop="staff.enroll" align="center"></el-table-column>
-        <el-table-column label="离职时间" prop="staff.enroll" align="center"></el-table-column>
-        <el-table-column label="离职操作时间" prop="staff.enroll" align="center"></el-table-column>
+        <el-table-column label="离职时间" prop="staff.dismiss_time" align="center"></el-table-column>
+        <el-table-column label="离职操作时间" prop="staff.is_on_job" align="center"></el-table-column>
+        <el-table-column label="禁用操作时间" prop="staff.is_enable" align="center"></el-table-column>
         <el-table-column label="联系方式" prop="phone" align="center"></el-table-column>
-        <el-table-column label="离职类型" prop="dismiss_time.entry_type" align="center"></el-table-column>
-        <el-table-column label="离职备注" prop="dismiss_time.entry_mess" align="center"></el-table-column>
+        <el-table-column label="离职类型" prop="staff.dismiss_reason.dismiss_type" align="center"></el-table-column>
+        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" align="center"></el-table-column>
         <el-table-column label="离职交接单" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="handleLooResignation(scope.row,'resignation_form')">查看</el-button>
@@ -81,7 +82,7 @@
   export default {
     name: "index",
     components: { LjDialog },
-    props: ['exportInfo'],
+    props: ['exportInfo','searchVal'],
     data() {
       return {
         checkList: [],
@@ -94,7 +95,7 @@
           limit: 36,
           org_id: '',
           position_id: '',
-          is_on_job: 1,
+          is_on_job: 0,
           export: 0
         },
 
@@ -108,8 +109,14 @@
     activated() {
     },
     watch: {
+      searchVal: {
+        handler(val) {
+          this.params = Object.assign({},this.params,val);
+          this.getStaffList();
+        },
+        deep: true
+      },
       exportInfo(val) {
-        console.log(val);
         if (val === 4) {
           this.params.export = 1;
           this.getStaffList();

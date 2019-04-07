@@ -1,5 +1,14 @@
 @import "../../common.scss";
 
+//common css
+
+.gray {
+  color: #919191 !important;
+  //font-family: MicrosoftYaHeiLight !important;
+}
+
+
+
 #theme_name {
   #discussPolitics {
     height: 100%;
@@ -247,9 +256,9 @@
 
               .timeline-item-container-content-item {
                 position: relative;
-                margin: 5px;
+                margin: 8px 5px;
                 font-size: 14px;
-                font-weight: 700;
+                //font-weight: 700;
                 color: #464646;
                 font-family: MicrosoftYaHei;
                 //padding: 3px 5px;
@@ -258,6 +267,12 @@
                 overflow: hidden;
                 cursor: default;
                 border-radius: 6px;
+
+                &.cancel-status {
+                  color: #919191 ;
+                  font-family: "Microsoft YaHei Light";
+                  //font-weight: 400;
+                }
 
                 span.icons-delete {
                   display: inline-block;

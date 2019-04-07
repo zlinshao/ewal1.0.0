@@ -5,8 +5,8 @@
         <div class="listTopCss items-bet">
           <div class="items-center listTopLeft">
             <p class="flex-center">
-              <!--<b @click="show_market = true;show_shadow = true">...</b>-->
-              <b>...</b>
+              <b @click="show_market = true">...</b>
+              <!--<b>...</b>-->
             </p>
             <h1>客户管理</h1>
             <h2 class="items-center">
@@ -105,18 +105,6 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                        <el-form-item label="客户身份">
-                          <span>{{ current_detail.idtype }}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="房屋地址">
-                          <div v-if="current_detail.address_info">
-                            <span v-for="(item,idx) in current_detail.address_info">{{ item.house_name }}<a v-if="idx !== current_detail.address_info.length">;</a></span>
-                          </div>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
                         <el-form-item label="性别">
                           <span>{{ current_detail.sex || '/'}}</span>
                         </el-form-item>
@@ -127,44 +115,9 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                        <el-form-item label="小区地址">
-                          <div v-if="current_detail.address_info">
-                            <span v-for="(item,idx) in current_detail.address_info">{{ item.community_address }}<a v-if="idx !== current_detail.address_info.length">;</a></span>
-                          </div>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="籍贯"></el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="民族"></el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="负责人"></el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="国籍"></el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="银行账号">
-                          <span>{{ current_detail.account_info && current_detail.account_info.account }}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="负责部门"></el-form-item>
-                      </el-col>
-                      <el-col :span="8">
                         <el-form-item label="证件类型">
                           <span>{{current_detail.idtype || '/'}}</span>
                         </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="开户行">
-                          <span>{{ current_detail.account_info && current_detail.account_info.bank }}</span>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="8">
-                        <el-form-item label="客户来源"></el-form-item>
                       </el-col>
                       <el-col :span="8">
                         <el-form-item label="证件号码">
@@ -172,18 +125,183 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
+                        <el-form-item label="房屋地址">
+                          <div v-if="current_detail.address_info">
+                            <span v-for="(item,idx) in current_detail.address_info">{{ item.house_name || '/'}}<a v-if="idx !== current_detail.address_info.length">;</a></span>
+                          </div>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="小区地址">
+                          <div v-if="current_detail.address_info">
+                            <span v-for="(item,idx) in current_detail.address_info">{{ item.community_address }}<a v-if="idx !== current_detail.address_info.length">;</a></span>
+                          </div>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8" v-if="customer_type !== '租客'">
+                        <el-form-item label="开户行">
+                          <span>{{ current_detail.account_info && current_detail.account_info.bank }}</span>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8" v-if="customer_type !== '租客'">
                         <el-form-item label="支行">
                           <span>{{ current_detail.account_info && current_detail.account_info.subranch || '/' }}</span>
                         </el-form-item>
                       </el-col>
+                      <el-col :span="8" v-if="customer_type !== '租客'">
+                        <el-form-item label="银行账号">
+                          <span>{{ current_detail.account_info && current_detail.account_info.account }}</span>
+                        </el-form-item>
+                      </el-col>
                       <el-col :span="8">
-                        <el-form-item label="客户意向"></el-form-item>
+                        <el-form-item label="负责人">
+                          <span>{{ current_detail.sign_user || '/'}}</span>
+                        </el-form-item>
+                      </el-col>
+
+                      <el-col :span="8">
+                        <el-form-item label="负责部门">
+                          <span>{{ current_detail.sign_org || '/'}}</span>
+                        </el-form-item>
                       </el-col>
                     </el-row>
                   </el-form>
                 </el-tab-pane>
-                <el-tab-pane label="合同信息" name="second">配置管理</el-tab-pane>
-                <el-tab-pane label="汇款记录" name="third">角色管理</el-tab-pane>
+                <el-tab-pane label="合同信息" name="second">
+                  <el-form label-width="120px" v-if="current_detail && current_detail.contract_info && current_detail.contract_info.length > 0">
+                    <el-row :gutter="10" v-for="(item,index) in current_detail.contract_info" :key="index" style="border-bottom: 1px solid #E4E7ED;margin: 0 15px">
+                      <el-col :span="8">
+                        <el-form-item label="创建时间">
+                          <span>{{ item.contract_created_at || ''}}</span>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                          <el-form-item label="合同编号">
+                            <span>{{ item.contract_number || ''}}</span>
+                          </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="房屋地址">
+                          <div v-if="current_detail.address_info">
+                            <span v-for="(item,idx) in current_detail.address_info">{{ item.house_name }}<a v-if="idx !== current_detail.address_info.length">;</a></span>
+                          </div>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="月单价">
+                          <div v-if="item.month_price && item.month_price.length > 0">
+                            <span v-for="(tmp,idx) in item.month_price" :key="idx">{{ tmp.price }}/月 {{ tmp.period }}月</span>
+                          </div>
+                          <div v-else>暂无</div>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="付款方式" v-if="customer_type === '房东'">
+                          <div v-if="item.pay_way && item.pay_way.length > 0">
+                            <span v-for="tmp in item.pay_way">{{ pay_type[tmp.pay_way ]}} {{ tmp.period }}月</span>
+                          </div>
+                          <div v-else>/</div>
+                        </el-form-item>
+                        <el-form-item label="付款方式" v-if="customer_type === '租客'">
+                          <div v-if="item.pay_way && item.pay_way.length > 0">
+                            <span v-for="(tmp,idx) in item.pay_way">{{ tmp.pay_way }}月 <a v-if="idx !== item.pay_way.length - 1">/</a></span>
+                          </div>
+                          <div v-else>/</div>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="合同时间">
+                          <span>{{ item.start_at || ''}}</span>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="负责人">
+                          <span>{{ item.sign_user || ''}}</span>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="负责部门">
+                          <span>{{ item.sign_org || ''}}</span>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="是否中介">
+                          <span>{{ item.is_agency === 1 ? '是' : '否'}}</span>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </el-form>
+                </el-tab-pane>
+                <el-tab-pane label="汇款记录" name="third">
+                  <el-tabs v-model="account_activeName">
+                    <el-tab-pane label="应收" name="receive">
+                      <el-table :data="current_detail && current_detail.account_running && current_detail.account_running.receive">
+                        <el-table-column label="汇款时间" prop="create_time" align="center" min-width="120px"></el-table-column>
+                        <el-table-column label="账户账号" prop="" align="center" min-width="120px">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.account }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="账户银行" prop="" align="center">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.bank }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="账户支行" prop="" align="center">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.subbranch || '/' }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="本次汇款金额" prop="amount_payable" align="center"></el-table-column>
+                        <el-table-column label="开户人" prop="" align="center">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.account_name }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="关系" align="center">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.relationship }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="操作人" prop="sign_user" align="center"></el-table-column>
+                        <el-table-column label="操作部门" prop="sign_org" align="center"></el-table-column>
+                      </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="应付" name="payable">
+                      <el-table :data="current_detail && current_detail.account_running && current_detail.account_running.payable">
+                        <el-table-column label="汇款时间" prop="create_time" align="center" min-width="120px"></el-table-column>
+                        <el-table-column label="账户账号" prop="" align="center" min-width="120px">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.account }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="账户银行" prop="" align="center">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.bank }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="账户支行" prop="" align="center">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.subbranch || '/' }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="本次汇款金额" prop="amount_payable" align="center"></el-table-column>
+                        <el-table-column label="开户人" prop="" align="center">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.account_name }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="关系" align="center">
+                          <template>
+                            <span>{{ current_detail && current_detail.account_info && current_detail.account_info.relationship }}</span>
+                          </template>
+                        </el-table-column>
+                        <el-table-column label="操作人" prop="sign_user" align="center"></el-table-column>
+                        <el-table-column label="操作部门" prop="sign_org" align="center"></el-table-column>
+                      </el-table>
+                    </el-tab-pane>
+                  </el-tabs>
+                </el-tab-pane>
               </el-tabs>
             </div>
             <div class="dialog_footer">
@@ -213,7 +331,7 @@
         </lj-dialog>
 
         <SearchHigh :module="highVisible" :show-data="searchData" @close="handleCloseHigh"></SearchHigh>
-        <MarketMenuList :show-market="show_market" :show-shadow="show_shadow" @close="handleCloseMenu"></MarketMenuList>
+        <MarketMenuList :show-market="show_market" :show-shadow="show_market" @close="handleCloseMenu"></MarketMenuList>
       </div>
     </div>
 </template>
@@ -227,13 +345,20 @@
         components: { LjDialog , SearchHigh ,MarketMenuList},
         data() {
             return {
+              pay_type: {
+                444 : '月付',
+                445 :  '双月付',
+                446 :  '季付',
+                447 :  '半年付',
+                448 :  '年付'
+              },
+              account_activeName: 'receive',
               move_out_visible: false,
               move_row: '',
 
               highVisible: false,
               show_market: false,
               searchData: {},
-              show_shadow: true,
 
               market_server: globalConfig.market_server,
               selects: [
@@ -263,7 +388,8 @@
               //详情
               detail_visible: false,
               current_detail: '',
-              activeName: 'first'
+              activeName: 'first',
+              customer_type: '',
             }
         },
         mounted() {
@@ -311,6 +437,7 @@
             if (this.params.is_black === 1) {
               return false;
             }
+            this.customer_type = row.customer_type;
             if (row.customer_type === '房东') {
               console.log(row.customer_type);
               // this.$http.get(this.market_server + `v1.0/market/customer/lord/${row.id}`).then(res => {

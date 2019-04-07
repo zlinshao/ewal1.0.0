@@ -19,16 +19,8 @@
           </template>
         </el-table-column>
         <el-table-column label="家庭住址" prop="staff.home_addr" align="center"></el-table-column>
-        <el-table-column label="紧急联系人" prop="" align="center"></el-table-column>
         <el-table-column label="紧急联系方式" prop="staff.emergency_call" align="center"></el-table-column>
         <el-table-column label="手机号" prop="phone" align="center"></el-table-column>
-        <!--<el-table-column-->
-          <!--align="center"-->
-          <!--label="操作">-->
-          <!--<template slot-scope="scope">-->
-
-          <!--</template>-->
-        <!--</el-table-column>-->
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -56,7 +48,7 @@
 
   export default {
     name: "index",
-    props: ['searchVal','searchParams'],
+    props: ['searchVal','searchParams','exportInfo','exportData'],
     components: {StaffFiles},
     data() {
       return {
@@ -64,17 +56,22 @@
         chooseRowIds: [],
         tableData: [],
         counts: 0,
+        export_params: {
+          field: [],
+          export: 0,
+        },
         params: {
           search: '',
           page: 1,
           limit: 30,
           org_id: '',
           position_id: '',
+          export: ''
         },
         filesVisible: false,
 
         //员工详情
-        staff_detail_info: ''
+        staff_detail_info: '',
       }
     },
     mounted() {
@@ -83,6 +80,22 @@
     activated() {
     },
     watch: {
+      exportData: {
+        handler(val) {
+          this.export_params.field = ['id'];
+          val.map(item => {
+            this.export_params.field.push(item.key);
+          });
+          console.log(this.export_params);
+        },
+        deep: true
+      },
+      exportInfo(val) {
+        if (val === 3) {
+          this.export_params.export = 1;
+          this.exportStaffList();
+        }
+      },
       searchParams: {
         handler(val) {
           this.params = Object.assign({},this.params,val);
@@ -100,6 +113,22 @@
     },
     computed: {},
     methods: {
+      exportStaffList() {
+        this.$http.post('staff/user/record',this.export_params,{responseType: 'arraybuffer'}).then(res => {
+          console.log(res);
+          if (!res) {
+            return;
+          }
+          let url = window.URL.createObjectURL(new Blob([res],{type: 'application/vnd.ms-excel'}));
+          let link = document.createElement('a');
+          link.style.display = 'a';
+          link.href = url;
+          link.setAttribute('download', 'export.xls');
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        })
+      },
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {
           this.tableData = res.data.data;

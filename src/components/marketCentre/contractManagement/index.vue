@@ -329,7 +329,46 @@
     <!--添加标记-->
     <lj-dialog
       :visible="add_mark_visible"
-    ></lj-dialog>
+      :size="{width: 450 + 'px',height: 500 + 'px'}"
+      @close="handleCancelMark"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>添加标记</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form :model="mark_form" label-width="80px">
+            <el-form-item label="标记类型">
+              <div class="items-center">
+                <p class="radioSelection" @click="chooseMarkRadio(item)"
+                   :class="{'highChoose': mark_form.tag_status === item.id}"
+                   v-for="item in mark_status">
+                  {{ item.val }}
+                </p>
+              </div>
+            </el-form-item>
+            <el-form-item label="预约时间">
+              <el-date-picker
+                value-format="yyyy-MM-dd HH:mm:ss"
+                v-model="mark_form.appointment_time"
+                type="datetime"
+                placeholder="请选择"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="备注信息">
+              <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="6"></el-input>
+            </el-form-item>
+            <el-form-item label="上传图片">
+              <Upload :file="mark_upload" @success="handleGetMarkUpload"></Upload>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleSubmitMark">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancelMark">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -347,7 +386,22 @@
         //添加标记
         add_mark_visible: false,
         mark_form: {
-
+          tag_status: '',
+          appointment_time: '',
+          remark: '',
+          album: [],
+        },
+        mark_status: [
+          {id: 1,val: '续租'},
+          {id: 2,val: '退租'},
+        ],
+        mark_upload: {
+          keyName: 'album',
+          setFile: [],
+          size: {
+            width: '50px',
+            height: '50px'
+          }
         },
 
         show_control: '',
@@ -463,29 +517,62 @@
     watch: {},
     computed: {},
     methods: {
+      handleCancelMark() {
+        for (var key in this.mark_form) {
+          this.mark_form[key] = '';
+        }
+        this.mark_form.album = [];
+        this.add_mark_visible = false;
+      },
+      handleSubmitMark() {
+        this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`,this.mark_form).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.message
+            });
+            this.handleCancelMark();
+            this.getContractList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.message
+            })
+          }
+        })
+      },
+      handleGetMarkUpload(file) {
+        if (file !== 'close') {
+          this.mark_form[file[0]] = file[1];
+        }
+      },
+      chooseMarkRadio(item) {
+        this.mark_form.tag_status = item.id;
+      },
       handleCloseLookBackInfo() {
         this.currentRow = '';
         this.backInfo_visible = false;
       },
       handleClickSpan(tmp,item) {
+        this.currentRow = item;
         this.current_choose_control = tmp.id;
-        console.log(item);
         switch (tmp.id) {
           case 1:
             break;
           case 2:
-            this.currentRow = item;
             this.backInfo_visible = true;
-            // if (item.record) {
-            //   this.backInfo = item.record;
-            // } else {
-            //   this.$LjNotify('warning',{
-            //     title: '警告',
-            //     message: '暂无回访信息'
-            //   })
-            // }
+            if (item.record) {
+              this.backInfo = item.record;
+            } else {
+              this.$LjNotify('warning',{
+                title: '警告',
+                message: '暂无回访信息'
+              })
+            }
             break;
           case 3:
+            this.add_mark_visible = true;
             break;
         }
       },

@@ -494,7 +494,7 @@
             <div class="items-bet">
               <span class="hover">岗位</span>
             </div>
-            <h2 class="add" @click="addPostVisible = true">
+            <h2 class="add" @click="operateModule('post')">
               <b>+</b>
             </h2>
           </div>
@@ -566,6 +566,9 @@
             <el-form-item label="岗位描述" required>
               <el-input v-model="add_position_form.description" type="textarea" placeholder="请输入"></el-input>
             </el-form-item>
+            <el-form-item label="岗位标识" required>
+              <el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>
+            </el-form-item>
             <el-form-item label="所属部门" required>
               <div class="items-center iconInput">
                 <el-input v-model="add_position_form.depart" readonly></el-input>
@@ -595,7 +598,7 @@
         <div class="dialog_main flex-center borderNone">
           <el-form :model="outForm" ref="postForm" label-width="120px" class="depart_visible">
             <el-form-item label="离职日期" required>
-              <el-date-picker type="date" value-format="yyyy-MM-dd"  v-model="outForm.is_on_job"></el-date-picker>
+              <el-date-picker type="date" value-format="yyyy-MM-dd"  v-model="outForm.dismiss_time"></el-date-picker>
             </el-form-item>
             <el-form-item label="离职原因" required>
               <el-select v-model="outForm.dismiss_reason.dismiss_type">
@@ -616,9 +619,9 @@
             </el-form-item>
             <div>
               <el-checkbox-group v-model="checkLists" style="display: flex;justify-content: center;color: #D2D2D2;">
-                <el-checkbox label="发送离职群消息"></el-checkbox>
-                <el-checkbox label="发送离职短信"></el-checkbox>
-                <el-checkbox label="发送离职证明"></el-checkbox>
+                <el-checkbox :label="1">发送离职群消息</el-checkbox>
+                <el-checkbox :label="2">发送离职短信</el-checkbox>
+                <el-checkbox :label="3">发送离职证明</el-checkbox>
               </el-checkbox-group>
             </div>
           </el-form>
@@ -652,6 +655,25 @@
       </div>
     </lj-dialog>
 
+    <!--确定发送离职信息-->
+    <lj-dialog
+      :visible="confirm_send_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="confirm_send_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确定</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定发送离职短信吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleConfirmSendMsg">确定</el-button>
+          <el-button type="info" size="small" @click="confirm_send_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -665,12 +687,14 @@
     components: {ljDialog,PositionOrgan},
     data() {
       return {
+        confirm_send_visible: false,
+
         show_field_list: [],
         field_list: [],
         //离职
         outForm: {
           type: 'dimission',
-          is_on_job: '',
+          dismiss_time: '',
           dismiss_reason: {
             dismiss_mess: '',
             dismiss_type: ''
@@ -746,16 +770,9 @@
         dutyList: [],
 
         addStaffVisible: '',
-        staffForm: {
-          name: '',
-          org_id: '',
-          depart: '',
-          position: '',
-          position_id: '',
-        },
         positionForm: {
           name: '',
-          org_id: '',
+          org_id: [],
           depart: '',
         },
 
@@ -818,11 +835,12 @@
         //新增岗位
         add_position_form: {
           name: '',
-          duty_id: '',
+          duty_id: [],
           duty_name: '',
           depart: '',
-          org_id: '',
+          org_id: [],
           description: '',
+          sign: '',
         },
 
         //禁用
@@ -903,6 +921,21 @@
       }
     },
     methods: {
+      handleConfirmSendMsg() {
+        console.log(this.checkLists);
+        var obj = {};
+        if (this.checkLists.includes(1)) {
+          obj.type = 'dimission';
+        }
+        if (this.checkLists.includes(2)) {
+          obj.sms = 1;
+        } else {
+          obj.sms = 0
+        }
+        this.$http.get(`staff/user/${this.currentStaff.id}/sendinfo`,obj).then(res => {
+          console.log(res);
+        })
+      },
       handleChangePowerType(type) {
         console.log(type);
       },
@@ -1065,7 +1098,7 @@
       handleCancelOut() {
         this.outForm = {
           type: 'dimission',
-          is_on_job: '',
+          dismiss_time: '',
           dismiss_reason: {
             dismiss_mess: '',
             dismiss_type: ''
@@ -1082,6 +1115,9 @@
             });
             this.handleCancelOut();
             this.getStaffList();
+            if (this.checkLists.length > 0) {
+              this.confirm_send_visible = true;
+            }
           } else {
             this.$LjNotify('warning',{
               title: '失败',
@@ -1164,7 +1200,7 @@
             this.positionForm = {
               name: '',
               depart: '',
-              org_id: ''
+              org_id: []
             }
           } else {
             this.$LjNotify('warning',{
@@ -1202,11 +1238,12 @@
       handleCancelAdd() {
         this.add_position_form = {
           name: '',
-          duty_id: '',
+          duty_id: [],
           duty_name: '',
           depart: '',
-          org_id: '',
+          org_id: [],
           description: '',
+          sign: ''
         };
         this.addPostVisible = false;
       },
@@ -1334,10 +1371,10 @@
         }).then(res => {
           if (res.code === '20000') {
             this.positionList = res.data.data;
-            this.positionVisible = true;
           } else {
             this.positionList = [];
-          }
+          };
+          this.positionVisible = true;
         })
       },
       // 权限/禁用/修改/离职
@@ -1363,7 +1400,8 @@
         }
         if (val === 'disabled') {
           this.currentStaff = item;
-        } else {
+        }
+        if (val === 'positionManagement') {
           this.currentDutyInfo = item;
         }
         switch (val) {
@@ -1379,7 +1417,7 @@
             break;
           case 'position'://岗位管理
             this.positionForm.depart = this.departInfo.name || '';
-            this.positionForm.org_id = this.departInfo.id || '';
+            this.positionForm.org_id.push(this.departInfo.id);
             this.addStaffVisible = true;
             break;
           case 'positionManagement'://岗位管理
@@ -1387,8 +1425,8 @@
             break;
           case 'post':
             this.add_position_form.depart = this.departInfo.name || '';
-            this.add_position_form.org_id = this.departInfo.id || '';
-            this.add_position_form.duty_id = this.currentDutyInfo.id || '';
+            this.add_position_form.org_id.push(this.departInfo.id);
+            this.add_position_form.duty_id.push(this.currentDutyInfo.id);
             this.add_position_form.duty_name = this.currentDutyInfo.name || '';
             this.addPostVisible = true;
             break;
