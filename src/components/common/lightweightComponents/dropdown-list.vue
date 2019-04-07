@@ -58,8 +58,6 @@
           }else {
             this.dropdown_code = Number(this.value) || '';
           }
-
-
         },
         immediate: true//第一次绑定也执行
       },

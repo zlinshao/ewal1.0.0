@@ -31,22 +31,18 @@
           </div>
           <div class="calendar-day">
             <div class="ui-container">
-
-
               <div @click="showAddNewMeetingDialog(item)" v-for="item in daysList" class="calendar-day-item">
                 <div class="calendar-day-item-container">
                   <div class="calendar-day-item-container-tip">
-                    <el-badge :value="item.tips" class="item">
+                    <el-badge :value="item.todoList.length>0?item.todoList.length:''" class="item">
                       <div :class="{'gray':item.type=='prev'||item.type=='next','current':item.today}"
                            class="calendar-day-item-container-date">
                         {{item.date}}
                       </div>
                     </el-badge>
                   </div>
-
-
                   <div class="calendar-day-item-container-content">
-                    <div @click.stop="handleMeetingDialog(contentItem)"
+                    <div @click.stop="openMeetingDialog(contentItem)"
                          :class="[contentItem.status==0?'default':contentItem.type==1?'warning':'danger']"
                          :title="contentItem.content"
                          v-for="(contentItem,index) in item.todoList"
@@ -57,11 +53,10 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
         <div class="container-right scroll_bar">
-          <div @click="meeting_counts_dialog_visible = true" class="monthTitle">
+          <div @click="getCurrentSelectMonthMeetingCounts" class="monthTitle">
             <span title="本月会议数">{{monthContent}}</span>
           </div>
           <!--时间线-->
@@ -74,10 +69,13 @@
                 placement="top">
                 <el-card>
                   <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
-                    <div class="timeline-item-container-content-item" @click="handleMeetingDialog(contentItem)"
+                    <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
+                         @click="openMeetingDialog(contentItem)"
                          :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoList">
                       {{contentItem.content}}
-                      <span title="删除" @click.stop="contentDelete(index,contentItemIndex)" class="icons-delete"></span>
+                      <span v-if="contentItem.status==0" title="取消"
+                            @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
+                            class="icons-delete"></span>
                     </div>
                   </div>
                 </el-card>
@@ -88,10 +86,10 @@
       </div>
     </div>
 
-    <!--周例会详情  -->
-    <lj-dialog :visible="weekly_meeting_dialog_visible"
+    <!--会议详情  -->
+    <lj-dialog :visible="meeting_detail_dialog_visible"
                :size="{width: 800 + 'px',height: 600 + 'px'}"
-               @close="weekly_meeting_dialog_visible = false">
+               @close="meeting_detail_dialog_visible = false">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>周例会 09:00-11:00</h3>
@@ -105,7 +103,7 @@
                   <div class="form-item-title">会议主题</div>
                 </el-col>
                 <el-col :span="20">
-                  <div class="form-item-content">{{weekly_meeting_form.meetingTheme}}</div>
+                  <div class="form-item-content">{{meeting_detail_form.meetingTheme}}</div>
                 </el-col>
               </el-row>
             </div>
@@ -196,7 +194,7 @@
                 </el-col>
                 <el-col :span="20">
                   <div class="form-item-content">
-                    <el-input type="textarea" v-model="weekly_meeting_form.feedback"></el-input>
+                    <el-input type="textarea" v-model="meeting_detail_form.feedback"></el-input>
                   </div>
                 </el-col>
               </el-row>
@@ -211,26 +209,25 @@
       </div>
     </lj-dialog>
 
-
     <!--会议个数详情dialog  -->
     <lj-dialog :visible="meeting_counts_dialog_visible"
                :size="{width: 800 + 'px',height: 600 + 'px'}"
                @close="meeting_counts_dialog_visible = false">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
-          <h3>本月会议数:7</h3>
+          <h3>本月会议数:{{meeting_counts_form.length}}</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
 
           <div class="meeting-counts-container">
 
-            <div @click="weekly_meeting_dialog_visible = true" class="form-item" v-for="item in meeting_counts_form">
+            <div @click="meeting_detail_dialog_visible = true" class="form-item" v-for="item in meeting_counts_form">
               <el-row :gutter="80">
                 <el-col :span="10">
-                  <div class="form-item-title">{{item.title}}</div>
+                  <div class="form-item-title">{{item.name}}</div>
                 </el-col>
                 <el-col :span="14">
-                  <div class="form-item-content">{{item.content}}</div>
+                  <div class="form-item-content">{{item.timeContent}}</div>
                 </el-col>
               </el-row>
             </div>
@@ -242,16 +239,20 @@
       </div>
     </lj-dialog>
 
-
     <!--新建会议-->
     <lj-dialog
       :visible="add_meeting_dialog_visible"
-      :size="{width: 520 + 'px',height: 700 + 'px'}"
+      :size="{width: 520 + 'px',height: 650 + 'px'}"
       @close="add_meeting_dialog_visible = false"
     >
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>新建会议</h3>
+
+          <div class="header_right">
+            <div>{{add_meeting_form.currentDate}}</div>
+          </div>
+
         </div>
         <div class="dialog_main borderNone add-meeting-container">
           <el-form :model="add_meeting_form" style="text-align: left" size="small" label-width="100px">
@@ -296,13 +297,14 @@
               </el-input>
             </el-form-item>-->
 
-
             <el-form-item label="会议提醒">
               <div class="form-item-content">
                 会议开始前
-                <el-input style="width: 50px" v-model="add_meeting_form.remind_data.hour"></el-input>
+                <el-input-number size="mini" :min="0" :max="23" style="width: 90px"
+                                 v-model="add_meeting_form.remind_data.hour"></el-input-number>
                 小时
-                <el-input style="width: 50px" v-model="add_meeting_form.remind_data.minute"></el-input>
+                <el-input-number size="mini" :min="0" :max="59" style="width: 90px"
+                                 v-model="add_meeting_form.remind_data.minute"></el-input-number>
                 分钟提醒
                 <!--                会议开始前<span class="span-input">3</span>小时<span class="span-input">20</span>分钟提醒-->
               </div>
@@ -539,19 +541,18 @@
         daysList: [],
         monthContent: '',
 
-
         /*dialog 群组*/
-        //周例会详情
-        weekly_meeting_dialog_visible: false,
-        weekly_meeting_form: {
-          meetingTheme: '乐伽周期会',//开会主题
+        //会议详情
+        meeting_detail_dialog_visible: false,
+        meeting_detail_form: {
+          name: '乐伽周期会',//开会主题
           applyPerson: '张三',//申请人
           meetingRoom: '大会议室',//会议室
           compere: '李四',//主持人
-          arrival: '19/19',//应到/实到
-          meetingTip: {
-            hours: '3',
-            minutes: '30'
+          //arrival: '19/19',//应到/实到
+          remind_data: {
+            hours: 0,
+            minutes: 0
           },
           participant: [
             {
@@ -563,36 +564,20 @@
               name: '李四'
             }
           ],//参加人员
-          accessory: {},//上传附件
-          feedback: '',//反馈
+          attachment: {},//上传附件
+          //feedback: '',//反馈
         },
 
         //会议个数dialog
         meeting_counts_dialog_visible: false,
-        meeting_counts_form: [
-          {
-            title: '公司周例会',
-            content: '02-03 09:00-16:35'
-          },
-          {
-            title: '公司2周例会',
-            content: '02-03 09:00-16:35'
-          },
-          {
-            title: '公司3周例会',
-            content: '02-03 09:00-16:35'
-          },
-          {
-            title: '公司4周例会',
-            content: '02-03 09:00-16:35'
-          },
-        ],
+        meeting_counts_form: [],
 
 
         //新建会议
         currentSelectionDate: '',
         add_meeting_dialog_visible: false,
         add_meeting_form: {//会议form表单
+          currentDate: '',
           name: '',//会议主题--会议名称
           room_id: '',//会议室id
           meeting_type: '',//会议类型id
@@ -648,23 +633,40 @@
     },
     computed: {},
     methods: {
+      //获取当前选取月份会议详情
+      getCurrentSelectMonthMeetingCounts() {
+        this.meeting_counts_dialog_visible = true;
+        let startDate = utils.formatDate(this.dateValue, 'yyyy-MM-01 00:00:00');
+        let endDate = this.lastTimeOfMonth(this.dateValue);
+        //this.dateValue;
+        this.$http.get(`${this.url}/meeting/meeting?date[]=${startDate}&date[]=${endDate}`).then(res => {
+          debugger
+          if (res.code.endsWith('0')) {
+            this.meeting_counts_form = _.forEach(res.data.data, (value) => {
+              value.timeContent = `${utils.formatDate(value.start_time, 'MM-dd hh:mm')} - ${utils.formatDate(value.end_time, 'hh:mm')}`;
+              return value;
+            });
+          }
+        });
+      },
+
       //添加新会议
       addNewMeeting() {
-        debugger
         let curDate = this.currentSelectionDate.datetime;
         let params = {
           ...this.add_meeting_form,
           start_time: `${curDate} ${this.$refs.meetingTime.startTime}:00`,
           end_time: `${curDate} ${this.$refs.meetingTime.endTime}:00`,
         };
+        delete params['currentDate'];
         this.$http.post(`${this.url}/meeting/meeting`, params).then(res => {
-          debugger
           if (res.code.endsWith('0')) {
             this.$LjNotify('success', {
               title: '成功',
               message: '添加会议成功',
             });
             this.add_meeting_dialog_visible = false;
+            this.initDaysList(this.dateValue);
           } else {
             this.$LjNotify('error', {
               title: '失败',
@@ -672,17 +674,17 @@
             });
           }
         });
-
       },
 
       showAddNewMeetingDialog(item) {
+
         debugger
+        this.add_meeting_form.currentDate = utils.formatDate(item.datetime, 'MM月dd日');
         //this.add_meeting_form = [];
         this.currentSelectionDate = item;
         //item.datetime  '2019-04-05'
         this.add_meeting_dialog_visible = true;
       },
-
       //打开会议相关
       openMeetingRoomOrType(type) {//type = 1 添加会议室    type = 2 添加会议类型
         if (type == 1) {//会议室
@@ -691,7 +693,7 @@
           this.add_meeting_type_dialog_visible = true;
         }
       },
-      //保存会议相关
+      //保存会议类型相关
       saveMeetingRoomOrType(type) {
         let name;
         if (type == 1) {//会议室
@@ -742,7 +744,7 @@
           }
         });
       },
-      //删除会议相关
+      //删除会议类型相关
       deleteMeetingRoomOrType(item, type) {
         if (item && item.id) {
           this.$LjConfirm({icon: 'delete'}).then(() => {
@@ -765,22 +767,65 @@
         }
       },
 
-
       handleChangeDate(id) {
 
       },
-
-      contentDelete(index, todoListIndex) {
+      //取消会议
+      cancelMeeting(item, index, todoListIndex) {
+        debugger
         //console.log(this.daysList);
-        this.$LjConfirm({icon: 'delete'}).then(res => {
-          this.daysList[index].todoList.splice(todoListIndex, 1);
+        this.$LjConfirm({content: '确定要取消吗？'}).then(res => {
+          /*let params = {...item};
+          params.status = 2;*/
+          let params = {
+            status: 2
+          };
+          this.$http.put(`${this.url}/meeting/meeting/${item.id}/status`, params).then(res => {
+            debugger
+            if (res.code.endsWith('0')) {
+              this.$LjNotify('success', {
+                title: '成功',
+                message: '取消成功',
+              });
+              this.initDaysList(this.timeValue);
+              //this.daysList[index].todoList.splice(todoListIndex, 1);
+            } else {
+              this.$LjNotify('error', {
+                title: '失败',
+                message: '取消失败',
+              });
+            }
+          });
+
+
         });
         //this.initDaysList();//重新渲染数据
       },
 
-      //处理会议点击事件
-      handleMeetingDialog(item) {
-        this.weekly_meeting_dialog_visible = true;
+      //处理会议点击事件 打开会议详情表单
+      openMeetingDialog(value) {
+        debugger
+
+        this.meeting_detail_dialog_visible = true;
+
+        this.$http.get(`${this.url}/meeting/meeting/${value.id}`).then(res => {
+          if (res.code.endsWith('0')) {
+            debugger
+            let item = res.data;
+            let applyPerson = _.find(item.users, {'user_id': item.user_id});//申请人
+            let compere =
+              this.meeting_detail_form = {
+                name: item.name,//会议名称
+                applyPerson: applyPerson,//申请人
+                meetingRoom: item.room?.name,//会议室
+                remind_data: item.remind_data,//提醒时间
+
+                attachment: item.attachment,//附件
+              };
+          }
+        });
+
+
         console.log(item);
       },
 
@@ -804,24 +849,27 @@
           let tempData = [];
 
           this.$http.get(`${this.url}/meeting/meeting`, params).then(res => {
-            if(res.code.endsWith('0')) {
+            if (res.code.endsWith('0')) {
               tempData = res.data.data;
-              _.forEach(tempData,(value)=> {
-                debugger
+              //let mStatus = [];//盛放当天所有会议状态
+              _.forEach(tempData, (value) => {
                 let curData = utils.formatDate(value.start_time);
-                let mIdx = _.findIndex(daysList,(o)=> {
+                let mIdx = _.findIndex(daysList, (o) => {
                   return o.datetime == curData;
                 });
-                if(mIdx!==-1) {
+                if (mIdx !== -1) {
                   let sObj = {
                     ...value,
-                    content:`${utils.formatDate(value.start_time,'hh:mm')}-${utils.formatDate(value.end_time,'hh:mm')} ${value.name}`
+                    content: `${utils.formatDate(value.start_time, 'hh:mm')}-${utils.formatDate(value.end_time, 'hh:mm')} ${value.name}`
                   };
-                  daysList[mIdx].todoType = sObj.status;
+                  //mStatus.push(sObj.status);
+                  debugger
+                  daysList[mIdx].todoType = sObj.status > (daysList[mIdx].todoType || 0) ? sObj.status : (daysList[mIdx].todoType || 0);
                   daysList[mIdx].todoList.push(sObj);
                 }
                 //console.log(curData);
               });
+              this.daysList = daysList;
               /*tempData.forEach((item,index)=> {
                 let data = utils.formatDate(item.created_at);
 
@@ -829,7 +877,6 @@
             }
           });
 
-          this.daysList = daysList;
         } else {
           this.monthContent = '';
           this.daysList = [];
@@ -874,10 +921,10 @@
             datetime: this.getDateTimeByDay(date, i, -1),
             today: false,
             type: 'prev',//用来区分 上月本月下月字体颜色 本月黑 上下月灰
-            tips: '3',
+            //todoList.length>0?: '3',
             todoType: 0,//严重程度 用来区分时间线颜色
             todoList: [
-              {
+              /*{
                 id: 1,
                 content: '09:00-11:00 周会',
                 status: 0
@@ -890,7 +937,7 @@
                 id: 3,
                 content: '09:00-11:00 周会',
                 status: 2
-              },
+              },*/
             ],
             date: i
           };
@@ -910,7 +957,8 @@
             datetime: this.getDateTimeByDay(date, i, 0),
             today: curDay == i && this.getCurrentMonth() == this.getCurrentMonth(date),
             type: 'cur',
-            todoList:[],
+            todoType: 0,//严重程度 用来区分时间线颜色
+            todoList: [],
             date: i
           };
           arr.push(obj);
@@ -939,7 +987,8 @@
           let obj = {
             datetime: this.getDateTimeByDay(date, i, 1),
             today: false,
-            todoList:[],
+            todoType: 0,//严重程度 用来区分时间线颜色
+            todoList: [],
             type: 'next',
             date: i
           };
@@ -987,8 +1036,27 @@
           }
         }
         return format;
-      }
+      },
 
+
+      //某月最后一天时间
+      lastTimeOfMonth(datetime) {
+        let startDate = new Date(datetime);
+        startDate.setDate(1); //第一天
+
+        let endDate = new Date(startDate);
+        endDate.setMonth(startDate.getMonth() + 1)
+        endDate.setDate(0);
+
+        let date = endDate;
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let hour = '23';
+        let minute = '59';
+        let second = '59';
+        return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ":" + second;
+      }
     },
   }
 </script>

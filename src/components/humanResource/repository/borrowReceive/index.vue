@@ -202,7 +202,7 @@
             <div class="detail-bottom">
               <div class="detail-item" style="position: relative">
                 <span style="position: absolute;right: 95px">照片/视频</span>
-<!--                <div @click="tableSettingData.items.photo_table_dialog_visible = true" class="icons tp"></div>-->
+                <!--                <div @click="tableSettingData.items.photo_table_dialog_visible = true" class="icons tp"></div>-->
                 <div @click="tableSettingData.items.is_show_photo_detail_dialog = true" class="icons tp"></div>
               </div>
               <div class="detail-item total-price">
@@ -363,7 +363,9 @@
               prop="picture"
               label="物品照片">
               <template slot-scope="scope">
-                <div @click="showPictureList" class="photo-img"></div>
+                <div :class="{'edit-no':!tableSettingData.goods.modifyAll}">
+                  <div @click="showPictureList" class="photo-img"></div>
+                </div>
               </template>
             </el-table-column>
 
@@ -509,8 +511,6 @@
     </lj-dialog>
 
 
-
-
     <!--图片dialog-->
     <lj-dialog
       :visible="tableSettingData.goods.form.photo.is_show_photo_dialog"
@@ -636,7 +636,7 @@
 
             //photo_table_dialog_visible: false,
             is_show_photo_detail_dialog: false,
-            photo_detail_arr:[21321,213,4224740],//要显示的图片数组
+            photo_detail_arr: [21321, 213, 4224740],//要显示的图片数组
           },
           photo: {},//照片
           goods: {//物品详情列表
@@ -692,7 +692,7 @@
         is_notify_visible: false,
         is_notify_form: {
           user_id: 0,//要发送人的姓名
-          id:0,//流程id
+          id: 0,//流程id
         },
 
         chooseDetailTabs: 1,//1事项详情 2物品详情
@@ -728,19 +728,19 @@
       sendReceiveNotify() {
         let id = this.is_notify_form.id;
         let user_id = this.is_notify_form.user_id;
-        let params = {user_id:user_id};
-        this.$http.get(`${this.url}/eam/process/${id}/todo`,params).then(res=> {
-          if(res.code.endsWith('0')) {
-            this.$LjNotify('success',{
-              title:'成功',
-              message:'发送成功',
+        let params = {user_id: user_id};
+        this.$http.get(`${this.url}/eam/process/${id}/todo`, params).then(res => {
+          if (res.code.endsWith('0')) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: '发送成功',
             });
             this.is_notify_visible = false;
             this.getBorrowReceiveList();
-          }else {
-            this.$LjNotify('error',{
-              title:'失败',
-              message:'发送失败',
+          } else {
+            this.$LjNotify('error', {
+              title: '失败',
+              message: '发送失败',
             });
           }
         });
@@ -773,12 +773,12 @@
                 goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status],//物品状态
                 repairPrice: item.repair_price || 0,//维修总费用
                 scrapPrice: item.scrap_price || 0,//报废总费用
-                responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type]||'-',//任责人类型
-                responsibleName: item.responsible?.responsible_info?.name||'-',//任责人
+                responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type] || '-',//任责人类型
+                responsibleName: item.responsible?.responsible_info?.name || '-',//任责人
                 //costType: item.responsible?.payment_type||0//付款类型-结算方式
                 costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type || 0],//付款类型-结算方式
-                receive_picture: item.receive_picture||[],
-                user_id:item.user_id,
+                receive_picture: item.receive_picture || [],
+                user_id: item.user_id,
               };
               this.tableSettingData[this.currentTable].tableData.push(obj);
             }
@@ -793,15 +793,15 @@
         this.currentTable = 'items';
         this.chooseDetailTabs = 1;
         this.tableSettingData[this.currentTable].tableData = [];
-        this.$http.get(`${this.url}/eam/process/${ids}/collection`,this.tableSettingData[this.currentTable].params).then(res=> {
+        this.$http.get(`${this.url}/eam/process/${ids}/collection`, this.tableSettingData[this.currentTable].params).then(res => {
           debugger
-          if(res.code.endsWith('0')) {
+          if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let obj = {
-                name: item.goods?.name||'-',//物品名称
-                count_num: item.count_num||0,//总数量
-                unclaimed_num: item.unclaimed_num||0,//待领数量
-                receive_time: item.receive_time||'-',//领取时间
+                name: item.goods?.name || '-',//物品名称
+                count_num: item.count_num || 0,//总数量
+                unclaimed_num: item.unclaimed_num || 0,//待领数量
+                receive_time: item.receive_time || '-',//领取时间
                 picture: item.picture,//图片
               }
               this.tableSettingData[this.currentTable].tableData.push(obj);
@@ -1102,6 +1102,12 @@
   }
 
   #goods_detail {
+
+    .edit-no {
+      pointer-events: none;
+      cursor: not-allowed !important;
+    }
+
     .editable {
       .el-input__inner {
         background-color: #F9F9F9 !important;
