@@ -87,7 +87,7 @@
                 <el-date-picker
                   v-model="add_interviewer_form.interview_time"
                   type="datetime"
-                  format="yyyy-MM-dd HH:mm:ss"
+                  value-format="yyyy-MM-dd HH:mm:ss"
                   placeholder="请选择面试时间"
                 ></el-date-picker>
               </el-form-item>
@@ -337,12 +337,14 @@
     watch: {
       addInterviewerVisible(val) {
         this.add_interviewer_visible = val;
+        this.is_paper = 'interview';
         if (val) {
           this.getPositionList();
         }
       },
       addOfferVisible(val) {
         this.add_msg_visible = val;
+        this.is_paper = 'offer';
       },
       searchData: {
         handler(val) {
@@ -451,11 +453,13 @@
         this.depart_visible = false;
       },
       handleGetFile(val){
-        if (this.is_paper === 'offer') {
-          this.add_msg_form.paper_id = val[1];
-        }
-        if (this.is_paper === 'interview') {
-          this.add_interviewer_form.resume_id = val[1];
+        if (val !== 'close') {
+          if (this.is_paper === 'offer') {
+            this.add_msg_form.paper_id = val[1];
+          }
+          if (this.is_paper === 'interview') {
+            this.add_interviewer_form.resume_id = val[1];
+          }
         }
       },
       handleGetOffer(id) {
@@ -554,7 +558,6 @@
         this.add_msg_visible = false;
         this.is_paper = '';
         this.is_staff = '';
-        this.is_select = '';
         this.$emit('closeMsg');
       },
       //关闭添加面试人
