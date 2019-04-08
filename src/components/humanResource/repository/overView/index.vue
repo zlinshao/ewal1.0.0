@@ -81,7 +81,7 @@
           <template slot-scope="scope">
             <span v-if="scope.row.status>=1">{{scope.row.status>=10?'正常':'预警'}}</span>
             <span class="font-red" v-if="scope.row.status<1">预警</span>
-<!--            <a @click="getUselessList(scope.row)">{{scope.row.uselessCounts}}</a>-->
+            <!--            <a @click="getUselessList(scope.row)">{{scope.row.uselessCounts}}</a>-->
             <!--<div slot="reference" class="name-wrapper">-->
             <!--<el-tag size="medium">{{ scope.row.uselessCounts }}</el-tag>-->
             <!--</div>-->
@@ -289,8 +289,9 @@
           <h3>入库</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form :model="in_repository_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="物品">
+          <el-form ref="inRepositoryForm" :rules="rules.inRepositoryRules" :model="in_repository_form" style="text-align: left" size="small"
+                   label-width="100px">
+            <el-form-item prop="goods" label="物品">
               <div class="items-center iconInput choose-goods" @click="getGoodsList" style="width: 320px">
                 <!--<el-input v-model="in_repository_form.goods" placeholder="请选择物品" style="width: 300px">
                 </el-input>-->
@@ -302,11 +303,11 @@
               <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
                     @click="add_goods_form_visible = true;">+</span>
             </el-form-item>
-            <el-form-item label="数量">
+            <el-form-item prop="counts" label="数量">
               <el-input v-model.number="in_repository_form.counts" placeholder="请输入数量" style="width: 320px">
               </el-input>
             </el-form-item>
-            <el-form-item label="存放位置">
+            <el-form-item prop="location" label="存放位置">
               <el-select v-model="in_repository_form.department"
                          placeholder="存储类型" style="width: 120px;display: inline-block">
                 <el-option :value="'user'" label="人员"></el-option>
@@ -323,21 +324,21 @@
               <el-input style="width: 200px" v-model="in_repository_form.location" @focus="in_repository_form.department=='user'?staffModule=true:departModule=true"
                          :placeholder="in_repository_placeholder"></el-input>-->
             </el-form-item>
-            <el-form-item label="采购人">
+            <el-form-item prop="purchasePerson" label="采购人">
               <user-choose v-model="in_repository_form.purchasePerson" num="1" title="请选择采购人"></user-choose>
               <!--<el-select v-model="in_repository_form.purchasePerson" placeholder="请输入采购人" style="width: 320px">
                 <el-option :value="1" label="采购人1"></el-option>
               </el-select>-->
             </el-form-item>
-            <el-form-item label="单价">
+            <el-form-item prop="price" label="单价">
               <el-input v-model.number="in_repository_form.price" placeholder="请输入单价" style="width: 320px">
               </el-input>
             </el-form-item>
-            <el-form-item label="总价">
+            <el-form-item prop="totalPrice" required label="总价">
               <el-input v-model.number="in_repository_form.totalPrice" placeholder="请输入总价" style="width: 320px">
               </el-input>
             </el-form-item>
-            <el-form-item label="采购源">
+            <el-form-item prop="resource" required label="采购源">
               <dropdown-list ref="categoryDropdown5" :url="`${this.url}eam/category`" title="必选" code="5"
                              v-model="in_repository_form.resource"></dropdown-list>
               <!--<el-input v-model="in_repository_form.resource" placeholder="请选择采购源" style="width: 320px">
@@ -442,8 +443,8 @@
           <h3>添加物品</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="分类" required>
+          <el-form ref="addGoodsForm" :rules="rules.addGoods" :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
+            <el-form-item prop="classify" label="分类" required>
 
 
               <dropdown-list ref="categoryDropdown1" :url="`${this.url}eam/category`" title="必选" :params="{'type':'1'}"
@@ -454,24 +455,24 @@
               <!--                             v-model="add_goods_form.classify"></dropdown-list>-->
               <span class="btn_add" @click="addCategory(1)">+</span>
             </el-form-item>
-            <el-form-item label="品牌" required>
+            <el-form-item prop="brand" label="品牌" required>
               <dropdown-list ref="categoryDropdown3" :url="`${this.url}eam/category`" title="必选" code="3"
                              v-model="add_goods_form.brand"></dropdown-list>
               <span class="btn_add" @click="addCategory(3)">+</span>
             </el-form-item>
 
-            <el-form-item label="名称" required>
+            <el-form-item prop="name" label="名称" required>
               <el-input v-model="add_goods_form.name" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
 
-            <el-form-item label="单位" required>
+            <el-form-item prop="unit" label="单位" required>
               <dropdown-list ref="categoryDropdown4" :url="`${this.url}eam/category`" title="必选" code="4"
                              v-model="add_goods_form.unit"></dropdown-list>
               <span class="btn_add" @click="addCategory(4)">+</span>
             </el-form-item>
 
-            <el-form-item label="预警数量" required>
+            <el-form-item prop="counts" label="预警数量" required>
               <el-input v-model.number="add_goods_form.counts" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
@@ -485,7 +486,7 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="saveGoods">提交</el-button>
+          <el-button size="small" type="danger" @click="saveGoods('addGoodsForm')">提交</el-button>
           <el-button size="small" type="info" @click="add_goods_form_visible = false">取消</el-button>
         </div>
       </div>
@@ -502,8 +503,8 @@
           <h3>{{add_category_form_tip.title}}</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item :label="add_category_form_tip.label">
+          <el-form ref="addCategoryForm" :rules="rules.addCategory" :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
+            <el-form-item prop="name" required :label="add_category_form_tip.label">
               <el-input v-model="add_category_form.name" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
@@ -675,6 +676,62 @@
     },
     data() {
       return {
+
+        rules: {
+          inRepositoryRules: {
+            goods: [
+              {required: true, message: '请选择物品', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+            counts: [
+              {type:'number',required: true, message: '请输入数量且只能为数字', trigger: 'blur'},
+            ],
+            location: [
+              {required: true, message: '不能为空', trigger: 'change'},
+            ],
+            purchasePerson: [
+              {required: true, message: '不能为空', trigger: 'change'},
+            ],
+            price: [
+              {type:'number',required: true, message: '请输入价格且只能为数字', trigger: 'blur'},
+            ],
+            totalPrice: [
+              {type:'number',required: true, message: '请输入价格且只能为数字', trigger: 'blur'},
+            ],
+            resource: [
+              {type:'number',required: true, message: '请输入价格采购源', trigger: 'blur'},
+            ],
+          },
+          addGoods: {
+            classify: [
+              {required: true, message: '不能为空', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+            brand: [
+              {required: true, message: '不能为空', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+            name: [
+              {required: true, message: '不能为空', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+            unit: [
+              {required: true, message: '不能为空', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+            counts: [
+              {type:'number',required: true, message: '请输入数量且只能为数字', trigger: 'blur'},
+            ],
+          },
+          addCategory: {
+            name: [
+              {required: true, message: '不能为空', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+          },
+        },
+
+
         DROPDOWN_CONSTANT,
         url: globalConfig.humanResource_server,
 
@@ -788,7 +845,7 @@
               page: 1,
               limit: 5,
               init() {
-                this.page =1;
+                this.page = 1;
                 this.limit = 5;
               }
             },
@@ -995,26 +1052,31 @@
 
       //入库表单提交
       inRepository() {
-        let params = {
-          category_id: this.in_repository_form.goods,
-          number: this.in_repository_form.counts,
-          unit_price: this.in_repository_form.price,
-          total_price: this.in_repository_form.totalPrice,
-          source_id: this.in_repository_form.resource,
-          purchaser_id: this.in_repository_form.purchasePerson.join(),
-          location_type: this.in_repository_form.department,
-          location_id: this.in_repository_form.location,
-          remark: this.in_repository_form.remark,
-        };
-        let urls = `${this.url}eam/storage`;
-        this.$http.post(urls, params).then(res => {
-          if (res.code.endsWith('0')) {
-            this.$LjNotify('success', {
-              title: '成功',
-              message: '添加成功',
+
+        this.$refs['inRepositoryForm'].validate((valid) => {
+          if (valid) {//成功
+            let params = {
+              category_id: this.in_repository_form.goods,
+              number: this.in_repository_form.counts,
+              unit_price: this.in_repository_form.price,
+              total_price: this.in_repository_form.totalPrice,
+              source_id: this.in_repository_form.resource,
+              purchaser_id: this.in_repository_form.purchasePerson.join(),
+              location_type: this.in_repository_form.department,
+              location_id: this.in_repository_form.location,
+              remark: this.in_repository_form.remark,
+            };
+            let urls = `${this.url}eam/storage`;
+            this.$http.post(urls, params).then(res => {
+              if (res.code.endsWith('0')) {
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: '添加成功',
+                });
+                this.in_repository = false;
+                this.getRepositoryList();
+              }
             });
-            this.in_repository = false;
-            this.getRepositoryList();
           }
         });
       },
@@ -1090,30 +1152,34 @@
 
 
       saveGoods() {
-        let params = {
-          name: this.add_goods_form.name,
-          parent_id: this.add_goods_form.classify,
-          type: 2,
-          brand_id: this.add_goods_form.brand,
-          unit_id: this.add_goods_form.unit,
-          warning_number: this.add_goods_form.counts,
-          remarks: this.add_goods_form.remark
-        };
-        this.$http.post(`${this.url}eam/category`, params).then(res => {
-          if (res.code == '20010') {
-            this.$LjNotify('success', {
-              title: '成功',
-              message: res.msg,
-            });
-            this.add_goods_form_visible = false;
-            this.add_goods_form = {};
-          } else {
-            this.$LjNotify('error', {
-              title: '失败',
-              message: res.msg,
+        this.$refs['addGoodsForm'].validate((valid) => {
+          if (valid) {//成功
+            let params = {
+              name: this.add_goods_form.name,
+              parent_id: this.add_goods_form.classify,
+              type: 2,
+              brand_id: this.add_goods_form.brand,
+              unit_id: this.add_goods_form.unit,
+              warning_number: this.add_goods_form.counts,
+              remarks: this.add_goods_form.remark
+            };
+            this.$http.post(`${this.url}eam/category`, params).then(res => {
+              if (res.code == '20010') {
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: res.msg,
+                });
+                this.add_goods_form_visible = false;
+                this.add_goods_form = {};
+              } else {
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: res.msg,
+                });
+              }
+              this.$refs.categoryDropdown2.update();//更新
             });
           }
-          this.$refs.categoryDropdown2.update();//更新
         });
       },
 
@@ -1147,21 +1213,26 @@
 
       //保存( 分类-1 品牌-3 单位-4 采购源-5 )的目录
       saveCategory() {
-        this.$http.post(this.url + 'eam/category', this.add_category_form).then(res => {
-          if (res.code == '20010') {
-            this.$LjNotify('success', {
-              title: '成功',
-              message: res.msg,
-              //subMessage: res.msg,
-            });
-            this.add_category_visible = false;
-            this.$refs['categoryDropdown' + this.add_category_form.type].update();
-            this.add_category_form = {};
-          } else {
-            this.$LjNotify('error', {
-              title: '失败',
-              message: res.msg,
-              //subMessage: res.msg,
+        //addCategoryForm
+        this.$refs['addCategoryForm'].validate((valid) => {
+          if (valid) {//成功
+            this.$http.post(this.url + 'eam/category', this.add_category_form).then(res => {
+              if (res.code == '20010') {
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: res.msg,
+                  //subMessage: res.msg,
+                });
+                this.add_category_visible = false;
+                this.$refs['categoryDropdown' + this.add_category_form.type].update();
+                this.add_category_form = {};
+              } else {
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: res.msg,
+                  //subMessage: res.msg,
+                });
+              }
             });
           }
         });
@@ -1259,10 +1330,10 @@
                 id: item.id,
                 department: item?.user?.org[0]?.name || '-',
                 name: item?.user?.name || '-',
-                goods_number: item.goods_number||'-',
-                responsiblePerson: item.process?.responsible?.responsible_info?.name||'-',//任责人
+                goods_number: item.goods_number || '-',
+                responsiblePerson: item.process?.responsible?.responsible_info?.name || '-',//任责人
                 repair_price: item?.process?.responsible?.repair_price || 0,//维修费用
-                payment_type: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.process?.responsible?.payment_type||0],
+                payment_type: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.process?.responsible?.payment_type || 0],
               }
               this.tableSettingData[this.currentTable].tableData.push(obj)
             }
@@ -1272,11 +1343,11 @@
       },
 
       //获取入库详情table表格数据
-      getInRepositoryList(categoryId,searchParams) {
+      getInRepositoryList(categoryId, searchParams) {
         this.currentTable = 'inRepository';
         this.tableSettingData[this.currentTable].tableData = [];
-        if(searchParams) this.tableSettingData[this.currentTable].params.init();
-        let params = {category_id: categoryId,search:searchParams};
+        if (searchParams) this.tableSettingData[this.currentTable].params.init();
+        let params = {category_id: categoryId, search: searchParams};
         let finalParams = {...params, ...this.tableSettingData[this.currentTable].params};
         this.$http.get(`${this.url}eam/storage`, finalParams).then(res => {
           if (res.code.endsWith('0')) {
