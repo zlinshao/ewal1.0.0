@@ -274,7 +274,7 @@
                   //font-weight: 400;
                 }
 
-                span.icons-delete {
+                span.icon-delete {
                   display: inline-block;
                   width: 20px;
                   height: 20px;
@@ -307,7 +307,7 @@
 
 
     .dialog_container {
-      .icons-upload {
+      .icon-upload {
         width: 40px;
         height: 40px;
         cursor: pointer;
@@ -315,14 +315,22 @@
         top: -10px;
       }
 
-      .weekly_form_container {
+      .comment-container {
+        margin-top: 15px;
+        width: 100%;
+        @include flex('flex-center');
+        //height: 100px;
+        flex-direction: column;
+      }
+
+      .meeting_detail_form_container {
         font-size: 14px;
         width: calc(100% - 40px);
         height: 100%;
 
         .form-item {
           width: 100%;
-          padding: 10px 0;
+          padding: 15px 0;
           vertical-align: center;
 
           .form-item-title {
@@ -334,6 +342,7 @@
             position: relative;
             text-align: left;
             font-weight: 700;
+            letter-spacing:2px;
 
             .form-item-content-span-red {
               color: #D1373C;
@@ -341,7 +350,8 @@
 
             .form-item-content-span-input {
               display: inline-block;
-              height: 19px;
+              height: 30px;
+              line-height: 30px;
               width: 40px;
               background-color: #fff;
               text-align: center;
@@ -398,7 +408,7 @@
 
       .view-meeting-room-container, .view-meeting-type-container {
 
-        span.icons-delete-red {
+        span.icon-delete-red {
           display: inline-block;
           width: 20px;
           height: 20px;
