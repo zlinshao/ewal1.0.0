@@ -74,14 +74,18 @@
         </div>
 
         <!--<SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>-->
-        <!--<FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>-->
+        <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
     </div>
 
 </template>
 
 <script>
+    import FinMenuList from '../components/finMenuList.vue';
     export default {
         name: "pending",
+        components:{
+            FinMenuList
+        },
         data() {
             return {
                 params: {//查询参数
@@ -96,6 +100,7 @@
                 tableData: [],
                 count: 0,
                 chooseRowIds: [],
+                showFinMenuList: false,
 
             }
         },

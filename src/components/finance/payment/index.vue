@@ -194,7 +194,7 @@
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="handleOkPayDate(current_row,formData.pay_date)">确定
+                    <el-button type="danger" size="small" @click="handleOkPayDate(current_row)">确定
                     </el-button>
                     <el-button type="info" size="small" @click="payData_visible = false;current_row = ''">取消</el-button>
                 </div>
@@ -774,7 +774,14 @@
         },
         activated() {
         },
-        watch: {},
+        watch: {
+            formData:{
+                handler(val){
+
+                }
+            }
+
+        },
         created() {
         },
         computed: {},
@@ -866,8 +873,8 @@
                 })
             },
             //修改付款时间
-            handleOkPayDate(row, val) {
-                this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: val}).then(res => {
+            handleOkPayDate(row) {
+                this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: this.formData.pay_date}).then(res => {
                     this.callbackSuccess(res);
                     this.payData_visible = false;
                     this.current_row = '';
@@ -1039,7 +1046,12 @@
               this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(res => {
                 if (res.code === 200) {
                   this.showLoading(false);
-                  this.tableLists = res.data.data;
+                  // this.tableLists = res.data.data;
+                    this.tableLists = res.data.data.sort(
+                        function (a,b) {
+                            return a.id-b.id
+                        }
+                    );
                   this.count = res.data.count;
                 } else {
                   this.tableLists = [];

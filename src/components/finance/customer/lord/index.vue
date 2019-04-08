@@ -3,10 +3,10 @@
         <!--列表-->
         <el-table
                 :data="lordLists"
-                :height="this.mainListHeight(30) + 'px'"
+                :height="this.mainListHeight() + 'px'"
                 highlight-current-row
                 header-row-class-name="tableHeader"
-                :row-class-name="tableChooseRow"
+                :row-class-name="tableRowClassName"
                 @cell-click="tableClickRow"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
@@ -134,7 +134,7 @@
                 :visible="edit_visible"
                 :size="{width: 1200 + 'px',height: 800 + 'px' }"
                 @close="edit_visible = false">
-            <lord-form :editForm="lordDetailData" :type="chooseType" :current_row="current_row" @updateList="updateLordList" :address="set_price_form.bottom_name" :addressIds="set_price_form.bottom_id"></lord-form>
+            <lord-form  :editForm="lordDetailData" :type="chooseType" :current_row="current_row" @updateList="updateLordList" :address="set_price_form.bottom_name" :addressIds="set_price_form.bottom_id"></lord-form>
         </lj-dialog>
 
         <!--搜索房源-->
@@ -239,11 +239,13 @@
             // this.$bus.on('cancelRemarkFun', this.handleRemark);//取消重复标记
             this.$bus.on('getParams', this.handleParams);//搜索参数
             this.$bus.on('chooseHouse', this.handleChooseHouse);//搜索房屋
+            this.$bus.on('cancelEdit_visible', this.getEditStatus);//取消
         },
         beforeDestroy() {
             // this.$bus.off('cancelRemarkFun', this.handleRemark);
             this.$bus.off('getParams', this.handleParams);
             this.$bus.off('chooseHouse', this.handleChooseHouse);//搜索房屋
+            this.$bus.off('cancelEdit_visible', this.getEditStatus);//取消
         },
         activated() {
 
@@ -254,6 +256,9 @@
 
         computed: {},
         methods: {
+            getEditStatus(val){
+                this.edit_visible = val;
+            },
 
             //房屋
             handleChooseHouse(val){
@@ -314,11 +319,12 @@
                 ids.push(row.id);
                 this.chooseRowIds = this.myUtils.arrayWeight(ids);
             },
-            // 行状态
-            tableChooseRow({row, rowIndex}) {
+            // 行 状态
+            tableRowClassName({row, rowIndex}) {
                 // return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-                return  row.freeze === 1 ? 'warning-row' : '';
+                return row.freeze===1 ? 'success-row' : '';
             },
+
             // 多选
             handleSelectionChange(val) {
             },
@@ -481,7 +487,8 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+
     @import "../../../../assets/scss/finance/customer/index.scss";
 
     #theme_name.theme1 {
@@ -496,11 +503,8 @@
                     margin-left: 4px;
                 }
             }
-            .warning-row{
-                background: #686874;
-            }
-            .success-row{
-                background: #f0f9eb;
+            .el-table .success-row{
+                background: #DFDFDF;
             }
 
             #theme_name .form_item_container {

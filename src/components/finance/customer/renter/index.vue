@@ -1,9 +1,9 @@
 <template>
-    <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+    <div class="mainListTable">
         <!--列表-->
         <el-table
                 :data="renterLists"
-                :height="this.mainListHeight(30) + 'px'"
+                :height="this.mainListHeight() + 'px'"
                 highlight-current-row
                 header-row-class-name="tableHeader"
                 :row-class-name="tableChooseRow"
@@ -184,14 +184,19 @@
             // this.$bus.on('cancelRemarkFun',this.handleRemarkRenter);
             this.$bus.on('getParams',this.handleParamsRenter);
             this.$bus.on('chooseHouse', this.handleChooseHouse);//搜索房屋
+            this.$bus.on('cancelEdit_visible', this.getEditStatus);//取消
         },
         beforeDestroy(){
             // this.$bus.off('cancelRemarkFun',this.handleRemarkRenter);
             this.$bus.off('getParams',this.handleParamsRenter);
             this.$bus.off('chooseHouse', this.handleChooseHouse);//搜索房屋
+            this.$bus.off('cancelEdit_visible', this.getEditStatus);//取消
         },
         computed: {},
         methods: {
+            getEditStatus(val){
+                this.edit_visible = val;
+            },
             handleChooseHouse(val){
                 this.house_filter_visible = val
             },
@@ -262,7 +267,8 @@
             },
             // 点击过
             tableChooseRow({row, rowIndex}) {
-                return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+                // return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+                return row.freeze===1 ? 'success-row' : '';
             },
 
             callbackSuccess(res) {
@@ -408,7 +414,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import "../../../../assets/scss/finance/customer/index.scss";
 
     #theme_name.theme1 {
@@ -421,6 +427,9 @@
                     border-radius: 50%;
                     margin-left: 4px;
                 }
+            }
+            .el-table .success-row{
+                background: #DFDFDF;
             }
 
             #theme_name .form_item_container {

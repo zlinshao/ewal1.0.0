@@ -48,7 +48,7 @@
                             </el-form-item>
                             <el-form-item label="尾款补齐时间">
                                 <el-date-picker
-                                        v-model="formParams.first_pay_date" type="date" placeholder="" :disabled="is_disabled"
+                                        v-model="formParams.complete_date" type="date" placeholder="" :disabled="is_disabled"
                                         style="width: 200px">
                                 </el-date-picker>
                             </el-form-item>
@@ -67,14 +67,23 @@
                                 <el-button size="mini" v-if="type==='edit'" type="danger" @click="addPrices" style="cursor: pointer;position: absolute;right:-50px;top:0;">添加</el-button>
                             </el-form-item>
                             <div v-for="(item,index) in prices" :key="item.key" style="width: 100%;display: flex;flex-direction: column;justify-content: center" >
-                                <el-form-item label="起止时间" >
+                                <el-form-item label="开始时间" >
                                     <el-date-picker :disabled="is_disabled"
-                                            v-model="item.times"
-                                            type="daterange"
-                                            range-separator="至"
-                                            start-placeholder="开始日期"
-                                            end-placeholder="结束日期"
-                                            style="width: 200px">
+                                                    v-model="item.begin_date"
+                                                    style="width: 200px"
+                                                    type="datetime"
+                                                    placeholder="选择日期时间"
+                                                    align="right">
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="结束时间" >
+                                    <el-date-picker
+                                            v-model="item.end_date"
+                                            :disabled="is_disabled"
+                                            style="width: 200px"
+                                            type="datetime"
+                                            placeholder="选择日期时间"
+                                            align="right">
                                     </el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="付款周期" >
@@ -127,7 +136,7 @@
         </div>
         <div class="dialog_footer" v-if="type==='edit'">
             <el-button type="danger" size="small" @click="postLordEditData('formParams')">确定</el-button>
-            <el-button type="info" size="small" @click="edit_visible = false;current_row = ''">取消</el-button>
+            <el-button type="info" size="small" @click="cancelEdit">取消</el-button>
         </div>
 
         <StaffOrgan :module="staffModule"  @close="hiddenStaff"></StaffOrgan>
@@ -171,19 +180,11 @@
                     {key:6,val:'个人转租'},
                     {key:7,val:'续租'},
                 ],
-                prices: [
-                    {
-                        "period": "12",//付款周期
-                        "pay_way": 3,//付款方式
-                        "end_date": "2021-03-15",
-                        "begin_date": "2020-03-15",
-                        "month_unit_price": "3100",//月单价
-                        'times':['2021-03-15','2020-03-15']
-                    },
-                ],
+
+                prices: [],
 
                 cate: {"1": "银行卡", "2": "支付宝", "3": "微信", "4": "银行卡(数据来自房管中心)"},
-                payTypes:[{id:1,val:'月付'} , {id:2,val:'双月付'} , {id:3,val:'季付'} , {id:4,val:'半年付'} , {id:5,val:'年付'} ,],
+                payTypes:[{id:"1",val:'月付'} , {id:"2",val:'双月付'} , {id:"3",val:'季付'} , {id:"4",val:'半年付'} , {id:"5",val:'年付'} ],
                 banks: [
                     "未知银行",
                     "中国工商银行",
@@ -340,6 +341,24 @@
             }else {
                 this.is_disabled = false;
             }
+            this.prices = this.formData.prices_raw;
+           switch (this.formData.rent_status) {
+               case "新租":
+                   this.formParams.rent_type = 1;
+                   break;
+               case "转租":
+                   this.formParams.rent_type = 2;
+                   break;
+               case "续租":
+                   this.formParams.rent_type = 3;
+                   break;
+               case "未收先租":
+                   this.formParams.rent_type = 4;
+                   break;
+               case "调租":
+                   this.formParams.rent_type = 5;
+                   break;
+           }
         },
         computed: {
         },
@@ -370,6 +389,9 @@
             },
         },
         methods: {
+            cancelEdit(){
+                this.$bus.emit('cancelEdit_visible',false)
+            },
             //增加付款周期
             addPrices(){
                 this.prices.push({

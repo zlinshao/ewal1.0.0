@@ -60,15 +60,23 @@
                                 <el-button v-if="type==='edit'" size="mini"  type="danger" @click="addPrices" style="cursor: pointer;position: absolute;right:-50px;top:0;">添加</el-button>
                             </el-form-item>
                             <div v-for="(item,index) in prices" :key="item.key" style="width: 100%;display: flex;flex-direction: column;justify-content: center" >
-                                <el-form-item label="起止时间" >
+                                <el-form-item label="开始时间" >
+                                    <el-date-picker :disabled="is_disabled"
+                                                    v-model="item.begin_date"
+                                                    style="width: 200px"
+                                                    type="datetime"
+                                                    placeholder="选择日期时间"
+                                                    align="right">
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="结束时间" >
                                     <el-date-picker
+                                            v-model="item.end_date"
                                             :disabled="is_disabled"
-                                            v-model="item.times"
-                                            type="daterange"
-                                            range-separator="至"
-                                            start-placeholder="开始日期"
-                                            end-placeholder="结束日期"
-                                            style="width: 200px">
+                                            style="width: 200px"
+                                            type="datetime"
+                                            placeholder="选择日期时间"
+                                            align="right">
                                     </el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="付款周期" >
@@ -79,10 +87,10 @@
                                 </el-form-item>
                                 <el-form-item label="付款方式" style="position: relative">
                                     <el-select placeholder="请选择付款方式" v-model="item.pay_way" style="width: 200px;" :disabled="is_disabled">
-                                        <el-option v-for="(item,index) in payTypes" :label="item.val" :value="item.id" :key="index"
-                                                   ></el-option>
+                                        <el-option v-for="(item,index) in payTypes" :label="item.val" :value="item.id"
+                                                   :key="index"></el-option>
                                     </el-select>
-                                    <el-button v-if="type==='edit'" size="mini"  class="el-icon-circle-close-outline"  type="danger" @click="reducePrices(index)" style="cursor: pointer;position: absolute;right:-50px;top:0;"></el-button>
+                                    <el-button size="mini"  v-if="type==='edit'" class="el-icon-circle-close-outline"  type="danger" @click="reducePrices(index)" style="cursor: pointer;position: absolute;right:-50px;top:0;"></el-button>
                                 </el-form-item>
 
                             </div>
@@ -120,7 +128,7 @@
         </div>
         <div class="dialog_footer" v-if="type==='edit'">
             <el-button type="danger" size="small" @click="postLordEditData('formParams')">确定</el-button>
-            <el-button type="info" size="small" @click="edit_visible = false;current_row = ''">取消</el-button>
+            <el-button type="info" size="small" @click="cancelEdit">取消</el-button>
         </div>
 
         <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
@@ -153,7 +161,7 @@
                 row: this.current_row,
                 tableData:this.editForm,//form回显数据
                 cate: {"1": "银行卡", "2": "支付宝", "3": "微信", "4": "银行卡(数据来自房管中心)"},
-                payTypes:[{id:1,val:'月付'} , {id:2,val:'双月付'} , {id:3,val:'季付'} , {id:4,val:'半年付'} , {id:5,val:'年付'} ],
+                payTypes:[{id:"1",val:'月付'} , {id:"2",val:'双月付'} , {id:"3",val:'季付'} , {id:"4",val:'半年付'} , {id:"5",val:'年付'} ],
                 banks: [
                     "未知银行",
                     "中国工商银行",
@@ -289,16 +297,7 @@
 
                 },
                 // 付款周期,月单价
-                prices: [
-                    {
-                        "period": "12",//付款周期
-                        "pay_way": 3,//付款方式
-                        "end_date": "2021-03-15",
-                        "begin_date": "2020-03-15",
-                        "month_unit_price": "3100",//月单价
-                        'times':['2021-03-15','2020-03-15']
-                    },
-                ],
+                prices: [],
                 times: [],
                 staffName:'',
                 chooseType:this.type,
@@ -312,6 +311,7 @@
             for(let item of Object.keys(this.formParams)){
                 this.formParams[item] = this.tableData[item];
             }
+            this.prices = this.tableData.prices_raw;
             this.formParams.leader_id = this.tableData.leader.id;
             // this.formParams.house_id = this.tableData.house_id;
             if(this.chooseType==='check'){
@@ -348,6 +348,10 @@
             }
         },
         methods: {
+            cancelEdit(){
+              this.$bus.emit('cancelEdit_visible',false)
+            },
+
             //增加付款周期
             addPrices(){
                 this.prices.push({
