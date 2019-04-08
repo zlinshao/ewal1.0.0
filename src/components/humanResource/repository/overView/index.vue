@@ -6,7 +6,7 @@
         highlight-current-row
         :height="this.mainListHeight(30) + 'px'"
         :row-class-name="tableChooseRow"
-        @cell-click="tableClickRow"
+        @cell-click="tableClickRow($event,'repository')"
         @row-dblclick="currentTable='inRepository';tableDblClick($event);"
         header-row-class-name="tableHeader"
         :row-style="{height:'70px'}"
@@ -133,7 +133,7 @@
             highlight-current-row
             :height="this.mainListHeight(250) + 'px'"
             :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow"
+            @cell-click="tableClickRow($event,'borrorReceive')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
             style="width: 100%">
@@ -189,7 +189,7 @@
             highlight-current-row
             :height="this.mainListHeight(430) + 'px'"
             :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow"
+            @cell-click="tableClickRow($event,'repair')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
             style="width: 100%">
@@ -244,7 +244,7 @@
             highlight-current-row
             :height="this.mainListHeight(430) + 'px'"
             :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow"
+            @cell-click="tableClickRow($event,'useless')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
             style="width: 100%">
@@ -383,7 +383,7 @@
             @selection-change="handleSelectionChange"
             :height="this.mainListHeight(300) + 'px'"
             :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow"
+            @cell-click="tableClickRow($event,'goods')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
             style="width: 100%">
@@ -551,7 +551,7 @@
             highlight-current-row
             :height="this.mainListHeight(200) + 'px'"
             :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow"
+            @cell-click="tableClickRow($event,'inRepository')"
             header-row-class-name="tableHeader"
             :row-style="{height:'62px'}"
             style="width: 100%">
@@ -613,7 +613,7 @@
             highlight-current-row
             :height="this.mainListHeight(200) + 'px'"
             :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow"
+            @cell-click="tableClickRow($event,'qrCode')"
             header-row-class-name="tableHeader"
             :row-style="{height:'62px'}"
             style="width: 100%">
@@ -1025,7 +1025,6 @@
       }
     },
     mounted() {
-      this.initData();
       this.getRepositoryList();
     },
     activated() {
@@ -1076,6 +1075,12 @@
                 this.in_repository = false;
                 this.getRepositoryList();
               }
+              else {
+                this.$LjNotify('error',{
+                  title:'失败',
+                  message:res.msg,
+                });
+              }
             });
           }
         });
@@ -1114,7 +1119,7 @@
               }).catch(err => {
                 this.$LjNotify('error', {
                   title: '失败',
-                  message: '删除失败'
+                  message: res.msg
                 });
               });
             }
@@ -1400,10 +1405,6 @@
 
       },
 
-
-      /*demo() {
-      },
-*/
       handleChangeDate(id) {
 
       },
@@ -1412,122 +1413,10 @@
       },
 
 
-      initData() {
-        //库房总览表格
-        /*const nameArr = ['LG-显示器', 'BenQ-显示器', '美帝良心想-显示器', '苹果-显示器', '三星-显示器', '现代-显示器', '宏基-显示器', 'HP-显示器', '小米-显示器'];
-        for (let i = 0; i < nameArr.length; i++) {
-          let obj = {
-            id: i + 1,
-            name: nameArr[i],
-            totalCounts: 10 + i,
-            stockCounts: 6 + i,
-            borrowReceiveCounts: 6,
-            repairCounts: '4',
-            uselessCounts: '1',
-            status: '预警',
-          }
-          this.tableData.push(obj)
-        }
-        this.counts = 1000;*/
-
-
-        //借/领用表格数据初始化
-        //borrowData
-        /*for (let i = 0; i < 8; i++) {
-          let obj = {
-            id: i + 1,
-            department: '研发部',
-            name: '张三',
-            applyType: '借用',
-            applyTime: '2019-03-18',
-            takeTime: '2019-03-25',
-            returnTime: '2020-02-06'
-          }
-          this.tableSettingData.borrowReceive.tableData.push(obj)
-        }*/
-
-        //维修表格数据初始化
-        //repairData
-        /*for (let i = 0; i < 3; i++) {
-          let obj = {
-            id: i + 1,
-            department: '研发部',
-            name: '赵四',
-            repairId: '20190318155908',
-            repairCost: '500',
-            settlement: '工资扣除',
-          }
-          this.tableSettingData.repair.tableData.push(obj)
-        }*/
-
-
-        //报废表格数据初始化
-        //repairData
-        for (let i = 0; i < 3; i++) {
-          let obj = {
-            id: i + 1,
-            department: '研发部',
-            name: '赵四',
-            uselessId: '20190318155908',
-            responsiblePerson: '赵铁柱',
-            repairCost: '500',
-            settlement: '工资扣除',
-          }
-          this.uselessData.push(obj)
-        }
-
-
-        //选择物品表格数据初始化
-        //chooseGoodsData
-        /*for (let i = 0; i < 6; i++) {
-          let obj = {
-            id: i + 1,
-            classify: '显示器',//分类
-            name: 'LG-显示器',//名称
-            brand: 'LG',//品牌
-            unit: '台',//单位
-            counts: '3',//预警数量
-          }
-          this.chooseGoodsData.push(obj)
-        }*/
-
-        //入库详情表格数据初始化
-        /*for (let i = 0; i < 8; i++) {
-          let obj = {
-            id: i + 1,
-            name: '张三',
-            count: 20 + i,
-            price: 34,
-            totalPrice: 35,
-            location: '南京一组',
-            purchasePerson: '赵四',
-            resource: '南京建邺',
-            inRepositoryTime: '20190318',
-            qrCode: '二维码',
-            remark: '备注备注',
-          }
-          this.inRepositoryData.push(obj)
-        }*/
-
-        //二维码table数据初始化
-        //qrCodeData
-        /*for (let i = 0; i < 7; i++) {
-          let obj = {
-            id: i + 1,
-            repairId: '20190319091956',
-            qrCode: '二维码',
-          }
-          this.qrCodeData.push(obj)
-        }*/
-
-
-      },
-
-
       // 当前点击
-      tableClickRow(row) {
-        this.tableSettingData[this.currentTable].currentSelection = row;
-        let ids = this.tableSettingData[this.currentTable].chooseRowIds;
+      tableClickRow(row,currentTable) {
+        this.tableSettingData[currentTable].currentSelection = row;
+        let ids = this.tableSettingData[currentTable].chooseRowIds;
         ids.push(row.id);
         this.ids = this.myUtils.arrayWeight(ids);
       },
