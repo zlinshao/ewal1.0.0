@@ -10,15 +10,11 @@
                 @cell-click="tableClickRow"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
-            <el-table-column
-                    class="changeChoose"
-                    type="selection"
-                    width="50">
-            </el-table-column>
+
             <el-table-column label="前缀" align="center" width="90">
                 <template slot-scope="scope">
                     <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===1">
-                        <!--<i class="el-icon-view"></i>忽略重复-->/
+                        /
                     </div>
                     <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
                         <span style="background-color: #14e731;" v-if="LordStatus[scope.$index]['is_contact']===0"></span>

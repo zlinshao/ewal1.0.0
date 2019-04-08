@@ -118,7 +118,7 @@
                                     <span>科目</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="formData.subject_val"
+                                    <el-input placeholder="请输入" v-model="subject_val"
                                               @focus="handleOpenSubject('subject_deposit')"></el-input>
                                 </div>
                             </div>
@@ -186,6 +186,7 @@
                                 </div>
                                 <div class="item_content">
                                     <el-date-picker
+                                            value-format="yyyy-MM-dd"
                                             v-model="formData.pay_date" type="date">
                                     </el-date-picker>
                                 </div>
@@ -664,7 +665,7 @@
                     subject_id: '',
 
                 },
-
+                subject_val:'',
                 formData: {
                     amount_payable: '',
                     tag: '',
@@ -771,6 +772,7 @@
         },
         mounted() {
             this.getPaymentList();
+
         },
         activated() {
         },
@@ -778,8 +780,17 @@
             formData:{
                 handler(val){
 
-                }
+                },
+                deep:true
+            },
+            subject_val:{
+                handler(val){
+
+                },
+                deep:true
             }
+
+
 
         },
         created() {
@@ -846,6 +857,9 @@
 
                     this.formData.subject_id = val.id;
                     this.formData.subject_val = val.title;
+                    this.subject_val = val.title;
+
+                    alert(this.subject_val);
 
                     this.ruleForm.subject_id = val.id;
                 }
@@ -874,6 +888,7 @@
             },
             //修改付款时间
             handleOkPayDate(row) {
+                // console.log(this.formData.pay_date);
                 this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: this.formData.pay_date}).then(res => {
                     this.callbackSuccess(res);
                     this.payData_visible = false;
@@ -1029,6 +1044,7 @@
                     this.show_subject = true;
                     this.formData.subject_val = this.current_row.subject.title;
                     this.formData.subject_id = this.current_row.subject_id;
+                    this.subject_val = this.current_row.subject.title;
                 }
                 if (key === "transfer_visible") {
                     this.transfer_visible = true;

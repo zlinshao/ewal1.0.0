@@ -15,7 +15,7 @@
         <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}">
             <div class="list">
                 <div class="list-info flex-center" v-for="(item,index) in dataLists">
-                    <div class="list-box"  @click="detail(item.id,index)">
+                    <div class="list-box"  @click="detail(item.id,index,item.over_time)">
                         <div class="list-modal" v-if="item.is_enter ===1"></div>
                         <div class="list-top"><img src="../../../../assets/image/newMedia/theme1/active.png" alt=""></div>
                         <div class="list-middle">
@@ -83,8 +83,8 @@
 
                 </div>
             </div>
-            <div style="position: absolute;bottom:50px;left:0;right:0;" v-if="showData.is_enter===2">
-                <el-button type="danger" size="" >结束活动</el-button>
+            <div style="position: absolute;bottom:50px;left:0;right:0;" v-if="is_end">
+                <el-button type="danger" size="" @click="end_visible = true">结束活动</el-button>
             </div>
             <div class="top_right_img" style="width:60px;height:140px;position: absolute;top:0;right:90px;">
                 <span>已报名</span>
@@ -245,6 +245,7 @@
                 endTimes:[
 
                 ],
+                is_end:'',
 
             }
         },
@@ -274,19 +275,43 @@
                 }
             },
             //详情
-            detail(id,index){
+            detail(id,index,end){
                 this.detail_visible = true;
+                var yourtime = end.replace("-","/");
+                var d2=new Date();
+                var d1 = new Date(Date.parse(yourtime));
+                if(d1>d2){
+                     this.is_end=true
+                }else {
+                    this.is_end=false
+                }
                 this.current_id = id;
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event/'+id,).then(res => {
                     if(res.status===200){
-                        this.showData = res.data.data[index];
-                        console.log(res)
+                        this.showData = res.data;
+                        console.log(this.showData)
                     }
 
                 })
             },
+            //提前结束
             handleOkDel(){
-
+                this.$http.put(globalConfig.newMedia_sever+'/api/club/event/'+this.current_id,).then(res => {
+                    if(res.status===200){
+                        this.end_visible = false;
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
+                })
             },
             //新增活动
             add(){
@@ -318,7 +343,11 @@
             getDataLists(){
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
                     if(res.status===200){
-                        this.dataLists = res.data.data;
+                        this.dataLists = res.data.data.sort(
+                            function (a,b) {
+                                return a.id-b.id
+                            }
+                        );
                         this.count = res.data.total;
 
                         for(let item of res.data.data){
@@ -332,7 +361,6 @@
                                 this.endTimes.push(2);
                             }
                         }
-                        console.log(this.endTimes);
 
                     }
                 })

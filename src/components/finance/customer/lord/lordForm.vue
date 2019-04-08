@@ -9,13 +9,13 @@
                     <el-col :span="8">
                         <div class="">
                             <el-form-item label="签约人">
-                                <el-input v-model="tableData.staff.name" style="width: 200px" @focus="clickCallback('签约人')" readonly  :disabled="is_disabled"></el-input>
+                                <el-input v-model="names.staff" style="width: 200px" @focus="clickCallback('签约人')" readonly  :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="所属部门">
-                                <el-input v-model="tableData.department.name" style="width: 200px" @focus="clickCallback('所属部门')" readonly :disabled="is_disabled"></el-input>
+                                <el-input v-model="names.department" style="width: 200px" @focus="clickCallback('所属部门')" readonly :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="负责人">
-                                <el-input v-model="tableData.leader.name" style="width: 200px" @focus="clickCallback('负责人')" readonly :disabled="is_disabled"></el-input>
+                                <el-input v-model="names.leader" style="width: 200px" @focus="clickCallback('负责人')" readonly :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="客户姓名">
                                 <el-input v-model="formParams.customer_name" style="width: 200px" :disabled="is_disabled"></el-input>
@@ -24,7 +24,7 @@
                                 <el-input v-model="formParams.contact" style="width: 200px" :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="房屋地址">
-                                <el-input placeholder="请选择" v-model="tableData.address"  @focus="handleOpenChooseHouse" style="width: 200px" :disabled="is_disabled"></el-input>
+                                <el-input placeholder="请选择" v-model="formParams.address"  @focus="handleOpenChooseHouse" style="width: 200px" :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="收房月数">
                                 <el-input v-model="formParams.months" style="width: 200px" type="number" :disabled="is_disabled"></el-input>
@@ -50,7 +50,7 @@
                                 </el-date-picker>
                             </el-form-item>
                             <el-form-item label="备注">
-                                <el-input v-model="formParams.remark" style="width: 200px" :disabled="is_disabled"></el-input>
+                                <el-input v-model="formParams.remark" style="width: 200px" :disabled="is_disabled" type="textarea" :rows="3"></el-input>
                             </el-form-item>
                         </div>
                     </el-col>
@@ -159,7 +159,14 @@
                 staffModule: false,//员工
                 is_disabled:false,
                 row: this.current_row,
-                tableData:this.editForm,//form回显数据
+                tableData:this.editForm,//表单初始化数据
+
+                names:{
+                    staff:'',
+                    department:'',
+                    leader:''
+                },
+
                 cate: {"1": "银行卡", "2": "支付宝", "3": "微信", "4": "银行卡(数据来自房管中心)"},
                 payTypes:[{id:"1",val:'月付'} , {id:"2",val:'双月付'} , {id:"3",val:'季付'} , {id:"4",val:'半年付'} , {id:"5",val:'年付'} ],
                 banks: [
@@ -303,23 +310,37 @@
                 chooseType:this.type,
 
 
-
             }
         },
         mounted() {
-            // console.log(this.tableData);
             for(let item of Object.keys(this.formParams)){
                 this.formParams[item] = this.tableData[item];
             }
+            this.names.leader = this.tableData.leader.name;
+            this.names.department= this.tableData.department.name;
+            this.names.staff= this.tableData.staff.name;
             this.prices = this.tableData.prices_raw;
             this.formParams.leader_id = this.tableData.leader.id;
-            // this.formParams.house_id = this.tableData.house_id;
             if(this.chooseType==='check'){
                 this.is_disabled = true;
             }else {
                 this.is_disabled = false;
             }
             console.log(this.formParams);
+            switch (this.tableData.account_type) {
+                case "银行卡":
+                    this.formParams.account_type = "1";
+                    break;
+                case "支付宝":
+                    this.formParams.rent_type = "2";
+                    break;
+                case "微信":
+                    this.formParams.rent_type = "3";
+                    break;
+                case "银行卡(数据来自房管中心)":
+                    this.formParams.rent_type = "4";
+                    break;
+            }
         },
         computed: {
 
@@ -332,13 +353,17 @@
             },
             address:{
                 handler(val){
-                    this.tableData.address = val;
+                    if(val){
+                        this.formParams.address = val;
+                    }
                 },
                 deep:true
             },
             addressIds:{
                 handler(val) {
-                    this.formParams.house_id = val[0] ;
+                    if(val){
+                        this.formParams.house_id = val[0] ;
+                    }
                 }
             },
 
@@ -391,12 +416,10 @@
                 // console.log(ids, names, arr);
                 this.departModule = false;
                 if (ids !== 'close') {
-                    // console.log(arr);
                     this.formParams.department_id = ids;
-                    this.formParams.leader = arr[0].leader.name;
+                    this.names.leader = arr[0].leader.name;
                     this.formParams.leader_id = arr[0].leader_id;
-                    this.formParams.department  = names;
-                    // console.log(this.formData.leader_id);
+                    this.names.department  = names;
                 }
             },
             //员工
@@ -404,7 +427,7 @@
                 this.staffModule = false;
                 // console.log(ids, names, arr);
                 if (ids !== 'close') {
-                    this.formParams.staff = names;
+                    this.names.staff = names;
                     this.formParams.staff_id = ids[0];
                 }
             },
@@ -441,14 +464,14 @@
 
             //编辑确认
             postLordEditData(formName) {
-                // console.log(this.formParams);
-                // console.log(this.row.id);
                 this.formParams.prices = this.prices ;
+
                 console.log(this.formParams);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.$http.put(globalConfig.temporary_server + 'customer_collect/' + this.row.id, this.formParams).then(res => {
                             this.callbackSuccess(res);
+                            this.tableData = '';
                             this.$emit("updateList", false);
                         })
                     } else {
