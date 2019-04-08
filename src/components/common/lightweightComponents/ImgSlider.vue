@@ -25,6 +25,10 @@
             <video @click.self="videoControl" ref="videoDom" style="width: 100%; height:100%; object-fit: fill">
               <source id="mp4_src" :src="item.uri" type="video/mp4">
               <source id="ogg_src" :src="item.uri" type="video/ogg">
+              <source :src="item.uri" type="video/webm"/>
+              <source :src="item.uri" type="audio/ogg"/>
+              <source :src="item.uri" type="audio/mpeg"/>
+
               不支持的格式
             </video>
             <div v-if="isShowPlayBtn" class="play-container">
@@ -86,6 +90,9 @@
       initialInterval: {
         type: Number,
         default: 3
+      },
+      initialIndex: {
+        default:1,
       },
       width: {
         type: [Number, String],
@@ -241,6 +248,12 @@
           this.distance = -val;
         },
         immediate: true
+      },
+      initialIndex: {
+        handler(val,oldVal) {
+          this.jump(val);
+        },
+        immediate: true,
       },
     },
     computed: {

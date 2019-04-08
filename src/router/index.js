@@ -37,6 +37,7 @@ const BudgetStream = () => import('@/components/finance/budgetStream/index.vue')
 const Gathering = () => import('@/components/finance/gathering/index.vue'); //收款
 const Customer = () => import('@/components/finance/customer/index.vue'); //客户
 const Payment = () => import('@/components/finance/payment/index.vue'); //付款
+const Pending = () => import('@/components/finance/pending/index.vue'); //付款
 
 //新媒体前台
 const Club = () => import('@/components/newMedia/front/club/index.vue');//俱乐部
@@ -108,6 +109,7 @@ export default new Router({
       name: '首页',
       component: HomePage
     },
+
 
     {
       path: '/faculty',
@@ -440,6 +442,11 @@ export default new Router({
       name: '付款',
       component: Payment
     },
+      {
+          path: '/pending',
+          name: '待处理项',
+          component: Pending
+      },
     // {
     //     path: '/offerDetail',
     //     name: '录用通知书',
