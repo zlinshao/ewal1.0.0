@@ -26,12 +26,28 @@
         <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" align="center"></el-table-column>
         <el-table-column label="离职交接单" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleLooResignation(scope.row,'resignation_form')">查看</el-button>
+            <el-button type="text" @click="handleLookResignation(scope.row)">查看</el-button>
           </template>
         </el-table-column>
         <el-table-column label="离职短信" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleControlMsg(scope.row)">查看</el-button>
+            <el-button type="text" @click="handleControlMsg(scope.row,'sms')">
+              {{ scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1 ? '已发送' : '发送'}}
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="离职群消息" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="handleControlMsg(scope.row,'notice')">
+              {{ scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1 ? '已发送' : '发送'}}
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="离职证明" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="handleLeaveProof(scope.row)">
+              {{ scope.row.staff && scope.row.staff.leave_proof_number ? '查看' : '发送'}}
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -113,20 +129,58 @@
     },
     computed: {},
     methods: {
+      handleLeaveProof(row) {
+        if (row.staff && row.staff.leave_proof_number) {
+          window.open(globalConfig.server + `staff/e_contract/show/${row.staff.leave_proof_number}`);
+        } else {
+          this.$http.get(`staff/user/${row.id}/sendinfo`,{
+            type: ['leave_proof_send']
+          }).then(res => {
+            if (res.code === '20000') {
+              this.$LjNotify('dimission_sms',{
+                title: '成功',
+                message: res.msg
+              });
+              this.getStaffList();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
+          })
+        }
+      },
+      //离职短信
+      handleControlMsg(row,where) {
+        var type = where === 'sms' ? ['dimission_sms'] : ['dimission_group'];
+        if (row.staff && row.staff.send_info && wor.staff.send_info.forward_group === 1) {
+          return false;
+        } else {
+          this.$http.get(`staff/user/${row.id}/sendinfo`,{
+            type
+          }).then(res => {
+            if (res.code === '20000') {
+              this.$LjNotify('dimission_sms',{
+                title: '成功',
+                message: res.msg
+              });
+              this.getStaffList();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
+          })
+        }
+      },
       handleCloseLookInfo() {
         this.look_info = [];
         this.look_info_visible = false;
       },
-      handleLooResignation(row,type) {
-        if (row.staff && row.staff[type]) {
-          this.look_info = row.staff[type] || [];
-          this.look_info_visible = true;
-        } else {
-          this.$LjNotify('warning',{
-            title: '提示',
-            message: '暂无该信息'
-          })
-        }
+      handleLookResignation(row) {
+        console.log(row);
       },
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {
