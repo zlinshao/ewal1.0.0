@@ -1,5 +1,5 @@
 <template>
-  <div id="lj_comment" class="scroll_bar" :style="{width:width+'px'}">
+  <div id="lj_comment" :style="{width:width+'px'}">
     <div class="comment-container">
         <div class="comment-item" v-for="item in commentList">
           <div class="comment-item-left">

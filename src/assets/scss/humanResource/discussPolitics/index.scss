@@ -7,8 +7,6 @@
   //font-family: MicrosoftYaHeiLight !important;
 }
 
-
-
 #theme_name {
   #discussPolitics {
     height: 100%;
@@ -101,7 +99,6 @@
                       }
                     }
                   }
-
 
                   .calendar-day-item-container-tip {
                     position: absolute;
@@ -271,7 +268,7 @@
                 line-height: 20px;
 
                 &.cancel-status {
-                  color: #919191 ;
+                  color: #919191;
                   font-family: "Microsoft YaHei Light";
                   //font-weight: 400;
                 }
@@ -318,6 +315,25 @@
       }
     }
 
+    .meeting-detail-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .hr {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        hr {
+          width: 90%;
+          background-color: #E5E5E5;
+          height: 2px;
+          border: none;
+        }
+      }
+    }
 
     .dialog_container {
       .icon-upload {
@@ -355,7 +371,7 @@
             position: relative;
             text-align: left;
             font-weight: 700;
-            letter-spacing:2px;
+            letter-spacing: 2px;
 
             .form-item-content-span-red {
               color: #D1373C;
@@ -369,7 +385,6 @@
               background-color: #fff;
               text-align: center;
             }
-
 
           }
         }

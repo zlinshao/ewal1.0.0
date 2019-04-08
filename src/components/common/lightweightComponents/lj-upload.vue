@@ -1,18 +1,28 @@
 <template>
-  <div :class="{'disabled':disabled}" id="lj_upload">
+  <!--<div :class="{'disabled':disabled}" id="lj_upload">-->
+  <div id="lj_upload">
     <div class="upload-container">
       <span v-if="title" class="upload-title">{{title}}</span>
-      <upload :file="photoData" @success="handleSuccess"></upload>
+      <upload :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
     </div>
   </div>
 </template>
 
 <script>
-  import Upload from '../upload';
+  import Upload from './upload';
 
   export default {
     name: "lj-upload",
-    props: ['title', 'value', 'size', 'data', 'disabled'],
+    //props: ['title', 'value', 'size', 'data', 'disabled'],
+    props: {
+      title:{},
+      value:{},
+      size:{},
+      data:{},
+      disabled:{
+        default:false,
+      },
+    },
     components: {
       Upload
     },

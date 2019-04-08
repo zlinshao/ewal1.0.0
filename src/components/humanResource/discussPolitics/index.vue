@@ -91,8 +91,8 @@
       </div>
     </div>
 
-    <!--会议详情  -->
-    <lj-dialog :visible="meeting_detail_dialog_visible"
+    <!--会议详情 1.0 -->
+    <!--<lj-dialog :visible="meeting_detail_dialog_visible"
                :size="{width: 800 + 'px',height: 800 + 'px'}"
                @close="meeting_detail_dialog_visible = false">
       <div class="dialog_container" style="margin: 20px 0 0 0">
@@ -105,6 +105,147 @@
           </div>
         </div>
         <div class="dialog_main flex-center borderNone" style="margin: 20px 0 0 0">
+
+          <div class="meeting_detail_form_container">
+            <div class="form-item">
+              <el-row :gutter="40">
+                <el-col :span="4">
+                  <div class="form-item-title">会议主题</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="form-item-content">{{meeting_detail_form.name}}</div>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="form-item">
+              <el-row :gutter="40">
+                <el-col :span="4">
+                  <div class="form-item-title">申请人</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="form-item-content">{{meeting_detail_form.applyPerson}}</div>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="form-item">
+              <el-row :gutter="40">
+                <el-col :span="4">
+                  <div class="form-item-title">会议室</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="form-item-content">{{meeting_detail_form.meetingRoom}}</div>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="form-item">
+              <el-row :gutter="40">
+                <el-col :span="4">
+                  <div class="form-item-title">主持人</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="form-item-content">{{meeting_detail_form.compere}}</div>
+                </el-col>
+              </el-row>
+            </div>
+            &lt;!&ndash;<div class="form-item">
+              <el-row :gutter="40">
+                <el-col :span="4">
+                  <div class="form-item-title">应到/实到</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="form-item-content"><span class="form-item-content-span-red">19/19</span></div>
+                </el-col>
+              </el-row>
+            </div>&ndash;&gt;
+            <div class="form-item">
+              <el-row :gutter="40">
+                <el-col :span="4">
+                  <div class="form-item-title">会议提醒</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="form-item-content">
+                    会议开始前<span
+                    class="form-item-content-span-input">{{meeting_detail_form.remind_data.hour}}</span>小时<span
+                    class="form-item-content-span-input">{{meeting_detail_form.remind_data.minute}}</span>分钟提醒
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="form-item">
+              <el-row :gutter="40">
+                <el-col :span="4">
+                  <div class="form-item-title">参加人员</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="form-item-content">
+                    {{meeting_detail_form.participant}}
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="form-item">
+              <el-row :gutter="40">
+                <el-col :span="4">
+                  <div class="form-item-title">上传附件</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="form-item-content">
+                    <lj-upload size="40" disabled="disabled" :data="meeting_detail_form.attachment"></lj-upload>
+                    &lt;!&ndash;<div class="icon-upload"></div>&ndash;&gt;
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="form-item">
+              <el-row :gutter="40">
+                <el-col :span="4">
+                  <div class="form-item-title">反馈</div>
+                </el-col>
+                <el-col :span="20">
+                  <div class="form-item-content">
+                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" maxlength="60"
+                              placeholder="请输入评论 限制60字" v-model="comment_content"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="dialog_footer" style="padding: 0;text-align: right">
+          <div style="padding-right: 40px">
+            <el-button type="primary" plain @click="publishComment(meeting_detail_form.id)">发布</el-button>
+          </div>
+
+        </div>
+
+        <div class="comment-container">
+          <hr style="width: 80%;background-color:#E5E5E5;height: 2px;border: none"/>
+          <lj-comment :comment-list="comment_list" style="height: 350px;width: 80%;"></lj-comment>
+        </div>
+
+      </div>
+    </lj-dialog>-->
+
+
+    <!--会议详情1.1  -->
+    <lj-dialog :visible="meeting_detail_dialog_visible"
+               :size="{width: 800 + 'px',height: 800 + 'px'}"
+               @close="meeting_detail_dialog_visible = false">
+      <div class="dialog_container scroll_bar meeting-detail-container">
+        <div class="dialog_header" >
+          <h3>{{meeting_detail_form.meetingType}} {{meeting_detail_form.meetingTime}}</h3>
+
+          <div class="header_right" style="height: 30px">
+            <i title="编辑" v-if="meeting_detail_form.status==0" class="icon icon-edit"
+               @click="showEditMeetingDialog"></i>
+          </div>
+        </div>
+        <div class="borderNone" style="margin: 20px 0 0 0">
 
           <div class="meeting_detail_form_container">
             <div class="form-item">
@@ -216,14 +357,19 @@
           </div>
 
         </div>
-        <div class="dialog_footer" style="padding: 0;">
-          <el-button type="primary" plain @click="publishComment(meeting_detail_form.id)">发布</el-button>
+        <div class="dialog_footer" style="padding: 0;text-align: right">
+          <div style="padding-right: 40px">
+            <el-button type="primary" plain @click="publishComment(meeting_detail_form.id)">发布</el-button>
+          </div>
+
+        </div>
+        <div class="hr">
+          <hr>
         </div>
 
-        <div class="comment-container">
-          <hr style="width: 80%;background-color:#E5E5E5;height: 2px;border: none"/>
-          <lj-comment :comment-list="comment_list" style="height: 350px;width: 80%;"></lj-comment>
-        </div>
+        <lj-comment :comment-list="comment_list" style="width: 100%"></lj-comment>
+        <!--<div class="comment-container">
+        </div>-->
 
       </div>
     </lj-dialog>
@@ -618,7 +764,7 @@
           attachment: [],//上传附件
         },
         comment_content: '',//评论内容
-        comment_list:[],//评论列表
+        comment_list: [],//评论列表
 
 
         //会议个数dialog
@@ -716,15 +862,15 @@
       //获取评论列表
       getCommentList(meetingId) {
         this.comment_list = [];
-        this.$http.get(`${this.url}meeting/meeting/${meetingId}/comments`).then(res=> {
-          if(res.code.endsWith('0')) {
+        this.$http.get(`${this.url}meeting/meeting/${meetingId}/comments`).then(res => {
+          if (res.code.endsWith('0')) {
             let arr = res.data.data;
-            this.comment_list = _.map(arr,(item)=> {
+            this.comment_list = _.map(arr, (item) => {
               return {
-                id:item.id,//id
+                id: item.id,//id
                 name: item.user?.name,//用户姓名
                 comment: item.content,//评论
-                photo: (item.user?.avatar||'').replace('\\',''),
+                photo: (item.user?.avatar || '').replace('\\', ''),
                 datetime: item.created_at,//评论时间
               }
             });
@@ -739,8 +885,11 @@
         this.meeting_counts_form = [];
         let startDate = utils.formatDate(this.dateValue, 'yyyy-MM-01 00:00:00');
         let endDate = this.lastTimeOfMonth(this.dateValue);
-        //this.dateValue;
-        this.$http.get(`${this.url}/meeting/meeting?date[]=${startDate}&date[]=${endDate}`).then(res => {
+        let params = {
+          date: [startDate, endDate]
+        };
+        // this.$http.get(`${this.url}/meeting/meeting?date[]=${startDate}&date[]=${endDate}`).then(res => {
+        this.$http.get(`${this.url}/meeting/meeting`, params).then(res => {
           if (res.code.endsWith('0')) {
             this.meeting_counts_form = _.forEach(res.data.data, (value) => {
               value.timeContent = `${utils.formatDate(value.start_time, 'MM-dd hh:mm')} - ${utils.formatDate(value.end_time, 'hh:mm')}`;
