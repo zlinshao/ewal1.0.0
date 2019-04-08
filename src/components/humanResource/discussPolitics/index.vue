@@ -329,7 +329,7 @@
             <div class="form-item">
               <el-row :gutter="40">
                 <el-col :span="4">
-                  <div class="form-item-title">上传附件</div>
+                  <div class="form-item-title">附件</div>
                 </el-col>
                 <el-col :span="20">
                   <div class="form-item-content">

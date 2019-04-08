@@ -204,7 +204,6 @@
         this.photo_detail_dialog = true;
       },
 
-
       videoPlay(index) {
         let id = 'video' + this.file.keyName + index;
         let myVideo = document.getElementById(id);
