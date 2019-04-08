@@ -32,7 +32,7 @@
 
                 <el-table-column label="状态" prop="" align="center">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.status === 1 ? '待入账' : '已入账'}}</span>
+                        <span>{{ scope.row.status === 1 ? '待入账' :scope.row.status === 2? '待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" prop="" align="center" width="550">
@@ -507,7 +507,7 @@
             </div>
         </lj-dialog>
         <!--科目-->
-        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"></lj-subject>
+        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject" style="z-index: 1000"></lj-subject>
         <!--客户列表-->
         <lj-dialog :visible="customer_visible" :size="{width: 900 + 'px',height: 720 + 'px'}"
                    @close="customer_visible = false">
@@ -856,6 +856,7 @@
             },
             //修改补齐时间
             handleOkCompleteData(row, val) {
+
                 this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: val}).then(res => {
                     this.callbackSuccess(res);
                     this.complete_visible = false;
