@@ -29,16 +29,11 @@
             <el-button type="text" @click="handleLooResignation(scope.row,'resignation_form')">查看</el-button>
           </template>
         </el-table-column>
-        <!--<el-table-column label="合同" align="center">-->
-          <!--<template slot-scope="scope">-->
-            <!--<el-button type="text">查看</el-button>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-        <!--<el-table-column label="离职短信" align="center">-->
-          <!--<template slot-scope="scope">-->
-            <!--<el-button type="text">查看</el-button>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
+        <el-table-column label="离职短信" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="handleControlMsg(scope.row)">查看</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -82,7 +77,7 @@
   export default {
     name: "index",
     components: { LjDialog },
-    props: ['exportInfo','searchVal'],
+    props: ['searchVal'],
     data() {
       return {
         checkList: [],
@@ -95,12 +90,11 @@
           limit: 36,
           org_id: '',
           position_id: '',
-          is_on_job: 0,
-          export: 0
+          is_on_job: 1,
         },
 
         look_info: [],
-        look_info_visible: false
+        look_info_visible: false,
       }
     },
     mounted() {
@@ -115,12 +109,6 @@
           this.getStaffList();
         },
         deep: true
-      },
-      exportInfo(val) {
-        if (val === 4) {
-          this.params.export = 1;
-          this.getStaffList();
-        }
       },
     },
     computed: {},
