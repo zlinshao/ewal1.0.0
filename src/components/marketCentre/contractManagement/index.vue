@@ -20,7 +20,7 @@
         </div>
       </div>
       <!--表格中部-->
-      <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+      <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}" @click="handleCloseControl">
 
         <el-table
           height="780px"
@@ -517,6 +517,9 @@
     watch: {},
     computed: {},
     methods: {
+      handleCloseControl() {
+        // this.show_control = '';
+      },
       handleCancelMark() {
         for (var key in this.mark_form) {
           this.mark_form[key] = '';
@@ -552,6 +555,7 @@
       },
       handleCloseLookBackInfo() {
         this.currentRow = '';
+        this.backInfo = '';
         this.backInfo_visible = false;
       },
       handleClickSpan(tmp,item) {
@@ -561,9 +565,9 @@
           case 1:
             break;
           case 2:
-            this.backInfo_visible = true;
             if (item.record) {
               this.backInfo = item.record;
+              this.backInfo_visible = true;
             } else {
               this.$LjNotify('warning',{
                 title: '警告',
