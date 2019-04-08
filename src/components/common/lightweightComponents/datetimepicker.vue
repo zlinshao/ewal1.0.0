@@ -8,6 +8,7 @@
       :endTime="endTime"
       format="HH:mm"
       is-range
+      :clearable = 'clearable'
       v-model="timeValue"
       range-separator="到"
       start-placeholder="开始时间"
@@ -21,6 +22,7 @@
       v-if="dateType=='datetimerange'"
       v-model="timeValue"
       :type="dateType"
+      :clearable = 'clearable'
       @change="handleChange"
       format="MM-dd hh:mm"
       :picker-options="pickerOptionsTime"
@@ -65,7 +67,10 @@
       },
       width: {
         type: null
-      }
+      },
+      clearable: {
+        type:Boolean,
+      },
     },
     computed: {
       startTime() {

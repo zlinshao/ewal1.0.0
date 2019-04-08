@@ -29,11 +29,14 @@
     props: {
       width:{
         default:600
-      }
+      },
+      commentList:{
+        default:[]
+      },
     },
     data() {
       return {
-        commentList: [
+        /*commentList: [
           {
             name:'张三',
             photo:'http://static.lejias.cn/lejia7f87dea5d2f218312028484e56211173.jpg',
@@ -67,7 +70,7 @@
             comment:'6666666666666666',
             datetime:'2019-03-28',
           },
-        ],//评论列表
+        ],//评论列表*/
       }
     },
 
@@ -116,7 +119,7 @@
             height: 25px;
             display: flex;
             justify-content: space-between;
-            color: #ccc;
+            color: #8F8F8F;
             .comment-item-right-up-left {
               //padding-left: 20px;
             }
@@ -127,6 +130,8 @@
           .comment-item-right-down {
             flex: 1;
             width: 100%;
+            display: flex;
+            justify-content: flex-start;
           }
         }
       }

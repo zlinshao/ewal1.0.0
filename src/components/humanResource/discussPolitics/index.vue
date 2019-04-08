@@ -73,9 +73,14 @@
                          @click="openMeetingDialog(contentItem)"
                          :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoList">
                       {{contentItem.content}}
-                      <span v-if="contentItem.status==0" title="取消"
-                            @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
-                            class="icon-delete"></span>
+                      <div class="icon-list">
+                        <span v-if="contentItem.status==0" title="取消"
+                              @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
+                              class="icon20 icon-cancel"></span>
+                        <span title="删除"
+                              @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
+                              class="icon20 icon-delete"></span>
+                      </div>
                     </div>
                   </div>
                 </el-card>
@@ -90,15 +95,16 @@
     <lj-dialog :visible="meeting_detail_dialog_visible"
                :size="{width: 800 + 'px',height: 800 + 'px'}"
                @close="meeting_detail_dialog_visible = false">
-      <div class="dialog_container">
+      <div class="dialog_container" style="margin: 20px 0 0 0">
         <div class="items-bet dialog_header">
           <h3>{{meeting_detail_form.meetingType}} {{meeting_detail_form.meetingTime}}</h3>
 
           <div class="header_right" style="height: 30px">
-            <i title="编辑" v-if="meeting_detail_form.status==0" class="icon icon-edit" @click="showEditMeetingDialog"></i>
+            <i title="编辑" v-if="meeting_detail_form.status==0" class="icon icon-edit"
+               @click="showEditMeetingDialog"></i>
           </div>
         </div>
-        <div class="dialog_main flex-center borderNone">
+        <div class="dialog_main flex-center borderNone" style="margin: 20px 0 0 0">
 
           <div class="meeting_detail_form_container">
             <div class="form-item">
@@ -200,7 +206,8 @@
                 </el-col>
                 <el-col :span="20">
                   <div class="form-item-content">
-                    <el-input type="textarea" v-model="meeting_detail_form.feedback"></el-input>
+                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" maxlength="60"
+                              placeholder="请输入评论 限制60字" v-model="comment_content"></el-input>
                   </div>
                 </el-col>
               </el-row>
@@ -209,13 +216,13 @@
           </div>
 
         </div>
-        <div class="dialog_footer">
-          <el-button type="primary" plain>发布</el-button>
+        <div class="dialog_footer" style="padding: 0;">
+          <el-button type="primary" plain @click="publishComment(meeting_detail_form.id)">发布</el-button>
         </div>
 
         <div class="comment-container">
-          <hr style="width: 80%"/>
-          <lj-comment style="height: 150px;width: 80%;"></lj-comment>
+          <hr style="width: 80%;background-color:#E5E5E5;height: 2px;border: none"/>
+          <lj-comment :comment-list="comment_list" style="height: 350px;width: 80%;"></lj-comment>
         </div>
 
       </div>
@@ -267,41 +274,37 @@
 
         </div>
         <div class="dialog_main borderNone add-meeting-container">
-          <el-form :model="add_meeting_form" style="text-align: left" size="small" label-width="100px">
+          <el-form ref="addMeetingForm" :rules="rules.addMeeting" :model="add_meeting_form" style="text-align: left"
+                   size="small" label-width="100px">
 
-            <el-form-item label="会议主题">
+            <el-form-item required prop="name" label="会议主题">
               <el-input v-model="add_meeting_form.name" placeholder="请输入会议主题" style="width: 320px">
               </el-input>
             </el-form-item>
 
-            <el-form-item label="会议室">
+            <el-form-item required prop="room_id" label="会议室">
               <dropdown-list ref="dropdown1" :url="`${this.url}meeting/category`" code="1"
                              v-model="add_meeting_form.room_id"></dropdown-list>
-              <!--<el-select v-model="add_meeting_form.meetingRoom" placeholder="请选择会议室" style="width: 320px">
-                <el-option :value="1" label="会议室1"></el-option>
-              </el-select>-->
+
               <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
                     @click="openMeetingRoomOrType(1)">+</span>
             </el-form-item>
 
-            <el-form-item label="会议类型">
+            <el-form-item required prop="meeting_type" label="会议类型">
               <dropdown-list ref="dropdown2" :url="`${this.url}meeting/category`" code="2"
                              v-model="add_meeting_form.meeting_type"></dropdown-list>
-              <!--<el-select v-model="add_meeting_form.meetingType" placeholder="请选择会议类型" style="width: 320px">
-                <el-option :value="1" label="会议类型1"></el-option>
-              </el-select>-->
+
               <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
                     @click="openMeetingRoomOrType(2)">+</span>
             </el-form-item>
 
             <el-form-item label="会议时间">
-              <date-time-picker ref="meetingTime" :width="320" date-type="timerange"></date-time-picker>
+              <date-time-picker :clearable="false" ref="meetingTime" :width="320"
+                                date-type="timerange"></date-time-picker>
             </el-form-item>
 
-            <el-form-item label="主持人">
+            <el-form-item required prop="presenter_id" label="主持人">
               <user-choose title="请选择主持人" v-model="add_meeting_form.presenter_id"></user-choose>
-              <!--<el-input v-model="add_meeting_form.compere" placeholder="请输入主持人" style="width: 320px">
-              </el-input>-->
             </el-form-item>
 
             <!--<el-form-item label="应到人数">
@@ -322,7 +325,7 @@
               </div>
             </el-form-item>
 
-            <el-form-item label="选择人员">
+            <el-form-item required prop="participants" label="选择人员">
               <user-choose title="请选择人员" v-model="add_meeting_form.participants"></user-choose>
               <!--              <el-input @focus="organSearch(item)" v-model="showName.staff" placeholder="请选择人员" readonly></el-input>-->
             </el-form-item>
@@ -336,8 +339,10 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button v-if="add_meeting_dialog_title_type==1" size="small" type="danger" @click="addNewMeeting">提交</el-button>
-          <el-button v-if="add_meeting_dialog_title_type==2" size="small" type="danger" @click="editMeeting">提交</el-button>
+          <el-button v-if="add_meeting_dialog_title_type==1" size="small" type="danger" @click="addNewMeeting">提交
+          </el-button>
+          <el-button v-if="add_meeting_dialog_title_type==2" size="small" type="danger" @click="editMeeting">提交
+          </el-button>
         </div>
       </div>
     </lj-dialog>
@@ -353,8 +358,9 @@
           <h3>添加会议室</h3>
         </div>
         <div class="dialog_main borderNone add-meeting-room-container">
-          <el-form :model="add_meeting_room_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="会议室名称">
+          <el-form ref="addMeetingRoomForm" :rules="rules.addMeetingRoom" :model="add_meeting_room_form"
+                   style="text-align: left" size="small" label-width="100px">
+            <el-form-item required prop="meetingRoom" label="会议室名称">
               <el-input v-model="add_meeting_room_form.meetingRoom" placeholder="必填" style="width: 300px">
               </el-input>
             </el-form-item>
@@ -409,8 +415,9 @@
           <h3>添加会议类型</h3>
         </div>
         <div class="dialog_main borderNone add-meeting-type-container">
-          <el-form :model="add_meeting_type_form" style="text-align: left" size="small" label-width="100px">
-            <el-form-item label="会议类型名称">
+          <el-form ref="addMeetingTypeForm" :rules="rules.addMeetingType" :model="add_meeting_type_form"
+                   style="text-align: left" size="small" label-width="100px">
+            <el-form-item required prop='meetingType' label="类型名称">
               <el-input v-model="add_meeting_type_form.meetingType" placeholder="必填" style="width: 300px">
               </el-input>
             </el-form-item>
@@ -493,6 +500,44 @@
     },
     data() {
       return {
+
+        rules: {
+          addMeeting: {
+            name: [
+              {required: true, message: '请选择会议主题', trigger: 'blur'},
+              {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
+            ],
+            room_id: [
+              {required: true, message: '请选择会议室', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+            meeting_type: [
+              {required: true, message: '请选择会议类型', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+            presenter_id: [
+              {required: true, message: '请选择主持人', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+            participants: [
+              {required: true, message: '请选择参会人员', trigger: 'blur'},
+              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+            ],
+
+          },
+          addMeetingRoom: {
+            meetingRoom: [
+              {required: true, message: '请选择会议室', trigger: 'blur'},
+            ],
+          },
+          addMeetingType: {
+            meetingType: [
+              {required: true, message: '请选择会议类型', trigger: 'blur'},
+            ],
+          },
+        },
+
+
         humanResource,
         resourceDepart,
 
@@ -572,6 +617,9 @@
           participant: [],//参加人员
           attachment: [],//上传附件
         },
+        comment_content: '',//评论内容
+        comment_list:[],//评论列表
+
 
         //会议个数dialog
         meeting_counts_dialog_visible: false,
@@ -639,9 +687,56 @@
     },
     computed: {},
     methods: {
+      //添加评论
+      publishComment(meetingId) {
+        debugger
+        if (this.comment_content) {
+          let params = {
+            "content": this.comment_content,
+            "parent_id": 0
+          };
+          this.$http.post(`${this.url}/meeting/meeting/${meetingId}/comments`, params).then(res => {
+            if (res.code.endsWith('0')) {
+              this.$LjNotify('success', {
+                title: '成功',
+                message: '评论成功',
+              });
+              this.comment_content = '';
+              this.getCommentList(meetingId);//获取评论当前会议id下的列表
+            }
+          });
+        } else {
+          this.$LjNotify('warning', {
+            title: '警告',
+            message: '请输入评论内容',
+          });
+        }
+      },
+
+      //获取评论列表
+      getCommentList(meetingId) {
+        this.comment_list = [];
+        this.$http.get(`${this.url}meeting/meeting/${meetingId}/comments`).then(res=> {
+          if(res.code.endsWith('0')) {
+            let arr = res.data.data;
+            this.comment_list = _.map(arr,(item)=> {
+              return {
+                id:item.id,//id
+                name: item.user?.name,//用户姓名
+                comment: item.content,//评论
+                photo: (item.user?.avatar||'').replace('\\',''),
+                datetime: item.created_at,//评论时间
+              }
+            });
+          }
+        });
+      },
+
+
       //获取当前选取月份会议详情列表
       getCurrentSelectMonthMeetingCounts() {
         this.meeting_counts_dialog_visible = true;
+        this.meeting_counts_form = [];
         let startDate = utils.formatDate(this.dateValue, 'yyyy-MM-01 00:00:00');
         let endDate = this.lastTimeOfMonth(this.dateValue);
         //this.dateValue;
@@ -658,50 +753,62 @@
       //添加新会议
       addNewMeeting() {
 
-        let curDate = this.currentSelectionDate.datetime;
-        let params = {
-          ...this.add_meeting_form,
-          start_time: `${curDate} ${this.$refs.meetingTime.startTime}:00`,
-          end_time: `${curDate} ${this.$refs.meetingTime.endTime}:00`,
-        };
-        delete params['currentDate'];
-        this.$http.post(`${this.url}/meeting/meeting`, params).then(res => {
-          if (res.code.endsWith('0')) {
-            this.$LjNotify('success', {
-              title: '成功',
-              message: '添加会议成功',
-            });
-            this.add_meeting_dialog_visible = false;
-            this.initDaysList(this.dateValue);
-          } else {
-            this.$LjNotify('error', {
-              title: '失败',
-              message: '添加会议失败',
+        this.$refs['addMeetingForm'].validate((valid) => {
+          if (valid) {//成功
+            let curDate = this.currentSelectionDate.datetime;
+            let params = {
+              ...this.add_meeting_form,
+              start_time: `${curDate} ${this.$refs.meetingTime.startTime}:00`,
+              end_time: `${curDate} ${this.$refs.meetingTime.endTime}:00`,
+            };
+            delete params['currentDate'];
+            this.$http.post(`${this.url}/meeting/meeting`, params).then(res => {
+              if (res.code.endsWith('0')) {
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: '添加会议成功',
+                });
+                this.add_meeting_dialog_visible = false;
+                this.initDaysList(this.dateValue);
+              } else {
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: res.msg,
+                });
+              }
             });
           }
         });
+
+
       },
 
       //修改会议
       editMeeting() {
-        let id = this.add_meeting_form.id;
-        delete this.add_meeting_form['id'];
-        debugger
-        this.$http.put(`${this.url}/meeting/meeting/${id}`,this.add_meeting_form).then(res=> {
-          if(res.code.endsWith('0')) {
-            this.$LjNotify('success',{
-              title:'成功',
-              message:'修改会议成功',
+        this.$refs['addMeetingForm'].validate((valid) => {
+          if (valid) {//成功
+            let id = this.add_meeting_form.id;
+            delete this.add_meeting_form['id'];
+            debugger
+            this.$http.put(`${this.url}/meeting/meeting/${id}`, this.add_meeting_form).then(res => {
+              if (res.code.endsWith('0')) {
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: '修改会议成功',
+                });
+                this.add_meeting_dialog_visible = false;
+                this.meeting_detail_dialog_visible = false;
+              } else {
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: res.msg,
+                })
+              }
             });
-            this.add_meeting_dialog_visible = false;
-            this.meeting_detail_dialog_visible = false;
-          }else {
-            this.$LjNotify('error',{
-              title:'失败',
-              message:'修改会议失败',
-            })
           }
         });
+
+
       },
 
       //显示修改会议dialog
@@ -711,8 +818,8 @@
         this.add_meeting_dialog_title_type = 2;
 
         this.add_meeting_form = {//会议form表单
-          id:this.meeting_detail_form.id,
-          currentDate: `${utils.formatDate(this.meeting_detail_form.start_time,'MM月dd日')}`,
+          id: this.meeting_detail_form.id,
+          currentDate: `${utils.formatDate(this.meeting_detail_form.start_time, 'MM月dd日')}`,
           name: this.meeting_detail_form.name,//会议主题--会议名称
           room_id: this.meeting_detail_form.room_id,//会议室id
           meeting_type: this.meeting_detail_form.meeting_type,//会议类型id
@@ -721,7 +828,7 @@
           presenter_id: [],//主持人id数组
           remind_data: this.meeting_detail_form.remind_data,
           participants: [],//参会人员数组
-          attachment: _.map(this.meeting_detail_form.attachment,'id'),//附件id
+          attachment: _.map(this.meeting_detail_form.attachment, 'id'),//附件id
         };
         //let id = this.meeting_detail_form.id;
         /*this.$http.put(`${this.url}/meeting/meeting/${id}`,this.add_meeting_form).then(res=> {
@@ -768,31 +875,62 @@
       //保存会议类型相关
       saveMeetingRoomOrType(type) {
         let name;
+        debugger
         if (type == 1) {//会议室
           this.add_meeting_room_dialog_visible = true;
           name = this.add_meeting_room_form.meetingRoom;
+
+          this.$refs['addMeetingRoomForm'].validate((valid) => {
+            if (valid) {//成功
+              if (name) {
+                let params = {name, type};
+                this.$http.post(`${this.url}/meeting/category`, params).then(res => {
+                  if (res.code.endsWith('0')) {
+                    this.$LjNotify('success', {
+                      title: '成功',
+                      message: '添加成功',
+                    });
+                    this.$refs[`dropdown${type}`].update();
+                    this.add_meeting_room_dialog_visible = false;
+                    this.add_meeting_type_dialog_visible = false;
+                    this.add_meeting_room_form.meetingRoom = '';
+                    this.add_meeting_type_form.meetingType = '';
+                  } else {
+                    this.$LjNotify('error', {
+                      title: '失败',
+                      message: res.msg
+                    });
+                  }
+                });
+              }
+            }
+          });
         } else if (type == 2) { //会议类型
           this.add_meeting_type_dialog_visible = true;
           name = this.add_meeting_type_form.meetingType;
-        }
-        if (name) {
-          let params = {name, type};
-          this.$http.post(`${this.url}/meeting/category`, params).then(res => {
-            if (res.code.endsWith('0')) {
-              this.$LjNotify('success', {
-                title: '成功',
-                message: '添加成功',
-              });
-              this.$refs[`dropdown${type}`].update();
-              this.add_meeting_room_dialog_visible = false;
-              this.add_meeting_type_dialog_visible = false;
-              this.add_meeting_room_form.meetingRoom = '';
-              this.add_meeting_type_form.meetingType = '';
-            } else {
-              this.$LjNotify('error', {
-                title: '失败',
-                message: '添加失败'
-              });
+          this.$refs['addMeetingTypeForm'].validate((valid) => {
+            if (valid) {//成功
+              if (name) {
+                let params = {name, type};
+                this.$http.post(`${this.url}/meeting/category`, params).then(res => {
+                  if (res.code.endsWith('0')) {
+                    this.$LjNotify('success', {
+                      title: '成功',
+                      message: '添加成功',
+                    });
+                    this.$refs[`dropdown${type}`].update();
+                    this.add_meeting_room_dialog_visible = false;
+                    this.add_meeting_type_dialog_visible = false;
+                    this.add_meeting_room_form.meetingRoom = '';
+                    this.add_meeting_type_form.meetingType = '';
+                  } else {
+                    this.$LjNotify('error', {
+                      title: '失败',
+                      message: res.msg
+                    });
+                  }
+                });
+              }
             }
           });
         }
@@ -831,7 +969,7 @@
               } else {
                 this.$LjNotify('error', {
                   title: '失败',
-                  message: '删除失败',
+                  message: res.msg,
                 });
               }
             });
@@ -842,12 +980,30 @@
       handleChangeDate(id) {
 
       },
+
+      //删除会议
+      deleteMeeting(item, index, todoListIndex) {
+        this.$LjConfirm({content: '确定要删除会议吗？'}).then(res => {
+          this.$http.delete(`${this.url}/meeting/meeting/${item.id}`).then(res => {
+            if (res.code.endsWith('0')) {
+              this.$LjNotify('success', {
+                title: '成功',
+                message: '删除成功',
+              });
+              this.initDaysList(this.dateValue);
+            } else {
+              this.$LjNotify('error', {
+                title: '失败',
+                message: res.msg,
+              });
+            }
+          });
+        });
+      },
+
       //取消会议
       cancelMeeting(item, index, todoListIndex) {
-        //console.log(this.daysList);
-        this.$LjConfirm({content: '确定要取消吗？'}).then(res => {
-          /*let params = {...item};
-          params.status = 2;*/
+        this.$LjConfirm({content: '确定要取消会议吗？'}).then(res => {
           let params = {
             status: 2
           };
@@ -857,12 +1013,12 @@
                 title: '成功',
                 message: '取消成功',
               });
-              this.initDaysList(this.timeValue);
+              this.initDaysList(this.dateValue);
               //this.daysList[index].todoList.splice(todoListIndex, 1);
             } else {
               this.$LjNotify('error', {
                 title: '失败',
-                message: '取消失败',
+                message: res.msg,
               });
             }
           });
@@ -874,7 +1030,6 @@
 
       //处理会议点击事件 打开会议详情表单
       openMeetingDialog(value) {
-        debugger
         console.log(value);
         this.meeting_detail_dialog_visible = true;
         this.meeting_detail_form = {//初始化表单
@@ -883,6 +1038,7 @@
             minute: 0
           },
         };
+        this.comment_content = '';
         this.$http.get(`${this.url}/meeting/meeting/${value.id}`).then(res => {
           if (res.code.endsWith('0')) {
             let item = res.data;
@@ -890,7 +1046,7 @@
             let compere = _.map(item.presenter || [], 'user.name').join(',');
             let participant = _.map(item.participant || [], 'user.name').join(',');
             this.meeting_detail_form = {
-              id:item.id,
+              id: item.id,
               name: item.name,//会议名称
               applyPerson: item.user?.name,//申请人
               meetingRoom: item.room?.name,//会议室
@@ -900,16 +1056,16 @@
               compere,//主持人
               participant,//参加人员
               meetingTime: `${utils.formatDate(item.start_time, 'hh:mm')}-${utils.formatDate(item.end_time, 'hh:mm')}`,//会议时间
-              status:item.status,//状态
+              status: item.status,//状态
 
 
-              start_time:value.start_time,
-              end_time:value.end_time,
-              room_id:value.room_id,
-              meeting_type:value.meeting_type,
+              start_time: value.start_time,
+              end_time: value.end_time,
+              room_id: value.room_id,
+              meeting_type: value.meeting_type,
 
             };
-
+            this.getCommentList(value.id);
           }
         });
 
@@ -1150,6 +1306,7 @@
 
 <style scoped lang="scss">
   @import "../../../assets/scss/humanResource/discussPolitics/index";
+  @import "../../../assets/scss/icon";
 
   @mixin discussPoliticsImg($m, $n) {
     $url: '../../../assets/image/humanResource/discussPolitics/' + $n + '/' + $m;
@@ -1158,9 +1315,9 @@
 
   #theme_name {
     #discussPolitics {
-      .icon-delete {
+      /*.icon-delete {
         @include discussPoliticsImg('shanchu.png', 'theme1');
-      }
+      }*/
 
       .icon-delete-red {
         @include discussPoliticsImg('shanchu1.png', 'theme1');
