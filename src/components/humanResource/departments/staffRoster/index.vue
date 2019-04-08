@@ -114,7 +114,7 @@
     computed: {},
     methods: {
       exportStaffList() {
-        this.$http.post('staff/user/record',this.export_params,{responseType: 'arraybuffer'}).then(res => {
+        this.$http.get('staff/user/record',this.export_params,'arraybuffer').then(res => {
           console.log(res);
           if (!res) {
             return;

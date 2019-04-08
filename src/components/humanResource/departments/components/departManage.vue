@@ -923,16 +923,14 @@
     methods: {
       handleConfirmSendMsg() {
         console.log(this.checkLists);
-        var obj = {};
+        var type = [];
         if (this.checkLists.includes(1)) {
-          obj.type = 'dimission';
+          type.push('dimission');
         }
         if (this.checkLists.includes(2)) {
-          obj.sms = 1;
-        } else {
-          obj.sms = 0
+          type.push('dimission_sms');
         }
-        this.$http.get(`staff/user/${this.currentStaff.id}/sendinfo`,obj).then(res => {
+        this.$http.get(`staff/user/${this.currentStaff.id}/sendinfo`,{type}).then(res => {
           console.log(res);
         })
       },
