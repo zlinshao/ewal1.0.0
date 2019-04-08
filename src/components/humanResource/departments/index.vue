@@ -15,8 +15,8 @@
       </div>
       <div class="items-center listTopRight">
         <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
-        <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3 || chooseTab === 4">设置报表</div>
-        <div class="buttons button2" v-if="chooseTab === 3 || chooseTab === 4" @click="handleExportInfo">导出报表</div>
+        <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3">设置报表</div>
+        <div class="buttons button2" v-if="chooseTab === 3" @click="handleExportInfo">导出报表</div>
         <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2"></div>
       </div>
@@ -66,7 +66,7 @@
 
     <!--离职管理-->
     <div v-if="chooseTab === 4">
-      <LeaveJob :export-info="exportInfo" :export-data="export_data" :searchVal="searchFruit4"></LeaveJob>
+      <LeaveJob :searchVal="searchFruit4"></LeaveJob>
     </div>
 
     <!--权限管理-->
@@ -645,50 +645,6 @@
     mounted() {
       this.getDepartList();
       this.getPowerList();
-      this.export_data = [
-        { key: 'name',val: '姓名'},
-        { key: 'position',val: '岗位'},
-        { key: 'gender',val: '性别'},
-        { key: 'staff.origin_addr',val: '籍贯'},
-        { key: 'staff.political_status',val: '政治面貌'},
-        { key: 'staff.birthday',val: '出生年月'},
-        { key: 'staff.city',val: '城市'},
-        { key: 'staff.origin_addr',val: '家庭住址'},
-        { key: 'phone',val: '联系方式'},
-        { key: 'staff.id_num',val: '身份证'},
-        { key: 'staff.emergency_call',val: '紧急联系人'},
-        { key: 'staff.household_register',val: '户口性质'},
-        { key: 'staff.national',val: '民族'},
-        { key: 'staff.marital_fertility_status',val: '婚育情况'},
-        { key: 'staff.education',val: '学历'},
-        { key: 'staff.school',val: '毕业院校'},
-        { key: 'staff.graduation_time',val: '毕业时间'},
-        { key: 'staff.major',val: '专业'},
-        { key: 'staff.position_level',val: '职级'},
-        { key: 'staff.enroll',val: '入职时间'},
-        // { key: 'phone9',val: '试用期时间'},
-        // { key: 'phone10',val: '转正时间'},
-        // { key: 'phone11',val: '转正提醒'},
-        // { key: 'phone12',val: '劳务合同'},
-        // { key: 'phone13',val: '合同开始时间'},
-        // { key: 'phone14',val: '合同结束时间'},
-        // { key: 'phone15',val: '劳动合同到期'},
-        // { key: 'phone16',val: '社保缴纳情况'},
-        // { key: 'phone21',val: '社保开始时间'},
-        // { key: 'phone22',val: '意外险缴纳情况'},
-        { key: 'staff.bank_num',val: '银行卡号'},
-        { key: 'staff.account_name',val: '户主'},
-        { key: 'staff.account_bank',val: '开户行'},
-        // { key: 'phone31',val: '入职渠道'},
-        { key: 'staff.commitment_number',val: '入职承诺书'},
-        { key: 'staff.employ_proof_number',val: '在职证明'},
-        { key: 'staff.income_proof_number',val: '收入证明'},
-        { key: 'staff.notice_number',val: '入职须知'},
-        { key: 'staff.secret_number',val: '保密协议编号'},
-        // { key: 'phone333',val: '授权委托书'},
-        { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书'},
-        { key: 'staff.internship_number',val: '实习协议'},
-      ]
     },
     watch: {},
     computed: {
@@ -1195,48 +1151,36 @@
       showSetForm() {
         this.SetFormVisible = true;
         this.setFormData = [
+          { key: 'staff.internship_number',val: '实习协议',isBtn: true},
           { key: 'name',val: '姓名'},
-          { key: 'position',val: '岗位'},
-          { key: 'gender',val: '性别'},
+          { key: 'position',val: '岗位',isArray: true,showKey: 'name'},
+          { key: 'gender',val: '性别',info:{1: '女',0: '男'}},
           { key: 'staff.origin_addr',val: '籍贯'},
-          { key: 'staff.political_status',val: '政治面貌'},
+          { key: 'staff.political_status',val: '政治面貌',info: {1: '群众',2: '团员',3: '党员',4: '其他'}},
           { key: 'staff.birthday',val: '出生年月'},
           { key: 'staff.city',val: '城市'},
           { key: 'staff.origin_addr',val: '家庭住址'},
           { key: 'phone',val: '联系方式'},
           { key: 'staff.id_num',val: '身份证'},
           { key: 'staff.emergency_call',val: '紧急联系人'},
-          { key: 'staff.household_register',val: '户口性质'},
+          { key: 'staff.household_register',val: '户口性质',info: {0: '农村',1: '城市'}},
           { key: 'staff.national',val: '民族'},
-          { key: 'staff.marital_fertility_status',val: '婚育情况'},
-          { key: 'staff.education',val: '学历'},
+          { key: 'staff.marital_fertility_status',val: '婚育情况',info: {1: '未婚', 2: '已婚未育',3: '已婚已育'}},
+          { key: 'staff.education',val: '学历',info: {1: '高中及以下',2: '大专',3: '本科', 4: '本科及以上', 5: '其他'}},
           { key: 'staff.school',val: '毕业院校'},
           { key: 'staff.graduation_time',val: '毕业时间'},
           { key: 'staff.major',val: '专业'},
-          { key: 'staff.position_level',val: '职级'},
+          { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
           { key: 'staff.enroll',val: '入职时间'},
-          // { key: 'phone9',val: '试用期时间'},
-          // { key: 'phone10',val: '转正时间'},
-          // { key: 'phone11',val: '转正提醒'},
-          // { key: 'phone12',val: '劳务合同'},
-          // { key: 'phone13',val: '合同开始时间'},
-          // { key: 'phone14',val: '合同结束时间'},
-          // { key: 'phone15',val: '劳动合同到期'},
-          // { key: 'phone16',val: '社保缴纳情况'},
-          // { key: 'phone21',val: '社保开始时间'},
-          // { key: 'phone22',val: '意外险缴纳情况'},
           { key: 'staff.bank_num',val: '银行卡号'},
           { key: 'staff.account_name',val: '户主'},
           { key: 'staff.account_bank',val: '开户行'},
-          // { key: 'phone31',val: '入职渠道'},
-          { key: 'staff.commitment_number',val: '入职承诺书'},
-          { key: 'staff.employ_proof_number',val: '在职证明'},
-          { key: 'staff.income_proof_number',val: '收入证明'},
-          { key: 'staff.notice_number',val: '入职须知'},
-          { key: 'staff.secret_number',val: '保密协议编号'},
-          // { key: 'phone333',val: '授权委托书'},
-          { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书'},
-          { key: 'staff.internship_number',val: '实习协议'},
+          { key: 'staff.commitment_number',val: '入职承诺书',isBtn: true},
+          { key: 'staff.employ_proof_number',val: '在职证明',isBtn: true},
+          { key: 'staff.income_proof_number',val: '收入证明',isBtn: true},
+          { key: 'staff.notice_number',val: '入职须知',isBtn: true},
+          { key: 'staff.secret_number',val: '保密协议编号',isBtn: true},
+          { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书',isBtn: true},
         ];
       },
       moduleList() {

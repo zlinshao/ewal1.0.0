@@ -19,9 +19,9 @@
                     <span style="margin-left: 16px"><i :style="{'background-color':item.iconColor}"></i><span>{{item.iconText}}</span></span>
                 </p>
                 <div class="icons home_icon"></div>
-                <div v-if="chooseTab===1||chooseTab===2">
-                    <el-button type="danger" size="small" @click="cancelRemark">取消重复标记</el-button>
-                </div>
+                <!--<div v-if="chooseTab===1||chooseTab===2">-->
+                    <!--<el-button type="danger" size="small" @click="cancelRemark">取消重复标记</el-button>-->
+                <!--</div>-->
                 <div class="icons search" @click="highSearch(chooseTab)"></div>
             </div>
         </div>
@@ -36,9 +36,9 @@
             <renter :searchParams="search_params"></renter>
         </div>
         <!--待处理项-->
-        <div v-if="chooseTab === 3">
-            <pending :searchParams="search_params"></pending>
-        </div>
+        <!--<div v-if="chooseTab === 3">-->
+            <!--<pending :searchParams="search_params"></pending>-->
+        <!--</div>-->
         <!--新增-->
         <lj-dialog :visible="add_visible" :size="{width: 960 + 'px',height: 820 + 'px'}" @close="add_visible = false">
             <lord-form v-if="chooseTab===1" :formData="lord_form" :current_row="current_row"></lord-form>
@@ -84,7 +84,7 @@
                 selects: [
                     {id: 1, title: '房东',},
                     {id: 2, title: '租客',},
-                    {id: 3, title: '待处理项',},
+                    // {id: 3, title: '待处理项',},
                 ],
                 statusBar: [
                     {iconColor: "#14e731", iconText: "手机"}, {iconColor: "#e6a23c", iconText: "姓名"},
@@ -226,9 +226,9 @@
             },
 
             //取消重复标记
-            cancelRemark() {
-                this.$bus.emit('cancelRemarkFun', 1);
-            }
+            // cancelRemark() {
+            //     this.$bus.emit('cancelRemarkFun', 1);
+            // }
         },
     }
 </script>

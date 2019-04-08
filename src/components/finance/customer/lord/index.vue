@@ -1,5 +1,5 @@
 <template>
-    <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+    <div class="mainListTable">
         <!--列表-->
         <el-table
                 :data="lordLists"
@@ -10,7 +10,6 @@
                 @cell-click="tableClickRow"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
-
             <el-table-column
                     class="changeChoose"
                     type="selection"
@@ -19,7 +18,7 @@
             <el-table-column label="前缀" align="center" width="90">
                 <template slot-scope="scope">
                     <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===1">
-                        <i class="el-icon-view"></i>忽略重复
+                        <!--<i class="el-icon-view"></i>忽略重复-->/
                     </div>
                     <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
                         <span style="background-color: #14e731;" v-if="LordStatus[scope.$index]['is_contact']===0"></span>
@@ -51,12 +50,12 @@
 
             <el-table-column label="操作" prop="" align="center" width="500">
                 <template slot-scope="scope">
-                    <el-button type="success" size="small" @click="handleDetailsLord(scope.row,scope.$index)">查看
+                    <el-button type="success" size="small" @click="handleEditLord(scope.row,scope.$index,'check')">查看
                     </el-button>
-                    <el-button type="primary" size="small" @click="handleEditLord(scope.row,scope.$index)">编辑
+                    <el-button type="primary" size="small" @click="handleEditLord(scope.row,scope.$index,'edit')">编辑
                     </el-button>
-                    <el-button type="warning" size="small" @click="handleReturnRemark(scope.row,scope.$index)">恢复重复标记
-                    </el-button>
+                    <!--<el-button type="warning" size="small" @click="handleReturnRemark(scope.row,scope.$index)">取消重复标记</el-button>-->
+                    <el-button type="warning" size="small" @click="handleRemark(scope.row,scope.$index)">取消重复标记</el-button>
                     <el-button type="info" size="small"
                                @click="scope.row.freeze===0 ? handleProcessLord(scope.row,scope.$index):handleCancelProcessLord(scope.row,scope.$index)">
                         {{scope.row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
@@ -135,7 +134,7 @@
                 :visible="edit_visible"
                 :size="{width: 1200 + 'px',height: 800 + 'px' }"
                 @close="edit_visible = false">
-            <lord-form :form="lordDetailData" :current_row="current_row" @updateList="updateLordList" :address="set_price_form.bottom_name" :addressIds="set_price_form.bottom_id"></lord-form>
+            <lord-form :editForm="lordDetailData" :type="chooseType" :current_row="current_row" @updateList="updateLordList" :address="set_price_form.bottom_name" :addressIds="set_price_form.bottom_id"></lord-form>
         </lj-dialog>
 
         <!--搜索房源-->
@@ -215,13 +214,8 @@
                 ra_ids: [],
                 multipleSelection: [],//多选
                 freeze: [],//待处理
+                lordDetailData: {},
 
-                lordDetailData: {
-                    leader: '',
-                    department: '',
-                    operator: '',
-                    staff: '',
-                },
                 statusLists:[],
                 house_filter_visible:false,
                 set_price_form: {
@@ -234,6 +228,7 @@
                     bottom_type: '',
                     suggest_type: ''
                 },
+                chooseType:'',
 
             }
         },
@@ -241,12 +236,12 @@
             this.getLordList();
         },
         created() {
-            this.$bus.on('cancelRemarkFun', this.handleRemark);//取消重复标记
+            // this.$bus.on('cancelRemarkFun', this.handleRemark);//取消重复标记
             this.$bus.on('getParams', this.handleParams);//搜索参数
             this.$bus.on('chooseHouse', this.handleChooseHouse);//搜索房屋
         },
         beforeDestroy() {
-            this.$bus.off('cancelRemarkFun', this.handleRemark);
+            // this.$bus.off('cancelRemarkFun', this.handleRemark);
             this.$bus.off('getParams', this.handleParams);
             this.$bus.off('chooseHouse', this.handleChooseHouse);//搜索房屋
         },
@@ -259,6 +254,7 @@
 
         computed: {},
         methods: {
+
             //房屋
             handleChooseHouse(val){
                 this.house_filter_visible = val
@@ -318,19 +314,13 @@
                 ids.push(row.id);
                 this.chooseRowIds = this.myUtils.arrayWeight(ids);
             },
-            // 点击过
+            // 行状态
             tableChooseRow({row, rowIndex}) {
-                return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+                // return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+                return  row.freeze === 1 ? 'warning-row' : '';
             },
             // 多选
             handleSelectionChange(val) {
-                this.ra_ids = [];
-                this.multipleSelection = val;
-                console.log(val);
-                for (let item in val) {
-                    this.ra_ids.push(val[item].id);
-                }
-                console.log(this.ra_ids);
             },
             callbackSuccess(res) {
                 if (res.code === 200) {
@@ -359,13 +349,13 @@
                                 return a.id-b.id
                             }
                         );
-
                         console.log(this.lordLists);
                         this.lordCount = res.data.count;
                         this.freeze = [];
                         for (let item of this.lordLists) {
                             this.freeze.push(item.freeze);
                         }
+                        console.log(this.freeze);
 
                     } else {
                         this.lordLists = [];
@@ -390,26 +380,25 @@
                     console.log(err);
                 })
             },
-            //详情
-            handleDetailsLord(row, index) {
-                this.current_row = row;
-                this.details_visible = true;
-                this.getRowInfo(index);
-                console.log(row.id);
-            },
+
+            //打开详情
+            // handleDetailsLord(row, index) {
+            //     this.current_row = row;
+            //     this.details_visible = true;
+            //     this.getRowInfo(index);
+            //     console.log(row.id);
+            // },
             //行信息
             getRowInfo(index) {
                 console.log(this.lordLists[index]);
                 this.lordDetailData = this.lordLists[index];
-                this.lordDetailData.leader = this.lordLists[index].leader.name;
-                this.lordDetailData.staff = this.lordLists[index].staff.name;
-                this.lordDetailData.operator = this.lordLists[index].operator.name;
-                this.lordDetailData.department = this.lordLists[index].department.name;
+                console.log(this.lordDetailData);
 
             },
 
             //打开编辑
-            handleEditLord(row, index) {
+            handleEditLord(row, index,type) {
+                this.chooseType = type;
                 this.current_row = row;
                 this.edit_visible = true;
                 this.getRowInfo(index);
@@ -425,29 +414,20 @@
                     if (res.code == 200) {
                         this.showLoading(false);
                         console.log(res.data.data);//详情
-
-                        // this.renterDetailData = Object.assign({}, this.renterDetail, this.renterDetailList);
-
-                        // for (let item of Object.keys(this.renter_form)) {
-                        //     if(this.renterDetailData[item]!=''&& this.renterDetailData[item] != undefined){
-                        //         this.renter_form[item] = this.renterDetailData[item];
-                        //     }else {
-                        //         this.renter_form[item] = '';
-                        //     }
-                        // }
                     }
                 })
             },
 
             //生成待处理项
             handleProcessLord(row, index) {
+                alert(row.id);
                 this.$http.post(globalConfig.temporary_server + 'customer_collect/pending/' + row.id,).then(res => {
                     this.callbackSuccess(res);
                 })
             },
             //取消待处理项
             handleCancelProcessLord(row, index) {
-
+                alert(row.id);
                 this.$http.put(globalConfig.temporary_server + 'account_pending/recover', {
                     customer_id: row.id,
                     identity: 1
@@ -457,8 +437,11 @@
                 })
             },
             //忽略重复标记
-            handleRemark(val) {
-                // alert(this.ra_ids);
+            handleRemark(row,index) {
+
+                this.ra_ids = [];
+                this.ra_ids.push(row.id);
+                console.log(this.ra_ids);
                 this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {
                     ids: this.ra_ids,
                     operate: 1
@@ -468,16 +451,16 @@
                 })
             },
             //恢复重复标记
-            handleReturnRemark(row, index) {
-                this.ra_ids = [];
-                this.ra_ids.push(row.id);
-                this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {
-                    ids: this.ra_ids,
-                    operate: 2
-                }).then(res => {
-                    this.callbackSuccess(res);
-                })
-            },
+            // handleReturnRemark(row, index) {
+            //     this.ra_ids = [];
+            //     this.ra_ids.push(row.id);
+            //     this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {
+            //         ids: this.ra_ids,
+            //         operate: 2
+            //     }).then(res => {
+            //         this.callbackSuccess(res);
+            //     })
+            // },
 
             //删除房东
             handleOkDel() {
@@ -503,6 +486,7 @@
 
     #theme_name.theme1 {
         #customer {
+
             .statusBar {
                 span {
                     display: block;
@@ -511,6 +495,12 @@
                     border-radius: 50%;
                     margin-left: 4px;
                 }
+            }
+            .warning-row{
+                background: #686874;
+            }
+            .success-row{
+                background: #f0f9eb;
             }
 
             #theme_name .form_item_container {

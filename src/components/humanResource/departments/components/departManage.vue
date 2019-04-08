@@ -930,8 +930,23 @@
         if (this.checkLists.includes(2)) {
           type.push('dimission_sms');
         }
+        if (this.checkLists.includes(3)) {
+          type.push('leave_proof_send');
+        }
         this.$http.get(`staff/user/${this.currentStaff.id}/sendinfo`,{type}).then(res => {
           console.log(res);
+          if (res.code === '20000') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.confirm_send_visible = false;
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
         })
       },
       handleChangePowerType(type) {
