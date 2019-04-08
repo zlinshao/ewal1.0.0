@@ -1061,13 +1061,13 @@
               message: res.msg
             });
             this.getDepartList();
+            this.handleCancelAddDepart();
           } else {
             this.$LjNotify('warning',{
               title: '警告',
               message: res.msg
             })
           }
-          this.handleCancelAddDepart();
         })
       },
       handleGetDepart(val,name) {
