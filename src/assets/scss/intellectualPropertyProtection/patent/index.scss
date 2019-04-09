@@ -1,0 +1,116 @@
+@import "../../common.scss";
+#theme_name {
+  #patent {
+    >div {
+    }
+      >div {
+      }
+        >div {
+        }
+          h2 {
+            margin-left: 42px;
+            height: 32px;
+            font-size: 32px;
+            font-family: 'jingDianXingShu';
+            color:rgba(104,104,116,1);
+            line-height:32px;
+          }
+  }
+}
+#theme_name.theme1 {
+  #patent {
+    background-color: $colorFFF;
+    div {
+      .patentContainer {
+        width: 1192px;
+        margin: 0 365px 0 365px;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        .patentList {
+          width: 33%;
+          div {
+            width: 282px;
+            height: 282px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 74px 0 19px 0;
+            &:hover {
+              h2 , h3 {
+                color:rgba(207,46,51,1);
+              }
+            }
+            >h1 {
+              width: 105px;
+              height: 24px;
+              font-size: 24px;
+              font-family: 'jingDianXingShu';
+              color:rgba(104,104,116,1);
+              line-height: 24px;
+              display: flex;
+              justify-content: center;
+            }
+            h2 {
+              width: 105px;
+              height: 30px;
+              margin-left: 0px;
+              font-size:21px;
+              font-family: MicrosoftYaHei-Bold;
+              font-weight:bold;
+              color:rgba(104,104,116,1);
+              line-height:27px;
+              display: flex;
+              justify-content: center;
+            }
+            h3 {
+              width: 136px;
+              height: 26px;
+              font-size: 20px;
+              font-family: MicrosoftYaHei-Bold;
+              font-weight:bold;
+              color:rgba(104,104,116,1);
+              line-height: 19px;
+              letter-spacing: 1px;
+              display: flex;
+              justify-content: center;
+            }
+          }
+          div + span {
+            width: 93px;
+            height: 21px;
+            margin-left: 95px;
+            span {
+              font-size: 16px;
+              font-family:MicrosoftYaHei;
+              color:rgba(104,104,116,1);
+              line-height: 19px;
+              &:hover {
+                  color:rgba(207,46,51,1);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme2 {
+    #patent {
+
+    }
+}
+
+#theme_name.theme3 {
+    #patent {
+
+    }
+}
+
+#theme_name.theme4 {
+    #patent {
+
+    }
+}

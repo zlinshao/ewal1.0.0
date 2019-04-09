@@ -1,0 +1,52 @@
+@import "../common.scss";
+
+#theme_name {
+  #intellectualPropertyProtection {
+    >div{
+    }
+      >div{
+      }
+        >div{
+        }
+          h2{
+            margin-left: 42px;
+            height:32px;
+            font-size: 32px;
+            font-family: 'jingDianXingShu';
+            color:rgba(104,104,116,1);
+            line-height:32px;
+          }
+  }
+  
+}
+#theme_name.theme1 {
+  #intellectualPropertyProtection {
+    background-color: $colorFFF;
+    #patentMenu{
+      width: 100%;
+      position: relative;
+      top: 90px;
+    }
+    #patentLine{
+      height: 354px;
+    }
+  }
+}
+
+#theme_name.theme2 {
+  #intellectualPropertyProtection {
+
+  }
+}
+
+#theme_name.theme3 {
+  #intellectualPropertyProtection {
+
+  }
+}
+
+#theme_name.theme4 {
+  #intellectualPropertyProtection {
+
+  }
+}

@@ -240,3 +240,26 @@ export const leJiaCollegeMenu = {
 
 };
 
+//知识产权保护
+export const intellectualPropertyProtection = {
+  type: 'intellectualPropertyProtection',
+  data: [
+    {
+      url: 'enterpriseCertificate',
+      title: '企业证书'
+    },
+    {
+      url: 'patent',
+      title: '专利'
+    },
+    {
+      url: 'copyright',
+      title: '著作权'
+    },
+    {
+      url: 'brand',
+      title: '商标'
+    }
+  ]
+};
+
