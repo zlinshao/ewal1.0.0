@@ -95,6 +95,13 @@ const ReserveTrainning = ()=> import('@/components/leJiaCollege/components/commo
 //待办
 // const TodoList = () => import('@/components/todoList/index.vue');
 
+//知识产权保护
+const IntellectualPropertyProtection = ()=> import('@/components/intellectualPropertyProtection/index.vue');
+const Patent = ()=> import('@/components/intellectualPropertyProtection/patent/index.vue');
+const Brand = ()=> import('@/components/intellectualPropertyProtection/brand/index.vue');
+const Copyright = ()=> import('@/components/intellectualPropertyProtection/copyright/index.vue');
+const EnterpriseCertificate = ()=> import('@/components/intellectualPropertyProtection/enterpriseCertificate/index.vue');
+
 Vue.use(Router);
 
 export default new Router({
@@ -434,6 +441,31 @@ export default new Router({
         //     name: '录用通知书',
         //     component: OfferDetail
         // }
+        {
+            path: '/intellectualPropertyProtection',
+            name: '知识产权保护',
+            component: IntellectualPropertyProtection
+        },
+        {
+            path: '/patent',
+            name: '专利',
+            component: Patent
+        },
+        {
+            path: '/brand',
+            name: '专利',
+            component: Brand
+        },
+        {
+            path: '/copyright',
+            name: '专利',
+            component: Copyright
+        },
+        {
+            path: '/enterpriseCertificate',
+            name: '专利',
+            component: EnterpriseCertificate
+        }
     ]
 
 })

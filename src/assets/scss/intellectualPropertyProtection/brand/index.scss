@@ -1,0 +1,42 @@
+@import "../../common.scss";
+#theme_name {
+  #brand {
+    >div {
+    }
+      >div {
+      }
+        >div {
+        }
+          h2 {
+            margin-left: 42px;
+            height: 32px;
+            font-size: 32px;
+            font-family: 'jingDianXingShu';
+            color:rgba(104,104,116,1);
+            line-height:32px;
+          }
+  }
+}
+#theme_name.theme1 {
+  #brand {
+    background-color: $colorFFF;
+  }
+}
+
+#theme_name.theme2 {
+    #brand {
+
+    }
+}
+
+#theme_name.theme3 {
+    #brand {
+
+    }
+}
+
+#theme_name.theme4 {
+    #brand {
+
+    }
+}
