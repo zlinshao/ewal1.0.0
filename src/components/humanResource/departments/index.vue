@@ -5,7 +5,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="myUtils.emptyPic(photo)">三省六部</h1>
+        <h1 @click="myUtils.emptyPic(photo)">人资规划</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -30,15 +30,19 @@
     <!--部门管理-->
     <div class="departList" v-if="chooseTab === 2">
       <div class="items-start mainList" :class="{'mainListHover': routeAnimation}">
-        <p v-for="item in departList" @click="showDepartManage(item)">
+        <p v-for="item in departList" @click="handleOpenDepartDetail(item)">
           <span class="writingMode" :title="item.name">
             {{item.name}}
           </span>
           <a class="control flex-center">
-            <i class="el-icon-delete" @click.self.stop="handleDelDepart(item)"></i>
-            <i class="el-icon-edit" @click.self.stop="handleOpenEditDepart(item)"></i>
-            <i class="el-icon-back" @click.self.stop="handleOpenBackParent(item)"></i>
-            <i class="el-icon-view" @click.self.stop="handleOpenLookInfo(item)"></i>
+            <a class="pointer">...</a>
+            <!--<i class="el-icon-delete" @click.self.stop="handleDelDepart(item)"></i>-->
+            <!--<i class="el-icon-edit" @click.self.stop="handleOpenEditDepart(item)"></i>-->
+            <!--<i class="el-icon-back" @click.self.stop="handleOpenBackParent(item)"></i>-->
+            <!--<i class="el-icon-view" @click.self.stop="handleOpenLookInfo(item)"></i>-->
+            <!--<b @click.stop="handleOpenEditDepart(item)">编辑</b>-->
+            <b @click.stop="handleOpenLookInfo(item)">编辑</b>
+            <b @click.stop="handleDelDepart(item)">删除</b>
           </a>
         </p>
       </div>
@@ -57,6 +61,48 @@
           </el-pagination>
         </div>
       </footer>
+
+      <!--部门详情-->
+      <div class="depart-detail" :class="{'show-depart-detail': show_depart_detail}">
+        <div class="depart_nav">
+          <span @click="handleGetCurrentDepart(tmp,idx)" v-for="(tmp,idx) in nav_depart">{{ tmp.name }} <a v-if="idx !== nav_depart.length - 1">/</a></span>
+        </div>
+
+        <div class="depart-detail-main flex-center">
+          <div class="depart-left flex-center">
+            <p @click="handleCloseDepartDetail">
+              <span class="writingMode">
+                {{ current_depart && current_depart.name }}
+              </span>
+              <a class="control flex-center">
+                <a class="pointer">...</a>
+                <b @click.stop="handleOpenEditDepart(current_depart)">编辑</b>
+                <b @click.stop="handleDelDepart(current_depart)">删除</b>
+              </a>
+            </p>
+          </div>
+          <div class="depart-right">
+            <div class="depart-btn flex">
+              <span @click="handleCheckStaffPost(tmp)" v-for="tmp in control_btn" :class="{'choose-span': current_btn === tmp.id}">{{ tmp.val }}</span>
+            </div>
+            <div class="depart-staff">
+              <!--下级部门列表-->
+              <div class="depart_list flex">
+                <div class="next_btn"><i class="el-icon-arrow-right"></i></div>
+                <div class="list flex scroll_bar">
+                  <div class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>
+                </div>
+              </div>
+
+              <!--人员列表-->
+              <div class="staff_list">
+                <!--管理部门/员工管理-->
+                <DepartManage :check-info="check_info" :module="departModule" :info="departInfo" @close="departModule = false"></DepartManage>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!--员工名册-->
@@ -183,9 +229,6 @@
 
     <!--设置表单-->
     <SetForms :module="SetFormVisible" :data="setFormData" @close="SetFormVisible = false" @remove="handleRemoveItem" @submit="handleSubmitForm"></SetForms>
-
-    <!--管理部门/员工管理-->
-    <DepartManage :module="departModule" :info="departInfo" @close="departModule = false"></DepartManage>
 
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -467,6 +510,26 @@
     },
     data() {
       return {
+        //新部门管理
+        show_depart_detail: false,
+        control_btn: [
+          {id: 1,val: '人员管理'},
+          {id: 2,val: '职位管理'},
+        ],
+        current_btn: 1,
+        current_depart: '', //当前部门
+        next_depart: [],
+        next_depart_params: {
+          page: 1,
+          limit: 999,
+          parent_id: ''
+        },
+        nav_depart: [],
+
+        departModule: false,//部门管理/员工管理
+        departInfo: '',
+        check_info: '',
+
         //导出
         export_data: [],
         //添加系统
@@ -566,7 +629,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 4,//tab切换
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -594,9 +657,6 @@
 
         setFormData: {},
         SetFormVisible: false,//设置表单
-
-        departModule: false,//部门管理/员工管理
-        departInfo: '',
 
         depart_visible: false,//新增部门
         lj_size: {},//新增部门
@@ -653,6 +713,60 @@
       },
     },
     methods: {
+      //新部门管理
+      //切换人员管理/职位管理
+      handleCheckStaffPost(tmp) {
+        this.current_btn = tmp.id;
+        this.check_info = tmp;
+      },
+      //部门列表打开部门详情
+      handleOpenDepartDetail(item) {
+        this.current_depart = item;
+        this.nav_depart = [];
+        this.nav_depart.push(item);
+        this.handleOpenLookInfo(item);
+        this.getNextDepart(item);
+        this.show_depart_detail = true;
+      },
+      //关闭部门详情
+      handleCloseDepartDetail() {
+        this.show_depart_detail = false;
+      },
+      // 部门管理 搜索下级部门
+      getNextDepart(val,next) {
+        this.next_depart_params.parent_id = val.id;
+        this.$http.get('organization/organization',this.next_depart_params).then(res => {
+          if (res.code === '20000') {
+            console.log(res.data.data);
+            this.next_depart = res.data.data;
+            if (next) {
+              this.nav_depart.push(val);
+            }
+          } else {
+            this.$LjNotify('info',{
+              title: '提示',
+              message: '暂无下级部门！'
+            });
+          }
+        })
+      },
+      //子部门点击获取子部门
+      handleInnerNextDepart(item) {
+        this.getNextDepart(item,'next');
+      },
+      //点击导航菜单
+      handleGetCurrentDepart(item,idx) {
+        console.log(item,idx);
+        this.getNextDepart(item);
+        this.nav_depart.splice(idx + 1);
+      },
+      handleOpenLookInfo(val) {
+        console.log(val);
+        this.departModule = true;
+        this.departInfo = val;
+      },
+
+
       //取消添加系统
       handleCancelAddSys() {
         this.add_system_visible = false;
@@ -988,10 +1102,6 @@
       handleExportInfo() {
         this.exportInfo = this.chooseTab;
       },
-      handleOpenLookInfo(val) {
-        this.departModule = true;
-        this.departInfo = val;
-      },
       //返回上级
       handleOpenBackParent(item) {
         this.params.parent_id = item.parent_org && item.parent_org.parent_id || 1;
@@ -1096,7 +1206,7 @@
         this.$store.dispatch('route_animation');
       },
       // 部门管理列表
-      getDepartList(val) {
+      getDepartList() {
         this.$http.get('organization/organization',this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;
@@ -1115,11 +1225,6 @@
             };
             break;
         }
-      },
-      // 部门管理
-      showDepartManage(val) {
-        this.params.parent_id = val.id;
-        this.getDepartList(val);
       },
       // 高级搜索
       highSearch(val) {
@@ -1219,6 +1324,39 @@
             @include departmentsImg('departmentshui.png', 'theme1');
             &:hover {
               @include departmentsImg('departmentshong.png', 'theme1');
+            }
+          }
+        }
+        .depart-detail {
+          background-color: $color9F9;
+          .depart_nav {
+            span {
+              color: $colorE33;
+              a {
+                color: #999999;
+                margin: 0 10px;
+              }
+            }
+          }
+          .depart-detail-main {
+            .depart-left {
+              p {
+                @include departmentsImg('departmentshui.png', 'theme1');
+                &:hover {
+                  @include departmentsImg('departmentshong.png', 'theme1');
+                }
+              }
+            }
+            .depart-right {
+              .depart-btn {
+                span {
+                  @include departmentsImg('huidikuang.png','theme1');
+                }
+                .choose-span {
+                  @include departmentsImg('hongdikuang.png','theme1');
+                  color: white;
+                }
+              }
             }
           }
         }

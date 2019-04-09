@@ -12,7 +12,8 @@
         </div>
       </div>
 
-      <house-card :house-source="house_source" :info="house_params" @close="handleCloseOverview" @open="handleOpenCardDetail"
+      <house-card :house-source="house_source" :info="house_params" @close="handleCloseOverview"
+                  @open="handleOpenCardDetail"
                   @change="handleChangePage"></house-card>
       <market-menu-list :show-market="show_market" :show-shadow="show_shadow"
                         @close="handleCloseMenu"></market-menu-list>
@@ -29,18 +30,16 @@
           <div class="base_info flex">
             <div class="house_photo">
               <div class="big_img">
-                <img src="./swipe6.jpg" alt="">
                 <div class="sijiao"></div>
+                <img :src="house_detail.house_detail && house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器" :data-src="house_detail.house_detail && house_detail.house_detail.cover">
               </div>
               <div class="small_img">
-                <div class="img_container items-center" ref="img_contain" :style="{'left': img_trams + '%'}">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
+                <div v-if="house_detail.album_photo" class="img_container items-center" ref="img_contain"
+                     :style="{'left': img_trams + '%'}">
+                  <img data-magnify="" data-caption="图片查看器" :data-src="item.uri"
+                       v-for="item in house_detail.album_photo" :src="item.uri" alt="">
                 </div>
+                <div v-else style="margin-top: 30px">暂无照片信息</div>
                 <span class="btn left_btn" @click="handleTransLeft"><i class="el-icon-arrow-left"></i></span>
                 <span class="btn right_btn" @click="handleTransRight"><i class="el-icon-arrow-right"></i></span>
               </div>
@@ -49,7 +48,7 @@
               <div class="easy_info">
                 <div class="title flex-center">
                   <div class="flex">
-                    <span class="address">{{ current_house.name || '江南雅苑1-2-3(test)'}}</span>
+                    <span class="address">{{ current_house.name }}</span>
                     <span class="mark"></span>
                   </div>
                   <div style="text-align: right">
@@ -59,22 +58,23 @@
                 </div>
                 <div class="h_type">
                   <div class="flex info">
-                    <!--<span v-for="item in h_info" :key="item.id">{{ item }}</span>-->
                     <span>{{ house_detail.hk }}</span>
                     <span>{{ house_detail.area }}</span>
                     <span>{{ house_detail.decorate }}</span>
-                    <span>{{ house_detail.house_type || '未知'}}</span>
-                    <!--<span>{{ house_detail}}</span>-->
+                    <span>{{ house_detail.property_type && house_detail.property_type.name }}</span>
+                    <span>{{ house_detail.direction && house_detail.direction.name }}</span>
+                    <span v-if="house_detail.floor">{{ house_detail.floor.this }}/{{ house_detail.floor.all }}</span>
                   </div>
                   <div class="le_text">
-                    <span>剩余时长：1年5月12天 当前空置12天 收房：2000/月</span>
+                    <span>空置{{ current_house.warning_current_days }}天 / 剩余 {{ current_house.month }}月 建议{{ current_house.suggest_price }}/月 {{ current_house.month }}月付</span>
                   </div>
                 </div>
               </div>
               <div class="deploy">
                 <h3>房屋配置</h3>
                 <div class="deploy_info flex">
-                  <span v-for="item in deploy_info" :key="item.id" class="items-column">
+                  <span v-for="item in deploy_info" :key="item.id" class="items-column"
+                        :class="{'deploy_none': parseInt(item.num) < 1}">
                     <span class="flex-center">
                       <i :class="[item.icon]"></i>
                     </span>
@@ -86,7 +86,8 @@
           </div>
           <div class="table_info">
             <div class="info_type flex-center">
-              <span v-for="item in house_type" :key="item.id">{{ item.val }}</span>
+              <span @click="handleCheckModule(item)" v-for="item in house_type" :key="item.id"
+                    :class="{'current-change': item.id === current_house_type}">{{ item.val }}</span>
             </div>
             <div class="table_list scroll_bar">
               <el-table :data="table_data" height="250">
@@ -254,91 +255,100 @@
         },
 
         img_trams: 0,
-        h_info: {
-          a: '2室1厅1卫',
-          b: '85㎡',
-          c: '精装',
-          d: '住宅',
-          e: '朝南',
-          f: '15/30'
-        },
+        //房屋配置
         deploy_info: [
           {
             id: 1,
             icon: 'kongtiao',
             txt: '空调',
-            num: 3
+            num: 3,
+            key: 'air_condition'
           },
           {
             id: 2,
             icon: 'bingxiang',
             txt: '冰箱',
-            num: 1
+            num: 1,
+            key: 'fridge'
           },
           {
             id: 3,
             icon: 'dianshi',
             txt: '电视',
-            num: 1
+            num: 1,
+            key: 'television'
           },
           {
             id: 4,
             icon: 'xiyiji',
             txt: '洗衣机',
-            num: 1
+            num: 1,
+            key: 'wash_machine'
           },
           {
             id: 5,
             icon: 'reshuiqi',
             txt: '热水器',
-            num: 1
+            num: 1,
+            key: 'water_heater'
           },
           {
             id: 6,
             icon: 'weibolu',
             txt: '微波炉',
-            num: 1
+            num: 1,
+            key: 'microwave'
           }, {
             id: 7,
             icon: 'shafa',
             txt: '沙发',
-            num: 3
+            num: 3,
+            key: 'sofa'
           }, {
             id: 8,
             icon: 'yizi',
             txt: '椅子',
-            num: 4
+            num: 4,
+            key: 'chair'
           },
           {
             id: 9,
             icon: 'yijia',
             txt: '衣架',
-            num: 2
+            num: 2,
+            key: 'clothe_rack'
           }, {
             id: 10,
             icon: 'ranqizao',
             txt: '燃气灶',
-            num: 2
-          }, {
-            id: 11,
-            icon: 'kuandai',
-            txt: '宽带',
-            num: 1
-          }, {
+            num: 2,
+            key: 'gas_stove'
+          },
+          // {
+          //   id: 11,
+          //   icon: 'kuandai',
+          //   txt: '宽带',
+          //   num: 1,
+          //   key: ''
+          // },
+          {
             id: 12,
             icon: 'nuanqi',
             txt: '暖气',
-            num: 2
+            num: 2,
+            key: 'heater'
           }, {
             id: 13,
             icon: 'canzhuo',
             txt: '餐桌',
-            num: 1
+            num: 1,
+            key: 'dining_table'
           }, {
             id: 14,
             icon: 'yigui',
             txt: '衣柜',
-            num: 1
+            num: 1,
+            key: 'wardrobe'
           }
         ],
         house_type: [
@@ -375,6 +385,11 @@
             val: '报备管理'
           },
         ],
+        current_house_type: 1,
+        table_params: {
+          page: 1,
+          limit: 15
+        },
         table_data: [
           {
             id: 1,
@@ -620,6 +635,22 @@
     watch: {},
     computed: {},
     methods: {
+      getDetailTableList(url) {
+        this.$http.get(this.market_server + url, this.table_params).then(res => {
+          console.log(res);
+        })
+      },
+      //切换列表信息
+      handleCheckModule(item) {
+        console.log(item);
+        var url = '';
+        switch (item.id) {
+          case 1:
+            url = `/v1.0/market/house/houseVillage/${this.current_house.id}`;
+            this.getDetailTableList(url);
+            break;
+        }
+      },
       handleChangePage(page) {
         this.house_params.page = page;
         this.getHouseResource();
@@ -893,29 +924,41 @@
       },
       handleOpenCardDetail(item) {
         this.current_house = item;
-        console.log(this.current_house);
-        this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
+        this.$http.get(this.market_server + `/v1.0/market/house/detail/328`).then(res => {
+          // this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
           if (res.code === 200) {
             this.house_detail = res.data;
             console.log(this.house_detail);
+            if (this.house_detail.house_goods) {
+              for (var item of this.deploy_info) {
+                item.num = this.house_detail.house_goods[item.key] ? this.house_detail.house_goods[item.key] : 0;
+              }
+            } else {
+              for (var item of this.deploy_info) {
+                item.num = 0;
+              }
+            }
+            this.handleCheckModule(this.house_type[this.current_house_type - 1]);
             this.lj_size = {
               width: 1220 + 'px',
               height: 800 + 'px'
             };
             this.lj_visible = true;
-          }else {
+          } else {
             this.house_detail = '';
           }
         });
       },
       handleTransLeft() {
-        console.log(this.$refs['img_contain']);
-        this.img_trams -= 20;
+        var keys = Object.keys(this.house_detail.album_photo);
+        var offset = (keys.length - 4) * 120 - 80;
+        if (this.$refs['img_contain'].offsetLeft > -offset) {
+          this.img_trams -= 10;
+        }
       },
       handleTransRight() {
-        console.log(this.$refs['img_contain']);
         if (this.img_trams < 0) {
-          this.img_trams += 20;
+          this.img_trams += 10;
         }
       },
       handleCloseMenu() {
@@ -1075,10 +1118,10 @@
             .info_type {
               > span {
                 color: $colorFDF;
-                &:hover {
-                  @include houseManagementImg('hongdi.png', 'theme1');
-                  color: white;
-                }
+              }
+              .current-change {
+                @include houseManagementImg('hongdi.png', 'theme1');
+                color: white;
               }
             }
             .page {
