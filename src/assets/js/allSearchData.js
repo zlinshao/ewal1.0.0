@@ -2,83 +2,45 @@
 export const staffBookSearch = {
   status: 'staffBookSearch',
   placeholder: '请输入地址',
+  keywords: 'search',
   data: [
     {
-      keyType: 'date',
-      title: '出生日期',
-      placeholder: '请选择日期',
-      keyName: 'date3',
+      keyType: 'radio',
+      title: '离职',
+      keyName: 'is_on_job',
       dataType: '',
-    },
-    {
-      keyType: 'dateRange',
-      title: '创建时间',
-      placeholder: '请选择日期',
-      keyName: 'date1',
-      dataType: [],
-    },
-    {
-      keyType: 'dateRange',
-      title: '跟进时间',
-      placeholder: '请选择日期',
-      keyName: 'date2',
-      dataType: [],
+      value: [
+        {
+          id: 0,
+          title: '否',
+        },
+        {
+          id: 1,
+          title: '是',
+        },
+      ],
     },
     {
       keyType: 'radio',
-      title: '紧急程度',
-      keyName: 'radio',
+      title: '禁用',
+      keyName: 'is_enable',
       dataType: '',
       value: [
         {
-          id: 12,
-          title: '特级',
+          id: 0,
+          title: '否'
         },
         {
-          id: 13,
-          title: '紧急',
-        },
-        {
-          id: 14,
-          title: '重要',
-        },
-        {
-          id: 15,
-          title: '一般',
+          id: 1,
+          title: '是'
         }
-      ],
-    },
-    {
-      keyType: 'check',
-      title: '状态',
-      keyName: 'check',
-      dataType: [],
-      value: [
-        {
-          id: 22,
-          title: '已完成',
-        },
-        {
-          id: 23,
-          title: '未完成',
-        },
-      ],
-    },
-    {
-      keyType: 'staff',
-      title: '员工',
-      placeholder: '请选择员工',
-      keyName: 'staff',
-      dataType: [],
-      value: {
-        num: '',
-      }
+      ]
     },
     {
       keyType: 'depart',
       title: '部门',
       placeholder: '请选择部门',
-      keyName: 'department',
+      keyName: 'org_id',
       dataType: [],
       value: {
         num: '',
@@ -89,7 +51,7 @@ export const staffBookSearch = {
       keyType: 'position',
       title: '岗位',
       placeholder: '请选择岗位',
-      keyName: 'position',
+      keyName: 'position_id',
       dataType: [],
       value: {
         num: '',
@@ -101,20 +63,44 @@ export const staffBookSearch = {
 // 离职管理
 export const LeaveJobSearch = {
   status: 'LeaveJobSearch',
+  keywords: 'search',
   data: [
     {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
+      keyType: 'radio',
+      title: '禁用',
+      keyName: 'is_enable',
       dataType: '',
+      value: [
+        {
+          id: 0,
+          title: '否'
+        },
+        {
+          id: 1,
+          title: '是'
+        }
+      ]
     },
     {
-      keyType: 'dateRange',
-      title: '离职日期',
-      placeholder: '请选择日期',
-      keyName: 'date1',
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'org_id',
       dataType: [],
+      value: {
+        num: '',
+        arr: []
+      }
+    },
+    {
+      keyType: 'position',
+      title: '岗位',
+      placeholder: '请选择岗位',
+      keyName: 'position_id',
+      dataType: [],
+      value: {
+        num: '',
+      }
     },
   ],
 };
@@ -560,4 +546,133 @@ export const recruitmentSearchList = {
       },
     ]
   },
+};
+
+//待处理项
+export const pendingSearchList = {
+    status: 'pendingSearchList',
+    keywords: 'search',
+    data:[
+        {
+            keyType: 'dateRange',
+            title: '创建时间',
+            placeholder: '请选择日期',
+            keyName: 'createTime',
+            dataType: [],
+        },
+        {
+            keyType: 'radio',
+            title: '事件类型',
+            keyName: 'event_type',
+            dataType: [],
+            value: [
+                {id: 1, title: '违约'},
+                {id: 2, title: '转租'},
+                {id: 3, title: '调租'},
+                {id: 4, title: '退租'},
+                {id: 5, title: '收房炸单'},
+                {id: 6, title: '租房炸单'},
+            ]
+
+        },
+        {
+            keyType: 'radio',
+            title: '收租类型',
+            keyName: 'collect_rent',
+            dataType: [],
+            value: [
+                {id: 1, title: '收房'},
+                {id: 2, title: '租房'},
+            ]
+
+        },
+    ]
+};
+//房东租客
+export const lordRenterSearchList = {
+    status: 'lordRenterSearchList',
+    keywords: 'search',
+    data:[
+        {
+            keyType: 'dateRange',
+            title: '创建时间',
+            placeholder: '请选择日期',
+            keyName: 'date1',
+            dataType: [],
+        },
+    ]
+};
+
+//应收款
+export const gatheringSearchList = {
+    status: 'gatheringSearchList',
+    keywords: 'search',
+    data:[
+        {
+            keyType: 'dateRange',
+            title: '应收时间',
+            placeholder: '请选择日期',
+            keyName: 'gatherDate',
+            dataType: [],
+        },
+        {
+            keyType: 'dateRange',
+            title: '催缴时间',
+            placeholder: '请选择日期',
+            keyName: 'tagDate',
+            dataType: [],
+        },
+        {
+            keyType: 'radio',
+            title: '入账状态',
+            keyName: 'status',
+            dataType: [],
+            value: [
+                {id: 1, title: '待入账'},
+                {id: 2, title: '待结清'},
+                {id: 3, title: '已结清'},
+                {id: 4, title: '已超额'},
+            ]
+
+        },
+        {
+            keyType: 'radio',
+            title: '催缴状态',
+            keyName: 'tag_status',
+            dataType: [],
+            value: [
+                {id: 1, title: '违约'},
+                {id: 2, title: '延期'},
+                {id: 3, title: '贴条'},
+                {id: 4, title: '换锁'},
+                {id: 5, title: '维修'},
+                {id: 6, title: '资金'},
+                {id: 7, title: '炸单'},
+                {id: 8, title: '调房'},
+                {id: 9, title: '特殊情况'},
+            ]
+
+        },
+        {
+            keyType: 'staff',
+            title: '员工',
+            placeholder: '请选择员工',
+            keyName: 'staff',
+            dataType: [],
+            value: {
+                num: '',
+            }
+        },
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'department',
+            dataType: [],
+            value: {
+                num: '',
+                arr: []
+            }
+        }
+    ]
 };

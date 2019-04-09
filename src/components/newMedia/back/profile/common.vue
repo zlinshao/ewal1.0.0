@@ -34,21 +34,20 @@
                 <div class="dialog_main">
                     <el-form size="mini" label-width="80px" :rules="rules">
 
-                        <el-form-item label="资料类型" prop="type">
-                            <el-select placeholder="请选择" v-model="form.type">
-                                <el-option label="视频" value=1></el-option>
-                                <el-option label="文档" value=2></el-option>
+                        <el-form-item label="资料类型" prop="type_id">
+                            <el-select placeholder="请选择" v-model="form.type_id">
+                                <el-option  v-for="(item,index) in selects" :label="item.title" :value="item.id" :key="index"></el-option>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="资料名称" prop="title">
-                            <el-input v-model="form.title"></el-input>
+                        <el-form-item label="资料名称" prop="name">
+                            <el-input v-model="form.name"></el-input>
                         </el-form-item>
 
                         <el-form-item label="查看权限" prop="permission">
                             <el-input v-model="form.permission"></el-input>
                         </el-form-item>
-                        <el-form-item label="添加附件" prop="permission">
+                        <el-form-item label="添加附件" prop="file_info">
                             <Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>
                         </el-form-item>
                     </el-form>
@@ -89,9 +88,10 @@
                 ],
                 tabView:'BackVideo',
                 form:{
-                    type:'',
-                    title:'',
-                    permission:''
+                    type_id:'',
+                    name:'',
+                    permission:'',
+                    file_info:'',
                 },
                 //上传
                 // upload_visible: false,
@@ -108,10 +108,10 @@
                     album_file: [],
                 }, //所有上传文件
                 rules:{
-                    type:[
+                    type_id:[
                         { required: true, message: '请选择类型', trigger: 'change' },
                     ],
-                    title:[
+                    name:[
                         { required: true, message: '请选择类型', trigger: 'blur' },
                     ],
                     permission:[
@@ -138,17 +138,33 @@
             handleSuccessUpload(item) {
                 if (item !== 'close') {
                     this.upload_form[item[0]] = item[1];
+                    this.form.file_info = item[1];
                 }
                 console.log(item);
             },
             //提交
             submit(){
                 console.log(this.form);
-                this.$http.post('',{
+                this.form.type_id = this.chooseTab;
+                this.$http.post(globalConfig.newMedia_sever+'/api/datum/admin',{
                     album: this.upload_form.album,
                     ...this.form
                 }).then(res => {
-
+                    this.postModule = false;
+                    if (res.status === 200) {
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        console.log(this.postModule)
+                    } else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
                 })
             },
         }

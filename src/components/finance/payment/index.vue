@@ -32,7 +32,7 @@
 
                 <el-table-column label="状态" prop="" align="center">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.status === 1 ? '待入账' : '已入账'}}</span>
+                        <span>{{ scope.row.status === 1 ? '待入账' :scope.row.status === 2? '待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" prop="" align="center" width="550">
@@ -118,7 +118,7 @@
                                     <span>科目</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="formData.subject_val"
+                                    <el-input placeholder="请输入" v-model="subject_val"
                                               @focus="handleOpenSubject('subject_deposit')"></el-input>
                                 </div>
                             </div>
@@ -186,6 +186,7 @@
                                 </div>
                                 <div class="item_content">
                                     <el-date-picker
+                                            value-format="yyyy-MM-dd"
                                             v-model="formData.pay_date" type="date">
                                     </el-date-picker>
                                 </div>
@@ -194,7 +195,7 @@
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="handleOkPayDate(current_row,formData.pay_date)">确定
+                    <el-button type="danger" size="small" @click="handleOkPayDate(current_row)">确定
                     </el-button>
                     <el-button type="info" size="small" @click="payData_visible = false;current_row = ''">取消</el-button>
                 </div>
@@ -507,7 +508,7 @@
             </div>
         </lj-dialog>
         <!--科目-->
-        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"></lj-subject>
+        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject" style="z-index: 1000"></lj-subject>
         <!--客户列表-->
         <lj-dialog :visible="customer_visible" :size="{width: 900 + 'px',height: 720 + 'px'}"
                    @close="customer_visible = false">
@@ -646,9 +647,9 @@
                     "customer.contact": "手机号",
                     "description.description": "明细详情",
                     "remark": "备注",
-                    "customer.salary_leader_name": "负责人",
+                    "leader.name": "负责人",
                     "staff.name": "开单人",
-                    "customer.salary_department_name": "部门"
+                    "org.name": "部门"
                 },
                 count: 0,
                 ruleForm: {
@@ -664,7 +665,7 @@
                     subject_id: '',
 
                 },
-
+                subject_val:'',
                 formData: {
                     amount_payable: '',
                     tag: '',
@@ -771,10 +772,27 @@
         },
         mounted() {
             this.getPaymentList();
+
         },
         activated() {
         },
-        watch: {},
+        watch: {
+            formData:{
+                handler(val){
+
+                },
+                deep:true
+            },
+            subject_val:{
+                handler(val){
+
+                },
+                deep:true
+            }
+
+
+
+        },
         created() {
         },
         computed: {},
@@ -839,6 +857,9 @@
 
                     this.formData.subject_id = val.id;
                     this.formData.subject_val = val.title;
+                    this.subject_val = val.title;
+
+                    alert(this.subject_val);
 
                     this.ruleForm.subject_id = val.id;
                 }
@@ -856,6 +877,7 @@
             },
             //修改补齐时间
             handleOkCompleteData(row, val) {
+
                 this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: val}).then(res => {
                     this.callbackSuccess(res);
                     this.complete_visible = false;
@@ -865,8 +887,9 @@
                 })
             },
             //修改付款时间
-            handleOkPayDate(row, val) {
-                this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: val}).then(res => {
+            handleOkPayDate(row) {
+                // console.log(this.formData.pay_date);
+                this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: this.formData.pay_date}).then(res => {
                     this.callbackSuccess(res);
                     this.payData_visible = false;
                     this.current_row = '';
@@ -1021,6 +1044,7 @@
                     this.show_subject = true;
                     this.formData.subject_val = this.current_row.subject.title;
                     this.formData.subject_id = this.current_row.subject_id;
+                    this.subject_val = this.current_row.subject.title;
                 }
                 if (key === "transfer_visible") {
                     this.transfer_visible = true;
@@ -1038,7 +1062,12 @@
               this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(res => {
                 if (res.code === 200) {
                   this.showLoading(false);
-                  this.tableLists = res.data.data;
+                  // this.tableLists = res.data.data;
+                    this.tableLists = res.data.data.sort(
+                        function (a,b) {
+                            return a.id-b.id
+                        }
+                    );
                   this.count = res.data.count;
                 } else {
                   this.tableLists = [];

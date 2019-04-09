@@ -1,87 +1,90 @@
 <template>
+  <!--<div :class="{'disabled':disabled}" id="lj_upload">-->
   <div id="lj_upload">
     <div class="upload-container">
       <span v-if="title" class="upload-title">{{title}}</span>
-      <upload :file="photoData" @success="handleSuccess"></upload>
+      <upload :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
     </div>
   </div>
 </template>
 
 <script>
-  import Upload from '../upload';
+  import Upload from './upload';
+
   export default {
     name: "lj-upload",
-    props: ['title','value','size'],
+    //props: ['title', 'value', 'size', 'data', 'disabled'],
+    props: {
+      title:{},
+      value:{},
+      size:{},
+      data:{},
+      disabled:{
+        default:false,
+      },
+    },
     components: {
       Upload
     },
     watch: {
+      data: {
+        handler(val, oldVal) {
+          if (val) {
+            this.photoData.setFile = val;
+          }
+        },
+        immediate: true,
+      },
+
       value: {
-        handler(val,oldVal) {
-          //debugger
-          //this.getPhotoInfoList(val);
-          //console.log(val);
+        handler(val, oldVal) {
+          if (val && !oldVal && this.count == 0) {
+            this.count++;
+            this.getPhotoInfoList(val);
+          }
         },
         immediate: true
       },
       size: {
-        handler(val,oldVal) {
-          if(val) {
-            this.photoData.size.width = val+'px';
-            this.photoData.size.height = val+'px';
+        handler(val, oldVal) {
+          if (val) {
+            this.photoData.size.width = val + 'px';
+            this.photoData.size.height = val + 'px';
           }
-
         },
         immediate: true
       },
-      /*width: {
-        handler(val,oldVal) {
-          this.photoData.size.width = `${val}px`;
-          this.photoData.size.height = `${val}px`;
-        },
-        immediate: true
-      },
-      height: {
-        handler(val,oldVal) {
-          this.photoData.size.width = `${val}px`;
-          this.photoData.size.height = `${val}px`;
-        },
-        immediate: true
-      },*/
     },
     data() {
       return {
-        url:globalConfig.humanResource_server,
+        url: globalConfig.humanResource_server,
         photoData: {
           keyName: Date.now(),
           setFile: [],
           size: {
             width: '60px',
             height: '60px'
-          }
+          },
+          count: 0,
         }
       }
     },
     mounted() {
-      if(this.value) {
+      if (this.value && this.value.length > 0) {
         this.getPhotoInfoList(this.value);
       }
-
     },
     methods: {
       handleSuccess(val) {
-        //debugger
-        if(val[2]) {
-          this.$emit('input',val[1]);
+        if (val[2]) {
+          this.$emit('input', val[1]);
         }
-        //console.log(val);
       },
 
       getPhotoInfoList(val) {
-        let params = {"id":val};
-        this.$http.post(`${this.url}public/pic`,params).then(res=> {
-          //debugger
-          if(res.code.endsWith('0')) {
+        let params = {"id": val};
+        this.$http.post(`${this.url}public/pic`, params).then(res => {
+          if (res.code.endsWith('0')) {
             this.photoData.setFile = res.data;
           }
         }).catch();
@@ -91,6 +94,10 @@
 </script>
 
 <style scoped lang="scss">
+  .disabled {
+    pointer-events: none;
+  }
+
   #lj_upload {
     .upload-container {
       display: flex;

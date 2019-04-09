@@ -58,9 +58,9 @@ axios.interceptors.response.use(response => {
 });
 
 class Axios {
-  static get(url, params = {}) {
+  static get(url, params = {},responseType = '') {
     return new Promise((resolve, reject) => {
-      axios.get(url, {params: params}).then(response => {
+      axios.get(url, {params: params,responseType}).then(response => {
         resolve(response.data);
       }).catch(err => {
         reject(err);

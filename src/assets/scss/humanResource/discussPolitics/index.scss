@@ -1,5 +1,12 @@
 @import "../../common.scss";
 
+//common css
+
+.gray {
+  color: #919191 !important;
+  //font-family: MicrosoftYaHeiLight !important;
+}
+
 #theme_name {
   #discussPolitics {
     height: 100%;
@@ -13,7 +20,6 @@
     }
 
     .discuss-politics-container {
-      //background-color: red;
       height: calc(100% - 80px);
 
       .calendar-container {
@@ -83,20 +89,48 @@
                   height: 100%;
 
                   &:hover {
-                    .calendar-day-item-container-date {
+                    .calendar-day-item-container-date:not(.current) {
                       background-color: $colorE33;
-                      color: $colorFFF;
+                      color: $colorFFF !important;
 
                       &.current {
-
                         color: #fff;
                         background-color: $colorE33 !important;
-
                       }
                     }
                   }
 
-                  .calendar-day-item-container-date {
+                  .calendar-day-item-container-tip {
+                    position: absolute;
+                    top: 8px;
+                    left: 5px;
+                    .calendar-day-item-container-date {
+                      //position: absolute;
+                      cursor: default;
+                      //top: 10px;
+                      //left: 4px;
+                      width: 24px;
+                      height: 24px;
+                      font-size: 14px;
+                      @include flex('flex-center');
+                      //padding: 6px;
+                      color: $color000;
+                      border-radius: 50%;
+
+                      &.gray {
+                        color: #DCDCDC;
+                      }
+
+                      &.current {
+                        font-size: 20px;
+                        font-weight: 700;
+                        color: $colorE33;
+                        background-color: #fff !important;
+                      }
+                    }
+                  }
+
+                  /*.calendar-day-item-container-date {
                     position: absolute;
                     cursor: default;
                     top: 10px;
@@ -147,7 +181,7 @@
                         //transform: rotateZ(45deg);
                       }
                     }
-                  }
+                  }*/
 
                   .calendar-day-item-container-content {
                     height: 65px;
@@ -219,9 +253,9 @@
 
               .timeline-item-container-content-item {
                 position: relative;
-                margin: 5px;
+                margin: 8px 5px;
                 font-size: 14px;
-                font-weight: 700;
+                //font-weight: 700;
                 color: #464646;
                 font-family: MicrosoftYaHei;
                 //padding: 3px 5px;
@@ -230,8 +264,27 @@
                 overflow: hidden;
                 cursor: default;
                 border-radius: 6px;
+                height: 20px;
+                line-height: 20px;
 
-                span.icons-delete {
+                &.cancel-status {
+                  color: #919191;
+                  font-family: "Microsoft YaHei Light";
+                  //font-weight: 400;
+                }
+
+                .icon-list {
+                  position: absolute;
+                  right: 0;
+                  display: inline-flex;
+                  justify-content: flex-end;
+                  align-items: center;
+
+                  span {
+                    margin-right: 10px;
+                  }
+                }
+                /*span.icon-delete {
                   display: inline-block;
                   width: 20px;
                   height: 20px;
@@ -239,7 +292,7 @@
                   //background-color: red;
                   position: absolute;
                   right: 0;
-                }
+                }*/
 
                 //background-color: #cccccc;
 
@@ -262,9 +315,28 @@
       }
     }
 
+    .meeting-detail-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .hr {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        hr {
+          width: 90%;
+          background-color: #E5E5E5;
+          height: 2px;
+          border: none;
+        }
+      }
+    }
 
     .dialog_container {
-      .icons-upload {
+      .icon-upload {
         width: 40px;
         height: 40px;
         cursor: pointer;
@@ -272,14 +344,22 @@
         top: -10px;
       }
 
-      .weekly_form_container {
+      .comment-container {
+        margin-top: 15px;
+        width: 100%;
+        @include flex('flex-center');
+        //height: 100px;
+        flex-direction: column;
+      }
+
+      .meeting_detail_form_container {
         font-size: 14px;
         width: calc(100% - 40px);
         height: 100%;
 
         .form-item {
           width: 100%;
-          padding: 10px 0;
+          padding: 12px 0;
           vertical-align: center;
 
           .form-item-title {
@@ -291,6 +371,7 @@
             position: relative;
             text-align: left;
             font-weight: 700;
+            letter-spacing: 2px;
 
             .form-item-content-span-red {
               color: #D1373C;
@@ -298,12 +379,12 @@
 
             .form-item-content-span-input {
               display: inline-block;
-              height: 19px;
+              height: 30px;
+              line-height: 30px;
               width: 40px;
               background-color: #fff;
               text-align: center;
             }
-
 
           }
         }
@@ -333,15 +414,15 @@
 
       }
 
-      .add-meeting-container {
+      /*.add-meeting-container {
         .span-input {
           display: inline-block;
-          height: 19px;
+          height: 34px;
           width: 40px;
           background-color: #fff;
           text-align: center;
         }
-      }
+      }*/
 
       .add-meeting-room-container, .add-meeting-type-container {
         .right-tip {
@@ -355,7 +436,7 @@
 
       .view-meeting-room-container, .view-meeting-type-container {
 
-        span.icons-delete-red {
+        span.icon-delete-red {
           display: inline-block;
           width: 20px;
           height: 20px;

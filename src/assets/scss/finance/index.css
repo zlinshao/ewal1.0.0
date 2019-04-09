@@ -171,11 +171,11 @@
       height: 410px; }
       #theme_name #finance .mainList .abacusDown p {
         width: 60px;
-        height: 160px;
+        height: 200px;
         padding-top: 30px; }
         #theme_name #finance .mainList .abacusDown p span {
           font-family: 'jingDianXingShu';
-          letter-spacing: 20px;
+          letter-spacing: 10px;
           font-size: 30px; }
     #theme_name #finance .mainList:hover > div p {
       color: #FFFFFF; }

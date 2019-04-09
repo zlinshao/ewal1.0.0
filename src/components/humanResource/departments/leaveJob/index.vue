@@ -13,31 +13,43 @@
         <el-table-column label="岗位" prop="position" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.position && scope.row.position.length > 0">
-              <span v-for="item in scope.row.position">{{ item.name }}</span>
+              <span v-for="(item,idx) in scope.row.position">{{ item.name }}<a v-if="idx !== scope.row.position.length - 1">;</a></span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="入职时间" prop="staff.enroll" align="center"></el-table-column>
-        <el-table-column label="离职时间" prop="staff.enroll" align="center"></el-table-column>
-        <el-table-column label="离职操作时间" prop="staff.enroll" align="center"></el-table-column>
+        <el-table-column label="离职时间" prop="staff.dismiss_time" align="center"></el-table-column>
+        <el-table-column label="离职操作时间" prop="staff.is_on_job" align="center"></el-table-column>
+        <el-table-column label="禁用操作时间" prop="staff.is_enable" align="center"></el-table-column>
         <el-table-column label="联系方式" prop="phone" align="center"></el-table-column>
-        <el-table-column label="离职类型" prop="dismiss_time.entry_type" align="center"></el-table-column>
-        <el-table-column label="离职备注" prop="dismiss_time.entry_mess" align="center"></el-table-column>
+        <el-table-column label="离职类型" prop="staff.dismiss_reason.dismiss_type" align="center"></el-table-column>
+        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" align="center"></el-table-column>
         <el-table-column label="离职交接单" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleLooResignation(scope.row,'resignation_form')">查看</el-button>
+            <el-button type="text" @click="handleLookResignation(scope.row)">查看</el-button>
           </template>
         </el-table-column>
-        <!--<el-table-column label="合同" align="center">-->
-          <!--<template slot-scope="scope">-->
-            <!--<el-button type="text">查看</el-button>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-        <!--<el-table-column label="离职短信" align="center">-->
-          <!--<template slot-scope="scope">-->
-            <!--<el-button type="text">查看</el-button>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
+        <el-table-column label="离职短信" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="handleControlMsg(scope.row,'sms')">
+              {{ scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1 ? '已发送' : '发送'}}
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="离职群消息" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="handleControlMsg(scope.row,'notice')">
+              {{ scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1 ? '已发送' : '发送'}}
+            </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="离职证明" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" @click="handleLeaveProof(scope.row)">
+              {{ scope.row.staff && scope.row.staff.leave_proof_number ? '查看' : '发送'}}
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -81,7 +93,7 @@
   export default {
     name: "index",
     components: { LjDialog },
-    props: ['exportInfo'],
+    props: ['searchVal'],
     data() {
       return {
         checkList: [],
@@ -95,11 +107,10 @@
           org_id: '',
           position_id: '',
           is_on_job: 1,
-          export: 0
         },
 
         look_info: [],
-        look_info_visible: false
+        look_info_visible: false,
       }
     },
     mounted() {
@@ -108,30 +119,68 @@
     activated() {
     },
     watch: {
-      exportInfo(val) {
-        console.log(val);
-        if (val === 4) {
-          this.params.export = 1;
+      searchVal: {
+        handler(val) {
+          this.params = Object.assign({},this.params,val);
           this.getStaffList();
-        }
+        },
+        deep: true
       },
     },
     computed: {},
     methods: {
+      handleLeaveProof(row) {
+        if (row.staff && row.staff.leave_proof_number) {
+          window.open(globalConfig.server + `staff/e_contract/show/${row.staff.leave_proof_number}`);
+        } else {
+          this.$http.get(`staff/user/${row.id}/sendinfo`,{
+            type: ['leave_proof_send']
+          }).then(res => {
+            if (res.code === '20000') {
+              this.$LjNotify('dimission_sms',{
+                title: '成功',
+                message: res.msg
+              });
+              this.getStaffList();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
+          })
+        }
+      },
+      //离职短信
+      handleControlMsg(row,where) {
+        var type = where === 'sms' ? ['dimission_sms'] : ['dimission_group'];
+        if (row.staff && row.staff.send_info && wor.staff.send_info.forward_group === 1) {
+          return false;
+        } else {
+          this.$http.get(`staff/user/${row.id}/sendinfo`,{
+            type
+          }).then(res => {
+            if (res.code === '20000') {
+              this.$LjNotify('dimission_sms',{
+                title: '成功',
+                message: res.msg
+              });
+              this.getStaffList();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
+          })
+        }
+      },
       handleCloseLookInfo() {
         this.look_info = [];
         this.look_info_visible = false;
       },
-      handleLooResignation(row,type) {
-        if (row.staff && row.staff[type]) {
-          this.look_info = row.staff[type] || [];
-          this.look_info_visible = true;
-        } else {
-          this.$LjNotify('warning',{
-            title: '提示',
-            message: '暂无该信息'
-          })
-        }
+      handleLookResignation(row) {
+        console.log(row);
       },
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {

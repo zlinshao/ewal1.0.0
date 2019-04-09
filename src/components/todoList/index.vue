@@ -4,9 +4,9 @@
       <div class="pendant-container">
         <div class="pendant">
           <div class="horizontal"></div>
-          <div class="todo-list-title">待办事项</div>
+          <div class="todo-list-title" @click="demo">待办事项</div>
           <div class="item-list">
-            <div class="item-detail" @click="checked=(index+1)" :class="{'checked':checked==(index+1)}"
+            <div @click="getCurrentList(item,index)" class="item-detail" :class="{'checked':checked==(index+1)}"
                  v-for="(item,index) in todo_list_toolbar">
               <span v-if="item.tipCount">{{item.tipCount}}</span>
               <i :class="{'multi-font':item.content.length>3}">{{item.content}}</i>
@@ -20,10 +20,10 @@
         </div>
       </div>
       <div class="todo-list-container">
-        <!--渲染todo_list数据   可优化//todo-->
+        <!--渲染todo_list数据-->
         <div :class="{'todo-list-container-top':listIndex==0,'todo-list-container-bottom':listIndex==1}"
              v-for="(listItem,listIndex) in todo_list_container_arr">
-          <div v-for="(item,index) in todo_list_container_arr[listIndex]" @click="container_checked = (item.id);todoListVisibleTrigger(item.onClick)"
+          <div v-for="(item,index) in todo_list_container_arr[listIndex]" @click="container_checked = (item.id);todoListVisibleTrigger(item)"
                class="todo-list-item">
             <div class="todo-list-item-title">{{item.title}}</div>
             <div v-for="(value,key) in item" v-if="!(key=='id'||key=='title'||key=='onClick')"
@@ -48,7 +48,10 @@
         </div>
       </footer>
 
+      <!--面试相关-->
       <interview-dialog></interview-dialog>
+      <!--内务库房相关-->
+      <repository-dialog></repository-dialog>
     </div>
   </div>
 
@@ -56,11 +59,13 @@
 
 <script>
   import interviewDialog from './components/humanResource/interviewDialog';
+  import repositoryDialog from './components/humanResource/repositoryDialog';
 
   export default {
     name: "index",
     components: {
-      interviewDialog
+      interviewDialog,
+      repositoryDialog,
     },
     computed: {
       todo_list_visible() {
@@ -71,7 +76,10 @@
       },
       todo_list_container() {
         return this.$store.state.todo.todo_list_container;
-      }
+      },
+      todo_list_current_selection() {
+        return this.$store.state.todo.todo_list_current_selection;
+      },
     },
     watch: {
       todo_list_container: {
@@ -91,8 +99,6 @@
           search: '',
           page: 1,
           limit: 30,
-          org_id: '',
-          position_id: '',
         },
 
 
@@ -103,6 +109,21 @@
       }
     },
     methods: {
+
+      demo() {
+        console.log(this.todo_list_current_selection);
+        debugger
+      },
+
+
+
+      //获取当前选择框下的数据
+      getCurrentList(item,index) {
+        this.checked=(index+1);
+        console.log(item);
+        //debugger
+      },
+
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },

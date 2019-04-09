@@ -33,7 +33,7 @@
                 },
                 {
                   title: '客户管理',
-                  url: '',
+                  url: '/customerManagement',
                   id: 2
                 },
                 {

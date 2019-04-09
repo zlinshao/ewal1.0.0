@@ -135,6 +135,10 @@ export const finance = {
       url: 'budgetStream',
       title: '流水',
     },
+      {
+          url: 'pending',
+          title: '待处理项',
+      },
   ]
 };
 

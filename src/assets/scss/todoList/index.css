@@ -276,6 +276,8 @@
     justify-content: center;
     margin: 0 50px;
     flex-wrap: wrap; }
+    #todo_list .todo-list-container .todo-list-container-top {
+      margin-bottom: 20px; }
     #todo_list .todo-list-container .todo-list-container-top, #todo_list .todo-list-container .todo-list-container-bottom {
       display: flex;
       display: -webkit-flex;

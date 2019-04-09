@@ -65,8 +65,9 @@ export default {
     }
     //全局触发待办事项对话框显示隐藏
     Vue.prototype.todoListVisibleTrigger = function (val) {
-      if (val) {
-        this.$store.dispatch('change_' + val + '_visible');
+      if (val && val.onClick) {
+        this.$store.dispatch('save_todo_list_current_selection',val);
+        this.$store.dispatch('change_' + val.onClick + '_visible');
       }
     }
     //中央事件总线

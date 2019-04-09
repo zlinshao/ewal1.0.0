@@ -12,9 +12,9 @@
                             <div class="video-modal"  v-if="seen&&index===current"></div>
                         </div>
                         <div class="video-box-bottom">
-                            <div class="title">{{item.title}}</div>
+                            <div class="title">{{item.name}}</div>
                             <div class="flex-center justify-bet">
-                                <span class="time">{{item.time}}</span>
+                                <span class="time">{{item.created_at}}</span>
                                 <span class="btn">
                                     <i @click="edit(item.id,index)"></i>
                                     <i @click="del(item.id,index)"></i>
@@ -53,21 +53,20 @@
                 <div class="dialog_main">
                     <el-form size="mini" label-width="80px" :rules="rules">
 
-                        <el-form-item label="资料类型" prop="type">
-                            <el-select placeholder="请选择" v-model="form.type">
-                                <el-option label="视频" value=1></el-option>
-                                <el-option label="文档" value=2></el-option>
+                        <el-form-item label="资料类型" prop="type_id">
+                            <el-select placeholder="请选择" v-model="form.type_id">
+                                <el-option  v-for="(item,index) in selects" :label="item.title" :value="item.id" :key="index"></el-option>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="资料名称" prop="title">
-                            <el-input v-model="form.title"></el-input>
+                        <el-form-item label="资料名称" prop="name">
+                            <el-input v-model="form.name"></el-input>
                         </el-form-item>
 
                         <el-form-item label="查看权限" prop="permission">
                             <el-input v-model="form.permission"></el-input>
                         </el-form-item>
-                        <el-form-item label="添加附件" prop="permission">
+                        <el-form-item label="添加附件" prop="file_info">
                             <Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>
                         </el-form-item>
                     </el-form>
@@ -114,50 +113,14 @@
                     limit: 8,
                     department_ids: '',
                     export: '',
+                    type_id:1,
                 },
-                dataLists:[//视频列表
-                    {
-                        id:1,
-                        title:'乐伽大学培训视频',
-                        time:'2019.01.12 13:14',
-                        type:1,
-                        permission:11,
-                    },
-                    {
-                        id:2,
-                        title:'乐伽大学培训视频',
-                        time:'2019.01.12 13:14',
-                        type:1,
-                        permission:11,
-                    },
-                    {
-                        id:3,
-                        title:'乐伽大学培训视频',
-                        time:'2019.01.12 13:14',
-                        type:1,
-                        permission:11,
-                    },
-                    {
-                        id:4,
-                        title:'乐伽大学培训视频',
-                        time:'2019.01.12 13:14',
-                        type:1,
-                        permission:11,
-                    },
-                    {
-                        id:5,
-                        video:'',
-                        title:'乐伽大学培训视频',
-                        time:'2019.01.12 13:14',
-                        type:1,
-                        permission:11,
-                    },
-
-                ],
+                dataLists:[],
                 form:{
-                    type:'',
-                    title:'',
-                    permission:''
+                    type_id:'',
+                    name:'',
+                    permission:'',
+                    file_info:'',
                 },
                 //上传
                 // upload_visible: false,
@@ -206,11 +169,28 @@
                 this.seen = false; //鼠标移出隐藏
                 this.current = null;
             },
+            callbackSuccess(res){
+                if (res.status === 200) {
+                    this.$LjNotify('success', {
+                        title: '成功',
+                        message: res.msg,
+                        subMessage: '',
+                    });
+                    this.getDataLists();
+                } else {
+                    this.$LjNotify('error', {
+                        title: '失败',
+                        message: res.msg,
+                        subMessage: '',
+                    });
+                }
+            },
             //获取列表
             getDataLists(){
-                this.$http.get('', this.params).then(res => {
-                    if (res.code === 200) {
+                this.$http.get(globalConfig.newMedia_sever+'/api/datum/admin', this.params).then(res => {
+                    if (res.status === 200) {
                         this.dataLists  = res.data.data;
+                        console.log(this.dataLists)
                     }
                 })
             },
@@ -228,26 +208,33 @@
                 this.delete_visible = true;
                 this.current_id = id;
             },
-            //提交
+            //编辑提交
             submit(){
                 console.log(this.form);
-                this.$http.post('',{
+                console.log(this.current_id);
+                this.$http.put(globalConfig.newMedia_sever+'/api/datum/admin/'+this.current_id,{
                     album: this.upload_form.album,
                     ...this.form
                 }).then(res => {
-
+                    this.callbackSuccess(res);
+                    this.edit_visible = false;
                 })
             },
             //确认删除
             delOk(){
-
+                // alert(this.current_id);
+                this.$http.get(globalConfig.newMedia_sever+'/api/datum/admin/'+this.current_id).then(res => {
+                    this.callbackSuccess(res);
+                    this.delete_visible = false;
+                })
             },
 
 
             //上传回调
             handleSuccessUpload(item) {
                 if (item !== 'close') {
-                    this.upload_form[item[0]] = item[1];
+                    // this.upload_form[item[0]] = item[1];
+                    this.form.file_info = item[1];
                 }
                 console.log(item);
             },

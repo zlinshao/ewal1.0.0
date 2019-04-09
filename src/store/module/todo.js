@@ -2,11 +2,11 @@ const todo = {
   state: {
     todo_list_visible: false,//待办事项显示/隐藏
     todo_list_toolbar: [
-      {
+      /*{
         id: 1,
         content: '全部',
         tipCount: '13',
-      },
+      },*/
       {
         id: 2,
         content: '面试',
@@ -15,7 +15,7 @@ const todo = {
       {
         id: 3,
         content: '入职资料',
-        tipCount: '3',
+        tipCount: '12',
       },
       {
         id: 4,
@@ -35,7 +35,7 @@ const todo = {
       {
         id: 7,
         content: '物品领取',
-        tipCount: '13',
+        tipCount: '3',
       },
       {
         id: 8,
@@ -114,16 +114,18 @@ const todo = {
         project: '研发中心会议',
       },
       {
-        id: 10,
-        title: '文职入职培训',
+        id: 1,
+        title: '领取通知',
+        date: '2019-03-22',
         user: '张无忌',
-        location: '艺术家工厂',
-        tip: '距离考试20分钟',
-        money: '扣款200元',
-        project: '研发中心会议',
+        location: '财务部领取',
+        project: '借用审批编号10086',
+        onClick:'humanResource_repository',//click事件控制lj-dialog显示隐藏
       },
 
     ],
+
+    todo_list_current_selection:{},
 
     /*
     * dialog 控制
@@ -132,7 +134,7 @@ const todo = {
     //人力资源中心 待办模块
     humanResource_interview_visible: false,//面试界面显示隐藏
     humanResource_interview_evaluate_visible: false,//面试评价界面显示隐藏
-    humanResource_repository_visible: false,//内务库房
+    humanResource_repository_visible: false,//内务库房页面显示隐藏
 
 
   },
@@ -145,6 +147,11 @@ const todo = {
       state.todo_list_visible = !state.todo_list_visible;
     },
 
+    //保存待办事项当前选择项
+    SAVE_TODO_LIST_CURRENT_SELECTION(state,status) {
+      state.todo_list_current_selection = status;
+    },
+
     /*人力资源中心 待办模块*/
     //切换面试待办事项
     CHANGE_HUMANRESOURCE_INTERVIEW_VISIBLE(state) {
@@ -154,6 +161,10 @@ const todo = {
     CHANGE_HUMANRESOURCE_INTERVIEW_EVALUATE_VISIBLE(state) {
       state.humanResource_interview_evaluate_visible = !state.humanResource_interview_evaluate_visible;
     },
+    //切换内务库房待办
+    CHANGE_HUMANRESOURCE_REPOSITORY_VISIBLE(state) {
+      state.humanResource_repository_visible = !state.humanResource_repository_visible;
+    },
   },
   // 执行函数
   actions: {
@@ -161,6 +172,12 @@ const todo = {
     change_todo_list_visible({commit}, status) {
       commit('CHANGE_TODO_LIST_VISIBLE', status);
     },
+
+    //保存待办事项当前选择项
+    save_todo_list_current_selection({commit},status) {
+      commit('SAVE_TODO_LIST_CURRENT_SELECTION',status);
+    },
+
     /*人力资源中心 待办模块*/
     //改变面试待办事项显示隐藏
     change_humanResource_interview_visible({commit},status) {
@@ -169,6 +186,10 @@ const todo = {
     //改变面试评价事项显示隐藏
     change_humanResource_interview_evaluate_visible({commit},status) {
       commit('CHANGE_HUMANRESOURCE_INTERVIEW_EVALUATE_VISIBLE',status);
+    },
+    //改变内务库房待办显示隐藏
+    change_humanResource_repository_visible({commit},status) {
+      commit('CHANGE_HUMANRESOURCE_REPOSITORY_VISIBLE',status);
     },
   }
 };

@@ -16,9 +16,14 @@ import 'echarts/theme/macarons.js'
 import './assets/scss/rest.css'
 import './assets/scss/element.css'
 import './assets/scss/currency.css'
-// import './assets/magnify/jquery.magnify.css';
-// import './assets/magnify/jquery.magnify.js';
+import './assets/magnify/jquery.magnify.css';
+import './assets/magnify/jquery.magnify.js';
 import Confirm from '@/components/common/lightweightComponents/confirm/index.js';
+
+import '../static/UE/ueditor.config.js'
+import '../static/UE/ueditor.all.min.js'
+import '../static/UE/lang/zh-cn/zh-cn.js'
+import '../static/UE/ueditor.parse.min.js'
 
 
 

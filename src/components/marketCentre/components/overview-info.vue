@@ -32,7 +32,7 @@
 <script>
   export default {
     props: ['overviewVisible'],
-    name: "",
+    name: "index",
     data() {
       return {
         market_server: globalConfig.market_server,
@@ -64,7 +64,6 @@
       //获取房屋信息
       getHouseInfo() {
         this.$http.get(this.market_server + 'v1.0/market/house/houseAnalysis').then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.left_info = res.data.num;
             this.notice_info = res.data.warning;
