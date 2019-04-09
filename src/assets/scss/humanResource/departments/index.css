@@ -134,73 +134,208 @@
 
 #theme_name #departments {
   height: 100%;
-  background-color: #FFFFFF; }
-  #theme_name #departments .departList .mainList {
-    margin: 100px 200px 0; }
-    #theme_name #departments .departList .mainList p {
-      height: 480px;
-      width: 100%;
-      max-width: 150px;
-      margin: 0 30px;
-      padding: 90px 0 60px;
-      text-align: center;
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
-      border-radius: 4px;
-      transform: rotateY(-180deg);
-      transition: transform 1s;
-      -webkit-backface-visibility: hidden;
-      -moz-backface-visibility: hidden;
-      -ms-backface-visibility: hidden;
-      backface-visibility: hidden; }
-      #theme_name #departments .departList .mainList p:hover {
-        cursor: pointer;
-        color: #CF2E33; }
-        #theme_name #departments .departList .mainList p:hover a.control {
-          display: inline-block; }
-      #theme_name #departments .departList .mainList p span {
-        display: inline-block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-height: 380px;
-        font-family: 'jingDianXingShu';
-        font-size: 30px;
-        white-space: nowrap; }
-      #theme_name #departments .departList .mainList p a.control {
+  background-color: #FFFFFF;
+  overflow: hidden;
+  position: relative; }
+  #theme_name #departments .departList {
+    width: 100%; }
+    #theme_name #departments .departList .mainList {
+      margin: 100px 200px 0; }
+      #theme_name #departments .departList .mainList p {
+        height: 480px;
         width: 100%;
-        height: 50px;
-        position: absolute;
-        bottom: -50px;
-        left: 0;
-        display: none;
-        justify-content: space-between; }
-        #theme_name #departments .departList .mainList p a.control i {
-          color: #999999; }
-          #theme_name #departments .departList .mainList p a.control i:hover {
-            color: #CF2E33; }
-    #theme_name #departments .departList .mainList p:nth-child(1) {
-      transition-delay: 0.1428571429s;
-      -webkit-transition-delay: 0.1428571429s; }
-    #theme_name #departments .departList .mainList p:nth-child(2) {
-      transition-delay: 0.2857142857s;
-      -webkit-transition-delay: 0.2857142857s; }
-    #theme_name #departments .departList .mainList p:nth-child(3) {
-      transition-delay: 0.4285714286s;
-      -webkit-transition-delay: 0.4285714286s; }
-    #theme_name #departments .departList .mainList p:nth-child(4) {
-      transition-delay: 0.5714285714s;
-      -webkit-transition-delay: 0.5714285714s; }
-    #theme_name #departments .departList .mainList p:nth-child(5) {
-      transition-delay: 0.7142857143s;
-      -webkit-transition-delay: 0.7142857143s; }
-    #theme_name #departments .departList .mainList p:nth-child(6) {
-      transition-delay: 0.8571428571s;
-      -webkit-transition-delay: 0.8571428571s; }
-    #theme_name #departments .departList .mainList p:nth-child(7) {
-      transition-delay: 1s;
-      -webkit-transition-delay: 1s; }
-  #theme_name #departments .departList .mainListHover p {
-    transform: rotateY(0); }
+        max-width: 150px;
+        margin: 0 30px;
+        padding: 90px 0 60px;
+        text-align: center;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        transform: rotateY(-180deg);
+        transition: transform 1s;
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -ms-backface-visibility: hidden;
+        backface-visibility: hidden; }
+        #theme_name #departments .departList .mainList p:hover {
+          cursor: pointer;
+          color: #CF2E33; }
+          #theme_name #departments .departList .mainList p:hover a.control {
+            display: inline-block; }
+        #theme_name #departments .departList .mainList p span {
+          display: inline-block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-height: 380px;
+          font-family: 'jingDianXingShu';
+          font-size: 30px;
+          white-space: nowrap; }
+        #theme_name #departments .departList .mainList p a.control {
+          width: 100%;
+          height: 50px;
+          position: absolute;
+          bottom: -50px;
+          left: 0;
+          display: none;
+          justify-content: space-between; }
+          #theme_name #departments .departList .mainList p a.control a.pointer {
+            font-size: 34px; }
+          #theme_name #departments .departList .mainList p a.control b {
+            display: none; }
+          #theme_name #departments .departList .mainList p a.control:hover b {
+            color: #999999;
+            margin-top: 25px;
+            display: inline-block; }
+            #theme_name #departments .departList .mainList p a.control:hover b:hover {
+              color: #CF2E33; }
+          #theme_name #departments .departList .mainList p a.control:hover a.pointer {
+            display: none; }
+      #theme_name #departments .departList .mainList p:nth-child(1) {
+        transition-delay: 0.1428571429s;
+        -webkit-transition-delay: 0.1428571429s; }
+      #theme_name #departments .departList .mainList p:nth-child(2) {
+        transition-delay: 0.2857142857s;
+        -webkit-transition-delay: 0.2857142857s; }
+      #theme_name #departments .departList .mainList p:nth-child(3) {
+        transition-delay: 0.4285714286s;
+        -webkit-transition-delay: 0.4285714286s; }
+      #theme_name #departments .departList .mainList p:nth-child(4) {
+        transition-delay: 0.5714285714s;
+        -webkit-transition-delay: 0.5714285714s; }
+      #theme_name #departments .departList .mainList p:nth-child(5) {
+        transition-delay: 0.7142857143s;
+        -webkit-transition-delay: 0.7142857143s; }
+      #theme_name #departments .departList .mainList p:nth-child(6) {
+        transition-delay: 0.8571428571s;
+        -webkit-transition-delay: 0.8571428571s; }
+      #theme_name #departments .departList .mainList p:nth-child(7) {
+        transition-delay: 1s;
+        -webkit-transition-delay: 1s; }
+    #theme_name #departments .departList .mainListHover p {
+      transform: rotateY(0); }
+    #theme_name #departments .departList .depart-detail {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 81px;
+      left: 1920px;
+      z-index: 10;
+      transition: all ease 1s; }
+      #theme_name #departments .departList .depart-detail .depart_nav {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 50px;
+        font-size: 14px; }
+        #theme_name #departments .departList .depart-detail .depart_nav span {
+          cursor: pointer; }
+      #theme_name #departments .departList .depart-detail .depart-detail-main {
+        height: 80%;
+        margin: 30px; }
+        #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left {
+          width: 30%;
+          height: 100%;
+          border-right: 1px dashed #808080; }
+          #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p {
+            position: relative;
+            height: 480px;
+            width: 100%;
+            max-width: 150px;
+            margin: 0 30px;
+            padding: 90px 0 60px;
+            text-align: center;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            -ms-backface-visibility: hidden;
+            backface-visibility: hidden; }
+            #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p:hover {
+              cursor: pointer;
+              color: #CF2E33; }
+              #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p:hover a.control {
+                display: inline-block; }
+            #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p span {
+              display: inline-block;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-height: 380px;
+              font-family: 'jingDianXingShu';
+              font-size: 30px;
+              white-space: nowrap; }
+            #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p a.control {
+              width: 100%;
+              height: 50px;
+              position: absolute;
+              bottom: -50px;
+              left: 0;
+              display: none;
+              justify-content: space-between; }
+              #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p a.control a.pointer {
+                font-size: 34px; }
+              #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p a.control b {
+                display: none; }
+              #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p a.control:hover b {
+                color: #999999;
+                margin-top: 25px;
+                display: inline-block; }
+                #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p a.control:hover b:hover {
+                  color: #CF2E33; }
+              #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p a.control:hover a.pointer {
+                display: none; }
+        #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right {
+          width: 70%;
+          height: 100%;
+          margin-left: 30px; }
+          #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-btn {
+            margin-left: 30px;
+            min-height: 100px; }
+            #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-btn > span {
+              width: 65px;
+              height: 65px;
+              padding: 10px;
+              text-align: center;
+              line-height: 20px;
+              margin-left: 20px;
+              font-size: 16px;
+              cursor: pointer; }
+              #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-btn > span:last-child {
+                margin-left: 80px; }
+          #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff {
+            width: 100%;
+            height: 80%; }
+            #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list {
+              width: 100%;
+              padding: 20px 0; }
+              #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .next_btn {
+                width: 40px;
+                height: 195px;
+                color: #CF2E33;
+                font-size: 24px;
+                line-height: 195px;
+                text-align: center;
+                cursor: pointer; }
+              #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list {
+                width: 100%;
+                padding: 30px 0;
+                min-height: 155px; }
+                #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div {
+                  width: 50px;
+                  height: 155px;
+                  line-height: 50px;
+                  text-align: center;
+                  margin: 0 20px;
+                  border: 1px solid #686874;
+                  background-color: white;
+                  cursor: pointer; }
+                  #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div:hover {
+                    color: #CF2E33;
+                    border: 1px solid #CF2E33; }
+            #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .staff_list {
+              height: 60%; }
+    #theme_name #departments .departList .show-depart-detail {
+      left: 0; }
   #theme_name #departments .dialog_container .dialog_main .depart_visible {
     width: 88%;
     height: 100%;

@@ -1,51 +1,40 @@
 <template>
   <div id="departManage">
     <!--员工管理/部门管理-->
-    <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>{{ departInfo && departInfo.name }}</h3>
-        </div>
-        <div class="dialog_main space-column departPosition">
-          <div class="items-bet mainTop">
-            <div class="items-bet">
-              <span @click="chooseManage('staff')" :class="{'hover': tabsManage === 'staff'}">员工管理</span>
-              <span @click="chooseManage('position')" :class="{'hover': tabsManage === 'position'}">职位管理</span>
-            </div>
-            <h2 class="add" @click="operateModule(tabsManage)">
-              <b>+</b>
-            </h2>
-          </div>
-          <div class="scroll_bar staffManage" id="scroll-body" v-if="tabsManage === 'staff'" @click="checkOverflow()">
-            <div v-for="item in staffList">
-              <div class="items-center" @click="reviseStaff(item)">
-                <p>
-                  <img :src="item.avatar" alt="" v-if="item.avatar">
-                  <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
-                </p>
-                <div>
-                  <h4>{{ item.name }}</h4>
-                  <h5>{{ item.position[0].name }}</h5>
-                </div>
-              </div>
-              <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-                <span v-for="label in operateList" @click="operateModule(label.type,item)">{{label.label}}</span>
-                <b v-if="!operatePos"></b>
-                <i v-if="operatePos"></i>
-              </h5>
+    <div class="dialog_main space-column departPosition">
+      <div class="items-bet mainTop">
+        <div></div>
+        <h2 class="add" @click="operateModule(tabsManage)">
+          <b>+</b>
+        </h2>
+      </div>
+      <div class="scroll_bar staffManage" id="scroll-body" v-if="tabsManage === 'staff'" @click="checkOverflow()">
+        <div v-for="item in staffList">
+          <div class="items-center" @click="reviseStaff(item)">
+            <p>
+              <img :src="item.avatar" alt="" v-if="item.avatar">
+              <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+            </p>
+            <div>
+              <h4>{{ item.name }}</h4>
+              <h5>{{ item.position[0].name }}</h5>
             </div>
           </div>
-          <div class="scroll_bar orgManage" v-if="tabsManage === 'position'">
-            <div v-for="item in dutyList">
-              <p @click="operateModule('positionManagement',item)">
-                <span class="writingMode">{{ item.name }}</span>
-              </p>
-            </div>
-          </div>
+          <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
+            <span v-for="label in operateList" @click="operateModule(label.type,item)">{{label.label}}</span>
+            <b v-if="!operatePos"></b>
+            <i v-if="operatePos"></i>
+          </h5>
         </div>
       </div>
-    </lj-dialog>
-
+      <div class="scroll_bar orgManage" v-if="tabsManage === 'position'">
+        <div v-for="item in dutyList">
+          <p @click="operateModule('positionManagement',item)">
+            <span class="writingMode">{{ item.name }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
     <!--新增员工-->
     <lj-dialog
       :visible="add_newStaff_visible"
@@ -479,7 +468,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleSubmitSetPower">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="info" size="small" @click="powerVisible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -683,7 +672,7 @@
 
   export default {
     name: "depart-manage",
-    props: ['module','info'],
+    props: ['module','info','checkInfo'],
     components: {ljDialog,PositionOrgan},
     data() {
       return {
@@ -782,6 +771,7 @@
         staff_size: {},
         tabsManage: 'staff',
         staffId: '',
+        check_info: '',
 
         operatePos: false,//编辑total
         operateList: [
@@ -893,6 +883,20 @@
     activated() {
     },
     watch: {
+      checkInfo: {
+        handler(val) {
+          console.log(val);
+          if (val.id === 1) {
+            this.tabsManage = 'staff';
+            this.getStaffList();
+          }
+          if (val.id === 2) {
+            this.tabsManage = 'position';
+            this.getDutyList();
+          }
+        },
+        deep: true
+      },
       info: {
         handler(val) {
           this.departInfo = val;
@@ -1071,7 +1075,6 @@
       getPowerList(id) {
         this.power_params.system_id = id;
         this.$http.get('organization/permission',this.power_params).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.power_list = res.data.data;
             let count = 0;
@@ -1336,6 +1339,7 @@
       //获取职位列表
       getDutyList() {
         this.$http.get('organization/duty',this.staffParams).then(res => {
+          console.log(res);
           if (res.code === '20000') {
             this.dutyList = res.data.data;
           } else {
@@ -1346,8 +1350,10 @@
       //获取员工列表
       getStaffList() {
         this.$http.get('staff/user',this.staffParams).then(res => {
+          console.log(res);
           if (res.code === '20000') {
             this.staffList = res.data.data;
+            console.log(this.staffList);
           } else {
             this.staffList = [];
           }
@@ -1360,14 +1366,6 @@
         this.$nextTick(function () {
           this.operatePos = obj.offsetHeight - obj.clientHeight > 0;
         })
-      },
-      // 员工/部门 切换
-      chooseManage(val, status = '') {
-        if (status === 'post') {
-          this.tabsPost = val;
-        } else {
-          this.tabsManage = val;
-        }
       },
       reviseStaff(val) {
         if (this.staffId === val) {
@@ -1520,33 +1518,29 @@
 
   #theme_name.theme1 {
     #departManage {
-      .dialog_container {
-        .dialog_main {
-          .mainTop {
-            span {
-              @include organImg('huidi.png', 'theme1');
-            }
-            .hover {
-              @include organImg('hongdi.png', 'theme1');
-            }
-          }
-          .iconInput {
-            .organization {
-              @include commonImg('zuzhijiagou.png', 'theme1');
-            }
-            .position {
-              @include commonImg('zhiwei.png', 'theme1');
-            }
-            .user {
-              @include commonImg('yonghu.png', 'theme1');
-            }
-          }
+      .mainTop {
+        span {
+          @include organImg('huidi.png', 'theme1');
         }
-        .powerContent {
-          .powerHead {
-            i {
-              @include commonImg('xiugai.png', 'theme1');
-            }
+        .hover {
+          @include organImg('hongdi.png', 'theme1');
+        }
+      }
+      .iconInput {
+        .organization {
+          @include commonImg('zuzhijiagou.png', 'theme1');
+        }
+        .position {
+          @include commonImg('zhiwei.png', 'theme1');
+        }
+        .user {
+          @include commonImg('yonghu.png', 'theme1');
+        }
+      }
+      .powerContent {
+        .powerHead {
+          i {
+            @include commonImg('xiugai.png', 'theme1');
           }
         }
       }
