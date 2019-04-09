@@ -4,27 +4,27 @@ export const humanResource = {
   data: [
     {
       url: 'departments',
-      title: '三省六部',
+      title: '人资规划',
     },
     {
       url: 'recruitment',
-      title: '招兵买马',
+      title: '招聘管理',
     },
     {
       url: 'reward',
-      title: '赏罚分明',
+      title: '公告问卷',
     },
     {
       url: 'militaryOrganization',
-      title: '排兵布阵',
+      title: '培训考试',
     },
     {
       url: 'repository',
-      title: '内务库房',
+      title: '资产管理',
     },
     {
       url: 'discussPolitics',
-      title: '奏事议政',
+      title: '会议管理',
     }
   ]
 };

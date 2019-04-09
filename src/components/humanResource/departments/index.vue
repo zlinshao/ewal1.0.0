@@ -5,7 +5,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="myUtils.emptyPic(photo)">三省六部</h1>
+        <h1 @click="myUtils.emptyPic(photo)">人资规划</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -566,7 +566,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 4,//tab切换
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
