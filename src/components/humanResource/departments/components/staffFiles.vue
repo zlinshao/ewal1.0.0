@@ -61,8 +61,8 @@
                     <el-col :span="6">
                       <el-form-item label="性别">
                         <div class="flex changeChoose" style="margin-top: 10px">
-                          <el-radio :label="0" v-model="staffDetail.gender">男</el-radio>
-                          <el-radio :label="1" v-model="staffDetail.gender">女</el-radio>
+                          <el-radio :label="1" v-model="staffDetail.gender">男</el-radio>
+                          <el-radio :label="0" v-model="staffDetail.gender">女</el-radio>
                         </div>
                       </el-form-item>
                     </el-col>

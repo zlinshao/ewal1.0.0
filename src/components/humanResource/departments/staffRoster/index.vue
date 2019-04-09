@@ -82,7 +82,7 @@
           { key: 'staff.internship_number',val: '实习协议',isBtn: true},
           { key: 'name',val: '姓名'},
           { key: 'position',val: '岗位',isArray: true,showKey: 'name'},
-          { key: 'gender',val: '性别',info:{1: '女',0: '男'}},
+          { key: 'gender',val: '性别',info:{0: '女',1: '男'}},
           { key: 'staff.origin_addr',val: '籍贯'},
           { key: 'staff.political_status',val: '政治面貌',info: {1: '群众',2: '团员',3: '党员',4: '其他'}},
           { key: 'staff.birthday',val: '出生年月'},

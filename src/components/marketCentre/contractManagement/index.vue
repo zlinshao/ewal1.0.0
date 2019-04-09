@@ -697,7 +697,6 @@
         this.current_choose_control = tmp.id;
         switch (tmp.id) {
           case 1:
-            // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
             this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${item.contract_id}`).then(res => {
               if (res.code === 200) {
                 console.log(res);
