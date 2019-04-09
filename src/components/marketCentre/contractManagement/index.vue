@@ -53,7 +53,7 @@
               <div>
                 <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
                 <div class="control_container flex" :class="{'show_control_container': show_control === scope.row.contract_id}">
-                  <span v-for="tmp in choose_list" :key="tmp.id" :class="{'choose': current_choose_control === tmp.id }" @click="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
+                  <span v-for="tmp in choose_list" :key="tmp.id" :class="{'choose': current_choose_control === tmp.id }" @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
                 </div>
                 <div class="writingMode point_btn" @click="handleShowControl(scope.row)">···</div>
               </div>
@@ -455,7 +455,7 @@
               <div class="content flex" v-for="(item,key) in check_info">
                 <div>
                   <a>{{ item.create.name || '/' }}</a><br>
-                  <span>{{ item.time }}</span>
+                  <span>{{ item.created_at }}</span>
                 </div>
                 <div class="flex-center">
                   <div class="circle flex-center">
@@ -697,7 +697,8 @@
         this.current_choose_control = tmp.id;
         switch (tmp.id) {
           case 1:
-            this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
+            // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
+            this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${item.contract_id}`).then(res => {
               if (res.code === 200) {
                 console.log(res);
                 if (res.data.checkout_remark && res.data.checkout_remark.length > 0) {
@@ -769,8 +770,7 @@
       //双击详情
       handleGetDetail(row) {
         this.currentRow = row;
-        // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
-        this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
+        this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
           if (res.code === 200) {
             this.contractDetail = res.data;
             this.contract_detail_visible = true;
