@@ -122,6 +122,10 @@
           padding-bottom: 6px;
         }
       }
+      //举报
+      .report {
+        @include commonImg('search.png', 'theme1');
+      }
       //搜索
       .search {
         @include commonImg('search.png', 'theme1');

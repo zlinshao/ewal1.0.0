@@ -7,16 +7,10 @@
                 </p>
                 <h1>收款</h1>
                 <h2 class="items-center">
-                    <!--<span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"-->
-                    <!--:class="{'chooseTab': chooseTab === item.id}">-->
-                    <!--{{item.title}}<i></i>-->
-                    <!--</span>-->
-                    <span class="items-column">请选择收款类型</span>
-
-                    <el-checkbox-group v-model="checkList">
-                        <el-checkbox label="定金"></el-checkbox>
-                        <el-checkbox label="房租"></el-checkbox>
-                    </el-checkbox-group>
+          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
+                :class="{'chooseTab': chooseTab === item.id}">
+            {{item.title}}<i></i>
+          </span>
                 </h2>
             </div>
             <div class="items-center listTopRight">
@@ -43,7 +37,7 @@
                 </el-table-column>
                 <el-table-column label="状态" prop="" align="center" width="80">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.status === 1 ? '待入账' : '已结清'}}</span>
+                        <span>{{ scope.row.status === 1?'待入账':scope.row.status === 2?'待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
                     </template>
                 </el-table-column>
 
@@ -143,7 +137,7 @@
         <!--应收入账-->
         <lj-dialog
                 :visible="receive_visible"
-                :size="{width: 500 + 'px',height: 600 + 'px'}"
+                :size="{width: 600 + 'px',height: 800 + 'px'}"
                 @close="receive_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header flex">
@@ -161,6 +155,38 @@
                                 </div>
                                 <div class="item_content">
                                     <span>{{current_address}}</span>
+                                </div>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_payTime"></i>
+                                    </b>
+                                    <span>收款时间</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-date-picker
+                                            class="all_width"
+                                            disabled
+                                            v-model="current_row.pay_date"
+                                            placeholder="请选择付款时间"
+                                            type="datetime"
+                                    ></el-date-picker>
+                                </div>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_money"></i>
+                                    </b>
+                                    <span>客户姓名</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-input v-model="customerName"  disabled></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -197,22 +223,6 @@
                                 </div>
                             </div>
                         </el-form-item>
-                        <!--<el-form-item>-->
-                        <!--<div class="form_item_container">-->
-                        <!--<div class="item_label">-->
-                        <!--<b class="item_icons">-->
-                        <!--<i class="icon_subject"></i>-->
-                        <!--</b>-->
-                        <!--<span>款项科目</span>-->
-                        <!--</div>-->
-                        <!--<div class="item_content">-->
-                        <!--<el-select class="all_width" v-model="receive_form.subject_name">-->
-                        <!--<el-option label="中介费" value="1"></el-option>-->
-                        <!--<el-option label="租房房租" value="2"></el-option>-->
-                        <!--</el-select>-->
-                        <!--</div>-->
-                        <!--</div>-->
-                        <!--</el-form-item>-->
                         <el-form-item>
                             <div class="form_item_container">
                                 <div class="item_label">
@@ -222,7 +232,7 @@
                                     <span>应收金额</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input v-model="amount_receivable" type="number"></el-input>
+                                    <el-input v-model="current_row.amount_receivable" type="number" disabled></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -236,6 +246,38 @@
                                 </div>
                                 <div class="item_content">
                                     <el-input v-model="receive_form.amount_received" type="number"></el-input>
+                                </div>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_case"></i>
+                                    </b>
+                                    <span>剩余款项</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-input v-model="current_row.balance" type="number" disabled></el-input>
+                                </div>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
+                                        <i class="icon_payTime"></i>
+                                    </b>
+                                    <span>补齐时间</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-date-picker
+                                            class="all_width"
+                                            disabled
+                                            v-model="current_row.complete_date"
+                                            placeholder="请选择付款时间"
+                                            type="datetime"
+                                    ></el-date-picker>
                                 </div>
                             </div>
                         </el-form-item>
@@ -261,6 +303,20 @@
                             <div class="form_item_container">
                                 <div class="item_label">
                                     <b class="item_icons">
+                                        <i class="icon_case"></i>
+                                    </b>
+                                    <span>收款人员</span>
+                                </div>
+                                <div class="item_content">
+                                    <el-input  v-model="receiveName" disabled></el-input>
+                                </div>
+                            </div>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <div class="form_item_container">
+                                <div class="item_label">
+                                    <b class="item_icons">
                                         <i class="icon_mark"></i>
                                     </b>
                                     <span>备注</span>
@@ -274,6 +330,23 @@
                                 </div>
                             </div>
                         </el-form-item>
+                        <!--<el-form-item>-->
+                            <!--<div class="form_item_container">-->
+                                <!--<div class="item_label">-->
+                                    <!--<b class="item_icons">-->
+                                        <!--<i class="icon_mark"></i>-->
+                                    <!--</b>-->
+                                    <!--<span>详情</span>-->
+                                <!--</div>-->
+                                <!--<div class="item_content">-->
+                                    <!--<el-input-->
+                                            <!--v-model="receive_form.remark"-->
+                                            <!--type="textarea"-->
+                                            <!--placeholder="请输入"-->
+                                    <!--&gt;</el-input>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</el-form-item>-->
                     </el-form>
                 </div>
                 <div class="dialog_footer flex-center">
@@ -414,7 +487,8 @@
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>跟进记录</h3>
-                    <span class="add_mark" @click="add_record_visible = true">+</span>
+                    <span class="add_mark"
+                          @click="add_record_visible = true;new_record.flow_staff_id='';new_record.flow_up_type='';new_record.remark='';new_record.address='';new_record.flow_staff_name=''">+</span>
                 </div>
                 <div class="dialog_main">
                     <div class="address">{{current_address}}</div>
@@ -430,12 +504,12 @@
                                              show-overflow-tooltip></el-table-column>
                             <el-table-column label="跟进类型" prop="" align="center" show-overflow-tooltip>
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.flow_up_type===3 ? '贴条': scope.row.flow_up_type===5 ?'换锁':'/'}}</span>
+                                    <span>{{scope.row.flow_up_type===3 ? '贴条': scope.row.flow_up_type===5 ?'换锁':''}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column label="跟进状态" align="center" show-overflow-tooltip>
                                 <template slot-scope="scope">
-                                    <span>{{scope.row.flow_up_status===3 ? '已响应' :scope.row.flow_up_status ===5 ? '未响应':'/'}}</span>
+                                    <span>{{scope.row.flow_up_status===3 ? '已响应' :scope.row.flow_up_status ===5 ? '未响应':''}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column label="款项名目" prop="address" align="center"
@@ -474,7 +548,8 @@
                                     <span>跟进人</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input v-model="new_record.flow_staff_id"></el-input>
+                                    <!--<el-input v-model="new_record.flow_staff_id"></el-input>-->
+                                    <el-input v-model="new_record.flow_staff_name" @focus="openStaff" readonly  ></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -487,7 +562,6 @@
                                     <span>跟进类型</span>
                                 </div>
                                 <div class="item_content">
-                                    <!--<el-input  v-model="new_record.content"></el-input>-->
                                     <el-select v-model="new_record.flow_up_type">
                                         <el-option v-for="(item,index) in categoryList" :key="index" :label="item.title"
                                                    :value="item.value"></el-option>
@@ -495,19 +569,19 @@
                                 </div>
                             </div>
                         </el-form-item>
-                        <el-form-item>
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_mark"></i>
-                                    </b>
-                                    <span>应收款项</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input v-model="new_record.content" type="number"></el-input>
-                                </div>
-                            </div>
-                        </el-form-item>
+                        <!--<el-form-item>-->
+                            <!--<div class="form_item_container">-->
+                                <!--<div class="item_label">-->
+                                    <!--<b class="item_icons">-->
+                                        <!--<i class="icon_mark"></i>-->
+                                    <!--</b>-->
+                                    <!--<span>应收款项</span>-->
+                                <!--</div>-->
+                                <!--<div class="item_content">-->
+                                    <!--<el-input v-model="new_record.content" type="number"></el-input>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</el-form-item>-->
                         <el-form-item>
                             <div class="form_item_container">
                                 <div class="item_label">
@@ -551,7 +625,7 @@
             <div class="dialog_container">
                 <div class="dialog_header flex">
                     <h3>催缴备注列表</h3>
-                    <span class="add_mark" @click="new_mark_visible = true">+</span>
+                    <span class="add_mark" @click="new_mark_visible = true;new_mark={}">+</span>
                 </div>
                 <div class="dialog_main">
                     <div class="address">{{current_address}}</div>
@@ -753,6 +827,8 @@
                 </div>
             </div>
         </lj-dialog>
+
+        <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
     </div>
 </template>
 
@@ -764,6 +840,7 @@
     import CustomerLists from '../components/customerLists.vue';
     import Upload from '../../common/upload.vue';
     import {gatheringSearchList} from "../../../assets/js/allSearchData.js";
+    import StaffOrgan from '../../common/staffOrgan.vue';
 
 
     export default {
@@ -774,7 +851,8 @@
             FinMenuList,
             LjSubject,
             CustomerLists,
-            Upload
+            Upload,
+            StaffOrgan
         },
         data() {
             return {
@@ -816,6 +894,9 @@
                     limit: 12,
                     export: '',
                     cate: '',
+                    is_deposit:'',
+                    is_tail_fund:'',
+                    is_rank_rent:'',
 
                 },
                 btnData: [
@@ -836,6 +917,7 @@
                 register_visible: false, //登记收款
                 register_size: '',
                 customer_visible: false,
+                staffModule:false,//员工组件
                 running_account_record: [],//回滚数据
                 ra_ids: [],//回滚id
 
@@ -892,33 +974,38 @@
                     category: '',
                 },
                 categoryList: [
-                    {title: "违约", value: 1},
-                    {title: "延期", value: 2},
+                    // {title: "违约", value: 1},
+                    // {title: "延期", value: 2},
                     {title: "贴条", value: 3},
-                    {title: "换锁", value: 4},
-                    {title: "维修", value: 5},
-                    {title: "资金", value: 6},
-                    {title: "炸单", value: 7},
-                    {title: "调房", value: 8},
-                    {title: "特殊情况", value: 9},
+                    // {title: "维修", value: 4},
+                    {title: "换锁", value: 5},
+                    // {title: "资金", value: 6},
+                    // {title: "炸单", value: 7},
+                    // {title: "调房", value: 8},
+                    // {title: "特殊情况", value: 9},
                 ],
                 showSearch: false,
                 chooseTab: 1,
                 selects: [
                     {
                         id: 1,
+                        title: '全部',
+                    },
+                    {
+                        id: 2,
                         title: '定金',
                     },
+
+                    {
+                        id: 3,
+                        title: '尾款',
+                    },
+                    {
+                        id: 4,
+                        title: '房租',
+                    },
                     // {
-                    //     id: 2,
-                    //     title: '尾款',
-                    // },
-                    // {
-                    //     id: 3,
-                    //     title: '房款',
-                    // },
-                    // {
-                    //     id: 4,
+                    //     id: 5,
                     //     title: '其他收款'
                     // }
                 ],
@@ -929,7 +1016,7 @@
                     "pay_date": '收款时间',
                     "subject.title": '应收科目',
                     "customer.address": "地址",
-                    "amount_receivable": '应收余额',
+                    "amount_receivable": '应收金额',
                     "amount_received": '实收金额',
                     "balance": '剩余金额',
                     "complete_date": '补齐时间',
@@ -948,15 +1035,15 @@
 
                 amount_receivable: '',//应收
                 chooseRowIds: [],
+
                 receive_form: {
-                    // subject_name: '1',//科目
                     account_id: '',//账户id
                     amount_received: '',//收款金额
                     pay_date: '',//付款时间
                     remark: '',
-                    // amount_receivable:'',//应收
-
                 },
+                receiveName:'',//收款人
+                customerName:'',//客户名称
 
                 record_data: [],//跟进列表
                 record_data_count: 0,
@@ -968,8 +1055,9 @@
                     fund_id: '',//收款id
                     remark: '',
                     address: '',
-
+                    flow_staff_name:'',
                 },
+                // flow_staff_name:'',//跟进人姓名姓名
                 registerData: [],//登记列表
                 accountLists: [],
                 cate: [
@@ -1007,26 +1095,56 @@
                 },
                 deep:true
             },
-            checkList:{
-                handler(val) {
-                    console.log(val);
-                    for(let item of val){
-                        if(item==='定金'){
-                            this.params.is_deposit = 2;
-                        }
-                        if(item==='房租'){
-                            this.params.is_tail_fund = 2;
 
-                        }
-                        this.getReceiveList()
-
-                    }
-                } ,
-                deep:true
-            }
         },
         computed: {},
         methods: {
+            openStaff(){
+               this.staffModule = true;
+            },
+            //员工
+            hiddenStaff(ids, names, arr) {
+                this.staffModule = false;
+                // console.log(ids, names, arr);
+                if (ids !== 'close') {
+                    this.new_record.flow_staff_name = names;
+                    this.new_record.flow_staff_id = ids[0];
+                }
+            },
+
+            changeTabs(id) {
+                this.chooseTab = id;
+                switch (id) {
+                    case 1:
+                        this.params.is_deposit = '';//定金
+                        this.params.is_tail_fund = '';//尾款
+                        this.params.is_rank_rent = '';//房租
+                        this.tableData = [];
+                        this.getReceiveList();
+                        break;
+                    case 2:
+                        this.params.is_deposit = 2;
+                        this.params.is_tail_fund = '';
+                        this.params.is_rank_rent = '';//房租
+                        this.tableData = [];
+                        this.getReceiveList();
+                        break;
+                    case 3:
+                        this.params.is_deposit = '';
+                        this.params.is_tail_fund = 2;
+                        this.params.is_rank_rent = '';//房租
+                        this.tableData = [];
+                        this.getReceiveList();
+                        break;
+                    case 4:
+                        this.params.is_deposit = '';
+                        this.params.is_tail_fund = '';
+                        this.params.is_rank_rent = 2;//房租
+                        this.tableData = [];
+                        this.getReceiveList();
+                        break;
+                }
+            },
             //上传回调
             handleSuccessUpload(item) {
                 this.register_from.collect_img = [];
@@ -1211,6 +1329,7 @@
                             subMessage: '',
                         });
                         this.new_mark_visible = false;
+
                         this.getReceivable_tag(this.current_row.id);
                     } else {
                         this.$LjNotify('error', {
@@ -1309,9 +1428,12 @@
             },
             handleClickBtn(key, row) {
                 this.current_row = row;
+                console.log(this.current_row);
                 this.current_address = row.customer.address;
                 if (key === 'should_receive') {
                     this.receive_visible = true;
+                    this.customerName = this.current_row.customer.customer_name;
+                    this.receiveName = this.current_row.staff.name;
                 }
                 if (key === 'record') {
                     this.record_visible = true;
@@ -1329,9 +1451,7 @@
                     this.register_visible = true;
                 }
             },
-            changeTabs(id) {
-                this.chooseTab = id;
-            },
+
             // 当前点击
             tableClickRow(row) {
                 let ids = this.chooseRowIds;
@@ -1352,24 +1472,23 @@
                 this.showSearch = false;
                 if (val !== 'close') {
                     console.log(val);
-                }
-                for (let item of Object.keys(this.params)) {
-                    if (val) {
+                    for (let item of Object.keys(this.params)) {
                         this.params[item] = val[item];
-                        if (val.gatherDate) {
-                            this.params.startRange = val.gatherDate[0];
-                            this.params.endRange = val.gatherDate[1];
-                        }
-                        if (val.tagDate) {
-                            this.params.startTag = val.tagDate[0];
-                            this.params.endTag = val.tagDate[1];
-                        }
-
-
                     }
-
+                    if (val.gatherDate) {
+                        this.params.startRange = val.gatherDate[0];
+                        this.params.endRange = val.gatherDate[1];
+                    }
+                    if (val.tagDate) {
+                        this.params.startTag = val.tagDate[0];
+                        this.params.endTag = val.tagDate[1];
+                    }
+                    this.params.staff_ids = val.staff;
+                    this.params.department_ids = val.department;
+                    console.log(this.params);
+                    this.getReceiveList();
                 }
-                this.getReceiveList();
+
             },
             handleOpenSubject(which) {
                 this.which_subject = which;
