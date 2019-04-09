@@ -1,0 +1,36 @@
+#theme_name .icon, #theme_name .icon20, #theme_name icon40 {
+  display: inline-block;
+  cursor: pointer; }
+#theme_name .icon20 {
+  width: 20px;
+  height: 20px; }
+#theme_name .icon {
+  width: 30px;
+  height: 30px; }
+#theme_name .icon40 {
+  width: 40px;
+  height: 40px; }
+
+#theme_name.theme1 .icon-delete {
+  background: url("../../../assets/image/icon/theme1/shanchu.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 .icon-delete-red {
+  background: url("../../../assets/image/icon/theme1/shanchu-red.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 .icon-delete-red-hover {
+  background: url("../../../assets/image/icon/theme1/shanchu2.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+  #theme_name.theme1 .icon-delete-red-hover:hover {
+    background: url("../../../assets/image/icon/theme1/xzshanchu2_hover.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+#theme_name.theme1 .icon-cancel {
+  background: url("../../../assets/image/icon/theme1/quxiao.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+  #theme_name.theme1 .icon-cancel:hover {
+    background: url("../../../assets/image/icon/theme1/xzquxiao_hover.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+#theme_name.theme1 .icon-edit {
+  background: url("../../../assets/image/icon/theme1/bianji_2.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+
+/*# sourceMappingURL=icon.css.map */

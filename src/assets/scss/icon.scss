@@ -1,0 +1,78 @@
+@mixin bgImage($m) {
+  background: url($m) no-repeat scroll center;
+  background-size: 100% 100%;
+}
+
+@mixin iconImg($m, $n) {
+  $url: '../../../assets/image/icon/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
+#theme_name {
+  .icon, .icon20, icon40 {
+    display: inline-block;
+    cursor: pointer;
+  }
+  .icon20 {
+    width: 20px;
+    height: 20px;
+  }
+  .icon {
+    width: 30px;
+    height: 30px;
+  }
+  .icon40 {
+    width: 40px;
+    height: 40px;
+  }
+
+
+}
+
+#theme_name.theme1 {
+  //删除
+  .icon-delete {
+    @include iconImg('shanchu.png','theme1');
+  }
+  .icon-delete-red {
+    @include iconImg('shanchu-red.png','theme1');
+  }
+
+  .icon-delete-red-hover {
+    @include iconImg('shanchu2.png','theme1');
+    &:hover {
+      @include iconImg('xzshanchu2_hover.png','theme1');
+    }
+  }
+
+  //取消
+  .icon-cancel {
+    @include iconImg('quxiao.png','theme1');
+    &:hover {
+      @include iconImg('xzquxiao_hover.png','theme1');
+    }
+  }
+
+  //编辑
+  .icon-edit {
+    @include iconImg('bianji_2.png','theme1')
+  }
+}
+
+#theme_name.theme2 {
+  #menuList {
+
+  }
+}
+
+#theme_name.theme3 {
+  #menuList {
+
+  }
+}
+
+#theme_name.theme4 {
+  #menuList {
+
+  }
+}

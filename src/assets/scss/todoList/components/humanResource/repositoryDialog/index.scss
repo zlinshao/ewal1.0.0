@@ -1,0 +1,112 @@
+@import "../../../../common";
+
+#repository_dialog_list {
+  #lj_dialog {
+    .receive-notify {
+      .notify-date-time {
+        margin-left: 40px;
+        color: #CCCCCC;
+        font-size: 14px;
+      }
+
+
+      .dialog_main {
+        //height: 70%;
+      }
+
+      .detail-container {
+
+        .detail-item {
+          display: inline-block;
+          margin-right: 24px;
+
+          & > :nth-child(1) {
+            font-size: 12px;
+            font-weight: bold;
+          }
+
+          & > :nth-child(2) {
+            font-size: 12px;
+            padding: 8px;
+            color: #686874;
+          }
+        }
+      }
+
+      .left-bottom {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+        //height: 200px;
+        //background-color: red;
+        position: absolute;
+        bottom: 80px;
+        left: 80px;
+
+        > div {
+          //margin: 5px 0;
+          >div {
+            font-size: 14px;
+            margin-right: 20px;
+          }
+        }
+      }
+
+      footer.common-page {
+        height: 100px;
+        width: 100%;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 200px;
+        //background-color: $color2F2;
+        z-index: 6;
+
+        .develop {
+          position: absolute;
+          top: -30px;
+          width: 80px;
+          cursor: pointer;
+          height: 30px;
+          opacity: 1;
+          border-radius: 10px 10px 0 0;
+          background-color: $color2F2;
+
+        }
+      }
+
+      .dialog_footer {
+        text-align: right;
+
+        button {
+          margin-right: 40px;
+        }
+      }
+    }
+  }
+
+}
+
+#theme_name.theme1 {
+  #repository_dialog_list {
+
+  }
+}
+
+#theme_name.theme2 {
+  #repository_dialog_list {
+
+  }
+}
+
+#theme_name.theme3 {
+  #repository_dialog_list {
+
+  }
+}
+
+#theme_name.theme4 {
+  #repository_dialog_list {
+
+  }
+}

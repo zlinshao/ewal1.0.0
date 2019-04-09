@@ -135,6 +135,10 @@ export const finance = {
       url: 'budgetStream',
       title: '流水',
     },
+      {
+          url: 'pending',
+          title: '待处理项',
+      },
   ]
 };
 
@@ -234,5 +238,28 @@ export const leJiaCollegeMenu = {
         {id: 7, title: "实践问题",url:'practicalProblems'},
     ]
 
+};
+
+//知识产权保护
+export const intellectualPropertyProtection = {
+  type: 'intellectualPropertyProtection',
+  data: [
+    {
+      url: 'enterpriseCertificate',
+      title: '企业证书'
+    },
+    {
+      url: 'patent',
+      title: '专利'
+    },
+    {
+      url: 'copyright',
+      title: '著作权'
+    },
+    {
+      url: 'brand',
+      title: '商标'
+    }
+  ]
 };
 

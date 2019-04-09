@@ -117,6 +117,20 @@
         }
       }
     }
+    #menuList.intellectualPropertyProtection {
+      .list {
+        .menu {
+          .childrenMenu {
+            @include menuImg('intellectualpropertyprotectionkuang.png', 'theme1');
+            background-size: 191px 314px;
+            &:hover {
+              @include menuImg('intellectualpropertyprotectionkuanger.png', 'theme1');
+              background-size: 191px 314px;
+            }
+          }
+        }
+      }
+    }
   }
 
   #theme_name.theme2 {

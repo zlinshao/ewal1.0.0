@@ -3,14 +3,32 @@
     <div class="window" :style="{width: width+'px',height: height+'px'}" @mouseover="stop" @mouseleave="play">
       <ul class="container" :style="containerStyle">
         <li>
-          <img :style="{width:imgWidth+'px'}" :src="sliders[sliders.length - 1].img" alt="">
+          <div v-if="sliders[sliders.length-1]&&sliders[sliders.length - 1].info.ext.includes('video')"
+               class="video-container" :style="{width: width+'px',height: height+'px'}">
+            <video @click.self="videoControl" ref="videoDom" style="width: 100%; height:100%; object-fit: fill">
+              <source :src="sliders[sliders.length - 1].uri" type="video/mp4">
+              <source :src="sliders[sliders.length - 1].uri" type="video/ogg">
+              不支持的格式
+            </video>
+            <div v-if="isShowPlayBtn" class="play-container">
+              <div @click.self="audioPlay($event)" class="play"></div>
+            </div>
+          </div>
+          <img v-if="sliders[sliders.length-1]&&sliders[sliders.length - 1].info.ext.includes('image')"
+               :style="{width:imgWidth+'px'}" :src="sliders[sliders.length - 1].uri" alt="">
         </li>
         <li v-for="(item, index) in sliders" :key="index">
-          <img :style="{width:imgWidth+'px',height: height+'px'}" v-if="item.img" :src="item.img" alt="">
-          <div v-if="item.video" class="video-container" :style="{width: width+'px',height: height+'px'}">
+          <img :style="{width:imgWidth+'px',height: height+'px'}" v-if="item.info.ext.includes('image')" :src="item.uri"
+               alt="">
+          <div v-if="item.info.ext.includes('video')" class="video-container"
+               :style="{width: width+'px',height: height+'px'}">
             <video @click.self="videoControl" ref="videoDom" style="width: 100%; height:100%; object-fit: fill">
-              <source id="mp4_src" :src="item.video" type="video/mp4">
-              <source id="ogg_src" :src="item.video" type="video/ogg">
+              <source id="mp4_src" :src="item.uri" type="video/mp4">
+              <source id="ogg_src" :src="item.uri" type="video/ogg">
+              <source :src="item.uri" type="video/webm"/>
+              <source :src="item.uri" type="audio/ogg"/>
+              <source :src="item.uri" type="audio/mpeg"/>
+
               不支持的格式
             </video>
             <div v-if="isShowPlayBtn" class="play-container">
@@ -19,7 +37,19 @@
           </div>
         </li>
         <li>
-          <img :style="{width:imgWidth+'px'}" :src="sliders[0].img" alt="">
+          <img v-if="sliders[0] && sliders[0].info.ext.includes('image')" :style="{width:imgWidth+'px'}"
+               :src="sliders[0].uri" alt="">
+          <div v-if="sliders[0] && sliders[0].info.ext.includes('video')" class="video-container"
+               :style="{width: width+'px',height: height+'px'}">
+            <video @click.self="videoControl" ref="videoDom" style="width: 100%; height:100%; object-fit: fill">
+              <source :src="sliders[0].uri" type="video/mp4">
+              <source :src="sliders[0].uri" type="video/ogg">
+              不支持的格式
+            </video>
+            <div v-if="isShowPlayBtn" class="play-container">
+              <div @click.self="audioPlay($event)" class="play"></div>
+            </div>
+          </div>
         </li>
       </ul>
       <ul v-if="sliders.length>1" class="direction">
@@ -61,6 +91,9 @@
         type: Number,
         default: 3
       },
+      initialIndex: {
+        default:1,
+      },
       width: {
         type: [Number, String],
         default: 600,
@@ -70,14 +103,96 @@
         default: 400,
       },
       arr: {
-        type:Array,
+        type: Array,
         //default: () => [],
       },
+      ids: {
+        type: Array
+      }
     },
     data() {
       return {
-
+        url: globalConfig.humanResource_server,
         sliders: [
+          /*{
+            "id": 123,
+            "name": "lejia7f87dea5d2f218312028484e56211173.jpg",
+            "display_name": "lejia7f87dea5d2f218312028484e56211173.jpg",
+            "raw_name": "lejia7f87dea5d2f218312028484e56211173.jpg",
+            "info": {
+              "ext": "image\/jpeg",
+              "host": "static.lejias.cn",
+              "mime": "image\/jpeg",
+              "size": 51251,
+              "bucket": "lejia-test"
+            },
+            "currentPlace": null,
+            "user_id": null,
+            "uri": "http:\/\/static.lejias.cn\/lejia7f87dea5d2f218312028484e56211173.jpg",
+            "created_at": "2019-03-21 11:32:02",
+            "updated_at": "2019-03-21 11:32:02",
+            "deleted_at": null
+          },
+          {
+            "id": 213,
+            "name": "lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
+            "display_name": "lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
+            "raw_name": "lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
+            "info": {
+              "ext": "image\/jpeg",
+              "host": "static.lejias.cn",
+              "mime": "image\/jpeg",
+              "size": 400542,
+              "bucket": "lejia-test"
+            },
+            "currentPlace": null,
+            "user_id": null,
+            "uri": "http:\/\/static.lejias.cn\/lejia18ff9bc0af300e4337ca5d9fa228b57b.JPG",
+            "created_at": "2019-03-21 20:04:42",
+            "updated_at": "2019-03-21 20:04:42",
+            "deleted_at": null
+          },
+          {
+            "id": 21321,
+            "name": "o_1calcge7f1j2939h13l81hj339go.png",
+            "display_name": "色相饱和度1.png",
+            "raw_name": "色相饱和度1.png",
+            "info": {
+              "ext": "image\/png",
+              "host": "http:\/\/s.lejias.cn\/",
+              "mime": "image\/png",
+              "size": 453155,
+              "bucket": "lejia-prod"
+            },
+            "currentPlace": "null",
+            "user_id": 462,
+            "uri": "http:\/\/s.lejias.cn\/o_1calcge7f1j2939h13l81hj339go.png",
+            "created_at": "2018-04-09 22:21:13",
+            "updated_at": "2018-04-09 22:21:13",
+            "deleted_at": null
+          },
+          {
+            "id": 4224740,
+            "name": "lejia1ff3335618ba4653810a3e91a1e87abe.mp4",
+            "display_name": "lejia1ff3335618ba4653810a3e91a1e87abe.mp4",
+            "raw_name": "lejia1ff3335618ba4653810a3e91a1e87abe.mp4",
+            "info": {
+              "ext": "video",
+              "host": "static.lejias.cn",
+              "mime": "video",
+              "size": 243104,
+              "bucket": "lejia-test"
+            },
+            "currentPlace": null,
+            "user_id": null,
+            "uri": "http:\/\/static.lejias.cn\/lejia1ff3335618ba4653810a3e91a1e87abe.mp4",
+            "created_at": "2019-04-03 18:30:12",
+            "updated_at": "2019-04-03 18:30:12",
+            "deleted_at": null
+          }*/
+        ],
+
+        /*sliders: [
           {
             img: 'http://img.hb.aicdn.com/adeed7d28df6e776c2fa6032579c697381d1a82b7fe00-fwRqgn_fw658'
           },
@@ -99,7 +214,7 @@
           {
             img: 'http://img.hb.aicdn.com/22ded455284aab361b8d2056e82f74a891a019704296a-PSraEB_fw658'
           },
-        ],
+        ],*/
         imgWidth: 0,
         currentIndex: 1,
         distance: 0,
@@ -109,9 +224,18 @@
       }
     },
     watch: {
+      ids: {
+        handler(val, oldVal) {
+          if (val) {
+            this.getPictureUrl(val);
+          }
+        },
+        immediate: true,
+      },
+
       arr: {
-        handler(val,oldVal) {
-          if(val) {
+        handler(val, oldVal) {
+          if (val) {
             this.sliders = val;
           }
         },
@@ -124,6 +248,12 @@
           this.distance = -val;
         },
         immediate: true
+      },
+      initialIndex: {
+        handler(val,oldVal) {
+          this.jump(val);
+        },
+        immediate: true,
       },
     },
     computed: {
@@ -140,6 +270,18 @@
       this.init()
     },
     methods: {
+      //获取图片
+      getPictureUrl(val) {
+        let params = {"id": val};
+        this.$http.post(`${this.url}public/pic`, params).then(res => {
+          //debugger
+          if (res.code.endsWith('0')) {
+            this.sliders = res.data;
+          }
+        }).catch();
+      },
+
+
       init() {
         this.play()
         window.onblur = function () {
@@ -240,6 +382,7 @@
       @include flex('flex-center');
       width: 100%;
       height: 100%;
+
       .play {
         width: 70px;
         height: 70px;

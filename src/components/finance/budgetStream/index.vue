@@ -358,6 +358,10 @@
         this.showSearch = false;
         if (val !== 'close') {
           console.log(val);
+          for(let item of Object.keys(this.params)){
+              this.params[item] = val[item];
+          }
+          this.getAccountRunList();
         }
       },
     },

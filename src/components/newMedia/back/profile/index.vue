@@ -30,21 +30,21 @@
                 <div class="dialog_main">
                     <el-form size="mini" label-width="80px" :rules="rules">
 
-                        <el-form-item label="资料类型" prop="type">
-                            <el-select placeholder="请选择" v-model="form.type">
+                        <el-form-item label="资料类型" prop="type_id">
+                            <el-select placeholder="请选择" v-model="form.type_id">
                                 <el-option label="视频" value=1></el-option>
                                 <el-option label="文档" value=2></el-option>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="资料名称" prop="title">
-                            <el-input v-model="form.title"></el-input>
+                        <el-form-item label="资料名称" prop="name">
+                            <el-input v-model="form.name"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="查看权限" prop="permission">
-                            <el-input v-model="form.permission"></el-input>
+                        <el-form-item label="查看权限" prop="permissionNames">
+                            <el-input @focus="organSearch" readonly v-model="permissionNames"></el-input>
                         </el-form-item>
-                        <el-form-item label="添加附件" prop="permission">
+                        <el-form-item label="添加附件">
                             <Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>
                         </el-form-item>
                     </el-form>
@@ -56,6 +56,8 @@
             </div>
         </lj-dialog>
 
+        <PostOrgan :module="postModule" :organData="organData" @close="hiddenOrgan"></PostOrgan>
+
     </div>
 
 
@@ -65,16 +67,22 @@
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
     import Upload from '../../../common/upload.vue';
+    import PostOrgan from '../../../../components/common/postOrgan.vue'
+
 
     export default {
         name: "index",
         components: {
             mediaList,
             LjDialog,
-            Upload
+            Upload,
+            PostOrgan
         },
         data() {
             return {
+                postModule:false,
+                organData: {},// 组织架构配置 选择数量 num
+                organKey: '',
                 profileType:[
                     {url: 'backVideo', title: '视频',type:1},
                     {url: 'BackDocument', title: '文档',type:2},
@@ -82,10 +90,12 @@
                 showFinMenuList: false,
                 add_visible:false,//新增
                 form:{
-                    type:'',
-                    title:'',
-                    permission:''
+                    type_id:'',
+                    name:'',
+                    permission:[],//查看权限
+                    file_info:[],
                 },
+                permissionNames:'',
                 //上传
                 // upload_visible: false,
                 uploadFile: {
@@ -101,39 +111,84 @@
                     album_file: [],
                 }, //所有上传文件
                 rules:{
-                    type:[
+                    type_id:[
                         { required: true, message: '请选择类型', trigger: 'change' },
                     ],
-                    title:[
+                    name:[
                         { required: true, message: '请输入标题', trigger: 'blur' },
                     ],
-                    permission:[
-                        { required: true, message: '请选择权限', trigger: 'blur' },
-                    ],
+                    // permission:[
+                    //     { required: true, message: '请选择权限', trigger: 'blur' },
+                    // ],
                 }
             }
         },
         watch:{
             "$route.path":function (to,from) {
                 console.log(to)
+            },
+            postModule:{
+                handler(val){
+
+                },
+                deep:true
             }
         },
+        mounted(){
+          this.getFiletype()
+        },
         methods:{
+
+            // 组织架构筛选
+            organSearch() {
+                this.postModule = true;
+            },
+            // 关闭 选择人员
+            hiddenOrgan(ids, names, arr) {
+                this.postModule = false;
+                if (ids !== 'close') {
+                    this.form.permission = ids;
+                    console.log(this.form.permission);
+                    this.permissionNames = names;
+                }
+            },
             //上传回调
             handleSuccessUpload(item) {
                 if (item !== 'close') {
                     this.upload_form[item[0]] = item[1];
+                    this.form.file_info = item[1];
                 }
                 console.log(item);
             },
-            //提交
+            //新增资料
             submit(){
                 console.log(this.form);
-                this.$http.post('',{
+                this.$http.post(globalConfig.newMedia_sever+'/api/datum/admin',{
                     album: this.upload_form.album,
                     ...this.form
                 }).then(res => {
+                    this.postModule = false;
+                    if (res.status === 200) {
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        console.log(this.postModule)
+                    } else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
+                })
+            },
+            getFiletype(){
+                this.$http.get(globalConfig.newMedia_sever+'/api/datum/file_type',{
 
+                }).then(res => {
+                    console.log(res)
                 })
             }
         }
