@@ -29,18 +29,23 @@
       <div class="content flex-center" v-if="!chooseTab">
         <div class="left flex-center" @click="chooseTab=1"><span>库房总览</span></div>
         <div class="right flex-center" @click="chooseTab=2"><span class="gray">借用领用</span></div>
+        <div class="right flex-center" @click="chooseTab=3"><span class="gray">资料库</span></div>
       </div>
       <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
                  @change="handleChangeDate"></work-info>
     </div>
     <!--库房总览-->
-    <div class="up" v-if="chooseTab==1">
+    <div v-if="chooseTab==1">
       <OverView :searchVal="searchFruit1" :in_repository_visible="in_repository_visible" ></OverView>
     </div>
 
     <!--借用领用-->
-    <div class="down" v-if="chooseTab==2">
+    <div v-if="chooseTab==2">
       <borrow-receive :searchVal="searchFruit2"></borrow-receive>
+    </div>
+
+    <div v-if="chooseTab==3">
+      <data-base></data-base>
     </div>
 
     <!--模块入口-->
@@ -59,6 +64,7 @@
   import OverView from './overView/index.vue';//库房总览
   import ImgSlider from '../../common/lightweightComponents/ImgSlider';
   import BorrowReceive from './borrowReceive/index';//借用领用
+  import DataBase from './dataBase/index';//资料库
   import WorkInfo from '../../common/work-info';
   import LjDialog from '../../common/lj-dialog.vue';
   import SearchHigh from '../../common/searchHigh.vue';
@@ -79,6 +85,7 @@
       SearchHigh,
       LjUpload,
       ImgSlider,
+      DataBase,//资料库
     },
     data() {
       return {
@@ -94,6 +101,10 @@
           {
             id: 2,
             title: '借用领用',
+          },
+          {
+            id: 3,
+            title: '资料库',
           }
         ],//tab切换
 

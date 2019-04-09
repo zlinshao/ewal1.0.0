@@ -43,7 +43,7 @@
                   </div>
                   <div class="calendar-day-item-container-content">
                     <div @click.stop="openMeetingDialog(contentItem)"
-                         :class="[contentItem.status==0?'default':contentItem.type==1?'warning':'danger']"
+                         :class="[contentItem.status==0?'default':contentItem.status==1?'danger':'warning']"
                          :title="contentItem.content"
                          v-for="(contentItem,index) in item.todoList"
                          v-if="index<2">
@@ -61,6 +61,33 @@
           </div>
           <!--时间线-->
           <div class="timeline">
+            <el-timeline>
+              <el-timeline-item
+                :key="index"
+                :color="item.todoType==0?'#50E38F':item.todoType==1?'#FF7A3C':'#FFDC75'"
+                v-if="item.todoList&&item.todoList.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
+                placement="top">
+                <el-card>
+                  <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
+                    <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
+                         @click="openMeetingDialog(contentItem)"
+                         :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoList">
+                      {{contentItem.content}}
+                      <div class="icon-list">
+                        <span v-if="contentItem.status==0" title="取消"
+                              @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
+                              class="icon20 icon-cancel"></span>
+                        <span title="删除"
+                              @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
+                              class="icon20 icon-delete"></span>
+                      </div>
+                    </div>
+                  </div>
+                </el-card>
+              </el-timeline-item>
+            </el-timeline>
+          </div>
+          <!--<div class="timeline">
             <el-timeline>
               <el-timeline-item
                 :key="index"
@@ -86,7 +113,7 @@
                 </el-card>
               </el-timeline-item>
             </el-timeline>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>

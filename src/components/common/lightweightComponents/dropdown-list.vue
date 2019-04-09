@@ -27,14 +27,15 @@
       title: String,
       url: [String],  //请求地址
       params: [Object, String],
-      arr:[Object,Array],
-      disabled:[Boolean],
+      arr: [Object, Array],
+      jsonArr: [Object, Array],
+      disabled: [Boolean],
       size: {
-        type:[String],
-        default:'',
+        type: [String],
+        default: '',
       },//高度
       root: {//接口返回数据data层级   //默认2级
-        type:[String,Number],
+        type: [String, Number],
         default: 2,
       }
     },
@@ -49,13 +50,13 @@
     watch: {
       value: {
         handler(val, oldVal) {
-          if(val==='') {
+          if (val === '') {
             this.dropdown_code = '';
             return;
           }
-          if(this.arr) {
+          if (this.arr) {
             this.dropdown_code = Number(this.value);
-          }else {
+          } else {
             this.dropdown_code = Number(this.value) || '';
           }
         },
@@ -70,8 +71,8 @@
         immediate: true//第一次绑定也执行
       },
       height: {
-        handler(val,oldVal) {
-          if(val) {
+        handler(val, oldVal) {
+          if (val) {
 
           }
         },
@@ -116,21 +117,25 @@
         });
       },
       getDropdownList() {
-        if(this.arr) {
+        if (this.arr) {
           let myArr = [];
-          this.arr.forEach((item,index)=> {
+          this.arr.forEach((item, index) => {
             let myItem = {
-              id:index,
-              name:item
+              id: index,
+              name: item
             }
             myArr.push(myItem);
           })
           this.dropdown_list = myArr;
 
-        } else {
+        }
+        else if (this.jsonArr) {
+          this.dropdown_list = this.jsonArr;
+        }
+        else {
           //this.$http.get(`${this.url}eam/category`,
           let queryParams = this.getQueryParams();
-          let keys = this.url + (JSON.stringify(queryParams)=='{}'?'':JSON.stringify(queryParams));
+          let keys = this.url + (JSON.stringify(queryParams) == '{}' ? '' : JSON.stringify(queryParams));
           let caches = storage.get(keys);
           if (caches) {
             this.dropdown_list = caches;

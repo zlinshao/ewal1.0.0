@@ -88,6 +88,7 @@
     methods: {
       handleCloseDialog() {
         this.dialog_visible = false;
+        this.$emit('update:visible',this.dialog_visible);
         this.$emit('close');
       }
     },

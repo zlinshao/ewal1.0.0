@@ -320,7 +320,7 @@
               <template slot-scope="scope">
                 <div :class="{editable:tableSettingData.goods.modifyAll}">
                   <dropdown-list :disabled="!tableSettingData.goods.modifyAll" width="120"
-                                 :arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
+                                 :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                                  v-model="scope.row.status"></dropdown-list>
                 </div>
 
@@ -351,7 +351,7 @@
               <template slot-scope="scope">
                 <div :class="{editable:tableSettingData.goods.modifyAll}">
                   <dropdown-list :disabled="!tableSettingData.goods.modifyAll" width="100"
-                                 :arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS"
+                                 :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS"
                                  v-model="scope.row.goods_status"></dropdown-list>
                 </div>
               </template>
@@ -544,6 +544,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import utils from '../../../../utils/myUtils';
   import LjDialog from '../../../common/lj-dialog.vue';
   //import Upload from '../../../common/upload.vue';
@@ -769,14 +770,18 @@
                 applyPerson: item.user?.name || '-',//申请人
                 department: item.user?.org[0]?.name || '-',//部门
                 applyTime: item.apply_time || '-',//申请日期
-                applyStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.apply_status],//申请状态
-                goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status],//物品状态
+                //applyStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.apply_status],//申请状态
+                applyStatus: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS, (o)=> {return o.id==item.apply_status})?.name || '-',//申请状态
+                //goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status],//物品状态
+                goodsStatus: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS, (o)=> {return o.id==item.goods_status})?.name || '-',//物品状态
                 repairPrice: item.repair_price || 0,//维修总费用
                 scrapPrice: item.scrap_price || 0,//报废总费用
-                responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type] || '-',//任责人类型
+                //responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type] || '-',//任责人类型
+                responsibleType: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE, (o)=> {return o.id==item.responsible?.type})?.name || '-',//任责人类型
                 responsibleName: item.responsible?.responsible_info?.name || '-',//任责人
                 //costType: item.responsible?.payment_type||0//付款类型-结算方式
-                costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type || 0],//付款类型-结算方式
+                //costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type || 0],//付款类型-结算方式
+                costType: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT, (o)=> {return o.id==item.responsible?.payment_type})?.name || '-',//付款类型-结算方式
                 receive_picture: item.receive_picture || [],
                 user_id: item.user_id,
               };
@@ -1069,7 +1074,6 @@
     color: #000000 !important;
   }
 
-
   .goods-detail {
     .el-input__inner {
       text-align: center !important;
@@ -1158,7 +1162,6 @@
           }
         }
 
-
         //图片dialog
         .borrow-receive-img-dialog {
           .icons-img {
@@ -1170,7 +1173,6 @@
           }
         }
       }
-
 
       /*.photo-img {
         @include childrenImg('celw.png', 'theme1')

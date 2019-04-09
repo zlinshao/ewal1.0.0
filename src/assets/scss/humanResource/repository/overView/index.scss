@@ -102,6 +102,35 @@
       //}
     }
 
+    .edit-category-search-list {
+      height: 30px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      .edit-category-search-dropdown {
+        margin-right: 30px;
+      }
+
+
+      .lj-header-search {
+        .el-icon-search {
+          position: absolute;
+          top: 7px;
+          right: 195px;
+        }
+        input {
+          border: 1px solid #ccc;
+          border-radius:20px;
+          width: 220px;
+          height: 28px;
+          padding: 2px 12px 2px 32px;
+        }
+      }
+    }
+
+
+
+
     .repository-overview {
       .lj-header-search {
         .el-icon-search {

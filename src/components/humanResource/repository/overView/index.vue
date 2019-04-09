@@ -260,9 +260,9 @@
               <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange($event,'useless')"
-                :current-page="params.page"
-                :page-size="params.limit"
-                :total="counts"
+                :current-page="tableSettingData.useless.params.page"
+                :page-size="tableSettingData.useless.params.limit"
+                :total="tableSettingData.useless.counts"
                 layout="total,jumper,prev,pager,next">
               </el-pagination>
             </div>
@@ -289,7 +289,8 @@
           <h3>入库</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form ref="inRepositoryForm" :rules="rules.inRepositoryRules" :model="in_repository_form" style="text-align: left" size="small"
+          <el-form ref="inRepositoryForm" :rules="rules.inRepositoryRules" :model="in_repository_form"
+                   style="text-align: left" size="small"
                    label-width="100px">
             <el-form-item prop="goods" label="物品">
               <div class="items-center iconInput choose-goods" @click="getGoodsList" style="width: 320px">
@@ -301,7 +302,7 @@
                 <p class="choose-goods-icon"></p>
               </div>
               <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
-                    @click="add_goods_form_visible = true;">+</span>
+                    @click="add_goods_form_visible = true;add_goods_form_title='添加物品'">+</span>
             </el-form-item>
             <el-form-item prop="counts" label="数量">
               <el-input v-model.number="in_repository_form.counts" placeholder="请输入数量" style="width: 320px">
@@ -440,10 +441,14 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>添加物品</h3>
+          <h3>{{add_goods_form_title}}</h3>
+          <div v-if="add_goods_form_title=='添加物品'" class="header_right">
+            <el-button @click="getEditCategoryList" type="primary" size="mini" plain>编辑类目</el-button>
+          </div>
         </div>
         <div class="dialog_main borderNone">
-          <el-form ref="addGoodsForm" :rules="rules.addGoods" :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
+          <el-form ref="addGoodsForm" :rules="rules.addGoods" :model="add_goods_form" style="text-align: left"
+                   size="small" label-width="100px">
             <el-form-item prop="classify" label="分类" required>
 
 
@@ -486,16 +491,98 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="saveGoods('addGoodsForm')">提交</el-button>
+          <el-button v-if="add_goods_form_title=='添加物品'" size="small" type="danger" @click="saveGoods('addGoodsForm')">
+            提交
+          </el-button>
+          <el-button v-if="add_goods_form_title=='编辑物品'" v size="small" type="danger" @click="editGoods">提交</el-button>
           <el-button size="small" type="info" @click="add_goods_form_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
+
+    <!--编辑类目dialog-->
+    <lj-dialog
+      :visible.sync="tableSettingData.editCategory.table_dialog_visible"
+      :size="{width: 1100 + 'px',height: 700 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>编辑类目</h3>
+          <div class="header_right">
+            <div class="edit-category-search-list">
+              <div class="edit-category-search-dropdown">
+                <dropdown-list @change-selection="getEditCategoryList({initPage:true})"
+                               v-model="tableSettingData.editCategory.params.type" title="请选择类型" size="mini" width="140"
+                               :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.ADD_GOODS.CATEGORY"></dropdown-list>
+              </div>
+              <div class="lj-header-search">
+                <i class="el-icon-search"></i>
+                <input
+                  v-model="tableSettingData.editCategory.params.search"
+                  @keydown.enter="getEditCategoryList({initPage:true})"
+                  placeholder="搜索名称/姓名" type="text"/>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-table
+            :data="tableSettingData.editCategory.tableData"
+            highlight-current-row
+            :height="this.mainListHeight(430) + 'px'"
+            :row-class-name="tableChooseRow"
+            @cell-click="tableClickRow($event,'useless')"
+            header-row-class-name="tableHeader"
+            :row-style="{height:'40px'}"
+            style="width: 100%">
+            <el-table-column
+              v-for="item in Object.keys(tableSettingData.editCategory.tableShowData)" :key="item"
+              align="center"
+              :prop="item"
+              :label="tableSettingData.editCategory.tableShowData[item]">
+            </el-table-column>
+            <el-table-column
+              align="center"
+              label="操作"
+              min-width="140px"
+            >
+              <template slot-scope="scope">
+                <div class="operate">
+                  <el-button size="mini" type="primary" @click="handleEditCategory(scope.row)">编辑</el-button>
+                  <el-button size="mini" type="danger" @click="handleDeleteCategory(scope.row)">删除</el-button>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+          <footer class="flex-center common-page">
+            <div class="page">
+              <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange($event,'editCategory')"
+                :current-page="tableSettingData.editCategory.params.page"
+                :page-size="tableSettingData.editCategory.params.limit"
+                :total="tableSettingData.editCategory.counts"
+                layout="total,jumper,prev,pager,next">
+              </el-pagination>
+            </div>
+          </footer>
+        </div>
+
+        <div class="dialog_footer">
+          <el-button size="small" type="danger">确定</el-button>
+          <el-button size="small" type="info" @click="tableSettingData.useless.table_dialog_visible = false">取消
+          </el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
     <!--添加目录dialog-->
     <lj-dialog
       :visible="add_category_visible"
-      :size="{width: 550 + 'px',height: 300 + 'px'}"
+      :size="{width: 550 + 'px',height: 340 + 'px'}"
       @close="add_category_visible = false"
     >
       <div class="dialog_container">
@@ -503,7 +590,12 @@
           <h3>{{add_category_form_tip.title}}</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form ref="addCategoryForm" :rules="rules.addCategory" :model="add_goods_form" style="text-align: left" size="small" label-width="100px">
+          <el-form ref="addCategoryForm" :rules="rules.addCategory" :model="add_category_form" style="text-align: left"
+                   size="small" label-width="100px">
+            <el-form-item prop="parent_id" required label="上级分类" v-show="add_category_form.type==1">
+              <dropdown-list v-model="add_category_form.parent_id" title="请选择上级分类"
+                             :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.ADD_GOODS.PARENT_CLASSIFY"></dropdown-list>
+            </el-form-item>
             <el-form-item prop="name" required :label="add_category_form_tip.label">
               <el-input v-model="add_category_form.name" placeholder="必填" style="width: 320px">
               </el-input>
@@ -512,7 +604,8 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button @click="saveCategory" size="small" type="danger">保存</el-button>
+          <el-button v-if="add_category_type==1" @click="saveCategory" size="small" type="danger">保存</el-button>
+          <el-button v-if="add_category_type==2" @click="editCategory" size="small" type="danger">保存</el-button>
           <el-button size="small" type="info" @click="add_category_visible = false">取消</el-button>
         </div>
       </div>
@@ -656,6 +749,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import {DROPDOWN_CONSTANT} from '@/assets/js/allConstantData';
   import LjDialog from '../../../common/lj-dialog.vue';
   import DropdownList from '../../../common/lightweightComponents/dropdown-list';
@@ -684,7 +778,7 @@
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
             counts: [
-              {type:'number',required: true, message: '请输入数量且只能为数字', trigger: 'blur'},
+              {type: 'number', required: true, message: '请输入数量且只能为数字', trigger: 'blur'},
             ],
             location: [
               {required: true, message: '不能为空', trigger: 'change'},
@@ -693,13 +787,13 @@
               {required: true, message: '不能为空', trigger: 'change'},
             ],
             price: [
-              {type:'number',required: true, message: '请输入价格且只能为数字', trigger: 'blur'},
+              {type: 'number', required: true, message: '请输入价格且只能为数字', trigger: 'blur'},
             ],
             totalPrice: [
-              {type:'number',required: true, message: '请输入价格且只能为数字', trigger: 'blur'},
+              {type: 'number', required: true, message: '请输入价格且只能为数字', trigger: 'blur'},
             ],
             resource: [
-              {type:'number',required: true, message: '请输入价格采购源', trigger: 'blur'},
+              {type: 'number', required: true, message: '请输入价格采购源', trigger: 'blur'},
             ],
           },
           addGoods: {
@@ -720,13 +814,15 @@
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
             counts: [
-              {type:'number',required: true, message: '请输入数量且只能为数字', trigger: 'blur'},
+              {type: 'number', required: true, message: '请输入数量且只能为数字', trigger: 'blur'},
             ],
           },
           addCategory: {
+            /*parent_id: [
+              {required: true, message: '不能为空', trigger: 'blur'},
+            ],*/
             name: [
               {required: true, message: '不能为空', trigger: 'blur'},
-              //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
           },
         },
@@ -793,6 +889,37 @@
             },
 
           },
+
+
+          editCategory: {//编辑类目
+            counts: 0,
+            params: {
+              search: '',
+              page: 1,
+              limit: 5,
+              type: 0,
+            },
+            init() {
+              this.params.page = 1;
+            },
+            chooseRowIds: [],
+            currentSelection: {},//当前选择行
+
+            table_dialog_visible: false,//dialog控制
+            table_dialog_title: '',
+            tableData: [],//表格数据
+            tableShowData: {
+              typeName: '类型',
+              name: '名称',
+              parent_name: '上级名称',
+              warning_number: '预警数量',
+              create_username: '创建人名称',
+              remark: '备注',
+            },
+
+          },
+
+
           repair: {//维修
             counts: 0,
             params: {
@@ -817,11 +944,11 @@
 
           },
           useless: {//报废
-            counts: 5,
+            counts: 0,
             params: {
               //search: '',
               page: 1,
-              limit: 8,
+              limit: 5,
             },
             chooseRowIds: [],
             currentSelection: {},//当前选择行
@@ -899,48 +1026,6 @@
           }
         },
 
-        /*
-            *表单群组  begin
-        */
-
-        //借/领用表单
-        /*tableSettingData.borrowReceive.table_dialog_visible: false,//借/领用form表单控制
-        borrowData: [],//借/领用表格数据
-        borrowShowData: {
-          department: '部门',
-          name: '姓名',
-          applyType: '申请类型',
-          applyTime: '申请日期',
-          takeTime: '领用日期',
-          returnTime: '归还日期'
-        },*/
-
-        //维修表单
-        /*tableSettingData.repair.table_dialog_visible: false,//维修form表单控制
-        repairData: [],//维修表格数据
-        repairShowData: {
-          department: '部门',
-          name: '姓名',
-          repairId: '维修编号',
-          repairCost: '维修费用',
-          settlement: '结算方式',
-        },*/
-
-        //报废表单
-        useless_table_visible: false,//报废form表单控制
-        uselessData: [],//报废表单数据
-        uselessShowData: {
-          department: '部门',
-          name: '姓名',
-          uselessId: '报废编号',
-          responsiblePerson: '任责人',
-          repairCost: '维修费用',
-          settlement: '结算方式',
-        },
-
-        /*
-            *表单群组  end
-        */
 
         /*
         *  表单群组  begin
@@ -974,6 +1059,7 @@
         },
 
         //添加物品
+        add_goods_form_title: '添加物品',
         add_goods_form_visible: false,
         add_goods_form: {
           classify: '',//分类
@@ -985,8 +1071,10 @@
         },
 
         //添加目录结构
+        add_category_type:1,//1为添加  2为编辑
         add_category_visible: false,
         add_category_form: {
+          parent_id: 1,
           name: '',
           type: 1,
         },
@@ -1041,8 +1129,6 @@
         handler(val, oldVal) {
           this.in_repository = !this.in_repository;
         },
-        //deep:true,
-        //immediate:true//第一次绑定也执行
       },
 
     },
@@ -1076,9 +1162,9 @@
                 this.getRepositoryList();
               }
               else {
-                this.$LjNotify('error',{
-                  title:'失败',
-                  message:res.msg,
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: res.msg,
                 });
               }
             });
@@ -1141,7 +1227,7 @@
             for (let item of res.data.data) {
               let obj = {
                 id: item.id,
-                name: item.id + item.name,
+                name: item.name,
                 classify: item?.parent?.name || '',
                 brand: item?.brand?.name || '',
                 unit: item?.unit?.name || '',
@@ -1155,7 +1241,7 @@
         })
       },
 
-
+      //添加物品
       saveGoods() {
         this.$refs['addGoodsForm'].validate((valid) => {
           if (valid) {//成功
@@ -1188,9 +1274,175 @@
         });
       },
 
+      //打开编辑类目对话框
+      getEditCategoryList({initPage} = {}) {
+
+        this.currentTable = 'editCategory';
+        if (initPage) {
+          this.tableSettingData[this.currentTable].init();
+        }
+        this.tableSettingData[this.currentTable].tableData = [];
+        this.tableSettingData[this.currentTable].table_dialog_visible = true;
+        this.requestEditCategoryData();
+      },
+
+      requestEditCategoryData() {
+        let params = {
+          ...this.tableSettingData[this.currentTable].params,
+
+        };
+        this.$http.get(`${this.url}eam/category`, params).then(res => {
+          if (res.code.endsWith('0')) {
+            for (let item of res.data.data) {
+              let obj = {
+                id: item.id,//id
+                classify: item.parent?.id,
+                type: item.type,
+                typeName: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.ADD_GOODS.CATEGORY, (o) => {
+                  return o.id == item.type
+                }).name,
+                name: item.name || '-',
+                parent_id: item.parent_id,
+                brand: item.brand_id,
+                brand_id: item.brand_id,
+                unit: item.unit_id,
+                unit_id: item.unit_id,
+                parent_name: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.ADD_GOODS.PARENT_CLASSIFY, (o) => {
+                  return o.id == item.parent_id
+                })?.name || '-',
+                warning_number: item.warning_number || 0,
+                counts: item.warning_number,
+                create_username: item.user?.name || '-',
+                remark: item.remarks || '-',
+                remarks: item.remarks,
+              };
+              this.tableSettingData[this.currentTable].tableData.push(obj);
+            }
+            this.tableSettingData[this.currentTable].counts = res.data.count;
+          }
+        });
+      },
+
+
+      handleEditCategory(row) {
+        if (row.type == 2) {
+
+          this.add_goods_form_visible = false;
+          this.$nextTick(() => {
+            this.add_goods_form = row;
+            this.add_goods_form_visible = true;
+            this.add_goods_form_title = '编辑物品';
+          })
+        } else  {
+          this.add_category_type = 2;
+          switch (row.type) {
+            case 1:
+              this.add_category_form.type = 1;//
+              this.add_category_form_tip.title = '编辑分类';
+              this.add_category_form_tip.label = '分类名称';
+              break;
+            case 3:
+              this.add_category_form.type = 3;//
+              this.add_category_form_tip.title = '编辑品牌';
+              this.add_category_form_tip.label = '品牌名称';
+              break;
+            case 4:
+              this.add_category_form.type = 4;//
+              this.add_category_form_tip.title = '编辑单位';
+              this.add_category_form_tip.label = '单位名称';
+              break;
+            case 5:
+              this.add_category_form.type = 5;//
+              this.add_category_form_tip.title = '编辑采购源';
+              this.add_category_form_tip.label = '采购源';
+              break;
+          }
+          //debugger
+          this.add_category_visible = true;
+          this.add_category_form = row;
+        }
+      },
+
+      //编辑分类
+      editCategory() {
+        debugger
+        this.$http.put(`${this.url}eam/category/${this.add_category_form.id}`,this.add_category_form).then(res=> {
+          if(res.code.endsWith('0')) {
+            this.$LjNotify('success',{
+              title:'成功',
+              message:'编辑成功',
+            });
+            this.add_category_visible =false;
+            this.add_category_form = {
+              parent_id: 1,
+              name: '',
+              type: 1,
+            };
+            this.getEditCategoryList();
+          }else {
+            this.$LjNotify('error',{
+              title:'失败',
+              message:'编辑失败',
+            });
+          }
+        });
+      },
+
+      //编辑物品
+      editGoods() {
+        this.$http.put(`${this.url}eam/category/${this.add_goods_form.id}`, this.add_goods_form).then(res => {
+          debugger
+          if (res.code.endsWith('0')) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: '编辑成功',
+            });
+            this.add_goods_form_visible = false;
+            this.add_goods_form = {
+              classify: '',//分类
+              brand: '',//品牌
+              name: '',//名称
+              unit: '',//单位
+              counts: '',//预警数量
+              remark: '',//备注
+            },
+              this.getEditCategoryList();
+          } else {
+            this.$LjNotify('error', {
+              title: '失败',
+              message: '编辑失败',
+            });
+          }
+        });
+      },
+
+
+      //删除某个category 资产目录
+      handleDeleteCategory(row) {
+        this.$LjConfirm().then(res => {
+          this.$http.delete(`${this.url}eam/category/${row.id}`).then(res => {
+            if (res.code.endsWith('0')) {
+              this.$LjNotify('success', {
+                title: '成功',
+                message: '删除成功',
+              });
+              this.getEditCategoryList();
+            } else {
+              this.$LjNotify('error', {
+                title: '失败',
+                message: res.msg,
+              });
+            }
+          });
+        });
+      },
+
+
       //添加category
       addCategory(index) {
+        this.add_category_type = 1;
         this.add_category_visible = true;
+        this.add_category_form.parent_id = 0;
         switch (index) {
           case 1:
             this.add_category_form.type = 1;//
@@ -1338,7 +1590,10 @@
                 goods_number: item.goods_number || '-',
                 responsiblePerson: item.process?.responsible?.responsible_info?.name || '-',//任责人
                 repair_price: item?.process?.responsible?.repair_price || 0,//维修费用
-                payment_type: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.process?.responsible?.payment_type || 0],
+                //payment_type: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.process?.responsible?.payment_type || 0],
+                payment_type: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT, (o) => {
+                  return o.id == item.process?.responsible?.payment_type
+                })?.name || '-',
               }
               this.tableSettingData[this.currentTable].tableData.push(obj)
             }
@@ -1414,7 +1669,7 @@
 
 
       // 当前点击
-      tableClickRow(row,currentTable) {
+      tableClickRow(row, currentTable) {
         this.tableSettingData[currentTable].currentSelection = row;
         let ids = this.tableSettingData[currentTable].chooseRowIds;
         ids.push(row.id);
@@ -1457,6 +1712,9 @@
             break;
           case 'goods':
             this.getGoodsList();
+            break;
+          case 'editCategory':
+            this.getEditCategoryList();
             break;
           case 'inRepository':
             let categoryId = this.tableSettingData[this.currentTable].currentSelection.category_id;

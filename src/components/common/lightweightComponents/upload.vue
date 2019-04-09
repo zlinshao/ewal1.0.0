@@ -19,7 +19,6 @@
         </div>
 
         <div @click="showImgSlider(showFile,index)" v-else-if="item.info.mime.includes('video') && !editable">
-          <!--<div class="playVideo" @click="videoPlay(index)">播放</div>-->
           <video :id="'video' + file.keyName + index">
             <source :src="item.uri" type="video/ogg"/>
             <source :src="item.uri" type="video/mp4"/>
@@ -178,7 +177,7 @@
 
         Promise.all(promises).then(() => {
           zip.generateAsync({type: "blob"}).then(content => { // 生成二进制流
-            FileSaver.saveAs(content, "打包下载.zip") // 利用file-saver保存文件
+            FileSaver.saveAs(content, "附件.zip") // 利用file-saver保存文件
           })
         })
       },
