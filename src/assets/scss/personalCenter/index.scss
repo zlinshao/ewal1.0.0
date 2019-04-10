@@ -1,0 +1,124 @@
+@import "../common.scss";
+
+#theme_name {
+  #personal_center {
+    height: 100%;
+    //width: 100%;
+    .personal-center-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      //background-color: red;
+      height: 100%;
+      padding-top: 15px;
+      //width: 100%;
+      .container-left {
+        width: 18%;
+        background-color: $colorFFF;
+        height: 100%;
+        .container-left-up {
+          height: 40%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+
+          .personal-info {
+            height: 65%;
+            width: 100%;
+            background-color: aliceblue;
+            @include flex('flex-center');
+            flex-direction: column;
+
+            .personal-info-photo {
+              width: 80px;
+              height: 80px;
+              border-radius:50%;
+              overflow: hidden;
+              background-color: greenyellow;
+            }
+            .personal-info-name {
+              @include flex('flex-center');
+              position: relative;
+              font-size:20px;
+              height: 26px;
+              line-height: 26px;
+              //width: 140px;
+              color: #686874;
+              font-weight: 700;
+
+              .personal-info-badge {
+                position: absolute;
+                top: 2px;
+                right: -26px;
+                //background-color: #666;
+                height: 19px;
+                width: 22px;
+                font-size: 10px;
+                color: $colorE33;
+                @include flex('flex-center');
+              }
+            }
+            .personal-info-status {
+              //@include flex('flex-center');
+              font-size: 16px;
+              line-height: 21px;
+              width: 140px;
+              height: 21px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              color: #686874;
+            }
+          }
+          .personal-group-button {
+            flex: 1;
+            width: 100%;
+            background-color: blueviolet;
+          }
+
+
+        }
+        .container-left-down {
+          height: 60%;
+          background-color: #0BB07B;
+        }
+      }
+      .container-right {
+        flex: 1;
+        //background-color: yellow;
+        height: 100%;
+        padding: 15px;
+        .calendar {
+          height: 100%;
+          width: 100%;
+          background-color: blue;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #personal_center {
+
+  }
+}
+
+#theme_name.theme2 {
+  #personal_center {
+
+  }
+}
+
+#theme_name.theme3 {
+  #personal_center {
+
+  }
+}
+
+#theme_name.theme4 {
+  #personal_center {
+
+  }
+}
