@@ -163,14 +163,16 @@
           transform: scale(1.05);
           transition: all 1s; }
         #theme_name #repository .repository-container .content > div span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
           width: 80px;
           word-wrap: break-word;
           word-break: break-all;
           color: #fff;
           font-size: 32px;
-          font-family: 'jingDianXingShu';
-          position: relative;
-          left: 8px; }
+          font-family: 'jingDianXingShu'; }
           #theme_name #repository .repository-container .content > div span.gray {
             color: #686874; }
 

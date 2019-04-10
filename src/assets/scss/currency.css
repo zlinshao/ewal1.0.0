@@ -300,6 +300,9 @@
       color: #FFFFFF;
       font-size: 30px;
       padding-bottom: 6px; }
+  #theme_name .listTopCss .listTopRight .report {
+    background: url("../../assets/image/common/theme1/search.png") no-repeat scroll center;
+    background-size: 100% 100%; }
   #theme_name .listTopCss .listTopRight .search {
     background: url("../../assets/image/common/theme1/search.png") no-repeat scroll center;
     background-size: 100% 100%; }
