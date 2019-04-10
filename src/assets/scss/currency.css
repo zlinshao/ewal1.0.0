@@ -516,6 +516,14 @@
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%; }
+#theme_name .all-choose {
+  background: url("../../assets/image/common/theme1/quanxuan.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name .icon-address {
+  width: 20px;
+  height: 20px;
+  background: url("../../assets/image/common/theme1/dizhi.png") no-repeat scroll center;
+  background-size: 100% 100%; }
 #theme_name .search {
   display: inline-block;
   width: 30px;
