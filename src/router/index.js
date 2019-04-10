@@ -134,6 +134,13 @@ const ReserveTrainning = () =>
 //待办
 // const TodoList = () => import('@/components/todoList/index.vue');
 
+//个人中心
+const PersonalCenter = () => import('@/components/personalCenter/index.vue');
+
+
+
+
+
 //知识产权保护
 const IntellectualPropertyProtection = () =>
   import('@/components/intellectualPropertyProtection/index.vue')
@@ -530,7 +537,12 @@ export default new Router({
       path: '/pending',
       name: '待处理项',
       component: Pending
-    }
+    },
+    {
+      path: '/personalCenter',
+      name: '个人中心',
+      component: PersonalCenter,
+    },
     // {
     //     path: '/offerDetail',
     //     name: '录用通知书',

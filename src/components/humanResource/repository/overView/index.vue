@@ -714,7 +714,7 @@
               key="repairId"
               align="center"
               prop="repairId"
-              label="维修编号">
+              label="物品编号">
             </el-table-column>
             <el-table-column
               key="qrCode"
