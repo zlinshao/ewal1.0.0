@@ -36,7 +36,7 @@
                    @close="add_visible = false">
            <div class="dialog_container">
               <div class="dialog_main flex-center borderNone">
-                <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible">
+                <el-form label-width="120px" class="depart_visible">
                   <el-form-item label="所属部门">
                     <div class="items-center iconInput">
                       <el-input placeholder="请选择"></el-input>
@@ -69,7 +69,7 @@
                    @close="edit_visible = false">
            <div class="dialog_container">
                 <div class="dialog_main flex-center borderNone">
-                <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible">
+                <el-form label-width="120px" class="depart_visible">
                   <el-form-item label="所属部门">
                     <div class="items-center iconInput">
                       <el-input placeholder="请选择"></el-input>
