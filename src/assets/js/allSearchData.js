@@ -252,18 +252,18 @@ export const accountRunSearch = {
     data: [
         {
             keyType: 'date',
-            title: '开始日期',
+            title: '交易日期',
             placeholder: '请选择开始日期',
             keyName: 'start_date',
             dataType: '',
         },
-        {
-            keyType: 'date',
-            title: '结束日期',
-            placeholder: '请选择结束日期',
-            keyName: 'end_date',
-            dataType: '',
-        },
+        // {
+        //     keyType: 'date',
+        //     title: '结束日期',
+        //     placeholder: '请选择结束日期',
+        //     keyName: 'end_date',
+        //     dataType: '',
+        // },
         {
             keyType: 'radio',
             title: '类别',
@@ -275,20 +275,20 @@ export const accountRunSearch = {
                 {id: 2, title: '支出'},
             ]
         },
-        {
-            keyType: 'date',
-            title: '操作开始日期',
-            placeholder: '请选择操作开始日期',
-            keyName: 'operate_start_date',
-            dataType: '',
-        },
-        {
-            keyType: 'date',
-            title: '操作结束日期',
-            placeholder: '请选择操作结束日期',
-            keyName: 'operate_end_date',
-            dataType: '',
-        },
+        // {
+        //     keyType: 'date',
+        //     title: '操作开始日期',
+        //     placeholder: '请选择操作开始日期',
+        //     keyName: 'operate_start_date',
+        //     dataType: '',
+        // },
+        // {
+        //     keyType: 'date',
+        //     title: '操作结束日期',
+        //     placeholder: '请选择操作结束日期',
+        //     keyName: 'operate_end_date',
+        //     dataType: '',
+        // },
     ]
 };
 

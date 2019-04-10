@@ -168,3 +168,54 @@ $color0F0: #F0F0F0;
 .scroll_bar {
   @include scroll;
 }
+.action-bar{
+  width: 100%;
+  padding: 0 40px;
+  height:46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top:1px solid #F2F2F2;
+  div{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+  }
+  .check-count{
+    margin-left: 30px;
+    margin-right: 50px;
+    i{
+      font-style: normal;
+      color:#ff4545;
+    }
+  }
+  .action-bar-name{
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    span{
+      display: inline-block;
+      text-align: center;
+      border-left:1px solid #9B9B9B;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+    span:first-child{
+      border-left:0;
+    }
+
+  }
+  .delete{
+    color:#ff4545;
+  }
+  .edit{
+    color:#0C66FF;
+  }
+  .check{
+    color:#0BB07B
+  }
+}
+

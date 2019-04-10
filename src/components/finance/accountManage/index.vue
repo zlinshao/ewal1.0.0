@@ -12,38 +12,40 @@
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
-        <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+        <div class="action-bar changeChoose">
+            <div class="action-bar-left">
+                <el-checkbox>全选</el-checkbox>
+                <span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+                <span class="action-bar-name" v-show="action_visible">
+                    <span class="edit" @click="handleOpenUpdateAccount(current_row)">更新</span>
+                    <span class="edit" @click="handleOpenRecharge(current_row)">充值</span>
+                    <span class="edit" @click="initial_visible = true;">归零</span>
+                    <span class="edit" @click="handleOpenInfo(current_row)">记录</span>
+                    <span class="delete" @click="handleOpenDel(current_row)">删除</span>
+                </span>
+            </div>
+            <div class="action-bar-right">
+
+            </div>
+        </div>
+        <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
             <el-table
                     :data="accountData"
                     :height="this.mainListHeight(30) + 'px'"
                     highlight-current-row
                     :row-class-name="tableChooseRow"
                     @cell-click="tableClickRow"
+                    @selection-change="handleSelectionChange"
                     header-row-class-name="tableHeader"
                     style="width: 100%">
+                <el-table-column
+                        type="selection" width="40">
+                </el-table-column>
                 <el-table-column
                         v-for="item in Object.keys(showData)" :key="item"
                         align="center"
                         :prop="item"
                         :label="showData[item]">
-                </el-table-column>
-                <el-table-column
-                        align="center"
-                        label="操作"
-                >
-                    <template slot-scope="scope">
-                        <div class="operate">
-                            <!--<el-button size="mini" type="primary" plain @click="info_visible = true">点击查看</el-button>-->
-                            <el-button size="mini" type="success" @click="handleOpenUpdateAccount(scope.row)">更新
-                            </el-button>
-                            <el-button size="mini" type="danger" @click="handleOpenDel(scope.row)">删除</el-button>
-                            <el-button size="mini" type="warning" @click="handleOpenRecharge(scope.row)">充值</el-button>
-                            <el-button size="mini" type="danger"
-                                       @click="initial_visible = true;current_row = scope.row">归零
-                            </el-button>
-                            <el-button size="mini" type="success" @click="handleOpenInfo(scope.row)">记录</el-button>
-                        </div>
-                    </template>
                 </el-table-column>
             </el-table>
             <footer class="flex-center bottomPage">
@@ -438,7 +440,9 @@
                 account_recharge_visible: false,
                 recharge: {
                     amount: ''
-                }
+                },
+                multipleSelection:[],
+                action_visible:false,
             }
         },
         mounted() {
@@ -456,6 +460,17 @@
         },
         computed: {},
         methods: {
+            // 多选
+            handleSelectionChange(val){
+                this.multipleSelection = val;
+                if(val.length>0){
+                    this.action_visible = true;
+                    this.current_row = val[0];
+                }else {
+                    this.action_visible = false;
+                }
+                console.log(val);
+            },
             handleCloseInfo() {
                 this.info_params.operation = '';
                 this.info_params.account_id = '';

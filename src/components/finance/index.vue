@@ -47,7 +47,7 @@
   }
 
   @mixin hoverImg($n) {
-    @for $i from 1 through 5 {
+    @for $i from 1 through 8 {
       .mainList.finance#{$i} {
         .abacusUp {
           .icons {

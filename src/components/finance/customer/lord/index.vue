@@ -1,5 +1,5 @@
 <template>
-    <div class="mainListTable">
+    <div class="mainListTable changeChoose">
         <!--列表-->
         <el-table
                 :data="lordLists"
@@ -11,15 +11,21 @@
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
 
+            <el-table-column
+                    type="selection" width="40">
+            </el-table-column>
+
             <el-table-column label="前缀" align="center" width="90">
                 <template slot-scope="scope">
                     <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===1">
                         /
                     </div>
                     <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
-                        <span style="background-color: #14e731;" v-if="LordStatus[scope.$index]['is_contact']===0"></span>
+                        <span style="background-color: #14e731;"
+                              v-if="LordStatus[scope.$index]['is_contact']===0"></span>
                         <span style="background-color: #e6a23c;" v-if="LordStatus[scope.$index]['is_name']===1"></span>
-                        <span style="background-color: #f56c6c;" v-if="LordStatus[scope.$index]['is_address']===2"></span>
+                        <span style="background-color: #f56c6c;"
+                              v-if="LordStatus[scope.$index]['is_address']===2"></span>
                         <span v-if="freeze[scope.$index]===1" style="background-color: #409eff;"></span>
                     </div>
                 </template>
@@ -44,22 +50,23 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="操作" prop="" align="center" width="500">
-                <template slot-scope="scope">
-                    <el-button type="success" size="small" @click="handleEditLord(scope.row,scope.$index,'check')">查看
-                    </el-button>
-                    <el-button type="primary" size="small" @click="handleEditLord(scope.row,scope.$index,'edit')">编辑
-                    </el-button>
-                    <!--<el-button type="warning" size="small" @click="handleReturnRemark(scope.row,scope.$index)">取消重复标记</el-button>-->
-                    <el-button type="warning" size="small" @click="handleRemark(scope.row,scope.$index)">取消重复标记</el-button>
-                    <el-button type="success" size="small" plain
-                               @click="scope.row.freeze===0 ? handleProcessLord(scope.row,scope.$index):handleCancelProcessLord(scope.row,scope.$index)">
-                        {{scope.row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
-                    </el-button>
-                    <el-button type="danger" size="small" @click="handleDeleteLord(scope.row,scope.$index)">删除
-                    </el-button>
-                </template>
-            </el-table-column>
+            <!--<el-table-column label="操作" prop="" align="center" width="500">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<el-button type="success" size="small" @click="handleEditLord(scope.row,scope.$index,'check')">查看-->
+                    <!--</el-button>-->
+                    <!--<el-button type="primary" size="small" @click="handleEditLord(scope.row,scope.$index,'edit')">编辑-->
+                    <!--</el-button>-->
+                    <!--&lt;!&ndash;<el-button type="warning" size="small" @click="handleReturnRemark(scope.row,scope.$index)">取消重复标记</el-button>&ndash;&gt;-->
+                    <!--<el-button type="warning" size="small" @click="handleRemark(scope.row,scope.$index)">取消重复标记-->
+                    <!--</el-button>-->
+                    <!--<el-button type="success" size="small" plain-->
+                               <!--@click="scope.row.freeze===0 ? handleProcessLord(scope.row,scope.$index):handleCancelProcessLord(scope.row,scope.$index)">-->
+                        <!--{{scope.row.freeze === 0 ? '生成待处理项':'取消待处理项'}}-->
+                    <!--</el-button>-->
+                    <!--<el-button type="danger" size="small" @click="handleDeleteLord(scope.row,scope.$index)">删除-->
+                    <!--</el-button>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
         </el-table>
         <!--分页-->
         <footer class="flex-center bottomPage">
@@ -93,44 +100,15 @@
                 </div>
             </div>
         </lj-dialog>
-        <!--详情-->
-        <lj-dialog :visible="details_visible" :size="{width: 960 + 'px',height: 560 + 'px'}"
-                   @close="details_visible = false">
-            <div class="dialog_container">
-                <div class="dialog_header">
-                    <h3>详情</h3>
-                </div>
-                <div class="dialog_main">
-                    <el-row :gutter="20" style="width: 100%">
-                        <el-col :span="15" :offset="1">
-                            <div class="justify-bet" style="flex-wrap: wrap">
-                                <div class="" style="width:45%;padding: 10px 0;text-align: left"
-                                     v-for="(item,index) in tableDetailData.slice(0,17)" :key="index">
-                                    <span class="tablelabel">{{item.label}}</span>
-                                    <span>{{lordDetailData[item.prop]}}</span>
-                                </div>
-                            </div>
-                        </el-col>
-                        <el-col :span="7" :offset="1">
-                            <div class="justify-bet" style="flex-wrap: wrap">
-                                <div class="" style="width:90%;padding: 10px 0;text-align: left"
-                                     v-for="(item,index) in tableDetailData.slice(17)" :key="index">
-                                    <span class="tablelabel">{{item.label}}</span>
-                                    <span>{{lordDetailData[item.prop]}}</span>
-                                </div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                </div>
-            </div>
-        </lj-dialog>
 
         <!--编辑-->
         <lj-dialog
                 :visible="edit_visible"
                 :size="{width: 1200 + 'px',height: 800 + 'px' }"
                 @close="edit_visible = false">
-            <lord-form  :editForm="lordDetailData" :type="chooseType" :current_row="current_row" @updateList="updateLordList" :address="set_price_form.bottom_name" :addressIds="set_price_form.bottom_id"></lord-form>
+            <lord-form :editForm="lordDetailData" :type="chooseType" :current_row="current_row"
+                       @updateList="updateLordList" :address="set_price_form.bottom_name"
+                       :addressIds="set_price_form.bottom_id"></lord-form>
         </lj-dialog>
 
         <!--搜索房源-->
@@ -147,8 +125,8 @@
 
     export default {
         name: "index",
-        components: {LordForm, LjDialog, LjSubject,HouseFilter},
-        props: ['searchParams'],
+        components: {LordForm, LjDialog, LjSubject, HouseFilter},
+        props: ['searchParams','status','current_row_info'],
         data() {
             return {
                 params: {//查询参数
@@ -161,29 +139,7 @@
                     export: '',
                 },
                 chooseRowIds: [],//列表ids
-                tableDetailData: [//详情
-                    {label: "签约人 :", prop: "staff"},
-                    {label: "所属部门 :", prop: "department"},
-                    {label: "客户姓名 :", prop: "customer_name"},
-                    {label: "客户联系方式 :", prop: "contact"},
-                    {label: "房屋地址 :", prop: "address"},
-                    {label: "租房月数 :", prop: "months"},
-                    {label: "付款方式/月单价 :", prop: "prices"},
-                    {label: "待签约日期 :", prop: "deal_date"},
-                    {label: "空置期 :", prop: "freeze"},
-                    {label: "第一次打房租日期 :", prop: "first_pay_date"},
-                    {label: "第二次打房租日期 :", prop: "second_pay_date"},
-                    {label: "负责人 :", prop: "leader"},
-                    {label: "所属部门 :", prop: "department"},
-                    {label: "操作人 :", prop: "operator"},
 
-                    {label: "备注 :", prop: "remark"},
-                    {label: "汇款方式 :", prop: "account_type"},
-                    {label: "汇款人姓名 :", prop: "account_owner"},
-                    {label: "开户行 :", prop: "account_bank"},
-                    {label: "支行 :", prop: "account_subbank"},
-                    {label: "账号 :", prop: "account_num"},
-                ],
                 LordStatus: [
                     {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
                     {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
@@ -203,17 +159,17 @@
                 edit_visible: false,//编辑
                 details_visible: false,//详情
                 is_disabled: true,//是否禁用
-                current_row: '',//当前row
+                current_row: this.current_row_info,//当前row
                 lordLists: [],//列表数据
                 lordCount: 0,
                 lordIds: [],
                 ra_ids: [],
                 multipleSelection: [],//多选
                 freeze: [],//待处理
-                lordDetailData: {},
+                lordDetailData: this.row,
 
-                statusLists:[],
-                house_filter_visible:false,
+                statusLists: [],
+                house_filter_visible: false,
                 set_price_form: {
                     bottom_price: '',
                     bottom_id: [],
@@ -224,7 +180,8 @@
                     bottom_type: '',
                     suggest_type: ''
                 },
-                chooseType:'',
+                chooseType: '',
+
 
             }
         },
@@ -232,13 +189,11 @@
             this.getLordList();
         },
         created() {
-            // this.$bus.on('cancelRemarkFun', this.handleRemark);//取消重复标记
             this.$bus.on('getParams', this.handleParams);//搜索参数
             this.$bus.on('chooseHouse', this.handleChooseHouse);//搜索房屋
             this.$bus.on('cancelEdit_visible', this.getEditStatus);//取消
         },
         beforeDestroy() {
-            // this.$bus.off('cancelRemarkFun', this.handleRemark);
             this.$bus.off('getParams', this.handleParams);
             this.$bus.off('chooseHouse', this.handleChooseHouse);//搜索房屋
             this.$bus.off('cancelEdit_visible', this.getEditStatus);//取消
@@ -247,48 +202,51 @@
 
         },
         watch: {
+            current_row:{
+                handler(val){
 
+                },
+                deep:true
+            }
         },
 
         computed: {},
         methods: {
-            getEditStatus(val){
+            getEditStatus(val) {
                 this.edit_visible = val;
             },
 
             //房屋
-            handleChooseHouse(val){
+            handleChooseHouse(val) {
                 this.house_filter_visible = val
             },
             //确定选择房源
-            handleGetHouseResource(house,type) {
+            handleGetHouseResource(house, type) {
                 console.log(house);
                 console.log(type);
                 if (house) {
-                        this.set_price_form.bottom_name = '';
-                        this.set_price_form.bottom_id = [];
-                        house.map(item => {
-                            this.set_price_form.bottom_name += item.house_name + ',';
-                            if (type === 'house') {
-                                this.set_price_form.bottom_type = 1;
-                                this.set_price_form.bottom_id.push(item.house_id);
-                            } else {
-                                this.set_price_form.bottom_type = 2;
-                                this.set_price_form.bottom_id.push(item.village_id);
-                            }
-                        });
-                        this.set_price_form.bottom_name = this.set_price_form.bottom_name.substring(0,this.set_price_form.bottom_name.length - 1);
+                    this.set_price_form.bottom_name = '';
+                    this.set_price_form.bottom_id = [];
+                    house.map(item => {
+                        this.set_price_form.bottom_name += item.house_name + ',';
+                        if (type === 'house') {
+                            this.set_price_form.bottom_type = 1;
+                            this.set_price_form.bottom_id.push(item.house_id);
+                        } else {
+                            this.set_price_form.bottom_type = 2;
+                            this.set_price_form.bottom_id.push(item.village_id);
+                        }
+                    });
+                    this.set_price_form.bottom_name = this.set_price_form.bottom_name.substring(0, this.set_price_form.bottom_name.length - 1);
 
                 }
                 this.house_filter_visible = false;
 
-                console.log(this.addressInfo)
-
             },
             // 搜索参数
             handleParams(val) {
-                if (val.undefined) {
-                    this.params.search = val.undefined;
+                if (val.search) {
+                    this.params.search = val.search;
                 } else {
                     this.params.search = ''
                 }
@@ -318,11 +276,13 @@
             // 行 状态
             tableRowClassName({row, rowIndex}) {
                 // return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-                return row.freeze===1 ? 'success-row' : '';
+                return row.freeze === 1 ? 'success-row' : '';
             },
 
             // 多选
             handleSelectionChange(val) {
+                this.multipleSelection = val;
+                this.$emit('getMultipleSelection',val)
             },
             callbackSuccess(res) {
                 if (res.code === 200) {
@@ -347,17 +307,15 @@
                     if (res.code === 200) {
                         this.showLoading(false);
                         this.lordLists = res.data.data.sort(
-                            function (a,b) {
-                                return a.id-b.id
+                            function (a, b) {
+                                return a.id - b.id
                             }
                         );
-                        console.log(this.lordLists);
                         this.lordCount = res.data.count;
                         this.freeze = [];
                         for (let item of this.lordLists) {
                             this.freeze.push(item.freeze);
                         }
-                        console.log(this.freeze);
 
                     } else {
                         this.lordLists = [];
@@ -372,8 +330,8 @@
                         if (res.code === 200) {
                             let statusData = res.data.data;
                             this.LordStatus = statusData.sort(
-                                function (a,b) {
-                                    return a.id-b.id
+                                function (a, b) {
+                                    return a.id - b.id
                                 }
                             );
                         }
@@ -395,11 +353,10 @@
                 console.log(this.lordLists[index]);
                 this.lordDetailData = this.lordLists[index];
                 console.log(this.lordDetailData);
-
             },
 
             //打开编辑
-            handleEditLord(row, index,type) {
+            handleEditLord(row, index, type) {
                 this.chooseType = type;
                 this.current_row = row;
                 this.edit_visible = true;
@@ -438,7 +395,7 @@
                 })
             },
             //忽略重复标记
-            handleRemark(row,index) {
+            handleRemark(row, index) {
 
                 this.ra_ids = [];
                 this.ra_ids.push(row.id);
@@ -482,7 +439,7 @@
     }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 
     @import "../../../../assets/scss/finance/customer/index.scss";
 
@@ -498,7 +455,8 @@
                     margin-left: 4px;
                 }
             }
-            .el-table .success-row{
+
+            .el-table .success-row {
                 background: #DFDFDF;
             }
 

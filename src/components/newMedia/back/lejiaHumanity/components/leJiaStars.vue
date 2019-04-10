@@ -12,7 +12,7 @@
             <div class="star_info_right flex-center">
                 <div class="main_info scroll_bar">
                     <h5 class="edit_icon justify-end" @click.stop="edit()"><span></span>编辑</h5>
-                    <h3>的说法都是发生的快速打开</h3>
+                    <h3>{{starInfo.title}}</h3>
                     <p>
                         is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价</p>
                     <div class="justify-bet">
@@ -69,6 +69,7 @@
                     name:'赵丽颖',
                     content:'国际上的飞机上的就发生的纠纷双方品搜东方'
                 },
+                starInfo:{},
             }
         },
         created(){
@@ -76,6 +77,9 @@
         },
         beforeDestroy(){
             this.$bus.off('add',this.getVal);
+        },
+        mounted(){
+          this.getLeJiaStarInfo();
         },
         methods: {
             //获取bus传值
@@ -89,6 +93,15 @@
             },
             edit() {
                 this.visible = true;
+            },
+            //获取乐伽之星
+            getLeJiaStarInfo(){
+                this.$http.get(globalConfig.newMedia_sever + '/api/humanity/star',).then(res => {
+                    if(res.status===200){
+                        console.log(res.data)
+                        this.starInfo = res.data;
+                    }
+                })
             }
         },
     }

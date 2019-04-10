@@ -88,7 +88,7 @@
                                     <span>应付金额</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="formData.amount_payable"></el-input>
+                                    <el-input placeholder="请输入" v-model="formData.amount_payable" :disabled="current_row.is_rank===1?true:false"></el-input>
                                 </div>
                             </div>
                         </el-form-item>

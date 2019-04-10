@@ -339,7 +339,7 @@
 #theme_name .mainListTable {
   padding: 0 30px;
   background-color: #FFFFFF;
-  margin-top: 9px;
+  /*margin-top: 9px;*/
   font-size: 14px; }
   #theme_name .mainListTable .status {
     display: flex;

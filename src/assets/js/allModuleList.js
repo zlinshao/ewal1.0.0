@@ -136,8 +136,12 @@ export const finance = {
       title: '流水',
     },
       {
+          url: 'balance',
+          title: '结算',
+      },
+      {
           url: 'pending',
-          title: '待处理项',
+          title: '待处理',
       },
   ]
 };
