@@ -268,7 +268,7 @@
           <h3>{{meeting_detail_form.meetingType}} {{meeting_detail_form.meetingTime}}</h3>
 
           <div class="header_right" style="height: 30px">
-            <i title="编辑" v-if="meeting_detail_form.status==0" class="icon icon-edit"
+            <i title="编辑" v-if="meeting_detail_form.status==0" class="icon30 icon-edit"
                @click="showEditMeetingDialog"></i>
           </div>
         </div>
@@ -1482,7 +1482,7 @@
 
 <style scoped lang="scss">
   @import "../../../assets/scss/humanResource/discussPolitics/index";
-  @import "../../../assets/scss/icon";
+  //@import "../../../assets/scss/icon";
 
   @mixin discussPoliticsImg($m, $n) {
     $url: '../../../assets/image/humanResource/discussPolitics/' + $n + '/' + $m;
@@ -1493,7 +1493,7 @@
     #discussPolitics {
       /*.icon-delete {
         @include discussPoliticsImg('shanchu.png', 'theme1');
-      }*/
+      }
 
       .icon-delete-red {
         @include discussPoliticsImg('shanchu1.png', 'theme1');
@@ -1504,12 +1504,46 @@
       }
 
       .icon-edit {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
+        @include discussPoliticsImg('bianji_2.png', 'theme1');
+      }*/
+    }
+  }
+
+  #theme_name.theme1 {
+    #discussPolitics {
+      .icon-delete {
+        @include discussPoliticsImg('shanchu.png', 'theme1');
+      }
+
+      .icon-delete-red {
+        @include discussPoliticsImg('shanchu1.png', 'theme1');
+      }
+
+      .icon-upload {
+        @include discussPoliticsImg('ckfj.png', 'theme1');
+      }
+
+      .icon-edit {
         @include discussPoliticsImg('bianji_2.png', 'theme1');
       }
+    }
+  }
+
+  #theme_name.theme2 {
+    #discussPolitics {
+
+    }
+  }
+
+  #theme_name.theme3 {
+    #discussPolitics {
+
+    }
+  }
+
+  #theme_name.theme4 {
+    #discussPolitics {
+
     }
   }
 </style>
