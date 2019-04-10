@@ -234,8 +234,7 @@
                                 </div>
                                 <div class="item_content">
                                     <el-select class="all_width" v-model="add_account.scope" placeholder="请选择">
-                                        <el-option :value="3" label="收款"></el-option>
-                                        <el-option :value="5" label="付款"></el-option>
+                                        <el-option  v-for="(item,index) in account_types" :value="item.val" :label="item.title" :key="index"></el-option>
                                     </el-select>
                                 </div>
                             </div>
@@ -348,12 +347,14 @@
     import SearchHigh from '../../common/searchHigh.vue'
     import FinMenuList from '../components/finMenuList.vue'
     import LjDialog from '../../common/lj-dialog.vue';
+    import {accountSearchList} from "../../../assets/js/allSearchData.js";
 
     export default {
         name: "index",
         components: {SearchHigh, FinMenuList, LjDialog},
         data() {
             return {
+                accountSearchList,
                 //查看记录
                 info_size: '',
                 info_type: {
@@ -363,6 +364,10 @@
                     4: '归档',
                     5: '充值'
                 },
+                account_types:[
+                    {title:'收款',val:3},
+                    {title:'付款',val:5},
+                ],
                 infoData: [],
                 info_count: 0,
                 info_params: {
@@ -420,6 +425,7 @@
                     cate: '',
                     account_owner: '',
                     account_num: '',
+                    scope:'',
                 },
 
                 //参数
@@ -623,55 +629,17 @@
             // 高级搜索
             highSearch() {
                 this.showSearch = true;
-                this.searchData.data = [
-
-                    {
-                        keyType: 'radio',
-                        title: '账户范围',
-                        keyName: 'scope',
-                        dataType: '',
-                        value: [
-                            {
-                                id: 3,
-                                title: '收',
-                            },
-                            {
-                                id: 5,
-                                title: '付',
-                            },
-
-                        ],
-                    },
-                    {
-                        keyType: 'radio',
-                        title: '账户类型',
-                        keyName: 'cate',
-                        dataType: '',
-                        value: [
-                            {
-                                id: 1,
-                                title: '银行卡',
-                            },
-                            {
-                                id: 2,
-                                title: '支付宝',
-                            },
-                            {
-                                id: 3,
-                                title: '微信',
-                            },
-                        ],
-                    },
-
-                ];
+                this.searchData = this.accountSearchList;
             },
             // 确认搜索
             hiddenModule(val) {
                 this.showSearch = false;
                 if (val !== 'close') {
                     console.log(val);
-                    console.log(val);
                     this.params = val;
+                    for (let item of Object.keys(this.params)){
+                        this.params[item] = val[item];
+                    }
                     this.getAccountList();
                 }
             },

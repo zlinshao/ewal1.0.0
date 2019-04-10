@@ -36,7 +36,7 @@
     watch: {},
     computed: {},
     methods: {
-      changeTabs: function(item) {
+      changeTabs: function(item) { 
         this.routerLink(item.url);
       }
     }

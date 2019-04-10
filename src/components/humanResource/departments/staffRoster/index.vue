@@ -132,12 +132,14 @@
     },
     mounted() {
       this.getStaffList();
+      this.handleSetData();
     },
     activated() {
     },
     watch: {
       exportData: {
         handler(val) {
+          this.export_params.field = [];
           this.export_params.field = ['id'];
           this.table_column = val;
           val.map(item => {
@@ -147,11 +149,10 @@
         deep: true
       },
       exportInfo(val) {
-        if (val === 3) {
-          this.export_params.export = 1;
-          this.export_params = Object.assign({},this.export_params,this.params);
-          this.exportStaffList();
-        }
+        console.log(val);
+        this.export_params.export = 1;
+        this.export_params = Object.assign({},this.export_params,this.params);
+        this.exportStaffList();
       },
       searchParams: {
         handler(val) {
@@ -170,6 +171,13 @@
     },
     computed: {},
     methods: {
+      //设置导出数据
+      handleSetData() {
+        this.export_params.field = ['id'];
+        this.table_column.map(item => {
+          this.export_params.field.push(item.key);
+        });
+      },
       //列表按钮
       handleLookInfo(row,key) {
         console.log(row,key);
@@ -184,7 +192,6 @@
       },
       exportStaffList() {
         this.$http.get('staff/user/record',this.export_params,'arraybuffer').then(res => {
-          console.log(res);
           if (!res) {
             return;
           }
@@ -196,7 +203,9 @@
           document.body.appendChild(link);
           link.click();
           link.remove();
-        })
+          this.export_params.field = [];
+          this.export_params.export = 0;
+        });
       },
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {

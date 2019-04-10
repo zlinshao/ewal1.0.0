@@ -132,48 +132,4 @@
     background: #747474;
     border-radius: 4px; }
 
-#theme_name #repository {
-  height: 100%;
-  background-color: #FFFFFF; }
-  #theme_name #repository .listTopRight .icons-font {
-    height: 30px;
-    width: 50px;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    justify-content: center; }
-    #theme_name #repository .listTopRight .icons-font b {
-      color: white;
-      font-size: 14px; }
-  #theme_name #repository .repository-container {
-    width: 100%;
-    height: calc(100% - 160px);
-    position: absolute;
-    left: 0;
-    top: 160px;
-    transition: all ease 1s; }
-    #theme_name #repository .repository-container .content {
-      height: calc(100% - 341px); }
-      #theme_name #repository .repository-container .content > div {
-        width: 240px;
-        height: 160px;
-        margin: 0 110px; }
-        #theme_name #repository .repository-container .content > div:hover {
-          cursor: pointer;
-          transform: scale(1.05);
-          transition: all 1s; }
-        #theme_name #repository .repository-container .content > div span {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          width: 80px;
-          word-wrap: break-word;
-          word-break: break-all;
-          color: #fff;
-          font-size: 32px;
-          font-family: 'jingDianXingShu'; }
-          #theme_name #repository .repository-container .content > div span.gray {
-            color: #686874; }
-
 /*# sourceMappingURL=index.css.map */

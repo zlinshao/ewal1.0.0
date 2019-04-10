@@ -1,0 +1,34 @@
+@import '../../common.scss';
+
+#theme_name {
+  #visitToRecord {
+    .el-button--danger {
+      background-color: #fef0f0;
+      &:hover {
+        background-color: #f56c6c;
+      }
+    }
+    .search {
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #visitToRecord {
+  }
+}
+
+#theme_name.theme2 {
+  #visitToRecord {
+  }
+}
+
+#theme_name.theme3 {
+  #visitToRecord {
+  }
+}
+
+#theme_name.theme4 {
+  #visitToRecord {
+  }
+}

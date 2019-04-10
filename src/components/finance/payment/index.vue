@@ -32,7 +32,7 @@
 
                 <el-table-column label="状态" prop="" align="center">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.status === 1 ? '待入账' :scope.row.status === 2? '待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
+                        <span>{{ scope.row.status === 1?'待入账':scope.row.status === 2?'待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" prop="" align="center" width="550">
@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="item_content">
                                     <el-input placeholder="请输入" v-model="subject_val"
-                                              @focus="handleOpenSubject('subject_deposit')"></el-input>
+                                              @focus="handleOpenSubject('subject')"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -508,7 +508,7 @@
             </div>
         </lj-dialog>
         <!--科目-->
-        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject" style="z-index: 1000"></lj-subject>
+        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject" style="z-index:1000"></lj-subject>
         <!--客户列表-->
         <lj-dialog :visible="customer_visible" :size="{width: 900 + 'px',height: 720 + 'px'}"
                    @close="customer_visible = false">
@@ -569,12 +569,14 @@
     import FinMenuList from '../components/finMenuList.vue';
     import LjSubject from '../../common/lj-subject.vue';
     import CustomerLists from './components/customerLists';
+    import {paySearchList} from "../../../assets/js/allSearchData.js";
 
     export default {
         name: "index",
         components: {SearchHigh, LjDialog, FinMenuList, LjSubject,CustomerLists},
         data() {
             return {
+                paySearchList,
                 params: {
                     is_del: '',//是否显示删除数据
                     staff_id: '',
@@ -847,6 +849,7 @@
             },
             //科目确定
             handleConfirmSubject(val) {
+                console.log(this.which_subject);
                 if (this.which_subject === 'move_subject') {
                     this.move_subject.parent_id = val.id;
                     this.move_subject.title = val.title;
@@ -858,8 +861,6 @@
                     this.formData.subject_id = val.id;
                     this.formData.subject_val = val.title;
                     this.subject_val = val.title;
-
-                    alert(this.subject_val);
 
                     this.ruleForm.subject_id = val.id;
                 }
@@ -911,6 +912,7 @@
             //应付入账
             handleOkTransfer(row,val) {
                 console.log(val);
+                // alert(row.id);
                 this.$http.put(globalConfig.temporary_server + "account_payable/transfer/" + row.id, val).then(res => {
                     this.callbackSuccess(res);
                     this.transfer_visible = false;
@@ -1048,6 +1050,7 @@
                 }
                 if (key === "transfer_visible") {
                     this.transfer_visible = true;
+                    // alert(this.current_row.id);
                     for (let item of Object.keys(this.transferForm)) {
                         this.transferForm[item] = this.current_row[item];
                     }
@@ -1081,82 +1084,19 @@
             // 高级搜索
             highSearch() {
                 this.showSearch = true;
-                this.searchData.data = [
-                    {
-                        keyType: 'date',
-                        title: '出生日期',
-                        placeholder: '请选择日期',
-                        keyName: 'date3',
-                        dataType: '',
-                    },
-                    {
-                        keyType: 'dateRange',
-                        title: '创建时间',
-                        placeholder: '请选择日期',
-                        keyName: 'date1',
-                        dataType: [],
-                    },
-                    {
-                        keyType: 'dateRange',
-                        title: '跟进时间',
-                        placeholder: '请选择日期',
-                        keyName: 'date2',
-                        dataType: [],
-                    },
-                    {
-                        keyType: 'radio',
-                        title: '紧急程度',
-                        keyName: 'radio',
-                        dataType: '',
-                        value: [
-                            {
-                                id: 12,
-                                title: '特级',
-                            },
-                            {
-                                id: 13,
-                                title: '紧急',
-                            },
-                            {
-                                id: 14,
-                                title: '重要',
-                            },
-                            {
-                                id: 15,
-                                title: '一般',
-                            }
-                        ],
-                    },
-                    {
-                        keyType: 'check',
-                        title: '状态',
-                        keyName: 'check',
-                        dataType: [],
-                        value: [
-                            {
-                                id: 22,
-                                title: '已完成',
-                            },
-                            {
-                                id: 23,
-                                title: '未完成',
-                            },
-                        ],
-                    },
-                    {
-                        keyType: 'organ',
-                        title: '部门',
-                        placeholder: '请选择部门',
-                        keyName: 'organ',
-                        dataType: '',
-                    },
-                ];
+                this.searchData = this.paySearchList;
             },
             // 确认搜索
             hiddenModule(val) {
                 this.showSearch = false;
                 if (val !== 'close') {
                     console.log(val);
+                    for (let item of Object.keys(this.params)){
+                        this.params[item] = val[item];
+                    }
+                    this.params.staff_id = val.staff[0];
+                    this.params.department_id = val.department[0];
+                    this.getPaymentList();
                 }
             },
 

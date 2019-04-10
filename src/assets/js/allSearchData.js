@@ -1,7 +1,7 @@
 // 员工名册
 export const staffBookSearch = {
   status: 'staffBookSearch',
-  placeholder: '请输入地址',
+  placeholder: '请输入搜索内容',
   keywords: 'search',
   data: [
     {
@@ -12,13 +12,13 @@ export const staffBookSearch = {
       value: [
         {
           id: 0,
-          title: '否',
+          title: '否'
         },
         {
           id: 1,
-          title: '是',
-        },
-      ],
+          title: '是'
+        }
+      ]
     },
     {
       keyType: 'radio',
@@ -54,11 +54,11 @@ export const staffBookSearch = {
       keyName: 'position_id',
       dataType: [],
       value: {
-        num: '',
+        num: ''
       }
-    },
-  ],
-};
+    }
+  ]
+}
 
 // 离职管理
 export const LeaveJobSearch = {
@@ -99,11 +99,11 @@ export const LeaveJobSearch = {
       keyName: 'position_id',
       dataType: [],
       value: {
-        num: '',
+        num: ''
       }
-    },
-  ],
-};
+    }
+  ]
+}
 
 // 工单
 export const workOrderSearch = {
@@ -114,21 +114,21 @@ export const workOrderSearch = {
       title: '出生日期',
       placeholder: '请选择日期',
       keyName: 'date3',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'dateRange',
       title: '创建时间',
       placeholder: '请选择日期',
       keyName: 'date1',
-      dataType: [],
+      dataType: []
     },
     {
       keyType: 'dateRange',
       title: '跟进时间',
       placeholder: '请选择日期',
       keyName: 'date2',
-      dataType: [],
+      dataType: []
     },
     {
       keyType: 'radio',
@@ -138,21 +138,21 @@ export const workOrderSearch = {
       value: [
         {
           id: 12,
-          title: '特级',
+          title: '特级'
         },
         {
           id: 13,
-          title: '紧急',
+          title: '紧急'
         },
         {
           id: 14,
-          title: '重要',
+          title: '重要'
         },
         {
           id: 15,
-          title: '一般',
+          title: '一般'
         }
-      ],
+      ]
     },
     {
       keyType: 'check',
@@ -162,51 +162,86 @@ export const workOrderSearch = {
       value: [
         {
           id: 22,
-          title: '已完成',
+          title: '已完成'
         },
         {
           id: 23,
-          title: '未完成',
-        },
-      ],
+          title: '未完成'
+        }
+      ]
     },
     {
       keyType: 'organ',
       title: '部门',
       placeholder: '请选择部门',
       keyName: 'organ',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'organ',
       title: '部门',
       placeholder: '请选择部门',
       keyName: 'organ',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'organ',
       title: '部门',
       placeholder: '请选择部门',
       keyName: 'organ',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'organ',
       title: '部门',
       placeholder: '请选择部门',
       keyName: 'organ',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'organ',
       title: '部门',
       placeholder: '请选择部门',
       keyName: 'organ',
-      dataType: '',
+      dataType: ''
     }
-  ],
-};
+  ]
+}
+
+// 回访记录
+export const visitToRecordSearch = {
+  status: 'visitToRecord',
+  data: [
+    {
+      keyType: 'dateRange',
+      title: '签约时间',
+      placeholder: '请选择日期',
+      keyName: 'date1',
+      dataType: []
+    },
+    {
+      keyType: 'staff',
+      title: '开单人',
+      placeholder: '请选择员工',
+      keyName: 'staff',
+      dataType: [],
+      value: {
+        num: ''
+      }
+    },
+    {
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'department',
+      dataType: [],
+      value: {
+        num: '',
+        arr: []
+      }
+    }
+  ]
+}
 
 //科目
 export const subjectSearch = {
@@ -219,13 +254,13 @@ export const subjectSearch = {
       keyName: 'er_type',
       dataType: '',
       value: [
-        {id: 1, title: '收入'},
-        {id: 2, title: '支出'},
-        {id: 3, title: '混合'}
+        { id: 1, title: '收入' },
+        { id: 2, title: '支出' },
+        { id: 3, title: '混合' }
       ]
-    },
+    }
   ]
-};
+}
 //客户搜索
 export const customerSearch = {
   status: 'subject',
@@ -237,13 +272,13 @@ export const customerSearch = {
       keyName: 'er_type',
       dataType: '',
       value: [
-        {id: 1, title: '房东'},
-        {id: 2, title: '租客'},
-        {id: 3, title: '其他'}
+        { id: 1, title: '房东' },
+        { id: 2, title: '租客' },
+        { id: 3, title: '其他' }
       ]
-    },
+    }
   ]
-};
+}
 
 //收支流水
 export const accountRunSearch = {
@@ -255,14 +290,14 @@ export const accountRunSearch = {
       title: '开始日期',
       placeholder: '请选择开始日期',
       keyName: 'start_date',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'date',
       title: '结束日期',
       placeholder: '请选择结束日期',
       keyName: 'end_date',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'radio',
@@ -270,45 +305,40 @@ export const accountRunSearch = {
       placeholder: '请选择类别',
       keyName: 'cate',
       dataType: '',
-      value: [
-        {id: 1, title: '收入'},
-        {id: 2, title: '支出'},
-      ]
+      value: [{ id: 1, title: '收入' }, { id: 2, title: '支出' }]
     },
     {
       keyType: 'date',
       title: '操作开始日期',
       placeholder: '请选择操作开始日期',
       keyName: 'operate_start_date',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'date',
       title: '操作结束日期',
       placeholder: '请选择操作结束日期',
       keyName: 'operate_end_date',
-      dataType: '',
-    },
+      dataType: ''
+    }
   ]
-};
-
-
+}
 
 /*赏罚分明*/
 //赏善令
 export const rewardUpSearch = {
-  status: 'rewardUpSearch',
-};
+  status: 'rewardUpSearch'
+}
 //惩恶令
 export const rewardDownSearch = {
-  status: 'rewardDownSearch',
-};
+  status: 'rewardDownSearch'
+}
 /*内务库房*/
 
 //库房总览
 export const overViewSearch = {
-  status: 'overViewSearch',
-};
+  status: 'overViewSearch'
+}
 
 //借用领用
 export const borrowReceiveSearch = {
@@ -319,7 +349,7 @@ export const borrowReceiveSearch = {
       title: '部门',
       placeholder: '请选择部门',
       keyName: 'organ',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'radio',
@@ -329,13 +359,13 @@ export const borrowReceiveSearch = {
       value: [
         {
           id: 1,
-          title: '领用',
+          title: '领用'
         },
         {
           id: 2,
-          title: '借用',
-        },
-      ],
+          title: '借用'
+        }
+      ]
     },
 
     {
@@ -346,48 +376,46 @@ export const borrowReceiveSearch = {
       value: [
         {
           id: 3,
-          title: '待通知',
+          title: '待通知'
         },
         {
           id: 4,
-          title: '待领取',
+          title: '待领取'
         },
         {
           id: 5,
-          title: '部分领取',
+          title: '部分领取'
         },
         {
           id: 6,
-          title: '已领取',
+          title: '已领取'
         },
         {
           id: 7,
-          title: '已归还',
+          title: '已归还'
         },
         {
           id: 8,
-          title: '待归还',
+          title: '待归还'
         },
         {
           id: 9,
-          title: '部分归还',
+          title: '部分归还'
         },
         {
           id: 10,
-          title: '放弃领取',
+          title: '放弃领取'
         }
-      ],
+      ]
     },
-
 
     {
       keyType: 'dateRange',
       title: '申领日期',
       placeholder: '请选择日期',
       keyName: 'date1',
-      dataType: [],
+      dataType: []
     },
-
 
     {
       keyType: 'radio',
@@ -397,44 +425,44 @@ export const borrowReceiveSearch = {
       value: [
         {
           id: 11,
-          title: '待维修',
+          title: '待维修'
         },
         {
           id: 12,
-          title: '维修中',
+          title: '维修中'
         },
         {
           id: 13,
-          title: '已维修',
+          title: '已维修'
         },
         {
           id: 14,
-          title: '维修报废',
+          title: '维修报废'
         },
         {
           id: 15,
-          title: '直接报废',
+          title: '直接报废'
         },
         {
           id: 16,
-          title: '部分维修',
+          title: '部分维修'
         },
         {
           id: 17,
-          title: '部分报废',
+          title: '部分报废'
         },
         {
           id: 18,
-          title: '完好',
+          title: '完好'
         },
         {
           id: 19,
-          title: '无',
+          title: '无'
         }
-      ],
-    },
-  ],
-};
+      ]
+    }
+  ]
+}
 
 //招兵买马
 export const recruitmentSearchList = {
@@ -460,9 +488,9 @@ export const recruitmentSearchList = {
         keyName: 'position_id',
         dataType: [],
         value: {
-          num: '',
+          num: ''
         }
-      },
+      }
     ]
   },
   2: {
@@ -487,9 +515,9 @@ export const recruitmentSearchList = {
         keyName: 'position_id',
         dataType: [],
         value: {
-          num: '',
+          num: ''
         }
-      },
+      }
     ]
   },
   3: {
@@ -514,9 +542,9 @@ export const recruitmentSearchList = {
         keyName: 'position_id',
         dataType: [],
         value: {
-          num: '',
+          num: ''
         }
-      },
+      }
     ]
   },
   4: {
@@ -541,138 +569,217 @@ export const recruitmentSearchList = {
         keyName: 'position_id',
         dataType: [],
         value: {
-          num: '',
+          num: ''
         }
-      },
+      }
     ]
-  },
-};
+  }
+}
 
 //待处理项
 export const pendingSearchList = {
-    status: 'pendingSearchList',
-    keywords: 'search',
-    data:[
-        {
-            keyType: 'dateRange',
-            title: '创建时间',
-            placeholder: '请选择日期',
-            keyName: 'createTime',
-            dataType: [],
-        },
-        {
-            keyType: 'radio',
-            title: '事件类型',
-            keyName: 'event_type',
-            dataType: [],
-            value: [
-                {id: 1, title: '违约'},
-                {id: 2, title: '转租'},
-                {id: 3, title: '调租'},
-                {id: 4, title: '退租'},
-                {id: 5, title: '收房炸单'},
-                {id: 6, title: '租房炸单'},
-            ]
-
-        },
-        {
-            keyType: 'radio',
-            title: '收租类型',
-            keyName: 'collect_rent',
-            dataType: [],
-            value: [
-                {id: 1, title: '收房'},
-                {id: 2, title: '租房'},
-            ]
-
-        },
-    ]
-};
+  status: 'pendingSearchList',
+  keywords: 'search',
+  data: [
+    {
+      keyType: 'dateRange',
+      title: '创建时间',
+      placeholder: '请选择日期',
+      keyName: 'createTime',
+      dataType: []
+    },
+    {
+      keyType: 'radio',
+      title: '事件类型',
+      keyName: 'event_type',
+      dataType: [],
+      value: [
+        { id: 1, title: '违约' },
+        { id: 2, title: '转租' },
+        { id: 3, title: '调租' },
+        { id: 4, title: '退租' },
+        { id: 5, title: '收房炸单' },
+        { id: 6, title: '租房炸单' }
+      ]
+    },
+    {
+      keyType: 'radio',
+      title: '收租类型',
+      keyName: 'collect_rent',
+      dataType: [],
+      value: [{ id: 1, title: '收房' }, { id: 2, title: '租房' }]
+    }
+  ]
+}
 //房东租客
 export const lordRenterSearchList = {
-    status: 'lordRenterSearchList',
-    keywords: 'search',
-    data:[
-        {
-            keyType: 'dateRange',
-            title: '创建时间',
-            placeholder: '请选择日期',
-            keyName: 'date1',
-            dataType: [],
-        },
-    ]
-};
+  status: 'lordRenterSearchList',
+  keywords: 'search',
+  data: [
+    {
+      keyType: 'dateRange',
+      title: '创建时间',
+      placeholder: '请选择日期',
+      keyName: 'date1',
+      dataType: []
+    }
+  ]
+}
 
 //应收款
 export const gatheringSearchList = {
-    status: 'gatheringSearchList',
-    keywords: 'search',
-    data:[
-        {
-            keyType: 'dateRange',
-            title: '应收时间',
-            placeholder: '请选择日期',
-            keyName: 'gatherDate',
-            dataType: [],
-        },
-        {
-            keyType: 'dateRange',
-            title: '催缴时间',
-            placeholder: '请选择日期',
-            keyName: 'tagDate',
-            dataType: [],
-        },
-        {
-            keyType: 'radio',
-            title: '入账状态',
-            keyName: 'status',
-            dataType: [],
-            value: [
-                {id: 1, title: '待入账'},
-                {id: 2, title: '待结清'},
-                {id: 3, title: '已结清'},
-                {id: 4, title: '已超额'},
-            ]
+  status: 'gatheringSearchList',
+  keywords: 'search',
+  data: [
+    {
+      keyType: 'dateRange',
+      title: '应收时间',
+      placeholder: '请选择日期',
+      keyName: 'gatherDate',
+      dataType: []
+    },
+    {
+      keyType: 'dateRange',
+      title: '催缴时间',
+      placeholder: '请选择日期',
+      keyName: 'tagDate',
+      dataType: []
+    },
+    {
+      keyType: 'radio',
+      title: '入账状态',
+      keyName: 'status',
+      dataType: [],
+      value: [
+        { id: 1, title: '待入账' },
+        { id: 2, title: '待结清' },
+        { id: 3, title: '已结清' },
+        { id: 4, title: '已超额' }
+      ]
+    },
+    {
+      keyType: 'radio',
+      title: '催缴状态',
+      keyName: 'tag_status',
+      dataType: [],
+      value: [
+        { id: 1, title: '违约' },
+        { id: 2, title: '延期' },
+        { id: 3, title: '贴条' },
+        { id: 4, title: '换锁' },
+        { id: 5, title: '维修' },
+        { id: 6, title: '资金' },
+        { id: 7, title: '炸单' },
+        { id: 8, title: '调房' },
+        { id: 9, title: '特殊情况' }
+      ]
+    },
+    {
+      keyType: 'staff',
+      title: '员工',
+      placeholder: '请选择员工',
+      keyName: 'staff',
+      dataType: [],
+      value: {
+        num: ''
+      }
+    },
+    {
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'department',
+      dataType: [],
+      value: {
+        num: '',
+        arr: []
+      }
+    }
+  ]
+}
 
+//账户
+export const accountSearchList = {
+  status: 'accountSearchList',
+  keywords: 'search',
+  data: [
+    {
+      keyType: 'radio',
+      title: '账户范围',
+      keyName: 'scope',
+      dataType: '',
+      value: [
+        {
+          id: 3,
+          title: '收'
         },
         {
-            keyType: 'radio',
-            title: '催缴状态',
-            keyName: 'tag_status',
-            dataType: [],
-            value: [
-                {id: 1, title: '违约'},
-                {id: 2, title: '延期'},
-                {id: 3, title: '贴条'},
-                {id: 4, title: '换锁'},
-                {id: 5, title: '维修'},
-                {id: 6, title: '资金'},
-                {id: 7, title: '炸单'},
-                {id: 8, title: '调房'},
-                {id: 9, title: '特殊情况'},
-            ]
-
-        },
-        {
-            keyType: 'staff',
-            title: '员工',
-            placeholder: '请选择员工',
-            keyName: 'staff',
-            dataType: [],
-            value: {
-                num: '',
-            }
-        },
-        {
-            keyType: 'depart',
-            title: '部门',
-            placeholder: '请选择部门',
-            keyName: 'department',
-            dataType: [],
-            value: {
-                num: '',
-                arr: []
-            }
+          id: 5,
+          title: '付'
         }
-    ]
-};
+      ]
+    },
+    {
+      keyType: 'radio',
+      title: '账户类型',
+      keyName: 'cate',
+      dataType: '',
+      value: [
+        {
+          id: 1,
+          title: '银行卡'
+        },
+        {
+          id: 2,
+          title: '支付宝'
+        },
+        {
+          id: 3,
+          title: '微信'
+        }
+      ]
+    }
+  ]
+}
+
+//付款
+export const paySearchList = {
+  status: 'paySearchList',
+  keywords: 'search',
+  data: [
+    {
+      keyType: 'radio',
+      title: '入账状态',
+      keyName: 'status',
+      dataType: [],
+      value: [
+        { id: 1, title: '待入账' },
+        { id: 2, title: '待结清' },
+        { id: 3, title: '已结清' },
+        { id: 4, title: '已超额' }
+      ]
+    },
+
+    {
+      keyType: 'staff',
+      title: '员工',
+      placeholder: '请选择员工',
+      keyName: 'staff',
+      dataType: [],
+      value: {
+        num: ''
+      }
+    },
+    {
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'department',
+      dataType: [],
+      value: {
+        num: '',
+        arr: []
+      }
+    }
+  ]
+}

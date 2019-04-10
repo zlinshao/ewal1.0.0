@@ -453,6 +453,7 @@
                         message: res.msg,
                         subMessage: '',
                     });
+                    this.$emit("updateList", false);
                 } else {
                     this.$LjNotify('error', {
                         title: '失败',
@@ -472,7 +473,6 @@
                         this.$http.put(globalConfig.temporary_server + 'customer_collect/' + this.row.id, this.formParams).then(res => {
                             this.callbackSuccess(res);
                             this.tableData = '';
-                            this.$emit("updateList", false);
                         })
                     } else {
                         console.log('error submit!!');

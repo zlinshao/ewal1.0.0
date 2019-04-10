@@ -43,7 +43,7 @@
                     <el-button type="success" size="small" @click="handleEditRenter(scope.row,scope.$index,'check')">查看</el-button>
                     <el-button type="primary" size="small" @click="handleEditRenter(scope.row,scope.$index,'edit')">编辑</el-button>
                     <el-button type="warning" size="small" @click="handleRemarkRenter(scope.row,scope.$index)">取消重复标记</el-button>
-                    <el-button type="info" size="small" @click="scope.row.freeze===0 ? handleProcessRenter(scope.row,scope.$index):handleCancelProcessRenter(scope.row,scope.$index)">{{scope.row.freeze === 0 ? '生成待处理项':'取消待处理项'}}</el-button>
+                    <el-button type="success" plain size="small" @click="scope.row.freeze===0 ? handleProcessRenter(scope.row,scope.$index):handleCancelProcessRenter(scope.row,scope.$index)">{{scope.row.freeze === 0 ? '生成待处理项':'取消待处理项'}}</el-button>
                     <el-button type="danger" size="small" @click="handleDeleteRenter(scope.row,scope.$index)">删除</el-button>
                 </template>
             </el-table-column>
@@ -218,12 +218,10 @@
                 }
                 this.house_filter_visible = false;
 
-                // console.log(this.addressInfo)
-
             },
             // 搜索参数
             handleParamsRenter(val){
-                // alert(val.undefined);
+
                 if(val.undefined){
                     this.params.search = val.undefined;
                 } else {

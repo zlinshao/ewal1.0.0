@@ -191,6 +191,23 @@
     height: 300px; }
   #theme_name #overView .qr-container > :last-child {
     padding: 15px; }
+#theme_name #overView .edit-category-search-list {
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; }
+  #theme_name #overView .edit-category-search-list .edit-category-search-dropdown {
+    margin-right: 30px; }
+  #theme_name #overView .edit-category-search-list .lj-header-search .el-icon-search {
+    position: absolute;
+    top: 7px;
+    right: 195px; }
+  #theme_name #overView .edit-category-search-list .lj-header-search input {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 220px;
+    height: 28px;
+    padding: 2px 12px 2px 32px; }
 #theme_name #overView .repository-overview .lj-header-search .el-icon-search {
   position: absolute;
   top: 7px;

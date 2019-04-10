@@ -52,7 +52,7 @@
                     </el-button>
                     <!--<el-button type="warning" size="small" @click="handleReturnRemark(scope.row,scope.$index)">取消重复标记</el-button>-->
                     <el-button type="warning" size="small" @click="handleRemark(scope.row,scope.$index)">取消重复标记</el-button>
-                    <el-button type="info" size="small"
+                    <el-button type="success" size="small" plain
                                @click="scope.row.freeze===0 ? handleProcessLord(scope.row,scope.$index):handleCancelProcessLord(scope.row,scope.$index)">
                         {{scope.row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
                     </el-button>
@@ -422,14 +422,13 @@
 
             //生成待处理项
             handleProcessLord(row, index) {
-                alert(row.id);
+
                 this.$http.post(globalConfig.temporary_server + 'customer_collect/pending/' + row.id,).then(res => {
                     this.callbackSuccess(res);
                 })
             },
             //取消待处理项
             handleCancelProcessLord(row, index) {
-                alert(row.id);
                 this.$http.put(globalConfig.temporary_server + 'account_pending/recover', {
                     customer_id: row.id,
                     identity: 1

@@ -258,7 +258,7 @@
             </el-tab-pane>
             <el-tab-pane label="学历信息" name="second">
               <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.education_history.length > 0">
-                <div v-for="item in interview_info_detail.education_history" :key="item.id">
+                <div v-for="item in interview_info_detail.education_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="起始时间:">
@@ -305,13 +305,13 @@
                 </div>
               </el-form>
               <div style="text-align: right">
-                <el-button type="success" size="mini" style="width: 120px" @click="handleAddEducation">添加</el-button>
-                <el-button type="danger" size="mini" style="width: 120px" v-if="interview_info_detail.education_history.length > 1" @click="handleDelEducation">删除</el-button>
+                <el-button type="danger" size="mini" style="width: 120px" @click="handleAddEducation">添加</el-button>
+                <el-button type="info" size="mini" style="width: 120px" v-if="interview_info_detail.education_history.length > 1" @click="handleDelEducation">删除</el-button>
               </div>
             </el-tab-pane>
             <el-tab-pane label="工作履历" name="third">
               <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.work_history.length > 0">
-                <div v-for="item in interview_info_detail.work_history" :key="item.id">
+                <div v-for="item in interview_info_detail.work_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="起始时间:">
@@ -355,8 +355,8 @@
                 </div>
               </el-form>
               <div style="text-align: right">
-                <el-button type="success" size="mini" style="width: 120px" @click="handleAddWork">添加</el-button>
-                <el-button type="danger" size="mini" style="width: 120px" v-if="interview_info_detail.work_history.length > 1" @click="handleDelWork">删除</el-button>
+                <el-button type="danger" size="mini" style="width: 120px" @click="handleAddWork">添加</el-button>
+                <el-button type="info" size="mini" style="width: 120px" v-if="interview_info_detail.work_history.length > 1" @click="handleDelWork">删除</el-button>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -542,7 +542,7 @@
       </div>
     </lj-dialog>
     <!--新增岗位===============================================================================================-->
-    <lj-dialog :visible="addPostVisible" :size="{width: 500 + 'px',height: 550 + 'px'}" @close="handleCancelAdd">
+    <lj-dialog :visible="addPostVisible" :size="{width: 500 + 'px',height: 560 + 'px'}" @close="handleCancelAdd">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>新建岗位</h3>
@@ -912,6 +912,10 @@
         this.getSystemList();
         this.depart_visible = val;
         this.lj_size = 'large';
+        if (!val) {
+          this.tabsManage = 'staff';
+          this.check_info = '';
+        }
       },
       depart_visible(val) {
         if (!val) {
@@ -1339,7 +1343,6 @@
       //获取职位列表
       getDutyList() {
         this.$http.get('organization/duty',this.staffParams).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.dutyList = res.data.data;
           } else {
@@ -1350,10 +1353,8 @@
       //获取员工列表
       getStaffList() {
         this.$http.get('staff/user',this.staffParams).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.staffList = res.data.data;
-            console.log(this.staffList);
           } else {
             this.staffList = [];
           }
