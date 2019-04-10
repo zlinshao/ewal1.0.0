@@ -8,7 +8,7 @@
           </p>
           <h1>小区管理</h1>
           <b class="line"></b>
-          <div class="icon-address"></div>
+          <div class="icon-address" @click="show_filter_search = true"></div>
           <div class="village-address">
             南京-建邺区-朝天宫-全部-乐伽-南京一区-双龙大道租
           </div>
@@ -54,7 +54,7 @@
                   </p>
                   <p>
                     <span class="icon-label sign_user"></span>
-                    <span></span>
+                    <span>{{ village.leader && village.leader.name }}</span>
                   </p>
                 </div>
                 <div class="village-footer">
@@ -87,13 +87,31 @@
             </el-pagination>
           </div>
         </footer>
+
+        <!--筛选-->
+        <div class="filter-search" :class="{'show-filter-search': show_filter_search}">
+          <div class="filter-body flex">
+            <div v-for="item in 5">
+              <!--<div class="filter-button" v-for="item in 10" >南京</div>-->
+            </div>
+          </div>
+          <div class="filter-footer flex-center">
+            <el-button type="danger" size="small">确定</el-button>
+            <el-button type="info" size="small" @click="show_filter_search = false">取消</el-button>
+          </div>
+        </div>
+
+      <searchHigh :module="searchHighVisible" :showData="searchData" @close="hiddenModule"></searchHigh>
     </div>
   </div>
 </template>
 
 <script>
+  import searchHigh from '../../common/searchHigh.vue';
+
   export default {
     name: "index",
+    components: { searchHigh },
     data() {
       return {
         http_server: globalConfig.market_server,
@@ -121,7 +139,12 @@
           limit: 20
         },
         choose_village: [],
-        check_choose: [],
+        check_choose: [], //当前选中小区
+        show_filter_search: false, //显示小区城市筛选
+
+        searchHighVisible: false,
+        searchData: {},
+
       }
     },
     mounted() {
@@ -130,6 +153,13 @@
     watch: {},
     computed: {},
     methods: {
+      //关闭高级搜索
+      hiddenModule(val) {
+        if (val !== 'close') {
+          console.log(val);
+        }
+        this.searchHighVisible = false;
+      },
       handleCheckVillage(village) {
         for (var i=0;i<this.check_choose.length;i++) {
           if (village.id === this.check_choose[i]) {
@@ -140,7 +170,14 @@
         this.check_choose.push(village.id);
       },
       //高级
-      highSearch() {},
+      highSearch() {
+        this.searchData = {
+          status: 'village',
+          placeholder: '小区名称/地址/报备人',
+          data: []
+        };
+        this.searchHighVisible = true;
+      },
       //变更排序
       handleChangeSort(tmp) {
         this.current_sort = tmp.id;

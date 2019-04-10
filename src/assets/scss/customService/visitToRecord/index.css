@@ -132,4 +132,9 @@
     background: #747474;
     border-radius: 4px; }
 
+#theme_name #visitToRecord .el-button--danger {
+  background-color: #fef0f0; }
+  #theme_name #visitToRecord .el-button--danger:hover {
+    background-color: #f56c6c; }
+
 /*# sourceMappingURL=index.css.map */

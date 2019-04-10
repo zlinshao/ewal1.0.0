@@ -12,10 +12,15 @@ $color07B: #0BB07B;
 #theme_name.theme1 {
   #village {
     height: 100%;
+    position: relative;
     > div {
       height: 100%;
+      .icon-address {
+        cursor: pointer;
+      }
       .village-address {
         margin: 0 30px;
+        cursor: pointer;
       }
       .village-num {
         color: $colorFFF;
@@ -65,7 +70,6 @@ $color07B: #0BB07B;
                 }
               }
               //&:hover {
-              //  box-sizing: border-box;
               //  border: 1px solid $colorE33;
               //}
               .village-body {
@@ -74,11 +78,15 @@ $color07B: #0BB07B;
                 p {
                   min-height: 30px;
                   cursor: pointer;
+                  span {
+                    font-size: 14px;
+                  }
                 }
                 .icon-label {
                   display: inline-block;
-                  width: 18px;
-                  height: 18px;
+                  width: 20px;
+                  height: 20px;
+                  vertical-align: middle;
                 }
               }
               .village-footer {
@@ -110,6 +118,42 @@ $color07B: #0BB07B;
             }
           }
         }
+      }
+
+      .filter-search {
+        width: 100%;
+        min-height: 500px;
+        position: absolute;
+        top: 81px;
+        right: 100%;
+        transition: all ease 1s;
+        .filter-body {
+          > div {
+            width: 25%;
+            height: 400px;
+            background-color: #E4E4E4;
+            padding: 30px 80px;
+            &:first-child {
+              background-color: white;
+            }
+            .filter-button {
+              width: 100px;
+              height: 50px;
+              border-radius: 5px;
+            }
+          }
+        }
+        .filter-footer {
+          width: 100%;
+          padding: 30px 0;
+          background-color: white;
+          button {
+            width: 100px;
+          }
+        }
+      }
+      .show-filter-search {
+        right: 0;
       }
     }
   }

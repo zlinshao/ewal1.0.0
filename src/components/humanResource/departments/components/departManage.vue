@@ -395,7 +395,7 @@
       </div>
     </lj-dialog>
     <!--权限管理===============================================================================================-->
-    <lj-dialog :visible="powerVisible" :size="power_size" @close="powerVisible = false">
+    <lj-dialog :visible="powerVisible" :size="power_size" @close="handleCancelSetPower">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>权限</h3>
@@ -468,7 +468,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleSubmitSetPower">确定</el-button>
-          <el-button type="info" size="small" @click="powerVisible = false">取消</el-button>
+          <el-button type="info" size="small" @click="handleCancelSetPower">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -498,8 +498,13 @@
                   header-row-class-name="tableHeader"
                   height="250px"
                   style="width: 100%">
-                  <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+                  <el-table-column label="名称" prop="name" align="center"></el-table-column>
                   <el-table-column label="人数" prop="users_count" align="center"></el-table-column>
+                  <el-table-column label="职级" prop="level" align="center">
+                    <template slot-scope="scope">
+                      <span>P{{ scope.row.level }}</span>
+                    </template>
+                  </el-table-column>
                   <el-table-column label="部门" prop="duty.org.name" align="center"></el-table-column>
                 </el-table>
               </div>
@@ -515,6 +520,11 @@
                   <el-table-column label="员工姓名" prop="name" align="center"></el-table-column>
                   <el-table-column label="手机号" prop="phone" align="center"></el-table-column>
                   <el-table-column label="入职时间" prop="created_at" align="center"></el-table-column>
+                  <el-table-column label="权限" align="center">
+                    <template slot-scope="scope">
+                      <el-button type="text" size="mini" @click="handleLookPower(scope.row)">查看</el-button>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
             </div>
@@ -554,6 +564,11 @@
             </el-form-item>
             <el-form-item label="岗位描述" required>
               <el-input v-model="add_position_form.description" type="textarea" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="岗位职级" required>
+              <el-select v-model="add_position_form.level">
+                <el-option v-for="item in position_level" :key="item.id" :value="item.id" :label="item.val"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="岗位标识" required>
               <el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>
@@ -677,6 +692,15 @@
     data() {
       return {
         confirm_send_visible: false,
+        position_level: [
+          {id: 1, val: 'P1'},
+          {id: 2, val: 'P2'},
+          {id: 3, val: 'P3'},
+          {id: 4, val: 'P4'},
+          {id: 5, val: 'P5'},
+          {id: 6, val: 'P6'},
+          {id: 7, val: 'P7'},
+        ],
 
         show_field_list: [],
         field_list: [],
@@ -862,7 +886,7 @@
 
         //个人权限
         self_power_params: {
-          user_id: 3057,
+          user_id: '',
           system_id: '',
           type: 'user',
           position_id: '',
@@ -929,6 +953,16 @@
       }
     },
     methods: {
+      handleLookPower(row) {
+        console.log(row);
+        this.self_power_params.user_id = row.id;
+        this.getSelfPower(this.powerChildName);
+        this.power_size = {
+          width: '1600px',
+          height: '840px',
+        };
+        this.powerVisible = true;
+      },
       handleConfirmSendMsg() {
         console.log(this.checkLists);
         var type = [];
@@ -977,9 +1011,14 @@
         this.current_field = tmp;
         this.show_field_list = tmp.fields || [];
       },
+      handleCancelSetPower() {
+        this.checkAll = false;
+        this.powerVisible = false;
+      },
       handleSubmitSetPower() {
         this.set_power.permission_id = this.checkList;
         this.set_power.permission_field_id = this.field_list;
+        this.set_power.system_id = this.powerChildName;
         this.$http.post('organization/permission/set',this.set_power).then(res => {
           if (res.code === '20000') {
             this.$LjNotify('success',{
@@ -1010,7 +1049,16 @@
                 permission.push(tmp.id);
               }
             }
+            console.log(permission);
+            console.log(this.power_list);
+            var count = 0;
+            for (var key in this.power_list) {
+              count += this.power_list[key].length;
+            }
             this.$nextTick(() => {
+              if (permission >= count) {
+                this.checkAll = true;
+              }
               this.checkList = permission;
               this.field_list = field;
             });
@@ -1263,7 +1311,8 @@
           depart: '',
           org_id: [],
           description: '',
-          sign: ''
+          sign: '',
+          level: ''
         };
         this.addPostVisible = false;
       },
@@ -1381,11 +1430,12 @@
           page: 1,
           limit: 999
         }).then(res => {
+          console.log(res.data.data);
           if (res.code === '20000') {
             this.positionList = res.data.data;
           } else {
             this.positionList = [];
-          };
+          }
           this.positionVisible = true;
         })
       },
@@ -1419,6 +1469,9 @@
         switch (val) {
           case 'power'://权限
             this.powerVisible = true;
+            this.set_power.type_id = item.id;
+            this.self_power_params.user_id = item.id;
+            this.getSelfPower(this.powerChildName);
             break;
           case 'leave'://离职
             this.currentStaff = item;
@@ -1491,6 +1544,7 @@
       // 岗位管理
       // 当前点击
       tableClickRow(row) {
+        console.log(row);
         this.positionStaffList = row.users;
         let ids = this.chooseRowIds;
         ids.push(row.id);
