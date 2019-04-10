@@ -1,1 +1,116 @@
 @import "../../common.scss";
+
+$colorFFF: #679FFF;
+$color07B: #0BB07B;
+
+@mixin moreTxtHide {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#theme_name.theme1 {
+  #village {
+    height: 100%;
+    > div {
+      height: 100%;
+      .village-address {
+        margin: 0 30px;
+      }
+      .village-num {
+        color: $colorFFF;
+      }
+
+      .village-main {
+        width: 100%;
+        height: calc(100% - 80px);
+        padding: 25px 85px;
+        overflow: hidden;
+        .content {
+          flex-wrap: wrap;
+          height: 800px;
+          > div {
+            width: 25%;
+            padding: 10px;
+            margin-bottom: 10px;
+            > div {
+              width: 95%;
+              height: 350px;
+              background-color: white;
+              border-radius: 5px;
+              padding: 10px 20px;
+              box-sizing: border-box;
+              .village-header {
+                min-height: 80px;
+                padding: 10px 0;
+                border-bottom: 1px dashed #EFF0F2;
+                p.name {
+                  span:first-child {
+                    width: 85%;
+                    font-size: 24px;
+                    @include moreTxtHide;
+                  }
+                  span:last-child {
+                    color: $color07B;
+                  }
+                }
+                p.detail-address {
+                  margin-top: 10px;
+                  a {
+                    display: inline-block;
+                    width: 70%;
+                    font-size: 14px;
+                    @include moreTxtHide;
+                  }
+                }
+              }
+              //&:hover {
+              //  box-sizing: border-box;
+              //  border: 1px solid $colorE33;
+              //}
+              .village-body {
+                min-height: 150px;
+                padding: 20px 30px;
+                p {
+                  min-height: 30px;
+                  cursor: pointer;
+                }
+                .icon-label {
+                  display: inline-block;
+                  width: 18px;
+                  height: 18px;
+                }
+              }
+              .village-footer {
+                text-align: center;
+                button {
+                  width: 80px;
+                }
+                > div {
+                  &:last-child {
+                    height: 50px;
+                    > div {
+                      width: 25px;
+                      height: 25px;
+                      border: 1px solid #EFF0F2;
+                      border-radius: 50%;
+                      cursor: pointer;
+                    }
+                    .choose-village {
+                      background: $color07B;
+                      border: 1px solid $color07B;
+                      i {
+                        color: white;
+                        font-size: 18px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

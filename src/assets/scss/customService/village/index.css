@@ -132,4 +132,81 @@
     background: #747474;
     border-radius: 4px; }
 
+#theme_name.theme1 #village {
+  height: 100%; }
+  #theme_name.theme1 #village > div {
+    height: 100%; }
+    #theme_name.theme1 #village > div .village-address {
+      margin: 0 30px; }
+    #theme_name.theme1 #village > div .village-num {
+      color: #679FFF; }
+    #theme_name.theme1 #village > div .village-main {
+      width: 100%;
+      height: calc(100% - 80px);
+      padding: 25px 85px;
+      overflow: hidden; }
+      #theme_name.theme1 #village > div .village-main .content {
+        flex-wrap: wrap;
+        height: 800px; }
+        #theme_name.theme1 #village > div .village-main .content > div {
+          width: 25%;
+          padding: 10px;
+          margin-bottom: 10px; }
+          #theme_name.theme1 #village > div .village-main .content > div > div {
+            width: 95%;
+            height: 350px;
+            background-color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            box-sizing: border-box; }
+            #theme_name.theme1 #village > div .village-main .content > div > div .village-header {
+              min-height: 80px;
+              padding: 10px 0;
+              border-bottom: 1px dashed #EFF0F2; }
+              #theme_name.theme1 #village > div .village-main .content > div > div .village-header p.name span:first-child {
+                width: 85%;
+                font-size: 24px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden; }
+              #theme_name.theme1 #village > div .village-main .content > div > div .village-header p.name span:last-child {
+                color: #0BB07B; }
+              #theme_name.theme1 #village > div .village-main .content > div > div .village-header p.detail-address {
+                margin-top: 10px; }
+                #theme_name.theme1 #village > div .village-main .content > div > div .village-header p.detail-address a {
+                  display: inline-block;
+                  width: 70%;
+                  font-size: 14px;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  overflow: hidden; }
+            #theme_name.theme1 #village > div .village-main .content > div > div .village-body {
+              min-height: 150px;
+              padding: 20px 30px; }
+              #theme_name.theme1 #village > div .village-main .content > div > div .village-body p {
+                min-height: 30px;
+                cursor: pointer; }
+              #theme_name.theme1 #village > div .village-main .content > div > div .village-body .icon-label {
+                display: inline-block;
+                width: 18px;
+                height: 18px; }
+            #theme_name.theme1 #village > div .village-main .content > div > div .village-footer {
+              text-align: center; }
+              #theme_name.theme1 #village > div .village-main .content > div > div .village-footer button {
+                width: 80px; }
+              #theme_name.theme1 #village > div .village-main .content > div > div .village-footer > div:last-child {
+                height: 50px; }
+                #theme_name.theme1 #village > div .village-main .content > div > div .village-footer > div:last-child > div {
+                  width: 25px;
+                  height: 25px;
+                  border: 1px solid #EFF0F2;
+                  border-radius: 50%;
+                  cursor: pointer; }
+                #theme_name.theme1 #village > div .village-main .content > div > div .village-footer > div:last-child .choose-village {
+                  background: #0BB07B;
+                  border: 1px solid #0BB07B; }
+                  #theme_name.theme1 #village > div .village-main .content > div > div .village-footer > div:last-child .choose-village i {
+                    color: white;
+                    font-size: 18px; }
+
 /*# sourceMappingURL=index.css.map */
