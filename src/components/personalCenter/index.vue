@@ -1,33 +1,117 @@
 <template>
-    <div id="personal_center">
-      <div class="personal-center-container">
-        <div class="container-left">
-          <div class="container-left-up">
-            <div class="personal-info">
-              <div class="personal-info-photo"></div>
-              <div class="personal-info-name">
-                张三
-                <div class="personal-info-badge">P2</div>
+  <div id="personal_center">
+    <div class="personal-center-container">
+      <div class="container-left">
+        <div class="container-left-up">
+          <div class="personal-info">
+            <div class="personal-info-photo">
+              <img
+                src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+            </div>
+            <div class="personal-info-name">
+              张三
+              <div class="personal-info-badge"><span>P2</span></div>
+            </div>
+            <div class="personal-info-status" title="工作状态工作状态工作状态">
+              工作状态工作状态工作状态
+            </div>
+          </div>
+          <div class="personal-group-button">
+            <div class="personal-group-button-container">
+              <div class="group-button-item" title="我的收藏">
+                <div class="group-button-item-icon icon-collect"></div>
+                <div class="group-button-item-content">我的收藏</div>
               </div>
-              <div class="personal-info-status">
-                的说法十分艰苦拉萨sadSadfas sadf
+              <div class="group-button-item" title="我的回复">
+                <div class="group-button-item-icon icon-message"></div>
+                <div class="group-button-item-content">我的回复</div>
+              </div>
+              <div class="group-button-item" title="下属日志">
+                <div class="group-button-item-icon icon-log"></div>
+                <div class="group-button-item-content">下属日志</div>
               </div>
             </div>
-            <div class="personal-group-button"></div>
+
           </div>
-          <div class="container-left-down"></div>
+          <div class="hr-horizontal"></div>
         </div>
-        <div class="container-right">
-          <div class="calendar"></div>
+        <div class="container-left-down">
+          <ul>
+            <li @click="checkedId=item.id" v-for="item of navbarList" :class="{checked:item.id==checkedId}">
+              <div class="li-item">
+                <i class="li-item-icon" :class="[item.icon]"></i>
+                <span class="li-item-content">{{item.name}}</span>
+              </div>
+            </li>
+
+            <!--<li>
+              <div class="li-item">
+                <i class="li-item-icon icon-check"></i>
+                <span class="li-item-content">我的考勤</span>
+              </div>
+            </li>
+            <li>
+              <div class="li-item">
+                <i class="li-item-icon icon-track"></i>
+                <span class="li-item-content">成长轨迹</span>
+              </div>
+            </li>
+            <li>
+              <div class="li-item">
+                <i class="li-item-icon icon-log-gray"></i>
+                <span class="li-item-content">工作日志</span>
+              </div>
+            </li>
+            <li>
+              <div class="li-item">
+                <i class="li-item-icon icon-kpi"></i>
+                <span class="li-item-content">我的KPI</span>
+              </div>
+            </li>-->
+          </ul>
         </div>
       </div>
+      <div class="container-right">
+        <div class="calendar"></div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "index"
-    }
+  import _ from 'lodash';
+  export default {
+    name: "index",
+    data() {
+      return {
+        url:globalConfig.humanResource_server,
+
+        checkedId:1,
+        navbarList:[
+          {
+            id:1,
+            icon:'icon-check',
+            name:'我的考勤',
+          },
+          {
+            id:2,
+            icon:'icon-track',
+            name:'成长轨迹',
+          },
+          {
+            id:3,
+            icon:'icon-log-gray',
+            name:'工作日志',
+          },
+          {
+            id:4,
+            icon:'icon-kpi',
+            name:'我的KPI',
+          },
+        ],
+      }
+    },
+  }
 </script>
 
 <style scoped lang="scss">
@@ -37,6 +121,7 @@
     $url: '../../assets/image/personalCenter/' + $n + '/' + $m;
     @include bgImage($url);
   }
+
   #theme_name {
     #personalCenter {
 
@@ -48,8 +133,30 @@
       .personal-center-container {
         .container-left {
           .personal-info-badge {
-            @include personalCenterImg('fill_1.png','theme1');
+            @include personalCenterImg('fill_1.png', 'theme1');
           }
+          .icon-collect {
+            @include personalCenterImg('shoucang.png', 'theme1');
+          }
+          .icon-message {
+            @include personalCenterImg('huifu.png', 'theme1');
+          }
+          .icon-log {
+            @include personalCenterImg('rizhi.png', 'theme1');
+          }
+          .icon-check {
+            @include personalCenterImg('kaoqin.png','theme1');
+          }
+          .icon-track {
+            @include personalCenterImg('guiji.png','theme1');
+          }
+          .icon-log-gray {
+            @include personalCenterImg('gongzuorizhi.png','theme1');
+          }
+          .icon-kpi {
+            @include personalCenterImg('kpi.png','theme1');
+          }
+
         }
       }
     }
