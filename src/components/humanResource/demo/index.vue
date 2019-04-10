@@ -1,6 +1,9 @@
 <template>
   <div class="demo-container">
-    <lj-comment width="900"></lj-comment>
+    <!--<lj-comment width="900"></lj-comment>-->
+    <div class="demo">
+      <div class="icon40 icon-demo"></div>
+    </div>
   </div>
 
 </template>
@@ -16,5 +19,10 @@
 </script>
 
 <style scoped lang="scss">
+  //@import "";
 
+  .demo {
+    width: 400px;
+    height: 400px;
+  }
 </style>
