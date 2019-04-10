@@ -36,11 +36,6 @@
           </span>
           <a class="control flex-center">
             <a class="pointer">...</a>
-            <!--<i class="el-icon-delete" @click.self.stop="handleDelDepart(item)"></i>-->
-            <!--<i class="el-icon-edit" @click.self.stop="handleOpenEditDepart(item)"></i>-->
-            <!--<i class="el-icon-back" @click.self.stop="handleOpenBackParent(item)"></i>-->
-            <!--<i class="el-icon-view" @click.self.stop="handleOpenLookInfo(item)"></i>-->
-            <!--<b @click.stop="handleOpenEditDepart(item)">编辑</b>-->
             <b @click.stop="handleOpenEditDepart(item)">编辑</b>
             <b @click.stop="handleDelDepart(item)">删除</b>
           </a>
@@ -1127,12 +1122,7 @@
       },
       //导出报表
       handleExportInfo() {
-        this.exportInfo = this.chooseTab;
-      },
-      //返回上级
-      handleOpenBackParent(item) {
-        this.params.parent_id = item.parent_org && item.parent_org.parent_id || 1;
-        this.getDepartList();
+        this.exportInfo += this.chooseTab;
       },
       handleOpenEditDepart(item) {
         this.edit_depart = item;

@@ -154,14 +154,14 @@
       //离职短信
       handleControlMsg(row,where) {
         var type = where === 'sms' ? ['dimission_sms'] : ['dimission_group'];
-        if (row.staff && row.staff.send_info && wor.staff.send_info.forward_group === 1) {
+        if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
           return false;
         } else {
           this.$http.get(`staff/user/${row.id}/sendinfo`,{
             type
           }).then(res => {
             if (res.code === '20000') {
-              this.$LjNotify('dimission_sms',{
+              this.$LjNotify('success',{
                 title: '成功',
                 message: res.msg
               });
