@@ -17,37 +17,45 @@
         navVisible: false,
         menu_list: [
           {
-            title: '工单',
+            title: '工单信息',
             url: '/workOrder',
           },
           {
-            title: '回访',
+            title: '回访记录',
             url: '',
           },
           {
-            title: '到期',
+            title: '房屋到期',
             url: '',
           },
           {
-            title: '资料',
+            title: '资料审核',
             url: '',
           },
           {
-            title: '合同',
+            title: '维修保洁',
             url: '',
           },
           {
-            title: '客户',
+            title: '客户管理',
             url: '',
           },
           {
-            title: '客服',
+            title: '客服接线',
             url: '',
           },
           {
-            title: '房屋',
+            title: '房源管理',
             url: '',
           },
+          {
+            title: '合同管理',
+            url: ''
+          },
+          {
+            title: '小区管理',
+            url: ''
+          }
         ],
       }
     },
