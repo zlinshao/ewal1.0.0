@@ -369,6 +369,20 @@
               </div>
             </div>
           </div>
+
+          <p style="text-align: left">相关合同</p>
+          <div class="have_info" v-if="contractDetail.related_contract && contractDetail.related_contract.length > 0">
+            <el-form label-width="120px">
+              <el-row :gutter="10">
+                <el-col :span="8" v-for="(item,index) in contractDetail.related_contract" :key="index">
+                  <el-form-item :label="contractLabel(item)">
+                    <span>{{ item.contract_number }}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </div>
+          <div v-else>暂无</div>
         </div>
       </div>
     </lj-dialog>
@@ -647,6 +661,10 @@
     watch: {},
     computed: {},
     methods: {
+      //相关合同label
+      contractLabel(item) {
+        return item.type === 1 ? `新收合同(${item.is_invalid === 0 ? '正常' : '作废'})` : `续收合同(${item.is_invalid === 0 ? '正常' : '作废'})`;
+      },
       handleCloseDetail() {
         this.contractDetail = '';
         this.contract_detail_visible = false;
@@ -769,7 +787,9 @@
       //双击详情
       handleGetDetail(row) {
         this.currentRow = row;
-        this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+        this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
+        // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+          console.log(res);
           if (res.code === 200) {
             this.contractDetail = res.data;
             this.contract_detail_visible = true;
