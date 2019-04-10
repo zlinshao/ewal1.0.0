@@ -180,6 +180,11 @@
         overflow: hidden;
         width: 45px;
         height: 45px; }
+    #app header .items-center .icon3024 {
+      display: inline-block;
+      cursor: pointer;
+      width: 30px;
+      height: 24px; }
   #app select {
     color: #FFFFFF;
     padding: 6px 18px;
@@ -258,7 +263,7 @@
   #app .loading {
     width: 100%;
     position: fixed;
-    top: 231px;
+    top: 171px;
     left: 0;
     bottom: 0;
     right: 0;

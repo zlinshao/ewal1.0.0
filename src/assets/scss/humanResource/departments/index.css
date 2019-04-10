@@ -218,7 +218,7 @@
       height: 100%;
       position: absolute;
       top: 81px;
-      left: 1920px;
+      left: 100%;
       z-index: 10;
       transition: all ease 1s; }
       #theme_name #departments .departList .depart-detail .depart_nav {
@@ -316,6 +316,8 @@
                 line-height: 195px;
                 text-align: center;
                 cursor: pointer; }
+              #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .show_next_btn {
+                opacity: 0; }
               #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list {
                 width: 100%;
                 padding: 30px 0;

@@ -82,7 +82,7 @@
         height: 100%;
         position: absolute;
         top: 81px;
-        left: 1920px;
+        left: 100%;
         z-index: 10;
         transition: all ease 1s;
         .depart_nav {
@@ -193,6 +193,9 @@
                   line-height: 195px;
                   text-align: center;
                   cursor: pointer;
+                }
+                .show_next_btn {
+                  opacity: 0;
                 }
                 .list {
                   width: 100%;

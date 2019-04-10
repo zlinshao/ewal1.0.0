@@ -369,6 +369,14 @@
   .btn_add {
     @include btn_square(50%);
   }
+  .all-choose {
+    @include commonImg('quanxuan.png','theme1');
+  }
+  .icon-address {
+    width: 20px;
+    height: 20px;
+    @include commonImg('dizhi.png','theme1');
+  }
   .search {
     display: inline-block;
     width: 30px;

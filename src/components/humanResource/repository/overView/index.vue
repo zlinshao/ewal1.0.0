@@ -714,7 +714,7 @@
               key="repairId"
               align="center"
               prop="repairId"
-              label="维修编号">
+              label="物品编号">
             </el-table-column>
             <el-table-column
               key="qrCode"
@@ -1378,6 +1378,7 @@
               name: '',
               type: 1,
             };
+            this.$refs[`dropdown${this.add_category_form.type}`].update();
             this.getEditCategoryList();
           }else {
             this.$LjNotify('error',{
@@ -1397,6 +1398,7 @@
               title: '成功',
               message: '编辑成功',
             });
+            this.$refs[`dropdown${this.add_goods_form.type}`].update();
             this.add_goods_form_visible = false;
             this.add_goods_form = {
               classify: '',//分类

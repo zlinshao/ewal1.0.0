@@ -313,11 +313,11 @@
     height: 300px; }
   #theme_name #borrowReceive .photo-container > :last-child {
     padding: 15px; }
-#theme_name #borrowReceive .repository-overview .lj-header-search .el-icon-search {
+#theme_name #borrowReceive .lj-header-search .el-icon-search {
   position: absolute;
   top: 7px;
   right: 195px; }
-#theme_name #borrowReceive .repository-overview .lj-header-search input {
+#theme_name #borrowReceive .lj-header-search input {
   border: 1px solid #ccc;
   border-radius: 20px;
   width: 220px;

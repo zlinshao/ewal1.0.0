@@ -36,12 +36,7 @@
           </span>
           <a class="control flex-center">
             <a class="pointer">...</a>
-            <!--<i class="el-icon-delete" @click.self.stop="handleDelDepart(item)"></i>-->
-            <!--<i class="el-icon-edit" @click.self.stop="handleOpenEditDepart(item)"></i>-->
-            <!--<i class="el-icon-back" @click.self.stop="handleOpenBackParent(item)"></i>-->
-            <!--<i class="el-icon-view" @click.self.stop="handleOpenLookInfo(item)"></i>-->
-            <!--<b @click.stop="handleOpenEditDepart(item)">编辑</b>-->
-            <b @click.stop="handleOpenLookInfo(item)">编辑</b>
+            <b @click.stop="handleOpenEditDepart(item)">编辑</b>
             <b @click.stop="handleDelDepart(item)">删除</b>
           </a>
         </p>
@@ -88,9 +83,13 @@
             <div class="depart-staff">
               <!--下级部门列表-->
               <div class="depart_list flex">
+                <!--<div class="next_btn" :class="{'show_next_btn': is_next}"><i class="el-icon-arrow-right"></i></div>-->
+                <!--鼠标移入判断是否有下级部门不合理-->
                 <div class="next_btn"><i class="el-icon-arrow-right"></i></div>
                 <div class="list flex scroll_bar">
                   <div class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>
+                  <!--不合理-->
+                  <!--<div @mouseover="handleConfirmNext(depart)" class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>-->
                 </div>
               </div>
 
@@ -525,6 +524,7 @@
           parent_id: ''
         },
         nav_depart: [],
+        is_next: true,
 
         departModule: false,//部门管理/员工管理
         departInfo: '',
@@ -730,6 +730,8 @@
       },
       //关闭部门详情
       handleCloseDepartDetail() {
+        this.current_btn = 1;
+        this.departModule = false;
         this.show_depart_detail = false;
       },
       // 部门管理 搜索下级部门
@@ -737,12 +739,14 @@
         this.next_depart_params.parent_id = val.id;
         this.$http.get('organization/organization',this.next_depart_params).then(res => {
           if (res.code === '20000') {
-            console.log(res.data.data);
             this.next_depart = res.data.data;
             if (next) {
               this.nav_depart.push(val);
             }
           } else {
+            if (!next) {
+              this.next_depart = [];
+            }
             this.$LjNotify('info',{
               title: '提示',
               message: '暂无下级部门！'
@@ -752,7 +756,26 @@
       },
       //子部门点击获取子部门
       handleInnerNextDepart(item) {
+        this.is_next = true;
         this.getNextDepart(item,'next');
+      },
+      //判断是否有下级部门
+      handleConfirmNext(depart) {
+        this.$http.get('organization/organization',{
+          page: 1,
+          limit: 999,
+          parent_id: depart.id
+        }).then(res => {
+          if (res.code === '20000') {
+            if (res.data.data.length > 0) {
+              this.is_next = false;
+            } else {
+              this.is_next = true;
+            }
+          } else {
+            this.is_next = true;
+          }
+        })
       },
       //点击导航菜单
       handleGetCurrentDepart(item,idx) {
@@ -761,7 +784,6 @@
         this.nav_depart.splice(idx + 1);
       },
       handleOpenLookInfo(val) {
-        console.log(val);
         this.departModule = true;
         this.departInfo = val;
       },
@@ -1100,12 +1122,7 @@
       },
       //导出报表
       handleExportInfo() {
-        this.exportInfo = this.chooseTab;
-      },
-      //返回上级
-      handleOpenBackParent(item) {
-        this.params.parent_id = item.parent_org && item.parent_org.parent_id || 1;
-        this.getDepartList();
+        this.exportInfo += this.chooseTab;
       },
       handleOpenEditDepart(item) {
         this.edit_depart = item;

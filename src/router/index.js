@@ -1,35 +1,47 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const HomePage = () => import  ('@/components/index.vue');//首页
-const Login = () => import  ('@/components/login.vue');//登录
-const President = () => import  ('@/components/president/index.vue');//总裁办
-const Jurisdiction = () => import('@/components/jurisdiction.vue'); //无权限
-const NetWork_error = () => import('@/components/network_error.vue'); //网络已断开
+const HomePage = () => import('@/components/index.vue') //首页
+const Login = () => import('@/components/login.vue') //登录
+const President = () => import('@/components/president/index.vue') //总裁办
+const Jurisdiction = () => import('@/components/jurisdiction.vue') //无权限
+const NetWork_error = () => import('@/components/network_error.vue') //网络已断开
 
 // 客服
-const CustomService = () => import('@/components/customService/index.vue');
-const WorkOrder = () => import('@/components/customService/workOrder/index.vue'); //工单
+const CustomService = () => import('@/components/customService/index.vue')
+const WorkOrder = () => import('@/components/customService/workOrder/index.vue') //工单
+const VisitToRecord = () =>
+  import('@/components/customService/visitToRecord/index.vue') //工单
+const Village = () => import('@/components/customService/village/index.vue') //小区
 
 // 市场
-const MarketCentre = () => import('@/components/marketCentre/index.vue');
-const HouseManagement = () => import('@/components/marketCentre/houseManagement/index.vue');//房源管理
-const ContractManagement = () => import('@/components/marketCentre/contractManagement/index.vue'); //合同管理
-const CustomerManagement = () => import('@/components/marketCentre/customerManagement/index.vue');//客户管理
+const MarketCentre = () => import('@/components/marketCentre/index.vue')
+const HouseManagement = () =>
+  import('@/components/marketCentre/houseManagement/index.vue') //房源管理
+const ContractManagement = () =>
+  import('@/components/marketCentre/contractManagement/index.vue') //合同管理
+const CustomerManagement = () =>
+  import('@/components/marketCentre/customerManagement/index.vue') //客户管理
 
 // 人力资源中心
-const HumanResource = () => import('@/components/humanResource/index.vue');
-const Departments = () => import('@/components/humanResource/departments/index.vue');//三省六部
-const Recruitment = () => import('@/components/humanResource/recruitment/index.vue');//招兵买马
-const StaffRoster = () => import('@/components/humanResource/departments/staffRoster/index.vue');//员工名册
-const MilitaryOrganization = () => import('@/components/humanResource/militaryOrganization/index.vue'); //排班布阵
-const Reward = () => import('@/components/humanResource/reward/index.vue'); //赏罚分明
-const Repository = () => import('@/components/humanResource/repository/index.vue'); //内务库房
-const DiscussPolitics = () => import('@/components/humanResource/discussPolitics/index.vue'); //奏事议政
-const Demo = () => import('@/components/humanResource/demo/index.vue'); //测试
-
+const HumanResource = () => import('@/components/humanResource/index.vue')
+const Departments = () =>
+  import('@/components/humanResource/departments/index.vue') //三省六部
+const Recruitment = () =>
+  import('@/components/humanResource/recruitment/index.vue') //招兵买马
+const StaffRoster = () =>
+  import('@/components/humanResource/departments/staffRoster/index.vue') //员工名册
+const MilitaryOrganization = () =>
+  import('@/components/humanResource/militaryOrganization/index.vue') //排班布阵
+const Reward = () => import('@/components/humanResource/reward/index.vue') //赏罚分明
+const Repository = () =>
+  import('@/components/humanResource/repository/index.vue') //内务库房
+const DiscussPolitics = () =>
+  import('@/components/humanResource/discussPolitics/index.vue') //奏事议政
+const Demo = () => import('@/components/humanResource/demo/index.vue') //测试
 
 // 财务中心
+<<<<<<< HEAD
 const Finance = () => import('@/components/finance/index.vue');
 const AccountManage = () => import('@/components/finance/accountManage/index.vue');//帐户
 const Subject = () => import('@/components/finance/subject/index.vue');//科目
@@ -39,77 +51,123 @@ const Customer = () => import('@/components/finance/customer/index.vue'); //客�
 const Payment = () => import('@/components/finance/payment/index.vue'); //付款
 const Pending = () => import('@/components/finance/pending/index.vue'); //待处理
 const Balance = () => import('@/components/finance/balance/index.vue'); //结算
+=======
+const Finance = () => import('@/components/finance/index.vue')
+const AccountManage = () =>
+  import('@/components/finance/accountManage/index.vue') //帐户
+const Subject = () => import('@/components/finance/subject/index.vue') //科目
+const BudgetStream = () => import('@/components/finance/budgetStream/index.vue') //收支流水
+const Gathering = () => import('@/components/finance/gathering/index.vue') //收款
+const Customer = () => import('@/components/finance/customer/index.vue') //客户
+const Payment = () => import('@/components/finance/payment/index.vue') //付款
+const Pending = () => import('@/components/finance/pending/index.vue') //付款
+>>>>>>> 0f17d43d3c5ce038a961ce1d1d1b2377bd19dadb
 
 //新媒体前台
-const Club = () => import('@/components/newMedia/front/club/index.vue');//俱乐部
-const HotNews = () => import('@/components/newMedia/front/hotNews/index.vue');//企业头条
-const Humanity = () => import('@/components/newMedia/front/humanity/index.vue');//公司人文
-const Profile = () => import('@/components/newMedia/front/profile/index.vue');//资料
+const Club = () => import('@/components/newMedia/front/club/index.vue') //俱乐部
+const HotNews = () => import('@/components/newMedia/front/hotNews/index.vue') //企业头条
+const Humanity = () => import('@/components/newMedia/front/humanity/index.vue') //公司人文
+const Profile = () => import('@/components/newMedia/front/profile/index.vue') //资料
 
 //前台资料
-const Video = () => import('@/components/newMedia/components/video.vue');
-const Document = () => import('@/components/newMedia/components/video.vue');
+const Video = () => import('@/components/newMedia/components/video.vue')
+const Document = () => import('@/components/newMedia/components/video.vue')
 
 //前台乐伽人文
-const LeJiaStars = () => import('@/components/newMedia/front/humanity/components/common.vue');
-const Birthday = () => import('@/components/newMedia/front/humanity/components/common.vue');
-const ExcellentStaff = () => import('@/components/newMedia/front/humanity/components/common.vue');
+const LeJiaStars = () =>
+  import('@/components/newMedia/front/humanity/components/common.vue')
+const Birthday = () =>
+  import('@/components/newMedia/front/humanity/components/common.vue')
+const ExcellentStaff = () =>
+  import('@/components/newMedia/front/humanity/components/common.vue')
 
 //前台企业头条
-const News = () => import('@/components/newMedia/front/hotNews/components/common.vue');
-const LeJiaNews = () => import('@/components/newMedia/front/hotNews/components/common.vue');
-const Notice = () => import('@/components/newMedia/front/hotNews/components/common.vue');
+const News = () =>
+  import('@/components/newMedia/front/hotNews/components/common.vue')
+const LeJiaNews = () =>
+  import('@/components/newMedia/front/hotNews/components/common.vue')
+const Notice = () =>
+  import('@/components/newMedia/front/hotNews/components/common.vue')
 
 //热门导读详情
-const NewsDetail = () => import('@/components/newMedia/front/hotNews/components/detail.vue');
+const NewsDetail = () =>
+  import('@/components/newMedia/front/hotNews/components/detail.vue')
 //优秀员工详情
-const StaffDetail = () => import('@/components/newMedia/components/staffDetail.vue');
+const StaffDetail = () =>
+  import('@/components/newMedia/components/staffDetail.vue')
 
 //新媒体后台
-const MediaCenter = () => import('@/components/newMedia/index.vue');
-const BackVideo = () => import('@/components/newMedia/back/profile/common.vue');
-const BackDocument = () => import('@/components/newMedia/back/profile/common.vue');
-const ProfileHome = () => import('@/components/newMedia/back/profile/index.vue');
-const BackNews = () => import('@/components/newMedia/back/news/index.vue');
-const LeJiaHumanity = () => import('@/components/newMedia/back/lejiaHumanity/index.vue');
-const BackClub = () => import('@/components/newMedia/back/club/index.vue');
+const MediaCenter = () => import('@/components/newMedia/index.vue')
+const BackVideo = () => import('@/components/newMedia/back/profile/common.vue')
+const BackDocument = () =>
+  import('@/components/newMedia/back/profile/common.vue')
+const ProfileHome = () => import('@/components/newMedia/back/profile/index.vue')
+const BackNews = () => import('@/components/newMedia/back/news/index.vue')
+const LeJiaHumanity = () =>
+  import('@/components/newMedia/back/lejiaHumanity/index.vue')
+const BackClub = () => import('@/components/newMedia/back/club/index.vue')
 
 //乐伽大学
-const LeJiaCollege = () => import('@/components/leJiaCollege/index.vue');
-const ExamArrangement = () => import('@/components/leJiaCollege/components/common.vue');//考试安排
-const Faculty = () => import('@/components/leJiaCollege/components/common.vue');//师资力量
-const IndustryDynamic = () => import('@/components/leJiaCollege/components/common.vue');//行业动态
-const JobTraining = () => import('@/components/leJiaCollege/components/common.vue');//工作培训
-const PostPlanning = () => import('@/components/leJiaCollege/components/common.vue');//岗位规划
-const PracticalProblems = () => import('@/components/leJiaCollege/components/common.vue');//实践问题
-const VideoLearning = () => import('@/components/leJiaCollege/components/common.vue');//视频学习
+const LeJiaCollege = () => import('@/components/leJiaCollege/index.vue')
+const ExamArrangement = () =>
+  import('@/components/leJiaCollege/components/common.vue') //考试安排
+const Faculty = () => import('@/components/leJiaCollege/components/common.vue') //师资力量
+const IndustryDynamic = () =>
+  import('@/components/leJiaCollege/components/common.vue') //行业动态
+const JobTraining = () =>
+  import('@/components/leJiaCollege/components/common.vue') //工作培训
+const PostPlanning = () =>
+  import('@/components/leJiaCollege/components/common.vue') //岗位规划
+const PracticalProblems = () =>
+  import('@/components/leJiaCollege/components/common.vue') //实践问题
+const VideoLearning = () =>
+  import('@/components/leJiaCollege/components/common.vue') //视频学习
 
 // 岗位规划
-const Partner = () => import('@/components/leJiaCollege/components/common.vue');//合伙人
-const GeneralManager = () => import('@/components/leJiaCollege/components/common.vue');//城市总
-const ViceManager = () => import('@/components/leJiaCollege/components/common.vue');//城市副总
-const DistrictManager = () => import('@/components/leJiaCollege/components/common.vue');//区域经理
-const ReserveDistrictManager = () => import('@/components/leJiaCollege/components/common.vue');//储备区域经理
-const AreaManager = () => import('@/components/leJiaCollege/components/common.vue');//片区经理
-const ReserveAreaManager = () => import('@/components/leJiaCollege/components/common.vue');//储备片区经理
-const Sales = () => import('@/components/leJiaCollege/components/common.vue');//市场专员
-const NewTrainning = () => import('@/components/leJiaCollege/components/common.vue');//新人训
-const ReserveTrainning = () => import('@/components/leJiaCollege/components/common.vue');//储备培训
+const Partner = () => import('@/components/leJiaCollege/components/common.vue') //合伙人
+const GeneralManager = () =>
+  import('@/components/leJiaCollege/components/common.vue') //城市总
+const ViceManager = () =>
+  import('@/components/leJiaCollege/components/common.vue') //城市副总
+const DistrictManager = () =>
+  import('@/components/leJiaCollege/components/common.vue') //区域经理
+const ReserveDistrictManager = () =>
+  import('@/components/leJiaCollege/components/common.vue') //储备区域经理
+const AreaManager = () =>
+  import('@/components/leJiaCollege/components/common.vue') //片区经理
+const ReserveAreaManager = () =>
+  import('@/components/leJiaCollege/components/common.vue') //储备片区经理
+const Sales = () => import('@/components/leJiaCollege/components/common.vue') //市场专员
+const NewTrainning = () =>
+  import('@/components/leJiaCollege/components/common.vue') //新人训
+const ReserveTrainning = () =>
+  import('@/components/leJiaCollege/components/common.vue') //储备培训
 
 //待办
 // const TodoList = () => import('@/components/todoList/index.vue');
 
-//知识产权保护
-const IntellectualPropertyProtection = ()=> import('@/components/intellectualPropertyProtection/index.vue');
-const Patent = ()=> import('@/components/intellectualPropertyProtection/patent/index.vue');
-const Brand = ()=> import('@/components/intellectualPropertyProtection/brand/index.vue');
-const Copyright = ()=> import('@/components/intellectualPropertyProtection/copyright/index.vue');
-const EnterpriseCertificate = ()=> import('@/components/intellectualPropertyProtection/enterpriseCertificate/index.vue');
+//个人中心
+const PersonalCenter = () => import('@/components/personalCenter/index.vue');
 
-Vue.use(Router);
+
+
+
+
+//知识产权保护
+const IntellectualPropertyProtection = () =>
+  import('@/components/intellectualPropertyProtection/index.vue')
+const Patent = () =>
+  import('@/components/intellectualPropertyProtection/patent/index.vue')
+const Brand = () =>
+  import('@/components/intellectualPropertyProtection/brand/index.vue')
+const Copyright = () =>
+  import('@/components/intellectualPropertyProtection/copyright/index.vue')
+const EnterpriseCertificate = () =>
+  import('@/components/intellectualPropertyProtection/enterpriseCertificate/index.vue')
+
+Vue.use(Router)
 
 export default new Router({
-
   mode: 'history',
   routes: [
     {
@@ -117,7 +175,6 @@ export default new Router({
       name: '首页',
       component: HomePage
     },
-
 
     {
       path: '/faculty',
@@ -206,7 +263,6 @@ export default new Router({
       component: Sales
     },
 
-
     {
       path: '/leJiaCollege',
       name: '乐伽大学',
@@ -294,6 +350,7 @@ export default new Router({
       name: '公告',
       component: Notice
     },
+<<<<<<< HEAD
 
         {
             path: '/lejiaStars',
@@ -472,6 +529,8 @@ export default new Router({
             component: EnterpriseCertificate
         },
     
+=======
+>>>>>>> 0f17d43d3c5ce038a961ce1d1d1b2377bd19dadb
     {
       path: '/lejiaStars',
       name: '乐伽之星',
@@ -520,12 +579,22 @@ export default new Router({
     {
       path: '/customService',
       name: '客服',
-      component: CustomService,
+      component: CustomService
     },
     {
       path: '/workOrder',
       name: '工单',
-      component: WorkOrder,
+      component: WorkOrder
+    },
+    {
+      path: '/visitToRecord',
+      name: '回访记录',
+      component: VisitToRecord
+    },
+    {
+      path: '/village',
+      name: '小区',
+      component: Village
     },
     {
       path: '/marketCentre',
@@ -541,11 +610,6 @@ export default new Router({
       path: '/contractManagement',
       name: '合同管理',
       component: ContractManagement
-    },
-    {
-      path: '/customerManagement',
-      name: '客户管理',
-      component: CustomerManagement
     },
     {
       path: '/humanResource',
@@ -576,11 +640,6 @@ export default new Router({
       path: '/discussPolitics',
       name: '奏事议政',
       component: DiscussPolitics
-    },
-    {
-      path: '/demo',
-      name: '测试',
-      component: Demo
     },
     {
       path: '/staffRoster',
@@ -627,6 +686,7 @@ export default new Router({
       name: '付款',
       component: Payment
     },
+<<<<<<< HEAD
       {
           path: '/pending',
           name: '待处理项',
@@ -637,11 +697,62 @@ export default new Router({
           name: '结算',
           component: Balance
       },
+=======
+    // {
+    //     path: '/offerDetail',
+    //     name: '录用通知书',
+    //     component: OfferDetail
+    // }
+    {
+      path: '/intellectualPropertyProtection',
+      name: '知识产权保护',
+      component: IntellectualPropertyProtection
+    },
+    {
+      path: '/patent',
+      name: '专利',
+      component: Patent
+    },
+    {
+      path: '/brand',
+      name: '商标',
+      component: Brand
+    },
+    {
+      path: '/copyright',
+      name: '著作权',
+      component: Copyright
+    },
+    {
+      path: '/enterpriseCertificate',
+      name: '企业证书',
+      component: EnterpriseCertificate
+    },
+    {
+      path: '/customerManagement',
+      name: '客户管理',
+      component: CustomerManagement
+    },
+    {
+      path: '/demo',
+      name: '测试',
+      component: Demo
+    },
+    {
+      path: '/pending',
+      name: '待处理项',
+      component: Pending
+    },
+    {
+      path: '/personalCenter',
+      name: '个人中心',
+      component: PersonalCenter,
+    },
+>>>>>>> 0f17d43d3c5ce038a961ce1d1d1b2377bd19dadb
     // {
     //     path: '/offerDetail',
     //     name: '录用通知书',
     //     component: OfferDetail
     // }
   ]
-
 })
