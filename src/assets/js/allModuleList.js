@@ -139,7 +139,7 @@ export const finance = {
       url: 'budgetStream',
       title: '流水'
     },
-<<<<<<< HEAD
+
       {
           url: 'balance',
           title: '结算',
@@ -148,12 +148,6 @@ export const finance = {
           url: 'pending',
           title: '待处理',
       },
-=======
-    {
-      url: 'pending',
-      title: '待处理项'
-    }
->>>>>>> 0f17d43d3c5ce038a961ce1d1d1b2377bd19dadb
   ]
 }
 

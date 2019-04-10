@@ -2,7 +2,7 @@
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   dev: {
@@ -13,11 +13,9 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-<<<<<<< HEAD
     // host: '192.168.20.62', // can be overwritten by process.env.HOST
-=======
     // host: '192.168.20.38', // can be overwritten by process.env.HOST
->>>>>>> 0f17d43d3c5ce038a961ce1d1d1b2377bd19dadb
+
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8082, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,

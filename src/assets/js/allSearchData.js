@@ -282,7 +282,6 @@ export const customerSearch = {
 
 //收支流水
 export const accountRunSearch = {
-<<<<<<< HEAD
     status: 'budgetStream',
     keywords: 'search',
     data: [
@@ -328,49 +327,7 @@ export const accountRunSearch = {
     ]
 };
 
-=======
-  status: 'budgetStream',
-  keywords: 'search',
-  data: [
-    {
-      keyType: 'date',
-      title: '开始日期',
-      placeholder: '请选择开始日期',
-      keyName: 'start_date',
-      dataType: ''
-    },
-    {
-      keyType: 'date',
-      title: '结束日期',
-      placeholder: '请选择结束日期',
-      keyName: 'end_date',
-      dataType: ''
-    },
-    {
-      keyType: 'radio',
-      title: '类别',
-      placeholder: '请选择类别',
-      keyName: 'cate',
-      dataType: '',
-      value: [{ id: 1, title: '收入' }, { id: 2, title: '支出' }]
-    },
-    {
-      keyType: 'date',
-      title: '操作开始日期',
-      placeholder: '请选择操作开始日期',
-      keyName: 'operate_start_date',
-      dataType: ''
-    },
-    {
-      keyType: 'date',
-      title: '操作结束日期',
-      placeholder: '请选择操作结束日期',
-      keyName: 'operate_end_date',
-      dataType: ''
-    }
-  ]
-}
->>>>>>> 0f17d43d3c5ce038a961ce1d1d1b2377bd19dadb
+
 
 /*赏罚分明*/
 //赏善令
