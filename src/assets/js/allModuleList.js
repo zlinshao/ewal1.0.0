@@ -106,7 +106,7 @@ export const customService = {
     },
     {
       title: '小区管理',
-      url: ''
+      url: '/village'
     }
   ]
 };

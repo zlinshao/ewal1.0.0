@@ -10,6 +10,7 @@ const NetWork_error = () => import('@/components/network_error.vue'); //网络�
 // 客服
 const CustomService = () => import('@/components/customService/index.vue');
 const WorkOrder = () => import('@/components/customService/workOrder/index.vue'); //工单
+const Village = () => import('@/components/customService/village/index.vue'); //小区
 
 // 市场
 const MarketCentre = () => import('@/components/marketCentre/index.vue');
@@ -347,6 +348,11 @@ export default new Router({
         path: '/workOrder',
         name: '工单',
         component: WorkOrder,
+    },
+    {
+      path: '/village',
+      name: '小区',
+      component: Village
     },
     {
         path: '/marketCentre',
