@@ -293,252 +293,180 @@ export default new Router({
       name: '公告',
       component: Notice
     },
-
-        {
-            path: '/lejiaStars',
-            name: '乐伽之星',
-            component: LeJiaStars
-        },
-        {
-            path: '/excellentStaff',
-            name: '优秀员工',
-            component: ExcellentStaff
-        },
-        {
-            path: '/birthday',
-            name: '寿星墙',
-            component: Birthday
-        },
-        {
-            path: '/club',
-            name: '俱乐部',
-            component: Club
-        },
-        {
-            path: '/hotNews',
-            name: '企业头条',
-            component: HotNews
-        },
-        {
-            path: '/humanity',
-            name: '人文关怀',
-            component: Humanity
-        },
-        {
-            path: '/profile',
-            name: '公司资料',
-            component: Profile
-        },
-        {
-            path: '/jurisdiction',
-            name: '无权限',
-            component: Jurisdiction
-        },
-        {
-            path: '/network_error',
-            name: '网络断开',
-            component: NetWork_error
-        },
-        {
-            path: '/customService',
-            name: '客服',
-            component: CustomService,
-        },
-        {
-            path: '/workOrder',
-            name: '工单',
-            component: WorkOrder,
-        },
-        {
-            path: '/marketCentre',
-            name: '市场',
-            component: MarketCentre
-        },
-        {
-            path: '/houseManagement',
-            name: '房源管理',
-            component: HouseManagement
-        },
-        {
-            path: '/contractManagement',
-            name: '合同管理',
-            component: ContractManagement
-        },
-        {
-            path: '/humanResource',
-            name: '人力资源中心',
-            component: HumanResource
-        },
-        {
-            path: '/departments',
-            name: '三省六部',
-            component: Departments
-        },
-        {
-            path: '/recruitment',
-            name: '招兵买马',
-            component: Recruitment
-        },
-        {
-            path: '/reward',
-            name: '赏罚分明',
-            component: Reward
-        },
-        {
-            path: '/repository',
-            name: '内务库房',
-            component: Repository
-        },
-        {
-          path: '/discussPolitics',
-          name:'奏事议政',
-          component: DiscussPolitics
-        },
-        {
-            path: '/staffRoster',
-            name: '员工名册',
-            component: StaffRoster
-        },
-        {
-            path: '/militaryOrganization',
-            name: '排兵布阵',
-            component: MilitaryOrganization
-        },
-        {
-            path: '/finance',
-            name: '财务账本',
-            component: Finance
-        },
-        {
-            path: '/accountManage',
-            name: '帐户',
-            component: AccountManage
-        },
-        {
-            path: '/subject',
-            name: '科目',
-            component: Subject
-        },
-        {
-            path: '/budgetStream',
-            name: '收支流水',
-            component: BudgetStream
-        },
-        {
-            path: '/gathering',
-            name: '收款',
-            component: Gathering
-        },
-        {
-            path: '/customer',
-            name: '客户',
-            component: Customer
-        },
-        {
-            path: '/payment',
-            name: '付款',
-            component: Payment
-        },
-        // {
-        //     path: '/offerDetail',
-        //     name: '录用通知书',
-        //     component: OfferDetail
-        // }
-        {
-            path: '/intellectualPropertyProtection',
-            name: '知识产权保护',
-            component: IntellectualPropertyProtection
-        },
-        {
-            path: '/patent',
-            name: '专利',
-            component: Patent
-        },
-        {
-            path: '/brand',
-            name: '专利',
-            component: Brand
-        },
-        {
-            path: '/copyright',
-            name: '专利',
-            component: Copyright
-        },
-        {
-            path: '/enterpriseCertificate',
-            name: '专利',
-            component: EnterpriseCertificate
-        },
-    
     {
-      path: '/lejiaStars',
-      name: '乐伽之星',
-      component: LeJiaStars
+        path: '/lejiaStars',
+        name: '乐伽之星',
+        component: LeJiaStars
     },
     {
-      path: '/excellentStaff',
-      name: '优秀员工',
-      component: ExcellentStaff
+        path: '/excellentStaff',
+        name: '优秀员工',
+        component: ExcellentStaff
     },
     {
-      path: '/birthday',
-      name: '寿星墙',
-      component: Birthday
+        path: '/birthday',
+        name: '寿星墙',
+        component: Birthday
     },
     {
-      path: '/club',
-      name: '俱乐部',
-      component: Club
+        path: '/club',
+        name: '俱乐部',
+        component: Club
     },
     {
-      path: '/hotNews',
-      name: '企业头条',
-      component: HotNews
+        path: '/hotNews',
+        name: '企业头条',
+        component: HotNews
     },
     {
-      path: '/humanity',
-      name: '人文关怀',
-      component: Humanity
+        path: '/humanity',
+        name: '人文关怀',
+        component: Humanity
     },
     {
-      path: '/profile',
-      name: '公司资料',
-      component: Profile
+        path: '/profile',
+        name: '公司资料',
+        component: Profile
     },
     {
-      path: '/jurisdiction',
-      name: '无权限',
-      component: Jurisdiction
+        path: '/jurisdiction',
+        name: '无权限',
+        component: Jurisdiction
     },
     {
-      path: '/network_error',
-      name: '网络断开',
-      component: NetWork_error
+        path: '/network_error',
+        name: '网络断开',
+        component: NetWork_error
     },
     {
-      path: '/customService',
-      name: '客服',
-      component: CustomService,
+        path: '/customService',
+        name: '客服',
+        component: CustomService,
     },
     {
-      path: '/workOrder',
-      name: '工单',
-      component: WorkOrder,
+        path: '/workOrder',
+        name: '工单',
+        component: WorkOrder,
     },
     {
-      path: '/marketCentre',
-      name: '市场',
-      component: MarketCentre
+        path: '/marketCentre',
+        name: '市场',
+        component: MarketCentre
     },
     {
-      path: '/houseManagement',
-      name: '房源管理',
-      component: HouseManagement
+        path: '/houseManagement',
+        name: '房源管理',
+        component: HouseManagement
     },
     {
-      path: '/contractManagement',
-      name: '合同管理',
-      component: ContractManagement
+        path: '/contractManagement',
+        name: '合同管理',
+        component: ContractManagement
+    },
+    {
+        path: '/humanResource',
+        name: '人力资源中心',
+        component: HumanResource
+    },
+    {
+        path: '/departments',
+        name: '三省六部',
+        component: Departments
+    },
+    {
+        path: '/recruitment',
+        name: '招兵买马',
+        component: Recruitment
+    },
+    {
+        path: '/reward',
+        name: '赏罚分明',
+        component: Reward
+    },
+    {
+        path: '/repository',
+        name: '内务库房',
+        component: Repository
+    },
+    {
+      path: '/discussPolitics',
+      name:'奏事议政',
+      component: DiscussPolitics
+    },
+    {
+        path: '/staffRoster',
+        name: '员工名册',
+        component: StaffRoster
+    },
+    {
+        path: '/militaryOrganization',
+        name: '排兵布阵',
+        component: MilitaryOrganization
+    },
+    {
+        path: '/finance',
+        name: '财务账本',
+        component: Finance
+    },
+    {
+        path: '/accountManage',
+        name: '帐户',
+        component: AccountManage
+    },
+    {
+        path: '/subject',
+        name: '科目',
+        component: Subject
+    },
+    {
+        path: '/budgetStream',
+        name: '收支流水',
+        component: BudgetStream
+    },
+    {
+        path: '/gathering',
+        name: '收款',
+        component: Gathering
+    },
+    {
+        path: '/customer',
+        name: '客户',
+        component: Customer
+    },
+    {
+        path: '/payment',
+        name: '付款',
+        component: Payment
+    },
+    // {
+    //     path: '/offerDetail',
+    //     name: '录用通知书',
+    //     component: OfferDetail
+    // }
+    {
+        path: '/intellectualPropertyProtection',
+        name: '知识产权保护',
+        component: IntellectualPropertyProtection
+    },
+    {
+        path: '/patent',
+        name: '专利',
+        component: Patent
+    },
+    {
+        path: '/brand',
+        name: '商标',
+        component: Brand
+    },
+    {
+        path: '/copyright',
+        name: '著作权',
+        component: Copyright
+    },
+    {
+        path: '/enterpriseCertificate',
+        name: '企业证书',
+        component: EnterpriseCertificate
     },
     {
       path: '/customerManagement',
@@ -546,90 +474,15 @@ export default new Router({
       component: CustomerManagement
     },
     {
-      path: '/humanResource',
-      name: '人力资源中心',
-      component: HumanResource
-    },
-    {
-      path: '/departments',
-      name: '三省六部',
-      component: Departments
-    },
-    {
-      path: '/recruitment',
-      name: '招兵买马',
-      component: Recruitment
-    },
-    {
-      path: '/reward',
-      name: '赏罚分明',
-      component: Reward
-    },
-    {
-      path: '/repository',
-      name: '内务库房',
-      component: Repository
-    },
-    {
-      path: '/discussPolitics',
-      name: '奏事议政',
-      component: DiscussPolitics
-    },
-    {
       path: '/demo',
       name: '测试',
       component: Demo
     },
     {
-      path: '/staffRoster',
-      name: '员工名册',
-      component: StaffRoster
-    },
-    {
-      path: '/militaryOrganization',
-      name: '排兵布阵',
-      component: MilitaryOrganization
-    },
-    {
-      path: '/finance',
-      name: '财务账本',
-      component: Finance
-    },
-    {
-      path: '/accountManage',
-      name: '帐户',
-      component: AccountManage
-    },
-    {
-      path: '/subject',
-      name: '科目',
-      component: Subject
-    },
-    {
-      path: '/budgetStream',
-      name: '收支流水',
-      component: BudgetStream
-    },
-    {
-      path: '/gathering',
-      name: '收款',
-      component: Gathering
-    },
-    {
-      path: '/customer',
-      name: '客户',
-      component: Customer
-    },
-    {
-      path: '/payment',
-      name: '付款',
-      component: Payment
-    },
-      {
-          path: '/pending',
-          name: '待处理项',
-          component: Pending
-      },
+        path: '/pending',
+        name: '待处理项',
+        component: Pending
+    }
     // {
     //     path: '/offerDetail',
     //     name: '录用通知书',
