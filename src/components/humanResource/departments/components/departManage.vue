@@ -21,7 +21,7 @@
             </div>
           </div>
           <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-            <span v-for="label in operateList" @click="operateModule(label.type,item)">{{label.label}}</span>
+            <span v-for="label in operateList" @click="operateModule(label.type,item,'user')">{{label.label}}</span>
             <b v-if="!operatePos"></b>
             <i v-if="operatePos"></i>
           </h5>
@@ -171,7 +171,7 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="入职时间">
-                      <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.enroll" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                      <el-date-picker placeholder="请选择" type="date" v-model="interview_info_detail.enroll" value-format="yyyy-MM-dd"></el-date-picker>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -238,21 +238,6 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="毕业院校">
-                      <el-input v-model="interview_info_detail.school" placeholder="请输入"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="专业">
-                      <el-input v-model="interview_info_detail.major" placeholder="请输入"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="毕业时间">
-                      <el-date-picker format="yyyy-DD-mm" type="date" v-model="interview_info_detail.graduation_time" placeholder="请选择"></el-date-picker>
-                    </el-form-item>
-                  </el-col>
                 </el-row>
               </el-form>
             </el-tab-pane>
@@ -303,6 +288,13 @@
                     </el-col>
                   </el-row>
                 </div>
+                <el-form-item label="入职材料:">
+                  <el-checkbox-group v-model="interview_info_detail.entry_materials" class="changeChoose">
+                    <div class="flex-center" style="margin-top: 8px">
+                      <el-checkbox v-for="tmp in entry_materials_checkbox" :key="tmp.id" :label="tmp.id">{{ tmp.val }}</el-checkbox>
+                    </div>
+                  </el-checkbox-group>
+                </el-form-item>
               </el-form>
               <div style="text-align: right">
                 <el-button type="danger" size="mini" style="width: 120px" @click="handleAddEducation">添加</el-button>
@@ -404,7 +396,7 @@
           <div class="powerHead items-bet">
             <div class="inputLabel">
               <h4>权限类型</h4>
-              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.permission_type" size="small" @change="handleChangePowerType">
+              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.type" size="small" @change="handleChangePowerType">
                 <el-option value="position" label="岗位"></el-option>
                 <el-option value="user" label="用户"></el-option>
                 <el-option value="ban" label="黑名单"></el-option>
@@ -522,7 +514,7 @@
                   <el-table-column label="入职时间" prop="created_at" align="center"></el-table-column>
                   <el-table-column label="权限" align="center">
                     <template slot-scope="scope">
-                      <el-button type="text" size="mini" @click="handleLookPower(scope.row)">查看</el-button>
+                      <el-button type="text" size="mini" @click="operateModule('power',scope.row,'user')">查看</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -691,6 +683,16 @@
     components: {ljDialog,PositionOrgan},
     data() {
       return {
+        entry_materials_checkbox: [
+          {id: 1,val: '意外险'},
+          {id: 2,val: '五险'},
+          {id: 3,val: '身份证复印件'},
+          {id: 4,val: '银行卡照片'},
+          {id: 5,val: '劳务合同'},
+          {id: 6,val: '应聘信息登记表'},
+          {id: 7,val: '学籍验证报告'},
+          {id: 8,val: '离职证明'},
+        ],
         confirm_send_visible: false,
         position_level: [
           {id: 1, val: 'P1'},
@@ -768,7 +770,8 @@
               witness: '',
               witness_phone: ''
             }
-          ]
+          ],
+          entry_materials: []
         },
 
         departInfo: '',
@@ -894,7 +897,7 @@
         //设置权限
         set_power: {
           system_id: '',
-          type_id: 3057,
+          type_id: '',
           permission_type: 'user',
           permission_id: '',
           permission_field_id: '',
@@ -909,7 +912,6 @@
     watch: {
       checkInfo: {
         handler(val) {
-          console.log(val);
           if (val.id === 1) {
             this.tabsManage = 'staff';
             this.getStaffList();
@@ -953,16 +955,6 @@
       }
     },
     methods: {
-      handleLookPower(row) {
-        console.log(row);
-        this.self_power_params.user_id = row.id;
-        this.getSelfPower(this.powerChildName);
-        this.power_size = {
-          width: '1600px',
-          height: '840px',
-        };
-        this.powerVisible = true;
-      },
       handleConfirmSendMsg() {
         console.log(this.checkLists);
         var type = [];
@@ -993,6 +985,8 @@
       },
       handleChangePowerType(type) {
         console.log(type);
+        this.set_power.permission_type = type;
+        this.self_power_params.type = type;
       },
       handleCheckField(val) {
         console.log(val);
@@ -1012,6 +1006,8 @@
         this.show_field_list = tmp.fields || [];
       },
       handleCancelSetPower() {
+        this.checkList = [];
+        this.field_list = [];
         this.checkAll = false;
         this.powerVisible = false;
       },
@@ -1049,8 +1045,6 @@
                 permission.push(tmp.id);
               }
             }
-            console.log(permission);
-            console.log(this.power_list);
             var count = 0;
             for (var key in this.power_list) {
               count += this.power_list[key].length;
@@ -1440,7 +1434,7 @@
         })
       },
       // 权限/禁用/修改/离职
-      operateModule(val,item) {
+      operateModule(val,item,type) {
         if (val === 'revise') {
           this.currentStaff = item;
           this.is_edit = true;
@@ -1455,10 +1449,18 @@
           this.interview_info_detail.position_id.push(item.position[0].id);
           this.interview_info_detail.org_id.push(item.org[0].id);
           this.interview_info_detail.depart = item.org[0].name;
-          this.interview_info_detail.work_history = item.staff.work_history || [];
-          this.interview_info_detail.education_history = item.staff.education_history || [];
+          this.interview_info_detail.work_history = item.staff && item.staff.work_history || [];
+          if (this.interview_info_detail.work_history === "[]") {
+            this.interview_info_detail.work_history = [];
+          }
+          this.interview_info_detail.education_history = item.staff && item.staff.education_history || [];
+          if (this.interview_info_detail.education_history === "[]") {
+            this.interview_info_detail.education_history = [];
+          }
           this.interview_info_detail.phone = item.phone;
           this.interview_info_detail.gender = item.gender;
+
+          console.log(this.interview_info_detail);
         }
         if (val === 'disabled') {
           this.currentStaff = item;
@@ -1471,6 +1473,8 @@
             this.powerVisible = true;
             this.set_power.type_id = item.id;
             this.self_power_params.user_id = item.id;
+            this.self_power_params.type = type;
+            this.set_power.permission_type = type;
             this.getSelfPower(this.powerChildName);
             break;
           case 'leave'://离职
