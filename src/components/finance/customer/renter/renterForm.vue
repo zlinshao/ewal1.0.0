@@ -1,7 +1,7 @@
 <template>
     <div class="dialog_container">
         <div class="dialog_header">
-            <h3>{{type==='edit'?'编辑': '查看'}}</h3>
+            <h3>{{checkOrEdit.is_check===false?'编辑': '查看'}}</h3>
         </div>
         <div class="dialog_main">
             <el-form :model="formParams" size="mini" ref="formParams" :rules="rulesForm" label-width="150px">
@@ -9,16 +9,16 @@
                     <el-col :span="8">
                         <div class="">
                             <el-form-item label="签约人">
-                                <el-input v-model="names.staff" style="width: 200px"
+                                <el-input v-model="commonModuleData.staff_name" style="width: 200px"
                                           @focus="clickCallback('签约人')" readonly :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="所属部门">
-                                <el-input v-model="names.department" style="width: 200px"
+                                <el-input v-model="commonModuleData.department_name" style="width: 200px"
                                           @focus="clickCallback('所属部门')" readonly :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="负责人">
-                                <el-input v-model="names.leader" style="width: 200px"
-                                          @focus="clickCallback('负责人')" readonly :disabled="is_disabled"></el-input>
+                                <el-input v-model="commonModuleData.leader_name" style="width: 200px"
+                                           readonly :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="客户姓名">
                                 <el-input v-model="formParams.customer_name" style="width: 200px"
@@ -29,7 +29,7 @@
                                           :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="房屋地址">
-                                <el-input placeholder="请选择" v-model="formParams.address" @focus="handleOpenChooseHouse"
+                                <el-input placeholder="请选择" v-model="formParams.address" @focus="clickCallback('地址')"
                                           style="width: 200px" :disabled="is_disabled"></el-input>
                             </el-form-item>
 
@@ -156,39 +156,33 @@
         </div>
         <div class="dialog_footer" v-if="type==='edit'">
             <el-button type="danger" size="small" @click="postLordEditData('formParams')">确定</el-button>
-            <el-button type="info" size="small" @click="cancelEdit">取消</el-button>
+            <el-button type="info" size="small" @click="cancel">取消</el-button>
         </div>
 
-        <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
-        <DepartOrgan :module="departModule" @close="hiddenDepart"></DepartOrgan>
-        <PostOrgan :module="postModule" @close="hiddenPost"></PostOrgan>
     </div>
 
 </template>
 
 <script>
-    import LjSubject from '../../../common/lj-subject.vue';
-    import StaffOrgan from '../../../common/staffOrgan.vue';
-    import DepartOrgan from '../../../common/departOrgan.vue';
-    import PostOrgan from '../../../common/postOrgan.vue';
+
 
     export default {
         name: "renterForm",
-        props: ['form', 'current_row', 'edit_visible', 'address', 'addressIds', 'type'],
+        props: ['initData', 'checkOrEdit', 'edit_visible', 'type'],
         components: {
-            LjSubject,
-            StaffOrgan,
-            DepartOrgan,
-            PostOrgan
+
         },
         data() {
             return {
-                postModule: false,//岗位
-                departModule: false,//部门
-                staffModule: false,//员工
+                commonModule: {},
+                commonModuleData: {
+                    leader_name: '',
+                    department_name: '',
+                    staff_name: '',
+                },
                 is_disabled: false,
                 chooseType: this.type,
-                formData: this.form,//初始化数据
+                formData: {},//表单初始数据,//初始化数据
                 row: this.current_row,
                 house_filter_visible: false,//房源
                 renterStatus: [
@@ -200,11 +194,7 @@
                     {key: 6, val: '个人转租'},
                     {key: 7, val: '续租'},
                 ],
-                names:{
-                    staff:'',
-                    department:'',
-                    leader:''
-                },
+
                 cate: {"1": "银行卡", "2": "支付宝", "3": "微信", "4": "银行卡(数据来自房管中心)"},
                 payTypes: [{id: "1", val: '月付'}, {id: "2", val: '双月付'}, {id: "3", val: '季付'}, {
                     id: "4",
@@ -357,17 +347,18 @@
             }
         },
         mounted() {
-
-            for(let item of Object.keys(this.formParams)){
+            this.formData = this.initData;
+            for (let item of Object.keys(this.formParams)) {
                 this.formParams[item] = this.formData[item];
             }
-            this.names.leader = this.formData.leader.name===null?'':this.formData.leader.name;
-            this.names.department= this.formData.department.name;
-            this.names.staff= this.formData.staff.name;
+            this.commonModuleData.leader_name = this.formData.leader.name;
+            this.commonModuleData.department_name = this.formData.department.name;
+            this.commonModuleData.staff_name = this.formData.staff.name;
             this.prices = this.formData.prices_raw;
             this.formParams.leader_id = this.formData.leader.id;
 
-            if (this.chooseType === 'check') {
+            //是否可编辑
+            if (this.checkOrEdit.is_check === true) {
                 this.is_disabled = true;
             } else {
                 this.is_disabled = false;
@@ -389,7 +380,6 @@
                     this.formParams.rent_type = 5;
                     break;
             }
-
             switch (this.formData.account_type) {
                 case "银行卡":
                     this.formParams.account_type = "1";
@@ -405,34 +395,49 @@
                     break;
             }
         },
-        computed: {},
+        created() {
+            this.$bus.on('moduleData', this.getModuleData);
+            this.$bus.on('moduleDataStatus', this.getModuleDataStatus);
+        },
+        beforeDestroy() {
+            this.$bus.off('moduleData', this.getModuleData);
+            this.$bus.off('moduleDataStatus', this.getModuleDataStatus);
+        },
         watch: {
-
-            address: {
+            initData: {
                 handler(val) {
-                    if(val){
-                        this.formParams.address = val;
-                    }
-
                 },
                 deep: true
             },
-            chooseType: {
+            checkOrEdit: {
                 handler(val) {
-                }
-            },
-            addressIds: {
-                handler(val) {
-                    if(val){
-                        this.formParams.house_id = val[0];
+                    if (val.is_check === true) {
+                        this.is_disabled = true
+                    } else {
+                        this.is_disabled = false
                     }
-
-                }
+                },
+                deep: true
             },
         },
         methods: {
-            cancelEdit() {
-                this.$bus.emit('cancelEdit_visible', false)
+            //获取部门组件的值
+            getModuleData(val) {
+                for (let item of Object.keys(this.commonModuleData)) {
+                    this.commonModuleData[item] = val[item];
+                }
+                this.formParams.staff_id = val.staff_id;
+                this.formParams.department_id = val.department_id;
+                this.formParams.leader_id = val.leader_id;
+                this.formParams.house_id = val.address_id[0];
+                this.formParams.address = val.address_name;
+            },
+            //获取部门组件的状态
+            getModuleDataStatus(val) {
+                this.commonModule = val;
+            },
+            cancel() {
+                this.$emit('cancel', false);
             },
             //增加付款周期
             addPrices() {
@@ -459,48 +464,20 @@
                 } else {
                     this.prices.splice(index, 1);
                 }
-
-
-            },
-            //打开搜索房屋
-            handleOpenChooseHouse() {
-                this.house_filter_visible = true;
-                this.$bus.emit('chooseHouse', this.house_filter_visible)
-            },
-            // 组织部门
-            hiddenDepart(ids, names, arr) {
-                console.log(ids, names, arr);
-                this.departModule = false;
-                if (ids !== 'close') {
-                    this.formData.department_id = ids;
-                    this.names.leader = arr[0].leader.name;
-                    this.formData.leader_id = arr[0].leader_id;
-                    this.names.department = names;
-                }
-            },
-            //员工
-            hiddenStaff(ids, names, arr) {
-                this.staffModule = false;
-                console.log(ids, names, arr);
-                if (ids !== 'close') {
-                    this.names.staff = names;
-                    this.formData.staff_id = ids[0];
-                }
-            },
-            // 岗位
-            hiddenPost(ids, names, arr) {
-                this.postModule = false;
             },
             clickCallback(val) {
-                if (val === "签约人") {
-                    this.staffModule = true;
+                switch (val) {
+                    case "签约人":
+                        this.commonModule.staffModule = true;
+                        break;
+                    case "所属部门":
+                        this.commonModule.departModule = true;
+                        break;
+                    case "地址":
+                        this.commonModule.house_filter_visible = true;
+                        break;
                 }
-                if (val === "所属部门") {
-                    this.departModule = true;
-                }
-                if (val === "负责人") {
-                    this.staffModule = false;
-                }
+                this.$bus.emit('openCommonModule', this.commonModule);
             },
             callbackSuccess(res) {
                 if (res.code === 200) {

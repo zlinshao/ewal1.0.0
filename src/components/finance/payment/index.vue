@@ -13,13 +13,37 @@
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
-        <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+        <div class="action-bar changeChoose">
+            <div class="action-bar-left">
+                <el-checkbox>全选</el-checkbox>
+                <span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+
+                <span class="action-bar-name" v-show="action_visible">
+                    <span v-for="(item,index) in btnData"
+                          :key="index"
+                          :class="item.class"
+                          @click="handleClickBtn(item.methods,current_row,index,item.key)">
+                        {{item.content}}
+                    </span>
+                </span>
+            </div>
+            <div class="action-bar-right">
+                <span>应收金额（元） <i class="edit">234525</i></span>
+                <span>实收金额（元） <i class="check">54554</i></span>
+                <span>剩余款项（元） <i class="delete">324324</i></span>
+            </div>
+        </div>
+        <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
             <el-table
                     :data="tableLists"
                     :height="this.mainListHeight(30) + 'px'"
                     highlight-current-row
                     header-row-class-name="tableHeader"
+                    @selection-change="selectionChange"
                     style="width: 100%">
+                <el-table-column
+                        type="selection" width="40">
+                </el-table-column>
 
                 <el-table-column
                         show-overflow-tooltip
@@ -35,20 +59,20 @@
                         <span>{{ scope.row.status === 1?'待入账':scope.row.status === 2?'待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" prop="" align="center" width="550">
-                    <template slot-scope="scope">
-                        <el-tooltip
-                                v-for="(item,index) in btnData" :key="index"
-                                effect="light" :content="item.content" placement="top">
-                            <el-button
-                                    :size="item.size"
-                                    @click="handleClickBtn(item.methods,scope.row,scope.$index,item.key)"
-                                    :type="item.type">{{item.content}}
-                            </el-button>
-                        </el-tooltip>
+                <!--<el-table-column label="操作" prop="" align="center" width="550">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<el-tooltip-->
+                                <!--v-for="(item,index) in btnData" :key="index"-->
+                                <!--effect="light" :content="item.content" placement="top">-->
+                            <!--<el-button-->
+                                    <!--:size="item.size"-->
+                                    <!--@click="handleClickBtn(item.methods,scope.row,scope.$index,item.key)"-->
+                                    <!--:type="item.type">{{item.content}}-->
+                            <!--</el-button>-->
+                        <!--</el-tooltip>-->
 
-                    </template>
-                </el-table-column>
+                    <!--</template>-->
+                <!--</el-table-column>-->
             </el-table>
             <!--分页-->
             <footer class="flex-center bottomPage">
@@ -526,13 +550,13 @@
         </lj-dialog>
 
         <!--回滚-->
-        <lj-dialog :visible="recall_visible" :size="{width: 600 + 'px',height: 500 + 'px'}"
+        <lj-dialog :visible="recall_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
                    @close="recall_visible = false;current_row = ''">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>回滚</h3>
                 </div>
-                <div class="dialog_main">
+                <div class="dialog_main changeChoose">
                     <el-table
                             :data="running_account_record"
                             :row-class-name="tableChooseRow"
@@ -577,6 +601,15 @@
         data() {
             return {
                 paySearchList,
+                action_visible:false,//操作栏作态
+                action_status:{//操作条状态
+                    delete_visible:false,
+                    edit_visible:false,
+                    details_visible:false,
+                    is_check:false,
+                },
+                current_row: '',
+                multipleSelection: [],//多选
                 params: {
                     is_del: '',//是否显示删除数据
                     staff_id: '',
@@ -596,7 +629,7 @@
                     export: '',
                     cate:'',
                 },
-                current_row: '',
+
                 delete_visible: false,//删除
                 add_visible: false,//新增
                 pay_visible: false,//应付金额
@@ -608,7 +641,7 @@
                 show_subject: false,//科目
                 customer_visible: false,//客户列表
                 is_disabled:true,
-                multipleSelection: [],//多选
+
                 running_account_record:[],//回滚数据
                 ra_ids:[],
 
@@ -711,7 +744,8 @@
                         size: "small",
                         methods: "handleEditPay",
                         content: "金额",
-                        key: "pay_visible"
+                        key: "pay_visible",
+                        class:'edit'
                     },
                     {
                         label: "",
@@ -720,7 +754,8 @@
                         size: "small",
                         methods: "handleSub",
                         content: "科目",
-                        key: "show_subject"
+                        key: "show_subject",
+                        class:'edit'
                     },
                     {
                         label: "",
@@ -729,7 +764,8 @@
                         size: "small",
                         methods: "handleComplete",
                         content: "补齐时间",
-                        key: "complete_visible"
+                        key: "complete_visible",
+                        class:'edit'
                     },
                     {
                         label: "",
@@ -738,7 +774,8 @@
                         size: "small",
                         methods: "handlePayTime",
                         content: "应付时间",
-                        key: "payData_visible"
+                        key: "payData_visible",
+                        class:'edit'
                     },
                     {
                         label: "",
@@ -747,7 +784,8 @@
                         size: "small",
                         methods: "handleComplete",
                         content: "应付入账",
-                        key: "transfer_visible"
+                        key: "transfer_visible",
+                        class:'edit'
                     },
                     {
                         label: "",
@@ -756,7 +794,8 @@
                         size: "small",
                         methods: "handleProcess",
                         content: "回滚",
-                        key: "recall_visible"
+                        key: "recall_visible",
+                        class:'edit'
                     },
                     {
                         label: "",
@@ -765,7 +804,8 @@
                         size: "small",
                         methods: "handleDelete",
                         content: "删除",
-                        key: "delete_visible"
+                        key: "delete_visible",
+                        class:'delete'
                     },
                 ],
                 accountLists:[],
@@ -799,6 +839,18 @@
         },
         computed: {},
         methods: {
+            selectionChange(val) {
+                this.multipleSelection = val;
+                if(val.length>0){
+                    this.action_visible = true;
+                    this.current_row = val[0];
+                    console.log(val);
+                }else {
+                    this.action_visible = false;
+                }
+                this.$emit('getMultipleSelection',val)
+            },
+
             // 当前点击
             tableClickRow(row) {
                 let ids = this.chooseRowIds;
