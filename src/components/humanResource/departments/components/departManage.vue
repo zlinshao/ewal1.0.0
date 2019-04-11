@@ -798,7 +798,6 @@
         staff_size: {},
         tabsManage: 'staff',
         staffId: '',
-        check_info: '',
 
         operatePos: false,//编辑total
         operateList: [
@@ -935,19 +934,17 @@
         deep: true
       },
       module(val) {
-        this.getSystemList();
+        // this.getDutyList();
         this.depart_visible = val;
         this.lj_size = 'large';
         if (!val) {
           this.tabsManage = 'staff';
-          this.check_info = '';
+          this.departInfo = '';
+          this.interview_info_detail.depart = '';
+          this.interview_info_detail.org_id = [];
+          this.staffParams.org_id = '';
         }
       },
-      depart_visible(val) {
-        if (!val) {
-          this.$emit('close');
-        }
-      }
     },
     computed: {
       themeName() {
@@ -1050,7 +1047,7 @@
               count += this.power_list[key].length;
             }
             this.$nextTick(() => {
-              if (permission >= count) {
+              if (permission.length >= count) {
                 this.checkAll = true;
               }
               this.checkList = permission;
@@ -1470,6 +1467,7 @@
         }
         switch (val) {
           case 'power'://权限
+            this.getSystemList();
             this.powerVisible = true;
             this.set_power.type_id = item.id;
             this.self_power_params.user_id = item.id;
