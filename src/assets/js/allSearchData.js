@@ -288,6 +288,67 @@ export const housingDueSearch = {
   ]
 }
 
+// 资料审核
+export const dataAuditSearch = {
+  status: 'housingDue',
+  data: [
+    {
+      keyType: 'dateRange',
+      title: '签约时间',
+      placeholder: '请选择日期',
+      keyName: 'date1',
+      dataType: []
+    },
+    {
+      keyType: 'radio',
+      title: '合同性质',
+      keyName: 'nature',
+      dataType: [],
+      value: [
+        {
+          id: 22,
+          title: '新收'
+        },
+        {
+          id: 23,
+          title: '新收'
+        }
+      ]
+    },
+    {
+      keyType: 'staff',
+      title: '开单人',
+      placeholder: '请选择员工',
+      keyName: 'openPer',
+      dataType: [],
+      value: {
+        num: ''
+      }
+    },
+    {
+      keyType: 'staff',
+      title: '负责人',
+      placeholder: '请选择员工',
+      keyName: 'handler',
+      dataType: [],
+      value: {
+        num: ''
+      }
+    },
+    {
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'department',
+      dataType: [],
+      value: {
+        num: '',
+        arr: []
+      }
+    }
+  ]
+}
+
 //科目
 export const subjectSearch = {
   status: 'subject',
