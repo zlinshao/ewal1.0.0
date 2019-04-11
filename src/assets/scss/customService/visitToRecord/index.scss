@@ -2,19 +2,231 @@
 
 #theme_name {
   #visitToRecord {
-    .el-button--danger {
-      background-color: #fef0f0;
-      &:hover {
-        background-color: #f56c6c;
+    .listTopCss {
+      .el-button--danger {
+        background-color: #fef0f0;
+        &:hover {
+          background-color: #f56c6c;
+        }
       }
     }
-    .search {
+
+    .dialog_container {
+      .dialog_header {
+        .header_method {
+          @include flex('items-bet');
+          background-color: transparent;
+        }
+      }
+      // 新增
+      .dialog_main {
+        .dialog_main_box {
+          width: 1530px;
+          height: 40px;
+          margin: 0 auto 28px;
+          @include flex('justify-start');
+          .box {
+            .title {
+              text-align: left;
+            }
+            .input_box {
+              width: 200px;
+              height: 40px;
+            }
+            .input_box2 {
+              width: 1020px;
+            }
+            .noBackground {
+              background-color: transparent;
+            }
+            .input_box_border {
+              border-color: #ffffff;
+              @include radius(4px);
+            }
+          }
+          div {
+            @include flex('justify-start');
+            @include flex('items-center');
+            i {
+              width: 20px;
+              height: 20px;
+            }
+            .title {
+              width: 60px;
+              box-sizing: border-box;
+              margin: 0 25px 0 15px;
+              font-size: 14px;
+              color: #686874;
+            }
+            .title1 {
+              line-height: 40px;
+              white-space: nowrap;
+            }
+          }
+        }
+        .detail {
+          width: 1530px;
+          height: 419px;
+          overflow-y: scroll;
+          margin: 41px auto 0;
+          @include flex('justify-start');
+          @include scroll;
+          flex-wrap: wrap;
+          .detail_box {
+            position: relative;
+            padding-top: 80px;
+            padding-left: 67px;
+            &:after {
+              content: '';
+              width: 1px;
+              height: 285px;
+              position: absolute;
+              right: 0;
+              top: 67px;
+            }
+            h5 {
+              font-size: 14px;
+              font-family: 'jingDianXingShu';
+              word-spacing: 2px;
+              text-align: left;
+              margin-bottom: 30px;
+            }
+            ul {
+              li {
+                margin-bottom: 18px;
+                text-align: left;
+                span {
+                  font-size: 14px;
+                  word-spacing: 2px;
+                  font-family: 'Microsoft Yahei';
+                }
+                .tit {
+                  display: inline-block;
+                  width: 64px;
+                  text-align: right;
+                  margin-left: 10px;
+                }
+              }
+            }
+          }
+          .user_box {
+            width: 411px;
+          }
+          .contract_box {
+            width: 763px;
+            div {
+              @include flex('justify-start');
+              .ul_left {
+                margin-right: 96px;
+              }
+            }
+          }
+          .house_box {
+            width: 338px;
+            &:after {
+              background-color: transparent;
+            }
+          }
+        }
+      }
+      // 回访记录
+      .detail_dialog {
+        width: 830px;
+        height: 380px;
+        margin: 0 auto;
+        overflow-y: scroll;
+        ul {
+          padding: 0 30px;
+          li + li {
+            position: relative;
+            &:before {
+              content: '';
+              width: 1px;
+              height: 80%;
+              background-color: #cf2e33;
+              position: absolute;
+              top: -25%;
+            }
+          }
+          li {
+            @include flex('justify-center');
+            @include flex('items-center');
+            font-family: 'Microsoft Yahei';
+            padding-top: 50px;
+            .detail_dialog_left {
+              flex: 1;
+              font-size: 14px;
+              text-align: right;
+              p + p {
+                margin-top: 10px;
+              }
+            }
+            .detail_dialog_center {
+              height: 100%;
+              margin: 0 80px;
+              .circle {
+                width: 15px;
+                height: 15px;
+                border: 1px solid red;
+                border-radius: 50%;
+              }
+            }
+            .detail_dialog_right {
+              flex: 1;
+              text-align: left;
+              font-size: 10px;
+              p + p {
+                margin-top: 10px;
+              }
+              .detail_dialog_rato {
+                margin-left: 20px;
+                display: inline-block;
+                .el-rate__icon {
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
 
 #theme_name.theme1 {
   #visitToRecord {
+    .dialog_main_box {
+      .box {
+        .input_box {
+          background-color: #ffffff;
+        }
+      }
+    }
+    .detail {
+      background-color: #ffffff;
+      .detail_box {
+        &:after {
+          background: #f2f2f2;
+        }
+      }
+      h5 {
+        color: #cf2e33;
+      }
+      ul {
+        li {
+          span {
+            color: #d5d5d5;
+          }
+          .content {
+            color: #686874;
+          }
+        }
+      }
+    }
+    .detail_dialog {
+      background: #ffffff;
+      color: #686874;
+    }
   }
 }
 
