@@ -243,6 +243,51 @@ export const visitToRecordSearch = {
   ]
 }
 
+// 房屋到期
+export const housingDueSearch = {
+  status: 'housingDue',
+  data: [
+    {
+      keyType: 'dateRange',
+      title: '签约时间',
+      placeholder: '请选择日期',
+      keyName: 'date1',
+      dataType: []
+    },
+    {
+      keyType: 'staff',
+      title: '开单人',
+      placeholder: '请选择员工',
+      keyName: 'openPer',
+      dataType: [],
+      value: {
+        num: ''
+      }
+    },
+    {
+      keyType: 'staff',
+      title: '负责人',
+      placeholder: '请选择员工',
+      keyName: 'handler',
+      dataType: [],
+      value: {
+        num: ''
+      }
+    },
+    {
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'department',
+      dataType: [],
+      value: {
+        num: '',
+        arr: []
+      }
+    }
+  ]
+}
+
 //科目
 export const subjectSearch = {
   status: 'subject',
@@ -282,52 +327,47 @@ export const customerSearch = {
 
 //收支流水
 export const accountRunSearch = {
-    status: 'budgetStream',
-    keywords: 'search',
-    data: [
-        {
-            keyType: 'date',
-            title: '交易日期',
-            placeholder: '请选择开始日期',
-            keyName: 'start_date',
-            dataType: '',
-        },
-        // {
-        //     keyType: 'date',
-        //     title: '结束日期',
-        //     placeholder: '请选择结束日期',
-        //     keyName: 'end_date',
-        //     dataType: '',
-        // },
-        {
-            keyType: 'radio',
-            title: '类别',
-            placeholder: '请选择类别',
-            keyName: 'cate',
-            dataType: '',
-            value: [
-                {id: 1, title: '收入'},
-                {id: 2, title: '支出'},
-            ]
-        },
-        // {
-        //     keyType: 'date',
-        //     title: '操作开始日期',
-        //     placeholder: '请选择操作开始日期',
-        //     keyName: 'operate_start_date',
-        //     dataType: '',
-        // },
-        // {
-        //     keyType: 'date',
-        //     title: '操作结束日期',
-        //     placeholder: '请选择操作结束日期',
-        //     keyName: 'operate_end_date',
-        //     dataType: '',
-        // },
-    ]
-};
-
-
+  status: 'budgetStream',
+  keywords: 'search',
+  data: [
+    {
+      keyType: 'date',
+      title: '交易日期',
+      placeholder: '请选择开始日期',
+      keyName: 'start_date',
+      dataType: ''
+    },
+    // {
+    //     keyType: 'date',
+    //     title: '结束日期',
+    //     placeholder: '请选择结束日期',
+    //     keyName: 'end_date',
+    //     dataType: '',
+    // },
+    {
+      keyType: 'radio',
+      title: '类别',
+      placeholder: '请选择类别',
+      keyName: 'cate',
+      dataType: '',
+      value: [{ id: 1, title: '收入' }, { id: 2, title: '支出' }]
+    }
+    // {
+    //     keyType: 'date',
+    //     title: '操作开始日期',
+    //     placeholder: '请选择操作开始日期',
+    //     keyName: 'operate_start_date',
+    //     dataType: '',
+    // },
+    // {
+    //     keyType: 'date',
+    //     title: '操作结束日期',
+    //     placeholder: '请选择操作结束日期',
+    //     keyName: 'operate_end_date',
+    //     dataType: '',
+    // },
+  ]
+}
 
 /*赏罚分明*/
 //赏善令

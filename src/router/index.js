@@ -13,7 +13,8 @@ const WorkOrder = () => import('@/components/customService/workOrder/index.vue')
 const VisitToRecord = () =>
   import('@/components/customService/visitToRecord/index.vue') //工单
 const HousingDue = () =>
-  import('@/components/customService/housingDue/index.vue')
+  import('@/components/customService/housingDue/index.vue') //房屋到期
+const DataAudit = () => import('@/components/customService/dataAudit/index.vue') //资料审核
 const Village = () => import('@/components/customService/village/index.vue') //小区
 
 // 市场
@@ -533,6 +534,11 @@ export default new Router({
       path: '/visitToRecord',
       name: '回访记录',
       component: VisitToRecord
+    },
+    {
+      path: '/dataAudit',
+      name: '资料审核',
+      component: DataAudit
     },
     {
       path: '/housingDue',

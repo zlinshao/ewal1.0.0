@@ -82,7 +82,7 @@ export const customService = {
     },
     {
       title: '资料审核',
-      url: ''
+      url: '/dataAudit'
     },
     {
       title: '维修保洁',
