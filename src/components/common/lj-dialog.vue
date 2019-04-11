@@ -12,120 +12,120 @@
 </template>
 
 <script>
-  export default {
-    name: "index",
-    props: ['visible', 'size'],
-    data() {
-      return {
-        show_button: true,
-        dialog_visible: false,
-        lj_size: 'small',
-        is_upright: false,
-        style: {
-          mini: {
-            width: 1200 * 0.4 + 'px',
-            height: 800 * 0.4 + 'px'
-          },
-          small: {
-            width: 1200 * 0.8 + 'px',
-            height: 800 * 0.8 + 'px'
-          },
-          large: {
-            width: 1200 + 'px',
-            height: 800 + 'px'
-          },
-          other: {
-            width: 0,
-            height: 0
-          }
+export default {
+  name: "index",
+  props: ['visible', 'size'],
+  data () {
+    return {
+      show_button: true,
+      dialog_visible: false,
+      lj_size: 'small',
+      is_upright: false,
+      style: {
+        mini: {
+          width: 1200 * 0.4 + 'px',
+          height: 800 * 0.4 + 'px'
         },
-      }
-    },
-    mounted() {
-
-    },
-    activated() {
-    },
-    watch: {
-      visible(val) {
-        this.dialog_visible = val;
-        this.$store.dispatch('add_dialog_z_index');
-        this.$nextTick( () => {
-          if(this.$refs.dialog_ref) {
-            this.$refs.dialog_ref.style.zIndex = this.dialogZIndex;
-          }
-        })
-        /*`有一点小问题 在同一个dialog点击隐藏后继续点击显示 不会浮在最上层 */
-        /*if (val) {
-          this.$nextTick( () => {
-            this.$refs.dialog_ref.style.zIndex = this.dialogZIndex;
-          })
-        }*/
+        small: {
+          width: 1200 * 0.8 + 'px',
+          height: 800 * 0.8 + 'px'
+        },
+        large: {
+          width: 1200 + 'px',
+          height: 800 + 'px'
+        },
+        other: {
+          width: 0,
+          height: 0
+        }
       },
-      size: {
-        handler(val) {
-          if (typeof val === 'string') {
-            this.lj_size = val;
-            this.is_upright = false;
-          } else {
-            this.lj_size = 'other';
-            this.style.other = val;
-            if (val.width.indexOf('%') !== -1) {
-              if (parseInt(val.height) > parseInt(val.width)) {
-                this.is_upright = true;
-              }
+    }
+  },
+  mounted () {
+
+  },
+  activated () {
+  },
+  watch: {
+    visible (val) {
+      this.dialog_visible = val;
+      this.$store.dispatch('add_dialog_z_index');
+      this.$nextTick(() => {
+        if (this.$refs.dialog_ref) {
+          this.$refs.dialog_ref.style.zIndex = this.dialogZIndex;
+        }
+      })
+      /*`有一点小问题 在同一个dialog点击隐藏后继续点击显示 不会浮在最上层 */
+      /*if (val) {
+        this.$nextTick( () => {
+          this.$refs.dialog_ref.style.zIndex = this.dialogZIndex;
+        })
+      }*/
+    },
+    size: {
+      handler (val) {
+        if (typeof val === 'string') {
+          this.lj_size = val;
+          this.is_upright = false;
+        } else {
+          this.lj_size = 'other';
+          this.style.other = val;
+          if (val.width.indexOf('%') !== -1) {
+            if (parseInt(val.height) > parseInt(val.width)) {
+              this.is_upright = true;
             }
           }
-        },
-        deep: true
-      }
-    },
-    computed: {
-      dialogZIndex() {
-        return this.$store.state.app.dialogZIndex;
+        }
       },
+      deep: true
+    }
+  },
+  computed: {
+    dialogZIndex () {
+      return this.$store.state.app.dialogZIndex;
     },
-    methods: {
-      handleCloseDialog() {
-        this.dialog_visible = false;
-        this.$emit('update:visible',this.dialog_visible);
-        this.$emit('close');
-      }
-    },
-  }
+  },
+  methods: {
+    handleCloseDialog () {
+      this.dialog_visible = false;
+      this.$emit('update:visible', this.dialog_visible);
+      this.$emit('close');
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  @import "../../assets/scss/components/lj_dialog.scss";
+@import "../../assets/scss/components/lj_dialog.scss";
 
-  @mixin lj_dialogImg($m,$n) {
-    $url: '../../assets/image/components/' + $n + '/' + $m;
-    @include bgImage($url);
-  }
+@mixin lj_dialogImg($m, $n) {
+  $url: "../../assets/image/components/" + $n + "/" + $m;
+  @include bgImage($url);
+}
 
-  #theme_name {
-    .lj_dialog {
-      > div {
-        .lj_container {
-          @include lj_dialogImg('tankuang.png', 'theme1');
-          /*background-size: contain;*/
-          .close_btn {
-            @include lj_dialogImg('close.png', 'theme1');
-            background-size: contain;
-          }
-          .wen_top {
-            @include lj_dialogImg('bianjiao.png', 'theme1');
-            background-size: contain;
-          }
-          .wen_bottom {
-            @include lj_dialogImg('bianjiao1.png', 'theme1');
-            background-size: contain;
-          }
+#theme_name {
+  .lj_dialog {
+    > div {
+      .lj_container {
+        @include lj_dialogImg("tankuang.png", "theme1");
+        /*background-size: contain;*/
+        .close_btn {
+          @include lj_dialogImg("close.png", "theme1");
+          background-size: contain;
         }
-        .show_upright {
-          @include lj_dialogImg('shu.png', 'theme1');
+        .wen_top {
+          @include lj_dialogImg("bianjiao.png", "theme1");
+          background-size: contain;
         }
+        .wen_bottom {
+          @include lj_dialogImg("bianjiao1.png", "theme1");
+          background-size: contain;
+        }
+      }
+      .show_upright {
+        @include lj_dialogImg("shu.png", "theme1");
       }
     }
   }
+}
 </style>

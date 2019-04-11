@@ -12,6 +12,9 @@ const CustomService = () => import('@/components/customService/index.vue')
 const WorkOrder = () => import('@/components/customService/workOrder/index.vue') //工单
 const VisitToRecord = () =>
   import('@/components/customService/visitToRecord/index.vue') //工单
+const HousingDue = () =>
+  import('@/components/customService/housingDue/index.vue') //房屋到期
+const DataAudit = () => import('@/components/customService/dataAudit/index.vue') //资料审核
 const Village = () => import('@/components/customService/village/index.vue') //小区
 
 // 市场
@@ -40,7 +43,7 @@ const DiscussPolitics = () =>
   import('@/components/humanResource/discussPolitics/index.vue') //奏事议政
 const Demo = () => import('@/components/humanResource/demo/index.vue') //测试
 
-// 财务中心
+//财务中心
 const Finance = () => import('@/components/finance/index.vue')
 const AccountManage = () =>
   import('@/components/finance/accountManage/index.vue') //帐户
@@ -49,7 +52,8 @@ const BudgetStream = () => import('@/components/finance/budgetStream/index.vue')
 const Gathering = () => import('@/components/finance/gathering/index.vue') //收款
 const Customer = () => import('@/components/finance/customer/index.vue') //客户
 const Payment = () => import('@/components/finance/payment/index.vue') //付款
-const Pending = () => import('@/components/finance/pending/index.vue') //付款
+const Pending = () => import('@/components/finance/pending/index.vue') //待处理
+const Balance = () => import('@/components/finance/balance/index.vue') //结算
 
 //新媒体前台
 const Club = () => import('@/components/newMedia/front/club/index.vue') //俱乐部
@@ -335,6 +339,7 @@ export default new Router({
       name: '公告',
       component: Notice
     },
+
     {
       path: '/lejiaStars',
       name: '乐伽之星',
@@ -389,16 +394,6 @@ export default new Router({
       path: '/workOrder',
       name: '工单',
       component: WorkOrder
-    },
-    {
-      path: '/visitToRecord',
-      name: '回访记录',
-      component: VisitToRecord
-    },
-    {
-      path: '/village',
-      name: '小区',
-      component: Village
     },
     {
       path: '/marketCentre',
@@ -490,11 +485,139 @@ export default new Router({
       name: '付款',
       component: Payment
     },
-    // {
-    //     path: '/offerDetail',
-    //     name: '录用通知书',
-    //     component: OfferDetail
-    // }
+    {
+      path: '/intellectualPropertyProtection',
+      name: '知识产权保护',
+      component: IntellectualPropertyProtection
+    },
+    {
+      path: '/patent',
+      name: '专利',
+      component: Patent
+    },
+    {
+      path: '/brand',
+      name: '专利',
+      component: Brand
+    },
+    {
+      path: '/copyright',
+      name: '专利',
+      component: Copyright
+    },
+    {
+      path: '/enterpriseCertificate',
+      name: '专利',
+      component: EnterpriseCertificate
+    },
+
+    {
+      path: '/jurisdiction',
+      name: '无权限',
+      component: Jurisdiction
+    },
+    {
+      path: '/network_error',
+      name: '网络断开',
+      component: NetWork_error
+    },
+    {
+      path: '/customService',
+      name: '客服',
+      component: CustomService
+    },
+    {
+      path: '/workOrder',
+      name: '工单',
+      component: WorkOrder
+    },
+    {
+      path: '/visitToRecord',
+      name: '回访记录',
+      component: VisitToRecord
+    },
+    {
+      path: '/dataAudit',
+      name: '资料审核',
+      component: DataAudit
+    },
+    {
+      path: '/housingDue',
+      name: '房屋到期',
+      component: HousingDue
+    },
+    {
+      path: '/village',
+      name: '小区',
+      component: Village
+    },
+    {
+      path: '/marketCentre',
+      name: '市场',
+      component: MarketCentre
+    },
+    {
+      path: '/houseManagement',
+      name: '房源管理',
+      component: HouseManagement
+    },
+    {
+      path: '/contractManagement',
+      name: '合同管理',
+      component: ContractManagement
+    },
+    {
+      path: '/humanResource',
+      name: '人力资源中心',
+      component: HumanResource
+    },
+    {
+      path: '/departments',
+      name: '三省六部',
+      component: Departments
+    },
+    {
+      path: '/recruitment',
+      name: '招兵买马',
+      component: Recruitment
+    },
+    {
+      path: '/reward',
+      name: '赏罚分明',
+      component: Reward
+    },
+    {
+      path: '/repository',
+      name: '内务库房',
+      component: Repository
+    },
+    {
+      path: '/discussPolitics',
+      name: '奏事议政',
+      component: DiscussPolitics
+    },
+    {
+      path: '/staffRoster',
+      name: '员工名册',
+      component: StaffRoster
+    },
+    {
+      path: '/militaryOrganization',
+      name: '排兵布阵',
+      component: MilitaryOrganization
+    },
+
+    {
+      path: '/pending',
+      name: '待处理项',
+      component: Pending
+    },
+    {
+      path: '/balance',
+      name: '结算',
+      component: Balance
+    },
+
     {
       path: '/intellectualPropertyProtection',
       name: '知识产权保护',
@@ -529,11 +652,6 @@ export default new Router({
       path: '/demo',
       name: '测试',
       component: Demo
-    },
-    {
-      path: '/pending',
-      name: '待处理项',
-      component: Pending
     },
     {
       path: '/personalCenter',

@@ -21,7 +21,7 @@
             </div>
           </div>
           <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-            <span v-for="label in operateList" @click="operateModule(label.type,item)">{{label.label}}</span>
+            <span v-for="label in operateList" @click="operateModule(label.type,item,'user')">{{label.label}}</span>
             <b v-if="!operatePos"></b>
             <i v-if="operatePos"></i>
           </h5>
@@ -171,7 +171,7 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="入职时间">
-                      <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.enroll" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                      <el-date-picker placeholder="请选择" type="date" v-model="interview_info_detail.enroll" value-format="yyyy-MM-dd"></el-date-picker>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -238,21 +238,6 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="毕业院校">
-                      <el-input v-model="interview_info_detail.school" placeholder="请输入"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="专业">
-                      <el-input v-model="interview_info_detail.major" placeholder="请输入"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="毕业时间">
-                      <el-date-picker format="yyyy-DD-mm" type="date" v-model="interview_info_detail.graduation_time" placeholder="请选择"></el-date-picker>
-                    </el-form-item>
-                  </el-col>
                 </el-row>
               </el-form>
             </el-tab-pane>
@@ -303,6 +288,13 @@
                     </el-col>
                   </el-row>
                 </div>
+                <el-form-item label="入职材料:">
+                  <el-checkbox-group v-model="interview_info_detail.entry_materials" class="changeChoose">
+                    <div class="flex-center" style="margin-top: 8px">
+                      <el-checkbox v-for="tmp in entry_materials_checkbox" :key="tmp.id" :label="tmp.id">{{ tmp.val }}</el-checkbox>
+                    </div>
+                  </el-checkbox-group>
+                </el-form-item>
               </el-form>
               <div style="text-align: right">
                 <el-button type="danger" size="mini" style="width: 120px" @click="handleAddEducation">添加</el-button>
@@ -395,7 +387,7 @@
       </div>
     </lj-dialog>
     <!--权限管理===============================================================================================-->
-    <lj-dialog :visible="powerVisible" :size="power_size" @close="powerVisible = false">
+    <lj-dialog :visible="powerVisible" :size="power_size" @close="handleCancelSetPower">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>权限</h3>
@@ -404,7 +396,7 @@
           <div class="powerHead items-bet">
             <div class="inputLabel">
               <h4>权限类型</h4>
-              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.permission_type" size="small" @change="handleChangePowerType">
+              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.type" size="small" @change="handleChangePowerType">
                 <el-option value="position" label="岗位"></el-option>
                 <el-option value="user" label="用户"></el-option>
                 <el-option value="ban" label="黑名单"></el-option>
@@ -468,7 +460,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleSubmitSetPower">确定</el-button>
-          <el-button type="info" size="small" @click="powerVisible = false">取消</el-button>
+          <el-button type="info" size="small" @click="handleCancelSetPower">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -498,8 +490,13 @@
                   header-row-class-name="tableHeader"
                   height="250px"
                   style="width: 100%">
-                  <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+                  <el-table-column label="名称" prop="name" align="center"></el-table-column>
                   <el-table-column label="人数" prop="users_count" align="center"></el-table-column>
+                  <el-table-column label="职级" prop="level" align="center">
+                    <template slot-scope="scope">
+                      <span>P{{ scope.row.level }}</span>
+                    </template>
+                  </el-table-column>
                   <el-table-column label="部门" prop="duty.org.name" align="center"></el-table-column>
                 </el-table>
               </div>
@@ -515,6 +512,11 @@
                   <el-table-column label="员工姓名" prop="name" align="center"></el-table-column>
                   <el-table-column label="手机号" prop="phone" align="center"></el-table-column>
                   <el-table-column label="入职时间" prop="created_at" align="center"></el-table-column>
+                  <el-table-column label="权限" align="center">
+                    <template slot-scope="scope">
+                      <el-button type="text" size="mini" @click="operateModule('power',scope.row,'user')">查看</el-button>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
             </div>
@@ -554,6 +556,11 @@
             </el-form-item>
             <el-form-item label="岗位描述" required>
               <el-input v-model="add_position_form.description" type="textarea" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="岗位职级" required>
+              <el-select v-model="add_position_form.level">
+                <el-option v-for="item in position_level" :key="item.id" :value="item.id" :label="item.val"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="岗位标识" required>
               <el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>
@@ -676,7 +683,26 @@
     components: {ljDialog,PositionOrgan},
     data() {
       return {
+        entry_materials_checkbox: [
+          {id: 1,val: '意外险'},
+          {id: 2,val: '五险'},
+          {id: 3,val: '身份证复印件'},
+          {id: 4,val: '银行卡照片'},
+          {id: 5,val: '劳务合同'},
+          {id: 6,val: '应聘信息登记表'},
+          {id: 7,val: '学籍验证报告'},
+          {id: 8,val: '离职证明'},
+        ],
         confirm_send_visible: false,
+        position_level: [
+          {id: 1, val: 'P1'},
+          {id: 2, val: 'P2'},
+          {id: 3, val: 'P3'},
+          {id: 4, val: 'P4'},
+          {id: 5, val: 'P5'},
+          {id: 6, val: 'P6'},
+          {id: 7, val: 'P7'},
+        ],
 
         show_field_list: [],
         field_list: [],
@@ -744,7 +770,8 @@
               witness: '',
               witness_phone: ''
             }
-          ]
+          ],
+          entry_materials: []
         },
 
         departInfo: '',
@@ -771,7 +798,6 @@
         staff_size: {},
         tabsManage: 'staff',
         staffId: '',
-        check_info: '',
 
         operatePos: false,//编辑total
         operateList: [
@@ -862,7 +888,7 @@
 
         //个人权限
         self_power_params: {
-          user_id: 3057,
+          user_id: '',
           system_id: '',
           type: 'user',
           position_id: '',
@@ -870,7 +896,7 @@
         //设置权限
         set_power: {
           system_id: '',
-          type_id: 3057,
+          type_id: '',
           permission_type: 'user',
           permission_id: '',
           permission_field_id: '',
@@ -885,7 +911,6 @@
     watch: {
       checkInfo: {
         handler(val) {
-          console.log(val);
           if (val.id === 1) {
             this.tabsManage = 'staff';
             this.getStaffList();
@@ -909,19 +934,17 @@
         deep: true
       },
       module(val) {
-        this.getSystemList();
+        // this.getDutyList();
         this.depart_visible = val;
         this.lj_size = 'large';
         if (!val) {
           this.tabsManage = 'staff';
-          this.check_info = '';
+          this.departInfo = '';
+          this.interview_info_detail.depart = '';
+          this.interview_info_detail.org_id = [];
+          this.staffParams.org_id = '';
         }
       },
-      depart_visible(val) {
-        if (!val) {
-          this.$emit('close');
-        }
-      }
     },
     computed: {
       themeName() {
@@ -959,6 +982,8 @@
       },
       handleChangePowerType(type) {
         console.log(type);
+        this.set_power.permission_type = type;
+        this.self_power_params.type = type;
       },
       handleCheckField(val) {
         console.log(val);
@@ -977,9 +1002,16 @@
         this.current_field = tmp;
         this.show_field_list = tmp.fields || [];
       },
+      handleCancelSetPower() {
+        this.checkList = [];
+        this.field_list = [];
+        this.checkAll = false;
+        this.powerVisible = false;
+      },
       handleSubmitSetPower() {
         this.set_power.permission_id = this.checkList;
         this.set_power.permission_field_id = this.field_list;
+        this.set_power.system_id = this.powerChildName;
         this.$http.post('organization/permission/set',this.set_power).then(res => {
           if (res.code === '20000') {
             this.$LjNotify('success',{
@@ -1010,7 +1042,14 @@
                 permission.push(tmp.id);
               }
             }
+            var count = 0;
+            for (var key in this.power_list) {
+              count += this.power_list[key].length;
+            }
             this.$nextTick(() => {
+              if (permission.length >= count) {
+                this.checkAll = true;
+              }
               this.checkList = permission;
               this.field_list = field;
             });
@@ -1263,7 +1302,8 @@
           depart: '',
           org_id: [],
           description: '',
-          sign: ''
+          sign: '',
+          level: ''
         };
         this.addPostVisible = false;
       },
@@ -1381,16 +1421,17 @@
           page: 1,
           limit: 999
         }).then(res => {
+          console.log(res.data.data);
           if (res.code === '20000') {
             this.positionList = res.data.data;
           } else {
             this.positionList = [];
-          };
+          }
           this.positionVisible = true;
         })
       },
       // 权限/禁用/修改/离职
-      operateModule(val,item) {
+      operateModule(val,item,type) {
         if (val === 'revise') {
           this.currentStaff = item;
           this.is_edit = true;
@@ -1405,10 +1446,18 @@
           this.interview_info_detail.position_id.push(item.position[0].id);
           this.interview_info_detail.org_id.push(item.org[0].id);
           this.interview_info_detail.depart = item.org[0].name;
-          this.interview_info_detail.work_history = item.staff.work_history || [];
-          this.interview_info_detail.education_history = item.staff.education_history || [];
+          this.interview_info_detail.work_history = item.staff && item.staff.work_history || [];
+          if (this.interview_info_detail.work_history === "[]") {
+            this.interview_info_detail.work_history = [];
+          }
+          this.interview_info_detail.education_history = item.staff && item.staff.education_history || [];
+          if (this.interview_info_detail.education_history === "[]") {
+            this.interview_info_detail.education_history = [];
+          }
           this.interview_info_detail.phone = item.phone;
           this.interview_info_detail.gender = item.gender;
+
+          console.log(this.interview_info_detail);
         }
         if (val === 'disabled') {
           this.currentStaff = item;
@@ -1418,7 +1467,13 @@
         }
         switch (val) {
           case 'power'://权限
+            this.getSystemList();
             this.powerVisible = true;
+            this.set_power.type_id = item.id;
+            this.self_power_params.user_id = item.id;
+            this.self_power_params.type = type;
+            this.set_power.permission_type = type;
+            this.getSelfPower(this.powerChildName);
             break;
           case 'leave'://离职
             this.currentStaff = item;
@@ -1491,6 +1546,7 @@
       // 岗位管理
       // 当前点击
       tableClickRow(row) {
+        console.log(row);
         this.positionStaffList = row.users;
         let ids = this.chooseRowIds;
         ids.push(row.id);

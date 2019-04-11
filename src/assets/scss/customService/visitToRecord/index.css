@@ -1,135 +1,46 @@
-.flex {
-  display: flex;
-  display: -webkit-flex; }
+/*
+Error: Invalid GBK character "\xE6"
+        on line 26 of index.scss
 
-.bet-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-direction: column;
-  justify-content: space-between; }
+21:         .header_method {
+22:           @include flex('items-bet');
+23:           background-color: transparent;
+24:         }
+25:       }
+26:       // 新增
+27:       .dialog_main {
+28:         .dialog_main_box {
+29:           width: 1530px;
+30:           height: 40px;
+31:           margin: 0 auto 28px;
 
-.bet-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-direction: column;
-  justify-content: space-between; }
-
-.space-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: center; }
-
-.items-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  align-items: center; }
-
-.flex-center {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: center; }
-
-.items-bet {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: space-between; }
-
-.items-center {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center; }
-
-.items-start {
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-start; }
-
-.items-end {
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-end; }
-
-.justify-center {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: center; }
-
-.justify-around {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: space-around; }
-
-.justify-bet {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: space-between; }
-
-.justify-start {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: flex-start; }
-
-.justify-end {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: flex-end; }
-
-@font-face {
-  font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf"); }
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
-@font-face {
-  font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf"); }
-.writingMode {
-  writing-mode: vertical-rl;
-  writing-mode: tb-rl; }
-
-.line-clamp1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1; }
-
-.line-clamp2 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; }
-
-.line-clamp3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; }
-
-.scroll_bar {
-  overflow: auto; }
-  .scroll_bar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-button {
-    height: 10px;
-    background-color: #e4e7ed;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-track {
-    background: #e4e7ed; }
-  .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
-    border-radius: 4px; }
-
-/*# sourceMappingURL=index.css.map */
+Backtrace:
+index.scss:26
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each_with_index'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:820:in `rescue in check_sass_encoding'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:816:in `check_sass_encoding'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:444:in `check_encoding!'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:400:in `_to_tree'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:307:in `render_with_sourcemap'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `each'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin.rb:82:in `update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:51:in `process_result'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:50:in `parse'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:18:in `parse!'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/bin/scss:13:in `<top (required)>'
+D:/Ruby24-x64/bin/scss:23:in `load'
+D:/Ruby24-x64/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid GBK character \"\xE6\"\A         on line 26 of index.scss\A \A 21:         .header_method {\A 22:           @include flex('items-bet');\A 23:           background-color: transparent;\A 24:         }\A 25:       }\A 26:       // 新增\A 27:       .dialog_main {\A 28:         .dialog_main_box {\A 29:           width: 1530px;\A 30:           height: 40px;\A 31:           margin: 0 auto 28px;"; }

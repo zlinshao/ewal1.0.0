@@ -19,26 +19,38 @@
                     <span style="margin-left: 16px"><i :style="{'background-color':item.iconColor}"></i><span>{{item.iconText}}</span></span>
                 </p>
                 <div class="icons home_icon"></div>
-                <!--<div v-if="chooseTab===1||chooseTab===2">-->
-                    <!--<el-button type="danger" size="small" @click="cancelRemark">取消重复标记</el-button>-->
-                <!--</div>-->
                 <div class="icons search" @click="highSearch(chooseTab)"></div>
+            </div>
+        </div>
+        <div class="action-bar changeChoose">
+            <div class="action-bar-left">
+                <el-checkbox>全选</el-checkbox>
+                <span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+
+                <span class="action-bar-name" v-show="action_visible">
+                    <span class="edit" @click="action_status.details_visible = true ">查看</span>
+                    <span class="edit" @click="handleMoveSubject(current_row)">编辑</span>
+                    <span class="edit" @click="handleUnUseSubject(current_row)">取消重复标记</span>
+                    <span class="edit" @click="current_row.freeze===0 ? handleProcessLord(current_row):handleCancelProcessLord(current_row)">{{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}</span>
+                    <span class="delete" @click="handleDeleteSubject(current_row)">删除</span>
+                </span>
+            </div>
+            <div class="action-bar-right">
+                <span>应收金额（元） <i class="edit">234525</i></span>
+                <span>实收金额（元） <i class="check">54554</i></span>
+                <span>剩余款项（元） <i class="delete">324324</i></span>
             </div>
         </div>
         <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
         <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
         <!--房东-->
         <div v-if="chooseTab === 1">
-            <lord :searchParams="search_params"></lord>
+            <lord :searchParams="search_params" @getMultipleSelection="getSelectionVal" :status="action_status" :current_row_info="current_row"></lord>
         </div>
         <!--租客-->
         <div v-if="chooseTab === 2">
             <renter :searchParams="search_params"></renter>
         </div>
-        <!--待处理项-->
-        <!--<div v-if="chooseTab === 3">-->
-            <!--<pending :searchParams="search_params"></pending>-->
-        <!--</div>-->
         <!--新增-->
         <lj-dialog :visible="add_visible" :size="{width: 960 + 'px',height: 820 + 'px'}" @close="add_visible = false">
             <lord-form v-if="chooseTab===1" :formData="lord_form" :current_row="current_row"></lord-form>
@@ -60,7 +72,6 @@
     import renterForm from "./renter/renterForm.vue";
     import {pendingSearchList,lordRenterSearchList} from "../../../assets/js/allSearchData.js";
 
-
     export default {
         name: "index",
         components: {
@@ -73,25 +84,25 @@
             lord,
             renter,
             pending,
-
-
         },
         data() {
             return {
                 pendingSearchList,
                 lordRenterSearchList,
+                multipleSelection:[],
+                action_visible:false,
                 chooseTab: 1,
                 selects: [
                     {id: 1, title: '房东',},
                     {id: 2, title: '租客',},
-                    // {id: 3, title: '待处理项',},
                 ],
                 statusBar: [
-                    {iconColor: "#14e731", iconText: "手机"}, {iconColor: "#e6a23c", iconText: "姓名"},
-                    {iconColor: "#f56c6c", iconText: "地址"}, {iconColor: "#409eff", iconText: "待处理项"},
+                    {iconColor: "#14e731", iconText: "手机"},
+                    {iconColor: "#e6a23c", iconText: "姓名"},
+                    {iconColor: "#f56c6c", iconText: "地址"},
                 ],
                 search_params: {},
-                current_row: '',
+                current_row: '',//选中当前行
                 showSearch: false,
                 showFinMenuList: false,
                 add_visible: false,
@@ -175,6 +186,12 @@
                     "cate": "",
                 },
 
+                action_status:{
+                    delete_visible:false,
+                    edit_visible:false,
+                    details_visible:false
+                }
+
 
             }
         },
@@ -185,20 +202,40 @@
 
         },
 
-        watch: {},
+        watch: {
+            current_row:{
+                handler(val){
+                    console.log(val)
+                },
+                deep:true
+            }
+        },
         created() {
+
         },
         computed: {},
         methods: {
+            // 切换
             changeTabs(id) {
                 this.chooseTab = id;
             },
+            //新增客户
             addCustomer() {
                 this.add_visible = true;
                 this.current_row = ''
             },
+            // 获取选项值
+            getSelectionVal(val){
+                this.multipleSelection = val;
+                if(val.length>0){
+                    this.action_visible = true;
+                    this.current_row = val[0];
+                    console.log(this.current_row);
 
-
+                }else {
+                    this.action_visible = false;
+                }
+            },
             // 高级搜索
             highSearch(val) {
                 this.showSearch = true;
@@ -208,9 +245,6 @@
                         break;
                     case 2:
                         this.searchData = this.lordRenterSearchList;
-                        break;
-                    case 3:
-                        this.searchData = this.pendingSearchList;
                         break;
                 }
 
@@ -224,11 +258,6 @@
                     this.$bus.emit('getParams', this.search_params);
                 }
             },
-
-            //取消重复标记
-            // cancelRemark() {
-            //     this.$bus.emit('cancelRemarkFun', 1);
-            // }
         },
     }
 </script>

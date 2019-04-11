@@ -24,7 +24,23 @@
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
-        <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+        <!--<div class="action-bar changeChoose">-->
+            <!--<div class="action-bar-left">-->
+                <!--<el-checkbox>全选</el-checkbox>-->
+                <!--<span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
+                <!--<span class="action-bar-name" v-show="action_visible">-->
+                    <!--<span class="edit" @click="handleOpenEdit(current_row)">编辑</span>-->
+                    <!--<span class="edit" @click="handleMoveSubject(current_row)">迁移</span>-->
+                    <!--<span class="edit" @click="handleUnUseSubject(current_row)">{{current_row.is_enable===2 ? '禁用' : '启用'}}</span>-->
+                    <!--<span class="delete" @click="handleDeleteSubject(current_row)">删除</span>-->
+                <!--</span>-->
+            <!--</div>-->
+            <!--<div class="action-bar-right">-->
+
+            <!--</div>-->
+
+        <!--</div>-->
+        <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
             <el-table
                     :data="tableData"
                     :height="this.mainListHeight(30) + 'px'"
@@ -32,37 +48,51 @@
                     :row-class-name="tableChooseRow"
                     @cell-click="tableClickRow"
                     header-row-class-name="tableHeader"
+                    @selection-change="handleSelectionChange"
                     style="width: 100%">
+
+                <!--<el-table-column-->
+                        <!--type="selection" width="40">-->
+                <!--</el-table-column>-->
                 <el-table-column
                         align="center"
-                        label="紧急程度">
+                        label="收入支出">
                     <template slot-scope="scope">
                         <div class="status" :class="['status' + scope.row.scope]">
                             <p>{{status[scope.row.scope]}}</p>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="交易时间" prop="operate_time" min-width="150px" align="center"></el-table-column>
-                <el-table-column label="客户姓名" prop="fund.description.customer" align="center"></el-table-column>
-                <el-table-column min-width="180px" label="地址" prop="address" align="center"></el-table-column>
-                <el-table-column label="科目名称" prop="subject.title" align="center"></el-table-column>
-                <el-table-column label="类型" prop="cate" align="center">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.cate === 1 ? '收入' : '支出'}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column min-width="130px" label="账户名称" prop="name" align="center"
-                                 show-overflow-tooltip></el-table-column>
-                <el-table-column min-width="150px" label="卡号" prop="account_num" align="center"></el-table-column>
-                <el-table-column label="应收金额" prop="amount_receivable" align="center"></el-table-column>
-                <el-table-column label="实收金额" prop="amount_received" align="center"></el-table-column>
-                <el-table-column label="应付金额" prop="amount_payable" align="center"></el-table-column>
-                <el-table-column label="实付金额" prop="amount_paid" align="center"></el-table-column>
-                <el-table-column label="账户余额" prop="balance" align="center"
-                                 show-overflow-tooltip></el-table-column>
-                <el-table-column label="详细信息" prop="fund.description.description" min-width="300px" align="center"
-                                 show-overflow-tooltip></el-table-column>
-                <el-table-column label="收/付款人员" prop="operator.name" align="center"></el-table-column>
+                <el-table-column label="账户" prop="account_num" min-width="150px" align="center"></el-table-column>
+                <el-table-column label="交易金额" prop="amount_received" min-width="150px" align="center"></el-table-column>
+                <el-table-column label="交易前账户金额" prop="amount_receivable" min-width="150px" align="center"></el-table-column>
+                <el-table-column label="地址" prop="operate_time" min-width="150px" align="center"></el-table-column>
+                <el-table-column label="交易后账户金额" prop="balance" min-width="150px" align="center"></el-table-column>
+                <el-table-column label="交易时间" prop="create_time" min-width="150px" align="center"></el-table-column>
+                <el-table-column label="操作人" prop="operator.name" min-width="150px" align="center"></el-table-column>
+                <el-table-column label="操作时间" prop="update_time" min-width="150px" align="center"></el-table-column>
+                <el-table-column label="备注" prop="remark" min-width="150px" align="center" show-overflow-tooltip></el-table-column>
+
+                <!--<el-table-column label="客户姓名" prop="fund.description.customer" align="center"></el-table-column>-->
+                <!--<el-table-column min-width="180px" label="地址" prop="address" align="center"></el-table-column>-->
+                <!--<el-table-column label="科目名称" prop="subject.title" align="center"></el-table-column>-->
+                <!--<el-table-column label="类型" prop="cate" align="center">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span>{{ scope.row.cate === 1 ? '收入' : '支出'}}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
+                <!--<el-table-column min-width="130px" label="账户名称" prop="name" align="center"-->
+                                 <!--show-overflow-tooltip></el-table-column>-->
+                <!--<el-table-column min-width="150px" label="卡号" prop="account_num" align="center"></el-table-column>-->
+                <!--<el-table-column label="应收金额" prop="amount_receivable" align="center"></el-table-column>-->
+                <!--<el-table-column label="实收金额" prop="amount_received" align="center"></el-table-column>-->
+                <!--<el-table-column label="应付金额" prop="amount_payable" align="center"></el-table-column>-->
+                <!--<el-table-column label="实付金额" prop="amount_paid" align="center"></el-table-column>-->
+                <!--<el-table-column label="账户余额" prop="balance" align="center"-->
+                                 <!--show-overflow-tooltip></el-table-column>-->
+                <!--<el-table-column label="详细信息" prop="fund.description.description" min-width="300px" align="center"-->
+                                 <!--show-overflow-tooltip></el-table-column>-->
+                <!--<el-table-column label="收/付款人员" prop="operator.name" align="center"></el-table-column>-->
             </el-table>
             <!--分页-->
             <footer class="flex-center bottomPage">
@@ -334,6 +364,8 @@
 
                 showSearch: false,
                 searchData: {},
+                multipleSelection:[],
+                action_visible:false
 
             }
         },
@@ -343,6 +375,16 @@
         watch: {},
         computed: {},
         methods: {
+            handleSelectionChange(val){
+                this.multipleSelection = val;
+                if(val.length>0){
+                    this.action_visible = true;
+                    this.current_row = val[0];
+                }else {
+                    this.action_visible = false;
+                }
+                console.log(val);
+            },
             //账户字典
             getAccount(){
                 this.$http.get(globalConfig.temporary_server + "account",this.params).then(res => {
@@ -371,12 +413,14 @@
                         this.tableData = [];
                         this.params.is_del = '';
                         this.params.is_archive = '';
+                        this.params.account_id = '';
                         this.getAccountRunList();
                         break;
                     case 2:
                         this.tableData = [];
                         this.params.is_del = 2;
                         this.params.is_archive = '';
+                        this.params.account_id = '';
                         this.getAccountRunList();
                         break;
                     case 3:
@@ -384,8 +428,8 @@
                         this.params.is_archive = 2;
                         this.account_visible = true;
                         this.tableData = [];
-                        this.params.account_id = '';
                         this.account_type='';
+                        this.params.account_id = '';
                         break;
                 }
 

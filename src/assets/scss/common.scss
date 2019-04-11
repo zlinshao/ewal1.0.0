@@ -1,40 +1,40 @@
-@import "flex.scss";
+@import 'flex.scss';
 
-$colorFFF: #FFFFFF;
+$colorFFF: #ffffff;
 $color000: #000000;
-$color2D2: #D2D2D2;
-$color8D8: #D8D8D8;
+$color2D2: #d2d2d2;
+$color8D8: #d8d8d8;
 
-$color2F2: #F2F2F2;
+$color2F2: #f2f2f2;
 $color874: #686874;
-$colorE33: #CF2E33;
-$colorFE0: #DFDFE0;
-$color0C0: #C0C0C0;
-$colorFDF: #DFDFDF;
+$colorE33: #cf2e33;
+$colorFE0: #dfdfe0;
+$color0C0: #c0c0c0;
+$colorFDF: #dfdfdf;
 
-$colorDFF: #00FDFF;
-$color131: #FF7131;
+$colorDFF: #00fdff;
+$color131: #ff7131;
 
-$colorE46: #F6DE46;
+$colorE46: #f6de46;
 
-$colorA7B: #008A7B;
-$colorC65: #9CCC65;
-$colorC00: #FB8C00;
-$color9F9: #F9F9F9;
-$color0F0: #F0F0F0;
+$colorA7B: #008a7b;
+$colorC65: #9ccc65;
+$colorC00: #fb8c00;
+$color9F9: #f9f9f9;
+$color0F0: #f0f0f0;
 @font-face {
   font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf");
+  src: url('/static/font/JDJXINSHU.otf');
 }
 
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF");
+  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
 }
 
 @font-face {
   font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf");
+  src: url('/static/font/BaiZhouRenZhe.otf');
 }
 
 @mixin inputColor($c) {
@@ -42,19 +42,26 @@ $color0F0: #F0F0F0;
     background-color: transparent;
   }
 
-  input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  input::-webkit-input-placeholder,
+  textarea::-webkit-input-placeholder {
     color: $c;
   }
 
-  input::-moz-placeholder, textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+  input::-moz-placeholder,
+  textarea::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
     color: $c;
   }
 
-  input:-moz-placeholder, textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  input:-moz-placeholder,
+  textarea:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
     color: $c;
   }
 
-  input:-ms-input-placeholder, textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  input:-ms-input-placeholder,
+  textarea:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
     color: $c;
   }
 }
@@ -115,7 +122,7 @@ $color0F0: #F0F0F0;
   transform: $s;
 }
 
-@mixin transOrigin($lf:0,$top:0,$z:0) {
+@mixin transOrigin($lf: 0, $top: 0, $z: 0) {
   -webkit-transform-origin: $lf $top $z;
   -moz-transform-origin: $lf $top $z;
   -ms-transform-origin: $lf $top $z;
@@ -167,4 +174,53 @@ $color0F0: #F0F0F0;
 
 .scroll_bar {
   @include scroll;
+}
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2;
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .check-count {
+    margin-left: 30px;
+    margin-right: 50px;
+    i {
+      font-style: normal;
+      color: #ff4545;
+    }
+  }
+  .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+    span:first-child {
+      border-left: 0;
+    }
+  }
+  .delete {
+    color: #ff4545;
+  }
+  .edit {
+    color: #0c66ff;
+  }
+  .check {
+    color: #0bb07b;
+  }
 }

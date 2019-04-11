@@ -724,7 +724,8 @@
         this.current_depart = item;
         this.nav_depart = [];
         this.nav_depart.push(item);
-        this.handleOpenLookInfo(item);
+        this.departModule = true;
+        this.departInfo = item;
         this.getNextDepart(item);
         this.show_depart_detail = true;
       },
@@ -783,12 +784,6 @@
         this.getNextDepart(item);
         this.nav_depart.splice(idx + 1);
       },
-      handleOpenLookInfo(val) {
-        this.departModule = true;
-        this.departInfo = val;
-      },
-
-
       //取消添加系统
       handleCancelAddSys() {
         this.add_system_visible = false;
@@ -1210,6 +1205,8 @@
       },
       // tab切换
       changeTabs(id) {
+        this.departModule = false;
+        this.show_depart_detail = false;
         this.chooseTab = id;
         this.$nextTick(function () {
           switch (id) {

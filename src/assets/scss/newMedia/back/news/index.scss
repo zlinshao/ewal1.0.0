@@ -1,0 +1,57 @@
+@import "../../../common.scss";
+#theme_name {
+  #headLines{
+
+    .read-status{
+      width: 100%;
+      text-align: left;
+      span{
+        display: inline-block;
+        text-align: center;
+        width: 120px;
+        height: 34px;
+        line-height: 34px;
+
+      }
+    }
+    .person-list{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      padding: 30px 50px;
+
+      .person-list-info{
+        width: 25%;
+        padding: 20px;
+        .person-box{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          img{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+          }
+          span{
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+            i{
+              font-style: normal;
+            }
+            i:first-child{
+              font-weight: bold;
+              color: #686874;
+            }
+            i:last-child{
+              color:#D2D2D2
+            }
+
+          }
+        }
+      }
+    }
+
+  }
+
+}

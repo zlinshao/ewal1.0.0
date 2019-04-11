@@ -7,9 +7,9 @@
                     <div class="card-middle">
                         <h3>{{item.title}}</h3>
                         <p class="card-status">
-                            <span><i></i>{{item.view}}</span>
-                            <span><i></i>{{item.point}}</span>
-                            <span><i></i>{{item.comment}}</span>
+                            <span><i></i>{{item.collect_number}}</span>
+                            <span><i></i>{{item.thumbs_up_number}}</span>
+                            <span><i></i>{{item.comment.length}}</span>
                         </p>
                         <p class="card-desc">{{item.desc}}</p>
                     </div>
@@ -17,12 +17,12 @@
                         <div class="avatar">
                             <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
                             <div class="avatar-name">
-                                <p>{{item.name}}</p>
-                                <p>{{item.department}}</p>
+                                <p>{{item.user_id.name}}</p>
+                                <p>{{item.org[0].name}}</p>
                             </div>
                         </div>
                         <div class="time">
-                            <span>{{item.time}}</span>
+                            <span>{{item.created_at}}</span>
                         </div>
 
                     </div>
@@ -282,10 +282,10 @@
         },
         methods: {
             fetchMoments() {// 请求接口方法
-                // fetch("").then(res => res.json()).then(res => {
-                //     // this.newsData = res.data.data;
-                //     // this.sort(0);// 分配数据到指定管道
-                // });
+                fetch(globalConfig.newMedia_sever + '/api/article/hot').then(res => res.json()).then(res => {
+                    this.newsData = res.data.data;
+                    this.sort(0);// 分配数据到指定管道
+                });
                 this.sort(0)
 
             },
@@ -397,13 +397,13 @@
                                 i{
                                 }
                             }
-                            i:first-child{
+                            span:nth-child(1) i{
                                 @include hotImg('theme1','pic_shoucang.png')
                             }
-                            i:nth-child(2){
+                            span:nth-child(2) i{
                                 @include hotImg('theme1','pic_dianzan.png')
                             }
-                            i:last-child{
+                            span:nth-child(3) i{
                                 @include hotImg('theme1','pic_pinglun.png')
                             }
                         }
