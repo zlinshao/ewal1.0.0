@@ -78,7 +78,7 @@ export const customService = {
     },
     {
       title: '房屋到期',
-      url: ''
+      url: '/housingDue'
     },
     {
       title: '资料审核',
@@ -140,14 +140,14 @@ export const finance = {
       title: '流水'
     },
 
-      {
-          url: 'balance',
-          title: '结算',
-      },
-      {
-          url: 'pending',
-          title: '待处理',
-      },
+    {
+      url: 'balance',
+      title: '结算'
+    },
+    {
+      url: 'pending',
+      title: '待处理'
+    }
   ]
 }
 
