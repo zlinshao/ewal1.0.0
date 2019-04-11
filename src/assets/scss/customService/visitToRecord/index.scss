@@ -26,6 +26,10 @@
           margin: 0 auto 28px;
           @include flex('justify-start');
           .box {
+            .icon {
+              width: 20px;
+              height: 20px;
+            }
             .title {
               text-align: left;
             }

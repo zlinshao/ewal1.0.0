@@ -487,5 +487,4 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/scss/customService/visitToRecord/index.scss";
-@import "../../../assets/scss/icon.scss";
 </style>
