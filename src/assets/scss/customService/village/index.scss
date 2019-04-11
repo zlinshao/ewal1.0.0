@@ -21,6 +21,12 @@ $color07B: #0BB07B;
       .village-address {
         margin: 0 30px;
         cursor: pointer;
+        span {
+          display: inline-block;
+          text-align: center;
+          min-width: 80px;
+          margin: 0 5px;
+        }
       }
       .village-num {
         color: $colorFFF;
@@ -45,6 +51,7 @@ $color07B: #0BB07B;
               border-radius: 5px;
               padding: 10px 20px;
               box-sizing: border-box;
+              border: 1px solid transparent;
               .village-header {
                 min-height: 80px;
                 padding: 10px 0;
@@ -69,9 +76,9 @@ $color07B: #0BB07B;
                   }
                 }
               }
-              //&:hover {
-              //  border: 1px solid $colorE33;
-              //}
+              &:hover {
+                border: 1px solid $colorE33;
+              }
               .village-body {
                 min-height: 150px;
                 padding: 20px 30px;
@@ -127,26 +134,39 @@ $color07B: #0BB07B;
         top: 81px;
         right: 100%;
         transition: all ease 1s;
+        background-color: white;
         .filter-body {
           > div {
-            width: 25%;
+            width: 50%;
             height: 400px;
-            background-color: #E4E4E4;
             padding: 30px 80px;
+            @include scroll;
             &:first-child {
               background-color: white;
             }
+            &:nth-child(2) {
+              background-color: #E4E4E4;
+            }
             .filter-button {
               width: 100px;
-              height: 50px;
+              height: 35px;
               border-radius: 5px;
+              text-align: center;
+              line-height: 35px;
+              margin: 5px auto;
+              cursor: pointer;
+              box-sizing: border-box;
+              border: 1px solid transparent;
+            }
+            .choose-filter-button {
+              color: $colorE33;
+              border: 1px solid $colorE33;
             }
           }
         }
         .filter-footer {
           width: 100%;
           padding: 30px 0;
-          background-color: white;
           button {
             width: 100px;
           }
