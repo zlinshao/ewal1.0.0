@@ -2,7 +2,42 @@
 
 #theme_name {
   #balance {
+    .balance-detail{
+      .balance-detail-title{
+        width:100% ;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        span{
+          display: inline-block;
+          padding: 6px 30px;
+          cursor: pointer;
 
+        }
+      }
+      .balance-detail-info{
+        width: 100%;
+        padding: 50px;
+        .balance-detail-form{
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          .balance-detail-form-info{
+            width: 30%;
+            height: 360px;
+            padding: 20px;
+            border:1px solid #ff4545;
+            .balance-detail-form-table{
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
