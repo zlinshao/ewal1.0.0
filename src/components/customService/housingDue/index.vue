@@ -2,7 +2,7 @@
   <div id='HousingDue'>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center">
+        <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
         <h1>房屋到期</h1>
@@ -59,19 +59,26 @@
     </div>
 
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+    <!--menu-->
+    <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
   </div>
 </template>
 
 <script>
-import SearchHigh from '../../common/searchHigh.vue'
+import SearchHigh from '../../common/searchHigh.vue';
+import MenuList from '../../common/menuList.vue';
 import { housingDueSearch } from '../../../assets/js/allSearchData.js';
+import { customService } from '../../../assets/js/allModuleList.js';
 export default {
   name: 'index',
   components: {
-    SearchHigh
+    SearchHigh,
+    MenuList
   },
   data () {
     return {
+      customService,
+      visibleStatus: false,
       selects: [
         {
           id: 1,
@@ -144,6 +151,11 @@ export default {
     this.initData()
   },
   methods: {
+    // 客服入口
+    moduleList () {
+      this.visibleStatus = !this.visibleStatus;
+      this.$store.dispatch('route_animation');
+    },
     //初始化数据
     initData () {
       //工单表格数据初始化
