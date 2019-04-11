@@ -138,9 +138,6 @@ const ReserveTrainning = () =>
 const PersonalCenter = () => import('@/components/personalCenter/index.vue');
 
 
-
-
-
 //知识产权保护
 const IntellectualPropertyProtection = () =>
   import('@/components/intellectualPropertyProtection/index.vue')
@@ -541,7 +538,30 @@ export default new Router({
     {
       path: '/personalCenter',
       name: '个人中心',
+      redirect: '/personalCenter/myAttendance',
       component: PersonalCenter,
+      children: [
+        {
+          path: '/personalCenter/myAttendance',
+          name: 'myAttendance',
+          component: () => import('@/components/personalCenter/myAttendance/index.vue')
+        },
+        {
+          path: '/personalCenter/growthProcess',
+          name: 'growProcess',
+          component: () => import('@/components/personalCenter/growthProcess/index.vue')
+        },
+        {
+          path: '/personalCenter/workLog',
+          name: 'workLog',
+          component: () => import('@/components/personalCenter/workLog/index.vue')
+        },
+        {
+          path: '/personalCenter/myKPI',
+          name: 'myKPI',
+          component: () => import('@/components/personalCenter/myKPI/index.vue')
+        },
+      ]
     },
     // {
     //     path: '/offerDetail',

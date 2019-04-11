@@ -1,0 +1,123 @@
+@import "../../common.scss";
+
+#theme_name {
+  #my_attendance {
+    height: 100%;
+    .personal-check {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .date-choose {
+        flex: 6%;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        //background-color: red;
+      }
+      .check-record {
+        flex: 20%;
+        width: 100%;
+        @include flex('flex-center');
+        //background-color: greenyellow;
+        .check-record-container {
+          width: 100%;
+          height: 70%;
+          border: 1px solid #E4E4E4;
+          //@include flex('flex-center');
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          //background-color: red;
+
+          .check-record-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            float:left;
+            border-left:1px solid #ccc;
+            &:nth-of-type(1) {
+              border-left: none;
+            }
+            //margin-left: -1px;
+            .check-record-item-top {
+              @include flex('flex-center');
+              height: 50%;
+              width: 100%;
+              >span {
+                @include flex('flex-center');
+                font-size: 14px;
+                font-family:MicrosoftYaHei-Bold;
+                font-weight: 700;
+                line-height: 19px;
+              }
+            }
+            .check-record-item-bottom {
+              height: 50%;
+              width: 100%;
+              border-top: 1px solid #ccc;
+              @include flex('flex-center');
+              >span {
+                @include flex('flex-center');
+                font-size: 14px;
+                font-family:MicrosoftYaHei-Bold;
+                font-weight: 400;
+                line-height: 19px;
+              }
+            }
+          }
+        }
+      }
+      .check-calendar {
+        flex: 74%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .calendar-container {
+          flex: 90%;
+          width: 100%;
+          border: 1px solid #E4E4E4;
+          border-top: none;
+        }
+        .calendar-useless {
+          flex: 10%;
+          width: 100%;
+        }
+        //margin-bottom: 4%;
+      }
+      //background-color: blue;
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #my_attendance {
+
+  }
+}
+
+#theme_name.theme2 {
+  #my_attendance {
+
+  }
+}
+
+#theme_name.theme3 {
+  #my_attendance {
+
+  }
+}
+
+#theme_name.theme4 {
+  #my_attendance {
+
+  }
+}

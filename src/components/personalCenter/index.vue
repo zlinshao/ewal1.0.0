@@ -37,42 +37,30 @@
         </div>
         <div class="container-left-down">
           <ul>
-            <li @click="checkedId=item.id" v-for="item of navbarList" :class="{checked:item.id==checkedId}">
-              <div class="li-item">
-                <i class="li-item-icon" :class="[item.icon]"></i>
-                <span class="li-item-content">{{item.name}}</span>
-              </div>
-            </li>
 
-            <!--<li>
-              <div class="li-item">
-                <i class="li-item-icon icon-check"></i>
-                <span class="li-item-content">我的考勤</span>
-              </div>
+            <li @click="checkedId=item.id" v-for="item of navbarList" :class="{checked:item.id==checkedId}">
+              <router-link :to="'/personalCenter/'+item.router">
+                <div class="li-item">
+                  <i class="li-item-icon" :class="[item.icon]"></i>
+                  <span class="li-item-content">
+                  {{item.name}}
+                    <!--<router-link :to="'/personalCenter/'+item.router">{{item.name}}</router-link>-->
+                </span>
+                </div>
+              </router-link>
             </li>
-            <li>
-              <div class="li-item">
-                <i class="li-item-icon icon-track"></i>
-                <span class="li-item-content">成长轨迹</span>
-              </div>
-            </li>
-            <li>
-              <div class="li-item">
-                <i class="li-item-icon icon-log-gray"></i>
-                <span class="li-item-content">工作日志</span>
-              </div>
-            </li>
-            <li>
-              <div class="li-item">
-                <i class="li-item-icon icon-kpi"></i>
-                <span class="li-item-content">我的KPI</span>
-              </div>
-            </li>-->
           </ul>
         </div>
       </div>
       <div class="container-right">
-        <div class="calendar"></div>
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+        <!--<div class="personal-check">
+          <div class="date-choose"></div>
+          <div class="check-record"></div>
+          <div class="check-calendar"></div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -80,36 +68,44 @@
 
 <script>
   import _ from 'lodash';
+
   export default {
     name: "index",
     data() {
       return {
-        url:globalConfig.humanResource_server,
+        url: globalConfig.humanResource_server,
 
-        checkedId:1,
-        navbarList:[
+        checkedId: 1,
+        navbarList: [
           {
-            id:1,
-            icon:'icon-check',
-            name:'我的考勤',
+            id: 1,
+            icon: 'icon-check',
+            name: '我的考勤',
+            router: 'myAttendance',
           },
           {
-            id:2,
-            icon:'icon-track',
-            name:'成长轨迹',
+            id: 2,
+            icon: 'icon-track',
+            name: '成长轨迹',
+            router: 'growthProcess',
           },
           {
-            id:3,
-            icon:'icon-log-gray',
-            name:'工作日志',
+            id: 3,
+            icon: 'icon-log-gray',
+            name: '工作日志',
+            router: 'workLog',
           },
           {
-            id:4,
-            icon:'icon-kpi',
-            name:'我的KPI',
+            id: 4,
+            icon: 'icon-kpi',
+            name: '我的KPI',
+            router: 'myKPI',
           },
         ],
       }
+    },
+    mounted() {
+      //this.$router.push('/personalCenter/myAttendance');
     },
   }
 </script>
@@ -123,7 +119,7 @@
   }
 
   #theme_name {
-    #personalCenter {
+    #personal_center {
 
     }
   }
@@ -145,16 +141,16 @@
             @include personalCenterImg('rizhi.png', 'theme1');
           }
           .icon-check {
-            @include personalCenterImg('kaoqin.png','theme1');
+            @include personalCenterImg('kaoqin.png', 'theme1');
           }
           .icon-track {
-            @include personalCenterImg('guiji.png','theme1');
+            @include personalCenterImg('guiji.png', 'theme1');
           }
           .icon-log-gray {
-            @include personalCenterImg('gongzuorizhi.png','theme1');
+            @include personalCenterImg('gongzuorizhi.png', 'theme1');
           }
           .icon-kpi {
-            @include personalCenterImg('kpi.png','theme1');
+            @include personalCenterImg('kpi.png', 'theme1');
           }
 
         }

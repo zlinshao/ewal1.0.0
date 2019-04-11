@@ -2,7 +2,9 @@
 
 #theme_name {
   #personal_center {
+    background-color: #FCFCFC;
     height: 100%;
+    width: 100%;
     //width: 100%;
     .personal-center-container {
       display: flex;
@@ -10,8 +12,10 @@
       align-items: center;
       //background-color: red;
       height: 100%;
+      width: 100%;
       padding-top: 15px;
       //width: 100%;
+      /*左边容器*/
       .container-left {
         width: 18%;
         background-color: $colorFFF;
@@ -186,16 +190,14 @@
           }
         }
       }
+      /*右边容器*/
       .container-right {
+        width: 82%;
         flex: 1;
         //background-color: yellow;
         height: 100%;
-        padding: 15px;
-        .calendar {
-          height: 100%;
-          width: 100%;
-          background-color: blue;
-        }
+        padding: 0 15px 15px 15px;
+
       }
     }
   }

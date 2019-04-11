@@ -65,13 +65,13 @@
               <el-timeline-item
                 :key="index"
                 :color="item.todoType==0?'#50E38F':item.todoType==1?'#FF7A3C':'#FFDC75'"
-                v-if="item.todoList&&item.todoList.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
+                v-if="item.todoListTimeLine&&item.todoListTimeLine.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
                 placement="top">
                 <el-card>
                   <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
                     <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
                          @click="openMeetingDialog(contentItem)"
-                         :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoList">
+                         :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
                       {{contentItem.content}}
                       <div class="icon-list">
                         <span v-if="contentItem.status==0" title="取消"
@@ -1260,6 +1260,7 @@
           let daysList = [...this.getPrevMonthRestList(date), ...this.getCurrentMonthList(date), ...this.getNextMonthRestList(date)];
           daysList.forEach((item, index) => {
             item.id = ++index;
+            item.todoListTimeLine = [];
           });
           //处理数据
           let startTime = utils.formatDate(daysList[0].datetime, 'yyyy-MM-dd hh:mm:ss');
@@ -1284,7 +1285,11 @@
                   };
                   //mStatus.push(sObj.status);
                   daysList[mIdx].todoType = sObj.status > (daysList[mIdx].todoType || 0) ? sObj.status : (daysList[mIdx].todoType || 0);
-                  daysList[mIdx].todoList.push(sObj);
+                  if(sObj.status==0) {
+                    daysList[mIdx].todoList.push(sObj);
+                  }
+
+                  daysList[mIdx].todoListTimeLine.push(sObj);
                 }
                 //console.log(curData);
               });
