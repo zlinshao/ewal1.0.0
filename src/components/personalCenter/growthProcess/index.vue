@@ -1,6 +1,7 @@
 <template>
   <div id="growth_process" class="scroll_bar">
     <div class="m-container">
+      <div class="bg-container"></div>
       <div v-for="item in growthList" class="m-container-item">
         <div class="m-container-item-decorate">
           <span class="m-container-item-decorate-circle"></span>
@@ -65,7 +66,7 @@
           {
             content:'2019年4月11日离职',
           },
-/*          {
+          {
             content:'2019年5月11日入职',
           },
           {
@@ -85,7 +86,7 @@
           },
           {
             content:'2019年7月11日离职',
-          },*/
+          },
         ],
       }
     },
@@ -106,7 +107,9 @@
     }
 
     .m-container {
-      @include personalCenterImg('liuxian.png', 'theme1');
+      .bg-container {
+        @include personalCenterImg('liuxian.png', 'theme1');
+      }
     }
   }
 
