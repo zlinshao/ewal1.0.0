@@ -1,11 +1,12 @@
-@import "flex.scss";
-@import "common.scss";
+@import 'flex.scss';
+@import 'common.scss';
 
 //select重置
 .appTheme1 {
-  .el-select-dropdown__item:hover, .el-select-dropdown__item.hover {
+  .el-select-dropdown__item:hover,
+  .el-select-dropdown__item.hover {
     color: $colorE33;
-    background-color: #FFEAEA;
+    background-color: #ffeaea;
   }
   .el-select-dropdown__item.selected {
     color: $colorE33;
@@ -18,7 +19,7 @@ div.el-popover {
   min-width: 0;
   padding: 12px;
   border-color: transparent;
-  @include transform(translateX(35%))
+  @include transform(translateX(35%));
 }
 
 #theme_name {
@@ -40,26 +41,30 @@ div.el-popover {
       margin: 0 10px 20px;
       height: 36px;
       line-height: 36px;
-      @include bgImage("../image/humanResource/departments/departManage/theme1/huidi.png");
+      @include bgImage(
+        '../image/humanResource/departments/departManage/theme1/huidi.png'
+      );
       &:hover {
         color: $color874;
       }
     }
     .el-tabs__item.is-active {
       color: $colorFFF;
-      @include bgImage("../image/humanResource/departments/departManage/theme1/hongdi.png");
+      @include bgImage(
+        '../image/humanResource/departments/departManage/theme1/hongdi.png'
+      );
     }
   }
   //button按钮
   .el-button {
     border-color: transparent;
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
   }
-  .el-button--danger {
-    background-color: $colorE33;
-  }
+  // .el-button--danger {
+  //    background-color: $colorE33;
+  // }
   .el-button--info {
     color: $color874;
     background-color: $colorFDF;
@@ -101,7 +106,8 @@ div.el-popover {
   }
   //input取消border
   .borderNone {
-    .el-input__inner, .el-textarea__inner {
+    .el-input__inner,
+    .el-textarea__inner {
       border: none;
       background-color: $colorFFF !important;
     }
@@ -111,7 +117,8 @@ div.el-popover {
     .el-form-item__label {
       color: $color2D2;
     }
-    .el-input__inner:focus, .el-textarea__inner:focus {
+    .el-input__inner:focus,
+    .el-textarea__inner:focus {
       border-color: $colorE33;
       background-color: $colorFFF !important;
     }
@@ -132,13 +139,16 @@ div.el-popover {
   }
   .changeChoose {
     //离职员工 check红色圆圈
-    .el-checkout-group, .el-radio-group {
+    .el-checkout-group,
+    .el-radio-group {
       @include flex('items-center');
       flex-wrap: wrap;
     }
-    .el-checkbox, .el-radio {
+    .el-checkbox,
+    .el-radio {
       @include flex('items-center');
-      .el-checkbox__inner, .el-radio__inner {
+      .el-checkbox__inner,
+      .el-radio__inner {
         width: 18px;
         height: 18px;
         @include radius(50%);
@@ -146,30 +156,37 @@ div.el-popover {
           display: none;
         }
         &:hover {
-          border-color: #D8D8D8;
+          border-color: #d8d8d8;
         }
       }
     }
   }
-  .el-checkbox, .el-radio {
+  .el-checkbox,
+  .el-radio {
     @include flex('items-center');
-    .el-checkbox__inner, .el-radio__inner {
+    .el-checkbox__inner,
+    .el-radio__inner {
       &:hover {
-        border-color: #D8D8D8;
+        border-color: #d8d8d8;
       }
     }
-    .el-checkbox__input.is-focus, .el-radio__input.is-focus {
-      .el-checkbox__inner, .el-radio__inner {
-        border-color: #D8D8D8;
+    .el-checkbox__input.is-focus,
+    .el-radio__input.is-focus {
+      .el-checkbox__inner,
+      .el-radio__inner {
+        border-color: #d8d8d8;
       }
     }
-    .el-checkbox__input.is-checked, .el-radio__input.is-checked {
-      .el-checkbox__inner, .el-radio__inner {
+    .el-checkbox__input.is-checked,
+    .el-radio__input.is-checked {
+      .el-checkbox__inner,
+      .el-radio__inner {
         background-color: $colorE33;
         border-color: $colorE33;
       }
     }
-    .el-checkbox__label, .el-radio__label {
+    .el-checkbox__label,
+    .el-radio__label {
       font-size: 15px;
       color: inherit;
       padding-bottom: 1px;
@@ -187,7 +204,8 @@ div.el-popover {
     }
   }
   //input前缀
-  .el-input-group__append, .el-input-group__prepend {
+  .el-input-group__append,
+  .el-input-group__prepend {
     background-color: white !important;
     border: none !important;
     color: $color874 !important;
@@ -227,14 +245,16 @@ div.el-popover {
       button:disabled {
         @include noBgColor;
       }
-      .btn-next, .btn-prev {
+      .btn-next,
+      .btn-prev {
         @include noBgColor;
       }
     }
   }
 
   #part_four {
-    .offer_container ,.labour_contract{
+    .offer_container,
+    .labour_contract {
       .el-input__inner {
         border: none;
         border-radius: 0;
@@ -270,7 +290,7 @@ div.el-popover {
       }
       tr:hover {
         td {
-          color: rgba(207, 46, 51, .5);
+          color: rgba(207, 46, 51, 0.5);
         }
       }
     }
@@ -281,19 +301,20 @@ div.el-popover {
 }
 
 #theme_name.theme2 {
-
 }
 
 #theme_name.theme3 {
-
 }
 
 #theme_name.theme4 {
-
 }
 
 //表格scroll重置
-.el-table__body-wrapper.is-scroll-right, .el-table__body-wrapper.is-scroll-left, .el-table__body-wrapper.is-scroll-middle, .el-table__body-wrapper.is-scrolling-none, .el-table--scrollable-x .el-table__body-wrapper {
+.el-table__body-wrapper.is-scroll-right,
+.el-table__body-wrapper.is-scroll-left,
+.el-table__body-wrapper.is-scroll-middle,
+.el-table__body-wrapper.is-scrolling-none,
+.el-table--scrollable-x .el-table__body-wrapper {
   &::-webkit-scrollbar {
     width: 4px;
     height: 5px;

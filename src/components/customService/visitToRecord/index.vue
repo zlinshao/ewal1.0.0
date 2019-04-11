@@ -2,7 +2,7 @@
   <div id="visitToRecord">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
-        <p class="flex-center">
+        <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
         <h1>回访记录</h1>
@@ -304,21 +304,29 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!--menu-->
+    <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
   </div>
 </template>
 
 <script>
 import SearchHigh from '../../common/searchHigh.vue'
 import LjDialog from '../../common/lj-dialog.vue';
+import MenuList from '../../common/menuList.vue';
 import { visitToRecordSearch } from '../../../assets/js/allSearchData.js';
+import { customService } from '../../../assets/js/allModuleList.js';
 export default {
   name: "index",
   components: {
     SearchHigh,
-    LjDialog
+    LjDialog,
+    MenuList
   },
   data () {
     return {
+      customService,
+      visibleStatus: false,
       chooseTab: 1,
       selects: [
         {
@@ -407,6 +415,11 @@ export default {
     this.initData()
   },
   methods: {
+    // 客服入口
+    moduleList () {
+      this.visibleStatus = !this.visibleStatus;
+      this.$store.dispatch('route_animation');
+    },
     changeTabs (id) {
       if (this.chooseTab !== id) {
         this.chooseTab = id
