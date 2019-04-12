@@ -1,0 +1,252 @@
+@import "../../common.scss";
+#theme_name {
+  #GroupCoreIndicators {
+    width: 100%;
+    height: 100%;
+
+    > div {
+      width: 100%;
+      height: 100%;
+      background: #FFFFFF;
+
+      .mainList {
+        position: relative;
+
+        .menu-list {
+          width: 100%;
+          padding: 0 150px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+
+          div {
+            width: 314px;
+            height: 314px;
+            cursor: pointer;
+
+            span {
+              font-family: jingDianXingShu;
+              font-size: 30px
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #marketRisk {
+    > div {
+      .mainList {
+        width: 100%;
+        .marketRisk-list {
+          width: 100%;
+          padding: 30px 100px;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          .marketRisk-list-info {
+            width: 33.33%;
+            padding: 30px;
+            .marketRisk-box {
+              width: 540px;
+              height: 290px;
+              cursor: pointer;
+              &:hover{
+                span{
+                  color: #B9292D;
+                }
+              }
+              span{
+                font-family: jingDianXingShu;
+                font-size: 32px;
+              }
+
+            }
+          }
+
+
+        }
+      }
+    }
+  }
+
+  #InternalRegulations{
+    >div{
+      .mainList{
+        background: #ffffff;
+        .InternalRegulations-info{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          position: relative;
+
+          .left-info{
+            width: 24%;
+            height: 700px;
+            padding-top: 30px ;
+            padding-left: 80px;
+            margin-right: 20px;
+            background: #F8F8F8;
+            div{
+              p{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-top: 30px;
+                cursor: pointer;
+                span{
+                  display: block;
+                  font-style: normal;
+                  font-size: 16px;
+                  font-family: jingDianXingShu;
+                  i{
+                    display: block;
+                    font-style: normal;
+                    font-family: jingDianXingShu;
+                    font-size: 28px;
+                  }
+
+                }
+                span:first-child{
+                  width: 40px;
+                  height: 40px;
+                  border:1px solid #CF2E33;
+                  transform: rotate(45deg);
+                  margin-right: 36px;
+                  i{
+                    width: 40px;
+                    height: 40px;
+                    text-align: center;
+                    line-height: 40px;
+                    transform: rotate(-45deg);
+                  }
+                }
+
+                i:first-child{
+
+                  //background:#CF2E33 ;
+                  //clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+                }
+
+                &:hover{
+                  span:first-child{
+                    i{
+                      color:#FFFFFF;
+                    }
+                    background: #CF2E33;
+                  }
+                  span:last-child{
+                    i{
+                      color:#CF2E33;
+
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .right-info{
+            width: 100%;
+            height: 700px;
+            background: #F8F8F8;
+            position: relative;
+            >div{
+              z-index: 110;
+              height: 540px;
+              width: 90%;
+              display: flex;
+              flex-direction: row;
+              flex-wrap: wrap;
+              padding-top: 30px ;
+              padding-left: 50px;
+              padding-right: 50px;
+              .right-info-list{
+                width: 25%;
+                padding: 30px;
+                padding-top: 0;
+                .right-info-box{
+                  p{
+                    margin-top: 6px;
+                    margin-bottom: 6px;
+                  }
+                  p:first-child{
+                    width: 192px;
+                    height: 192px;
+                    background: #ffffff;
+                    position: relative;
+                    &:hover{
+                      border:1px solid #CF2E33;
+                    }
+                    span{
+                      position: absolute;
+                      top:-30px;
+                      right: 0px;
+                      display: inline-block;
+                      height: 30px;
+                      line-height: 30px;
+                      background: #CF2E33;
+                      border-radius: 5px;
+                      i{
+                        font-size: 14px;
+                        font-style: normal;
+                        display: inline-block;
+                        height: 20px;
+                        padding: 0 20px;
+                        line-height: 20px;
+                        color:#ffffff;
+                        &:hover{
+                          color: #CF2E33;
+                        }
+                      }
+                    }
+                  }
+                  p:nth-child(2){
+                    color:#7B7B7B;
+                  }
+                  p:last-child{
+                    color:#BDBDBD;
+                  }
+                }
+              }
+            }
+            .bg-img{
+              position: absolute;
+              top: 50%;
+              left:50%;
+              transform: translate(-50%,-50%);
+              width: 360px;
+              height: 360px;
+              z-index: 11;
+            }
+          }
+
+          .add-icons{
+            position: absolute;
+            top:30px;
+            right:130px;
+            width: 30px;
+            height: 30px;
+
+            background:#CF2E33 ;
+            color: #ffffff;
+            font-size: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            span{
+              display:block;
+              line-height: 26px;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}

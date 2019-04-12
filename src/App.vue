@@ -142,7 +142,7 @@
             English: 'Lejia College',
           },
           {
-            url: '',
+            url: '/riskManagement',
             title: '风险控制',
             English: 'Risk Management',
           },

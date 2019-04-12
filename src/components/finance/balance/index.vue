@@ -92,7 +92,7 @@
                         </div>
 
                         <div class="balance-detail-info">
-                            <div v-if="selectTab===1" class="tab1">
+                            <div v-if="selectTab===1" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="收款周期">
@@ -142,7 +142,7 @@
                                 </el-form>
 
                             </div>
-                            <div v-if="selectTab===2" class="tab1">
+                            <div v-if="selectTab===2" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="收款周期">
@@ -192,7 +192,7 @@
                                 </el-form>
 
                             </div>
-                            <div v-if="selectTab===3" class="tab1">
+                            <div v-if="selectTab===3" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="收款周期">
@@ -242,7 +242,7 @@
                                 </el-form>
 
                             </div>
-                            <div v-if="selectTab===4" class="tab1">
+                            <div v-if="selectTab===4" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="收款周期">
@@ -292,7 +292,7 @@
                                 </el-form>
 
                             </div>
-                            <div v-if="selectTab===5" class="tab1">
+                            <div v-if="selectTab===5" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="退房原因">
@@ -318,7 +318,7 @@
                                 </el-form>
 
                             </div>
-                            <div v-if="selectTab===6" class="tab1">
+                            <div v-if="selectTab===6" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="退房原因">
@@ -344,7 +344,7 @@
                                 </el-form>
 
                             </div>
-                            <div v-if="selectTab===7" class="tab1">
+                            <div v-if="selectTab===7" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="退房原因">
@@ -352,21 +352,33 @@
                                         </el-form-item>
                                     </div>
                                     <div class="balance-detail-form-info">
-                                        <el-table
-                                                class="balance-detail-form-table"
-                                                :data="balanceDataDetail"
-                                                highlight-current-row
-                                                :row-class-name="tableChooseRow"
-                                                @cell-click="tableClickRow"
-                                                header-row-class-name="tableHeader"
-                                                @selection-change="handleSelectionChange"
-                                                style="width: 100%">
+                                        <div class="balance-detail-form-table">
+                                            <el-table
+                                                    size="small"
+                                                    max-height="260"
+                                                    :data="balanceDataDetail"
+                                                    highlight-current-row
+                                                    :row-class-name="tableChooseRow"
+                                                    @cell-click="tableClickRow"
+                                                    header-row-class-name="tableHeader"
+                                                    @selection-change="handleSelectionChange"
+                                            >
 
-                                            <el-table-column label="序号" prop="creat_time" align="center" width="80"></el-table-column>
-                                            <el-table-column label="名称" prop="number" align="center" width="80"></el-table-column>
-                                            <el-table-column label="金额" prop="address" align="center" width="80"></el-table-column>
-                                            <el-table-column label="查看" prop="data" align="center" width="80"></el-table-column>
-                                        </el-table>
+                                                <el-table-column  label="序号" prop="creat_time" align="center" width="60"></el-table-column>
+                                                <el-table-column label="名称" prop="number" align="center" width="60"></el-table-column>
+                                                <el-table-column label="金额" prop="address" align="center" width="60"></el-table-column>
+                                                <el-table-column label="查看" prop="data" align="center" width="80">
+                                                    <template slot-scope="scope">
+                                                        <el-button type="danger" plain size="mini" @click="check_visible = true">查看</el-button>
+                                                    </template>
+                                                </el-table-column>
+
+                                            </el-table>
+                                        </div>
+                                        <div class="balance-detail-total flex-center">
+                                            <span >合计:<span>200</span></span>
+                                        </div>
+
                                     </div>
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="评论">
@@ -376,16 +388,124 @@
                                 </el-form>
 
                             </div>
+                            <div v-if="selectTab===8" class="tab8">
+                                <el-table
+                                        size="small"
+                                        max-height="340"
+                                        style="width:100%"
+                                        :data="balanceDataDetail"
+                                        highlight-current-row
+                                        :row-class-name="tableChooseRow"
+                                        @cell-click="tableClickRow"
+                                        header-row-class-name="tableHeader"
+                                        @selection-change="handleSelectionChange"
+                                >
+
+                                    <el-table-column  label="项目" prop="creat_time" align="center" ></el-table-column>
+                                    <el-table-column label="金额" prop="number" align="center" ></el-table-column>
+                                    <el-table-column label="状态" prop="address" align="center" ></el-table-column>
+                                    <el-table-column label="角色" prop="data" align="center" ></el-table-column>
+                                    <el-table-column label="是否平账" prop="number" align="center" ></el-table-column>
+                                    <el-table-column label="时间" prop="number" align="center" ></el-table-column>
+                                    <el-table-column label="备注" prop="number" align="center" ></el-table-column>
+                                    <el-table-column label="修改" prop="data" align="center" ></el-table-column>
+
+                                </el-table>
+                                <div class="page">
+                                    <el-pagination
+                                            :total=0
+                                            layout="total,jumper,prev,pager,next"
+                                            :current-page="params.page"
+                                            :page-size="params.limit"
+                                            @current-change="handleChangePage"
+                                    >
+                                    </el-pagination>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="handleOkDel">确定</el-button>
-                    <el-button type="info" size="small" @click="detail_visible = false;current_row = ''">取消</el-button>
+                    <el-button type="danger" size="small" @click="handleOkDel">通过</el-button>
+                    <el-button type="info" size="small" @click="detail_visible = false;current_row = ''">驳回</el-button>
                 </div>
             </div>
         </lj-dialog>
 
+        <!--查看-->
+        <div class="check-box" v-if="check_visible===true" @click="check_visible=false">
+                <div class="check-box-list">
+                    <div class="check-box-info">
+                        <div>
+                            <h3>水费明细</h3>
+                            <div>
+                                <p><span>上次底数：</span><span>2121.212</span></p>
+                                <p><span>本次底数：</span><span>2121.212</span></p>
+                                <p><span>单价：</span><span>2121.212</span></p>
+                                <p><span>滞纳金：</span><span>2121.212</span></p>
+                                <p><span>其他：</span><span>2121.212</span></p>
+                                <p><span>合计：</span><span>808</span></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="check-box-info">
+                        <div>
+                            <h3>电费明细</h3>
+                            <div>
+                                <p><span>上次底数：</span><span>2121.212</span></p>
+                                <p><span>本次底数：</span><span>2121.212</span></p>
+                                <p><span>单价：</span><span>2121.212</span></p>
+                                <p><span>滞纳金：</span><span>2121.212</span></p>
+                                <p><span>其他：</span><span>2121.212</span></p>
+                                <p><span>合计：</span><span>808</span></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="check-box-info">
+                        <div>
+                            <h3>燃气费明细</h3>
+                            <div>
+                                <p><span>上次底数：</span><span>2121.212</span></p>
+                                <p><span>本次底数：</span><span>2121.212</span></p>
+                                <p><span>单价：</span><span>2121.212</span></p>
+                                <p><span>滞纳金：</span><span>2121.212</span></p>
+                                <p><span>其他：</span><span>2121.212</span></p>
+                                <p><span>合计：</span><span>808</span></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="check-box-info">
+                        <div>
+                            <h3>物业费明细</h3>
+                            <div>
+                                <p><span>物业费：</span><span>2121.212</span></p>
+                                <p><span>合同承担方：</span><span>2121.212</span></p>
+                                <p><span>实际承担方：</span><span>2121.212</span></p>
+                                <p><span>公摊费：</span><span>2121.212</span></p>
+                                <p><span>其他：</span><span>2121.212</span></p>
+                                <p><span>合计：</span><span>808</span></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="check-box-info">
+                        <div>
+                            <h3>维修费明细</h3>
+                            <div>
+                                <p><span>内容：</span><span>维修维修维修伟新单位 反反复复烦烦烦烦烦烦 烦烦烦烦烦烦</span></p>
+                                <p><span>金额：</span><span>2121.212</span></p>
+                                <p><span>内容：</span><span>维修维修维修伟新单位 反反复复烦烦烦烦烦烦 烦烦烦烦烦烦</span></p>
+                                <p><span>金额：</span><span>2121.212</span></p>
+                                <p><span>合计：</span><span>808</span></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        </div>
     </div>
 </template>
 
@@ -406,26 +526,91 @@
                     page: 1,
                     limit: 12
                 },
+                check_visible:false,//查看
                 balanceDataDetail:[
                     {
                         creat_time: 1,
                         number: 32,
                         address: '323',
-                        data: '查看',
+                        data: '修改',
 
                     },
                     {
                         creat_time: 1,
                         number: 32,
                         address: '323',
-                        data: '查看',
+                        data: '修改',
 
                     },
                     {
                         creat_time: 1,
                         number: 32,
                         address: '323',
-                        data: '查看',
+                        data: '修改',
+
+                    },
+                    {
+                        creat_time: 1,
+                        number: 32,
+                        address: '323',
+                        data: '修改',
+
+                    },
+                    {
+                        creat_time: 1,
+                        number: 32,
+                        address: '323',
+                        data: '修改',
+
+                    },
+
+                    {
+                        creat_time: 1,
+                        number: 32,
+                        address: '323',
+                        data: '修改',
+
+                    },
+                    {
+                        creat_time: 1,
+                        number: 32,
+                        address: '323',
+                        data: '修改',
+
+                    },
+                    {
+                        creat_time: 1,
+                        number: 32,
+                        address: '323',
+                        data: '修改',
+
+                    },
+                    {
+                        creat_time: 1,
+                        number: 32,
+                        address: '323',
+                        data: '修改',
+
+                    },
+                    {
+                        creat_time: 1,
+                        number: 32,
+                        address: '323',
+                        data: '修改',
+
+                    },
+                    {
+                        creat_time: 1,
+                        number: 32,
+                        address: '323',
+                        data: '修改',
+
+                    },
+                    {
+                        creat_time: 1,
+                        number: 32,
+                        address: '323',
+                        data: '修改',
 
                     },
                 ],
@@ -619,6 +804,11 @@
         @include bgImage($url);
     }
 
+    @mixin lj_dialogImg($m, $n) {
+        $url: "../../../assets/image/components/" + $n + "/" + $m;
+        @include bgImage($url);
+    }
+
     #theme_name.theme1 {
         #balance {
             .balance-detail {
@@ -630,6 +820,13 @@
                     .activeTab {
                         @include balanceImg('weiyuedu.png', 'theme1');
                         color: #FFFFFF;
+                    }
+                }
+            }
+            .check-box{
+                .check-box-list{
+                    .check-box-info{
+                        @include lj_dialogImg('shu.png', 'theme1');
                     }
                 }
             }
