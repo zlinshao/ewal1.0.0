@@ -376,6 +376,41 @@ export default new Router({
       component: Profile
     },
     {
+      path: '/finance',
+      name: '财务账本',
+      component: Finance
+    },
+    {
+      path: '/accountManage',
+      name: '帐户',
+      component: AccountManage
+    },
+    {
+      path: '/subject',
+      name: '科目',
+      component: Subject
+    },
+    {
+      path: '/budgetStream',
+      name: '收支流水',
+      component: BudgetStream
+    },
+    {
+      path: '/gathering',
+      name: '收款',
+      component: Gathering
+    },
+    {
+      path: '/customer',
+      name: '客户',
+      component: Customer
+    },
+    {
+      path: '/payment',
+      name: '付款',
+      component: Payment
+    },
+    {
       path: '/jurisdiction',
       name: '无权限',
       component: Jurisdiction
@@ -394,6 +429,26 @@ export default new Router({
       path: '/workOrder',
       name: '工单',
       component: WorkOrder
+    },
+    {
+      path: '/visitToRecord',
+      name: '回访记录',
+      component: VisitToRecord
+    },
+    {
+      path: '/dataAudit',
+      name: '资料审核',
+      component: DataAudit
+    },
+    {
+      path: '/housingDue',
+      name: '房屋到期',
+      component: HousingDue
+    },
+    {
+      path: '/village',
+      name: '小区',
+      component: Village
     },
     {
       path: '/marketCentre',
@@ -450,41 +505,7 @@ export default new Router({
       name: '排兵布阵',
       component: MilitaryOrganization
     },
-    {
-      path: '/finance',
-      name: '财务账本',
-      component: Finance
-    },
-    {
-      path: '/accountManage',
-      name: '帐户',
-      component: AccountManage
-    },
-    {
-      path: '/subject',
-      name: '科目',
-      component: Subject
-    },
-    {
-      path: '/budgetStream',
-      name: '收支流水',
-      component: BudgetStream
-    },
-    {
-      path: '/gathering',
-      name: '收款',
-      component: Gathering
-    },
-    {
-      path: '/customer',
-      name: '客户',
-      component: Customer
-    },
-    {
-      path: '/payment',
-      name: '付款',
-      component: Payment
-    },
+
     {
       path: '/pending',
       name: '待处理项',
