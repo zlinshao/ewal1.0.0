@@ -6,7 +6,6 @@
              class="my-kpi-toolbar-item">{{item.name}}
         </div>
       </div>
-      <!--<span @click="tableSettingData.weekly.table_dialog_visible = true">测试</span>-->
       <div class="my-kpi-table-container">
         <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
           <div v-show="toolbarChoosed==1" class="table-weekly">
@@ -21,10 +20,21 @@
               :row-style="{height:'70px'}"
               style="width: 100%">
               <el-table-column
-                v-for="item in Object.keys(tableSettingData.weekly.showData)" :key="item"
+                v-for="(item,index) in Object.keys(tableSettingData.weekly.showData)" :key="item"
+                v-if="index<2"
                 align="center"
                 :prop="item"
                 :label="tableSettingData.weekly.showData[item]">
+              </el-table-column>
+              <el-table-column
+                v-for="(item,index) in Object.keys(tableSettingData.weekly.showData)" :key="item"
+                v-if="index>=2"
+                align="center"
+                :prop="item"
+                :label="tableSettingData.weekly.showData[item]">
+                <template slot-scope="scope">
+                  <span @click="showWeeklyForm(scope.row,item)" style="cursor: pointer">{{scope.row[item]}}</span>
+                </template>
               </el-table-column>
 
             </el-table>
@@ -195,10 +205,70 @@
     </div>
 
 
-
     <lj-dialog
-      :size="{width:'70%',height:'80%'}"
-      :visible="tableSettingData.weekly.table_dialog_visible"></lj-dialog>
+      :size="{width:'40%',height:'80%'}"
+      :visible.sync="tableSettingData.weekly.table_dialog_visible">
+
+      <div class="dialog_container dialog-weekly-form">
+        <div class="dialog-header">
+          <div class="dialog-header-user">
+            <div class="header-user-photo">
+              <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+            </div>
+            <div class="header-user-info">
+              <div class="header-user-info-name">张三</div>
+              <div class="header-user-info-address">苏州吴江组</div>
+            </div>
+          </div>
+          <div class="dialog-header-score">
+            <div class="dialog-header-score-detail">
+              <span>KPI总得分</span><span class="dialog-header-score-number colorE33">8</span><span class="colorE33">分</span>
+            </div>
+            <div class="dialog-header-score-date">2019-04-12</div>
+          </div>
+        </div>
+        <div class="dialog_main">
+          <div class="mainListTable" :style="{'height': 100 + '%'}">
+            <div v-show="toolbarChoosed==1" class="table-weekly">
+              <el-table
+                :data="tableSettingData.kpi.tableData"
+                highlight-current-row
+                :height="this.mainListHeight(430) + 'px'"
+                :row-class-name="tableChooseRow"
+                @cell-click="tableClickRow"
+                @row-dblclick="tableDblClick($event,'kpi')"
+                header-row-class-name="tableHeader"
+                :row-style="{height:'70px'}"
+                style="width: 100%">
+                <el-table-column
+                  v-for="(item,index) in Object.keys(tableSettingData.kpi.showData)" :key="item"
+                  v-if="index<2"
+                  align="center"
+                  :prop="item"
+                  :label="tableSettingData.kpi.showData[item]">
+                </el-table-column>
+                <el-table-column
+                  v-for="(item,index) in Object.keys(tableSettingData.kpi.showData)" :key="item"
+                  v-if="index>=2"
+                  align="center"
+                  :prop="item"
+                  :label="tableSettingData.kpi.showData[item]">
+                  <template slot-scope="scope">
+                    <span @click="showWeeklyForm(scope.row,item)" style="cursor: pointer">{{scope.row[item]}}</span>
+                  </template>
+                </el-table-column>
+
+              </el-table>
+            </div>
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger">确定</el-button>
+          <el-button size="small" type="info" @click="tableSettingData.weekly.table_dialog_visible=false">取消</el-button>
+        </div>
+      </div>
+
+    </lj-dialog>
   </div>
 </template>
 
@@ -400,6 +470,33 @@
             searchParams: '',// dialog中的模糊搜索
 
           },
+          kpi: {//详情
+            counts: 0,
+            params: {
+              //search: '',
+              page: 1,
+              limit: 5,
+
+            },
+            init() {
+              this.params.page = 1;
+              this.params.limit = 5;
+            },
+            chooseRowIds: [],
+            currentSelection: {},//当前选择行
+
+            table_dialog_visible: false,//table表单控制
+            table_dialog_title: '',
+            tableData: [],//表格数据
+            formData: {},//详情表格数据
+            showData: {
+              name: '考核项',
+              department: '指标值',
+              grade: '得分',
+            },
+            searchParams: '',// dialog中的模糊搜索
+
+          },
         },
       }
     },
@@ -412,7 +509,8 @@
       },
 
       getWeeklyList() {
-        for(let i=0;i<10;i++) {
+        this.tableSettingData[this.currentTable].tableData = [];
+        for (let i = 0; i < 5; i++) {
           let obj = {
             name: '张三',
             department: '研发部',
@@ -427,6 +525,13 @@
           this.tableSettingData[this.currentTable].tableData.push(obj);
         }
         this.tableSettingData[this.currentTable].counts = 10;
+      },
+
+      //显示周度考核详情表单
+      showWeeklyForm(row, columnName) {
+        this.tableSettingData.weekly.table_dialog_visible = true
+        //console.log(row);
+        //console.log(columnName);
       },
 
       switchToolbar(index) {
@@ -499,6 +604,9 @@
              break;
          }*/
       }
+    },
+    mounted() {
+      this.switchToolbar(1);
     },
   }
 </script>

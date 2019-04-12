@@ -578,7 +578,22 @@ export default new Router({
           path: '/personalCenter/myKPI',
           name: 'myKPI',
           component: () => import('@/components/personalCenter/myKPI/index.vue')
-        }
+        },
+        {
+          path: '/personalCenter/myFavorite',
+          name: '我的收藏',
+          component: () => import('@/components/personalCenter/myFavorite/index.vue')
+        },
+        {
+          path: '/personalCenter/myResponse',
+          name: '我的回复',
+          component: () => import('@/components/personalCenter/myResponse/index.vue')
+        },
+        {
+          path: '/personalCenter/subLog',
+          name: '下属日志',
+          component: () => import('@/components/personalCenter/subLog/index.vue')
+        },
       ]
     }
     // {

@@ -1,0 +1,68 @@
+@import "../../common.scss";
+
+#theme_name {
+  #my_favorite {
+    height: 100%;
+    .favorite-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding-left: 30px;
+      .favorite-toolbar {
+        height: 8%;
+        display: flex;
+        justify-content: space-between;
+        .toolbar-left {
+          height: 100%;
+          //width: 120px;
+          @include flex('flex-center');
+          color: $color874;
+          .toolbar-left-static {
+            font-size: 20px;
+            font-family: MicrosoftYaHei;
+            padding-right: 15px;
+          }
+          .toolbar-left-dynamic {
+            font-size: 16px;
+            opacity: .7;
+          }
+          //background-color: red;
+        }
+        .toolbar-right {
+          height: 100%;
+          width: 100px;
+          background-color: red;
+        }
+        //background-color: red;
+      }
+      .favorite-table {
+        flex: 1 0 auto;
+        background-color: #ccc;
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #my_favorite {
+
+  }
+}
+
+#theme_name.theme2 {
+  #my_favorite {
+
+  }
+}
+
+#theme_name.theme3 {
+  #my_favorite {
+
+  }
+}
+
+#theme_name.theme4 {
+  #my_favorite {
+
+  }
+}
