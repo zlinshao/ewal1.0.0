@@ -17,7 +17,7 @@
       </div>
       <div class="check-calendar">
         <div class="calendar-container">
-          <calendar week-type="en"></calendar>
+          <calendar :datetime="datetime" week-type="en"></calendar>
         </div>
         <div class="calendar-useless"></div>
 
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+  import LjDialog from '@/components/common/lj-dialog.vue';
   import MonthChoose from '@/components/common/lightweightComponents/Calendar/MonthChoose/index.vue';
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
 
@@ -35,6 +36,7 @@
     components: {
       MonthChoose,
       Calendar,
+      LjDialog,
     },
     data() {
       return {
