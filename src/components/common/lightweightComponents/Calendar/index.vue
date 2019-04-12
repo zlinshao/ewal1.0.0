@@ -29,34 +29,10 @@
                 <slot :name="'slot'+item.id">
                   {{item.date}}
                 </slot>
-                <!--<div class="calendar-day-item-container">-->
-                  <!--<div class="calendar-day-item-container-tip">-->
-                    <!--<el-badge :value="item.todoList.length>0?item.todoList.length:''" class="item">-->
-                      <!--<div :class="{'gray':item.type=='prev'||item.type=='next','current':item.today}"-->
-                           <!--class="calendar-day-item-container-date">-->
-                        <!--{{item.date}}-->
-                      <!--</div>-->
-                    <!--</el-badge>-->
-                  <!--</div>-->
-                  <!--&lt;!&ndash;<div class="calendar-day-item-container-content">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div&ndash;&gt;-->
-                      <!--&lt;!&ndash;:class="[contentItem.status==0?'default':contentItem.status==1?'danger':'warning']"&ndash;&gt;-->
-                      <!--&lt;!&ndash;:title="contentItem.content"&ndash;&gt;-->
-                      <!--&lt;!&ndash;v-for="(contentItem,index) in item.todoList"&ndash;&gt;-->
-                      <!--&lt;!&ndash;v-if="index<2">&ndash;&gt;-->
-                      <!--&lt;!&ndash;{{contentItem.content}}&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--</div>-->
               </div>
             </div>
           </div>
         </div>
-<!--        <div class="container-right scroll_bar">
-          <div class="monthTitle">
-            <span title="本月会议数">{{monthContent}}</span>
-          </div>
-        </div>-->
       </div>
     </div>
   </div>
@@ -66,7 +42,9 @@
   export default {
     name: "Calendar",
     props:{
-      datetime: {},
+      datetime: {
+        default:new Date(),
+      },
       weekType:{
         default:'ch',//ch或者en
       },
@@ -93,9 +71,18 @@
         },
         immediate: true
       },
+      datetime: {
+        handler(val,oldVal) {
+          if(val) {
+            this.initDaysList(val);
+            //this.dateValue = val;
+          }
+        },
+        immediate: true
+      },
     },
     mounted() {
-      this.initDaysList(new Date('2019-04-01'));
+      this.initDaysList(this.datetime);
       // this.initDaysList(new Date('2019-03-01'));
     },
 
