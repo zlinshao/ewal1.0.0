@@ -1,32 +1,43 @@
 @import '../../common.scss';
-// @mixin confirmImg($m, $n) {
-//   $url: '../../../../assets/image/common/lightweightComponents/confirm/' + $n +
-//     '/' + $m;
-//   @include bgImage($url);
-// }
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/customService/visitToRecord/' + $n + '/' + $m;
+  @include bgImage($url);
+}
 
 #theme_name {
   #visitToRecord {
-    // .listTopCss {
-    //   // .el-button--danger {
-    //   //   background-color: #fef0f0;
-    //   //   &:hover {
-    //   //     background-color: #f56c6c;
-    //   //   }
-    //   // }
-    // }
-
     .dialog_container {
       .dialog_header {
-        .header_method {
+        height: 90px;
+        .main_header {
+          padding-top: 20px;
+          overflow: hidden;
           @include flex('items-bet');
           background-color: transparent;
+          .left_tips {
+            font-size: 14px;
+            .icon {
+              display: inline-block;
+              width: 20px;
+              height: 14px;
+              margin-right: 10px;
+            }
+          }
+          .right_tips {
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            font-size: 24px;
+            line-height: 20px;
+          }
         }
       }
       // 新增
       .dialog_main {
+        .el-row {
+          margin-right: 0 !important;
+        }
         .dialog_main_box {
-          width: 1530px;
           height: 40px;
           margin: 0 auto 28px;
           @include flex('justify-start');
@@ -73,18 +84,89 @@
             }
           }
         }
+        .add_record_form {
+          margin-bottom: 20px;
+          .el-col {
+            height: 40px;
+            @include flex('justify-start');
+            p {
+              width: 36%;
+              font-size: 14px;
+              margin-right: 10px;
+              @include flex('justify-start');
+              @include flex('items-center');
+              .icon {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                margin-right: 15px;
+              }
+              span {
+                width: 60px;
+              }
+            }
+
+            .input_box {
+              flex: 1;
+              @include flex('justify-start');
+              @include flex('items-center');
+              position: relative;
+              .icons {
+                width: 20px;
+                height: 20px;
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+              }
+            }
+          }
+          .note {
+            p {
+              width: 96px;
+            }
+          }
+        }
         .detail {
-          width: 1530px;
-          height: 419px;
+          height: 406px;
           overflow-y: scroll;
-          margin: 41px auto 0;
-          @include flex('justify-start');
+          padding-bottom: 60px;
           @include scroll;
           flex-wrap: wrap;
-          .detail_box {
+          @include flex('items-start');
+          .el-col {
+            padding-top: 60px;
+            h5 {
+              font-size: 14px;
+              font-family: 'jingDianXingShu';
+              word-spacing: 2px;
+              text-align: left;
+              margin-bottom: 30px;
+              padding-left: 40px !important;
+            }
+            div {
+              margin-bottom: 18px;
+              @include flex('justify-start');
+              span {
+                font-size: 14px;
+                font-family: 'Microsoft Yahei';
+              }
+              .tit {
+                width: 40%;
+                text-align: right;
+                padding-right: 10px;
+              }
+              .content {
+                width: 60%;
+                text-align: left;
+                img {
+                  width: 50px;
+                  height: 50px;
+                }
+              }
+            }
+          }
+          .el-border {
             position: relative;
-            padding-top: 80px;
-            padding-left: 67px;
             &:after {
               content: '';
               width: 1px;
@@ -93,47 +175,10 @@
               right: 0;
               top: 67px;
             }
-            h5 {
-              font-size: 14px;
-              font-family: 'jingDianXingShu';
-              word-spacing: 2px;
-              text-align: left;
-              margin-bottom: 30px;
-            }
-            ul {
-              li {
-                margin-bottom: 18px;
-                text-align: left;
-                span {
-                  font-size: 14px;
-                  word-spacing: 2px;
-                  font-family: 'Microsoft Yahei';
-                }
-                .tit {
-                  display: inline-block;
-                  width: 64px;
-                  text-align: right;
-                  margin-left: 10px;
-                }
-              }
-            }
-          }
-          .user_box {
-            width: 411px;
-          }
-          .contract_box {
-            width: 763px;
-            div {
+            .el-col {
+              padding-top: 0;
+              @include flex('space-column');
               @include flex('justify-start');
-              .ul_left {
-                margin-right: 96px;
-              }
-            }
-          }
-          .house_box {
-            width: 338px;
-            &:after {
-              background-color: transparent;
             }
           }
         }
@@ -145,7 +190,7 @@
         margin: 0 auto;
         overflow-y: scroll;
         ul {
-          padding: 0 30px;
+          padding: 0 30px 50px;
           li + li {
             position: relative;
             &:before {
@@ -187,12 +232,21 @@
               p + p {
                 margin-top: 10px;
               }
+              .other_fee {
+                p {
+                  margin-top: 5px;
+                  padding-left: 10px;
+                }
+              }
               .detail_dialog_rato {
                 margin-left: 20px;
                 display: inline-block;
                 .el-rate__icon {
                   font-size: 12px;
                 }
+              }
+              .detail_dialog_note {
+                margin-top: 0;
               }
             }
           }
@@ -204,6 +258,21 @@
 
 #theme_name.theme1 {
   #visitToRecord {
+    .dialog_header {
+      .main_header {
+        .left_tips {
+          color: #686874;
+          .icon {
+            @include confirmImg('kefu.png', 'theme1');
+          }
+        }
+        .right_tips {
+          background-color: #cf2e33;
+          color: #ffffff;
+        }
+      }
+    }
+
     .dialog_main_box {
       .box {
         .input_box {
@@ -211,16 +280,105 @@
         }
       }
     }
+    .add_record_form {
+      .el-col {
+        p {
+          color: #686874;
+        }
+        .input_box {
+          .icon_add {
+            @include confirmImg('tianjia.png', 'theme1');
+          }
+          .icon_del {
+            @include confirmImg('shanchu.png', 'theme1');
+          }
+        }
+      }
+      .contact {
+        .icon {
+          @include confirmImg('dianhua_.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('dianhua_hong.png', 'theme1');
+          }
+        }
+      }
+      .origin {
+        .icon {
+          @include confirmImg('gognzuoneirong.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('neirong.png', 'theme1');
+          }
+        }
+      }
+      .freePay {
+        .icon {
+          @include confirmImg('jine_hui.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('jine.png', 'theme1');
+          }
+        }
+      }
+      .satisfied {
+        .icon {
+          @include confirmImg('manyidu.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('manyidu_hong.png', 'theme1');
+          }
+        }
+      }
+      .note {
+        .icon {
+          @include confirmImg('beizhu.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('beizhu_hong.png', 'theme1');
+          }
+        }
+      }
+      .feiyong {
+        .icon {
+          @include confirmImg('feiyongmingcheng.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('feiyongmingcheng_hong.png', 'theme1');
+          }
+        }
+      }
+    }
     .detail {
       background-color: #ffffff;
-      .detail_box {
+      .el-col {
+        h5 {
+          color: #cf2e33;
+          @include confirmImg('dianxian.png', 'theme1');
+          background-size: 30px 5px;
+          background-position: 110px 50%;
+        }
+        div {
+          .tit {
+            color: #d5d5d5;
+          }
+          .content {
+            color: #686874;
+          }
+        }
+      }
+      .el-border {
         &:after {
           background: #f2f2f2;
         }
       }
-      h5 {
-        color: #cf2e33;
-      }
+
       ul {
         li {
           span {

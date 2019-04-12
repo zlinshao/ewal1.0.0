@@ -140,7 +140,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +159,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,9 +168,9 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
 
 #theme_name.theme1 #village {
   height: 100%;
@@ -231,7 +231,7 @@
                   white-space: nowrap;
                   overflow: hidden; }
             #theme_name.theme1 #village > div .village-main .content > div > div:hover {
-              border: 1px solid #CF2E33; }
+              border: 1px solid #cf2e33; }
             #theme_name.theme1 #village > div .village-main .content > div > div .village-body {
               min-height: 150px;
               padding: 20px 30px; }
@@ -289,6 +289,9 @@
         #theme_name.theme1 #village > div .filter-search .filter-body > div::-webkit-scrollbar-thumb {
           background: #747474;
           border-radius: 4px; }
+        #theme_name.theme1 #village > div .filter-search .filter-body > div::-webkit-scrollbar {
+          width: 0;
+          height: 0; }
         #theme_name.theme1 #village > div .filter-search .filter-body > div:first-child {
           background-color: white; }
         #theme_name.theme1 #village > div .filter-search .filter-body > div:nth-child(2) {
@@ -304,8 +307,8 @@
           box-sizing: border-box;
           border: 1px solid transparent; }
         #theme_name.theme1 #village > div .filter-search .filter-body > div .choose-filter-button {
-          color: #CF2E33;
-          border: 1px solid #CF2E33; }
+          color: #cf2e33;
+          border: 1px solid #cf2e33; }
       #theme_name.theme1 #village > div .filter-search .filter-footer {
         width: 100%;
         padding: 30px 0; }
