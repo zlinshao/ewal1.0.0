@@ -1,6 +1,7 @@
 <template>
   <div id="village">
     <div>
+      <!--头部-->
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
           <p class="flex-center">
@@ -21,104 +22,113 @@
             <span @click="handleChangeSort(tmp)" v-for="tmp in sort_list" :key="tmp.id" :class="{'current-choose': current_sort === tmp.id }">{{ tmp.val }}</span>
           </div>
           <div class="icons all-choose"></div>
-          <div class="icons add"><b>+</b></div>
+          <div class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
           <div class="icons search" @click="highSearch"></div>
         </div>
       </div>
 
-        <!--小区列表-->
-        <div class="village-main">
-          <div class="content flex scroll_bar">
-            <div v-for="(village,index) in village_list" class="flex-center">
-              <div>
-                <div class="village-header">
-                  <p class="name flex">
-                    <span>{{ village.village_name }}</span>
-                    <span>{{ village.houseNum }}套</span>
-                  </p>
-                  <p class="detail-address">
-                    <a>{{ village.address }}</a>
-                  </p>
+      <!--小区列表-->
+      <div class="village-main">
+        <div class="content flex scroll_bar">
+          <div v-for="(village,index) in village_list" class="flex-center">
+            <div>
+              <div class="village-header">
+                <p class="name flex">
+                  <span>{{ village.village_name }}</span>
+                  <span>{{ village.houseNum }}套</span>
+                </p>
+                <p class="detail-address">
+                  <a>{{ village.address }}</a>
+                </p>
+              </div>
+              <div class="village-body">
+                <p>
+                  <span class="icon-label type"></span>
+                  <span>{{ village.house_type }}</span>
+                </p>
+                <p>
+                  <span class="icon-label price"></span>
+                  <span>{{ village.min_price || 0 }}-{{ village.max_price || 0 }}/月</span>
+                </p>
+                <p>
+                  <span class="icon-label number"></span>
+                  <span>{{ village.rentalRatio }}%({{ village.rented }}已出租)</span>
+                </p>
+                <p>
+                  <span class="icon-label sign_user"></span>
+                  <span>{{ village.leader && village.leader.name }}</span>
+                </p>
+              </div>
+              <div class="village-footer">
+                <div class="flex-center">
+                  <el-button type="info" size="small">编辑</el-button>
+                  <el-button type="primary" size="small" plain>合并</el-button>
+                  <el-button type="warning" size="small" plain>分配</el-button>
                 </div>
-                <div class="village-body">
-                  <p>
-                    <span class="icon-label type"></span>
-                    <span>{{ village.house_type }}</span>
-                  </p>
-                  <p>
-                    <span class="icon-label price"></span>
-                    <span>{{ village.min_price || 0 }}-{{ village.max_price || 0 }}/月</span>
-                  </p>
-                  <p>
-                    <span class="icon-label number"></span>
-                    <span>{{ village.rentalRatio }}%({{ village.rented }}已出租)</span>
-                  </p>
-                  <p>
-                    <span class="icon-label sign_user"></span>
-                    <span>{{ village.leader && village.leader.name }}</span>
-                  </p>
-                </div>
-                <div class="village-footer">
-                  <div class="flex-center">
-                    <el-button type="info" size="small">编辑</el-button>
-                    <el-button type="primary" size="small" plain>合并</el-button>
-                    <el-button type="warning" size="small" plain>分配</el-button>
-                  </div>
-                  <div class="flex-center">
-                    <div class="flex-center" :class="{'choose-village': check_choose.includes(village.id)}" @click="handleCheckVillage(village)">
-                      <i class="el-icon-check" v-if="check_choose.includes(village.id)"></i>
-                    </div>
+                <div class="flex-center">
+                  <div class="flex-center" :class="{'choose-village': check_choose.includes(village.id)}" @click="handleCheckVillage(village)">
+                    <i class="el-icon-check" v-if="check_choose.includes(village.id)"></i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <footer class="flex-center bottomPage">
-          <div class="develop flex-center">
-            <i class="el-icon-d-arrow-right"></i>
-          </div>
-          <div class="page">
-            <el-pagination
-              :total="village_count"
-              :page-size="village_params.limit"
-              :current-page="village_params.page"
-              @current-change="handleChangePage"
-              layout="total,jumper,prev,pager,next">
-            </el-pagination>
-          </div>
-        </footer>
+      </div>
 
-        <!--筛选-->
-        <div class="filter-search" :class="{'show-filter-search': show_filter_search}">
-          <div class="filter-body flex-center">
-            <div v-if="check_module === 'city'">
-              <div @click="handleChooseItem(item,check_module)" class="filter-button" :class="{'choose-filter-button': current_choose === item.code}" v-for="(item,idx) in city_list" :key="idx">{{ item.name }}</div>
-            </div>
-            <div v-if="check_module === 'area'">
-              <div @click="handleChooseItem(area,check_module)" class="filter-button" v-for="(area,idx) in area_list" :key="idx" :class="{'choose-filter-button': current_choose === area.id}">{{ area.area_name }}</div>
-            </div>
-            <div v-if="check_module === 'area'"></div>
-          </div>
-          <div class="filter-footer flex-center">
-            <el-button type="danger" size="small" @click="handleConfirmFilter">确定</el-button>
-            <el-button type="info" size="small" @click="show_filter_search = false">取消</el-button>
-          </div>
+      <!--分页-->
+      <footer class="flex-center bottomPage">
+        <div class="develop flex-center">
+          <i class="el-icon-d-arrow-right"></i>
         </div>
+        <div class="page">
+          <el-pagination
+            :total="village_count"
+            :page-size="village_params.limit"
+            :current-page="village_params.page"
+            @current-change="handleChangePage"
+            layout="total,jumper,prev,pager,next">
+          </el-pagination>
+        </div>
+      </footer>
+
+      <!--筛选-->
+      <div class="filter-search" :class="{'show-filter-search': show_filter_search}">
+        <div class="filter-body flex-center">
+          <div v-if="check_module === 'city'">
+            <div @click="handleChooseItem(item,check_module)" class="filter-button" :class="{'choose-filter-button': current_choose === item.code}" v-for="(item,idx) in city_list" :key="idx">{{ item.name }}</div>
+          </div>
+          <div v-if="check_module === 'area'">
+            <div @click="handleChooseItem(area,check_module)" class="filter-button" v-for="(area,idx) in area_list" :key="idx" :class="{'choose-filter-button': current_choose === area.id}">{{ area.area_name }}</div>
+          </div>
+          <div v-if="check_module === 'area'"></div>
+        </div>
+        <div class="filter-footer flex-center">
+          <el-button type="danger" size="small" @click="handleConfirmFilter">确定</el-button>
+          <el-button type="info" size="small" @click="show_filter_search = false">取消</el-button>
+        </div>
+      </div>
 
       <searchHigh :module="searchHighVisible" :showData="searchData" @close="hiddenModule"></searchHigh>
+
+      <!--添加小区-->
+      <NewVillage :module="new_village_visible"></NewVillage>
     </div>
   </div>
 </template>
 
 <script>
   import searchHigh from '../../common/searchHigh.vue';
+  import NewVillage from './components/new-village.vue';
 
   export default {
     name: "index",
-    components: { searchHigh },
+    components: { searchHigh ,NewVillage },
     data() {
       return {
+        //添加小区
+        new_village_visible: false,
+
         http_server: globalConfig.market_server,
         sort_list: [
           { id: 1, val: '默认排序' },
@@ -178,6 +188,10 @@
       handleChooseItem(item,module) {
         switch (module) {
           case 'city':
+            //清空area
+            this.address_filter[1].val = '选区域';
+            this.village_params.area = item.id;
+
             this.village_params.city = [];
             this.village_params.province = '';
             this.village_params.province = item.province.code;
@@ -192,13 +206,13 @@
             this.village_params.area = item.id;
             this.address_filter[1].val += item.area_name + ',';
             this.address_filter[1].val = this.address_filter[1].val.substring(0,this.address_filter[1].val.length - 1);
+            this.getAreaNextList();
             break;
         }
       },
       //城市列表
       getCityList() {
         this.$http.get(this.http_server + 'v1.0/city/address/city-list').then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.city_list = res.data;
           } else {
@@ -212,7 +226,6 @@
           province: this.village_params.province,
           city: this.village_params.city[0]
         }).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.area_list = res.data;
           } else {
@@ -220,9 +233,18 @@
           }
         })
       },
+      //获取区域下的街道
+      getAreaNextList() {
+        this.$http.get(this.http_server + '/v1.0/city/address',{
+          province: this.village_params.province,
+          city: this.village_params.city[0],
+          region: this.village_params.area[0]
+        }).then(res => {
+          console.log(res);
+        })
+      },
       //点击打开地址筛选
       handleOpenFilterAddress(tmp) {
-        console.log(tmp);
         const key = tmp.key;
         this.check_module = tmp.key; //赋值当前模块
         switch (key) {

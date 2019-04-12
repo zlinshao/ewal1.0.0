@@ -410,6 +410,11 @@ export default new Router({
       component: DataAudit
     },
     {
+      path: '/village',
+      name: '小区管理',
+      component: Village
+    },
+    {
       path: '/marketCentre',
       name: '市场',
       component: MarketCentre
