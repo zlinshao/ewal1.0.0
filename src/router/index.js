@@ -435,15 +435,6 @@ export default new Router({
       component: VisitToRecord
     },
     {
-      path: '/dataAudit',
-      name: '资料审核',
-      component: DataAudit
-    },
-    {
-      name: '记录回访',
-      component: VisitToRecord
-    },
-    {
       path: '/housingDue',
       name: '房屋到期',
       component: HousingDue
