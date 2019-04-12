@@ -18,15 +18,15 @@
           </div>
           <div class="personal-group-button">
             <div class="personal-group-button-container">
-              <div class="group-button-item" title="我的收藏">
+              <div @click="routerLink('/personalCenter/myFavorite')" class="group-button-item" title="我的收藏">
                 <div class="group-button-item-icon icon-collect"></div>
                 <div class="group-button-item-content">我的收藏</div>
               </div>
-              <div class="group-button-item" title="我的回复">
+              <div @click="routerLink('/personalCenter/myResponse')" class="group-button-item" title="我的回复">
                 <div class="group-button-item-icon icon-message"></div>
                 <div class="group-button-item-content">我的回复</div>
               </div>
-              <div class="group-button-item" title="下属日志">
+              <div @click="routerLink('/personalCenter/subLog')" class="group-button-item" title="下属日志">
                 <div class="group-button-item-icon icon-log"></div>
                 <div class="group-button-item-content">下属日志</div>
               </div>
@@ -44,7 +44,6 @@
                   <i class="li-item-icon" :class="[item.icon]"></i>
                   <span class="li-item-content">
                   {{item.name}}
-                    <!--<router-link :to="'/personalCenter/'+item.router">{{item.name}}</router-link>-->
                 </span>
                 </div>
               </router-link>
@@ -56,11 +55,6 @@
         <keep-alive>
           <router-view></router-view>
         </keep-alive>
-        <!--<div class="personal-check">
-          <div class="date-choose"></div>
-          <div class="check-record"></div>
-          <div class="check-calendar"></div>
-        </div>-->
       </div>
     </div>
   </div>

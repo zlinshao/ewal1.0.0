@@ -375,6 +375,41 @@ export default new Router({
       component: Profile
     },
     {
+      path: '/finance',
+      name: '财务账本',
+      component: Finance
+    },
+    {
+      path: '/accountManage',
+      name: '帐户',
+      component: AccountManage
+    },
+    {
+      path: '/subject',
+      name: '科目',
+      component: Subject
+    },
+    {
+      path: '/budgetStream',
+      name: '收支流水',
+      component: BudgetStream
+    },
+    {
+      path: '/gathering',
+      name: '收款',
+      component: Gathering
+    },
+    {
+      path: '/customer',
+      name: '客户',
+      component: Customer
+    },
+    {
+      path: '/payment',
+      name: '付款',
+      component: Payment
+    },
+    {
       path: '/jurisdiction',
       name: '无权限',
       component: Jurisdiction
@@ -396,7 +431,7 @@ export default new Router({
     },
     {
       path: '/visitToRecord',
-      name: '记录回访',
+      name: '回访记录',
       component: VisitToRecord
     },
     {
@@ -404,6 +439,10 @@ export default new Router({
       name: '房屋到期',
       component: HousingDue
     },
+    {
+      path: '/village',
+      name: '小区',
+      component: Village},
     {
       path: '/dataAudit',
       name: '资料审核',
@@ -469,41 +508,7 @@ export default new Router({
       name: '排兵布阵',
       component: MilitaryOrganization
     },
-    {
-      path: '/finance',
-      name: '财务账本',
-      component: Finance
-    },
-    {
-      path: '/accountManage',
-      name: '帐户',
-      component: AccountManage
-    },
-    {
-      path: '/subject',
-      name: '科目',
-      component: Subject
-    },
-    {
-      path: '/budgetStream',
-      name: '收支流水',
-      component: BudgetStream
-    },
-    {
-      path: '/gathering',
-      name: '收款',
-      component: Gathering
-    },
-    {
-      path: '/customer',
-      name: '客户',
-      component: Customer
-    },
-    {
-      path: '/payment',
-      name: '付款',
-      component: Payment
-    },
+
     {
       path: '/pending',
       name: '待处理项',
@@ -578,7 +583,22 @@ export default new Router({
           path: '/personalCenter/myKPI',
           name: 'myKPI',
           component: () => import('@/components/personalCenter/myKPI/index.vue')
-        }
+        },
+        {
+          path: '/personalCenter/myFavorite',
+          name: '我的收藏',
+          component: () => import('@/components/personalCenter/myFavorite/index.vue')
+        },
+        {
+          path: '/personalCenter/myResponse',
+          name: '我的回复',
+          component: () => import('@/components/personalCenter/myResponse/index.vue')
+        },
+        {
+          path: '/personalCenter/subLog',
+          name: '下属日志',
+          component: () => import('@/components/personalCenter/subLog/index.vue')
+        },
       ]
     }
     // {
