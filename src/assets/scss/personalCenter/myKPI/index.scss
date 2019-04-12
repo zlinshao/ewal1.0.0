@@ -6,6 +6,7 @@
     user-select: none;
     .my-kpi-container {
       display: flex;
+      flex-direction: column;
       height: 100%;
       //background-color: red;
       .my-kpi-toolbar {
@@ -33,6 +34,10 @@
             color: $colorFFF;
           }
         }
+      }
+      .my-kpi-table-container {
+        height: 92%;
+        background-color: red;
       }
     }
   }
