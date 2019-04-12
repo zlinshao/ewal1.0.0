@@ -11,7 +11,7 @@ const NetWork_error = () => import('@/components/network_error.vue') //网络已
 const CustomService = () => import('@/components/customService/index.vue')
 const WorkOrder = () => import('@/components/customService/workOrder/index.vue') //工单
 const VisitToRecord = () =>
-  import('@/components/customService/visitToRecord/index.vue') //工单
+  import('@/components/customService/visitToRecord/index.vue') //回访记录
 const HousingDue = () =>
   import('@/components/customService/housingDue/index.vue') //房屋到期
 const DataAudit = () => import('@/components/customService/dataAudit/index.vue') //资料审核
@@ -139,8 +139,7 @@ const ReserveTrainning = () =>
 // const TodoList = () => import('@/components/todoList/index.vue');
 
 //个人中心
-const PersonalCenter = () => import('@/components/personalCenter/index.vue');
-
+const PersonalCenter = () => import('@/components/personalCenter/index.vue')
 
 //知识产权保护
 const IntellectualPropertyProtection = () =>
@@ -441,6 +440,10 @@ export default new Router({
       component: DataAudit
     },
     {
+      name: '记录回访',
+      component: VisitToRecord
+    },
+    {
       path: '/housingDue',
       name: '房屋到期',
       component: HousingDue
@@ -448,7 +451,11 @@ export default new Router({
     {
       path: '/village',
       name: '小区',
-      component: Village
+      component: Village},
+    {
+      path: '/dataAudit',
+      name: '资料审核',
+      component: DataAudit
     },
     {
       path: '/marketCentre',
@@ -561,25 +568,28 @@ export default new Router({
         {
           path: '/personalCenter/myAttendance',
           name: 'myAttendance',
-          component: () => import('@/components/personalCenter/myAttendance/index.vue')
+          component: () =>
+            import('@/components/personalCenter/myAttendance/index.vue')
         },
         {
           path: '/personalCenter/growthProcess',
           name: 'growProcess',
-          component: () => import('@/components/personalCenter/growthProcess/index.vue')
+          component: () =>
+            import('@/components/personalCenter/growthProcess/index.vue')
         },
         {
           path: '/personalCenter/workLog',
           name: 'workLog',
-          component: () => import('@/components/personalCenter/workLog/index.vue')
+          component: () =>
+            import('@/components/personalCenter/workLog/index.vue')
         },
         {
           path: '/personalCenter/myKPI',
           name: 'myKPI',
           component: () => import('@/components/personalCenter/myKPI/index.vue')
-        },
+        }
       ]
-    },
+    }
     // {
     //     path: '/offerDetail',
     //     name: '录用通知书',

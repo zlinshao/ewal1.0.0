@@ -272,16 +272,23 @@
 
                 <div class='circle'></div>
               </div>
-              <div class='detail_dialog_right'>
-                <p>来源:朋友</p>
-                <p>其他费用:无</p>
+              <div class='detail_dialog_right' v-if='item.is_connect== 0'>
+                <p>暂无数据</p>
+              </div>
+              <div class='detail_dialog_right' v-else>
+                <p>来源:{{item.from}}</p>
+                <p v-if='item.other_fee.length == 0'>其他费用:无</p>
+                <p v-else>
+                  其他费用：<span v-for='fee in  item.other_fee' :key='fee.name'>{{fee.name-fee.money}}</span>
+                </p>
                 <p>
                   满意度:
-                  <el-rate class='detail_dialog_rato' v-model="value5" disabled score-template="{value}">
+                  <el-rate class='detail_dialog_rato' v-model="item.star" disabled score-template="{value}">
                   </el-rate>
                 </p>
                 <p>备注：客对房客户对房屋很客户对房屋很满意客户对房屋很满意屋很满意客户对房屋很满意</p>
               </div>
+
             </li>
           </ul>
         </div>
@@ -313,7 +320,7 @@ export default {
   data () {
     return {
       customService,
-      visibleStatus: false,
+      visibleStatus: false, //客服
       chooseTab: 1,
       accessTab: 1,
       selects: [
@@ -327,10 +334,7 @@ export default {
         }
       ],
       showSearch: false,
-      searchData: {
-        status: 'visitToRecord',
-        data: [],
-      },
+      searchData: {},
       // table 数据
       tableShowDate: {
         sign_at: '签约时间',
@@ -357,9 +361,10 @@ export default {
         signer: ''
       },
       //回访记录
+      detail_visible: false,
       record: [],
       record_housename: '',
-      chooseRowIds: [],
+      //添加回访记录
       add_visible: false,
       addRecordOption: {
         options: [{
@@ -372,13 +377,14 @@ export default {
         }],
         origin: [{
           value: '1',
-          label: 'df'
+          label: '朋友'
         },
         {
           value: '2',
-          label: 'afasdf'
+          label: '中介'
         }]
       },
+      recordDetail: {},
       recordOption: {
         option: '',
         origin: '',
@@ -386,12 +392,6 @@ export default {
         rate: 0,
         note: ''
       },
-      detail_visible: false,
-      recordDetail: {
-
-      },
-      value5: 3,
-
       market_server: globalConfig.market_server,
     }
   },
@@ -399,6 +399,24 @@ export default {
     this.getRecordList()
   },
   methods: {
+    //初始化数据
+    getRecordList () {
+      this.showLoading(true);
+      this.params.type = this.chooseTab
+      this.params.status = this.accessTab
+      this.$http.get(this.market_server + 'v1.0/csd/revisit', this.params).then(res => {
+        if (res.code === 200) {
+
+          this.tableData = res.data.data;
+          console.log(this.tableData)
+          this.tableDateCount = res.data.count;
+        } else {
+          this.tableData = [];
+          this.tableDateCount = 0;
+        }
+        this.showLoading(false);
+      })
+    },
     // 客服入口
     moduleList () {
       this.visibleStatus = !this.visibleStatus;
@@ -445,28 +463,9 @@ export default {
         this.getRecordList()
       }
     },
-    //初始化数据
-    getRecordList () {
-      this.showLoading(true);
-      this.params.type = this.chooseTab
-      this.params.status = this.accessTab
-      this.$http.get(this.market_server + 'v1.0/csd/revisit', this.params).then(res => {
-        if (res.code === 200) {
-
-          this.tableData = res.data.data;
-          console.log(this.tableData)
-          this.tableDateCount = res.data.count;
-        } else {
-          this.tableData = [];
-          this.tableDateCount = 0;
-        }
-        this.showLoading(false);
-      })
-    },
     // 双击查看回访记录
     tableClickRow (row) {
-      //  this.$http.get(this.market_server + `v1.0/csd/revist/${this.chooseTab}/${row.contract_id}`).then(res => {
-      this.$http.get(this.market_server + `v1.0/csd/revisit/2/1`).then(res => {
+      this.$http.get(this.market_server + `v1.0/csd/revisit/${this.chooseTab}/${row.contract_id}`).then(res => {
         if (res.code === 200) {
           if (res.data.record && res.data.record.length > 0) {
             this.record = res.data.record
@@ -489,14 +488,27 @@ export default {
       this.params.page = val
       this.getRecordList()
     },
+    //添加回访记录
     handleAddRecord (row) {
-      this.add_visible = true
+      // this.recordDetail = row
+      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+        if (res.code === 200) {
+          console.log(res)
+          // this.recordDetail
+          this.add_visible = true
+        }
+
+      })
+
     },
     handleCloseAdd () {
       this.add_visible = false;
+      this.recordDetail = {}
     },
     handleCloseDetail () {
       this.detail_visible = false;
+      this.record = [];
+      this.record_housename = '';
     },
   }
 }

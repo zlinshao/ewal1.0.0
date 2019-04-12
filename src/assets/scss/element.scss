@@ -31,6 +31,10 @@ div.el-popover {
   .el-date-editor--datetimerange.el-input__inner {
     width: 100%;
   }
+  .el-step .is-finish {
+    color: $colorE33;
+    border-color: $colorE33;
+  }
   //tab切换
   .el-tabs {
     .el-tabs__active-bar {

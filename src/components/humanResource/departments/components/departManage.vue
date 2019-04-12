@@ -159,12 +159,12 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="薪资">
-                      <el-input v-model="interview_info_detail.real_salary" placeholder="请输入"></el-input>
+                      <el-input v-model="interview_info_detail.salary" placeholder="请输入"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="推荐人">
-                      <el-input readonly v-model="interview_info_detail.recommender_name" @focus=""></el-input>
+                      <el-input readonly v-model="interview_info_detail.recommenders.name" @focus="staff_visible = true"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -670,19 +670,25 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!--选人-->
+    <StaffOrgan :module="staff_visible" @close="handleGetStaff"></StaffOrgan>
   </div>
 </template>
 
 <script>
   import ljDialog from '../../../common/lj-dialog.vue';
   import PositionOrgan from '../../../common/postOrgan.vue';
+  import StaffOrgan from '../../../common/staffOrgan.vue';
 
   export default {
     name: "depart-manage",
     props: ['module','info','checkInfo'],
-    components: {ljDialog,PositionOrgan},
+    components: {ljDialog,PositionOrgan,StaffOrgan},
     data() {
       return {
+        staff_visible: false,
+
         entry_materials_checkbox: [
           {id: 1,val: '意外险'},
           {id: 2,val: '五险'},
@@ -741,8 +747,11 @@
           branch_bank: '',
           account_name: '',
           enroll: '',
-          real_salary: '',
-          recommender_name: '',
+          salary: '',
+          recommender: '',
+          recommenders: {
+            name: ''
+          },
           political_status: '',
           education: '',
           level: '',
@@ -952,6 +961,13 @@
       }
     },
     methods: {
+      handleGetStaff(id,name) {
+        if (id !== 'close') {
+          this.interview_info_detail.recommender = id[0];
+          this.interview_info_detail.recommenders.name = name;
+        }
+        this.staff_visible = false;
+      },
       handleConfirmSendMsg() {
         console.log(this.checkLists);
         var type = [];
@@ -1348,7 +1364,10 @@
           account_name: '',
           enroll: '',
           real_salary: '',
-          recommender_name: '',
+          recommender: '',
+          recommenders: {
+            name: ''
+          },
           political_status: '',
           education: '',
           level: '',
@@ -1437,8 +1456,9 @@
           this.is_edit = true;
           this.add_newStaff_visible = true;
           for (var key in this.interview_info_detail) {
-            this.interview_info_detail[key] = item.staff[key] || '';
+            this.interview_info_detail[key] = item.staff && item.staff[key] || '';
           }
+          this.interview_info_detail.recommenders = item.staff && item.staff.recommenders || {name: ''};
           this.interview_info_detail.name = item.name;
           this.interview_info_detail.position = item.position[0].name;
           this.interview_info_detail.position_id = [];
