@@ -486,32 +486,6 @@ export default new Router({
       component: Payment
     },
     {
-      path: '/intellectualPropertyProtection',
-      name: '知识产权保护',
-      component: IntellectualPropertyProtection
-    },
-    {
-      path: '/patent',
-      name: '专利',
-      component: Patent
-    },
-    {
-      path: '/brand',
-      name: '专利',
-      component: Brand
-    },
-    {
-      path: '/copyright',
-      name: '专利',
-      component: Copyright
-    },
-    {
-      path: '/enterpriseCertificate',
-      name: '专利',
-      component: EnterpriseCertificate
-    },
-
-    {
       path: '/jurisdiction',
       name: '无权限',
       component: Jurisdiction
