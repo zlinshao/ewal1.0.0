@@ -122,7 +122,7 @@
           }
           .note {
             p {
-              width: 100px;
+              width: 96px;
             }
           }
         }
@@ -158,6 +158,10 @@
               .content {
                 width: 60%;
                 text-align: left;
+                img {
+                  width: 50px;
+                  height: 50px;
+                }
               }
             }
           }
@@ -174,6 +178,7 @@
             .el-col {
               padding-top: 0;
               @include flex('space-column');
+              @include flex('justify-start');
             }
           }
         }
@@ -227,12 +232,21 @@
               p + p {
                 margin-top: 10px;
               }
+              .other_fee {
+                p {
+                  margin-top: 5px;
+                  padding-left: 10px;
+                }
+              }
               .detail_dialog_rato {
                 margin-left: 20px;
                 display: inline-block;
                 .el-rate__icon {
                   font-size: 12px;
                 }
+              }
+              .detail_dialog_note {
+                margin-top: 0;
               }
             }
           }

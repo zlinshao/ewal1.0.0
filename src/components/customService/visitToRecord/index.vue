@@ -58,7 +58,7 @@
             <el-col :span="6" class='contact'>
               <p><i class='icon'></i>是否接通</p>
               <div class='input_box'>
-                <el-select v-model="recordOption.option" placeholder="请选择">
+                <el-select v-model="recordOption.is_connect" placeholder="请选择">
                   <el-option v-for="item in addRecordOption.options" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
@@ -67,7 +67,7 @@
             <el-col :span="6" class='origin'>
               <p><i class='icon'></i>来源</p>
               <div class='input_box'>
-                <el-select v-model="recordOption.origin" placeholder="请选择">
+                <el-select v-model="recordOption.from" placeholder="请选择">
                   <el-option v-for="item in addRecordOption.origin" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
                 </el-select>
@@ -76,8 +76,8 @@
             <el-col :span="6" class='freePay'>
               <p><i class='icon'></i><span>是否收取其他费用</span></p>
               <div class='input_box'>
-                <el-radio v-model="addRecordOption.free" label="1">是</el-radio>
-                <el-radio v-model="addRecordOption.free" label="2">否</el-radio>
+                <el-radio v-model="recordFree" label="1">是</el-radio>
+                <el-radio v-model="recordFree" label="2">否</el-radio>
               </div>
             </el-col>
           </el-row>
@@ -86,69 +86,61 @@
             <el-col :span="6" class='satisfied'>
               <p><i class='icon'></i>满意度</p>
               <div class='input_box'>
-                <el-rate v-model="recordOption.rate" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+                <el-rate v-model="recordOption.star" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
                 </el-rate>
               </div>
             </el-col>
             <el-col :span="18" class='note'>
               <p><i class='icon'></i>备注</p>
               <div class='input_box'>
-                <el-input v-model="recordOption.note" placeholder="请输入"></el-input>
+                <el-input v-model="recordOption.record" placeholder="请输入"></el-input>
               </div>
             </el-col>
           </el-row>
 
-          <el-row :gutter="20" class='add_record_form'>
-            <el-col :span="6" class='feiyong'>
-              <p><i class='icon'></i>费用名称</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.note" placeholder="请输入"></el-input>
-                <i class='icons icon_add'></i>
-              </div>
-            </el-col>
-            <el-col :span="6" class='feiyong'>
-              <p><i class='icon'></i>费用金额</p>
-              <div class='input_box'>
-                <el-input v-model.number="recordOption.note" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-            <el-col :span="6" class='feiyong'>
-              <p><i class='icon'></i>费用名称</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.note" placeholder="请输入"></el-input>
-                <i class='icons icon_del'></i>
-              </div>
-            </el-col>
-            <el-col :span="6" class='feiyong'>
-              <p><i class='icon'></i>费用金额</p>
-              <div class='input_box'>
-                <el-input v-model.number="recordOption.note" placeholder="请输入"></el-input>
-              </div>
+          <el-row :gutter="5" class='add_record_form' v-if='recordFree == 1'>
+            <el-col :span='12' v-for='(feiyong,index) in recordOption.other_free' :key='"feiyong" + index' class='add_record_form'>
+              <el-row :gutter="15">
+                <el-col :span="12" class='feiyong'>
+                  <p><i class='icon'></i>费用名称</p>
+                  <div class='input_box'>
+                    <el-input v-model="feiyong.name" placeholder="请输入"></el-input>
+                    <i class='icons icon_add' v-if='index== 0' @click='addFeiyong'></i>
+                    <i class='icons icon_del' v-else @click="delFeiyong(index)"></i>
+                  </div>
+                </el-col>
+                <el-col :span="12" class='feiyong'>
+                  <p><i class='icon'></i>费用金额</p>
+                  <div class='input_box'>
+                    <el-input v-model.number="feiyong.money" placeholder="请输入"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
             </el-col>
           </el-row>
 
-          <el-row :gutter="10" class="detail">
-            <el-col :span="6" class=' el-border'>
+          <el-row :gutter="10" class="detail" v-if='recordDetail'>
+            <el-col :span="6" class=' el-border' v-if='recordDetail.customer_info'>
               <h5>客户信息</h5>
               <div>
                 <span class='tit'>姓名</span>
-                <span class="content">东皇</span>
+                <span class="content">{{recordDetail.customer_info.name}}</span>
               </div>
               <div>
                 <span class='tit'>性别</span>
-                <span class="content">男</span>
+                <span class="content">{{recordDetail.customer_info.sex == 1 ? "男":"女"}}</span>
               </div>
               <div>
                 <span class='tit'>性质</span>
-                <span class="content">房东</span>
+                <span class="content">{{chooseTab == 1 ? "房东":"租客"}}</span>
               </div>
               <div>
                 <span class='tit'>手机号</span>
-                <span class="content">15854185432</span>
+                <span class="content">{{recordDetail.customer_info.phone || '/'}}</span>
               </div>
               <div>
                 <span class='tit'>身份证号</span>
-                <span class="content">320811199205141564</span>
+                <span class="content">{{recordDetail.customer_info.idcard || '/'}}</span>
               </div>
             </el-col>
             <el-col :span='12' class='el-border'>
@@ -157,51 +149,51 @@
                 <el-col :span='12'>
                   <div>
                     <span class='tit'>签约人</span>
-                    <span class="content">盖聂</span>
+                    <span class="content">{{recordDetail.sign_user}}</span>
                   </div>
                   <div>
                     <span class='tit'>负责人</span>
-                    <span class="content">位置</span>
+                    <span class="content">{{recordDetail.org_leader}}</span>
                   </div>
                   <div>
                     <span class='tit'>合同编号</span>
-                    <span class="content">LJSF010004843</span>
+                    <span class="content">{{recordDetail.contract_number}}</span>
                   </div>
                   <div>
                     <span class='tit'>签约时间</span>
-                    <span class="content">2019.1.21</span>
+                    <span class="content">{{recordDetail.sign_at}}</span>
                   </div>
                   <div>
                     <span class='tit'>合约时长</span>
-                    <span class="content">2019.1.22-2020.1.21</span>
+                    <span class="content">{{recordDetail.sign_month.moth_to_year}}</span>
                   </div>
                   <div>
                     <span class='tit'>合同照片</span>
                     <p class='content'>
-                      <img src="" alt="">
+                      <img :src="img.uri" alt="" v-for='img in recordDetail.album.photo' :key='img.id'>
                     </p>
                   </div>
                 </el-col>
                 <el-col :span='12'>
                   <div>
                     <span class='tit'>部门</span>
-                    <span class="content">盖聂</span>
+                    <span class="content">{{recordDetail.sign_org}}</span>
                   </div>
                   <div>
                     <span class='tit'>付款方式</span>
-                    <span class="content">位置</span>
+                    <span class="content">{{recordDetail.pay_way}}</span>
                   </div>
                   <div>
                     <span class='tit'>收费价格</span>
-                    <span class="content">LJSF010004843</span>
+                    <span class="content">{{recordDetail.month_price[0].price + "元"}}</span>
                   </div>
                   <div>
                     <span class='tit'>合同状态</span>
-                    <span class="content">2019.1.21</span>
+                    <span class="content">{{recordDetail | contractStatusFormate}}</span>
                   </div>
                   <div>
                     <span class='tit'>回访状态</span>
-                    <span class="content">已回访</span>
+                    <span class="content">{{recordDetail.is_connect ?'已回访':'未回访'}}</span>
                   </div>
                   <div>
                     <span class='tit'>其他附件</span>
@@ -212,38 +204,38 @@
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span='6'>
+            <el-col :span='6' v-if='recordDetail.house_extension'>
               <h5>房屋信息</h5>
               <div>
                 <span class='tit'>房屋地址</span>
-                <span class="content">仙居雅苑1-101</span>
+                <span class="content">{{recordDetail.house_extension.address}}</span>
               </div>
             </el-col>
-            <el-col :span='6'>
+            <el-col :span='6' v-if='recordDetail.is_agency == 1 && recordDetail.agency_info'>
               <h5>中介信息</h5>
               <div>
                 <span class='tit'>中介名称</span>
-                <span class="content">链家</span>
+                <span class="content">{{recordDetail.agency_info.agency_name}}</span>
               </div>
               <div>
                 <span class='tit'>中介价格</span>
-                <span class="content">10000</span>
+                <span class="content">{{recordDetail.agency_info.agency_price_now + "元"}}</span>
               </div>
               <div>
                 <span class='tit'>中介姓名</span>
-                <span class="content">哈哈</span>
+                <span class="content">{{recordDetail.agency_info.agency_user_name}}</span>
               </div>
               <div>
                 <span class='tit'>中介电话</span>
-                <span class="content">15854185432</span>
+                <span class="content">{{recordDetail.agency_info.agency_phone}}</span>
               </div>
             </el-col>
           </el-row>
         </div>
 
         <div class='dialog_footer'>
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info">取消</el-button>
+          <el-button type="danger" size="small" @click='addRecord'>新增</el-button>
+          <el-button type="info" @click='handleCloseAdd'>取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -256,7 +248,7 @@
           <div class="main_header">
             <p class='left_tips'>
               <i class='icon'></i>回访记录</p>
-            <div class='right_tips'>
+            <div class='right_tips' @click='record_addRecord'>
               <b>+</b>
             </div>
           </div>
@@ -273,20 +265,21 @@
                 <div class='circle'></div>
               </div>
               <div class='detail_dialog_right' v-if='item.is_connect== 0'>
-                <p>暂无数据</p>
+                <p>未接通</p>
               </div>
               <div class='detail_dialog_right' v-else>
                 <p>来源:{{item.from}}</p>
                 <p v-if='item.other_fee.length == 0'>其他费用:无</p>
-                <p v-else>
-                  其他费用：<span v-for='fee in  item.other_fee' :key='fee.name'>{{fee.name-fee.money}}</span>
-                </p>
-                <p>
+                <div class='other_fee' v-else>
+                  其他费用：
+                  <p v-for='fee in  item.other_fee' :key='fee.name'>{{fee.name + ':' + fee.money + '元'}}</p>
+                </div>
+                <div>
                   满意度:
                   <el-rate class='detail_dialog_rato' v-model="item.star" disabled score-template="{value}">
                   </el-rate>
-                </p>
-                <p>备注：客对房客户对房屋很客户对房屋很满意客户对房屋很满意屋很满意客户对房屋很满意</p>
+                </div>
+                <p class='detail_dialog_note'>备注：{{item.remark}}</p>
               </div>
 
             </li>
@@ -384,19 +377,51 @@ export default {
           label: '中介'
         }]
       },
-      recordDetail: {},
+      recordDetail: null,
+      recordFree: 0,
       recordOption: {
-        option: '',
-        origin: '',
-        free: '',
-        rate: 0,
-        note: ''
+        contract_id: null,
+        contract_number: null,
+        is_connect: '',
+        from: '',
+        star: 0,
+        record: '',
+        other_free: [{
+          name: '',
+          money: ''
+        }]
       },
+      //暂存 点击row
+      currentRow: null,
       market_server: globalConfig.market_server,
     }
   },
   created () {
     this.getRecordList()
+  },
+  filters: {
+    contractStatusFormate (item) {
+      const { start_at, end_at, end_real_at, end_type } = item
+      let startAt = new Date(start_at).getTime(),
+        endAt = new Date(end_at).getTime(),
+        nowAt = new Date().getTime();
+      if (startAt > nowAt) {
+        return '未生效'
+      }
+      if (startAt <= nowAt && endAt > nowAt && !end_real_at) {
+        return '生效中'
+      }
+      if (endAt >= nowAt && !end_real_at) {
+        return '已过期'
+      }
+      if (end_real_at || end_type) {
+        return '已终止'
+      }
+      // 未生效：  start_at 大于当前日期
+      // 生效中： start_at 小于当前日期 并且 end_at 大于当前日期，并且 end_real_at 为null
+      // 过期：    end_at 小于当前日期，并且 end_real_at 为null
+      // 结束：    end_real_at  不为null 或者 end_type 不为 null
+    }
   },
   methods: {
     //初始化数据
@@ -406,9 +431,7 @@ export default {
       this.params.status = this.accessTab
       this.$http.get(this.market_server + 'v1.0/csd/revisit', this.params).then(res => {
         if (res.code === 200) {
-
           this.tableData = res.data.data;
-          console.log(this.tableData)
           this.tableDateCount = res.data.count;
         } else {
           this.tableData = [];
@@ -465,13 +488,12 @@ export default {
     },
     // 双击查看回访记录
     tableClickRow (row) {
-      this.$http.get(this.market_server + `v1.0/csd/revisit/${this.chooseTab}/${row.contract_id}`).then(res => {
+      this.$http.get(this.market_server + `v1.0/csd/revisit/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
           if (res.data.record && res.data.record.length > 0) {
             this.record = res.data.record
             this.detail_visible = true;
-            console.log(row)
-            this.record_housename = row.house_name
+            this.record_housename = row.house_name || '----'
             return
           }
         }
@@ -480,8 +502,8 @@ export default {
           title: '警告',
           message: '暂无回访记录'
         })
-
       })
+      this.currentRow = row
     },
     //切换分页
     handleCurrentChange (val) {
@@ -490,25 +512,100 @@ export default {
     },
     //添加回访记录
     handleAddRecord (row) {
-      // this.recordDetail = row
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+      this.recordOption.contract_id = row.con_id
+      this.recordOption.contract_number = row.contract_number
+      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
-          console.log(res)
-          // this.recordDetail
+          this.recordDetail = res.data
           this.add_visible = true
         }
-
       })
+    },
+    addFeiyong () {
+      this.recordOption.other_free.push({
+        name: '',
+        money: ''
+      })
+    },
+    delFeiyong (index) {
+      this.recordOption.other_free.splice(index, 1)
+    },
+    addRecord () {
+      //判断内容填写
+      if (!this.recordOption.is_connect ||
+        !this.recordOption.from ||
+        !this.recordFree ||
+        !this.recordOption.star ||
+        !this.recordOption.record) {
+        this.$LjNotify('warning', {
+          title: '警告',
+          message: '记录数据未全部填写'
+        })
+        return
+      }
 
+      if (this.recordFree == 1) {
+        let free = this.recordOption.other_free[0]
+        if (free.name == '' || (!free.money && free.money != 0)) {
+          this.$LjNotify('warning', {
+            title: '警告',
+            message: '填写其他费用'
+          })
+          return
+        }
+      }
+
+      let recordOption = this.recordOption
+      recordOption.contract_type = this.chooseTab
+      if (this.recordOption == 1) {
+        recordOption.other_free = JSON.stringify(recordOption.other_free)
+      } else {
+        recordOption.other_free = ''
+      }
+
+
+      this.$http.post(this.market_server + 'v1.0/csd/revisit', recordOption).then(res => {
+        if (res.code === 200) {
+          this.$LjNotify('success', {
+            title: '成功',
+            message: '记录添加成功'
+          })
+          this.handleCloseAdd()
+        } else {
+          this.$LjNotify('warning', {
+            title: '警告',
+            message: '记录添加失败'
+          })
+        }
+      })
+    },
+    record_addRecord () {
+      this.detail_visible = false
+      this.handleAddRecord(this.currentRow)
     },
     handleCloseAdd () {
       this.add_visible = false;
-      this.recordDetail = {}
+      this.recordDetail = null
+      this.recordOption = {
+        contract_id: null,
+        contract_number: null,
+        is_connect: '',
+        from: '',
+        star: 0,
+        record: '',
+        other_free: [{
+          name: '',
+          money: ''
+        }]
+      }
+      this.recordFree = 0
+      this.currentRow = null
     },
     handleCloseDetail () {
       this.detail_visible = false;
       this.record = [];
       this.record_housename = '';
+      this.currentRow = null
     },
   }
 }
