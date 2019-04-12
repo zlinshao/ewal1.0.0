@@ -21,7 +21,7 @@
     </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table :data="tableSettingData.housingDue.tableData" :height="this.mainListHeight(30) + 'px'"
-        highlight-current-row :row-class-name="tableChooseRow" @cell-click="tableClickRow" header-row-class-name="tableHeader"
+        highlight-current-row :row-class-name="tableChooseRow" @row-dblclick="tableClickRow" header-row-class-name="tableHeader"
         style="width: 100%">
 
         <el-table-column align="center" label="标记" v-if='chooseTab == 2'>
@@ -61,6 +61,10 @@
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
     <!--menu-->
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
+    <!--合同详情-->
+    <ContractDetail :contract_detail_visible='contract_detail_visible' :contractDetail='contractDetail' :chooseTab='chooseTab'
+      :currentRow='currentRow' @closeDetail='contract_detail_visible=false' />
+
   </div>
 </template>
 
@@ -69,11 +73,15 @@ import SearchHigh from '../../common/searchHigh.vue';
 import MenuList from '../../common/menuList.vue';
 import { housingDueSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
+import ContractDetail from '../components/contract_detail'
+
 export default {
   name: 'index',
   components: {
     SearchHigh,
-    MenuList
+    MenuList,
+    ContractDetail,
+
   },
   data () {
     return {
@@ -145,6 +153,42 @@ export default {
         },
       },
       chooseRowIds: [],
+      currentRow: {},
+      //合同详情
+      contract_detail_visible: false,
+      contractDetail: {
+        contract_number: 'LHZF2014020312',
+        sign_at: '2018.04.03',
+        month_price: { price: 1450, period: 12 },
+        sign_month: { moth_to_year: '12个月' },
+        deposit_payed: '5000元',
+        mortgage_price: '5000元',
+        pay_way: '季付',
+        first_pay_at: '2018.04.03',
+        second_pay_at: '2018.05.03',
+        ready_days: '30天',
+        is_agency: 1,
+        agency_info: {
+          agency_name: '链家',
+          agency_price_now: '500元',
+          agency_user_name: '链家',
+          agency_phone: 13844564121
+        },
+        is_corp: 1,
+        sign_user: '链家2',
+        sign_org: 'sign_org',
+        pay_account_info: {
+          account: 384903820190384934,
+          subbranch: 'dfas',
+          relationship: 'dd',
+          bank: '',
+        },
+        customer_info: {
+          name: '乐乐了',
+          phone: 14738920482,
+          idcard: 384903820190384934
+        },
+      }
     }
   },
   created () {
@@ -196,10 +240,12 @@ export default {
     },
     // 当前点击
     tableClickRow (row) {
-      this.tableSettingData[this.currentTable].currentSelection = row;
-      let ids = this.tableSettingData[this.currentTable].chooseRowIds;
-      ids.push(row.id);
-      this.ids = this.myUtils.arrayWeight(ids);
+      this.currentRow = row
+      this.contract_detail_visible = true
+      // this.tableSettingData[this.currentTable].currentSelection = row;
+      // let ids = this.tableSettingData[this.currentTable].chooseRowIds;
+      // ids.push(row.id);
+      // this.ids = this.myUtils.arrayWeight(ids);
     },
     // 点击过
     tableChooseRow ({ row, rowIndex }) {
@@ -229,6 +275,7 @@ export default {
       //this.getRepositoryList();
       //console.log(`当前页: ${val}`);
     },
+
   }
 }
 </script>

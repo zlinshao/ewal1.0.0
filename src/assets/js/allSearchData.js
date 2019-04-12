@@ -211,6 +211,8 @@ export const workOrderSearch = {
 // 回访记录
 export const visitToRecordSearch = {
   status: 'visitToRecord',
+  placeholder: '地址/合同编号/工单编号/内容',
+  keywords: 'search',
   data: [
     {
       keyType: 'dateRange',
@@ -226,7 +228,7 @@ export const visitToRecordSearch = {
       keyName: 'staff',
       dataType: [],
       value: {
-        num: ''
+        num: 1
       }
     },
     {
@@ -236,8 +238,8 @@ export const visitToRecordSearch = {
       keyName: 'department',
       dataType: [],
       value: {
-        num: '',
-        arr: []
+        num: 1,
+        arr: ''
       }
     }
   ]
