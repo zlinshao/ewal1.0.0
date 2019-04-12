@@ -11,11 +11,11 @@ const NetWork_error = () => import('@/components/network_error.vue');//网络已
 const CustomService = () => import('@/components/customService/index.vue');
 const WorkOrder = () => import('@/components/customService/workOrder/index.vue'); //工单
 const VisitToRecord = () =>
-<<<<<<< HEAD
+
     import('@/components/customService/visitToRecord/index.vue'); //工单
-=======
-  import('@/components/customService/visitToRecord/index.vue') //回访记录
->>>>>>> d0b7b52beca14be73da38860a2c2084ada1b29a5
+
+//   import('@/components/customService/visitToRecord/index.vue') //回访记录
+
 const HousingDue = () =>
     import('@/components/customService/housingDue/index.vue') //房屋到期
 const DataAudit = () => import('@/components/customService/dataAudit/index.vue'); //资料审核
