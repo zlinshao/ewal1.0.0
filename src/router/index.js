@@ -400,6 +400,16 @@ export default new Router({
       component: VisitToRecord
     },
     {
+      path: '/housingDue',
+      name: '房屋到期',
+      component: HousingDue
+    },
+    {
+      path: '/dataAudit',
+      name: '资料审核',
+      component: DataAudit
+    },
+    {
       path: '/marketCentre',
       name: '市场',
       component: MarketCentre
