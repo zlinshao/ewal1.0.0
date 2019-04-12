@@ -29,9 +29,9 @@
         </div>
       </div>
     </div>
-    <lj-dialog :visible="show_visible" :size="{width: 595 + 'px',height: 821 + 'px'}"
-                   @close="show_visible = false">
-    </lj-dialog>
+    <el-dialog :visible.sync="show_visible" :show-close="false" custom-class="imgDialog">
+      <img src="../../../assets/image/intellectualPropertyProtection/theme1/patent.png"/>
+    </el-dialog>
     <lj-dialog :visible="add_visible" :size="{width: 540 + 'px',height: 560 + 'px'}"
                    @close="add_visible = false">
            <div class="dialog_container">
@@ -127,6 +127,7 @@
         add_visible: false,
         edit_visible: false,
         delete_visible: false,
+        patentUrl: "../../../assets/image/intellectualPropertyProtection/theme1/patent.png",
         intellectualPropertyProtection,
         chooseTab:1,
         patentList:[
@@ -201,10 +202,26 @@
       },
       delOk: function() {
         this.delete_visible = false
-      },
+      }
     }
   }
 </script>
+
+<style lang="scss">
+  .imgDialog {
+    .el-dialog__header {
+      height: 0px;
+      padding: 0px 0px 0px 0px !important; 
+      background: transparent;
+      border: none;
+    }
+    .el-dialog__body {
+      width: 100%;
+      height: 821px;
+      padding: 0px 0px 0px 0px !important;
+    }
+  }
+</style>
 
 <style lang="scss" scoped>
   @import "../../../assets/scss/intellectualPropertyProtection/patent/index.scss";

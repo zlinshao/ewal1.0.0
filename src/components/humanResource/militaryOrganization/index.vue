@@ -6,7 +6,7 @@
           <p class="flex-center" @click="moduleList">
             <b>...</b>
           </p>
-          <h1>排兵布阵</h1>
+          <h1>培训考核</h1>
           <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -20,10 +20,12 @@
         </div>
       </div>
 
+      <!--考勤模块-->
+      <attence v-if="chooseTab==0"></attence>
       <!--培训模块-->
-      <train  v-if="chooseTab==3"></train>
+      <train  v-if="chooseTab==1"></train>
       <!--薪资模块-->
-      <salary v-if="chooseTab==4"></salary>
+      <kpi v-if="chooseTab==2"></kpi>
 
       <!--模块入口-->
       <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -40,7 +42,8 @@
 
 
   import Train from './train/index';//培训模块
-  import Salary from './salary/index';//薪资模块
+  import Kpi from './kpi/index';//kpi
+  import Attence from './attence/index';//考勤
 
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
   import {overViewSearch, borrowReceiveSearch} from '../../../assets/js/allSearchData.js';
@@ -52,8 +55,9 @@
       LjDialog,
       MenuList,
       SearchHigh,
+      Attence,//考勤
       Train,//培训
-      Salary,//薪资
+      Kpi,//考核
     },
     data() {
       return {
@@ -67,17 +71,11 @@
         showSearch: false,//高级搜索
         searchData: {},//搜索项
         selects: [
-          {id: 1, title: '排班'},
-          {id: 2, title: '考勤'},
-          {id: 3, title: '培训'},
-          {id: 4, title: '薪资'}
+          {id: 0, title: '考勤'},
+          {id: 1, title: '培训'},
+          {id: 2, title: '考核'}
         ], //模块列表
-        chooseTab: 3, //当前选中模块
-
-
-
-
-
+        chooseTab: 0, //当前选中模块
       }
     },
     mounted() {

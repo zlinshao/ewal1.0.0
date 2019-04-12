@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="main-container repository-container">
+    <div v-if="!chooseTab" class="main-container repository-container">
       <div class="content flex-center" v-if="!chooseTab">
         <div class="left flex-center" @click="chooseTab=1"><span>库房总览</span></div>
         <div class="right flex-center" @click="chooseTab=2"><span class="gray">借用领用</span></div>

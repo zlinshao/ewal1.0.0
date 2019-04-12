@@ -1,0 +1,63 @@
+@import "../../common.scss";
+
+#theme_name {
+  #my_KPI {
+    height: 100%;
+    user-select: none;
+    .my-kpi-container {
+      display: flex;
+      height: 100%;
+      //background-color: red;
+      .my-kpi-toolbar {
+        height: 8%;
+        //@include flex('flex-center');
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        //background-color: red;
+        .my-kpi-toolbar-item {
+          @include flex('flex-center');
+          flex: 0 0 auto;
+          height: 31px;
+          width: 110px;
+          line-height: 31px;
+          margin: 0 30px;
+          font-size: 14px;
+          font-family: MicrosoftYaHei-Bold;
+          font-weight: bold;
+          cursor: pointer;
+          color: #797982;
+          white-space: nowrap;
+
+          &.checked {
+            color: $colorFFF;
+          }
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #my_KPI {
+
+  }
+}
+
+#theme_name.theme2 {
+  #my_KPI {
+
+  }
+}
+
+#theme_name.theme3 {
+  #my_KPI {
+
+  }
+}
+
+#theme_name.theme4 {
+  #my_KPI {
+
+  }
+}

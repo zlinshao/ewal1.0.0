@@ -1,11 +1,7 @@
 let calendar = {
   date() {
     return {
-      dateValue: new Date(),
-      weekList: ['一', '二', '三', '四', '五', '六', '日'],
-      monthList: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
       daysList: [],
-      monthContent: '',
     }
   },
   methods: {
@@ -20,7 +16,6 @@ let calendar = {
       this.daysList = daysList;
 
       } else {
-        this.monthContent = '';
         this.daysList = [];
       }
 
@@ -72,7 +67,6 @@ let calendar = {
     getCurrentMonthList(date) {
       let days = this.getDaysCount(date);
       let months = this.getCurrentMonth(date);
-      this.monthContent = this.monthList[months - 1];
       let arr = [];
       let curDay = this.getCurrentDay();
       for (let i = 1; i <= days; i++) {

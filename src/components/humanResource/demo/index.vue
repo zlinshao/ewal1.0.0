@@ -1,28 +1,92 @@
 <template>
   <div class="demo-container">
-    <!--<lj-comment width="900"></lj-comment>-->
-    <div class="demo">
-      <div class="icon40 icon-demo"></div>
-    </div>
+    <calendar week-type="en" style="width: 1366px;height: 768px">
+      <div :slot="'slot'+item.id" v-for="item in daysList"
+      class="days-item" :class="{rest:!item.reason,current:item.today}"
+      >
+        <div class="days-item-content-container">
+          <span class="days-item-content-date" :class="{colorE33:item.reason}">{{item.date}}</span>
+          <span v-if="item.reason" class="days-item-content-reason">{{item.reason}}</span>
+
+        </div>
+        <!--<div>{{item.datetime}}</div>-->
+      </div>
+    </calendar>
   </div>
 
 </template>
 
 <script>
-  import LjComment from '@/components/common/lightweightComponents/LjComment.vue';
+  import _ from 'lodash';
+  import mixins from '@/assets/js/mixins/calendar.js';
+  import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
   export default {
     name: "index",
+    mixins: [mixins],
     components: {
-      LjComment,
+      Calendar,
+    },
+    data() {
+      return {
+        daysList: [],
+      }
+    },
+    mounted() {
+      this.initDaysList(new Date('2019-04-01'));
+    },
+    methods: {
+      initDaysList(date) {
+        if (date) {
+          let daysList = [...this.getPrevMonthRestList(date), ...this.getCurrentMonthList(date), ...this.getNextMonthRestList(date)];
+          daysList.forEach((item, index) => {
+            item.id = ++index;
+          });
+          //处理数据
+          daysList = _.forEach(daysList, (o) => {
+            if(o.id%6==0) {
+              o.reason = '迟到';
+            }
+          });
+
+          this.daysList = daysList;
+
+        } else {
+          this.daysList = [];
+        }
+      },
     },
   }
 </script>
 
 <style scoped lang="scss">
-  //@import "";
+  @import "../../../assets/scss/common";
 
-  .demo {
-    width: 400px;
-    height: 400px;
+
+  .colorE33 {
+    color: $colorE33;
+  }
+  .days-item {
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    //background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="100%" y1="0" x2="0" y2="100%" style="stroke:rgb(99,99,99);stroke-width:2" stroke="gray" stroke-width="1"/></svg>');
+    &.rest {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="100%" y1="0" x2="0" y2="100%" style="stroke:rgb(228,228,228);stroke-width:1"/></svg>');
+    }
+    &.current {
+      color: white;
+      background-color: $colorE33;
+    }
+    //background-color: red;
+    .days-item-content-container {
+      padding: 10% 0 0 10%;
+      .days-item-content-date {
+        font-size: 18px;
+      }
+      .days-item-content-reason {
+        font-size:14px;
+        color: $colorE33;
+      }
+    }
   }
 </style>

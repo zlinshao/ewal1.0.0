@@ -139,7 +139,8 @@ const ReserveTrainning = () =>
 // const TodoList = () => import('@/components/todoList/index.vue');
 
 //个人中心
-const PersonalCenter = () => import('@/components/personalCenter/index.vue')
+const PersonalCenter = () => import('@/components/personalCenter/index.vue');
+
 
 //知识产权保护
 const IntellectualPropertyProtection = () =>
@@ -485,32 +486,6 @@ export default new Router({
       component: Payment
     },
     {
-      path: '/intellectualPropertyProtection',
-      name: '知识产权保护',
-      component: IntellectualPropertyProtection
-    },
-    {
-      path: '/patent',
-      name: '专利',
-      component: Patent
-    },
-    {
-      path: '/brand',
-      name: '专利',
-      component: Brand
-    },
-    {
-      path: '/copyright',
-      name: '专利',
-      component: Copyright
-    },
-    {
-      path: '/enterpriseCertificate',
-      name: '专利',
-      component: EnterpriseCertificate
-    },
-
-    {
       path: '/jurisdiction',
       name: '无权限',
       component: Jurisdiction
@@ -655,7 +630,35 @@ export default new Router({
     {
       path: '/personalCenter',
       name: '个人中心',
-      component: PersonalCenter
-    }
+      redirect: '/personalCenter/myAttendance',
+      component: PersonalCenter,
+      children: [
+        {
+          path: '/personalCenter/myAttendance',
+          name: 'myAttendance',
+          component: () => import('@/components/personalCenter/myAttendance/index.vue')
+        },
+        {
+          path: '/personalCenter/growthProcess',
+          name: 'growProcess',
+          component: () => import('@/components/personalCenter/growthProcess/index.vue')
+        },
+        {
+          path: '/personalCenter/workLog',
+          name: 'workLog',
+          component: () => import('@/components/personalCenter/workLog/index.vue')
+        },
+        {
+          path: '/personalCenter/myKPI',
+          name: 'myKPI',
+          component: () => import('@/components/personalCenter/myKPI/index.vue')
+        },
+      ]
+    },
+    // {
+    //     path: '/offerDetail',
+    //     name: '录用通知书',
+    //     component: OfferDetail
+    // }
   ]
 })
