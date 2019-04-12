@@ -213,7 +213,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="推荐人">
-                        <el-input readonly v-model="staffDetail.recommender_name"></el-input>
+                        <el-input readonly v-model="staffDetail.recommenders.name" @focus="staff_visible = true"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -507,10 +507,13 @@
           household_register: '',
           employment_permit: '',
           recommender: '',
-          recommender_name: '',
+          recommenders: {
+            name: ''
+          },
           marital_status: '',
           level: '',
           home_addr: '',
+          salary: '',
           education_history: [
             {
               start_end_time: '',
@@ -559,7 +562,6 @@
       detailInfo: {
         handler(val) {
           this.currentStaffInfo = val;
-          console.log(val);
           for (var key in this.staffDetail) {
             this.staffDetail[key] = key in val ? val[key] : val.staff && key in val.staff ? val.staff[key] : '';
           }
@@ -568,6 +570,7 @@
             entry_type: '',
             entry_mess: ''
           };
+          this.staffDetail.recommenders = val.staff && val.staff.recommenders || {name: ''};
           this.staffDetail.work_history = val.staff && val.staff.work_history || [];
           this.staffDetail.education_history = val.staff && val.staff.education_history || [];
           if (val.position && val.position.length > 0) {
@@ -653,7 +656,6 @@
           type: 'update',
           ...this.staffDetail
         }).then(res => {
-          console.log(res);
           if (res.code === '20030') {
             this.$LjNotify('success', {
               title: '成功',
@@ -661,6 +663,7 @@
             });
             this.reviseInfo = false;
             this.files_visible = false;
+            this.activeName = 'first';
           } else {
             this.$LjNotify('warning', {
               title: '失败',
@@ -671,8 +674,8 @@
       },
       handleGetStaff(id, name) {
         if (id !== 'close') {
-          this.staffDetail.recommender_name = name;
-          this.staffDetail.recommender = id;
+          this.staffDetail.recommenders.name = name;
+          this.staffDetail.recommender = id[0];
         }
         this.staff_visible = false;
       },
