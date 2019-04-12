@@ -19,7 +19,27 @@
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
-        <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+        <div class="action-bar changeChoose">
+            <div class="action-bar-left">
+                <el-checkbox>全选</el-checkbox>
+                <span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+
+                <span class="action-bar-name" v-show="action_visible">
+                    <span v-for="(item,index) in btn_group"
+                          :key="index"
+                          :class="item.class"
+                          @click="handleClickBtn(item.key,current_row)">
+                        {{item.val}}
+                    </span>
+                </span>
+            </div>
+            <div class="action-bar-right">
+                <span>应收金额（元） <i class="edit">234525</i></span>
+                <span>实收金额（元） <i class="check">54554</i></span>
+                <span>剩余款项（元） <i class="delete">324324</i></span>
+            </div>
+        </div>
+        <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
             <el-table
                     :data="tableData"
                     :height="this.mainListHeight(30) + 'px'"
@@ -27,7 +47,11 @@
                     :row-class-name="tableChooseRow"
                     @cell-click="tableClickRow"
                     header-row-class-name="tableHeader"
+                    @selection-change="selectionChange"
                     style="width: 100%">
+                <el-table-column
+                        type="selection" width="40">
+                </el-table-column>
                 <el-table-column
                         show-overflow-tooltip
                         v-for="item in Object.keys(showData)" :key="item"
@@ -41,29 +65,29 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column
-                        width="100"
-                        v-for="(item,key) in btn_group"
-                        :key="key"
-                        :label="item.val"
-                        align="center">
-                    <template slot-scope="scope">
-                        <el-button size="mini" :type="item.type" @click="handleClickBtn(item.key,scope.row)">
-                            {{ item.val }}
-                        </el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" prop="" align="center">
-                    <template slot-scope="scope">
-                        <el-button v-for="(item,index) in btnData"
-                                   :key="index"
-                                   :type="item.type"
-                                   size="mini"
-                                   @click="clkCall(item.methods,scope.row,scope.$index)">
-                            {{item.label}}
-                        </el-button>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column-->
+                        <!--width="100"-->
+                        <!--v-for="(item,key) in btn_group"-->
+                        <!--:key="key"-->
+                        <!--:label="item.val"-->
+                        <!--align="center">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<el-button size="mini" :type="item.type" @click="handleClickBtn(item.key,scope.row)">-->
+                            <!--{{ item.val }}-->
+                        <!--</el-button>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
+                <!--<el-table-column label="操作" prop="" align="center">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<el-button v-for="(item,index) in btnData"-->
+                                   <!--:key="index"-->
+                                   <!--:type="item.type"-->
+                                   <!--size="mini"-->
+                                   <!--@click="clkCall(item.methods,scope.row,scope.$index)">-->
+                            <!--{{item.label}}-->
+                        <!--</el-button>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
             </el-table>
             <footer class="flex-center bottomPage">
                 <div class="develop flex-center">
@@ -107,7 +131,7 @@
                 <div class="dialog_header">
                     <h3>回滚</h3>
                 </div>
-                <div class="dialog_main">
+                <div class="dialog_main changeChoose">
                     <el-table
                             :data="running_account_record"
                             :row-class-name="tableChooseRow"
@@ -857,6 +881,7 @@
         data() {
             return {
                 gatheringSearchList,
+                action_visible:false,//操作栏作态
                 checkList:[],
                 photo1: {
                     keyName: 'photo1',
@@ -900,8 +925,7 @@
 
                 },
                 btnData: [
-                    {label: "回滚", type: "warning", icon: "el-icon-info", size: "small", methods: "handleProcess"},
-                    {label: "删除", type: "danger", icon: "el-icon-delete", size: "small", methods: "handleDelete"},
+
                 ],
                 current_address: '',
                 current_row: '',
@@ -1025,11 +1049,14 @@
                     // "receTag": "催缴备注"
                 },
                 btn_group: [
-                    {val: '跟进列表', key: 'record', type: 'success',},
-                    {val: '催缴备注', key: 'mark', type: 'danger',},
+                    {val: '跟进列表', key: 'record', type: 'success',class:'edit'},
+                    {val: '催缴备注', key: 'mark', type: 'danger',class:'edit'},
                     // {val: '详情', key: 'detail', type: 'primary',},
-                    {val: '更新登记', key: 'register', type: 'warning',},
-                    {val: '应收入账', key: 'should_receive', type: 'success',}
+                    {val: '更新登记', key: 'register', type: 'warning',class:'edit'},
+                    {val: '应收入账', key: 'should_receive', type: 'success',class:'edit'},
+                    {val: '回滚', key: 'handleProcess', type: 'success',class:'edit'},
+                    {val: '删除', key: 'handleDelete', type: 'success',class:'delete'},
+
                 ],
                 searchData: {},
 
@@ -1099,6 +1126,17 @@
         },
         computed: {},
         methods: {
+            selectionChange(val) {
+                this.multipleSelection = val;
+                if(val.length>0){
+                    this.action_visible = true;
+                    this.current_row = val[0];
+                    console.log(val);
+                }else {
+                    this.action_visible = false;
+                }
+                this.$emit('getMultipleSelection',val)
+            },
             openStaff(){
                this.staffModule = true;
             },
@@ -1214,7 +1252,7 @@
                     console.log(err);
                 })
             },
-            handleDelete(row, index) {
+            handleDelete(row) {
                 this.current_row = row;
                 this.delete_visible = true;
             },
@@ -1229,7 +1267,7 @@
                 console.log(this.ra_ids);
             },
             //显示回滚
-            handleProcess(row, index) {
+            handleProcess(row) {
                 this.running_account_record = [];
                 this.current_row = row;
                 this.recall_visible = true;
@@ -1449,6 +1487,12 @@
                 if (key === 'register') {
                     this.register_size = 'mini';
                     this.register_visible = true;
+                }
+                if (key === 'handleProcess') {
+                    this.handleProcess(row);
+                }
+                if (key === 'handleDelete') {
+                    this.delete_visible = true;
                 }
             },
 
