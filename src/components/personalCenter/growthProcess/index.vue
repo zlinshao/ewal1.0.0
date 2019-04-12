@@ -1,7 +1,7 @@
 <template>
   <div id="growth_process" class="scroll_bar">
     <div class="m-container">
-      <div v-for="item in growthList" class="m-container-item">
+      <div v-for="item in growthList" class="m-container-item" :style="{width:growthList.length<5?`${100/growthList.length}%`:`20%`}">
         <div class="m-container-item-decorate">
           <span class="m-container-item-decorate-circle"></span>
         </div>
@@ -65,7 +65,7 @@
           {
             content:'2019年4月11日离职',
           },
-/*          {
+          {
             content:'2019年5月11日入职',
           },
           {
@@ -77,15 +77,15 @@
           {
             content:'2019年6月11日入职',
           },
-          {
-            content:'2019年7月11日离职',
-          },
-          {
-            content:'2019年6月11日入职',
-          },
-          {
-            content:'2019年7月11日离职',
-          },*/
+          // {
+          //   content:'2019年7月11日离职',
+          // },
+          // {
+          //   content:'2019年6月11日入职',
+          // },
+          // {
+          //   content:'2019年7月11日离职',
+          // },
         ],
       }
     },

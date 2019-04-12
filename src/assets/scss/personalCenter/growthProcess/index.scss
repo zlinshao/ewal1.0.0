@@ -16,11 +16,14 @@
       align-items: center;
 
       flex-wrap: nowrap;
+
+
+
       .m-container-item:nth-child(2n+1) {
         flex: 0 0 auto;
         display: inline-block;
         //float: left;
-        margin: 10px;
+        //margin: 10px;
         width: 15%;
         height: 100%;
         //background-color: #eee;
@@ -64,7 +67,7 @@
         flex: 0 0 auto;
         display: inline-block;
         //float: left;
-        margin: 10px;
+        //margin: 10px;
         width: 15%;
         height: 100%;
         //background-color: #eee;
@@ -105,6 +108,10 @@
           }
         }
       }
+
+
+
+
     }
   }
 }
