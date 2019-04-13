@@ -172,82 +172,90 @@
   .action-bar .check {
     color: #0bb07b; }
 
-#theme_name #balance .balance-detail .balance-detail-title {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between; }
-  #theme_name #balance .balance-detail .balance-detail-title span {
-    display: inline-block;
-    padding: 6px 30px;
-    cursor: pointer; }
-#theme_name #balance .balance-detail .balance-detail-info {
-  width: 100%; }
-  #theme_name #balance .balance-detail .balance-detail-info .tab {
-    padding: 50px; }
-  #theme_name #balance .balance-detail .balance-detail-info .tab8 {
-    width: 90%;
-    margin: 0 auto;
-    padding: 10px;
-    border: 1px solid #f56c6c;
-    border-radius: 5px;
-    background: #FFFFFF;
-    margin-top: 50px; }
-  #theme_name #balance .balance-detail .balance-detail-info .balance-detail-form {
+#theme_name #riskDetails > div .mainList {
+  background: #ffffff; }
+  #theme_name #riskDetails > div .mainList .InternalRegulations-info {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center; }
-    #theme_name #balance .balance-detail .balance-detail-info .balance-detail-form .balance-detail-form-info {
-      width: 30%;
-      height: 360px;
-      padding: 20px;
-      border-radius: 5px;
-      background: #FFFFFF; }
-      #theme_name #balance .balance-detail .balance-detail-info .balance-detail-form .balance-detail-form-info .balance-detail-total {
-        margin-top: 30px; }
-#theme_name #balance .check-box {
-  position: fixed;
-  top: 81px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 240; }
-  #theme_name #balance .check-box .check-box-list {
-    width: 100%;
-    padding: 50px 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; }
-    #theme_name #balance .check-box .check-box-list .check-box-info {
-      width: 18%;
-      height: 440px;
-      padding: 30px; }
-      #theme_name #balance .check-box .check-box-list .check-box-info > div {
-        width: 100%; }
-        #theme_name #balance .check-box .check-box-list .check-box-info > div div {
-          margin-top: 30px; }
-          #theme_name #balance .check-box .check-box-list .check-box-info > div div p {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start; }
-            #theme_name #balance .check-box .check-box-list .check-box-info > div div p span {
+    align-items: center;
+    position: relative; }
+    #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info {
+      width: 100%;
+      height: 100%;
+      background: #F8F8F8;
+      position: relative; }
+      #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div {
+        z-index: 110;
+        height: 540px;
+        width: 90%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding-top: 30px;
+        padding-left: 50px;
+        padding-right: 50px; }
+        #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list {
+          width: 20%;
+          padding: 30px;
+          padding-top: 0; }
+          #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p {
+            margin-top: 6px;
+            margin-bottom: 6px; }
+          #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child {
+            width: 192px;
+            height: 192px;
+            background: #ffffff;
+            position: relative; }
+            #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child:hover {
+              border: 1px solid #CF2E33; }
+            #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span {
+              position: absolute;
+              top: -30px;
+              right: 0px;
               display: inline-block;
-              font-size: 14px; }
-            #theme_name #balance .check-box .check-box-list .check-box-info > div div p span:first-child {
-              width: 40%;
-              text-align: right; }
-            #theme_name #balance .check-box .check-box-list .check-box-info > div div p span:last-child {
-              width: 60%;
-              text-align: justify;
-              padding-left: 20px; }
-          #theme_name #balance .check-box .check-box-list .check-box-info > div div p:last-child {
-            margin-top: 30px;
-            margin-left: 100px; }
+              height: 30px;
+              line-height: 30px;
+              background: #CF2E33;
+              border-radius: 5px; }
+              #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span i {
+                font-size: 14px;
+                font-style: normal;
+                display: inline-block;
+                height: 20px;
+                padding: 0 20px;
+                line-height: 20px;
+                color: #ffffff; }
+                #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span i:hover {
+                  color: #CF2E33; }
+          #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:nth-child(2) {
+            color: #7B7B7B; }
+          #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:last-child {
+            color: #BDBDBD; }
+      #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info .bg-img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 360px;
+        height: 360px;
+        z-index: 11; }
+    #theme_name #riskDetails > div .mainList .InternalRegulations-info .add-icons {
+      position: absolute;
+      top: 30px;
+      right: 130px;
+      width: 30px;
+      height: 30px;
+      background: #CF2E33;
+      color: #ffffff;
+      font-size: 30px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center; }
+      #theme_name #riskDetails > div .mainList .InternalRegulations-info .add-icons span {
+        display: block;
+        line-height: 26px; }
 
 /*# sourceMappingURL=index.css.map */

@@ -1,21 +1,21 @@
 /*
 Error: Invalid GBK character "\xE6"
-        on line 26 of index.scss
+        on line 35 of index.scss
 
-21:         .header_method {
-22:           @include flex('items-bet');
-23:           background-color: transparent;
-24:         }
-25:       }
-26:       // 新增
-27:       .dialog_main {
-28:         .dialog_main_box {
-29:           width: 1530px;
-30:           height: 40px;
-31:           margin: 0 auto 28px;
+30:             font-size: 24px;
+31:             line-height: 20px;
+32:           }
+33:         }
+34:       }
+35:       // 新增
+36:       .dialog_main {
+37:         .el-row {
+38:           margin-right: 0 !important;
+39:         }
+40:         .dialog_main_box {
 
 Backtrace:
-index.scss:26
+index.scss:35
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
@@ -43,4 +43,4 @@ D:/Ruby24-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE6\"\A         on line 26 of index.scss\A \A 21:         .header_method {\A 22:           @include flex('items-bet');\A 23:           background-color: transparent;\A 24:         }\A 25:       }\A 26:       // 新增\A 27:       .dialog_main {\A 28:         .dialog_main_box {\A 29:           width: 1530px;\A 30:           height: 40px;\A 31:           margin: 0 auto 28px;"; }
+  content: "Error: Invalid GBK character \"\xE6\"\A         on line 35 of index.scss\A \A 30:             font-size: 24px;\A 31:             line-height: 20px;\A 32:           }\A 33:         }\A 34:       }\A 35:       // 新增\A 36:       .dialog_main {\A 37:         .el-row {\A 38:           margin-right: 0 !important;\A 39:         }\A 40:         .dialog_main_box {"; }
