@@ -25,8 +25,8 @@
       return {
         activeName: 1,
         active: [
-          {id: 1, val: 'KPI'},
-          {id: 2, val: '工资条'},
+          {id: 1, val: '月度汇总'},
+          {id: 2, val: '考勤确认表'},
         ],
       }
     },
