@@ -52,7 +52,7 @@
 <script>
 import SearchHigh from '../../common/searchHigh.vue'
 import MenuList from '../../common/menuList.vue';
-import { workOrderSearch } from '../../../assets/js/allSearchData.js';
+import { maintenanceSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 
 export default {
@@ -60,7 +60,7 @@ export default {
   components: { SearchHigh, MenuList },
   data () {
     return {
-      workOrderSearch,
+      maintenanceSearch,
       customService,
       visibleStatus: false,
       chooseTab: 1,
@@ -127,11 +127,7 @@ export default {
       chooseRowIds: [],
 
       showSearch: false,
-      searchData: {
-        status: 'workOrder',
-        data: [],
-      },
-
+      searchData: {},
       market_server: globalConfig.market_server,
     }
   },
@@ -257,7 +253,7 @@ export default {
     // 高级搜索
     highSearch () {
       this.showSearch = true;
-      this.searchData = workOrderSearch;
+      this.searchData = maintenanceSearch;
     },
     // 确认搜索
     hiddenModule (val) {

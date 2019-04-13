@@ -200,6 +200,19 @@
         },
         data() {
             return {
+                params: {//查询参数
+                    search: '',
+                    total:'',//总页数
+                    current_page:'',//当前页数
+                    per_page:10,//一页多少条
+                    last_page:'',//最后一页的条数
+                    first_page_url:'',//第一页的URL
+                    last_page_url:'',//最后一页的URL
+                    prev_page_url:'',//上一页的URL
+                    next_page_url:'',//下一页的URL
+                    from:'',//当前页 数据第一项的编号
+                    to:'',//当前页 数据最后一项的编号
+                },
                 showFinMenuList: false,
                 delete_visible: false,
                 edit_visible: false,
@@ -254,11 +267,32 @@
                     {name:'齐达内',depart:'南京二区一组',avatar:""},
                     {name:'齐达内',depart:'南京二区一组',avatar:""},
                 ],
+                dataLists:[],
+                count:0,
             }
+        },
+        mounted(){
+          this.getBirthdayLists();
         },
         methods: {
             changeTabs(id) {
                 this.chooseTab = id;
+            },
+            getBirthdayLists(){
+                this.$http.get(globalConfig.newMedia_sever+'/api/humanity/birthday',this.params).then(res => {
+                    if(res.status===200){
+                        this.dataLists = res.data.data.sort(
+                            function (a,b) {
+                                return a.id-b.id
+                            }
+                        );
+                        this.count = res.data.total;
+                        console.log(this.dataLists);
+
+
+
+                    }
+                })
             },
 
         }

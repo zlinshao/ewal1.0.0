@@ -17,6 +17,7 @@
                 <div  @click.stop="add" v-show="chooseTab===3"><b>添加视频</b></div>
                 <div  @click.stop="add" v-show="chooseTab===5"><b>添加讲师</b></div>
                 <div  @click.stop="add" v-show="chooseTab===6"><b>添加行业动态</b></div>
+                <div  @click.stop="add" v-show="chooseTab===7"><b>添加实践问题</b></div>
             </div>
         </div>
         <div class="mainList">
