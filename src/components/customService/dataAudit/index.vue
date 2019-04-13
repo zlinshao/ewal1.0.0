@@ -51,13 +51,13 @@
           <h3>合同到期</h3>
           <div class="header_right">
             <span>{{contractDetail.contract_number}}</span>
-            <el-button type='danger' size='mini' @click='' style='margin-left:10px'>作废重签</el-button>
+            <el-button type='danger' size='mini' @click='handleRewrite' style='margin-left:10px'>作废重签</el-button>
           </div>
         </div>
         <div class="dialog_main">
           <!---房屋信息-->
-          <p class='main_tit'>房屋信息</p>
-          <div class="house_info">
+          <p class='main_tit noMarginTop'>房屋信息</p>
+          <div class="common_info">
             <el-form label-width="120px">
               <el-row :gutter="10">
                 <el-col :span="8">
@@ -90,7 +90,7 @@
           </div>
           <!--合同信息-->
           <p class='main_tit'>合同信息</p>
-          <div class="contract_info">
+          <div class="common_info">
             <el-form label-width="120px">
               <el-row :gutter="10">
                 <el-col :span="8">
@@ -228,7 +228,7 @@
           </div>
           <!--签约人及产权人信息-->
           <p class='main_tit'>签约人及产权人信息</p>
-          <div class="person_info">
+          <div class="common_info">
             <el-form label-width="120px">
               <el-row :gutter="10">
                 <el-col :span="1">
@@ -272,16 +272,52 @@
             </el-form>
           </div>
 
-          <p class='main_tit'>收款账号</p>
-          <div class="collection_info">
-            <div class="flex-center" v-for='i in 3' :key='i'>
-              <div clas="flex_center_tit">银行证件</div>
-              <div class='flex_center_content'>
-                <img data-caption="图片查看器">
-                <!-- <img v-for="tmp in item" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri" :src="tmp.uri"
-                  style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri"> -->
+          <p class='main_tit' v-if="chooseTab === 1">收款账号</p>
+          <div class="common_info">
+            <el-form label-width="160px">
+              <el-row :gutter="10">
+                <el-col :span="8">
+                  <el-form-item label="收款人">
+                    <span>{{ contractDetail.contractor.name}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="与房东关系">
+                    <span>{{ contractDetail.contractor.contact }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="账号">
+                    <span>{{ contractDetail.contractor.id_card }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="开户行">
+                    <span>{{ contractDetail.property_person.name}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="支行">
+                    <span>{{ contractDetail.property_person.contact}}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </div>
+
+          <p class='main_tit' v-if="chooseTab === 1">附件信息</p>
+          <!--收房 -->
+          <div class="common_info collection_info" v-if="chooseTab === 1">
+            <div v-if="contractDetail.album">
+              <div class="flex-center" v-for="(item,index) in contractDetail.album" style="min-height: 80px">
+                <div style="width: 10%;text-align: right;padding-right: 15px">{{ other_pictures[index] }}</div>
+                <!-- <div style="width: 90%;text-align: left">
+                <img v-for="tmp in item" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri" :src="tmp.uri"
+                  style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+              </div> -->
               </div>
             </div>
+            <div v-else>暂无资料</div>
             <p class='collection_info_warning'>(包括委托书/收条/授权委托书/承诺书)</p>
           </div>
 
@@ -289,10 +325,8 @@
           <div class='data_info'>
             <div class="flex-center">
               <div class="flex_center_tit">发送对象</div>
-              <div class="flex_center_content flex_center_content1">
+              <div class="flex_center_content flex_center_content1 borderNone">
                 <el-input @focus="organSearch" readonly v-model="postman" :placeholder="contractDetail.contractor.name + ',' + contractDetail.property_person.name"></el-input>
-
-                <!-- <el-input v-model="contractDetail.postman" placeholder="默认为开单人,负责人"></el-input> -->
               </div>
             </div>
 
@@ -346,6 +380,26 @@
         <div class="dialog_footer">
           <el-button type="danger" size="small">确定</el-button>
           <el-button type="info">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!-- 作废重签 -->
+    <lj-dialog :visible="rewrite_visible" :size="{width: 400 + 'px',height: 300 + 'px'}" @close="handleCancelRewrite">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>作废重签</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form label-width="80px">
+            <el-form-item label="备注">
+              <el-input v-model="rewrite_note" type="textarea"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="mini" @click="handleSubmitRewrite">确定</el-button>
+          <el-button type="info" size="mini" @click="handleCancelRewrite">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -494,7 +548,10 @@ export default {
         person: []
       },
       //资料不齐记录
-      dataRecord_visible: false
+      dataRecord_visible: false,
+      // 合同作废重签
+      rewrite_visible: false,
+      rewrite_note: '',
     }
   },
   created () {
@@ -591,7 +648,35 @@ export default {
     },
     handleCloseRecord () {
       this.dataRecord_visible = false;
-    }
+    },
+    // 合同作废
+    handleRewrite () {
+      this.rewrite_visible = true
+    },
+    // 合同作废
+    handleSubmitRewrite () {
+      this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
+        note: this.rewrite_note
+      }).then(res => {
+        if (res.code === 200) {
+          this.$LjNotify('success', {
+            title: '成功',
+            message: res.message
+          });
+          this.handleCancelRewrite();
+        } else {
+          this.$LjNotify('warning', {
+            title: '失败',
+            message: res.message
+          })
+        }
+      })
+    },
+    // 取消合同作废
+    handleCancelRewrite () {
+      this.rewrite_note = '';
+      this.rewrite_visible = false
+    },
   }
 }
 </script>

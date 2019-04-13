@@ -1,22 +1,28 @@
 @import '../../common.scss';
+
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/customService/dataAudit/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
 #theme_name {
   #dataAudit {
     .dialog_main {
       .main_tit {
         text-align: left;
         font-size: 14px;
+        margin: 20px 0 8px;
       }
-      .house_info,
-      .contract_info,
-      .person_info,
-      .collection_info,
-      .data_info {
+      .noMarginTop {
+        margin-top: 0;
+      }
+      .common_info {
         padding: 10px 20px;
-        margin: 10px 0;
         .el-form-item {
           margin-bottom: 0;
           .el-form-item__label {
             font-size: 14px;
+            white-space: nowrap;
           }
           .el-form-item__content {
             font-size: 14px;
@@ -26,6 +32,7 @@
         .person_tit {
           .el-form-item__label {
             text-align: left;
+            white-space: nowrap;
           }
         }
         .flex-center {
@@ -52,18 +59,24 @@
         .collection_info_warning {
           font-size: 14px;
           position: absolute;
-          bottom: 50px;
+          bottom: 10px;
           right: 30px;
         }
       }
       .data_info {
         .flex-center {
           @include flex('justify-start');
+          margin-bottom: 20px;
+          .flex_center_tit {
+            font-size: 14px;
+            margin-right: 30px;
+          }
           .flex_center_content1 {
             width: 260px;
             height: 40px;
           }
           .flex_center_content2 {
+            flex: 1;
             height: 135px;
           }
         }
@@ -89,7 +102,6 @@
                 display: inline-block;
                 width: 14px;
                 height: 14px;
-                border: 1px solid red;
               }
               span {
                 font-size: 14px;
@@ -121,8 +133,6 @@
           .circle {
             width: 15px;
             height: 15px;
-            border: 1px solid red;
-            border-radius: 50%;
           }
         }
         .detail_dialog_right {
@@ -167,10 +177,7 @@
       .main_tit {
         color: #686874;
       }
-      .house_info,
-      .contract_info,
-      .person_info,
-      .collection_info {
+      .common_info {
         background-color: #fff;
         .el-form-item {
           .el-form-item__label {
@@ -180,8 +187,6 @@
             color: #686874;
           }
         }
-      }
-      .collection_info {
         .collection_info_warning {
           color: #cf2e33;
         }
@@ -196,6 +201,9 @@
         .flex-center2 {
           .buttons {
             .buttons_left {
+              .icon {
+                @include confirmImg('fasong.png', 'theme1');
+              }
               span {
                 color: #cf2e33;
               }
@@ -206,6 +214,9 @@
     }
     .dataRecord_dialog_main {
       background-color: #fff;
+      .circle {
+        @include confirmImg('biaoji.png', 'theme1');
+      }
     }
   }
 }
