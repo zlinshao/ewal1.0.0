@@ -372,6 +372,13 @@
       handleChooseItem(item,module) {
         switch (module) {
           case 'city':
+            if (item.code === this.current_choose) {
+              this.current_choose = '';
+              this.village_params.city = [];
+              this.village_params.province = '';
+              this.address_filter[0].val = '选城市';
+              return false;
+            }
             //清空area
             this.address_filter[1].val = '选区域';
             this.village_params.area = '';
@@ -387,9 +394,17 @@
             this.current_choose = item.code;
             break;
           case 'area':
+            if (item.area_id === this.current_choose) {
+              this.address_filter[1].val = '选区域';
+              this.village_params.area = '';
+              this.current_choose = '';
+              this.region_list = [];
+              return false;
+            }
             this.address_filter[1].val = '';
             this.current_choose_region = '';
             this.village_params.region = '';
+
             this.current_choose = item.area_id;
             this.village_params.area = item.area_id;
             this.address_filter[1].val += item.area_name + ',';
@@ -397,12 +412,29 @@
             this.getAreaNextList();
             break;
           case 'region':
+            if (item.region_id === this.current_choose_region) {
+              this.current_choose_region = '';
+              this.village_params.region = '';
+              this.address_filter[1].val = this.address_filter[1].val.split('-')[0];
+              return false;
+            }
             this.current_choose_region = item.region_id;
             this.village_params.region = item.region_id;
             this.address_filter[1].val = this.address_filter[1].val.split('-')[0];
             this.address_filter[1].val += '-' + item.region_name;
             break;
           case 'type' :
+            if (item.id === this.current_choose_type) {
+              this.current_choose_type = '';
+              this.this.address_filter[2].val = '';
+              if (item.id === 1 || item.id === 2) {
+                this.village_params.is_share = '';
+              }
+              if (item.id === 3 || item.id === 4) {
+                this.village_params.allocation = '';
+              }
+              return false;
+            }
             this.village_params.house_type = '';
             this.current_choose_house = '';
 
@@ -416,6 +448,12 @@
             this.current_choose_type = item.id;
             break;
           case 'house' :
+            if (item.id === this.current_choose_house) {
+              this.current_choose_house = '';
+              this.address_filter[2].val = this.address_filter[2].val.split('-')[0];
+              this.village_params.house_type = '';
+              return false;
+            }
             this.address_filter[2].val = this.address_filter[2].val.split('-')[0];
             this.address_filter[2].val += '-' + item.val;
             this.village_params.house_type = item.id;

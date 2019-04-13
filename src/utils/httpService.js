@@ -121,7 +121,9 @@ class Axios {
   static getOrganization(org) {
     return new Promise((resolve, reject) => {
       this.get(url + 'organization/organization', {
-        parent_id: org
+        parent_id: org,
+        page: 1,
+        limit: 999
       }).then(res => {
         resolve(res);
       });

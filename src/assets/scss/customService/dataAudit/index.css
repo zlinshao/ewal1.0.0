@@ -140,7 +140,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +159,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,8 +168,177 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
+
+#theme_name #dataAudit .dialog_main .main_tit {
+  text-align: left;
+  font-size: 14px;
+  margin: 20px 0 8px; }
+#theme_name #dataAudit .dialog_main .noMarginTop {
+  margin-top: 0; }
+#theme_name #dataAudit .dialog_main .common_info {
+  padding: 10px 20px; }
+  #theme_name #dataAudit .dialog_main .common_info .el-form-item {
+    margin-bottom: 0; }
+    #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__label {
+      font-size: 14px;
+      white-space: nowrap; }
+    #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content {
+      font-size: 14px;
+      text-align: left; }
+  #theme_name #dataAudit .dialog_main .common_info .person_tit .el-form-item__label {
+    text-align: left;
+    white-space: nowrap; }
+  #theme_name #dataAudit .dialog_main .common_info .flex-center {
+    margin-bottom: 20px; }
+    #theme_name #dataAudit .dialog_main .common_info .flex-center .flex_center_tit {
+      width: 10%;
+      text-align: right;
+      padding-right: 15px; }
+    #theme_name #dataAudit .dialog_main .common_info .flex-center .flex_center_content {
+      width: 90%;
+      height: 60px;
+      text-align: left; }
+      #theme_name #dataAudit .dialog_main .common_info .flex-center .flex_center_content img {
+        width: 60px;
+        height: 60px;
+        margin-right: 15px; }
+#theme_name #dataAudit .dialog_main .collection_info {
+  position: relative; }
+  #theme_name #dataAudit .dialog_main .collection_info .collection_info_warning {
+    font-size: 14px;
+    position: absolute;
+    bottom: 10px;
+    right: 30px; }
+#theme_name #dataAudit .dialog_main .data_info .flex-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start;
+  margin-bottom: 20px; }
+  #theme_name #dataAudit .dialog_main .data_info .flex-center .flex_center_tit {
+    font-size: 14px;
+    margin-right: 30px; }
+  #theme_name #dataAudit .dialog_main .data_info .flex-center .flex_center_content1 {
+    width: 260px;
+    height: 40px; }
+  #theme_name #dataAudit .dialog_main .data_info .flex-center .flex_center_content2 {
+    flex: 1;
+    height: 135px; }
+#theme_name #dataAudit .dialog_main .data_info .flex-center2 {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start;
+  position: relative; }
+  #theme_name #dataAudit .dialog_main .data_info .flex-center2 .flex_center_tit {
+    padding-top: 10px; }
+  #theme_name #dataAudit .dialog_main .data_info .flex-center2 .el-textarea__inner {
+    border: none;
+    overflow: auto; }
+    #theme_name #dataAudit .dialog_main .data_info .flex-center2 .el-textarea__inner::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      border-radius: 10px; }
+    #theme_name #dataAudit .dialog_main .data_info .flex-center2 .el-textarea__inner::-webkit-scrollbar-button {
+      height: 10px;
+      background-color: #e4e7ed;
+      border-radius: 10px; }
+    #theme_name #dataAudit .dialog_main .data_info .flex-center2 .el-textarea__inner::-webkit-scrollbar-track {
+      background: #e4e7ed; }
+    #theme_name #dataAudit .dialog_main .data_info .flex-center2 .el-textarea__inner::-webkit-scrollbar-thumb {
+      background: #747474;
+      border-radius: 4px; }
+  #theme_name #dataAudit .dialog_main .data_info .flex-center2 .buttons {
+    width: 180px;
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between; }
+    #theme_name #dataAudit .dialog_main .data_info .flex-center2 .buttons .buttons_left {
+      display: flex;
+      display: -webkit-flex;
+      align-items: center; }
+      #theme_name #dataAudit .dialog_main .data_info .flex-center2 .buttons .buttons_left .icon {
+        display: inline-block;
+        width: 14px;
+        height: 14px; }
+      #theme_name #dataAudit .dialog_main .data_info .flex-center2 .buttons .buttons_left span {
+        font-size: 14px;
+        margin-left: 6px; }
+#theme_name #dataAudit .dataRecord_dialog_main {
+  padding-bottom: 50px; }
+  #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    font-family: 'Microsoft Yahei';
+    padding-top: 50px; }
+    #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell .detail_dialog_left {
+      flex: 1;
+      font-size: 14px;
+      text-align: right; }
+      #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell .detail_dialog_left p + p {
+        margin-top: 10px; }
+    #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell .detail_dialog_center {
+      height: 100%;
+      margin: 0 80px; }
+      #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell .detail_dialog_center .circle {
+        width: 15px;
+        height: 15px; }
+    #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell .detail_dialog_right {
+      flex: 1;
+      text-align: left;
+      font-size: 10px; }
+      #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell .detail_dialog_right p {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden; }
+      #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell .detail_dialog_right p + p {
+        margin-top: 10px; }
+      #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell .detail_dialog_right .detail_dialog_rato {
+        margin-left: 20px;
+        display: inline-block; }
+        #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell .detail_dialog_right .detail_dialog_rato .el-rate__icon {
+          font-size: 12px; }
+  #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell + .dataRecord_cell {
+    position: relative; }
+    #theme_name #dataAudit .dataRecord_dialog_main .dataRecord_cell + .dataRecord_cell:before {
+      content: '';
+      width: 1px;
+      height: 60%;
+      background-color: #cf2e33;
+      position: absolute;
+      top: -10%; }
+
+#theme_name.theme1 #dataAudit .dialog_main .main_tit {
+  color: #686874; }
+#theme_name.theme1 #dataAudit .dialog_main .common_info {
+  background-color: #fff; }
+  #theme_name.theme1 #dataAudit .dialog_main .common_info .el-form-item .el-form-item__label {
+    color: #b0b0b0; }
+  #theme_name.theme1 #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content {
+    color: #686874; }
+  #theme_name.theme1 #dataAudit .dialog_main .common_info .collection_info_warning {
+    color: #cf2e33; }
+#theme_name.theme1 #dataAudit .dialog_main .data_info .flex_center_tit {
+  text-align: left; }
+#theme_name.theme1 #dataAudit .dialog_main .data_info .flex_center_content {
+  background-color: #fff; }
+#theme_name.theme1 #dataAudit .dialog_main .data_info .flex-center2 .buttons .buttons_left .icon {
+  background: url("../../../assets/image/customService/dataAudit/theme1/fasong.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #dataAudit .dialog_main .data_info .flex-center2 .buttons .buttons_left span {
+  color: #cf2e33; }
+#theme_name.theme1 #dataAudit .dataRecord_dialog_main {
+  background-color: #fff; }
+  #theme_name.theme1 #dataAudit .dataRecord_dialog_main .circle {
+    background: url("../../../assets/image/customService/dataAudit/theme1/biaoji.png") no-repeat scroll center;
+    background-size: 100% 100%; }
 
 /*# sourceMappingURL=index.css.map */
