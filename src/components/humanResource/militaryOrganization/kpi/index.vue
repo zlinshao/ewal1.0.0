@@ -2,7 +2,7 @@
   <div id="kpi">
     <div class="kpiTable">
       <div class="table">
-        <el-table :data="weekData" v-if="choosePeriod===0">
+        <el-table :data="weekData" v-if="choosePeriod===0" highlight-current-row header-row-class-name="tableHeader">
           <el-table-column label="姓名" prop="name" align="center"></el-table-column>
           <el-table-column label="部门" prop="department" align="center"></el-table-column>
           <el-table-column label="星期一" prop="monday" align="center"></el-table-column>
@@ -13,7 +13,7 @@
           <el-table-column label="星期六" prop="saturday" align="center"></el-table-column>
           <el-table-column label="星期日" prop="sunday" align="center"></el-table-column>
         </el-table >
-        <el-table :data="monthData" v-if="choosePeriod===1">
+        <el-table :data="monthData" v-if="choosePeriod===1" highlight-current-row header-row-class-name="tableHeader">
           <el-table-column label="姓名" prop="name" align="center"></el-table-column>
           <el-table-column label="部门" prop="department" align="center"></el-table-column>
           <el-table-column label="1月"  align="center"></el-table-column>
@@ -30,28 +30,28 @@
           <el-table-column label="12月" align="center"></el-table-column>
           <el-table-column label="年平均" align="center"></el-table-column>
         </el-table>
-        <el-table  :data="seasonData" v-if="choosePeriod===2">
+        <el-table  :data="seasonData" v-if="choosePeriod===2" highlight-current-row header-row-class-name="tableHeader">
           <el-table-column label="姓名" prop="name" align="center"></el-table-column>
           <el-table-column label="部门" prop="department" align="center"></el-table-column>
-          <el-table-column label="第一季度" prop="monday" align="right"></el-table-column>
-          <el-table-column label="第二季度" prop="tuesday" align="right"></el-table-column>
-          <el-table-column label="第三季度" prop="monday" align="right"></el-table-column>
-          <el-table-column label="第四季度" prop="monday" align="right"></el-table-column>
+          <el-table-column label="第一季度" align="right"></el-table-column>
+          <el-table-column label="第二季度" align="right"></el-table-column>
+          <el-table-column label="第三季度" align="right"></el-table-column>
+          <el-table-column label="第四季度" align="right"></el-table-column>
         </el-table>
-        <el-table  :data="halfyearData" v-if="choosePeriod===3">
+        <el-table  :data="halfyearData" v-if="choosePeriod===3" highlight-current-row header-row-class-name="tableHeader">
           <el-table-column label="姓名" prop="name" align="center" width="200px"></el-table-column>
           <el-table-column label="部门" prop="department" align="center" width="200px"></el-table-column>
-          <el-table-column label="上半年" prop="monday" align="center" width="400px"></el-table-column>
-          <el-table-column label="下半年" prop="tuesday" align="center" width="400px"></el-table-column>
+          <el-table-column label="上半年"  align="center" width="400px"></el-table-column>
+          <el-table-column label="下半年"  align="center" width="400px"></el-table-column>
         </el-table>
-        <el-table  :data="yearData" v-if="choosePeriod===4">
+        <el-table  :data="yearData" v-if="choosePeriod===4" highlight-current-row header-row-class-name="tableHeader">
           <el-table-column label="姓名" prop="name" align="center" width="200px"></el-table-column>
           <el-table-column label="部门" prop="department" align="center" width="200px"></el-table-column>
-          <el-table-column label="年度考核成绩" prop="sunday" align="center" width="700px"></el-table-column>
+          <el-table-column label="年度考核成绩" align="center" width="700px"></el-table-column>
         </el-table>
       </div>
       <div class="periodButton">
-        <el-button v-for="(item, index) in period" type="danger" :key="index" size="mini" @click="handleTable(index)">{{item.title}}</el-button>
+        <el-button v-for="(item, index) in period"  :key="index" @click="handleTable(index)" :class="choosePeriod==index ? 'chooseButton' : 'changeButton'">{{item.title}}</el-button>
       </div>
     </div>
     <footer class="flex-center bottomPage">
@@ -59,7 +59,7 @@
         <i class="el-icon-d-arrow-right"></i>
       </div>
       <div class="page">
-        <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10" @current-change="handleChangePage"></el-pagination>
+        <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
       </div>
     </footer>
   </div>
@@ -114,7 +114,10 @@
           }
         ],
         monthData: [
-          
+          {
+            name:"张艺兴",
+            department: "苏州吴江组",
+          },
         ],
         seasonData: [
 
@@ -159,13 +162,41 @@
             margin-right: 148px;
           }
           .periodButton{
-            width: 55px;
             height: 165px;
             margin-top: 67px;
             display: flex;  
             flex-direction: column;
             justify-content: space-between;
             align-items: flex-end;
+            .changeButton{
+              width: 65px;
+              height:25px;
+              padding-top: 5px;
+              display: flex;
+              justify-content: center;
+              background:rgba(223,223,223,1);
+              font-family: MicrosoftYaHei;
+              font-size:9px;
+              line-height:12px;
+              border-radius: 5px 0px 0px 5px;
+              &:hover{
+                background-color: rgba(207,46,51,1);
+                color:white;
+              }
+            }
+            .chooseButton{
+              width: 65px;
+              height:25px;
+              padding-top: 5px;
+              display: flex;
+              justify-content: center;
+              background-color: rgba(207,46,51,1);
+              color:white;
+              font-family: MicrosoftYaHei;
+              font-size:9px;
+              line-height:12px;
+              border-radius: 5px 0px 0px 5px;
+            }
           }
         }
     }

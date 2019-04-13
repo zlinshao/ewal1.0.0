@@ -52,6 +52,9 @@
       <interview-dialog></interview-dialog>
       <!--内务库房相关-->
       <repository-dialog></repository-dialog>
+      <!--考勤核对相关-->
+      <attence-dialog></attence-dialog>
+      
     </div>
   </div>
 
@@ -60,12 +63,13 @@
 <script>
   import interviewDialog from './components/humanResource/interviewDialog';
   import repositoryDialog from './components/humanResource/repositoryDialog';
-
+  import attenceDialog from './components/humanResource/attenceDialog';
   export default {
-    name: "index",
+    name: "todoList",
     components: {
       interviewDialog,
       repositoryDialog,
+      attenceDialog,
     },
     computed: {
       todo_list_visible() {

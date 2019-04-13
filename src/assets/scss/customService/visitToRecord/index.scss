@@ -133,8 +133,15 @@
           @include scroll;
           flex-wrap: wrap;
           @include flex('items-start');
+          .detail_col {
+            margin-top: 60px;
+            .detail_col_box {
+              height: 250px;
+              overflow-y: scroll;
+              @include scroll;
+            }
+          }
           .el-col {
-            padding-top: 60px;
             h5 {
               font-size: 14px;
               font-family: 'jingDianXingShu';
@@ -163,6 +170,16 @@
                   height: 50px;
                 }
               }
+              .content_album {
+                @include flex('space-column');
+                .imgs_box {
+                  @include flex('space-column');
+                  margin-bottom: 5px;
+                  div {
+                    flex-wrap: wrap;
+                  }
+                }
+              }
             }
           }
           .el-border {
@@ -173,7 +190,7 @@
               height: 285px;
               position: absolute;
               right: 0;
-              top: 67px;
+              top: 10px;
             }
             .el-col {
               padding-top: 0;

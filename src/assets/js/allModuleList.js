@@ -86,7 +86,7 @@ export const customService = {
     },
     {
       title: '维修保洁',
-      url: ''
+      url: '/maintenance'
     },
     {
       title: '客户管理',
@@ -265,103 +265,102 @@ export const intellectualPropertyProtection = {
       title: '商标'
     }
   ]
-};
+}
 
 //风险控制
 export const riskManagement = {
-    type: 'riskManagement',
-    data: [
-        {
-            name:'集团核心指标',
-            id:1,
-            url:'groupCoreIndicators'
-        },
-        {
-            name:'企业综合预警',
-            id:2,
-            url:'comprehensiveEarlyWarning'
-        },
-        {
-            name:'重大战略监测',
-            id:3,
-            url:'majorStrategicMonitoring'
-        }
-    ],
-    childrenData:[
-        {
-            name:'市场风险',
-            id:1,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'运营风险',
-            id:2,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'流动性风险',
-            id:3,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'合规风险',
-            id:4,
-            url:'riskManagementCommon'
-        }
-    ],
-    childrenData2:[
-        {
-            name:'资产获利能力',
-            id:1,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'偿债能力',
-            id:2,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'经济效率',
-            id:3,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'企业发展管理发展潜力',
-            id:4,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'财务弹性',
-            id:5,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'举债经营的财务风险',
-            id:6,
-            url:'riskManagementCommon'
-        }
-    ],
-    childrenData3:[
-        {
-            name:'市场经济环境预判',
-            id:1,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'项目规划及前景',
-            id:2,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'跟踪迭代',
-            id:3,
-            url:'riskManagementCommon'
-        },
-        {
-            name:'财务核算',
-            id:4,
-            url:'riskManagementCommon'
-        }
-    ],
-};
-
+  type: 'riskManagement',
+  data: [
+    {
+      name: '集团核心指标',
+      id: 1,
+      url: 'groupCoreIndicators'
+    },
+    {
+      name: '企业综合预警',
+      id: 2,
+      url: 'comprehensiveEarlyWarning'
+    },
+    {
+      name: '重大战略监测',
+      id: 3,
+      url: 'majorStrategicMonitoring'
+    }
+  ],
+  childrenData: [
+    {
+      name: '市场风险',
+      id: 1,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '运营风险',
+      id: 2,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '流动性风险',
+      id: 3,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '合规风险',
+      id: 4,
+      url: 'riskManagementCommon'
+    }
+  ],
+  childrenData2: [
+    {
+      name: '资产获利能力',
+      id: 1,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '偿债能力',
+      id: 2,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '经济效率',
+      id: 3,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '企业发展管理发展潜力',
+      id: 4,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '财务弹性',
+      id: 5,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '举债经营的财务风险',
+      id: 6,
+      url: 'riskManagementCommon'
+    }
+  ],
+  childrenData3: [
+    {
+      name: '市场经济环境预判',
+      id: 1,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '项目规划及前景',
+      id: 2,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '跟踪迭代',
+      id: 3,
+      url: 'riskManagementCommon'
+    },
+    {
+      name: '财务核算',
+      id: 4,
+      url: 'riskManagementCommon'
+    }
+  ]
+}
