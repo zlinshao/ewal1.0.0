@@ -9,10 +9,9 @@
           </p>
           <h1>合同管理</h1>
           <h2 class="items-center">
-              <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                    :class="{'chooseTab': chooseTab === item.id}">
-                {{item.title}}<i></i>
-              </span>
+            <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column" :class="{'chooseTab': chooseTab === item.id}">
+              {{item.title}}<i></i>
+            </span>
           </h2>
         </div>
         <div class="items-center listTopRight">
@@ -22,11 +21,7 @@
       <!--表格中部-->
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}" @click="handleCloseControl">
 
-        <el-table
-          height="780px"
-          :data="contractList"
-          @row-dblclick="handleGetDetail"
-        >
+        <el-table height="780px" :data="contractList" @row-dblclick="handleGetDetail">
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
           <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
@@ -53,7 +48,8 @@
               <div>
                 <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
                 <div class="control_container flex" :class="{'show_control_container': show_control === scope.row.contract_id}">
-                  <span v-for="tmp in choose_list" :key="tmp.id" :class="{'choose': current_choose_control === tmp.id }" @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
+                  <span v-for="tmp in choose_list" :key="tmp.id" :class="{'choose': current_choose_control === tmp.id }"
+                    @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
                 </div>
                 <div class="writingMode point_btn" @click="handleShowControl(scope.row)">···</div>
               </div>
@@ -66,13 +62,8 @@
             <i class="el-icon-d-arrow-right"></i>
           </div>
           <div class="page">
-            <el-pagination
-              :total="contractCount"
-              layout="total,jumper,prev,pager,next"
-              :current-page="params.page"
-              :page-size="params.limit"
-              @current-change="handleChangePage"
-            >
+            <el-pagination :total="contractCount" layout="total,jumper,prev,pager,next" :current-page="params.page"
+              :page-size="params.limit" @current-change="handleChangePage">
             </el-pagination>
           </div>
         </footer>
@@ -83,11 +74,7 @@
     <MarketMenuList :show-market="show_market" :show-shadow="show_shadow" @close="handleCloseMenu"></MarketMenuList>
 
     <!--查看回访记录-->
-    <LjDialog
-      :visible="backInfo_visible"
-      :size="{width: 600 + 'px',height: 500 + 'px'}"
-      @close="handleCloseLookBackInfo"
-    >
+    <LjDialog :visible="backInfo_visible" :size="{width: 600 + 'px',height: 500 + 'px'}" @close="handleCloseLookBackInfo">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{ currentRow.house_name }}</h3>
@@ -126,11 +113,7 @@
     </LjDialog>
 
     <!--资料补齐-->
-    <lj-dialog
-      :visible="data_polishing_visible"
-      :size="{width: 550 + 'px',height: 600 + 'px'}"
-      @close="handleCancelPolishing"
-    >
+    <lj-dialog :visible="data_polishing_visible" :size="{width: 550 + 'px',height: 600 + 'px'}" @close="handleCancelPolishing">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>补齐资料</h3>
@@ -156,11 +139,7 @@
     </lj-dialog>
 
     <!--合同详情-->
-    <lj-dialog
-      :visible="contract_detail_visible"
-      :size="{width: 1200 + 'px',height: 800 + 'px'}"
-      @close="handleCloseDetail"
-    >
+    <lj-dialog :visible="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>合同详情</h3>
@@ -364,7 +343,8 @@
               <div class="flex-center" v-for="(item,index) in contractDetail.album" style="min-height: 80px">
                 <div style="width: 10%;text-align: right;padding-right: 15px">{{ other_pictures[index] }}</div>
                 <div style="width: 90%;text-align: left">
-                  <img v-for="tmp in item" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+                  <img v-for="tmp in item" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri" :src="tmp.uri"
+                    style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
                 </div>
               </div>
             </div>
@@ -388,11 +368,7 @@
     </lj-dialog>
 
     <!--作废重签-->
-    <lj-dialog
-      :visible="rewrite_visible"
-      :size="{width: 400 + 'px',height: 300 + 'px'}"
-      @close="handleCancelRewrite"
-    >
+    <lj-dialog :visible="rewrite_visible" :size="{width: 400 + 'px',height: 300 + 'px'}" @close="handleCancelRewrite">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>作废重签</h3>
@@ -412,11 +388,7 @@
     </lj-dialog>
 
     <!--添加标记-->
-    <lj-dialog
-      :visible="add_mark_visible"
-      :size="{width: 450 + 'px',height: 500 + 'px'}"
-      @close="handleCancelMark"
-    >
+    <lj-dialog :visible="add_mark_visible" :size="{width: 450 + 'px',height: 500 + 'px'}" @close="handleCancelMark">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>添加标记</h3>
@@ -425,20 +397,15 @@
           <el-form :model="mark_form" label-width="80px">
             <el-form-item label="标记类型">
               <div class="items-center">
-                <p class="radioSelection" @click="chooseMarkRadio(item)"
-                   :class="{'highChoose': mark_form.tag_status === item.id}"
-                   v-for="item in mark_status">
+                <p class="radioSelection" @click="chooseMarkRadio(item)" :class="{'highChoose': mark_form.tag_status === item.id}"
+                  v-for="item in mark_status">
                   {{ item.val }}
                 </p>
               </div>
             </el-form-item>
             <el-form-item label="预约时间">
-              <el-date-picker
-                value-format="yyyy-MM-dd HH:mm:ss"
-                v-model="mark_form.appointment_time"
-                type="datetime"
-                placeholder="请选择"
-              ></el-date-picker>
+              <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="mark_form.appointment_time" type="datetime"
+                placeholder="请选择"></el-date-picker>
             </el-form-item>
             <el-form-item label="备注信息">
               <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="6"></el-input>
@@ -456,11 +423,7 @@
     </lj-dialog>
 
     <!--审核详情-->
-    <lj-dialog
-      :visible="check_visible"
-      :size="{width: 600 + 'px',height: 500 + 'px'}"
-      @close="check_visible = false"
-    >
+    <lj-dialog :visible="check_visible" :size="{width: 600 + 'px',height: 500 + 'px'}" @close="check_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">审核详情</div>
         <div class="dialog_main">
@@ -493,494 +456,494 @@
 </template>
 
 <script>
-  import SearchHigh from '../../common/searchHigh.vue';
-  import MarketMenuList from '../components/market-menu-list.vue';
-  import LjDialog from '../../common/lj-dialog.vue';
-  import Upload from '../../common/upload.vue';
+import SearchHigh from '../../common/searchHigh.vue';
+import MarketMenuList from '../components/market-menu-list.vue';
+import LjDialog from '../../common/lj-dialog.vue';
+import Upload from '../../common/upload.vue';
 
-  export default {
-    name: "index",
-    components: { SearchHigh,MarketMenuList,LjDialog,Upload},
-    data() {
-      return {
-        //附件信息
-        other_pictures: {
+export default {
+  name: "index",
+  components: { SearchHigh, MarketMenuList, LjDialog, Upload },
+  data () {
+    return {
+      //附件信息
+      other_pictures: {
+        identity_photo: '证件照片',
+        bank_photo: '银行卡照片',
+        photo: '合同照片',
+        water_photo: '水表照片',
+        electricity_photo: '电表照片',
+        electricity_card_photo: '电卡照片',
+        gas_photo: '气表照片',
+        gas_card_photo: '气卡照片',
+        checkin_photo: '交接单照片',
+        auth_photo: '委托书照片',
+        deposit_photo: '押金照片',
+        promise: '承诺书照片',
+        other_photo: '补充照片',
+        checkout_photo: '退租交接单照片',
+        checkout_settle_photo: '退租结算照片',
+        water_card_photo: '水卡照片',
+        property_photo: '物业照片'
+      },
+      //添加标记
+      add_mark_visible: false,
+      mark_form: {
+        tag_status: '',
+        appointment_time: '',
+        remark: '',
+        album: [],
+      },
+      mark_status: [
+        { id: 1, val: '续租' },
+        { id: 2, val: '退租' },
+      ],
+      mark_upload: {
+        keyName: 'album',
+        setFile: [],
+        size: {
+          width: '50px',
+          height: '50px'
+        }
+      },
+
+      show_control: '',
+      current_choose_control: '',
+      choose_list: [
+        { id: 1, val: '审核记录' },
+        { id: 2, val: '回访记录' },
+        { id: 3, val: '添加标记' },
+      ],
+
+      //作废重签
+      rewrite_visible: false,
+      rewrite_note: '',
+
+      //合同详情
+      contract_detail_visible: false,
+      contractDetail: '',
+
+      //资料补齐
+      upload_file: {
+
+      },
+      currentRow: '',
+      data_polishing_visible: false,
+      polishing_params: {},
+      property_number: '',
+      mound_number: '',
+      polishing_data: [
+        {
           identity_photo: '证件照片',
           bank_photo: '银行卡照片',
           photo: '合同照片',
           water_photo: '水表照片',
           electricity_photo: '电表照片',
-          electricity_card_photo: '电卡照片',
           gas_photo: '气表照片',
-          gas_card_photo: '气卡照片',
           checkin_photo: '交接单照片',
           auth_photo: '委托书照片',
           deposit_photo: '押金照片',
           promise: '承诺书照片',
-          other_photo: '补充照片',
-          checkout_photo: '退租交接单照片',
-          checkout_settle_photo: '退租结算照片',
+          property_photo: '房产证照片',
           water_card_photo: '水卡照片',
-          property_photo:   '物业照片'
+          electricity_card_photo: '电卡照片',
+          gas_card_photo: '气卡照片',
         },
-        //添加标记
-        add_mark_visible: false,
-        mark_form: {
-          tag_status: '',
-          appointment_time: '',
-          remark: '',
-          album: [],
+        {
+          checkin_photo: '交接单照片',
+          certificate_photo: '截图凭证',
+          deposit_photo: '押金收条',
+          identity_photo: '证件照片',
+          photo: '合同照片',
+          bank_photo: '银行卡照片',
+          water_photo: '水表照片',
+          electricity_photo: '电表照片',
+          gas_photo: '气表照片'
+        }
+      ],
+      //查看回访记录
+      backInfo_visible: false,
+      backInfo: [
+        {
+          uid: 1111,
+          star: 4,
+          time: '2019-02-01',
+          record: '已回访',
+          add_user: '张三'
+        }
+      ],
+
+      show_market: false,
+      show_shadow: false,
+
+      market_server: globalConfig.market_server,
+      selects: [
+        {
+          id: 1,
+          title: '收房'
         },
-        mark_status: [
-          {id: 1,val: '续租'},
-          {id: 2,val: '退租'},
-        ],
-        mark_upload: {
-          keyName: 'album',
-          setFile: [],
-          size: {
-            width: '50px',
-            height: '50px'
-          }
-        },
+        {
+          id: 2,
+          title: '租房'
+        }
+      ],
+      chooseTab: 1,
 
-        show_control: '',
-        current_choose_control: '',
-        choose_list: [
-          {id: 1,val: '审核记录'},
-          {id: 2,val: '回访记录'},
-          {id: 3,val: '添加标记'},
-        ],
+      params: {
+        page: 1,
+        limit: 30,
+        contract_type: 1,
+        sign_date_min: '',
+        sign_date_max: '',
+        type: '',
+        start_date_min: '',
+        start_date_max: '',
+        end_date_min: '',
+        end_date_max: '',
+        signer: '',
+        org: '',
+      },
+      contractList: [],
+      contractCount: 0,
 
-        //作废重签
-        rewrite_visible: false,
-        rewrite_note: '',
+      highVisible: false, //高级
+      searchData: {
+        status: 'contractManagement',
+        keywords: 'search',
+        data: []
+      },
 
-        //合同详情
-        contract_detail_visible: false,
-        contractDetail: '',
-
-        //资料补齐
-        upload_file: {
-
-        },
-        currentRow: '',
-        data_polishing_visible: false,
-        polishing_params: {},
-        property_number: '',
-        mound_number: '',
-        polishing_data: [
-          {
-            identity_photo: '证件照片',
-            bank_photo: '银行卡照片',
-            photo: '合同照片',
-            water_photo: '水表照片',
-            electricity_photo: '电表照片',
-            gas_photo: '气表照片',
-            checkin_photo: '交接单照片',
-            auth_photo: '委托书照片',
-            deposit_photo: '押金照片',
-            promise: '承诺书照片',
-            property_photo: '房产证照片',
-            water_card_photo: '水卡照片',
-            electricity_card_photo: '电卡照片',
-            gas_card_photo: '气卡照片',
-          },
-          {
-            checkin_photo: '交接单照片',
-            certificate_photo: '截图凭证',
-            deposit_photo: '押金收条',
-            identity_photo: '证件照片',
-            photo: '合同照片',
-            bank_photo: '银行卡照片',
-            water_photo: '水表照片',
-            electricity_photo: '电表照片',
-            gas_photo: '气表照片'
-          }
-        ],
-        //查看回访记录
-        backInfo_visible: false,
-        backInfo: [
-          {
-            uid: 1111,
-            star: 4,
-            time: '2019-02-01',
-            record: '已回访',
-            add_user: '张三'
-          }
-        ],
-
-        show_market: false,
-        show_shadow: false,
-
-        market_server: globalConfig.market_server,
-        selects: [
-          {
-            id: 1,
-            title: '收房'
-          },
-          {
-            id: 2,
-            title: '租房'
-          }
-        ],
-        chooseTab: 1,
-
-        params: {
-          page: 1,
-          limit: 30,
-          contract_type: 1,
-          sign_date_min: '',
-          sign_date_max: '',
-          type: '',
-          start_date_min: '',
-          start_date_max: '',
-          end_date_min: '',
-          end_date_max: '',
-          signer: '',
-          org: '',
-        },
-        contractList: [],
-        contractCount: 0,
-
-        highVisible: false, //高级
-        searchData: {
-          status: 'contractManagement',
-          keywords: 'search',
-          data: []
-        },
-
-        //审核信息
-        check_info: [],
-        check_visible: false,
+      //审核信息
+      check_info: [],
+      check_visible: false,
+    }
+  },
+  mounted () {
+    this.getContractList();
+  },
+  watch: {},
+  computed: {},
+  methods: {
+    //相关合同label
+    contractLabel (item) {
+      return item.type === 1 ? `新收合同(${item.is_invalid === 0 ? '正常' : '作废'})` : `续收合同(${item.is_invalid === 0 ? '正常' : '作废'})`;
+    },
+    handleCloseDetail () {
+      this.contractDetail = '';
+      this.contract_detail_visible = false;
+    },
+    handleCloseControl () {
+      // this.show_control = '';
+    },
+    handleCancelMark () {
+      for (var key in this.mark_form) {
+        this.mark_form[key] = '';
+      }
+      this.mark_form.album = [];
+      this.add_mark_visible = false;
+    },
+    handleSubmitMark () {
+      this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
+        console.log(res);
+        if (res.code === 200) {
+          this.$LjNotify('success', {
+            title: '成功',
+            message: res.message
+          });
+          this.handleCancelMark();
+          this.getContractList();
+        } else {
+          this.$LjNotify('warning', {
+            title: '失败',
+            message: res.message
+          })
+        }
+      })
+    },
+    handleGetMarkUpload (file) {
+      if (file !== 'close') {
+        this.mark_form[file[0]] = file[1];
       }
     },
-    mounted() {
-      this.getContractList();
+    chooseMarkRadio (item) {
+      this.mark_form.tag_status = item.id;
     },
-    watch: {},
-    computed: {},
-    methods: {
-      //相关合同label
-      contractLabel(item) {
-        return item.type === 1 ? `新收合同(${item.is_invalid === 0 ? '正常' : '作废'})` : `续收合同(${item.is_invalid === 0 ? '正常' : '作废'})`;
-      },
-      handleCloseDetail() {
-        this.contractDetail = '';
-        this.contract_detail_visible = false;
-      },
-      handleCloseControl() {
-        // this.show_control = '';
-      },
-      handleCancelMark() {
-        for (var key in this.mark_form) {
-          this.mark_form[key] = '';
-        }
-        this.mark_form.album = [];
-        this.add_mark_visible = false;
-      },
-      handleSubmitMark() {
-        this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`,this.mark_form).then(res => {
-          console.log(res);
-          if (res.code === 200) {
-            this.$LjNotify('success',{
-              title: '成功',
-              message: res.message
-            });
-            this.handleCancelMark();
-            this.getContractList();
-          } else {
-            this.$LjNotify('warning',{
-              title: '失败',
-              message: res.message
-            })
-          }
-        })
-      },
-      handleGetMarkUpload(file) {
-        if (file !== 'close') {
-          this.mark_form[file[0]] = file[1];
-        }
-      },
-      chooseMarkRadio(item) {
-        this.mark_form.tag_status = item.id;
-      },
-      handleCloseLookBackInfo() {
-        this.currentRow = '';
-        this.backInfo = '';
-        this.backInfo_visible = false;
-      },
-      handleClickSpan(tmp,item) {
-        this.currentRow = item;
-        this.current_choose_control = tmp.id;
-        switch (tmp.id) {
-          case 1:
-            this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${item.contract_id}`).then(res => {
-              if (res.code === 200) {
-                console.log(res);
-                if (res.data.checkout_remark && res.data.checkout_remark.length > 0) {
-                  this.check_info = res.data.checkout_remark;
-                  this.check_visible = true;
-                } else {
-                  this.check_info = [];
-                  this.$LjNotify('success',{
-                    title: '提示',
-                    message: '暂无审核记录'
-                  });
-                  return false;
-                }
+    handleCloseLookBackInfo () {
+      this.currentRow = '';
+      this.backInfo = '';
+      this.backInfo_visible = false;
+    },
+    handleClickSpan (tmp, item) {
+      this.currentRow = item;
+      this.current_choose_control = tmp.id;
+      switch (tmp.id) {
+        case 1:
+          this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${item.contract_id}`).then(res => {
+            if (res.code === 200) {
+              console.log(res);
+              if (res.data.checkout_remark && res.data.checkout_remark.length > 0) {
+                this.check_info = res.data.checkout_remark;
+                this.check_visible = true;
               } else {
                 this.check_info = [];
-                this.$LjNotify('success',{
+                this.$LjNotify('success', {
                   title: '提示',
-                  message: '获取审核记录失败'
+                  message: '暂无审核记录'
                 });
                 return false;
               }
-            });
-            break;
-          case 2:
-            if (item.record) {
-              this.backInfo = item.record;
-              this.backInfo_visible = true;
             } else {
-              this.$LjNotify('warning',{
-                title: '警告',
-                message: '暂无回访信息'
-              })
-            }
-            break;
-          case 3:
-            this.add_mark_visible = true;
-            break;
-        }
-      },
-      handleShowControl(row) {
-        this.current_choose_control = '';
-        this.show_control = row.contract_id;
-      },
-      handleSubmitRewrite() {
-        this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`,{
-          note: this.rewrite_note
-        }).then(res => {
-          if (res.code === 200) {
-            this.$LjNotify('success',{
-              title: '成功',
-              message: res.message
-            });
-            this.handleCancelRewrite();
-          } else {
-            this.$LjNotify('warning',{
-              title: '失败',
-              message: res.message
-            })
-          }
-        })
-      },
-      handleCancelRewrite() {
-        this.rewrite_note = '';
-        this.rewrite_visible = false;
-      },
-      handleRewrite() {
-        this.rewrite_visible = true;
-      },
-      //双击详情
-      handleGetDetail(row) {
-        this.currentRow = row;
-        this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
-        // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
-          console.log(res);
-          if (res.code === 200) {
-            this.contractDetail = res.data;
-            this.contract_detail_visible = true;
-            console.log(this.contractDetail);
-          } else {
-            this.contractDetail = '';
-          }
-        })
-      },
-      handleConfirmPolishing() {
-        var form = new FormData();
-        form.append('complete_content',this.polishing_params);
-        form.append('property_number',this.property_number);
-        form.append('mound_number',this.mound_number);
-        this.$http.post(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`,form).then(res => {
-          if (res.code === 200) {
-            this.$LjNotify('success',{
-              title: '成功',
-              message: res.message
-            });
-            this.handleCancelPolishing();
-            this.getContractList();
-          } else {
-            this.$LjNotify('warning',{
-              title: '失败',
-              message: res.message
-            })
-          }
-        })
-      },
-      //取消补齐
-      handleCancelPolishing() {
-        this.polishing_params = {};
-        this.mound_number = '';
-        this.property_number = '';
-        this.upload_file = {};
-        // this.currentRow = '';
-        this.data_polishing_visible = false;
-      },
-      handleGetFile(item) {
-        if (item !== 'close') {
-          this.polishing_params[item[0]] = item[1];
-        }
-      },
-      selfLabel(idx) {
-        return this.polishing_data[this.chooseTab - 1][idx];
-      },
-      handleOpenPolishing(row) {
-        if (row.needComplete && row.needComplete.length > 0) {
-          var obj = {};
-          var param = {};
-          row.needComplete.map(item => {
-            obj[item] = '';
-            param[item] = {
-              keyName: item,
-              setFile: [],
-              size: {
-                width: '50px',
-                height: '50px'
-              }
+              this.check_info = [];
+              this.$LjNotify('success', {
+                title: '提示',
+                message: '获取审核记录失败'
+              });
+              return false;
             }
           });
-          this.polishing_params = Object.assign({},this.polishing_params,obj);
-          this.upload_file = Object.assign({},param);
-          this.data_polishing_visible = true;
-        } else {
-          this.$LjNotify('info',{
-            title: '提示',
-            message: "暂无需要补齐的资料"
-          });
-          return false;
-        }
-      },
-      handleCloseMenu() {
-        this.show_market = false;
-        this.show_shadow = false;
-      },
-      //获取合同列表
-      getContractList() {
-        this.params.contract_type = this.chooseTab;
-        this.showLoading(true);
-        this.$http.get(this.market_server + 'v1.0/market/contract',this.params).then(res => {
-          if (res.code === 200) {
-            this.contractList = res.data.data;
-            this.contractCount = res.data.count;
+          break;
+        case 2:
+          if (item.record) {
+            this.backInfo = item.record;
+            this.backInfo_visible = true;
           } else {
-            this.contractList = [];
-            this.contractCount = 0;
+            this.$LjNotify('warning', {
+              title: '警告',
+              message: '暂无回访信息'
+            })
           }
-          this.showLoading(false);
-        })
-      },
-      //打开高级
-      handleOpenHigh() {
-        this.searchData.data = [
-          {
-            keyType: 'dateRange',
-            title: '签约时间',
-            placeholder: '请选择日期',
-            keyName: 'date1',
-            dataType: [],
-          },
-          {
-            keyType: 'radio',
-            title: '合同性质',
-            keyName: 'type',
-            dataType: '',
-            value: this.chooseTab === 1 ? [
-              {id: 1, title: '新收'},
-              {id: 2, title: '续收'}
-            ] : [
-              {id: 1,title: '新租'},
-              {id: 2,title: '转租'},
-              {id: 3,title: '续租'},
-              {id: 4,title: '未收先租'},
-              {id: 5,title: '调租'},
-            ]
-          },
-          {
-            keyType: 'dateRange',
-            title: '合同起始时间',
-            placeholder: '请选择日期',
-            keyName: 'date2',
-            dataType: [],
-          },
-          {
-            keyType: 'dateRange',
-            title: '合同起始时间',
-            placeholder: '请选择日期',
-            keyName: 'date3',
-            dataType: [],
-          },
-          {
-            keyType: 'staff',
-            title: '开单人',
-            placeholder: '请选择开单人',
-            keyName: 'signer',
-            dataType: '',
-            value: {
-              num: '',
-            }
-          }
-        ];
-        this.highVisible = true;
-      },
-      changeTabs(id) {
-        this.chooseTab = id;
-        this.getContractList();
-      },
-      handleChangePage(page) {
-        this.params.page = page;
-        this.getContractList();
-      },
-
-      //高级
-      handleCloseHigh(val) {
-        if (val !== 'close') {
-          console.log(val);
-          this.params.sign_date_min = val.date1[0] ? val.date1[0] : '';
-          this.params.sign_date_max = val.date1[1] ? val.date1[1] : '';
-          this.params.start_date_min = val.date2[0] ? val.date2[0] : '';
-          this.params.start_date_max = val.date2[1] ? val.date2[1] : '';
-          this.params.end_date_min = val.date3[0] ? val.date2[0] : '';
-          this.params.end_date_max = val.date3[1] ? val.date2[1] : '';
-          this.params.signer = val.signer[0] ? val.signer[0] : '';
-          this.params.type = val.type;
-          this.getContractList();
-        }
-        this.highVisible = false;
-      },
+          break;
+        case 3:
+          this.add_mark_visible = true;
+          break;
+      }
     },
-  }
+    handleShowControl (row) {
+      this.current_choose_control = '';
+      this.show_control = row.contract_id;
+    },
+    handleSubmitRewrite () {
+      this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
+        note: this.rewrite_note
+      }).then(res => {
+        if (res.code === 200) {
+          this.$LjNotify('success', {
+            title: '成功',
+            message: res.message
+          });
+          this.handleCancelRewrite();
+        } else {
+          this.$LjNotify('warning', {
+            title: '失败',
+            message: res.message
+          })
+        }
+      })
+    },
+    handleCancelRewrite () {
+      this.rewrite_note = '';
+      this.rewrite_visible = false;
+    },
+    handleRewrite () {
+      this.rewrite_visible = true;
+    },
+    //双击详情
+    handleGetDetail (row) {
+      this.currentRow = row;
+      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
+        // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+        console.log(res);
+        if (res.code === 200) {
+          this.contractDetail = res.data;
+          this.contract_detail_visible = true;
+          console.log(this.contractDetail);
+        } else {
+          this.contractDetail = '';
+        }
+      })
+    },
+    handleConfirmPolishing () {
+      var form = new FormData();
+      form.append('complete_content', this.polishing_params);
+      form.append('property_number', this.property_number);
+      form.append('mound_number', this.mound_number);
+      this.$http.post(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, form).then(res => {
+        if (res.code === 200) {
+          this.$LjNotify('success', {
+            title: '成功',
+            message: res.message
+          });
+          this.handleCancelPolishing();
+          this.getContractList();
+        } else {
+          this.$LjNotify('warning', {
+            title: '失败',
+            message: res.message
+          })
+        }
+      })
+    },
+    //取消补齐
+    handleCancelPolishing () {
+      this.polishing_params = {};
+      this.mound_number = '';
+      this.property_number = '';
+      this.upload_file = {};
+      // this.currentRow = '';
+      this.data_polishing_visible = false;
+    },
+    handleGetFile (item) {
+      if (item !== 'close') {
+        this.polishing_params[item[0]] = item[1];
+      }
+    },
+    selfLabel (idx) {
+      return this.polishing_data[this.chooseTab - 1][idx];
+    },
+    handleOpenPolishing (row) {
+      if (row.needComplete && row.needComplete.length > 0) {
+        var obj = {};
+        var param = {};
+        row.needComplete.map(item => {
+          obj[item] = '';
+          param[item] = {
+            keyName: item,
+            setFile: [],
+            size: {
+              width: '50px',
+              height: '50px'
+            }
+          }
+        });
+        this.polishing_params = Object.assign({}, this.polishing_params, obj);
+        this.upload_file = Object.assign({}, param);
+        this.data_polishing_visible = true;
+      } else {
+        this.$LjNotify('info', {
+          title: '提示',
+          message: "暂无需要补齐的资料"
+        });
+        return false;
+      }
+    },
+    handleCloseMenu () {
+      this.show_market = false;
+      this.show_shadow = false;
+    },
+    //获取合同列表
+    getContractList () {
+      this.params.contract_type = this.chooseTab;
+      this.showLoading(true);
+      this.$http.get(this.market_server + 'v1.0/market/contract', this.params).then(res => {
+        if (res.code === 200) {
+          this.contractList = res.data.data;
+          this.contractCount = res.data.count;
+        } else {
+          this.contractList = [];
+          this.contractCount = 0;
+        }
+        this.showLoading(false);
+      })
+    },
+    //打开高级
+    handleOpenHigh () {
+      this.searchData.data = [
+        {
+          keyType: 'dateRange',
+          title: '签约时间',
+          placeholder: '请选择日期',
+          keyName: 'date1',
+          dataType: [],
+        },
+        {
+          keyType: 'radio',
+          title: '合同性质',
+          keyName: 'type',
+          dataType: '',
+          value: this.chooseTab === 1 ? [
+            { id: 1, title: '新收' },
+            { id: 2, title: '续收' }
+          ] : [
+              { id: 1, title: '新租' },
+              { id: 2, title: '转租' },
+              { id: 3, title: '续租' },
+              { id: 4, title: '未收先租' },
+              { id: 5, title: '调租' },
+            ]
+        },
+        {
+          keyType: 'dateRange',
+          title: '合同起始时间',
+          placeholder: '请选择日期',
+          keyName: 'date2',
+          dataType: [],
+        },
+        {
+          keyType: 'dateRange',
+          title: '合同起始时间',
+          placeholder: '请选择日期',
+          keyName: 'date3',
+          dataType: [],
+        },
+        {
+          keyType: 'staff',
+          title: '开单人',
+          placeholder: '请选择开单人',
+          keyName: 'signer',
+          dataType: '',
+          value: {
+            num: '',
+          }
+        }
+      ];
+      this.highVisible = true;
+    },
+    changeTabs (id) {
+      this.chooseTab = id;
+      this.getContractList();
+    },
+    handleChangePage (page) {
+      this.params.page = page;
+      this.getContractList();
+    },
+
+    //高级
+    handleCloseHigh (val) {
+      if (val !== 'close') {
+        console.log(val);
+        this.params.sign_date_min = val.date1[0] ? val.date1[0] : '';
+        this.params.sign_date_max = val.date1[1] ? val.date1[1] : '';
+        this.params.start_date_min = val.date2[0] ? val.date2[0] : '';
+        this.params.start_date_max = val.date2[1] ? val.date2[1] : '';
+        this.params.end_date_min = val.date3[0] ? val.date2[0] : '';
+        this.params.end_date_max = val.date3[1] ? val.date2[1] : '';
+        this.params.signer = val.signer[0] ? val.signer[0] : '';
+        this.params.type = val.type;
+        this.getContractList();
+      }
+      this.highVisible = false;
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../assets/scss/marketCentre/contractManagement/index.scss";
+@import "../../../assets/scss/marketCentre/contractManagement/index.scss";
 
-  @mixin contractManagementImg($m, $n) {
-    $url: '../../../assets/image/marketCentre/' + $n + '/' + $m;
-    @include bgImage($url);
-  }
+@mixin contractManagementImg($m, $n) {
+  $url: "../../../assets/image/marketCentre/" + $n + "/" + $m;
+  @include bgImage($url);
+}
 
-  #theme_name.theme1 {
-    #contractManagement {
-      > div {
-        .control_container {
-          .choose {
-            @include bgImage('../../../assets/image/components/theme1/xzgj.png');
-          }
+#theme_name.theme1 {
+  #contractManagement {
+    > div {
+      .control_container {
+        .choose {
+          @include bgImage("../../../assets/image/components/theme1/xzgj.png");
         }
       }
     }
   }
+}
 </style>

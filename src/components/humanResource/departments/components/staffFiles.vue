@@ -1,6 +1,6 @@
 <template>
   <div id="staffFiles">
-    <lj-dialog :visible="files_visible" :size="files_size" @close="files_visible = false;reviseInfo = false;activeName = 'first'">
+    <lj-dialog :visible="files_visible" :size="files_size" @close="handleCloseStaff">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>员工档案</h3>
@@ -562,9 +562,11 @@
       detailInfo: {
         handler(val) {
           this.currentStaffInfo = val;
+          console.log(val);
           for (var key in this.staffDetail) {
             this.staffDetail[key] = key in val ? val[key] : val.staff && key in val.staff ? val.staff[key] : '';
           }
+          this.staffDetail.work_status = val.is_on_job ? '离职' : '在职';
           this.staffDetail.dismiss_reason = val.staff && val.staff.dismiss_reason || { dismiss_type: ''};
           this.staffDetail.entry_way = val.staff && val.staff.entry_way || {
             entry_type: '',
@@ -609,6 +611,12 @@
       }
     },
     methods: {
+      handleCloseStaff() {
+        this.files_visible = false;
+        this.reviseInfo = true;
+        this.activeName = 'first';
+        this.$emit('close');
+      },
       handleOpenGrow(dates,idx) {
         this.step_active = idx + 1;
         this.current_grow = dates;
