@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 
-let url = globalConfig.humanResource_server;
+let url = '';
 axios.defaults.timeout = 10000;
 
-axios.defaults.baseURL = globalConfig.humanResource_server; // 域名
+axios.defaults.baseURL = ''; // 域名
 
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {

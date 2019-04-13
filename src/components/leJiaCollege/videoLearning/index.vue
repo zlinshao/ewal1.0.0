@@ -2,7 +2,7 @@
     <div id="videoLearning">
         <div class="video-lists">
             <div class="video-list-info" v-for="(item,index) in dataLists">
-                <div class="video-box"  @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
+                <div class="video-box"  @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)" @click.stop="detail(item.id)">
                     <div class="video-box-top justify-end items-bet" v-show="is_show&&index===current">
                         <span><i @click.stop="edit(item.id,index)">编辑</i><i @click.stop="del(item.id,index)">删除</i></span>
                     </div>
@@ -11,14 +11,14 @@
                         <div class="video-inner">
                             <div>
                                 <span class="video-start-btn"></span>
-                                <video src="" poster="../../../assets/image/newMedia/theme1/active.png"></video>
+                                <video :src="item.file_id[0].uri" poster="../../../assets/image/newMedia/theme1/active.png"></video>
                             </div>
                         </div>
                     </div>
                     <div class="video-box-bottom justify-bet">
-                        <span>{{item.title}}</span>
-                        <span>{{item.time}}</span>
-                        <span><i class="view"></i><i>{{item.view}}</i></span>
+                        <span>{{item.name}}</span>
+                        <span>{{item.created_at}}</span>
+                        <span><i class="view"></i><i>{{item.click}}</i></span>
                     </div>
                 </div>
             </div>
@@ -62,28 +62,31 @@
                    @close="visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
-                    <h3>{{flag===1?'编辑视频':'新增视频'}}</h3>
+                    <h3>{{flag===1?'编辑讲师详情':flag===2?'新增讲师详情':flag===3?'讲师详情':''}}</h3>
                 </div>
                 <div class="dialog_main">
                     <el-form ref="form" :model="form" label-width="80px"  size="small">
                         <el-form-item label="视频名称">
-                            <el-input v-model="form.title" size="small"></el-input>
+                            <el-input v-model="form.name" size="small" :disabled="flag===3"></el-input>
                         </el-form-item>
                         <el-form-item label="可见岗位">
-                            <el-input v-model="form.department" size="small"></el-input>
+                            <el-input v-model="form.position_name" size="small" @focus="postModule=true" :disabled="flag===3"></el-input>
                         </el-form-item>
 
                         <el-form-item label="上传视频"  v-if="flag===2">
-                            <el-input v-model="form.department" size="small"></el-input>
+                            <Upload :file="uploadFile" @success="handleSuccessUpload" :disabled="flag===3"></Upload>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="submit">确定</el-button>
-                    <el-button type="info" size="small" @click="visible = false;current_id = ''">取消</el-button>
+                    <el-button type="danger" v-if="flag===1||flag===2" size="small" @click="submit(flag)">确定</el-button>
+                    <el-button type="info" v-if="flag===1||flag===2" size="small" @click="visible = false;current_id = ''">取消</el-button>
+                    <el-button type="danger" v-if="flag===3" size="small" @click="visible = false;current_id = ''">关闭</el-button>
                 </div>
             </div>
         </lj-dialog>
+
+        <PostOrgan :module="postModule" @close="hiddenPost"></PostOrgan>
 
 
 
@@ -93,10 +96,14 @@
 <script>
     import {leJiaCollegeMenu} from '../../../assets/js/allModuleList.js';
     import LjDialog from '../../common/lj-dialog.vue';
+    import PostOrgan from '../../common/postOrgan.vue';
+    import Upload from '../../common/upload';
     export default {
         name: "videoLearning",
         components:{
             LjDialog,
+            PostOrgan,
+            Upload
         },
         data(){
             return{
@@ -104,6 +111,7 @@
                 count:0,
                 flag:1,
                 showFinMenuList:false,
+                postModule:false,
                 is_show:true,
                 delete_visible:false,
                 visible:false,
@@ -111,11 +119,10 @@
                 current:'',
                 current_id:'',
                 form:{
-                    title:'',
-                    id:'',
-                    department:''
-
-
+                    name:'',
+                    file_id:'',//视频的七牛云文件id
+                    position:[],//岗位id数组
+                    position_name:'',
                 },
                 params: {//查询参数
                     search:'',
@@ -126,76 +133,20 @@
                     department_ids: '',
                     export: '',
                 },
-                dataLists:[
-                    {
-                        id:1,
-                        avatar:'',
-                        time:'08:08',
-                        view:232,
-                        title:'可见的房屋信息哈哈',
-                        department:'行政岗位'
+                dataLists:[],
 
-                    },
-                    {
-                        id:1,
-                        avatar:'',
-                        time:'08:08',
-                        view:232,
-                        title:'可见的房屋信息哈哈',
-                        department:'行政岗位'
-
-                    },
-                    {
-                        id:1,
-                        avatar:'',
-                        time:'08:08',
-                        view:232,
-                        title:'可见的房屋信息哈哈',
-                        department:'行政岗位'
-
-                    },
-                    {
-                        id:1,
-                        avatar:'',
-                        time:'08:08',
-                        view:232,
-                        title:'可见的房屋信息哈哈',
-                        department:'行政岗位'
-                    },
-                    {
-                        id:1,
-                        avatar:'',
-                        time:'08:08',
-                        view:232,
-                        title:'可见的房屋信息哈哈',
-                        department:'行政岗位'
-                    },
-                    {
-                        id:1,
-                        avatar:'',
-                        time:'08:08',
-                        view:232,
-                        title:'可见的房屋信息哈哈',
-                        department:'行政岗位'
-                    },
-                    {
-                        id:1,
-                        avatar:'',
-                        time:'08:08',
-                        view:232,
-                        title:'可见的房屋信息哈哈',
-                        department:'行政岗位'
-                    },
-                    {
-                        id:1,
-                        avatar:'',
-                        time:'08:08',
-                        view:232,
-                        title:'可见的房屋信息哈哈',
-                        department:'行政岗位'
-                    },
-
-                ],
+                uploadFile: {
+                    keyName: 'album',
+                    setFile: [],
+                    size: {
+                        width: '50px',
+                        height: '60px'
+                    }
+                },
+                upload_form: {
+                    album: [],
+                    album_file: [],
+                },
             }
         },
         mounted(){
@@ -208,8 +159,27 @@
             this.$bus.off('add',this.getVal);
         },
         methods:{
+            //详情
+            detail(id){
+                this.current_id=id;
+                this.flag=3;
+            },
+            handleSuccessUpload(item) {
+                if (item !== 'close') {
+                    this.upload_form[item[0]] = item[1];
+                    this.form.file_id =  item[1][0];
+                }
+                console.log(item);
+            },
+            //获取岗位信息
+            hiddenPost(ids, names, arr) {
+                this.postModule = false;
+                console.log(names);
+                this.form.position_name= names;
+                this.form.position=ids;
+            },
             callbackSuccess(res) {
-                if (res.code === 200) {
+                if (res.status === 200) {
                     this.$LjNotify('success', {
                         title: '成功',
                         message: res.msg,
@@ -249,10 +219,18 @@
 
             },
             //提交
-            submit(){
-                this.$http.post('', this.form).then(res => {
-                    this.callbackSuccess(res)
-                })
+            submit(type){
+               if(type===1){
+                   this.$http.put(globalConfig.leJiaCollege_server+'/api/video/study'+this.current_id, this.form).then(res => {
+                       this.callbackSuccess(res);
+                       this.visible=false;
+                   })
+               }else if(type===2){
+                   this.$http.post(globalConfig.leJiaCollege_server+'/api/video/study', this.form).then(res => {
+                       this.callbackSuccess(res);
+                       this.visible=false;
+                   })
+               }
             },
 
             //删除弹出
@@ -262,14 +240,15 @@
             },
             //确认删除
             delOk(){
-                this.$http.delete('', this.current_id).then(res => {
-                    this.callbackSuccess(res)
+                this.$http.delete(globalConfig.leJiaCollege_server+'/api/video/study'+this.current_id,).then(res => {
+                    this.callbackSuccess(res);
+                    this.delete_visible=false;
                 })
             },
             //获取列表
             getDataLists(){
-                this.$http.get('', this.params).then(res => {
-                    if(res.code===200){
+                this.$http.get(globalConfig.leJiaCollege_server+'/api/video/study', this.params).then(res => {
+                    if(res.status===200){
                         this.dataLists  = res.data.data;
                     }
                 })
