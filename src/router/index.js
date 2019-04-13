@@ -545,47 +545,6 @@ export default new Router({
       component: IntellectualPropertyProtection
     },
     {
-      path: '/patent',
-      name: '专利',
-      component: Patent
-    },
-    {
-      path: '/brand',
-      name: '专利',
-      component: Brand
-    },
-    {
-      path: '/copyright',
-      name: '专利',
-      component: Copyright
-    },
-    {
-      path: '/enterpriseCertificate',
-      name: '专利',
-      component: EnterpriseCertificate
-    },
-
-    {
-      path: '/jurisdiction',
-      name: '无权限',
-      component: Jurisdiction
-    },
-    {
-      path: '/network_error',
-      name: '网络断开',
-      component: NetWork_error
-    },
-    {
-      path: '/customService',
-      name: '客服',
-      component: CustomService
-    },
-    {
-      path: '/workOrder',
-      name: '工单',
-      component: WorkOrder
-    },
-    {
       path: '/visitToRecord',
       name: '回访记录',
       component: VisitToRecord
@@ -606,62 +565,6 @@ export default new Router({
       component: Village
     },
     {
-      path: '/marketCentre',
-      name: '市场',
-      component: MarketCentre
-    },
-    {
-      path: '/houseManagement',
-      name: '房源管理',
-      component: HouseManagement
-    },
-    {
-      path: '/contractManagement',
-      name: '合同管理',
-      component: ContractManagement
-    },
-    {
-      path: '/humanResource',
-      name: '人力资源中心',
-      component: HumanResource
-    },
-    {
-      path: '/departments',
-      name: '三省六部',
-      component: Departments
-    },
-    {
-      path: '/recruitment',
-      name: '招兵买马',
-      component: Recruitment
-    },
-    {
-      path: '/reward',
-      name: '赏罚分明',
-      component: Reward
-    },
-    {
-      path: '/repository',
-      name: '内务库房',
-      component: Repository
-    },
-    {
-      path: '/discussPolitics',
-      name: '奏事议政',
-      component: DiscussPolitics
-    },
-    {
-      path: '/staffRoster',
-      name: '员工名册',
-      component: StaffRoster
-    },
-    {
-      path: '/militaryOrganization',
-      name: '排兵布阵',
-      component: MilitaryOrganization
-    },
-
-    {
       path: '/pending',
       name: '待处理项',
       component: Pending
@@ -670,12 +573,6 @@ export default new Router({
       path: '/balance',
       name: '结算',
       component: Balance
-    },
-
-    {
-      path: '/intellectualPropertyProtection',
-      name: '知识产权保护',
-      component: IntellectualPropertyProtection
     },
     {
       path: '/patent',
