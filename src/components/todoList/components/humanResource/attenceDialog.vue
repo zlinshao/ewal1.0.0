@@ -6,7 +6,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <img src="../../../../assets/image/todoList/components/humanResource/theme1/rili.png" style="width:25px;height:25px"/>
+          <img :src="imgUrl" style="width:25px;height:25px"/>
           <div class="personMsg">
             <h3 class="name">张无忌</h3>
             <h3 class="time">2019年三月考核</h3>
@@ -66,6 +66,7 @@
     data() {
       return {
           datetime: new Date(),
+          imgUrl: require('../../../../assets/image/todoList/components/humanResource/theme1/rili.png')
       }
     },
     methods: {
@@ -92,6 +93,5 @@
         }
       }
     }
-    
 }
 </style>

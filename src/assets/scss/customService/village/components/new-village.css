@@ -176,5 +176,8 @@
   text-align: right; }
   #theme_name.theme1 #new-village .dialog_footer button {
     width: 100px; }
+#theme_name.theme1 #new-village #container {
+  width: 100%;
+  min-height: 400px; }
 
 /*# sourceMappingURL=new-village.css.map */
