@@ -29,7 +29,7 @@
 
       <!--小区列表-->
       <div class="village-main">
-        <div class="content flex scroll_bar" v-if="village_list.length > 0">
+        <div class="content flex scroll_bar">
           <div v-for="(village) in village_list" class="flex">
             <div>
               <div class="village-header">
@@ -74,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div class="content-none" v-else>暂无数据</div>
+        <!--<div class="content-none" v-else>暂无数据</div>-->
       </div>
 
       <!--分页-->
@@ -121,7 +121,7 @@
       <searchHigh :module="searchHighVisible" :showData="searchData" @close="hiddenModule"></searchHigh>
 
       <!--添加小区-->
-      <NewVillage :module="new_village_visible"></NewVillage>
+      <NewVillage :module="new_village_visible" @close="new_village_visible = false"></NewVillage>
 
       <!--选择部门-->
       <DepartOrgan :module="depart_visible" @close="handleGetDepart"></DepartOrgan>

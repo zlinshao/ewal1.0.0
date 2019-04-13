@@ -21,12 +21,10 @@
         my_title: '',
       }
     },
-    mounted() {
-    },
+    mounted() {},
     watch: {
       village: {
         handler(val) {
-          console.log(val);
           this.my_title = val;
         },
         immediate: true,
