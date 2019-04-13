@@ -566,7 +566,7 @@ export default new Router({
     },
     {
       path: '/maintenance',
-      name: '房屋到期',
+      name: '维修保洁',
       component: Maintenance
     },
     {
