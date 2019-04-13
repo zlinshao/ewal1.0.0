@@ -131,6 +131,8 @@ export default {
         status: 'workOrder',
         data: [],
       },
+
+      market_server: globalConfig.market_server,
     }
   },
   mounted () {
@@ -162,23 +164,39 @@ export default {
         this.tableSettingData[this.currentTable].tableData.push(obj);
       }
     },
-
-
-
-    /*// tab切换
-    changeTabs(id) {
-      this.chooseTab = id;
+    //工单表格数据初始化
+    getDateList () {
+      this.showLoading(true);
+      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}`, this.params).then(res => {
+        if (res.code === 200) {
+          this.tableData = res.data.data;
+          console.log(this.tableData)
+          this.tableDateCount = res.data.count;
+        } else {
+          this.tableData = [];
+          this.tableDateCount = 0;
+        }
+        this.showLoading(false);
+      })
     },
-    // 当前点击
-    tableClickRow(row) {
-      let ids = this.chooseRowIds;
-      ids.push(row.id);
-      this.chooseRowIds = this.myUtils.arrayWeight(ids);
+    // tab切换
+    changeTabs (id) {
+      if (this.chooseTab !== id) {
+        this.chooseTab = id;
+        // this.getDateList()
+      }
     },
-    // 点击过
-    tableChooseRow({row, rowIndex}) {
-      return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-    },*/
+
+    /*  // 当前点击
+     tableClickRow(row) {
+       let ids = this.chooseRowIds;
+       ids.push(row.id);
+       this.chooseRowIds = this.myUtils.arrayWeight(ids);
+     },
+     // 点击过
+     tableChooseRow({row, rowIndex}) {
+       return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+     },*/
     // 当前点击
     tableClickRow (row) {
       this.tableSettingData[this.currentTable].currentSelection = row;
