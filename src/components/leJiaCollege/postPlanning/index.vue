@@ -262,12 +262,14 @@
                     {id:7,title:'储备片区经理'},
                     {id:8,title:'市场专员'},
                 ],
+
+                levelData:[],
             }
         },
         computed:{
-            // chooseTab:function () {
-            //
-            // }
+        },
+        mounted(){
+            this.getDataLists();
         },
 
         watch:{
@@ -292,6 +294,14 @@
             changeTabs(id) {//切换tab
                 this.chooseTab = id;
             },
+            getDataLists(){
+                this.$http.get(globalConfig.leJiaCollege_server+'/api/position/level', this.params).then(res => {
+                    if(res.status===200){
+                        this.levelData  = res.data.data;
+                        console.log(this.levelData)
+                    }
+                })
+            }
         },
 
 

@@ -9,9 +9,14 @@
                     <div class="video-box-middle">
                         <div class="video-border"></div>
                         <div class="video-inner">
+                            <!--<video  poster="" width="300" height="210" controls>-->
+                                <!--<source :src="item.file_id[0].uri" type="video/mp4">-->
+                            <!--</video>-->
                             <div>
-                                <span class="video-start-btn"></span>
-                                <video :src="item.file_id[0].uri" poster="../../../assets/image/newMedia/theme1/active.png"></video>
+                                <span class="video-start-btn" id="video-start-btn"></span>
+                                <video  poster="" width="300" height="210"  id="leJiaVideo">
+                                    <source :src="item.file_id[0].uri" type="video/mp4">
+                                </video>
                             </div>
                         </div>
                     </div>
@@ -121,7 +126,7 @@
                 form:{
                     name:'',
                     file_id:'',//视频的七牛云文件id
-                    position:[],//岗位id数组
+                    position:[1,2],//岗位id数组
                     position_name:'',
                 },
                 params: {//查询参数
@@ -151,6 +156,8 @@
         },
         mounted(){
             this.getDataLists();
+            this.initVideo();
+
         },
         created(){
             this.$bus.on('add',this.getVal)
@@ -164,6 +171,15 @@
                 this.current_id=id;
                 this.flag=3;
             },
+            initVideo(){
+              let myVideo = document.getElementById('leJiaVideo')  ;
+              let myBtn = document.getElementById('video-start-btn')  ;
+                myBtn.onclick=function () {
+                    myVideo.play()
+                }
+
+            },
+
             handleSuccessUpload(item) {
                 if (item !== 'close') {
                     this.upload_form[item[0]] = item[1];
@@ -221,11 +237,13 @@
             //提交
             submit(type){
                if(type===1){
-                   this.$http.put(globalConfig.leJiaCollege_server+'/api/video/study'+this.current_id, this.form).then(res => {
+
+                   this.$http.put(globalConfig.leJiaCollege_server+'/api/video/study/'+this.current_id, this.form).then(res => {
                        this.callbackSuccess(res);
                        this.visible=false;
                    })
                }else if(type===2){
+                   this.form.position=[1,2];
                    this.$http.post(globalConfig.leJiaCollege_server+'/api/video/study', this.form).then(res => {
                        this.callbackSuccess(res);
                        this.visible=false;
@@ -240,7 +258,7 @@
             },
             //确认删除
             delOk(){
-                this.$http.delete(globalConfig.leJiaCollege_server+'/api/video/study'+this.current_id,).then(res => {
+                this.$http.delete(globalConfig.leJiaCollege_server+'/api/video/study/'+this.current_id,).then(res => {
                     this.callbackSuccess(res);
                     this.delete_visible=false;
                 })
