@@ -103,7 +103,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="产权地址">
-                    <span>{{ contractDetail.house_extension.detailed_address || '--'}}</span>
+                    <span>{{ contractDetail.lease_collect.property_address || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -147,7 +147,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="空置期">
-                    <span>{{ contractDetail.vacancy || '--'}}</span>
+                    <span>{{ contractDetail.ready_days || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -162,17 +162,17 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="押金">
-                    <span>{{ contractDetail.deposit || '--'}}</span>
+                    <span>{{ contractDetail.deposit_payed + '元'|| '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="违约金">
-                    <span>{{ contractDetail.breach || '--'}}</span>
+                    <span>{{ contractDetail.mortgage_price + '元'|| '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="价格">
-                    <span>{{ contractDetail.month_price[0].price || '--'}}</span>
+                    <span>{{ contractDetail.month_price[0].price + '元'|| '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -181,16 +181,16 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="第一次打房租日期">
+                  <el-form-item v-if="contractDetail.first_pay_at && chooseTab === 1 " label="第一次打房租日期">
                     <span>{{ contractDetail.first_pay_at || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="第二次打房租日期">
+                  <el-form-item label="第二次打房租日期" v-if="contractDetail.second_pay_at && chooseTab === 1">
                     <span>{{ contractDetail.second_pay_at || '--' }}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8" v-if="chooseTab === 1">
                   <el-form-item label="房东承担费用">
                     <span>{{ contractDetail.houserPay || '--'}}</span>
                   </el-form-item>
@@ -201,7 +201,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="可否装修">
+                  <el-form-item label="可否装修" v-if="chooseTab === 1">
                     <span>{{ contractDetail.lease_collect.can_decorate== 1?'是':'否' }}</span>
                   </el-form-item>
                 </el-col>
@@ -212,27 +212,27 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="是否渠道">
-                    <span>{{ contractDetail.channel || '--' }}</span>
+                    <span>{{contractDetail.is_agency && contractDetail.is_agency === 1 ? '是' : '否'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="渠道名称">
-                    <span>{{ contractDetail.channelName || '--' }}</span>
+                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_name || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="渠道费">
-                    <span>{{ contractDetail.channelPay || '--'}}</span>
+                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_price_now + '元'|| '--'}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8" v-if="contractDetail.is_agency && contractDetail.is_agency === 1">
                   <el-form-item label="渠道人">
-                    <span>{{ contractDetail.channelPer || '--'}}</span>
+                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_user_name || '--'}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8" v-if="contractDetail.is_agency && contractDetail.is_agency === 1">
                   <el-form-item label="渠道电话">
-                    <span>{{ contractDetail.channelPhone || '--' }}</span>
+                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_phone || '--' }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -242,7 +242,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="备注">
-                    <span>{{ contractDetail.note || '--'}}</span>
+                    <span>{{ contractDetail.remark || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -266,7 +266,7 @@
 
           <p class='main_tit' v-if="chooseTab === 1">签约人及产权人信息</p>
           <div class="common_info">
-            <el-form label-width="160px" v-if=' contractDetail.contractor'>
+            <el-form label-width="160px" v-if=' contractDetail.customer_info'>
               <el-row :gutter="10">
                 <el-col :span="1">
                   <el-form-item label="签约人" class='person_tit'>
@@ -274,17 +274,17 @@
                 </el-col>
                 <el-col :span="7">
                   <el-form-item label="姓名">
-                    <span>{{ contractDetail.contractor.name}}</span>
+                    <span>{{ contractDetail.customer_info[0].name}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="联系方式">
-                    <span>{{ contractDetail.contractor.contact }}</span>
+                    <span>{{ contractDetail.customer_info[0].phone }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="身份证号">
-                    <span>{{ contractDetail.contractor.id_card }}</span>
+                    <span>{{ contractDetail.customer_info[0].idcard }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="1">
@@ -292,10 +292,10 @@
                 </el-col>
                 <el-col :span="7">
                   <el-form-item label="姓名">
-                    <span>{{ contractDetail.property_person.name}}</span>
+                    <span>{{ contractDetail.lease_collect.proerty_owner || '--'}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <!-- <el-col :span="8">
                   <el-form-item label="联系方式">
                     <span>{{ contractDetail.property_person.contact}}</span>
                   </el-form-item>
@@ -304,13 +304,13 @@
                   <el-form-item label="身份证号">
                     <span>{{ contractDetail.property_person.id_card}}</span>
                   </el-form-item>
-                </el-col>
+                </el-col> -->
               </el-row>
             </el-form>
           </div>
 
           <p class='main_tit' v-if="chooseTab === 1">收款账号</p>
-          <div class="common_info">
+          <div class="common_info" v-if="chooseTab === 1">
             <el-form label-width="160px" v-if='contractDetail.contractor'>
               <el-row :gutter="10">
                 <el-col :span="8">
