@@ -1,0 +1,88 @@
+@import "../../../../common";
+#attence_dialog {
+    #lj_dialog{
+      .dialog_container{
+        .dialog_header{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0px 40px 0px 30px;
+          .personMsg{
+            margin-right: 1065px;
+            .name{
+              height:13px;
+              font-size:10px;
+              font-family:MicrosoftYaHei;
+              color:rgba(104,104,116,1);
+              line-height:13px;
+              letter-spacing:1px;
+            }
+            .time{
+              height:10px;
+              font-size:7px;
+              font-family:MicrosoftYaHei;
+              color:rgba(104,104,116,1);
+              line-height:10px;
+            }
+          }
+          .rili{
+            width: 15px;
+            height: 13px;
+          }
+        }
+        .dialog_main{
+          margin-right: 50px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          .calendar_container{
+            margin-right: 20px;
+            width: 1240px;
+          }
+          .attenceInfo{
+            margin-top: 100px;
+            >div{
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              .title{
+                >h3{
+                  height: 25px;
+                  display: flex;
+                  justify-content: flex-end;
+                  font-family:MicrosoftYaHei;
+                  font-size:8px;
+                  color:rgba(210,210,210,1);
+                }
+              }
+              .value{
+                >h3{
+                  height: 25px;
+                  display: flex;
+                  justify-content: flex-start;
+                  font-family:MicrosoftYaHei;
+                  font-size:8px;
+                  color:rgba(104,104,116,1);
+                }
+              }
+            }
+            .submitButton{
+              width: 120px;
+              height:40px;
+              margin-top: 200px;
+              display: flex;
+              justify-content: center;
+              background-color: rgba(207,46,51,1);
+              color:white;
+              font-family: PingFangSC-Regular;
+              border-radius:4px;
+              font-size:18px;
+              line-height:13px;
+              letter-spacing:2px;
+            } 
+          }
+        }
+      }
+    }
+}

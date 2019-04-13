@@ -71,6 +71,7 @@ const todo = {
         user: '张无忌',
         money: '扣款200元',
         project: '研发中心会议',
+        onClick: 'humanResource_attence'
       },
       {
         id: 4,
@@ -135,7 +136,7 @@ const todo = {
     humanResource_interview_visible: false,//面试界面显示隐藏
     humanResource_interview_evaluate_visible: false,//面试评价界面显示隐藏
     humanResource_repository_visible: false,//内务库房页面显示隐藏
-
+    humanResource_attence_visible: false,//考勤界面显示隐藏
 
   },
   // 计算属性
@@ -165,6 +166,10 @@ const todo = {
     CHANGE_HUMANRESOURCE_REPOSITORY_VISIBLE(state) {
       state.humanResource_repository_visible = !state.humanResource_repository_visible;
     },
+    //切换考勤待办
+    CHANGE_HUMANRESOURCE_ATTENCE_VISIBLE(state) {
+      state.humanResource_attence_visible = !state.humanResource_attence_visible;
+    },
   },
   // 执行函数
   actions: {
@@ -190,6 +195,10 @@ const todo = {
     //改变内务库房待办显示隐藏
     change_humanResource_repository_visible({commit},status) {
       commit('CHANGE_HUMANRESOURCE_REPOSITORY_VISIBLE',status);
+    },
+    //改变考勤待办显示隐藏
+    change_humanResource_attence_visible({commit},status) {
+      commit('CHANGE_HUMANRESOURCE_ATTENCE_VISIBLE',status);
     },
   }
 };

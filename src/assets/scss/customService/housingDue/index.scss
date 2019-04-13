@@ -11,6 +11,9 @@
       overflow: hidden;
       overflow-y: scroll;
     }
+    .cell.time {
+      font-size: 14px;
+    }
     // 合同详情
     .contract_detail {
       .main_tit {
@@ -57,12 +60,12 @@
   #HousingDue {
     .mainListTable {
       .status1 {
-        @include confirmImg('fendi.png', 'theme1');
-        color: #cf2e33;
-      }
-      .status2 {
         @include confirmImg('landi.png', 'theme1');
         color: #0c66ff;
+      }
+      .status2 {
+        @include confirmImg('fendi.png', 'theme1');
+        color: #cf2e33;
       }
     }
     // 合同详情

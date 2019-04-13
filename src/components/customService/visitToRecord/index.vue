@@ -120,32 +120,34 @@
           </el-row>
 
           <el-row :gutter="10" class="detail" v-if='recordDetail'>
-            <el-col :span="6" class=' el-border' v-if='recordDetail.customer_info'>
+            <el-col :span="6" class='detail_col el-border' v-if='recordDetail.customer_info'>
               <h5>客户信息</h5>
-              <div>
-                <span class='tit'>姓名</span>
-                <span class="content">{{recordDetail.customer_info.name}}</span>
-              </div>
-              <div>
-                <span class='tit'>性别</span>
-                <span class="content">{{recordDetail.customer_info.sex == 1 ? "男":"女"}}</span>
-              </div>
-              <div>
-                <span class='tit'>性质</span>
-                <span class="content">{{chooseTab == 1 ? "房东":"租客"}}</span>
-              </div>
-              <div>
-                <span class='tit'>手机号</span>
-                <span class="content">{{recordDetail.customer_info.phone || '/'}}</span>
-              </div>
-              <div>
-                <span class='tit'>身份证号</span>
-                <span class="content">{{recordDetail.customer_info.idcard || '/'}}</span>
+              <div class='detail_col_box'>
+                <div>
+                  <span class='tit'>姓名</span>
+                  <span class="content">{{recordDetail.customer_info.name}}</span>
+                </div>
+                <div>
+                  <span class='tit'>性别</span>
+                  <span class="content">{{recordDetail.customer_info.sex == 1 ? "男":"女"}}</span>
+                </div>
+                <div>
+                  <span class='tit'>性质</span>
+                  <span class="content">{{chooseTab == 1 ? "房东":"租客"}}</span>
+                </div>
+                <div>
+                  <span class='tit'>手机号</span>
+                  <span class="content">{{recordDetail.customer_info.phone || '/'}}</span>
+                </div>
+                <div>
+                  <span class='tit'>身份证号</span>
+                  <span class="content">{{recordDetail.customer_info.idcard || '/'}}</span>
+                </div>
               </div>
             </el-col>
-            <el-col :span='12' class='el-border'>
+            <el-col :span='12' class='detail_col el-border'>
               <h5>合同信息</h5>
-              <el-row :gutter="10">
+              <el-row :gutter="10" class='detail_col_box'>
                 <el-col :span='12'>
                   <div>
                     <span class='tit'>签约人</span>
@@ -170,7 +172,8 @@
                   <div>
                     <span class='tit'>合同照片</span>
                     <p class='content'>
-                      <img :src="img.uri" alt="" v-for='img in recordDetail.album.photo' :key='img.id'>
+                      <img :src="img.uri" alt="" v-for='img in recordDetail.album.photo' :key='img.id' data-magnify=""
+                        data-caption="图片查看器" :data-src="img.uri">
                     </p>
                   </div>
                 </el-col>
@@ -197,37 +200,45 @@
                   </div>
                   <div>
                     <span class='tit'>其他附件</span>
-                    <p class='content'>
-                      <img src="" alt="">
-                    </p>
+                    <div class='content content_album'>
+                      <div v-for='(item,key) in recordDetail.album' class='imgs_box' v-if='key !="photo"'>
+                        <p>{{dataAblum[key]}}</p>
+                        <div v-if='item'>
+                          <img :src="img.uri" alt="" v-for='img in item' :key='img.id' data-magnify="" data-caption="图片查看器"
+                            :data-src="img.uri" v-if='img.uri'>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span='6' v-if='recordDetail.house_extension'>
+            <el-col :span='6' classs='detail_col' v-if='recordDetail.house_extension'>
               <h5>房屋信息</h5>
-              <div>
+              <div class='detail_col_box'>
                 <span class='tit'>房屋地址</span>
                 <span class="content">{{recordDetail.house_extension.address}}</span>
               </div>
             </el-col>
-            <el-col :span='6' v-if='recordDetail.is_agency == 1 && recordDetail.agency_info'>
+            <el-col :span='6' class='detail_col' v-if='recordDetail.is_agency == 1 && recordDetail.agency_info'>
               <h5>中介信息</h5>
-              <div>
-                <span class='tit'>中介名称</span>
-                <span class="content">{{recordDetail.agency_info.agency_name}}</span>
-              </div>
-              <div>
-                <span class='tit'>中介价格</span>
-                <span class="content">{{recordDetail.agency_info.agency_price_now + "元"}}</span>
-              </div>
-              <div>
-                <span class='tit'>中介姓名</span>
-                <span class="content">{{recordDetail.agency_info.agency_user_name}}</span>
-              </div>
-              <div>
-                <span class='tit'>中介电话</span>
-                <span class="content">{{recordDetail.agency_info.agency_phone}}</span>
+              <div class='detail_col_box'>
+                <div>
+                  <span class='tit'>中介名称</span>
+                  <span class="content">{{recordDetail.agency_info.agency_name}}</span>
+                </div>
+                <div>
+                  <span class='tit'>中介价格</span>
+                  <span class="content">{{recordDetail.agency_info.agency_price_now + "元"}}</span>
+                </div>
+                <div>
+                  <span class='tit'>中介姓名</span>
+                  <span class="content">{{recordDetail.agency_info.agency_user_name}}</span>
+                </div>
+                <div>
+                  <span class='tit'>中介电话</span>
+                  <span class="content">{{recordDetail.agency_info.agency_phone}}</span>
+                </div>
               </div>
             </el-col>
           </el-row>
@@ -394,6 +405,22 @@ export default {
       //暂存 点击row
       currentRow: null,
       market_server: globalConfig.market_server,
+      dataAblum: {
+        identity_photo: '证件照片',
+        bank_photo: '银行卡照片',
+        photo: '合同照片',
+        water_photo: '水表照片',
+        electricity_photo: '电表',
+        gas_photo: '气表照片',
+        checkin_photo: '交接单照片',
+        auth_photo: '委托书照片',
+        deposit_photo: '押金照片',
+        promise: '承诺书照片',
+        property_photo: '房产证',
+        water_card_photo: '水卡',
+        electricity_card_photo: '电卡',
+        gas_card_photo: '气卡'
+      }
     }
   },
   created () {
