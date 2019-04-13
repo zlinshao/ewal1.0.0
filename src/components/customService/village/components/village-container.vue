@@ -15,7 +15,7 @@
 <script>
   export default {
     name: "index",
-    props: ['villageTitle'],
+    props: ['village'],
     data() {
       return {
         my_title: '',
@@ -23,12 +23,14 @@
     },
     mounted() {
     },
-    activated() {
-    },
     watch: {
-      villageTitle(val) {
-        console.log(val);
-        this.my_title = val;
+      village: {
+        handler(val) {
+          console.log(val);
+          this.my_title = val;
+        },
+        immediate: true,
+        deep: true
       },
     },
     computed: {},

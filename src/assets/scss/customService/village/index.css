@@ -187,6 +187,8 @@
         text-align: center;
         min-width: 80px;
         margin: 0 5px; }
+      #theme_name.theme1 #village > div .village-address .choose-address {
+        color: #cf2e33; }
     #theme_name.theme1 #village > div .village-num {
       color: #679FFF; }
     #theme_name.theme1 #village > div .village-main {
@@ -263,6 +265,11 @@
                   #theme_name.theme1 #village > div .village-main .content > div > div .village-footer > div:last-child .choose-village i {
                     color: white;
                     font-size: 18px; }
+      #theme_name.theme1 #village > div .village-main .content-none {
+        text-align: center;
+        font-family: 'jingDianXingShu';
+        font-size: 18px;
+        color: #cf2e33; }
     #theme_name.theme1 #village > div .filter-search {
       width: 100%;
       min-height: 500px;
@@ -305,7 +312,10 @@
           margin: 5px auto;
           cursor: pointer;
           box-sizing: border-box;
-          border: 1px solid transparent; }
+          border: 1px solid transparent;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden; }
         #theme_name.theme1 #village > div .filter-search .filter-body > div .choose-filter-button {
           color: #cf2e33;
           border: 1px solid #cf2e33; }

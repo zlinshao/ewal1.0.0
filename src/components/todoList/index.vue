@@ -65,7 +65,7 @@
   import repositoryDialog from './components/humanResource/repositoryDialog';
   import attenceDialog from './components/humanResource/attenceDialog';
   export default {
-    name: "index",
+    name: "todoList",
     components: {
       interviewDialog,
       repositoryDialog,

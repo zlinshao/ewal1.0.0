@@ -10,7 +10,7 @@
           <h3>仙居雅苑</h3>
         </div>
         <div class="dialog_main">
-          <VillageContainer :village-title="t1">
+          <VillageContainer :village="t1">
             <el-form label-width="80px" class="borderNone">
               <el-row :gutter="10">
                 <el-col :span="6">
@@ -77,7 +77,7 @@
               </el-form-item>
             </el-form>
           </VillageContainer>
-          <VillageContainer :village-title="t2"></VillageContainer>
+          <VillageContainer :village="t2"></VillageContainer>
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="click">确定</el-button>
@@ -106,12 +106,14 @@
         },
       }
     },
-    mounted() {
-      this.t1 = '基本信息';
-      this.t2 = '全站大数据房源匹配';
-    },
+    mounted() {},
     watch: {
       module(val) {
+        console.log(val);
+        if (val) {
+          this.t1 = '基本信息';
+          this.t2 = '全站大数据房源匹配';
+        }
         this.new_village_visible = val;
       },
     },

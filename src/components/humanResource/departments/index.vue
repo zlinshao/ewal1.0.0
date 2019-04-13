@@ -1123,7 +1123,7 @@
         this.edit_depart = item;
         this.departForm.name = item.name;
         this.departForm.leader = item.leader && item.leader.name || '';
-        this.departForm.leader_id = item.leader_id;
+        this.departForm.leader_id.push(item.leader_id);
         this.departForm.parent = item.parent_org && item.parent_org.name || '';
         this.departForm.parent_id = item.parent_id;
         this.is_edit_depart = true;
@@ -1171,8 +1171,19 @@
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
           this.$http.put(`organization/organization/${this.edit_depart.id}`,this.departForm).then(res => {
-            this.getDepartList();
-            this.handleCancelAddDepart();
+            if (res.code === '20030') {
+              this.$LjNotify('success',{
+                title: '成功',
+                message: res.msg
+              });
+              this.getDepartList();
+              this.handleCancelAddDepart();
+            } else {
+              this.$LjNotify('warning',{
+                title: '成功',
+                message: res.msg
+              })
+            }
           });
           return false;
         }
@@ -1195,7 +1206,7 @@
       handleGetDepart(val,name) {
         this.chooseDepart = false;
         if (val !== 'close') {
-          this.departForm.parent_id.push(val);
+          this.departForm.parent_id = val[0];
           this.departForm.parent = name;
         }
       },
