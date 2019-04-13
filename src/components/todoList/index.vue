@@ -62,7 +62,7 @@
   import repositoryDialog from './components/humanResource/repositoryDialog';
 
   export default {
-    name: "index",
+    name: "todoList",
     components: {
       interviewDialog,
       repositoryDialog,
