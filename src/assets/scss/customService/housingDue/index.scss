@@ -1,20 +1,83 @@
 @import '../../common.scss';
-#theme_name {
-  #HousingDue {
-  }
+
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/customService/housingDue/' + $n + '/' + $m;
+  @include bgImage($url);
 }
 
-// @mixin confirmImg($m, $n) {
-//   $url: '../../../../assets/image/common/lightweightComponents/confirm/' + $n +
-//     '/' + $m;
-//   @include bgImage($url);
-// }
+#theme_name {
+  #HousingDue {
+    .dialog_main {
+      overflow: hidden;
+      overflow-y: scroll;
+    }
+    // 合同详情
+    .contract_detail {
+      .main_tit {
+        font-size: 14px;
+        text-align: left;
+        margin: 20px 0 8px;
+      }
+      .noMarginTop {
+        margin-top: 0;
+      }
+      .common_info {
+        padding: 20px 0 12px;
+      }
+      .el-form-item {
+        margin-bottom: 10px;
+        .el-row {
+          margin-right: 0 !important;
+        }
+        .el-form-item__label {
+          line-height: 20px;
+        }
+        .el-form-item__content {
+          line-height: 20px;
+          text-align: left;
+        }
+      }
+      .house_info {
+      }
+    }
+    .urgedDeal {
+      .el-form {
+        margin-bottom: 0;
+      }
+      .el-textarea {
+        textarea {
+          min-height: 80px !important;
+        }
+      }
+    }
+  }
+}
 
 #theme_name.theme1 {
   #HousingDue {
     .mainListTable {
       .status1 {
-        //  @include confirmImg('shanchuchenggong.png', 'theme1');
+        @include confirmImg('fendi.png', 'theme1');
+        color: #cf2e33;
+      }
+      .status2 {
+        @include confirmImg('landi.png', 'theme1');
+        color: #0c66ff;
+      }
+    }
+    // 合同详情
+    .contract_detail {
+      .main_tit {
+        color: #686874;
+      }
+      .common_info {
+        background-color: #ffffff;
+      }
+      .el-form-item__label {
+        color: #b0b0b0;
+      }
+      .el-form-item__content {
+        color: #686874;
       }
     }
   }

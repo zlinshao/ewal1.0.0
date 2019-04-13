@@ -221,8 +221,6 @@
               .circle {
                 width: 15px;
                 height: 15px;
-                border: 1px solid red;
-                border-radius: 50%;
               }
             }
             .detail_dialog_right {
@@ -393,6 +391,9 @@
     .detail_dialog {
       background: #ffffff;
       color: #686874;
+      .circle {
+        @include confirmImg('biaoji.png', 'theme1');
+      }
     }
   }
 }
