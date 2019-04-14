@@ -30,7 +30,7 @@
       <!--小区列表-->
       <div class="village-main">
         <div class="content flex scroll_bar">
-          <div v-for="(village) in village_list" class="flex">
+          <div v-for="(village,index) in village_list" class="flex">
             <div>
               <div class="village-header">
                 <p class="name flex">
@@ -66,8 +66,8 @@
                   <el-button type="warning" size="small" plain @click="handleAllotCommunity(village)">分配</el-button>
                 </div>
                 <div class="flex-center">
-                  <div class="flex-center" :class="{'choose-village': check_choose.includes(village.id)}" @click="handleCheckVillage(village)">
-                    <i class="el-icon-check" v-if="check_choose.includes(village.id)"></i>
+                  <div class="flex-center" :class="{'choose-village': check_choose.includes(index)}" @click="handleCheckVillage(village,index)">
+                    <i class="el-icon-check" v-if="check_choose.includes(index)"></i>
                   </div>
                 </div>
               </div>
@@ -538,14 +538,14 @@
         }
         this.searchHighVisible = false;
       },
-      handleCheckVillage(village) {
+      handleCheckVillage(village,index) {
         for (var i=0;i<this.check_choose.length;i++) {
-          if (village.id === this.check_choose[i]) {
+          if (index === this.check_choose[i]) {
             this.check_choose.splice(i,1);
             return false;
           }
         }
-        this.check_choose.push(village.id);
+        this.check_choose.push(index);
       },
       //高级
       highSearch() {

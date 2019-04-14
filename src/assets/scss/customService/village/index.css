@@ -198,7 +198,8 @@
       overflow: hidden; }
       #theme_name.theme1 #village > div .village-main .content {
         flex-wrap: wrap;
-        height: 800px; }
+        height: 800px;
+        padding-bottom: 20px; }
         #theme_name.theme1 #village > div .village-main .content > div {
           width: 25%;
           padding: 10px;
