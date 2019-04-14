@@ -45,6 +45,7 @@ const Repository = () =>
 const DiscussPolitics = () =>
   import('@/components/humanResource/discussPolitics/index.vue') //奏事议政
 const Demo = () => import('@/components/humanResource/demo/index.vue') //测试
+const CurrentMonthAssessment = () => import('@/components/currentMonthAssessment/index.vue') //当月考核
 
 //财务中心
 const Finance = () => import('@/components/finance/index.vue')
@@ -508,6 +509,11 @@ export default new Router({
       path: '/militaryOrganization',
       name: '排兵布阵',
       component: MilitaryOrganization
+    },
+    {
+      path: '/currentMonthAssessment',
+      name: '当月考核',
+      component: CurrentMonthAssessment
     },
     {
       path: '/finance',

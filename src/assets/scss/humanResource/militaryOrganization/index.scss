@@ -9,7 +9,21 @@
       overflow: hidden;
       background-color: $colorFFF;
     }
-
+    .listTopCss{
+      .listTopRight{
+        .assessment{
+          width: 90px;
+          height: 25px;
+          color: $colorFFF;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size:7px;
+          font-family:MicrosoftYaHei;
+          color:rgba(255,255,255,1);
+        }
+      }
+    }
 
     .military-container {
       width: 100%;
