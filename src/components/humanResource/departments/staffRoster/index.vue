@@ -8,9 +8,10 @@
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
+        key="staffTable"
         style="width: 100%">
         <div v-for="(item,index) in table_column" :key="index">
-          <el-table-column min-width = "120px"  :label="item.val" :prop="item.key" align="center" v-if="item.info">
+          <el-table-column min-width="120px"  :label="item.val" :prop="item.key" align="center" v-if="item.info">
             <template slot-scope="scope">
               <span v-if="item.key.indexOf('staff') === -1">
                 {{ item.info[scope.row[item.key]] ? item.info[scope.row[item.key]] : '/' }}
@@ -24,13 +25,13 @@
             <template slot-scope="scope">
               <span v-if="item.key.indexOf('staff') === -1">
                 <span v-if="scope.row[item.key] && scope.row[item.key].length > 0">
-                  <span v-for="(tmp,idx) in scope.row[item.key]">{{ tmp[item.showKey ]}} <a v-if="idx !== scope.row[item.key].length - 1">;</a></span>
+                  <span v-for="(tmp,idx) in scope.row[item.key]" :key="idx">{{ tmp[item.showKey ]}} <a v-if="idx !== scope.row[item.key].length - 1">;</a></span>
                 </span>
                 <span v-else>/</span>
               </span>
               <span v-else>
                 <span v-if="scope.row.staff && scope.row.staff[item.key.split('.')[1]] && scope.row.staff[item.key.split('.')].length > 0">
-                  <span v-for="(tmp,idx) in scope.row.staff[item.key.split(',')[1]]">{{ tmp[item.showKey] }} <a v-if="idx !== scope.row.staff[item.key.split('.')[1]] - 1">;</a></span>
+                  <span v-for="(tmp,idx) in scope.row.staff[item.key.split(',')[1]]" :key="idx">{{ tmp[item.showKey] }} <a v-if="idx !== scope.row.staff[item.key.split('.')[1]] - 1">;</a></span>
                 </span>
                 <span v-else>/</span>
               </span>

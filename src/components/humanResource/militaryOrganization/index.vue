@@ -7,14 +7,14 @@
             <b>...</b>
           </p>
           <h1>培训考核</h1>
-          <h2 class="items-center">
+          <h2 v-if="chooseTab" class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
           </span>
           </h2>
         </div>
-        <div class="items-center listTopRight">
+        <div v-if="chooseTab" class="items-center listTopRight">
           <!--<div class="icons add" @click="new_train_visible = true"><b>+</b></div>-->
           <div class="assessment" v-if="chooseTab==3" @click="routerLink('currentMonthAssessment')">本月考核</div>
           <div class="icons search" @click="highSearch(chooseTab)"></div>
@@ -24,9 +24,35 @@
 
       <div v-if="!chooseTab" class="main-container military-container">
         <div class="content flex-center" v-if="!chooseTab">
-          <div class="left flex-center" @click="chooseTab=1"><span>库房总览</span></div>
-          <div class="right flex-center" @click="chooseTab=2"><span class="gray">借用领用</span></div>
-          <div class="right flex-center" @click="chooseTab=3"><span class="gray">资料库</span></div>
+          <div class="flex-center" @click="chooseTab=1">
+            <div class="bg-kaoqin bg-container"></div>
+            <div class="below-container">
+              <div class="container-left">考勤</div>
+              <div class="container-right">
+                <span class="writingMode">月度汇总</span>
+                <span class="writingMode">考勤确认表</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex-center" @click="chooseTab=2">
+            <div class="bg-peixun bg-container"></div>
+            <div class="below-container">
+              <div class="container-left">培训</div>
+              <div class="container-right">
+                <span class="writingMode">培训课程</span>
+                <span class="writingMode">考试设置</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex-center" @click="chooseTab=3">
+            <div class="bg-kaohe bg-container"></div>
+            <div class="below-container">
+              <div class="container-left">考核</div>
+              <div class="container-right">
+                <span class="writingMode">KPI考核</span>
+              </div>
+            </div>
+          </div>
         </div>
         <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
                    @change="handleChangeDate"></work-info>
@@ -35,12 +61,13 @@
       <!--考勤模块-->
       <attence v-if="chooseTab==1"></attence>
       <!--培训模块-->
-      <train  v-if="chooseTab==2"></train>
+      <train v-if="chooseTab==2"></train>
       <!--薪资模块-->
       <kpi v-if="chooseTab==3"></kpi>
 
       <!--模块入口-->
-      <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
+      <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true"
+                @close="visibleStatus = false"></MenuList>
       <!--高级搜索-->
       <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
     </div>
@@ -91,19 +118,18 @@
         chooseTab: 0, //当前选中模块
 
 
-
         work_info: [
           {work: '平均在线时长', val: '8 h'},
           {work: '平均处理用时', val: '30 min'},
           {work: '当日处理事件数', val: '16 件'},
           {work: '本周处理事件数', val: '35 件'},
         ],
-        event_data:[
+        event_data: [
           {value: 500, name: '一般'},
           {value: 300, name: '特殊'},
           {value: 200, name: '紧急'},
         ],
-        attend_data:[10,5,2]
+        attend_data: [10, 5, 2]
       }
     },
     mounted() {
@@ -158,12 +184,6 @@
     @include bgImage($url);
   }
 
-
-  @mixin repositoryImg($m, $n) {
-    $url: '../../../assets/image/humanResource/repository/' + $n + '/' + $m;
-    @include bgImage($url);
-  }
-
   #theme_name {
     .militaryOrganization {
       .listTopCss{
@@ -177,13 +197,34 @@
 
         .content {
 
-          .left {
+          /*.left {
             @include repositoryImg('kfzlx.png', 'theme1')
           }
 
           .right {
             @include repositoryImg('lwkfw.png', 'theme1')
+          }*/
+          .bg-kaoqin {
+            @include militaryImg('m.png', 'theme1');
+            &:hover {
+              @include militaryImg('j.png', 'theme1');
+            }
           }
+
+          .bg-peixun {
+            @include militaryImg('k.png', 'theme1');
+            &:hover {
+              @include militaryImg('n.png', 'theme1');
+            }
+          }
+
+          .bg-kaohe {
+            @include militaryImg('l.png', 'theme1');
+            &:hover {
+              @include militaryImg('o.png', 'theme1');
+            }
+          }
+
         }
       }
     }
