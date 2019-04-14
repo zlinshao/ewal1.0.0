@@ -27,6 +27,7 @@
     },
     watch: {
       module(val) {
+        console.log(val);
         this.dialogVisible = val;
       },
       dialogVisible(val) {

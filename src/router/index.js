@@ -19,6 +19,9 @@ const DataAudit = () => import('@/components/customService/dataAudit/index.vue')
 const Village = () => import('@/components/customService/village/index.vue') //小区
 const Maintenance = () =>
   import('@/components/customService/maintenance/index.vue')
+const ServiceOnline = () => import('@/components/customService/serviceOnline/index.vue'); //客服接线
+const ServiceCustomerManagement = () => import('@/components/customService/customerManagement/index.vue'); //客服客户管理
+const ServiceHouseManagement = () => import('@/components/customService/houseManagement/index.vue'); // 房源管理
 
 // 市场
 const MarketCentre = () => import('@/components/marketCentre/index.vue')
@@ -573,6 +576,21 @@ export default new Router({
       path: '/village',
       name: '小区',
       component: Village
+    },
+    {
+      path: '/serviceOnline',
+      name: '客服接线',
+      component: ServiceOnline
+    },
+    {
+      path: '/serviceCustomerManagement',
+      name: '客服客户管理',
+      component: ServiceCustomerManagement
+    },
+    {
+      path: '/serviceHouseManagement',
+      name: '客服房源管理',
+      component: ServiceHouseManagement
     },
     {
       path: '/pending',
