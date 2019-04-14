@@ -16,7 +16,7 @@
         </div>
         <div v-if="chooseTab" class="items-center listTopRight">
           <!--<div class="icons add" @click="new_train_visible = true"><b>+</b></div>-->
-          <div class="icons search" @click="highSearch(chooseTab)"></div>
+          <div v-if="chooseTab!==1" class="icons search" @click="highSearch(chooseTab)"></div>
         </div>
       </div>
 
@@ -165,10 +165,15 @@
       },
 
 
+
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;
         this.$store.dispatch('route_animation');
+      },
+
+      handleChangeDate(id) {
+
       },
 
     },
