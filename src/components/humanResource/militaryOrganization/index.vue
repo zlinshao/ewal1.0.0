@@ -16,6 +16,7 @@
         </div>
         <div class="items-center listTopRight">
           <!--<div class="icons add" @click="new_train_visible = true"><b>+</b></div>-->
+          <div class="assessment" v-if="chooseTab==3" @click="routerLink('currentMonthAssessment')">本月考核</div>
           <div class="icons search" @click="highSearch(chooseTab)"></div>
         </div>
       </div>
@@ -144,7 +145,7 @@
         this.chooseTab = id;
         this.$store.dispatch('route_animation');
       },
-
+      
     },
   }
 </script>
@@ -165,7 +166,13 @@
 
   #theme_name {
     .militaryOrganization {
-
+      .listTopCss{
+        .listTopRight{
+          .assessment{
+            @include militaryImg('cght.png', 'theme1')
+          }
+        }
+      }
       .military-container {
 
         .content {

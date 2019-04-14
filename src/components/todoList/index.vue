@@ -54,6 +54,8 @@
       <repository-dialog></repository-dialog>
       <!--考勤核对相关-->
       <attence-dialog></attence-dialog>
+      <!--罚款缴纳相关-->
+      <finespayment-dialog></finespayment-dialog>
       
     </div>
   </div>
@@ -64,12 +66,14 @@
   import interviewDialog from './components/humanResource/interviewDialog';
   import repositoryDialog from './components/humanResource/repositoryDialog';
   import attenceDialog from './components/humanResource/attenceDialog';
+  import finespaymentDialog from './components/humanResource/finespaymentDialog';
   export default {
     name: "todoList",
     components: {
       interviewDialog,
       repositoryDialog,
       attenceDialog,
+      finespaymentDialog,
     },
     computed: {
       todo_list_visible() {

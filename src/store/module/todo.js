@@ -79,6 +79,7 @@ const todo = {
         user: '张无忌',
         date: '2019-03-22',
         project: '研发中心会议',
+        onClick: 'humanResource_finespayment'
       }, {
         id: 5,
         title: '资料补齐',
@@ -137,7 +138,7 @@ const todo = {
     humanResource_interview_evaluate_visible: false,//面试评价界面显示隐藏
     humanResource_repository_visible: false,//内务库房页面显示隐藏
     humanResource_attence_visible: false,//考勤界面显示隐藏
-
+    humanResource_finespayment_visible: false,//罚款缴纳显示隐藏
   },
   // 计算属性
   getter: {},
@@ -170,6 +171,10 @@ const todo = {
     CHANGE_HUMANRESOURCE_ATTENCE_VISIBLE(state) {
       state.humanResource_attence_visible = !state.humanResource_attence_visible;
     },
+    //罚款缴纳待办
+    CHANGE_HUMANRESOURCE_FINESPAYMENT_VISIBLE(state) {
+      state.humanResource_finespayment_visible = !state.humanResource_finespayment_visible;
+    },
   },
   // 执行函数
   actions: {
@@ -199,6 +204,10 @@ const todo = {
     //改变考勤待办显示隐藏
     change_humanResource_attence_visible({commit},status) {
       commit('CHANGE_HUMANRESOURCE_ATTENCE_VISIBLE',status);
+    },
+    //改变罚款缴纳显示隐藏
+    change_humanResource_finespayment_visible({commit},status) {
+      commit('CHANGE_HUMANRESOURCE_FINESPAYMENT_VISIBLE',status);
     },
   }
 };

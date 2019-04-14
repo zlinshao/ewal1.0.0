@@ -69,9 +69,7 @@
     },
     methods: {
       getAreaChangeOrder: function() {
-        // this.$http.post(`${this.url}/fdd/process/staff_change`).then(res =>{
-        //   console.log(res.code)
-        // })
+        
       }
     }
   }
@@ -90,7 +88,7 @@
       .main-nav {
         .isActive {
           @include childrenImg('teji.png', 'theme1');
-          color: white;
+          
         }
       }
     }

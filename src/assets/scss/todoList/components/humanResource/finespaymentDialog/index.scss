@@ -1,0 +1,35 @@
+  @import "../../../../common";
+  #finespayment_dialog{
+    #lj_dialog {
+      #finespayment  {
+        .dialog_main {
+          .finespayment_dialog_form {
+            .finespayment_dialog_form_row {
+              width: 100%;
+              margin: 10px;
+              text-align: left;
+              .finespayment_dialog_form_label {
+                display: inline-block;
+                color: #C8C8CC;
+                text-align: right;
+                width: 190px;
+                padding-right: 30px;
+              }
+              > span {
+                font-size: 14px;
+                padding: 0 50px;
+                color: $color000;
+  
+                &.finespayment_dialog_form_checkbox {
+                  display: inline-block;
+                  .el-radio {
+                    display: inline-block !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

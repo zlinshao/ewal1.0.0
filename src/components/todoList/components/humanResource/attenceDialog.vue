@@ -16,7 +16,17 @@
         </div>
         <div class="dialog_main borderNone">
           <div class="calendar_container">
-            <calendar :datetime="datetime"></calendar>
+            <calendar :datetime="datetime">
+              <div :slot="'slot'+item.id" v-for="item in daysList"
+                class="days-item" :class="{rest:!item.reason,current:item.today}"
+                >
+                  <div class="days-item-content-container">
+                    <span class="days-item-content-date" :class="{colorE33:item.reason}">{{item.date}}</span>
+                    <span v-if="item.reason" class="days-item-content-reason">{{item.reason}}</span>
+
+                  </div>
+              </div>
+            </calendar>
           </div>
           <div class="attenceInfo">
             <div>
@@ -48,9 +58,12 @@
 <script>
   import ljDialog from '../../../common/lj-dialog';
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
+  import _ from 'lodash';
+  import mixins from '@/assets/js/mixins/calendar.js';
 
   export default {
     name: "attenceDialog",
+    mixins: [mixins],
     components: {
       ljDialog,
       Calendar
@@ -60,16 +73,37 @@
         return this.$store.state.todo.humanResource_attence_visible;
       }
     },
+    mounted(){
+      this.initDaysList(new Date('2019-04-01'));
+    },
     watch: {
      
     },
     data() {
       return {
           datetime: new Date(),
-          imgUrl: require('../../../../assets/image/todoList/components/humanResource/theme1/rili.png')
+          imgUrl: require('../../../../assets/image/todoList/components/humanResource/theme1/rili.png'),
+          daysList: [],
       }
     },
     methods: {
+      initDaysList(date) {
+        if (date) {
+          let daysList = [...this.getPrevMonthRestList(date), ...this.getCurrentMonthList(date), ...this.getNextMonthRestList(date)];
+          daysList.forEach((item, index) => {
+            item.id = ++index;
+          });
+          //处理数据
+          daysList = _.forEach(daysList, (o) => {
+            if(o.id%6==0) {
+              o.reason = '迟到';
+            }
+          });
+          this.daysList = daysList;
+        } else {
+          this.daysList = [];
+        }
+      },
     }
   }
 </script>
