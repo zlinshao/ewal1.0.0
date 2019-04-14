@@ -1,6 +1,6 @@
 <template>
   <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
-    <div class="iconInput">
+    <div class="input-container">
       <el-input :disabled="disabled" @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p class="icons user"></p>
     </div>
@@ -86,4 +86,14 @@
 
 <style scoped lang="scss">
   @import "../../../assets/scss/common/lightweightComponents/UserChoose";
+
+  @mixin commonImg($m,$n) {
+    $url: '../../../assets/image/common/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
+
+  .user {
+    @include commonImg('yonghu.png', 'theme1');
+  }
 </style>

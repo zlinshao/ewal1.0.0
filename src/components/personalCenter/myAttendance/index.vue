@@ -17,7 +17,7 @@
       </div>
       <div class="check-calendar">
         <div class="calendar-container">
-          <calendar :datetime="datetime" week-type="en"></calendar>
+          <calendar :datetime="datetime" lang="en"></calendar>
         </div>
         <div class="calendar-useless"></div>
 

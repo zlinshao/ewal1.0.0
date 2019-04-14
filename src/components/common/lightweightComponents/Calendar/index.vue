@@ -3,7 +3,7 @@
     <div class="main-container discuss-politics-container">
       <div class="calendar-container">
         <div class="container-left scroll_bar">
-          <div v-if="weekType=='ch'" class="calendar-week">
+          <div v-if="lang=='ch'" class="calendar-week">
             <div class="ui-container">
               <div v-for="(item,index) in weekListCh" class="calendar-week-item">
                 <div class="calendar-week-item-container">
@@ -13,7 +13,7 @@
             </div>
 
           </div>
-          <div v-if="weekType=='en'" class="calendar-week-en">
+          <div v-if="lang=='en'" class="calendar-week-en">
             <div class="ui-container">
               <div v-for="(item,index) in weekListEn" class="calendar-week-item">
                 <div class="calendar-week-item-container">
@@ -45,7 +45,7 @@
       datetime: {
         default:new Date(),
       },
-      weekType:{
+      lang:{
         default:'ch',//ch或者en
       },
     },
@@ -61,7 +61,7 @@
       }
     },
     watch: {
-      weekType: {
+      lang: {
         handler(val,oldVal) {
           /*if(val=='en') {
             this.weekList = this.weekListEn;
