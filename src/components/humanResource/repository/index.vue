@@ -27,9 +27,9 @@
 
     <div v-if="!chooseTab" class="main-container repository-container">
       <div class="content flex-center" v-if="!chooseTab">
-        <div class="left flex-center" @click="chooseTab=1"><span>库房总览</span></div>
-        <div class="right flex-center" @click="chooseTab=2"><span class="gray">借用领用</span></div>
-        <div class="right flex-center" @click="chooseTab=3"><span class="gray">资料库</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=1"><span>库房总览</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=2"><span>借用领用</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=3"><span>资料库</span></div>
       </div>
       <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
                  @change="handleChangeDate"></work-info>
@@ -238,12 +238,12 @@
         .content {
           //@include repositoryImg('sffmbj.png', 'theme1');
 
-          .left {
-            @include repositoryImg('kfzlx.png', 'theme1')
-          }
-
-          .right {
+          .bg-container {
             @include repositoryImg('lwkfw.png', 'theme1')
+
+            &:hover {
+              @include repositoryImg('kfzlx.png', 'theme1')
+            }
           }
         }
       }
