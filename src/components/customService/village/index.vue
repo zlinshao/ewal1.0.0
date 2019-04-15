@@ -21,7 +21,7 @@
           <div class="sort-control flex-center">
             <span @click="handleChangeSort(tmp)" v-for="tmp in sort_list" :key="tmp.id + 1" :class="{'current-choose': current_sort === tmp.id }">{{ tmp.val }}</span>
           </div>
-          <div class="icons all-choose"></div>
+          <div class="icons all-choose" @click="handleChooseAll"></div>
           <div class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
           <div class="icons search" @click="highSearch"></div>
         </div>
@@ -30,7 +30,7 @@
       <!--小区列表-->
       <div class="village-main">
         <div class="content flex scroll_bar">
-          <div v-for="(village,index) in village_list" class="flex">
+          <div v-for="(village,index) in village_list" class="flex" @click="handleGetDetail(village)">
             <div>
               <div class="village-header">
                 <p class="name flex">
@@ -62,11 +62,11 @@
               <div class="village-footer">
                 <div class="flex-center">
                   <el-button type="info" size="small">编辑</el-button>
-                  <el-button type="primary" size="small" plain @click="handleOpenMergeVillage(village)">合并</el-button>
-                  <el-button type="warning" size="small" plain @click="handleAllotCommunity(village)">分配</el-button>
+                  <el-button type="primary" size="small" plain @click.stop="handleOpenMergeVillage(village)">合并</el-button>
+                  <el-button type="warning" size="small" plain @click.stop="handleAllotCommunity(village)">分配</el-button>
                 </div>
                 <div class="flex-center">
-                  <div class="flex-center" :class="{'choose-village': check_choose.includes(index)}" @click="handleCheckVillage(village,index)">
+                  <div class="flex-center" :class="{'choose-village': check_choose.includes(index)}" @click.stop="handleCheckVillage(village,index)">
                     <i class="el-icon-check" v-if="check_choose.includes(index)"></i>
                   </div>
                 </div>
@@ -158,6 +158,59 @@
 
       <!--MenuList-->
       <MenuList :module="menu_visible" :list="customService" :backdrop="true" @close="menu_visible = false"></MenuList>
+
+      <!--小区详情-->
+      <lj-dialog
+        :visible="village_detail_visible"
+        :size="{width: 1200 + 'px',height: 850 + 'px'}"
+        @close="village_detail_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>{{ current_village_detail && current_village_detail.village_name }}</h3>
+            <div class="header_right">
+              <span>本小区已收房100套，已出租50套，出租率50%</span>
+            </div>
+          </div>
+          <div class="dialog_main">
+            <VillageContainer village="基本信息">
+              <el-form label-width="80px" class="borderNone" readonly>
+                <el-row>
+                  <el-col :span="6" v-for="(item,idx) in village_detail_form" :key="idx">
+                    <el-form-item :label="item.label" style="text-align: left;width: 100%">
+                      <div style="word-break: break-all">{{ item.val }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-form-item label="小区照片">
+                  <div class="flex">
+
+                  </div>
+                </el-form-item>
+                <el-form-item label="房屋照片"></el-form-item>
+                <el-form-item label="调研报告"></el-form-item>
+              </el-form>
+            </VillageContainer>
+            <VillageContainer village="全站大数据房源匹配">
+              <div id="village-detail" style="min-height: 400px"></div>
+            </VillageContainer>
+            <VillageContainer village="房型价格-区块链推荐">
+              <el-table :data="outer_net_data">
+                <el-table-column label="房型" prop="house_type" align="center"></el-table-column>
+                <el-table-column label="价格" prop="price" align="center"></el-table-column>
+                <el-table-column align="center">
+                  <template slot-scope="scope">
+                    <el-button type="primary" size="mini" plain @click="handleOpenOuterHouse(scope.row)">查看详情</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </VillageContainer>
+            <VillageContainer village="自适应聚类房型图"></VillageContainer>
+            <VillageContainer village="所属部门"></VillageContainer>
+          </div>
+        </div>
+      </lj-dialog>
+
     </div>
   </div>
 </template>
@@ -170,12 +223,68 @@
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
   import MenuList from '../../common/menuList.vue';
   import {customService} from '../../../assets/js/allModuleList.js';
+  import VillageContainer from './components/village-container.vue';
 
   export default {
     name: "index",
-    components: { searchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList},
+    components: { searchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer},
     data() {
       return {
+        //小区详情
+        village_detail_visible: false,
+        current_village_detail: '',
+        village_detail_form: {
+          city_name: {
+            label: '城市名称',
+            val: ''
+          },
+          area_name: {
+            label: '区/县名称',
+            val: ''
+          },
+          village_alias: {
+            label: '小区别名',
+            val: '',
+          },
+          address: {
+            label: '街道地址',
+            val: ''
+          },
+          built_year: {
+            label: '建筑年代',
+            val: ''
+          },
+          house_type: {
+            label: '房屋类型',
+            val: ''
+          },
+          total_buildings: {
+            label: '总栋数',
+            val: ''
+          },
+          property_fee: {
+            label: '物业费',
+            val: ''
+          },
+          property_phone: {
+            label: '物业电话',
+            val: ''
+          },
+          property_com: {
+            label: '物业公司',
+            val: ''
+          },
+          peripheral_info: {
+            label: '周边信息',
+            val: ''
+          },
+          remark: {
+            label: '备注',
+            val: ''
+          }
+        },
+        outer_net_data: [],
+
         menu_visible: false,
         customService,
         //部门
@@ -264,7 +373,8 @@
         current_community: '',
         merge_village_params: {
           merge_to_community_id: '',
-        }
+        },
+        map: null,
       }
     },
     mounted() {
@@ -273,6 +383,69 @@
     watch: {},
     computed: {},
     methods: {
+      //查看外网房源
+      handleOpenOuterHouse(row) {
+        if (row.url) {
+          window.open(row.url);
+        } else {
+          this.$LjNotify('info',{
+            title: '提示',
+            message: '暂无外网房源链接'
+          });
+          return false;
+        }
+      },
+      handleDetailMap(position) {
+        this.map = new AMap.Map('village-detail', {
+          resizeEnable: true,
+          center: [118.78 , 32.07], //初始化地图中心点
+          zoom: 13
+        });
+        var marker = new AMap.Marker({
+          icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+          position,
+          map: this.map
+        });
+        this.map.add(marker);
+      },
+      //小区全选
+      handleChooseAll() {
+        if (this.check_choose.length >= this.village_list.length) {
+          this.check_choose = [];
+          return false;
+        }
+        this.check_choose = [];
+        for (var key in this.village_list) {
+          this.check_choose.push(parseInt(key));
+        }
+      },
+      //小区详情
+      handleGetDetail(village) {
+        console.log(village);
+        this.$http.get(this.http_server + `v1.0/market/community/${village.id}`).then(res => {
+          if (res.code === 200) {
+            console.log(res.data);
+            this.current_village_detail = res.data;
+            this.village_detail_visible = true;
+            for (var key in this.village_detail_form) {
+              this.village_detail_form[key].val = res.data[key] ? res.data[key] : '';
+            }
+            this.village_detail_form.city_name.val = res.data.city && res.data.city.city_name;
+            this.village_detail_form.area_name.val = res.data.area && res.data.area.area_name;
+            this.outer_net_data = res.data.outer_net_data ? res.data.outer_net_data : [];
+            var location = [res.data.longitude,res.data.latitude];
+            this.$nextTick(() => {
+              this.handleDetailMap(location);
+            })
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.message
+            });
+            return false;
+          }
+        })
+      },
       handleOpenMenu() {
         this.menu_visible = !this.visibleStatus;
         this.$store.dispatch('route_animation');

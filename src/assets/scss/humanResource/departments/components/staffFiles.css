@@ -224,7 +224,8 @@
       padding: 40px;
       margin-left: 30px;
       position: relative;
-      background-color: #ffffff; }
+      background-color: #ffffff;
+      overflow: auto; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight b {
         position: absolute;
         top: 30px;
@@ -242,9 +243,12 @@
           #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form .info .item_margin {
             margin-top: 15px; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow {
-        width: 100%;
-        height: 150px;
-        position: relative; }
+        min-width: 590px;
+        width: 50%;
+        min-height: 150px;
+        position: relative;
+        background-color: #9CCC65;
+        display: inline-block; }
         #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow i {
           display: inline-block;
           width: 8px;
@@ -285,5 +289,35 @@
             top: -110px; }
             #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .bottoms span i {
               bottom: 0; }
+#theme_name #staffFiles .dialog_container .staff-line {
+  width: 100%;
+  cursor: pointer; }
+  #theme_name #staffFiles .dialog_container .staff-line .left-line {
+    width: 10%;
+    text-align: center;
+    height: 100px; }
+    #theme_name #staffFiles .dialog_container .staff-line .left-line i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background-color: #999999;
+      border-radius: 50%; }
+    #theme_name #staffFiles .dialog_container .staff-line .left-line div {
+      width: 2px;
+      height: 100px;
+      background-color: #999999;
+      margin: 0 auto;
+      position: relative;
+      top: -5px;
+      z-index: -1; }
+  #theme_name #staffFiles .dialog_container .staff-line .right-content {
+    width: 90%;
+    text-align: left; }
+    #theme_name #staffFiles .dialog_container .staff-line .right-content > p:last-child {
+      margin-top: 10px; }
+  #theme_name #staffFiles .dialog_container .staff-line:hover .right-content {
+    color: #cf2e33; }
+  #theme_name #staffFiles .dialog_container .staff-line:hover .left-line i {
+    background-color: #cf2e33; }
 
 /*# sourceMappingURL=staffFiles.css.map */

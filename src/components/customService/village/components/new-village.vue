@@ -7,10 +7,10 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>仙居雅苑</h3>
+          <h3>{{ new_village_form.village_name }}</h3>
         </div>
         <div class="dialog_main">
-          <VillageContainer :village="t1">
+          <VillageContainer village="基本信息">
             <el-form label-width="80px" class="borderNone">
               <el-row :gutter="10">
                 <el-col :span="6">
@@ -38,7 +38,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                  <el-form-item label="街道地址">
+                  <el-form-item label="街道">
                     <el-select v-model="new_village_form.region" placeholder="请选择">
                       <el-option v-for="(item,idx) in region_list" :key="idx" :value="item.region_id"
                                  :label="item.region_name"></el-option>
@@ -46,8 +46,11 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+              <el-form-item label="街道地址">
+                <el-input v-model="new_village_form.address" placeholder="请输入"></el-input>
+              </el-form-item>
               <el-form-item label="小区名称">
-                <el-input id="tipInput" placeholder="请输入" v-model="new_village_form.address"></el-input>
+                <el-input id="tipInput" placeholder="请输入" v-model="new_village_form.village_name"></el-input>
               </el-form-item>
               <el-form-item label="小区别名">
                 <el-input placeholder="请输入" v-model="new_village_form.village_alias"></el-input>
@@ -66,7 +69,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item label="房屋类型">
-                    <el-select placeholder="请输入" v-model="new_village_form.house_type">
+                    <el-select placeholder="请输入" v-model="new_village_form.property_type">
                       <el-option v-for="(item,idx) in house_type_list" :key="idx" :value="item.id"
                                  :label="item.val"></el-option>
                     </el-select>
@@ -116,7 +119,7 @@
               </el-form-item>
             </el-form>
           </VillageContainer>
-          <VillageContainer :village="t2">
+          <VillageContainer village="全站大数据房源匹配">
             <div id="container"></div>
           </VillageContainer>
         </div>
@@ -168,8 +171,6 @@
         },
 
         server: globalConfig.market_server,
-        t1: '',
-        t2: '',
         new_village_visible: false,
         province_list: [],
         city_list: [],
@@ -194,9 +195,10 @@
           area: '',
           address: '',
           region: '',
+          village_name: '',
           village_alias: '',
           total_buildings: '',
-          house_type: '',
+          property_type: '',
           total_houses: '',
           property_fee: '',
           property_phone: '',
@@ -220,8 +222,6 @@
       module: {
         handler(val) {
           if (val) {
-            this.t1 = '基本信息';
-            this.t2 = '全站大数据房源匹配';
             this.getAddressList('province');
             this.$nextTick(() => {
               this.handleInitialMap();
@@ -246,6 +246,21 @@
       //确定添加
       handleConfirmAddVillage() {
         console.log(this.new_village_form);
+        this.$http.post(this.server + 'v1.0/market/community',this.new_village_form).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.message
+            });
+            this.handleCloseAddVillage();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.message
+            });
+          }
+        })
       },
       //标记
       handleMarkerMap(position) {

@@ -256,6 +256,12 @@
   .action-bar .check {
     color: #0bb07b; }
 
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 .appTheme1 .el-select-dropdown__item:hover,
 .appTheme1 .el-select-dropdown__item.hover {
   color: #cf2e33;
@@ -306,23 +312,6 @@ div.el-popover {
 #theme_name .el-button--info {
   color: #686874;
   background-color: #dfdfdf; }
-#theme_name .el-table {
-  background-color: transparent; }
-  #theme_name .el-table::before {
-    height: 0; }
-  #theme_name .el-table tr {
-    background-color: transparent; }
-  #theme_name .el-table th {
-    background-color: transparent; }
-  #theme_name .el-table .tableHeader th div {
-    height: 40px;
-    line-height: 40px;
-    color: #686874;
-    font-weight: bold; }
-  #theme_name .el-table tbody tr.current-row td {
-    background-color: transparent !important; }
-  #theme_name .el-table tbody tr:hover td {
-    background-color: transparent !important; }
 #theme_name .borderNone .el-input__inner,
 #theme_name .borderNone .el-textarea__inner {
   border: none;

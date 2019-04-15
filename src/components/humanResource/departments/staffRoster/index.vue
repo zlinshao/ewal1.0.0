@@ -22,7 +22,7 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column min-width="120px" :label="item.val" align="center" v-else-if="item.isArray">
+          <el-table-column min-width="120px" :label="item.val" align="center" v-else-if="item.isArray" :fixed="item.key === 'position'">
             <template slot-scope="scope">
               <span v-if="item.key.indexOf('staff') === -1">
                 <span v-if="scope.row[item.key] && scope.row[item.key].length > 0">
@@ -43,6 +43,7 @@
               <el-button type="text" size="small" @click.stop="handleLookInfo(scope.row,item.key)">查看</el-button>
             </template>
           </el-table-column>
+          <el-table-column min-width="120px" :label="item.val" :prop="item.key" align="center" v-else-if="item.key === 'name'" fixed="left" style="background-color: white"></el-table-column>
           <el-table-column min-width="120px" :label="item.val" :prop="item.key" align="center" v-else></el-table-column>
         </div>
       </el-table>

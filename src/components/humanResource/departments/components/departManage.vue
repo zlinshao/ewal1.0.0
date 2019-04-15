@@ -85,7 +85,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="部门">
-                      <el-input placeholder="请选择" readonly @focus="" v-model="interview_info_detail.depart"></el-input>
+                      <el-input placeholder="请选择" readonly @focus="departOrgan_visible = true" v-model="interview_info_detail.depart"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -673,6 +673,9 @@
 
     <!--选人-->
     <StaffOrgan :module="staff_visible" @close="handleGetStaff"></StaffOrgan>
+
+    <!--选部门-->
+    <DepartOrgan :module="departOrgan_visible" @close="handleGetDepart"></DepartOrgan>
   </div>
 </template>
 
@@ -680,14 +683,16 @@
   import ljDialog from '../../../common/lj-dialog.vue';
   import PositionOrgan from '../../../common/postOrgan.vue';
   import StaffOrgan from '../../../common/staffOrgan.vue';
+  import DepartOrgan from '../../../common/departOrgan.vue';
 
   export default {
     name: "depart-manage",
     props: ['module','info','checkInfo'],
-    components: {ljDialog,PositionOrgan,StaffOrgan},
+    components: {ljDialog,PositionOrgan,StaffOrgan,DepartOrgan},
     data() {
       return {
         staff_visible: false,
+        departOrgan_visible: false,
 
         entry_materials_checkbox: [
           {id: 1,val: '意外险'},
@@ -961,6 +966,13 @@
       }
     },
     methods: {
+      handleGetDepart(id,name) {
+        if (id !== 'close') {
+          this.interview_info_detail.depart = name;
+          this.interview_info_detail.org_id = id;
+        }
+        this.departOrgan_visible = false;
+      },
       handleGetStaff(id,name) {
         if (id !== 'close') {
           this.interview_info_detail.recommender = id[0];
@@ -1440,7 +1452,6 @@
           page: 1,
           limit: 999
         }).then(res => {
-          console.log(res.data.data);
           if (res.code === '20000') {
             this.positionList = res.data.data;
           } else {

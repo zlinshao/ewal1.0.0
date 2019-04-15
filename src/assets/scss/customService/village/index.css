@@ -172,6 +172,12 @@
   .action-bar .check {
     color: #0bb07b; }
 
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name.theme1 #village {
   height: 100%;
   position: relative; }
@@ -203,7 +209,8 @@
         #theme_name.theme1 #village > div .village-main .content > div {
           width: 25%;
           padding: 10px;
-          margin-bottom: 10px; }
+          margin-bottom: 10px;
+          cursor: pointer; }
           #theme_name.theme1 #village > div .village-main .content > div > div {
             width: 95%;
             height: 350px;

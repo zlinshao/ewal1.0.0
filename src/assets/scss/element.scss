@@ -74,40 +74,40 @@ div.el-popover {
     background-color: $colorFDF;
   }
   //表格================
-  .el-table {
-    &::before {
-      height: 0;
-    }
-    background-color: transparent;
-    tr {
-      background-color: transparent;
-    }
-    th {
-      background-color: transparent;
-    }
-    .tableHeader {
-      th {
-        div {
-          height: 40px;
-          line-height: 40px;
-          color: $color874;
-          font-weight: bold;
-        }
-      }
-    }
-    tbody {
-      tr.current-row {
-        td {
-          background-color: transparent !important;
-        }
-      }
-      tr:hover {
-        td {
-          background-color: transparent !important;
-        }
-      }
-    }
-  }
+  //.el-table {
+  //  &::before {
+  //    height: 0;
+  //  }
+  //  background-color: transparent;
+  //  tr {
+  //    background-color: transparent;
+  //  }
+  //  th {
+  //    background-color: transparent;
+  //  }
+  //  .tableHeader {
+  //    th {
+  //      div {
+  //        height: 40px;
+  //        line-height: 40px;
+  //        color: $color874;
+  //        font-weight: bold;
+  //      }
+  //    }
+  //  }
+  //  tbody {
+  //    tr.current-row {
+  //      td {
+  //        background-color: transparent !important;
+  //      }
+  //    }
+  //    tr:hover {
+  //      td {
+  //        background-color: transparent !important;
+  //      }
+  //    }
+  //  }
+  //}
   //input取消border
   .borderNone {
     .el-input__inner,

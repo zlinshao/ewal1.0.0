@@ -271,6 +271,31 @@
                         <el-input v-model="staffDetail.dismiss_time"></el-input>
                       </el-form-item>
                     </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="银行卡照片">
+
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="劳务合同">
+
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="应聘人员信息登记表">
+
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="学籍验证报告">
+
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-form-item label="离职证明">
+
+                      </el-form-item>
+                    </el-col>
                   </el-row>
                 </el-form>
               </el-tab-pane>
@@ -386,7 +411,7 @@
               </el-tab-pane>
               <el-tab-pane label="成长轨迹" name="fourth">
                 <div class="items-center mainRight scroll_bar">
-                  <div class="grow" :style="{'backgroundPosition': num[index]}" v-for="(item,index) in dates">
+                  <div class="grow" :style="{'backgroundPosition': num[index]}"  v-for="(item,index) in dates">
                     <div :class="[(index%2 === 0) ? 'tops' :  'bottoms']">
                       <p @click="handleOpenGrow(dates,index)"><i></i>【{{item.created_at}} {{item.zh}}】<i></i></p>
                       <span><i></i></span>
@@ -413,7 +438,7 @@
     <!--员工轨迹详情-->
     <lj-dialog
       :visible="grow_visible"
-      :size="{width: 500 + 'px',height: 600 + 'px'}"
+      :size="{width: 800 + 'px',height: 750 + 'px'}"
       @close="grow_visible = false"
     >
       <div class="dialog_container">
@@ -421,11 +446,17 @@
           <h3>详情</h3>
         </div>
         <div class="dialog_main">
-          <el-steps direction="vertical" :active="step_active" space="20%">
-            <el-step :title="item.created_at" :description="item.zh" v-for="(item,idx) in current_grow" :key="idx"></el-step>
-          </el-steps>
+          <div class="staff-line flex" v-for="(item,idx) in current_grow" :key="idx">
+            <div class="left-line">
+              <i></i>
+              <div v-if="idx !== current_grow.length - 1"></div>
+            </div>
+            <div class="right-content">
+              <p>{{ item.created_at }}</p>
+              <p>{{ item.zh }}</p>
+            </div>
+          </div>
         </div>
-        <div class="dialog_footer"></div>
       </div>
     </lj-dialog>
   </div>
@@ -600,14 +631,18 @@
     },
     computed: {
       num() {
-        let aaa = 100 / (this.dates.length - 1), bbb = ['0 0'], ccc = 0;
-        for (let i = 0, l = this.dates.length - 1; i < l; i++) {
+        let bbb = ['0 0'],  ccc = 0;
+        for (let i =0;i<this.dates.length ;i ++){
           let ddd = '';
-          ccc = ccc + aaa;
+          ccc += 100;
+          if (ccc > 100) {
+            ccc = 0;
+          }
           ddd = ccc + '% 0';
           bbb.push(ddd);
         }
-        return bbb
+        console.log(bbb);
+        return bbb;
       }
     },
     methods: {
@@ -754,7 +789,7 @@
                 @include bgImage("../../../../assets/image/common/theme1/xiugai.png");
               }
               .grow {
-                background: url("../../../../assets/image/humanResource/departments/components/theme1/liuxian.png") no-repeat scroll;
+                background: url("../../../../assets/image/humanResource/departments/components/theme1/liuxian.png") no-repeat left center;
               }
             }
           }
