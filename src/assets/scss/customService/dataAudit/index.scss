@@ -32,6 +32,9 @@
           .el-form-item__content {
             font-size: 14px;
             text-align: left;
+            span {
+              white-space: nowrap;
+            }
           }
         }
         .person_tit {
@@ -171,6 +174,14 @@
           position: absolute;
           top: -10%;
         }
+      }
+    }
+    .el_check_box {
+      min-height: 80px;
+      @include flex('justify-start');
+      @include flex('items-center');
+      .main_tit {
+        margin: 0 10px 0 0;
       }
     }
   }

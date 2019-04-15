@@ -13,8 +13,8 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-button type="warning" plain>收房</el-button>
-        <el-button type="primary" plain>租房</el-button>
+        <el-button type="warning" plain @click='changeTag_Status(1)'>收房</el-button>
+        <el-button type="primary" plain @click='changeTag_Status(2)'>租房</el-button>
         <div></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
@@ -24,7 +24,7 @@
         header-row-class-name="tableHeader" style="width: 100%">
         <el-table-column align="center" label="签约时间">
           <template slot-scope="scope">
-            <i class='table_icon'></i>
+            <i class='table_icon' v-if='!cookieArr[scope.row.contract_id] || cookieArr[scope.row.contract_id] < scope.row.end_at'></i>
             <span>{{scope.row.createTime}}</span>
           </template>
         </el-table-column>
@@ -61,9 +61,8 @@
         <div class="dialog_header">
           <h3>合同详情</h3>
           <div class="header_right">
-            <span>
-              {{ contractDetail.contract_number }}
-            </span>
+            <span>{{contractDetail.contract_number}}</span>
+            <el-button type='danger' size='mini' @click='handleRewrite' style='margin-left:10px'>作废重签</el-button>
           </div>
         </div>
         <div class="dialog_main contract_detail">
@@ -72,7 +71,7 @@
           <div class="common_info">
             <el-form label-width="120px" v-if='contractDetail.house_extension'>
               <el-row :gutter="10">
-                <el-col :span="8" v-if='chooseTab == 1'>
+                <el-col :span="8" v-if='tag_status == 1'>
                   <el-form-item label="物业地址">
                     <span v-if='contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).name
                       || '--'}}</span>
@@ -131,7 +130,7 @@
                     <span>{{ contractDetail.sign_at || '--' }}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if='chooseTab == 1'>
+                <el-col :span="8" v-if='tag_status == 1'>
                   <el-form-item label="空置期">
                     <span>{{ contractDetail.ready_days || '--'}}</span>
                   </el-form-item>
@@ -166,32 +165,32 @@
                     <span>{{ contractDetail.pay_way || '--'}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="contractDetail.first_pay_at && chooseTab === 1 ">
+                <el-col :span="8" v-if="contractDetail.first_pay_at && tag_status === 1 ">
                   <el-form-item label="第一次打房租日期">
                     <span>{{ contractDetail.first_pay_at || '--'}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="contractDetail.second_pay_at && chooseTab === 1">
+                <el-col :span="8" v-if="contractDetail.second_pay_at && tag_status === 1">
                   <el-form-item label="第二次打房租日期">
                     <span>{{ contractDetail.second_pay_at || '--' }}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
+                <el-col :span="8" v-if="tag_status === 1">
                   <el-form-item label="房东承担费用">
                     <span v-for='pay in contractDetail.houserPay'>{{payArr[pay-1] || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="租客承担费用" v-if='chooseTab == 2'>
+                  <el-form-item label="租客承担费用" v-if='tag_status == 2'>
                     <span v-for='pay in contractDetail.non_landlord_fee'>{{payArr[pay-1] + '/'|| '--'}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
+                <el-col :span="8" v-if="tag_status === 1">
                   <el-form-item label="可否装修">
                     <span>{{ contractDetail.lease_collect.can_decorate== 1?'是':'否' }}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
+                <el-col :span="8" v-if="tag_status === 1">
                   <el-form-item label="可否添加物品">
                     <span>{{ contractDetail.lease_collect.can_add_goods == 1?'是':'否' }}</span>
                   </el-form-item>
@@ -251,11 +250,11 @@
             </el-form>
           </div>
 
-          <p class='main_tit' v-if="chooseTab === 1">签约人及产权人信息</p>
-          <p class='main_tit' v-if="chooseTab === 2">签约人信息</p>
+          <p class='main_tit' v-if="tag_status === 1">签约人及产权人信息</p>
+          <p class='main_tit' v-if="tag_status === 2">签约人信息</p>
           <div class="common_info">
             <el-form label-width="120px" v-if=' contractDetail.customer_info'>
-              <el-row :gutter="10" v-for='item in  contractDetail.customer_info' :key='item.id'>
+              <el-row :gutter="10" v-for='item in contractDetail.customer_info' :key='item.phone' v-if='item'>
                 <el-col :span="1">
                   <el-form-item label="签约人" class='person_tit'>
                   </el-form-item>
@@ -276,7 +275,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :gutter="10" v-if="chooseTab === 1">
+              <el-row :gutter="10" v-if="tag_status === 1">
                 <el-col :span="1">
                   <el-form-item label="产权人" class='person_tit'></el-form-item>
                 </el-col>
@@ -299,8 +298,8 @@
             </el-form>
           </div>
 
-          <p class='main_tit' v-if="chooseTab === 1">收款账号</p>
-          <div class="common_info" v-if="chooseTab === 1">
+          <p class='main_tit' v-if="tag_status === 1">收款账号</p>
+          <div class="common_info" v-if="tag_status === 1">
             <el-form label-width="120px">
               <el-row :gutter="10">
                 <el-col :span="8">
@@ -339,32 +338,50 @@
 
           <p class='main_tit'>附件信息</p>
           <div class="common_info">
-            <div v-if="contractDetail.album">
-              <div class="flex-center" v-for="(item,index) in contractDetail.album" style="min-height: 80px">
-                <div class='main_tit'>{{ polishing_data[chooseTab -
-                  1][index]}}</div>
-                <div style="width: 90%;text-align: left">
-                  <img v-for="tmp in item" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri" :src="tmp.uri"
-                    style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+            <el-checkbox-group v-model='rewrite_data'>
+              <el-checkbox name="type" v-for="(tit,key) in polishing_data[tag_status-1]" :key='key' :label='tit'>
+                <template>
+                  <div class='el_check_box'>
+                    <div class='main_tit'> {{tit}}</div>
+                    <div style="width: 90%;text-align: left">
+                      <img v-for="tmp in contractDetail.album[key]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
+                        :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+                    </div>
+                  </div>
+                </template>
+              </el-checkbox>
+            </el-checkbox-group>
+          </div>
+
+          <p class='main_tit'>资料不齐记录</p>
+          <div class='data_info'>
+            <div class="flex-center">
+              <div class="flex_center_tit">发送对象</div>
+              <div class="flex_center_content flex_center_content1 borderNone">
+                <el-input @focus="organSearch" readonly v-model="postman" :placeholder="contractDetail.org_leader + ',' + contractDetail.sign_user"></el-input>
+              </div>
+            </div>
+
+            <div class="flex-center flex-center2">
+              <div class="flex_center_tit">不齐内容</div>
+              <div class="flex_center_content flex_center_content2">
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="postContent">
+                </el-input>
+                <div class='buttons'>
+                  <p class='buttons_left'>
+                    <i class='icon'></i>
+                    <span>发送</span>
+                  </p>
+                  <el-button type="primary" plain @click='handleGetRecord'>不良记录</el-button>
                 </div>
               </div>
             </div>
-            <div v-else>暂无资料</div>
           </div>
+        </div>
 
-          <p class='main_tit'>相关合同</p>
-          <div class="common_info" v-if="contractDetail.related_contract && contractDetail.related_contract.length > 0">
-            <el-form label-width="120px">
-              <el-row :gutter="10">
-                <el-col :span="8" v-for="(item,index) in contractDetail.related_contract" :key="index">
-                  <el-form-item :label="contractLabel(item)">
-                    <span>{{ item.contract_number +'-' + (item.is_invalid == 0 ? "合同正常" : "合同作废")}}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-          <div class="common_info" v-else>暂无资料</div>
+        <div class="dialog_footer">
+          <el-button type="success" size="small" @click="handleContractPass" v-if='tag_status == 1 || tag_status == 2'>通过</el-button>
+          <el-button type="warning" size="small" @click="handleContractRejected" v-if='tag_status == 3'>驳回</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -460,11 +477,9 @@ export default {
         }
       ],
       chooseTab: 1,
+      tag_status: 1,
       showSearch: false,
-      searchData: {
-        status: 'housingDue',
-        data: [],
-      },
+      searchData: {},
       showData: {
         createTime: '签约时间',
         ContractNo: '合同编号',
@@ -566,8 +581,39 @@ export default {
       postMess: {
         person: []
       },
+      //附件
+      polishing_data: [
+        {
+          identity_photo: '证件照片',
+          bank_photo: '银行卡照片',
+          photo: '合同照片',
+          water_photo: '水表照片',
+          electricity_photo: '电表照片',
+          gas_photo: '气表照片',
+          checkin_photo: '交接单照片',
+          auth_photo: '委托书照片',
+          deposit_photo: '押金照片',
+          promise: '承诺书照片',
+          property_photo: '房产证照片',
+          water_card_photo: '水卡照片',
+          electricity_card_photo: '电卡照片',
+          gas_card_photo: '气卡照片',
+        },
+        {
+          checkin_photo: '交接单照片',
+          certificate_photo: '截图凭证',
+          deposit_photo: '押金收条',
+          identity_photo: '证件照片',
+          photo: '合同照片',
+          bank_photo: '银行卡照片',
+          water_photo: '水表照片',
+          electricity_photo: '电表照片',
+          gas_photo: '气表照片'
+        }
+      ],
       //资料不齐记录
       dataRecord_visible: false,
+      rewrite_data: [],
       // 合同作废重签
       rewrite_visible: false,
       rewrite_note: '',
@@ -575,11 +621,19 @@ export default {
         limit: 10,
         page: 1,
       },
+      cookieArr: {},
       market_server: globalConfig.market_server,
     }
   },
   created () {
     this.initData()
+    this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
+  },
+  watch: {
+    rewrite_data (newVal) {
+      this.postContent = ''
+      this.postContent = newVal.join(',') + '缺失;'
+    }
   },
   methods: {
     // 客服入口
@@ -587,15 +641,30 @@ export default {
       this.visibleStatus = !this.visibleStatus;
       this.$store.dispatch('route_animation');
     },
+    getCookie (cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+      }
+      return "";
+    },
+    setCookie (cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      var expires = "expires=" + d.toGMTString();
+      document.cookie = cname + "=" + cvalue + "; " + expires;
+    },
     getDateList () {
       this.showLoading(true);
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}`, this.params).then(res => {
+      this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_status}`, this.params).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.data;
-          this.tableDateCount = res.data.count;
+          this.tableDataCount = res.data.count;
         } else {
           this.tableData = [];
-          this.tableDateCount = 0;
+          this.tableDataCount = 0;
         }
         this.showLoading(false);
       })
@@ -621,15 +690,44 @@ export default {
         this.tableData.push(obj);
       }
     },
-    //切换
+    //切换 
     changeTabs (id) {
       if (this.chooseTab !== id) {
         this.chooseTab = id
+        this.getDateList()
+      }
+    },
+    // 切换 租房 收房
+    changeTag_Status (id) {
+      if (this.tag_status !== id) {
+        this.tag_status = id
+        this.getDateList()
       }
     },
     //高级搜索
     highSearch () {
       this.showSearch = true;
+      if (this.tag_status == 2) {
+        dataAuditSearch.data[1].value = [
+          {
+            id: 1,
+            title: '租房'
+          },
+          {
+            id: 2,
+            title: '续租'
+          },
+          {
+            id: 3,
+            title: '调房'
+          },
+          {
+            id: 4,
+            title: '转租'
+          }
+        ]
+
+      }
       this.searchData = dataAuditSearch;
     },
     hiddenModule (val) {
@@ -638,20 +736,33 @@ export default {
         console.log(val);
       }
     },
-    //双击详情
+    //双击 合同详情
     handleGetDetail (row) {
-      this.contract_detail_visible = true;
+      this.currentRow = row
+      //  this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_stauts}/${row.contract_id}`).then(res => {
+      this.tag_status = 2
+      this.$http.get(this.market_server + `v1.0/market/contract/2/1`).then(res => {
+        console.log(res)
+        if (res.code === 200) {
+          this.contractDetail = res.data
+          this.contract_detail_visible = true;
+          this.$set(this.cookieArr, row.contract_id, new Date().getTime())
+          this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
+        }
+      })
     },
     // 关闭详情
     handleCloseDetail () {
-      // this.contractDetail = '';
+      this.contractDetail = '';
       this.contract_detail_visible = false;
+      this.currentRow = null
     },
+    handleContractPass () { },
+    handleContractRejected () { },
     //footer
     handleCurrentChange (val) {
       this.params.page = val
-      //this.getRepositoryList();
-      //console.log(`当前页: ${val}`);
+      this.getDateList()
     },
     //选择人员
     organSearch () {

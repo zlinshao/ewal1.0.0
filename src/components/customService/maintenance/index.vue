@@ -13,7 +13,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons add"><b>+</b></div>
+        <div class="icons add" @click='addOrder'><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -46,6 +46,23 @@
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
+
+    <LjDialog :visible="addOrder_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseAddOrder">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>标记记录</h3>
+
+        </div>
+        <div class="dialog_main detail_dialog">
+          <div class="back_info scroll_bar">
+
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleCloseLookBackInfo">确定</el-button>
+        </div>
+      </div>
+    </LjDialog>
   </div>
 </template>
 
@@ -54,10 +71,10 @@ import SearchHigh from '../../common/searchHigh.vue'
 import MenuList from '../../common/menuList.vue';
 import { maintenanceSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
-
+import LjDialog from '../../common/lj-dialog.vue';
 export default {
   name: "index",
-  components: { SearchHigh, MenuList },
+  components: { SearchHigh, MenuList, LjDialog },
   data () {
     return {
       maintenanceSearch,
@@ -129,6 +146,7 @@ export default {
       showSearch: false,
       searchData: {},
       market_server: globalConfig.market_server,
+      addOrder_visible: false
     }
   },
   mounted () {
@@ -182,7 +200,13 @@ export default {
         // this.getDateList()
       }
     },
-
+    // add 工单
+    addOrder () {
+      this.addOrder_visible = true
+    },
+    handleCloseAddOrder () {
+      this.addOrder_visible = false
+    },
     /*  // 当前点击
      tableClickRow(row) {
        let ids = this.chooseRowIds;
