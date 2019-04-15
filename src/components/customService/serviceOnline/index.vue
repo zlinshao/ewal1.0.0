@@ -19,13 +19,13 @@
           :data="online_list"
           @row-click="handleClickRow"
         >
-          <el-table-column label="签约时间" prop="a"></el-table-column>
-          <el-table-column label="合同编号" prop="b"></el-table-column>
-          <el-table-column label="地址" prop="c"></el-table-column>
-          <el-table-column label="来点类型" prop="d"></el-table-column>
-          <el-table-column label="接线时长" prop="e"></el-table-column>
-          <el-table-column label="来点内容" prop="f"></el-table-column>
-          <el-table-column label="接线人" prop="g"></el-table-column>
+          <el-table-column label="接听时间" prop="call_log.start_time" align="center"></el-table-column>
+          <el-table-column label="合同编号" prop="b" align="center"></el-table-column>
+          <el-table-column label="地址" prop="customer.name" align="center"></el-table-column>
+          <el-table-column label="来电类型" prop="d" align="center"></el-table-column>
+          <el-table-column label="接线时长/s" prop="call_log.duration" align="center"></el-table-column>
+          <el-table-column label="来电内容" prop="custom_fields" align="center"></el-table-column>
+          <el-table-column label="接线人" prop="customer.owner_name" align="center"></el-table-column>
         </el-table>
         <footer class="flex-center bottomPage">
           <div class="develop flex-center">
@@ -100,6 +100,7 @@
     components: {MenuList,searchHigh,LjDialog},
     data() {
       return {
+        server: globalConfig.market_server,
         //接线详情
         online_detail_visible: false,
         online_detail: {
@@ -116,21 +117,34 @@
         searchData: {},
         params: {
           page: 1,
-          limit: 20
+          limit: 20,
+          date_min: '',
+          date_max: ''
         },
-        online_list: [
-          {a: '2019-01-02',b: 'LJSF0230834',c: '乔虹苑12-102',d: '房屋查询',e: '00:20:00',f: '询问租金情况，已解决...',g: '小马哥'}
-        ],
+        online_list: [],
         online_count: 0,
       }
     },
     mounted() {
+      this.getServiceOnlineList();
     },
     activated() {
     },
     watch: {},
     computed: {},
     methods: {
+      getServiceOnlineList() {
+        this.$http.get(this.server + 'v1.0/csd/udesk/calllog',this.params).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.online_list = res.data.data;
+            this.online_count = res.data.total;
+          } else {
+            this.online_list = [];
+            this.online_count = 0;
+          }
+        })
+      },
       handleClickRow() {
         this.online_detail_visible = true;
       },
@@ -152,7 +166,7 @@
               keyType: 'dateRange',
               title: '来电时间',
               placeholder: '请选择日期',
-              keyName: 'date1',
+              keyName: 'date',
               dataType: []
             },
             {

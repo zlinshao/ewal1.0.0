@@ -102,7 +102,7 @@ export const customService = {
     },
     {
       title: '合同管理',
-      url: ''
+      url: '/serviceContractManagement'
     },
     {
       title: '小区管理',

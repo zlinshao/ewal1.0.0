@@ -3,7 +3,7 @@
     <div>
       <div class="header items-bet">
         <div class="items-center">
-          <span class="btn" @click="show_market = true;show_shadow = true">...</span>
+          <span class="btn" @click="show_market = true">...</span>
           <span class="title">房源管理</span>
         </div>
         <div class="items-center">
@@ -15,8 +15,7 @@
       <house-card :house-source="house_source" :info="house_params" @close="handleCloseOverview"
                   @open="handleOpenCardDetail"
                   @change="handleChangePage"></house-card>
-      <market-menu-list :show-market="show_market" :show-shadow="show_shadow"
-                        @close="handleCloseMenu"></market-menu-list>
+      <MenuList :module="show_market" :list="customService" :backdrop="true" @close="handleCloseMenu"></MenuList>
       <searchHigh :module="isHigh" :show-data="searchData" @close="handleCloseSearch"></searchHigh>
 
       <overview-info :overview-visible="overview_visible" @open="overview_visible = true"></overview-info>
@@ -187,18 +186,20 @@
 </template>
 
 <script>
-  import MarketMenuList from '../../marketCentre/components/market-menu-list.vue';
   import searchHigh from '../../common/searchHigh.vue';
   import HouseCard from '../../marketCentre/components/house-card.vue';
   import OverviewInfo from '../../marketCentre/components/overview-info.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
+  import MenuList from '../../common/menuList.vue';
+  import {customService} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: {MarketMenuList, searchHigh, HouseCard, OverviewInfo, LjDialog, HouseFilter},
+    components: {searchHigh, HouseCard, OverviewInfo, LjDialog, HouseFilter,MenuList},
     data() {
       return {
+        customService,
         //房屋详情
         house_detail: '',
         current_house: '',
@@ -230,7 +231,6 @@
           data3: []
         },
         show_market: false,
-        show_shadow: false,
         isHigh: false,
         searchData: {
           status: 'houseManagement',
@@ -963,7 +963,6 @@
       },
       handleCloseMenu() {
         this.show_market = false;
-        this.show_shadow = false;
       },
       handleCloseSearch(search) {
         if (search !== 'close') {

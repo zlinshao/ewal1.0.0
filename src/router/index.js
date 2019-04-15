@@ -21,7 +21,8 @@ const Maintenance = () =>
   import('@/components/customService/maintenance/index.vue')
 const ServiceOnline = () => import('@/components/customService/serviceOnline/index.vue'); //客服接线
 const ServiceCustomerManagement = () => import('@/components/customService/customerManagement/index.vue'); //客服客户管理
-const ServiceHouseManagement = () => import('@/components/customService/houseManagement/index.vue'); // 房源管理
+const ServiceHouseManagement = () => import('@/components/customService/houseManagement/index.vue'); // 客服房源管理
+const ServiceContractManagement = () => import('@/components/customService/contractManagement/index.vue'); //客服合同管理
 
 // 市场
 const MarketCentre = () => import('@/components/marketCentre/index.vue')
@@ -597,6 +598,11 @@ export default new Router({
       path: '/serviceHouseManagement',
       name: '客服房源管理',
       component: ServiceHouseManagement
+    },
+    {
+      path: '/serviceContractManagement',
+      name: '客服合同管理',
+      component: ServiceContractManagement
     },
     {
       path: '/pending',

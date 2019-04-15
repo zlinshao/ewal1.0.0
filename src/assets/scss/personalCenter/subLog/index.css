@@ -172,7 +172,54 @@
   .action-bar .check {
     color: #0bb07b; }
 
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name #sub_log {
   height: 100%; }
+  #theme_name #sub_log .log-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 30px; }
+    #theme_name #sub_log .log-container .log-toolbar {
+      height: 8%;
+      display: flex;
+      justify-content: space-between; }
+      #theme_name #sub_log .log-container .log-toolbar .toolbar-left {
+        height: 100%;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center;
+        color: #686874; }
+        #theme_name #sub_log .log-container .log-toolbar .toolbar-left .toolbar-left-static {
+          font-size: 20px;
+          font-family: MicrosoftYaHei;
+          padding-right: 15px; }
+        #theme_name #sub_log .log-container .log-toolbar .toolbar-left .toolbar-left-dynamic {
+          font-size: 16px;
+          opacity: .7; }
+      #theme_name #sub_log .log-container .log-toolbar .toolbar-right {
+        height: 100%;
+        width: 200px;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center; }
+    #theme_name #sub_log .log-container .log-table {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px; }
+      #theme_name #sub_log .log-container .log-table .log-table-list {
+        height: 85%; }
+        #theme_name #sub_log .log-container .log-table .log-table-list .log-table-item:not(:nth-child(5n+5)) {
+          margin-right: 3.75%; }
+      #theme_name #sub_log .log-container .log-table .log-table-pagination {
+        height: 15%; }
 
 /*# sourceMappingURL=index.css.map */

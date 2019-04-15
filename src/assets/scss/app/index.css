@@ -140,7 +140,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +159,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,9 +168,15 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
 
 @keyframes lang_move {
   0% {
@@ -203,8 +209,8 @@
       -moz-border-radius: 20px;
       border-radius: 20px; }
       #app header .headLeft .showButton:hover {
-        color: #CF2E33;
-        border-color: #CF2E33; }
+        color: #cf2e33;
+        border-color: #cf2e33; }
     #app header .items-center .funTop {
       margin-right: 40px; }
     #app header .items-center .personal div {
@@ -226,7 +232,7 @@
       width: 30px;
       height: 24px; }
   #app select {
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 6px 18px;
     background-color: rgba(0, 0, 0, 0.4);
     -webkit-border-radius: 6px;
@@ -283,7 +289,7 @@
           margin-top: 20px;
           font-size: 18px; }
     #app #moduleList > div .list:hover div {
-      color: #FFFFFF; }
+      color: #ffffff; }
   #app #moduleList.moduleList {
     opacity: 1;
     -webkit-transform: scale(1);
@@ -391,14 +397,14 @@
     z-index: 1001; }
 
 #app.app1 {
-  background-color: #F2F2F2; }
+  background-color: #f2f2f2; }
   #app.app1 header {
-    background-color: #FFFFFF;
-    border-bottom: #F2F2F2; }
+    background-color: #ffffff;
+    border-bottom: #f2f2f2; }
   #app.app1 select {
-    color: #FFFFFF; }
+    color: #ffffff; }
   #app.app1 #moduleList {
-    background-color: #FFFFFF; }
+    background-color: #ffffff; }
     #app.app1 #moduleList > div {
       background: url("./assets/image/module/theme1/modulebg.png") no-repeat scroll center;
       background-size: 100% 100%;
@@ -465,11 +471,11 @@
         background-size: 100% 100%; }
 
 #app.app2 {
-  color: #00FDFF;
+  color: #00fdff;
   background: url("./assets/image/2.jpg") no-repeat scroll center;
   background-size: 100% 100%; }
   #app.app2 header select {
-    color: #00FDFF; }
+    color: #00fdff; }
   #app.app2 #moduleList {
     background: url("./assets/image/2.jpg") no-repeat scroll center;
     background-size: 100% 100%; }
@@ -514,7 +520,7 @@
     #app.app2 #moduleList > div .list:hover p {
       opacity: 1; }
     #app.app2 #moduleList > div .list:hover div {
-      color: #00FDFF;
+      color: #00fdff;
       background: url("./assets/image/module/theme2/moduledianji.png") no-repeat scroll center;
       background-size: 100% 100%; }
 
@@ -558,17 +564,17 @@
         margin: 20px 0 0;
         width: 6px;
         height: 6px;
-        background-color: #9CCC65;
+        background-color: #9ccc65;
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%; }
       #app.app4 #moduleList > div .list div span {
-        color: #FFFFFF; }
+        color: #ffffff; }
       #app.app4 #moduleList > div .list div span:first-of-type {
         font-size: 30px;
         font-family: 'jingDianXingShu'; }
       #app.app4 #moduleList > div .list div span:last-of-type {
-        color: #9CCC65; }
+        color: #9ccc65; }
       #app.app4 #moduleList > div .list div b {
         position: absolute;
         top: -80px;
@@ -580,14 +586,14 @@
       -webkit-border-radius: 100px;
       -moz-border-radius: 100px;
       border-radius: 100px;
-      background-color: #FFFFFF; }
+      background-color: #ffffff; }
       #app.app4 #moduleList > div .list:hover div span {
-        color: #008A7B; }
+        color: #008a7b; }
       #app.app4 #moduleList > div .list:hover div i {
         display: inline-block;
         width: 6px;
         height: 6px;
-        background-color: #FB8C00;
+        background-color: #fb8c00;
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%;

@@ -99,17 +99,21 @@
               <el-form-item label="周边信息">
                 <el-input placeholder="请输入" v-model="new_village_form.peripheral_info"></el-input>
               </el-form-item>
-              <el-form-item label="地铁信息">
+              <el-form-item label="地铁路线">
                 <el-input placeholder="请输入" v-model="new_village_form.subway_road"></el-input>
               </el-form-item>
               <el-form-item label="备注">
                 <el-input placeholder="请输入" type="textarea" :row="8" v-model="new_village_form.remark"></el-input>
               </el-form-item>
               <el-form-item label="小区照片">
-                <Upload :file="pic_upload.village" @success="handleGetUploadFile"></Upload>
+                <Upload :file="pic_upload.village_photo" @success="handleGetUploadFile"></Upload>
               </el-form-item>
-              <el-form-item label="房屋照片"></el-form-item>
-              <el-form-item label="调研报告"></el-form-item>
+              <el-form-item label="房屋照片">
+                <Upload :file="pic_upload.home_photo" @success="handleGetUploadFile"></Upload>
+              </el-form-item>
+              <el-form-item label="调研报告">
+                <Upload :file="pic_upload.files" @success="handleGetUploadFile"></Upload>
+              </el-form-item>
             </el-form>
           </VillageContainer>
           <VillageContainer :village="t2">
@@ -137,8 +141,24 @@
       return {
 
         pic_upload: {
-          village: {
-            keyName: 'album',
+          village_photo: {
+            keyName: 'village_photo',
+            setFile: [],
+            size: {
+              width: '50px',
+              height: '50px'
+            }
+          },
+          home_photo: {
+            keyName: 'home_photo',
+            setFile: [],
+            size: {
+              width: '50px',
+              height: '50px'
+            }
+          },
+          files: {
+            keyName: 'files',
             setFile: [],
             size: {
               width: '50px',
@@ -188,6 +208,7 @@
           built_year: '',
           longitude: '',
           latitude: '',
+          album: {},
         },
         //高德地图api
         map: null,
@@ -219,7 +240,7 @@
       //获取上传文件
       handleGetUploadFile(file) {
         if (file !== 'close') {
-          console.log(file);
+          this.new_village_form.album[file[0]] = file[1];
         }
       },
       //确定添加

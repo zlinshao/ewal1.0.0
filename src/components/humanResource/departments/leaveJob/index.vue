@@ -8,6 +8,7 @@
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
+        :default-sort="{prop: 'staff.enroll',order: 'descending'}"
         style="width: 100%">
         <el-table-column label="姓名" prop="name" align="center"></el-table-column>
         <el-table-column label="岗位" prop="position" align="center">
@@ -17,7 +18,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="入职时间" prop="staff.enroll" align="center"></el-table-column>
+        <el-table-column label="入职时间" prop="staff.enroll" align="center" sortable></el-table-column>
         <el-table-column label="离职时间" prop="staff.dismiss_time" align="center"></el-table-column>
         <el-table-column label="离职操作时间" prop="staff.is_on_job" align="center"></el-table-column>
         <el-table-column label="禁用操作时间" prop="staff.is_enable" align="center"></el-table-column>
@@ -129,6 +130,9 @@
     },
     computed: {},
     methods: {
+      filterHandler() {
+
+      },
       handleLeaveProof(row) {
         if (row.staff && row.staff.leave_proof_number) {
           window.open(globalConfig.server + `staff/e_contract/show/${row.staff.leave_proof_number}`);

@@ -8,6 +8,7 @@
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
+        :default-sort="{prop: 'staff.enroll',order: 'descending'}"
         key="staffTable"
         style="width: 100%">
         <div v-for="(item,index) in table_column" :key="index">
@@ -87,6 +88,7 @@
           { key: 'staff.origin_addr',val: '籍贯'},
           { key: 'staff.political_status',val: '政治面貌',info: {1: '群众',2: '团员',3: '党员',4: '其他'}},
           { key: 'staff.birthday',val: '出生年月'},
+          { key: 'staff.enroll',val: '入职时间'},
           { key: 'staff.city',val: '城市'},
           { key: 'staff.origin_addr',val: '家庭住址'},
           { key: 'phone',val: '联系方式'},
@@ -100,7 +102,6 @@
           { key: 'staff.graduation_time',val: '毕业时间'},
           { key: 'staff.major',val: '专业'},
           { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
-          { key: 'staff.enroll',val: '入职时间'},
           { key: 'staff.dismiss_time',val: '离职时间'},
           // { key: 'staff.dismiss_reason.dismiss_type',val: '离职类型',info: {1: '主动离职',2: '旷工离职',3: '劝退',4: '开除',5: '其他'}},
           // { key: 'staff.dismiss_reason.dismiss_mess',val: '离职原因'},
