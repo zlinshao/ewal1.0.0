@@ -274,7 +274,6 @@
       getPictureUrl(val) {
         let params = {"id": val};
         this.$http.post(`${this.url}public/pic`, params).then(res => {
-          //debugger
           if (res.code.endsWith('0')) {
             this.sliders = res.data;
           }

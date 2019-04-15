@@ -12,7 +12,8 @@
         &lt;!&ndash;<div>{{item.datetime}}</div>&ndash;&gt;
       </div>
     </calendar>-->
-    <img-slider :arr="sliders"></img-slider>
+    <!--<img-slider :arr="sliders"></img-slider>-->
+    <lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>
   </div>
 
 </template>
@@ -22,10 +23,12 @@
   import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
   import mixins from '@/assets/js/mixins/calendar.js';
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
+  import LjUpload from "../../common/lightweightComponents/lj-upload";
   export default {
     name: "index",
     mixins: [mixins],
     components: {
+      LjUpload,
       Calendar,
       ImgSlider,
     },
@@ -45,6 +48,7 @@
             },
           }
         ],
+        list:[4225067],
       }
     },
     mounted() {

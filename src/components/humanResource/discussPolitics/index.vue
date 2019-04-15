@@ -1006,6 +1006,8 @@
           participants: [],//参会人员数组
           attachment: _.map(this.meeting_detail_form.attachment, 'id'),//附件id
         };
+
+
         //let id = this.meeting_detail_form.id;
         /*this.$http.put(`${this.url}/meeting/meeting/${id}`,this.add_meeting_form).then(res=> {
           debugger
@@ -1217,6 +1219,7 @@
         this.comment_content = '';
         this.$http.get(`${this.url}/meeting/meeting/${value.id}`).then(res => {
           if (res.code.endsWith('0')) {
+            debugger
             let item = res.data;
             //let applyPerson = _.find(item.users, {'user_id': item.user_id});//申请人
             let compere = _.map(item.presenter || [], 'user.name').join(',');
@@ -1241,6 +1244,7 @@
               meeting_type: value.meeting_type,
 
             };
+            debugger
             this.getCommentList(value.id);
           }
         });
