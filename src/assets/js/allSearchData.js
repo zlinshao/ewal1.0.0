@@ -330,7 +330,7 @@ export const dataAuditSearch = {
         },
         {
           id: 23,
-          title: '新收'
+          title: '续收'
         }
       ]
     },
@@ -353,18 +353,18 @@ export const dataAuditSearch = {
       value: {
         num: ''
       }
-    },
-    {
-      keyType: 'depart',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'department',
-      dataType: [],
-      value: {
-        num: '',
-        arr: []
-      }
     }
+    // {
+    //   keyType: 'depart',
+    //   title: '部门',
+    //   placeholder: '请选择部门',
+    //   keyName: 'department',
+    //   dataType: [],
+    //   value: {
+    //     num: '',
+    //     arr: []
+    //   }
+    // }
   ]
 }
 
