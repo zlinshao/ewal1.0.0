@@ -184,11 +184,15 @@
                 </el-row>
                 <el-form-item label="小区照片">
                   <div class="flex">
-
+                    <LjUpload v-model="village_pic" :disabled="true" :download="false"></LjUpload>
                   </div>
                 </el-form-item>
-                <el-form-item label="房屋照片"></el-form-item>
-                <el-form-item label="调研报告"></el-form-item>
+                <el-form-item label="房屋照片">
+                  <LjUpload v-model="house_pic" :disabled="true" :download="false"></LjUpload>
+                </el-form-item>
+                <el-form-item label="调研报告">
+                  <LjUpload v-model="files" :disabled="true" :download="false"></LjUpload>
+                </el-form-item>
               </el-form>
             </VillageContainer>
             <VillageContainer village="全站大数据房源匹配">
@@ -224,10 +228,11 @@
   import MenuList from '../../common/menuList.vue';
   import {customService} from '../../../assets/js/allModuleList.js';
   import VillageContainer from './components/village-container.vue';
+  import LjUpload from '../../common/lightweightComponents/lj-upload';
 
   export default {
     name: "index",
-    components: { searchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer},
+    components: { searchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer,LjUpload},
     data() {
       return {
         //小区详情
@@ -375,6 +380,10 @@
           merge_to_community_id: '',
         },
         map: null,
+
+        village_pic: [],
+        house_pic: [],
+        files: [],
       }
     },
     mounted() {
@@ -422,7 +431,8 @@
       //小区详情
       handleGetDetail(village) {
         console.log(village);
-        this.$http.get(this.http_server + `v1.0/market/community/${village.id}`).then(res => {
+        this.$http.get(this.http_server + `v1.0/market/community/41234`).then(res => {
+        // this.$http.get(this.http_server + `v1.0/market/community/${village.id}`).then(res => {
           if (res.code === 200) {
             console.log(res.data);
             this.current_village_detail = res.data;
@@ -434,6 +444,9 @@
             this.village_detail_form.area_name.val = res.data.area && res.data.area.area_name;
             this.outer_net_data = res.data.outer_net_data ? res.data.outer_net_data : [];
             var location = [res.data.longitude,res.data.latitude];
+            this.village_pic = res.data && res.data.album && res.data.album.village_photo ? res.data.album.village_photo : [];
+            this.house_pic = res.data && res.data.album && res.data.album.house_pic ? res.data.album.house_pic : [];
+            this.files = res.data && res.data.album && res.data.album.files ? res.data.album.files : [];
             this.$nextTick(() => {
               this.handleDetailMap(location);
             })

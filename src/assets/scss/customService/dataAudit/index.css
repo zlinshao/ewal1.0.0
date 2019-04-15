@@ -198,6 +198,8 @@
     #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content {
       font-size: 14px;
       text-align: left; }
+      #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content span {
+        white-space: nowrap; }
   #theme_name #dataAudit .dialog_main .common_info .person_tit .el-form-item__label {
     text-align: left;
     white-space: nowrap; }
@@ -325,6 +327,16 @@
       background-color: #cf2e33;
       position: absolute;
       top: -10%; }
+#theme_name #dataAudit .el_check_box {
+  min-height: 80px;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+  #theme_name #dataAudit .el_check_box .main_tit {
+    margin: 0 10px 0 0; }
 
 #theme_name.theme1 #dataAudit .table_icon {
   background: url("../../../assets/image/customService/dataAudit/theme1/biao.png") no-repeat scroll center;
