@@ -16,6 +16,7 @@
         </div>
         <div v-if="chooseTab" class="items-center listTopRight">
           <!--<div class="icons add" @click="new_train_visible = true"><b>+</b></div>-->
+          <div v-if="chooseTab!==1" class="icons search" @click="highSearch(chooseTab)"></div>
           <div class="assessment" v-if="chooseTab==3" @click="routerLink('currentMonthAssessment')">本月考核</div>
           <div class="icons search" @click="highSearch(chooseTab)"></div>
         </div>
@@ -166,12 +167,17 @@
       },
 
 
+
       // tab切换
       changeTabs(id) {
         this.chooseTab = id;
         this.$store.dispatch('route_animation');
       },
-      
+
+      handleChangeDate(id) {
+
+      },
+
     },
   }
 </script>

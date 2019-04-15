@@ -90,19 +90,19 @@ export const customService = {
     },
     {
       title: '客户管理',
-      url: ''
+      url: '/serviceCustomerManagement'
     },
     {
       title: '客服接线',
-      url: ''
+      url: '/serviceOnline'
     },
     {
       title: '房源管理',
-      url: ''
+      url: '/serviceHouseManagement'
     },
     {
       title: '合同管理',
-      url: ''
+      url: '/serviceContractManagement'
     },
     {
       title: '小区管理',

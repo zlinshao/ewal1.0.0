@@ -248,6 +248,8 @@ export const visitToRecordSearch = {
 // 房屋到期
 export const housingDueSearch = {
   status: 'housingDue',
+  placeholder: '地址/合同编号/工单编号/内容',
+  keywords: 'search',
   data: [
     {
       keyType: 'dateRange',
@@ -263,7 +265,7 @@ export const housingDueSearch = {
       keyName: 'openPer',
       dataType: [],
       value: {
-        num: ''
+        num: 1
       }
     },
     {
@@ -273,7 +275,7 @@ export const housingDueSearch = {
       keyName: 'handler',
       dataType: [],
       value: {
-        num: ''
+        num: 1
       }
     },
     {
@@ -283,9 +285,24 @@ export const housingDueSearch = {
       keyName: 'department',
       dataType: [],
       value: {
-        num: '',
-        arr: []
+        num: 1
       }
+    },
+    {
+      keyType: 'check',
+      title: '状态',
+      keyName: 'tag_status',
+      dataType: [],
+      value: [
+        {
+          id: 1,
+          title: '续租'
+        },
+        {
+          id: 2,
+          title: '退租'
+        }
+      ]
     }
   ]
 }

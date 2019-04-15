@@ -47,7 +47,7 @@
                 </el-col>
               </el-row>
               <el-form-item label="小区名称">
-                <el-input placeholder="请输入" v-model="new_village_form.address"></el-input>
+                <el-input id="tipInput" placeholder="请输入" v-model="new_village_form.address"></el-input>
               </el-form-item>
               <el-form-item label="小区别名">
                 <el-input placeholder="请输入" v-model="new_village_form.village_alias"></el-input>
@@ -99,11 +99,20 @@
               <el-form-item label="周边信息">
                 <el-input placeholder="请输入" v-model="new_village_form.peripheral_info"></el-input>
               </el-form-item>
-              <el-form-item label="地铁信息">
+              <el-form-item label="地铁路线">
                 <el-input placeholder="请输入" v-model="new_village_form.subway_road"></el-input>
               </el-form-item>
               <el-form-item label="备注">
                 <el-input placeholder="请输入" type="textarea" :row="8" v-model="new_village_form.remark"></el-input>
+              </el-form-item>
+              <el-form-item label="小区照片">
+                <Upload :file="pic_upload.village_photo" @success="handleGetUploadFile"></Upload>
+              </el-form-item>
+              <el-form-item label="房屋照片">
+                <Upload :file="pic_upload.home_photo" @success="handleGetUploadFile"></Upload>
+              </el-form-item>
+              <el-form-item label="调研报告">
+                <Upload :file="pic_upload.files" @success="handleGetUploadFile"></Upload>
               </el-form-item>
             </el-form>
           </VillageContainer>
@@ -127,9 +136,37 @@
   export default {
     name: "index",
     props: ['module'],
-    components: {LjDialog, VillageContainer},
+    components: {LjDialog, VillageContainer,Upload},
     data() {
       return {
+
+        pic_upload: {
+          village_photo: {
+            keyName: 'village_photo',
+            setFile: [],
+            size: {
+              width: '50px',
+              height: '50px'
+            }
+          },
+          home_photo: {
+            keyName: 'home_photo',
+            setFile: [],
+            size: {
+              width: '50px',
+              height: '50px'
+            }
+          },
+          files: {
+            keyName: 'files',
+            setFile: [],
+            size: {
+              width: '50px',
+              height: '50px'
+            }
+          }
+        },
+
         server: globalConfig.market_server,
         t1: '',
         t2: '',
@@ -171,8 +208,12 @@
           built_year: '',
           longitude: '',
           latitude: '',
+          album: {},
         },
+        //高德地图api
         map: null,
+        autoComplete: null,
+        marker: null,
       }
     },
     watch: {
@@ -192,17 +233,50 @@
         deep: true
       },
     },
-    computed: {},
+    computed: {
+
+    },
     methods: {
+      //获取上传文件
+      handleGetUploadFile(file) {
+        if (file !== 'close') {
+          this.new_village_form.album[file[0]] = file[1];
+        }
+      },
       //确定添加
       handleConfirmAddVillage() {
         console.log(this.new_village_form);
       },
+      //标记
+      handleMarkerMap(position) {
+        this.marker = new AMap.Marker({
+          icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+          position,
+          map: this.map
+        });
+        this.marker.setMap(this.map);
+      },
+      //初始化地图
       handleInitialMap() {
         this.map = new AMap.Map('container', {
           resizeEnable: true,
-          center: [116.397428, 39.90923], //初始化地图中心点
+          center: [118.78 , 32.07], //初始化地图中心点
           zoom: 13
+        });
+        AMap.plugin('AMap.Autocomplete',() => {
+          //实例化Autocomplete
+          var autoOptions = {
+            province: '江苏省',
+            city: '南京市',
+            input: 'tipInput'
+          };
+          this.autoComplete = new AMap.Autocomplete(autoOptions);
+          AMap.event.addListener(this.autoComplete,"select",(info) => {
+            console.log(info);
+            this.new_village_form.longitude = info.poi.location.R;
+            this.new_village_form.latitude = info.poi.location.Q;
+            this.handleMarkerMap([info.poi.location.R,info.poi.location.Q]);
+          });
         });
       },
       handleChangeArea(val) {
@@ -211,6 +285,7 @@
         this.getAddressList('region');
       },
       handleChangeCity(val) {
+        console.log(val);
         this.new_village_form.area = '';
         this.new_village_form.region = '';
         this.address_params.city = val;

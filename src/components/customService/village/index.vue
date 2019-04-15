@@ -4,7 +4,7 @@
       <!--头部-->
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
-          <p class="flex-center">
+          <p class="flex-center" @click="handleOpenMenu">
             <b>...</b>
           </p>
           <h1>小区管理</h1>
@@ -155,6 +155,9 @@
 
       <!--选小区-->
       <HouseFilter :visible="merge_village_visible" @close="handleGetVillage"></HouseFilter>
+
+      <!--MenuList-->
+      <MenuList :module="menu_visible" :list="customService" :backdrop="true" @close="menu_visible = false"></MenuList>
     </div>
   </div>
 </template>
@@ -165,12 +168,16 @@
   import DepartOrgan from '../../common/departOrgan.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
+  import MenuList from '../../common/menuList.vue';
+  import {customService} from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: { searchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter},
+    components: { searchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList},
     data() {
       return {
+        menu_visible: false,
+        customService,
         //部门
         depart_visible: false,
         user_type: '',
@@ -266,6 +273,10 @@
     watch: {},
     computed: {},
     methods: {
+      handleOpenMenu() {
+        this.menu_visible = !this.visibleStatus;
+        this.$store.dispatch('route_animation');
+      },
       //合并小区
       handleConfirmMerge() {
         this.$http.put(this.http_server + `v1.0/market/community/merge/${this.current_community.id}`,this.merge_village_params).then(res => {
