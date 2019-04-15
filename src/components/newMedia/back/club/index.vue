@@ -112,77 +112,43 @@
         <!--新增-->
         <lj-dialog
                 :visible="add_visible"
-                :size="{width: 900 + 'px' ,height: 560 + 'px'}"
+                :size="{width: 1200 + 'px' ,height: 800 + 'px'}"
                 @close="add_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>新增活动</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form  size="mini">
-                        <el-form-item>
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_mark"></i>
-                                    </b>
-                                    <span>活动名称</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input  v-model="showData.name"></el-input>
-                                </div>
-                            </div>
+                <div class="dialog_main borderNone">
+                    <el-form label-width="80px">
+                        <el-form-item label="活动名称">
+                            <el-input  v-model="showData.name" class=""></el-input>
                         </el-form-item>
-                        <el-form-item>
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_mark"></i>
-                                    </b>
-                                    <span>活动时间</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-date-picker
-                                            v-model="actionTime"
-                                            type="datetimerange"
-                                            value-format="yyyy-MM-dd HH:mm:ss"
-                                            range-separator="至"
-                                            start-placeholder="开始日期"
-                                            end-placeholder="结束日期">
-                                    </el-date-picker>
-                                </div>
-                            </div>
+
+                        <el-form-item label="活动时间">
+                            <el-date-picker
+                                    v-model="actionTime"
+                                    type="datetimerange"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期">
+                            </el-date-picker>
                         </el-form-item>
-                        <el-form-item>
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_mark"></i>
-                                    </b>
-                                    <span>活动地点</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input  v-model="showData.address"></el-input>
-                                </div>
-                            </div>
+
+                        <el-form-item label="活动地点">
+                            <el-input  v-model="showData.address"></el-input>
                         </el-form-item>
-                        <el-form-item>
-                            <div class="form_item_container" style="align-items: flex-start">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_mark"></i>
-                                    </b>
-                                    <span>评论内容</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input type="textarea" v-model="showData.content" :rows="8"></el-input>
-                                </div>
+
+                        <el-form-item label="评论内容">
+                            <div class="item_content">
+                                <!--<el-input type="textarea" v-model="showData.content" :rows="8"></el-input>-->
+                                <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>
                             </div>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="small" type="warning" @click="preview">预览</el-button>
+                    <el-button size="small" type="warning" @click="getUEContent">预览</el-button>
                     <el-button size="small" type="danger" @click="submit">发布</el-button>
                     <el-button size="small" type="info" @click="add_visible = false">取消</el-button>
                 </div>
@@ -197,12 +163,14 @@
 <script>
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
+    import UE from '../../../../components/common/UE.vue';
 
     export default {
         name: "club",
         components: {
             mediaList,
-            LjDialog
+            LjDialog,
+            UE
         },
         data() {
             return {
@@ -215,14 +183,8 @@
                 count:0,//总条数
                 params: {//查询参数
                     search: '',
-                    // startRange: '',
-                    // endRange: '',
-                    // page: 1,
-                    // limit: 10,
-                    // department_ids: '',
-                    // export: '',
                     total:'',//总页数
-                    current_page:'',//当前页数
+                    current_page:1,//当前页数
                     per_page:10,//一页多少条
                     last_page:'',//最后一页的条数
                     first_page_url:'',//第一页的URL
@@ -246,6 +208,11 @@
 
                 ],
                 is_end:'',
+                defaultMsg: '',
+                config: {
+                    initialFrameWidth: null,
+                    initialFrameHeight: 350
+                },
 
             }
         },
@@ -254,6 +221,15 @@
         },
 
         methods:{
+            getUEContent() {
+                let content = this.$refs.ue.getUEContent();
+                this.$notify({
+                    title: '获取成功，可在控制台查看！',
+                    message: content,
+                    type: 'success'
+                });
+                console.log(content)
+            },
             handleChangePage(page) {
                 this.params.current_page = page;
                 this.getDataLists();
@@ -349,6 +325,7 @@
                             }
                         );
                         this.count = res.data.total;
+                        console.log(this.dataLists);
 
                         for(let item of res.data.data){
                             // this.endTimes.push({over_time:item.over_time});

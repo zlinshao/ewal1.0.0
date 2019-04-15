@@ -4,12 +4,9 @@
             <div class="video-lists">
                 <div class="video-list-info flex-center" v-for="(item,index) in dataLists">
                     <div class="video-box">
-                        <div class="video-box-top" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
-                            <video  poster="../../../../assets/image/newMedia/theme1/active.png">
-                                    <source src="" type="video/ogg">你的浏览器不支持video
-                            </video>
-                            <div class="video-start-icon"></div>
-                            <div class="video-modal"  v-if="seen&&index===current"></div>
+                        <div class="video-box-top" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)" @click="openDetail(item.file_info)">
+                            <img-slider :arr="item.file_info" :initialSpeed="0"></img-slider>
+                            <!--<div class="video-modal"  v-if="seen&&index===current"></div>-->
                         </div>
                         <div class="video-box-bottom">
                             <div class="title">{{item.name}}</div>
@@ -21,6 +18,7 @@
                                 </span>
                             </div>
                         </div>
+                        <!--<lj-upload size="40" disabled="disabled" :data="item.file_info" v-if="is_open_slider===true"></lj-upload>-->
                     </div>
                 </div>
             </div>
@@ -45,13 +43,13 @@
 
         <!--编辑-->
         <lj-dialog :visible="edit_visible" :size="{width: 500 + 'px',height: 500 + 'px'}"
-                   @close="edit_visible = false">
+                   @close="closeStatus">
             <div class="dialog_container">
                 <div class="dialog_header">
-                    <h3>编辑资料</h3>
+                    <h3>{{is_add===false?'编辑资料':'新增资料'}}</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form size="mini" label-width="80px" :rules="rules">
+                <div class="dialog_main borderNone">
+                    <el-form  label-width="80px" :rules="rules">
 
                         <el-form-item label="资料类型" prop="type_id">
                             <el-select placeholder="请选择" v-model="form.type_id">
@@ -64,19 +62,27 @@
                         </el-form-item>
 
                         <el-form-item label="查看权限" prop="permission">
-                            <el-input v-model="form.permission"></el-input>
+                            <el-input v-model="permissionNames" @focus="organSearch"></el-input>
                         </el-form-item>
                         <el-form-item label="添加附件" prop="file_info">
-                            <Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>
+                            <!--<lj-upload size="40" disabled="disabled" :data="form.file_info"></lj-upload>-->
+                            <lj-upload v-model="form.file_info" size="40"
+                                       style="position: absolute; top: -12px;"></lj-upload>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="submit">确定</el-button>
-                    <el-button type="info" size="small" @click="edit_visible = false;current_id = ''">取消</el-button>
+                    <el-button type="danger" size="small" @click="submit(is_add)">确定</el-button>
+                    <el-button type="info" size="small" @click="cancelStatus">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
+
+        <PostOrgan :module="postModule" :organData="organData" @close="hiddenOrgan"></PostOrgan>
+
+        <!--<img-slider :arr="file_info" :initialSpeed="0" v-if="is_open_slider===true"></img-slider>-->
+
+
 
     </div>
 </template>
@@ -84,21 +90,36 @@
 <script>
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
-    import Upload from '../../../common/upload.vue';
+    // import Upload from '../../../common/upload.vue';
+    import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
+
+    import LjUpload from '../../../common/lightweightComponents/lj-upload';
+    import PostOrgan from '../../../../components/common/postOrgan.vue';
+
+
 
     export default {
+        props:['add_status'],
         name: "backVideo",
         components: {
             mediaList,
             LjDialog,
-            Upload
+            // Upload,
+            LjUpload,
+            ImgSlider,
+            PostOrgan
         },
         data(){
             return{
+                file_info:[],//附件信息
+                is_open_slider:false,
                 showFinMenuList:false,
                 delete_visible:false,
                 edit_visible:false,
+                postModule:false,
+                organData: {},// 组织架构配置 选择数量 num
                 chooseTab: 1,
+                is_add:false,
                 current: '',//当前
                 current_id:'',
                 seen: false,//显隐
@@ -110,17 +131,20 @@
                     startRange: '',
                     endRange: '',
                     page: 1,
-                    limit: 8,
+                    limit: 6,
                     department_ids: '',
                     export: '',
                     type_id:1,
                 },
                 dataLists:[],
+                permissionNames:'',
                 form:{
-                    type_id:'',
+                    type_id:1,
                     name:'',
-                    permission:'',
-                    file_info:'',
+                    permission:[1,2],
+                    file_info:[],
+                    attachment:[],
+
                 },
                 //上传
                 // upload_visible: false,
@@ -137,24 +161,57 @@
                     album_file: [],
                 }, //所有上传文件
                 rules:{
-                    type:[
-                        { required: true, message: '请选择类型', trigger: 'change' },
-                    ],
-                    title:[
-                        { required: true, message: '请选择类型', trigger: 'blur' },
-                    ],
-                    permission:[
-                        { required: true, message: '请选择类型', trigger: 'blur' },
-                    ],
                 }
 
 
             }
         },
+        watch:{
+            add_status:{
+                handler(val){
+                    if(val===true){
+                        this.edit_visible=true;
+                       for(let item of Object.keys(this.form)){
+                           this.form[item]= '';
+                       }
+                        this.is_add=true;
+                       this.form.permission=[1,2];
+                    }
+                }
+            }
+        },
         mounted(){
-          this.getDataLists()
+          this.getDataLists();
         },
         methods:{
+            openDetail(val){
+              this.file_info = val;
+              this.is_open_slider=true;
+            },
+            organSearch() {
+                this.postModule = true;
+            },
+            // 关闭 选择人员
+            hiddenOrgan(ids, names, arr) {
+                this.postModule = false;
+                if (ids !== 'close') {
+                    this.form.permission = ids;
+                    console.log(this.form.permission);
+                    this.permissionNames = names;
+                }
+            },
+            closeStatus(){
+              this.edit_visible=false;
+              this.is_add=false;
+              this.$emit('getAddStatus',this.is_add);
+            },
+            cancelStatus(){
+                this.edit_visible = false;
+                this.current_id = '';
+                this.is_add=false ;
+                this.$emit('getAddStatus',this.is_add);
+            },
+
             //tab切换
             changeTabs(id) {
                 this.chooseTab = id;
@@ -190,14 +247,16 @@
                 this.$http.get(globalConfig.newMedia_sever+'/api/datum/admin', this.params).then(res => {
                     if (res.status === 200) {
                         this.dataLists  = res.data.data;
-                        console.log(this.dataLists)
+                        console.log(this.dataLists);
                     }
                 })
+
             },
             //编辑弹出
             edit(id,index){
                 this.edit_visible = true;
                 this.current_id = id;
+                this.is_add=false;
                 for(let item of Object.keys(this.form)){
                     this.form[item] = this.dataLists[index][item];
                 }
@@ -209,21 +268,25 @@
                 this.current_id = id;
             },
             //编辑提交
-            submit(){
-                console.log(this.form);
-                console.log(this.current_id);
-                this.$http.put(globalConfig.newMedia_sever+'/api/datum/admin/'+this.current_id,{
-                    album: this.upload_form.album,
-                    ...this.form
-                }).then(res => {
-                    this.callbackSuccess(res);
-                    this.edit_visible = false;
-                })
+            submit(type){
+                if(type===true){
+                    this.$http.post(globalConfig.newMedia_sever+'/api/datum/admin',this.form).then(res => {
+                        this.callbackSuccess(res);
+                        this.edit_visible = false;
+                    })
+                }else{
+                    this.$http.put(globalConfig.newMedia_sever+'/api/datum/admin/'+this.current_id,this.form).then(res => {
+                        this.callbackSuccess(res);
+                        this.edit_visible = false;
+                    })
+                }
+
+
             },
             //确认删除
             delOk(){
-                // alert(this.current_id);
-                this.$http.get(globalConfig.newMedia_sever+'/api/datum/admin/'+this.current_id).then(res => {
+                alert(this.current_id);
+                this.$http.delete(globalConfig.newMedia_sever+'/api/datum/admin/'+this.current_id).then(res => {
                     this.callbackSuccess(res);
                     this.delete_visible = false;
                 })
@@ -233,10 +296,10 @@
             //上传回调
             handleSuccessUpload(item) {
                 if (item !== 'close') {
-                    // this.upload_form[item[0]] = item[1];
                     this.form.file_info = item[1];
+                    console.log(this.form.file_info);
                 }
-                console.log(item);
+
             },
 
 
@@ -266,6 +329,7 @@
                             }
                         }
 
+
                         .video-box-bottom {
                             .title{
                             }
@@ -286,6 +350,12 @@
                         }
                     }
                 }
+            }
+        }
+        .window{
+            .video-container .play-container{
+                width: 480px!important;
+                height: 300px!important;
             }
         }
     }

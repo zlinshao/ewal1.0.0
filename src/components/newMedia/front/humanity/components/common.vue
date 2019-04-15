@@ -14,10 +14,10 @@
                 </h2>
             </div>
 
-            <div class="items-center listTopRight">
-                <div class="icons home_icon"></div>
-                <div class="icons add" @click="addCustomer(chooseTab)"><b>+</b></div>
-            </div>
+            <!--<div class="items-center listTopRight">-->
+                <!--<div class="icons home_icon"></div>-->
+                <!--<div class="icons add" @click="addCustomer(chooseTab)"><b>+</b></div>-->
+            <!--</div>-->
         </div>
 
         <div class="mainList">

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 let url = globalConfig.humanResource_server;
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 100000;
 
 axios.defaults.baseURL = globalConfig.humanResource_server; // 域名
 
