@@ -7,6 +7,11 @@
 
 #theme_name {
   #dataAudit {
+    .table_icon {
+      display: inline-block;
+      width: 13px;
+      height: 11px;
+    }
     .dialog_main {
       .main_tit {
         text-align: left;
@@ -173,6 +178,9 @@
 
 #theme_name.theme1 {
   #dataAudit {
+    .table_icon {
+      @include confirmImg('biao.png', 'theme1');
+    }
     .dialog_main {
       .main_tit {
         color: #686874;

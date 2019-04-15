@@ -7,9 +7,76 @@
 
 #theme_name {
   #HousingDue {
+    .cell {
+      span {
+        white-space: nowrap;
+      }
+    }
     .dialog_main {
       overflow: hidden;
       overflow-y: scroll;
+      .detail_dialog_left {
+        flex: 1;
+        font-size: 14px;
+        text-align: right;
+        p + p {
+          margin-top: 10px;
+        }
+      }
+      .detail_dialog_center {
+        height: 100%;
+        margin: 0 80px;
+        .circle {
+          width: 15px;
+          height: 15px;
+        }
+      }
+      .detail_dialog_right {
+        flex: 1;
+        text-align: left;
+        font-size: 10px;
+        p + p {
+          margin-top: 10px;
+        }
+        .other_fee {
+          p {
+            margin-top: 5px;
+            padding-left: 10px;
+          }
+        }
+        .detail_dialog_rato {
+          margin-left: 20px;
+          display: inline-block;
+          .el-rate__icon {
+            font-size: 12px;
+          }
+        }
+        .detail_dialog_note {
+          margin-top: 0;
+        }
+      }
+    }
+    .detail_dialog {
+      .back_info {
+        padding: 0 30px 50px;
+      }
+      .content + .content {
+        position: relative;
+        &:before {
+          content: '';
+          width: 1px;
+          height: 70%;
+          background-color: #cf2e33;
+          position: absolute;
+          top: -10%;
+          left: 50%;
+        }
+      }
+      .content {
+        padding-top: 50px;
+        @include flex('justify-center');
+        @include flex('items-center');
+      }
     }
     .cell.time {
       font-size: 14px;
@@ -58,6 +125,13 @@
 
 #theme_name.theme1 {
   #HousingDue {
+    .detail_dialog {
+      background: #ffffff;
+      color: #686874;
+      .circle {
+        @include confirmImg('biaoji.png', 'theme1');
+      }
+    }
     .mainListTable {
       .status1 {
         @include confirmImg('landi.png', 'theme1');

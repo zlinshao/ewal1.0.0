@@ -194,10 +194,151 @@
         </div>
       </div>
     </div>
-    <div v-if="chooseTab==2" class="attence-container">
-      123
+    <div v-if="chooseTab==2" class="confirm-container">
+      <div class="confirm-table">
+        <div class="mainListTable changeChoose" :style="{'height': '100%'}">
+          <el-table
+            :data="tableSettingData.confirm.tableData"
+            height="100%"
+            :border="true"
+            :row-class-name="tableChooseRow"
+            @cell-click="tableClickRow"
+            @row-dblclick="tableDblClick($event,'confirm')"
+            header-row-class-name="tableHeader"
+            :row-style="{height:'60px'}"
+            style="width: 100%">
+            <el-table-column
+              type="selection"
+              width="50" align="center">
+            </el-table-column>
+            <el-table-column
+              key="name"
+              align="center"
+              prop="name"
+              label="姓名">
+            </el-table-column>
+            <el-table-column
+              key="department"
+              align="center"
+              width="160"
+              prop="department"
+              label="部门">
+            </el-table-column>
+            <el-table-column
+              key="post"
+              align="center"
+              prop="post"
+              label="岗位">
+            </el-table-column>
+            <el-table-column
+              key="attRest"
+              align="center"
+              width="120"
+              prop="attRest"
+              label="出勤/休息天数">
+              <template slot-scope="scope">
+                <span style="cursor: pointer" @click="showAttRest(scope.row)"
+                      class="colorE33">{{scope.row.attRest}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="center"
+              label="出勤班次">
+              <el-table-column
+                key="network"
+                align="center"
+                prop="network"
+                width="100"
+                label="网络">
+              </el-table-column>
+              <el-table-column
+                key="civil"
+                align="center"
+                prop="civil"
+                width="100"
+                label="文职">
+              </el-table-column>
+              <el-table-column
+                key="early"
+                align="center"
+                prop="early"
+                width="100"
+                label="早班">
+              </el-table-column>
+              <el-table-column
+                key="last"
+                align="center"
+                prop="last"
+                width="100"
+                label="晚班">
+              </el-table-column>
+            </el-table-column>
+            <el-table-column
+              key="lack"
+              align="center"
+              prop="lack"
+              width="110"
+              label="迟到缺卡次数">
+            </el-table-column>
+            <el-table-column
+              key="kuanggong"
+              align="center"
+              prop="kuanggong"
+              label="矿工天数">
+            </el-table-column>
+            <el-table-column
+              key="chuchai"
+              align="center"
+              prop="chuchai"
+              label="出差天数">
+            </el-table-column>
+            <el-table-column
+              key="gongchu"
+              align="center"
+              prop="gongchu"
+              label="公出时长">
+            </el-table-column>
+            <el-table-column
+              key="qingjia"
+              align="center"
+              prop="qingjia"
+              label="请假时长">
+            </el-table-column>
+            <el-table-column
+              key="jiaban"
+              align="center"
+              prop="jiaban"
+              label="加班统计">
+            </el-table-column>
+            <el-table-column
+              key="status"
+              align="center"
+              prop="status"
+              width="110"
+              label="考勤确认结果">
+              <template slot-scope="scope">
+                <div @click="sendResult(scope.row)" class="table-operate"
+                     :class="[scope.row.status==1?'no-send':'send']">
+                  {{scope.row.status===1?'发送':scope.row.status===2?'已发送':'已确认'}}
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+      <div class="confirm-pagination flex-center">
+        <div class="page">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="tableSettingData.confirm.params.page"
+            :page-size="tableSettingData.confirm.params.limit"
+            :total="tableSettingData.confirm.counts"
+            layout="total,jumper,prev,pager,next">
+          </el-pagination>
+        </div>
+      </div>
     </div>
-
 
     <lj-dialog
       :size="{width:'70%',height:'95%'}"
@@ -273,7 +414,6 @@
       </div>
     </lj-dialog>
 
-
   </div>
 </template>
 
@@ -318,13 +458,61 @@
             tip: '下班缺卡次数',
             value: '0次',
           },
-
-
         ],
 
         currentTable: 'attence',
         tableSettingData: {
           attence: {
+            counts: 0,
+            params: {
+              //search: '',
+              page: 1,
+              limit: 5,
+
+            },
+            init() {
+              this.params.page = 1;
+              this.params.limit = 5;
+            },
+            chooseRowIds: [],
+            currentSelection: {},//当前选择行
+
+            table_dialog_visible: false,//form表单控制
+            table_dialog_choose_tab: 1,
+            table_dialog_tabs: [
+              {
+                id: 1,
+                name: '出勤/休息天数',
+              },
+              {
+                id: 2,
+                name: '迟到/缺卡次数',
+              },
+              {
+                id: 3,
+                name: '加班统计',
+              }
+            ],
+            tableData: [],//表格数据
+            /*showData: {
+              name: '姓名',
+              department: '部门',
+              post: '岗位',
+              attRest: '出勤/休息天数',
+              wednesday: '出勤班次',
+              thursday: '迟到缺卡次数',
+              friday: '矿工天数',
+              saturday: '出差天数',
+              weekday: '公出时长',
+              leave: '请假时长',
+              workOvertime: '加班统计',
+              operate: '考勤确认结果',
+
+            },*/
+            formData: {},//详情表格数据
+            searchParams: '',// dialog中的模糊搜索
+          },
+          confirm: {
             counts: 0,
             params: {
               //search: '',

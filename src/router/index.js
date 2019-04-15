@@ -145,6 +145,7 @@ const ReserveTrainning = () =>
 
 //待办
 // const TodoList = () => import('@/components/todoList/index.vue');
+const KpiCheck = () => import('@/components/kpiCheck/index.vue')
 
 //个人中心
 const PersonalCenter = () => import('@/components/personalCenter/index.vue')
@@ -692,7 +693,12 @@ export default new Router({
             import('@/components/personalCenter/subLog/index.vue')
         }
       ]
-    }
+    },
+    {
+        path: '/kpiCheck',
+        name: 'kpi核对',
+        component: KpiCheck
+    },
     // {
     //     path: '/offerDetail',
     //     name: '录用通知书',
