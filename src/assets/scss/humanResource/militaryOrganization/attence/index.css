@@ -252,6 +252,24 @@
     #theme_name #attence .attence-container .attence-pagination {
       height: 10%;
       width: 100%; }
+  #theme_name #attence .confirm-container {
+    width: 100%;
+    height: calc(100% - 131px);
+    padding: 20px 60px 0 60px;
+    display: flex;
+    flex-direction: column; }
+    #theme_name #attence .confirm-container .confirm-table {
+      width: 100%;
+      height: 90%;
+      background-color: gray; }
+      #theme_name #attence .confirm-container .confirm-table .table-operate.no-send {
+        color: #cf2e33;
+        cursor: pointer; }
+      #theme_name #attence .confirm-container .confirm-table .table-operate.send {
+        color: rgba(104, 104, 116, 0.4); }
+    #theme_name #attence .confirm-container .confirm-pagination {
+      height: 10%;
+      width: 100%; }
   #theme_name #attence .lj_container .att-rest-container {
     height: 100%;
     display: flex;

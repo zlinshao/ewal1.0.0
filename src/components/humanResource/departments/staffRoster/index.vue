@@ -9,7 +9,7 @@
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         :default-sort="{prop: 'staff.enroll',order: 'descending'}"
-        key="staffTable"
+        :key="random_key"
         style="width: 100%">
         <div v-for="(item,index) in table_column" :key="index">
           <el-table-column min-width="120px"  :label="item.val" :prop="item.key" align="center" v-if="item.info">
@@ -131,6 +131,8 @@
 
         //员工详情
         staff_detail_info: '',
+
+        random_key: '',
       }
     },
     mounted() {
@@ -145,6 +147,9 @@
           this.export_params.field = [];
           this.export_params.field = ['id'];
           this.table_column = val;
+          this.random_key = 'staffTable';
+          var random = Math.random();
+          this.random_key = this.random_key + random.toString().substring(3,10);
           val.map(item => {
             this.export_params.field.push(item.key);
           });

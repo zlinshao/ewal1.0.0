@@ -172,6 +172,16 @@
   .action-bar .check {
     color: #0bb07b; }
 
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#theme_name #dataAudit .table_icon {
+  display: inline-block;
+  width: 13px;
+  height: 11px; }
 #theme_name #dataAudit .dialog_main .main_tit {
   text-align: left;
   font-size: 14px;
@@ -316,6 +326,9 @@
       position: absolute;
       top: -10%; }
 
+#theme_name.theme1 #dataAudit .table_icon {
+  background: url("../../../assets/image/customService/dataAudit/theme1/biao.png") no-repeat scroll center;
+  background-size: 100% 100%; }
 #theme_name.theme1 #dataAudit .dialog_main .main_tit {
   color: #686874; }
 #theme_name.theme1 #dataAudit .dialog_main .common_info {
