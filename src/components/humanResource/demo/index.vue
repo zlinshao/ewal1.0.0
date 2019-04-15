@@ -1,6 +1,6 @@
 <template>
   <div class="demo-container">
-    <calendar week-type="en" style="width: 1366px;height: 768px">
+    <!--<calendar week-type="en" style="width: 1366px;height: 768px">
       <div :slot="'slot'+item.id" v-for="item in daysList"
       class="days-item" :class="{rest:!item.reason,current:item.today}"
       >
@@ -9,26 +9,46 @@
           <span v-if="item.reason" class="days-item-content-reason">{{item.reason}}</span>
 
         </div>
-        <!--<div>{{item.datetime}}</div>-->
+        &lt;!&ndash;<div>{{item.datetime}}</div>&ndash;&gt;
       </div>
-    </calendar>
+    </calendar>-->
+    <!--<img-slider :arr="sliders"></img-slider>-->
+    <lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>
   </div>
 
 </template>
 
 <script>
   import _ from 'lodash';
+  import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
   import mixins from '@/assets/js/mixins/calendar.js';
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
+  import LjUpload from "../../common/lightweightComponents/lj-upload";
   export default {
     name: "index",
     mixins: [mixins],
     components: {
+      LjUpload,
       Calendar,
+      ImgSlider,
     },
     data() {
       return {
         daysList: [],
+        sliders:[
+          {
+            id:10086,
+            uri:'http://static.lejias.cn/lejia35b673cf3a51c850e3c0489a31a574a9.MP4',
+            "info": {
+              "ext": "video",
+              "host": "static.lejias.cn",
+              "mime": "video",
+              "size": 243104,
+              "bucket": "lejia-test"
+            },
+          }
+        ],
+        list:[4225067],
       }
     },
     mounted() {

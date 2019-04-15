@@ -39,6 +39,16 @@
       }
       .nav-right {
         @include flex('flex-center');
+
+        .button-all-close {
+          >span {
+           &:hover {
+             color: $colorE33;
+           }
+          }
+        }
+
+
         > span {
           padding: 5px 30px;
           margin: 0 10px;
@@ -114,14 +124,11 @@
         height: 90%;
         background-color: gray;
 
-        .table-operate {
-          &.no-send {
-            color: $colorE33;
-            cursor: pointer;
-          }
-          &.send {
-            color: rgba(104, 104, 116, .4);
-          }
+
+        .icon-pdf {
+          cursor: pointer;
+          width: 36px;
+          height: 41px;
         }
 
 

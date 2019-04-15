@@ -2,9 +2,18 @@
 
 #theme_name {
   #orgChoose {
+    .icons {
+      width: 20px;
+      height: 20px;
+    }
     display: inline-block;
-    .iconInput {
+    .input-container {
       @include flex('flex-center');
+      position: relative;
+      .icons.organization {
+        position: absolute;
+        right: 10px;
+      }
     }
   }
 }
