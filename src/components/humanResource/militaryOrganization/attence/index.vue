@@ -4,7 +4,8 @@
       <div class="search-toolbar listTopRight">
         <!--<div class="icons add" @click="new_train_visible = true"><b>+</b></div>-->
         <div style="display: inline-block;width:230px;margin-right: 0">
-          <month-choose v-model="monthValue"></month-choose>
+          <month-choose v-if="chooseTab==1" v-model="monthValue"></month-choose>
+          <year-choose v-if="chooseTab==2" v-model="yearValue"></year-choose>
         </div>
       </div>
 
@@ -19,21 +20,29 @@
           @click="chooseTab = item.id"
         >{{ item.val }}</span>
       </div>
-      <div v-if="chooseTab==1" class="nav-right">
-        <span>选择</span>
-        <span class="user-leave"><i></i><span>离职员工</span></span>
-        <!--<span>部门/人员</span>-->
-        <user-choose width="140" title="请选择人员"></user-choose>
-        <span class="colorE33">全部发送</span>
+      <div v-if="chooseTab==1" class="nav-right changeChoose">
+        <span style="color: #0BB07B;" v-if="tableSettingData.attence.isShowMultiSelection==false"
+              @click="tableSettingData.attence.isShowMultiSelection = true">选择</span>
+
+        <span class="button-all-close" v-if="tableSettingData.attence.isShowMultiSelection">
+          <span @click="toggleSelection(tableSettingData.attence.tableData)">全选/</span>
+          <span @click="tableSettingData.attence.isShowMultiSelection = false">取消</span>
+          <!--<span class="user-leave"><i></i><span>离职员工</span></span>-->
+        </span>
+
+        <el-checkbox v-model="tableSettingData.attence.isLeave">离职员工</el-checkbox>
+        <org-choose num="1" width="200" title="请选择部门" v-model="tableSettingData.attence.departmentId"></org-choose>
+        <span @click="demo" class="colorE33">考勤确认</span>
       </div>
       <div v-if="chooseTab==2" class="nav-right">
-        <user-choose width="140" title="请选择人员"></user-choose>
+        <org-choose width="140" title="请选择部门"></org-choose>
       </div>
     </div>
     <div v-if="chooseTab==1" class="attence-container">
       <div class="attence-table">
         <div class="mainListTable changeChoose" :style="{'height': '100%'}">
           <el-table
+            ref="multipleTable"
             :data="tableSettingData.attence.tableData"
             height="100%"
             :border="true"
@@ -44,6 +53,8 @@
             :row-style="{height:'60px'}"
             style="width: 100%">
             <el-table-column
+              :selectable='isDisabled'
+              v-if="tableSettingData.attence.isShowMultiSelection"
               type="selection"
               width="50" align="center">
             </el-table-column>
@@ -122,7 +133,7 @@
               key="kuanggong"
               align="center"
               prop="kuanggong"
-              label="矿工天数">
+              label="旷工天数">
             </el-table-column>
             <el-table-column
               key="chuchai"
@@ -136,12 +147,12 @@
               prop="gongchu"
               label="公出时长">
             </el-table-column>
-            <el-table-column
+            <!--<el-table-column
               key="qingjia"
               align="center"
               prop="qingjia"
               label="请假时长">
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column
               key="jiaban"
               align="center"
@@ -157,27 +168,10 @@
               <template slot-scope="scope">
                 <div @click="sendResult(scope.row)" class="table-operate"
                      :class="[scope.row.status==1?'no-send':'send']">
-                  {{scope.row.status===1?'发送':scope.row.status===2?'已发送':'已确认'}}
+                  {{scope.row.status===0?'未确认':scope.row.status===1?'已确认':'-'}}
                 </div>
               </template>
             </el-table-column>
-            <!--<el-table-column
-              v-for="(item,index) in Object.keys(tableSettingData.attence.showData)" :key="item"
-              v-if="index<2"
-              align="center"
-              :prop="item"
-              :label="tableSettingData.attence.showData[item]">
-            </el-table-column>
-            <el-table-column
-              v-for="(item,index) in Object.keys(tableSettingData.attence.showData)" :key="item"
-              v-if="index>=2"
-              align="center"
-              :prop="item"
-              :label="tableSettingData.attence.showData[item]">
-              <template slot-scope="scope">
-                <span style="cursor: pointer">{{scope.row[item]}}</span>
-              </template>
-            </el-table-column>-->
           </el-table>
         </div>
       </div>
@@ -208,119 +202,19 @@
             :row-style="{height:'60px'}"
             style="width: 100%">
             <el-table-column
-              type="selection"
-              width="50" align="center">
-            </el-table-column>
-            <el-table-column
-              key="name"
-              align="center"
-              prop="name"
-              label="姓名">
-            </el-table-column>
-            <el-table-column
               key="department"
               align="center"
               width="160"
               prop="department"
-              label="部门">
+              label="">
             </el-table-column>
             <el-table-column
-              key="post"
+              v-for="item in Object.keys(tableSettingData.confirm.showData)" :key="item"
               align="center"
-              prop="post"
-              label="岗位">
-            </el-table-column>
-            <el-table-column
-              key="attRest"
-              align="center"
-              width="120"
-              prop="attRest"
-              label="出勤/休息天数">
+              :prop="item"
+              :label="tableSettingData.confirm.showData[item]">
               <template slot-scope="scope">
-                <span style="cursor: pointer" @click="showAttRest(scope.row)"
-                      class="colorE33">{{scope.row.attRest}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="出勤班次">
-              <el-table-column
-                key="network"
-                align="center"
-                prop="network"
-                width="100"
-                label="网络">
-              </el-table-column>
-              <el-table-column
-                key="civil"
-                align="center"
-                prop="civil"
-                width="100"
-                label="文职">
-              </el-table-column>
-              <el-table-column
-                key="early"
-                align="center"
-                prop="early"
-                width="100"
-                label="早班">
-              </el-table-column>
-              <el-table-column
-                key="last"
-                align="center"
-                prop="last"
-                width="100"
-                label="晚班">
-              </el-table-column>
-            </el-table-column>
-            <el-table-column
-              key="lack"
-              align="center"
-              prop="lack"
-              width="110"
-              label="迟到缺卡次数">
-            </el-table-column>
-            <el-table-column
-              key="kuanggong"
-              align="center"
-              prop="kuanggong"
-              label="矿工天数">
-            </el-table-column>
-            <el-table-column
-              key="chuchai"
-              align="center"
-              prop="chuchai"
-              label="出差天数">
-            </el-table-column>
-            <el-table-column
-              key="gongchu"
-              align="center"
-              prop="gongchu"
-              label="公出时长">
-            </el-table-column>
-            <el-table-column
-              key="qingjia"
-              align="center"
-              prop="qingjia"
-              label="请假时长">
-            </el-table-column>
-            <el-table-column
-              key="jiaban"
-              align="center"
-              prop="jiaban"
-              label="加班统计">
-            </el-table-column>
-            <el-table-column
-              key="status"
-              align="center"
-              prop="status"
-              width="110"
-              label="考勤确认结果">
-              <template slot-scope="scope">
-                <div @click="sendResult(scope.row)" class="table-operate"
-                     :class="[scope.row.status==1?'no-send':'send']">
-                  {{scope.row.status===1?'发送':scope.row.status===2?'已发送':'已确认'}}
-                </div>
+                <div class="icon-pdf"></div>
               </template>
             </el-table-column>
           </el-table>
@@ -386,13 +280,13 @@
 
               <div class="check-record-container">
 
-                <div  class="check-record-item">
+                <div class="check-record-item">
                   <div class="check-record-item-top">
                     <span style="font-weight: 700">加班-审批单统计</span></div>
                   <div class="check-record-item-bottom">
                     <span>2</span></div>
                 </div>
-                <div  class="check-record-item">
+                <div class="check-record-item">
                   <div class="check-record-item-top">
                     <div class="th-top" style="font-weight: 700">加班时长-按加班规则计算</div>
                     <div class="th-bottom">
@@ -421,14 +315,18 @@
   import _ from 'lodash';
   import Calendar from '../../../common/lightweightComponents/Calendar/index';
   import MonthChoose from '../../../common/lightweightComponents/Calendar/MonthChoose/index';
+  import YearChoose from '../../../common/lightweightComponents/Calendar/YearChoose/index';
   import UserChoose from '../../../common/lightweightComponents/UserChoose';
+  import OrgChoose from '../../../common/lightweightComponents/OrgChoose';
   import LjDialog from '../../../common/lj-dialog';
 
   export default {
     name: "attence",
     components: {
       MonthChoose,
+      YearChoose,
       UserChoose,
+      OrgChoose,
       LjDialog,
       Calendar,
     },
@@ -467,7 +365,7 @@
             params: {
               //search: '',
               page: 1,
-              limit: 5,
+              limit: 1000,
 
             },
             init() {
@@ -476,6 +374,12 @@
             },
             chooseRowIds: [],
             currentSelection: {},//当前选择行
+
+            departmentId: 2,
+            isShowMultiSelection: false,//是否显示多选框
+
+            isLeave: false,//是否离职  true离职 false在职
+
 
             table_dialog_visible: false,//form表单控制
             table_dialog_choose_tab: 1,
@@ -544,21 +448,22 @@
               }
             ],
             tableData: [],//表格数据
-            /*showData: {
-              name: '姓名',
-              department: '部门',
-              post: '岗位',
-              attRest: '出勤/休息天数',
-              wednesday: '出勤班次',
-              thursday: '迟到缺卡次数',
-              friday: '矿工天数',
-              saturday: '出差天数',
-              weekday: '公出时长',
-              leave: '请假时长',
-              workOvertime: '加班统计',
-              operate: '考勤确认结果',
+            showData: {
+              //department: '',
+              january: '1月',
+              february: '2月',
+              march: '3月',
+              april: '4月',
+              may: '5月',
+              june: '6月',
+              july: '7月',
+              august: '8月',
+              september: '9月',
+              october: '10月',
+              november: '11月',
+              december: '12月',
 
-            },*/
+            },
             formData: {},//详情表格数据
             searchParams: '',// dialog中的模糊搜索
           },
@@ -570,10 +475,76 @@
           {id: 2, val: '考勤确认表'},
         ],
         monthValue: new Date(),
+        yearValue: new Date(),
       }
+    },
+    watch: {
+      monthValue: {
+        handler(val, oldVal) {
+          if (val) {
+            this.getAttenceList();
+          }
+        },
+        immediate: true,
+      },
+      'tableSettingData.attence.departmentId': {
+        handler(val, oldVal) {
+          if (val && val.length > 0) {
+            this.getAttenceList();
+          }
+        },
+      },
+      'tableSettingData.attence.isLeave': {
+        handler(val, oldVal) {
+          this.getAttenceList();
+        },
+      },
     },
     methods: {
 
+      getAttenceList() {
+        this.tableSettingData.attence.tableData = [];
+        let params = {
+          is_on_job: this.tableSettingData.attence.isLeave ? 1 : 0,
+          date: this.monthValue,
+          ...this.tableSettingData.attence.params,
+          //org_id: this.tableSettingData.attence.departmentId[0] || 2,
+          org_id: 106,
+        };
+        this.$http.get(`${this.url}attendance/attendance`, params).then(res => {
+          //debugger
+          if (res.code.endsWith('0')) {
+            for (let item of res.data.data) {
+              //console.log(item);
+              let obj = {
+                name: item.name || '-',//姓名
+                department: item.org[0]?.name || '-',//部门
+                post: item.position[0]?.name || '-',//岗位
+                attRest: `${item.attendance[0]?.attendance_day || '-'}/${item.attendance[0]?.rest_day || '-'}`,
+                network: item.attendance[0]?.attendance_classes[0] || '-',
+                civil: item.attendance[0]?.attendance_classes[1] || '-',
+                early: item.attendance[0]?.attendance_classes[2] || '-',
+                last: item.attendance[0]?.attendance_classes[3] || '-',
+                lack: item.attendance[0]?.late_day || '-',//迟到缺卡次数
+                kuanggong: item.attendance[0]?.absenteeism_day || '-',//旷工天数
+                chuchai: item.attendance[0]?.business_day || '-',//出差天数
+                gongchu: item.attendance[0]?.out_time || '-',//公出时长
+                qingjia: '-',//请假时长
+                jiaban: item.attendance[0]?.overtime_day || '-',//加班统计
+                status: item.attendance[0]?.is_confirm === 0 ? 0 : (item.attendance[0]?.is_confirm || 2),//考勤确认结果
+              };
+              this.tableSettingData.attence.tableData.push(obj);
+            }
+            this.tableSettingData.attence.counts = res.data.count;
+          }
+        });
+      },
+
+      demo() {
+        console.log(this.tableSettingData.attence.departmentId[0]);
+      },
+
+      //显示详情弹窗
       showAttRest() {
         this.tableSettingData.attence.table_dialog_visible = true;
       },
@@ -588,7 +559,7 @@
       },
 
       initData() {
-        for (let i = 0; i < 6; i++) {
+        /*for (let i = 0; i < 6; i++) {
           let obj = {
             name: '张三',
             department: '研发部',
@@ -606,12 +577,55 @@
             jiaban: '9',
             status: _.random(1, 3),
           };
-          console.log(obj.status);
           this.tableSettingData.attence.tableData.push(obj);
         }
-        this.tableSettingData.attence.counts = 10;
+        this.tableSettingData.attence.counts = 10;*/
+
+
+        for (let i = 0; i < 6; i++) {
+          let obj = {
+            department: '人力资源中心',
+            january: '1月',
+            february: '2月',
+            march: '3月',
+            april: '4月',
+            may: '5月',
+            june: '6月',
+            july: '7月',
+            august: '8月',
+            september: '9月',
+            october: '10月',
+            november: '11月',
+            december: '12月',
+          };
+          this.tableSettingData.confirm.tableData.push(obj);
+        }
+        this.tableSettingData.confirm.counts = 10;
       },
 
+
+      //全选切换
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            if (row.status !== 2) {
+              this.$refs.multipleTable.toggleRowSelection(row);
+            }
+
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
+      },
+
+      isDisabled(row, index) {
+        if (row.status == 2) {
+          return 0;
+        }
+        else {
+          return 1;
+        }
+      },
 
       handleSizeChange() {
       },
@@ -673,16 +687,35 @@
 
 <style lang="scss">
   #attence {
+
+    .main-nav {
+      .nav-right {
+        .el-checkbox {
+          font-size: 20px;
+
+          .el-checkbox__inner {
+            width: 20px;
+            height: 20px;
+          }
+          .el-checkbox__label {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+
     .attence-container {
       .el-table__header th {
         padding: 0;
         height: 40px;
+        border-top: 1px solid #EBEEF5;
       }
       .el-table--border {
         //border: none !important;
         //border-left: ;
         border: none;
-        border-top: 1px solid #EBEEF5;
+        //border-top: 1px solid #EBEEF5;
+        //border-left: 1px solid #EBEEF5;
         /*border-left: none;
         border-bottom: none;
         border-right: none;*/
@@ -692,6 +725,35 @@
       }
       .el-table--border::after, .el-table--group::after {
         height: 0%;
+      }
+
+      .tableHeader {
+        th:nth-child(1) {
+          border-left: 1px solid #EBEEF5;
+        }
+        .el-table-column--selection {
+          border-left: none !important;
+          border-bottom: none !important;
+          border-top: none !important;
+          > div {
+            display: none;
+          }
+        }
+      }
+
+      .el-table__body {
+        tbody {
+          .el-table__row {
+            td:nth-child(1) {
+              border-left: 1px solid #EBEEF5;
+            }
+          }
+
+          .el-table-column--selection {
+            border-left: none !important;
+            border-bottom: none !important;
+          }
+        }
       }
 
       /*.el-table__header {
@@ -708,6 +770,55 @@
       }
 
       .el-table__header, .el-table__body {
+        .el-checkbox {
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+        }
+      }
+    }
+
+    .confirm-container {
+      /*.el-table__header th {
+        padding: 0;
+        height: 40px;
+      }*/
+      .tableHeader {
+        th:nth-child(1) {
+          border-left: 1px solid #EBEEF5;
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="0" y1="0" x2="100%" y2="100%" style="stroke:rgb(228,228,228);stroke-width:1"/></svg>');
+        }
+      }
+      .el-table__body {
+        tbody {
+          .el-table__row {
+            td:nth-child(1) {
+              border-left: 1px solid #EBEEF5;
+            }
+          }
+        }
+      }
+
+      .el-table--border {
+        border: none;
+        border-top: 1px solid #EBEEF5;
+      }
+      .el-table-column--selection {
+        border-left: 1px solid #EBEEF5;
+      }
+      .el-table--border::after, .el-table--group::after {
+        height: 0%;
+      }
+      .el-table__header, .el-table__body {
+        .cell {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .el-table__header, .el-table__body {
+        //border-left: 1px solid #EBEEF5;
         .el-checkbox {
           display: flex !important;
           justify-content: center !important;
@@ -739,6 +850,15 @@
         .isActive {
           @include militaryImg('teji.png', 'theme1');
           color: white;
+        }
+      }
+
+      .confirm-container {
+        .icon-pdf {
+          @include militaryImg('s.png', 'theme1');
+          &:hover {
+            @include militaryImg('t.png', 'theme1');
+          }
         }
       }
 

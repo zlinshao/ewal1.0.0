@@ -1,6 +1,6 @@
 <template>
   <div id="orgChoose"  :style="{width:`${this.dropdownListWidth}px`}">
-    <div class="iconInput">
+    <div class="input-container">
       <el-input @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p class="icons organization"></p>
     </div>
@@ -63,5 +63,13 @@
 
   @import "../../../assets/scss/common/lightweightComponents/OrgChoose";
 
+  @mixin commonImg($m,$n) {
+    $url: '../../../assets/image/common/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
 
+
+  .organization {
+    @include commonImg('zuzhijiagou.png', 'theme1');
+  }
 </style>
