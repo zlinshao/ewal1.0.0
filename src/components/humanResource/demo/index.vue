@@ -12,8 +12,8 @@
         &lt;!&ndash;<div>{{item.datetime}}</div>&ndash;&gt;
       </div>
     </calendar>-->
-    <!--<img-slider :arr="sliders"></img-slider>-->
-    <lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>
+    <img-slider :size="{width: '100%',height:'100%'}" :initialSpeed="0" :arr="sliders"></img-slider>
+    <!--<lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>-->
   </div>
 
 </template>
@@ -80,8 +80,28 @@
 
 <style scoped lang="scss">
   @import "../../../assets/scss/common";
+  #slider {
+    width: 100%;
+    height: 100%;
+    .window {
+      width: 100%;
+      height: 100%;
+      ul {
+        width: 100%;
+        height: 100%;
+        li {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
 
 
+  .demo-container {
+    width: 100%;
+    height: 100%;
+  }
   .colorE33 {
     color: $colorE33;
   }

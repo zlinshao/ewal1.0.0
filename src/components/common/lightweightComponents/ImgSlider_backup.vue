@@ -77,8 +77,8 @@
       </ul>
     </div>
     <div v-if="sliders.length=1" class="window" :style="size" @mouseover="stop" @mouseleave="play">
-      <ul class="container" style="width: 100%;height: 100%">
-        <li style="width: 100%;height: 100%" v-for="(item, index) in sliders" :key="index">
+      <ul class="container">
+        <li v-for="(item, index) in sliders" :key="index">
           <img :style="size" v-if="item.info.ext.includes('image')" :src="item.uri"
                alt="">
           <div v-if="item.info.ext.includes('video')" class="video-container"
