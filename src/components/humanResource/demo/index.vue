@@ -12,7 +12,7 @@
         &lt;!&ndash;<div>{{item.datetime}}</div>&ndash;&gt;
       </div>
     </calendar>-->
-    <img-slider :size="{width: '100%',height:'100%'}" :initialSpeed="0" :arr="sliders"></img-slider>
+    <img-slider :size="{width:'100%',height:'100%'}" :single="true" :arr="sliders"></img-slider>
     <!--<lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>-->
   </div>
 
