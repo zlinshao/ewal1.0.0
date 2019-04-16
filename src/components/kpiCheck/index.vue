@@ -25,7 +25,7 @@
         <div class="page">
           <el-pagination :total="25" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="5"></el-pagination>
         </div>
-        <el-button class="footButton" @click="asure()">确定</el-button>
+        <el-button class="footButton" @click="confirm()">确定</el-button>
       </div>
     </div>
     <lj-dialog
@@ -95,7 +95,7 @@
       }
     },
     methods: {
-      asure: function(){
+      confirm: function(){
         this.dialogVisible = !this.dialogVisible
       }
     },

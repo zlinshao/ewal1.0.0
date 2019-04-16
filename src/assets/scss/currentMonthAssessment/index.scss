@@ -62,6 +62,66 @@
         }
       }
     }
+    .tableHeader{
+      .redStatus{
+        width:18px;
+          height:18px;
+          border-radius:18px;
+          background:rgba(207,46,51,1);
+          margin-left: 40px;
+      }
+    }
+    .dialog_container{
+      .dialog_header{
+        .listTopCss{
+          .listTopLeft{
+            margin-left: 25px;
+            >img{
+              width: 40px;
+              height: 40px;
+            }
+            >div{
+              margin-left: 20px;
+              .personName{
+                font-size: 20px;
+                font-family: MicrosoftYaHei;
+                color:rgba(104,104,116,1);
+                letter-spacing: 1px;
+              }
+              .timeInfo{
+                font-size: 14px;
+                font-family :MicrosoftYaHei;
+                color:rgba(104,104,116,1);
+                letter-spacing: 1px;
+              }
+            }
+          }
+          .listTopRight{
+            margin-right: 10px;
+            >div{
+              .personName{
+                font-size: 14px;
+                font-family: MicrosoftYaHei;
+                color:rgba(104,104,116,1);
+                letter-spacing: 1px;
+                span{
+                  font-size: 15px;
+                  color: #CF2E33;
+                }
+              }
+              .timeInfo{
+                display: flex;
+                justify-content: flex-end;
+                font-size: 7px;
+                font-family :MicrosoftYaHei;
+                color:rgba(104,104,116,1);
+                letter-spacing: 1px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
