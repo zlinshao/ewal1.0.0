@@ -65,7 +65,8 @@
         </el-table-column>
         <el-table-column label="付款方式" align="center">
           <template slot-scope="scope">
-            <span v-if='scope.row.pay_way[0]'>{{'押'+ scope.row.pay_way[0].pay_way_bet + '付'+
+            <span v-if='scope.row.pay_way[0]'>{{scope.row.pay_way[0].pay_way_str?scope.row.pay_way[0].pay_way_str :'押'+
+              scope.row.pay_way[0].pay_way_bet + '付'+
               scope.row.pay_way[0].pay_way}}</span>
             <span v-else>--</span>
           </template>
@@ -91,7 +92,7 @@
             <el-button type="success" plain size="mini" @click.stop="addHousuingTag(scope.row,1)" v-if='tabType == 1 || tabType == 4'>添加标记</el-button>
             <el-button type="warning" plain size="mini" @click.stop="readHousuingTag(scope.row)" v-if='tabType == 2'>查看标记</el-button>
             <el-button type="primary" plain size="mini" @click.stop="addHousuingTag(scope.row,2)" v-if='tabType == 2'>修改标记</el-button>
-            <el-button type="success" plain size="mini" @click.stop="postHelp(scope.row)" v-if='tabType == 2&& scope.row.status'>发送代办</el-button>
+            <el-button type="success" plain size="mini" @click.stop="postHelp(scope.row)" v-if='tabType == 2&& scope.row.is_send==0'>发送代办</el-button>
 
             <el-button type="success" plain size="mini" @click.stop="urgedDealWith(scope.row)" v-if='tabType == 4'>催办</el-button>
           </template>
@@ -129,39 +130,39 @@
           <!---房屋信息-->
           <p class='main_tit noMarginTop'>房屋信息</p>
           <div class="common_info">
-            <el-form label-width="120px" v-if='contractDetail.house_extension'>
+            <el-form label-width="120px">
               <el-row :gutter="10">
                 <el-col :span="8" v-if='chooseTab == 1'>
                   <el-form-item label="物业地址">
-                    <span v-if='contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).name
+                    <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).name
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="产权地址">
-                    <span v-if='contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).detailed_address
+                    <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).detailed_address
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="水卡卡号">
-                    <span v-if='contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).water_card_number
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).water_card_number
                       || '--' }}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="电卡卡号">
-                    <span v-if='contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).electricity_card_number
+                    <span v-if='contractDetail.house_extension&& contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).electricity_card_number
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="燃气卡号">
-                    <span v-if='contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).gas_card_number
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).gas_card_number
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
@@ -705,16 +706,27 @@ export default {
     hiddenModule (val) {
       this.showSearch = false;
       if (val !== 'close') {
-        this.params.page = 1
-        this.params.search = val.search
-        this.params.tag_status = val.tag_status
-        this.params.sign_user_id = val.openPer[0] || ''
-        this.params.sign_org_id = val.handler[0] || ''
-        this.params.end_at_min = val.date1[0] || ''
-        this.params.end_at_max = val.date1[1] || ''
+        if (val == 'reset') {
+          this.params.page = 1
+          this.params.search = ''
+          this.params.tag_status = ''
+          this.params.sign_user_id = ''
+          this.params.sign_org_id = ''
+          this.params.end_at_min = ''
+          this.params.end_at_max = ''
+        } else {
+          this.params.page = 1
+          this.params.search = val.search
+          this.params.tag_status = val.tag_status
+          this.params.sign_user_id = val.openPer[0] || ''
+          this.params.sign_org_id = val.handler[0] || ''
+          this.params.end_at_min = val.date1[0] || ''
+          this.params.end_at_max = val.date1[1] || ''
+        }
 
         this.getDateList()
       }
+
     },
     //合同详情
     tableClickRow (row) {
@@ -723,7 +735,6 @@ export default {
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
         if (res.code === 200) {
           this.contractDetail = res.data
-          console.log(JSON.parse(this.contractDetail.house_extension.community))
           this.contract_detail_visible = true
         } else {
 
@@ -828,7 +839,29 @@ export default {
     },
     // 发送代办
     postHelp (row) {
-      console.log(`代办${row}`)
+      let params = {
+        house_id: row.house_id,
+        contract_id: row.contract_id,
+        contract_type: this.chooseTab,
+        task_type: row.tag_status,
+        tag_id: row.tag_id
+      }
+
+      this.$http.post(this.market_server + `v1.0/market/contract/send-task`, params).then(res => {
+        if (res.code === 200) {
+          this.handleCloseUrgedDeal()
+          this.$LjNotify('success', {
+            title: '提示',
+            message: '代办发送成功'
+          });
+          this.getDateList()
+        } else {
+          this.$LjNotify('warning', {
+            title: '提示',
+            message: '代办发送失败'
+          });
+        }
+      })
     },
     // 催办
     urgedDealWith (row) {
@@ -852,7 +885,6 @@ export default {
         }
 
       })
-
     },
     // 取消催办
     handleCloseUrgedDeal () {
