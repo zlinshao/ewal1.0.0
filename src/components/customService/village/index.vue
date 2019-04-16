@@ -199,7 +199,7 @@
               <div id="village-detail" style="min-height: 400px"></div>
             </VillageContainer>
             <VillageContainer village="房型价格-区块链推荐">
-              <el-table :data="outer_net_data">
+              <el-table :data="outer_net_data" @row-click="handleClickRow">
                 <el-table-column label="房型" prop="house_type" align="center"></el-table-column>
                 <el-table-column label="价格" prop="price" align="center"></el-table-column>
                 <el-table-column align="center">
@@ -209,7 +209,16 @@
                 </el-table-column>
               </el-table>
             </VillageContainer>
-            <VillageContainer village="自适应聚类房型图"></VillageContainer>
+            <VillageContainer village="自适应聚类房型图">
+              <div style="text-align: left" v-if="outer_house_pic.length > 0">
+                <img :src="url" alt=""
+                     style="width: 60px;height: 60px;margin-right: 15px;cursor: pointer;border-radius: 4px"
+                     v-for="url in outer_house_pic"
+                     data-magnify="" data-caption="图片查看器" :data-src="url"
+                >
+              </div>
+              <div style="text-align: center" v-else>暂无数据</div>
+            </VillageContainer>
             <VillageContainer village="所属部门"></VillageContainer>
           </div>
         </div>
@@ -289,6 +298,7 @@
           }
         },
         outer_net_data: [],
+        outer_house_pic: [],
 
         menu_visible: false,
         customService,
@@ -392,6 +402,11 @@
     watch: {},
     computed: {},
     methods: {
+      //点击获取房型图
+      handleClickRow(row) {
+        console.log(row);
+        this.outer_house_pic = row.pic_address || [];
+      },
       //查看外网房源
       handleOpenOuterHouse(row) {
         if (row.url) {
@@ -405,17 +420,25 @@
         }
       },
       handleDetailMap(position) {
+        let that = this;
         this.map = new AMap.Map('village-detail', {
           resizeEnable: true,
-          center: [118.78 , 32.07], //初始化地图中心点
+          center: position, //初始化地图中心点
           zoom: 13
         });
+        let infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(5, -20)});
         var marker = new AMap.Marker({
-          icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
           position,
-          map: this.map
+          map: that.map
         });
+        marker.content = this.current_village_detail && this.current_village_detail.village_name;
+        marker.on('click',markerClick);
+        marker.emit('click',{target: marker});
         this.map.add(marker);
+        function markerClick(e) {
+          infoWindow.setContent(e.target.content);
+          infoWindow.open(that.map, e.target.getPosition());
+        }
       },
       //小区全选
       handleChooseAll() {
@@ -431,8 +454,8 @@
       //小区详情
       handleGetDetail(village) {
         console.log(village);
-        this.$http.get(this.http_server + `v1.0/market/community/41234`).then(res => {
-        // this.$http.get(this.http_server + `v1.0/market/community/${village.id}`).then(res => {
+        // this.$http.get(this.http_server + `v1.0/market/community/41234`).then(res => {
+        this.$http.get(this.http_server + `v1.0/market/community/${village.id}`).then(res => {
           if (res.code === 200) {
             console.log(res.data);
             this.current_village_detail = res.data;
@@ -514,6 +537,7 @@
       //分配小区
       handleAllotCommunity(village) {
         this.allot_village_params.community_id = village.id;
+        // this.allot_village_params.community_id = 41234;
         this.allot_village_params.village_name = village.village_name;
         this.allot_village_visible = true;
       },
@@ -561,7 +585,6 @@
       },
       //确定筛选
       handleConfirmFilter() {
-        console.log(this.village_params);
         this.getVillageList();
         this.show_filter_search = false;
       },
@@ -623,7 +646,11 @@
           case 'type' :
             if (item.id === this.current_choose_type) {
               this.current_choose_type = '';
-              this.this.address_filter[2].val = '';
+              if (this.current_choose_house) {
+                this.address_filter[2].val = this.address_filter[2].val.split('-')[1];
+              } else {
+                this.address_filter[2].val = '选类型';
+              }
               if (item.id === 1 || item.id === 2) {
                 this.village_params.is_share = '';
               }

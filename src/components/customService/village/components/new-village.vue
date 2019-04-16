@@ -16,7 +16,7 @@
                 <el-col :span="6">
                   <el-form-item label="省">
                     <el-select v-model="new_village_form.province" placeholder="请选择" @change="handleChangeProvince">
-                      <el-option v-for="(item,idx) in province_list" :key="idx" :value="item.province_id"
+                      <el-option v-for="item in province_list" :key="item.id" :value="item.province_id"
                                  :label="item.province_name"></el-option>
                     </el-select>
                   </el-form-item>
@@ -24,7 +24,7 @@
                 <el-col :span="6">
                   <el-form-item label="市">
                     <el-select v-model="new_village_form.city" placeholder="请选择" @change="handleChangeCity">
-                      <el-option v-for="(item,idx) in city_list" :key="idx" :value="item.city_id"
+                      <el-option v-for="item in city_list" :key="item.id" :value="item.city_id"
                                  :label="item.city_name"></el-option>
                     </el-select>
                   </el-form-item>
@@ -32,7 +32,7 @@
                 <el-col :span="6">
                   <el-form-item label="区/县">
                     <el-select v-model="new_village_form.area" placeholder="请选择" @change="handleChangeArea">
-                      <el-option v-for="(item,idx) in area_list" :key="idx" :value="item.area_id"
+                      <el-option v-for="item in area_list" :key="item.id" :value="item.area_id"
                                  :label="item.area_name"></el-option>
                     </el-select>
                   </el-form-item>
@@ -40,7 +40,7 @@
                 <el-col :span="6">
                   <el-form-item label="街道">
                     <el-select v-model="new_village_form.region" placeholder="请选择">
-                      <el-option v-for="(item,idx) in region_list" :key="idx" :value="item.region_id"
+                      <el-option v-for="item in region_list" :key="item.id" :value="item.region_id"
                                  :label="item.region_name"></el-option>
                     </el-select>
                   </el-form-item>
@@ -263,13 +263,27 @@
         })
       },
       //标记
-      handleMarkerMap(position) {
-        this.marker = new AMap.Marker({
-          icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-          position,
-          map: this.map
+      handleMarkerMap(position,info) {
+        this.map.destroy();
+        let that = this;
+        this.map = new AMap.Map('container', {
+          resizeEnable: true,
+          center: position, //初始化地图中心点
+          zoom: 13
         });
-        this.marker.setMap(this.map);
+        let infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(5, -20)});
+        let marker = new AMap.Marker({
+          position,
+          map: that.map
+        });
+        marker.content = info.poi.name;
+        marker.on('click',markerClick);
+        marker.emit('click',{target: marker});
+        this.map.add(marker);
+        function markerClick(e) {
+          infoWindow.setContent(e.target.content);
+          infoWindow.open(that.map, e.target.getPosition());
+        }
       },
       //初始化地图
       handleInitialMap() {
@@ -290,7 +304,8 @@
             console.log(info);
             this.new_village_form.longitude = info.poi.location.R;
             this.new_village_form.latitude = info.poi.location.Q;
-            this.handleMarkerMap([info.poi.location.R,info.poi.location.Q]);
+            this.new_village_form.village_name = info.poi.name;
+            this.handleMarkerMap([info.poi.location.R,info.poi.location.Q],info);
           });
         });
       },
@@ -303,6 +318,7 @@
         console.log(val);
         this.new_village_form.area = '';
         this.new_village_form.region = '';
+        this.address_params.area = '';
         this.address_params.city = val;
         this.getAddressList('area');
       },
@@ -310,6 +326,8 @@
         this.new_village_form.city = '';
         this.new_village_form.area = '';
         this.new_village_form.region = '';
+        this.address_params.city = '';
+        this.address_params.area = '';
         this.address_params.province = val;
         this.getAddressList('city');
       },

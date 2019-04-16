@@ -212,6 +212,8 @@
       display: -webkit-flex;
       align-items: center;
       justify-content: center; }
+      #theme_name #attence .main-nav .nav-right .button-all-close > span:hover {
+        color: #cf2e33; }
       #theme_name #attence .main-nav .nav-right > span {
         padding: 5px 30px;
         margin: 0 10px;
@@ -262,11 +264,10 @@
       width: 100%;
       height: 90%;
       background-color: gray; }
-      #theme_name #attence .confirm-container .confirm-table .table-operate.no-send {
-        color: #cf2e33;
-        cursor: pointer; }
-      #theme_name #attence .confirm-container .confirm-table .table-operate.send {
-        color: rgba(104, 104, 116, 0.4); }
+      #theme_name #attence .confirm-container .confirm-table .icon-pdf {
+        cursor: pointer;
+        width: 36px;
+        height: 41px; }
     #theme_name #attence .confirm-container .confirm-pagination {
       height: 10%;
       width: 100%; }

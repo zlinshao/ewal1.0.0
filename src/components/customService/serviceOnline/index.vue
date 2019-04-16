@@ -18,11 +18,16 @@
         <el-table
           :data="online_list"
           @row-click="handleClickRow"
+          :height="this.mainListHeight(30) + 'px'"
         >
           <el-table-column label="接听时间" prop="call_log.start_time" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="b" align="center"></el-table-column>
           <el-table-column label="地址" prop="customer.name" align="center"></el-table-column>
-          <el-table-column label="来电类型" prop="d" align="center"></el-table-column>
+          <el-table-column label="来电类型" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.note && scope.row.note.content || '/'}} </span>
+            </template>
+          </el-table-column>
           <el-table-column label="接线时长/s" prop="call_log.duration" align="center"></el-table-column>
           <el-table-column label="来电内容" prop="custom_fields" align="center"></el-table-column>
           <el-table-column label="接线人" prop="customer.owner_name" align="center"></el-table-column>
@@ -119,7 +124,9 @@
           page: 1,
           limit: 20,
           date_min: '',
-          date_max: ''
+          date_max: '',
+          advisory_type: '',
+          search: ''
         },
         online_list: [],
         online_count: 0,
@@ -134,8 +141,9 @@
     computed: {},
     methods: {
       getServiceOnlineList() {
+        this.showLoading(true);
         this.$http.get(this.server + 'v1.0/csd/udesk/calllog',this.params).then(res => {
-          console.log(res);
+          console.log(res.data);
           if (res.code === 200) {
             this.online_list = res.data.data;
             this.online_count = res.data.total;
@@ -143,6 +151,7 @@
             this.online_list = [];
             this.online_count = 0;
           }
+          this.showLoading(false);
         })
       },
       handleClickRow() {
@@ -151,6 +160,7 @@
       //分页
       handleChangePage (page) {
         this.params.page = page;
+        this.getServiceOnlineList();
       },
       handleOpenMenu() {
         this.menu_visible = !this.visibleStatus;
@@ -161,6 +171,7 @@
         this.searchData = {
           status: 'village',
           placeholder: '请输入搜索内容',
+          keywords: 'search',
           data: [
             {
               keyType: 'dateRange',
@@ -170,19 +181,86 @@
               dataType: []
             },
             {
-              keyType: 'check',
+              keyType: 'radio',
               title: '类型',
-              keyName: 'check',
+              keyName: 'advisory_type',
               dataType: [],
               value: [
                 {
                   id: 1,
-                  title: '房屋查询'
+                  title: '投诉'
                 },
                 {
                   id: 2,
-                  title: '维修'
-                }
+                  title: '其他'
+                },
+                {
+                  id: 3,
+                  title: '报修(公司)'
+                },
+                {
+                  id: 4,
+                  title: '报修(房东)'
+                },
+                {
+                  id: 5,
+                  title: '报修(超报修期)'
+                },
+                {
+                  id: 6,
+                  title: '报修(无信息)'
+                },
+                {
+                  id: 7,
+                  title: '报销'
+                },
+                {
+                  id: 8,
+                  title: '催缴'
+                },
+                {
+                  id: 9,
+                  title: '退租(违约金)'
+                },
+                {
+                  id: 10,
+                  title: '退租(到期退)'
+                },
+                {
+                  id: 11,
+                  title: '求租托管'
+                },
+                {
+                  id: 12,
+                  title: '续租'
+                },
+                {
+                  id: 13,
+                  title: '退押金'
+                },
+                {
+                  id: 14,
+                  title: '业主催房租'
+                },
+                {
+                  id: 15,
+                  title: '租客缴纳房租'
+                },
+                {
+                  id: 16,
+                  title: '业主收房(违约)'
+                },{
+                  id: 17,
+                  title: '业主收房(到期)'
+                },{
+                  id: 18,
+                  title: '催维修'
+                },
+                {
+                  id: 19,
+                  title: '转租'
+                },
+
               ]
             },
           ]
@@ -192,7 +270,11 @@
       //关闭高级搜索
       hiddenModule(val) {
         if (val !== 'close') {
-          console.log(val);
+          this.params.advisory_type = val.advisory_type;
+          this.params.date_min = val.date[0] ? val.date[0] : '';
+          this.params.date_max = val.date[1] ? val.date[1] : '';
+          this.params.search = val.search;
+          this.getServiceOnlineList();
         }
         this.searchHighVisible = false;
       },
