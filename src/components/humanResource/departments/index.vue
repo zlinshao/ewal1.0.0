@@ -752,6 +752,7 @@
       //关闭部门详情
       handleCloseDepartDetail() {
         this.current_btn = 1;
+        this.check_info = '';
         this.departModule = false;
         this.show_depart_detail = false;
         this.departForm.parent_id = [1];

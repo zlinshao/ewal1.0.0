@@ -925,6 +925,7 @@
     watch: {
       checkInfo: {
         handler(val) {
+          console.log(val);
           if (val.id === 1) {
             this.tabsManage = 'staff';
             this.getStaffList();
