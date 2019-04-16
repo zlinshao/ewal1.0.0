@@ -32,6 +32,7 @@
     //  }
     //}
 
+
     .main-nav {
       padding: 15px 0;
 
@@ -58,6 +59,7 @@
         right: 0;
         top: 50%;
         transform: translateY(-50%);
+
 
         > div {
           width: 100px;
@@ -228,7 +230,7 @@
           text-align: center;
           transition: all ease 1s;
 
-          .question-paper {
+          .exam-paper {
             width: 80%;
 
             > div {
@@ -286,48 +288,6 @@
             }
           }
 
-          .exam-paper {
-            width: 80%;
-
-            > div {
-              width: 80px;
-              height: 100%;
-              font-family: 'jingDianXingShu';
-              @include flex('flex-center');
-              flex-direction: column;
-
-              > div {
-                font-size: 26px;
-                font-family: 'jingDianXingShu';
-                cursor: pointer;
-
-                &:first-child {
-                  margin-bottom: 80px;
-                }
-              }
-
-              &:hover {
-                color: $colorE33;
-              }
-            }
-
-            .exam_span {
-              vertical-align: top;
-
-              > span {
-                font-family: 'jingDianXingShu';
-
-                &:first-child {
-                  font-size: 12px;
-                }
-
-                &:last-child {
-                  font-size: 26px;
-                }
-              }
-            }
-          }
-
           .exam-control {
             width: 20%;
             flex-direction: column;
@@ -354,6 +314,7 @@
         }
       }
     }
+
 
     .exam-setting {
       transform: translateX(0);
@@ -423,7 +384,7 @@
       position: absolute;
       left: 0;
       top: 0;
-      z-index: 10086;
+      z-index: 100;
       transition: all ease 1s;
       transform-origin: center center;
       background-color: $color2F2;

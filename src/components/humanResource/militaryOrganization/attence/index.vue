@@ -772,30 +772,30 @@
         }
       },
 
-
       //考勤确认
       confirmAttence() {
         let rows = this.tableSettingData.attence.multipleSelection;
         if (rows && rows.length > 0) {
-          let users = _.map(rows, 'id');
-          let params = {
-            user_id: users,
-            date: this.monthValue
-          };
-          this.$http.get(`${this.url}attendance/attendance/todo`, params).then(res => {
-            debugger
-            if(res.code.endsWith('0')) {
-              this.$LjNotify('success',{
-                title:'成功',
-                message:res.msg,
-              });
-              rows = [];
-            }else {
-              this.$LjNotify('error',{
-                title:'失败',
-                message:res.msg,
-              });
-            }
+          this.$LjConfirm({content:'月度统计表将发送至对应员工待办中'}).then(()=> {
+            let users = _.map(rows, 'id');
+            let params = {
+              user_id: users,
+              date: this.monthValue
+            };
+            this.$http.get(`${this.url}attendance/attendance/todo`, params).then(res => {
+              if(res.code.endsWith('0')) {
+                this.$LjNotify('success',{
+                  title:'成功',
+                  message:res.msg,
+                });
+                rows = [];
+              }else {
+                this.$LjNotify('error',{
+                  title:'失败',
+                  message:res.msg,
+                });
+              }
+            });
           });
         } else {
           this.$LjMessage('warning', {
