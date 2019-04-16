@@ -1,0 +1,275 @@
+.flex {
+  display: flex;
+  display: -webkit-flex; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #747474;
+    border-radius: 4px; }
+
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#theme_name #miantenance .addOrder_dialog .el-row {
+  margin: 0 !important; }
+#theme_name #miantenance .addOrder_dialog .el-col {
+  height: 40px;
+  margin-bottom: 20px;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+  #theme_name #miantenance .addOrder_dialog .el-col .el-col-p {
+    width: 33%;
+    font-size: 14px;
+    text-align: left;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center; }
+    #theme_name #miantenance .addOrder_dialog .el-col .el-col-p .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 10px; }
+  #theme_name #miantenance .addOrder_dialog .el-col .el-col-p1 {
+    width: 92px; }
+  #theme_name #miantenance .addOrder_dialog .el-col .input_box {
+    width: 65%;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center; }
+
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col p {
+  color: #686874; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .house_name {
+    background: url("../../../assets/image/customService/maintenance/theme1/dizhi_hui.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .type {
+    background: url("../../../assets/image/customService/maintenance/theme1/leixing_copy.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .post {
+    background: url("../../../assets/image/customService/maintenance/theme1/paidan.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .handler {
+    background: url("../../../assets/image/customService/maintenance/theme1/ren.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .org {
+    background: url("../../../assets/image/customService/maintenance/theme1/bumen_hui.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .phone {
+    background: url("../../../assets/image/customService/maintenance/theme1/dianhua_.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .endTime {
+    background: url("../../../assets/image/customService/maintenance/theme1/shijian_hui.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .status {
+    background: url("../../../assets/image/customService/maintenance/theme1/koukuanmingxi_hui.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .content {
+    background: url("../../../assets/image/customService/maintenance/theme1/gognzuoneirong.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name.theme1 #miantenance .addOrder_dialog .el-col p .upload {
+    background: url("../../../assets/image/customService/maintenance/theme1/shangchuantupian.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .house_name {
+  background: url("../../../assets/image/customService/maintenance/theme1/dizhi.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .type {
+  background: url("../../../assets/image/customService/maintenance/theme1/leixing.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .post {
+  background: url("../../../assets/image/customService/maintenance/theme1/paidan_hong.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .handler {
+  background: url("../../../assets/image/customService/maintenance/theme1/ren_hong.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .org {
+  background: url("../../../assets/image/customService/maintenance/theme1/bumen.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .phone {
+  background: url("../../../assets/image/customService/maintenance/theme1/dianhua_hong.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .endTime {
+  background: url("../../../assets/image/customService/maintenance/theme1/shijian.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .status {
+  background: url("../../../assets/image/customService/maintenance/theme1/jinji_hong.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .content {
+  background: url("../../../assets/image/customService/maintenance/theme1/neirong.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme1 #miantenance .addOrder_dialog .el-col:hover .upload {
+  background: url("../../../assets/image/customService/maintenance/theme1/tupian_hong.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+
+/*# sourceMappingURL=index.css.map */

@@ -140,7 +140,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +159,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,8 +168,65 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#theme_name #organization {
+  width: 100%;
+  height: 100%; }
+  #theme_name #organization > div {
+    height: 100%;
+    padding: 30px 100px; }
+    #theme_name #organization > div .organ-tree {
+      width: 90%;
+      height: 700px;
+      margin: 0 auto;
+      padding: 30px;
+      text-align: center; }
+      #theme_name #organization > div .organ-tree .radius-container {
+        display: inline-block;
+        min-width: 100px;
+        height: 50px;
+        border-radius: 20px;
+        text-align: center;
+        line-height: 50px;
+        border: 1px solid black;
+        font-family: 'jingDianXingShu';
+        font-size: 22px;
+        cursor: pointer;
+        position: relative; }
+      #theme_name #organization > div .organ-tree .area-container {
+        min-width: 50px;
+        min-height: 120px;
+        border: 1px solid black;
+        padding: 5px 8px;
+        cursor: pointer;
+        margin: 0 20px;
+        position: relative; }
+        #theme_name #organization > div .organ-tree .area-container .line-up {
+          width: 1px;
+          height: 50px;
+          background-color: black;
+          position: absolute;
+          left: 50%;
+          top: -43%;
+          transform: translateX(-50%);
+          display: inline-block; }
+        #theme_name #organization > div .organ-tree .area-container p {
+          text-align: left;
+          letter-spacing: 3px;
+          font-family: 'jingDianXingShu'; }
+        #theme_name #organization > div .organ-tree .area-container .bold {
+          font-size: 22px; }
+        #theme_name #organization > div .organ-tree .area-container:hover {
+          color: #cf2e33;
+          border-color: #cf2e33; }
 
 /*# sourceMappingURL=index.css.map */

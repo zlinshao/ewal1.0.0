@@ -115,82 +115,95 @@
     </div>
 
     <!--权限管理-->
-    <div v-if="chooseTab === 5" style="padding: 0 30px;">
+    <div v-if="chooseTab === 5" style="padding: 0 30px;background-color: #F9F9F9" class="scroll_bar">
       <!--系统-->
-      <div style="padding: 10px 0;margin-bottom: 30px">
-        <el-card>
-          <div style="text-align: right">
-            <div class="btn_square_add" @click="add_system_visible = true"><b>+</b></div>
+      <div style="height: 800px">
+        <div style="padding: 10px 0;margin-bottom: 30px">
+          <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">系统</p>
+          <div style="padding: 20px;background-color: white">
+            <div style="text-align: right">
+              <div class="btn_square_add" @click="add_system_visible = true"><b>+</b></div>
+            </div>
+            <el-table
+              :data="system_list"
+              height="400px"
+              @row-click="handleClickSystem"
+            >
+              <el-table-column label="ID" prop="id" align="center"></el-table-column>
+              <el-table-column label="系统标识" prop="sign" align="center"></el-table-column>
+              <el-table-column label="系统名称" prop="name" align="center"></el-table-column>
+              <el-table-column label="系统描述" prop="description" align="center"></el-table-column>
+              <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+              <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                  <el-button type="success" size="mini" plain @click="handleOpenAddModule(scope.row)">新增模块</el-button>
+                  <el-button type="warning" size="mini" plain @click="handleOpenEdit('system',scope.row)">编辑</el-button>
+                  <el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
           </div>
-          <el-table
-            :data="system_list"
-            height="400px"
-            @row-click="handleClickSystem"
-          >
-            <el-table-column label="ID" prop="id" align="center"></el-table-column>
-            <el-table-column label="系统标识" prop="sign" align="center"></el-table-column>
-            <el-table-column label="系统名称" prop="name" align="center"></el-table-column>
-            <el-table-column label="系统描述" prop="description" align="center"></el-table-column>
-            <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="success" size="mini" @click="handleOpenAddModule(scope.row)">新增模块</el-button>
-                <el-button type="warning" size="mini" @click="handleOpenEdit('system',scope.row)">编辑</el-button>
-                <el-button type="danger" size="mini" @click="handleDelControl('system',scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-        <el-card style="margin: 20px auto">
-          <el-table
-            :data="module_list"
-            @row-click="handleClickModule"
-          >
-            <el-table-column label="ID" prop="id" align="center"></el-table-column>
-            <el-table-column label="模块标识" prop="sign" align="center"></el-table-column>
-            <el-table-column label="模块名称" prop="name" align="center"></el-table-column>
-            <el-table-column label="模块描述" prop="description" align="center"></el-table-column>
-            <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="success" size="mini" @click="handleOpenAddPower(scope.row)">新增权限</el-button>
-                <el-button type="warning" size="mini" @click="handleOpenEdit('module',scope.row)">编辑</el-button>
-                <el-button type="danger" size="mini" @click="handleDelControl('system',scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-        <el-card>
-          <el-table :data="power_list" height="400px" @row-click="handleClickPower">
-            <el-table-column label="ID" prop="id" align="center"></el-table-column>
-            <el-table-column label="权限标示" prop="sign" align="center"></el-table-column>
-            <el-table-column label="权限名称" prop="name" align="center"></el-table-column>
-            <el-table-column label="权限描述" prop="description" align="center"></el-table-column>
-            <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="success" size="mini" @click="handleOpenAddField(scope.row)">添加字段权限</el-button>
-                <el-button type="warning" size="mini" @click="handleOpenEdit('power',scope.row)">编辑</el-button>
-                <el-button type="danger" size="mini" @click="handleDelControl('power',scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-        <el-card style="margin-top: 20px">
-          <el-table :data="field_list" height="400px">
-            <el-table-column label="项目名称" prop="app_name" align="center"></el-table-column>
-            <el-table-column label="控制器全称" prop="controller" align="center"></el-table-column>
-            <el-table-column label="方法名称" prop="method" align="center"></el-table-column>
-            <el-table-column label="权限字段标识" prop="sign" align="center"></el-table-column>
-            <el-table-column label="权限字段名称" prop="name" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="warning" size="mini" @click="handleOpenEditField(scope.row)">编辑</el-button>
-                <el-button type="danger" size="mini" @click="handleOpenDelField(scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
+          <div>
+            <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">模块</p>
+            <div style="background-color: white;padding: 20px">
+              <el-table
+                :data="module_list"
+                @row-click="handleClickModule"
+                height="400px"
+              >
+                <el-table-column label="ID" prop="id" align="center"></el-table-column>
+                <el-table-column label="模块标识" prop="sign" align="center"></el-table-column>
+                <el-table-column label="模块名称" prop="name" align="center"></el-table-column>
+                <el-table-column label="模块描述" prop="description" align="center"></el-table-column>
+                <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                  <template slot-scope="scope">
+                    <el-button type="success" size="mini" plain @click="handleOpenAddPower(scope.row)">新增权限</el-button>
+                    <el-button type="warning" size="mini" plain @click="handleOpenEdit('module',scope.row)">编辑</el-button>
+                    <el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+          <div>
+            <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">权限</p>
+            <div style="background-color: white;padding: 20px">
+              <el-table :data="power_list" height="400px" @row-click="handleClickPower">
+                <el-table-column label="ID" prop="id" align="center"></el-table-column>
+                <el-table-column label="权限标示" prop="sign" align="center"></el-table-column>
+                <el-table-column label="权限名称" prop="name" align="center"></el-table-column>
+                <el-table-column label="权限描述" prop="description" align="center"></el-table-column>
+                <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                  <template slot-scope="scope">
+                    <el-button type="success" size="mini" plain @click="handleOpenAddField(scope.row)">添加字段权限</el-button>
+                    <el-button type="warning" size="mini" plain @click="handleOpenEdit('power',scope.row)">编辑</el-button>
+                    <el-button type="danger" size="mini" plain @click="handleDelControl('power',scope.row)">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+          <div>
+            <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">字段</p>
+            <div style="background-color: white;padding: 20px">
+              <el-table :data="field_list" height="400px">
+                <el-table-column label="项目名称" prop="app_name" align="center"></el-table-column>
+                <el-table-column label="控制器全称" prop="controller" align="center"></el-table-column>
+                <el-table-column label="方法名称" prop="method" align="center"></el-table-column>
+                <el-table-column label="权限字段标识" prop="sign" align="center"></el-table-column>
+                <el-table-column label="权限字段名称" prop="name" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                  <template slot-scope="scope">
+                    <el-button type="warning" size="mini" plain @click="handleOpenEditField(scope.row)">编辑</el-button>
+                    <el-button type="danger" size="mini" plain @click="handleOpenDelField(scope.row)">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -629,7 +642,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 3,//tab切换
+        chooseTab: 5,//tab切换
         selects: [
           {
             id: 1,
