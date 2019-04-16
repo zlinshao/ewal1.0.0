@@ -17,12 +17,9 @@
                 <div class="icons add" @click.stop="is_add = true;" v-if="tabView==='BackVideo'"><b>+</b></div>
             </div>
         </div>
-
-        <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px'}">
-            <keep-alive>
-                <component :is="tabView" :add_status="is_add" @getAddStatus="addStatus"></component>
-            </keep-alive>
-        </div>
+        <keep-alive>
+            <component :is="tabView" :add_status="is_add" @getAddStatus="addStatus"></component>
+        </keep-alive>
     </div>
 </template>
 
