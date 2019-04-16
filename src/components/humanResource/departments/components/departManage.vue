@@ -10,22 +10,22 @@
       </div>
       <div class="scroll_bar staffManage" id="scroll-body" v-if="tabsManage === 'staff'" @click="checkOverflow()">
         <div v-for="item in staffList">
-          <div class="items-center" @click="reviseStaff(item)">
-            <p>
-              <img :src="item.avatar" alt="" v-if="item.avatar">
-              <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
-            </p>
-            <div>
-              <h4>{{ item.name }}</h4>
-              <h5>{{ item.position[0].name }}</h5>
+            <div class="items-center" @click="reviseStaff(item)">
+              <p>
+                <img :src="item.avatar" alt="" v-if="item.avatar">
+                <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+              </p>
+              <div>
+                <h4>{{ item.name }}</h4>
+                <h5>{{ item.position[0].name }}</h5>
+              </div>
             </div>
+            <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
+              <span v-for="label in operateList" @click="operateModule(label.type,item,'user')">{{label.label}}</span>
+              <b v-if="!operatePos"></b>
+              <i v-if="operatePos"></i>
+            </h5>
           </div>
-          <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-            <span v-for="label in operateList" @click="operateModule(label.type,item,'user')">{{label.label}}</span>
-            <b v-if="!operatePos"></b>
-            <i v-if="operatePos"></i>
-          </h5>
-        </div>
       </div>
       <div class="scroll_bar orgManage" v-if="tabsManage === 'position'">
         <div v-for="item in dutyList">
@@ -74,7 +74,7 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="身份证号">
-                      <el-input v-model="interview_info_detail.id_num" placeholder="请输入"></el-input>
+                      <el-input v-model="interview_info_detail.id_num" placeholder="请输入" @blur="handleGetStaffInfo"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -471,7 +471,7 @@
           <h3>{{ currentDutyInfo && currentDutyInfo.name }}</h3>
         </div>
         <div class="dialog_main positionContent space-column">
-          <div class="items-bet mainTop">
+          <div class="items-bet mainTop" style="margin-bottom: 10px">
             <div class="items-bet">
               <span class="hover">岗位</span>
             </div>
@@ -544,7 +544,7 @@
       </div>
     </lj-dialog>
     <!--新增岗位===============================================================================================-->
-    <lj-dialog :visible="addPostVisible" :size="{width: 500 + 'px',height: 560 + 'px'}" @close="handleCancelAdd">
+    <lj-dialog :visible="addPostVisible" :size="{width: 550 + 'px',height: 650 + 'px'}" @close="handleCancelAdd">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>新建岗位</h3>
@@ -966,6 +966,21 @@
       }
     },
     methods: {
+      //身份验证
+      handleGetStaffInfo() {
+        console.log(this.interview_info_detail.id_num);
+        this.$http.post('staff/user/check',{
+          id_num: this.interview_info_detail.id_num
+        }).then(res => {
+          if (res.code === "20000") {
+            this.interview_info_detail.birthday = res.data.birthday;
+            this.interview_info_detail.home_addr = res.data.area.result;
+          } else {
+            this.interview_info_detail.birthday = '';
+            this.interview_info_detail.home_addr = '';
+          }
+        })
+      },
       handleGetDepart(id,name) {
         if (id !== 'close') {
           this.interview_info_detail.depart = name;

@@ -86,10 +86,13 @@
                 <!--<div class="next_btn" :class="{'show_next_btn': is_next}"><i class="el-icon-arrow-right"></i></div>-->
                 <!--鼠标移入判断是否有下级部门不合理-->
                 <div class="next_btn"><i class="el-icon-arrow-right"></i></div>
-                <div class="list flex scroll_bar">
+                <div class="list flex scroll_bar" v-if="next_depart.length > 0">
                   <div class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>
                   <!--不合理-->
                   <!--<div @mouseover="handleConfirmNext(depart)" class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>-->
+                </div>
+                <div v-else class="items-center">
+                  <span>暂无下级部门</span>
                 </div>
               </div>
 
@@ -642,7 +645,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 5,//tab切换
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -678,7 +681,7 @@
           leader: '',
           leader_id: [],
           parent_id: [1],
-          parent: ''
+          parent: '南京乐伽商业管理有限公司'
         },//新增部门
         visibleStatus: false,//弹出部门
 
@@ -734,6 +737,10 @@
       },
       //部门列表打开部门详情
       handleOpenDepartDetail(item) {
+        console.log(item);
+        this.departForm.parent = item.name;
+        this.departForm.parent_id = [];
+        this.departForm.parent_id.push(item.id);
         this.current_depart = item;
         this.nav_depart = [];
         this.nav_depart.push(item);
@@ -747,6 +754,8 @@
         this.current_btn = 1;
         this.departModule = false;
         this.show_depart_detail = false;
+        this.departForm.parent_id = [1];
+        this.departForm.parent = '南京乐伽商业管理有限公司';
       },
       // 部门管理 搜索下级部门
       getNextDepart(val,next) {
@@ -761,10 +770,6 @@
             if (!next) {
               this.next_depart = [];
             }
-            this.$LjNotify('info',{
-              title: '提示',
-              message: '暂无下级部门！'
-            });
           }
         })
       },
@@ -1174,9 +1179,18 @@
          name: '',
          leader: '',
          leader_id: [],
-         parent_id: [1],
+         parent_id: [],
          parent: ''
        };
+       if (!this.show_depart_detail) {
+         this.departForm.parent_id = [1];
+         this.departForm.parent = '南京乐伽商业管理有限公司';
+       }
+       if (this.show_depart_detail) {
+         this.departForm.parent_id = [];
+         this.departForm.parent_id.push(this.current_depart.id);
+         this.departForm.parent = this.current_depart.name;
+       }
        this.is_edit_depart = false;
        this.depart_visible = false;
       },
@@ -1216,10 +1230,10 @@
           }
         })
       },
-      handleGetDepart(val,name) {
+      handleGetDepart(id,name) {
         this.chooseDepart = false;
-        if (val !== 'close') {
-          this.departForm.parent_id = val[0];
+        if (id !== 'close') {
+          this.departForm.parent_id = id;
           this.departForm.parent = name;
         }
       },
