@@ -1,5 +1,5 @@
 <template>
-  <div id="workOrder">
+  <div id="miantenance">
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
@@ -50,31 +50,128 @@
     <LjDialog :visible="addOrder_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseAddOrder">
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>标记记录</h3>
+          <h3>新建维修单</h3>
 
         </div>
-        <div class="dialog_main detail_dialog">
+        <div class="dialog_main addOrder_dialog">
           <div class="back_info scroll_bar">
+            <el-row :gutter="10">
+              <el-col :span='6'>
+                <p class='el-col-p'><i class='icon house_name'></i>房屋地址</p>
+                <div class='input_box'>
+                  <el-input disabled placeholder="请填写" v-model='addOrder_options.house_name'></el-input>
+                </div>
+              </el-col>
 
+              <el-col :span="6">
+                <p class='el-col-p'><i class='icon type'></i><span>类型</span></p>
+                <div class='input_box'>
+                  <el-radio v-model="addOrder_options.type" label="1">维修</el-radio>
+                  <el-radio v-model="addOrder_options.type" label="2">保洁</el-radio>
+                </div>
+              </el-col>
+
+              <el-col :span="6">
+                <p class='el-col-p'><i class='icon post'></i><span>派单至</span></p>
+                <div class='input_box'>
+                  <el-input @focus="this.staffModule = true" readonly v-model="addOrder_options.post"></el-input>
+                </div>
+              </el-col>
+
+              <el-col :span="6">
+                <p class='el-col-p'><i class='icon handler'></i><span>处理人</span></p>
+                <div class='input_box'>
+                  <el-input @focus="this.staffModule = true" readonly v-model="addOrder_options.handler"></el-input>
+                </div>
+              </el-col>
+
+              <el-col :span="6">
+                <p class='el-col-p'><i class='icon org'></i><span>部门</span></p>
+                <div class='input_box'>
+                  <el-input @focus="this.departModule = true" readonly v-model="addOrder_options.org"></el-input>
+                </div>
+              </el-col>
+
+              <el-col :span="6">
+                <p class='el-col-p'><i class='icon phone'></i><span>回复电话</span></p>
+                <div class='input_box'>
+                  <el-input placeholder="请填写" v-model='addOrder_options.mobile'></el-input>
+                </div>
+              </el-col>
+
+              <el-col :span="6">
+                <p class='el-col-p'><i class='icon endTime'></i><span>截止时间</span></p>
+                <div class='input_box'>
+                  <el-date-picker v-model="addOrder_options.endTime" value-format="yyyy-MM-dd" align="right" type="date"
+                    placeholder="选择日期">
+                    <!-- :picker-options="addOrder_options.pickerOptions" -->
+                  </el-date-picker>
+                </div>
+              </el-col>
+
+              <el-col :span="6">
+                <p class='el-col-p'><i class='icon status'></i><span>紧急时间</span></p>
+                <div class='input_box'>
+                  <el-select v-model="addOrder_options.status" placeholder="请选择">
+                    <el-option label="特急" value="特急"></el-option>
+                    <el-option label="紧急" value="紧急"></el-option>
+                    <el-option label="重要" value="重要"></el-option>
+                    <el-option label="一般" value="一般"></el-option>
+                  </el-select>
+                </div>
+              </el-col>
+
+              <el-col :span='6'>
+                <p class='el-col-p'><i class='icon content'></i>内容</p>
+                <div class='input_box'>
+                  <el-input placeholder="请填写" v-model="addOrder_options.content"></el-input>
+                </div>
+              </el-col>
+
+              <el-col :span='18'>
+                <p class='el-col-p el-col-p1'><i class='icon upload'></i>上传图片</p>
+                <Ljupload size='40' v-model='addOrder_options.imgList'></Ljupload>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="10">
+              <el-col :span='2' class='el-col-box'>
+                <div class='el-box'>
+
+                </div>
+              </el-col>
+              <el-col :span='22'>
+              </el-col>
+            </el-row>
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleCloseLookBackInfo">确定</el-button>
+          <el-button type="danger" size="small" @click="handleCloseAddOrder">新增</el-button>
+          <el-button type="danger" size="small" @click="handleCloseAddOrder">取消</el-button>
         </div>
       </div>
     </LjDialog>
+
+    <!--选择人员-->
+    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
+
+    <!--选择部门-->
+    <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart"></DepartOrgan>
   </div>
 </template>
 
 <script>
 import SearchHigh from '../../common/searchHigh.vue'
 import MenuList from '../../common/menuList.vue';
+import StaffOrgan from '../../common/staffOrgan';
+import DepartOrgan from '../../common/departOrgan';
+import Ljupload from '../../common/lightweightComponents/lj-upload'
 import { maintenanceSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 import LjDialog from '../../common/lj-dialog.vue';
 export default {
   name: "index",
-  components: { SearchHigh, MenuList, LjDialog },
+  components: { SearchHigh, MenuList, LjDialog, StaffOrgan, DepartOrgan, Ljupload },
   data () {
     return {
       maintenanceSearch,
@@ -146,7 +243,27 @@ export default {
       showSearch: false,
       searchData: {},
       market_server: globalConfig.market_server,
-      addOrder_visible: false
+      addOrder_visible: false,
+      addOrder_options: {
+        house_name: '',
+        type: '',
+        post: '',
+        handler: '',
+        org: '',
+        mobile: '',
+        endTime: '',
+        status: '',
+        content: '',
+        imgList: [],
+      },
+      staffModule: false,//显示人员选择
+      organData: { //最多选择几个人
+        num: 1
+      },
+      departModule: false, //部门选择
+      departData: {
+        num: 1,
+      }
     }
   },
   mounted () {
@@ -204,6 +321,21 @@ export default {
     addOrder () {
       this.addOrder_visible = true
     },
+    hiddenOrgan (ids, names, arr) { // 关闭 选择人员
+      this.staffModule = false;
+      if (ids !== 'close') {
+        // this.postman = names
+        // this.postMess.person = arr
+        console.log(ids, names, arr)
+      }
+    },
+    hiddenDepart (ids, str, arr) {
+      this.departModule = false
+      if (dis != 'close') {
+        console.log(ids, names, arr)
+      }
+    },
+
     handleCloseAddOrder () {
       this.addOrder_visible = false
     },
@@ -296,50 +428,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../assets/scss/customService/workOrder/index.scss";
-
-@mixin workOrderImg($m, $n) {
-  $url: "../../../assets/image/customService/workOrder/" + $n + "/" + $m;
-  @include bgImage($url);
-}
-
-#theme_name.theme1 {
-  #workOrder {
-    .mainListTable {
-      .status1 {
-        p {
-          color: $colorFFF;
-          @include workOrderImg("teji.png", "theme1");
-        }
-      }
-      .status2 {
-        p {
-          color: #ffad0d;
-          @include workOrderImg("jinji.png", "theme1");
-        }
-      }
-      .status3 {
-        p {
-          color: #0c66ff;
-          @include workOrderImg("zhongyao.png", "theme1");
-        }
-      }
-    }
-  }
-}
-
-#theme_name.theme2 {
-  #workOrder {
-  }
-}
-
-#theme_name.theme3 {
-  #workOrder {
-  }
-}
-
-#theme_name.theme4 {
-  #workOrder {
-  }
-}
+@import "../../../assets/scss/customService/maintenance/index.scss";
 </style>

@@ -1,0 +1,131 @@
+@import '../../common.scss';
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/customService/maintenance/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
+#theme_name {
+  #miantenance {
+    //增加order
+    .addOrder_dialog {
+      .el-row {
+        margin: 0 !important;
+      }
+      .el-col {
+        height: 40px;
+        margin-bottom: 20px;
+        @include flex('items-center');
+        @include flex('justify-start');
+        .el-col-p {
+          width: 33%;
+          font-size: 14px;
+          text-align: left;
+          @include flex('items-center');
+          .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+          }
+        }
+        .el-col-p1 {
+          width: 92px;
+        }
+        .input_box {
+          width: 65%;
+          @include flex('items-center');
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #miantenance {
+    //增加order
+    .addOrder_dialog {
+      .el-col {
+        p {
+          color: #686874;
+          .house_name {
+            @include confirmImg('dizhi_hui.png', 'theme1');
+          }
+          .type {
+            @include confirmImg('leixing_copy.png', 'theme1');
+          }
+          .post {
+            @include confirmImg('paidan.png', 'theme1');
+          }
+          .handler {
+            @include confirmImg('ren.png', 'theme1');
+          }
+          .org {
+            @include confirmImg('bumen_hui.png', 'theme1');
+          }
+          .phone {
+            @include confirmImg('dianhua_.png', 'theme1');
+          }
+          .endTime {
+            @include confirmImg('shijian_hui.png', 'theme1');
+          }
+          .status {
+            @include confirmImg('koukuanmingxi_hui.png', 'theme1');
+          }
+          .content {
+            @include confirmImg('gognzuoneirong.png', 'theme1');
+          }
+          .upload {
+            @include confirmImg('shangchuantupian.png', 'theme1');
+          }
+        }
+        &:hover {
+          .house_name {
+            @include confirmImg('dizhi.png', 'theme1');
+          }
+          .type {
+            @include confirmImg('leixing.png', 'theme1');
+          }
+          .post {
+            @include confirmImg('paidan_hong.png', 'theme1');
+          }
+          .handler {
+            @include confirmImg('ren_hong.png', 'theme1');
+          }
+          .org {
+            @include confirmImg('bumen.png', 'theme1');
+          }
+          .phone {
+            @include confirmImg('dianhua_hong.png', 'theme1');
+          }
+          .endTime {
+            @include confirmImg('shijian.png', 'theme1');
+          }
+          .status {
+            @include confirmImg('jinji_hong.png', 'theme1');
+          }
+          .content {
+            @include confirmImg('neirong.png', 'theme1');
+          }
+          .upload {
+            @include confirmImg('tupian_hong.png', 'theme1');
+          }
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme2 {
+  #miantenance {
+  }
+}
+
+#theme_name.theme3 {
+  #miantenance {
+  }
+}
+
+#theme_name.theme4 {
+  #miantenance {
+  }
+}
