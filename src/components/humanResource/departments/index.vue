@@ -1024,7 +1024,7 @@
         this.edit_module_form = {
           name: '',
           description: '',
-          parent_id: '',
+          parent_id: [],
           parent: '',
           system_id: ''
         };
@@ -1144,7 +1144,8 @@
         this.departForm.leader = item.leader && item.leader.name || '';
         this.departForm.leader_id.push(item.leader_id);
         this.departForm.parent = item.parent_org && item.parent_org.name || '';
-        this.departForm.parent_id = item.parent_id;
+        this.departForm.parent_id = [];
+        this.departForm.parent_id.push(item.parent_id);
         this.is_edit_depart = true;
         this.lj_size = {
           width: '510px',
