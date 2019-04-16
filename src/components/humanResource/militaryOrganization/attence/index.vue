@@ -32,7 +32,7 @@
 
         <el-checkbox v-model="tableSettingData.attence.isLeave">离职员工</el-checkbox>
         <org-choose num="1" width="200" title="请选择部门" v-model="tableSettingData.attence.departmentId"></org-choose>
-        <span @click="demo" class="colorE33">考勤确认</span>
+        <span @click="confirmAttence" class="colorE33">考勤确认</span>
       </div>
       <div v-if="chooseTab==2" class="nav-right">
         <org-choose width="140" title="请选择部门"></org-choose>
@@ -46,6 +46,7 @@
             :data="tableSettingData.attence.tableData"
             height="100%"
             :border="true"
+            @selection-change="handleSelectionChange"
             :row-class-name="tableChooseRow"
             @cell-click="tableClickRow"
             @row-dblclick="tableDblClick($event,'attence')"
@@ -82,7 +83,7 @@
               align="center"
               width="120"
               prop="attRest"
-              label="出勤/休息天数">
+              label="出勤统计">
               <template slot-scope="scope">
                 <span style="cursor: pointer" @click="showAttRest(scope.row)"
                       class="colorE33">{{scope.row.attRest}}</span>
@@ -246,19 +247,49 @@
                v-for="item in tableSettingData.attence.table_dialog_tabs">
             <span>{{item.name}}</span>
           </div>
-          <!--<div class="middle-item bg-default"><span>出勤/休息天数</span></div>
-          <div class="middle-item bg-default"><span>迟到/缺卡次数</span></div>
-          <div class="middle-item bg-default"><span>加班统计</span></div>-->
         </div>
         <div class="container-bottom">
-          <div v-if="tableSettingData.attence.table_dialog_choose_tab==1" class="container-bottom-tab1">
-            <div class="bottom-tip">2019-04 出勤天数：21，休息天数：3</div>
+          <div v-if="tableSettingData.attence.table_dialog_choose_tab==1" class="container-bottom-tab1 scroll_bar">
+            <div class="bottom-tip">{{monthContent}}
+              出勤天数：{{tableSettingData.attence.formData.attendance_day}}，休息天数：{{tableSettingData.attence.formData.rest_day}}
+            </div>
             <div class="bottom-calendar">
-              <calendar lang="en"></calendar>
+              <calendar lang="en" :datetime="monthValue">
+                <div :slot="'slot'+item.id" v-for="item in daysList"
+                     class="calendar-days-item" :class="{rest:item.week==0||item.week==6,current:item.today}"
+                >
+                  <div class="days-item-content-container"
+                       :class="{colorE33:item.attendance_data&&item.attendance_data!=='正常'}">
+                    <span class="days-item-content-date">{{item.date}}</span>
+                    <span style="font-size: 13px" v-if="item.attendance_data">{{item.attendance_data}}</span>
+
+                  </div>
+                  <!--<div>{{item.datetime}}</div>-->
+                </div>
+              </calendar>
+            </div>
+            <div class="bottom-other">
+              <div class="container-bottom-other">
+                <div class="bottom-tip">{{monthContent}} 请假统计：{{tableSettingData.attence.formData.vacate_count}}</div>
+                <div class="bottom-container">
+
+                  <div class="check-record-container">
+
+                    <div v-for="item in vacateList" class="check-record-item">
+                      <div class="check-record-item-top">
+                        <span>{{item.tip}}</span></div>
+                      <div class="check-record-item-bottom">
+                        <span>{{item.value}}</span></div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
             </div>
           </div>
           <div v-if="tableSettingData.attence.table_dialog_choose_tab==2" class="container-bottom-tab2">
-            <div class="bottom-tip">2019-04 迟到/缺卡次数：3</div>
+            <div class="bottom-tip">{{monthContent}} 迟到/缺卡次数：{{tableSettingData.attence.formData.lack}}</div>
             <div class="bottom-container">
 
               <div class="check-record-container">
@@ -275,7 +306,7 @@
           </div>
 
           <div v-if="tableSettingData.attence.table_dialog_choose_tab==3" class="container-bottom-tab3">
-            <div class="bottom-tip">2019-04 加班统计：16h</div>
+            <div class="bottom-tip">{{monthContent}} 加班统计：{{tableSettingData.attence.formData.jiaban}}</div>
             <div class="bottom-container">
 
               <div class="check-record-container">
@@ -284,7 +315,7 @@
                   <div class="check-record-item-top">
                     <span style="font-weight: 700">加班-审批单统计</span></div>
                   <div class="check-record-item-bottom">
-                    <span>2</span></div>
+                    <span>{{tableSettingData.attence.formData.jiaban_data1}}</span></div>
                 </div>
                 <div class="check-record-item">
                   <div class="check-record-item-top">
@@ -295,8 +326,8 @@
                     </div>
                   </div>
                   <div class="check-record-item-bottom">
-                    <div>8h</div>
-                    <div>8h</div>
+                    <div>{{tableSettingData.attence.formData.jiaban_data2}}</div>
+                    <div>{{tableSettingData.attence.formData.jiaban_data3}}</div>
                   </div>
                 </div>
               </div>
@@ -313,6 +344,7 @@
 
 <script>
   import _ from 'lodash';
+  import mixins from '@/assets/js/mixins/calendar.js';
   import Calendar from '../../../common/lightweightComponents/Calendar/index';
   import MonthChoose from '../../../common/lightweightComponents/Calendar/MonthChoose/index';
   import YearChoose from '../../../common/lightweightComponents/Calendar/YearChoose/index';
@@ -330,31 +362,73 @@
       LjDialog,
       Calendar,
     },
+    mixins: [mixins],
     data() {
       return {
         url: globalConfig.humanResource_server,
-
 
         attendanceList: [
           {
             id: 1,
             tip: '迟到次数',
-            value: '2次',
+            value: '-',
           },
           {
             id: 2,
             tip: '严重迟到次数',
-            value: '2次',
+            value: '-',
           },
           {
             id: 3,
             tip: '上班缺卡次数',
-            value: '0次',
+            value: '-',
           },
           {
             id: 4,
             tip: '下班缺卡次数',
-            value: '0次',
+            value: '-',
+          },
+        ],
+        vacateList: [
+          {
+            id: 1,
+            tip: '事假',
+            value: '-',
+          },
+          {
+            id: 2,
+            tip: '病假',
+            value: '-',
+          },
+          {
+            id: 3,
+            tip: '年假',
+            value: '-',
+          },
+          {
+            id: 4,
+            tip: '调休',
+            value: '-',
+          },
+          {
+            id: 5,
+            tip: '婚假',
+            value: '-',
+          },
+          {
+            id: 6,
+            tip: '产假',
+            value: '-',
+          },
+          {
+            id: 7,
+            tip: '陪产假',
+            value: '-',
+          },
+          {
+            id: 8,
+            tip: '丧假',
+            value: '-',
           },
         ],
 
@@ -375,9 +449,9 @@
             chooseRowIds: [],
             currentSelection: {},//当前选择行
 
-            departmentId: 2,
+            departmentId: [106],
             isShowMultiSelection: false,//是否显示多选框
-
+            multipleSelection: [],
             isLeave: false,//是否离职  true离职 false在职
 
 
@@ -386,7 +460,7 @@
             table_dialog_tabs: [
               {
                 id: 1,
-                name: '出勤/休息天数',
+                name: '出勤统计',
               },
               {
                 id: 2,
@@ -436,7 +510,7 @@
             table_dialog_tabs: [
               {
                 id: 1,
-                name: '出勤/休息天数',
+                name: '出勤统计',
               },
               {
                 id: 2,
@@ -475,7 +549,9 @@
           {id: 2, val: '考勤确认表'},
         ],
         monthValue: new Date(),
+        monthContent: '',
         yearValue: new Date(),
+        daysList: [],
       }
     },
     watch: {
@@ -483,6 +559,7 @@
         handler(val, oldVal) {
           if (val) {
             this.getAttenceList();
+            this.monthContent = this.myUtils.formatDate(val, 'yyyy-MM');
           }
         },
         immediate: true,
@@ -501,37 +578,79 @@
       },
     },
     methods: {
-
       getAttenceList() {
         this.tableSettingData.attence.tableData = [];
         let params = {
           is_on_job: this.tableSettingData.attence.isLeave ? 1 : 0,
           date: this.monthValue,
           ...this.tableSettingData.attence.params,
-          //org_id: this.tableSettingData.attence.departmentId[0] || 2,
-          org_id: 106,
+          org_id: this.tableSettingData.attence.departmentId[0] || 2,
+          //org_id: 106,
         };
         this.$http.get(`${this.url}attendance/attendance`, params).then(res => {
           //debugger
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               //console.log(item);
+              let mAttRest = `${item.attendance[0]?.attendance_day || '-'}/${item.attendance[0]?.rest_day || '-'}`;
+              let late_count = item.attendance[0]?.late_day || 0;//迟到次数
+              let s_late_count = item.attendance[0]?.seriousLate_count || 0;//严重迟到次数
+              let on_work_count = item.attendance[0]?.not_signed_count[0] || 0;//上班缺卡次数
+              let off_work_count = item.attendance[0]?.not_signed_count[1] || 0;//下班缺卡次数
+
+
+              let shijia = item.attendance[0]?.vacate_data[0] || 0;//事假
+              let bingjia = item.attendance[0]?.vacate_data[1] || 0;
+              let nianjia = item.attendance[0]?.vacate_data[2] || 0;
+              let tiaoxiu = item.attendance[0]?.vacate_data[3] || 0;
+              let hunjia = item.attendance[0]?.vacate_data[4] || 0;
+              let chanjia = item.attendance[0]?.vacate_data[5] || 0;
+              let peichanjia = item.attendance[0]?.vacate_data[6] || 0;
+              let sangjia = item.attendance[0]?.vacate_data[7] || 0;
+
+
               let obj = {
+                id: item.id,//人id
                 name: item.name || '-',//姓名
                 department: item.org[0]?.name || '-',//部门
                 post: item.position[0]?.name || '-',//岗位
-                attRest: `${item.attendance[0]?.attendance_day || '-'}/${item.attendance[0]?.rest_day || '-'}`,
+                // attRest: `${item.attendance[0]?.attendance_day || '-'}/${item.attendance[0]?.rest_day || '-'}`,
+                attendance_day: item.attendance[0]?.attendance_day || '-',//出勤天数
+                rest_day: item.attendance[0]?.rest_day || '-',//休息天数
+                attRest: mAttRest,
                 network: item.attendance[0]?.attendance_classes[0] || '-',
                 civil: item.attendance[0]?.attendance_classes[1] || '-',
                 early: item.attendance[0]?.attendance_classes[2] || '-',
                 last: item.attendance[0]?.attendance_classes[3] || '-',
-                lack: item.attendance[0]?.late_day || '-',//迟到缺卡次数
+                lack: (late_count + s_late_count + on_work_count + off_work_count) || '-',//迟到缺卡次数
+
+                late_count: late_count || '-',//迟到次数
+                s_late_count: s_late_count || '-',//严重迟到次数
+                on_work_count: on_work_count || '-',//上班缺卡次数
+                off_work_count: off_work_count || '-',//下班缺卡次数
+
                 kuanggong: item.attendance[0]?.absenteeism_day || '-',//旷工天数
                 chuchai: item.attendance[0]?.business_day || '-',//出差天数
                 gongchu: item.attendance[0]?.out_time || '-',//公出时长
-                qingjia: '-',//请假时长
+                //qingjia: '-',//请假时长
                 jiaban: item.attendance[0]?.overtime_day || '-',//加班统计
+
+                jiaban_data1: item.attendance[0]?.overtime_data[0] || '-',
+                jiaban_data2: item.attendance[0]?.overtime_data[1] || '-',
+                jiaban_data3: item.attendance[0]?.overtime_data[2] || '-',
+
+                vacate_count: (shijia + bingjia + nianjia + tiaoxiu + hunjia + chanjia + peichanjia + sangjia) || '-',
+                shijia: shijia || '-',
+                bingjia: bingjia || '-',
+                nianjia: nianjia || '-',
+                tiaoxiu: tiaoxiu || '-',
+                hunjia: hunjia || '-',
+                chanjia: chanjia || '-',
+                peichanjia: peichanjia || '-',
+                sangjia: sangjia || '-',
+
                 status: item.attendance[0]?.is_confirm === 0 ? 0 : (item.attendance[0]?.is_confirm || 2),//考勤确认结果
+                attendance: item.attendance,
               };
               this.tableSettingData.attence.tableData.push(obj);
             }
@@ -545,8 +664,103 @@
       },
 
       //显示详情弹窗
-      showAttRest() {
+      showAttRest(row) {
+        this.tableSettingData.attence.formData = row;
         this.tableSettingData.attence.table_dialog_visible = true;
+        this.initDaysList(this.monthValue);
+        this.attendanceList = [
+          {
+            id: 1,
+            tip: '迟到次数',
+            value: this.tableSettingData.attence.formData.late_count,
+          },
+          {
+            id: 2,
+            tip: '严重迟到次数',
+            value: this.tableSettingData.attence.formData.s_late_count,
+          },
+          {
+            id: 3,
+            tip: '上班缺卡次数',
+            value: this.tableSettingData.attence.formData.on_work_count,
+          },
+          {
+            id: 4,
+            tip: '下班缺卡次数',
+            value: this.tableSettingData.attence.formData.off_work_count,
+          },
+        ];
+        this.vacateList = [
+          {
+            id: 1,
+            tip: '事假',
+            value: this.tableSettingData.attence.formData.shijia,
+          },
+          {
+            id: 2,
+            tip: '病假',
+            value: this.tableSettingData.attence.formData.bingjia,
+          },
+          {
+            id: 3,
+            tip: '年假',
+            value: this.tableSettingData.attence.formData.nianjia,
+          },
+          {
+            id: 4,
+            tip: '调休',
+            value: this.tableSettingData.attence.formData.tiaoxiu,
+          },
+          {
+            id: 5,
+            tip: '婚假',
+            value: this.tableSettingData.attence.formData.hunjia,
+          },
+          {
+            id: 6,
+            tip: '产假',
+            value: this.tableSettingData.attence.formData.chanjia,
+          },
+          {
+            id: 7,
+            tip: '陪产假',
+            value: this.tableSettingData.attence.formData.peichanjia,
+          },
+          {
+            id: 8,
+            tip: '丧假',
+            value: this.tableSettingData.attence.formData.sangjia,
+          },
+        ];
+      },
+
+      initDaysList(date) {
+        if (date) {
+          let daysList = [...this.getPrevMonthRestList(date), ...this.getCurrentMonthList(date), ...this.getNextMonthRestList(date)];
+          daysList.forEach((item, index) => {
+            item.id = ++index;
+          });
+          //处理数据
+          let itemList = this.tableSettingData.attence.formData.attendance[0]?.attendance_data;
+          let curMonthDaysList = _.filter(daysList, (o) => {
+            return o.type == 'cur';
+          });
+          if (itemList && itemList.length > 0) {
+            _.forEach(itemList, (o, index) => {
+              curMonthDaysList[index].attendance_data = o;
+            });
+          }
+          let preNextMonthDaysList = _.remove(daysList, (o) => {
+            return o.type !== 'cur';
+          });
+          let newDaysList = _.concat(preNextMonthDaysList, curMonthDaysList);
+          newDaysList = _.sortBy(newDaysList, ['id']);
+          //console.log(newDaysList);
+          this.daysList = newDaysList;
+
+        } else {
+          this.daysList = [];
+        }
       },
 
       //发送通知
@@ -557,6 +771,40 @@
           });
         }
       },
+
+
+      //考勤确认
+      confirmAttence() {
+        let rows = this.tableSettingData.attence.multipleSelection;
+        if (rows && rows.length > 0) {
+          let users = _.map(rows, 'id');
+          let params = {
+            user_id: users,
+            date: this.monthValue
+          };
+          this.$http.get(`${this.url}attendance/attendance/todo`, params).then(res => {
+            debugger
+            if(res.code.endsWith('0')) {
+              this.$LjNotify('success',{
+                title:'成功',
+                message:res.msg,
+              });
+              rows = [];
+            }else {
+              this.$LjNotify('error',{
+                title:'失败',
+                message:res.msg,
+              });
+            }
+          });
+        } else {
+          this.$LjMessage('warning', {
+            title: '警告',
+            msg: '请至少选择一人',
+          });
+        }
+      },
+
 
       initData() {
         /*for (let i = 0; i < 6; i++) {
@@ -630,8 +878,8 @@
       handleSizeChange() {
       },
 
-      handleSelectionChange(row) {
-        //this.tableSettingData.goods.multipleSelection = row;
+      handleSelectionChange(val) {
+        this.tableSettingData.attence.multipleSelection = val;
       },
 
 
@@ -870,6 +1118,34 @@
               @include militaryImg('p.png', 'theme1');
             }
           }
+        }
+      }
+
+      .calendar-days-item {
+        width: 100%;
+        height: 100%;
+        user-select: none;
+        display: flex;
+        background-color: $color9F9;
+        justify-content: flex-start;
+        //background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="100%" y1="0" x2="0" y2="100%" style="stroke:rgb(99,99,99);stroke-width:2" stroke="gray" stroke-width="1"/></svg>');
+        &.rest {
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="100%" y1="0" x2="0" y2="100%" style="stroke:rgb(228,228,228);stroke-width:1"/></svg>');
+        }
+        &.current {
+          color: white;
+          background-color: $colorE33;
+        }
+        //background-color: red;
+        .days-item-content-container {
+          padding: 10% 0 0 10%;
+          .days-item-content-date {
+            font-size: 18px;
+          }
+          /*.days-item-content-reason {
+            font-size:14px;
+            color: $colorE33;
+          }*/
         }
       }
     }

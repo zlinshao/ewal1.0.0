@@ -43,7 +43,10 @@
     name: "Calendar",
     props:{
       datetime: {
-        default:new Date(),
+        //default:new Date(),
+        default: () => {
+          return new Date()
+        }
       },
       lang:{
         default:'ch',//ch或者en

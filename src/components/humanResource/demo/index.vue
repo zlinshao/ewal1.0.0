@@ -1,6 +1,6 @@
 <template>
   <div class="demo-container">
-    <!--<calendar week-type="en" style="width: 1366px;height: 768px">
+    <calendar week-type="en" style="width: 1366px;height: 768px">
       <div :slot="'slot'+item.id" v-for="item in daysList"
       class="days-item" :class="{rest:!item.reason,current:item.today}"
       >
@@ -9,10 +9,10 @@
           <span v-if="item.reason" class="days-item-content-reason">{{item.reason}}</span>
 
         </div>
-        &lt;!&ndash;<div>{{item.datetime}}</div>&ndash;&gt;
+        <!--<div>{{item.datetime}}</div>-->
       </div>
-    </calendar>-->
-    <img-slider :size="{width:'100%',height:'100%'}" :single="true" :arr="sliders"></img-slider>
+    </calendar>
+    <!--<img-slider :size="{width:'100%',height:'100%'}" :single="true" :arr="sliders"></img-slider>-->
     <!--<lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>-->
   </div>
 
