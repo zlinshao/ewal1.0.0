@@ -14,52 +14,15 @@
                 </h2>
             </div>
             <div class="items-center listTopRight">
-                <div class="icons add" @click="add_visible = true"><b>+</b></div>
+                <div class="icons add" @click.stop="is_add = true;" v-if="tabView==='BackVideo'"><b>+</b></div>
             </div>
         </div>
 
         <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px'}">
             <keep-alive>
-                <component :is="tabView"></component>
+                <component :is="tabView" :add_status="is_add" @getAddStatus="addStatus"></component>
             </keep-alive>
         </div>
-
-        <!--新增-->
-        <lj-dialog :visible="add_visible" :size="{width: 500 + 'px',height: 500 + 'px'}"
-                   @close="add_visible = false">
-            <div class="dialog_container">
-                <div class="dialog_header">
-                    <h3>新增资料</h3>
-                </div>
-                <div class="dialog_main">
-                    <el-form size="mini" label-width="80px" :rules="rules">
-
-                        <el-form-item label="资料类型" prop="type_id">
-                            <el-select placeholder="请选择" v-model="form.type_id">
-                                <el-option  v-for="(item,index) in selects" :label="item.title" :value="item.id" :key="index"></el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <el-form-item label="资料名称" prop="name">
-                            <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="查看权限" prop="permission">
-                            <el-input v-model="form.permission"></el-input>
-                        </el-form-item>
-                        <el-form-item label="添加附件" prop="file_info">
-                            <Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>
-                        </el-form-item>
-                    </el-form>
-                </div>
-                <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="submit">确定</el-button>
-                    <el-button type="info" size="small" @click="add_visible = false;current_row = ''">取消</el-button>
-                </div>
-            </div>
-        </lj-dialog>
-
-
     </div>
 </template>
 
@@ -82,19 +45,12 @@
             return{
                 chooseTab:1,
                 showFinMenuList:false,
-                add_visible:false,
+                is_add:'',
                 selects:[
                     {id:1,title:"视频",url:'BackVideo'},{id:2,title:"文档",url:'BackDocument'}
                 ],
                 tabView:'BackVideo',
-                form:{
-                    type_id:'',
-                    name:'',
-                    permission:'',
-                    file_info:'',
-                },
                 //上传
-                // upload_visible: false,
                 uploadFile: {
                     keyName: 'album',
                     setFile: [],
@@ -108,15 +64,6 @@
                     album_file: [],
                 }, //所有上传文件
                 rules:{
-                    type_id:[
-                        { required: true, message: '请选择类型', trigger: 'change' },
-                    ],
-                    name:[
-                        { required: true, message: '请选择类型', trigger: 'blur' },
-                    ],
-                    permission:[
-                        { required: true, message: '请选择类型', trigger: 'blur' },
-                    ],
                 }
             }
         },
@@ -134,38 +81,8 @@
                 this.chooseTab = id;
                 this.tabView = url;
             },
-            //上传回调
-            handleSuccessUpload(item) {
-                if (item !== 'close') {
-                    this.upload_form[item[0]] = item[1];
-                    this.form.file_info = item[1];
-                }
-                console.log(item);
-            },
-            //提交
-            submit(){
-                console.log(this.form);
-                this.form.type_id = this.chooseTab;
-                this.$http.post(globalConfig.newMedia_sever+'/api/datum/admin',{
-                    album: this.upload_form.album,
-                    ...this.form
-                }).then(res => {
-                    this.postModule = false;
-                    if (res.status === 200) {
-                        this.$LjNotify('success', {
-                            title: '成功',
-                            message: res.msg,
-                            subMessage: '',
-                        });
-                        console.log(this.postModule)
-                    } else {
-                        this.$LjNotify('error', {
-                            title: '失败',
-                            message: res.msg,
-                            subMessage: '',
-                        });
-                    }
-                })
+            addStatus(val){
+              this.is_add = val;
             },
         }
     }

@@ -27,8 +27,8 @@
                 <div class="dialog_header">
                     <h3>新增资料</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form size="mini" label-width="80px" :rules="rules">
+                <div class="dialog_main borderNone">
+                    <el-form label-width="80px" :rules="rules">
 
                         <el-form-item label="资料类型" prop="type_id">
                             <el-select placeholder="请选择" v-model="form.type_id">
@@ -38,14 +38,16 @@
                         </el-form-item>
 
                         <el-form-item label="资料名称" prop="name">
-                            <el-input v-model="form.name"></el-input>
+                            <el-input v-model="form.name" placeholder="请输入"></el-input>
                         </el-form-item>
 
                         <el-form-item label="查看权限" prop="permissionNames">
-                            <el-input @focus="organSearch" readonly v-model="permissionNames"></el-input>
+                            <el-input @focus="organSearch"  v-model="permissionNames" placeholder="请输入"></el-input>
                         </el-form-item>
                         <el-form-item label="添加附件">
-                            <Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>
+                            <!--<Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>-->
+                            <lj-upload v-model="form.attachment" size="40"
+                                       style="position: absolute; top: -12px;" :data="form.file_info"></lj-upload>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -67,7 +69,8 @@
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
     import Upload from '../../../common/upload.vue';
-    import PostOrgan from '../../../../components/common/postOrgan.vue'
+    import PostOrgan from '../../../../components/common/postOrgan.vue';
+    import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
 
 
     export default {
@@ -76,7 +79,8 @@
             mediaList,
             LjDialog,
             Upload,
-            PostOrgan
+            PostOrgan,
+            ImgSlider
         },
         data() {
             return {
@@ -111,15 +115,7 @@
                     album_file: [],
                 }, //所有上传文件
                 rules:{
-                    type_id:[
-                        { required: true, message: '请选择类型', trigger: 'change' },
-                    ],
-                    name:[
-                        { required: true, message: '请输入标题', trigger: 'blur' },
-                    ],
-                    // permission:[
-                    //     { required: true, message: '请选择权限', trigger: 'blur' },
-                    // ],
+
                 }
             }
         },

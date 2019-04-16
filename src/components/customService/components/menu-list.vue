@@ -18,11 +18,19 @@ export default {
       navVisible: false,
       menu_list: [
         {
-          title: '工单信息',
+          title: '维修保洁',
+          url: '',
+        },
+        {
+          title: '工单管理',
           url: '/workOrder',
         },
         {
-          title: '回访记录',
+          title: '资料审核',
+          url: '',
+        },
+        {
+          title: '回访管理',
           url: '/visitToRecord',
         },
         {
@@ -30,23 +38,11 @@ export default {
           url: '',
         },
         {
-          title: '资料审核',
-          url: '',
+          title: '小区管理',
+          url: ''
         },
         {
-          title: '维修保洁',
-          url: '',
-        },
-        {
-          title: '客户管理',
-          url: '',
-        },
-        {
-          title: '客服接线',
-          url: '',
-        },
-        {
-          title: '房源管理',
+          title: '房源中心',
           url: '',
         },
         {
@@ -54,9 +50,16 @@ export default {
           url: ''
         },
         {
-          title: '小区管理',
-          url: ''
-        }
+          title: '客户管理',
+          url: '',
+        },
+        {
+          title: '接线记录',
+          url: '',
+        },
+
+
+
       ],
     }
   },

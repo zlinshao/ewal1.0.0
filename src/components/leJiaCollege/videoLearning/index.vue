@@ -14,9 +14,10 @@
                             <!--</video>-->
                             <div>
                                 <span class="video-start-btn" id="video-start-btn"></span>
-                                <video  poster="" width="300" height="210"  id="leJiaVideo">
-                                    <source :src="item.file_id[0].uri" type="video/mp4">
-                                </video>
+                                <!--<video  poster="" width="300" height="210"  id="leJiaVideo">-->
+                                    <!--<source :src="item.file_id[0].uri" type="video/mp4">-->
+                                <!--</video>-->
+                                <img-slider :arr="item.file_info" :initialSpeed="0"></img-slider>
                             </div>
                         </div>
                     </div>
@@ -65,7 +66,7 @@
         <!--编辑视频or新增视频-->
         <lj-dialog :visible="visible" :size="{width: 400 + 'px',height: flag===1 ? 330:400 + 'px'}"
                    @close="visible = false">
-            <div class="dialog_container">
+            <div class="dialog_container borderNone">
                 <div class="dialog_header">
                     <h3>{{flag===1?'编辑讲师详情':flag===2?'新增讲师详情':flag===3?'讲师详情':''}}</h3>
                 </div>
@@ -79,7 +80,8 @@
                         </el-form-item>
 
                         <el-form-item label="上传视频"  v-if="flag===2">
-                            <Upload :file="uploadFile" @success="handleSuccessUpload" :disabled="flag===3"></Upload>
+                            <lj-upload v-model="form.file_id" size="40"
+                                       style="position: absolute; top: -12px;"></lj-upload>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -103,12 +105,16 @@
     import LjDialog from '../../common/lj-dialog.vue';
     import PostOrgan from '../../common/postOrgan.vue';
     import Upload from '../../common/upload';
+    import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
+    import LjUpload from '../../common/lightweightComponents/lj-upload';
     export default {
         name: "videoLearning",
         components:{
             LjDialog,
             PostOrgan,
-            Upload
+            Upload,
+            LjUpload,
+    ImgSlider
         },
         data(){
             return{
@@ -139,19 +145,6 @@
                     export: '',
                 },
                 dataLists:[],
-
-                uploadFile: {
-                    keyName: 'album',
-                    setFile: [],
-                    size: {
-                        width: '50px',
-                        height: '60px'
-                    }
-                },
-                upload_form: {
-                    album: [],
-                    album_file: [],
-                },
             }
         },
         mounted(){
@@ -237,7 +230,6 @@
             //提交
             submit(type){
                if(type===1){
-
                    this.$http.put(globalConfig.leJiaCollege_server+'/api/video/study/'+this.current_id, this.form).then(res => {
                        this.callbackSuccess(res);
                        this.visible=false;

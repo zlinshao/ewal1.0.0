@@ -10,11 +10,13 @@
                     </div>
                     <div class="today_birthday_list">
                         <div class="birthday_box-left">
-                            <div class="birthday_box" v-for="(item,index) in todayBirthday.slice(0,3)">
-                                <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
-                                <div class="">
-                                    <span class="writingMode">{{item.depart}}</span>
-                                    <span class="writingMode">{{item.name}}</span>
+                            <div class="birthday_box-info flex-center"v-for="(item,index) in todayBirthday.slice(0,3)">
+                                <div class="birthday_box">
+                                    <img :src="item.user_id.avatar" alt="">
+                                    <div class="">
+                                        <span class="writingMode">{{item.user_id.org[0].name.slice(0,6)}}</span>
+                                        <span class="writingMode">{{item.user_id.name}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -22,11 +24,13 @@
                             <div class="outer-container">
                                 <div class="inner-container">
                                     <div class="element">
-                                        <div class="wishes-list" v-for="(item,index) in todayBirthday">
-                                            <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
-                                            <div>
-                                                <p>赵小刀</p>
-                                                <p>祝李莫愁生日快乐！年年有今日～岁岁有今朝～哈哈！生日快乐！ ～岁岁有今朝～～哈哈！生日快乐！</p>
+                                        <div class="wishes-list" v-for="(item,index) in wishesData">
+                                            <div v-for="(val,key) in item">
+                                                <img :src="item.user_id.avatar" alt="">
+                                                <div>
+                                                    <p>{{item.user_id.name}}</p>
+                                                    <p>{{item.user_id.content}}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -37,11 +41,11 @@
                             </div>
                         </div>
                         <div class="wishes-btn">
-                            <div>
+                            <div @click="edit_wishes_visible=true">
                                 <p>编写</p>
                                 <p>祝福</p>
                             </div>
-                            <div>
+                            <div  @click="wishes_visible=true">
                                 <p>所有</p>
                                 <p>祝福</p>
                             </div>
@@ -53,10 +57,10 @@
                     <div class="months_birthday_title"><span>本月寿星</span></div>
                     <div class="months_birthday_list">
                         <div class="birthday_box" v-for="(item,index) in monthBirthday">
-                            <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
+                            <img :src="item.user_id.avatar" alt="">
                             <div class="">
-                                <span class="writingMode">{{item.depart}}</span>
-                                <span class="writingMode">{{item.name}}</span>
+                                <span class="writingMode">{{item.user_id.org[0].name.slice(0,6)}}</span>
+                                <span class="writingMode">{{item.user_id.name}}</span>
                             </div>
                         </div>
                     </div>
@@ -82,10 +86,10 @@
                                     <div class="element">
                                         <div class="box-info" v-for="(item,index) in todayBirthday">
                                             <div class="birthday_box" >
-                                                <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
+                                                <img :src="item.user_id.avatar" alt="">
                                                 <div class="">
-                                                    <span class="writingMode">{{item.depart}}</span>
-                                                    <span class="writingMode">{{item.name}}</span>
+                                                    <span class="writingMode">{{item.user_id.org[0].name.slice(0,6)}}</span>
+                                                    <span class="writingMode">{{item.user_id.name}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -97,12 +101,12 @@
                             <div class="outer-container">
                                 <div class="inner-container">
                                     <div class="element">
-                                        <div class="wishes-list" v-for="(item,index) in todayBirthday">
-                                            <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
-                                            <div>
-                                                <p>赵小刀</p>
-                                                <p>祝李莫愁生日快乐！年年有今日～岁岁有今朝～哈哈！生日快乐！ ～岁岁有今朝～～哈哈！生日快乐！</p>
-                                            </div>
+                                        <div class="wishes-list" v-for="(item,index) in wishesData">
+                                            <!--<img :src="item.user_id.avatar" alt="">-->
+                                            <!--<div>-->
+                                                <!--<p>{{item.user_id.name}}</p>-->
+                                                <!--<p>{{item.user_id.content}}</p>-->
+                                            <!--</div>-->
                                         </div>
                                     </div>
                                 </div>
@@ -112,11 +116,11 @@
                             </div>
                         </div>
                         <div class="wishes-btn">
-                            <div>
+                            <div @click="edit_wishes_visible=true">
                                 <p>编写</p>
                                 <p>祝福</p>
                             </div>
-                            <div>
+                            <div  @click="wishes_visible=true">
                                 <p>所有</p>
                                 <p>祝福</p>
                             </div>
@@ -130,7 +134,7 @@
                 </div>
             </div>
         </div>
-        <!--祝福-->
+        <!--所有祝福-->
         <lj-dialog :visible="wishes_visible" :size="{width: 900 + 'px',height: 600 + 'px'}"
                    @close="wishes_visible = false">
             <div class="dialog_container">
@@ -142,12 +146,13 @@
                     </p>
                 </div>
                 <div class="dialog_main">
-                    <div class="wishes-lists" v-for="(item,index) in wishesData" >
-                        <img src="../../../../../assets/image/newMedia/theme1/avatar.png" alt="">
+                    <div class="wishes-lists" v-for="(item,index) in wishesData">
+                        <img src="" alt="">
                         <div>
-                            <h3>{{item.name}}</h3>
-                            <p class="desc">{{item.content}}</p>
+                            <h3></h3>
+                            <p class="desc"></p>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -172,14 +177,14 @@
                                     <span>祝福内容</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input type="textarea" v-model="comment" :rows="8"></el-input>
+                                    <el-input type="textarea" v-model="content" :rows="8"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="small" type="danger" @click="postReceivable_tag()">发布</el-button>
+                    <el-button size="small" type="danger" @click="comfirmPostWishes()">发布</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -213,6 +218,8 @@
                     from:'',//当前页 数据第一项的编号
                     to:'',//当前页 数据最后一项的编号
                 },
+                content:'',//祝福语
+                current_id:'',
                 showFinMenuList: false,
                 delete_visible: false,
                 edit_visible: false,
@@ -224,50 +231,10 @@
                 selects: [
                     {id: 1, title: "乐伽之星"}, {id: 2, title: "优秀员工"}, {id: 3, title: "寿星墙"}
                 ],
-                wishesData:[
-                    {
-                        avatar:'',
-                        name:'赵晓刀',
-                        content:'评论列表评论列列表评论列表评论表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表',
-                        reply:'2'
-                    },
-                    {
-                        avatar:'',
-                        name:'赵晓刀',
-                        content:'评论列表评论列列表评论列表评论表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表评论列表',
-                        reply:'2'
-                    },
-                ],
-                todayBirthday:[
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
+                wishesData:[],
+                todayBirthday:[],
+                monthBirthday:[],
 
-                ],
-                monthBirthday:[
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                    {name:'齐达内',depart:'南京二区一组',avatar:""},
-                ],
-                dataLists:[],
                 count:0,
             }
         },
@@ -278,22 +245,54 @@
             changeTabs(id) {
                 this.chooseTab = id;
             },
+            //寿星列表信息
             getBirthdayLists(){
                 this.$http.get(globalConfig.newMedia_sever+'/api/humanity/birthday',this.params).then(res => {
                     if(res.status===200){
-                        this.dataLists = res.data.data.sort(
+                        var birthdayData = res.data.data.sort(
                             function (a,b) {
                                 return a.id-b.id
                             }
                         );
+                        this.todayBirthday=[];
+                        this.monthBirthday=[];
+                        for(let item of birthdayData){
+                            // for(var i=0;i<3;i++){
+                                if(item.birthday_type==='day'){
+                                    this.todayBirthday.push(item);
+                                }else if(item.birthday_type==='month '){
+                                    this.monthBirthday.push(item);
+                                }
+
+                                this.wishesData.push(item.blessing);
+                        }
                         this.count = res.data.total;
-                        console.log(this.dataLists);
-
-
 
                     }
                 })
             },
+            //写祝福
+            comfirmPostWishes(){
+                this.current_id=5;
+                this.$http.post(globalConfig.newMedia_sever+'/api/humanity/birthday/blessing/'+this.current_id,{content:this.content}).then(res=>{
+                    if (res.status===200){
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.edit_wishes_visible = false;
+                        this.getBirthdayLists();
+                    }else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
+                })
+            }
+
 
         }
     }

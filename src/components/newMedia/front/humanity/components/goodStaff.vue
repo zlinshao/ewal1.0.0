@@ -8,8 +8,8 @@
                         <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
                     </div>
                     <p>
-                        <span>{{item.department}}</span>
-                        <span>{{item.name}}</span>
+                        <span>{{item.user_id.org[0].name}}</span>
+                        <span>{{item.user_id.name}}</span>
                     </p>
                 </div>
             </div>
@@ -21,46 +21,23 @@
         name: "goodStaff",
         data(){
             return{
-                goodStaffData:[
-                    {
-                        image:'',
-                        department:'南京二区一组',
-                        name:'切尔西'
-                    },
-                    {
-                        image:'',
-                        department:'南京二区一组',
-                        name:'切尔西'
-                    },
-                    {
-                        image:'',
-                        department:'南京二区一组',
-                        name:'切尔西'
-                    },
-                    {
-                        image:'',
-                        department:'南京二区一组',
-                        name:'切尔西'
-                    },
-                    {
-                        image:'',
-                        department:'南京二区一组',
-                        name:'切尔西'
-                    },
-                    {
-                        image:'',
-                        department:'南京二区一组',
-                        name:'切尔西'
-                    },
-                    {
-                        image:'',
-                        department:'南京二区一组',
-                        name:'切尔西'
-                    },
-                ],
+                goodStaffData:[],
 
             }
-        }
+        },
+        mounted(){
+          this.getDataLists();
+        },
+        methods:{
+            getDataLists(){
+                this.$http.get(globalConfig.newMedia_sever+'/api/humanity/excellent',this.params).then(res=>{
+                    if(res.status===200){
+                        this.goodStaffData = res.data.data;
+                        console.log(res);
+                    }
+                })
+            }
+        },
     }
 </script>
 

@@ -5,7 +5,7 @@
                 <div class="faculty-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)"
                      @click.stop="detail(item.id,index)">
                     <div class="faculty-box-top justify-end items-bet" v-show="seen&&index===current">
-                        <span><i @click.stop="edit(item.id,index)">编辑</i><i
+                        <span><i @click.stop="edit(item.id,index,item.file_info)">编辑</i><i
                                 @click.stop="del(item.id,index)">删除</i></span>
                     </div>
                     <div class="faculty-box-middle">
@@ -45,10 +45,10 @@
                 <div class="dialog_header">
                     <h3>{{flag===1?'编辑讲师详情':flag===2?'新增讲师详情':flag===3?'讲师详情':''}}</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form size="mini" v-model="form" :rules="rules" label-width="80px" >
+                <div class="dialog_main borderNone">
+                    <el-form  v-model="form" :rules="rules" label-width="80px" >
                         <el-form-item label="讲师头像">
-                            <Upload :file="uploadFile" @success="handleSuccessUpload" :disabled="flag===3"></Upload>
+                            <lj-upload size="40" disabled="disabled"  v-model="form.file_info"></lj-upload>
                         </el-form-item>
                         <el-form-item label="讲师姓名" prop="name">
                             <el-input v-model="form.name" :disabled="flag===3" @focus="staffModule=true"></el-input>
@@ -95,13 +95,15 @@
     import LjDialog from '../../common/lj-dialog.vue';
     import Upload from '../../common/upload';
     import StaffOrgan from '../../common/staffOrgan.vue';
+    import LjUpload from '../../common/lightweightComponents/lj-upload';
 
     export default {
         name: "faculty",
         components: {
             LjDialog,
             Upload,
-            StaffOrgan
+            StaffOrgan,
+            LjUpload
         },
         data() {
             return {
@@ -131,6 +133,7 @@
                     desc:'',//讲师简介
                     comment:'',//点评概要
                     user_id:'',
+                    file_info:[],
                 },
                 rules: {
                 },
@@ -201,6 +204,7 @@
                 this.form.desc='';
                 this.form.id='';
                 this.form.name='';
+                this.form.file_info=[];
 
             },
             //换页
