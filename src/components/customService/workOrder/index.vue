@@ -70,7 +70,7 @@
         <div class="dialog_main borderNone urgedDeal" v-if='currentRow'>
           <el-form label-width="80px">
             <el-form-item label="发送对象">
-              <el-input @focus="handlerOrgan" readonly v-model="urgedDeal.person" :placeholder="currentRow.operate_user_name + ',' + currentRow.create_name"></el-input>
+              <el-input @focus="handlerOrgan" readonly v-model="urgedDeal.personName" :placeholder="currentRow.operate_user_name + ',' + currentRow.create_name"></el-input>
             </el-form-item>
             <el-form-item label="备注信息">
               <el-input v-model="urgedDeal.note" type="textarea" placeholder="请输入" :row="10"></el-input>
@@ -83,8 +83,7 @@
         </div>
       </div>
     </LjDialog>
-    <!-- 人员选择 -->
-    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
+
     <!--新建工单-->
     <LjDialog :visible="createOrder_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseAddOrder">
       <div class="dialog_container">
@@ -276,7 +275,8 @@
         </div>
       </div>
     </LjDialog>
-
+    <!-- 人员选择 -->
+    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
     <!--选择部门-->
     <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart"></DepartOrgan>
   </div>
@@ -386,6 +386,7 @@ export default {
       urgedDeal: {
         note: '',
         person: [],
+        personName: ''
       },
       staffModule: false, // 选择人员
       organData: {
@@ -501,11 +502,10 @@ export default {
     // 关闭催办
     handleCloseUrgedDeal (params) {
       if (params) {
-        console.log(this.currentRow)
         let option = {
-          work_order_id: '',
-          user: '',
-          content: ''
+          work_order_id: this.currentRow.id,
+          user: this.urgedDeal.person,
+          content: this.urgedDeal.note
         }
         this.$http.post(`${this.market_server}v1.0/csd/work_order/notice`, option).then(res => {
           this.$LjNotify('success', {
@@ -549,7 +549,8 @@ export default {
     hiddenOrgan (ids, names, arr) {
       this.staffModule = false;
       if (ids !== 'close') {
-        console.log(ids, names, arr)
+        this.urgedDeal.personName = names
+        this.urgedDeal.person = ids
       }
     },
     handlerDepart () {
@@ -597,6 +598,18 @@ export default {
 
         }
       }
+    },
+    // 高级搜索
+    highSearch () {
+      this.$http.get(`${this.market_server}v1.0/csd/work_order`, params).then(res => {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: res.message
+        });
+        if (res.code === 200) {
+          this.getDataList()
+        }
+      })
     },
     // 客服入口
     moduleList () {

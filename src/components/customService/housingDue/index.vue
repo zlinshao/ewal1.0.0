@@ -707,24 +707,13 @@ export default {
     hiddenModule (val) {
       this.showSearch = false;
       if (val !== 'close') {
-        if (val == 'reset') {
-          this.params.page = 1
-          this.params.search = ''
-          this.params.tag_status = ''
-          this.params.sign_user_id = ''
-          this.params.sign_org_id = ''
-          this.params.end_at_min = ''
-          this.params.end_at_max = ''
-        } else {
-          this.params.page = 1
-          this.params.search = val.search
-          this.params.tag_status = val.tag_status
-          this.params.sign_user_id = val.openPer[0] || ''
-          this.params.sign_org_id = val.handler[0] || ''
-          this.params.end_at_min = val.date1[0] || ''
-          this.params.end_at_max = val.date1[1] || ''
-        }
-
+        this.params.page = 1
+        this.params.search = val.search
+        this.params.tag_status = val.tag_status
+        this.params.sign_user_id = val.openPer[0] || ''
+        this.params.sign_org_id = val.handler[0] || ''
+        this.params.end_at_min = val.date1[0] || ''
+        this.params.end_at_max = val.date1[1] || ''
         this.getDateList()
       }
 

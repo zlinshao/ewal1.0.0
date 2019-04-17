@@ -496,19 +496,11 @@ export default {
       this.showSearch = false;
       if (val !== 'close') {
         this.params.page = 1
-        if (val == 'reset') {
-          this.params.search = ''
-          this.params.org = ''
-          this.params.sign_date_min = ''
-          this.params.sign_date_max = ''
-          this.params.signer = ''
-        } else {
-          this.params.search = val.search
-          this.params.sign_date_min = val.date1[0] || '' //签约最小值
-          this.params.sign_date_max = val.date1[1] || ''//签约最大值
-          this.params.signer = val.staff[0] || ''//签约人
-          this.params.org = val.department[0] || ''//部门
-        }
+        this.params.search = val.search
+        this.params.sign_date_min = val.date1[0] || '' //签约最小值
+        this.params.sign_date_max = val.date1[1] || ''//签约最大值
+        this.params.signer = val.staff[0] || ''//签约人
+        this.params.org = val.department[0] || ''//部门
         this.getRecordList()
       }
     },
