@@ -9,6 +9,9 @@
     .el-row {
       margin: 0 !important;
     }
+    .icons.add {
+      margin-left: 20px;
+    }
     //增加order
     .addOrder_dialog {
       .el-col {
@@ -298,6 +301,14 @@
 
 #theme_name.theme1 {
   #miantenance {
+    .active-warning {
+      background: #e6a23c;
+      color: #fff;
+    }
+    .active-primary {
+      background: #409eff;
+      color: #fff;
+    }
     //增加order
     .addOrder_dialog {
       .el-col {

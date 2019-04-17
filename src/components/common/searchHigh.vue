@@ -205,7 +205,7 @@ export default {
     resetting () {
       this.params = this.jsonData(this.reset);
       this.showName = {};
-      this.$emit('close', 'reset');
+      this.$emit('close', this.params);
     },
   },
 }
