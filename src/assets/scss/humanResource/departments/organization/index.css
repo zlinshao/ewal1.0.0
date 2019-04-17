@@ -185,48 +185,94 @@
     height: 100%;
     padding: 30px 100px; }
     #theme_name #organization > div .organ-tree {
-      width: 90%;
       height: 700px;
       margin: 0 auto;
       padding: 30px;
-      text-align: center; }
-      #theme_name #organization > div .organ-tree .radius-container {
+      text-align: center;
+      overflow: auto;
+      position: relative; }
+      #theme_name #organization > div .organ-tree .strt-wrap {
+        width: 3000px;
+        min-height: 600px;
+        margin: 10px;
+        cursor: move;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%); }
+      #theme_name #organization > div .organ-tree .strt-part {
+        text-align: center;
+        float: left;
+        position: relative; }
+      #theme_name #organization > div .organ-tree .strt-part .line-v {
+        position: relative;
+        height: 40px;
+        width: 100%; }
+      #theme_name #organization > div .organ-tree .strt-part .line-v span {
+        display: block;
+        position: absolute;
+        top: 0;
+        font-size: 0;
+        background: #70707B;
+        line-height: 1px;
+        width: 1px;
+        height: 40px;
+        left: 50%; }
+      #theme_name #organization > div .organ-tree .strt-name {
         display: inline-block;
+        padding: 0 5px;
         min-width: 100px;
         height: 50px;
-        border-radius: 20px;
-        text-align: center;
         line-height: 50px;
-        border: 1px solid black;
+        border: 1px solid #70707B;
+        margin: 0 10px;
+        border-radius: 20px;
+        font-size: 18px;
         font-family: 'jingDianXingShu';
-        font-size: 22px;
-        cursor: pointer;
-        position: relative; }
-      #theme_name #organization > div .organ-tree .area-container {
-        min-width: 50px;
+        text-align: center;
+        cursor: pointer; }
+        #theme_name #organization > div .organ-tree .strt-name:hover {
+          border-color: #cf2e33;
+          color: #cf2e33; }
+      #theme_name #organization > div .organ-tree .strt-info {
+        display: inline-block;
+        padding: 5px 0;
+        width: 50px;
+        line-height: 50px;
         min-height: 120px;
-        border: 1px solid black;
-        padding: 5px 8px;
+        border: 1px solid #70707B;
+        margin: 10px 0;
+        margin-top: 0;
+        font-size: 18px;
+        font-family: 'jingDianXingShu';
+        text-align: center;
         cursor: pointer;
-        margin: 0 20px;
-        position: relative; }
-        #theme_name #organization > div .organ-tree .area-container .line-up {
-          width: 1px;
-          height: 50px;
-          background-color: black;
-          position: absolute;
-          left: 50%;
-          top: -43%;
-          transform: translateX(-50%);
-          display: inline-block; }
-        #theme_name #organization > div .organ-tree .area-container p {
-          text-align: left;
-          letter-spacing: 3px;
-          font-family: 'jingDianXingShu'; }
-        #theme_name #organization > div .organ-tree .area-container .bold {
-          font-size: 22px; }
-        #theme_name #organization > div .organ-tree .area-container:hover {
-          color: #cf2e33;
-          border-color: #cf2e33; }
+        writing-mode: vertical-rl;
+        writing-mode: tb-rl; }
+        #theme_name #organization > div .organ-tree .strt-info:hover {
+          border-color: #cf2e33;
+          color: #cf2e33; }
+      #theme_name #organization > div .organ-tree .strt-part .line-h {
+        height: 1px;
+        display: block;
+        background: #70707B;
+        position: absolute;
+        top: 0;
+        font-size: 0; }
+      #theme_name #organization > div .organ-tree .strt-part .line-h-l {
+        width: 50%;
+        left: 0; }
+      #theme_name #organization > div .organ-tree .strt-part .line-h-c {
+        width: 100%;
+        left: 0; }
+      #theme_name #organization > div .organ-tree .strt-part .line-h-r {
+        width: 50%;
+        right: 0; }
+      #theme_name #organization > div .organ-tree .strt-block {
+        float: left; }
+    #theme_name #organization > div ::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      border: none; }
 
 /*# sourceMappingURL=index.css.map */

@@ -18,7 +18,7 @@
                 <el-pagination
                         :total="count"
                         layout="total,jumper,prev,pager,next"
-                        :current-page="params.page"
+                        :current-page="params.offset"
                         :page-size="params.limit"
                         @current-change="handleChangePage"
                 >
@@ -96,7 +96,7 @@
                     search: '',
                     startRange: '',
                     endRange: '',
-                    page: 1,
+                    offset: 1,
                     limit: 6,
                     department_ids: '',
                     export: '',
@@ -151,7 +151,7 @@
             },
             //换页
             handleChangePage(page) {
-                this.params.page = page;
+                this.params.offset = page;
                 this.getIndustryList();
 
             },

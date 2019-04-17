@@ -25,6 +25,11 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
       QUESTIONTYPE: [{id:1,name:'面试考核'},{id:2,name:'技能考核'},{id:3,name:'入职培训考核'}],//题库类型
     },
   },
+  NOTICEQUESTIONNAIRE: {//公告问卷
+    PUBLISHNOTICE:{//发公告
+      TYPE:[{id:1,name:'奖赏'},{id:2,name:'处罚'}],
+    }
+  }
 };
 
 export{ DROPDOWN_CONSTANT };

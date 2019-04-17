@@ -1,0 +1,75 @@
+@import "../../../common.scss";
+
+#theme_name {
+  #notice {
+    .listTopCss {
+      height: 0;
+      .search-toolbar {
+        position: fixed;
+        top: 106px;
+        right: 70px;
+        height: 30px;
+        @include flex('justify-end');
+        width: 40%;
+        > div {
+          width: 30px;
+          height: 30px;
+          //margin-right: 50px;
+        }
+
+        .icons-font {
+          height: 30px;
+          width: 70px;
+          @include flex('flex-center');
+          b {
+            color: white;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+
+    .header_right {
+      display: flex;
+      flex-direction: row-reverse;
+      .icon-add {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        @include flex('flex-center');
+        cursor: pointer;
+        background-color: #CF2E33;
+        b {
+          color: $colorFFF;
+          font-size: 30px;
+          margin-bottom: 6px;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #notice {
+
+  }
+}
+
+#theme_name.theme2 {
+  #notice {
+
+  }
+}
+
+#theme_name.theme3 {
+  #notice {
+
+  }
+}
+
+#theme_name.theme4 {
+  #notice {
+
+  }
+}

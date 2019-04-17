@@ -120,8 +120,8 @@
     </div>
 
     <!--自己录入题库-->
-    <div class="library_info" :class="{'library_info_hide': !show_edit_library}">
-      <div class="library_header flex">
+    <div class="library-info" :class="{'library_info_hide': !show_edit_library}">
+      <div class="library-header flex">
         <div class="left flex-center">
           <h3>新建题库</h3>
           <div>
@@ -133,15 +133,15 @@
           <el-button size="mini" type="primary">预览题库</el-button>
         </div>
       </div>
-      <div class="library_main">
+      <div class="library-main scroll_bar">
         <div class="control flex">
           <div class="btn_square_minus" @click="handlePopExamForm">-</div>
           <div class="btn_square_add" @click="handleAddExamForm">+</div>
         </div>
         <!--题型-->
-        <div class="exam_type">
+        <div class="exam-type">
           <el-row :gutter="20">
-            <el-col :span="2">
+            <el-col :span="2" class="left-tip">
               <span>题型</span>
             </el-col>
             <el-col :span="22" style="height: 50px;">
@@ -152,31 +152,31 @@
               </div>-->
               <div class="train-radio-style">
                 <el-radio-group v-model="exam_type">
-                <el-radio :label="3">单选题</el-radio>
-                <el-radio :label="6">判断题</el-radio>
-                <el-radio :label="9">解答题</el-radio>
+                <el-radio :label="1">单选题</el-radio>
+                <el-radio :label="2">判断题</el-radio>
+                <el-radio :label="3">解答题</el-radio>
               </el-radio-group>
               </div>
 
             </el-col>
           </el-row>
         </div>
-        <div class="paper_main borderNone scroll_bar">
+        <div class="paper-main borderNone scroll_bar">
           <el-form size="small">
-            <div v-for="(exam,index) in exam_form" :key="index" class="form_item_border">
+            <div v-for="(item,index) in exam_form_list" :key="index" class="form_item_border">
               <el-form-item>
                 <el-row :gutter="20">
-                  <el-col :span="2">
+                  <el-col :span="2" class="left-tip">
                     <span>{{'题干' + (index + 1)}}</span>
                   </el-col>
                   <el-col :span="22">
-                    <el-input v-model="exam.exam_title" type="textarea" :rows="6" placeholder="请输入题干"></el-input>
+                    <el-input v-model="item.stem" type="textarea" :rows="6" placeholder="请输入题干"></el-input>
                   </el-col>
                 </el-row>
               </el-form-item>
-              <el-form-item v-for="(tmp,idx) in exam.exam_choose" :key="idx">
+              <el-form-item v-if="item.category==1" v-for="(tmp,idx) in item.choice" :key="idx">
                 <el-row :gutter="20">
-                  <el-col :span="2">
+                  <el-col :span="2" class="left-tip">
                     <span :class="{'hide_label': idx !== 0}">选项</span>
                   </el-col>
                   <el-col :span="22">
@@ -184,13 +184,13 @@
                       <el-input
                         v-model="tmp.val"
                         placeholder="请输入选项内容">
-                        <template slot="prepend">{{ exam_form_choose[idx] }}</template>
+                        <template slot="prepend">{{ exam_form_item_choose[idx] }}</template>
                       </el-input>
                       <el-button type="text" size="mini" class="del_btn" @click="handleDeleteChoose(index,idx)">删除
                       </el-button>
                       <div class="btn_add"
                            style="margin-left: 15px"
-                           :class="{'hide_label': idx !== exam.exam_choose.length - 1}"
+                           :class="{'hide_label': idx !== item.choice.length - 1}"
                            @click="handleAddChooseItem(index)"
                       >+
                       </div>
@@ -198,23 +198,67 @@
                   </el-col>
                 </el-row>
               </el-form-item>
+
+              <el-form-item v-if="item.category==2" v-for="(tmp,idx) in item.choice" :key="idx">
+                <el-row :gutter="20">
+                  <el-col :span="2" class="left-tip">
+                    <span :class="{'hide_label': idx !== 0}">选项</span>
+                  </el-col>
+                  <el-col :span="22">
+                    <div class="flex">
+                      <el-input
+                        v-model="tmp.val"
+                        placeholder="请输入选项内容">
+                        <template slot="prepend">{{ exam_form_item_judge[idx] }}</template>
+                      </el-input>
+                    </div>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+
+              <el-form-item v-if="item.category==3" v-for="(tmp,idx) in item.choice" :key="idx">
+                <el-row :gutter="20">
+                  <el-col :span="2" class="left-tip">
+                    <span :class="{'hide_label': idx !== 0}">选项</span>
+                  </el-col>
+                  <el-col :span="22">
+                    <div class="flex">
+                      <el-input
+                        v-model="tmp.val"
+                        placeholder="请输入关键字">
+                        <!--<template slot="prepend">{{ exam_form_item_key[idx] }}</template>-->
+                        <template slot="prepend">关键字{{ idx+1 }}</template>
+                      </el-input>
+                      <el-button type="text" size="mini" class="del_btn" @click="handleDeleteChoose(index,idx)">删除
+                      </el-button>
+                      <div class="btn_add"
+                           style="margin-left: 15px"
+                           :class="{'hide_label': idx !== item.choice.length - 1}"
+                           @click="handleAddChooseItem(index)"
+                      >+
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+
               <el-form-item>
                 <el-row :gutter="20">
-                  <el-col :span="2">
+                  <el-col :span="2" class="left-tip">
                     <div>默认分值</div>
                   </el-col>
                   <el-col :span="22">
-                    <el-input v-model="exam.exam_score" placeholder="请输入分值"></el-input>
+                    <el-input v-model="item.score" placeholder="请输入分值"></el-input>
                   </el-col>
                 </el-row>
               </el-form-item>
               <el-form-item>
                 <el-row :gutter="20">
-                  <el-col :span="2">
+                  <el-col :span="2" class="left-tip">
                     <div>答案</div>
                   </el-col>
                   <el-col :span="22">
-                    <el-input v-model="exam.exam_answer" placeholder="请输入答案"></el-input>
+                    <el-input v-model="item.answer" placeholder="请输入答案"></el-input>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -730,8 +774,6 @@
       return {
 
 
-
-
         DROPDOWN_CONSTANT,
         //humanResource,
         //resourceDepart,
@@ -766,11 +808,6 @@
 
           },
         },
-
-
-
-
-
 
 
         tableSettingData: {
@@ -815,11 +852,6 @@
           },
         },
 
-
-
-
-
-
         //考试得分
         exam_score_visible: false,
         exam_score_list: [
@@ -862,19 +894,22 @@
 
         //新建题库
         show_edit_library: false,
-        exam_type: 3,
-        exam_form_choose: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
-        exam_form: [
+        exam_type: 1,
+        exam_form_item_choose: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
+        exam_form_item_judge: ['A', 'B'],
+        exam_form_item_key: ['关键字1', '关键字2','关键字3','关键字4','关键字5'],
+        exam_form_list: [//题列表
           {
-            exam_title: '',
-            exam_choose: [
+            category:1,//1单选 2判断 3简答题
+            stem: '',
+            choice: [
               {val: ''},
               {val: ''},
               {val: ''},
               {val: ''}
             ],
-            exam_score: '',
-            exam_answer: ''
+            score: '',
+            answer: ''
           }
         ],
 
@@ -1047,7 +1082,7 @@
         exam_library: [
           {id: 1, name: '文职入职测试', type: '入职考试'},
           {id: 2, name: '文职入职测试', type: '入职考试'},
-          {id: 3, name: '客服话术培训测试', type: '入职考试'},
+          {id: 3, name: '客服培训', type: '入职考试'},
           {id: 4, name: '文职入职测试', type: '入职考试'},
           {id: 5, name: '文职入职测试', type: '入职考试'},
           {id: 6, name: '文职入职测试', type: '入职考试'},
@@ -1071,8 +1106,6 @@
         });
       },
 
-
-
       //获取题库列表
       getQuestionList() {
         this.$http.get(`${this.url}`);
@@ -1080,30 +1113,61 @@
 
 
       handleAddChooseItem(index,) {
-        this.exam_form[index].exam_choose.push({val: ''});
+        this.exam_form_list[index].choice.push({val: ''});
       },
       handleDeleteChoose(index, idx) {
-        this.exam_form[index].exam_choose.splice(idx, 1);
+        this.exam_form_list[index].choice.splice(idx, 1);
       },
       //提交题库
       handleSubmitExam() {
-        console.log(this.exam_form);
+        console.log(this.exam_form_list);
       },
       //添加题库form
       handleAddExamForm() {
-        this.exam_form.push({
-          exam_title: '',
-          exam_choose: '',
-          exam_score: '',
-          exam_answer: ''
-        })
+        if(this.exam_type==1) {
+          this.exam_form_list.push({
+            category:1,//1单选 2判断 3简答题
+            stem: '',
+            choice: [
+              {val: ''},
+              {val: ''},
+              {val: ''},
+              {val: ''}
+            ],
+            score: '',
+            answer: ''
+          })
+        }else if(this.exam_type==2) {
+          this.exam_form_list.push({
+            category:2,
+            stem: '判断题',
+            choice: [
+              {val: ''},
+              {val: ''},
+            ],
+            score: '',
+            answer: ''
+          })
+        }else if(this.exam_type==3) {
+          this.exam_form_list.push({
+            category:3,
+            stem: '简答题',
+            choice: [
+              {val: ''},
+              {val: ''},
+            ],
+            score: '',
+            answer: ''
+          })
+        }
+
       },
       //删除题库form
       handlePopExamForm() {
-        if (this.exam_form.length < 2) {
+        if (this.exam_form_list.length < 2) {
           return false;
         }
-        this.exam_form.pop();
+        this.exam_form_list.pop();
       },
       //打开编辑培训
       handleOpenEditTrain(row) {
@@ -1146,13 +1210,12 @@
 
 <style lang="scss">
   #train {
-    .library_info {
-      .exam_type {
+    .library-info {
+      .exam-type {
         .train-radio-style {
           .el-radio {
             display: inline-block;
           }
-
         }
       }
     }

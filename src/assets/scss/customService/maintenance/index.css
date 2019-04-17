@@ -1,21 +1,21 @@
 /*
 Error: Invalid GBK character "\xE5"
-        on line 12 of index.scss
+        on line 15 of index.scss
 
-7: #theme_name {
-8:   #miantenance {
-9:     .el-row {
 10:       margin: 0 !important;
 11:     }
-12:     //增加order
-13:     .addOrder_dialog {
-14:       .el-col {
-15:         height: 40px;
-16:         margin-bottom: 30px;
-17:         @include flex('items-center');
+12:     .icons.add {
+13:       margin-left: 20px;
+14:     }
+15:     //增加order
+16:     .addOrder_dialog {
+17:       .el-col {
+18:         height: 40px;
+19:         margin-bottom: 30px;
+20:         @include flex('items-center');
 
 Backtrace:
-index.scss:12
+index.scss:15
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
@@ -43,4 +43,4 @@ D:/Ruby24-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE5\"\A         on line 12 of index.scss\A \A 7: #theme_name {\A 8:   #miantenance {\A 9:     .el-row {\A 10:       margin: 0 !important;\A 11:     }\A 12:     //增加order\A 13:     .addOrder_dialog {\A 14:       .el-col {\A 15:         height: 40px;\A 16:         margin-bottom: 30px;\A 17:         @include flex('items-center');"; }
+  content: "Error: Invalid GBK character \"\xE5\"\A         on line 15 of index.scss\A \A 10:       margin: 0 !important;\A 11:     }\A 12:     .icons.add {\A 13:       margin-left: 20px;\A 14:     }\A 15:     //增加order\A 16:     .addOrder_dialog {\A 17:       .el-col {\A 18:         height: 40px;\A 19:         margin-bottom: 30px;\A 20:         @include flex('items-center');"; }

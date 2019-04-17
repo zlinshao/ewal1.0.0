@@ -541,12 +541,29 @@ export const accountRunSearch = {
 /*赏罚分明*/
 //赏善令
 export const rewardUpSearch = {
-  status: 'rewardUpSearch'
+  status: 'rewardUpSearch',
+  data: [],
 }
 //惩恶令
 export const rewardDownSearch = {
-  status: 'rewardDownSearch'
+  status: 'rewardDownSearch',
+  data: [],
 }
+
+
+/*公告问卷*/
+//公告
+export const noticeSearch = {
+  status: 'noticeSearch',
+  data: [],
+}
+//问卷调查
+export const questionnaireSearch = {
+  status: 'questionnaireSearch',
+  data: [],
+}
+
+
 /*内务库房*/
 
 //库房总览
