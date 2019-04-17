@@ -74,7 +74,8 @@ let calendar = {
           datetime: this.getDateTimeByDay(date, i, 0),
           today: curDay == i && this.getCurrentMonth() == this.getCurrentMonth(date),
           type: 'cur',
-          date: i
+          date: i,
+          week:this.getWeek(this.getDateTimeByDay(date, i, 0)),
         };
         arr.push(obj);
       }
@@ -86,6 +87,13 @@ let calendar = {
       let day = date.getDate();
       return day;
     },
+    //获取某个时间下 今日周几  不传默认当天
+    getWeek(mDate = new Date()) {
+      let date = new Date(mDate);
+      let day = date.getDay();
+      return day;
+    },
+
     //获取当前时间下 几月  不传参默认当月
     getCurrentMonth(date = new Date()) {
       let curDate = new Date(date);

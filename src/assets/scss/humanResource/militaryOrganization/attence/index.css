@@ -324,7 +324,81 @@
           align-items: center;
           font-size: 18px; }
         #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-calendar {
-          height: 92%; }
+          height: 92%;
+          padding-bottom: 40px; }
+        #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other {
+          width: 100%;
+          height: 45%; }
+          #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column; }
+            #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other .bottom-tip {
+              width: 100%;
+              height: 20%;
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              font-size: 18px;
+              color: #686874;
+              margin-bottom: 30px; }
+            #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other .bottom-container {
+              width: 100%;
+              height: 80%; }
+              #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other .bottom-container .check-record-container {
+                width: 100%;
+                height: 70%;
+                border: 1px solid #E4E4E4;
+                display: flex;
+                align-items: center;
+                justify-content: space-between; }
+                #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other .bottom-container .check-record-container .check-record-item {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100%;
+                  width: 100%;
+                  float: left;
+                  border-left: 1px solid #d2d2d2; }
+                  #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other .bottom-container .check-record-container .check-record-item:nth-of-type(1) {
+                    border-left: none; }
+                  #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other .bottom-container .check-record-container .check-record-item .check-record-item-top {
+                    display: flex;
+                    display: -webkit-flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 50%;
+                    width: 100%; }
+                    #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other .bottom-container .check-record-container .check-record-item .check-record-item-top > span {
+                      display: flex;
+                      display: -webkit-flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 14px;
+                      font-family: MicrosoftYaHei-Bold;
+                      font-weight: 700;
+                      line-height: 19px; }
+                  #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other .bottom-container .check-record-container .check-record-item .check-record-item-bottom {
+                    height: 50%;
+                    width: 100%;
+                    border-top: 1px solid #d2d2d2;
+                    display: flex;
+                    display: -webkit-flex;
+                    align-items: center;
+                    justify-content: center; }
+                    #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab1 .bottom-other .container-bottom-other .bottom-container .check-record-container .check-record-item .check-record-item-bottom > span {
+                      display: flex;
+                      display: -webkit-flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 14px;
+                      font-family: MicrosoftYaHei-Bold;
+                      font-weight: 400;
+                      line-height: 19px; }
       #theme_name #attence .lj_container .att-rest-container .container-bottom .container-bottom-tab2 {
         height: 100%;
         width: 70%;

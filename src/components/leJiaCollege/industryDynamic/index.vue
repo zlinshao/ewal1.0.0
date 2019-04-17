@@ -16,7 +16,7 @@
             </div>
             <div class="page">
                 <el-pagination
-                        :total="videoCount"
+                        :total="count"
                         layout="total,jumper,prev,pager,next"
                         :current-page="params.page"
                         :page-size="params.limit"
@@ -35,8 +35,8 @@
                 <div class="dialog_header">
                     <h3>{{current===1?'编辑行业动态':current===2?'新增行业动态':current===3?'详情':''}}</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form size="mini" label-width="80px" v-model="form" :rules="rules" ref="form">
+                <div class="dialog_main borderNone">
+                    <el-form  label-width="80px" v-model="form" :rules="rules" ref="form">
                         <el-form-item label="标题" prop="title">
                             <el-input v-model="form.title" placeholder="请输入标题" :disabled="current===3"></el-input>
                         </el-form-item>
@@ -83,7 +83,7 @@
         },
         data() {
             return {
-                videoCount: 0,
+                count: 0,
                 visible: false,
                 delete_visible: false,
                 is_add:false,
@@ -190,6 +190,10 @@
                 this.$http.get(globalConfig.leJiaCollege_server+'/api/trade/dynamic', this.params).then(res => {
                     if (res.status === 200) {
                         this.dataLists = res.data.data;
+                        this.count=res.data.total;
+                    }else{
+                        this.dataLists = [];
+                        this.count=0;
                     }
                 })
             },
