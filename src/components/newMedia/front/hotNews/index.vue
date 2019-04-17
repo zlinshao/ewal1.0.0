@@ -50,7 +50,7 @@
                         chooseTab:2,
                     },
                     {
-                        url: 'notice',
+                        url: 'announcement',
                         title: '公告  ',
                         letter: "Notice",
                         chooseTab:3,

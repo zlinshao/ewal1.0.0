@@ -1,5 +1,5 @@
 <template>
-  <div id="rewardUp">
+  <div id="notice">
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
         :data="tableData"
@@ -379,7 +379,7 @@
       },
 
       getRewardUpList() {
-        this.$http.get(this.url + 'announcement/xxx', this.params).then(res => {
+        this.$http.get(this.url + 'aa/xxx', this.params).then(res => {
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })
@@ -424,7 +424,7 @@
       },
       handleCurrentChange(val) {
         this.params.page = val;
-        this.getRewardUpList();
+        //this.getRewardUpList();
         console.log(`当前页: ${val}`);
       }
     },
@@ -432,16 +432,16 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../../assets/scss/humanResource/reward/rewardUp/index.scss";
+  @import "../../../../assets/scss/humanResource/noticeQuestionnaire/notice/index.scss";
   /*@import "../../../../assets/scss/currency";*/
 
   @mixin childrenImg($m, $n) {
-    $url: '../../../../assets/image/humanResource/reward/rewardUp/' + $n + '/' + $m;
+    $url: '../../../../assets/image/humanResource/noticeQuestionnaire/notice/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name.theme1 {
-    #rewardUp {
+    #notice {
 
 
 
@@ -471,19 +471,19 @@
   }
 
   #theme_name.theme2 {
-    #rewardUp {
+    #notice {
 
     }
   }
 
   #theme_name.theme3 {
-    #rewardUp {
+    #notice {
 
     }
   }
 
   #theme_name.theme4 {
-    #rewardUp {
+    #notice {
 
     }
   }

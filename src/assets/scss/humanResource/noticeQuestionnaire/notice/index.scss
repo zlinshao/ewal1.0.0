@@ -1,0 +1,47 @@
+@import "../../../common.scss";
+
+#theme_name {
+  #rewardUp {
+
+  }
+}
+
+#theme_name.theme1 {
+  #rewardUp {
+    .header_right {
+      display: flex;
+      flex-direction: row-reverse;
+      .icon-add {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        @include flex('flex-center');
+        cursor: pointer;
+        background-color: #CF2E33;
+        b {
+          color: $colorFFF;
+          font-size: 30px;
+          margin-bottom: 6px;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme2 {
+  #rewardUp {
+
+  }
+}
+
+#theme_name.theme3 {
+  #rewardUp {
+
+  }
+}
+
+#theme_name.theme4 {
+  #rewardUp {
+
+  }
+}

@@ -19,6 +19,66 @@
     <div class="main-container discuss-politics-container">
       <div class="calendar-container">
         <div class="container-left scroll_bar">
+          <div @click="getCurrentSelectMonthMeetingCounts" class="monthTitle">
+            <span title="本月会议数">{{monthContent}}</span>
+          </div>
+          <!--时间线-->
+          <div class="timeline">
+            <el-timeline>
+              <el-timeline-item
+                :key="index"
+                :color="item.todoType==0?'#50E38F':item.todoType==1?'#FF7A3C':'#FFDC75'"
+                v-if="item.todoListTimeLine&&item.todoListTimeLine.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
+                placement="top">
+                <el-card>
+                  <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
+                    <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
+                         @click="openMeetingDialog(contentItem)"
+                         :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
+                      {{contentItem.content}}
+                      <div class="icon-list">
+                        <span v-if="contentItem.status==0" title="取消"
+                              @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
+                              class="icon15 icon-cancel"></span>
+                        <span title="删除"
+                              @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
+                              class="icon15 icon-delete-red"></span>
+                      </div>
+                    </div>
+                  </div>
+                </el-card>
+              </el-timeline-item>
+            </el-timeline>
+          </div>
+          <!--<div class="timeline">
+            <el-timeline>
+              <el-timeline-item
+                :key="index"
+                :color="item.todoType==0?'#50E38F':item.todoType==1?'#FFDC75':'#FF7A3C'"
+                v-if="item.todoList&&item.todoList.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
+                placement="top">
+                <el-card>
+                  <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
+                    <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
+                         @click="openMeetingDialog(contentItem)"
+                         :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoList">
+                      {{contentItem.content}}
+                      <div class="icon-list">
+                        <span v-if="contentItem.status==0" title="取消"
+                              @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
+                              class="icon20 icon-cancel"></span>
+                        <span title="删除"
+                              @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
+                              class="icon20 icon-delete"></span>
+                      </div>
+                    </div>
+                  </div>
+                </el-card>
+              </el-timeline-item>
+            </el-timeline>
+          </div>-->
+        </div>
+        <div class="container-right scroll_bar">
           <div class="calendar-week">
             <div class="ui-container">
               <div v-for="(item,index) in weekList" class="calendar-week-item">
@@ -55,66 +115,7 @@
             </div>
           </div>
         </div>
-        <div class="container-right scroll_bar">
-          <div @click="getCurrentSelectMonthMeetingCounts" class="monthTitle">
-            <span title="本月会议数">{{monthContent}}</span>
-          </div>
-          <!--时间线-->
-          <div class="timeline">
-            <el-timeline>
-              <el-timeline-item
-                :key="index"
-                :color="item.todoType==0?'#50E38F':item.todoType==1?'#FF7A3C':'#FFDC75'"
-                v-if="item.todoListTimeLine&&item.todoListTimeLine.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
-                placement="top">
-                <el-card>
-                  <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
-                    <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
-                         @click="openMeetingDialog(contentItem)"
-                         :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
-                      {{contentItem.content}}
-                      <div class="icon-list">
-                        <span v-if="contentItem.status==0" title="取消"
-                              @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
-                              class="icon20 icon-cancel"></span>
-                        <span title="删除"
-                              @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
-                              class="icon20 icon-delete"></span>
-                      </div>
-                    </div>
-                  </div>
-                </el-card>
-              </el-timeline-item>
-            </el-timeline>
-          </div>
-          <!--<div class="timeline">
-            <el-timeline>
-              <el-timeline-item
-                :key="index"
-                :color="item.todoType==0?'#50E38F':item.todoType==1?'#FFDC75':'#FF7A3C'"
-                v-if="item.todoList&&item.todoList.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
-                placement="top">
-                <el-card>
-                  <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
-                    <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
-                         @click="openMeetingDialog(contentItem)"
-                         :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoList">
-                      {{contentItem.content}}
-                      <div class="icon-list">
-                        <span v-if="contentItem.status==0" title="取消"
-                              @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
-                              class="icon20 icon-cancel"></span>
-                        <span title="删除"
-                              @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
-                              class="icon20 icon-delete"></span>
-                      </div>
-                    </div>
-                  </div>
-                </el-card>
-              </el-timeline-item>
-            </el-timeline>
-          </div>-->
-        </div>
+
       </div>
     </div>
 
@@ -1219,7 +1220,6 @@
         this.comment_content = '';
         this.$http.get(`${this.url}/meeting/meeting/${value.id}`).then(res => {
           if (res.code.endsWith('0')) {
-            debugger
             let item = res.data;
             //let applyPerson = _.find(item.users, {'user_id': item.user_id});//申请人
             let compere = _.map(item.presenter || [], 'user.name').join(',');
@@ -1244,13 +1244,10 @@
               meeting_type: value.meeting_type,
 
             };
-            debugger
             this.getCommentList(value.id);
           }
         });
 
-
-        //console.log(item);
       },
 
 
@@ -1489,6 +1486,31 @@
   }
 </script>
 
+<style lang="scss">
+
+  #discussPolitics {
+
+    .calendar-day {
+      .ui-container {
+        .calendar-day-item-container {
+          &:hover {
+            sup {
+              display: none !important;
+            }
+          }
+        }
+      }
+    }
+
+    .timeline {
+      .el-card {
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+</style>
+
 <style scoped lang="scss">
   @import "../../../assets/scss/humanResource/discussPolitics/index";
   //@import "../../../assets/scss/icon";
@@ -1520,6 +1542,8 @@
 
   #theme_name.theme1 {
     #discussPolitics {
+      @include discussPoliticsImg('di.png','theme1');
+
       .icon-delete {
         @include discussPoliticsImg('shanchu.png', 'theme1');
       }
@@ -1532,8 +1556,16 @@
         @include discussPoliticsImg('ckfj.png', 'theme1');
       }
 
+      .icon-cancel {
+        @include discussPoliticsImg('xzquxiao.png', 'theme1');
+      }
+
       .icon-edit {
         @include discussPoliticsImg('bianji_2.png', 'theme1');
+      }
+
+      .timeline {
+        @include discussPoliticsImg('椭圆形.png','theme1');
       }
     }
   }

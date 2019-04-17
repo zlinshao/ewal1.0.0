@@ -25,7 +25,7 @@
                   </div>
                   <div class="notice_info flex-center">
                     <span class="notice_type">{{ item.house_status_name }}</span>
-                    <span :class="['notice-' + item.warning_status ]" class="notice"></span>
+                    <span :class="['announcement-' + item.warning_status ]" class="notice"></span>
                   </div>
                 </div>
                 <div class="control flex-center" @click.stop="" v-if="show_control === item.id ">

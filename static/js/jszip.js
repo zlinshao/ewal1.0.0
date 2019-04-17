@@ -3459,8 +3459,8 @@ exports.prepareContent = function(name, inputData, isBinary, isOptimizedBinarySt
 
     // if inputData is already a promise, this flatten it.
     var promise = external.Promise.resolve(inputData).then(function(data) {
-        
-        
+
+
         var isBlob = support.blob && (data instanceof Blob || ['[object File]', '[object Blob]'].indexOf(Object.prototype.toString.call(data)) !== -1);
 
         if (isBlob && typeof FileReader !== "undefined") {
@@ -5703,7 +5703,7 @@ exports.utf8border = function (buf, max) {
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 function adler32(adler, buf, len, pos) {
   var s1 = (adler & 0xffff) |0,
@@ -5752,7 +5752,7 @@ module.exports = adler32;
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 module.exports = {
 
@@ -5826,7 +5826,7 @@ module.exports = {
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 // Use ordinary array, since untyped makes no boost here
 function makeTable() {
@@ -5883,7 +5883,7 @@ module.exports = crc32;
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 var utils   = require('../utils/common');
 var trees   = require('./trees');
@@ -7759,7 +7759,7 @@ exports.deflateTune = deflateTune;
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 function GZheader() {
   /* true if compressed data believed to be text */
@@ -7819,7 +7819,7 @@ module.exports = GZheader;
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 // See state defs from inflate.js
 var BAD = 30;       /* got a data error -- remain here until reset */
@@ -8166,7 +8166,7 @@ module.exports = function inflate_fast(strm, start) {
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 var utils         = require('../utils/common');
 var adler32       = require('./adler32');
@@ -9724,7 +9724,7 @@ exports.inflateUndermine = inflateUndermine;
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 var utils = require('../utils/common');
 
@@ -10069,7 +10069,7 @@ module.exports = function inflate_table(type, lens, lens_index, codes, table, ta
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 module.exports = {
   2:      'need dictionary',     /* Z_NEED_DICT       2  */
@@ -10103,7 +10103,7 @@ module.exports = {
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 var utils = require('../utils/common');
 
@@ -11325,7 +11325,7 @@ exports._tr_align = _tr_align;
 //   appreciated but is not required.
 // 2. Altered source versions must be plainly marked as such, and must not be
 //   misrepresented as being the original software.
-// 3. This notice may not be removed or altered from any source distribution.
+// 3. This noticeQuestionnaire may not be removed or altered from any source distribution.
 
 function ZStream() {
   /* next input byte */

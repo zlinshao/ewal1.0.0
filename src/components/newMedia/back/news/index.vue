@@ -337,7 +337,7 @@
                         this.type = 'news';
                         break;
                     case 3:
-                        this.type = 'announcement';
+                        this.type ='announcement';
                         break;
                 }
                 this.getDataLists();
