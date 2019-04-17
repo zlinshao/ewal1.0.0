@@ -39,7 +39,7 @@
         </el-table-column>
         <el-table-column label="离职群消息" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleControlMsg(scope.row,'notice')">
+            <el-button type="text" @click="handleControlMsg(scope.row,'announcement')">
               {{ scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1 ? '已发送' : '发送'}}
             </el-button>
           </template>

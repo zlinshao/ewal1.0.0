@@ -530,6 +530,19 @@ export const rewardUpSearch = {
 export const rewardDownSearch = {
   status: 'rewardDownSearch'
 }
+
+
+/*公告问卷*/
+//公告
+export const noticeSearch = {
+  status: 'noticeSearch'
+}
+//问卷调查
+export const questionnaireSearch = {
+  status: 'questionnaireSearch'
+}
+
+
 /*内务库房*/
 
 //库房总览

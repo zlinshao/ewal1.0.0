@@ -44,6 +44,7 @@ const StaffRoster = () =>
 const MilitaryOrganization = () =>
   import('@/components/humanResource/militaryOrganization/index.vue') //排班布阵
 const Reward = () => import('@/components/humanResource/reward/index.vue') //赏罚分明
+const NoticeQuestionnaire = () => import('@/components/humanResource/noticeQuestionnaire/index.vue') //公告问卷
 const Repository = () =>
   import('@/components/humanResource/repository/index.vue') //内务库房
 const DiscussPolitics = () =>
@@ -400,7 +401,7 @@ export default new Router({
       component: LeJiaNews
     },
     {
-      path: '/notice',
+      path: '/announcement',
       name: '公告',
       component: Notice
     },
@@ -491,9 +492,9 @@ export default new Router({
       component: Recruitment
     },
     {
-      path: '/reward',
-      name: '赏罚分明',
-      component: Reward
+      path: '/noticeQuestionnaire',
+      name: '公告问卷',
+      component: NoticeQuestionnaire
     },
     {
       path: '/repository',
