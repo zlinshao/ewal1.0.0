@@ -61,6 +61,8 @@
 
     <!--确定删除-->
     <DeleteDialog :delete_visible='delete_visible' @close='handleCloseDelete'></DeleteDialog>
+    <!--确定增加-->
+    <AddDialog :add_visible='add_visible' @close='handleCloseAdd'></AddDialog>
     <!-- 催办 -->
     <LjDialog :visible="urgedDeal_visible" :size="{width: 480 + 'px',height: 340 + 'px'}" @close="handleCloseUrgedDeal">
       <div class="dialog_container">
@@ -502,28 +504,24 @@
       </div>
     </LjDialog>
     <!--新增跟进记录-->
-    <LjDialog :visible="followRecord_visible" :size="{width: 960 + 'px',height: 640 + 'px'}" @close="handleCloseAddNewRecord">
+    <LjDialog :visible="followRecord_visible" :size="{width: 720 + 'px',height: 480 + 'px'}" @close="handleCloseAddNewRecord">
       <div class="dialog_container followRecord">
         <div class="dialog_header">
           <h3>新增跟进记录</h3>
         </div>
         <div class="dialog_main">
-          <el-form label-width='100px'>
-            <el-row :gutter="20" width='100%'>
-              <el-col :span="8">
+          <el-form label-width='80px'>
+            <el-row :gutter="10" width='100%'>
+              <el-col :span="12">
                 <el-form-item label="工单状态">
                   <el-radio v-model="followRecord.type" label="1">跟进中</el-radio>
                   <el-radio v-model="followRecord.type" label="2">已完成</el-radio>
                 </el-form-item>
               </el-col>
-              <el-col :span="8" v-if='chooseTab !== 338 && followRecord.type == 2'>
-                <el-form-item label="紧急程度">
-                  <el-select v-model="followRecord.emergency" placeholder="请选择">
-                    <el-option label="一般" value="1"></el-option>
-                    <el-option label="紧急" value="2"></el-option>
-                    <el-option label="特急" value="3"></el-option>
-                    <el-option label="重要" value="4"></el-option>
-                  </el-select>
+              <el-col :span="12" v-if='chooseTab !== 338 && followRecord.type == 2'>
+                <el-form-item label="投诉有效性">
+                  <el-radio v-model="followRecord.emergency" label="1">有效</el-radio>
+                  <el-radio v-model="followRecord.emergency" label="2">无效</el-radio>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -586,6 +584,8 @@
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
     <!--选择部门-->
     <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart"></DepartOrgan>
+    <!-- 财务记录 -->
+
   </div>
 </template>
 
@@ -595,6 +595,7 @@ import MenuList from '../../common/menuList.vue';
 import { workOrderSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 import DeleteDialog from '../components/delete-dialog';
+import AddDialog from '../components/add-dialog';
 import LjDialog from '../../common/lj-dialog.vue';
 import StaffOrgan from '../../common/staffOrgan.vue'
 import DepartOrgan from '../../common/departOrgan';
@@ -602,7 +603,7 @@ import Ljupload from '../../common/lightweightComponents/lj-upload'
 
 export default {
   name: "index",
-  components: { SearchHigh, MenuList, DeleteDialog, LjDialog, StaffOrgan, DepartOrgan, Ljupload },
+  components: { SearchHigh, MenuList, DeleteDialog, AddDialog, LjDialog, StaffOrgan, DepartOrgan, Ljupload },
   data () {
     return {
       customService,
@@ -645,6 +646,8 @@ export default {
       currentRow: null,
       //删除row
       delete_visible: false,
+      // 增加
+      add_visible: false,
       //催办
       urgedDeal_visible: false,
       urgedDeal: {
@@ -880,7 +883,8 @@ export default {
           label: '前租客',
           value: 5
         }
-      ]
+      ],
+      currentMethod: null, //记录当前操作
     }
   },
   mounted () {
@@ -1126,8 +1130,51 @@ export default {
     //确定新增
     handleAddNewRecord () {
       this.followRecord_visible = false
-      // this.sureEnding_visible = true
+      this.add_visible = true
+      console.log(this.followRecord)
+      this.currentMethod = 'addRecord'
+
+
     },
+    addRecordFun (par) {
+      if (par) {
+        let params = {
+          work_order_id: this.currentRow.id,
+          folow_status: this.followRecord.type,
+          content: this.followRecord.note
+        }
+        this.$http.post(`${this.market_server}v1.0/csd/work_order/follow`, params).then(res => {
+          console.log(res)
+          this.$LjNotify('success', {
+            title: '提示',
+            message: res.message
+          });
+          this.followRecord_visible = false;
+        })
+      }
+      this.followRecord = {
+        type: '',
+        emergency: '',
+        note: '',
+        complained: [
+          {
+            id: '',
+            type: '',
+            name: '',
+            money: ''
+          }
+        ],
+        album: []
+      }
+    },
+    //确认添加
+    handleCloseAdd (params) {
+      if (this.currentMethod == 'addRecord') {
+        this.addRecordFun(params)
+      }
+      this.currentMethod = null
+    },
+
     handleCloseAddNewRecord () {
       this.followRecord_visible = false
     },

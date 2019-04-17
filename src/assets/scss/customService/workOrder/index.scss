@@ -11,6 +11,9 @@
     .el-row {
       margin-right: 0 !important;
     }
+    .el-form-item__label {
+      white-space: nowrap;
+    }
     //增加order
     .addOrder_dialog {
       .el-col {
