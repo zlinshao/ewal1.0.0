@@ -18,6 +18,7 @@
           </div>
         </div>
         <div class="items-center listTopRight">
+          <el-button size="small" style="width: 80px" type="success" plain @click="handleAllotVillage">分配</el-button>
           <div class="sort-control flex-center">
             <span @click="handleChangeSort(tmp)" v-for="tmp in sort_list" :key="tmp.id + 1" :class="{'current-choose': current_sort === tmp.id }">{{ tmp.val }}</span>
           </div>
@@ -30,7 +31,7 @@
       <!--小区列表-->
       <div class="village-main">
         <div class="content flex scroll_bar">
-          <div v-for="(village,index) in village_list" class="flex" @click="handleGetDetail(village)">
+          <div v-for="(village,index) in village_list" class="flex" @dblclick="handleGetDetail(village)">
             <div>
               <div class="village-header">
                 <p class="name flex">
@@ -56,14 +57,18 @@
                 </p>
                 <p>
                   <span class="icon-label sign_user"></span>
-                  <span>{{ village.leader && village.leader.name }}</span>
+                  <span v-if="village.org && village.org.length > 0">
+                    <span v-for="item in village.org">
+                      {{ item.leader && item.leader.name }}&nbsp;&nbsp;
+                    </span>
+                  </span>
+                  <span v-else>-</span>
                 </p>
               </div>
               <div class="village-footer">
                 <div class="flex-center">
                   <el-button type="info" size="small">编辑</el-button>
                   <el-button type="primary" size="small" plain @click.stop="handleOpenMergeVillage(village)">合并</el-button>
-                  <el-button type="warning" size="small" plain @click.stop="handleAllotCommunity(village)">分配</el-button>
                 </div>
                 <div class="flex-center">
                   <div class="flex-center" :class="{'choose-village': check_choose.includes(index)}" @click.stop="handleCheckVillage(village,index)">
@@ -336,6 +341,7 @@
           limit: 20
         },
         check_choose: [], //当前选中小区
+        current_check_village: [],
 
         show_filter_search: false, //显示小区城市筛选
         city_list: [], //城市列表
@@ -402,6 +408,23 @@
     watch: {},
     computed: {},
     methods: {
+      //分配小区
+      handleAllotVillage() {
+        if (this.current_check_village.length < 1) {
+          this.$LjNotify('warning',{
+            title: '提示',
+            message: '请选择需要分配的小区'
+          });
+          return false;
+        }
+        this.allot_village_params.community_id = [];
+        for (var item of this.current_check_village) {
+          this.allot_village_params.community_id.push(item.id);
+          this.allot_village_params.village_name += item.village_name + ',';
+        }
+        this.allot_village_params.village_name = this.allot_village_params.village_name.substring(0,this.allot_village_params.village_name.length - 1);
+        this.allot_village_visible = true;
+      },
       //点击获取房型图
       handleClickRow(row) {
         console.log(row);
@@ -444,9 +467,11 @@
       handleChooseAll() {
         if (this.check_choose.length >= this.village_list.length) {
           this.check_choose = [];
+          this.current_check_village = [];
           return false;
         }
         this.check_choose = [];
+        this.current_check_village = this.village_list;
         for (var key in this.village_list) {
           this.check_choose.push(parseInt(key));
         }
@@ -533,13 +558,6 @@
       handleOpenDepart(type) {
         this.user_type = type;
         this.depart_visible = true;
-      },
-      //分配小区
-      handleAllotCommunity(village) {
-        this.allot_village_params.community_id = village.id;
-        // this.allot_village_params.community_id = 41234;
-        this.allot_village_params.village_name = village.village_name;
-        this.allot_village_visible = true;
       },
       handleConfirmCommunity() {
         this.$http.post(this.http_server + 'v1.0/market/community/org',this.allot_village_params).then(res => {
@@ -766,10 +784,12 @@
         for (var i=0;i<this.check_choose.length;i++) {
           if (index === this.check_choose[i]) {
             this.check_choose.splice(i,1);
+            this.current_check_village.splice(this.village_list[i],1);
             return false;
           }
         }
         this.check_choose.push(index);
+        this.current_check_village.push(this.village_list[index]);
       },
       //高级
       openHighSearch() {
