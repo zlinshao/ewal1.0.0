@@ -16,8 +16,8 @@
       </div>
       <div class="items-center listTopRight">
         <!--<div class="icons-font" @click="publish(chooseTab)" v-if="chooseTab === 1|| chooseTab===2"><b>发榜</b></div>-->
-        <div class="icons-font" @click="exchange(chooseTab)" v-if="chooseTab === 1"><b>发公告</b></div>
-        <div class="icons-font" @click="exchange(chooseTab)" v-if="chooseTab === 2"><b>调查问卷</b></div>
+        <!--<div class="icons-font" @click="exchange(chooseTab)" v-if="chooseTab === 1"><b>发公告</b></div>
+        <div class="icons-font" @click="exchange(chooseTab)" v-if="chooseTab === 2"><b>调查问卷</b></div>-->
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
       </div>
     </div>
@@ -58,6 +58,7 @@
   import WorkInfo from './components/workInfo/work-info';
   import LjDialog from '../../common/lj-dialog.vue';
   import SearchHigh from '../../common/searchHigh.vue';
+  import StaffOrgan from '../../common/staffOrgan.vue';
   import {noticeSearch, questionnaireSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
@@ -70,6 +71,7 @@
       WorkInfo,
       LjDialog,
       SearchHigh,
+      StaffOrgan,
     },
     data() {
       return {
