@@ -14,7 +14,7 @@
             <span :class="{ 'choose-address' : tmp.val.indexOf('选') === -1 }" v-for="tmp in address_filter" :key="tmp.id" @click="handleOpenFilterAddress(tmp)">{{ tmp.val }}</span>
           </div>
           <div class="village-num">
-            86个小区
+            {{ village_count || 0 }}个小区
           </div>
         </div>
         <div class="items-center listTopRight">
@@ -23,7 +23,7 @@
           </div>
           <div class="icons all-choose" @click="handleChooseAll"></div>
           <div class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
-          <div class="icons search" @click="highSearch"></div>
+          <div class="icons search" @click="openHighSearch"></div>
         </div>
       </div>
 
@@ -118,7 +118,7 @@
         </div>
       </div>
 
-      <searchHigh :module="searchHighVisible" :showData="searchData" @close="hiddenModule"></searchHigh>
+      <searchHigh :module="searchHighVisible" :showData="searchData" @close="handleCloseSearch"></searchHigh>
 
       <!--添加小区-->
       <NewVillage :module="new_village_visible" @close="new_village_visible = false"></NewVillage>
@@ -756,8 +756,8 @@
         }
       },
       //关闭高级搜索
-      hiddenModule(val) {
-        if (val !== 'close') {
+      handleCloseSearch(val) {
+        if (val !== 'close' && val !== 'reset') {
           console.log(val);
         }
         this.searchHighVisible = false;
@@ -772,10 +772,11 @@
         this.check_choose.push(index);
       },
       //高级
-      highSearch() {
+      openHighSearch() {
         this.searchData = {
           status: 'village',
-          placeholder: '小区名称/地址/报备人',
+          placeholder: '小区名称',
+          keywords: 'address',
           data: []
         };
         this.searchHighVisible = true;

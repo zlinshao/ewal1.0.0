@@ -762,6 +762,7 @@
       getNextDepart(val,next) {
         this.next_depart_params.parent_id = val.id;
         this.$http.get('organization/organization',this.next_depart_params).then(res => {
+          console.log(res);
           if (res.code === '20000') {
             this.next_depart = res.data.data;
             if (next) {
@@ -1200,7 +1201,7 @@
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
           this.$http.put(`organization/organization/${this.edit_depart.id}`,this.departForm).then(res => {
-            if (res.code === '20030') {
+            if (res.code === '20010') {
               this.$LjNotify('success',{
                 title: '成功',
                 message: res.msg
@@ -1209,7 +1210,7 @@
               this.handleCancelAddDepart();
             } else {
               this.$LjNotify('warning',{
-                title: '成功',
+                title: '失败',
                 message: res.msg
               })
             }
@@ -1223,6 +1224,9 @@
               message: res.msg
             });
             this.getDepartList();
+            if (this.show_depart_detail) {
+              this.getNextDepart({id: this.departForm.parent_id});
+            }
             this.handleCancelAddDepart();
           } else {
             this.$LjNotify('warning',{
