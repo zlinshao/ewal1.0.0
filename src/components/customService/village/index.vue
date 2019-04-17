@@ -567,6 +567,8 @@
               title: '成功',
               message: res.message
             });
+            this.check_choose = [];
+            this.current_check_village = [];
             this.getVillageList();
             this.handleCancelAllotVillage();
           } else {

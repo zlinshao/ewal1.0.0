@@ -6,8 +6,9 @@
         <div></div>
         <el-button type="text" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>
       </div>
-      <div class="scroll_bar staffManage" id="scroll-body" v-if="tabsManage === 'staff'" @click="checkOverflow()">
-        <div v-for="item in staffList">
+      <div id="scroll-body" v-if="tabsManage === 'staff'" @click="checkOverflow()">
+        <div class="scroll_bar staffManage" v-if="staffList.length > 0">
+          <div v-for="item in staffList">
             <div class="items-center" @click="reviseStaff(item)">
               <p>
                 <img :src="item.avatar" alt="" v-if="item.avatar">
@@ -24,13 +25,18 @@
               <i v-if="operatePos"></i>
             </h5>
           </div>
-      </div>
-      <div class="scroll_bar orgManage" v-if="tabsManage === 'position'">
-        <div v-for="item in dutyList">
-          <p @click="operateModule('positionManagement',item)">
-            <span class="writingMode">{{ item.name }}</span>
-          </p>
         </div>
+        <div class="staffManage items-center"><span>暂无员工信息</span></div>
+      </div>
+      <div v-if="tabsManage === 'position'">
+        <div class="scroll_bar orgManage" v-if="dutyList.length > 0">
+          <div v-for="item in dutyList">
+            <p @click="operateModule('positionManagement',item)">
+              <span class="writingMode">{{ item.name }}</span>
+            </p>
+          </div>
+        </div>
+        <div v-else class="orgManage items-center"><span>暂无职位信息</span></div>
       </div>
     </div>
     <!--新增员工-->

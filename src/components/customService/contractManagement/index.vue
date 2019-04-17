@@ -57,7 +57,28 @@
           </el-table-column>
           <el-table-column type="expand" label="综合页展开" align="center" v-if="chooseTab === 3" width="90px">
             <template slot-scope="scope">
-              {{ scope.row }}
+              <div class="expand-container">
+                <el-table :data="expand_data">
+                  <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
+                  <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
+                  <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
+                  <el-table-column label="合同性质" prop="type" align="center"></el-table-column>
+                  <el-table-column label="收房价格" prop="month_price" align="center">
+                    <template slot-scope="scope">
+                      <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
+              <span v-for="(item,index) in scope.row.month_price">
+                {{ item.price }} 元 / {{ item.period }}月 <a v-if="index !== scope.row.month_price.length - 1">;</a>
+              </span>
+                      </div>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="付款方式" prop="pay_way" align="center"></el-table-column>
+                  <el-table-column label="开单人" prop="sign_user" align="center"></el-table-column>
+                  <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
+                  <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
+                  <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
+                </el-table>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -630,8 +651,8 @@
         check_visible: false,
 
         expand_params: {
-          type: 2,
-          address: ''
+          contract_type: 2,
+          house_id: ''
         },
         expand_data: [],
         expand_count: 0,
@@ -646,13 +667,18 @@
       //获取展开行数据
       getExpandData() {
         this.$http.get(this.market_server + 'v1.0/market/contract', this.expand_params).then(res => {
-          console.log(res);
+          if (res.code === 200) {
+            this.expand_data = res.data.data;
+            this.expand_count = res.data.count;
+          } else {
+            this.expand_data = [];
+            this.expand_count = 0;
+          }
         })
       },
       //展开某一行
       handleExpandRow(row) {
-        console.log(row);
-        this.expand_params.address = row.house_name;
+        this.expand_params.house_id = row.house_id;
         this.getExpandData();
       },
       //相关合同label

@@ -8,7 +8,7 @@ Error: Invalid GBK character "\xE8"
 417:     }
 418: 
 419:     //  自己录入题库
-420:     .library_info {
+420:     .library-info {
 421:       width: 100%;
 422:       height: 100%;
 423:       position: absolute;
@@ -43,4 +43,4 @@ D:/Ruby24-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE8\"\A         on line 419 of index.scss\A \A 414:       width: 90%;\A 415:       margin: 0 auto;\A 416:       text-align: left;\A 417:     }\A 418: \A 419:     //  自己录入题库\A 420:     .library_info {\A 421:       width: 100%;\A 422:       height: 100%;\A 423:       position: absolute;\A 424:       left: 0;"; }
+  content: "Error: Invalid GBK character \"\xE8\"\A         on line 419 of index.scss\A \A 414:       width: 90%;\A 415:       margin: 0 auto;\A 416:       text-align: left;\A 417:     }\A 418: \A 419:     //  自己录入题库\A 420:     .library-info {\A 421:       width: 100%;\A 422:       height: 100%;\A 423:       position: absolute;\A 424:       left: 0;"; }
