@@ -1,21 +1,21 @@
 /*
 Error: Invalid GBK character "\xE8"
-        on line 364 of index.scss
+        on line 419 of index.scss
 
-359:       width: 90%;
-360:       margin: 0 auto;
-361:       text-align: left;
-362:     }
-363: 
-364:     //  自己录入题库
-365:     .library_info {
-366:       width: 100%;
-367:       height: 100%;
-368:       position: absolute;
-369:       left: 0;
+414:       width: 90%;
+415:       margin: 0 auto;
+416:       text-align: left;
+417:     }
+418: 
+419:     //  自己录入题库
+420:     .library_info {
+421:       width: 100%;
+422:       height: 100%;
+423:       position: absolute;
+424:       left: 0;
 
 Backtrace:
-index.scss:364
+index.scss:419
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
@@ -43,4 +43,4 @@ D:/Ruby24-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE8\"\A         on line 364 of index.scss\A \A 359:       width: 90%;\A 360:       margin: 0 auto;\A 361:       text-align: left;\A 362:     }\A 363: \A 364:     //  自己录入题库\A 365:     .library_info {\A 366:       width: 100%;\A 367:       height: 100%;\A 368:       position: absolute;\A 369:       left: 0;"; }
+  content: "Error: Invalid GBK character \"\xE8\"\A         on line 419 of index.scss\A \A 414:       width: 90%;\A 415:       margin: 0 auto;\A 416:       text-align: left;\A 417:     }\A 418: \A 419:     //  自己录入题库\A 420:     .library_info {\A 421:       width: 100%;\A 422:       height: 100%;\A 423:       position: absolute;\A 424:       left: 0;"; }

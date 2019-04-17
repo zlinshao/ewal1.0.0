@@ -14,7 +14,7 @@
             <span :class="{ 'choose-address' : tmp.val.indexOf('选') === -1 }" v-for="tmp in address_filter" :key="tmp.id" @click="handleOpenFilterAddress(tmp)">{{ tmp.val }}</span>
           </div>
           <div class="village-num">
-            86个小区
+            {{ village_count || 0 }}个小区
           </div>
         </div>
         <div class="items-center listTopRight">
@@ -23,7 +23,7 @@
           </div>
           <div class="icons all-choose" @click="handleChooseAll"></div>
           <div class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
-          <div class="icons search" @click="highSearch"></div>
+          <div class="icons search" @click="openHighSearch"></div>
         </div>
       </div>
 
@@ -118,7 +118,7 @@
         </div>
       </div>
 
-      <searchHigh :module="searchHighVisible" :showData="searchData" @close="hiddenModule"></searchHigh>
+      <SearchHigh :module="HighVisible" :showData="searchData" @close="handleCloseSearch"></SearchHigh>
 
       <!--添加小区-->
       <NewVillage :module="new_village_visible" @close="new_village_visible = false"></NewVillage>
@@ -229,7 +229,7 @@
 </template>
 
 <script>
-  import searchHigh from '../../common/searchHigh.vue';
+  import SearchHigh from '../../common/searchHigh.vue';
   import NewVillage from './components/new-village.vue';
   import DepartOrgan from '../../common/departOrgan.vue';
   import LjDialog from '../../common/lj-dialog.vue';
@@ -241,7 +241,7 @@
 
   export default {
     name: "index",
-    components: { searchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer,LjUpload},
+    components: { SearchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer,LjUpload},
     data() {
       return {
         //小区详情
@@ -371,8 +371,8 @@
           {key: 'depart', val: '选部门'}
         ],
 
-        searchHighVisible: false,
-        searchData: {},
+        HighVisible: false,
+        searchData: '',
 
         //分配小区
         allot_village_params: {
@@ -756,11 +756,11 @@
         }
       },
       //关闭高级搜索
-      hiddenModule(val) {
+      handleCloseSearch(val) {
         if (val !== 'close') {
           console.log(val);
         }
-        this.searchHighVisible = false;
+        this.HighVisible = false;
       },
       handleCheckVillage(village,index) {
         for (var i=0;i<this.check_choose.length;i++) {
@@ -772,13 +772,14 @@
         this.check_choose.push(index);
       },
       //高级
-      highSearch() {
+      openHighSearch() {
         this.searchData = {
           status: 'village',
-          placeholder: '小区名称/地址/报备人',
-          data: []
+          placeholder: '小区名称',
+          keywords: 'address',
+          data: [],
         };
-        this.searchHighVisible = true;
+        this.HighVisible = true;
       },
       //变更排序
       handleChangeSort(tmp) {

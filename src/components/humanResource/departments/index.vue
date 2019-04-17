@@ -737,7 +737,6 @@
       },
       //部门列表打开部门详情
       handleOpenDepartDetail(item) {
-        console.log(item);
         this.departForm.parent = item.name;
         this.departForm.parent_id = [];
         this.departForm.parent_id.push(item.id);
@@ -778,6 +777,7 @@
       handleInnerNextDepart(item) {
         this.is_next = true;
         this.getNextDepart(item,'next');
+        this.departInfo = item;
       },
       //判断是否有下级部门
       handleConfirmNext(depart) {
@@ -799,7 +799,7 @@
       },
       //点击导航菜单
       handleGetCurrentDepart(item,idx) {
-        console.log(item,idx);
+        this.departInfo = item;
         this.getNextDepart(item);
         this.nav_depart.splice(idx + 1);
       },
@@ -1200,7 +1200,7 @@
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
           this.$http.put(`organization/organization/${this.edit_depart.id}`,this.departForm).then(res => {
-            if (res.code === '20030') {
+            if (res.code === '20010') {
               this.$LjNotify('success',{
                 title: '成功',
                 message: res.msg
@@ -1209,7 +1209,7 @@
               this.handleCancelAddDepart();
             } else {
               this.$LjNotify('warning',{
-                title: '成功',
+                title: '失败',
                 message: res.msg
               })
             }
@@ -1223,6 +1223,9 @@
               message: res.msg
             });
             this.getDepartList();
+            if (this.show_depart_detail) {
+              this.getNextDepart({id: this.departForm.parent_id});
+            }
             this.handleCancelAddDepart();
           } else {
             this.$LjNotify('warning',{

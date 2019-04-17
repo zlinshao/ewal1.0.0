@@ -48,7 +48,7 @@
                 <div class="dialog_main borderNone">
                     <el-form  v-model="form" :rules="rules" label-width="80px" >
                         <el-form-item label="讲师头像">
-                            <lj-upload size="40" disabled="disabled"  v-model="form.file_info"></lj-upload>
+                            <lj-upload size="40"   v-model="form.file_info"></lj-upload>
                         </el-form-item>
                         <el-form-item label="讲师姓名" prop="name">
                             <el-input v-model="form.name" :disabled="flag===3" @focus="staffModule=true"></el-input>
@@ -132,7 +132,7 @@
                     name:'',
                     desc:'',//讲师简介
                     comment:'',//点评概要
-                    user_id:'',
+                    user_id:'',//用户id
                     file_info:[],
                 },
                 rules: {
@@ -217,7 +217,10 @@
                 this.$http.get(globalConfig.leJiaCollege_server+'/api/teachers/lecturer', this.params).then(res => {
                     if(res.status===200){
                         this.dataLists  = res.data.data;
-                        console.log(this.dataLists)
+                        this.count=res.data.total;
+                    }else {
+                        this.dataLists  = [];
+                        this.count=0;
                     }
                 })
             },

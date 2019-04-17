@@ -1,6 +1,6 @@
 <template>
-    <div>
-        666666
+    <div id="jobTraining">
+      
     </div>
 </template>
 

@@ -108,26 +108,20 @@ export const LeaveJobSearch = {
 // 工单
 export const workOrderSearch = {
   status: 'workOrder',
+  keywords: 'search',
   data: [
-    {
-      keyType: 'date',
-      title: '出生日期',
-      placeholder: '请选择日期',
-      keyName: 'date3',
-      dataType: ''
-    },
     {
       keyType: 'dateRange',
       title: '创建时间',
       placeholder: '请选择日期',
-      keyName: 'date1',
+      keyName: 'create_time',
       dataType: []
     },
     {
       keyType: 'dateRange',
       title: '跟进时间',
       placeholder: '请选择日期',
-      keyName: 'date2',
+      keyName: 'end_time',
       dataType: []
     },
     {
@@ -145,12 +139,12 @@ export const workOrderSearch = {
           title: '紧急'
         },
         {
-          id: 14,
-          title: '重要'
-        },
-        {
           id: 15,
           title: '一般'
+        },
+        {
+          id: 14,
+          title: '重要'
         }
       ]
     },
@@ -161,49 +155,35 @@ export const workOrderSearch = {
       dataType: [],
       value: [
         {
-          id: 22,
+          id: 7,
           title: '已完成'
         },
         {
-          id: 23,
-          title: '未完成'
+          id: 8,
+          title: '跟进中'
         }
       ]
     },
     {
-      keyType: 'organ',
+      keyType: 'depart',
       title: '部门',
       placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
+      keyName: 'department',
+      dataType: [],
+      value: {
+        num: 1,
+        arr: ''
+      }
     },
     {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
-    },
-    {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
-    },
-    {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
-    },
-    {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
+      keyType: 'staff',
+      title: '处理人',
+      placeholder: '请选择员工',
+      keyName: 'staff',
+      dataType: [],
+      value: {
+        num: 1
+      }
     }
   ]
 }
