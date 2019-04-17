@@ -189,6 +189,15 @@
 
 #theme_name.theme1 {
   #dataAudit {
+    .active-warning {
+      background: #e6a23c;
+      color: #fff;
+    }
+    .active-primary {
+      background: #409eff;
+      color: #fff;
+    }
+
     .table_icon {
       @include confirmImg('biao.png', 'theme1');
     }

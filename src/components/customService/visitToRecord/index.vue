@@ -13,10 +13,10 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-button type="warning" plain @click="changeAccessTab(1)" :autofocus='accessTab===1'>待回访</el-button>
-        <el-button type="primary" plain @click="changeAccessTab(2)" :autofocus='accessTab===2'>二次回访</el-button>
-        <el-button type="primary" plain @click="changeAccessTab(3)" :autofocus='accessTab===3'>多次回访</el-button>
-        <el-button type="danger" plain @click="changeAccessTab(4)" :autofocus='accessTab===4'>已完成</el-button>
+        <el-button type="warning" plain @click="changeAccessTab(1)" :class='[accessTab ==1 ? "active-warning":""]'>待回访</el-button>
+        <el-button type="primary" plain @click="changeAccessTab(2)" :class='[accessTab ==2 ? "active-primary":""]'>二次回访</el-button>
+        <el-button type="primary" plain @click="changeAccessTab(3)" :class='[accessTab ==3 ? "active-primary":""]'>多次回访</el-button>
+        <el-button type="danger" plain @click="changeAccessTab(4)" :class='[accessTab ==4 ? "active-danger":""]'>已完成</el-button>
         <div></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
@@ -122,7 +122,7 @@
           <el-row :gutter="10" class="detail" v-if='recordDetail'>
             <el-col :span="6" class='detail_col el-border' v-if='recordDetail.customer_info'>
               <h5>客户信息</h5>
-              <div class='detail_col_box'>
+              <div class='detail_col_box detail_col_box2' width='100%'>
                 <div>
                   <span class='tit'>姓名</span>
                   <span class="content">{{recordDetail.customer_info.name}}</span>
@@ -173,7 +173,7 @@
                     <span class='tit'>合同照片</span>
                     <p class='content'>
                       <img :src="img.uri" alt="" v-for='img in recordDetail.album.photo' :key='img.id' data-magnify=""
-                        data-caption="图片查看器" :data-src="img.uri">
+                        data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'>
                     </p>
                   </div>
                 </el-col>
@@ -213,16 +213,16 @@
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span='6' classs='detail_col' v-if='recordDetail.house_extension'>
+            <el-col :span='6' class='detail_col' v-if='recordDetail.house_extension'>
               <h5>房屋信息</h5>
-              <div class='detail_col_box'>
+              <div class='detail_col_box detail_col_box2'>
                 <span class='tit'>房屋地址</span>
                 <span class="content">{{recordDetail.house_extension.address}}</span>
               </div>
             </el-col>
             <el-col :span='6' class='detail_col' v-if='recordDetail.is_agency == 1 && recordDetail.agency_info'>
               <h5>中介信息</h5>
-              <div class='detail_col_box'>
+              <div class='detail_col_box  detail_col_box2'>
                 <div>
                   <span class='tit'>中介名称</span>
                   <span class="content">{{recordDetail.agency_info.agency_name}}</span>
@@ -357,8 +357,7 @@ export default {
         page: 1,
         limit: 10,
         status: 1,
-        address: '',
-        contract_number: '',
+        search: '',
         org: '',
         sign_date_min: '',
         sign_date_max: '',
@@ -496,20 +495,20 @@ export default {
     hiddenModule (val) {
       this.showSearch = false;
       if (val !== 'close') {
-        //正则匹配汉字
-        if (/[\u4E00-\u9FA5]+/.test(val.search)) {
-          this.params.address = val.search //地址
+        this.params.page = 1
+        if (val == 'reset') {
+          this.params.search = ''
+          this.params.org = ''
+          this.params.sign_date_min = ''
+          this.params.sign_date_max = ''
+          this.params.signer = ''
         } else {
-          this.params.contract_number = '' //合同编号
+          this.params.search = val.search
+          this.params.sign_date_min = val.date1[0] || '' //签约最小值
+          this.params.sign_date_max = val.date1[1] || ''//签约最大值
+          this.params.signer = val.staff[0] || ''//签约人
+          this.params.org = val.department[0] || ''//部门
         }
-
-        if (val.date1.length > 0) {
-          this.params.sign_date_min = val.date1[0] //签约最小值
-          this.params.sign_date_max = val.date1[1] //签约最大值
-        }
-        this.params.signer = val.staff[0] || ''//签约人
-        this.params.org = val.department[0] || ''//部门
-
         this.getRecordList()
       }
     },

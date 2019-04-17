@@ -13,8 +13,8 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-button type="warning" plain @click='changeTab(1)'>收房</el-button>
-        <el-button type="primary" plain @click='changeTab(2)'>租房</el-button>
+        <el-button type="warning" plain @click='changeTab(1)' :class="[chooseTab==1?'active-warning':'']">收房</el-button>
+        <el-button type="primary" plain @click='changeTab(2)' :class="[chooseTab==2?'active-primary':'']">租房</el-button>
         <div></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
@@ -503,9 +503,9 @@
           <h3>建立催办</h3>
         </div>
         <div class="dialog_main borderNone urgedDeal">
-          <el-form :model="mark_form" label-width="80px">
+          <el-form label-width="80px">
             <el-form-item label="备注信息">
-              <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="10"></el-input>
+              <el-input v-model="urgedDeal_note" type="textarea" placeholder="请输入" :row="10"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -639,6 +639,7 @@ export default {
       backInfo: [],
       // 催办
       urgedDeal_visible: false,
+      urgedDeal_note: '',
       // 当前点击的row
       currentRow: null,
       market_server: globalConfig.market_server,
@@ -736,8 +737,6 @@ export default {
         if (res.code === 200) {
           this.contractDetail = res.data
           this.contract_detail_visible = true
-        } else {
-
         }
       })
     },
@@ -866,17 +865,24 @@ export default {
     // 催办
     urgedDealWith (row) {
       this.currentRow = row
+      console.log(row)
       this.urgedDeal_visible = true
     },
     // 确定催办
     handleUrgedDeal () {
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}`, this.params).then(res => {
+
+      let params = {
+        sign_user_id: '',
+        content: this.urgedDeal_note
+      }
+      this.$http.post(this.market_server + `v1.0/message/send-urgent`, params).then(res => {
         if (res.code === 200) {
           this.handleCloseUrgedDeal()
           this.$LjNotify('success', {
             title: '提示',
             message: '建立催办成功'
           });
+          this.getDateList()
         } else {
           this.$LjNotify('warning', {
             title: '提示',

@@ -13,8 +13,8 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-button type="warning" plain @click='changeTag_Status(1)'>收房</el-button>
-        <el-button type="primary" plain @click='changeTag_Status(2)'>租房</el-button>
+        <el-button type="warning" plain @click='changeTag_Status(1)' :class="[tag_status==1?'active-warning':'']">收房</el-button>
+        <el-button type="primary" plain @click='changeTag_Status(2)' :class="[tag_status==2?'active-primary':'']">租房</el-button>
         <div></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
