@@ -85,6 +85,26 @@
           </div>
         </div>
       </LjDialog>
+
+      <!--确定发送-->
+      <lj-dialog
+        :visible="confirm_visible"
+        :size="{width: 400 + 'px',height: 250 + 'px'}"
+        @close="confirm_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>确定</h3>
+          </div>
+          <div class="dialog_main">
+            <div class="unUse-txt">确定发送吗？</div>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleConfirmSend">确定</el-button>
+            <el-button type="info" size="small" @click="confirm_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
@@ -97,6 +117,10 @@
     props: ['searchVal'],
     data() {
       return {
+        confirm_visible: false,
+        confirm_type: '',
+        confirm_row: '',
+
         checkList: [],
         chooseRowIds: [],
         tableData: [],
@@ -130,8 +154,31 @@
     },
     computed: {},
     methods: {
-      filterHandler() {
-
+      handleConfirmSend() {
+        const row = this.confirm_row;
+        const where = this.confirm_type;
+        var type = where === 'sms' ? ['dimission_sms'] : ['dimission_group'];
+        if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
+          return false;
+        } else {
+          this.$http.get(`staff/user/${row.id}/sendinfo`,{
+            type
+          }).then(res => {
+            if (res.code === '20000') {
+              this.$LjNotify('success',{
+                title: '成功',
+                message: res.msg
+              });
+              this.confirm_visible = false;
+              this.getStaffList();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
+          })
+        }
       },
       handleLeaveProof(row) {
         if (row.staff && row.staff.leave_proof_number) {
@@ -157,27 +204,9 @@
       },
       //离职短信
       handleControlMsg(row,where) {
-        var type = where === 'sms' ? ['dimission_sms'] : ['dimission_group'];
-        if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
-          return false;
-        } else {
-          this.$http.get(`staff/user/${row.id}/sendinfo`,{
-            type
-          }).then(res => {
-            if (res.code === '20000') {
-              this.$LjNotify('success',{
-                title: '成功',
-                message: res.msg
-              });
-              this.getStaffList();
-            } else {
-              this.$LjNotify('warning',{
-                title: '失败',
-                message: res.msg
-              })
-            }
-          })
-        }
+        this.confirm_row = row;
+        this.confirm_type = where;
+        this.confirm_visible = true;
       },
       handleCloseLookInfo() {
         this.look_info = [];

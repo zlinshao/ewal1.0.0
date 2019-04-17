@@ -4,9 +4,7 @@
     <div class="dialog_main space-column departPosition">
       <div class="items-bet mainTop">
         <div></div>
-        <h2 class="add" @click="operateModule(tabsManage)">
-          <b>+</b>
-        </h2>
+        <el-button type="text" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>
       </div>
       <div class="scroll_bar staffManage" id="scroll-body" v-if="tabsManage === 'staff'" @click="checkOverflow()">
         <div v-for="item in staffList">
@@ -943,7 +941,7 @@
           this.interview_info_detail.org_id.push(val.id);
           this.staffParams.org_id = val.id;
           this.getStaffList();
-          this.getDutyList();
+          // this.getDutyList();
         },
         deep: true
       },

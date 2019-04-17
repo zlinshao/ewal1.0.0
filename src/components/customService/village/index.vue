@@ -118,7 +118,7 @@
         </div>
       </div>
 
-      <searchHigh :module="searchHighVisible" :showData="searchData" @close="handleCloseSearch"></searchHigh>
+      <SearchHigh :module="HighVisible" :showData="searchData" @close="handleCloseSearch"></SearchHigh>
 
       <!--添加小区-->
       <NewVillage :module="new_village_visible" @close="new_village_visible = false"></NewVillage>
@@ -229,7 +229,7 @@
 </template>
 
 <script>
-  import searchHigh from '../../common/searchHigh.vue';
+  import SearchHigh from '../../common/searchHigh.vue';
   import NewVillage from './components/new-village.vue';
   import DepartOrgan from '../../common/departOrgan.vue';
   import LjDialog from '../../common/lj-dialog.vue';
@@ -241,7 +241,7 @@
 
   export default {
     name: "index",
-    components: { searchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer,LjUpload},
+    components: { SearchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer,LjUpload},
     data() {
       return {
         //小区详情
@@ -371,8 +371,8 @@
           {key: 'depart', val: '选部门'}
         ],
 
-        searchHighVisible: false,
-        searchData: {},
+        HighVisible: false,
+        searchData: '',
 
         //分配小区
         allot_village_params: {
@@ -757,10 +757,10 @@
       },
       //关闭高级搜索
       handleCloseSearch(val) {
-        if (val !== 'close' && val !== 'reset') {
+        if (val !== 'close') {
           console.log(val);
         }
-        this.searchHighVisible = false;
+        this.HighVisible = false;
       },
       handleCheckVillage(village,index) {
         for (var i=0;i<this.check_choose.length;i++) {
@@ -777,9 +777,9 @@
           status: 'village',
           placeholder: '小区名称',
           keywords: 'address',
-          data: []
+          data: [],
         };
-        this.searchHighVisible = true;
+        this.HighVisible = true;
       },
       //变更排序
       handleChangeSort(tmp) {

@@ -737,7 +737,6 @@
       },
       //部门列表打开部门详情
       handleOpenDepartDetail(item) {
-        console.log(item);
         this.departForm.parent = item.name;
         this.departForm.parent_id = [];
         this.departForm.parent_id.push(item.id);
@@ -762,7 +761,6 @@
       getNextDepart(val,next) {
         this.next_depart_params.parent_id = val.id;
         this.$http.get('organization/organization',this.next_depart_params).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.next_depart = res.data.data;
             if (next) {
@@ -779,6 +777,7 @@
       handleInnerNextDepart(item) {
         this.is_next = true;
         this.getNextDepart(item,'next');
+        this.departInfo = item;
       },
       //判断是否有下级部门
       handleConfirmNext(depart) {
@@ -800,7 +799,7 @@
       },
       //点击导航菜单
       handleGetCurrentDepart(item,idx) {
-        console.log(item,idx);
+        this.departInfo = item;
         this.getNextDepart(item);
         this.nav_depart.splice(idx + 1);
       },
