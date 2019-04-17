@@ -108,6 +108,7 @@ export const LeaveJobSearch = {
 // 工单
 export const workOrderSearch = {
   status: 'workOrder',
+  placeholder: '',
   keywords: 'search',
   data: [
     {
@@ -127,7 +128,7 @@ export const workOrderSearch = {
     {
       keyType: 'radio',
       title: '紧急程度',
-      keyName: 'radio',
+      keyName: 'emergency',
       dataType: '',
       value: [
         {
@@ -149,18 +150,54 @@ export const workOrderSearch = {
       ]
     },
     {
-      keyType: 'check',
-      title: '状态',
-      keyName: 'check',
-      dataType: [],
+      keyType: 'radio',
+      title: '工单类型',
+      keyName: 'type',
+      dataType: '',
       value: [
         {
-          id: 7,
-          title: '已完成'
+          id: 1,
+          title: '报销'
         },
         {
-          id: 8,
-          title: '跟进中'
+          id: 2,
+          title: '核实信息'
+        },
+        {
+          id: 3,
+          title: '催缴'
+        },
+        {
+          id: 4,
+          title: '续租'
+        },
+        {
+          id: 5,
+          title: '调房'
+        },
+        {
+          id: 6,
+          title: '退租'
+        },
+        {
+          id: 9,
+          title: '转租'
+        },
+        {
+          id: 10,
+          title: '求租'
+        },
+        {
+          id: 11,
+          title: '投诉'
+        },
+        {
+          id: 12,
+          title: '托管'
+        },
+        {
+          id: 13,
+          title: '其他'
         }
       ]
     },
