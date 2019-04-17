@@ -9,7 +9,7 @@
             </div>
             <div class="items-center listTopRight">
                 <div class="icons home_icon"></div>
-                <div class="icons add" @click="add_visible = true"><b>+</b></div>
+                <div class="icons add" @click="add"><b>+</b></div>
             </div>
         </div>
         <div class="mainList flex-center">
@@ -41,7 +41,7 @@
                             <el-input v-model="form.name" placeholder="请输入"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="查看权限" prop="permissionNames">
+                        <el-form-item label="查看权限" prop="permission_names">
                             <el-input @focus="organSearch"  v-model="form.permission_names" placeholder="请输入"></el-input>
                         </el-form-item>
                         <el-form-item label="添加附件">
@@ -123,15 +123,24 @@
                 this.postModule = false;
                 if (ids !== 'close') {
                     this.form.permission = ids;
-                    console.log(names);
                     this.form.permission_names = names;
                 }
             },
+            add(){
+                for (let item of Object.keys(this.form)) {
+                    this.form[item] = '';
+                }
+                this.add_visible = true;
+            },
             //新增资料
             submit(){
-                Object.defineProperty(this.form,'permission_names',{enumerable:false});
-                delete this.form.permission_names;
-                this.$http.post(globalConfig.newMedia_sever+'/api/datum/admin',this.form).then(res => {
+               let paramsForm = {
+                   type_id:this.form.type_id,
+                   name:this.form.name,
+                   permission:this.form.permission,
+                   file_id:this.form.file_info[0],
+               };
+                this.$http.post(globalConfig.newMedia_sever+'/api/datum/admin',paramsForm).then(res => {
                     this.postModule = false;
                     if (res.status === 200) {
                         this.$LjNotify('success', {

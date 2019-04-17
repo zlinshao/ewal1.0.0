@@ -8,7 +8,7 @@
             </div>
             <div class="mainList" :style="{'height': this.mainListHeight() + 'px'}">
                 <div class="menu-list">
-                    <div v-for="(item,index) in riskManagement.data" @click="routerLink(item.url)" class="flex-center">
+                    <div v-for="(item,index) in riskData" @click="routerLink('riskManagementCommon',{org_id:item.id})" class="flex-center">
                         <span class="writingMode">{{item.name}}</span>
                     </div>
                 </div>
@@ -24,6 +24,26 @@
         data(){
             return{
                 riskManagement,
+                params: {//查询参数
+                    search: '',
+                    offset: 1,
+                    limit: 6,
+                },
+                riskData: [],
+            }
+        },
+        mounted(){
+           this.getDataList();
+        },
+        methods:{
+            getDataList(){
+                this.$http.get(globalConfig.risk_sever+"/api/risk/classify",this.params).then(res=>{
+                    console.log(res);
+                    if(res.status===200){
+                        console.log(res.data.data);
+                        this.riskData = res.data.data;
+                    }
+                })
             }
         }
     }
