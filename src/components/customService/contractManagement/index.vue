@@ -19,9 +19,9 @@
         </div>
       </div>
       <!--表格中部-->
-      <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}" @click="handleCloseControl">
+      <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
 
-        <el-table height="780px" :data="contractList" @row-dblclick="handleGetDetail">
+        <el-table :data="contractList" @expand-change="handleExpandRow" @row-dblclick="handleGetDetail" :height="this.mainListHeight(30) + 'px'">
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
           <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
@@ -52,6 +52,32 @@
                         @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
                 </div>
                 <div class="writingMode point_btn" @click="handleShowControl(scope.row)">···</div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column type="expand" label="综合页展开" align="center" v-if="chooseTab === 3" width="90px">
+            <template slot-scope="scope">
+              <div class="expand-container">
+                <el-table :data="expand_data">
+                  <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
+                  <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
+                  <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
+                  <el-table-column label="合同性质" prop="type" align="center"></el-table-column>
+                  <el-table-column label="收房价格" prop="month_price" align="center">
+                    <template slot-scope="scope">
+                      <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
+              <span v-for="(item,index) in scope.row.month_price">
+                {{ item.price }} 元 / {{ item.period }}月 <a v-if="index !== scope.row.month_price.length - 1">;</a>
+              </span>
+                      </div>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="付款方式" prop="pay_way" align="center"></el-table-column>
+                  <el-table-column label="开单人" prop="sign_user" align="center"></el-table-column>
+                  <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
+                  <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
+                  <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
+                </el-table>
               </div>
             </template>
           </el-table-column>
@@ -587,9 +613,13 @@
           {
             id: 2,
             title: '租房'
+          },
+          {
+            id: 3,
+            title: '综合页'
           }
         ],
-        chooseTab: 1,
+        chooseTab: 3,
 
         params: {
           page: 1,
@@ -598,6 +628,7 @@
           sign_date_min: '',
           sign_date_max: '',
           type: '',
+          address: '',
           start_date_min: '',
           start_date_max: '',
           end_date_min: '',
@@ -618,6 +649,13 @@
         //审核信息
         check_info: [],
         check_visible: false,
+
+        expand_params: {
+          contract_type: 2,
+          house_id: ''
+        },
+        expand_data: [],
+        expand_count: 0,
       }
     },
     mounted () {
@@ -626,6 +664,23 @@
     watch: {},
     computed: {},
     methods: {
+      //获取展开行数据
+      getExpandData() {
+        this.$http.get(this.market_server + 'v1.0/market/contract', this.expand_params).then(res => {
+          if (res.code === 200) {
+            this.expand_data = res.data.data;
+            this.expand_count = res.data.count;
+          } else {
+            this.expand_data = [];
+            this.expand_count = 0;
+          }
+        })
+      },
+      //展开某一行
+      handleExpandRow(row) {
+        this.expand_params.house_id = row.house_id;
+        this.getExpandData();
+      },
       //相关合同label
       contractLabel (item) {
         return item.type === 1 ? `新收合同(${item.is_invalid === 0 ? '正常' : '作废'})` : `续收合同(${item.is_invalid === 0 ? '正常' : '作废'})`;
@@ -633,9 +688,6 @@
       handleCloseDetail () {
         this.contractDetail = '';
         this.contract_detail_visible = false;
-      },
-      handleCloseControl () {
-        // this.show_control = '';
       },
       handleCancelMark () {
         for (var key in this.mark_form) {
@@ -752,8 +804,8 @@
       //双击详情
       handleGetDetail (row) {
         this.currentRow = row;
-        this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
-          // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+        // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
+          this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
           console.log(res);
           if (res.code === 200) {
             this.contractDetail = res.data;
@@ -833,7 +885,7 @@
       },
       //获取合同列表
       getContractList () {
-        this.params.contract_type = this.chooseTab;
+        this.params.contract_type = this.chooseTab === 1 || this.chooseTab === 3 ? 1 : 2;
         this.showLoading(true);
         this.$http.get(this.market_server + 'v1.0/market/contract', this.params).then(res => {
           if (res.code === 200) {

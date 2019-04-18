@@ -645,7 +645,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 2,//tab切换
+        chooseTab: 1,//tab切换
         selects: [
           {
             id: 1,
@@ -737,7 +737,6 @@
       },
       //部门列表打开部门详情
       handleOpenDepartDetail(item) {
-        console.log(item);
         this.departForm.parent = item.name;
         this.departForm.parent_id = [];
         this.departForm.parent_id.push(item.id);
@@ -778,6 +777,7 @@
       handleInnerNextDepart(item) {
         this.is_next = true;
         this.getNextDepart(item,'next');
+        this.departInfo = item;
       },
       //判断是否有下级部门
       handleConfirmNext(depart) {
@@ -799,7 +799,7 @@
       },
       //点击导航菜单
       handleGetCurrentDepart(item,idx) {
-        console.log(item,idx);
+        this.departInfo = item;
         this.getNextDepart(item);
         this.nav_depart.splice(idx + 1);
       },
@@ -1024,7 +1024,7 @@
         this.edit_module_form = {
           name: '',
           description: '',
-          parent_id: '',
+          parent_id: [],
           parent: '',
           system_id: ''
         };
@@ -1144,7 +1144,8 @@
         this.departForm.leader = item.leader && item.leader.name || '';
         this.departForm.leader_id.push(item.leader_id);
         this.departForm.parent = item.parent_org && item.parent_org.name || '';
-        this.departForm.parent_id = item.parent_id;
+        this.departForm.parent_id = [];
+        this.departForm.parent_id.push(item.parent_id);
         this.is_edit_depart = true;
         this.lj_size = {
           width: '510px',
@@ -1199,7 +1200,7 @@
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
           this.$http.put(`organization/organization/${this.edit_depart.id}`,this.departForm).then(res => {
-            if (res.code === '20030') {
+            if (res.code === '20010') {
               this.$LjNotify('success',{
                 title: '成功',
                 message: res.msg
@@ -1208,7 +1209,7 @@
               this.handleCancelAddDepart();
             } else {
               this.$LjNotify('warning',{
-                title: '成功',
+                title: '失败',
                 message: res.msg
               })
             }
@@ -1222,6 +1223,9 @@
               message: res.msg
             });
             this.getDepartList();
+            if (this.show_depart_detail) {
+              this.getNextDepart({id: this.departForm.parent_id});
+            }
             this.handleCancelAddDepart();
           } else {
             this.$LjNotify('warning',{

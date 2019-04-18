@@ -108,32 +108,27 @@ export const LeaveJobSearch = {
 // 工单
 export const workOrderSearch = {
   status: 'workOrder',
+  placeholder: '',
+  keywords: 'search',
   data: [
-    {
-      keyType: 'date',
-      title: '出生日期',
-      placeholder: '请选择日期',
-      keyName: 'date3',
-      dataType: ''
-    },
     {
       keyType: 'dateRange',
       title: '创建时间',
       placeholder: '请选择日期',
-      keyName: 'date1',
+      keyName: 'create_time',
       dataType: []
     },
     {
       keyType: 'dateRange',
       title: '跟进时间',
       placeholder: '请选择日期',
-      keyName: 'date2',
+      keyName: 'end_time',
       dataType: []
     },
     {
       keyType: 'radio',
       title: '紧急程度',
-      keyName: 'radio',
+      keyName: 'emergency',
       dataType: '',
       value: [
         {
@@ -145,65 +140,87 @@ export const workOrderSearch = {
           title: '紧急'
         },
         {
-          id: 14,
-          title: '重要'
-        },
-        {
           id: 15,
           title: '一般'
-        }
-      ]
-    },
-    {
-      keyType: 'check',
-      title: '状态',
-      keyName: 'check',
-      dataType: [],
-      value: [
-        {
-          id: 22,
-          title: '已完成'
         },
         {
-          id: 23,
-          title: '未完成'
+          id: 14,
+          title: '重要'
         }
       ]
     },
     {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
+      keyType: 'radio',
+      title: '工单类型',
+      keyName: 'type',
+      dataType: '',
+      value: [
+        {
+          id: 1,
+          title: '报销'
+        },
+        {
+          id: 2,
+          title: '核实信息'
+        },
+        {
+          id: 3,
+          title: '催缴'
+        },
+        {
+          id: 4,
+          title: '续租'
+        },
+        {
+          id: 5,
+          title: '调房'
+        },
+        {
+          id: 6,
+          title: '退租'
+        },
+        {
+          id: 9,
+          title: '转租'
+        },
+        {
+          id: 10,
+          title: '求租'
+        },
+        {
+          id: 11,
+          title: '投诉'
+        },
+        {
+          id: 12,
+          title: '托管'
+        },
+        {
+          id: 13,
+          title: '其他'
+        }
+      ]
     },
     {
-      keyType: 'organ',
+      keyType: 'depart',
       title: '部门',
       placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
+      keyName: 'department',
+      dataType: [],
+      value: {
+        num: 1,
+        arr: ''
+      }
     },
     {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
-    },
-    {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
-    },
-    {
-      keyType: 'organ',
-      title: '部门',
-      placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
+      keyType: 'staff',
+      title: '处理人',
+      placeholder: '请选择员工',
+      keyName: 'staff',
+      dataType: [],
+      value: {
+        num: 1
+      }
     }
   ]
 }
@@ -524,12 +541,29 @@ export const accountRunSearch = {
 /*赏罚分明*/
 //赏善令
 export const rewardUpSearch = {
-  status: 'rewardUpSearch'
+  status: 'rewardUpSearch',
+  data: [],
 }
 //惩恶令
 export const rewardDownSearch = {
-  status: 'rewardDownSearch'
+  status: 'rewardDownSearch',
+  data: [],
 }
+
+
+/*公告问卷*/
+//公告
+export const noticeSearch = {
+  status: 'noticeSearch',
+  data: [],
+}
+//问卷调查
+export const questionnaireSearch = {
+  status: 'questionnaireSearch',
+  data: [],
+}
+
+
 /*内务库房*/
 
 //库房总览

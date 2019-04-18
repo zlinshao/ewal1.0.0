@@ -255,6 +255,12 @@
 #theme_name #HousingDue .urgedDeal .el-textarea textarea {
   min-height: 80px !important; }
 
+#theme_name.theme1 #HousingDue .active-warning {
+  background: #e6a23c;
+  color: #fff; }
+#theme_name.theme1 #HousingDue .active-primary {
+  background: #409eff;
+  color: #fff; }
 #theme_name.theme1 #HousingDue .detail_dialog {
   background: #ffffff;
   color: #686874; }

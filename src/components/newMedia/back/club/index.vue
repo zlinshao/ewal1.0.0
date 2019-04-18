@@ -12,12 +12,13 @@
             </div>
         </div>
 
-        <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}">
+        <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}" ref='viewBox'>
             <div class="list">
                 <div class="list-info flex-center" v-for="(item,index) in dataLists">
-                    <div class="list-box"  @click="detail(item.id,index,item.over_time)">
+                    <div class="list-box" @click="detail(item.id,index,item.over_time)">
                         <div class="list-modal" v-if="item.is_enter ===1"></div>
-                        <div class="list-top"><img src="../../../../assets/image/newMedia/theme1/active.png" alt=""></div>
+                        <div class="list-top"><img src="../../../../assets/image/newMedia/theme1/active.png" alt="">
+                        </div>
                         <div class="list-middle">
                             <div class="list-middle-info">
                                 <div class="list-middle-left">
@@ -39,46 +40,35 @@
                 </div>
             </div>
         </div>
-
-        <!--分页-->
-        <footer class="flex-center bottomPage">
-            <div class="develop flex-center">
-                <i class="el-icon-d-arrow-right"></i>
-            </div>
-            <div class="page">
-                <el-pagination
-                        :total="count"
-                        layout="total,jumper,prev,pager,next"
-                        :current-page="params.page"
-                        :page-size="params.limit"
-                        @current-change="handleChangePage"
-                >
-                </el-pagination>
-            </div>
-        </footer>
         <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
         <!--详情-->
-        <lj-dialog :visible="detail_visible" :size="{width:1200 + 'px',height: '620' + 'px'}" @close="detail_visible = false">
+        <lj-dialog :visible="detail_visible" :size="{width:1200 + 'px',height: '620' + 'px'}"
+                   @close="detail_visible = false">
             <div class="action_info">
                 <h3 class="justify-start">活动详情</h3>
                 <div>
-                    <div class="action_name" >
+                    <div class="action_name">
                         <div class="action_left" style="width: 70px;float: left">活动名称</div>
-                        <div class="action_right" style="width: 860px;text-align: left;float: left">{{showData.name}}</div>
+                        <div class="action_right" style="width: 860px;text-align: left;float: left">{{showData.name}}
+                        </div>
                     </div>
-                    <div class="action_name" >
+                    <div class="action_name">
                         <div class="action_left" style="width: 70px;float: left">活动时间</div>
                         <div class="action_right" style="width: 860px;text-align: left;float: left">
                             <span>{{showData.start_time}}-{{showData.over_time}}</span>
                         </div>
                     </div>
-                    <div class="action_name" >
+                    <div class="action_name">
                         <div class="action_left" style="width: 70px;float: left">活动地址</div>
-                        <div class="action_right" style="width: 860px;text-align: left;float: left">{{showData.address}}</div>
+                        <div class="action_right" style="width: 860px;text-align: left;float: left">
+                            {{showData.address}}
+                        </div>
                     </div>
                     <div class="action_name" style="border-bottom: 0">
                         <div class="action_left" style="width: 70px;float: left">活动内容</div>
-                        <div class="action_right action_address" style="width: 860px;text-align: left;float: left;height: 100px">{{showData.content}}</div>
+                        <div class="action_right action_address"
+                             style="width: 860px;text-align: left;float: left;height: 100px">{{showData.content}}
+                        </div>
                     </div>
 
                 </div>
@@ -121,7 +111,7 @@
                 <div class="dialog_main borderNone">
                     <el-form label-width="80px">
                         <el-form-item label="活动名称">
-                            <el-input  v-model="showData.name" class=""></el-input>
+                            <el-input v-model="showData.name" class=""></el-input>
                         </el-form-item>
 
                         <el-form-item label="活动时间">
@@ -136,12 +126,11 @@
                         </el-form-item>
 
                         <el-form-item label="活动地点">
-                            <el-input  v-model="showData.address"></el-input>
+                            <el-input v-model="showData.address"></el-input>
                         </el-form-item>
 
                         <el-form-item label="评论内容">
                             <div class="item_content">
-                                <!--<el-input type="textarea" v-model="showData.content" :rows="8"></el-input>-->
                                 <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>
                             </div>
                         </el-form-item>
@@ -163,7 +152,7 @@
 <script>
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
-    import UE from '../../../../components/common/UE.vue';
+    import UE from '../../../common/UE.vue';
 
     export default {
         name: "club",
@@ -175,52 +164,96 @@
         data() {
             return {
                 showFinMenuList: false,
-                detail_visible:false,//详情
-                end_visible:false,//结束活动
-                add_visible:false,//新增活动
-                current_id:'',
-                current_time:'',
-                count:0,//总条数
+                detail_visible: false,//详情
+                end_visible: false,//结束活动
+                add_visible: false,//新增活动
+                current_id: '',
+                current_time: '',
+
                 params: {//查询参数
                     search: '',
-                    total:'',//总页数
-                    current_page:1,//当前页数
-                    per_page:10,//一页多少条
-                    last_page:'',//最后一页的条数
-                    first_page_url:'',//第一页的URL
-                    last_page_url:'',//最后一页的URL
-                    prev_page_url:'',//上一页的URL
-                    next_page_url:'',//下一页的URL
-                    from:'',//当前页 数据第一项的编号
-                    to:'',//当前页 数据最后一项的编号
+                    startRange: '',
+                    endRange: '',
+                    page: 1,
+                    limit: 10,
+                    department_ids: '',
+                    export: '',
                 },
-                showData:{
-                    name:'',
-                    start_time:'',
-                    over_time:'',
-                    address:'',
-                    content:'',
+                showData: {
+                    name: '',
+                    start_time: '',
+                    over_time: '',
+                    address: '',
+                    content: '',
                 },
-                actionTime:[],//活动时间
-                dataLists:[],//列表
+                actionTime: [],//活动时间
+                dataLists: [],//列表
 
-                endTimes:[
-
-                ],
-                is_end:'',
+                endTimes: [],
+                is_end: '',
                 defaultMsg: '',
                 config: {
                     initialFrameWidth: null,
                     initialFrameHeight: 350
                 },
 
+
             }
         },
-        mounted(){
-          this.getDataLists();
+        mounted() {
+            this.getDataLists();
+            this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);
         },
 
-        methods:{
+        methods: {
+            throttle(fn, delay, atleast) {
+                /**函数节流方法
+                 @param Function fn 延时调用函数
+                 @param Number dalay 延迟多长时间
+                 @param Number atleast 至少多长时间触发一次
+                 @return Function 延迟执行的方法
+                 */
+                let timer = null;
+                let previous = null;
+                return function () {
+                    var now = +new Date();
+                    if (!previous) previous = now;
+                    if (atleast && now - previous > atleast) {
+                        fn();
+                        // 重置上一次开始时间为本次结束时间
+                        previous = now;
+                        clearTimeout(timer);
+                    } else {
+                        clearTimeout(timer);
+                        timer = setTimeout(function () {
+                            fn();
+                            previous = null;
+                        }, delay);
+                    }
+                }
+            },
+            setpage() {
+                if (this.nomore && !this.loaded) return;//到达底部不再执行
+                if (this.$refs.viewBox.scrollTop + this.$refs.viewBox.offsetHeight + 20 >= this.$refs.viewBox.scrollHeight) {
+                    // this.loadingTip = true;  //loading提示语
+                    this.showLoading(true);
+                    this.params.page +=1;
+                    this.$http.get(globalConfig.newMedia_sever + '/api/club/event', this.params).then(res => {
+                            let arr = res.data.data;
+                            if (arr.length === 0) {
+                                //some tips
+                                this.loaded = false;
+                                this.nomore = true;//没有更多
+                                return
+                            }
+                            this.dataLists = [...this.dataLists, ...arr];
+                            this.showLoading(false);
+                        }
+                    ).catch(err => {
+                            console.log(err)
+                        })
+                }
+            },
             getUEContent() {
                 let content = this.$refs.ue.getUEContent();
                 this.$notify({
@@ -251,19 +284,19 @@
                 }
             },
             //详情
-            detail(id,index,end){
+            detail(id, index, end) {
                 this.detail_visible = true;
-                var yourtime = end.replace("-","/");
-                var d2=new Date();
+                var yourtime = end.replace("-", "/");
+                var d2 = new Date();
                 var d1 = new Date(Date.parse(yourtime));
-                if(d1>d2){
-                     this.is_end=true
-                }else {
-                    this.is_end=false
+                if (d1 > d2) {
+                    this.is_end = true
+                } else {
+                    this.is_end = false
                 }
                 this.current_id = id;
-                this.$http.get(globalConfig.newMedia_sever+'/api/club/event/'+id,).then(res => {
-                    if(res.status===200){
+                this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + id,).then(res => {
+                    if (res.status === 200) {
                         this.showData = res.data;
                         console.log(this.showData)
                     }
@@ -271,16 +304,16 @@
                 })
             },
             //提前结束
-            handleOkDel(){
-                this.$http.put(globalConfig.newMedia_sever+'/api/club/event/'+this.current_id,).then(res => {
-                    if(res.status===200){
+            handleOkDel() {
+                this.$http.put(globalConfig.newMedia_sever + '/api/club/event/' + this.current_id,).then(res => {
+                    if (res.status === 200) {
                         this.end_visible = false;
                         this.$LjNotify('success', {
                             title: '成功',
                             message: res.msg,
                             subMessage: '',
                         });
-                    }else {
+                    } else {
                         this.$LjNotify('error', {
                             title: '失败',
                             message: res.msg,
@@ -290,51 +323,49 @@
                 })
             },
             //新增活动
-            add(){
+            add() {
                 this.add_visible = true;
                 this.current_id = '';
-                for(let item of Object.keys(this.showData)){
+                for (let item of Object.keys(this.showData)) {
                     this.showData[item] = '';
                 }
             },
             //发布
-            submit(){
+            submit() {
                 this.showData.start_time = this.actionTime[0];
                 this.showData.over_time = this.actionTime[1];
                 console.log(this.showData);
-                this.$http.post(globalConfig.newMedia_sever+'/api/club/event',this.showData).then(res => {
-                    this.add_visible  = false;
+                this.$http.post(globalConfig.newMedia_sever + '/api/club/event', this.showData).then(res => {
+                    this.add_visible = false;
                     this.callbackSuccess(res);
                 })
             },
             //预览
-            preview(){
+            preview() {
                 this.detail_visible = true;
                 this.showData.start_time = this.actionTime[0];
                 this.showData.over_time = this.actionTime[1];
             },
-
-
             //获取列表
-            getDataLists(){
-                this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
-                    if(res.status===200){
+            getDataLists() {
+                this.$http.get(globalConfig.newMedia_sever + '/api/club/event', this.params).then(res => {
+                    if (res.status === 200) {
                         this.dataLists = res.data.data.sort(
-                            function (a,b) {
-                                return a.id-b.id
+                            function (a, b) {
+                                return a.id - b.id
                             }
                         );
                         this.count = res.data.total;
                         console.log(this.dataLists);
 
-                        for(let item of res.data.data){
+                        for (let item of res.data.data) {
                             // this.endTimes.push({over_time:item.over_time});
-                            var yourtime = item.over_time.replace("-","/");
-                            var d2=new Date();
+                            var yourtime = item.over_time.replace("-", "/");
+                            var d2 = new Date();
                             var d1 = new Date(Date.parse(yourtime));
-                            if(d1>d2){
+                            if (d1 > d2) {
                                 this.endTimes.push(1);
-                            }else {
+                            } else {
                                 this.endTimes.push(2);
                             }
                         }
@@ -349,14 +380,15 @@
 
 <style scoped lang="scss">
     @import "../../../../assets/scss/newMedia/back/club/index.scss";
+
     @mixin clubImg($n, $m) {
         $url: '../../../../assets/image/newMedia/' + $n + '/' + $m;
         @include bgImage($url);
     }
 
-    #theme_name.theme1{
-        #club{
-            .mainList{
+    #theme_name.theme1 {
+        #club {
+            .mainList {
                 .list {
                     .list-info {
                         .list-box {
@@ -364,38 +396,46 @@
                                 img {
                                 }
                             }
+
                             .list-middle {
-                                .list-middle-info{
+                                .list-middle-info {
                                     .list-middle-left {
-                                        span:nth-child(1){
+                                        span:nth-child(1) {
                                         }
-                                        span:nth-child(2){
-                                        }
-                                    }
-                                    .list-middle-right{
-                                        span{
+
+                                        span:nth-child(2) {
                                         }
                                     }
-                                    .end{
-                                        @include clubImg('theme1','status_right_icon2.png')
+
+                                    .list-middle-right {
+                                        span {
+                                        }
                                     }
-                                    .process{
-                                        @include clubImg('theme1','status_right_icon1.png')
+
+                                    .end {
+                                        @include clubImg('theme1', 'status_right_icon2.png')
+                                    }
+
+                                    .process {
+                                        @include clubImg('theme1', 'status_right_icon1.png')
                                     }
                                 }
                             }
-                            .list-bottom{
-                                .list-bottom-info{
-                                    span{
-                                        i{
+
+                            .list-bottom {
+                                .list-bottom-info {
+                                    span {
+                                        i {
 
                                         }
                                     }
-                                    span:nth-child(1) i{
-                                        @include clubImg('theme1','shijian.png')
+
+                                    span:nth-child(1) i {
+                                        @include clubImg('theme1', 'shijian.png')
                                     }
-                                    span:nth-child(2) i{
-                                        @include clubImg('theme1','ico_yueduliang.png')
+
+                                    span:nth-child(2) i {
+                                        @include clubImg('theme1', 'ico_yueduliang.png')
                                     }
                                 }
                             }
@@ -404,8 +444,9 @@
                 }
 
             }
-            .top_right_img{
-                @include clubImg('theme1','denglong.png')
+
+            .top_right_img {
+                @include clubImg('theme1', 'denglong.png')
             }
         }
 

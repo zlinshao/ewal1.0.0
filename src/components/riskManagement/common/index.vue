@@ -67,36 +67,61 @@
                 riskManagement,
                 showFinMenuList: false,
                 chooseTab: 1,
+                params: {//查询参数
+                    search: '',
+                    offset: 1,
+                    limit: 6,
+                },
+                org_id: '',
                 marketRisk: [//市场
-                    {id: 1, title: '市场风险监测制度',url:'riskManagementDetail'},
-                    {id: 2, title: '市场风险量化控制制度',url:'riskManagementDetail'},
-                    {id: 3, title: '系统性风险预警机制',url:'riskManagementDetail'},
-                    {id: 4, title: '道德风险管理',url:'riskManagementDetail'},
-                    {id: 5, title: '止损机制与强制平仓机制',url:'riskManagementDetail'},
+                    {id: 1, title: '市场风险监测制度', url: 'riskManagementDetail'},
+                    {id: 2, title: '市场风险量化控制制度', url: 'riskManagementDetail'},
+                    {id: 3, title: '系统性风险预警机制', url: 'riskManagementDetail'},
+                    {id: 4, title: '道德风险管理', url: 'riskManagementDetail'},
+                    {id: 5, title: '止损机制与强制平仓机制', url: 'riskManagementDetail'},
                 ],
                 complianceRisk: [//合规
-                    {id: 1, title: '公司内部规定',url:'internalRegulations'},
-                    {id: 2, title: '行业法律规定',url:'internalRegulations'},
-                    {id: 3, title: '委托方的合规比例',url:'internalRegulations'},
+                    {id: 1, title: '公司内部规定', url: 'internalRegulations'},
+                    {id: 2, title: '行业法律规定', url: 'internalRegulations'},
+                    {id: 3, title: '委托方的合规比例', url: 'internalRegulations'},
                 ],
                 operationRisk: [//运营
-                    {id: 1, title: '集中交易制度',url:'riskManagementDetail'},
-                    {id: 2, title: '交易审核',url:'riskManagementDetail'},
-                    {id: 3, title: '执行力审计监督',url:'riskManagementDetail'},
-                    {id: 4, title: 'IT系统及灾备风险',url:'riskManagementDetail'},
+                    {id: 1, title: '集中交易制度', url: 'riskManagementDetail'},
+                    {id: 2, title: '交易审核', url: 'riskManagementDetail'},
+                    {id: 3, title: '执行力审计监督', url: 'riskManagementDetail'},
+                    {id: 4, title: 'IT系统及灾备风险', url: 'riskManagementDetail'},
                 ],
-                liquidityRisk:[//流动性
-                    {id: 1, title: '流动性风险量化控制制度',url:'riskManagementDetail'},
-                    {id: 2, title: '人员流动性监测',url:'riskManagementDetail'},
-                    {id: 3, title: '账户资本流动性管理',url:'riskManagementDetail'},
+                liquidityRisk: [//流动性
+                    {id: 1, title: '流动性风险量化控制制度', url: 'riskManagementDetail'},
+                    {id: 2, title: '人员流动性监测', url: 'riskManagementDetail'},
+                    {id: 3, title: '账户资本流动性管理', url: 'riskManagementDetail'},
                 ]
 
             }
         },
+        mounted() {
+            this.org_id = this.$route.query.org_id;
+            this.getDataList();
+        },
+        watch: {
+            "$route.path": "getPath"
+        },
         methods: {
             changeTabs(id) {
                 this.chooseTab = id;
+            },
+            getPath() {
+
+            },
+            getDataList(){
+                this.$http.get(globalConfig.risk_sever + "/api/risk/classify_document",{classify_id:this.org_id}).then(res => {
+                    console.log(res);
+                    if (res.status === 200) {
+                        console.log(res.data.data);
+                    }
+                })
             }
+
         },
     }
 </script>

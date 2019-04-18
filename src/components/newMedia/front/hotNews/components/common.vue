@@ -13,9 +13,9 @@
           </span>
                 </h2>
             </div>
-            <div class="items-center listTopRight">
-                <div class="icons add" @click="add_visible = true"><b>+</b></div>
-            </div>
+            <!--<div class="items-center listTopRight">-->
+                <!--<div class="icons add" @click="add_visible = true"><b>+</b></div>-->
+            <!--</div>-->
         </div>
 
         <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px'}">

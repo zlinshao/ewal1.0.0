@@ -125,6 +125,15 @@
 
 #theme_name.theme1 {
   #HousingDue {
+    .active-warning {
+      background: #e6a23c;
+      color: #fff;
+    }
+    .active-primary {
+      background: #409eff;
+      color: #fff;
+    }
+
     .detail_dialog {
       background: #ffffff;
       color: #686874;

@@ -1,32 +1,507 @@
-@import "../../common.scss";
+@import '../../common.scss';
+
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/customService/workorder/' + $n + '/' + $m;
+  @include bgImage($url);
+}
 
 #theme_name {
   #workOrder {
     height: 100%;
+    .el-row {
+      margin-right: 0 !important;
+    }
+    .el-form-item__label {
+      white-space: nowrap;
+    }
+    //增加order
+    .addOrder_dialog {
+      .el-col {
+        height: 40px;
+        margin-bottom: 30px;
+        @include flex('items-center');
+        @include flex('justify-start');
+        .el-col-p {
+          width: 33%;
+          font-size: 14px;
+          text-align: left;
+          @include flex('items-center');
+          .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+          }
+        }
+        .el-col-p1 {
+          width: 92px;
+        }
+        .input_box {
+          width: 65%;
+          @include flex('items-center');
+          position: relative;
+          .icons {
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+          }
+          input {
+            border-color: #fff;
+          }
+        }
+      }
+      .feiyong {
+        .el-col {
+          margin-bottom: 0;
+        }
+      }
+      .el-col-box {
+        cursor: pointer;
+        height: 410px;
+        @include flex('space-column');
+        @include flex('justify-start');
+        @include flex('items-start');
+        .el-box {
+          width: 67px;
+          height: 67px;
+          font-size: 18px;
+          padding: 10px 12px;
+          margin-bottom: 48px;
+        }
+      }
+      .el-col-content {
+        height: 410px;
+        display: block;
+        padding: 30px 65px;
+        .info_search {
+          width: 280px;
+          height: 32px;
+          border-radius: 16px;
+          padding: 0 10px;
+          box-sizing: border-box;
+          margin-left: 60px;
+          margin-bottom: 20px;
+          @include flex('flex-center');
+          .icon {
+            display: inline-block;
+            width: 14px;
+            height: 16px;
+          }
+          input {
+            border: none;
+            height: 30px;
+          }
+        }
+        .custmer_info {
+          .custmer_content {
+            padding-left: 32px;
+            font-size: 14px;
+            margin-bottom: 40px;
+            height: 40px;
+            .el-radio__label {
+              flex: 1;
+            }
+            .el-col {
+              margin-bottom: 0;
+            }
+            .tit {
+              width: 30%;
+              text-align: right;
+            }
+            .content_tit {
+              width: 70%;
+              text-align: left;
+              padding-left: 12px;
+            }
+          }
+        }
+        .custmer_info1 {
+          padding: 0 97px 0 107px;
+          .order_content_boxes {
+            height: 275px;
+            .order_content {
+              height: 84px;
+              border-bottom: 1px solid #f3f3f3;
+              @include flex('space-column');
+              .order_content_box {
+                @include flex('items-bet');
+                font-size: 14px;
+                margin-bottom: 10px;
+                color: #686874;
+                .order_title1 {
+                  width: 400px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  text-align: left;
+                  span {
+                    padding-right: 10px;
+                  }
+                }
+                .order_title2 {
+                  color: #c4c4c4;
+                  span {
+                    padding-right: 40px;
+                  }
+                }
+                .status1 {
+                  font-weight: 600;
+                  color: #0bb07b;
+                }
+                .status2 {
+                  color: #ffad0d;
+                }
+              }
+            }
+            .order_content2 {
+              height: 57px;
+              .order_content_box {
+                margin-bottom: 0;
+              }
+            }
+          }
 
+          .el-pagination {
+          }
+        }
+
+        .nothing {
+          width: 100%;
+          height: 300px;
+          @include flex('space-column');
+          @include flex('items-center');
+          .nothing_img {
+            width: 70px;
+            height: 180px;
+            margin-bottom: 30px;
+          }
+          .nothing_words {
+            font-size: 14px;
+          }
+        }
+        .ending {
+          @include flex('flex-center');
+          color: #dfdfdf;
+          font-size: 14px;
+          .ending_img {
+            width: 100px;
+            height: 18px;
+          }
+        }
+      }
+    }
+    //详情
+    .dialog_detail {
+      cursor: pointer;
+      .detail_tit {
+        @include flex('items-bet');
+        font-size: 20px;
+        margin-bottom: 20px;
+        b {
+          width: 20px;
+          height: 20px;
+          font-size: 24px;
+          font-weight: 700;
+          line-height: 20px;
+        }
+      }
+      .el-form {
+        @include flex('items-bet');
+        padding-right: 70px;
+        flex-wrap: wrap;
+        .el-form-item {
+          width: 48%;
+          .el-form-item__label {
+            font-size: 14px;
+          }
+          input {
+            border: none;
+          }
+        }
+      }
+      .detail_box {
+        height: 500px;
+        padding-bottom: 50px;
+        .content + .content {
+          position: relative;
+          &:before {
+            content: '';
+            width: 1px;
+            height: 70%;
+            background-color: #cf2e33;
+            position: absolute;
+            top: -10%;
+            left: 50%;
+          }
+        }
+        .content {
+          padding-top: 50px;
+          @include flex('justify-center');
+          @include flex('items-center');
+          .detail_dialog_left {
+            flex: 1;
+            font-size: 14px;
+            text-align: right;
+            p + p {
+              margin-top: 10px;
+            }
+          }
+          .detail_dialog_center {
+            height: 100%;
+            margin: 0 80px;
+            .circle {
+              width: 15px;
+              height: 15px;
+            }
+          }
+          .detail_dialog_right {
+            flex: 1;
+            text-align: left;
+            font-size: 10px;
+            p + p {
+              margin-top: 10px;
+            }
+            .other_fee {
+              p {
+                margin-top: 5px;
+                padding-left: 10px;
+              }
+            }
+            .detail_dialog_rato {
+              margin-left: 20px;
+              display: inline-block;
+              .el-rate__icon {
+                font-size: 12px;
+              }
+            }
+            .detail_dialog_note {
+              margin-top: 0;
+            }
+          }
+        }
+      }
+      .dialog_footer {
+        @include flex('justify-end');
+      }
+    }
+    // 新增记录
+    .followRecord {
+      .el-form-item__content {
+        height: 40px;
+        @include flex('items-center');
+      }
+      input {
+        border-color: none;
+      }
+      .record_money {
+        position: relative;
+        .icons {
+          width: 16px;
+          height: 16px;
+          position: absolute;
+          right: 10px;
+          bottom: 10px;
+        }
+      }
+    }
   }
 }
 
 #theme_name.theme1 {
   #workOrder {
+    //增加order
+    .icon_add {
+      @include confirmImg('tianjia.png', 'theme1');
+    }
+    .icon_del {
+      @include confirmImg('shanchu.png', 'theme1');
+    }
+    .addOrder_dialog {
+      .el-col {
+        p {
+          color: #686874;
+          .house_name {
+            @include confirmImg('dizhi_hui.png', 'theme1');
+          }
+          .type {
+            @include confirmImg('leixing_copy.png', 'theme1');
+          }
+          .post {
+            @include confirmImg('paidan.png', 'theme1');
+          }
+          .handler {
+            @include confirmImg('ren.png', 'theme1');
+          }
+          .org {
+            @include confirmImg('bumen_hui.png', 'theme1');
+          }
+          .phone {
+            @include confirmImg('dianhua_.png', 'theme1');
+          }
+          .endTime {
+            @include confirmImg('shijian_hui.png', 'theme1');
+          }
+          .status {
+            @include confirmImg('koukuanmingxi_hui.png', 'theme1');
+          }
+          .content {
+            @include confirmImg('gognzuoneirong.png', 'theme1');
+          }
+          .upload {
+            @include confirmImg('shangchuantupian.png', 'theme1');
+          }
+          .comtype {
+            @include confirmImg('leixing2.png', 'theme1');
+          }
+          .commoney {
+            @include confirmImg('jine_hui.png', 'theme1');
+          }
+          .tsqd {
+            @include confirmImg('tousuqudao.png', 'theme1');
+          }
+        }
+        &:hover {
+          input {
+            border-color: #cf2e33;
+          }
+          .tsqd {
+            @include confirmImg('tousuqudao_copy.png', 'theme1');
+          }
+          .comtype {
+            @include confirmImg('leixing2_copy.png', 'theme1');
+          }
+          .commoney {
+            @include confirmImg('jine.png', 'theme1');
+          }
+          .house_name {
+            @include confirmImg('dizhi.png', 'theme1');
+          }
+          .type {
+            @include confirmImg('leixing.png', 'theme1');
+          }
+          .post {
+            @include confirmImg('paidan_hong.png', 'theme1');
+          }
+          .handler {
+            @include confirmImg('ren_hong.png', 'theme1');
+          }
+          .org {
+            @include confirmImg('bumen.png', 'theme1');
+          }
+          .phone {
+            @include confirmImg('dianhua_hong.png', 'theme1');
+          }
+          .endTime {
+            @include confirmImg('shijian.png', 'theme1');
+          }
+          .status {
+            @include confirmImg('jinji_hong.png', 'theme1');
+          }
+          .content {
+            @include confirmImg('neirong.png', 'theme1');
+          }
+          .upload {
+            @include confirmImg('tupian_hong.png', 'theme1');
+          }
+        }
 
+        .el-select .el-input.is-focus .el-input__inner {
+          border-color: #cf2e33;
+        }
+      }
+      .el-col-box {
+        .el-box {
+          @include confirmImg('xinxi_hui.png', 'theme1');
+          color: #686874;
+        }
+        .el-box-active {
+          @include confirmImg('xinxi.png', 'theme1');
+          p {
+            color: #ffffff;
+          }
+        }
+      }
+      .el-col-content {
+        background: #ffffff;
+        .info_search {
+          border: 1px solid #dfdfdf;
+          .icon {
+            @include confirmImg('sousuo_xiao.png', 'theme1');
+          }
+        }
+        .custmer_info {
+        }
+        .custmer_content {
+          .tit {
+            color: #d5d5d5;
+          }
+          .content_tit {
+            color: #686874;
+          }
+        }
+        .nothing {
+          .nothing_img {
+            @include confirmImg('shenmeyemeiyou.png', 'theme1');
+          }
+          .nothing_words {
+            color: #dfdfdf;
+          }
+        }
+        .ending {
+          .ending_img {
+            @include confirmImg('dixian.png', 'theme1');
+          }
+        }
+      }
+    }
+    .dialog_detail {
+      .detail_tit {
+        color: #686874;
+        b {
+          background: #cf2e33;
+          color: #fff;
+        }
+      }
+      .el-form {
+        .el-form-item {
+          .el-form-item__label {
+            color: #686874;
+          }
+        }
+      }
+      .detail_box {
+        background: #fff;
+        .circle {
+          @include confirmImg('biaoji.png', 'theme1');
+        }
+      }
+    }
+    .followRecord {
+      .el-col:hover {
+        input {
+          border-color: #cf2e33;
+        }
+      }
+      .el-select .el-input.is-focus .el-input__inner {
+        border-color: #cf2e33;
+      }
+    }
   }
 }
 
 #theme_name.theme2 {
   #workOrder {
-
   }
 }
 
 #theme_name.theme3 {
   #workOrder {
-
   }
 }
 
 #theme_name.theme4 {
   #workOrder {
-
   }
 }

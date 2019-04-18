@@ -32,7 +32,6 @@
     //  }
     //}
 
-
     .main-nav {
       padding: 15px 0;
 
@@ -59,7 +58,6 @@
         right: 0;
         top: 50%;
         transform: translateY(-50%);
-
 
         > div {
           width: 100px;
@@ -230,6 +228,64 @@
           text-align: center;
           transition: all ease 1s;
 
+          .question-paper {
+            width: 80%;
+
+            > div {
+              width: 80px;
+              height: 100%;
+              font-family: 'jingDianXingShu';
+              @include flex('flex-center');
+              flex-direction: column;
+
+              > div {
+                height: 40%;
+                width: 100%;
+                //background-color: red;
+                margin-top: 10%;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                font-size: 26px;
+                font-family: 'jingDianXingShu';
+                cursor: pointer;
+                width: 100%;
+                &:nth-child(2) {
+                  margin-bottom: 10%;
+                }
+                span {
+                  display: inline-block;
+                  width: 26px;
+                  display: flex;
+                  justify-content: flex-start;
+                  //width: 26px;
+                  overflow: hidden;
+                  font-family: 'jingDianXingShu';
+                }
+              }
+
+              &:hover {
+                color: $colorE33;
+              }
+            }
+
+            .exam_span {
+              vertical-align: top;
+
+              > span {
+                font-family: 'jingDianXingShu';
+
+                &:first-child {
+                  font-size: 12px;
+                }
+
+                &:last-child {
+                  font-size: 26px;
+                }
+              }
+            }
+          }
+
           .exam-paper {
             width: 80%;
 
@@ -299,7 +355,6 @@
       }
     }
 
-
     .exam-setting {
       transform: translateX(0);
       z-index: 2;
@@ -362,19 +417,21 @@
     }
 
     //  自己录入题库
-    .library_info {
+    .library-info {
       width: 100%;
       height: 100%;
       position: absolute;
       left: 0;
       top: 0;
-      z-index: 100;
+      bottom: 0;
+      right: 0;
+      z-index: 10086;
       transition: all ease 1s;
       transform-origin: center center;
       background-color: $color2F2;
 
-      .library_header {
-        height: 80px;
+      .library-header {
+        height: 10%;
         border-bottom: 1px solid $color0C0;
 
         > div {
@@ -399,10 +456,12 @@
         }
       }
 
-      .library_main {
+      .library-main {
         padding: 0 200px;
         height: 90%;
         position: relative;
+        display: flex;
+        flex-direction: column;
 
         .control {
           padding: 15px 0;
@@ -410,12 +469,13 @@
           flex-direction: row-reverse;
         }
 
-        .exam_type {
-          margin-bottom: 30px;
+        .exam-type {
+          padding: 30px 30px 0 30px;
+          //margin-bottom: 30px;
         }
 
-        .paper_main {
-          height: 600px;
+        .paper-main {
+          height: 80%;
           padding: 30px;
 
           .del_btn {
@@ -430,6 +490,14 @@
 
           .hide_label {
             opacity: 0;
+          }
+        }
+
+        .exam-type,.paper-main {
+          .left-tip {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
           }
         }
 

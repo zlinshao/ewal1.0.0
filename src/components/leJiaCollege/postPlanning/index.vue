@@ -2,7 +2,7 @@
     <div id="postPlanning">
         <div class="mainList justify-bet" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="getTab===1">
             <div class="edit_btn">
-                <span @click="">编 辑</span>
+                <span @click="openEdit">编 辑</span>
             </div>
             <div class="tab" v-if="tab===1">
                 <div class="slogan">
@@ -14,9 +14,7 @@
                 <div class="main-middle flex-center">
                     <div>
                         <span class="spacial-tab">业绩提成</span>
-                        <span>实际业绩大于等于50万<br/> 底薪+总业绩1%</span>
-                        <span>实际业绩大于等于100万<br/> 底薪+总业绩1</span>
-                        <span>工资10000（其中无责任底薪2200）+提成 </span>
+                        <span>{{levelDataDetail.achievement_desc}}</span>
                     </div>
                 </div>
             </div>
@@ -25,16 +23,15 @@
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
                         <div>
-                            <span>实际业绩大于等于100万</span>
-                            <span>P3的考试资格</span>
-                            <span>总部晋升面试</span>
+                            <span>{{levelDataDetail.promote.level_standard}}</span>
+                            <span>{{levelDataDetail.promote.promote_direction}}</span>
                         </div>
                     </div>
                     <div class="left-bottom">
                         <div class="flex-center"><span class="writingMode flex-center">职位贬罚</span></div>
                         <div>
-                            <span>实际业绩低于50万</span>
-                            <span>底薪+降级</span>
+                            <span>{{levelDataDetail.down.level_standard}}</span>
+                            <span>{{levelDataDetail.down.substandard_measure}}</span>
                         </div>
                     </div>
                 </div>
@@ -42,9 +39,7 @@
                 <div class="main-middle flex-center">
                     <div>
                         <span>业绩提成</span>
-                        <span>实际业绩大于等于50万<br/> 底薪+总业绩1%</span>
-                        <span>实际业绩大于等于100万<br/> 底薪+总业绩1</span>
-                        <span>工资10000（其中无责任底薪2200）+提成 </span>
+                        <span>{{levelDataDetail.achievement_desc}}</span>
                     </div>
                 </div>
             </div>
@@ -53,16 +48,15 @@
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
                         <div>
-                            <span>实际业绩大于等于100万</span>
-                            <span>P3的考试资格</span>
-                            <span>总部晋升面试</span>
+                            <span>{{levelDataDetail.promote.level_standard}}</span>
+                            <span>{{levelDataDetail.promote.promote_direction}}</span>
                         </div>
                     </div>
                     <div class="left-bottom">
                         <div class="flex-center"><span class="writingMode flex-center">职位贬罚</span></div>
                         <div>
-                            <span>实际业绩低于50万</span>
-                            <span>底薪+降级</span>
+                            <span>{{levelDataDetail.down.level_standard}}</span>
+                            <span>{{levelDataDetail.down.substandard_measure}}</span>
                         </div>
                     </div>
                 </div>
@@ -70,9 +64,7 @@
                 <div class="main-middle flex-center">
                     <div>
                         <span>业绩提成</span>
-                        <span>实际业绩大于等于50万<br/> 底薪+总业绩1%</span>
-                        <span>实际业绩大于等于100万<br/> 底薪+总业绩1</span>
-                        <span>工资10000（其中无责任底薪2200）+提成 </span>
+                        <span>{{levelDataDetail.achievement_desc}}</span>
                     </div>
                 </div>
             </div>
@@ -81,16 +73,15 @@
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
                         <div>
-                            <span>实际业绩大于等于100万</span>
-                            <span>P3的考试资格</span>
-                            <span>总部晋升面试</span>
+                            <span>{{levelDataDetail.promote.level_standard}}</span>
+                            <span>{{levelDataDetail.promote.promote_direction}}</span>
                         </div>
                     </div>
                     <div class="left-bottom">
                         <div class="flex-center"><span class="writingMode flex-center">职位贬罚</span></div>
                         <div>
-                            <span>实际业绩低于50万</span>
-                            <span>底薪+降级</span>
+                            <span>{{levelDataDetail.down.level_standard}}</span>
+                            <span>{{levelDataDetail.down.substandard_measure}}</span>
                         </div>
                     </div>
                 </div>
@@ -98,9 +89,7 @@
                 <div class="main-middle flex-center">
                     <div>
                         <span>业绩提成</span>
-                        <span>实际业绩大于等于50万<br/> 底薪+总业绩1%</span>
-                        <span>实际业绩大于等于100万<br/> 底薪+总业绩1</span>
-                        <span>工资10000（其中无责任底薪2200）+提成 </span>
+                        <span>{{levelDataDetail.achievement_desc}}</span>
                     </div>
                 </div>
             </div>
@@ -109,16 +98,15 @@
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
                         <div>
-                            <span>实际业绩大于等于100万</span>
-                            <span>P3的考试资格</span>
-                            <span>总部晋升面试</span>
+                            <span>{{levelDataDetail.promote.level_standard}}</span>
+                            <span>{{levelDataDetail.promote.promote_direction}}</span>
                         </div>
                     </div>
                     <div class="left-bottom">
                         <div class="flex-center"><span class="writingMode flex-center">职位贬罚</span></div>
                         <div>
-                            <span>实际业绩低于50万</span>
-                            <span>底薪+降级</span>
+                            <span>{{levelDataDetail.down.level_standard}}</span>
+                            <span>{{levelDataDetail.down.substandard_measure}}</span>
                         </div>
                     </div>
                 </div>
@@ -126,9 +114,7 @@
                 <div class="main-middle flex-center">
                     <div>
                         <span>业绩提成</span>
-                        <span>实际业绩大于等于50万<br/> 底薪+总业绩1%</span>
-                        <span>实际业绩大于等于100万<br/> 底薪+总业绩1</span>
-                        <span>工资10000（其中无责任底薪2200）+提成 </span>
+                        <span>{{levelDataDetail.achievement_desc}}</span>
                     </div>
                 </div>
             </div>
@@ -137,16 +123,15 @@
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
                         <div>
-                            <span>实际业绩大于等于100万</span>
-                            <span>P3的考试资格</span>
-                            <span>总部晋升面试</span>
+                            <span>{{levelDataDetail.promote.level_standard}}</span>
+                            <span>{{levelDataDetail.promote.promote_direction}}</span>
                         </div>
                     </div>
                     <div class="left-bottom">
                         <div class="flex-center"><span class="writingMode flex-center">职位贬罚</span></div>
                         <div>
-                            <span>实际业绩低于50万</span>
-                            <span>底薪+降级</span>
+                            <span>{{levelDataDetail.down.level_standard}}</span>
+                            <span>{{levelDataDetail.down.substandard_measure}}</span>
                         </div>
                     </div>
                 </div>
@@ -154,9 +139,7 @@
                 <div class="main-middle flex-center">
                     <div>
                         <span>业绩提成</span>
-                        <span>实际业绩大于等于50万<br/> 底薪+总业绩1%</span>
-                        <span>实际业绩大于等于100万<br/> 底薪+总业绩1</span>
-                        <span>工资10000（其中无责任底薪2200）+提成 </span>
+                        <span>{{levelDataDetail.achievement_desc}}</span>
                     </div>
                 </div>
             </div>
@@ -165,16 +148,15 @@
                     <div class="left-top">
                         <div class="flex-center"><span class="writingMode flex-center">职位晋升</span></div>
                         <div>
-                            <span>实际业绩大于等于100万</span>
-                            <span>P3的考试资格</span>
-                            <span>总部晋升面试</span>
+                            <span>{{levelDataDetail.promote.level_standard}}</span>
+                            <span>{{levelDataDetail.promote.promote_direction}}</span>
                         </div>
                     </div>
                     <div class="left-bottom">
                         <div class="flex-center"><span class="writingMode flex-center">职位贬罚</span></div>
                         <div>
-                            <span>实际业绩低于50万</span>
-                            <span>底薪+降级</span>
+                            <span>{{levelDataDetail.down.level_standard}}</span>
+                            <span>{{levelDataDetail.down.substandard_measure}}</span>
                         </div>
                     </div>
                 </div>
@@ -182,18 +164,16 @@
                 <div class="main-middle flex-center">
                     <div>
                         <span>业绩提成</span>
-                        <span>实际业绩大于等于50万<br/> 底薪+总业绩1%</span>
-                        <span>实际业绩大于等于100万<br/> 底薪+总业绩1</span>
-                        <span>工资10000（其中无责任底薪2200）+提成 </span>
+                        <span>{{levelDataDetail.achievement_desc}}</span>
                     </div>
                 </div>
             </div>
             <div class="main-right">
                 <div class="right-list">
                 <span
-                        v-for="item in selects"
+                        v-for="(item,index) in selects"
                         :class="{'active':tab === item.id,'default': tab != item.id}"
-                        @click="selectTab(item.id)">{{item.title}}</span>
+                        @click="selectTab(item.id,index)">{{item.title}}</span>
                 </div>
             </div>
         </div>
@@ -218,6 +198,41 @@
                 <span @click="" v-for="item in storeData"><i>{{item.title}}</i></span>
             </div>
         </div>
+        <!--编辑-->
+        <lj-dialog :visible="edit_visible" :size="{width: 460 + 'px',height: 700 + 'px'}"
+                   @close="edit_visible = false">
+            <div class="dialog_container borderNone">
+                <div class="dialog_header">
+                    <h3>{{'p'+(tab-1)}}</h3>
+                </div>
+                <div class="dialog_main">
+                    <el-form ref="form" :model="levelDataDetail" label-width="68px">
+                        <p style="text-align: left;margin-bottom: 10px">业绩提成</p>
+                        <el-form-item label="" label-width="0px">
+                            <el-input v-model="levelDataDetail.achievement_desc" size="small" type="textarea" :rows="4"></el-input>
+                        </el-form-item>
+                        <p style="text-align: left;margin-bottom: 10px;margin-top: 10px">职位晋升</p>
+                        <el-form-item label="等级标准" style="margin-bottom: 0">
+                            <el-input v-model="levelDataDetail.promote.level_standard" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="晋升方向" style="margin-bottom: 0">
+                            <el-input v-model="levelDataDetail.promote.promote_direction" size="small"></el-input>
+                        </el-form-item>
+                        <p style="text-align: left;margin-bottom: 10px;margin-top: 10px">职位贬罚</p>
+                        <el-form-item label="等级标准" style="margin-bottom: 0">
+                            <el-input v-model="levelDataDetail.down.level_standard" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="未达措施" style="margin-bottom: 0">
+                            <el-input v-model="levelDataDetail.down.substandard_measure" size="small"></el-input>
+                        </el-form-item>
+                    </el-form>
+                </div>
+                <div class="dialog_footer">
+                    <el-button type="danger" size="small" @click="submit(flag)">确定</el-button>
+                    <el-button type="info" size="small" @click="edit_visible = false;current_id = ''">取消</el-button>
+                </div>
+            </div>
+        </lj-dialog>
 
     </div>
 </template>
@@ -233,11 +248,15 @@
         data(){
             return{
                 tab:this.tabId,
+                edit_visible:false,
                 chooseTab:this.switchTab,//chooseTab初始值
                 tabSelects:[
                     {id:1,title:'新人训'},
                     {id:2,title:'储备培训'},
                 ],
+                form:{
+                    name:''
+                },
                 newTrainData:[
                     {id:1,title:'企业介绍及条例宣贯'},
                     {id:2,title:'薪酬计算及晋升'},
@@ -264,6 +283,17 @@
                 ],
 
                 levelData:[],
+                levelDataDetail:{
+                    achievement_desc:'',//溢出业绩介绍
+                    down:{
+                        level_standard:'',//等级标准介绍
+                        substandard_measure:'',//未达措施介绍
+                    },
+                    promote:{
+                        level_standard:'',//等级标准介绍
+                        promote_direction:'',//晋升方向介绍
+                    }
+                },
             }
         },
         computed:{
@@ -285,8 +315,18 @@
         },
 
         methods:{
-            selectTab(val){//切换menu
+            openEdit(){
+                this.edit_visible=true;
+            },
+            selectTab(val,index){//切换menu
                 this.tab = val;
+                // this.levelDataDetail = this.levelData[index];
+                for (let item of Object.keys(this.levelDataDetail)){
+                    this.levelDataDetail[item]=this.levelData[index][item];
+                }
+
+                console.log(this.levelDataDetail);
+
             },
             getPath(){//获取路由参数
                 this.tab = this.$route.query.id;
@@ -297,7 +337,11 @@
             getDataLists(){
                 this.$http.get(globalConfig.leJiaCollege_server+'/api/position/level', this.params).then(res => {
                     if(res.status===200){
-                        this.levelData  = res.data.data;
+                        this.levelData = res.data.sort(
+                            function (a, b) {
+                                return a.id - b.id
+                            }
+                        );
                         console.log(this.levelData)
                     }
                 })

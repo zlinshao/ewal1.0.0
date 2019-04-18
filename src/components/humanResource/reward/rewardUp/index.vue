@@ -379,7 +379,7 @@
       },
 
       getRewardUpList() {
-        this.$http.get(this.url + 'rewardUp/xxx', this.params).then(res => {
+        this.$http.get(this.url + 'announcement/xxx', this.params).then(res => {
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })

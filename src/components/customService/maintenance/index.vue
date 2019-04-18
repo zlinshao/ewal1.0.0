@@ -13,6 +13,8 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
+        <el-button type="warning" plain @click='chosenTag_status(7)' :class="[tag_status==7?'active-warning':'']">维修</el-button>
+        <el-button type="primary" plain @click='chosenTag_status(8)' :class="[tag_status==8?'active-primary':'']">保洁</el-button>
         <div class="icons add" @click='addOrder'><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
@@ -140,8 +142,8 @@
     <LjDialog :visible="sureEnding_visible" :size="{width: 480 + 'px',height: 320 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container end_dialog">
         <div class="dialog_main">
-          <h3>确定结束码?</h3>
-          <el-checkbox v-model="checked">
+          <h3>确定结束吗?</h3>
+          <el-checkbox>
             公司员工(员工姓名-部门)已支付维修费用,结束后系统进入报销流程
           </el-checkbox>
         </div>
@@ -451,22 +453,6 @@ export default {
       maintenanceSearch,
       customService,
       visibleStatus: false,
-      chooseTab: 1,
-      selects: [
-        {
-          id: 1,
-          title: '待处理',
-        },
-        {
-          id: 2,
-          title: '跟进中',
-        },
-        {
-          id: 3,
-          title: '已完成',
-        }
-      ],
-
 
       currentTable: 'workOrder',
       tableSettingData: {
@@ -590,40 +576,44 @@ export default {
       },
       currentRow: null, // 当前查看的row
       sureEnding_visible: false,
+
+      tag_status: 7, // 7是维修 8是保洁
+      chooseTab: 336, // 336待处理 337处理中 338已完成
+      selects: [
+        {
+          id: 336,
+          title: '待处理',
+        },
+        {
+          id: 337,
+          title: '跟进中',
+        },
+        {
+          id: 338,
+          title: '已完成',
+        }
+      ],
+      currentPage: 1,
     }
   },
   mounted () {
-    this.initData();
+    this.getDateList();
   },
   activated () {
   },
   computed: {},
   methods: {
-
-    //初始化数据
-    initData () {
-      //工单表格数据初始化
-      for (let i = 0; i < 10; i++) {
-        let obj = {
-          id: i + 1,
-          status: '1',
-          createTime: '2019-03-28',
-          workOrderId: '10086',
-          type: '维修',
-          address: '地址',
-          content: '内容',
-          endTime: '2019-04-25',
-          handler: '处理人',
-          createUser: '创建人',
-          department: '部门',
-        };
-        this.tableSettingData[this.currentTable].tableData.push(obj);
-      }
-    },
     //工单表格数据初始化
     getDateList () {
       this.showLoading(true);
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}`, this.params).then(res => {
+      let params = {
+        type: this.tag_status,
+        page: this.currentPage,
+        limit: 10,
+        follow_status: this.chooseTab
+      }
+      this.$http.get(`${this.market_server}v1.0/market/work_order`, params).then(res => {
+        console.log(res)
         if (res.code === 200) {
           this.tableData = res.data.data;
           console.log(this.tableData)
@@ -640,6 +630,11 @@ export default {
       if (this.chooseTab !== id) {
         this.chooseTab = id;
         // this.getDateList()
+      }
+    },
+    chosenTag_status (id) {
+      if (this.tag_status != id) {
+        this.tag_status = id
       }
     },
     // add 工单

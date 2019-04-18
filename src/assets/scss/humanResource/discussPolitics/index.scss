@@ -7,12 +7,21 @@
   //font-family: MicrosoftYaHeiLight !important;
 }
 
+.icon15 {
+  display: inline-block;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+};
+
 .icon20 {
   display: inline-block;
   cursor: pointer;
   width: 20px;
   height: 20px;
 };
+
+
 
 .icon30 {
   display: inline-block;
@@ -42,6 +51,98 @@
         @include flex();
         //padding-left: 100px;
         .container-left {
+          flex: 20%;
+          padding-left: 2%;
+          padding-right: 3%;
+          //background-color: green;
+
+
+          .monthTitle {
+            position: relative;
+            font-size: 20px;
+            margin-top: 20px;
+            height: 50px;
+
+            span {
+              cursor: pointer;
+              position: absolute;
+              bottom: 0;
+            }
+          }
+
+          .timeline {
+
+            padding-top: 20px;
+            .timeline-item-container {
+              &.prev {
+                > div {
+                  color: #A5A5A5;
+                }
+              }
+
+              .timeline-item-container-content-item {
+                position: relative;
+                margin: 8px 5px;
+                font-size: 14px;
+                //font-weight: 700;
+                color: rgba(255,255,255,1);
+                font-family: MicrosoftYaHei;
+                //padding: 3px 5px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                cursor: default;
+                border-radius: 6px;
+                height: 20px;
+                line-height: 20px;
+
+                &.cancel-status {
+                  //color: rgba(255,255,255,.4);
+                  //color: #919191;
+                  font-family: "Microsoft YaHei Light";
+                  //font-weight: 400;
+                }
+
+                .icon-list {
+                  position: absolute;
+                  right: 0;
+                  display: inline-flex;
+                  justify-content: flex-end;
+                  align-items: center;
+
+                  span {
+                    margin-right: 10px;
+                  }
+                }
+                /*span.icon-delete {
+                  display: inline-block;
+                  width: 20px;
+                  height: 20px;
+                  cursor: pointer;
+                  //background-color: red;
+                  position: absolute;
+                  right: 0;
+                }*/
+
+                //background-color: #cccccc;
+
+                /*&.danger {
+                  color: #FF8248;
+                  background-color: #FFE8DE;
+                }
+                &.default {
+                  background-color: #E2FFEE;
+                  color: #50E38F;
+                }
+                &.warning {
+                  background-color: #FFF4D4;
+                  color: #FFCD35;
+                }*/
+              }
+            }
+          }
+        }
+        .container-right {
           flex: 75%;
           margin-bottom: 10px;
 
@@ -103,6 +204,23 @@
                   height: 100%;
 
                   &:hover {
+                    color: #fff;
+                    background-color: $colorE33 !important;
+                    .calendar-day-item-container-tip {
+                      .calendar-day-item-container-date {
+                        //display: none;
+                        sup {
+                          display: none !important;
+                        }
+                      }
+                    }
+
+                    .calendar-day-item-container-date {
+                      font-size: 18px;
+                      font-family: MicrosoftYaHei-Bold;
+                      font-weight: 700;
+                    }
+
                     .calendar-day-item-container-date:not(.current) {
                       background-color: $colorE33;
                       color: $colorFFF !important;
@@ -112,7 +230,25 @@
                         background-color: $colorE33 !important;
                       }
                     }
+
+                    .calendar-day-item-container-content {
+                      > div {
+                        color: $colorFFF !important;
+                      }
+                    }
                   }
+
+                  /*&:hover {
+                    .calendar-day-item-container-date:not(.current) {
+                      background-color: $colorE33;
+                      color: $colorFFF !important;
+
+                      &.current {
+                        color: #fff;
+                        background-color: $colorE33 !important;
+                      }
+                    }
+                  }*/
 
                   .calendar-day-item-container-tip {
                     position: absolute;
@@ -136,10 +272,9 @@
                       }
 
                       &.current {
-                        font-size: 20px;
                         font-weight: 700;
-                        color: $colorE33;
-                        background-color: #fff !important;
+                        color: $colorFFF;
+                        background-color: $colorE33;
                       }
                     }
                   }
@@ -214,20 +349,19 @@
                       overflow: hidden;
                       cursor: pointer;
                       border-radius: 6px;
-                      background-color: #cccccc;
 
                       &.danger {
                         color: #FF8248;
-                        background-color: #FFE8DE;
+                        //background-color: #FFE8DE;
                       }
 
                       &.default {
-                        background-color: #E2FFEE;
+                        //background-color: #E2FFEE;
                         color: #50E38F;
                       }
 
                       &.warning {
-                        background-color: #FFF4D4;
+                        //background-color: #FFF4D4;
                         color: #FFCD35;
                       }
                     }
@@ -238,94 +372,7 @@
           }
         }
 
-        .container-right {
-          flex: 25%;
-          //background-color: green;
 
-          .monthTitle {
-            position: relative;
-            font-size: 20px;
-            margin-top: 20px;
-            height: 50px;
-
-            span {
-              cursor: pointer;
-              position: absolute;
-              bottom: 0;
-            }
-          }
-
-          .timeline {
-            padding-top: 20px;
-
-            .timeline-item-container {
-              &.prev {
-                > div {
-                  color: #A5A5A5;
-                }
-              }
-
-              .timeline-item-container-content-item {
-                position: relative;
-                margin: 8px 5px;
-                font-size: 14px;
-                //font-weight: 700;
-                color: #464646;
-                font-family: MicrosoftYaHei;
-                //padding: 3px 5px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                cursor: default;
-                border-radius: 6px;
-                height: 20px;
-                line-height: 20px;
-
-                &.cancel-status {
-                  color: #919191;
-                  font-family: "Microsoft YaHei Light";
-                  //font-weight: 400;
-                }
-
-                .icon-list {
-                  position: absolute;
-                  right: 0;
-                  display: inline-flex;
-                  justify-content: flex-end;
-                  align-items: center;
-
-                  span {
-                    margin-right: 10px;
-                  }
-                }
-                /*span.icon-delete {
-                  display: inline-block;
-                  width: 20px;
-                  height: 20px;
-                  cursor: pointer;
-                  //background-color: red;
-                  position: absolute;
-                  right: 0;
-                }*/
-
-                //background-color: #cccccc;
-
-                /*&.danger {
-                  color: #FF8248;
-                  background-color: #FFE8DE;
-                }
-                &.default {
-                  background-color: #E2FFEE;
-                  color: #50E38F;
-                }
-                &.warning {
-                  background-color: #FFF4D4;
-                  color: #FFCD35;
-                }*/
-              }
-            }
-          }
-        }
       }
     }
 
@@ -449,13 +496,6 @@
       }
 
       .view-meeting-room-container, .view-meeting-type-container {
-
-        span.icon-delete-red {
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          cursor: pointer;
-        }
 
         .meeting-room-list, .meeting-type-list {
           width: 100%;

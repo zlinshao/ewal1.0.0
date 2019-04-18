@@ -11,7 +11,7 @@ export const humanResource = {
       title: '招聘管理'
     },
     {
-      url: 'reward',
+      url: 'noticeQuestionnaire',
       title: '公告问卷'
     },
     {

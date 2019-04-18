@@ -21,8 +21,8 @@
                 <div class="dialog_header">
                     <h3>{{current_type===1?'新增实践问题':current_type===2?'收房时应该注意哪些问题':current_type===3?'详情':''}}</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form size="mini" label-width="80px" v-model="form" :rules="rules" ref="form">
+                <div class="dialog_main borderNone">
+                    <el-form  label-width="80px" v-model="form" :rules="rules" ref="form">
                         <el-form-item label="标题" prop="title">
                             <el-input v-model="form.title" placeholder="请输入标题" :disabled="current_type===3"></el-input>
                         </el-form-item>
@@ -66,7 +66,7 @@
                 <el-pagination
                         :total="count"
                         layout="total,jumper,prev,pager,next"
-                        :current-page="params.page"
+                        :current-page="params.offset"
                         :page-size="params.limit"
                         @current-change="handleChangePage"
                 >
@@ -96,7 +96,7 @@
                     search:'',
                     startRange: '',
                     endRange: '',
-                    page: 1,
+                    offset: 1,//页数
                     limit: 8,
                     department_ids: '',
                     export: '',
@@ -176,8 +176,9 @@
                 }
             },
             // 换页
-            handleChangePage(){
-                this.params.page = page;
+            handleChangePage(page){
+                this.params.offset = page;
+                this.problemsData=[];
                 this.getProblemLists();
             },
             //提交
@@ -199,7 +200,10 @@
                 this.$http.get(globalConfig.leJiaCollege_server+'/api/practice/question', this.params).then(res => {
                     if (res.status === 200) {
                         this.problemsData  = res.data.data;
-                        console.log(res.data.data);
+                        this.count=res.data.total;
+                    }else{
+                        this.problemsData  = [];
+                        this.count=0;
                     }
                 })
             },

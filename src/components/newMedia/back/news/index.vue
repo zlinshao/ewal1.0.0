@@ -139,12 +139,23 @@
                         </span>
                     </div>
                     <div class="person-list">
-                        <div class="person-list-info flex-center" v-for="(item,index) in readData" :key="index">
+                        <div class="person-list-info flex-center" v-for="(item,index) in read_info" :key="index"
+                             v-if="read_type===1">
                             <div class="person-box">
-                                <img src="../../../../assets/image/newMedia/theme1/staff.png" alt="">
+                                <img :src="item.avatar" alt="">
                                 <span>
-                                    <i>赵丽颖</i>
-                                    <i>研发部产品助理</i>
+                                    <i>{{item.name}}</i>
+                                    <i>{{item.department_name}}</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="person-list-info flex-center" v-for="(item,index) in unread_info" :key="index"
+                             v-if="read_type===2">
+                            <div class="person-box">
+                                <img :src="item.avatar" alt="">
+                                <span>
+                                    <i>{{item.name}}</i>
+                                    <i>{{item.department_name}}</i>
                                 </span>
                             </div>
                         </div>
@@ -162,8 +173,8 @@
                 <div class="dialog_header">
                     <h3>{{chooseTab===1?'发布导读':chooseTab===2?'发布新闻':chooseTab===3?'发布公告':''}}</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form size="mini" label-width="80px">
+                <div class="dialog_main borderNone">
+                    <el-form label-width="80px">
                         <el-form-item label="类型">
                             <el-input></el-input>
                         </el-form-item>
@@ -255,7 +266,7 @@
                     department_ids: '',
                     export: '',
                 },
-                defaultMsg: '这里是UE测试',
+                defaultMsg: '',
                 config: {
                     initialFrameWidth: null,
                     initialFrameHeight: 350
@@ -288,10 +299,8 @@
                 ],
                 tableData: [],
                 type: 'hot',
-                readData: [],
-                read_info:[],//已读人员
-                unread_info:[],//未读人员
-
+                read_info: [],
+                unread_info: [],
 
                 statusParams: {
                     is_open: '',
@@ -328,18 +337,13 @@
                         this.type = 'news';
                         break;
                     case 3:
-                        this.type = 'announcement';
+                        this.type ='announcement';
                         break;
                 }
                 this.getDataLists();
             },
             readTab(id) {
                 this.read_type = id;
-                if(id===1){
-                    this.readData = this.read_info ;
-                }else{
-                    this.readData = this.unread_info ;
-                }
             },
             handleChangePage(page) {
                 this.params.page = page;
@@ -349,22 +353,50 @@
             comfirmDelReport() {
 
             },
-
-            getDetail(row, index, type) {
+            // 已读未读详情
+            getDetail(row, index, readType) {
                 this.readStatus_visible = true;
-                this.read_type = type;
+                this.read_type = readType;
                 this.$http.get(globalConfig.newMedia_sever + '/api/article/' + this.type + '/' + row.id).then(res => {
                     if (res.status === 200) {
-                        this.read_info = res.data.status.read_info;
-                        this.unread_info = res.data.status.unread_info;
-                        if(type===1){
-                            this.readData = this.read_info ;
-                        }else{
-                            this.readData = this.unread_info ;
+                        if (res.data.status) {
+                            let read_info = res.data.status.read_info;
+                            let unread_info = res.data.status.unread_info;
+
+                            if (read_info.length > 0) {
+                                this.unread_info = [];
+                                for (let item of read_info) {
+                                    this.read_info.push(
+                                        {
+                                            name: item.name,
+                                            avatar: item.avatar,
+                                            department_name: item.org.length > 0 ? item.org[0].name : ''
+                                        }
+                                    )
+                                }
+                            } else {
+
+                            }
+
+                            if (unread_info.length > 0) {
+                                this.unread_info = [];
+                                for (let item of unread_info) {
+                                    this.unread_info.push(
+                                        {
+                                            name: item.name,
+                                            avatar: item.avatar,
+                                            department_name: item.org.length > 0 ? item.org[0].name : ''
+                                        }
+                                    )
+                                }
+                            } else {
+
+                            }
+                            console.log(this.unread_info);
                         }
                     }
                 });
-                console.log(this.readData);
+
             },
 
             //获取新闻列表

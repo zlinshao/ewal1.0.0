@@ -9,7 +9,7 @@
             </div>
             <div class="items-center listTopRight">
                 <div class="icons home_icon"></div>
-                <div class="icons add" @click="add_visible = true"><b>+</b></div>
+                <div class="icons add" @click="add"><b>+</b></div>
             </div>
         </div>
         <div class="mainList flex-center">
@@ -28,7 +28,7 @@
                     <h3>新增资料</h3>
                 </div>
                 <div class="dialog_main borderNone">
-                    <el-form label-width="80px" :rules="rules">
+                    <el-form label-width="80px">
 
                         <el-form-item label="资料类型" prop="type_id">
                             <el-select placeholder="请选择" v-model="form.type_id">
@@ -41,13 +41,11 @@
                             <el-input v-model="form.name" placeholder="请输入"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="查看权限" prop="permissionNames">
-                            <el-input @focus="organSearch"  v-model="permissionNames" placeholder="请输入"></el-input>
+                        <el-form-item label="查看权限" prop="permission_names">
+                            <el-input @focus="organSearch"  v-model="form.permission_names" placeholder="请输入"></el-input>
                         </el-form-item>
                         <el-form-item label="添加附件">
-                            <!--<Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>-->
-                            <lj-upload v-model="form.attachment" size="40"
-                                       style="position: absolute; top: -12px;" :data="form.file_info"></lj-upload>
+                            <lj-upload v-model="form.file_info" size="40" style="position: absolute; top: -12px;"></lj-upload>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -68,9 +66,8 @@
 <script>
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
-    import Upload from '../../../common/upload.vue';
     import PostOrgan from '../../../../components/common/postOrgan.vue';
-    import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
+    import LjUpload from '../../../common/lightweightComponents/lj-upload';
 
 
     export default {
@@ -78,9 +75,8 @@
         components: {
             mediaList,
             LjDialog,
-            Upload,
             PostOrgan,
-            ImgSlider
+            LjUpload,
         },
         data() {
             return {
@@ -94,29 +90,13 @@
                 showFinMenuList: false,
                 add_visible:false,//新增
                 form:{
-                    type_id:'',
+                    type_id:'',//文件类型
                     name:'',
                     permission:[],//查看权限
-                    file_info:[],
+                    file_info:[],//文件id
+                    permission_names:'',//
                 },
-                permissionNames:'',
-                //上传
-                // upload_visible: false,
-                uploadFile: {
-                    keyName: 'album',
-                    setFile: [],
-                    size: {
-                        width: '50px',
-                        height: '50px'
-                    }
-                },
-                upload_form: {
-                    album: [],
-                    album_file: [],
-                }, //所有上传文件
-                rules:{
 
-                }
             }
         },
         watch:{
@@ -131,10 +111,9 @@
             }
         },
         mounted(){
-          this.getFiletype()
+
         },
         methods:{
-
             // 组织架构筛选
             organSearch() {
                 this.postModule = true;
@@ -144,25 +123,24 @@
                 this.postModule = false;
                 if (ids !== 'close') {
                     this.form.permission = ids;
-                    console.log(this.form.permission);
-                    this.permissionNames = names;
+                    this.form.permission_names = names;
                 }
             },
-            //上传回调
-            handleSuccessUpload(item) {
-                if (item !== 'close') {
-                    this.upload_form[item[0]] = item[1];
-                    this.form.file_info = item[1];
+            add(){
+                for (let item of Object.keys(this.form)) {
+                    this.form[item] = '';
                 }
-                console.log(item);
+                this.add_visible = true;
             },
             //新增资料
             submit(){
-                console.log(this.form);
-                this.$http.post(globalConfig.newMedia_sever+'/api/datum/admin',{
-                    album: this.upload_form.album,
-                    ...this.form
-                }).then(res => {
+               let paramsForm = {
+                   type_id:this.form.type_id,
+                   name:this.form.name,
+                   permission:this.form.permission,
+                   file_id:this.form.file_info[0],
+               };
+                this.$http.post(globalConfig.newMedia_sever+'/api/datum/admin',paramsForm).then(res => {
                     this.postModule = false;
                     if (res.status === 200) {
                         this.$LjNotify('success', {
@@ -170,7 +148,7 @@
                             message: res.msg,
                             subMessage: '',
                         });
-                        console.log(this.postModule)
+                        this.add_visible = false;
                     } else {
                         this.$LjNotify('error', {
                             title: '失败',
@@ -180,13 +158,7 @@
                     }
                 })
             },
-            getFiletype(){
-                this.$http.get(globalConfig.newMedia_sever+'/api/datum/file_type',{
 
-                }).then(res => {
-                    console.log(res)
-                })
-            }
         }
     }
 </script>
