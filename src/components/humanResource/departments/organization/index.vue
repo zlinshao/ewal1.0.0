@@ -19,6 +19,7 @@
                       <span class="strt-name">总裁助理</span>
                     </div>
                   </div>
+                  <span class="common-part common-r"></span>
                 </div>
                 <div class="strt-part">
                   <span class="line-h line-h-c"></span>
@@ -57,6 +58,12 @@
                       <span class="strt-info">稽查中心</span>
                     </div>
                   </div>
+                  <div class="common-part common-l">
+                    <div class="line-v"><span></span></div>
+                    <div class="line-v"><span></span></div>
+                    <div class="line-v"><span></span></div>
+                    <div class="line-v"><span></span></div>
+                  </div>
                 </div>
                 <div class="strt-part">
                   <span class="line-h line-h-c"></span>
@@ -75,6 +82,7 @@
                       <span class="strt-name">研发中心</span>
                       <div class="line-v"><span></span></div>
                       <div class="strt-part">
+                        <div class="line-v"><span></span></div>
                         <span class="strt-info">研发总监</span>
                       </div>
                     </div>
