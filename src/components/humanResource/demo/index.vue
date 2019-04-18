@@ -1,6 +1,7 @@
 <template>
-  <div class="demo-container">
-    <calendar week-type="en" style="width: 1366px;height: 768px">
+  <div class="demo-container" style="width: 800px">
+    <user-list :ids="user_list"></user-list>
+    <!--<calendar week-type="en" style="width: 1366px;height: 768px">
       <div :slot="'slot'+item.id" v-for="item in daysList"
       class="days-item" :class="{rest:!item.reason,current:item.today}"
       >
@@ -9,9 +10,8 @@
           <span v-if="item.reason" class="days-item-content-reason">{{item.reason}}</span>
 
         </div>
-        <!--<div>{{item.datetime}}</div>-->
       </div>
-    </calendar>
+    </calendar>-->
     <!--<img-slider :size="{width:'100%',height:'100%'}" :single="true" :arr="sliders"></img-slider>-->
     <!--<lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>-->
   </div>
@@ -20,6 +20,7 @@
 
 <script>
   import _ from 'lodash';
+  import UserList from '@/components/common/lightweightComponents/UserList.vue';
   import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
   import mixins from '@/assets/js/mixins/calendar.js';
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
@@ -31,6 +32,7 @@
       LjUpload,
       Calendar,
       ImgSlider,
+      UserList,
     },
     data() {
       return {
@@ -49,6 +51,7 @@
           }
         ],
         list:[4225067],
+        user_list:[211,289,3604,3623,3590,3589],
       }
     },
     mounted() {
