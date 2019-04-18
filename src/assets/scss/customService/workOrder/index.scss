@@ -1,7 +1,7 @@
 @import '../../common.scss';
 
 @mixin confirmImg($m, $n) {
-  $url: '../../../assets/image/customService/workorder/' + $n + '/' + $m;
+  $url: '../../../assets/image/customService/workOrder/' + $n + '/' + $m;
   @include bgImage($url);
 }
 

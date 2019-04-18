@@ -347,10 +347,8 @@
                     </el-row>
                   </div>
                   <el-form-item label="入职材料:">
-                    <el-checkbox-group v-model="staffDetail.entry_materials" class="changeChoose">
-                      <div class="flex-center" style="margin-top: 8px">
+                    <el-checkbox-group v-model="staffDetail.entry_materials" class="changeChoose flex-center">
                         <el-checkbox v-for="tmp in entry_materials_checkbox" :key="tmp.id" :label="tmp.id">{{ tmp.val }}</el-checkbox>
-                      </div>
                     </el-checkbox-group>
                   </el-form-item>
                 </el-form>

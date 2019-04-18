@@ -655,7 +655,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 2,//tab切换
+        chooseTab: 1,//tab切换
         selects: [
           {
             id: 1,
@@ -1221,7 +1221,7 @@
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
           this.$http.put(`organization/organization/${this.edit_depart.id}`,this.departForm).then(res => {
-            if (res.code === '20010') {
+            if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
                 message: res.msg

@@ -234,6 +234,11 @@
         #theme_name #organization > div .organ-tree .strt-name:hover {
           border-color: #cf2e33;
           color: #cf2e33; }
+        #theme_name #organization > div .organ-tree .strt-name img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          vertical-align: middle; }
       #theme_name #organization > div .organ-tree .strt-name-mini {
         min-width: 70px;
         height: 40px;
@@ -249,7 +254,6 @@
           writing-mode: tb-rl;
           font-family: 'jingDianXingShu'; }
       #theme_name #organization > div .organ-tree .strt-info {
-        display: inline-block;
         padding: 10px 5px;
         min-width: 50px;
         min-height: 120px;
@@ -260,7 +264,9 @@
         cursor: pointer;
         writing-mode: vertical-rl;
         writing-mode: tb-rl;
-        position: relative; }
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%); }
         #theme_name #organization > div .organ-tree .strt-info:hover {
           border-color: #cf2e33;
           color: #cf2e33; }

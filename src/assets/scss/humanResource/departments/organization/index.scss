@@ -63,6 +63,12 @@
             border-color: $colorE33;
             color: $colorE33;
           }
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            vertical-align: middle;
+          }
         }
         .strt-name-mini {
           min-width: 70px;
@@ -82,7 +88,7 @@
           }
         }
         .strt-info {
-          display: inline-block;
+          //display: inline-block;
           padding: 10px 5px;
           min-width: 50px;
           min-height: 120px;
@@ -94,6 +100,8 @@
           writing-mode: vertical-rl;
           writing-mode: tb-rl;
           position: relative;
+          left: 50%;
+          transform: translateX(-50%);
           &:hover {
             border-color: $colorE33;
             color: $colorE33;
