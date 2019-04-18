@@ -1,5 +1,12 @@
 <template>
-  <div id="rewardDown">
+  <div id="questionnaire">
+    <div class="listTopCss">
+      <div class="search-toolbar listTopRight">
+        <div class="icons-font"><b>发公告</b></div>
+        <!--<div class="icons add" @click="publish_notice_dialog_visible = true"><b>+</b></div>-->
+      </div>
+
+    </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
         :data="tableData"
@@ -12,18 +19,72 @@
         :row-style="{height:'70px'}"
         style="width: 100%">
         <el-table-column
-          v-for="item in Object.keys(showData)" :key="item"
+          key="name"
           align="center"
-          :prop="item"
-          :label="showData[item]">
+          prop="name"
+          label="问卷名称">
         </el-table-column>
-        <!--<el-table-column-->
-          <!--align="center"-->
-          <!--label="操作">-->
-          <!--<template slot-scope="scope">-->
-
-          <!--</template>-->
-        <!--</el-table-column>-->
+        <el-table-column
+          key="username"
+          align="center"
+          prop="username"
+          label="发布人">
+          <template slot-scope="scope">
+            {{scope.row.user.name||'-'}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          key="release_time"
+          align="center"
+          prop="release_time"
+          label="发布时间">
+        </el-table-column>
+        <el-table-column
+          key="start_time"
+          align="center"
+          prop="start_time"
+          label="开始时间">
+        </el-table-column>
+        <el-table-column
+          key="validity_time"
+          align="center"
+          prop="validity_time"
+          label="有效期(天)">
+        </el-table-column>
+        <el-table-column
+          key="reply_number"
+          align="center"
+          prop="reply_number"
+          label="回复量">
+        </el-table-column>
+        <el-table-column
+          key="object_count"
+          align="center"
+          prop="object_count"
+          label="调查对象(人数)">
+        </el-table-column>
+        <template slot-scope="scope">
+          <div @click="showObjectHandler" style="color: #0C66FF;cursor: pointer">{{scope.object_count}}</div>
+        </template>
+        <el-table-column
+          key="status"
+          align="center"
+          prop="status"
+          label="调查状态">
+          <template slot-scope="scope">
+            <div style="color: #FFAD0D;" v-if="scope.row.status==0">未开始</div>
+            <div style="color: #0BB07B;" v-if="scope.row.status==1">进行中</div>
+            <div style="color: #9B9B9B;" v-if="scope.row.status==2">已结束</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="操作">
+          <template slot-scope="scope">
+            <div v-if="scope.row.status!==2">-</div>
+            <el-button v-if="scope.row.status==2" type="primary" size="mini" plain>查看统计结果</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -41,69 +102,6 @@
         </div>
       </footer>
     </div>
-
-
-    <!--惩恶令-->
-    <lj-dialog
-      :visible="reward_order"
-      :size="{width: 600 + 'px',height: 650 + 'px'}"
-      @close="reward_order = false"
-    >
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>惩恶令</h3>
-          <!--<div class="header_right">-->
-          <!--<el-button size="mini" type="primary" plain>新增</el-button>-->
-          <!--</div>-->
-        </div>
-        <div class="dialog_main borderNone">
-          <el-form :model="reward_order_form" label-width="80px" style="width: 80%">
-            <el-form-item label="姓名">
-              <el-input v-model="reward_order_form.name" placeholder="选择人员自动获取"></el-input>
-            </el-form-item>
-            <el-form-item label="部门">
-              <el-input v-model="reward_order_form.department" placeholder="选择人员自动获取">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="岗位">
-              <el-input v-model="reward_order_form.station" placeholder="选择人员自动获取">
-              </el-input>
-            </el-form-item>
-
-            <el-form-item label="事件">
-              <div class="items-center iconInput">
-                <el-select v-model="reward_order_form.event" placeholder="请选择事件">
-                  <el-option :value="1" label="事件1"></el-option>
-                </el-select>
-              </div>
-            </el-form-item>
-            <el-form-item label="惩罚类型">
-              <div class="items-center iconInput">
-                <el-select v-model="reward_order_form.reward_type" placeholder="请选择惩罚类型">
-                  <el-option :value="1" label="惩罚1"></el-option>
-                </el-select>
-              </div>
-            </el-form-item>
-            <el-form-item label="惩罚金额">
-              <el-input v-model="reward_order_form.penalty" placeholder="请填写惩罚金额">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="备注">
-              <el-input v-model="reward_order_form.remark" placeholder="请填写备注">
-              </el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button size="small" type="danger">保存</el-button>
-          <el-button size="small" type="info" @click="reward_order = false">取消</el-button>
-        </div>
-      </div>
-    </lj-dialog>
-
-
-
-
   </div>
 </template>
 
@@ -113,52 +111,26 @@
 
   export default {
     name: "index",
-    props: ['searchVal','reward_order_visible',],
+    props: ['searchVal'],
     components: {
       LjDialog
     },
     data() {
       return {
-        url: globalConfig.organ_server,
+        url: globalConfig.humanResource_server,
         checkList: [],
-        showData: {
-          name: '姓名',
-          department: '岗位',
-          station: '部门',
-          event: '事件',
-          penalty: '惩罚',
-          remark: '备注',
-        },
         chooseRowIds: [],
         tableData: [],
         counts: 0,
         params: {
           search: '',
           page: 1,
-          limit: 30,
-          org_id: '',
-          position_id: '',
+          limit: 8,
         },
-
-
-        //乐伽dialog
-        //惩恶令
-        reward_order: false,
-        reward_order_form: {
-          name: '',//姓名
-          department: '',//部门,
-          station: '',//岗位
-          event: '',//事件
-          reward_type: '',//惩罚类型
-          penalty: '',//罚款
-          remark: '',//备注
-        },
-
-
       }
     },
     mounted() {
-      this.initData();
+      //this.initData();
     },
     activated() {
     },
@@ -166,38 +138,33 @@
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
           this.params = val;
-          this.getRewardDownList();
         },
-        deep: true
+        deep: true,
       },
-      reward_order_visible: {
-        handler(val, oldVal) {
-          console.log(val,oldVal);
-          this.reward_order = !this.reward_order;
-          this.reward_order_form = {};
-        },
-        //deep:true,
-        //immediate:true//第一次绑定也执行
-      },
-      exchange_rules_visible: {
-        handler(val, oldVal) {
-          console.log(val,oldVal);
-          this.exchange_rules = !this.exchange_rules;
-        },
-      }
     },
     computed: {},
+    mounted() {
+      this.getQuestionnaireList();
+    },
     methods: {
-
-
-
-      handleChangeDate(id) {
+      showObjectHandler() {
 
       },
-      handleCloseMenu() {
-        //this.show_market = false;
-      },
 
+
+
+      getQuestionnaireList() {
+        this.tableData = [];
+        let params = {
+          ...this.params
+        };
+        this.$http.get(`${this.url}questionnaire`,params).then(res=> {
+          debugger
+          if(res.code.endsWith('0')) {
+            this.tableData = res.data.data;
+          }
+        });
+      },
 
 
       initData() {
@@ -213,18 +180,11 @@
             remark:'锁血打小怪掉金币',
             //address: '上海市普陀区金沙江路 1518 弄'
           }
-          this.tableData.push(obj)
+          this.tableData.push(obj);
         }
-        console.log(this.tableData);
         this.counts = 1000;
       },
 
-      getRewardDownList() {
-        this.$http.get(this.url + 'questionnaire/xxx', this.params).then(res => {
-          this.tableData = res.data.data;
-          this.counts = res.data.count;
-        })
-      },
       // 当前点击
       tableClickRow(row) {
         let ids = this.chooseRowIds;
@@ -253,15 +213,14 @@
       },
       handleCurrentChange(val) {
         this.params.page = val;
-        this.getRewardDownList();
-        console.log(`当前页: ${val}`);
+        this.getQuestionnaireList();
       }
     },
   }
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../../assets/scss/humanResource/reward/rewardDown/index.scss";
+  @import "../../../../assets/scss/humanResource/noticeQuestionnaire/questionnaire/index.scss";
 
   @mixin childrenImg($m, $n) {
     $url: '../../../../assets/image/humanResource/reward/rewardDown/' + $n + '/' + $m;
@@ -269,8 +228,7 @@
   }
 
   #theme_name.theme1 {
-    #rewardDown {
-
+    #questionnaire {
 
 
 
@@ -299,19 +257,19 @@
   }
 
   #theme_name.theme2 {
-    #rewardDown {
+    #questionnaire {
 
     }
   }
 
   #theme_name.theme3 {
-    #rewardDown {
+    #questionnaire {
 
     }
   }
 
   #theme_name.theme4 {
-    #rewardDown {
+    #questionnaire {
 
     }
   }

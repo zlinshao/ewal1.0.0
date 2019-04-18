@@ -1,6 +1,7 @@
 <template>
   <div class="demo-container" style="width: 800px">
-    <user-list :ids="user_list"></user-list>
+    <name-shower type="org" :ids="org_list"></name-shower>
+    <!--<user-list :ids="user_list"></user-list>-->
     <!--<calendar week-type="en" style="width: 1366px;height: 768px">
       <div :slot="'slot'+item.id" v-for="item in daysList"
       class="days-item" :class="{rest:!item.reason,current:item.today}"
@@ -20,6 +21,7 @@
 
 <script>
   import _ from 'lodash';
+  import NameShower from '@/components/common/lightweightComponents/NameShower.vue';
   import UserList from '@/components/common/lightweightComponents/UserList.vue';
   import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
   import mixins from '@/assets/js/mixins/calendar.js';
@@ -33,6 +35,7 @@
       Calendar,
       ImgSlider,
       UserList,
+      NameShower,
     },
     data() {
       return {
@@ -52,6 +55,7 @@
         ],
         list:[4225067],
         user_list:[211,289,3604,3623,3590,3589],
+        org_list:[395,396],
       }
     },
     mounted() {

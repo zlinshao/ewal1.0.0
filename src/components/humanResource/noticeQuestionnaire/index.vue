@@ -28,13 +28,13 @@
         <div class="right flex-center" @click="chooseTab=2"><span class="gray">问卷调查</span></div>
       </div>
     </div>
-    <!--扬善组件-->
+    <!--组件-->
     <div class="up" v-if="chooseTab==1">
       <Notice :searchVal="searchFruit1" :reward_order_visible="reward_order_visible"
                 :exchange_rules_visible="exchange_rules_visible"></Notice>
     </div>
 
-    <!--惩恶组件-->
+    <!--组件-->
     <div class="down" v-if="chooseTab==2">
       <Questionnaire :searchVal="searchFruit2" :reward_order_visible="reward_order_visible"></Questionnaire>
     </div>
@@ -198,14 +198,6 @@
       handleCloseMenu() {
         this.show_market = false;
       },
-
-      publish() {
-        this.reward_order_visible = !this.reward_order_visible;
-      },
-      exchange() {
-        this.exchange_rules_visible = !this.exchange_rules_visible;
-      },
-
 
       // tab切换
       changeTabs(id) {

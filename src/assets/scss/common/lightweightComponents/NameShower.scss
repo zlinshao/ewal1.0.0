@@ -1,0 +1,45 @@
+@import "../../common.scss";
+
+#theme_name {
+  #name_shower {
+    .name-list-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      .name-item {
+        cursor: default;
+        color: #686874;
+        background-color: #EFF0F2;
+        border: 1px solid #E1E4E8;
+        margin: 3px;
+        span {
+          padding: 0 3px;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #name_shower {
+
+  }
+}
+
+#theme_name.theme2 {
+  #name_shower {
+
+  }
+}
+
+#theme_name.theme3 {
+  #name_shower {
+
+  }
+}
+
+#theme_name.theme4 {
+  #name_shower {
+
+  }
+}
