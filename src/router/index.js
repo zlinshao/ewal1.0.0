@@ -165,22 +165,20 @@ const EnterpriseCertificate = () =>
 
 //风险控制
 const RiskManagement = () => import('@/components/riskManagement/index.vue')
-const GroupCoreIndicators = () =>
-  import('@/components/riskManagement/GroupCoreIndicators/index.vue') //集团核心指标
-const ComprehensiveEarlyWarning = () =>
-  import('@/components/riskManagement/ComprehensiveEarlyWarning/index.vue') //企业综合预警
-const MajorStrategicMonitoring = () =>
-  import('@/components/riskManagement/MajorStrategicMonitoring/index.vue') //重大战略监测
+const GroupCoreIndicators = () => import('@/components/riskManagement/GroupCoreIndicators/index.vue') //集团核心指标2级列表
+const ComprehensiveEarlyWarning = () => import('@/components/riskManagement/ComprehensiveEarlyWarning/index.vue') //企业综合预警2级列表
+const MajorStrategicMonitoring = () => import('@/components/riskManagement/MajorStrategicMonitoring/index.vue') //重大战略监测2级列表
 
-// const MarketRisk = () => import('@/components/riskManagement/GroupCoreIndicators/marketRisk/index.vue');//市场风险
-const RiskManagementCommon = () =>
-  import('@/components/riskManagement/common/index.vue') //制度列表
-const RiskManagementDetail = () =>
-  import('@/components/riskManagement/common/details.vue') //制度详情
-const InternalRegulations = () =>
-  import('@/components/riskManagement/GroupCoreIndicators/complianceRisk/InternalRegulations.vue') //公司内部规定
+const RiskManagementCommon = () => import('@/components/riskManagement/GroupCoreIndicators/common/index.vue');//三级列表
+const GroupCoreIndicatorsMenuLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue') //制度列表
 
-Vue.use(Router)
+const RiskManagementMenu = () => import('@/components/riskManagement/common/index.vue') //三级列表
+
+const RiskManagementDetail = () => import('@/components/riskManagement/common/details.vue') //风控文件列表
+// const DocumentLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue');//集团指标文件列表
+const InternalRegulations = () => import('@/components/riskManagement/GroupCoreIndicators/complianceRisk/InternalRegulations.vue') //公司内部规定
+
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -354,23 +352,41 @@ export default new Router({
       name: '重大战略监测',
       component: MajorStrategicMonitoring
     },
-    {
-      path: '/riskManagementCommon',
-      name: '市场风险',
-      component: RiskManagementCommon
-    },
+
+        {
+          path: '/marketHouseRisk',
+          name: '市场风险',
+          component: RiskManagementCommon
+        },
+      {
+          path: '/businessRisk',
+          name: '运营风险',
+          component: RiskManagementCommon
+      },
+      {
+          path: '/flowRisk',
+          name: '流动性风险',
+          component: RiskManagementCommon
+      },
+      {
+          path: '/complianceRisk',
+          name: '合规风险',
+          component: RiskManagementCommon
+      },
+      {
+          path: '/riskManagementMenu',
+          name: '三级列表页',
+          component: RiskManagementMenu,
+      },
+
     {
       path: '/riskManagementDetail',
-      name: '制度详情',
+      name: '市场风险监测制度',
       component: RiskManagementDetail
     },
-    // {
-    //     path: '/marketRisk',
-    //     name: '市场风险',
-    //     component: MarketRisk
-    // },
+
     {
-      path: '/internalRegulations',
+      path: '/interiorStipulate',
       name: '公司内部规定',
       component: InternalRegulations
     },

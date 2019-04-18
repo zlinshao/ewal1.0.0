@@ -200,9 +200,11 @@
             },
             //获取岗位信息
             hiddenPost(ids, names, arr) {
-                this.postModule = false;
-                this.form.position = ids;
-                this.form.position_name = names;
+                if (ids !== 'close') {
+                    this.postModule = false;
+                    this.form.position = ids;
+                    this.form.position_name = names;
+                }
             },
             callbackSuccess(res) {
                 if (res.status === 200) {

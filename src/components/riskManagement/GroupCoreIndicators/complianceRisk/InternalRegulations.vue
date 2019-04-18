@@ -10,7 +10,7 @@
                 <div class="InternalRegulations-info">
                     <div class="left-info">
                         <div>
-                            <p v-for="(item,index) in department" @click="selects(item.id)"  :class="chooseTab===item.id?'activeTab':''">
+                            <p v-for="(item,index) in riskData" @click="selects(item.id)"  :class="chooseTab===item.id?'activeTab':''">
                                 <span class="flex-center"><i>{{item.tag}}</i></span>
                                 <span><i>{{item.name}}</i></span>
                             </p>
@@ -25,46 +25,22 @@
                                             <i @click.stop="openEdit(item.id,index)">编辑</i>
                                             <i @click.stop="openDel(item.id,index)">删除</i>
                                         </span>
-                                        暂无数据
+                                        <a class="word_icon" @click="openFile(item.file_id[0].uri)"></a>
                                     </p>
                                     <p><span>营销中心制度及相关操作…</span></p>
                                     <p><span>2019-04-07</span></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="scroll_bar"  v-if="chooseTab===2">
-                            <div v-for="(item,index) in fileData2" class="right-info-list flex-center">
-                                <div class="right-info-box">
-                                    <p class="flex-center">暂无数据</p>
-                                    <p><span>营销中心制度及相关操作…</span></p>
-                                    <p><span>2019-04-07</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="scroll_bar"  v-if="chooseTab===3">
-                            <div v-for="(item,index) in fileData3" class="right-info-list flex-center">
-                                <div class="right-info-box">
-                                    <p class="flex-center">暂无数据</p>
-                                    <p><span>营销中心制度及相关操作…</span></p>
-                                    <p><span>2019-04-07</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="scroll_bar"  v-if="chooseTab===4">
-                            <div v-for="(item,index) in fileData4" class="right-info-list flex-center">
-                                <div class="right-info-box">
-                                    <p class="flex-center">暂无数据</p>
-                                    <p><span>营销中心制度及相关操作…</span></p>
-                                    <p><span>2019-04-07</span></p>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="bg-img"></div>
                     </div>
                     <div class="add-icons" @click="add_visible = true"><span>+</span></div>
                 </div>
             </div>
         </div>
+
+        <DepartOrgan :module="departModule" :organData="organData" @close="hiddenOrgan"></DepartOrgan>
 
         <!--新增-->
         <lj-dialog
@@ -76,23 +52,24 @@
                     <h3>新增文件</h3>
                 </div>
                 <div class="dialog_main borderNone">
-                    <el-form  label-width="80px">
+                    <el-form label-width="80px" v-model="form">
                         <el-form-item label="所属部门">
-                            <el-input placeholder="请选择"></el-input>
+                            <el-input placeholder="请选择" v-model="form.org_name" @focus="openDepart(1)"></el-input>
                         </el-form-item>
-                        <el-form-item label="文件类型">
-                            <el-input placeholder="请选择"></el-input>
+                        <el-form-item label="文件名称">
+                            <el-input placeholder="请选择" v-model="form.name"></el-input>
                         </el-form-item>
                         <el-form-item label="添加文件">
-                            <el-input placeholder="请选择"></el-input>
+                            <lj-upload v-model="form.file_info" size="40"
+                                       style="position: absolute; top: -12px;"></lj-upload>
                         </el-form-item>
                         <el-form-item label="可见范围">
-                            <el-input placeholder="请选择"></el-input>
+                            <el-input placeholder="请选择" v-model="form.permission_name" @focus="openDepart(2)"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="small" type="danger" @click="postReceivable_tag()">确定</el-button>
+                    <el-button size="small" type="danger" @click="confirm">确定</el-button>
                     <el-button size="small" type="info" @click="add_visible = false">取消</el-button>
                 </div>
             </div>
@@ -123,10 +100,15 @@
 
 <script>
     import LjDialog from '../../../common/lj-dialog.vue';
+    import DepartOrgan from '../../../common/departOrgan.vue';
+    import LjUpload from '../../../common/lightweightComponents/lj-upload';
     export default {
         name: "InternalRegulations",
         components:{
-            LjDialog
+            LjDialog,
+            DepartOrgan,
+            LjUpload
+
         },
         data() {
             return {
@@ -211,11 +193,42 @@
                     {id: 7, name: '乐伽大学', tag: '七'},
                     {id: 8, name: '稽查中心', tag: '八'},
                 ],
+                form:{
+                    classify_id:'',//上一级分类id
+                    file_id:'',//七牛云文件id
+                    permission_name:'',//权限名称
+                    org_id:'',//所属部门
+                    org_name:'',//部门名称
+                    permission_org_id:[],//
+                    // user_id:[],//用户
+                    file_info:[],
+                },
+                departModule:false,
+                open_type:'',
+                riskData:[],
+
             }
         },
+        mounted(){
+            this.getTabList();
+        },
         methods:{
+            getTabList(){//一级目录
+                this.$http.get(globalConfig.risk_sever+"/api/risk/classify",{parent_id:60}).then(res=>{
+                    console.log(res);
+                    if(res.status===200){
+                        console.log(res.data.data);
+                        this.riskData=res.data.data;
+                    }
+                })
+            },
+
             selects(id){
                 this.chooseTab=id;
+            },
+            openFile(val){
+                console.log(val);
+                window.open(val);
             },
             //鼠标移入
             onMousteIn: function (index) {
@@ -232,6 +245,53 @@
             },
             openDel(){
                 this.delete_visible = true;
+            },
+            openDepart(val){
+                this.departModule = true;
+                this.open_type = val;
+            },
+            hiddenOrgan (ids, names, arr) {//获取部门数据
+                if (ids !== 'close') {
+                    this.departModule = false;
+                    if(this.open_type===1){
+                        this.form.org_name=names;
+                        this.form.org_id=ids[0];
+                    }else if(this.open_type===2){
+                        this.form.permission_org_id = ids;
+                        this.form.permission_name = names;
+                    }
+                }
+            },
+            confirm(){
+                let paramsForm = {
+                    classify_id:this.$route.query.pre_id,//上级分类id
+                    file_id:this.form.file_info[0],//附件id
+                    permission:{
+                        org_id:this.form.permission_org_id,
+                        user_id:[],
+                    },//权限ids
+                    org_id:this.form.org_id,//部门ids
+                    name:this.form.name,//文件名
+                };
+                this.$http.post(globalConfig.risk_sever + "/api/risk/classify_document",paramsForm).then(res => {
+                    console.log(res);
+                    if (res.status === 200) {
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.add_visible = false;
+                        this.getDataLists();
+                        this.current_item = '';
+                    }else{
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
+                })
             }
         },
     }
@@ -287,6 +347,10 @@
                                 .right-info-list{
 
                                     .right-info-box{
+                                        .word_icon{
+                                            cursor: pointer;
+                                            @include riskManagementImg('word_icon.png', 'theme1');
+                                        }
                                         p{
 
                                         }

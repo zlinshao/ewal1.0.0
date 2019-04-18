@@ -6,12 +6,12 @@
                     <p class="flex-center">
                         <b>...</b>
                     </p>
-                    <h1>集团核心指标</h1>
+                    <h1>{{this.$route.query.pre_name}}</h1>
                 </div>
             </div>
             <div class="mainList" :style="{'height': this.mainListHeight() + 'px'}">
                 <div class="menu-list">
-                    <div v-for="(item,index) in riskManagement.childrenData" @click="routerLink(item.url)" class="flex-center">
+                    <div v-for="(item,index) in childrenRiskData" @click="routerLink('riskManagementMenu',{pre_id:item.id,pre_name:item.name,pre_data:childrenRiskData,pre_index:index+1})" class="flex-center">
                         <span class="writingMode">{{item.name}}</span>
                     </div>
                 </div>
@@ -21,12 +21,25 @@
 </template>
 
 <script>
-    import {riskManagement} from '../../../assets/js/allModuleList.js';
     export default {
         name: "index",
         data(){
             return{
-                riskManagement,
+                childrenRiskData:[],
+            }
+        },
+        mounted(){
+          this.getDataList();
+        },
+        methods:{
+            getDataList(){//二级目录
+                this.$http.get(globalConfig.risk_sever+"/api/risk/classify",{parent_id:this.$route.query.pre_id}).then(res=>{
+                    console.log(res);
+                    if(res.status===200){
+                        console.log(res.data.data);
+                        this.childrenRiskData=res.data.data;
+                    }
+                })
             }
         }
     }

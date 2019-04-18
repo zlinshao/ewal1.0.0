@@ -1,9 +1,9 @@
 export default {
   install(Vue, options) {
     // 路由跳转
-    Vue.prototype.routerLink = function (url, data) {
+    Vue.prototype.routerLink = function (url, data,url_name) {
       if (data) {
-        this.$router.push({path: url, query: data});
+        this.$router.push({path: url, query: data,name:url_name});
       } else {
         this.$router.push(url);
       }
