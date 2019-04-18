@@ -255,11 +255,11 @@
           @include nqImg('sffmbj.png', 'theme1');
 
           .left {
-            @include nqImg('yslx.png', 'theme1')
+            @include nqImg('yslx.png', 'theme1');
           }
 
           .right {
-            @include nqImg('celw.png', 'theme1')
+            @include nqImg('celw.png', 'theme1');
           }
         }
       }
