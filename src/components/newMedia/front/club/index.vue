@@ -31,6 +31,22 @@
                 </div>
             </div>
         </div>
+        <!--分页-->
+        <footer class="flex-center bottomPage">
+            <div class="develop flex-center">
+                <i class="el-icon-d-arrow-right"></i>
+            </div>
+            <div class="page">
+                <el-pagination
+                        :total="count"
+                        layout="total,jumper,prev,pager,next"
+                        :current-page="params.offset"
+                        :page-size="params.limit"
+                        @current-change="handleChangePage"
+                >
+                </el-pagination>
+            </div>
+        </footer>
         <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
 
         <!--详情-->
@@ -46,10 +62,6 @@
                         <p><span>活动时间</span><span>{{showData.start_time}}-{{showData.over_time}}</span></p>
                         <p><span>活动地点</span><span>{{showData.address}}</span></p>
                         <p><span>活动内容</span><span>{{showData.content}}</span></p>
-                        <!--<p v-for="item in clubDetail">-->
-                            <!--<span>{{item.name}}</span>-->
-                            <!--<span>{{item.content}}</span>-->
-                        <!--</p>-->
                     </div>
                 </div>
                 <div class="dialog_footer" v-show="clubStatus===2">
@@ -82,12 +94,12 @@
         data() {
             return {
                 clubStatus:'',
-                // clubDetail:[
-                //     {title:'活动名称',content:''},
-                //     {title:'活动时间',content:''},
-                //     {title:'活动地点',content:''},
-                //     {title:'活动内容',content:''},
-                // ],
+                params: {//查询参数
+                    search: '',
+                    offset: 1,
+                    limit: 6,
+                },
+                count:0,
                 showFinMenuList: false,
                 showModal:false,
                 showData:{
@@ -108,6 +120,11 @@
           this.getDataLists()
         },
         methods:{
+            //换页
+            handleChangePage(page) {
+                this.params.offset = page;
+                this.getDataLists();
+            },
             callbackSuccess(res) {
                 if (res.code === 200) {
                     this.$LjNotify('success', {
@@ -140,6 +157,7 @@
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
                     if(res.status===200){
                         this.clubData = res.data.data;
+                        this.count = res.data.total;
                     }
                 })
             },

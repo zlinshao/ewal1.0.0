@@ -14,19 +14,19 @@
                 </h2>
             </div>
             <div class="items-center listTopRight">
-                <div class="icons add" @click.stop="is_add = true;" v-if="tabView==='BackVideo'"><b>+</b></div>
+                <div class="icons add" @click.stop="add"><b>+</b></div>
             </div>
         </div>
         <keep-alive>
-            <component :is="tabView" :add_status="is_add" @getAddStatus="addStatus"></component>
+            <component :is="tabView" :is_add="add_visible" @callbackAdd="getCallbackAdd"></component>
         </keep-alive>
+
     </div>
 </template>
 
 <script>
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
-    import Upload from '../../../common/upload.vue';
     import BackVideo from './video.vue';
     import BackDocument from './file.vue';
     export default {
@@ -34,7 +34,6 @@
         components:{
             mediaList,
             LjDialog,
-            Upload,
             BackDocument,
             BackVideo,
         },
@@ -42,26 +41,11 @@
             return{
                 chooseTab:1,
                 showFinMenuList:false,
-                is_add:'',
+                add_visible:false,
                 selects:[
                     {id:1,title:"视频",url:'BackVideo'},{id:2,title:"文档",url:'BackDocument'}
                 ],
                 tabView:'BackVideo',
-                //上传
-                uploadFile: {
-                    keyName: 'album',
-                    setFile: [],
-                    size: {
-                        width: '50px',
-                        height: '50px'
-                    }
-                },
-                upload_form: {
-                    album: [],
-                    album_file: [],
-                }, //所有上传文件
-                rules:{
-                }
             }
         },
         watch:{
@@ -70,7 +54,6 @@
 
         methods:{
             getPath(){
-                console.log(this.$route.query.url);
                 this.tabView = this.$route.query.url;
                 this.chooseTab = this.$route.query.type;
             },
@@ -78,9 +61,13 @@
                 this.chooseTab = id;
                 this.tabView = url;
             },
-            addStatus(val){
-              this.is_add = val;
+            add(){
+                this.add_visible = true;
             },
+            getCallbackAdd(val){//获取取消状态
+                this.add_visible = val;
+            }
+
         }
     }
 </script>

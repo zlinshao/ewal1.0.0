@@ -2,56 +2,36 @@
   <div id="kpi">
     <div class="kpiTable">
       <div class="table">
-        <el-table :data="weekData" v-if="choosePeriod===0" highlight-current-row header-row-class-name="tableHeader">
-          <el-table-column label="姓名" prop="name" align="center"></el-table-column>
-          <el-table-column label="部门" prop="department" align="center"></el-table-column>
-          <el-table-column label="星期一" prop="monday" align="center"></el-table-column>
-          <el-table-column label="星期二" prop="tuesday" align="center"></el-table-column>
-          <el-table-column label="星期三" prop="wednesday" align="center"></el-table-column>
-          <el-table-column label="星期四" prop="thursday" align="center"></el-table-column>
-          <el-table-column label="星期五" prop="friday" align="center"></el-table-column>
-          <el-table-column label="星期六" prop="saturday" align="center"></el-table-column>
-          <el-table-column label="星期日" prop="sunday" align="center"></el-table-column>
+        <el-table :data="weekData" v-if="choosedPeriod===0" highlight-current-row header-row-class-name="tableHeader">
+          <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+          <el-table-column label="部门"  align="center" prop="department"></el-table-column>
+          <el-table-column v-for="(item, index) in week" :key="index" :label="item"  align="center"></el-table-column>
         </el-table >
-        <el-table :data="monthData" v-if="choosePeriod===1" highlight-current-row header-row-class-name="tableHeader">
+        <el-table :data="monthData" v-if="choosedPeriod===1" highlight-current-row header-row-class-name="tableHeader">
           <el-table-column label="姓名" prop="name" align="center"></el-table-column>
           <el-table-column label="部门" prop="department" align="center"></el-table-column>
-          <el-table-column label="1月"  align="center"></el-table-column>
-          <el-table-column label="2月"  align="center"></el-table-column>
-          <el-table-column label="3月"  align="center"></el-table-column>
-          <el-table-column label="4月"  align="center"></el-table-column>
-          <el-table-column label="5月"  align="center"></el-table-column>
-          <el-table-column label="6月"  align="center"></el-table-column>
-          <el-table-column label="7月"  align="center"></el-table-column>
-          <el-table-column label="8月"  align="center"></el-table-column>
-          <el-table-column label="9月"  align="center"></el-table-column>
-          <el-table-column label="10月" align="center"></el-table-column>
-          <el-table-column label="11月" align="center"></el-table-column>
-          <el-table-column label="12月" align="center"></el-table-column>
+          <el-table-column v-for="(item, index) in month" :key="index" :label="item"  align="center"></el-table-column>
           <el-table-column label="年平均" align="center"></el-table-column>
         </el-table>
-        <el-table  :data="seasonData" v-if="choosePeriod===2" highlight-current-row header-row-class-name="tableHeader">
+        <el-table  :data="seasonData" v-if="choosedPeriod===2" highlight-current-row header-row-class-name="tableHeader">
           <el-table-column label="姓名" prop="name" align="center"></el-table-column>
           <el-table-column label="部门" prop="department" align="center"></el-table-column>
-          <el-table-column label="第一季度" align="right"></el-table-column>
-          <el-table-column label="第二季度" align="right"></el-table-column>
-          <el-table-column label="第三季度" align="right"></el-table-column>
-          <el-table-column label="第四季度" align="right"></el-table-column>
+          <el-table-column v-for="(item, index) in season" :key="index" :label="item"  align="right"></el-table-column>
         </el-table>
-        <el-table  :data="halfyearData" v-if="choosePeriod===3" highlight-current-row header-row-class-name="tableHeader">
+        <el-table  :data="halfyearData" v-if="choosedPeriod===3" highlight-current-row header-row-class-name="tableHeader">
           <el-table-column label="姓名" prop="name" align="center" width="200px"></el-table-column>
           <el-table-column label="部门" prop="department" align="center" width="200px"></el-table-column>
           <el-table-column label="上半年"  align="center" width="400px"></el-table-column>
           <el-table-column label="下半年"  align="center" width="400px"></el-table-column>
         </el-table>
-        <el-table  :data="yearData" v-if="choosePeriod===4" highlight-current-row header-row-class-name="tableHeader">
+        <el-table  :data="yearData" v-if="choosedPeriod===4" highlight-current-row header-row-class-name="tableHeader">
           <el-table-column label="姓名" prop="name" align="center" width="200px"></el-table-column>
           <el-table-column label="部门" prop="department" align="center" width="200px"></el-table-column>
           <el-table-column label="年度考核成绩" align="center" width="700px"></el-table-column>
         </el-table>
       </div>
       <div class="periodButton">
-        <el-button v-for="(item, index) in period"  :key="index" @click="handleTable(index)" :class="choosePeriod==index ? 'chooseButton' : 'changeButton'">{{item.title}}</el-button>
+        <el-button v-for="(item, index) in period"  :key="index" @click="choosePeriod(index)" :class="choosedPeriod==index ? 'chooseButton' : 'changeButton'">{{item.title}}</el-button>
       </div>
     </div>
     <footer class="flex-center bottomPage">
@@ -77,7 +57,10 @@
           {id: 3, title: '半年度'},
           {id: 4, title: '年度'}
         ],
-        choosePeriod: 0,
+        week: ['星期一','星期二','星期三','星期四','星期五','星期六','星期日'],
+        month: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+        season: ['第一季度','第二季度','第三季度','第四季度'],
+        choosedPeriod: 0,
         weekData:[
           {
             name:"张艺兴",
@@ -131,8 +114,8 @@
       }
     },
     methods:{
-      handleTable: function(index) {
-        this.choosePeriod = index
+      choosePeriod: function(index) {
+        this.choosedPeriod = index
       }
     }
   }
@@ -150,54 +133,4 @@
     $url: '../../../../assets/image/humanResource/militaryOrganization/kpi/' + $n + '/' + $m;
     @include bgImage($url);
   }
-    #kpi {
-      background-color: white;
-      height: 100%;
-        .kpiTable{
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          .table{
-            width: 100%;
-            margin-right: 148px;
-          }
-          .periodButton{
-            height: 165px;
-            margin-top: 67px;
-            display: flex;  
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-end;
-            .changeButton{
-              width: 65px;
-              height:25px;
-              padding-top: 5px;
-              display: flex;
-              justify-content: center;
-              background:rgba(223,223,223,1);
-              font-family: MicrosoftYaHei;
-              font-size:9px;
-              line-height:12px;
-              border-radius: 5px 0px 0px 5px;
-              &:hover{
-                background-color: rgba(207,46,51,1);
-                color:white;
-              }
-            }
-            .chooseButton{
-              width: 65px;
-              height:25px;
-              padding-top: 5px;
-              display: flex;
-              justify-content: center;
-              background-color: rgba(207,46,51,1);
-              color:white;
-              font-family: MicrosoftYaHei;
-              font-size:9px;
-              line-height:12px;
-              border-radius: 5px 0px 0px 5px;
-            }
-          }
-        }
-    }
 </style>

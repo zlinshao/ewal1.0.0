@@ -1,14 +1,14 @@
 <template>
-  <LjDialog :visible="delete_visible" :size="{width: 480 + 'px',height: 310 + 'px'}" @close="handleCloseDelete" id='delete_dailog'>
+  <LjDialog :visible="add_visible" :size="{width: 480 + 'px',height: 310 + 'px'}" @close="handleCloseAdd" id='delete_dailog'>
     <div class='dialog_container'>
       <div class="dialog_main">
         <div class='img_box'></div>
-        <p class='words'>删除</p>
-        <p class='notice'>确定要删除这条工单吗?</p>
+        <p class='words'>添加</p>
+        <p class='notice'>确定要添加吗?</p>
       </div>
       <div class="dialog_footer">
         <el-button type="danger" size="small" @click="handleCloseAddOrder">新增</el-button>
-        <el-button type="info" size="small" @click="handleCloseDelete">取消</el-button>
+        <el-button type="info" size="small" @click="handleCloseAdd">取消</el-button>
       </div>
     </div>
   </LjDialog>
@@ -18,9 +18,9 @@
 import LjDialog from '../../common/lj-dialog.vue';
 export default {
   components: { LjDialog },
-  props: ['delete_visible'],
+  props: ['add_visible'],
   methods: {
-    handleCloseDelete () {
+    handleCloseAdd () {
       this.$emit('close', false)
     },
     handleCloseAddOrder () {
@@ -62,10 +62,10 @@ export default {
 #theme_name.theme1 {
   #delete_dailog {
     .img_box {
-      @include backgroundImg("delete.png", "theme1");
+      @include backgroundImg("add.png", "theme1");
     }
     .words {
-      color: #cf2e33;
+      color: #2ecf74;
     }
     .notice {
       color: #686874;
