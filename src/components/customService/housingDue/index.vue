@@ -854,12 +854,10 @@ export default {
     // 催办
     urgedDealWith (row) {
       this.currentRow = row
-      console.log(row)
       this.urgedDeal_visible = true
     },
     // 确定催办
     handleUrgedDeal () {
-
       let params = {
         sign_user_id: '',
         content: this.urgedDeal_note
