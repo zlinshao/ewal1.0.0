@@ -29,7 +29,6 @@
       }
     }
 
-
     .header_right {
       display: flex;
       flex-direction: row-reverse;
@@ -46,6 +45,45 @@
           margin-bottom: 6px;
         }
       }
+    }
+
+    .read-dialog {
+      .dialog_main {
+        display: flex;
+        flex-direction: column;
+        .read-toolbar {
+          height: 10%;
+          //background-color: red;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
+          .read-icon {
+            height: 30px;
+            width: 100px;
+            cursor: pointer;
+            margin-right: 20px;
+            @include flex('flex-center');
+            b {
+              color: #797982;
+              font-size: 14px;
+            }
+            &.checked {
+              b {
+                color: white;
+              }
+            }
+          }
+        }
+        .read-container {
+          flex: 1 0 auto;
+          padding: 20px;
+          background-color: white;
+          //background-color: blue;
+        }
+
+      }
+
     }
   }
 }

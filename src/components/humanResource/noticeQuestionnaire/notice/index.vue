@@ -39,7 +39,7 @@
           prop="status"
           label="状态">
           <template slot-scope="scope">
-            <div>未读<span style="color: #0C66FF;cursor: pointer">{{scope.row.unread_people}}人</span>/共{{scope.row.all_people}}人
+            <div>未读<span @click="showReadDialog(scope.row.id)" style="color: #0C66FF;cursor: pointer">{{scope.row.unread_people}}人</span>/共{{scope.row.all_people}}人
             </div>
           </template>
         </el-table-column>
@@ -169,7 +169,7 @@
 
     <!--添加公告类型-->
     <lj-dialog
-      :visible="add_notice_type_dialog_visible"
+      :visible.sync="add_notice_type_dialog_visible"
       :size="{width: 500 + 'px',height: 300 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -191,6 +191,33 @@
         </div>
       </div>
     </lj-dialog>
+
+
+    <!--未读/已读人员列表-->
+    <lj-dialog
+      :visible.sync="read_dialog_visible"
+      :size="{width:'60%',height: '90%'}">
+      <div class="dialog_container read-dialog">
+        <div class="dialog_header">
+          <h3>{{read_dialog_title}}</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="read-toolbar">
+            <div class="read-icon" @click="readChooseHandler(item.id)" :class="{checked:item.id==read_choose_tab}" v-for="item in read_choose_list">
+              <b>{{item.name}}</b>
+            </div>
+            <!--<div class="read-icon" @click="showNoReadList"><b>未读人员</b></div>
+            <div class="read-icon" @click="showReadList"><b>已读人员</b></div>-->
+          </div>
+          <div class="read-container">
+            <user-list :ids="userList_ids"></user-list>
+          </div>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+
 
 
     <!--兑换规则-->
@@ -367,6 +394,7 @@
 
 <script>
   import _ from 'lodash';
+  import UserList from '../../../common/lightweightComponents/UserList';
   import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
   import UserChoose from '../../../common/lightweightComponents/UserChoose';
@@ -383,6 +411,7 @@
       OrgChoose,
       LjUpload,
       DropdownList,
+      UserList,
     },
     data() {
       return {
@@ -427,19 +456,6 @@
         url: globalConfig.humanResource_server,
         DROPDOWN_CONSTANT,
         checkList: [],
-        showData: {
-          title: '标题',
-          status: '状态',
-          //no_read:500,
-          //total:1000,
-          publish_time: '发布时间',
-          /*name: '姓名',
-          department: '岗位',
-          station: '部门',
-          event: '事件',
-          bonus: '奖励',
-          remark: '备注',*/
-        },
         chooseRowIds: [],
         tableData: [],
         counts: 0,
@@ -448,6 +464,8 @@
           page: 1,
           limit: 3,
         },
+        detailData:[],
+        userList_ids:[],
 
         publish_notice_dialog_visible: false,//发布公告对话框
         publish_notice_form: {
@@ -474,6 +492,22 @@
         add_notice_type_form: {
           name: '',//公告类型名称
         },
+
+        //已读 未读 列表对话框
+        read_dialog_visible: false,
+        read_dialog_title:'未读人员列表',
+
+        read_choose_tab:1,
+        read_choose_list:[
+          {
+            id:1,
+            name:'未读人员',
+          },
+          {
+            id:2,
+            name:'已读人员',
+          }
+        ],
 
 
         //乐伽dialog
@@ -550,10 +584,40 @@
           console.log(val, oldVal);
           this.exchange_rules = !this.exchange_rules;
         },
-      }
+      },
+      /*read_choose_tab: {
+        handler(val,oldVal) {
+          if(val==1) {
+            this.userList_ids = detailData?.unread_user_id||[];
+          } else if(val==2) {
+            this.userList_ids = detailData?.all_user_id||[];
+          }
+        },
+      },*/
+
     },
     computed: {},
     methods: {
+      //显示已读未读dialog对话框
+      showReadDialog(id) {
+        this.detailData = [];
+        this.$http.get(`${this.url}announcement/announcement/${id}`).then(res=> {
+          debugger
+          if(res.code.endsWith('0')) {
+            this.detailData = res.data;
+            this.userList_ids = detailData?.unread_user_id||[];
+          }
+        });
+      },
+
+      readChooseHandler(id) {
+        this.read_choose_tab=id;
+        if(id==2) {
+          this.userList_ids = detailData?.all_user_id||[];
+        } else {
+          this.userList_ids = detailData?.unread_user_id||[];
+        }
+      },
 
       //获取公告列表
       getNoticeList() {
@@ -592,7 +656,9 @@
                 this.$LjNotify('success',{
                   title:'成功',
                   message:res.msg,
-                })
+                });
+                this.publish_notice_dialog_visible = false;
+                this.getNoticeList();
               }else {
                 this.$LjNotify('error',{
                   title:'失败',
@@ -619,7 +685,7 @@
               ...this.add_notice_type_form
             };
             this.$http.post(`${this.url}announcement/announcement_type`, params).then(res => {
-              debugger
+              //debugger
               if (res.code.endsWith('0')) {
                 this.$LjNotify('success', {
                   title: '成功',
@@ -627,6 +693,7 @@
                 });
                 this.$refs['dropdown1'].update();
                 this.add_notice_type_dialog_visible = false;
+
               } else {
                 this.$LjNotify('error', {
                   title: '失败',
@@ -773,6 +840,14 @@
 
   #theme_name.theme1 {
     #notice {
+      .read-icon {
+        @include nqImg('button_bg_gray.png', 'theme1');
+        &.checked {
+          @include nqImg('button_bg_red.png','theme1');
+        }
+      }
+
+
 
       .listTopRight {
         .icons-font {
