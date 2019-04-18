@@ -233,6 +233,9 @@
                 <p class="icons user"></p>
               </div>
             </el-form-item>
+            <el-form-item label="部门负责岗位">
+              <el-input v-model="departForm.position" @focus="post_visible = true" readonly></el-input>
+            </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
@@ -490,6 +493,9 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!--岗位-->
+    <PostOrgan :module="post_visible" @close="handleGetPost"></PostOrgan>
   </div>
 </template>
 
@@ -507,6 +513,7 @@
   import DepartOrgan from '../../common/departOrgan.vue'
   import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
+  import PostOrgan from '../../common/postOrgan.vue';
 
   export default {
     name: "index",
@@ -521,10 +528,13 @@
       Upload,
       StaffOrgan,
       Organization,
-      DepartOrgan
+      DepartOrgan,
+      PostOrgan
     },
     data() {
       return {
+        post_visible: false,
+
         //新部门管理
         show_depart_detail: false,
         control_btn: [
@@ -681,7 +691,9 @@
           leader: '',
           leader_id: [],
           parent_id: [1],
-          parent: '南京乐伽商业管理有限公司'
+          parent: '南京乐伽商业管理有限公司',
+          position: '',
+          position_id: ''
         },//新增部门
         visibleStatus: false,//弹出部门
 
@@ -715,12 +727,14 @@
         value: '',
 
         //导出报表
-        exportInfo: ''
+        exportInfo: '',
       }
     },
     mounted() {
       this.getDepartList();
       this.getPowerList();
+
+
     },
     watch: {},
     computed: {
@@ -729,6 +743,13 @@
       },
     },
     methods: {
+      handleGetPost(id,name) {
+        if (id !== 'close') {
+          this.departForm.position = name;
+          this.departForm.position_id = id[0];
+        }
+        this.post_visible = false;
+      },
       //新部门管理
       //切换人员管理/职位管理
       handleCheckStaffPost(tmp) {
@@ -1149,7 +1170,7 @@
         this.is_edit_depart = true;
         this.lj_size = {
           width: '510px',
-          height: '450px',
+          height: '550px',
         };
         this.depart_visible = true;
       },
@@ -1278,7 +1299,7 @@
             this.depart_visible = true;
             this.lj_size = {
               width: '510px',
-              height: '450px',
+              height: '550px',
             };
             break;
         }

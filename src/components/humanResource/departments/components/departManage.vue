@@ -548,7 +548,7 @@
       </div>
     </lj-dialog>
     <!--新增岗位===============================================================================================-->
-    <lj-dialog :visible="addPostVisible" :size="{width: 550 + 'px',height: 650 + 'px'}" @close="handleCancelAdd">
+    <lj-dialog :visible="addPostVisible" :size="{width: 550 + 'px',height:750 + 'px'}" @close="handleCancelAdd">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>新建岗位</h3>
@@ -568,6 +568,15 @@
             </el-form-item>
             <el-form-item label="岗位标识" required>
               <el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="顶级岗位" required>
+              <div class="changeChoose flex-center" style="margin-top: 12px">
+                <el-radio v-model="add_position_form.is_top" :label="0">否</el-radio>
+                <el-radio v-model="add_position_form.is_top" :label="1">是</el-radio>
+              </div>
+            </el-form-item>
+            <el-form-item label="岗位排序" required>
+              <el-input v-model="add_position_form.order" type="number" placeholder="值越小，越靠前"></el-input>
             </el-form-item>
             <el-form-item label="所属部门" required>
               <div class="items-center iconInput">
@@ -875,6 +884,8 @@
           org_id: [],
           description: '',
           sign: '',
+          is_top: '',
+          order: ''
         },
 
         //禁用
@@ -1350,7 +1361,9 @@
           org_id: [],
           description: '',
           sign: '',
-          level: ''
+          level: '',
+          is_top: '',
+          order: ''
         };
         this.addPostVisible = false;
       },
