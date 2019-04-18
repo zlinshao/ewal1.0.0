@@ -2,8 +2,6 @@
 
 #theme_name {
   #questionnaire {
-    height: 100%;
-    background-color: red;
     .listTopCss {
       height: 0;
       .search-toolbar {
@@ -35,7 +33,7 @@
 
 #theme_name.theme1 {
   #questionnaire {
-    .header_right {
+    /*.header_right {
       display: flex;
       flex-direction: row-reverse;
       .icon-add {
@@ -51,7 +49,7 @@
           margin-bottom: 6px;
         }
       }
-    }
+    }*/
   }
 }
 

@@ -22,21 +22,20 @@
       </div>
     </div>
 
-    <div class="main-container nq-container">
-      <div class="content flex-center" v-if="!chooseTab">
+    <div class="main-container nq-container" v-if="!chooseTab">
+      <div class="content flex-center" >
         <div class="left flex-center" @click="chooseTab=1"><span>公告</span></div>
         <div class="right flex-center" @click="chooseTab=2"><span class="gray">问卷调查</span></div>
       </div>
     </div>
     <!--组件-->
     <div class="up" v-if="chooseTab==1">
-      <Notice :searchVal="searchFruit1" :reward_order_visible="reward_order_visible"
-                :exchange_rules_visible="exchange_rules_visible"></Notice>
+      <Notice :searchVal="searchFruit1"></Notice>
     </div>
 
     <!--组件-->
     <div class="down" v-if="chooseTab==2">
-      <Questionnaire :searchVal="searchFruit2" :reward_order_visible="reward_order_visible"></Questionnaire>
+      <Questionnaire :searchVal="searchFruit2"></Questionnaire>
     </div>
 
 
