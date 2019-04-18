@@ -20,7 +20,7 @@
           <div @click="showPatent(index)">
             <h1>{{item.department}}</h1>
             ...............................
-            <h2></h2>
+            <!-- <h2></h2> -->
             <h3>{{item.name}}</h3>
           </div>
           <span>
@@ -184,7 +184,6 @@
           if (res.status===200) {
             this.patentList = [];
             for(var i = 0; i < res.data.data.length; i++){
-              console.log(res.data)
               let obj ={
                 id: res.data.data[i].id,
                 name: res.data.data[i].name,
@@ -204,6 +203,10 @@
       },
       addPatent: function () {
         this.add_visible = true
+        this.patentAddDetail.name = ''
+        this.patentAddDetail.org_id = ''
+        this.patentAddDetail.file_id = ''
+        this.patentAddDetail.permission = ''
       },
       editPatent: function(index) {
         this.edit_visible = true;
@@ -212,7 +215,6 @@
         this.patentEditDetail.name = this.patentList[index].name,
         this.patentEditDetail.org_id = this.patentList[index].org_id,
         this.patentEditDetail.idpermission = 0
-        
       },
       removePatent: function(index) {
         this.delete_visible = true;
@@ -229,12 +231,38 @@
                         org_id: [this.patentAddDetail.permission[0]]
                       }
         } 
-        this.$http.post(`${this.url}/api/knowledge/patent`,params).then(res => {
-          if (res.status===200) {
-            this.add_visible = false
-            this.getPatentList();
-          }
-        })
+        if(!params.name) {
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请输入专利名称',
+          });
+        }
+        else if(!params.org_id) {
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请选择部门',
+          });
+        }
+        else if(!params.permission) {
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请选择可见范围',
+          });
+        }
+        else if(!params.file_id) {
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请上传文件',
+          });
+        }
+        else{
+          this.$http.post(`${this.url}/api/knowledge/patent`,params).then(res => {
+            if (res.status===200) {
+              this.add_visible = false
+              this.getPatentList();
+            }
+          })
+        }
       },
       editOk: function() {
         let params = {
@@ -247,13 +275,38 @@
                         org_id: this.patentEditDetail.permission
                       }
         } 
-       
-        this.$http.put(`${this.url}/api/knowledge/patent/${params.id}`,params).then(res => {
-          if (res.status===200) {
-            this.edit_visible = false
-            this.getPatentList();
-          }
-        })
+        if(!params.name) {
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请输入专利名称',
+          });
+        }
+        else if(!params.org_id) {
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请选择部门',
+          });
+        }
+        else if(!params.permission) {
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请选择可见范围',
+          });
+        }
+        else if(!params.file_id) {
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请上传文件',
+          });
+        }
+        else{
+          this.$http.put(`${this.url}/api/knowledge/patent/${params.id}`,params).then(res => {
+            if (res.status===200) {
+              this.edit_visible = false
+              this.getPatentList();
+            }
+          })
+        }
       },
       delOk: function() {
         let params = {
