@@ -235,7 +235,7 @@
             <el-row :gutter="10">
               <el-col :span='2' class='el-col-box'>
                 <div :class='{"el-box":true,"el-box-active":addOrderChosen == option.id}' v-for='option in addOrderChosen_options'
-                  @click='chosenOptions(option.id)'>
+                  @click='chosenOptions(option.id)' :key='option.id'>
                   <p>{{option.title}}</p>
                 </div>
               </el-col>
@@ -292,7 +292,7 @@
                     <p class='nothing_words'>这里什么都没有哦~</p>
                   </div>
                   <div class='order_content_boxes' v-else>
-                    <div class='order_content' v-for='i in 3'>
+                    <div class='order_content' v-for='i in 3' :key='i'>
                       <div class='order_content_box'>
                         <p class='order_title1'>
                           <span>工单内容</span>
@@ -320,7 +320,7 @@
                     <p class='nothing_words'>这里什么都没有哦~</p>
                   </div>
                   <div class='order_content_boxes' v-else>
-                    <div class='order_content  order_content2' v-for='i in 3'>
+                    <div class='order_content  order_content2' v-for='i in 3' :key='i'>
                       <div class='order_content_box'>
                         <p class='order_title1'>
                           <span>工单内容</span>
@@ -478,7 +478,7 @@
                   <b @click='handleAddRecord'>+</b>
                 </div>
                 <div class='detail_box scroll_bar'>
-                  <div class="content flex" v-for='follow in detail_form.follow_data' v-if='detail_form.follow_data'>
+                  <div class="content flex" v-for='follow in detail_form.follow_data' :key='follow.payper' v-if='detail_form.follow_data'>
                     <div class='detail_dialog_left'>
                       <p>{{follow.payper}}</p>
                       <p>{{follow.next_follow_time}}</p>
@@ -537,7 +537,8 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='chooseTab !==338 && followRecord.type == 2' v-for='(com,index) in followRecord.complained'>
+            <el-row :gutter="20" width='100%' v-if='chooseTab !==338 && followRecord.type == 2' v-for='(com,index) in followRecord.complained'
+              :key='"comp"+index'>
               <el-col :span="8">
                 <el-form-item label="认责人">
                   <el-select placeholder="请选择" v-model='com.type'>
@@ -585,7 +586,118 @@
     <!--选择部门-->
     <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart"></DepartOrgan>
     <!-- 财务记录 -->
+    <ljDialog :visible='financial_visible' :size="{width: 720 + 'px',height: 680 + 'px'}" @close='handkeCloseFinancial'>
+      <div class="dialog_container recordList">
+        <div class="dialog_header">
+          <h3>财务记录</h3>
+        </div>
+        <div class='dialog_main'>
+          <el-table :data="financial.table" height="480px" highlight-current-row header-row-class-name="tableHeader"
+            style="width: 100%" v-if='financial.table_count > 0'>
+            <el-table-column key="应付时间" align="center" prop="time" label="应付时间"></el-table-column>
+            <el-table-column key="实付时间" align="center" prop="real_time" label="实付时间"></el-table-column>
+            <el-table-column key="应付金额" align="center" prop="money" label="应付金额"></el-table-column>
+            <el-table-column key="实付金额" align="center" label="实付金额">
+              <template slot-scope="scope">
+                <span>{{scope.row.real_money}}</span>
+                <el-tooltip class="item" effect="light" :content="scope.row.real_money" placement="right">
+                  <i class='warn_icon'></i>
+                </el-tooltip>
+              </template>
+            </el-table-column>
+          </el-table>
+          <p v-else>暂无数据</p>
+          <el-pagination @current-change="handleFinancialCurrentPage" :current-page="financial.page" layout="total,  prev, pager, next, jumper"
+            :total="financial.table_count" v-if='financial.table_count > 0'>
+          </el-pagination>
+        </div>
+      </div>
+    </ljDialog>
+    <!-- 报销记录 -->
+    <ljDialog :visible='expense_visible' :size="{width: 720 + 'px',height: 680 + 'px'}" @close='handkeCloseExpense'>
+      <div class="dialog_container recordList">
+        <div class="dialog_header">
+          <h3>财务记录</h3>
+        </div>
+        <div class='dialog_main'>
+          <el-table :data="expense.table" height="480px" highlight-current-row header-row-class-name="tableHeader"
+            style="width: 100%">
+            <el-table-column key="创建时间" align="center" prop="time" label="应付时间"></el-table-column>
+            <el-table-column key="结算时间" align="center" prop="real_time" label="实付时间"></el-table-column>
+            <el-table-column key="报销金额" align="center" prop="money" label="应付金额"></el-table-column>
+            <el-table-column key="实付金额" align="center" label="实付金额">
+              <template slot-scope="scope">
+                <span>{{scope.row.real_money}}</span>
+                <el-tooltip class="item" effect="light" :content="scope.row.real_money" placement="right">
+                  <i class='warn_icon'></i>
+                </el-tooltip>
+              </template>
+            </el-table-column>
+          </el-table>
 
+          <el-pagination @current-change="handleExpenseCurrentPage" :current-page="expense.page" layout="total,  prev, pager, next, jumper"
+            :total="expense.table_count">
+          </el-pagination>
+        </div>
+      </div>
+    </ljDialog>
+    <!-- 回访记录 -->
+    <lj-dialog :visible="record_visible" :size="{width: 720 + 'px',height: 680 + 'px'}" @close="handleCloserecord">
+      <div class="dialog_container detail_dialog">
+        <div class="dialog_header">
+          <h3>回访记录</h3>
+        </div>
+        <div class='dialog_main'>
+          <ul v-if='record_table.length > 0'>
+            <li v-for='item in record_table'>
+              <div class='detail_dialog_left'>
+                <p>{{item.user || '----'}}</p>
+                <p>{{item.time}}</p>
+              </div>
+              <div class="detail_dialog_center">
+
+                <div class='circle'></div>
+              </div>
+              <div class='detail_dialog_right' v-if='item.is_connect== 0'>
+                <p>未接通</p>
+              </div>
+              <div class='detail_dialog_right' v-else>
+                <p class='detail_dialog_note'>{{item.remark}}</p>
+                <el-rate class='detail_dialog_rato' v-model="item.star" disabled score-template="{value}">
+                </el-rate>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </lj-dialog>
+    <!-- 退租记录 -->
+    <ljDialog :visible='without_visible' :size="{width: 720 + 'px',height: 680 + 'px'}" @close='handkeCloseWithout'>
+      <div class="dialog_container recordList">
+        <div class="dialog_header">
+          <h3>退租记录</h3>
+        </div>
+        <div class='dialog_main'>
+          <el-table :data="without.table" height="480px" highlight-current-row header-row-class-name="tableHeader"
+            style="width: 100%">
+            <el-table-column key="退租时间" align="center" prop="time" label="退租时间"></el-table-column>
+            <el-table-column key="退房时间" align="center" prop="real_time" label="退租时间"></el-table-column>
+            <el-table-column key="退款金额" align="center" label="退租时间">
+              <template slot-scope="scope">
+                <span>{{scope.row.real_money}}</span>
+                <el-tooltip class="item" effect="light" :content="scope.row.real_money" placement="right">
+                  <i class='warn_icon'></i>
+                </el-tooltip>
+              </template>
+            </el-table-column>
+          </el-table>
+
+          <el-pagination @current-change="handleWithoutCurrentPage" :current-page="without.page" layout="total,  prev, pager, next, jumper"
+            :total="without.table_count">
+          </el-pagination>
+        </div>
+      </div>
+    </ljDialog>
   </div>
 </template>
 
@@ -885,6 +997,47 @@ export default {
         }
       ],
       currentMethod: null, //记录当前操作
+      financial_visible: false, // 财务记录
+      financial: {
+        page: 1,
+        table_count: 1,
+        table: [
+          {
+            time: '2019.1.22',
+            real_time: '2019.1.22',
+            money: '300',
+            real_money: '300'
+          }
+        ]
+      },
+      expense_visible: false,
+      expense: {
+        page: 1,
+        table_count: 1,
+        table: [
+          {
+            time: '2019.1.22',
+            real_time: '2019.1.22',
+            money: '300',
+            real_money: '300'
+          }
+        ]
+      },
+      record_visible: false,
+      record_table: [],
+      without_visible: false,
+      without: {
+        page: 1,
+        count: 1,
+        table: [
+          {
+            time: '2019.1.22',
+            real_time: '2019.1.22',
+            money: '300',
+            real_money: '300'
+          }
+        ]
+      }
     }
   },
   mounted () {
@@ -1133,8 +1286,6 @@ export default {
       this.add_visible = true
       console.log(this.followRecord)
       this.currentMethod = 'addRecord'
-
-
     },
     addRecordFun (par) {
       if (par) {
@@ -1188,6 +1339,39 @@ export default {
     },
     delComplaintsType (index) {
       this.followRecord.complained.splice(index, 1)
+    },
+
+    // 财务记录 换页
+    handleFinancialCurrentPage (val) {
+      this.financial.page = val
+    },
+    // 财务记录 关闭
+    handkeCloseFinancial () {
+      this.financial_visible = false
+      this.expense.page = 1
+    },
+    // 报销记录 换页
+    handleExpenseCurrentPage (val) {
+      this.expense.page = val
+    },
+    // 报销记录 关闭
+    handkeCloseExpense () {
+      this.expense_visible = false
+      this.expense.page = 1
+    },
+    //  回访记录 关闭
+    handleCloserecord () {
+      this.record_visible = false
+      this.record_table = []
+    },
+    // 退租记录 换页
+    handleWithoutCurrentPage (val) {
+      this.without.page = val
+    },
+    //  退租记录 关闭
+    handkeCloseWithout () {
+      this.without_visible = false
+      this.without.page = 1
     },
     // 客服入口
     moduleList () {

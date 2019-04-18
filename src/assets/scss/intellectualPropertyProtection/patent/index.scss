@@ -38,32 +38,33 @@
             align-items: center;
             margin: 74px 0 19px 0;
             &:hover {
-              h2 , h3 {
+              h3 {
                 color:rgba(207,46,51,1);
               }
             }
             >h1 {
-              width: 105px;
-              height: 24px;
+              height: 40px;
+              width: 150px;
               font-size: 24px;
               font-family: 'jingDianXingShu';
               color:rgba(104,104,116,1);
               line-height: 24px;
               display: flex;
               justify-content: center;
+              margin-bottom: 10px;
             }
-            h2 {
-              width: 105px;
-              height: 30px;
-              margin-left: 0px;
-              font-size:21px;
-              font-family: MicrosoftYaHei-Bold;
-              font-weight:bold;
-              color:rgba(104,104,116,1);
-              line-height:27px;
-              display: flex;
-              justify-content: center;
-            }
+            // h2 {
+            //   width: 105px;
+            //   height: 30px;
+            //   margin-left: 0px;
+            //   font-size:21px;
+            //   font-family: MicrosoftYaHei-Bold;
+            //   font-weight:bold;
+            //   color:rgba(104,104,116,1);
+            //   line-height:27px;
+            //   display: flex;
+            //   justify-content: center;
+            // }
             h3 {
               width: 136px;
               height: 26px;
@@ -75,6 +76,7 @@
               letter-spacing: 1px;
               display: flex;
               justify-content: center;
+              margin-top: 20px;
             }
           }
           div + span {

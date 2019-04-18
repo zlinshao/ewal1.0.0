@@ -8,7 +8,6 @@
 
     </div>
 
-
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
         :data="tableData"
@@ -39,7 +38,7 @@
           prop="status"
           label="状态">
           <template slot-scope="scope">
-            <div>未读<span style="color: #0C66FF;cursor: pointer">{{scope.row.unread_people}}人</span>/共{{scope.row.all_people}}人
+            <div>未读<span @click="showReadDialog(scope.row.id)" style="color: #0C66FF;cursor: pointer">{{scope.row.unread_people}}人</span>/共{{scope.row.all_people}}人
             </div>
           </template>
         </el-table-column>
@@ -54,7 +53,7 @@
           align="center"
           label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" plain>编辑再发布</el-button>
+            <el-button @click="editNotice(scope.row)" type="primary" size="mini" plain>编辑再发布</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -83,7 +82,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>公告</h3>
+          <h3>{{publish_notice_dialog_title}}</h3>
 
           <div class="header_right">
             <div>{{publish_notice_form.currentDate}}</div>
@@ -151,7 +150,8 @@
               <el-form-item required :prop="'sanction_info.'+index+'.user_id'"
                             :rules="{required: true, message: '请选择责任人', trigger: 'blur'}"
                             label="责任人">
-                <user-choose title="请选择责任人" v-model="publish_notice_form.sanction_info[index].user_id"></user-choose>
+                <user-choose num="1" title="请选择责任人"
+                             v-model="publish_notice_form.sanction_info[index].user_id"></user-choose>
               </el-form-item>
             </div>
 
@@ -159,7 +159,10 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="publishNotice">发布
+          <el-button v-if="publish_notice_dialog_title=='发布公告'" size="small" type="danger" @click="publishNotice">发布
+          </el-button>
+          <el-button v-if="publish_notice_dialog_title=='编辑公告'" size="small" type="danger"
+                     @click="handleConfirmEditNotice">发布
           </el-button>
           <el-button size="small" type="danger" @click="publish_notice_dialog_visible = false">取消
           </el-button>
@@ -169,7 +172,7 @@
 
     <!--添加公告类型-->
     <lj-dialog
-      :visible="add_notice_type_dialog_visible"
+      :visible.sync="add_notice_type_dialog_visible"
       :size="{width: 500 + 'px',height: 300 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -193,170 +196,164 @@
     </lj-dialog>
 
 
-    <!--兑换规则-->
+    <!--未读/已读人员列表-->
     <lj-dialog
-      :visible="exchange_rules"
-      :size="{width: 900 + 'px',height: 700 + 'px'}"
-      @close="exchange_rules = false"
-    >
-      <div class="dialog_container">
+      :visible.sync="read_dialog_visible"
+      :size="{width:'60%',height: '90%'}">
+      <div class="dialog_container read-dialog">
         <div class="dialog_header">
-          <h3>兑换规则</h3>
-          <div class="header_right" @click="exchangeRulesFormHandler">
-            <!--<el-button size="mini" type="primary" plain>增加</el-button>-->
-            <div class="icon-add"><b>+</b></div>
+          <h3>{{read_dialog_title}}</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="read-toolbar">
+            <div class="read-icon" @click="readChooseHandler(item.id)" :class="{checked:item.id==read_choose_tab}"
+                 v-for="item in read_choose_list">
+              <b>{{item.name}}</b>
+            </div>
+            <!--<div class="read-icon" @click="showNoReadList"><b>未读人员</b></div>
+            <div class="read-icon" @click="showReadList"><b>已读人员</b></div>-->
+          </div>
+          <div class="read-container">
+            <user-list :ids="userList_ids"></user-list>
           </div>
         </div>
-        <div class="dialog_main borderNone">
-          <el-table
-            :data="exchangeRulesData"
-            highlight-current-row
-            :height="this.mainListHeight(430) + 'px'"
-            :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow"
-            header-row-class-name="tableHeader"
-            @row-dblclick="exchangeTableDblClick"
-            :row-style="{height:'40px'}"
-            style="width: 100%">
-            <el-table-column
-              v-for="item in Object.keys(exchangeRulesShowData)" :key="item"
-              align="center"
-              :prop="item"
-              :label="exchangeRulesShowData[item]">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="操作">
-              <template slot-scope="scope">
-
-              </template>
-            </el-table-column>
-          </el-table>
-          <footer class="flex-center common-page">
-            <div class="page">
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="params.page"
-                :page-size="params.limit"
-                :total="counts"
-                layout="total,jumper,prev,pager,next">
-              </el-pagination>
-            </div>
-          </footer>
-        </div>
-
-        <div class="dialog_footer">
-          <el-button size="small" type="danger">确定</el-button>
-          <el-button size="small" type="info" @click="reward_order = false">取消</el-button>
-        </div>
       </div>
     </lj-dialog>
 
 
-    <!--兑换规则form-->
+    <!--公告详情-->
     <lj-dialog
-      :visible="exchange_rules_form_visible"
-      :size="{width: 400 + 'px',height: 450 + 'px'}"
-      @close="exchange_rules_form_visible = false"
+      :visible="notice_detail_dialog_visible"
+      :size="{width: '60%',height: '90%'}"
+      @close="notice_detail_dialog_visible = false"
     >
-      <div class="dialog_container">
+      <div class="dialog_container notice-detail-dialog">
         <div class="dialog_header">
-          <h3>{{exchange_rules_form_title}}</h3>
-        </div>
-        <div class="dialog_main borderNone">
-          <el-form :model="exchange_rules_form" label-width="80px" style="width: 80%">
-
-
-            <el-form-item label="兑换类型">
-              <div class="items-center iconInput">
-                <el-select v-model="exchange_rules_form.exchangeType" placeholder="请选择兑换类型">
-                  <el-option value="1" label="兑换类型1"></el-option>
-                </el-select>
-              </div>
-            </el-form-item>
-            <el-form-item label="兑换额">
-              <el-input v-model="exchange_rules_form.exchangeBonus" placeholder="请输入兑换额度">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="兑换物品">
-              <div class="items-center iconInput">
-                <el-select v-model="exchange_rules_form.exchangeObject" placeholder="请选择兑换物品">
-                  <el-option value="1" label="兑换物品1"></el-option>
-                </el-select>
-              </div>
-            </el-form-item>
-            <el-form-item label="状态">
-              <div class="items-center iconInput">
-                <el-select v-model="exchange_rules_form.exchangeStatus" placeholder="请选择状态">
-                  <el-option value="1" label="状态1"></el-option>
-                </el-select>
-              </div>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button size="small" type="danger">保存</el-button>
-          <el-button size="small" type="info" @click="exchange_rules_form_visible = false">取消</el-button>
-        </div>
-      </div>
-    </lj-dialog>
-
-
-    <!--赏善令-->
-    <lj-dialog
-      :visible="reward_order"
-      :size="{width: 600 + 'px',height: 650 + 'px'}"
-      @close="reward_order = false"
-    >
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>赏善令</h3>
+          <h3>公告详情</h3>
           <!--<div class="header_right">-->
           <!--<el-button size="mini" type="primary" plain>新增</el-button>-->
           <!--</div>-->
         </div>
-        <div class="dialog_main borderNone">
-          <el-form :model="reward_order_form" label-width="80px" style="width: 80%">
-            <el-form-item label="姓名">
-              <el-input v-model="reward_order_form.name" placeholder="选择人员自动获取"></el-input>
-            </el-form-item>
-            <el-form-item label="部门">
-              <el-input v-model="reward_order_form.department" placeholder="选择人员自动获取">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="岗位">
-              <el-input v-model="reward_order_form.station" placeholder="选择人员自动获取">
-              </el-input>
-            </el-form-item>
+        <div class="dialog_main">
+          <div class="notice-detail-container">
+            <div class="notice-detail-list">
+              <div class="form-item">
+                <el-row :gutter="40">
+                  <el-col :span="4">
+                    <div class="form-item-title">公告类型</div>
+                  </el-col>
+                  <el-col :span="20">
+                    <div class="form-item-content">
+                      <dropdown-list size="mini" width="140" :disabled="true"
+                                     :url="`${this.url}announcement/announcement_type`"
+                                     v-model="notice_detail_form.type_id"></dropdown-list>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="form-item">
+                <el-row :gutter="40">
+                  <el-col :span="4">
+                    <div class="form-item-title">标题</div>
+                  </el-col>
+                  <el-col :span="20">
+                    <div class="form-item-content">{{notice_detail_form.title}}</div>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="form-item">
+                <el-row :gutter="40">
+                  <el-col :span="4">
+                    <div class="form-item-title">发布时间</div>
+                  </el-col>
+                  <el-col :span="20">
+                    <div class="form-item-content">{{notice_detail_form.send_at}}</div>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="form-item">
+                <el-row :gutter="40">
+                  <el-col :span="4">
+                    <div class="form-item-title">正文</div>
+                  </el-col>
+                  <el-col :span="20">
+                    <div class="form-item-content">{{notice_detail_form.content}}</div>
+                  </el-col>
+                </el-row>
+              </div>
 
-            <el-form-item label="事件">
-              <div class="items-center iconInput">
-                <el-select v-model="reward_order_form.event" placeholder="请选择事件">
-                  <el-option :value="1" label="事件1"></el-option>
-                </el-select>
+              <div class="form-item">
+                <el-row :gutter="40">
+                  <el-col :span="4">
+                    <div class="form-item-title">附件</div>
+                  </el-col>
+                  <el-col :span="20">
+                    <div class="form-item-content attachment-container">
+                      <lj-upload size="40" disabled="disabled" :data="notice_detail_form.attachment"></lj-upload>
+                    </div>
+                  </el-col>
+                </el-row>
               </div>
-            </el-form-item>
-            <el-form-item label="奖励类型">
-              <div class="items-center iconInput">
-                <el-select v-model="reward_order_form.reward_type" placeholder="请选择奖励类型">
-                  <el-option :value="1" label="奖励1"></el-option>
-                </el-select>
+
+              <div class="form-item">
+                <el-row :gutter="40">
+                  <el-col :span="4">
+                    <div class="form-item-title">发送范围</div>
+                  </el-col>
+                  <el-col :span="20">
+                    <div class="form-item-content">
+                      <name-shower type="org" :ids="this.notice_detail_form.send_scope.org_id"></name-shower>
+                    </div>
+                  </el-col>
+                </el-row>
               </div>
-            </el-form-item>
-            <el-form-item label="奖额">
-              <el-input v-model="reward_order_form.bonus" placeholder="请填写奖励金额">
-              </el-input>
-            </el-form-item>
-            <el-form-item label="备注">
-              <el-input v-model="reward_order_form.remark" placeholder="请填写备注">
-              </el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button size="small" type="danger">提交</el-button>
-          <el-button size="small" type="info" @click="reward_order = false">取消</el-button>
+
+            </div>
+          </div>
+          <div class="notice-table-container scroll_bar">
+            <div class="mainListTable">
+              <el-table
+                :data="notice_detail_table_data"
+                highlight-current-row
+                header-row-class-name="tableHeader"
+                :row-style="{height:'50px'}"
+                style="width: 100%">
+
+                <el-table-column
+                  key="name"
+                  align="center"
+                  prop="name"
+                  label="责任人">
+                </el-table-column>
+                <el-table-column
+                  key="type"
+                  align="center"
+                  prop="type"
+                  label="类型">
+                </el-table-column>
+                <el-table-column
+                  key="money"
+                  align="center"
+                  prop="money"
+                  label="金额">
+                </el-table-column>
+                <el-table-column
+                  key="pay_type"
+                  align="center"
+                  prop="pay_type"
+                  label="缴纳方式">
+                </el-table-column>
+                <el-table-column
+                  key="pay_status"
+                  align="center"
+                  prop="pay_status"
+                  label="缴纳状态">
+                </el-table-column>
+
+              </el-table>
+            </div>
+          </div>
+
         </div>
       </div>
     </lj-dialog>
@@ -367,6 +364,8 @@
 
 <script>
   import _ from 'lodash';
+  import NameShower from '../../../common/lightweightComponents/NameShower';
+  import UserList from '../../../common/lightweightComponents/UserList';
   import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
   import UserChoose from '../../../common/lightweightComponents/UserChoose';
@@ -376,13 +375,15 @@
 
   export default {
     name: "index",
-    props: ['searchVal', 'reward_order_visible', 'exchange_rules_visible'],
+    props: ['searchVal'],
     components: {
       LjDialog,
       UserChoose,
       OrgChoose,
       LjUpload,
       DropdownList,
+      UserList,
+      NameShower,
     },
     data() {
       return {
@@ -427,28 +428,18 @@
         url: globalConfig.humanResource_server,
         DROPDOWN_CONSTANT,
         checkList: [],
-        showData: {
-          title: '标题',
-          status: '状态',
-          //no_read:500,
-          //total:1000,
-          publish_time: '发布时间',
-          /*name: '姓名',
-          department: '岗位',
-          station: '部门',
-          event: '事件',
-          bonus: '奖励',
-          remark: '备注',*/
-        },
         chooseRowIds: [],
         tableData: [],
         counts: 0,
         params: {
           search: '',
           page: 1,
-          limit: 3,
+          limit: 8,
         },
+        detailData: [],
+        userList_ids: [],
 
+        publish_notice_dialog_title: '发布公告',
         publish_notice_dialog_visible: false,//发布公告对话框
         publish_notice_form: {
           type_id: null,//公告类型id
@@ -463,11 +454,10 @@
               user_id: [],
               sanction_type: null,
               money: '',
-              pay_type:null,
-              pay_status:1
+              pay_type: null,
+              pay_status: 1
             }
           ],
-
         },
 
         add_notice_type_dialog_visible: false,
@@ -475,39 +465,39 @@
           name: '',//公告类型名称
         },
 
+        //已读 未读 列表对话框
+        read_dialog_visible: false,
+        read_dialog_title: '未读人员列表',
 
-        //乐伽dialog
-        //赏善令
-        reward_order: false,
-        reward_order_form: {
-          name: '',//姓名
-          department: '',//部门,
-          station: '',//岗位
-          event: '',//事件
-          reward_type: '',//奖励类型
-          bonus: '',//奖额
-          remark: '',//备注
+        read_choose_tab: 1,
+        read_choose_list: [
+          {
+            id: 1,
+            name: '未读人员',
+          },
+          {
+            id: 2,
+            name: '已读人员',
+          }
+        ],
+
+
+        //公告详情
+        notice_detail_dialog_visible: false,
+        //公告详情form表单
+        notice_detail_form: {
+          type_id: '',//公告类型
+          title: '',//标题
+          send_at: '',//发布时间
+          content: '',//正文
+          attachment: [],
+          send_scope: {
+            org_id: [],
+            user_id: [],
+          },
         },
-
-        //兑换规则
-        exchange_rules: false,
-        exchange_rules_form_title: '新增兑换规则',
-        exchangeRulesData: [],
-        exchangeRulesShowData: {
-          exchangeType: '兑换类型',
-          exchangeBonus: '兑换额',
-          exchangeObject: '兑换物品',
-          exchangeStatus: '状态',
-        },
-
-        exchange_rules_form_visible: false,//兑换规则form表单显示隐藏控制
-        exchange_rules_form: {
-          exchangeType: '',//兑换类型
-          exchangeBonus: '',//兑换额
-          exchangeObject: '',//兑换物品
-          exchangeStatus: '',//状态
-        }
-
+        //公告详情中的table奖惩数据
+        notice_detail_table_data: [],
 
         // work_info: [
         //   {work: '平均在线时长', val: '8 h'},
@@ -532,71 +522,103 @@
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
           this.params = val;
-          this.getRewardUpList();
         },
         deep: true
       },
-      reward_order_visible: {
-        handler(val, oldVal) {
-          console.log(val, oldVal);
-          this.reward_order = !this.reward_order;
-          this.reward_order_form = {};
-        },
-        //deep:true,
-        //immediate:true//第一次绑定也执行
-      },
-      exchange_rules_visible: {
-        handler(val, oldVal) {
-          console.log(val, oldVal);
-          this.exchange_rules = !this.exchange_rules;
-        },
-      }
     },
     computed: {},
     methods: {
+      //显示已读未读dialog对话框
+      showReadDialog(id) {
+        debugger
+        this.read_dialog_visible = true;
+        this.detailData = [];
+        this.userList_ids = [];
+        this.read_choose_tab = 1;
+        let params = {};
+        this.$http.get(`${this.url}announcement/announcement/${id}`, params).then(res => {
+          debugger
+          if (res.code.endsWith('0')) {
+            this.detailData = res.data;
+            this.userList_ids = this.detailData?.unread_user_id || [];
+          }
+        });
+      },
+
+      readChooseHandler(id) {
+        this.read_choose_tab = id;
+        if (id == 2) {
+          this.read_dialog_title = '已读人员列表';
+          this.userList_ids = this.detailData?.read_user_id || [];
+        } else {
+          this.read_dialog_title = '未读人员列表';
+          this.userList_ids = this.detailData?.unread_user_id || [];
+        }
+      },
 
       //获取公告列表
       getNoticeList() {
         let params = {
-          all:1,
+          all: 1,
           ...this.params
         };
-        this.$http.get(`${this.url}announcement/announcement`,params).then(res=> {
-          if(res.code.endsWith('0')) {
+        this.$http.get(`${this.url}announcement/announcement`, params).then(res => {
+          if (res.code.endsWith('0')) {
             this.tableData = res.data.data;
             this.counts = res.data.count;
           }
         });
       },
 
-
       //显示发公告对话框
       showPublishNoticeDialog() {
+        this.publish_notice_dialog_title = '发布公告';
         this.publish_notice_dialog_visible = true;
+        this.publish_notice_form = {
+          type_id: null,//公告类型id
+          title: '',//标题
+          content: '',//正文
+          file_info: [],
+          send_scope: {
+            org_id: [],
+          },
+          sanction_info: [
+            {
+              user_id: [],
+              sanction_type: null,
+              money: '',
+              pay_type: null,
+              pay_status: 1
+            }
+          ],
+
+        };
       },
 
       //发布公告
       publishNotice() {
         this.$refs['publishNoticeForm'].validate(valid => {
           if (valid) {
-            /*debugger
-            console.log(this.publish_notice_form);*/
+            let newForm = this.publish_notice_form;
+            newForm.sanction_info = _.forEach(newForm.sanction_info, (o) => {
+              o.user_id = parseInt(o.user_id.join());
+            });
             let params = {
-              ...this.publish_notice_form
+              ...newForm
             };
-            console.log(params);
-            debugger
-            this.$http.post(`${this.url}announcement/announcement`,params).then(res=> {
+            this.$http.post(`${this.url}announcement/announcement`, params).then(res => {
               debugger
-              if(res.code.endsWith('0')) {
-                this.$LjNotify('success',{
-                  title:'成功',
-                  message:res.msg,
-                })
-              }else {
-                this.$LjNotify('error',{
-                  title:'失败',
-                  message:res.msg,
+              if (res.code.endsWith('0')) {
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: res.msg,
+                });
+                this.publish_notice_dialog_visible = false;
+                this.getNoticeList();
+              } else {
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: res.msg,
                 })
               }
             });
@@ -605,6 +627,76 @@
 
       },
 
+      //编辑公告
+      editNotice(row) {
+        this.publish_notice_dialog_visible = true;
+        this.publish_notice_dialog_title = '编辑公告';
+        let id = row.id;
+        this.$http.get(`${this.url}announcement/announcement/${id}`).then(res => {
+          if (res.code.endsWith('0')) {
+            let mData = res.data;
+            debugger
+            /*mData.sanction_info = _.forEach(mData.sanction_info,(o)=> {
+              o.user_id = [parseInt(o.user_id)];
+            });*/
+            this.publish_notice_form = mData;
+          }
+        })
+      },
+
+      //提交编辑公告请求
+      handleConfirmEditNotice() {
+        debugger
+        this.$refs['publishNoticeForm'].validate(valid => {
+          debugger
+          if (valid) {
+            let newForm = this.publish_notice_form;
+            newForm.sanction_info = _.forEach(newForm.sanction_info, (o) => {
+              if (o.user_id.constructor == Array) {
+                o.user_id = parseInt(o.user_id.join());
+              }
+            });
+            let params = {
+              ...newForm
+            };
+            this.$http.post(`${this.url}announcement/announcement/update`, params).then(res => {
+              if (res.code.endsWith('0')) {
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: '编辑成功'
+                });
+                this.publish_notice_dialog_visible = false;
+                this.publish_notice_form = {
+                  type_id: null,//公告类型id
+                  title: '',//标题
+                  content: '',//正文
+                  file_info: [],
+                  send_scope: {
+                    org_id: [],
+                  },
+                  sanction_info: [
+                    {
+                      user_id: [],
+                      sanction_type: null,
+                      money: '',
+                      pay_type: null,
+                      pay_status: 1
+                    }
+                  ],
+
+                };
+                this.getNoticeList();
+              } else {
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: res.msg,
+                });
+              }
+            });
+          }
+        })
+
+      },
 
       //显示公告类型dialog
       showNoticeTypeDialog() {
@@ -619,7 +711,7 @@
               ...this.add_notice_type_form
             };
             this.$http.post(`${this.url}announcement/announcement_type`, params).then(res => {
-              debugger
+              //debugger
               if (res.code.endsWith('0')) {
                 this.$LjNotify('success', {
                   title: '成功',
@@ -627,6 +719,7 @@
                 });
                 this.$refs['dropdown1'].update();
                 this.add_notice_type_dialog_visible = false;
+
               } else {
                 this.$LjNotify('error', {
                   title: '失败',
@@ -639,6 +732,38 @@
 
       },
 
+      //显示公告详情
+      getNoticeSingleForm(row) {
+        this.notice_detail_dialog_visible = true;
+        this.notice_detail_table_data = [];
+        let id = row.id;
+        this.$http.get(`${this.url}announcement/announcement/${id}`).then(res => {
+          if (res.code.endsWith('0')) {
+            let item = res.data;
+            this.notice_detail_form = {
+              type_id: item.type_id,//公告类型
+              title: item.title || '-',//标题
+              send_at: item.send_at || '-',//发布时间
+              content: item.content || '-',//正文
+              attachment: item.file_detail || [],//附件
+              send_scope: item.send_scope,
+            };
+            if (item.sanction_info && item.sanction_info.length > 0) {
+              for (let subItem of item.sanction_info) {
+                let obj = {
+                  name: subItem.user_info?.name,
+                  type:subItem.sanction_type==1?'奖赏':'处罚',
+                  money:subItem.money||'-',
+                  pay_type:subItem.pay_type||'-',
+                  pay_status:subItem.pay_status==2?'已缴纳':'未缴纳',
+                };
+                this.notice_detail_table_data.push(obj);
+              }
+            }
+          }
+        })
+      },
+
       //添加或删除奖罚信息
       handleSanctionInfo(idx) {
         debugger
@@ -648,22 +773,14 @@
               user_id: [],
               sanction_type: null,
               money: '',
-              pay_type:null,
-              pay_status:1
+              pay_type: null,
+              pay_status: 1
             });
         } else {
           this.publish_notice_form.sanction_info.splice(idx, 1);
           //_.pullAt(this.publish_notice_form.sanction_info,[idx]);
         }
       },
-
-
-      exchangeRulesFormHandler() {
-        this.exchange_rules_form_visible = true;
-        this.exchange_rules_form = {};
-        this.exchange_rules_form_title = "新增兑换规则";
-      },
-
 
       handleChangeDate(id) {
 
@@ -673,49 +790,6 @@
       },
 
 
-      initData() {
-        //扬善表格
-        for (let i = 0; i < 9; i++) {
-          let obj = {
-            id: i + 1,
-            title: '这是一个标题',
-            status: '未读300人/共1000人',
-            publish_time: '2019-04-17',
-            no_read: 500,
-            total: 1000,
-            /*name: '张三',
-            station:'工程师',
-            department:'研发部',
-            event:'攻城时因穿铠甲',
-            bonus:'200金币',
-            remark:'锁血打小怪掉金币',*/
-          }
-          this.tableData.push(obj)
-        }
-        //console.log(this.tableData);
-        this.counts = 1000;
-
-
-        //兑换规则表格
-        //exchangeRulesData
-        for (let i = 0; i < 9; i++) {
-          let obj = {
-            id: i + 1,
-            exchangeType: '兑换类型1',//兑换类型
-            exchangeBonus: '300',//兑换额
-            exchangeObject: '物品1',//兑换物品
-            exchangeStatus: '状态1',//状态
-          }
-          this.exchangeRulesData.push(obj)
-        }
-      },
-
-      getRewardUpList() {
-        this.$http.get(this.url + 'aa/xxx', this.params).then(res => {
-          this.tableData = res.data.data;
-          this.counts = res.data.count;
-        })
-      },
       // 当前点击
       tableClickRow(row) {
         let ids = this.chooseRowIds;
@@ -724,28 +798,9 @@
       },
       //表格某一行双击
       tableDblClick(row) {
-        console.log(row);
-        this.reward_order = true;
-        this.reward_order_form = {
-          name: '张三',
-          station: '工程师',
-          department: '研发部',
-          event: '攻城时因穿铠甲',
-          bonus: '200金币',
-          remark: '锁血打小怪掉金币',
-        };
-      },
-      //兑换规则表格某一行双击
-      exchangeTableDblClick(row) {
-        this.exchange_rules_form_visible = true;
-        this.exchange_rules_form_title = "编辑兑换规则";
-        this.exchange_rules_form = {
-          name: '张三',
-          exchangeType: '1',//兑换类型
-          exchangeBonus: '300',//兑换额
-          exchangeObject: '1',//兑换物品
-          exchangeStatus: '1',//状态
-        };
+        //console.log(row);
+        this.getNoticeSingleForm(row);
+
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {
@@ -773,6 +828,12 @@
 
   #theme_name.theme1 {
     #notice {
+      .read-icon {
+        @include nqImg('button_bg_gray.png', 'theme1');
+        &.checked {
+          @include nqImg('button_bg_red.png', 'theme1');
+        }
+      }
 
       .listTopRight {
         .icons-font {

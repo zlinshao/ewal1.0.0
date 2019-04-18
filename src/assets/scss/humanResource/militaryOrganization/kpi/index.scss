@@ -1,5 +1,54 @@
 @import "../../../common.scss";
 
 #theme_name {
-    
+  #kpi {
+    background-color: white;
+    height: 100%;
+      .kpiTable{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .table{
+          width: 100%;
+          margin-right: 148px;
+        }
+        .periodButton{
+          height: 165px;
+          margin-top: 67px;
+          display: flex;  
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: flex-end;
+          .changeButton{
+            width: 65px;
+            height:25px;
+            padding-top: 5px;
+            display: flex;
+            justify-content: center;
+            background:rgba(223,223,223,1);
+            font-family: MicrosoftYaHei;
+            font-size:9px;
+            line-height:12px;
+            border-radius: 5px 0px 0px 5px;
+            &:hover{
+              background-color: rgba(207,46,51,1);
+              color:white;
+            }
+          }
+          .chooseButton{
+            width: 65px;
+            height:25px;
+            padding-top: 5px;
+            display: flex;
+            justify-content: center;
+            background-color: rgba(207,46,51,1);
+            color:white;
+            font-family: MicrosoftYaHei;
+            font-size:9px;
+            line-height:12px;
+            border-radius: 5px 0px 0px 5px;
+          }
+        }
+      }
+  }
 }

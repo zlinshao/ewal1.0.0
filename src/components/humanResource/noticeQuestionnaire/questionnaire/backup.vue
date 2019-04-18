@@ -2,7 +2,8 @@
   <div id="questionnaire">
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
-        <div class="icons-font"><b>调查问卷</b></div>
+        <div class="icons-font"><b>发公告</b></div>
+        <!--<div class="icons add" @click="publish_notice_dialog_visible = true"><b>+</b></div>-->
       </div>
 
     </div>
@@ -61,11 +62,10 @@
           align="center"
           prop="object_count"
           label="调查对象(人数)">
-          <template slot-scope="scope">
-            <div @click="showObjectHandler" style="color: #0C66FF;cursor: pointer">{{scope.row.object_count}}</div>
-          </template>
         </el-table-column>
-
+        <template slot-scope="scope">
+          <div @click="showObjectHandler" style="color: #0C66FF;cursor: pointer">{{scope.object_count}}</div>
+        </template>
         <el-table-column
           key="status"
           align="center"
@@ -129,6 +129,9 @@
         },
       }
     },
+    mounted() {
+      //this.initData();
+    },
     activated() {
     },
     watch: {
@@ -141,7 +144,7 @@
     },
     computed: {},
     mounted() {
-      this.getQuestionnaireList();
+      //this.getQuestionnaireList();
     },
     methods: {
       showObjectHandler() {
@@ -235,6 +238,29 @@
       .listTopRight {
         .icons-font {
           @include nqImg('fabang.png', 'theme1');
+        }
+      }
+
+
+      footer.common-page {
+        height: 100px;
+        width: 100%;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 100px;
+        //background-color: $color2F2;
+        z-index: 6;
+        .develop {
+          position: absolute;
+          top: -30px;
+          width: 80px;
+          cursor: pointer;
+          height: 30px;
+          opacity: 1;
+          border-radius: 10px 10px 0 0;
+          background-color: $color2F2;
+
         }
       }
     }

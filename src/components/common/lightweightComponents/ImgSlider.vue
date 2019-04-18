@@ -128,9 +128,11 @@
         default: 400,
       },
       size: {
-        default: {
-          width:'600px',
-          height:'400px',
+        default() {
+          return {
+            width:'600px',
+            height:'400px',
+          }
         }
       },
       arr: {

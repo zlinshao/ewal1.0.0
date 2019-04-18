@@ -1,14 +1,39 @@
 @import "../../../common.scss";
 
 #theme_name {
-  #rewardDown {
+  #questionnaire {
+    .listTopCss {
+      height: 0;
+      .search-toolbar {
+        position: fixed;
+        top: 106px;
+        right: 70px;
+        height: 30px;
+        @include flex('justify-end');
+        width: 40%;
+        > div {
+          width: 30px;
+          height: 30px;
+          //margin-right: 50px;
+        }
 
+        .icons-font {
+          height: 30px;
+          width: 70px;
+          @include flex('flex-center');
+          b {
+            color: white;
+            font-size: 14px;
+          }
+        }
+      }
+    }
   }
 }
 
 #theme_name.theme1 {
-  #rewardDown {
-    .header_right {
+  #questionnaire {
+    /*.header_right {
       display: flex;
       flex-direction: row-reverse;
       .icon-add {
@@ -24,24 +49,24 @@
           margin-bottom: 6px;
         }
       }
-    }
+    }*/
   }
 }
 
 #theme_name.theme2 {
-  #rewardDown {
+  #questionnaire {
 
   }
 }
 
 #theme_name.theme3 {
-  #rewardDown {
+  #questionnaire {
 
   }
 }
 
 #theme_name.theme4 {
-  #rewardDown {
+  #questionnaire {
 
   }
 }

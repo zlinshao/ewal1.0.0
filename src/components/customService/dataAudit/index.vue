@@ -7,7 +7,7 @@
         </p>
         <h1>资料审核</h1>
         <h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column" :class="{'chooseTab': chooseTab === item.id}">
+          <span v-for="item in selects" :key='item.id' @click="changeTabs(item.id)" class="items-column" :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
           </span>
         </h2>
@@ -177,12 +177,12 @@
                 </el-col>
                 <el-col :span="8" v-if="tag_status === 1">
                   <el-form-item label="房东承担费用">
-                    <span v-for='pay in contractDetail.houserPay'>{{payArr[pay-1] || '--'}}</span>
+                    <span v-for='pay in contractDetail.houserPay' :key='pay'>{{payArr[pay-1] || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="租客承担费用" v-if='tag_status == 2'>
-                    <span v-for='pay in contractDetail.non_landlord_fee'>{{payArr[pay-1] + '/'|| '--'}}</span>
+                    <span v-for='pay in contractDetail.non_landlord_fee' :key='pay'>{{payArr[pay-1] + '/'|| '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" v-if="tag_status === 1">
@@ -339,7 +339,7 @@
           <p class='main_tit'>附件信息</p>
           <div class="common_info">
             <el-checkbox-group v-model='rewrite_data'>
-              <el-checkbox name="type" v-for="(tit,key) in polishing_data[tag_status-1]" :key='key' :label='tit'>
+              <el-checkbox name="type" v-for="(tit,key) in polishing_data[tag_status-1]" :key='tit' :label='key'>
                 <template>
                   <div class='el_check_box'>
                     <div class='main_tit'> {{tit}}</div>
@@ -358,21 +358,21 @@
             <div class="flex-center">
               <div class="flex_center_tit">发送对象</div>
               <div class="flex_center_content flex_center_content1 borderNone">
-                <el-input @focus="organSearch" readonly v-model="postman" :placeholder="contractDetail.org_leader + ',' + contractDetail.sign_user"></el-input>
+                <el-input @focus="organSearch" readonly v-model="dataRecord.send_name" :placeholder="contractDetail.org_leader + ',' + contractDetail.sign_user"></el-input>
               </div>
             </div>
 
             <div class="flex-center flex-center2">
               <div class="flex_center_tit">不齐内容</div>
               <div class="flex_center_content flex_center_content2">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="postContent">
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="dataRecord.content">
                 </el-input>
                 <div class='buttons'>
-                  <p class='buttons_left'>
+                  <p class='buttons_left' @click='handlePostRecord'>
                     <i class='icon'></i>
                     <span>发送</span>
                   </p>
-                  <el-button type="primary" plain @click='handleGetRecord'>不良记录</el-button>
+                  <el-button type="primary" plain @click='handleGetRecord'>不齐记录</el-button>
                 </div>
               </div>
             </div>
@@ -396,7 +396,7 @@
           <h3>资料不齐记录</h3>
         </div>
         <div class="dialog_main dataRecord_dialog_main">
-          <div v-for='i in  4' class='dataRecord_cell'>
+          <div v-for='i in  4' class='dataRecord_cell' :key='i'>
             <div class='detail_dialog_left'>
               <p>黄海</p>
               <p>2019.1.16</p>
@@ -409,10 +409,6 @@
               <p>发送对象:野原新之助</p>
             </div>
           </div>
-        </div>
-        <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -572,15 +568,12 @@ export default {
           id_card: 384903820190384934
         },
       },
-      postman: '',
-      postContent: '',
+
       staffModule: false,//显示人员选择
       organData: {
         num: ''
       },
-      postMess: {
-        person: []
-      },
+
       //附件
       polishing_data: [
         {
@@ -613,6 +606,11 @@ export default {
       ],
       //资料不齐记录
       dataRecord_visible: false,
+      dataRecord: {
+        send_name: '',
+        send_id: [],
+        content: ''
+      },
       rewrite_data: [],
       // 合同作废重签
       rewrite_visible: false,
@@ -626,13 +624,17 @@ export default {
     }
   },
   created () {
-    this.initData()
+    this.getDateList()
     this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
   },
   watch: {
     rewrite_data (newVal) {
-      this.postContent = ''
-      this.postContent = newVal.join(',') + '缺失;'
+      this.dataRecord.content = ''
+      let data = this.polishing_data[this.tag_status - 1]
+      newVal.forEach(item => {
+        this.dataRecord.content += data[item]
+      })
+      this.dataRecord.content += '缺失;'
     }
   },
   methods: {
@@ -668,27 +670,6 @@ export default {
         }
         this.showLoading(false);
       })
-    },
-    //初始化数据
-    initData () {
-      //工单表格数据初始化
-      for (let i = 0; i < 10; i++) {
-        let obj = {
-          id: i + 1,
-          createTime: '2019-10-11',
-          ContractNo: '合同编号',
-          address: '地址',
-          nature: '合同性质',
-          compay: '所属公司',
-          houser_name: '房东姓名', //收房 
-          price: '收房价格',
-          payType: '付款方式',
-          openPer: '开单人',
-          handler: '负责人',
-          department: '部门',
-        };
-        this.tableData.push(obj);
-      }
     },
     //切换 
     changeTabs (id) {
@@ -772,10 +753,28 @@ export default {
     hiddenOrgan (ids, names, arr) {
       this.staffModule = false;
       if (ids !== 'close') {
-        this.postman = names
-        this.postMess.person = arr
-        console.log(ids, names, arr)
+        this.dataRecord.send_name = names
+        this.dataRecord.send_id = arr
       }
+    },
+    // 发送不齐记录
+    handlePostRecord () {
+      let params = {
+        contract_type: this.tag_status,
+        contract_id: this.currentRow.contract_id,
+        houser_name: this.currentRow.houser_name,
+        contract_number: this.currentRow.number,
+        complete_content: this.rewrite_data
+      }
+
+      this.$http.get(this.market_server + `v1.0/market/contract/send-complete-data`, params).then(res => {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: res.message
+        });
+        this.rewrite_data = []
+      })
+
     },
     //资料不齐
     handleGetRecord () {

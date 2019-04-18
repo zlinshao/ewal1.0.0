@@ -51,7 +51,7 @@
         <input type="file" :id="file.keyName" hidden multiple @change="uploadPic">
       </label>
       <!--下载按钮-->
-      <label title="下载全部" @click="downloadAll" v-if="!editable && download" class="uploadPic" :key="1" :style="uploadCss"
+      <label title="下载全部" @click="downloadAll" v-if="!editable && download &&showFile.length>0" class="uploadPic" :key="1" :style="uploadCss"
              :for="file.keyName">
         <img src="../../../assets/image/common/theme1/xiazai_xue.png">
       </label>

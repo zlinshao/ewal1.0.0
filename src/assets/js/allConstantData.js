@@ -28,8 +28,12 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
   NOTICEQUESTIONNAIRE: {//公告问卷
     PUBLISHNOTICE:{//发公告
       TYPE:[{id:1,name:'奖赏'},{id:2,name:'处罚'}],
-    }
-  }
+    },
+  },
+  //缴纳状态
+  PAYMENT_STATUS: [{id:1,name:'未缴纳'},{id:2,name:'已缴纳'}],
+  //调查状态
+  INSPECT_STATUS:[{id:0,name:'未开始'},{id:1,name:'已开始'},{id:2,name:'已结束'}],
 };
 
 export{ DROPDOWN_CONSTANT };

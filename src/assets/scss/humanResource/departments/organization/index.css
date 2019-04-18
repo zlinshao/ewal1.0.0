@@ -234,24 +234,50 @@
         #theme_name #organization > div .organ-tree .strt-name:hover {
           border-color: #cf2e33;
           color: #cf2e33; }
+        #theme_name #organization > div .organ-tree .strt-name img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          vertical-align: middle; }
+      #theme_name #organization > div .organ-tree .strt-name-mini {
+        min-width: 70px;
+        height: 40px;
+        line-height: 40px; }
+      #theme_name #organization > div .organ-tree .primary-name {
+        display: flex;
+        justify-content: space-between;
+        justify-items: center;
+        margin-top: 10px; }
+        #theme_name #organization > div .organ-tree .primary-name span {
+          font-size: 16px;
+          writing-mode: vertical-rl;
+          writing-mode: tb-rl;
+          font-family: 'jingDianXingShu'; }
       #theme_name #organization > div .organ-tree .strt-info {
-        display: inline-block;
-        padding: 5px 0;
-        width: 50px;
-        line-height: 50px;
+        padding: 10px 5px;
+        min-width: 50px;
         min-height: 120px;
         border: 1px solid #70707B;
-        margin: 10px 0;
-        margin-top: 0;
+        margin: 0 10px;
         font-size: 18px;
-        font-family: 'jingDianXingShu';
         text-align: center;
         cursor: pointer;
         writing-mode: vertical-rl;
-        writing-mode: tb-rl; }
+        writing-mode: tb-rl;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%); }
         #theme_name #organization > div .organ-tree .strt-info:hover {
           border-color: #cf2e33;
           color: #cf2e33; }
+        #theme_name #organization > div .organ-tree .strt-info p {
+          font-family: 'jingDianXingShu';
+          text-align: left;
+          width: 50%;
+          line-height: 20px;
+          margin: 3px; }
+          #theme_name #organization > div .organ-tree .strt-info p:first-child {
+            font-size: 20px; }
       #theme_name #organization > div .organ-tree .strt-part .line-h {
         height: 1px;
         display: block;

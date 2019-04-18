@@ -63,27 +63,58 @@
             border-color: $colorE33;
             color: $colorE33;
           }
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            vertical-align: middle;
+          }
+        }
+        .strt-name-mini {
+          min-width: 70px;
+          height: 40px;
+          line-height: 40px;
+        }
+        .primary-name {
+          display: flex;
+          justify-content: space-between;
+          justify-items: center;
+          margin-top: 10px;
+          span {
+            font-size: 16px;
+            writing-mode: vertical-rl;
+            writing-mode: tb-rl;
+            font-family: 'jingDianXingShu';
+          }
         }
         .strt-info {
-          display: inline-block;
-          padding: 5px 0;
-          width: 50px;
-          line-height: 50px;
+          //display: inline-block;
+          padding: 10px 5px;
+          min-width: 50px;
           min-height: 120px;
           border: 1px solid #70707B;
-          margin: 10px 0;
-          margin-top: 0;
+          margin: 0 10px;
           font-size: 18px;
-          font-family: 'jingDianXingShu';
           text-align: center;
           cursor: pointer;
           writing-mode: vertical-rl;
           writing-mode: tb-rl;
-          //position: relative;
-          //left: 50%;
+          position: relative;
+          left: 50%;
+          transform: translateX(-50%);
           &:hover {
             border-color: $colorE33;
             color: $colorE33;
+          }
+          p {
+            font-family: 'jingDianXingShu';
+            text-align: left;
+            width: 50%;
+            line-height: 20px;
+            margin: 3px;
+            &:first-child {
+              font-size: 20px;
+            }
           }
         }
         .strt-part .line-h {
@@ -108,6 +139,9 @@
         }
         .strt-block {
           float: left;
+          //display: flex;
+          //justify-content: space-between;
+          //flex-wrap: nowrap;
         }
       }
       ::-webkit-scrollbar {
