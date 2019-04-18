@@ -42,16 +42,17 @@
     watch: {
       ids: {
         handler(val,oldVal) {
-          debugger
-          if(val&&val.length>0) {
+          this.getUserList();
+          /*if(val&&val.length>0) {
             this.getUserList();
-          }
+          }*/
          },
         immediate:true,
       }
     },
     methods: {
       getUserList() {
+        this.userList = [];
         if(this.ids.length==0) return;
         let params = {
           limit:1000,

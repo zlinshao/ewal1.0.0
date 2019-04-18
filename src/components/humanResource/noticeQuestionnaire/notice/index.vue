@@ -54,7 +54,7 @@
           align="center"
           label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" plain>编辑再发布</el-button>
+            <el-button @click="editNotice(scope.row)" type="primary" size="mini" plain>编辑再发布</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -83,7 +83,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>公告</h3>
+          <h3>{{publish_notice_dialog_title}}</h3>
 
           <div class="header_right">
             <div>{{publish_notice_form.currentDate}}</div>
@@ -151,7 +151,8 @@
               <el-form-item required :prop="'sanction_info.'+index+'.user_id'"
                             :rules="{required: true, message: '请选择责任人', trigger: 'blur'}"
                             label="责任人">
-                <user-choose title="请选择责任人" v-model="publish_notice_form.sanction_info[index].user_id"></user-choose>
+                <user-choose num="1" title="请选择责任人"
+                             v-model="publish_notice_form.sanction_info[index].user_id"></user-choose>
               </el-form-item>
             </div>
 
@@ -159,7 +160,10 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="publishNotice">发布
+          <el-button v-if="publish_notice_dialog_title=='发布公告'" size="small" type="danger" @click="publishNotice">发布
+          </el-button>
+          <el-button v-if="publish_notice_dialog_title=='编辑公告'" size="small" type="danger"
+                     @click="handleConfirmEditNotice">发布
           </el-button>
           <el-button size="small" type="danger" @click="publish_notice_dialog_visible = false">取消
           </el-button>
@@ -203,7 +207,8 @@
         </div>
         <div class="dialog_main">
           <div class="read-toolbar">
-            <div class="read-icon" @click="readChooseHandler(item.id)" :class="{checked:item.id==read_choose_tab}" v-for="item in read_choose_list">
+            <div class="read-icon" @click="readChooseHandler(item.id)" :class="{checked:item.id==read_choose_tab}"
+                 v-for="item in read_choose_list">
               <b>{{item.name}}</b>
             </div>
             <!--<div class="read-icon" @click="showNoReadList"><b>未读人员</b></div>
@@ -215,9 +220,6 @@
         </div>
       </div>
     </lj-dialog>
-
-
-
 
 
     <!--兑换规则-->
@@ -462,11 +464,12 @@
         params: {
           search: '',
           page: 1,
-          limit: 3,
+          limit: 8,
         },
-        detailData:[],
-        userList_ids:[],
+        detailData: [],
+        userList_ids: [],
 
+        publish_notice_dialog_title: '发布公告',
         publish_notice_dialog_visible: false,//发布公告对话框
         publish_notice_form: {
           type_id: null,//公告类型id
@@ -481,11 +484,10 @@
               user_id: [],
               sanction_type: null,
               money: '',
-              pay_type:null,
-              pay_status:1
+              pay_type: null,
+              pay_status: 1
             }
           ],
-
         },
 
         add_notice_type_dialog_visible: false,
@@ -495,17 +497,17 @@
 
         //已读 未读 列表对话框
         read_dialog_visible: false,
-        read_dialog_title:'未读人员列表',
+        read_dialog_title: '未读人员列表',
 
-        read_choose_tab:1,
-        read_choose_list:[
+        read_choose_tab: 1,
+        read_choose_list: [
           {
-            id:1,
-            name:'未读人员',
+            id: 1,
+            name: '未读人员',
           },
           {
-            id:2,
-            name:'已读人员',
+            id: 2,
+            name: '已读人员',
           }
         ],
 
@@ -600,33 +602,40 @@
     methods: {
       //显示已读未读dialog对话框
       showReadDialog(id) {
+        debugger
+        this.read_dialog_visible = true;
         this.detailData = [];
-        this.$http.get(`${this.url}announcement/announcement/${id}`).then(res=> {
+        this.userList_ids = [];
+        this.read_choose_tab = 1;
+        let params = {};
+        this.$http.get(`${this.url}announcement/announcement/${id}`, params).then(res => {
           debugger
-          if(res.code.endsWith('0')) {
+          if (res.code.endsWith('0')) {
             this.detailData = res.data;
-            this.userList_ids = detailData?.unread_user_id||[];
+            this.userList_ids = this.detailData?.unread_user_id || [];
           }
         });
       },
 
       readChooseHandler(id) {
-        this.read_choose_tab=id;
-        if(id==2) {
-          this.userList_ids = detailData?.all_user_id||[];
+        this.read_choose_tab = id;
+        if (id == 2) {
+          this.read_dialog_title = '已读人员列表';
+          this.userList_ids = this.detailData?.read_user_id || [];
         } else {
-          this.userList_ids = detailData?.unread_user_id||[];
+          this.read_dialog_title = '未读人员列表';
+          this.userList_ids = this.detailData?.unread_user_id || [];
         }
       },
 
       //获取公告列表
       getNoticeList() {
         let params = {
-          all:1,
+          all: 1,
           ...this.params
         };
-        this.$http.get(`${this.url}announcement/announcement`,params).then(res=> {
-          if(res.code.endsWith('0')) {
+        this.$http.get(`${this.url}announcement/announcement`, params).then(res => {
+          if (res.code.endsWith('0')) {
             this.tableData = res.data.data;
             this.counts = res.data.count;
           }
@@ -636,38 +645,130 @@
 
       //显示发公告对话框
       showPublishNoticeDialog() {
+        this.publish_notice_dialog_title = '发布公告';
         this.publish_notice_dialog_visible = true;
+        this.publish_notice_form = {
+          type_id: null,//公告类型id
+          title: '',//标题
+          content: '',//正文
+          file_info: [],
+          send_scope: {
+            org_id: [],
+          },
+          sanction_info: [
+            {
+              user_id: [],
+              sanction_type: null,
+              money: '',
+              pay_type: null,
+              pay_status: 1
+            }
+          ],
+
+        };
       },
 
       //发布公告
       publishNotice() {
         this.$refs['publishNoticeForm'].validate(valid => {
           if (valid) {
-            /*debugger
-            console.log(this.publish_notice_form);*/
+            let newForm = this.publish_notice_form;
+            newForm.sanction_info = _.forEach(newForm.sanction_info, (o) => {
+              o.user_id = parseInt(o.user_id.join());
+            });
             let params = {
-              ...this.publish_notice_form
+              ...newForm
             };
-            console.log(params);
-            debugger
-            this.$http.post(`${this.url}announcement/announcement`,params).then(res=> {
+            this.$http.post(`${this.url}announcement/announcement`, params).then(res => {
               debugger
-              if(res.code.endsWith('0')) {
-                this.$LjNotify('success',{
-                  title:'成功',
-                  message:res.msg,
+              if (res.code.endsWith('0')) {
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: res.msg,
                 });
                 this.publish_notice_dialog_visible = false;
                 this.getNoticeList();
-              }else {
-                this.$LjNotify('error',{
-                  title:'失败',
-                  message:res.msg,
+              } else {
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: res.msg,
                 })
               }
             });
           }
         });
+
+      },
+
+
+      //编辑公告
+      editNotice(row) {
+        this.publish_notice_dialog_visible = true;
+        this.publish_notice_dialog_title = '编辑公告';
+        let id = row.id;
+        this.$http.get(`${this.url}announcement/announcement/${id}`).then(res => {
+          if (res.code.endsWith('0')) {
+            let mData = res.data;
+            debugger
+            /*mData.sanction_info = _.forEach(mData.sanction_info,(o)=> {
+              o.user_id = [parseInt(o.user_id)];
+            });*/
+            this.publish_notice_form = mData;
+          }
+        })
+      },
+
+      //提交编辑公告请求
+      handleConfirmEditNotice() {
+        debugger
+        this.$refs['publishNoticeForm'].validate(valid => {
+          debugger
+          if (valid) {
+            let newForm = this.publish_notice_form;
+            newForm.sanction_info = _.forEach(newForm.sanction_info, (o) => {
+              if(o.user_id.constructor==Array) {
+                o.user_id = parseInt(o.user_id.join());
+              }
+            });
+            let params = {
+              ...newForm
+            };
+            this.$http.post(`${this.url}announcement/announcement/update`, params).then(res => {
+              if (res.code.endsWith('0')) {
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: '编辑成功'
+                });
+                this.publish_notice_dialog_visible = false;
+                this.publish_notice_form = {
+                  type_id: null,//公告类型id
+                  title: '',//标题
+                  content: '',//正文
+                  file_info: [],
+                  send_scope: {
+                    org_id: [],
+                  },
+                  sanction_info: [
+                    {
+                      user_id: [],
+                      sanction_type: null,
+                      money: '',
+                      pay_type: null,
+                      pay_status: 1
+                    }
+                  ],
+
+                };
+                this.getNoticeList();
+              } else {
+                this.$LjNotify('error', {
+                  title: '失败',
+                  message: res.msg,
+                });
+              }
+            });
+          }
+        })
 
       },
 
@@ -715,8 +816,8 @@
               user_id: [],
               sanction_type: null,
               money: '',
-              pay_type:null,
-              pay_status:1
+              pay_type: null,
+              pay_status: 1
             });
         } else {
           this.publish_notice_form.sanction_info.splice(idx, 1);
@@ -843,11 +944,9 @@
       .read-icon {
         @include nqImg('button_bg_gray.png', 'theme1');
         &.checked {
-          @include nqImg('button_bg_red.png','theme1');
+          @include nqImg('button_bg_red.png', 'theme1');
         }
       }
-
-
 
       .listTopRight {
         .icons-font {

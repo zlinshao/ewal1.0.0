@@ -34,7 +34,7 @@ axios.interceptors.response.use(response => {
         break;
       case 500:
         console.log('服务器端出错');
-        window.location.href = window.location.origin + '/network_error';
+        // window.location.href = window.location.origin + '/network_error';
         break;
       case 501:
         console.log('网络未实现');
