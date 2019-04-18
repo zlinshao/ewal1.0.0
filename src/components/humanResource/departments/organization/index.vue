@@ -219,16 +219,15 @@
           parent_id: next_depart.id
         }).then(res => {
           if (res.code === '20000') {
-            this.child_depart[index] = Object.assign({},this.child_depart,{
+            this.child_depart[index] = Object.assign({},this.child_depart[index],{
               [idx]: res.data.data
             })
           } else {
-            this.child_depart[index] = Object.assign({},this.child_depart,{
+            this.child_depart[index] = Object.assign({},this.child_depart[index],{
               [idx]: []
             })
           }
           console.log(this.child_depart);
-          debugger;
         })
       },
       //获取领导管辖的部门
@@ -236,7 +235,6 @@
         this.child_depart = Object.assign({},this.child_depart,{
           [index]: {}
         });
-        console.log(this.child_depart);
         this.$http.get('organization/organization',{
           position_id: [item.id]
         }).then(res => {
@@ -250,7 +248,6 @@
             })
           }
         });
-        console.log(this.next_depart);
       },
       //获取顶级领导列表
       getTopPosition() {
