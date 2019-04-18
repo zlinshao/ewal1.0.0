@@ -38,7 +38,7 @@
             align-items: center;
             margin: 74px 0 19px 0;
             &:hover {
-              h2 , h3 {
+              h3 {
                 color:rgba(207,46,51,1);
               }
             }
@@ -52,18 +52,18 @@
               display: flex;
               justify-content: center;
             }
-            h2 {
-              width: 105px;
-              height: 30px;
-              margin-left: 0px;
-              font-size:21px;
-              font-family: MicrosoftYaHei-Bold;
-              font-weight:bold;
-              color:rgba(104,104,116,1);
-              line-height:27px;
-              display: flex;
-              justify-content: center;
-            }
+            // h2 {
+            //   width: 105px;
+            //   height: 30px;
+            //   margin-left: 0px;
+            //   font-size:21px;
+            //   font-family: MicrosoftYaHei-Bold;
+            //   font-weight:bold;
+            //   color:rgba(104,104,116,1);
+            //   line-height:27px;
+            //   display: flex;
+            //   justify-content: center;
+            // }
             h3 {
               width: 136px;
               height: 26px;

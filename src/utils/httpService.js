@@ -17,11 +17,11 @@ axios.interceptors.response.use(response => {
         break;
       case 401:
         console.log('未授权，请重新登录');
-        window.location.href = window.location.origin + '/jurisdiction';
+        // window.location.href = window.location.origin + '/jurisdiction';
         break;
       case 403:
         console.log('拒绝访问');
-        window.location.href = window.location.origin + '/jurisdiction';
+        // window.location.href = window.location.origin + '/jurisdiction';
         break;
       case 404:
         console.log('请求错误,未找到该资源');
