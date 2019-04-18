@@ -1,67 +1,36 @@
 <template>
   <div id="organization">
-    <tree-item
-      :item="treeData">
-    </tree-item>
+    <div>
+      <p>南京乐伽商业管理有限公司</p>
+      <div class="organ-tree">
+        <!--<div class="radius-container">总裁办</div>-->
+        <div class="flex-center">
+          <div class="area-container writingMode">
+            <span class="line-up"></span>
+            <p class="bold">研发中心</p>
+            <p>张楚岚</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import TreeItem from './tree.vue'
 
   export default {
     name: 'tree',
-    components: {TreeItem},
+    components: {},
     data() {
       return {
         url: globalConfig.server,
-        treeData: {
-          name: 'My Tree',
-          children: [
-            {name: 'hello1'},
-            {name: 'wat1'},
-            {
-              name: 'child folder',
-              children: [
-                {
-                  name: 'child folder',
-                  children: [
-                    {name: 'hello3'},
-                    {name: 'wat3'}
-                  ]
-                },
-                {name: 'hello2'},
-                {name: 'wat2'},
-                {
-                  name: 'child folder',
-                  children: [
-                    {name: 'hello3'},
-                    {name: 'wat3'}
-                  ]
-                }
-              ]
-            }
-          ]
-        }
       }
     },
     mounted() {
     },
-    activated() {
-    },
     watch: {},
     computed: {},
-    methods: {
-      // makeFolder: function (item) {
-      //   this.set(item, 'children', []);
-      //   this.addItem(item);
-      // },
-      // addItem: function (item) {
-      //   item.children.push({
-      //     name: 'new stuff'
-      //   })
-      // }
-    },
+    methods: {},
   }
 </script>
 

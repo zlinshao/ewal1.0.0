@@ -312,6 +312,13 @@ div.el-popover {
 #theme_name .el-button--info {
   color: #686874;
   background-color: #dfdfdf; }
+#theme_name .el-table::before {
+  height: 0; }
+#theme_name .el-table .tableHeader th div {
+  height: 40px;
+  line-height: 40px;
+  color: #686874;
+  font-weight: bold; }
 #theme_name .borderNone .el-input__inner,
 #theme_name .borderNone .el-textarea__inner {
   border: none;

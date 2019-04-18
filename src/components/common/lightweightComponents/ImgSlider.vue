@@ -1,6 +1,6 @@
 <template>
   <div id="slider">
-    <div v-if="sliders.length>1" class="window" :style="{width: width+'px',height: height+'px'}" @mouseover="stop" @mouseleave="play">
+    <div v-if="!single" class="window" :style="{width: width+'px',height: height+'px'}" @mouseover="stop" @mouseleave="play">
       <ul class="container" :style="containerStyle">
         <li>
           <div v-if="sliders[sliders.length-1]&&sliders[sliders.length - 1].info.ext.includes('video')"
@@ -76,9 +76,11 @@
         </li>
       </ul>
     </div>
-    <div v-if="sliders.length=1" class="window" :style="size" @mouseover="stop" @mouseleave="play">
-      <ul class="container" style="width: 100%;height: 100%">
-        <li style="width: 100%;height: 100%" v-for="(item, index) in sliders" :key="index">
+
+
+    <div v-if="single" :style="size" class="window" @mouseover="stop" @mouseleave="play">
+      <ul class="container" :style="size">
+        <li :style="size" v-for="(item, index) in sliders" :key="index">
           <img :style="size" v-if="item.info.ext.includes('image')" :src="item.uri"
                alt="">
           <div v-if="item.info.ext.includes('video')" class="video-container"
@@ -89,7 +91,6 @@
               <source :src="item.uri" type="video/webm"/>
               <source :src="item.uri" type="audio/ogg"/>
               <source :src="item.uri" type="audio/mpeg"/>
-
               不支持的格式
             </video>
             <div v-if="isShowPlayBtn" class="play-container">
@@ -99,6 +100,7 @@
         </li>
       </ul>
     </div>
+
   </div>
 </template>
 
@@ -138,6 +140,9 @@
       ids: {
         type: Array
       },
+      single: {
+        default:false,
+      }
     },
     data() {
       return {
@@ -397,6 +402,14 @@
   @mixin sliderImg($m, $n) {
     $url: '../../../assets/image/common/lightweightComponents/imgslider/' + $n + '/' + $m;
     @include bgImage($url);
+  }
+  #slider {
+    width: 100%;
+    height: 100%;
+    .window {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .video-container {

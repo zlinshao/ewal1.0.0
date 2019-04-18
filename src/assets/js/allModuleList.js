@@ -69,11 +69,19 @@ export const customService = {
   type: 'customService',
   data: [
     {
-      title: '工单信息',
+      title: '维修保洁',
+      url: '/maintenance'
+    },
+    {
+      title: '工单管理',
       url: '/workOrder'
     },
     {
-      title: '回访记录',
+      title: '资料审核',
+      url: '/dataAudit'
+    },
+    {
+      title: '回访管理',
       url: '/visitToRecord'
     },
     {
@@ -81,23 +89,11 @@ export const customService = {
       url: '/housingDue'
     },
     {
-      title: '资料审核',
-      url: '/dataAudit'
+      title: '小区管理',
+      url: '/village'
     },
     {
-      title: '维修保洁',
-      url: '/maintenance'
-    },
-    {
-      title: '客户管理',
-      url: '/serviceCustomerManagement'
-    },
-    {
-      title: '客服接线',
-      url: '/serviceOnline'
-    },
-    {
-      title: '房源管理',
+      title: '房源中心',
       url: '/serviceHouseManagement'
     },
     {
@@ -105,8 +101,12 @@ export const customService = {
       url: '/serviceContractManagement'
     },
     {
-      title: '小区管理',
-      url: '/village'
+      title: '客户管理',
+      url: '/serviceCustomerManagement'
+    },
+    {
+      title: '接线记录',
+      url: '/serviceOnline'
     }
   ]
 }

@@ -24,7 +24,7 @@
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
         <el-table
           :data="customerList"
-          height="700px"
+          :height="this.mainListHeight(30) + 'px'"
           @row-dblclick="handleOpenDetail"
         >
           <el-table-column prop="created_at" label="创建时间" align="center"></el-table-column>

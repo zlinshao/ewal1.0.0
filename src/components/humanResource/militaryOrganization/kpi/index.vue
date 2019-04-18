@@ -3,8 +3,8 @@
     <div class="kpiTable">
       <div class="table">
         <el-table :data="weekData" v-if="choosedPeriod===0" highlight-current-row header-row-class-name="tableHeader">
-          <el-table-column label="姓名" align="center"></el-table-column>
-          <el-table-column label="部门"  align="center"></el-table-column>
+          <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+          <el-table-column label="部门"  align="center" prop="department"></el-table-column>
           <el-table-column v-for="(item, index) in week" :key="index" :label="item"  align="center"></el-table-column>
         </el-table >
         <el-table :data="monthData" v-if="choosedPeriod===1" highlight-current-row header-row-class-name="tableHeader">
