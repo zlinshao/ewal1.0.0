@@ -85,6 +85,68 @@
       }
 
     }
+
+
+    .notice-detail-dialog {
+      .dialog_main {
+        display: flex;
+        flex-direction: column;
+        .notice-detail-container {
+          height: 300px;
+          .notice-detail-list {
+            font-size: 14px;
+            width: calc(100% - 40px);
+            height: 100%;
+
+            .form-item {
+              width: 100%;
+              padding: 12px 0;
+              vertical-align: center;
+              position: relative;
+
+              .form-item-title {
+                opacity: .5;
+                text-align: right;
+              }
+
+              .form-item-content {
+                //height: 100%;
+                position: relative;
+                text-align: left;
+                font-weight: 700;
+                letter-spacing: 2px;
+
+                &.attachment-container {
+                  position: absolute;
+                  top: -20px;
+                }
+
+                .form-item-content-span-red {
+                  color: #D1373C;
+                }
+
+                .form-item-content-span-input {
+                  display: inline-block;
+                  height: 30px;
+                  line-height: 30px;
+                  width: 40px;
+                  background-color: #fff;
+                  text-align: center;
+                }
+
+              }
+            }
+
+            //会议个数dialog
+
+          }
+        }
+        .notice-table-container {
+          flex: 1;
+          //background-color: gray;
+        }
+      }
+    }
   }
 }
 

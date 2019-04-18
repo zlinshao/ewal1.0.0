@@ -20,18 +20,30 @@
       </div>
     </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
-      <el-table :data="tableSettingData['workOrder'].tableData" :height="this.mainListHeight(30) + 'px'"
-        highlight-current-row :row-class-name="tableChooseRow" @row-dblclick="tableDblClick" header-row-class-name="tableHeader"
-        style="width: 100%">
+      <el-table :data="tableData" :height="this.mainListHeight(30) + 'px'" highlight-current-row @row-dblclick="tableDblClick"
+        header-row-class-name="tableHeader" style="width: 100%" :key='"orderTable"+chooseTab'>
         <el-table-column align="center" label="紧急程度">
           <template slot-scope="scope">
-            <div class="status" :class="['status' + scope.row.status]">
-              <p>{{tableSettingData.workOrder.status[scope.row.status]}}</p>
+            <div class="status" :class="['emergency' + scope.row.emergency]">
+              <p>{{scope.row.emergency_name}}</p>
             </div>
           </template>
         </el-table-column>
-        <el-table-column v-for="item in Object.keys(tableSettingData.workOrder.showData)" :key="item" align="center"
-          :prop="item" :label="tableSettingData.workOrder.showData[item]">
+        <el-table-column align="center" label="创建时间" prop='create_time'></el-table-column>
+        <el-table-column align="center" label="工单编号" prop='num'></el-table-column>
+        <el-table-column align="center" label="类型" prop='type_name'></el-table-column>
+        <el-table-column align="center" label="地址" prop='house_name'></el-table-column>
+        <el-table-column align="center" label="内容" prop='content'></el-table-column>
+        <el-table-column align="center" label="截止时间" prop='finish_time'></el-table-column>
+        <el-table-column align="center" label="处理人" prop='operate_user_name'></el-table-column>
+        <el-table-column align="center" label="创建人" prop='create_name'></el-table-column>
+        <el-table-column align="center" label="部门" prop='org_name'></el-table-column>
+
+        <el-table-column align="center" label="操作">
+          <template slot-scope="scope">
+            <el-button type="primary" plain size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
+            <el-button type="warning" plain size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <footer class="flex-center bottomPage">
@@ -39,8 +51,8 @@
           <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="page">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="tableSettingData.workOrder.params.page"
-            :page-size="tableSettingData.workOrder.params.limit" :total="tableSettingData.workOrder.counts" layout="total,jumper,prev,pager,next">
+          <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" :total="tableDateCount"
+            layout="total,jumper,prev,pager,next">
           </el-pagination>
         </div>
       </footer>
@@ -48,7 +60,28 @@
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
-
+    <!-- 催办 -->
+    <LjDialog :visible="urgedDeal_visible" :size="{width: 480 + 'px',height: 340 + 'px'}" @close="handleCloseUrgedDeal">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>建立催办</h3>
+        </div>
+        <div class="dialog_main borderNone urgedDeal" v-if='currentRow'>
+          <el-form label-width="80px">
+            <el-form-item label="发送对象">
+              <el-input @focus="organSearch('cuiban')" readonly v-model="urgedDeal.personName" :placeholder="currentRow.operate_user_name + ',' + currentRow.create_name"></el-input>
+            </el-form-item>
+            <el-form-item label="备注信息">
+              <el-input v-model="urgedDeal.note" type="textarea" placeholder="请输入" :row="10"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleCloseUrgedDeal(true)">确定</el-button>
+          <el-button type="info" size="small" @click="handleCloseUrgedDeal">取消</el-button>
+        </div>
+      </div>
+    </LjDialog>
     <!--新增跟进记录-->
     <LjDialog :visible="followRecord_visible" :size="{width: 960 + 'px',height: 640 + 'px'}" @close="handleCloseAddNewRecord">
       <div class="dialog_container followRecord">
@@ -243,52 +276,55 @@
               <el-col :span='6'>
                 <p class='el-col-p'><i class='icon house_name'></i>房屋地址</p>
                 <div class='input_box'>
-                  <el-input placeholder="请填写" v-model='addOrder_options.house_name'></el-input>
+                  <el-input placeholder="请填写" v-model='createOrder_form.house_name' disabled></el-input>
                 </div>
               </el-col>
 
               <el-col :span="6">
                 <p class='el-col-p'><i class='icon type'></i><span>类型</span></p>
                 <div class='input_box'>
-                  <el-radio v-model="addOrder_options.type" label="1">维修</el-radio>
-                  <el-radio v-model="addOrder_options.type" label="2">保洁</el-radio>
+                  <el-radio v-model="createOrder_form.type" label="1">维修</el-radio>
+                  <el-radio v-model="createOrder_form.type" label="2">保洁</el-radio>
                 </div>
               </el-col>
 
               <el-col :span="6">
                 <p class='el-col-p'><i class='icon post'></i><span>派单至</span></p>
                 <div class='input_box'>
-                  <el-input @focus="this.staffModule = true" readonly v-model="addOrder_options.post"></el-input>
+                  <el-select placeholder="请选择" v-model='createOrder_form.send_order_type'>
+                    <el-option label="内部保修" value="1"> </el-option>
+                    <el-option label="外部保修" value="2"> </el-option>
+                  </el-select>
                 </div>
               </el-col>
 
               <el-col :span="6">
                 <p class='el-col-p'><i class='icon handler'></i><span>处理人</span></p>
                 <div class='input_box'>
-                  <el-input @focus="this.staffModule = true" readonly v-model="addOrder_options.handler"></el-input>
+                  <el-input @focus="organSearch('add')" readonly v-model="createOrder_form.operate_user_name"></el-input
+                    placeholder="请选择">
                 </div>
               </el-col>
 
               <el-col :span="6">
                 <p class='el-col-p'><i class='icon org'></i><span>部门</span></p>
                 <div class='input_box'>
-                  <el-input @focus="this.departModule = true" readonly v-model="addOrder_options.org"></el-input>
+                  <el-input @focus="departSearch" readonly v-model="createOrder_form.operate_org_name" placeholder="请选择"></el-input>
                 </div>
               </el-col>
 
               <el-col :span="6">
                 <p class='el-col-p'><i class='icon phone'></i><span>回复电话</span></p>
                 <div class='input_box'>
-                  <el-input placeholder="请填写" v-model='addOrder_options.mobile'></el-input>
+                  <el-input placeholder="请填写" v-model='createOrder_form.replay_phone'></el-input>
                 </div>
               </el-col>
 
               <el-col :span="6">
                 <p class='el-col-p'><i class='icon endTime'></i><span>截止时间</span></p>
                 <div class='input_box'>
-                  <el-date-picker v-model="addOrder_options.endTime" value-format="yyyy-MM-dd" align="right" type="date"
-                    placeholder="选择日期">
-                    <!-- :picker-options="addOrder_options.pickerOptions" -->
+                  <el-date-picker v-model="createOrder_form.next_follow_time" value-format="yyyy-MM-dd" align="right"
+                    type="date" placeholder="填写跟进时间">
                   </el-date-picker>
                 </div>
               </el-col>
@@ -296,11 +332,11 @@
               <el-col :span="6">
                 <p class='el-col-p'><i class='icon status'></i><span>紧急时间</span></p>
                 <div class='input_box'>
-                  <el-select v-model="addOrder_options.status" placeholder="请选择">
-                    <el-option label="特急" value="特急"></el-option>
-                    <el-option label="紧急" value="紧急"></el-option>
-                    <el-option label="重要" value="重要"></el-option>
-                    <el-option label="一般" value="一般"></el-option>
+                  <el-select v-model="createOrder_form.emergency" placeholder="请选择">
+                    <el-option label="一般" value="1"></el-option>
+                    <el-option label="紧急" value="2"></el-option>
+                    <el-option label="特急" value="3"></el-option>
+                    <el-option label="重要" value="4"></el-option>
                   </el-select>
                 </div>
               </el-col>
@@ -308,13 +344,13 @@
               <el-col :span='6'>
                 <p class='el-col-p'><i class='icon content'></i>内容</p>
                 <div class='input_box'>
-                  <el-input placeholder="请填写" v-model="addOrder_options.content"></el-input>
+                  <el-input placeholder="请填写" v-model="createOrder_form.content"></el-input>
                 </div>
               </el-col>
 
               <el-col :span='18'>
                 <p class='el-col-p el-col-p1'><i class='icon upload'></i>上传图片</p>
-                <Ljupload size='40' v-model='addOrder_options.imgList'></Ljupload>
+                <Ljupload size='40' v-model='createOrder_form.album'></Ljupload>
               </el-col>
             </el-row>
 
@@ -326,84 +362,91 @@
                 </div>
               </el-col>
               <el-col :span='22' class='el-col-content'>
-                <div class='info_search'>
+                <div class='info_search' v-if='addOrderChosen == 1'>
                   <i class='icon'></i>
-                  <el-input placeholder="地址/合同编号/手机号/客户姓名" v-model="custm_info_search"></el-input>
+                  <div class='el-input'>
+                    <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model="customer_search"
+                      v-on:keyup.enter='addOrder_search'>
+                  </div>
                 </div>
                 <!--客户信息-->
                 <div class='custmer_info' v-if='addOrderChosen == 1'>
-                  <div class='nothing' v-if='custm_info.length == 0'>
+                  <div class='nothing' v-if='customer_info.dataCount == 0'>
                     <div class="nothing_img"></div>
                     <p class='nothing_words'>这里什么都没有哦~</p>
                   </div>
-                  <div class='custmer_content' v-if='custm_info.length >= 0' v-for='info in custm_info' :key='info.id'>
-                    <el-radio v-model="current_cust" :label="info" @change="changeCustmInfo">
-                      <el-row width='100%'>
-                        <el-col :span='7'>
-                          <span class='tit'>房屋地址</span>
-                          <span class='content_tit'>{{info.house_name}}</span>
-                        </el-col>
-                        <el-col :span='5'>
-                          <span class='tit'>合同编号</span>
-                          <span class='content_tit'>{{info.contract_num}}</span>
-                        </el-col>
-                        <el-col :span='3'>
-                          <span class='tit'>姓名</span>
-                          <span class='content_tit'>{{info.username}}</span>
-                        </el-col>
-                        <el-col :span='3'>
-                          <span class='tit'>性质</span>
-                          <span class='content_tit'>{{info.type}}</span>
-                        </el-col>
-                        <el-col :span='5'>
-                          <span class='tit'>电话</span>
-                          <span class='content_tit'>{{info.phone}}</span>
-                        </el-col>
-                      </el-row>
-                    </el-radio>
+                  <div class='order_content_boxes' v-else>
+                    <div class='custmer_content' v-for='info in customer_info.data' :key='info.id'>
+                      <el-radio v-model="current_customer" :label="info" @change="changeCustmInfo">
+                        <el-row width='100%'>
+                          <el-col :span='7'>
+                            <span class='tit'>房屋地址</span>
+                            <span class='content_tit'>{{info.house_name || '--'}}</span>
+                          </el-col>
+                          <el-col :span='5'>
+                            <span class='tit'>合同编号</span>
+                            <span class='content_tit'>{{info.contract_id || '--'}}</span>
+                          </el-col>
+                          <el-col :span='3'>
+                            <span class='tit'>姓名</span>
+                            <span class='content_tit'>{{info.name || '--'}}</span>
+                          </el-col>
+                          <el-col :span='3'>
+                            <span class='tit'>性质</span>
+                            <span class='content_tit'>{{info.customer_type || '--'}}</span>
+                          </el-col>
+                          <el-col :span='5'>
+                            <span class='tit'>电话</span>
+                            <span class='content_tit'>{{info.phone|| '--'}}</span>
+                          </el-col>
+                        </el-row>
+                      </el-radio>
+                    </div>
                   </div>
-                  <div class='ending' v-if='custm_info.length >= 0'>
-                    <div class='ending_img'></div>
-                    我也是有底线的~
-                  </div>
+                  <el-pagination @current-change="handleCustomerChange" :current-page="customer_info.page" layout="total,  prev, pager, next, jumper"
+                    :total="customer_info.dataCount" v-if='customer_info.dataCount > 0'>
+                  </el-pagination>
                 </div>
 
                 <!--历史工单-->
                 <div class='custmer_info custmer_info1' v-if='addOrderChosen == 2'>
-                  <div class='nothing' v-if='historyOrder.length == 0'>
+                  <div class='nothing' v-if='history_info.dataCount == 0'>
                     <div class="nothing_img"></div>
                     <p class='nothing_words'>这里什么都没有哦~</p>
                   </div>
                   <div class='order_content_boxes' v-else>
-                    <div class='order_content' v-for='i in 3'>
+                    <div class='order_content' v-for='history in history_info.data' :key='history.id'>
                       <div class='order_content_box'>
                         <p class='order_title1'>
                           <span>工单内容</span>
-                          洗衣机坏了
+                          {{history.content}}
                         </p>
-                        <span class='status1'>已完成</span>
+                        <span class='status1'>{{history.follow_name}}</span>
                       </div>
                       <div class='order_content_box'>
                         <p class='order_title2'>
-                          <span>维修工单</span>
-                          2019.1.22
+                          <span>{{history.type_name}}工单</span>
+                          {{history.next_follow_time}}
                         </p>
-                        <span>报销金额</span>
+                        <span v-if='history.type == 697 && history.follow_status == 338'>报销金额 {{'￥'+
+                          history.reimburse_money}}</span>
+                        <span v-else-if='history.type == 697 && history.follow_status == 338'>已结束维修</span>
+                        <span v-else-if='history.follow_status != 338'>处理中</span>
                       </div>
                     </div>
                   </div>
-                  <el-pagination @current-change="handleCurrentChange" :current-page="historyOrder_current" layout="total,  prev, pager, next, jumper"
-                    :total="historyOrder.length" v-if='historyOrder.length > 0'>
+                  <el-pagination @current-change="handleHistoryChange" :current-page="history_info.page" layout="total,  prev, pager, next, jumper"
+                    :total="history_info.dataCount" v-if='history_info.dataCount > 0'>
                   </el-pagination>
                 </div>
                 <!--来电记录-->
                 <div class='custmer_info custmer_info1' v-if='addOrderChosen == 3'>
-                  <div class='nothing' v-if='historyPhone.length == 0'>
+                  <div class='nothing' v-if='temporaryRecord.dataCount == 0'>
                     <div class="nothing_img"></div>
                     <p class='nothing_words'>这里什么都没有哦~</p>
                   </div>
                   <div class='order_content_boxes' v-else>
-                    <div class='order_content  order_content2' v-for='i in 3'>
+                    <div class='order_content  order_content2' v-for='temp in temporaryRecord.data' :key='temp.id'>
                       <div class='order_content_box'>
                         <p class='order_title1'>
                           <span>工单内容</span>
@@ -413,8 +456,8 @@
                       </div>
                     </div>
                   </div>
-                  <el-pagination @current-change="handleCurrentChange" :current-page="historyOrder_current" layout="total,  prev, pager, next, jumper"
-                    :total="historyOrder.length" v-if='historyPhone.length > 0'>
+                  <el-pagination @current-change="handleTemporayChange" :current-page="temporaryRecord.page" layout="total,  prev, pager, next, jumper"
+                    :total="temporaryRecord.dataCount" v-if='temporaryRecord.dataCount > 0'>
                   </el-pagination>
                 </div>
               </el-col>
@@ -427,6 +470,11 @@
         </div>
       </div>
     </LjDialog>
+
+    <!--确定删除-->
+    <DeleteDialog :delete_visible='delete_visible' @close='handleCloseDelete'></DeleteDialog>
+    <!--确定增加-->
+    <AddDialog :add_visible='add_visible' @close='handleCloseAdd'></AddDialog>
 
     <!--选择人员-->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
@@ -445,77 +493,38 @@ import Ljupload from '../../common/lightweightComponents/lj-upload'
 import { maintenanceSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 import LjDialog from '../../common/lj-dialog.vue';
+import DeleteDialog from '../components/delete-dialog';
+import AddDialog from '../components/add-dialog';
 export default {
   name: "index",
-  components: { SearchHigh, MenuList, LjDialog, StaffOrgan, DepartOrgan, Ljupload },
+  components: { SearchHigh, MenuList, LjDialog, StaffOrgan, DepartOrgan, Ljupload, DeleteDialog, AddDialog },
   data () {
     return {
       maintenanceSearch,
       customService,
       visibleStatus: false,
 
-      currentTable: 'workOrder',
-      tableSettingData: {
-        workOrder: {//工单
-          counts: 1,
-          params: {
-            search: '',
-            page: 1,
-            limit: 10,
-          },
-          showData: {
-            createTime: '创建时间',
-            workOrderId: '工单编号',
-            type: '类型',
-            address: '地址',
-            content: '内容',
-            endTime: '截至时间',
-            handler: '处理人',
-            createUser: '创建人',
-            department: '部门',
-          },
-          tableData: [],
-          status: {
-            1: '特急',
-            2: '紧急',
-            3: '重要',
-            4: '一般',
-          },
-          chooseRowIds: [],
-          currentSelection: {}//当前选择行
-        },
-        goods: {
-          counts: 0,
-          params: {
-            search: '',
-            page: 1,
-            limit: 8,
-          },
-          chooseRowIds: [],
-          currentSelection: {},//当前选择行,
-          multiSelection: [],//多选行
-          isShowMulti: false,//是否显示多选
-        },
+      tableData: [], // 工单列表
+      tableDateCount: 0, // 工单列表count
+      currentRow: null, // 当前查看的row
+      currentPage: 1, //分页
+      //催办
+      urgedDeal_visible: false,
+      urgedDeal: {
+        note: '',
+        person: [],
+        personName: ''
       },
-
-      chooseRowIds: [],
+      //删除row
+      delete_visible: false,
+      // 增加
+      add_visible: false,
 
       showSearch: false,
       searchData: {},
+
       market_server: globalConfig.market_server,
-      addOrder_visible: false,
-      addOrder_options: {
-        house_name: '',
-        type: '',
-        post: '',
-        handler: '',
-        org: '',
-        mobile: '',
-        endTime: '',
-        status: '',
-        content: '',
-        imgList: [],
-      },
+
       staffModule: false,//显示人员选择
       organData: { //最多选择几个人
         num: 1
@@ -537,33 +546,46 @@ export default {
           id: 3
         }
       ],
-      custm_info_search: '',
-      custm_info: [
-        {
-          id: '451',
-          house_name: '东南花园1-2-102',
-          contract_num: 'LJGDS2545222',
-          username: '沙发上',
-          type: '租客',
-          phone: 15203224511
-        }, {
-          id: '453',
-          house_name: '东南花园1-2-104',
-          contract_num: 'LJGDS2545224',
-          username: '沙发上',
-          type: '租客',
-          phone: 15203224511
-        }
-      ],
-      current_cust: '',
-      historyOrder: [
-        {
-          content: '洗衣机换了，需要维修',
-        }
-      ],
-      historyOrder_current: 1,
-      historyPhone: [{}, {}],
-      historyOrder_current: 1,
+      addOrder_visible: false, // 新建工单
+      customer_search: '', // 模糊搜索
+      customer_info: {  // 用户信息
+        page: 1,
+        dataCount: 0,
+        data: []
+      },
+      current_customer: null,  // 当前选择的客户
+      history_info: { //历史工单
+        page: 1,
+        dataCount: 0,
+        data: []
+      },
+      temporaryRecord: {  // 来电记录
+        page: 1,
+        dataCount: 0,
+        data: []
+      },
+      createOrder_form: { //创建工单
+        contract_num: '',
+        contract_id: '',
+        contract_type: '',
+        house_id: '',
+        house_name: '',
+        type: '',
+        send_order_type: '',
+        operate_user_id: '',
+        operate_user_name: '',
+        operate_org_id: '',
+        operate_org_name: '',
+        replay_phone: '',
+        next_follow_time: '',
+        emergency: '',
+        content: '',
+        album: ''
+      },
+      currentStaff_method: '',
+
+
+
       // 详情
       detail_visible: false,
       detail_form: {
@@ -574,7 +596,7 @@ export default {
       organData: {
         num: 1
       },
-      currentRow: null, // 当前查看的row
+
       sureEnding_visible: false,
 
       tag_status: 7, // 7是维修 8是保洁
@@ -593,7 +615,7 @@ export default {
           title: '已完成',
         }
       ],
-      currentPage: 1,
+
     }
   },
   mounted () {
@@ -612,7 +634,7 @@ export default {
         limit: 10,
         follow_status: this.chooseTab
       }
-      this.$http.get(`${this.market_server}v1.0/market/work_order`, params).then(res => {
+      this.$http.get(`${this.market_server}v1.0/csd/work_order`, params).then(res => {
         console.log(res)
         if (res.code === 200) {
           this.tableData = res.data.data;
@@ -625,11 +647,104 @@ export default {
         this.showLoading(false);
       })
     },
+    // 催办
+    handleCuiBan (row) {
+      this.urgedDeal_visible = true
+      this.currentRow = row
+    },
+    // 关闭催办
+    handleCloseUrgedDeal (params) {
+      if (params) {
+        let option = {
+          work_order_id: this.currentRow.id,
+          user: this.urgedDeal.person,
+          content: this.urgedDeal.note
+        }
+        this.$http.post(`${this.market_server}v1.0/csd/work_order/notice`, option).then(res => {
+          this.$LjNotify('success', {
+            title: '提示',
+            message: res.message
+          });
+          if (res.code === 200) {
+            this.getDataList()
+          }
+        })
+      }
+      this.urgedDeal_visible = false
+      this.urgedDeal_note = null
+      this.currentRow = null
+    },
+    // 删除
+    handleDeleteRow (row) {
+      this.currentRow = row
+      this.delete_visible = true
+    },
+    //关闭删除
+    handleCloseDelete (val) {
+      if (val) { //确定删除
+        this.$http.delete(`${this.market_server}v1.0/csd/work_order/delete/${this.currentRow.id}`).then(res => {
+          this.$LjNotify('success', {
+            title: '提示',
+            message: res.message
+          });
+          if (res.code === 200) {
+            this.getDataList()
+          }
+        })
+      }
+      this.currentRow = null
+      this.delete_visible = true
+    },
+    //确定新增
+    handleAddNewRecord () {
+      this.followRecord_visible = false
+      this.add_visible = true
+      console.log(this.followRecord)
+      this.currentMethod = 'addRecord'
+    },
+    addRecordFun (par) {
+      if (par) {
+        let params = {
+          work_order_id: this.currentRow.id,
+          folow_status: this.followRecord.type,
+          content: this.followRecord.note
+        }
+        this.$http.post(`${this.market_server}v1.0/csd/work_order/follow`, params).then(res => {
+          console.log(res)
+          this.$LjNotify('success', {
+            title: '提示',
+            message: res.message
+          });
+          this.followRecord_visible = false;
+        })
+      }
+      this.followRecord = {
+        type: '',
+        emergency: '',
+        note: '',
+        complained: [
+          {
+            id: '',
+            type: '',
+            name: '',
+            money: ''
+          }
+        ],
+        album: []
+      }
+    },
+    //确认添加
+    handleCloseAdd (params) {
+      if (this.currentMethod == 'addRecord') {
+        this.addRecordFun(params)
+      }
+      this.currentMethod = null
+    },
     // tab切换
     changeTabs (id) {
       if (this.chooseTab !== id) {
         this.chooseTab = id;
-        // this.getDateList()
+        this.getDateList()
       }
     },
     chosenTag_status (id) {
@@ -641,32 +756,116 @@ export default {
     addOrder () {
       this.addOrder_visible = true
     },
-    hiddenOrgan (ids, names, arr) { // 关闭 选择人员
-      this.staffModule = false;
-      if (ids !== 'close') {
-        // this.postman = names
-        // this.postMess.person = arr
-        console.log(ids, names, arr)
-      }
-    },
-    hiddenDepart (ids, str, arr) {
-      this.departModule = false
-      if (dis != 'close') {
-        console.log(ids, names, arr)
-      }
-    },
     chosenOptions (id) {
       if (this.addOrderChosen != id) {
         this.addOrderChosen = id
+        id == 2 && this.history_search() // 历史工单
+        id == 3 && this.temporary_search() // 来电
       }
     },
-    changeCustmInfo (val) {
-      this.addOrder_options.house_name = val.house_name
+    changeCustmInfo (val) { // 选择用户
+      this.createOrder_form.house_name = val.house_name || '--'
+      this.history_info = {
+        page: 1,
+        dataCount: 0,
+        data: []
+      }
+      this.temporaryRecord = {
+        page: 1,
+        dataCount: 0,
+        data: []
+      }
     },
-    handleCurrentChange () { },
+    // 模糊搜索 用户
+    addOrder_search () {
+      let params = {
+        type: 3,
+        search: this.customer_search,
+        limit: 5,
+        page: this.customer_info.page
+      }
+      this.$http.get(this.market_server + `v1.0/market/customer`, params).then(res => {
+        if (res.code === 200) {
+          this.customer_info.dataCount = res.data.count
+          this.customer_info.data = res.data.data
+        }
+      })
+    },
+    // 历史工单搜索
+    history_search () {
+      if (this.current_customer) {
+        let history = {
+          type: 0,
+          page: this.history_info.page,
+          limit: 5,
+          search: this.current_customer.contract_num,
+        }
+        this.$http.get(`${this.market_server}v1.0/csd/work_order/history`, history).then(res => {
+          console.log(res)
+          if (res.code === 200) {
+            this.history_info.data = res.data.data
+            this.history_info.dataCount = res.data.all_count
+          }
+        })
+      }
+
+    },
+    // 来电记录
+    temporary_search () {
+      if (this.current_customer) {
+        let temporary = {
+          type: 0,
+          page: this.temporaryRecord.page,
+          limit: 5,
+          search: this.current_customer.contract_num,
+        }
+        this.$http.get(`${this.market_server}v1.0/csd/work_order/temporaryRecord`, temporary).then(res => {
+          console.log(res)
+          if (res.code === 200) {
+            this.temporaryRecord.data = res.data.data
+            this.temporaryRecord.dataCount = res.data.all_count
+          }
+        })
+      }
+    },
+    // 用户列表分页
+    handleCustomerChange (val) {
+      this.customer_info.page = val
+      this.addOrder_search()
+    },
+    // 历史工单分页
+    handleHistoryChange (val) {
+      this.history_info.page = val
+      this.history_search()
+    },
+    // 来电记录 分页
+    handleTemporayChange (val) {
+      this.temporaryRecord.page = val
+      this.temporary_search()
+    },
+    // 关闭新增工单
     handleCloseAddOrder () {
       this.addOrder_visible = false
+      // 将用户列表清空
+      this.customer_info = {
+        page: 1,
+        dataCount: 0,
+        data: []
+      }
+      this.history_info = {
+        page: 1,
+        dataCount: 0,
+        data: []
+      }
+      this.temporaryRecord = {
+        page: 1,
+        dataCount: 0,
+        data: []
+      }
+      this.customer_search = ''
+      this.current_customer = null
     },
+
     handleCloseDetail () { },
     // 转交
     handleTransfer () {
@@ -683,16 +882,37 @@ export default {
       this.followRecord_visible = true
     },
     //选择人员
-    organSearch () {
+    organSearch (par) {
       this.staffModule = true
+      this.currentStaff_method = par
     },
     // 关闭 选择人员
     hiddenOrgan (ids, names, arr) {
       this.staffModule = false;
       if (ids !== 'close') {
-        this.postman = names
-        this.postMess.person = arr
+        if (this.currentStaff_method == 'add') {  // 创建工单 选择处理人
+          this.createOrder_form.operate_user_name = names
+          this.createOrder_form.operate_user_id = arr
+
+        }
+        if (this.currentStaff_method == 'cuiban') {  // 催办 选择处理人
+          this.urgedDeal.personName = names
+          this.urgedDeal.person = arr
+        }
+        this.currentStaff_method = ''
         console.log(ids, names, arr)
+      }
+    },
+    //选择 部门
+    departSearch () {
+      this.departModule = true
+    },
+    // 关闭 部门
+    hiddenDepart (ids, str, arr) {
+      this.departModule = false
+      if (ids != 'close') {
+        this.createOrder_form.operate_org_name = str
+        this.createOrder_form.operate_org_id = arr
       }
     },
     //确定新增
@@ -728,40 +948,20 @@ export default {
       this.detail_visible = true
       //this.in_workOrder_table_visible = true;
     },
-    //table多选时触发的事件
-    handleSelectionChange (val) {
-      switch (this.currentTable) {
-        case 'workOrder':
-          console.log('re' + val);
-          break;
-        case 'goods':
-          this.tableSettingData[this.currentTable].multiSelection = val;
-          break;
-        default:
-          break;
-      }
-      console.log(val);
-    },
-    // 点击过
-    tableChooseRow ({ row, rowIndex }) {
-      return this.tableSettingData[this.currentTable].chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-    },
-    handleSizeChange (val) {
-      //console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange (val) {
 
-      this.tableSettingData[this.currentTable].params.page = val;
-      switch (this.currentTable) {
-        case 'workOrder':
-          this.getRepositoryList();
-          break;
-        case 'goods':
-          this.getGoodsList();
-          break;
-        default:
-          break;
-      }
+    handleCurrentChange (val) {
+      this.currentPage = val
+      // this.tableSettingData[this.currentTable].params.page = val;
+      // switch (this.currentTable) {
+      //   case 'workOrder':
+      //     this.getRepositoryList();
+      //     break;
+      //   case 'goods':
+      //     this.getGoodsList();
+      //     break;
+      //   default:
+      //     break;
+      // }
       //this.getRepositoryList();
       //console.log(`当前页: ${val}`);
     },
