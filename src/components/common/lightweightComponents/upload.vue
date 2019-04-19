@@ -108,7 +108,15 @@
 
   export default {
     name: "upload",
-    props: ['file', 'disabled','download'],
+    //props: ['file', 'disabled','download'],
+    props: {
+      file: {},
+      disabled:{},
+      download:{},
+      maxSize: {
+        type:[Number],
+      },
+    },
     components: {
       LjDialog,
       ImgSlider,
@@ -243,6 +251,16 @@
           let fileType = '';
           let fileName = file.name;
           let fileSize = file.size;
+          if(this.maxSize) {
+            debugger
+            if(this.maxSize*1024*1024<=file.size) {
+              this.$LjMessage('warning',{
+                title:'警告',
+                msg:`超过最大上传限制${this.maxSize}M`,
+              });
+              return;
+            }
+          }
           let key = "lejia" + md5(fileName + new Date().getTime()).toLowerCase() + "." + fileName.split(".")[1];
           reader.readAsDataURL(file);
           reader.onload = function (event) {

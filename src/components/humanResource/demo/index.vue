@@ -1,6 +1,8 @@
 <template>
   <div class="demo-container" style="width: 800px">
-    <name-shower type="org" :ids="org_list"></name-shower>
+    <!--<el-button @click="paper_visible=true">测试</el-button>
+    <test-paper :visible.sync="paper_visible" :params="paper_params" @success="demoSuccess"></test-paper>-->
+<!--    <name-shower type="org" :ids="org_list"></name-shower>-->
     <!--<user-list :ids="user_list"></user-list>-->
     <!--<calendar week-type="en" style="width: 1366px;height: 768px">
       <div :slot="'slot'+item.id" v-for="item in daysList"
@@ -14,13 +16,14 @@
       </div>
     </calendar>-->
     <!--<img-slider :size="{width:'100%',height:'100%'}" :single="true" :arr="sliders"></img-slider>-->
-    <!--<lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>-->
+    <lj-upload v-model="list"></lj-upload>
   </div>
 
 </template>
 
 <script>
   import _ from 'lodash';
+  import TestPaper from '@/components/common/lightweightComponents/TestPaper.vue';
   import NameShower from '@/components/common/lightweightComponents/NameShower.vue';
   import UserList from '@/components/common/lightweightComponents/UserList.vue';
   import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
@@ -36,6 +39,7 @@
       ImgSlider,
       UserList,
       NameShower,
+      TestPaper
     },
     data() {
       return {
@@ -56,12 +60,25 @@
         list:[4225067],
         user_list:[211,289,3604,3623,3590,3589],
         org_list:[395,396],
+        paper_params:{
+          paper_name:'新建问卷',
+          title:'入职考试',
+          sub_title:'关于春节挂春联选一副',
+          btn_name:'预览问卷',
+        },
+        paper_visible:false,
       }
     },
     mounted() {
       this.initDaysList(new Date('2019-04-01'));
     },
     methods: {
+      demoSuccess(exam) {
+        debugger
+        console.log(exam);
+      },
+
+
       initDaysList(date) {
         if (date) {
           let daysList = [...this.getPrevMonthRestList(date), ...this.getCurrentMonthList(date), ...this.getNextMonthRestList(date)];

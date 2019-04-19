@@ -2,7 +2,7 @@
   <div id="questionnaire">
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
-        <div class="icons-font"><b>调查问卷</b></div>
+        <div @click="showAddQuestionnaire" class="icons-font"><b>新建问卷</b></div>
       </div>
 
     </div>
@@ -102,21 +102,88 @@
         </div>
       </footer>
     </div>
+
+
+
+
+    <!--新建问卷对话框-->
+    <lj-dialog
+      :visible.sync="add_questionnaire_dialog_visible"
+      :size="{width:'500px',height: '500px'}">
+      <div class="dialog_container add-questionnaire-dialog">
+        <div class="dialog_header">
+          <h3>新建问卷</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form size="small" label-width="100px" :rules="rules.addQuestionnaire" ref="addQuestionnaireFormRef" :model="add_questionnaire_form">
+            <el-form-item prop="name" label="问卷名称">
+              <el-input v-model="add_questionnaire_form.name" placeholder="请输入试卷名称"></el-input>
+            </el-form-item>
+            <el-form-item prop="start_time" label="开始时间">
+              <el-date-picker v-model="add_questionnaire_form.start_time" type="datetime" placeholder="请选择开始时间"></el-date-picker>
+            </el-form-item>
+            <el-form-item prop="validity_time" label="有效期">
+              <el-input v-model.number="add_questionnaire_form.validity_time" placeholder="请输入有效期">
+                <template slot="append">天</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="object_ids" label="调查对象">
+              <user-choose v-model="add_questionnaire_form.object_ids"></user-choose>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger">提交</el-button>
+          <el-button size="small" type="info" @click="add_questionnaire_dialog_visible = false">取消
+          </el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+
+
+
+    <test-paper :visible.sync="paper_visible" :params="paper_params" @success="demoSuccess"></test-paper>
+
   </div>
 </template>
 
 <script>
+  import UserChoose from '../../../common/lightweightComponents/UserChoose';
   import LjDialog from '../../../common/lj-dialog.vue';
+  import TestPaper from '../../../common/lightweightComponents/TestPaper';
 
 
   export default {
     name: "index",
     props: ['searchVal'],
     components: {
-      LjDialog
+      LjDialog,
+      UserChoose,
+      TestPaper,
     },
     data() {
       return {
+        rules:{
+          addQuestionnaire:{
+            name:[
+              {required:true,message: '请输入公告名称', trigger: 'blur'},
+            ],
+            start_time:[
+              {required:true,message: '请选择开始时间', trigger: 'blur'},
+            ],
+            validity_time:[
+              {required:true,message: '请输入有效期', trigger: 'blur'},
+              { type: 'number', message: '必须为数字值',trigger: 'blur'}
+            ],
+            object_ids:[
+              {required:true,message: '请选择调查对象', trigger: 'blur'},
+            ],
+          },
+        },
+
+
         url: globalConfig.humanResource_server,
         checkList: [],
         chooseRowIds: [],
@@ -127,6 +194,26 @@
           page: 1,
           limit: 8,
         },
+
+        add_questionnaire_dialog_visible: false,
+        add_questionnaire_form: {
+          name:'',//名称
+          start_time:'',//开始时间
+          validity_time:null,//有效期
+          object_ids:[],//人员数组
+          exam_info:[],//调查问卷题库
+        },
+
+
+
+        paper_visible:false,
+        paper_params:{
+          paper_name:'新建问卷',
+          //title:'入职考试',
+          sub_title:'关于春节挂春联选一副',
+          btn_name:'预览问卷',
+        },
+
       }
     },
     activated() {
@@ -144,8 +231,19 @@
       this.getQuestionnaireList();
     },
     methods: {
+      //显示调查对象对话框
       showObjectHandler() {
 
+      },
+
+      //显示新建问卷对话框
+      showAddQuestionnaire() {
+        this.add_questionnaire_dialog_visible = true;
+      },
+
+      demoSuccess(examList) {
+        debugger
+        console.log(examList);
       },
 
 

@@ -1,0 +1,272 @@
+@import "../../common.scss";
+
+#theme_name {
+  //common
+  .icon-edit {
+    width: 26px;
+    height: 26px;
+    display: inline-block;
+    cursor: pointer;
+    //background-color: red;
+  }
+
+  #test_paper {
+    width: 100%;
+    height: calc(100% - 80px);
+    background-color: $color9F9;
+    position: fixed;
+    top: -100%;
+    z-index: 10086;
+    //top:0;
+    transition: all ease 1s;
+
+    &.active {
+      top: 80px;
+    }
+    .edit-paper {//编辑试卷
+      width: 100%;
+      height: 100%;
+
+      .library-header {
+        height: 10%;
+        border-bottom: 1px solid $color0C0;
+
+        > div {
+          width: 50%;
+          text-align: center;
+        }
+
+        .left {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding-left: 10%;
+          > h3 {
+            font-weight: 500;
+          }
+
+          > div {
+            > span {
+              margin-left: 30px;
+            }
+          }
+        }
+
+        .right {
+          //flex-direction: row-reverse;
+        }
+      }
+
+      .library-main {
+        padding: 0 200px;
+        height: 90%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+
+        .control {
+          padding: 15px 0;
+          text-align: right;
+          flex-direction: row-reverse;
+        }
+
+        .exam-type {
+          padding: 30px 30px 0 30px;
+          //margin-bottom: 30px;
+        }
+
+        .paper-main {
+          height: 80%;
+          padding: 30px;
+
+          .del_btn {
+            margin-left: 15px;
+            color: $colorE33;
+          }
+
+          .form_item_border {
+            padding: 20px 0;
+            border-bottom: 1px solid $color0C0;
+          }
+
+          .hide_label {
+            opacity: 0;
+          }
+        }
+
+        .exam-type, .paper-main {
+          .left-tip {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+          }
+        }
+
+        .library-footer {
+          width: 100%;
+          height: 80px;
+          //text-align: right;
+          >div {
+            display: flex;
+            justify-content: flex-end;
+            >button {
+              margin-right: 30px;
+            }
+          }
+        }
+      }
+
+    }
+
+    .preview-paper {//预览试卷
+      width: 100%;
+      height: 100%;
+
+      .library-header {
+        height: 10%;
+        border-bottom: 1px solid $color0C0;
+
+        > div {
+          width: 50%;
+          text-align: center;
+        }
+
+        .left {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding-left: 10%;
+          > h3 {
+            font-weight: 500;
+          }
+
+          > div {
+            > span {
+              margin-left: 30px;
+            }
+          }
+        }
+
+        .right {
+          //flex-direction: row-reverse;
+        }
+      }
+
+      .library-main {
+        padding: 0 200px;
+        height: 90%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+
+        .control {
+          padding: 15px 0;
+          text-align: right;
+          flex-direction: row-reverse;
+        }
+
+        .exam-list {
+          flex: 1;
+          color: $color874;
+
+          .exam-single {
+            .single-title {
+              font-size: 16px;
+              font-family: PingFangSC-Regular !important;
+              padding: 0 0 5px 0;
+            }
+            .single-container {
+              padding: 5px 10px;
+              .exam-single-item {
+                .single-item-stem {}
+                .single-item-choice {
+                  padding: 10px 15px;
+                }
+              }
+            }
+          }
+
+          .exam-judge {
+            padding-top: 30px;
+            .single-title {
+              font-size: 16px;
+              font-family: PingFangSC-Regular !important;
+              padding: 0 0 5px 0;
+            }
+            .single-container {
+              padding: 5px 10px;
+              .exam-single-item {
+                .single-item-stem {}
+                .single-item-choice {
+                  padding: 10px 15px;
+                }
+              }
+            }
+          }
+
+          .exam-short {
+            padding-top: 30px;
+            .single-title {
+              font-size: 16px;
+              font-family: PingFangSC-Regular !important;
+              padding: 0 0 5px 0;
+            }
+            .single-container {
+              padding: 5px 10px;
+              .exam-single-item {
+                .single-item-stem {}
+                .single-item-choice {
+                  padding: 10px 15px;
+                }
+              }
+            }
+          }
+
+
+          //background-color: red;
+          //width: 100%;
+        }
+
+        .library-footer {
+          width: 100%;
+          height: 80px;
+          @include flex('flex-center');
+          //text-align: right;
+          >div {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            >button {
+              margin-right: 30px;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
+
+#theme_name.theme1 {
+  #test_paper {
+
+  }
+}
+
+#theme_name.theme2 {
+  #test_paper {
+
+  }
+}
+
+#theme_name.theme3 {
+  #test_paper {
+
+  }
+}
+
+#theme_name.theme4 {
+  #test_paper {
+
+  }
+}
