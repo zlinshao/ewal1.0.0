@@ -108,7 +108,7 @@ export const LeaveJobSearch = {
 // 工单
 export const workOrderSearch = {
   status: 'workOrder',
-  placeholder: '',
+  placeholder: '地址/合同编号/工单编号/内容',
   keywords: 'search',
   data: [
     {
@@ -388,25 +388,27 @@ export const dataAuditSearch = {
 // 维修保洁
 export const maintenanceSearch = {
   status: 'workOrder',
+  placeholder: '地址/合同编号/工单编号/内容',
+  keywords: 'search',
   data: [
     {
       keyType: 'dateRange',
       title: '创建时间',
       placeholder: '请选择日期',
-      keyName: 'date1',
+      keyName: 'create_time',
       dataType: []
     },
     {
       keyType: 'dateRange',
       title: '跟进时间',
       placeholder: '请选择日期',
-      keyName: 'date2',
+      keyName: 'finish_time',
       dataType: []
     },
     {
       keyType: 'radio',
       title: '紧急程度',
-      keyName: 'radio',
+      keyName: 'emergency',
       dataType: '',
       value: [
         {
@@ -428,26 +430,20 @@ export const maintenanceSearch = {
       ]
     },
     {
-      keyType: 'check',
-      title: '状态',
-      keyName: 'check',
+      keyType: 'staff',
+      title: '处理人',
+      placeholder: '请选择员工',
+      keyName: 'operate_user_id',
       dataType: [],
-      value: [
-        {
-          id: 22,
-          title: '已完成'
-        },
-        {
-          id: 23,
-          title: '未完成'
-        }
-      ]
+      value: {
+        num: 1
+      }
     },
     {
       keyType: 'depart',
       title: '部门',
       placeholder: '请选择部门',
-      keyName: 'department',
+      keyName: 'operate_org_id',
       dataType: [],
       value: {
         num: '',
@@ -542,27 +538,25 @@ export const accountRunSearch = {
 //赏善令
 export const rewardUpSearch = {
   status: 'rewardUpSearch',
-  data: [],
+  data: []
 }
 //惩恶令
 export const rewardDownSearch = {
   status: 'rewardDownSearch',
-  data: [],
+  data: []
 }
-
 
 /*公告问卷*/
 //公告
 export const noticeSearch = {
   status: 'noticeSearch',
-  data: [],
+  data: []
 }
 //问卷调查
 export const questionnaireSearch = {
   status: 'questionnaireSearch',
-  data: [],
+  data: []
 }
-
 
 /*内务库房*/
 

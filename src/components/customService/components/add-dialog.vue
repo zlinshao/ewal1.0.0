@@ -1,5 +1,5 @@
 <template>
-  <LjDialog :visible="add_visible" :size="{width: 480 + 'px',height: 310 + 'px'}" @close="handleCloseAdd" id='delete_dailog'>
+  <LjDialog :visible="add_visible" :size="{width: 480 + 'px',height: 310 + 'px'}" @close="handleCloseAdd" id='add_dailog'>
     <div class='dialog_container'>
       <div class="dialog_main">
         <div class='img_box'></div>
@@ -39,7 +39,7 @@ export default {
 }
 
 #theme_name {
-  #delete_dailog {
+  #add_dailog {
     .dialog_main {
       @include flex("items-column");
       .img_box {
@@ -60,7 +60,7 @@ export default {
 }
 
 #theme_name.theme1 {
-  #delete_dailog {
+  #add_dailog {
     .img_box {
       @include backgroundImg("add.png", "theme1");
     }

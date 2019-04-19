@@ -277,6 +277,16 @@
         height: 40px;
         @include flex('items-center');
       }
+      .record_money {
+        position: relative;
+        .icons {
+          width: 16px;
+          height: 16px;
+          position: absolute;
+          right: 10px;
+          bottom: 10px;
+        }
+      }
     }
     .end_dialog {
       .dialog_main {
@@ -311,6 +321,12 @@
     .active-primary {
       background: #409eff;
       color: #fff;
+    }
+    .icon_add {
+      @include confirmImg('tianjia.png', 'theme1');
+    }
+    .icon_del {
+      @include confirmImg('shanchu.png', 'theme1');
     }
 
     .emergency2 {
