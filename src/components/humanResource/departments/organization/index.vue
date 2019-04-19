@@ -16,7 +16,7 @@
                   <div class="line-v"><span></span></div>
                   <span class="strt-name" @click="handleTopGetDepart(item,index)">
                     <img :src="item.users && item.users.length > 0 && item.users[0].avatar" alt="">
-                    {{ item.users && item.users.length > 0 && item.users[0].name }}
+                    {{ item.name }} {{ item.users && item.users.length > 0 && item.users[0].name }}
                   </span>
                   <div class="line-v" v-if="next_depart[index] && next_depart[index].length > 0"><span></span></div>
                   <div class="strt-block" v-show="next_depart[index] && next_depart[index].length > 0">
@@ -36,8 +36,18 @@
                           <span class="line-h line-h-l" v-else-if="child_idx === child_depart[index][idx].length - 1"></span>
                           <span v-else class="line-h line-h-c"></span>
                           <div class="line-v"><span></span></div>
-                          <div class="strt-name strt-name-mini">
+                          <div class="strt-name strt-name-mini" @click="handleGetStaff(child_depart_item,child_idx,idx,index)">
                             {{ child_depart_item.name }}
+                          </div>
+                          <div class="line-v" v-show="staff_list[index][idx][child_idx] && staff_list[index][idx][child_idx].length >0"><span></span></div>
+                          <div class="strt-block" v-show="staff_list[index][idx][child_idx] && staff_list[index][idx][child_idx].length >0">
+                            <div class="strt-part" v-for="(staff_item,staff_idx) in staff_list[index][idx][child_idx]">
+                              <span class="line-h line-h-r" v-if="staff_idx === 0"></span>
+                              <span class="line-h line-h-r" v-else-if="staff_idx === staff_list[index][idx][child_idx].length - 1"></span>
+                              <span class="line-h line-h-c" v-else></span>
+                              <div class="line-v"><span></span></div>
+                              <div class="strt-info-mini">{{ staff_item.name }}</div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -204,7 +214,10 @@
         },
         child_depart: {
 
-        }
+        },
+        staff_list: {
+
+        },
       }
     },
     mounted() {
@@ -213,8 +226,31 @@
     watch: {},
     computed: {},
     methods: {
+      //获取部门下面的人
+      handleGetStaff(child_depart,child_idx,idx,index) {
+        console.log(child_depart,child_idx,idx,index);
+        this.$http.get('staff/user',{
+          page: 1,
+          limit: 999,
+          org_id: child_depart.id
+        }).then(res => {
+          if (res.code === '20000') {
+            this.staff_list[index][idx] = Object.assign({},this.staff_list[index][idx],{
+              [child_idx]: res.data.data
+            })
+          } else {
+            this.staff_list[index][idx] = Object.assign({},this.staff_list[index][idx],{
+              [child_idx]: []
+            })
+          }
+          console.log(this.staff_list);
+        })
+      },
       //获取下级部门
       handleGetChildDepart(next_depart,idx,index) {
+        this.staff_list[index] = Object.assign({},this.staff_list[index],{
+          [idx]:{}
+        });
         this.$http.get('organization/organization',{
           parent_id: next_depart.id
         }).then(res => {
@@ -227,12 +263,14 @@
               [idx]: []
             })
           }
-          console.log(this.child_depart);
         })
       },
       //获取领导管辖的部门
       handleTopGetDepart(item,index) {
         this.child_depart = Object.assign({},this.child_depart,{
+          [index]: {}
+        });
+        this.staff_list = Object.assign({},this.child_depart,{
           [index]: {}
         });
         this.$http.get('organization/organization',{
@@ -241,7 +279,12 @@
           if (res.code === '20000') {
             this.next_depart = Object.assign({},this.next_depart,{
               [index] : res.data.data
-            })
+            });
+            for (var key in this.next_depart) {
+              for (var i =0;i<this.next_depart[key].length;i++) {
+                this.handleGetChildDepart(this.next_depart[key][i],i,key);
+              }
+            }
           } else {
             this.next_depart = Object.assign({},this.next_depart,{
               [index] : []

@@ -278,6 +278,14 @@
           margin: 3px; }
           #theme_name #organization > div .organ-tree .strt-info p:first-child {
             font-size: 20px; }
+      #theme_name #organization > div .organ-tree .strt-info-mini {
+        display: inline-block;
+        padding: 5px 3px;
+        min-width: 40px;
+        line-height: 40px;
+        min-height: 80px;
+        writing-mode: vertical-rl;
+        writing-mode: tb-rl; }
       #theme_name #organization > div .organ-tree .strt-part .line-h {
         height: 1px;
         display: block;
