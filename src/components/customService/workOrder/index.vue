@@ -1216,8 +1216,7 @@ export default {
     addComplaintsType () {
       this.createOrder.reimburse.push({
         type: '',
-        money: '',
-        disable: [false, false, false, false, false],
+        money: ''
       })
     },
     delComplaintsType (index) {
