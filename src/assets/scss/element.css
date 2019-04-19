@@ -309,9 +309,19 @@ div.el-popover {
   border-color: transparent; }
   #theme_name .el-button:hover {
     opacity: 0.8; }
+#theme_name .el-button--danger {
+  background-color: #cf2e33; }
+  #theme_name .el-button--danger:hover {
+    background-color: #cf2e33;
+    opacity: 1; }
+#theme_name .el-button--danger .is-plain {
+  color: white; }
 #theme_name .el-button--info {
   color: #686874;
   background-color: #dfdfdf; }
+  #theme_name .el-button--info:hover {
+    background-color: #dfdfdf;
+    opacity: 1; }
 #theme_name .el-table::before {
   height: 0; }
 #theme_name .el-table .tableHeader th div {

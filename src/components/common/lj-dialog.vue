@@ -4,8 +4,8 @@
       <div class="lj_container" :style="style[lj_size]" :class="{'show_upright': is_upright}">
         <slot></slot>
         <span class="close_btn" @click="handleCloseDialog"></span>
-        <span class="wen_top"></span>
-        <span class="wen_bottom"></span>
+        <!--<span class="wen_top"></span>-->
+        <!--<span class="wen_bottom"></span>-->
       </div>
     </div>
   </div>

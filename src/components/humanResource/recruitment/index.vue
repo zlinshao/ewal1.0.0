@@ -21,7 +21,7 @@
           <p class="flex-center" @click="visibleStatus = true">
             <b>...</b>
           </p>
-          <h1>招兵买马</h1>
+          <h1>招聘管理</h1>
           <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -287,10 +287,10 @@
 
         //导航
         selects: [
-          {id: 1, title: '募兵行列'},
-          {id: 2, title: '分科取士'},
-          {id: 3, title: '殿试会师'},
-          {id: 4, title: '榜上有名'}
+          {id: 1, title: '人员需求'},
+          {id: 2, title: '预约面试'},
+          {id: 3, title: '已约面试'},
+          {id: 4, title: '预约入职'}
         ], //模块列表
         chooseTab: 2, //当前选中模块
         is_hide_nav_container: true,
