@@ -140,7 +140,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +159,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,13 +168,40 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
 
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#theme_name #departOrgan .choose-title {
+  text-align: left;
+  font-size: 16px;
+  margin: 10px 0; }
+  #theme_name #departOrgan .choose-title span {
+    cursor: pointer; }
+    #theme_name #departOrgan .choose-title span:hover {
+      color: #cf2e33; }
 #theme_name #departOrgan .dialog_main {
   padding: 0 15px; }
   #theme_name #departOrgan .dialog_main .checkboxBottom {
     margin-top: 20px; }
+  #theme_name #departOrgan .dialog_main .checkbox-container {
+    position: relative;
+    cursor: pointer; }
+    #theme_name #departOrgan .dialog_main .checkbox-container span {
+      position: absolute;
+      bottom: 2px;
+      right: 15px;
+      width: 80px;
+      height: 20px;
+      vertical-align: middle;
+      font-size: 14px; }
+    #theme_name #departOrgan .dialog_main .checkbox-container:hover {
+      color: #cf2e33; }
 
 /*# sourceMappingURL=departOrgan.css.map */
