@@ -1,7 +1,7 @@
 <template>
   <div class="demo-container" style="width: 800px">
-    <!--<el-button @click="paper_visible=true">测试</el-button>
-    <test-paper :visible.sync="paper_visible" :params="paper_params" @success="demoSuccess"></test-paper>-->
+    <el-button @click="paper_visible=true">测试</el-button>
+    <test-paper :visible.sync="paper_visible" :params="paper_params" @success="demoSuccess"></test-paper>
 <!--    <name-shower type="org" :ids="org_list"></name-shower>-->
     <!--<user-list :ids="user_list"></user-list>-->
     <!--<calendar week-type="en" style="width: 1366px;height: 768px">
@@ -16,7 +16,7 @@
       </div>
     </calendar>-->
     <!--<img-slider :size="{width:'100%',height:'100%'}" :single="true" :arr="sliders"></img-slider>-->
-    <lj-upload v-model="list"></lj-upload>
+    <!--<lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>-->
   </div>
 
 </template>

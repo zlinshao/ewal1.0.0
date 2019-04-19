@@ -252,7 +252,6 @@
           let fileName = file.name;
           let fileSize = file.size;
           if(this.maxSize) {
-            debugger
             if(this.maxSize*1024*1024<=file.size) {
               this.$LjMessage('warning',{
                 title:'警告',

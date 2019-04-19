@@ -123,7 +123,7 @@
                     <div>默认分值</div>
                   </el-col>
                   <el-col :span="22">
-                    <el-input v-model="item.score" placeholder="请输入分值"></el-input>
+                    <el-input v-model.number="item.score" placeholder="请输入分值"></el-input>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -150,10 +150,13 @@
       </div>
     </div>
     <div v-show="paper_type==2" class="preview-paper">
-<!--      <div @click="paper_type=1">预览试卷</div>-->
+      <!--      <div @click="paper_type=1">预览试卷</div>-->
       <div class="library-header flex">
         <div class="left">
-          <h3 @click="paper_type=1">{{params.title}}</h3>
+          <h3>{{params.title}}</h3>
+        </div>
+        <div class="right">
+          <h4>总分数：{{exam_total_score}}分</h4>
         </div>
       </div>
       <div class="library-main scroll_bar">
@@ -161,14 +164,25 @@
           <!--<div class="btn_square_minus" @click="handlePopExamForm">-</div>
           <div class="btn_square_add" @click="handleAddExamForm">+</div>-->
           <i @click="paper_type=1" class="icon-edit"></i>
-          <div></div>
+          <!-- <div></div>-->
         </div>
         <!--题型-->
         <div class="exam-list scroll_bar">
           <div class="exam-single">
-            <div class="single-title">一、单选题（共5题）</div>
+            <div class="single-title">一、单选题（共{{exam_category_list.single.exam_list.length}}题）</div>
             <div class="single-container">
-              <div class="exam-single-item">
+
+              <div v-for="(item,index) in exam_category_list.single.exam_list" class="exam-single-item">
+                <div class="single-item-stem">{{index+1}}、{{item.stem}}（{{item.score}}分）</div>
+                <div class="single-item-choice">
+                  <el-radio-group v-model="item.answer">
+                    <el-radio :key="subIndex" v-for="(subItem,subIndex) in item.choice" :label="exam_form_item_choose[subIndex]">{{subItem.val}}</el-radio>
+                  </el-radio-group>
+                </div>
+              </div>
+
+
+              <!--<div class="exam-single-item">
                 <div class="single-item-stem">1、公司的创立时间是?</div>
                 <div class="single-item-choice">
                   <el-radio-group v-model="demo">
@@ -178,41 +192,53 @@
                     <el-radio label="D">9987</el-radio>
                   </el-radio-group>
                 </div>
-              </div>
+              </div>-->
             </div>
           </div>
 
           <div class="exam-judge">
-            <div class="single-title">一、单选题（共5题）</div>
-            <div class="single-container">
-              <div class="exam-single-item">
-                <div class="single-item-stem">1、公司的创立时间是?</div>
-                <div class="single-item-choice">
-                  <el-radio-group v-model="demo">
-                    <el-radio label="A">1906</el-radio>
-                    <el-radio label="B">1952</el-radio>
-                    <el-radio label="C">2017</el-radio>
-                    <el-radio label="D">9987</el-radio>
+            <div class="judge-title">二、判断题（共{{exam_category_list.judge.exam_list.length}}题）</div>
+            <div class="judge-container">
+
+              <div v-for="(item,index) in exam_category_list.judge.exam_list" class="exam-judge-item">
+                <div class="judge-item-stem">{{index+1}}、{{item.stem}}（{{item.score}}分）</div>
+                <div class="judge-item-choice">
+                  <el-radio-group v-model="item.answer">
+                    <el-radio label="对">对</el-radio>
+                    <el-radio label="错">错</el-radio>
                   </el-radio-group>
                 </div>
               </div>
+
+              <!--<div class="exam-judge-item">
+                <div class="judge-item-stem">1、这是一道判断题?</div>
+                <div class="judge-item-choice">
+                  <el-radio-group v-model="demo">
+                    <el-radio label="A">对</el-radio>
+                    <el-radio label="B">错</el-radio>
+                  </el-radio-group>
+                </div>
+              </div>-->
             </div>
           </div>
 
           <div class="exam-short">
-            <div class="single-title">一、单选题（共5题）</div>
-            <div class="single-container">
-              <div class="exam-single-item">
-                <div class="single-item-stem">1、公司的创立时间是?</div>
-                <div class="single-item-choice">
-                  <el-radio-group v-model="demo">
-                    <el-radio label="A">1906</el-radio>
-                    <el-radio label="B">1952</el-radio>
-                    <el-radio label="C">2017</el-radio>
-                    <el-radio label="D">9987</el-radio>
-                  </el-radio-group>
+            <div class="short-title">三、简答题（共{{exam_category_list.short.exam_list.length}}题）</div>
+            <div class="short-container">
+
+              <div v-for="(item,index) in exam_category_list.short.exam_list" class="exam-short-item">
+                <div class="short-item-stem">{{index+1}}、{{item.stem}}</div>
+                <div class="short-item-choice">
+                  <el-input type="textarea" v-model="item.answer" :autosize="{ minRows: 8, maxRows: 10}"></el-input>
                 </div>
               </div>
+
+              <!--<div class="exam-short-item">
+                <div class="short-item-stem">1、这是一个简答题，说出答案</div>
+                <div class="short-item-choice">
+                  <el-input type="textarea" v-model="demo2" :autosize="{ minRows: 4, maxRows: 10}"></el-input>
+                </div>
+              </div>-->
             </div>
           </div>
         </div>
@@ -236,55 +262,56 @@
   export default {
     name: "TestPaper",
     props: {
-      params:{
+      params: {
         default() {
           return {
-            paper_name:'新建题库',
-            title:'入职考试',
-            sub_title:'文职入职考试',
-            btn_name:'预览题库',
+            paper_name: '新建题库',
+            title: '入职考试',
+            sub_title: '文职入职考试',
+            btn_name: '预览题库',
           }
         }
       },
       visible: {
-        default:false,
+        default: false,
       },
     },
     watch: {
       visible: {
-        handler(val,oldVal) {
+        handler(val, oldVal) {
           this.paper_visible = val;
           //this.$emit('update:visible', this.dialog_visible);
         },
-        immediate:true,
+        immediate: true,
       },
 
       paper_visible: {
-        handler(val,oldVal) {
+        handler(val, oldVal) {
           this.$emit('update:visible', this.paper_visible);
         },
-        immediate:true,
+        immediate: true,
       },
     },
     data() {
       return {
-        url:globalConfig.humanResource_server,
+        url: globalConfig.humanResource_server,
 
         paper_visible: false,
 
-        paper_type:1,//1编辑试卷 2预览试卷
+        paper_type: 1,//1编辑试卷 2预览试卷
 
 
-        demo:'',
+        demo: '',
+        demo2: '',
 
 
         exam_type: 1,//1单选 2判断 3简答题
         exam_form_item_choose: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
         exam_form_item_judge: ['对', '错'],
-        exam_form_item_key: ['关键字1', '关键字2','关键字3','关键字4','关键字5','关键字6'],
+        exam_form_item_key: ['关键字1', '关键字2', '关键字3', '关键字4', '关键字5', '关键字6'],
         exam_form_list: [//题列表
           {
-            category:1,//1单选 2判断 3简答题
+            category: 1,//1单选 2判断 3简答题
             stem: '',
             choice: [
               {val: ''},
@@ -296,10 +323,21 @@
             answer: '',
           }
         ],
-        exam_category_list:{
-          single:{
-            count:3,
-            exam_list:[
+        exam_total_score: 0,
+        /*exam_category_list: {
+          single: {
+            exam_list: [
+              {
+                stem: '这是一个单选题',
+                choice: [
+                  {val: '选项A'},
+                  {val: '选项B'},
+                  {val: '选项C'},
+                  {val: '选项D'},
+                ],
+                score: 10,
+                answer: '',
+              },
               {
                 stem: '这是一个单选题',
                 choice: [
@@ -313,23 +351,40 @@
               }
             ],
           },//单选题
-          judge:{
-            count:3,
-            exam_list:[
+          judge: {
+            exam_list: [
               {
                 stem: '这是一个判断题',
                 choice: [
-                  {val: '卢卡斯就开了房间'},
-                  {val: '士大夫十分'},
+                  {val: ''},
+                  {val: ''},
+                ],
+                score: 10,
+                answer: ''
+              },
+              {
+                stem: '这是一个判断题',
+                choice: [
+                  {val: ''},
+                  {val: ''},
+                ],
+                score: 10,
+                answer: ''
+              },
+              {
+                stem: '这是一个判断题',
+                choice: [
+                  {val: ''},
+                  {val: ''},
                 ],
                 score: 10,
                 answer: ''
               }
+
             ],
           },//判断题
-          short:{
-            count:3,
-            exam_list:[
+          short: {
+            exam_list: [
               {
                 stem: '这是一个简答题',
                 choice: [
@@ -341,12 +396,51 @@
               }
             ],
           },//简答题
+        }*/
+        exam_category_list: {
+          single: {
+            exam_list: [],
+          },//单选题
+          judge: {
+            exam_list: [],
+          },//判断题
+          short: {
+            exam_list: [],
+          },//简答题
         }
       }
     },
     methods: {
       //预览题库/问卷
       preView() {
+
+        this.exam_category_list = {
+          single: {
+            exam_list: [],
+          },//单选题
+          judge: {
+            exam_list: [],
+          },//判断题
+          short: {
+            exam_list: [],
+          },//简答题
+        };
+        _.forEach(this.exam_form_list, (item, index) => {
+          /*if(item.category==1) {
+            this.exam_category_list.single.exam_list.push(item);
+          }*/
+          this.exam_total_score+=item.score||0;
+          switch (item.category) {
+            case 1:
+              this.exam_category_list.single.exam_list.push(item);
+              break;
+            case 2:
+              this.exam_category_list.judge.exam_list.push(item);
+              break;
+            case 3:
+              this.exam_category_list.short.exam_list.push(item);
+          }
+        });
         this.paper_type = 2;
       },
 
@@ -358,15 +452,15 @@
       },
       //提交题库
       handleSubmitExam() {
-        this.$emit('success',this.exam_form_list);
+        this.$emit('success', this.exam_form_list);
         this.paper_visible = false;
         //console.log(this.exam_form_list);
       },
       //添加题库form
       handleAddExamForm() {
-        if(this.exam_type==1) {
+        if (this.exam_type == 1) {
           this.exam_form_list.push({
-            category:1,//1单选 2判断 3简答题
+            category: 1,//1单选 2判断 3简答题
             stem: '',
             choice: [
               {val: ''},
@@ -377,9 +471,9 @@
             score: '',
             answer: ''
           })
-        }else if(this.exam_type==2) {
+        } else if (this.exam_type == 2) {
           this.exam_form_list.push({
-            category:2,
+            category: 2,
             stem: '',
             choice: [
               {val: ''},
@@ -388,9 +482,9 @@
             score: '',
             answer: ''
           })
-        }else if(this.exam_type==3) {
+        } else if (this.exam_type == 3) {
           this.exam_form_list.push({
-            category:3,
+            category: 3,
             stem: '',
             choice: [
               {val: ''},
@@ -415,21 +509,24 @@
 
 <style lang="scss">
   #test_paper {
-      /*.train-radio-style {
-        .el-radio {
-          display: inline-block;
-        }
-      }*/
+    /*.train-radio-style {
       .el-radio {
         display: inline-block;
       }
+    }*/
+    .el-radio {
+      display: inline-block;
+    }
 
     .preview-paper {
-      .el-radio-group {
-        display: flex;
-        justify-content: flex-start;
-        >label {
-          padding-right: 70px;
+      .exam-single {
+        .el-radio-group {
+          display: flex;
+          justify-content: flex-start;
+
+          > label {
+            padding-right: 70px;
+          }
         }
       }
     }
@@ -443,10 +540,11 @@
     $url: '../../../assets/image/common/' + $n + '/' + $m;
     @include bgImage($url);
   }
+
   #theme_name.theme1 {
     #test_paper {
       .icon-edit {
-        @include commonImg('bianji.png','theme1');
+        @include commonImg('bianji.png', 'theme1');
       }
     }
   }
