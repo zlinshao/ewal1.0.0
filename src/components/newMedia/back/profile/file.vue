@@ -21,7 +21,7 @@
 
                     <div class="bg-img"></div>
                 </div>
-                <div class="add-icons" @click="add_visible = true"><span>+</span></div>
+                <!--<div class="add-icons" @click="add_visible = true"><span>+</span></div>-->
             </div>
         </div>
 
@@ -29,7 +29,7 @@
         <lj-dialog
                 :visible="add_visible"
                 :size="{width: 450 + 'px' ,height:450 + 'px'}"
-                @close="add_visible = false">
+                @close="closeAdd">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>新增文档</h3>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="dialog_footer">
                     <el-button size="small" type="danger" @click="postReceivable_tag()">确定</el-button>
-                    <el-button size="small" type="info" @click="add_visible = false">取消</el-button>
+                    <el-button size="small" type="info" @click="closeAdd">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -80,6 +80,7 @@
     import LjDialog from '../../../common/lj-dialog.vue';
     export default {
         name: "BackDocument",
+        props: ['is_add'],
         components:{
             LjDialog
         },
@@ -109,7 +110,23 @@
                 ],
             }
         },
+        watch:{
+            is_add:{
+                handler(val){
+                    this.add_visible = val;
+                    this.flag = 2;
+                    for (let item of Object.keys(this.form)) {
+                        this.form[item] = '';
+                    }
+                },
+                deep:true
+            }
+        },
         methods:{
+            closeAdd(){
+              this.add_visible = false;
+              this.$emit('callbackCancel',this.add_visible)
+            },
             //鼠标移入
             onMousteIn: function (index) {
                 this.seen = true; //鼠标移入显示

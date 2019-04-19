@@ -34,6 +34,12 @@
             padding-top: 0;
 
             .right-info-box {
+              .word_icon{
+                display: block;
+                width: 80px;
+                height: 80px;
+
+              }
               p {
                 margin-top: 6px;
                 margin-bottom: 6px;
@@ -67,6 +73,7 @@
                     padding: 0 20px;
                     line-height: 20px;
                     color: #ffffff;
+                    cursor: pointer;
 
                     &:hover {
                       color: #CF2E33;

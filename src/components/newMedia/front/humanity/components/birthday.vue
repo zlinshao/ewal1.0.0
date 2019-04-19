@@ -207,16 +207,8 @@
             return {
                 params: {//查询参数
                     search: '',
-                    total:'',//总页数
-                    current_page:'',//当前页数
-                    per_page:10,//一页多少条
-                    last_page:'',//最后一页的条数
-                    first_page_url:'',//第一页的URL
-                    last_page_url:'',//最后一页的URL
-                    prev_page_url:'',//上一页的URL
-                    next_page_url:'',//下一页的URL
-                    from:'',//当前页 数据第一项的编号
-                    to:'',//当前页 数据最后一项的编号
+                    limit:12,
+                    offset:1,
                 },
                 content:'',//祝福语
                 current_id:'',
@@ -249,22 +241,21 @@
             getBirthdayLists(){
                 this.$http.get(globalConfig.newMedia_sever+'/api/humanity/birthday',this.params).then(res => {
                     if(res.status===200){
-                        var birthdayData = res.data.data.sort(
-                            function (a,b) {
-                                return a.id-b.id
-                            }
-                        );
+                        // var birthdayData = res.data.data.sort(
+                        //     function (a,b) {
+                        //         return a.id-b.id
+                        //     }
+                        // );
                         this.todayBirthday=[];
                         this.monthBirthday=[];
-                        for(let item of birthdayData){
-                            // for(var i=0;i<3;i++){
+                        for(let item of res.data.data){
                                 if(item.birthday_type==='day'){
                                     this.todayBirthday.push(item);
                                 }else if(item.birthday_type==='month '){
                                     this.monthBirthday.push(item);
                                 }
 
-                                this.wishesData.push(item.blessing);
+                                // this.wishesData.push(item.blessing);
                         }
                         this.count = res.data.total;
 

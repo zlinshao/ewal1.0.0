@@ -62,9 +62,13 @@
             $route: {
                 handler: function(val, oldVal){
                     console.log(val);
+                    console.log(oldVal);
                     this.chooseTab = this.$route.query.pre_index;//切换tab
                     this.selects = this.$route.query.pre_data;
                     this.parent_id = this.$route.query.pre_id;
+                    if(oldVal.path==='/riskManagementDetail'){
+
+                    }
                 },
                 // 深度观察监听
                 deep: true

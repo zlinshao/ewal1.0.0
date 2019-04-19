@@ -176,12 +176,16 @@
         },
         watch: {
             "$route.path": "getPath",
-            // beforeEach((to, from, next) => {
-            //     if (to.name = 'A' && from.name == 'B') {
-            //         next({name: 'C', params: {'id': '跳页成功，还可以传递参数'}})
-            //     }
-            // })
+            "$route":'getRoute',
         },
+        // beforeRouteLeave(to, from, next) {
+        //     console.log(to);
+        //     console.log(from);
+        //     if(from.path ==='/riskManagementDetail'){
+        //         next({name : '三级列表页' , params : {'id':'跳页成功，还可以传递参数'}})
+        //     }
+        // },
+
 
         mounted() {
             this.pre_id = this.$route.query.pre_id;
@@ -191,16 +195,12 @@
                 this.chooseTab = 63;
                 this.getTabList();
             }
-            ;
             this.pre_data = this.$route.query.pre_data;
             console.log(this.pre_data);
 
         },
         methods: {
-            getPath(to, from, next) {
-                if (to.name = 'riskManagementMenu' && from.name == 'riskManagementDetail') {
-                    next({name: 'riskManagementMenu', query: {'pre_data': this.pre_data}})
-                }
+            getPath() {
 
             },
             selects(id) {
@@ -323,7 +323,7 @@
                             this.add_visible = false;
                             this.getDataLists();
                             this.current_item = '';
-                            for (let item of Object.keys(this, form)) {
+                            for (let item of Object.keys(this.form)) {
                                 this.form[item] = ''
                             }
                         } else {
@@ -431,7 +431,6 @@
 
                                     .right-info-box {
                                         .word_icon {
-                                            cursor: pointer;
                                             @include riskManagementImg('word_icon.png', 'theme1');
                                         }
 
@@ -447,6 +446,7 @@
 
                                             span {
                                                 i {
+                                                    cursor: pointer;
                                                     &:hover {
                                                         @include riskManagementImg('xzgj.png', 'theme1');
                                                     }
@@ -517,7 +517,6 @@
 
                                     .right-info-box {
                                         .word_icon {
-                                            cursor: pointer;
                                             @include riskManagementImg('word_icon.png', 'theme1');
                                         }
 
@@ -533,6 +532,7 @@
 
                                             span {
                                                 i {
+                                                    cursor: pointer;
                                                     &:hover {
                                                         @include riskManagementImg('xzgj.png', 'theme1');
                                                     }
