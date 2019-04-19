@@ -170,13 +170,13 @@ const ComprehensiveEarlyWarning = () => import('@/components/riskManagement/Comp
 const MajorStrategicMonitoring = () => import('@/components/riskManagement/MajorStrategicMonitoring/index.vue') //重大战略监测2级列表
 
 const RiskManagementCommon = () => import('@/components/riskManagement/GroupCoreIndicators/common/index.vue');//三级列表
-const GroupCoreIndicatorsMenuLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue') //制度列表
+// const GroupCoreIndicatorsMenuLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue') //制度列表
 
 const RiskManagementMenu = () => import('@/components/riskManagement/common/index.vue') //三级列表
 
 const RiskManagementDetail = () => import('@/components/riskManagement/common/details.vue') //风控文件列表
 // const DocumentLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue');//集团指标文件列表
-const InternalRegulations = () => import('@/components/riskManagement/GroupCoreIndicators/complianceRisk/InternalRegulations.vue') //公司内部规定
+// const InternalRegulations = () => import('@/components/riskManagement/GroupCoreIndicators/complianceRisk/InternalRegulations.vue') //公司内部规定
 
 Vue.use(Router);
 
@@ -382,14 +382,15 @@ export default new Router({
     {
       path: '/riskManagementDetail',
       name: '市场风险监测制度',
-      component: RiskManagementDetail
+      component: RiskManagementDetail,
+
     },
 
-    {
-      path: '/interiorStipulate',
-      name: '公司内部规定',
-      component: InternalRegulations
-    },
+    // {
+    //   path: '/interiorStipulate',
+    //   name: '公司内部规定',
+    //   component: InternalRegulations
+    // },
     {
       path: '/video',
       name: '视频',

@@ -20,7 +20,7 @@
                 <div>
                     <div class="marketRisk-list">
                         <div class="marketRisk-list-info flex-center" v-for="(item,index) in gradeChildrenData">
-                            <div class="marketRisk-box flex-center" @click="routerLink('riskManagementDetail',{pre_name:item.name,pre_id:item.id})">
+                            <div class="marketRisk-box flex-center" @click="routerLink('riskManagementDetail',{pre_name:item.name,pre_id:item.id,pre_data:gradeChildrenData})">
                                 <span>{{item.name}}</span>
                             </div>
                         </div>
