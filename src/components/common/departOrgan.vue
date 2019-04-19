@@ -15,7 +15,7 @@
           <div class="scroll_bar">
             <div style="height: 500px">
               <div class="changeChoose" v-if="departList.length > 0">
-                <el-checkbox-group v-model="checkList" :max="configure.num" @change="handleChooseCheck">
+                <el-checkbox-group v-model="checkList" :max="configure.num">
                   <div v-for="item in departList" class="flex checkbox-container">
                     <el-checkbox :label="item.id" :key="item.id"
                                  class="checkboxBottom">{{item.name}}
@@ -93,10 +93,6 @@
     },
     computed: {},
     methods: {
-      //选择
-      handleChooseCheck(val) {
-        console.log(val);
-      },
       //定位部门
       handleLocationDepart(tmp,idx) {
         console.log(tmp,idx);

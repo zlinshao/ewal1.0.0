@@ -224,7 +224,11 @@
               </div>
               <div style="text-align: center" v-else>暂无数据</div>
             </VillageContainer>
-            <VillageContainer village="所属部门"></VillageContainer>
+            <VillageContainer village="所属部门">
+              <div v-if="current_village_detail.org && current_village_detail.org.length > 0" style="text-align: left" class="flex">
+                <p v-for="(item,idx) in current_village_detail.org">{{ item.name }}<a v-if="idx !== current_village_detail.org.length - 1">、</a></p>
+              </div>
+            </VillageContainer>
           </div>
         </div>
       </lj-dialog>

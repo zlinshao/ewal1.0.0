@@ -6,7 +6,7 @@
       @close="handleCloseLjDialog">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
-          <h3>选择职位</h3>
+          <h3>选择岗位</h3>
         </div>
         <div class="justify-bet dialog_main">
           <div class="flex depart">

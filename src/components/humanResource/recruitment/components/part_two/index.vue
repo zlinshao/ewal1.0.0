@@ -414,8 +414,9 @@
       handleConfirmAddOffer() {
         this.$http.post('recruitment/interviewees',this.add_interviewer_form).then(res => {
           this.handleSuccessCallback(res,'20010');
-          this.send_msg_offer = false;
-          this.handleCloseAddInterviewer();
+          if (res.code === '20010') {
+            this.handleCloseAddInterviewer();
+          }
         }).catch(err => {
           console.log(err);
         })
@@ -423,7 +424,9 @@
       handleAddOffer() {
         this.$http.post('recruitment/interviewers',this.add_msg_form).then(res => {
           this.handleSuccessCallback(res,'20010');
-          this.handleCloseAddMsg();
+          if (res.code === '20010') {
+            this.handleCloseAddMsg();
+          }
         }).catch(err => {
           console.log(err);
         })
@@ -499,6 +502,7 @@
             });
           this.getIntervieweeList();
         } else {
+          this.send_msg_offer = false;
           this.$LjNotify('warning',{
             title: '失败',
             message: res.msg
