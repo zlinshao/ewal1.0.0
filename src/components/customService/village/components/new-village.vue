@@ -24,7 +24,7 @@
                 <el-col :span="6">
                   <el-form-item label="市">
                     <el-select v-model="new_village_form.city" placeholder="请选择" @change="handleChangeCity">
-                      <el-option v-for="item in city_list" :key="item.id" :value="item.city_id"
+                      <el-option v-for="item in city_list" :key="item.city_name" :value="item.city_id"
                                  :label="item.city_name"></el-option>
                     </el-select>
                   </el-form-item>
@@ -32,7 +32,7 @@
                 <el-col :span="6">
                   <el-form-item label="区/县">
                     <el-select v-model="new_village_form.area" placeholder="请选择" @change="handleChangeArea">
-                      <el-option v-for="item in area_list" :key="item.id" :value="item.area_id"
+                      <el-option v-for="item in area_list" :key="item.area_name" :value="item.area_id"
                                  :label="item.area_name"></el-option>
                     </el-select>
                   </el-form-item>
@@ -40,13 +40,13 @@
                 <el-col :span="6">
                   <el-form-item label="街道">
                     <el-select v-model="new_village_form.region" placeholder="请选择">
-                      <el-option v-for="item in region_list" :key="item.id" :value="item.region_id"
+                      <el-option v-for="item in region_list" :key="item.region_name" :value="item.region_id"
                                  :label="item.region_name"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-form-item label="街道地址">
+              <el-form-item label="小区地址">
                 <el-input v-model="new_village_form.address" placeholder="请输入"></el-input>
               </el-form-item>
               <el-form-item label="小区名称">
@@ -64,7 +64,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item label="总栋数">
-                    <el-input placeholder="请输入" type="number" v-model="new_village_form.total_buildings"></el-input>
+                    <el-input placeholder="请输入" v-model="new_village_form.total_buildings"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -77,12 +77,12 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item label="房屋总数">
-                    <el-input placeholder="请输入" type="number" v-model="new_village_form.total_houses"></el-input>
+                    <el-input placeholder="请输入" v-model="new_village_form.total_houses"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
                   <el-form-item label="物业费">
-                    <el-input placeholder="请输入" type="number" v-model="new_village_form.property_fee"></el-input>
+                    <el-input placeholder="请输入" v-model="new_village_form.property_fee"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -109,13 +109,13 @@
                 <el-input placeholder="请输入" type="textarea" :row="8" v-model="new_village_form.remark"></el-input>
               </el-form-item>
               <el-form-item label="小区照片">
-                <Upload :file="pic_upload.village_photo" @success="handleGetUploadFile"></Upload>
+                <LjUpload :file="pic_upload.village_photo" v-model="new_village_form.album.village_photo" @success="handleGetUploadFile"></LjUpload>
               </el-form-item>
               <el-form-item label="房屋照片">
-                <Upload :file="pic_upload.home_photo" @success="handleGetUploadFile"></Upload>
+                <LjUpload :file="pic_upload.home_photo" v-model="new_village_form.album.home_photo" @success="handleGetUploadFile"></LjUpload>
               </el-form-item>
               <el-form-item label="调研报告">
-                <Upload :file="pic_upload.files" @success="handleGetUploadFile"></Upload>
+                <LjUpload :file="pic_upload.files" v-model="new_village_form.album.files" @success="handleGetUploadFile"></LjUpload>
               </el-form-item>
             </el-form>
           </VillageContainer>
@@ -134,14 +134,15 @@
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
   import VillageContainer from './village-container.vue';
-  import Upload from '../../../common/upload.vue';
+  import LjUpload from '../../../common/lightweightComponents/lj-upload';
 
   export default {
     name: "index",
-    props: ['module'],
-    components: {LjDialog, VillageContainer,Upload},
+    props: ['module','editInfo'],
+    components: {LjDialog, VillageContainer,LjUpload},
     data() {
       return {
+        is_edit: false,
 
         pic_upload: {
           village_photo: {
@@ -210,12 +211,19 @@
           built_year: '',
           longitude: '',
           latitude: '',
-          album: {},
+          album: {
+            home_photo: [],
+            files: [],
+            village_photo: []
+          },
         },
         //高德地图api
         map: null,
         autoComplete: null,
         marker: null,
+
+        //  编辑小区
+        edit_village_info: '',
       }
     },
     watch: {
@@ -232,39 +240,26 @@
         immediate: true,
         deep: true
       },
+      editInfo: {
+        handler(val) {
+          if (val) {
+            this.edit_village_info = val;
+            this.is_edit = true;
+            this.handleInitialVillage(val);
+            this.$nextTick(() => {
+              this.handleMarkerMap([val.longitude,val.latitude],{poi: {name: val.village_name}});
+            })
+          }
+        },
+        deep:true
+      }
     },
     computed: {
 
     },
     methods: {
-      //获取上传文件
-      handleGetUploadFile(file) {
-        if (file !== 'close') {
-          this.new_village_form.album[file[0]] = file[1];
-        }
-      },
-      //确定添加
-      handleConfirmAddVillage() {
-        console.log(this.new_village_form);
-        this.$http.post(this.server + 'v1.0/market/community',this.new_village_form).then(res => {
-          console.log(res);
-          if (res.code === 200) {
-            this.$LjNotify('success',{
-              title: '成功',
-              message: res.message
-            });
-            this.handleCloseAddVillage();
-          } else {
-            this.$LjNotify('warning',{
-              title: '失败',
-              message: res.message
-            });
-          }
-        })
-      },
       //标记
       handleMarkerMap(position,info) {
-        this.map.destroy();
         let that = this;
         this.map = new AMap.Map('container', {
           resizeEnable: true,
@@ -285,6 +280,105 @@
           infoWindow.open(that.map, e.target.getPosition());
         }
       },
+      //初始化编辑小区
+      handleInitialVillage(village) {
+        for (var key in this.new_village_form) {
+          this.new_village_form[key] = village[key] || '';
+        }
+        this.new_village_form.album = village.album ? village.album : {
+          home_photo: [],
+          files: [],
+          village_photo: []
+        };
+        this.new_village_form.province = village.province && parseInt(village.province.province_id);
+        this.new_village_form.city = village.city && parseInt(village.city.city_id);
+        this.new_village_form.area = village.area && parseInt(village.area.area_id);
+        this.new_village_form.region = village.region && parseInt(village.region.region_id);
+
+        var province = village.province && village.province.province_id;
+        var city = village.city && village.city.city_id;
+        var area = village.area && village.area.area_id;
+        this.$http.get(this.server + '/v1.0/city/address',{
+          province
+        }).then(res => {
+          if (res.code === 200) {
+            this.city_list = res.data;
+            for (var i =0;i<this.city_list.length;i++) {
+              this.city_list[i].city_id = Number(this.city_list[i].city_id);
+            }
+            this.$http.get(this.server + '/v1.0/city/address',{
+              province,
+              city
+            }).then(res => {
+              if (res.code === 200) {
+                this.area_list = res.data;
+                for (var i =0;i<this.area_list.length;i++) {
+                  this.area_list[i].area_id = Number(this.area_list[i].area_id);
+                }
+                this.$http.get(this.server + '/v1.0/city/address',{
+                  province,
+                  city,
+                  area
+                }).then(res => {
+                  if (res.code === 200) {
+                    this.region_list = res.data;
+                    for (var i =0;i<this.region_list.length;i++) {
+                      this.region_list[i].region_id = Number(this.region_list[i].region_id);
+                    }
+                  } else {
+                    this.region_list = [];
+                  }
+                })
+              } else {
+                this.area_list = [];
+              }
+            })
+          } else {
+            this.city_list = []
+          }
+        });
+      },
+      //获取上传文件
+      handleGetUploadFile(file) {
+        if (file !== 'close') {
+          this.new_village_form.album[file[0]] = file[1];
+        }
+      },
+      //确定添加
+      handleConfirmAddVillage() {
+        if (this.is_edit) {
+          this.$http.patch(this.server + `v1.0/market/community/${this.edit_village_info.id}`,this.new_village_form).then(res => {
+            if (res.code === 200) {
+              this.$LjNotify('success',{
+                title: '成功',
+                message: res.message
+              });
+              this.handleCloseAddVillage();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.message
+              })
+            }
+          });
+          return false;
+        }
+        this.$http.post(this.server + 'v1.0/market/community',this.new_village_form).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.message
+            });
+            this.handleCloseAddVillage();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.message
+            });
+          }
+        })
+      },
       //初始化地图
       handleInitialMap() {
         this.map = new AMap.Map('container', {
@@ -301,7 +395,6 @@
           };
           this.autoComplete = new AMap.Autocomplete(autoOptions);
           AMap.event.addListener(this.autoComplete,"select",(info) => {
-            console.log(info);
             this.new_village_form.longitude = info.poi.location.R;
             this.new_village_form.latitude = info.poi.location.Q;
             this.new_village_form.village_name = info.poi.name;
@@ -315,7 +408,6 @@
         this.getAddressList('region');
       },
       handleChangeCity(val) {
-        console.log(val);
         this.new_village_form.area = '';
         this.new_village_form.region = '';
         this.address_params.area = '';
@@ -338,15 +430,27 @@
             switch (type) {
               case 'province':
                 this.province_list = res.data;
+                for (var i = 0;i<this.province_list.length;i++) {
+                  this.province_list[i].province_id = Number(this.province_list[i].province_id);
+                }
                 break;
               case 'city':
                 this.city_list = res.data;
+                for (var i = 0;i<this.city_list.length;i++) {
+                  this.city_list[i].city_id = Number(this.city_list[i].city_id);
+                }
                 break;
               case 'area':
                 this.area_list = res.data;
+                for (var i = 0;i<this.area_list.length;i++) {
+                  this.area_list[i].area_id = Number(this.area_list[i].area_id);
+                }
                 break;
               case 'region':
                 this.region_list = res.data;
+                for (var i = 0;i<this.region_list.length;i++) {
+                  this.region_list[i].region_id = Number(this.region_list[i].region_id);
+                }
                 break;
             }
           } else {
@@ -370,6 +474,16 @@
       //关闭添加小区
       handleCloseAddVillage() {
         this.new_village_visible = false;
+        this.edit_village_info = '';
+        this.is_edit = false;
+        for (var key in this.new_village_form) {
+          this.new_village_form[key] = '';
+        }
+        this.new_village_form.album = {
+          home_photo: [],
+          files: [],
+          village_photo: []
+        };
         this.$emit('close');
       },
     },

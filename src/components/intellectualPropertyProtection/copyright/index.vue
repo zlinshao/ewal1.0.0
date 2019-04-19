@@ -15,23 +15,36 @@
           <div class="icons add"><b>+</b></div>
         </div>
       </div>
-      <div class='patentContainer'>
-        <div v-for="(item, index) in patentList" :key="index" class='patentList'>
-          <div @click="showPatent(index)">
-            <h1>{{item.department}}</h1>
-            ...............................
-            <!-- <h2></h2> -->
-            <h3>{{item.name}}</h3>
+      <div class='patentContainer' v-if="showAllData">
+        <div class="patentContainerLeft"></div>
+        <div class="patentContainerMid">
+          <div v-for="(item, index) in patentList" :key="index" class='patentList'>
+            <div>
+              <div @click="showPatent(index)" class="patentDetail">
+                <h1>{{item.departmentHeader}}</h1>
+                <h1>{{item.departmentBody}}</h1>
+                <h1>{{item.departmentFooter}}</h1>
+                ...............................
+                <h3>{{item.name}}</h3>
+              </div>
+              <span class="handleTrigger flex-center">
+                <span class="handlePointer">...</span>
+                <span @click="editPatent(index)" class="handlePatent">编辑 </span>
+                <span></span>
+                <span @click="removePatent(index)" class="handlePatent"> 删除</span>
+              </span>
+            </div>
           </div>
-          <span>
-            <span @click="editPatent(index)">编辑 </span>/<span @click="removePatent(index)"> 删除</span>
-          </span>
         </div>
+        <div class="patentContainerRight"></div>
+      </div>
+      <div v-if="showNoneData" class="noneDataShow">
+        <div></div>
       </div>
     </div>
-    <!-- 展示专利 -->
-
     
+
+    <!-- 展示专利 -->
     <el-dialog :visible.sync="show_visible" :show-close="false" custom-class="imgDialog">
       <img :src="patentUrl"/>
     </el-dialog>
@@ -57,7 +70,7 @@
               <org-choose title="请选择可见范围" v-model="patentAddDetail.permission"></org-choose>
             </el-form-item>
             <el-form-item label="添加文件">
-              <lj-upload v-model="patentAddDetail.flie_id"></lj-upload>
+              <lj-upload :max-size="5" v-model="patentAddDetail.file_id"></lj-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -87,7 +100,7 @@
               <org-choose title="请选择可见范围" v-model="patentEditDetail.permission"></org-choose>
             </el-form-item>
             <el-form-item label="编辑文件">
-              <lj-upload v-model="patentEdit_file_id"></lj-upload>
+              <lj-upload :max-size="5" v-model="patentEditDetail.file_id"></lj-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -97,6 +110,8 @@
           </div>
       </div>
     </lj-dialog>
+
+
     <!-- 删除专利 -->
     <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
                    @close="delete_visible = false">
@@ -105,7 +120,7 @@
               <div class="unUse-txt">确定删除该专利文件吗？</div>
           </div>
           <div class="dialog_footer">
-              <el-button type="danger" size="small" @click="delOk">确定</el-button>
+              <el-button type="danger" size="small" @click="removeOk">确定</el-button>
               <el-button type="info" size="small" @click="delete_visible = false;">取消</el-button>
           </div>
       </div>
@@ -129,27 +144,26 @@
       return {
         url: globalConfig.intellectualPropertyProtection,
         intellectualPropertyProtection,
+        showAllData: false,
+        showNoneData: false,
         show_visible: false,
         add_visible: false,
         edit_visible: false,
         delete_visible: false,
-        editIndex: 0,
-        deleteIndex: 0,
         patentUrl: '',
         chooseTab: 2,
         patentList: [],
         patentAddDetail: {
           name: '',
           org_id: 0,
-          flie_id: '',
+          file_id: '',
           permission: 0
         },
-        patentEdit_file_id: [],
         patentEditDetail: {
           id: 0,
           name: '',
           org_id: 0,
-          flie_id: '',
+          file_id: '',
           permission: 0
         },
         patenteDelId:0,
@@ -158,42 +172,34 @@
     mounted() {
       this.getPatentList();
     },
-    watch: {},
-    computed: {
-      // patentName: function(){
-      //   var patentNameHead = []
-      //   var patentNameFoot = [] 
-      //   for(var i = 0; i < this.patentList.length; i++){
-      //     patentNameHead[i] = this.patentList[i].name.split(' ')[0]
-      //     patentNameFoot[i] = this.patentList[i].name.split(' ')[1]
-      //   }
-      //   var patentNameTemp = {
-      //     patentNameHead:patentNameHead,
-      //     patentNameFoot:patentNameFoot
-      //   }
-      //   return patentNameTemp
-      // }
-    },
     methods: {
       getPatentList: function() {
         let params = {
           classify_id: 3,
           all: 1
         }
-        this.$http.get(`${this.url}/api/knowledge/patent`,params).then(res => {
+        this.$http.get(`${this.url}/api/knowledge/classify_document`,params).then(res => {
           if (res.status===200) {
             this.patentList = [];
             for(var i = 0; i < res.data.data.length; i++){
-              console.log(res.data)
               let obj ={
                 id: res.data.data[i].id,
                 name: res.data.data[i].name,
-                org_id:res.data.data[i].org_id,
-                department: res.data.data[i].org_id.name,
-                file_id: res.data.data[i].file_id[0],
+                org_id:res.data.data[i].org_id.id,
+                departmentHeader: res.data.data[i].org_id.name.slice(0,8),
+                departmentBody: res.data.data[i].org_id.name.slice(8,16),
+                departmentFooter: res.data.data[i].org_id.name.slice(16,24),
+                file_id: res.data.data[i].file_id[0].id,
                 fileUrl: res.data.data[i].file_id[0].uri
               }
               this.patentList.push(obj);
+            }
+            if(this.patentList.length > 0){
+              this.showAllData = true;
+              this.showNoneData = false;
+            }else {
+              this.showAllData = false;
+              this.showNoneData = true;
             }
           }
         })
@@ -210,29 +216,34 @@
         this.patentAddDetail.permission = ''
       },
       editPatent: function(index) {
-        this.edit_visible = true;
-        this.editIndex = index;
-        this.patentEditDetail.id = this.patentList[index].id
-        this.patentEditDetail.name = this.patentList[index].name,
-        this.patentEditDetail.org_id = this.patentList[index].org_id,
-        this.patentEditDetail.idpermission = 0
-        
+        this.patentEditDetail.id = this.patentList[index].id;
+        this.patentEditDetail.name = this.patentList[index].name;
+        this.patentEditDetail.org_id = [this.patentList[index].org_id];
+        this.patentEditDetail.file_id = [this.patentList[index].file_id];
+        let params = {
+          id: this.patentEditDetail.id
+        }
+        this.$http.get(`${this.url}/api/knowledge/classify_document/${this.patentEditDetail.id}`,params).then(res => {
+            if (res.status===200) {
+              this.patentEditDetail.permission = res.data.permission.org_id
+              this.edit_visible = true;
+            }
+        })
       },
       removePatent: function(index) {
         this.delete_visible = true;
-        this.deleteIndex = index;
         this.patenteDelId = this.patentList[index].id
       },
       addOk: function() {
         let params = {
           name: this.patentAddDetail.name,
           classify_id: 3,
-          file_id: this.patentAddDetail.flie_id[0],
+          file_id: this.patentAddDetail.file_id,
           org_id: this.patentAddDetail.org_id[0],
           permission: { 
-                        org_id: [this.patentAddDetail.permission[0]]
+                        org_id: this.patentAddDetail.permission
                       }
-        } 
+        }
         if(!params.name) {
           this.$LjNotify('error', {
               title: '失败',
@@ -257,8 +268,15 @@
               message: '请上传文件',
           });
         }
+        else if(params.file_id.length > 1){
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '只能上传一个文件',
+          });
+        }
+
         else{
-          this.$http.post(`${this.url}/api/knowledge/patent`,params).then(res => {
+          this.$http.post(`${this.url}/api/knowledge/classify_document`,params).then(res => {
             if (res.status===200) {
               this.add_visible = false
               this.getPatentList();
@@ -271,12 +289,12 @@
           id: this.patentEditDetail.id,
           name: this.patentEditDetail.name,
           classify_id: 3,
-          file_id: this.patentEdit_file_id[0],
+          file_id: this.patentEditDetail.file_id,
           org_id: this.patentEditDetail.org_id[0],
           permission: { 
                         org_id: this.patentEditDetail.permission
                       }
-        } 
+        }
         if(!params.name) {
           this.$LjNotify('error', {
               title: '失败',
@@ -301,8 +319,14 @@
               message: '请上传文件',
           });
         }
+        else if(params.file_id.length > 1){
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '只能上传一个文件',
+          });
+        }
         else{
-          this.$http.put(`${this.url}/api/knowledge/patent/${params.id}`,params).then(res => {
+          this.$http.put(`${this.url}/api/knowledge/classify_document/${params.id}`,params).then(res => {
             if (res.status===200) {
               this.edit_visible = false
               this.getPatentList();
@@ -310,11 +334,11 @@
           })
         }
       },
-      delOk: function() {
+      removeOk: function() {
         let params = {
           id: this.patenteDelId
         } 
-        this.$http.delete(`${this.url}/api/knowledge/patent/${params.id}`,params).then(res => {
+        this.$http.delete(`${this.url}/api/knowledge/classify_document/${params.id}`,params).then(res => {
           if (res.status===200) {
             this.delete_visible = false
             this.getPatentList();
@@ -354,15 +378,32 @@
 
   #theme_name.theme1 {
     #patent {
-      div{
+      >div {
         .patentContainer{
-          .patentList{
-            div{
-              @include serviceImg('quan.png','theme1');
-              &:hover {
-                @include serviceImg('quan-.png','theme1');
+          .patentContainerLeft{
+            @include serviceImg('huawen.png','theme1')
+          }
+          .patentContainerMid{
+            .patentList{
+              >div{
+                .patentDetail{
+                  @include serviceImg('quan.png','theme1');
+                }
+                &:hover {
+                  .patentDetail{
+                    @include serviceImg('quan-.png','theme1');
+                  }
+                }
               }
             }
+          }
+          .patentContainerRight{
+            @include serviceImg('huawen.png','theme1')
+          }
+        }
+        .noneDataShow{
+          >div{
+            @include serviceImg('zanwushuju.png','theme1')
           }
         }
       }

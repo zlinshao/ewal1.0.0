@@ -66,12 +66,23 @@ div.el-popover {
       opacity: 0.8;
     }
   }
-  // .el-button--danger {
-  //    background-color: $colorE33;
-  // }
+   .el-button--danger {
+      background-color: $colorE33;
+     &:hover {
+       background-color: $colorE33;
+       opacity: 1;
+     }
+   }
+  .el-button--danger .is-plain {
+    color: white;
+  }
   .el-button--info {
     color: $color874;
     background-color: $colorFDF;
+    &:hover {
+      background-color: $colorFDF;
+      opacity: 1;
+    }
   }
   //表格================
   .el-table {

@@ -1,0 +1,471 @@
+<template>
+  <div id="test_paper" :class="{active:paper_visible}">
+    <div v-show="paper_type==1" class="edit-paper">
+      <div class="library-header flex">
+        <div class="left">
+          <h3>{{params.paper_name}}</h3>
+          <div>
+            <span>{{params.title}}</span>
+            <span>{{params.sub_title}}</span>
+          </div>
+        </div>
+        <div class="right flex-center">
+          <el-button @click="preView" size="mini" type="primary">{{params.btn_name}}</el-button>
+        </div>
+      </div>
+      <div class="library-main scroll_bar">
+        <div class="control flex">
+          <div class="btn_square_minus" @click="handlePopExamForm">-</div>
+          <div class="btn_square_add" @click="handleAddExamForm">+</div>
+        </div>
+        <!--题型-->
+        <div class="exam-type">
+          <el-row :gutter="20">
+            <el-col :span="2" class="left-tip">
+              <span>题型</span>
+            </el-col>
+            <el-col :span="22" style="height: 50px;">
+              <div class="train-radio-style">
+                <el-radio-group v-model="exam_type">
+                  <el-radio :label="1">单选题</el-radio>
+                  <el-radio :label="2">判断题</el-radio>
+                  <el-radio :label="3">解答题</el-radio>
+                </el-radio-group>
+              </div>
+
+            </el-col>
+          </el-row>
+        </div>
+        <div class="paper-main borderNone scroll_bar">
+          <el-form size="small">
+            <div v-for="(item,index) in exam_form_list" :key="index" class="form_item_border">
+              <el-form-item>
+                <el-row :gutter="20">
+                  <el-col :span="2" class="left-tip">
+                    <span>{{'题干' + (index + 1)}}</span>
+                  </el-col>
+                  <el-col :span="22">
+                    <el-input v-model="item.stem" type="textarea" :rows="6" placeholder="请输入题干"></el-input>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+              <el-form-item v-if="item.category==1" v-for="(tmp,idx) in item.choice" :key="idx">
+                <el-row :gutter="20">
+                  <el-col :span="2" class="left-tip">
+                    <span :class="{'hide_label': idx !== 0}">选项</span>
+                  </el-col>
+                  <el-col :span="22">
+                    <div class="flex">
+                      <el-input
+                        v-model="tmp.val"
+                        placeholder="请输入选项内容">
+                        <template slot="prepend">{{ exam_form_item_choose[idx] }}</template>
+                      </el-input>
+                      <el-button type="text" size="mini" class="del_btn" @click="handleDeleteChoose(index,idx)">删除
+                      </el-button>
+                      <div class="btn_add"
+                           style="margin-left: 15px"
+                           :class="{'hide_label': idx !== item.choice.length - 1}"
+                           @click="handleAddChooseItem(index)"
+                      >+
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+
+              <el-form-item v-if="item.category==2" v-for="(tmp,idx) in item.choice" :key="idx">
+                <el-row :gutter="20">
+                  <el-col :span="2" class="left-tip">
+                    <span :class="{'hide_label': idx !== 0}">选项</span>
+                  </el-col>
+                  <el-col :span="22">
+                    <div class="flex">
+                      <el-input
+                        v-model="tmp.val"
+                        placeholder="请输入选项内容">
+                        <template slot="prepend">{{ exam_form_item_judge[idx] }}</template>
+                      </el-input>
+                    </div>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+
+              <el-form-item v-if="item.category==3" v-for="(tmp,idx) in item.choice" :key="idx">
+                <el-row :gutter="20">
+                  <el-col :span="2" class="left-tip">
+                    <span :class="{'hide_label': idx !== 0}">选项</span>
+                  </el-col>
+                  <el-col :span="22">
+                    <div class="flex">
+                      <el-input
+                        v-model="tmp.val"
+                        placeholder="请输入关键字">
+                        <!--<template slot="prepend">{{ exam_form_item_key[idx] }}</template>-->
+                        <template slot="prepend">关键字{{ idx+1 }}</template>
+                      </el-input>
+                      <el-button type="text" size="mini" class="del_btn" @click="handleDeleteChoose(index,idx)">删除
+                      </el-button>
+                      <div class="btn_add"
+                           style="margin-left: 15px"
+                           :class="{'hide_label': idx !== item.choice.length - 1}"
+                           @click="handleAddChooseItem(index)"
+                      >+
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+
+              <el-form-item>
+                <el-row :gutter="20">
+                  <el-col :span="2" class="left-tip">
+                    <div>默认分值</div>
+                  </el-col>
+                  <el-col :span="22">
+                    <el-input v-model="item.score" placeholder="请输入分值"></el-input>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+              <el-form-item>
+                <el-row :gutter="20">
+                  <el-col :span="2" class="left-tip">
+                    <div>答案</div>
+                  </el-col>
+                  <el-col :span="22">
+                    <el-input v-model="item.answer" placeholder="请输入答案"></el-input>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+            </div>
+          </el-form>
+        </div>
+        <div class="library-footer">
+          <div>
+            <el-button size="mini" type="danger" @click="handleSubmitExam">提交</el-button>
+            <el-button size="mini" type="info" @click="paper_visible = false">取消</el-button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div v-show="paper_type==2" class="preview-paper">
+<!--      <div @click="paper_type=1">预览试卷</div>-->
+      <div class="library-header flex">
+        <div class="left">
+          <h3 @click="paper_type=1">{{params.title}}</h3>
+        </div>
+      </div>
+      <div class="library-main scroll_bar">
+        <div class="control flex">
+          <!--<div class="btn_square_minus" @click="handlePopExamForm">-</div>
+          <div class="btn_square_add" @click="handleAddExamForm">+</div>-->
+          <i @click="paper_type=1" class="icon-edit"></i>
+          <div></div>
+        </div>
+        <!--题型-->
+        <div class="exam-list scroll_bar">
+          <div class="exam-single">
+            <div class="single-title">一、单选题（共5题）</div>
+            <div class="single-container">
+              <div class="exam-single-item">
+                <div class="single-item-stem">1、公司的创立时间是?</div>
+                <div class="single-item-choice">
+                  <el-radio-group v-model="demo">
+                    <el-radio label="A">1906</el-radio>
+                    <el-radio label="B">1952</el-radio>
+                    <el-radio label="C">2017</el-radio>
+                    <el-radio label="D">9987</el-radio>
+                  </el-radio-group>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="exam-judge">
+            <div class="single-title">一、单选题（共5题）</div>
+            <div class="single-container">
+              <div class="exam-single-item">
+                <div class="single-item-stem">1、公司的创立时间是?</div>
+                <div class="single-item-choice">
+                  <el-radio-group v-model="demo">
+                    <el-radio label="A">1906</el-radio>
+                    <el-radio label="B">1952</el-radio>
+                    <el-radio label="C">2017</el-radio>
+                    <el-radio label="D">9987</el-radio>
+                  </el-radio-group>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="exam-short">
+            <div class="single-title">一、单选题（共5题）</div>
+            <div class="single-container">
+              <div class="exam-single-item">
+                <div class="single-item-stem">1、公司的创立时间是?</div>
+                <div class="single-item-choice">
+                  <el-radio-group v-model="demo">
+                    <el-radio label="A">1906</el-radio>
+                    <el-radio label="B">1952</el-radio>
+                    <el-radio label="C">2017</el-radio>
+                    <el-radio label="D">9987</el-radio>
+                  </el-radio-group>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="library-footer">
+          <div>
+            <el-button size="mini" type="danger" @click="handleSubmitExam">提交</el-button>
+            <el-button size="mini" type="info" @click="paper_visible = false">取消</el-button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script>
+  import _ from 'lodash';
+
+  export default {
+    name: "TestPaper",
+    props: {
+      params:{
+        default() {
+          return {
+            paper_name:'新建题库',
+            title:'入职考试',
+            sub_title:'文职入职考试',
+            btn_name:'预览题库',
+          }
+        }
+      },
+      visible: {
+        default:false,
+      },
+    },
+    watch: {
+      visible: {
+        handler(val,oldVal) {
+          this.paper_visible = val;
+          //this.$emit('update:visible', this.dialog_visible);
+        },
+        immediate:true,
+      },
+
+      paper_visible: {
+        handler(val,oldVal) {
+          this.$emit('update:visible', this.paper_visible);
+        },
+        immediate:true,
+      },
+    },
+    data() {
+      return {
+        url:globalConfig.humanResource_server,
+
+        paper_visible: false,
+
+        paper_type:1,//1编辑试卷 2预览试卷
+
+
+        demo:'',
+
+
+        exam_type: 1,//1单选 2判断 3简答题
+        exam_form_item_choose: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
+        exam_form_item_judge: ['对', '错'],
+        exam_form_item_key: ['关键字1', '关键字2','关键字3','关键字4','关键字5','关键字6'],
+        exam_form_list: [//题列表
+          {
+            category:1,//1单选 2判断 3简答题
+            stem: '',
+            choice: [
+              {val: ''},
+              {val: ''},
+              {val: ''},
+              {val: ''},
+            ],
+            score: '',
+            answer: '',
+          }
+        ],
+        exam_category_list:{
+          single:{
+            count:3,
+            exam_list:[
+              {
+                stem: '这是一个单选题',
+                choice: [
+                  {val: '选项A'},
+                  {val: '选项B'},
+                  {val: '选项C'},
+                  {val: '选项D'},
+                ],
+                score: 10,
+                answer: '',
+              }
+            ],
+          },//单选题
+          judge:{
+            count:3,
+            exam_list:[
+              {
+                stem: '这是一个判断题',
+                choice: [
+                  {val: '卢卡斯就开了房间'},
+                  {val: '士大夫十分'},
+                ],
+                score: 10,
+                answer: ''
+              }
+            ],
+          },//判断题
+          short:{
+            count:3,
+            exam_list:[
+              {
+                stem: '这是一个简答题',
+                choice: [
+                  {val: '关键词1'},
+                  {val: '关键词2'},
+                ],
+                score: 10,
+                answer: ''
+              }
+            ],
+          },//简答题
+        }
+      }
+    },
+    methods: {
+      //预览题库/问卷
+      preView() {
+        this.paper_type = 2;
+      },
+
+      handleAddChooseItem(index,) {
+        this.exam_form_list[index].choice.push({val: ''});
+      },
+      handleDeleteChoose(index, idx) {
+        this.exam_form_list[index].choice.splice(idx, 1);
+      },
+      //提交题库
+      handleSubmitExam() {
+        this.$emit('success',this.exam_form_list);
+        this.paper_visible = false;
+        //console.log(this.exam_form_list);
+      },
+      //添加题库form
+      handleAddExamForm() {
+        if(this.exam_type==1) {
+          this.exam_form_list.push({
+            category:1,//1单选 2判断 3简答题
+            stem: '',
+            choice: [
+              {val: ''},
+              {val: ''},
+              {val: ''},
+              {val: ''},
+            ],
+            score: '',
+            answer: ''
+          })
+        }else if(this.exam_type==2) {
+          this.exam_form_list.push({
+            category:2,
+            stem: '',
+            choice: [
+              {val: ''},
+              {val: ''},
+            ],
+            score: '',
+            answer: ''
+          })
+        }else if(this.exam_type==3) {
+          this.exam_form_list.push({
+            category:3,
+            stem: '',
+            choice: [
+              {val: ''},
+              {val: ''},
+            ],
+            score: '',
+            answer: '',
+          })
+        }
+
+      },
+      //删除题库form
+      handlePopExamForm() {
+        if (this.exam_form_list.length < 2) {
+          return false;
+        }
+        this.exam_form_list.pop();
+      },
+    },
+  }
+</script>
+
+<style lang="scss">
+  #test_paper {
+      /*.train-radio-style {
+        .el-radio {
+          display: inline-block;
+        }
+      }*/
+      .el-radio {
+        display: inline-block;
+      }
+
+    .preview-paper {
+      .el-radio-group {
+        display: flex;
+        justify-content: flex-start;
+        >label {
+          padding-right: 70px;
+        }
+      }
+    }
+  }
+</style>
+
+<style scoped lang="scss">
+  @import "../../../assets/scss/common/lightweightComponents/TestPaper";
+
+  @mixin commonImg($m,$n) {
+    $url: '../../../assets/image/common/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+  #theme_name.theme1 {
+    #test_paper {
+      .icon-edit {
+        @include commonImg('bianji.png','theme1');
+      }
+    }
+  }
+
+  #theme_name.theme2 {
+    #test_paper {
+
+    }
+  }
+
+  #theme_name.theme3 {
+    #test_paper {
+
+    }
+  }
+
+  #theme_name.theme4 {
+    #test_paper {
+
+    }
+  }
+</style>

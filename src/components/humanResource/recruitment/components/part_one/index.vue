@@ -79,7 +79,7 @@
           <div class="dialog_main borderNone">
             <el-form :disabled="is_control === 'look'" :model="control_mb_form" :rules="control_mb_form_rules" label-width="80px" style="width: 90%;margin: 0 auto" size="small">
               <el-form-item label="部门" prop="org_id">
-                <el-input v-model="control_mb_form.depart" placeholder="请选择" readonly @focus="depart_visible = true;organ_data.num = 1"></el-input>
+                <el-input v-model="control_mb_form.depart" placeholder="请选择" readonly @focus="depart_visible = true"></el-input>
               </el-form-item>
               <el-form-item label="岗位" prop="position">
                 <el-input v-model="control_mb_form.position" placeholder="请选择" readonly @focus="position_visible = true"></el-input>
@@ -158,7 +158,7 @@
       <postOrgan :module="position_visible" @close="handleSelPosition"></postOrgan>
 
       <!--部门-->
-      <departOrgan :module="depart_visible" :organ-data="organ_data" @close="handleSelDepart"></departOrgan>
+      <departOrgan :module="depart_visible" @close="handleSelDepart"></departOrgan>
     </div>
   </div>
 </template>
@@ -176,9 +176,6 @@
       return {
         //部门
         depart_visible: false,
-        organ_data: {
-          num: ''
-        },
         //岗位
         position_visible: false,
 

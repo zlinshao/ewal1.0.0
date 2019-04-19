@@ -24,7 +24,7 @@
           </div>
           <div class="icons all-choose" @click="handleChooseAll"></div>
           <div class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
-          <div class="icons search" @click="openHighSearch"></div>
+          <div class="icons search" @click="handleHighSearch"></div>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
               </div>
               <div class="village-footer">
                 <div class="flex-center">
-                  <el-button type="info" size="small">编辑</el-button>
+                  <el-button type="info" size="small" @click="handleEditVillage(village)">编辑</el-button>
                   <el-button type="primary" size="small" plain @click.stop="handleOpenMergeVillage(village)">合并</el-button>
                 </div>
                 <div class="flex-center">
@@ -123,10 +123,10 @@
         </div>
       </div>
 
-      <SearchHigh :module="HighVisible" :showData="searchData" @close="handleCloseSearch"></SearchHigh>
+      <SearchHigh :module="HighVisible" :show-data="searchData" @close="handleCloseSearch"></SearchHigh>
 
       <!--添加小区-->
-      <NewVillage :module="new_village_visible" @close="new_village_visible = false"></NewVillage>
+      <NewVillage :module="new_village_visible" :edit-info="edit_info" @close="new_village_visible = false"></NewVillage>
 
       <!--选择部门-->
       <DepartOrgan :module="depart_visible" @close="handleGetDepart"></DepartOrgan>
@@ -174,7 +174,7 @@
           <div class="dialog_header">
             <h3>{{ current_village_detail && current_village_detail.village_name }}</h3>
             <div class="header_right">
-              <span>本小区已收房100套，已出租50套，出租率50%</span>
+              <span>本小区已收房{{ current_village_detail && current_village_detail.houseNum }}套，已出租{{ current_village_detail && current_village_detail.rented }}套，出租率{{ current_village_detail && current_village_detail.rentalRatio * 100}}%</span>
             </div>
           </div>
           <div class="dialog_main">
@@ -224,7 +224,11 @@
               </div>
               <div style="text-align: center" v-else>暂无数据</div>
             </VillageContainer>
-            <VillageContainer village="所属部门"></VillageContainer>
+            <VillageContainer village="所属部门">
+              <div v-if="current_village_detail.org && current_village_detail.org.length > 0" style="text-align: left" class="flex">
+                <p v-for="(item,idx) in current_village_detail.org">{{ item.name }}<a v-if="idx !== current_village_detail.org.length - 1">、</a></p>
+              </div>
+            </VillageContainer>
           </div>
         </div>
       </lj-dialog>
@@ -249,6 +253,9 @@
     components: { SearchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer,LjUpload},
     data() {
       return {
+        //小区编辑
+        edit_info: '',
+
         //小区详情
         village_detail_visible: false,
         current_village_detail: '',
@@ -378,7 +385,12 @@
         ],
 
         HighVisible: false,
-        searchData: '',
+        searchData: {
+          status: 'village',
+          placeholder: '小区名称',
+          keywords: 'address',
+          data: []
+        },
 
         //分配小区
         allot_village_params: {
@@ -408,6 +420,10 @@
     watch: {},
     computed: {},
     methods: {
+      handleEditVillage(village) {
+        this.edit_info = village;
+        this.new_village_visible = true;
+      },
       //分配小区
       handleAllotVillage() {
         if (this.current_check_village.length < 1) {
@@ -478,8 +494,6 @@
       },
       //小区详情
       handleGetDetail(village) {
-        console.log(village);
-        // this.$http.get(this.http_server + `v1.0/market/community/41234`).then(res => {
         this.$http.get(this.http_server + `v1.0/market/community/${village.id}`).then(res => {
           if (res.code === 200) {
             console.log(res.data);
@@ -778,9 +792,14 @@
       //关闭高级搜索
       handleCloseSearch(val) {
         if (val !== 'close') {
-          console.log(val);
+          this.village_params.address = val.address;
+          this.getVillageList();
         }
         this.HighVisible = false;
+      },
+      //高级
+      handleHighSearch() {
+        this.HighVisible = true;
       },
       handleCheckVillage(village,index) {
         for (var i=0;i<this.check_choose.length;i++) {
@@ -792,16 +811,6 @@
         }
         this.check_choose.push(index);
         this.current_check_village.push(this.village_list[index]);
-      },
-      //高级
-      openHighSearch() {
-        this.searchData = {
-          status: 'village',
-          placeholder: '小区名称',
-          keywords: 'address',
-          data: [],
-        };
-        this.HighVisible = true;
       },
       //变更排序
       handleChangeSort(tmp) {
