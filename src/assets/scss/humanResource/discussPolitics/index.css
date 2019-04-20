@@ -1,21 +1,21 @@
 /*
 Error: Invalid GBK character "\xE4"
-        on line 453 of index.scss
+        on line 472 of index.scss
 
-448:             }
-449: 
-450:           }
-451:         }
-452: 
-453:         //会议个数dialog
-454: 
-455:       }
-456: 
-457:       .meeting-counts-container {
-458:         width: calc(100% - 80px);
+467:             }
+468: 
+469:           }
+470:         }
+471: 
+472:         //会议个数dialog
+473: 
+474:       }
+475: 
+476:       .meeting-counts-container {
+477:         width: calc(100% - 80px);
 
 Backtrace:
-index.scss:453
+index.scss:472
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
@@ -43,4 +43,4 @@ D:/Ruby24-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE4\"\A         on line 453 of index.scss\A \A 448:             }\A 449: \A 450:           }\A 451:         }\A 452: \A 453:         //会议个数dialog\A 454: \A 455:       }\A 456: \A 457:       .meeting-counts-container {\A 458:         width: calc(100% - 80px);"; }
+  content: "Error: Invalid GBK character \"\xE4\"\A         on line 472 of index.scss\A \A 467:             }\A 468: \A 469:           }\A 470:         }\A 471: \A 472:         //会议个数dialog\A 473: \A 474:       }\A 475: \A 476:       .meeting-counts-container {\A 477:         width: calc(100% - 80px);"; }

@@ -1358,6 +1358,8 @@
           { key: 'staff.bank_num',val: '银行卡号'},
           { key: 'staff.account_name',val: '户主'},
           { key: 'staff.account_bank',val: '开户行'},
+          { key: 'staff.contract_number',val: '劳务合同',isBtn: true},
+          { key: 'staff.leave_proof_number',val: '离职证明',isBtn: true},
           { key: 'staff.commitment_number',val: '入职承诺书',isBtn: true},
           { key: 'staff.employ_proof_number',val: '在职证明',isBtn: true},
           { key: 'staff.income_proof_number',val: '收入证明',isBtn: true},

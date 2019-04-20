@@ -178,7 +178,7 @@
 .color874 {
   color: #686874; }
 
-#theme_name #file .InternalRegulations-info {
+#theme_name #profile_file_back {
   width: 100%;
   height: 100%;
   display: flex;
@@ -186,12 +186,12 @@
   justify-content: space-between;
   align-items: center;
   position: relative; }
-  #theme_name #file .InternalRegulations-info .right-info {
+  #theme_name #profile_file_back .right-info {
     width: 100%;
     height: 100%;
     background: #F8F8F8;
     position: relative; }
-    #theme_name #file .InternalRegulations-info .right-info > div {
+    #theme_name #profile_file_back .right-info > div {
       z-index: 110;
       height: 540px;
       width: 90%;
@@ -201,25 +201,25 @@
       padding-top: 30px;
       padding-left: 50px;
       padding-right: 50px; }
-      #theme_name #file .InternalRegulations-info .right-info > div .right-info-list {
+      #theme_name #profile_file_back .right-info > div .right-info-list {
         width: 20%;
         padding: 30px;
         padding-top: 0; }
-        #theme_name #file .InternalRegulations-info .right-info > div .right-info-list .right-info-box .word_icon {
+        #theme_name #profile_file_back .right-info > div .right-info-list .right-info-box .word_icon {
           display: block;
           width: 80px;
           height: 80px; }
-        #theme_name #file .InternalRegulations-info .right-info > div .right-info-list .right-info-box p {
+        #theme_name #profile_file_back .right-info > div .right-info-list .right-info-box p {
           margin-top: 6px;
           margin-bottom: 6px; }
-        #theme_name #file .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child {
+        #theme_name #profile_file_back .right-info > div .right-info-list .right-info-box p:first-child {
           width: 192px;
           height: 192px;
           background: #ffffff;
           position: relative; }
-          #theme_name #file .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child:hover {
+          #theme_name #profile_file_back .right-info > div .right-info-list .right-info-box p:first-child:hover {
             border: 1px solid #CF2E33; }
-          #theme_name #file .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span {
+          #theme_name #profile_file_back .right-info > div .right-info-list .right-info-box p:first-child span {
             position: absolute;
             top: -30px;
             right: 0px;
@@ -228,22 +228,21 @@
             line-height: 30px;
             background: #CF2E33;
             border-radius: 5px; }
-            #theme_name #file .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span i {
+            #theme_name #profile_file_back .right-info > div .right-info-list .right-info-box p:first-child span i {
               font-size: 14px;
               font-style: normal;
               display: inline-block;
               height: 20px;
               padding: 0 20px;
               line-height: 20px;
-              color: #ffffff;
-              cursor: pointer; }
-              #theme_name #file .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span i:hover {
+              color: #ffffff; }
+              #theme_name #profile_file_back .right-info > div .right-info-list .right-info-box p:first-child span i:hover {
                 color: #CF2E33; }
-        #theme_name #file .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:nth-child(2) {
+        #theme_name #profile_file_back .right-info > div .right-info-list .right-info-box p:nth-child(2) {
           color: #7B7B7B; }
-        #theme_name #file .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:last-child {
+        #theme_name #profile_file_back .right-info > div .right-info-list .right-info-box p:last-child {
           color: #BDBDBD; }
-    #theme_name #file .InternalRegulations-info .right-info .bg-img {
+    #theme_name #profile_file_back .right-info .bg-img {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -251,7 +250,7 @@
       width: 360px;
       height: 360px;
       z-index: 11; }
-  #theme_name #file .InternalRegulations-info .add-icons {
+  #theme_name #profile_file_back .add-icons {
     position: absolute;
     top: 30px;
     right: 130px;
@@ -263,8 +262,77 @@
     border-radius: 6px;
     cursor: pointer;
     text-align: center; }
-    #theme_name #file .InternalRegulations-info .add-icons span {
+    #theme_name #profile_file_back .add-icons span {
       display: block;
       line-height: 26px; }
+#theme_name #profile_video_back .video-lists {
+  width: 100%;
+  height: 100%;
+  padding-left: 175px;
+  padding-right: 175px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; }
+  #theme_name #profile_video_back .video-lists .video-list-info {
+    width: 33.33%;
+    height: 420px;
+    margin-bottom: 30px;
+    padding: 20px; }
+    #theme_name #profile_video_back .video-lists .video-list-info .video-box {
+      width: 480px;
+      background-color: #ffffff;
+      border-radius: 8px; }
+      #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-top {
+        width: 100%;
+        height: 300px;
+        cursor: pointer;
+        overflow: hidden;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        position: relative; }
+        #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-top video {
+          width: 100%;
+          height: 300px;
+          object-fit: fill; }
+        #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-top .video-start-icon {
+          width: 100px;
+          height: 100px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%); }
+        #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-top .video-modal {
+          width: 100%;
+          height: 100%;
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+          background: rgba(0, 0, 0, 0.4);
+          position: absolute;
+          top: 0;
+          left: 0; }
+      #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-bottom {
+        width: 100%;
+        height: 120px;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 20px; }
+        #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-bottom .title {
+          font-family: jingDianXingShu;
+          font-size: 30px;
+          margin-top: 10px;
+          margin-bottom: 10px; }
+        #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-bottom .time {
+          font-size: 16px;
+          color: #D2D2D2; }
+        #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-bottom .btn {
+          display: inline-block; }
+          #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-bottom .btn i {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            cursor: pointer; }
+          #theme_name #profile_video_back .video-lists .video-list-info .video-box .video-box-bottom .btn i:nth-child(1) {
+            margin-right: 20px; }
 
-/*# sourceMappingURL=file.css.map */
+/*# sourceMappingURL=common.css.map */

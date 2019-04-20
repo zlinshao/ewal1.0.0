@@ -398,9 +398,9 @@
         </div>
         <div class="dialog_main powerContent space-column">
           <div class="powerHead items-bet">
-            <div class="inputLabel">
+            <div class="inputLabel borderNone">
               <h4>权限类型</h4>
-              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.type" size="small" @change="handleChangePowerType">
+              <el-select disabled :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.type" size="small" @change="handleChangePowerType">
                 <el-option value="position" label="岗位"></el-option>
                 <el-option value="user" label="用户"></el-option>
                 <el-option value="ban" label="黑名单"></el-option>
