@@ -71,8 +71,8 @@ const Humanity = () => import('@/components/newMedia/front/humanity/index.vue') 
 const Profile = () => import('@/components/newMedia/front/profile/index.vue') //资料
 
 //前台资料
-const Video = () => import('@/components/newMedia/components/video.vue')
-const Document = () => import('@/components/newMedia/components/video.vue')
+const Video = () => import('@/components/newMedia/front/profile/components/video.vue')
+const Document = () => import('@/components/newMedia/front/profile/components/video.vue')
 
 //前台乐伽人文
 const LeJiaStars = () =>
@@ -83,29 +83,22 @@ const ExcellentStaff = () =>
   import('@/components/newMedia/front/humanity/components/common.vue')
 
 //前台企业头条
-const News = () =>
-  import('@/components/newMedia/front/hotNews/components/common.vue')
-const LeJiaNews = () =>
-  import('@/components/newMedia/front/hotNews/components/common.vue')
-const Notice = () =>
-  import('@/components/newMedia/front/hotNews/components/common.vue')
+const News = () => import('@/components/newMedia/front/hotNews/components/common.vue')
+const LeJiaNews = () => import('@/components/newMedia/front/hotNews/components/common.vue')
+const Notice = () => import('@/components/newMedia/front/hotNews/components/common.vue')
 
 //热门导读详情
-const NewsDetail = () =>
-  import('@/components/newMedia/front/hotNews/components/detail.vue')
+const NewsDetail = () => import('@/components/newMedia/front/hotNews/components/detail.vue')
 //优秀员工详情
-const StaffDetail = () =>
-  import('@/components/newMedia/components/staffDetail.vue')
+const StaffDetail = () => import('@/components/newMedia/components/staffDetail.vue')
 
 //新媒体后台
 const MediaCenter = () => import('@/components/newMedia/index.vue')
 const BackVideo = () => import('@/components/newMedia/back/profile/common.vue')
-const BackDocument = () =>
-  import('@/components/newMedia/back/profile/common.vue')
+const BackDocument = () => import('@/components/newMedia/back/profile/common.vue')
 const ProfileHome = () => import('@/components/newMedia/back/profile/index.vue')
 const BackNews = () => import('@/components/newMedia/back/news/index.vue')
-const LeJiaHumanity = () =>
-  import('@/components/newMedia/back/lejiaHumanity/index.vue')
+const LeJiaHumanity = () => import('@/components/newMedia/back/lejiaHumanity/index.vue')
 const BackClub = () => import('@/components/newMedia/back/club/index.vue')
 
 //乐伽大学
@@ -169,14 +162,14 @@ const GroupCoreIndicators = () => import('@/components/riskManagement/GroupCoreI
 const ComprehensiveEarlyWarning = () => import('@/components/riskManagement/ComprehensiveEarlyWarning/index.vue') //企业综合预警2级列表
 const MajorStrategicMonitoring = () => import('@/components/riskManagement/MajorStrategicMonitoring/index.vue') //重大战略监测2级列表
 
-const RiskManagementCommon = () => import('@/components/riskManagement/GroupCoreIndicators/common/index.vue');//三级列表
-const GroupCoreIndicatorsMenuLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue') //制度列表
+const RiskManagementCommon = () => import('@/components/riskManagement/common/index.vue');//三级列表
+// const GroupCoreIndicatorsMenuLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue') //制度列表
 
 const RiskManagementMenu = () => import('@/components/riskManagement/common/index.vue') //三级列表
 
 const RiskManagementDetail = () => import('@/components/riskManagement/common/details.vue') //风控文件列表
 // const DocumentLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue');//集团指标文件列表
-const InternalRegulations = () => import('@/components/riskManagement/GroupCoreIndicators/complianceRisk/InternalRegulations.vue') //公司内部规定
+// const InternalRegulations = () => import('@/components/riskManagement/GroupCoreIndicators/complianceRisk/InternalRegulations.vue') //公司内部规定
 
 Vue.use(Router);
 
@@ -377,19 +370,26 @@ export default new Router({
           path: '/riskManagementMenu',
           name: '三级列表页',
           component: RiskManagementMenu,
+
       },
 
     {
       path: '/riskManagementDetail',
       name: '市场风险监测制度',
-      component: RiskManagementDetail
+      component: RiskManagementDetail,
+        beforeRouteLeave (to, from, next) {
+            if(to.path ==='/riskManagementMenu'&& from.path ==='/riskManagementDetail'){
+                next()
+            }
+        },
+
     },
 
-    {
-      path: '/interiorStipulate',
-      name: '公司内部规定',
-      component: InternalRegulations
-    },
+    // {
+    //   path: '/interiorStipulate',
+    //   name: '公司内部规定',
+    //   component: InternalRegulations
+    // },
     {
       path: '/video',
       name: '视频',

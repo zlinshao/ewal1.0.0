@@ -36,7 +36,7 @@
         </div>
       </div>
     </header>
-    <div id="moduleList" :class="{'moduleList':moduleList}">
+    <div id="moduleList" :class="{'moduleList':moduleList}" style="z-index: 1000">
       <div class="justify-around">
         <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules"
              @click="routerLink(item.url);moduleList = false" :key='index'>

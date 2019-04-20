@@ -5,78 +5,81 @@
                 <h1>{{this.$route.query.type ===1 ? '热门导读详情':this.$route.query.type ===2 ? '乐伽新闻详情':this.$route.query.type ===3?'公告详情':''}}</h1>
             </div>
         </div>
-        <div class="mainList" style="height: 80px">
-            <h3 class="detail-title">
-                {{this.$route.query.type ===1 ? '热门导读推荐':this.$route.query.type ===2 ? '热门新闻推荐':this.$route.query.type ===3?'其他公告':''}}
-            </h3>
-        </div>
 
-        <div class="mainList" :style="{'height': this.mainListHeight() + 'px'}">
-            <div class="detail-left-list">
-                <div class="outer-container">
-                    <div class="inner-container">
-                        <div class="element">
-                            <div class="detail-box" v-for="(item,index) in detailDataList">
-                                <div class="detail-box-top">
-                                    <h3>{{item.title}}</h3>
-                                    <div class="top-icons justify-start">
-                                        <span><i class="view"></i>{{item.view}}</span>
-                                        <span><i class="point"></i>{{item.point}}</span>
-                                        <span><i class="comment"></i>{{item.comment}}</span>
+
+
+        <div class="mainList scroll_bar" :style="{'height': this.mainListHeight() + 'px'}">
+            <div class="news-title" style="height: 80px">
+                <h3 class="detail-title">
+                    {{this.$route.query.type ===1 ? '热门导读推荐':this.$route.query.type ===2 ? '热门新闻推荐':this.$route.query.type ===3?'其他公告':''}}
+                </h3>
+            </div>
+            <div class="news-title-menu" :style="{'height': this.mainListHeight() + 'px'}">
+                <div class="detail-left-list">
+                    <div class="outer-container">
+                        <div class="inner-container">
+                            <div class="element">
+                                <div class="detail-box" v-for="(item,index) in detailDataList">
+                                    <div class="detail-box-top">
+                                        <h3>{{item.title}}</h3>
+                                        <div class="top-icons justify-start">
+                                            <span><i class="view"></i>{{item.view}}</span>
+                                            <span><i class="point"></i>{{item.point}}</span>
+                                            <span><i class="comment"></i>{{item.comment}}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="detail-box-bottom">
-                                    <div class="bottom-left">
-                                        <img src="../../../../../assets/image/newMedia/theme1/avatar.png" alt=""></div>
-                                    <div class="bottom-right">
-                                        <p><span class="mar-right">{{item.name}}</span></p>
-                                        <p><span class="mar-right">{{item.department}}</span><span>{{item.time}}</span>
-                                        </p>
+                                    <div class="detail-box-bottom">
+                                        <div class="bottom-left">
+                                            <img src="../../../../../assets/image/newMedia/theme1/avatar.png" alt=""></div>
+                                        <div class="bottom-right">
+                                            <p><span class="mar-right">{{item.name}}</span></p>
+                                            <p><span class="mar-right">{{item.department}}</span><span>{{item.time}}</span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="star_info_right flex-center" @mouseleave="share_navbar_visible = false">
-                <div class="main_info scroll_bar">
-                    <div class="detail-content-middle">
-                        <div class="middle-info">
-                            <h1>{{detailData.title}}</h1>
-                            <div class="detail-box-bottom">
-                                <div class="bottom-left"><img
-                                        src="../../../../../assets/image/newMedia/theme1/avatar.png"
-                                        alt=""></div>
-                                <div class="bottom-right">
-                                    <p><span class="mar-right">{{detailData.name}}</span></p>
-                                    <p><span
-                                            class="mar-right">{{detailData.department}}</span><span>{{detailData.time}}</span>
-                                    </p>
+                <div class="star_info_right flex-center" @mouseleave="share_navbar_visible = false">
+                    <div class="main_info scroll_bar">
+                        <div class="detail-content-middle">
+                            <div class="middle-info">
+                                <h1>{{detailData.title}}</h1>
+                                <div class="detail-box-bottom">
+                                    <div class="bottom-left"><img
+                                            src="../../../../../assets/image/newMedia/theme1/avatar.png"
+                                            alt=""></div>
+                                    <div class="bottom-right">
+                                        <p><span class="mar-right">{{detailData.name}}</span></p>
+                                        <p><span
+                                                class="mar-right">{{detailData.department}}</span><span>{{detailData.time}}</span>
+                                        </p>
+                                    </div>
                                 </div>
+                                <p class="desc">{{detailData.desc}}</p>
+                                <div class="middle-img justify-bet">
+                                    <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
+                                    <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
+                                </div>
+                                <p class="content">{{detailData.content}}</p>
                             </div>
-                            <p class="desc">{{detailData.desc}}</p>
-                            <div class="middle-img justify-bet">
-                                <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
-                                <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
-                            </div>
-                            <p class="content">{{detailData.content}}</p>
-                        </div>
-                        <div class="detail-content-right flex-center">
-                            <div class="right-info-icons">
-                                <div class="icon-list" @click="comment_visible = true">
-                                    <i class="icon-bg collect-icon"></i>
-                                    <i class="person-number">3213</i>
-                                </div>
-                                <div class="icon-list">
-                                    <i class="icon-bg point-icon"></i>
-                                    <i class="person-number">3213</i>
-                                </div>
-                                <div class="icon-list">
-                                    <i class="icon-bg commit-icon"></i>
-                                    <i class="person-number">312</i>
-                                </div>
-                                <div class="icon-list share-navbar">
+                            <div class="detail-content-right flex-center">
+                                <div class="right-info-icons">
+                                    <div class="icon-list" @click="comment_visible = true">
+                                        <i class="icon-bg collect-icon"></i>
+                                        <i class="person-number">3213</i>
+                                    </div>
+                                    <div class="icon-list">
+                                        <i class="icon-bg point-icon"></i>
+                                        <i class="person-number">3213</i>
+                                    </div>
+                                    <div class="icon-list">
+                                        <i class="icon-bg commit-icon"></i>
+                                        <i class="person-number">312</i>
+                                    </div>
+                                    <div class="icon-list share-navbar">
                                     <span class="share-navbar-box flex-center justify-around"
                                           v-if="share_navbar_visible"
                                           id="div1"
@@ -86,8 +89,9 @@
                                         <i class="wechat-icon"></i>
                                         <i class="link-icon"></i>
                                     </span>
-                                    <i class="icon-bg share-icon" @mouseenter="share_navbar_visible = true"
-                                       ></i>
+                                        <i class="icon-bg share-icon" @mouseenter="share_navbar_visible = true"
+                                        ></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>

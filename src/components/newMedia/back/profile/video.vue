@@ -42,7 +42,6 @@
                 </div>
             </lj-dialog>
 
-            <!---->
             <lj-dialog :visible="visible" :size="{width: 500 + 'px',height: 500 + 'px'}"
                        @close="cancelAdd">
                 <div class="dialog_container">
@@ -217,18 +216,20 @@
                         subMessage: '',
                     });
                     this.getDataLists();
+                    this.$emit('getCallbackCancel',this.visible)
                 } else {
                     this.$LjNotify('error', {
                         title: '失败',
                         message: res.msg,
                         subMessage: '',
                     });
+                    this.$emit('getCallbackCancel',this.visible)
                 }
             },
             cancelAdd(){
                 this.visible = false;
                 this.current_item = '';
-                this.$emit('callbackAdd',this.visible)
+                this.$emit('callbackCancel',this.visible)
             },
             // 查看详情
             openDetail(row) {
@@ -342,21 +343,21 @@
                     type_id:this.form.type_id,
                     name:this.form.name,
                     permission:this.form.permission,
-                    file_id:this.form.file_id[0],
+                    file_id:this.form.file_info[0],
                 };
                 if(type===1){
                     this.$http.put(globalConfig.newMedia_sever+'/api/datum/admin/'+this.current_item.id,paramsForm).then(res => {
                         this.callbackSuccess(res);
                         this.visible = false;
                         this.current_item = '';
-                        this.$emit('callbackAdd',this.visible)
+
                     })
                 }else if(type===2){
                     this.$http.post(globalConfig.newMedia_sever+'/api/datum/admin',paramsForm).then(res => {
                         this.callbackSuccess(res);
                         this.visible = false;
                         this.current_item = '';
-                        this.$emit('callbackAdd',this.visible)
+                        this.$emit('getCallbackCancel',this.visible)
                     })
                 }
 

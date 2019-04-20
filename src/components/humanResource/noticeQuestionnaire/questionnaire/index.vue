@@ -103,9 +103,6 @@
       </footer>
     </div>
 
-
-
-
     <!--新建问卷对话框-->
     <lj-dialog
       :visible.sync="add_questionnaire_dialog_visible"
@@ -115,12 +112,14 @@
           <h3>新建问卷</h3>
         </div>
         <div class="dialog_main">
-          <el-form size="small" label-width="100px" :rules="rules.addQuestionnaire" ref="addQuestionnaireFormRef" :model="add_questionnaire_form">
+          <el-form size="small" label-width="100px" :rules="rules.addQuestionnaire" ref="addQuestionnaireFormRef"
+                   :model="add_questionnaire_form">
             <el-form-item prop="name" label="问卷名称">
               <el-input v-model="add_questionnaire_form.name" placeholder="请输入试卷名称"></el-input>
             </el-form-item>
             <el-form-item prop="start_time" label="开始时间">
-              <el-date-picker v-model="add_questionnaire_form.start_time" type="datetime" placeholder="请选择开始时间"></el-date-picker>
+              <el-date-picker v-model="add_questionnaire_form.start_time" type="datetime"
+                              placeholder="请选择开始时间"></el-date-picker>
             </el-form-item>
             <el-form-item prop="validity_time" label="有效期">
               <el-input v-model.number="add_questionnaire_form.validity_time" placeholder="请输入有效期">
@@ -133,7 +132,7 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger">提交</el-button>
+          <el-button @click="saveQuestionnaire" size="small" type="danger">提交</el-button>
           <el-button size="small" type="info" @click="add_questionnaire_dialog_visible = false">取消
           </el-button>
         </div>
@@ -141,10 +140,7 @@
     </lj-dialog>
 
 
-
-
-
-    <test-paper :visible.sync="paper_visible" :params="paper_params" @success="demoSuccess"></test-paper>
+    <test-paper :visible.sync="paper_visible" :params="paper_params" @success="getExamList"></test-paper>
 
   </div>
 </template>
@@ -165,20 +161,20 @@
     },
     data() {
       return {
-        rules:{
-          addQuestionnaire:{
-            name:[
-              {required:true,message: '请输入公告名称', trigger: 'blur'},
+        rules: {
+          addQuestionnaire: {
+            name: [
+              {required: true, message: '请输入公告名称', trigger: 'blur'},
             ],
-            start_time:[
-              {required:true,message: '请选择开始时间', trigger: 'blur'},
+            start_time: [
+              {required: true, message: '请选择开始时间', trigger: 'blur'},
             ],
-            validity_time:[
-              {required:true,message: '请输入有效期', trigger: 'blur'},
-              { type: 'number', message: '必须为数字值',trigger: 'blur'}
+            validity_time: [
+              {required: true, message: '请输入有效期', trigger: 'blur'},
+              {type: 'number', message: '必须为数字值', trigger: 'blur'}
             ],
-            object_ids:[
-              {required:true,message: '请选择调查对象', trigger: 'blur'},
+            object_ids: [
+              {required: true, message: '请选择调查对象', trigger: ['blur', 'change']},
             ],
           },
         },
@@ -197,21 +193,20 @@
 
         add_questionnaire_dialog_visible: false,
         add_questionnaire_form: {
-          name:'',//名称
-          start_time:'',//开始时间
-          validity_time:null,//有效期
-          object_ids:[],//人员数组
-          exam_info:[],//调查问卷题库
+          name: '',//名称
+          start_time: '',//开始时间
+          validity_time: null,//有效期
+          object_ids: [],//人员数组
+          exam_info: [],//调查问卷题库
         },
 
 
-
-        paper_visible:false,
-        paper_params:{
-          paper_name:'新建问卷',
+        paper_visible: false,
+        paper_params: {
+          paper_name: '新建问卷',
           //title:'入职考试',
-          sub_title:'关于春节挂春联选一副',
-          btn_name:'预览问卷',
+          sub_title: '关于春节挂春联选一副',
+          btn_name: '预览问卷',
         },
 
       }
@@ -241,11 +236,38 @@
         this.add_questionnaire_dialog_visible = true;
       },
 
+      //保存问卷->显示问卷调查编辑框
+      saveQuestionnaire() {
+        this.$refs['addQuestionnaireFormRef'].validate(valid => {
+          if (valid) {
+            this.paper_visible = true;
+          }
+        });
+      },
+
+      //获取试题列表 并提交数据到新增公告接口
+      getExamList(examList) {
+        debugger
+        let newExamList = _.forEach(examList, (o) => {
+          let choice = {};
+          _.forEach(o.choice, (subO, index) => {
+            //choice[]
+          });
+        });
+        this.add_questionnaire_form.exam_info = examList;
+        this.$http.post(`${this.url}questionnaire`, this.add_questionnaire_form).then(res => {
+          debugger
+          if (res.code.endsWith('0')) {
+
+          }
+        });
+
+      },
+
       demoSuccess(examList) {
         debugger
         console.log(examList);
       },
-
 
 
       getQuestionnaireList() {
@@ -253,31 +275,13 @@
         let params = {
           ...this.params
         };
-        this.$http.get(`${this.url}questionnaire`,params).then(res=> {
-          if(res.code.endsWith('0')) {
+        this.$http.get(`${this.url}questionnaire`, params).then(res => {
+          if (res.code.endsWith('0')) {
             this.tableData = res.data.data;
           }
         });
       },
 
-
-      initData() {
-
-        for (let i=0;i<9;i++) {
-          let obj = {
-            id: i+1,
-            name: '张三',
-            station:'工程师',
-            department:'研发部',
-            event:'攻城时因穿铠甲',
-            penalty:'200金币',
-            remark:'锁血打小怪掉金币',
-            //address: '上海市普陀区金沙江路 1518 弄'
-          }
-          this.tableData.push(obj);
-        }
-        this.counts = 1000;
-      },
 
       // 当前点击
       tableClickRow(row) {
@@ -291,11 +295,11 @@
         this.reward_order = true;
         this.reward_order_form = {
           name: '张三',
-          station:'工程师',
-          department:'研发部',
-          event:'攻城时因穿铠甲',
-          penalty:'200金币',
-          remark:'锁血打小怪掉金币',
+          station: '工程师',
+          department: '研发部',
+          event: '攻城时因穿铠甲',
+          penalty: '200金币',
+          remark: '锁血打小怪掉金币',
         };
       },
       // 点击过
@@ -325,6 +329,7 @@
     #questionnaire {
       .read-icon {
         @include nqImg('button_bg_gray.png', 'theme1');
+
         &.checked {
           @include nqImg('button_bg_red.png', 'theme1');
         }

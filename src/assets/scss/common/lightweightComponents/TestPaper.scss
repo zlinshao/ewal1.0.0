@@ -148,6 +148,10 @@
         }
 
         .right {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          padding-right: 10%;
           //flex-direction: row-reverse;
         }
       }
@@ -188,16 +192,18 @@
 
           .exam-judge {
             padding-top: 30px;
-            .single-title {
+            .judge-title {
               font-size: 16px;
               font-family: PingFangSC-Regular !important;
               padding: 0 0 5px 0;
             }
-            .single-container {
+            .judge-container {
               padding: 5px 10px;
-              .exam-single-item {
-                .single-item-stem {}
-                .single-item-choice {
+              .exam-judge-item {
+                display: flex;
+                align-items: center;
+                .judge-item-stem {}
+                .judge-item-choice {
                   padding: 10px 15px;
                 }
               }
@@ -206,16 +212,16 @@
 
           .exam-short {
             padding-top: 30px;
-            .single-title {
+            .short-title {
               font-size: 16px;
               font-family: PingFangSC-Regular !important;
               padding: 0 0 5px 0;
             }
-            .single-container {
+            .short-container {
               padding: 5px 10px;
-              .exam-single-item {
-                .single-item-stem {}
-                .single-item-choice {
+              .exam-short-item {
+                .short-item-stem {}
+                .short-item-choice {
                   padding: 10px 15px;
                 }
               }

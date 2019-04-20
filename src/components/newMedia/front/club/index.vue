@@ -24,7 +24,7 @@
                         </div>
                         <div class="club-box-bottom">
                             <span><i></i>{{item.day}}</span>
-                            <span><i :class="item.status===1?'post':'unPost'"  @click="look_visible = true;clubStatus=item.status">{{item.status===1?'已报名':'我要报名'}}</i><i></i>{{item.click}}</span>
+                            <span><i :class="item.status===1?'post':'unPost'"  @click="openReport(item)">{{item.status===1?'已报名':'我要报名'}}</i><i></i>{{item.click}}</span>
                         </div>
                         <div class="club-modal" v-if="item.status===1"></div>
                     </div>
@@ -59,13 +59,13 @@
                 <div class="dialog_main">
                     <div class="club-detail">
                         <p><span>活动名称</span><span>{{showData.name}}</span></p>
-                        <p><span>活动时间</span><span>{{showData.start_time}}-{{showData.over_time}}</span></p>
+                        <p><span>活动时间</span><span>{{showData.start_time}} - {{showData.over_time}}</span></p>
                         <p><span>活动地点</span><span>{{showData.address}}</span></p>
                         <p><span>活动内容</span><span>{{showData.content}}</span></p>
                     </div>
                 </div>
-                <div class="dialog_footer" v-show="clubStatus===2">
-                    <el-button type="danger" size="small" @click="">我要报名</el-button>
+                <div class="dialog_footer">
+                    <el-button type="danger" size="small" @click="confirmReport(showData.id)">我要报名</el-button>
                     <el-button type="info" size="small" @click="look_visible = false;current_row = ''">取消</el-button>
                 </div>
             </div>
@@ -99,15 +99,16 @@
                     offset: 1,
                     limit: 6,
                 },
+
                 count:0,
                 showFinMenuList: false,
                 showModal:false,
                 showData:{
-                    name:'',
-                    start_time:'',
-                    over_time:'',
-                    address:'',
-                    content:'',
+                    // name:'',
+                    // start_time:'',
+                    // over_time:'',
+                    // address:'',
+                    // content:'',
                 },
                 current_id:'',
                 clubData:[],
@@ -120,13 +121,25 @@
           this.getDataLists()
         },
         methods:{
-            //换页
-            handleChangePage(page) {
+            openReport(item){
+                this.look_visible = true;
+                this.clubStatus=item.status;
+                this.showData=item
+            },
+            confirmReport(id){//报名
+                this.$http.get(globalConfig.newMedia_sever+'/api/club/event/create',{event_id:id}).then(res => {
+                   this.callbackSuccess(res);
+                   this.look_visible = false;
+                })
+            },
+
+
+            handleChangePage(page) {//分页
                 this.params.offset = page;
                 this.getDataLists();
             },
-            callbackSuccess(res) {
-                if (res.code === 200) {
+            callbackSuccess(res) {//回调
+                if (res.status === 200) {
                     this.$LjNotify('success', {
                         title: '成功',
                         message: res.msg,
@@ -141,7 +154,7 @@
                     });
                 }
             },
-            handleClubDetail(status,id,index){
+            handleClubDetail(status,id,index){//详情
                 this.clubStatus = status;
                 this.look_visible= true;
                 this.current_id = id;
@@ -153,7 +166,7 @@
 
                 })
             },
-            getDataLists(){
+            getDataLists(){//列表
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
                     if(res.status===200){
                         this.clubData = res.data.data;

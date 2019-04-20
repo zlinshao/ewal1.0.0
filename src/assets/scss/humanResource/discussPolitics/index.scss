@@ -51,108 +51,127 @@
         @include flex();
         //padding-left: 100px;
         .container-left {
-          flex: 20%;
-          padding-left: 2%;
-          padding-right: 3%;
+          width: 345px;
+          padding-left:30px;
+          //padding-right: 3%;
           //background-color: green;
 
 
           .monthTitle {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
             position: relative;
             font-size: 20px;
-            margin-top: 20px;
+            //margin-top: 20px;
             height: 50px;
-
             span {
+              padding-left: 10px;
               cursor: pointer;
               position: absolute;
-              bottom: 0;
+              color: $colorFFF;
+              //bottom: 0;
             }
           }
 
           .timeline {
+            width: 100%;
+            height: 100%;
+            .timeline-bg {
+              height: 100%;
+              width: 305px;
+              position: fixed;
+            }
 
-            padding-top: 20px;
-            .timeline-item-container {
-              &.prev {
-                > div {
-                  color: #A5A5A5;
-                }
-              }
-
-              .timeline-item-container-content-item {
-                position: relative;
-                margin: 8px 5px;
-                font-size: 14px;
-                //font-weight: 700;
-                color: rgba(255,255,255,1);
-                font-family: MicrosoftYaHei;
-                //padding: 3px 5px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                cursor: default;
-                border-radius: 6px;
-                height: 20px;
-                line-height: 20px;
-
-                &.cancel-status {
-                  //color: rgba(255,255,255,.4);
-                  //color: #919191;
-                  font-family: "Microsoft YaHei Light";
-                  //font-weight: 400;
-                }
-
-                .icon-list {
-                  position: absolute;
-                  right: 0;
-                  display: inline-flex;
-                  justify-content: flex-end;
-                  align-items: center;
-
-                  span {
-                    margin-right: 10px;
+            //padding-top: 20px;
+            .eltimeline-container {
+              height: 100%;
+              width: 100%;
+              padding-left: 10px;
+              .timeline-item-container {
+                &.prev {
+                  > div {
+                    color: #A5A5A5;
                   }
                 }
-                /*span.icon-delete {
-                  display: inline-block;
-                  width: 20px;
+
+                .timeline-item-container-content-item {
+                  position: relative;
+                  margin: 8px 5px;
+                  font-size: 14px;
+                  //font-weight: 700;
+                  color: rgba(255,255,255,1);
+                  font-family: MicrosoftYaHei;
+                  //padding: 3px 5px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  cursor: default;
+                  border-radius: 6px;
                   height: 20px;
-                  cursor: pointer;
-                  //background-color: red;
-                  position: absolute;
-                  right: 0;
-                }*/
+                  line-height: 20px;
 
-                //background-color: #cccccc;
+                  &.cancel-status {
+                    //color: rgba(255,255,255,.4);
+                    //color: #919191;
+                    font-family: "Microsoft YaHei Light";
+                    //font-weight: 400;
+                  }
 
-                /*&.danger {
-                  color: #FF8248;
-                  background-color: #FFE8DE;
+                  .icon-list {
+                    position: absolute;
+                    right: 0;
+                    display: inline-flex;
+                    justify-content: flex-end;
+                    align-items: center;
+
+                    span {
+                      margin-right: 10px;
+                    }
+                  }
+                  /*span.icon-delete {
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                    //background-color: red;
+                    position: absolute;
+                    right: 0;
+                  }*/
+
+                  //background-color: #cccccc;
+
+                  /*&.danger {
+                    color: #FF8248;
+                    background-color: #FFE8DE;
+                  }
+                  &.default {
+                    background-color: #E2FFEE;
+                    color: #50E38F;
+                  }
+                  &.warning {
+                    background-color: #FFF4D4;
+                    color: #FFCD35;
+                  }*/
                 }
-                &.default {
-                  background-color: #E2FFEE;
-                  color: #50E38F;
-                }
-                &.warning {
-                  background-color: #FFF4D4;
-                  color: #FFCD35;
-                }*/
               }
             }
+
           }
         }
         .container-right {
-          flex: 75%;
+          flex: 1;
           margin-bottom: 10px;
+          margin-right: 50px;
 
           .calendar-week {
             margin-top: 20px;
             height: 50px;
 
             .ui-container {
-              padding-left: calc(70px + 2%);
-              margin: 0 70px;
+              padding-left: 20px;
+              //padding-left: calc(70px + 2%);
+              //margin: 0 70px;
               @include flex('');
 
               .calendar-week-item {
@@ -186,8 +205,8 @@
 
             //margin-bottom: 40px;
             .ui-container {
-              padding-left: calc(70px + 2%);
-              margin: 0 70px;
+              //padding-left: calc(70px + 2%);
+              //margin: 0 70px;
               @include flex('');
               flex-wrap: wrap;
               background-color: $colorFFF;
@@ -252,8 +271,8 @@
 
                   .calendar-day-item-container-tip {
                     position: absolute;
-                    top: 8px;
-                    left: 5px;
+                    top: 15px;
+                    left: 10px;
                     .calendar-day-item-container-date {
                       //position: absolute;
                       cursor: default;

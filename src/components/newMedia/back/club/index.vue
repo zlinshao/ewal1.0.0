@@ -174,7 +174,7 @@
                     search: '',
                     startRange: '',
                     endRange: '',
-                    page: 1,
+                    offset: 1,
                     limit: 10,
                     department_ids: '',
                     export: '',
@@ -237,7 +237,7 @@
                 if (this.$refs.viewBox.scrollTop + this.$refs.viewBox.offsetHeight + 20 >= this.$refs.viewBox.scrollHeight) {
                     // this.loadingTip = true;  //loading提示语
                     this.showLoading(true);
-                    this.params.page +=1;
+                    this.params.offset +=1;
                     this.$http.get(globalConfig.newMedia_sever + '/api/club/event', this.params).then(res => {
                             let arr = res.data.data;
                             if (arr.length === 0) {

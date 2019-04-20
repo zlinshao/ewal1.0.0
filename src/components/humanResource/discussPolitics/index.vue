@@ -19,36 +19,40 @@
     <div class="main-container discuss-politics-container">
       <div class="calendar-container">
         <div class="container-left scroll_bar">
-          <div @click="getCurrentSelectMonthMeetingCounts" class="monthTitle">
-            <span title="本月会议数">{{monthContent}}</span>
-          </div>
           <!--时间线-->
           <div class="timeline">
-            <el-timeline>
-              <el-timeline-item
-                :key="index"
-                :color="item.todoType==0?'#50E38F':item.todoType==1?'#FF7A3C':'#FFDC75'"
-                v-if="item.todoListTimeLine&&item.todoListTimeLine.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
-                placement="top">
-                <el-card>
-                  <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
-                    <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
-                         @click="openMeetingDialog(contentItem)"
-                         :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
-                      {{contentItem.content}}
-                      <div class="icon-list">
+            <div class="timeline-bg"></div>
+            <div @click="getCurrentSelectMonthMeetingCounts" class="monthTitle">
+              <span title="本月会议数">{{monthContent}}</span>
+            </div>
+            <div class="eltimeline-container">
+              <el-timeline>
+                <el-timeline-item
+                  :key="index"
+                  :color="item.todoType==0?'#50E38F':item.todoType==1?'#FFDC75':'#FF7A3C'"
+                  v-if="item.todoListTimeLine&&item.todoListTimeLine.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
+                  placement="top">
+                  <el-card>
+                    <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
+                      <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
+                           @click="openMeetingDialog(contentItem)"
+                           :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
+                        {{contentItem.content}}
+                        <div class="icon-list">
                         <span v-if="contentItem.status==0" title="取消"
                               @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
                               class="icon15 icon-cancel"></span>
-                        <span title="删除"
-                              @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
-                              class="icon15 icon-delete-red"></span>
+                          <span title="删除"
+                                @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
+                                class="icon15 icon-delete-red"></span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </el-card>
-              </el-timeline-item>
-            </el-timeline>
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
+
           </div>
           <!--<div class="timeline">
             <el-timeline>
@@ -103,7 +107,7 @@
                   </div>
                   <div class="calendar-day-item-container-content">
                     <div @click.stop="openMeetingDialog(contentItem)"
-                         :class="[contentItem.status==0?'default':contentItem.status==1?'danger':'warning']"
+                         :class="[contentItem.status==0?'default':contentItem.status==1?'warning':'danger']"
                          :title="contentItem.content"
                          v-for="(contentItem,index) in item.todoList"
                          v-if="index<2">
@@ -1286,7 +1290,7 @@
                   };
                   //mStatus.push(sObj.status);
                   daysList[mIdx].todoType = sObj.status > (daysList[mIdx].todoType || 0) ? sObj.status : (daysList[mIdx].todoType || 0);
-                  if(sObj.status==0) {
+                  if(sObj.status==0||sObj.status==1) {
                     daysList[mIdx].todoList.push(sObj);
                   }
 
@@ -1564,8 +1568,11 @@
         @include discussPoliticsImg('bianji_2.png', 'theme1');
       }
 
-      .timeline {
-        @include discussPoliticsImg('椭圆形.png','theme1');
+      .timeline  {
+        .timeline-bg {
+          @include discussPoliticsImg('椭圆形.png','theme1');
+        }
+
       }
     }
   }
