@@ -1,7 +1,7 @@
 <template>
   <div class="demo-container" style="width: 800px">
     <el-button @click="paper_visible=true">测试</el-button>
-    <test-paper :visible.sync="paper_visible" :params="paper_params" @success="demoSuccess"></test-paper>
+    <test-paper :visible.sync="paper_visible" :params="paper_params" :type="2" :statisticsResult="view_result_list"  @success="demoSuccess"></test-paper>
 <!--    <name-shower type="org" :ids="org_list"></name-shower>-->
     <!--<user-list :ids="user_list"></user-list>-->
     <!--<calendar week-type="en" style="width: 1366px;height: 768px">
@@ -67,6 +67,51 @@
           btn_name:'预览问卷',
         },
         paper_visible:false,
+
+        view_result_list:[
+          {
+            "exam_question_id": 223,
+            "exam_question_info": {
+              "id": "223",
+              "stem": "选择题题干",
+              "score": 0,
+              "answer": null,
+              "choice": {
+                "A": "选项A",
+                "B": "选项B",
+                "C": "选项C",
+                "D": "选项D"
+              },
+              "user_id": 289,
+              "category": "1",
+              "created_at": "2019-04-09 16:30:34",
+              "order_factor": 0,
+              "exam_question_bank_id": "66",
+            },
+            "count": {
+              "A": 0,
+              "B": 0,
+              "C": 1,
+              "D": 0,
+            }
+          },
+          {
+            "exam_question_id": 224,
+            "exam_question_info": {
+              "id": "224",
+              "stem": "简答题题干",
+              "score": 0,
+              "answer": null,
+              "choice": '',
+              "user_id": 289,
+              "category": "3",
+              "created_at": "2019-04-09 16:30:34",
+              "order_factor": 0,
+              "exam_question_bank_id": "66"
+            },
+            "count": '简答题答案'
+          }
+        ]
       }
     },
     mounted() {

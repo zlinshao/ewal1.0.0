@@ -76,7 +76,7 @@
 
           .timeline {
             width: 100%;
-            height: 100%;
+            height: calc(100% - 160px);
             .timeline-bg {
               height: 100%;
               width: 305px;

@@ -106,19 +106,23 @@
     <!--新建问卷对话框-->
     <lj-dialog
       :visible.sync="add_questionnaire_dialog_visible"
-      :size="{width:'500px',height: '500px'}">
+      :size="{width:'450px',height: '500px'}">
       <div class="dialog_container add-questionnaire-dialog">
         <div class="dialog_header">
-          <h3>新建问卷</h3>
+          <h3>{{add_questionnaire_form_type==1?'新建问卷':add_questionnaire_form_type==2?'问卷详情':'编辑问卷'}}</h3>
+          <div v-if="add_questionnaire_form_type==2" class="header_right">
+            <i @click="add_questionnaire_form_type=3" class="icon-edit"></i>
+          </div>
         </div>
-        <div class="dialog_main">
-          <el-form size="small" label-width="100px" :rules="rules.addQuestionnaire" ref="addQuestionnaireFormRef"
+        <div class="dialog_main borderNone">
+          <el-form :disabled="add_questionnaire_form_type==2" style="text-align: left" size="small" label-width="100px" :rules="rules.addQuestionnaire"
+                   ref="addQuestionnaireFormRef"
                    :model="add_questionnaire_form">
             <el-form-item prop="name" label="问卷名称">
               <el-input v-model="add_questionnaire_form.name" placeholder="请输入试卷名称"></el-input>
             </el-form-item>
             <el-form-item prop="start_time" label="开始时间">
-              <el-date-picker v-model="add_questionnaire_form.start_time" type="datetime"
+              <el-date-picker format="yyyy-MM-dd HH:mm:ss" v-model="add_questionnaire_form.start_time" type="datetime"
                               placeholder="请选择开始时间"></el-date-picker>
             </el-form-item>
             <el-form-item prop="validity_time" label="有效期">
@@ -127,12 +131,13 @@
               </el-input>
             </el-form-item>
             <el-form-item prop="object_ids" label="调查对象">
-              <user-choose v-model="add_questionnaire_form.object_ids"></user-choose>
+              <user-choose width="290" v-model="add_questionnaire_form.object_ids"></user-choose>
             </el-form-item>
           </el-form>
         </div>
-        <div class="dialog_footer">
-          <el-button @click="saveQuestionnaire" size="small" type="danger">提交</el-button>
+        <div v-if="add_questionnaire_form_type!==2" class="dialog_footer">
+          <el-button v-if="add_questionnaire_form_type==1" @click="saveQuestionnaire" size="small" type="danger">提交</el-button>
+          <el-button v-if="add_questionnaire_form_type==3" @click="editQuestionnaire" size="small" type="danger">保存</el-button>
           <el-button size="small" type="info" @click="add_questionnaire_dialog_visible = false">取消
           </el-button>
         </div>
@@ -140,7 +145,7 @@
     </lj-dialog>
 
 
-    <test-paper :visible.sync="paper_visible" :params="paper_params" @success="getExamList"></test-paper>
+    <test-paper :type="2" :visible.sync="paper_visible" :params="paper_params" @success="getExamList"></test-paper>
 
   </div>
 </template>
@@ -191,6 +196,10 @@
           limit: 8,
         },
 
+
+        //新建问卷
+        add_questionnaire_form_type:1,
+        add_questionnaire_form_title: '新建问卷',
         add_questionnaire_dialog_visible: false,
         add_questionnaire_form: {
           name: '',//名称
@@ -233,7 +242,16 @@
 
       //显示新建问卷对话框
       showAddQuestionnaire() {
+        this.add_questionnaire_form_type = 1;
+        //this.add_questionnaire_form_title = '新建问卷';
         this.add_questionnaire_dialog_visible = true;
+        this.add_questionnaire_form = {
+          name: '',//名称
+          start_time: '',//开始时间
+          validity_time: null,//有效期
+          object_ids: [],//人员数组
+          exam_info: [],//调查问卷题库
+        };
       },
 
       //保存问卷->显示问卷调查编辑框
@@ -245,35 +263,42 @@
         });
       },
 
+      //编辑调查问卷
+      editQuestionnaire() {
+        this.$http.post(`${this.url}questionnaire/update`,this.add_questionnaire_form).then(res=> {
+          this.$LjNotifyEasy(res,()=> {
+            this.add_questionnaire_dialog_visible = false;
+            this.getQuestionnaireList();
+          })
+        });
+      },
+
       //获取试题列表 并提交数据到新增公告接口
       getExamList(examList) {
         debugger
-        let newExamList = _.forEach(examList, (o) => {
-          let choice = {};
-          _.forEach(o.choice, (subO, index) => {
-            //choice[]
-          });
-        });
         this.add_questionnaire_form.exam_info = examList;
+        this.add_questionnaire_form.start_time = this.myUtils.formatDate(this.add_questionnaire_form.start_time, 'yyyy-MM-dd hh:mm:ss');
         this.$http.post(`${this.url}questionnaire`, this.add_questionnaire_form).then(res => {
-          debugger
           if (res.code.endsWith('0')) {
-
+            this.$LjNotify('success', {
+              title: '成功',
+              message: res.msg,
+            });
+          } else {
+            this.$LjNotify('error', {
+              title: '失败',
+              message: res.msg,
+            });
           }
         });
-
       },
 
-      demoSuccess(examList) {
-        debugger
-        console.log(examList);
-      },
-
-
+      //获取问卷列表
       getQuestionnaireList() {
         //this.tableData = [];
         let params = {
-          ...this.params
+          ...this.params,
+          all: 1,
         };
         this.$http.get(`${this.url}questionnaire`, params).then(res => {
           if (res.code.endsWith('0')) {
@@ -281,7 +306,6 @@
           }
         });
       },
-
 
       // 当前点击
       tableClickRow(row) {
@@ -292,14 +316,14 @@
       //表格某一行双击
       tableDblClick(row) {
         console.log(row);
-        this.reward_order = true;
-        this.reward_order_form = {
-          name: '张三',
-          station: '工程师',
-          department: '研发部',
-          event: '攻城时因穿铠甲',
-          penalty: '200金币',
-          remark: '锁血打小怪掉金币',
+        this.add_questionnaire_form_type = 2;
+        this.add_questionnaire_dialog_visible = true;
+        this.add_questionnaire_form = {
+          id:row.id,
+          name: row.name,//名称
+          start_time: row.start_time,//开始时间
+          validity_time: row.validity_time,//有效期
+          object_ids: row.object_ids,//人员数组
         };
       },
       // 点击过
@@ -327,6 +351,10 @@
 
   #theme_name.theme1 {
     #questionnaire {
+      .icon-edit {
+        @include nqImg('bj.png','theme1');
+      }
+
       .read-icon {
         @include nqImg('button_bg_gray.png', 'theme1');
 

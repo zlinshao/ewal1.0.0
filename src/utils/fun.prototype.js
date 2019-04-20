@@ -85,5 +85,23 @@ export default {
         }
     })
     Vue.prototype.$bus = Bus;
+
+    //统一管理接口处理结果
+    Vue.prototype.$LjNotifyEasy = function(res,callback) {
+      if (res.code.endsWith('0')) {
+        this.$LjNotify('success', {
+          title: '成功',
+          message: res.msg,
+        });
+        if(callback) {
+          callback();
+        }
+      } else {
+        this.$LjNotify('error', {
+          title: '失败',
+          message: res.msg,
+        });
+      }
+    }
   }
 }

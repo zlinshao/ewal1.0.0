@@ -2,6 +2,16 @@
 
 #theme_name {
   #questionnaire {
+    //common
+    .icon-edit {
+      display: inline-block;
+      height: 26px;
+      width: 26px;
+      cursor: pointer;
+    }
+
+
+
     .listTopCss {
       height: 0;
       .search-toolbar {

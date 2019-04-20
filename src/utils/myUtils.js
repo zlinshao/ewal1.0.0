@@ -39,7 +39,7 @@ class myUtils {
     return temp;
   }
 
-  static formatDate(v, format = 'yyyy-MM-dd') {
+  static formatDate(v, format = 'yyyy-MM-dd') {//用法:format="yyyy-MM-dd hh:mm:ss";
     if (!v) return null;
     let d = v;
     if (typeof v === 'string') {

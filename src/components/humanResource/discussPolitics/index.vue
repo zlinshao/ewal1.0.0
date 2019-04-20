@@ -5,7 +5,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>奏事议政</h1>
+        <h1>会议管理</h1>
         <div class="date-value-container">
           <el-date-picker
             v-model="dateValue"
