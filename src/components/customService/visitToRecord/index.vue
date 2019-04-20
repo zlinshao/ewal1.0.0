@@ -217,7 +217,7 @@
               <h5>房屋信息</h5>
               <div class='detail_col_box detail_col_box2'>
                 <span class='tit'>房屋地址</span>
-                <span class="content">{{recordDetail.house_extension.address}}</span>
+                <span class="content">{{recordDetail.house_extension && recordDetail.house_extension.address || '--'}}</span>
               </div>
             </el-col>
             <el-col :span='6' class='detail_col' v-if='recordDetail.is_agency == 1 && recordDetail.agency_info'>
@@ -225,19 +225,21 @@
               <div class='detail_col_box  detail_col_box2'>
                 <div>
                   <span class='tit'>中介名称</span>
-                  <span class="content">{{recordDetail.agency_info.agency_name}}</span>
+                  <span class="content">{{recordDetail.agency_info && recordDetail.agency_info.agency_name || ''}}</span>
                 </div>
                 <div>
                   <span class='tit'>中介价格</span>
-                  <span class="content">{{recordDetail.agency_info.agency_price_now + "元"}}</span>
+                  <span class="content">{{recordDetail.agency_info && recordDetail.agency_info.agency_price_now || '--'
+                    + "元"}}</span>
                 </div>
                 <div>
                   <span class='tit'>中介姓名</span>
-                  <span class="content">{{recordDetail.agency_info.agency_user_name}}</span>
+                  <span class="content">{{recordDetail.agency_info && recordDetail.agency_info.agency_user_name ||
+                    '--'}}</span>
                 </div>
                 <div>
                   <span class='tit'>中介电话</span>
-                  <span class="content">{{recordDetail.agency_info.agency_phone}}</span>
+                  <span class="content">{{recordDetail.agency_info && recordDetail.agency_info.agency_phone || '--'}}</span>
                 </div>
               </div>
             </el-col>

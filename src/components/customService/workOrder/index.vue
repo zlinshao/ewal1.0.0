@@ -72,7 +72,8 @@
         <div class="dialog_main borderNone urgedDeal" v-if='currentRow'>
           <el-form label-width="80px">
             <el-form-item label="发送对象">
-              <el-input @focus="handlerOrgan" readonly v-model="urgedDeal.personName" :placeholder="currentRow.operate_user_name + ',' + currentRow.create_name"></el-input>
+              <el-input @focus="handlerOrgan('cuiban')" readonly v-model="urgedDeal.personName" :placeholder="currentRow.create_name 
+              || currentRow.operate_user_name"></el-input>
             </el-form-item>
             <el-form-item label="备注信息">
               <el-input v-model="urgedDeal.note" type="textarea" placeholder="请输入" :row="10"></el-input>
@@ -85,9 +86,23 @@
         </div>
       </div>
     </LjDialog>
-
+    <!--确定结束-->
+    <LjDialog :visible="sureEnding_visible" :size="{width: 480 + 'px',height: 320 + 'px'}" @close="handleCloseSure(false)">
+      <div class="dialog_container end_dialog">
+        <div class="dialog_main">
+          <h3>确定结束吗?</h3>
+          <el-checkbox v-model='sureEnding_check' v-if='sureEnding_visible'>
+            公司员工({{detail_form.payer || '/'}}-{{detail_form.payer_org_name ||'/'}})已支付维修费用,结束后系统进入报销流程
+          </el-checkbox>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleCloseSure(true)">确定</el-button>
+          <el-button type="info" size="small" @click="handleCloseSure(false)">取消</el-button>
+        </div>
+      </div>
+    </LjDialog>
     <!--新建工单-->
-    <LjDialog :visible="createOrder_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseAddOrder(false)">
+    <LjDialog :visible="createOrder_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseOrder">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>新建工单</h3>
@@ -240,98 +255,241 @@
                 </div>
               </el-col>
               <el-col :span='22' class='el-col-content'>
-                <div class='info_search'>
-                  <i class='icon'></i>
-                  <div class='el-input'>
-                    <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model="customer_search"
-                      v-on:keyup.enter='addOrder_search'>
+                <div class='content-top' v-if='addOrderChosen == 1'>
+                  <div class='info_search'>
+                    <i class='icon'></i>
+                    <div class='el-input'>
+                      <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model="customer_search"
+                        v-on:keyup.enter='addOrder_search'>
+                    </div>
+
                   </div>
+                  <ul>
+                    <li v-for='item in seeRecord' :key='item.label' :class="[seeRecord_status == item.value ?'active_record':'']"
+                      @click='chosenActiveRecord(item.value)'>{{item.label}}</li>
+                  </ul>
                 </div>
                 <!--客户信息-->
-                <div class='custmer_info' v-if='addOrderChosen == 1'>
+                <div class='custmer_info' v-if='addOrderChosen == 1 && !customer_info.contract_Detail'>
                   <div class='nothing' v-if='customer_info.count == 0'>
                     <div class="nothing_img"></div>
                     <p class='nothing_words'>这里什么都没有哦~</p>
                   </div>
-                  <div class='custmer_content' v-if='customer_info.count  > 0' v-for='info in customer_info.data' :key='info.id'>
-                    <el-radio v-model="chosenCustomer" :label="info" @change="changeCustmInfo">
-                      <el-row width='100%'>
-                        <el-col :span='7'>
-                          <span class='tit'>房屋地址</span>
-                          <span class='content_tit'>{{info.house_name || '--'}}</span>
-                        </el-col>
-                        <el-col :span='5'>
-                          <span class='tit'>合同编号</span>
-                          <span class='content_tit'>{{info.contract_id || '--'}}</span>
-                        </el-col>
-                        <el-col :span='3'>
-                          <span class='tit'>姓名</span>
-                          <span class='content_tit'>{{info.name || '--'}}</span>
-                        </el-col>
-                        <el-col :span='3'>
-                          <span class='tit'>性质</span>
-                          <span class='content_tit'>{{info.customer_type || '--'}}</span>
-                        </el-col>
-                        <el-col :span='5'>
-                          <span class='tit'>电话</span>
-                          <span class='content_tit'>{{info.phone || '--'}}</span>
-                        </el-col>
-                      </el-row>
-                    </el-radio>
+                  <div class='order_content_boxes' v-else>
+                    <div class='custmer_content' v-for='info in customer_info.data' :key='info.id'>
+                      <el-radio v-model="chosenCustomer" :label="info" @change="changeCustmInfo">
+                        <el-row width='100%'>
+                          <el-col :span='7'>
+                            <span class='tit'>房屋地址</span>
+                            <span class='content_tit'>{{info.house_name || '--'}}</span>
+                          </el-col>
+                          <el-col :span='5'>
+                            <span class='tit'>合同编号</span>
+                            <span class='content_tit'>{{info.contract_id || '--'}}</span>
+                          </el-col>
+                          <el-col :span='3'>
+                            <span class='tit'>姓名</span>
+                            <span class='content_tit'>{{info.name || '--'}}</span>
+                          </el-col>
+                          <el-col :span='3'>
+                            <span class='tit'>性质</span>
+                            <span class='content_tit'>{{info.customer_type || '--'}}</span>
+                          </el-col>
+                          <el-col :span='5'>
+                            <span class='tit'>电话</span>
+                            <span class='content_tit'>{{info.phone || '--'}}</span>
+                          </el-col>
+                        </el-row>
+                      </el-radio>
+                    </div>
                   </div>
-                  <div class='ending' v-if='customer_info.count > 0'>
-                    <div class='ending_img'></div>
-                    我也是有底线的~
-                  </div>
+                  <el-pagination @current-change="handleCustomerChange" :current-page="customer_info.page" layout="total,  prev, pager, next, jumper"
+                    :total="customer_info.count" v-if='customer_info.count > 0'>
+                  </el-pagination>
                 </div>
+
+                <!-- 合同信息 -->
+                <el-row :gutter="10" class='detail_contract' v-if='addOrderChosen == 1 && customer_info.contract_Detail'>
+                  <el-col :span="6" class='detail_col el-border' v-if='customer_info.contract_Detail.customer_info'>
+                    <h5>客户信息</h5>
+                    <div class='detail_col_box detail_col_box2' width='100%'>
+                      <div>
+                        <span class='tit'>姓名</span>
+                        <span class="content_tit">{{customer_info.contract_Detail.customer_info.name || '--'}}</span>
+                      </div>
+                      <div>
+                        <span class='tit'>性别</span>
+                        <span class="content_tit">{{customer_info.contract_Detail.customer_info.sex == 1 ? "男":"女"}}</span>
+                      </div>
+                      <div>
+                        <span class='tit'>性质</span>
+                        <span class="content_tit">{{createOrder.chooseTab == 1 ? "房东":"租客"}}</span>
+                      </div>
+                      <div>
+                        <span class='tit'>手机号</span>
+                        <span class="content_tit">{{customer_info.contract_Detail.customer_info.phone || '--'}}</span>
+                      </div>
+                      <div>
+                        <span class='tit'>身份证号</span>
+                        <span class="content_tit">{{customer_info.contract_Detail.customer_info.idcard || '--'}}</span>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span='12' class='detail_col el-border'>
+                    <h5>合同信息</h5>
+                    <el-row :gutter="10" class='detail_col_box'>
+                      <el-col :span='12'>
+                        <div>
+                          <span class='tit'>签约人</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.sign_user || '--'}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>负责人</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.org_leader || '--'}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>合同编号</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.contract_number || '--'}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>签约时间</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.sign_at || '--'}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>合约时长</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.sign_month.moth_to_year || '--'}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>合同照片</span>
+                          <p class='content_tit'>
+                            <img :src="img.uri" alt="" v-for='img in customer_info.contract_Detail.album.photo' :key='img.id'
+                              data-magnify="" data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'>
+                          </p>
+                        </div>
+                      </el-col>
+                      <el-col :span='12'>
+                        <div>
+                          <span class='tit'>部门</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.sign_org || '--'}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>付款方式</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.pay_way || '--'}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>收费价格</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.month_price[0].price || '--' +
+                            "元"}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>合同状态</span>
+                          <span class="content_tit">{{customer_info.contract_Detail | contractStatusFormate}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>回访状态</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.is_connect ?'已回访':'未回访'}}</span>
+                        </div>
+                        <div>
+                          <span class='tit'>其他附件</span>
+                          <div class='content_tit content_album'>
+                            <div v-for='(item,key) in customer_info.contract_Detail.album' class='imgs_box' v-if='key !="photo"'>
+                              <p>{{dataAblum[key]}}</p>
+                              <div v-if='item'>
+                                <img :src="img.uri" alt="" v-for='img in item' :key='img.id' data-magnify=""
+                                  data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </el-col>
+                    </el-row>
+                  </el-col>
+                  <el-col :span='6' class='detail_col'>
+                    <h5>房屋信息</h5>
+                    <div>
+                      <span class='tit'>房屋地址</span>
+                      <span class="content_tit">{{customer_info.contract_Detail.house_extension&&customer_info.contract_Detail.house_extension.address
+                        || '--'}}</span>
+                    </div>
+                  </el-col>
+                  <el-col :span='6' class='detail_col' v-if='customer_info.contract_Detail.is_agency == 1 && customer_info.contract_Detail.agency_info'>
+                    <h5>中介信息</h5>
+                    <div class='detail_col_box  detail_col_box2'>
+                      <div>
+                        <span class='tit'>中介名称</span>
+                        <span class="content_tit">{{customer_info.contract_Detail.agency_info&&customer_info.contract_Detail.agency_info.agency_name
+                          || '--' }}</span>
+                      </div>
+                      <div>
+                        <span class='tit'>中介价格</span>
+                        <span class="content_tit">{{customer_info.contract_Detail.agency_info&&customer_info.contract_Detail.agency_info.agency_price_now
+                          || '--' +
+                          "元"}}</span>
+                      </div>
+                      <div>
+                        <span class='tit'>中介姓名</span>
+                        <span class="content_tit">{{customer_info.contract_Detail.agency_info&&customer_info.contract_Detail.agency_info.agency_user_name
+                          || '--'}}</span>
+                      </div>
+                      <div>
+                        <span class='tit'>中介电话</span>
+                        <span class="content_tit">{{customer_info.contract_Detail.agency_info&&customer_info.contract_Detail.agency_info.agency_phone
+                          || '--'}}</span>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
 
                 <!--历史工单-->
                 <div class='custmer_info custmer_info1' v-if='addOrderChosen == 2'>
-                  <div class='nothing' v-if='historyOrder.length == 0'>
+                  <div class='nothing' v-if='history_info.dataCount == 0'>
                     <div class="nothing_img"></div>
                     <p class='nothing_words'>这里什么都没有哦~</p>
                   </div>
                   <div class='order_content_boxes' v-else>
-                    <div class='order_content' v-for='i in 3' :key='i'>
+                    <div class='order_content' v-for='history in history_info.data' :key='history.id'>
                       <div class='order_content_box'>
                         <p class='order_title1'>
                           <span>工单内容</span>
-                          洗衣机坏了
+                          {{history.content}}
                         </p>
-                        <span class='status1'>已完成</span>
+                        <span class='status1'>{{history.follow_name}}</span>
                       </div>
                       <div class='order_content_box'>
                         <p class='order_title2'>
-                          <span>维修工单</span>
-                          2019.1.22
+                          <span>{{history.type_name}}工单</span>
+                          {{history.next_follow_time}}
                         </p>
-                        <span>报销金额</span>
+                        <span v-if='history.type == 697 && history.follow_status == 338'>报销金额 {{'￥'+
+                          history.reimburse_money}}</span>
+                        <span v-else-if='history.type == 697 && history.follow_status == 338'>已结束维修</span>
+                        <span v-else-if='history.follow_status != 338'>处理中</span>
                       </div>
                     </div>
                   </div>
-                  <el-pagination @current-change="handleCurrentChange" :current-page="historyOrder_current" layout="total,  prev, pager, next, jumper"
-                    :total="historyOrder.length" v-if='historyOrder.length > 0'>
+                  <el-pagination @current-change="handleHistoryChange" :current-page="history_info.page" layout="total,  prev, pager, next, jumper"
+                    :total="history_info.dataCount" v-if='history_info.dataCount > 0'>
                   </el-pagination>
                 </div>
                 <!--来电记录-->
                 <div class='custmer_info custmer_info1' v-if='addOrderChosen == 3'>
-                  <div class='nothing' v-if='historyPhone.length == 0'>
+                  <div class='nothing' v-if='temporaryRecord.dataCount == 0'>
                     <div class="nothing_img"></div>
                     <p class='nothing_words'>这里什么都没有哦~</p>
                   </div>
                   <div class='order_content_boxes' v-else>
-                    <div class='order_content  order_content2' v-for='i in 3' :key='i'>
+                    <div class='order_content  order_content2' v-for='temp in temporaryRecord.data' :key='temp.id'>
                       <div class='order_content_box'>
                         <p class='order_title1'>
                           <span>工单内容</span>
-                          洗衣机坏了
+                          {{temp.content}}
                         </p>
-                        <span class='status1'>已完成</span>
+                        <span class='status1'>{{temp.follow_time}}</span>
                       </div>
                     </div>
                   </div>
-                  <el-pagination @current-change="handleCurrentChange" :current-page="historyOrder_current" layout="total,  prev, pager, next, jumper"
-                    :total="historyOrder.length" v-if='historyPhone.length > 0'>
+                  <el-pagination @current-change="handleTemporayChange" :current-page="temporaryRecord.page" layout="total,  prev, pager, next, jumper"
+                    :total="temporaryRecord.dataCount" v-if='temporaryRecord.dataCount > 0'>
                   </el-pagination>
                 </div>
               </el-col>
@@ -339,8 +497,8 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleCloseAddOrder(true)">新增</el-button>
-          <el-button type="info" size="small" @click="handleCloseAddOrder(false)">取消</el-button>
+          <el-button type="danger" size="small" @click="handleCloseAddOrder">新增</el-button>
+          <el-button type="info" size="small" @click="handleCloseOrder">取消</el-button>
         </div>
       </div>
     </LjDialog>
@@ -373,32 +531,32 @@
                     <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='报销金额'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.payer_all_money" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='处理人'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.operate_user_name" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='部门'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.operate_org_name" type="text" disabled> </el-input>
                   </el-form-item>
 
                   <el-form-item label='截止时间'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.finish_time" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='工单内容' style='width:100%;'>
                     <el-input v-model="detail_form.content" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='照片' style='width:100%;'>
-                    <!-- <div style="width: 90%;text-align: left">
-                      <img v-for="tmp in contractDetail.album[key]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
+                    <div style="width: 90%;text-align: left">
+                      <img v-for="tmp in detail_form.imagic" :key="tmp.id" data-magnify="" data-caption="图片查看器"
                         :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
-                    </div> -->
+                    </div>
                   </el-form-item>
                 </el-form>
                 <!-- 投诉工单 -->
                 <el-form label-width='80px' v-if='detail_form.type == 699'>
                   <el-form-item label='创建时间'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.create_time" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='房屋地址'>
                     <el-input v-model="detail_form.house_name" type="text" disabled> </el-input>
@@ -419,22 +577,22 @@
                     <el-input v-model="detail_form.emergency_name" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='处理人'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.operate_user_name" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='部门'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.operate_org_name" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='截止时间'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.finish_time" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='工单内容' style='width:100%;'>
                     <el-input v-model="detail_form.content" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='照片' style='width:100%;'>
-                    <!-- <div style="width: 90%;text-align: left">
-                      <img v-for="tmp in contractDetail.album[key]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
+                    <div style="width: 90%;text-align: left">
+                      <img v-for="tmp in detail_form.imagic" :key="tmp.id" data-magnify="" data-caption="图片查看器"
                         :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
-                    </div> -->
+                    </div>
                   </el-form-item>
                 </el-form>
                 <!-- 普通工单 -->
@@ -452,22 +610,22 @@
                     <el-input v-model="detail_form.emergency_name" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='处理人'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.operate_user_name" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='部门'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.operate_org_name" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='截止时间'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.finish_time" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='工单内容' style='width:100%;'>
                     <el-input v-model="detail_form.content" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='照片' style='width:100%;'>
-                    <!-- <div style="width: 90%;text-align: left">
-                      <img v-for="tmp in contractDetail.album[key]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
+                    <div style="width: 90%;text-align: left">
+                      <img v-for="tmp in detail_form.imagic" :key="tmp.id" data-magnify="" data-caption="图片查看器"
                         :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
-                    </div> -->
+                    </div>
                   </el-form-item>
                 </el-form>
               </el-col>
@@ -698,6 +856,8 @@
         </div>
       </div>
     </ljDialog>
+    <!-- 转交 -->
+    <TransferDialog :visible='transfer_visible' :data="currentRow" @close='handleCloseTranfer' />
   </div>
 </template>
 
@@ -708,6 +868,7 @@ import { workOrderSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 import DeleteDialog from '../components/delete-dialog';
 import AddDialog from '../components/add-dialog';
+import TransferDialog from '../components/transfer-dialog';
 import LjDialog from '../../common/lj-dialog.vue';
 import StaffOrgan from '../../common/staffOrgan.vue'
 import DepartOrgan from '../../common/departOrgan';
@@ -715,7 +876,7 @@ import Ljupload from '../../common/lightweightComponents/lj-upload'
 
 export default {
   name: "index",
-  components: { SearchHigh, MenuList, DeleteDialog, AddDialog, LjDialog, StaffOrgan, DepartOrgan, Ljupload },
+  components: { SearchHigh, MenuList, DeleteDialog, AddDialog, LjDialog, StaffOrgan, DepartOrgan, Ljupload, TransferDialog },
   data () {
     return {
       customService,
@@ -807,11 +968,12 @@ export default {
       },
       departModule: false, //部门选择
       departData: {
+        dataType: '',
         num: 1,
       },
       staffModule: false, // 选择人员
       organData: {
-        num: ''
+        num: 1
       },
       currentStaff: '',//当前选择人员的对象
       currentOrg: '',//当前选择部门的对象
@@ -940,17 +1102,20 @@ export default {
         page: 1,
         limit: 5,
         count: 0,
-        data: []
+        data: [],
+        contract_Detail: null
       },
       chosenCustomer: null,
-      historyOrder: [
-        {
-          content: '洗衣机换了，需要维修',
-        }
-      ],
-      historyOrder_current: 1,
-      historyPhone: [{}, {}],
-      historyOrder_current: 1,
+      history_info: { //历史工单
+        page: 1,
+        dataCount: 0,
+        data: []
+      },
+      temporaryRecord: {  // 来电记录
+        page: 1,
+        dataCount: 0,
+        data: []
+      },
       // 工单详情
       detail_visible: false,
       detail_form: null,
@@ -1037,13 +1202,73 @@ export default {
             real_money: '300'
           }
         ]
-      }
+      },
+      dataAblum: {
+        identity_photo: '证件照片',
+        bank_photo: '银行卡照片',
+        photo: '合同照片',
+        water_photo: '水表照片',
+        electricity_photo: '电表',
+        gas_photo: '气表照片',
+        checkin_photo: '交接单照片',
+        auth_photo: '委托书照片',
+        deposit_photo: '押金照片',
+        promise: '承诺书照片',
+        property_photo: '房产证',
+        water_card_photo: '水卡',
+        electricity_card_photo: '电卡',
+        gas_card_photo: '气卡'
+      },
+      transfer_visible: false,
+      sureEnding_visible: false,
+      sureEnding_check: null,
+      seeRecord: [
+        {
+          label: '回访记录',
+          value: 1,
+        },
+        {
+          label: '财务记录',
+          value: 2,
+        }, {
+          label: '退租记录',
+          value: 3,
+        }, {
+          label: '报销记录',
+          value: 4,
+        }
+      ],
+      seeRecord_status: 0,
     }
   },
   mounted () {
     this.getDataList();
   },
   activated () {
+  },
+  filters: {
+    contractStatusFormate (item) {
+      const { start_at, end_at, end_real_at, end_type } = item
+      let startAt = new Date(start_at).getTime(),
+        endAt = new Date(end_at).getTime(),
+        nowAt = new Date().getTime();
+      if (startAt > nowAt) {
+        return '未生效'
+      }
+      if (startAt <= nowAt && endAt > nowAt && !end_real_at) {
+        return '生效中'
+      }
+      if (endAt >= nowAt && !end_real_at) {
+        return '已过期'
+      }
+      if (end_real_at || end_type) {
+        return '已终止'
+      }
+      // 未生效：  start_at 大于当前日期
+      // 生效中： start_at 小于当前日期 并且 end_at 大于当前日期，并且 end_real_at 为null
+      // 过期：    end_at 小于当前日期，并且 end_real_at 为null
+      // 结束：    end_real_at  不为null 或者 end_type 不为 null
+    }
   },
   watch: {
     createOrder: {
@@ -1055,31 +1280,66 @@ export default {
         }
       },
       deep: true
-    }
+    },
   },
   computed: {},
   methods: {
-    handleCloseAddOrder (params) {
-      if (params) {
-        console.log(this.createOrder)
-        // let isNoPar = false
-        // for (let item in this.createOrder) {
-        //   let newItem = this.createOrder[item]
-        //   if (typeof newItem == 'string' && !newItem) {
-        //     isNoPar = true
-        //   } else if (typeof newItem == 'object' && newItem.length == 0) {
-        //     isNoPar = true
-        //   }
-        // }
-
-        // if (isNoPar) {
-        //   this.$LjNotify('warning', {
-        //     title: '提示',
-        //     message: '数据未填充完整'
-        //   });
-        //   return
-        // }
+    // 查看记录
+    chosenActiveRecord (val) {
+      this.seeRecord_status = val
+      if (val == 1) { //回访
+        this.record_visible = true
       }
+      if (val == 2) { // 财务
+        this.financial_visible = true
+      }
+      if (val == 3) { // 退租
+        this.without_visible = true
+      }
+      if (val == 4) { // 报销
+        this.expense_visible = true
+
+      }
+    },
+    // 用户信息分页
+    handleCustomerChange (val) {
+      this.customer_info.page = val
+      this.addOrder_search()
+    },
+    handleCloseAddOrder () {
+      if (!this.current_customer) {
+        this.$LjNotify('warning', {
+          title: '提示',
+          message: '数据未填写'
+        });
+        return
+      }
+
+      this.addOrder_visible = false
+      this.add_visible = true
+      this.currentMethod = 'addOrder'
+    },
+    // 取消新增
+    handleCloseOrder () {
+      this.addOrder_visible = false
+      // 将用户列表清空
+      this.customer_info = {
+        page: 1,
+        dataCount: 0,
+        data: []
+      }
+      this.history_info = {
+        page: 1,
+        dataCount: 0,
+        data: []
+      }
+      this.temporaryRecord = {
+        page: 1,
+        dataCount: 0,
+        data: []
+      }
+      this.customer_search = ''
+      this.current_customer = null
     },
     // 选择报销类型
     chosenComplaintsType (val) {
@@ -1102,6 +1362,7 @@ export default {
         operate_org_id: this.searchParams.department,
         emergency: this.searchParams.emergency,
       }
+
       this.$http.get(this.market_server + `v1.0/csd/work_order`, params).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.data;
@@ -1175,12 +1436,15 @@ export default {
             message: res.message
           });
           if (res.code === 200) {
+            this.delete_visible = false
             this.getDataList()
           }
         })
+      } else {
+        this.currentRow = null
+        this.delete_visible = false
       }
-      this.currentRow = null
-      this.delete_visible = true
+
     },
     handlerOrgan (params) {
       this.staffModule = true
@@ -1190,10 +1454,16 @@ export default {
     hiddenOrgan (ids, names, arr) {
       this.staffModule = false;
       if (ids !== 'close') {
-        this.createOrder[this.currentStaff] = {
-          name: names,
-          id: ids
+        if (this.currentStaff == 'cuiban') {
+          this.urgedDeal.personName = names
+          this.urgedDeal.person = ids
+        } else {
+          this.createOrder[this.currentStaff] = {
+            name: names,
+            id: ids
+          }
         }
+
         this.currentStaff = ''
       }
     },
@@ -1205,7 +1475,7 @@ export default {
     hiddenDepart (ids, str, arr) {
       this.departModule = false
       if (ids != 'close') {
-        this.createOrder[this.currentStaff] = {
+        this.createOrder[this.currentOrg] = {
           name: str,
           id: ids
         }
@@ -1226,32 +1496,89 @@ export default {
     chosenOptions (id) {
       if (this.addOrderChosen != id) {
         this.addOrderChosen = id
+        id == 2 && this.history_search() // 历史工单
+        id == 3 && this.temporary_search() // 来电
+      }
+    },
+    // 历史工单搜索
+    history_search () {
+      if (this.chosenCustomer) {
+        let history = {
+          type: 0,
+          page: this.history_info.page,
+          limit: 5,
+          search: this.chosenCustomer.contract_num,
+        }
+        this.$http.get(`${this.market_server}v1.0/csd/work_order/history`, history).then(res => {
+          console.log(res)
+          if (res.code === 200) {
+            this.history_info.data = res.data.data
+            this.history_info.dataCount = res.data.all_count
+          }
+        })
+      }
+
+    },
+    // 来电记录
+    temporary_search () {
+      if (this.chosenCustomer) {
+        let temporary = {
+          type: -1,
+          page: this.temporaryRecord.page,
+          limit: 5,
+          search: this.chosenCustomer.contract_num,
+        }
+        this.$http.get(`${this.market_server}v1.0/csd/work_order/temporaryRecord`, temporary).then(res => {
+          console.log(res)
+          if (res.code === 200) {
+            this.temporaryRecord.data = res.data.data
+            this.temporaryRecord.dataCount = res.data.all_count
+          }
+        })
       }
     },
     // 模糊搜索
     addOrder_search () {
+      this.customer_info.chosenCustomer = null
+      this.customer_info.contract_Detail = null
       let params = {
         type: 3,
         search: this.customer_search,
         limit: 5,
         page: this.customer_info.page
       }
-      this.$http.get(this.market_server + `v1.0/market/customer`, params).then(res => {
+      this.$http.get(this.market_server + `v1.0/market/customer/orderCustomer`, params).then(res => {
         if (res.code === 200) {
           this.customer_info.data = res.data.data
-          this.customer_info.count = 1
+          this.customer_info.count = res.data.count
         }
       })
+    },
+    // 历史工单分页
+    handleHistoryChange (val) {
+      this.history_info.page = val
+      this.history_search()
+    },
+    // 来电记录 分页
+    handleTemporayChange (val) {
+      this.temporaryRecord.page = val
+      this.temporary_search()
     },
     changeCustmInfo (val) {
       this.createOrder.house_id = val.house_id
       this.createOrder.house_name = val.house_name
+      this.createOrder.chooseTab = 1
+      this.$http.get(this.market_server + `v1.0/market/contract/1/${val.contract_id}`).then(res => {
+        if (res.code === 200) {
+          this.customer_info.contract_Detail = res.data
+        }
+      })
+
     },
-    handleCurrentChange () { },
-    // 分页
+    // tbale 分页
     handleCurrentChange (val) {
-      //this.getRepositoryList();
-      //console.log(`当前页: ${val}`);
+      this.currentPage = val
+      this.getDataList()
     },
     // 双击 详情
     tableDblClick (row) {
@@ -1268,65 +1595,191 @@ export default {
     handleCloseDetail () { },
     // 转交
     handleTransfer () {
+      this.detail_visible = false
+      this.transfer_visible = true
+    },
+    handleCloseTranfer (transfer) {
+      this.transfer_visible = !transfer
+    },
+    // 通知
+    handleNotice () {
+      this.detail_visible = false
+      this.handleCuiBan(this.currentRow)
+    },
+    //结束
+    handleEnd () {
+      this.detail_visible = false
+      this.sureEnding_visible = true
+    },
+    handleCloseSure (isSure) {
+      if (isSure) {
 
+        // 跟进工单中的结束
+        if (this.currentMethod == 'addRecord') {
+          this.addRecordFun(isSure)
+          return
+        }
+        // sureEnding_check
+        let option = {
+          work_order_id: this.currentRow.id,
+          payer_all_money: this.currentRow.payer_all_money || 0,
+          flag: this.sureEnding_check ? 1 : 0
+        }
+
+        this.$http.post(`${this.market_server}v1.0/csd/work_order/finish`, option).then(res => {
+          this.$LjNotify('success', {
+            title: '提示',
+            message: res.message
+          });
+
+          if (res.code === 200) {
+            this.sureEnding_visible = false
+            this.currentRow = null
+            this.detail_form = null
+            this.sureEnding_check = null
+            this.getDataList()
+          }
+        })
+
+      } else {
+        this.sureEnding_visible = false
+        this.currentRow = null
+        this.detail_form = null
+      }
     },
     handleAddRecord () {
       this.followRecord_visible = true
       this.detail_visible = false
     },
-    //通知
-    handleNotice () { },
-    //结束
-    handleEnd () { },
+
     // 新增记录
+    handleAddNewRecord () {
+      this.followRecord_visible = false
+      this.currentMethod = 'addRecord'
+      if (this.followRecord_info.folow_status == 337) {
+        this.add_visible = true
+      } else {
+        this.sureEnding_visible = true
+      }
+    },
     //确定新增
     handleAddNewRecord () {
       this.followRecord_visible = false
       this.add_visible = true
-      console.log(this.followRecord)
       this.currentMethod = 'addRecord'
     },
     addRecordFun (par) {
       if (par) {
-        let params = {
-          work_order_id: this.currentRow.id,
-          folow_status: this.followRecord.type,
-          content: this.followRecord.note
+        let params = this.followRecord,
+          pay_method = [];
+        if (params.folow_status == 338 && this.pay_method[0].type) {
+          this.pay_method.forEach(el => {
+            pay_method.push([el.type || '', el.name || '', el.money || ''])
+          });
         }
+        params.pay_method = pay_method
+        params.work_order_id = this.currentRow.id
+
         this.$http.post(`${this.market_server}v1.0/csd/work_order/follow`, params).then(res => {
-          console.log(res)
           this.$LjNotify('success', {
             title: '提示',
             message: res.message
           });
-          this.followRecord_visible = false;
+
+          this.add_visible = false
         })
+      } else {
+        this.add_visible = false
       }
+
       this.followRecord = {
-        type: '',
-        emergency: '',
-        note: '',
-        complained: [
-          {
-            id: '',
-            type: '',
-            name: '',
-            money: ''
-          }
-        ],
-        album: []
+        folow_status: 1, // 工单状态
+        emergency: '', // 紧急程度
+        payer_type: '', // 实际支付人 type
+        payer_id: '', // 实际支付人id
+        payer: '', // 实际支付人
+        pay_all_money: '', //维修金额
+        content: '', // 跟进内容
       }
+      this.pay_method = [
+        {
+          type: '',
+          name: '',
+          money: ''
+        }
+      ]// 认责人 
     },
     //确认添加
     handleCloseAdd (params) {
       if (this.currentMethod == 'addRecord') {
         this.addRecordFun(params)
       }
+
+      if (this.currentMethod == 'created') {
+        this.createOrderFun(params)
+      }
+
+
       this.currentMethod = null
     },
+    createOrderFun (isCreate) {
+      if (isCreate) {
+        let order = {
+          house_id: this.current_customer.house_id,
+          house_name: this.current_customer.house_name,
+          contract_id: this.current_customer.contract_id,
+          contract_num: this.current_customer.contract_num,
+          contract_type: this.current_customer.contract_type,
+          type: this.createOrder.type,
+          album: this.createOrder.album,
+          content: this.createOrder.content,
+          operate_user_id: this.createOrder.operate_user.id,
+          operate_user_name: this.createOrder.operate_user.name,
+          operate_org_id: this.createOrder.operate_org.id,
+          replay_phone: this.createOrder.replay_phone,
+          emergency: this.createOrder.emergency,
+          complained_user: this.createOrder.complained_user.name,
+          complained_user_id: this.createOrder.complained_user.id,
+          complain_type: this.createOrder.complain_type,
+          type_of_complaint: this.createOrder.complain_channel,
+          next_follow_time: this.createOrder.next_follow_time,
+        }
 
+
+        this.$http.post(`${this.market_server}v1.0/csd/work_order`, order).then(res => {
+          this.$LjNotify('warning', {
+            title: '提示',
+            message: res.message
+          });
+          if (res.code === 200) {
+            this.handleCloseOrder()
+            this.getDataList()
+          }
+        })
+      } else {
+        this.handleCloseOrder()
+      }
+    },
     handleCloseAddNewRecord () {
       this.followRecord_visible = false
+      this.detail_form = null
+      this.followRecord = {
+        folow_status: 1, // 工单状态
+        emergency: '', // 紧急程度
+        payer_type: '', // 实际支付人 type
+        payer_id: '', // 实际支付人id
+        payer: '', // 实际支付人
+        pay_all_money: '', //维修金额
+        content: '', // 跟进内容
+        ablum: [] // 上传图片
+      }
+      this.pay_method = [
+        {
+          type: '',
+          name: '',
+          money: ''
+        }
+      ] // 认责人
     },
     addComplaintsType () {
       this.followRecord.complained.push({
