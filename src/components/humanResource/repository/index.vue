@@ -96,11 +96,11 @@
         selects: [
           {
             id: 1,
-            title: '库房总览',
+            title: '入库',
           },
           {
             id: 2,
-            title: '借用领用',
+            title: '领用借用',
           },
           {
             id: 3,

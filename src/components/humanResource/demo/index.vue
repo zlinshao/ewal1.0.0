@@ -1,10 +1,10 @@
 <template>
   <div class="demo-container" style="width: 800px">
-    <el-button @click="paper_visible=true">测试</el-button>
+    <!--<el-button @click="paper_visible=true">测试</el-button>
     <el-button @click="demo2">测试222</el-button>
     <test-paper :visible.sync="paper_visible" :params="paper_params" :type="2" :statisticsResult="view_result_list"
-                @success="demoSuccess"></test-paper>
-    <!--    <name-shower type="org" :ids="org_list"></name-shower>-->
+                @success="demoSuccess"></test-paper>-->
+        <name-shower type="user" :ids="org_list"></name-shower>
     <!--<user-list :ids="user_list"></user-list>-->
     <!--<calendar week-type="en" style="width: 1366px;height: 768px">
       <div :slot="'slot'+item.id" v-for="item in daysList"

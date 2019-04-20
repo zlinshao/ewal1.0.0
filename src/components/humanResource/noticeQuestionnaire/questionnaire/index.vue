@@ -307,6 +307,7 @@
         this.$http.get(`${this.url}questionnaire`, params).then(res => {
           if (res.code.endsWith('0')) {
             this.tableData = res.data.data;
+            this.counts = res.data.count;
           }
         });
       },
