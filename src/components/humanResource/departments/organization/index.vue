@@ -43,7 +43,7 @@
                           <div class="strt-block" v-show="staff_list[index][idx][child_idx] && staff_list[index][idx][child_idx].length >0">
                             <div class="strt-part" v-for="(staff_item,staff_idx) in staff_list[index][idx][child_idx]">
                               <span class="line-h line-h-r" v-if="staff_idx === 0"></span>
-                              <span class="line-h line-h-r" v-else-if="staff_idx === staff_list[index][idx][child_idx].length - 1"></span>
+                              <span class="line-h line-h-l" v-else-if="staff_idx === staff_list[index][idx][child_idx].length - 1"></span>
                               <span class="line-h line-h-c" v-else></span>
                               <div class="line-v"><span></span></div>
                               <div class="strt-info-mini">{{ staff_item.name }}</div>
