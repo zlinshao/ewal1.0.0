@@ -113,9 +113,15 @@
         ]
       }
     },
+    mounted() {
+      this.getWeekData()
+    },
     methods:{
       choosePeriod: function(index) {
         this.choosedPeriod = index
+      },
+      getWeekData: function() {
+        
       }
     }
   }

@@ -40,7 +40,9 @@
     <div class="page flex-center">
       <el-pagination :total="50" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
     </div>
+
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule()"></SearchHigh>
+    
     <el-dialog
       :visible.sync="sendTodoList"
       :show-close="false"
@@ -104,7 +106,7 @@
             <h3>修改</h3>
           </div>
           <div class="dialog_main">
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="form"  label-width="80px">
               <el-form-item label="考核项">
                 <el-input></el-input>
               </el-form-item>
@@ -140,7 +142,33 @@
     data() {
       return {
         showSearch: false,
-        searchData: {},
+        searchData: {
+          status: 'assessmentSearchList',
+          keywords: 'search',
+          data: [
+            {
+              keyType: 'radio',
+              title: '发送状态',
+              keyName: 'sendStatus',
+              dataType: [],
+              value: [
+                { id: 1, title: '未发送' },
+                { id: 2, title: '已发送' }
+              ]
+            },
+            {
+              keyType: 'radio',
+              title: '确认状态',
+              keyName: 'confirmStatus',
+              dataType: [],
+              value: [
+                { id: 1, title: '未确认' },
+                { id: 2, title: '已确认' },
+                { id: 3, title: '有异议' }
+              ]
+            }
+          ]
+        },
         sendTodoList: false,
         kpi_detail_visible: false,
         kpi_modify_visible: false,
@@ -189,33 +217,6 @@
     methods: {
       highSearch: function() {
         this.showSearch = true
-        this.searchData = {
-          status: 'assessmentSearchList',
-          keywords: 'search',
-          data: [
-            {
-              keyType: 'radio',
-              title: '发送状态',
-              keyName: 'sendStatus',
-              dataType: [],
-              value: [
-                { id: 1, title: '未发送' },
-                { id: 2, title: '已发送' }
-              ]
-            },
-            {
-              keyType: 'radio',
-              title: '确认状态',
-              keyName: 'confirmStatus',
-              dataType: [],
-              value: [
-                { id: 1, title: '未确认' },
-                { id: 2, title: '已确认' },
-                { id: 3, title: '有异议' }
-              ]
-            }
-          ]
-        }
       },
       hiddenModule: function() {
         this.showSearch = false
