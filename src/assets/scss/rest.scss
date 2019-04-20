@@ -20,6 +20,11 @@ html, body {
   .amap-sug-result {
     border: none ;
   }
+  div.el-tooltip__popper,
+  div.is-dark {
+    background-color: $colorE33 !important;
+    color: white;
+  }
 }
 
 ol, ul {

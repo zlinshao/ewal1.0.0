@@ -21,8 +21,16 @@ div.el-popover {
   border-color: transparent;
   @include transform(translateX(35%));
 }
-
 #theme_name {
+  .el-form-item__label:before{
+    content: '' !important;
+  }
+  .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:after {
+    content: '*';
+    color: $colorE33;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
   //form input宽度
   .el-select,
   .el-date-editor.el-input,
@@ -89,12 +97,12 @@ div.el-popover {
     &::before {
       height: 0;
     }
-    //background-color: transparent;
+    background-color: transparent;
     tr {
-      //background-color: transparent;
+      background-color: transparent;
     }
     th {
-      //background-color: transparent;
+      background-color: transparent;
     }
     .tableHeader {
       th {
@@ -109,12 +117,12 @@ div.el-popover {
     tbody {
       tr.current-row {
         td {
-          //background-color: transparent !important;
+          background-color: transparent !important;
         }
       }
       tr:hover {
         td {
-          //background-color: transparent !important;
+          background-color: transparent !important;
         }
       }
     }

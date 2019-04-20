@@ -279,6 +279,11 @@ html, body {
   height: 100%; }
   html .amap-sug-result, body .amap-sug-result {
     border: none; }
+  html div.el-tooltip__popper,
+  html div.is-dark, body div.el-tooltip__popper,
+  body div.is-dark {
+    background-color: #cf2e33 !important;
+    color: white; }
 
 ol, ul {
   list-style: none; }

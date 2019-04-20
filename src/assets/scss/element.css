@@ -281,6 +281,13 @@ div.el-popover {
   -o-transform: translateX(35%);
   transform: translateX(35%); }
 
+#theme_name .el-form-item__label:before {
+  content: '' !important; }
+#theme_name .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:after {
+  content: '*';
+  color: #cf2e33;
+  margin-left: 4px;
+  vertical-align: middle; }
 #theme_name .el-select,
 #theme_name .el-date-editor.el-input,
 #theme_name .el-date-editor.el-input__inner,
@@ -322,13 +329,23 @@ div.el-popover {
   #theme_name .el-button--info:hover {
     background-color: #dfdfdf;
     opacity: 1; }
-#theme_name .el-table::before {
-  height: 0; }
-#theme_name .el-table .tableHeader th div {
-  height: 40px;
-  line-height: 40px;
-  color: #686874;
-  font-weight: bold; }
+#theme_name .el-table {
+  background-color: transparent; }
+  #theme_name .el-table::before {
+    height: 0; }
+  #theme_name .el-table tr {
+    background-color: transparent; }
+  #theme_name .el-table th {
+    background-color: transparent; }
+  #theme_name .el-table .tableHeader th div {
+    height: 40px;
+    line-height: 40px;
+    color: #686874;
+    font-weight: bold; }
+  #theme_name .el-table tbody tr.current-row td {
+    background-color: transparent !important; }
+  #theme_name .el-table tbody tr:hover td {
+    background-color: transparent !important; }
 #theme_name .borderNone .el-input__inner,
 #theme_name .borderNone .el-textarea__inner {
   border: none;
