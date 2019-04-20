@@ -21,13 +21,14 @@
             height: 60px;
             margin-left: 15px;
             position: relative;
+            top: 10px;
             img {
               @include radius(50%);
             }
             b, i {
               position: absolute;
-              top: 0;
-              right: -4px;
+              top: -8px;
+              right: -10px;
               width: 24px;
               height: 24px;
             }

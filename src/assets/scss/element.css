@@ -343,9 +343,9 @@ div.el-popover {
     color: #686874;
     font-weight: bold; }
   #theme_name .el-table tbody tr.current-row td {
-    background-color: transparent !important; }
+    background-color: white !important; }
   #theme_name .el-table tbody tr:hover td {
-    background-color: transparent !important; }
+    background-color: white !important; }
 #theme_name .borderNone .el-input__inner,
 #theme_name .borderNone .el-textarea__inner {
   border: none;

@@ -196,15 +196,16 @@
       width: 60px;
       height: 60px;
       margin-left: 15px;
-      position: relative; }
+      position: relative;
+      top: 10px; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesTop p img {
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesTop p b, #theme_name #staffFiles .dialog_container .staffFiles .filesTop p i {
         position: absolute;
-        top: 0;
-        right: -4px;
+        top: -8px;
+        right: -10px;
         width: 24px;
         height: 24px; }
   #theme_name #staffFiles .dialog_container .staffFiles .filesMain {
