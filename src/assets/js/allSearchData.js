@@ -132,19 +132,19 @@ export const workOrderSearch = {
       dataType: '',
       value: [
         {
-          id: 12,
+          id: 3,
           title: '特级'
         },
         {
-          id: 13,
+          id: 2,
           title: '紧急'
         },
         {
-          id: 15,
+          id: 1,
           title: '一般'
         },
         {
-          id: 14,
+          id: 4,
           title: '重要'
         }
       ]
@@ -327,18 +327,20 @@ export const housingDueSearch = {
 // 资料审核
 export const dataAuditSearch = {
   status: 'housingDue',
+  placeholder: '地址/合同编号/工单编号/内容',
+  keywords: 'search',
   data: [
     {
       keyType: 'dateRange',
       title: '签约时间',
       placeholder: '请选择日期',
-      keyName: 'date1',
+      keyName: 'dateTime',
       dataType: []
     },
     {
       keyType: 'radio',
       title: '合同性质',
-      keyName: 'nature',
+      keyName: 'type',
       dataType: [],
       value: [
         {
@@ -355,10 +357,10 @@ export const dataAuditSearch = {
       keyType: 'staff',
       title: '开单人',
       placeholder: '请选择员工',
-      keyName: 'openPer',
-      dataType: [],
+      keyName: 'signer',
+      dataType: '',
       value: {
-        num: ''
+        num: 1
       }
     },
     {
@@ -366,22 +368,11 @@ export const dataAuditSearch = {
       title: '负责人',
       placeholder: '请选择员工',
       keyName: 'handler',
-      dataType: [],
+      dataType: '',
       value: {
-        num: ''
+        num: 1
       }
     }
-    // {
-    //   keyType: 'depart',
-    //   title: '部门',
-    //   placeholder: '请选择部门',
-    //   keyName: 'department',
-    //   dataType: [],
-    //   value: {
-    //     num: '',
-    //     arr: []
-    //   }
-    // }
   ]
 }
 
@@ -412,19 +403,19 @@ export const maintenanceSearch = {
       dataType: '',
       value: [
         {
-          id: 12,
+          id: 3,
           title: '特级'
         },
         {
-          id: 13,
+          id: 2,
           title: '紧急'
         },
         {
-          id: 14,
+          id: 4,
           title: '重要'
         },
         {
-          id: 15,
+          id: 1,
           title: '一般'
         }
       ]

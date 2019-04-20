@@ -21,23 +21,38 @@
     </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table :data="tableData" :height="this.mainListHeight(30) + 'px'" highlight-current-row @row-dblclick="handleGetDetail"
-        header-row-class-name="tableHeader" style="width: 100%">
+        header-row-class-name="tableHeader" style="width: 100%" :key="'table'+tag_status">
         <el-table-column align="center" label="签约时间">
           <template slot-scope="scope">
-            <i class='table_icon' v-if='!cookieArr[scope.row.contract_id] || cookieArr[scope.row.contract_id] < scope.row.end_at'></i>
-            <span>{{scope.row.createTime}}</span>
+            <i class='table_icon' v-if='!cookieArr[scope.row.contract_id] || cookieArr[scope.row.contract_id] < scope.row.update_time'></i>
+            <span>{{scope.row.sign_at}}</span>
           </template>
         </el-table-column>
-        <el-table-column key="合同编号" align="center" prop="ContractNo" label="合同编号"></el-table-column>
+        <el-table-column key="合同编号" align="center" prop="contract_number" label="合同编号"></el-table-column>
         <el-table-column key="地址" align="center" prop="address" label="地址"></el-table-column>
-        <el-table-column key="合同性质" align="center" prop="nature" label="合同性质"></el-table-column>
-        <el-table-column key="所属公司" align="center" prop="compay" label="所属公司"></el-table-column>
-        <el-table-column key="房东姓名" align="center" prop="houser_name" label="房东姓名"></el-table-column>
-        <el-table-column key="收房价格" align="center" prop="price" label="收房价格"></el-table-column>
-        <el-table-column key="付款方式" align="center" prop="payType" label="付款方式"></el-table-column>
-        <el-table-column key="开单人" align="center" prop="openPer" label="开单人"></el-table-column>
-        <el-table-column key="负责人" align="center" prop="handler" label="负责人"></el-table-column>
-        <el-table-column key="部门" align="center" prop="department" label="部门"></el-table-column>
+        <el-table-column key="合同性质" align="center" prop="type" label="合同性质"></el-table-column>
+        <el-table-column key="收房价格" align="center" label="收房价格" v-if='tag_status == 1'>>
+          <template slot-scope="scope">
+            <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
+              <span v-for="(item,index) in scope.row.month_price">
+                {{ item.price }} 元 / {{ item.period }}月 <a v-if="index !== scope.row.month_price.length - 1">;</a>
+              </span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column key="租房价格" align="center" label="租房价格" v-if='tag_status == 2'>
+          <template slot-scope="scope">
+            <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
+              <span v-for="(item,index) in scope.row.month_price">
+                {{ item.price }} 元 / {{ item.period }}月 <a v-if="index !== scope.row.month_price.length - 1">;</a>
+              </span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column key="付款方式" align="center" prop="pay_way" label="付款方式"></el-table-column>
+        <el-table-column key="开单人" align="center" prop="sign_user" label="开单人"></el-table-column>
+        <el-table-column key="负责人" align="center" prop="org_leader" label="负责人"></el-table-column>
+        <el-table-column key="部门" align="center" prop="sign_org" label="部门"></el-table-column>
       </el-table>
 
       <footer class="flex-center bottomPage">
@@ -45,8 +60,8 @@
           <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="page">
-          <el-pagination @current-change="handleCurrentChange" :current-page="params.page" :page-size="params.limit"
-            :total="tableDataCount" layout="total,jumper,prev,pager,next">
+          <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" :total="tableDataCount"
+            layout="total,jumper,prev,pager,next">
           </el-pagination>
         </div>
       </footer>
@@ -69,39 +84,39 @@
           <!---房屋信息-->
           <p class='main_tit noMarginTop'>房屋信息</p>
           <div class="common_info">
-            <el-form label-width="120px" v-if='contractDetail.house_extension'>
+            <el-form label-width="120px">
               <el-row :gutter="10">
                 <el-col :span="8" v-if='tag_status == 1'>
                   <el-form-item label="物业地址">
-                    <span v-if='contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).name
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).name
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="产权地址">
-                    <span v-if='contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).detailed_address
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).detailed_address
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="水卡卡号">
-                    <span v-if='contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).water_card_number
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).water_card_number
                       || '--' }}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="电卡卡号">
-                    <span v-if='contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).electricity_card_number
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).electricity_card_number
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="燃气卡号">
-                    <span v-if='contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).gas_card_number
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).gas_card_number
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
@@ -353,12 +368,13 @@
             </el-checkbox-group>
           </div>
 
-          <p class='main_tit'>资料不齐记录</p>
-          <div class='data_info'>
+          <p class='main_tit' v-if='chooseTab != 3'>资料不齐记录</p>
+          <div class='data_info' v-if='chooseTab != 3'>
             <div class="flex-center">
               <div class="flex_center_tit">发送对象</div>
               <div class="flex_center_content flex_center_content1 borderNone">
-                <el-input @focus="organSearch" readonly v-model="dataRecord.send_name" :placeholder="contractDetail.org_leader + ',' + contractDetail.sign_user"></el-input>
+                <el-input @focus="organSearch" readonly v-model="dataRecord.send_name" :placeholder="contractDetail.sign_user || contractDetail.org_leader">
+                </el-input>
               </div>
             </div>
 
@@ -380,8 +396,8 @@
         </div>
 
         <div class="dialog_footer">
-          <el-button type="success" size="small" @click="handleContractPass" v-if='tag_status == 1 || tag_status == 2'>通过</el-button>
-          <el-button type="warning" size="small" @click="handleContractRejected" v-if='tag_status == 3'>驳回</el-button>
+          <el-button type="success" size="small" @click="handleContract(true)" v-if='chooseTab == 1 || chooseTab == 2'>通过</el-button>
+          <el-button type="warning" size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -396,19 +412,20 @@
           <h3>资料不齐记录</h3>
         </div>
         <div class="dialog_main dataRecord_dialog_main">
-          <div v-for='i in  4' class='dataRecord_cell' :key='i'>
+          <div v-for='remark in contractDetail.checkout_remark' class='dataRecord_cell' :key='remark.create_uid' v-if='dataRecord_visible && contractDetail.checkout_remark'>
             <div class='detail_dialog_left'>
-              <p>黄海</p>
+              <p>{{remark.create.name}}</p>
               <p>2019.1.16</p>
             </div>
             <div class="detail_dialog_center">
               <div class='circle'></div>
             </div>
             <div class='detail_dialog_right'>
-              <p>交接单不齐</p>
-              <p>发送对象:野原新之助</p>
+              <p>{{remark.remark}}</p>
+              <p>发送对象:{{remark.receive}}</p>
             </div>
           </div>
+          <div v-else>暂无记录</div>
         </div>
       </div>
     </lj-dialog>
@@ -472,56 +489,19 @@ export default {
           title: '已完成'
         }
       ],
-      chooseTab: 1,
-      tag_status: 1,
-      showSearch: false,
-      searchData: {},
-      showData: {
-        createTime: '签约时间',
-        ContractNo: '合同编号',
-        address: '地址',
-        nature: '合同性质',
-        compay: '所属公司',
-        houser_name: '房东姓名',
-        price: '收房价格',
-        payType: '付款方式',
-        openPer: '开单人',
-        handler: '负责人',
-        department: '部门',
-      },
-      tableData: [],
+      chooseTab: 1,  // 待审核 跟进中 已完成
+      tag_status: 1, // 收房 租房
+      tableData: [],  // 列表
       tableDataCount: 0,
-      tableSettingData: {
-        dataAudit: {//工单
-          counts: 1,
-          params: {
-            search: '',
-            page: 1,
-            limit: 10,
-          },
 
-          tableData: [],
-          status: {
-            1: '退租',
-            2: '续租',
-          },
-          chooseRowIds: [],
-          currentSelection: {}//当前选择行
-        },
-        goods: {
-          counts: 0,
-          params: {
-            search: '',
-            page: 1,
-            limit: 8,
-          },
-          chooseRowIds: [],
-          currentSelection: {},//当前选择行,
-          multiSelection: [],//多选行
-          isShowMulti: false,//是否显示多选
-        },
-      },
-      chooseRowIds: [],
+
+      showSearch: false,  // 显示高级搜索
+      searchData: {}, // 高级搜索 参数
+      searchParams: {
+        dateTime: [],
+      }, // 高级搜索返回值
+
+
       //合同详情
       contract_detail_visible: false,
       contractDetail: {
@@ -615,12 +595,17 @@ export default {
       // 合同作废重签
       rewrite_visible: false,
       rewrite_note: '',
-      params: {
-        limit: 10,
-        page: 1,
-      },
+      // params {
+      //   limit: 10,
+      //   page: 1,
+      // },
+      currentPage: 1,
       cookieArr: {},
       market_server: globalConfig.market_server,
+      complete: {
+        task_id: '',
+        key_name: ''
+      }
     }
   },
   created () {
@@ -660,18 +645,33 @@ export default {
     },
     getDateList () {
       this.showLoading(true);
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_status}`, this.params).then(res => {
+      let params = {
+        contract_type: this.tag_status, // 收房 租房
+        doc_Status: this.chooseTab == 1 ? "review" : (this.chooseTab == 2 ? "flowing" : "published"), // 待审核 跟进中 已完成
+        sign_date_min: this.searchParams.dateTime[0] || '',
+        sign_date_max: this.searchParams.dateTime[1] || '',
+        type: this.searchParams.type || '',
+        signer: this.searchParams.signer || '',
+        org: this.searchParams.handler || '', // 负责人
+        search: this.searchParams.search || '',
+        limit: 10,
+        page: this.currentPage
+      }
+
+      this.$http.get(this.market_server + `v1.0/market/contract`, params).then(res => {
+        console.log(res)
         if (res.code === 200) {
           this.tableData = res.data.data;
           this.tableDataCount = res.data.count;
         } else {
+          this.currentPage = 1;
           this.tableData = [];
           this.tableDataCount = 0;
         }
         this.showLoading(false);
       })
     },
-    //切换 
+    //切换 待审核 跟进中 已完成
     changeTabs (id) {
       if (this.chooseTab !== id) {
         this.chooseTab = id
@@ -711,24 +711,37 @@ export default {
       }
       this.searchData = dataAuditSearch;
     },
+    //高级搜索
     hiddenModule (val) {
       this.showSearch = false;
       if (val !== 'close') {
-        console.log(val);
+        this.searchParams = val
+        this.currentPage = 1;
+        this.getDateList()
       }
     },
     //双击 合同详情
     handleGetDetail (row) {
       this.currentRow = row
-      //  this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_stauts}/${row.contract_id}`).then(res => {
-      this.tag_status = 2
-      this.$http.get(this.market_server + `v1.0/market/contract/2/1`).then(res => {
-        console.log(res)
+      // this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_stauts}/${row.contract_id}`).then(res => {
+      this.tag_status = 1
+      this.$http.get(this.market_server + `v1.0/market/contract/1/256901`).then(res => {
         if (res.code === 200) {
           this.contractDetail = res.data
           this.contract_detail_visible = true;
+          this.getProcess_id(res.data.process_instance_id)
           this.$set(this.cookieArr, row.contract_id, new Date().getTime())
           this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
+          this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
+        }
+      })
+    },
+    getProcess_id (PROCESS_ID) {
+      this.$http.get(this.market_server + `v1.0/market/contract/kf-check-button?process_id=${PROCESS_ID}`).then(res => {
+        if (res.code === 200) {
+          let data = res.data;
+          this.complete.task_id = data.taskId
+          this.complete.key_name = data.buttons.variableName || 'kf_approved'
         }
       })
     },
@@ -738,11 +751,29 @@ export default {
       this.contract_detail_visible = false;
       this.currentRow = null
     },
-    handleContractPass () { },
-    handleContractRejected () { },
+    // 合同通过 驳回
+    handleContract (isTrue) {
+      let params = {
+        process_id: this.contractDetail.process_instance_id,
+        contract_type: this.contractDetail.contract_type,
+        task_id: this.complete.task_id,
+        data: {}
+      }
+      params.data[this.complete.key_name] = isTrue
+      this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: res.message
+        });
+
+        if (res.code === 200) {
+          this.handleCloseDetail()
+        }
+      })
+    },
     //footer
     handleCurrentChange (val) {
-      this.params.page = val
+      this.currentPage = val
       this.getDateList()
     },
     //选择人员
@@ -759,15 +790,16 @@ export default {
     },
     // 发送不齐记录
     handlePostRecord () {
-      let params = {
+      let current = {
         contract_type: this.tag_status,
         contract_id: this.currentRow.contract_id,
-        houser_name: this.currentRow.houser_name,
-        contract_number: this.currentRow.number,
-        complete_content: this.rewrite_data
+        house_name: this.currentRow.house_name,
+        contract_number: this.currentRow.contract_number,
+        remark: this.dataRecord.content,
+        receive_ids: this.dataRecord.receive_ids || this.contractDetail.sign_user_id || contractDetail.org_leader
       }
 
-      this.$http.get(this.market_server + `v1.0/market/contract/send-complete-data`, params).then(res => {
+      this.$http.post(this.market_server + `v1.0/market/contract/send-complete-data`, current).then(res => {
         this.$LjNotify('success', {
           title: '提示',
           message: res.message
@@ -778,13 +810,16 @@ export default {
     },
     //资料不齐
     handleGetRecord () {
+      this.contract_detail_visible = false
       this.dataRecord_visible = true;
     },
     handleCloseRecord () {
       this.dataRecord_visible = false;
+      this.contractDetail = null
     },
     // 合同作废
     handleRewrite () {
+      this.contract_detail_visible = false
       this.rewrite_visible = true
     },
     // 合同作废
@@ -810,6 +845,7 @@ export default {
     handleCancelRewrite () {
       this.rewrite_note = '';
       this.rewrite_visible = false
+      this.currentRow = null
     },
   }
 }

@@ -83,7 +83,7 @@
       </div>
     </LjDialog>
     <!-- 转交 -->
-    <LjDialog :visible="transfer_visible" :size="{width: 480 + 'px',height: 340 + 'px'}" @close="handleCloseTranfer">
+    <LjDialog :visible="transfer_visible" :size="{width: 480 + 'px',height: 340 + 'px'}" @close="handleCloseTranfer(false)">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>转交</h3>
@@ -100,7 +100,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleCloseTranfer(true)">确定</el-button>
-          <el-button type="info" size="small" @click="handleCloseTranfer">取消</el-button>
+          <el-button type="info" size="small" @click="handleCloseTranfer(false)">取消</el-button>
         </div>
       </div>
     </LjDialog>
@@ -124,7 +124,7 @@
             <el-row :gutter="20" width='100%' v-if='followRecord_info.folow_status == 338'>
               <el-col :span="8">
                 <el-form-item label="维修金额">
-                  <el-input placeholder="请填写" v-model='followRecord_info.folow_status'></el-input>
+                  <el-input placeholder="请填写" v-model='followRecord_info.pay_all_money'></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -140,7 +140,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='followRecord_info.folow_status == 338' v-for='(item,index) in followRecord_info.reimburse'
+            <el-row :gutter="20" width='100%' v-if='followRecord_info.folow_status == 338' v-for='(item,index) in pay_method'
               :key='"follow" + index'>
               <el-col :span="8">
                 <el-form-item label="认责人">
@@ -152,13 +152,13 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="姓名" v-model='item.name'>
-                  <el-input @focus="organSearch" readonly placeholder="请选择"></el-input>
+                <el-form-item label="姓名">
+                  <el-input @focus="organSearch('complained',index)" v-model='item.name' readonly placeholder="请选择"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="认责金额" v-model='item.money' class='record_money'>
-                  <el-input placeholder="请填写"></el-input>
+                <el-form-item label="认责金额" class='record_money'>
+                  <el-input placeholder="请填写" v-model='item.money'></el-input>
                   <i class='icons icon_add' v-if='index== 0' @click='addComplaintsType'></i>
                   <i class='icons icon_del' v-else @click="delComplaintsType(index)"></i>
                 </el-form-item>
@@ -176,7 +176,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="姓名">
-                  <el-input @focus="organSearch" readonly placeholder="业务员" v-model='followRecord_info.payer'></el-input>
+                  <el-input @focus="organSearch('payer')" readonly placeholder="业务员" v-model='followRecord_info.payer'></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -205,17 +205,17 @@
     <!--新增跟进记录 认责人选择-->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
     <!--确定结束-->
-    <LjDialog :visible="sureEnding_visible" :size="{width: 480 + 'px',height: 320 + 'px'}" @close="handleCloseSure">
+    <LjDialog :visible="sureEnding_visible" :size="{width: 480 + 'px',height: 320 + 'px'}" @close="handleCloseSure(false)">
       <div class="dialog_container end_dialog">
         <div class="dialog_main">
           <h3>确定结束吗?</h3>
-          <el-checkbox>
-            公司员工(员工姓名-部门)已支付维修费用,结束后系统进入报销流程
+          <el-checkbox v-model='sureEnding_check' v-if='sureEnding_visible'>
+            公司员工({{detail_form.payer || '/'}}-{{detail_form.payer_org_name ||'/'}})已支付维修费用,结束后系统进入报销流程
           </el-checkbox>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleCloseAddOrder">新增</el-button>
-          <el-button type="info" size="small" @click="handleCloseAddOrder">取消</el-button>
+          <el-button type="danger" size="small" @click="handleCloseSure(true)">确定</el-button>
+          <el-button type="info" size="small" @click="handleCloseSure(false)">取消</el-button>
         </div>
       </div>
     </LjDialog>
@@ -260,10 +260,10 @@
                     <el-input v-model="detail_form.data.content" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='照片' style='width:100%;'>
-                    <!-- <div style="width: 90%;text-align: left">
-                      <img v-for="tmp in contractDetail.album[key]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
+                    <div style="width: 90%;text-align: left">
+                      <img v-for="tmp in detail_form.data.album.image_pic" :key="tmp.id" data-magnify="" data-caption="图片查看器"
                         :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
-                    </div> -->
+                    </div>
                   </el-form-item>
                 </el-form>
               </el-col>
@@ -484,9 +484,9 @@
                       <div class='order_content_box'>
                         <p class='order_title1'>
                           <span>工单内容</span>
-                          洗衣机坏了
+                          {{temp.content}}
                         </p>
-                        <span class='status1'>已完成</span>
+                        <span class='status1'>{{temp.follow_time}}</span>
                       </div>
                     </div>
                   </div>
@@ -621,6 +621,7 @@ export default {
         num: 1
       },
       sureEnding_visible: false,  // 确定结束
+      sureEnding_check: null,
       tag_status: 7, // 7是维修 8是保洁
       chooseTab: 336, // 336待处理 337处理中 338已完成
       selects: [
@@ -648,22 +649,23 @@ export default {
       },
       followRecord_visible: false,
       followRecord_info: { // 新增记录
-        folow_status: 1,
-        emergency: '',
-        reimburse: [
-          {
-            type: '',
-            name: '',
-            money: ''
-          }
-        ], // 认责人
-        payer_type: '',
-        payer_id: '',
-        payer: '',
-        pay_all_money: '',
-        content: '',
-        ablum: []
+        folow_status: 1, // 工单状态
+        emergency: '', // 紧急程度
+        payer_type: '', // 实际支付人 type
+        payer_id: '', // 实际支付人id
+        payer: '', // 实际支付人
+        pay_all_money: '', //维修金额
+        content: '', // 跟进内容
+        ablum: [] // 上传图片
       },
+      pay_method: [
+        {
+          type: '',
+          name: '',
+          money: null
+        }
+      ], // 认责人
+      currentStaff_index: 0,
       complainedType: [ // 认责人
         {
           label: '业务员',
@@ -713,36 +715,44 @@ export default {
     },
     addRecordFun (par) {
       if (par) {
-        let params = {
-          folow_status: this.followRecord.folow_status,
-          work_order_id: this.currentRow.id,
-          content: this.followRecord.note
+        let params = this.followRecord_info,
+          pay_method = [];
+        if (params.folow_status == 338 && this.pay_method[0].type) {
+          this.pay_method.forEach(el => {
+            pay_method.push([el.type || '', el.name || '', el.money || ''])
+          });
         }
+        params.pay_method = pay_method
+        params.work_order_id = this.currentRow.id
+
         this.$http.post(`${this.market_server}v1.0/csd/work_order/follow`, params).then(res => {
           this.$LjNotify('success', {
             title: '提示',
             message: res.message
           });
           this.followRecord_visible = false;
+          this.sureEnding_visible = false
         })
       } else {
         this.followRecord_visible = false;
       }
 
-      this.followRecord = {
-        type: '',
-        emergency: '',
-        note: '',
-        complained: [
-          {
-            id: '',
-            type: '',
-            name: '',
-            money: ''
-          }
-        ],
-        album: []
+      this.followRecord_info = {
+        folow_status: 1, // 工单状态
+        emergency: '', // 紧急程度
+        payer_type: '', // 实际支付人 type
+        payer_id: '', // 实际支付人id
+        payer: '', // 实际支付人
+        pay_all_money: '', //维修金额
+        content: '', // 跟进内容
       }
+      this.pay_method = [
+        {
+          type: '',
+          name: '',
+          money: ''
+        }
+      ]// 认责人  
     },
     //工单表格数据初始化
     getDateList () {
@@ -813,6 +823,7 @@ export default {
             message: res.message
           });
           if (res.code === 200) {
+            this.delete_visible = false
             this.getDateList()
           }
         })
@@ -822,24 +833,13 @@ export default {
     //确定新增
     handleAddNewRecord () {
       this.followRecord_visible = false
-      this.add_visible = true
       this.currentMethod = 'addRecord'
+      if (this.followRecord_info.folow_status == 337) {
+        this.add_visible = true
+      } else {
+        this.sureEnding_visible = true
+      }
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //确认添加
     handleCloseAdd (params) {
@@ -927,7 +927,7 @@ export default {
     temporary_search () {
       if (this.current_customer) {
         let temporary = {
-          type: 0,
+          type: -1,
           page: this.temporaryRecord.page,
           limit: 5,
           search: this.current_customer.contract_num,
@@ -1017,13 +1017,15 @@ export default {
     //新增跟进记录
     handleAddRecord () {
       this.detail_visible = false
-      this.detail_form = null
       this.followRecord_visible = true
     },
     //选择人员
-    organSearch (par) {
+    organSearch (par, idex) {
       this.staffModule = true
       this.currentStaff_method = par
+      if (par == 'complained') {
+        this.currentStaff_index = idex
+      }
     },
     // 关闭 选择人员
     hiddenOrgan (ids, names, arr) {
@@ -1042,8 +1044,18 @@ export default {
           this.transfer.personName = names
           this.transfer.person = ids
         }
+
+        if (this.currentStaff_method == 'complained') {
+          this.$set(this.pay_method[this.currentStaff_index], 'name', names)
+          this.$set(this.pay_method[this.currentStaff_index], 'id', ids)
+        }
+
+        if (this.currentStaff_method == 'payer') {
+          this.followRecord_info.payer = names
+          this.followRecord_info.payer_id = ids
+        }
         this.currentStaff_method = ''
-        console.log(ids, names, arr)
+        this.currentStaff_index = 0
       }
     },
     //选择 部门
@@ -1058,16 +1070,65 @@ export default {
         this.createOrder_form.operate_org_id = ids
       }
     },
-    //确定新增
-    handleAddNewRecord () {
-      this.followRecord_visible = false
-      this.sureEnding_visible = true
-    },
-    handleCloseSure () {
-      this.sureEnding_visible = false
+
+    handleCloseSure (isSure) {
+      if (isSure) {
+
+        // 跟进工单中的结束
+        if (this.currentMethod == 'addRecord') {
+          this.addRecordFun(isSure)
+          return
+        }
+
+        // sureEnding_check
+
+        let option = {
+          work_order_id: this.currentRow.id,
+          payer_all_money: this.currentRow.payer_all_money || 0,
+          flag: this.sureEnding_check ? 1 : 0
+        }
+
+        this.$http.post(`${this.market_server}v1.0/csd/work_order/finish`, option).then(res => {
+          this.$LjNotify('success', {
+            title: '提示',
+            message: res.message
+          });
+
+          if (res.code === 200) {
+            this.sureEnding_visible = false
+            this.currentRow = null
+            this.detail_form = null
+            this.sureEnding_check = null
+            this.getDateList()
+          }
+        })
+
+      } else {
+        this.sureEnding_visible = false
+        this.currentRow = null
+        this.detail_form = null
+      }
     },
     handleCloseAddNewRecord () {
       this.followRecord_visible = false
+      this.detail_form = null
+      this.followRecord_info = {
+        folow_status: 1, // 工单状态
+        emergency: '', // 紧急程度
+        payer_type: '', // 实际支付人 type
+        payer_id: '', // 实际支付人id
+        payer: '', // 实际支付人
+        pay_all_money: '', //维修金额
+        content: '', // 跟进内容
+        ablum: [] // 上传图片
+      }
+      this.pay_method = [
+        {
+          type: '',
+          name: '',
+          money: ''
+        }
+      ] // 认责人
     },
     // 查看详情
     tableDblClick (row) {
@@ -1093,27 +1154,30 @@ export default {
       this.transfer_visible = true
     },
     handleCloseTranfer (transfer) {
-      if (params) {
+      if (transfer) {
         let option = {
           work_order_id: this.currentRow.id,
-          user: this.transfer.person,
+          operate_user_id: this.transfer.person[0],
+          operate_user_name: this.transfer.personName,
           content: this.transfer.note
         }
+
+        this.$http.post(`${this.market_server}v1.0/csd/work_order/tranfer`, option).then(res => {
+          this.$LjNotify('success', {
+            title: '提示',
+            message: res.message
+          });
+
+          if (res.code === 200) {
+            this.transfer_visible = false
+            this.currentRow = null
+            this.getDateList()
+          }
+        })
+      } else {
         this.transfer_visible = false
-        // this.$http.post(`${this.market_server}v1.0/csd/work_order/notice`, option).then(res => {
-        //   this.$LjNotify('success', {
-        //     title: '提示',
-        //     message: res.message
-        //   });
-
-        //   this.currentRow = null
-
-        //   if (res.code === 200) {
-        //     this.getDateList()
-        //   }
-        // })
+        this.currentRow = null
       }
-
     },
     // 通知
     handleNotice () {
@@ -1152,7 +1216,7 @@ export default {
     // 选择认责人类型
     chosenComplaintsType (val) {
       this.complainedTypeDisable = []
-      this.followRecord_info.reimburse.forEach(el => {
+      this.pay_method.forEach(el => {
         this.complainedTypeDisable.push(el.type)
       })
     },
