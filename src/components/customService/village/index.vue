@@ -126,7 +126,7 @@
       <SearchHigh :module="HighVisible" :show-data="searchData" @close="handleCloseSearch"></SearchHigh>
 
       <!--添加小区-->
-      <NewVillage :module="new_village_visible" :edit-info="edit_info" @close="new_village_visible = false"></NewVillage>
+      <NewVillage :module="new_village_visible" :edit-info="edit_info" @close="handleCloseControlVillage"></NewVillage>
 
       <!--选择部门-->
       <DepartOrgan :module="depart_visible" @close="handleGetDepart"></DepartOrgan>
@@ -420,6 +420,11 @@
     watch: {},
     computed: {},
     methods: {
+      //关闭操作小区
+      handleCloseControlVillage() {
+        this.edit_info = '';
+        this.new_village_visible = false;
+      },
       handleEditVillage(village) {
         this.edit_info = village;
         this.new_village_visible = true;

@@ -11,7 +11,7 @@
         </div>
         <div class="dialog_main">
           <VillageContainer village="基本信息">
-            <el-form label-width="80px" class="borderNone">
+            <el-form label-width="80px" class="onlyBg">
               <el-row :gutter="10">
                 <el-col :span="6">
                   <el-form-item label="省">
@@ -282,6 +282,7 @@
       },
       //初始化编辑小区
       handleInitialVillage(village) {
+        console.log(village);
         for (var key in this.new_village_form) {
           this.new_village_form[key] = village[key] || '';
         }

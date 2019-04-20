@@ -630,7 +630,6 @@
     mounted() {
       this.getHouseResource();
       this.house_source = [];
-      this.overview_visible = true;
     },
     watch: {},
     computed: {},

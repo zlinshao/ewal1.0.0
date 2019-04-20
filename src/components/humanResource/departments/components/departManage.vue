@@ -502,6 +502,11 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="部门" prop="duty.org.name" align="center"></el-table-column>
+                  <el-table-column label="权限" align="center">
+                    <template slot-scope="scope">
+                      <el-button type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
             </div>
@@ -919,7 +924,7 @@
         self_power_params: {
           user_id: '',
           system_id: '',
-          type: 'user',
+          type: '',
           position_id: '',
         },
         //设置权限
@@ -1533,7 +1538,11 @@
             this.getSystemList();
             this.powerVisible = true;
             this.set_power.type_id = item.id;
-            this.self_power_params.user_id = item.id;
+            if (type === 'user') {
+              this.self_power_params.user_id = item.id;
+            } else if (type === 'position') {
+              this.self_power_params.position_id = item.id;
+            }
             this.self_power_params.type = type;
             this.set_power.permission_type = type;
             this.getSelfPower(this.powerChildName);

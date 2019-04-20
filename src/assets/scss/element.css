@@ -333,6 +333,13 @@ div.el-popover {
 #theme_name .borderNone .el-textarea__inner {
   border: none;
   background-color: #ffffff !important; }
+#theme_name .onlyBg .el-input__inner,
+#theme_name .onlyBg .el-textarea__inner {
+  border: none;
+  background-color: #f9f9f9 !important; }
+  #theme_name .onlyBg .el-input__inner:focus,
+  #theme_name .onlyBg .el-textarea__inner:focus {
+    border: 1px solid #cf2e33; }
 #theme_name .focusBorder .el-form-item__label {
   color: #d2d2d2; }
 #theme_name .focusBorder .el-input__inner:focus,
