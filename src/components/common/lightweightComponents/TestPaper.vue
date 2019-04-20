@@ -142,7 +142,7 @@
         <div class="library-footer">
           <div>
             <el-button size="mini" type="danger" @click="handleSubmitExam">提交</el-button>
-            <el-button size="mini" type="info" @click="paper_visible = false">取消</el-button>
+            <el-button size="mini" type="info" @click="paper_visible = false;paper_type=1">取消</el-button>
           </div>
 
         </div>
@@ -172,112 +172,19 @@
             <div class="single-container">
 
               <div v-for="(item,index) in exam_category_list.single.exam_list" class="exam-single-item">
-                <div class="single-item-stem">{{index+1}}、{{item.stem}}<span v-if="type==1">（{{item.score}}分）</span></div>
+                <div class="single-item-stem">{{index+1}}、{{item.stem}}<span v-if="type==1">（{{item.score}}分）</span>
+                </div>
                 <div class="single-item-choice">
                   <el-radio-group v-model="item.user_answer">
-                    <el-radio :key="subIndex" v-for="(subVal,subKey,subIndex) in item.choice" :label="subKey">{{subVal}}</el-radio>
-<!--                    <el-radio :key="subIndex" v-for="(subItem,subIndex) in item.choice" :label="exam_form_item_choose[subIndex]">{{subItem.val}}</el-radio>-->
-                  </el-radio-group>
-                </div>
-              </div>
-
-
-
-            </div>
-          </div>
-
-          <div class="exam-judge">
-            <div class="judge-title">二、判断题（共{{exam_category_list.judge.exam_list.length}}题）</div>
-            <div class="judge-container">
-
-              <div v-for="(item,index) in exam_category_list.judge.exam_list" class="exam-judge-item">
-                <div class="judge-item-stem">{{index+1}}、{{item.stem}}<span v-if="type==1">（{{item.score}}分）</span></div>
-                <div class="judge-item-choice">
-                  <el-radio-group v-model="item.user_answer">
-<!--                    <el-radio :key="subIndex" v-for="(subVal,subKey,subIndex) in item.choice" :label="subKey">{{subVal}}</el-radio>-->
-                    <el-radio label="A">对</el-radio>
-                    <el-radio label="B">错</el-radio>
-                  </el-radio-group>
-                </div>
-              </div>
-
-              <!--<div class="exam-judge-item">
-                <div class="judge-item-stem">1、这是一道判断题?</div>
-                <div class="judge-item-choice">
-                  <el-radio-group v-model="demo">
-                    <el-radio label="A">对</el-radio>
-                    <el-radio label="B">错</el-radio>
-                  </el-radio-group>
-                </div>
-              </div>-->
-            </div>
-          </div>
-
-          <div class="exam-short">
-            <div class="short-title">三、简答题（共{{exam_category_list.short.exam_list.length}}题）</div>
-            <div class="short-container">
-
-              <div v-for="(item,index) in exam_category_list.short.exam_list" class="exam-short-item">
-                <div class="short-item-stem">{{index+1}}、{{item.stem}}<span v-if="type==1">（{{item.score}}分）</span></div>
-                <div class="short-item-choice">
-                  <el-input type="textarea" v-model="item.user_answer" :autosize="{ minRows: 8, maxRows: 10}"></el-input>
-                </div>
-              </div>
-
-              <!--<div class="exam-short-item">
-                <div class="short-item-stem">1、这是一个简答题，说出答案</div>
-                <div class="short-item-choice">
-                  <el-input type="textarea" v-model="demo2" :autosize="{ minRows: 4, maxRows: 10}"></el-input>
-                </div>
-              </div>-->
-            </div>
-          </div>
-        </div>
-
-        <div class="library-footer">
-          <div>
-            <el-button size="mini" type="danger" @click="handleSubmitExam">提交</el-button>
-            <el-button size="mini" type="info" @click="paper_visible = false">取消</el-button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <div v-show="paper_type==3" class="statistical-paper">
-      <!--      <div @click="paper_type=1">预览试卷</div>-->
-      <div class="library-header flex">
-        <div class="left">
-          <h3>{{params.title}}</h3>
-        </div>
-        <div class="right">
-          <h4>总分数：{{exam_total_score}}分</h4>
-        </div>
-      </div>
-      <div class="library-main scroll_bar">
-        <div class="control flex">
-          <!--<div class="btn_square_minus" @click="handlePopExamForm">-</div>
-          <div class="btn_square_add" @click="handleAddExamForm">+</div>-->
-          <i @click="paper_type=1" class="icon-edit"></i>
-          <!-- <div></div>-->
-        </div>
-        <!--题型-->
-        <div class="exam-list scroll_bar">
-          <div class="exam-single">
-            <div class="single-title">一、单选题（共{{exam_category_list.single.exam_list.length}}题）</div>
-            <div class="single-container">
-
-              <div v-for="(item,index) in exam_category_list.single.exam_list" class="exam-single-item">
-                <div class="single-item-stem">{{index+1}}、{{item.stem}}<span v-if="type==1">（{{item.score}}分）</span></div>
-                <div class="single-item-choice">
-                  <el-radio-group v-model="item.user_answer">
-                    <el-radio :key="subIndex" v-for="(subVal,subKey,subIndex) in item.choice" :label="subKey">{{subVal}}</el-radio>
+                    <el-radio :key="subIndex" v-for="(subVal,subKey,subIndex) in item.choice" :label="subKey">
+                      {{subVal}}
+                    </el-radio>
                     <!--                    <el-radio :key="subIndex" v-for="(subItem,subIndex) in item.choice" :label="exam_form_item_choose[subIndex]">{{subItem.val}}</el-radio>-->
                   </el-radio-group>
                 </div>
               </div>
 
 
-
             </div>
           </div>
 
@@ -286,7 +193,8 @@
             <div class="judge-container">
 
               <div v-for="(item,index) in exam_category_list.judge.exam_list" class="exam-judge-item">
-                <div class="judge-item-stem">{{index+1}}、{{item.stem}}<span v-if="type==1">（{{item.score}}分）</span></div>
+                <div class="judge-item-stem">{{index+1}}、{{item.stem}}<span v-if="type==1">（{{item.score}}分）</span>
+                </div>
                 <div class="judge-item-choice">
                   <el-radio-group v-model="item.user_answer">
                     <!--                    <el-radio :key="subIndex" v-for="(subVal,subKey,subIndex) in item.choice" :label="subKey">{{subVal}}</el-radio>-->
@@ -313,9 +221,11 @@
             <div class="short-container">
 
               <div v-for="(item,index) in exam_category_list.short.exam_list" class="exam-short-item">
-                <div class="short-item-stem">{{index+1}}、{{item.stem}}<span v-if="type==1">（{{item.score}}分）</span></div>
+                <div class="short-item-stem">{{index+1}}、{{item.stem}}<span v-if="type==1">（{{item.score}}分）</span>
+                </div>
                 <div class="short-item-choice">
-                  <el-input type="textarea" v-model="item.user_answer" :autosize="{ minRows: 8, maxRows: 10}"></el-input>
+                  <el-input type="textarea" v-model="item.user_answer"
+                            :autosize="{ minRows: 8, maxRows: 10}"></el-input>
                 </div>
               </div>
 
@@ -333,6 +243,50 @@
           <div>
             <el-button size="mini" type="danger" @click="handleSubmitExam">提交</el-button>
             <el-button size="mini" type="info" @click="paper_visible = false">取消</el-button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div v-show="paper_type==3" class="statistical-paper">
+      <div class="library-header flex">
+        <div class="left">
+          <h3>{{params.title}}</h3>
+        </div>
+      </div>
+      <div class="library-main scroll_bar">
+        <div class="exam-list scroll_bar">
+          <div class="exam-single">
+            <div class="single-container">
+
+              <div v-for="(item,index) in statisticsResult" :key="index" class="exam-single-item">
+                <div class="single-item-stem">{{index+1}}、{{item.exam_question_info.stem}}
+                </div>
+                <div :key="subIndex" v-for="(subVal,subKey,subIndex) in item.exam_question_info.choice" class="single-item-choice">
+                  {{subKey}}、{{subVal}}
+                  <div class="single-item-stem-process">
+                    <div class="single-item-stem-process-container">
+                      <el-progress :text-inside="true" :stroke-width="18" :percentage="Number(((item.count[subKey]/(params.response_count))*100).toFixed(2))"></el-progress>
+                    </div>
+                    <div class="single-item-stem-process-tip">{{params.response_count}}</div>
+                  </div>
+
+
+                </div>
+               <!-- <div class="single-item-choice">
+                  sdf
+                </div>-->
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="library-footer">
+          <div>
+            <el-button size="mini" type="danger" @click="statisticsResultConfirm">确定</el-button>
           </div>
 
         </div>
@@ -365,7 +319,7 @@
         default: 1,
       },
       statisticsResult: {//问卷调查统计结果页面数据
-        type:Array,
+        type: Array,
         default() {
           return []
         }
@@ -386,6 +340,16 @@
         },
         immediate: true,
       },
+
+      statisticsResult: {
+        handler(val, oldVal) {
+          if (val && val.length > 0) {
+            this.paper_visible = true;
+            this.paper_type = 3;
+          }
+        },
+        immediate:true,
+      },
     },
     data() {
       return {
@@ -405,14 +369,14 @@
             category: 1,//1单选 2判断 3简答题
             stem: '',
             choice: {
-              A:'',
-              B:'',
-              C:'',
-              D:'',
+              A: '',
+              B: '',
+              C: '',
+              D: '',
             },
             score: '',
             answer: '',
-            user_answer:'',
+            user_answer: '',
           }
         ],
         exam_total_score: 0,
@@ -521,7 +485,7 @@
           /*if(item.category==1) {
             this.exam_category_list.single.exam_list.push(item);
           }*/
-          this.exam_total_score+=item.score||0;
+          this.exam_total_score += item.score || 0;
           switch (item.category) {
             case 1:
               this.exam_category_list.single.exam_list.push(item);
@@ -536,36 +500,36 @@
         this.paper_type = 2;
       },
 
-      handleAddChooseItem(index,type=1) {
-        if(type==1) {
+      handleAddChooseItem(index, type = 1) {
+        if (type == 1) {
           this.exam_form_list[index].choice['z'] = '';
           let newChoice = {};
           let iter = 0;
-          _.forEach(this.exam_form_list[index].choice,(o,oIndex)=> {
+          _.forEach(this.exam_form_list[index].choice, (o, oIndex) => {
             newChoice[this.exam_form_item_choose[iter++]] = o;
           });
           this.exam_form_list[index].choice = newChoice;
           this.$forceUpdate();
         }
-        if(type==3) {
+        if (type == 3) {
           this.exam_form_list[index].answer.push('');
         }
       },
-      handleDeleteChoose(index, idx,type=1) {
-        if(type==1) {
+      handleDeleteChoose(index, idx, type = 1) {
+        if (type == 1) {
           console.log(this.exam_form_list[index])
           delete this.exam_form_list[index].choice[idx];
           //console.log(this.exam_form_list[index]);
           let newChoice = {};
           let iter = 0;
-          _.forEach(this.exam_form_list[index].choice,(o,oIndex)=> {
+          _.forEach(this.exam_form_list[index].choice, (o, oIndex) => {
             newChoice[this.exam_form_item_choose[iter++]] = o;
           });
           this.exam_form_list[index].choice = newChoice;
           this.$forceUpdate();
         }
-        if(type==3) {
-          this.exam_form_list[index].answer.splice(idx,1);
+        if (type == 3) {
+          this.exam_form_list[index].answer.splice(idx, 1);
           //this.$forceUpdate();
         }
       },
@@ -581,26 +545,26 @@
             category: 1,//1单选 2判断 3简答题
             stem: '',
             choice: {
-              A:'',
-              B:'',
-              C:'',
-              D:'',
+              A: '',
+              B: '',
+              C: '',
+              D: '',
             },
             score: '',
             answer: '',
-            user_answer:'',
+            user_answer: '',
           })
         } else if (this.exam_type == 2) {
           this.exam_form_list.push({
             category: 2,
             stem: '',
             choice: {
-              A:'',
-              B:'',
+              A: '',
+              B: '',
             },
             score: '',
             answer: '',
-            user_answer:'',
+            user_answer: '',
           })
         } else if (this.exam_type == 3) {
           this.exam_form_list.push({
@@ -608,8 +572,8 @@
             stem: '',
             choice: [],
             score: '',
-            answer: ['',''],
-            user_answer:'',
+            answer: ['', ''],
+            user_answer: '',
           })
         }
 
@@ -620,6 +584,16 @@
           return false;
         }
         this.exam_form_list.pop();
+      },
+
+
+      //查看统计结果确认事件
+      statisticsResultConfirm() {
+        this.paper_visible = false;
+        let _this = this;
+        setTimeout(()=> {
+          _this.paper_type = 1;
+        },1000);
       },
     },
   }

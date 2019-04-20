@@ -62,7 +62,7 @@
           prop="object_count"
           label="调查对象(人数)">
           <template slot-scope="scope">
-            <div @click="showObjectHandler" style="color: #0C66FF;cursor: pointer">{{scope.row.object_count}}</div>
+            <div @click="showObjectHandler" style="color: #0C66FF">{{scope.row.object_count}}</div>
           </template>
         </el-table-column>
 
@@ -82,7 +82,7 @@
           label="操作">
           <template slot-scope="scope">
             <div v-if="scope.row.status!==2">-</div>
-            <el-button v-if="scope.row.status==2" type="primary" size="mini" plain>查看统计结果</el-button>
+            <el-button @click="viewStatisticsResult(scope.row)" v-if="scope.row.status==2" type="primary" size="mini" plain>查看统计结果</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -145,7 +145,7 @@
     </lj-dialog>
 
 
-    <test-paper :type="2" :visible.sync="paper_visible" :params="paper_params" @success="getExamList"></test-paper>
+    <test-paper :type="2" :visible.sync="paper_visible" :params="paper_params" :statisticsResult="statistics_result" @success="getExamList"></test-paper>
 
   </div>
 </template>
@@ -213,10 +213,14 @@
         paper_visible: false,
         paper_params: {
           paper_name: '新建问卷',
-          //title:'入职考试',
+          title:'',
           sub_title: '关于春节挂春联选一副',
           btn_name: '预览问卷',
         },
+
+
+        //问卷调查结果
+        statistics_result:[],
 
       }
     },
@@ -306,6 +310,23 @@
           }
         });
       },
+
+      //查看统计结果
+      viewStatisticsResult(row) {
+        let params = {
+          id:row.id
+        };
+        this.$http.post(`${this.url}questionnaire/submitCount`,params).then(res=> {
+          debugger
+          if(res.code.endsWith('0')) {
+            this.statistics_result = res.data;
+            this.paper_params.title = row.name;
+            this.paper_params.response_count = row.reply_number;
+          }
+        });
+      },
+
+
 
       // 当前点击
       tableClickRow(row) {
