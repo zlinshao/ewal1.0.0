@@ -46,7 +46,7 @@
                               <span class="line-h line-h-l" v-else-if="staff_idx === staff_list[index][idx][child_idx].length - 1"></span>
                               <span class="line-h line-h-c" v-else></span>
                               <div class="line-v"><span></span></div>
-                              <div class="strt-info-mini">{{ staff_item.name }}</div>
+                              <div class="strt-info-mini">{{ staff_item.name }}&nbsp;<a>{{ staff_item.position && staff_item.position.length > 0 && staff_item.position[0].name }}</a></div>
                             </div>
                           </div>
                         </div>

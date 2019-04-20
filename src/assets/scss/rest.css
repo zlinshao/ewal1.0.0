@@ -285,6 +285,16 @@ html, body {
     background-color: #cf2e33 !important;
     color: white; }
 
+.control-btn span {
+  padding: 5px 20px;
+  cursor: pointer;
+  color: white;
+  margin: 0 8px; }
+  .control-btn span:hover {
+    color: #cf2e33;
+    background: url("../image/components/theme1/xzgj.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+
 ol, ul {
   list-style: none; }
 

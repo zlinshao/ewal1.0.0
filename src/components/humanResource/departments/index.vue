@@ -141,9 +141,17 @@
               <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
               <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <el-button type="success" size="mini" plain @click="handleOpenAddModule(scope.row)">新增模块</el-button>
-                  <el-button type="warning" size="mini" plain @click="handleOpenEdit('system',scope.row)">编辑</el-button>
-                  <el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>
+                  <el-tooltip placement="left" :visible-arrow="false">
+                    <div class="flex control-btn" slot="content">
+                      <!--<el-button type="success" size="mini" plain @click="handleOpenAddModule(scope.row)">新增模块</el-button>-->
+                      <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('system',scope.row)">编辑</el-button>-->
+                      <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
+                      <span @click="handleOpenAddModule(scope.row)">编辑模块</span>
+                      <span @click="handleOpenEdit('system',scope.row)">编辑</span>
+                      <span @click="handleDelControl('system',scope.row)">删除</span>
+                    </div>
+                    <span class="table_control writingMode">···</span>
+                  </el-tooltip>
                 </template>
               </el-table-column>
             </el-table>
@@ -163,9 +171,17 @@
                 <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                   <template slot-scope="scope">
-                    <el-button type="success" size="mini" plain @click="handleOpenAddPower(scope.row)">新增权限</el-button>
-                    <el-button type="warning" size="mini" plain @click="handleOpenEdit('module',scope.row)">编辑</el-button>
-                    <el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>
+                    <!--<el-button type="success" size="mini" plain @click="handleOpenAddPower(scope.row)">新增权限</el-button>-->
+                    <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('module',scope.row)">编辑</el-button>-->
+                    <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
+                    <el-tooltip placement="left" :visible-arrow="false">
+                      <div class="flex control-btn" slot="content">
+                        <span @click="handleOpenAddPower(scope.row)">新增权限</span>
+                        <span @click="handleOpenEdit('module',scope.row)">编辑</span>
+                        <span @click="handleDelControl('system',scope.row)">删除</span>
+                      </div>
+                      <span class="table_control writingMode">···</span>
+                    </el-tooltip>
                   </template>
                 </el-table-column>
               </el-table>
@@ -182,9 +198,17 @@
                 <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                   <template slot-scope="scope">
-                    <el-button type="success" size="mini" plain @click="handleOpenAddField(scope.row)">添加字段权限</el-button>
-                    <el-button type="warning" size="mini" plain @click="handleOpenEdit('power',scope.row)">编辑</el-button>
-                    <el-button type="danger" size="mini" plain @click="handleDelControl('power',scope.row)">删除</el-button>
+                    <!--<el-button type="success" size="mini" plain @click="handleOpenAddField(scope.row)">添加字段权限</el-button>-->
+                    <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('power',scope.row)">编辑</el-button>-->
+                    <!--<el-button type="danger" size="mini" plain @click="handleDelControl('power',scope.row)">删除</el-button>-->
+                    <el-tooltip placement="left" :visible-arrow="false">
+                      <div class="flex control-btn" slot="content">
+                        <span @click="handleOpenAddField(scope.row)">添加字段权限</span>
+                        <span @click="handleOpenEdit('power',scope.row)">编辑</span>
+                        <span @click="handleDelControl('power',scope.row)">删除</span>
+                      </div>
+                      <span class="table_control writingMode">···</span>
+                    </el-tooltip>
                   </template>
                 </el-table-column>
               </el-table>
@@ -201,8 +225,15 @@
                 <el-table-column label="权限字段名称" prop="name" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                   <template slot-scope="scope">
-                    <el-button type="warning" size="mini" plain @click="handleOpenEditField(scope.row)">编辑</el-button>
-                    <el-button type="danger" size="mini" plain @click="handleOpenDelField(scope.row)">删除</el-button>
+                    <!--<el-button type="warning" size="mini" plain @click="handleOpenEditField(scope.row)">编辑</el-button>-->
+                    <!--<el-button type="danger" size="mini" plain @click="handleOpenDelField(scope.row)">删除</el-button>-->
+                    <el-tooltip placement="left" :visible-arrow="false">
+                      <div class="flex control-btn" slot="content">
+                        <span @click="handleOpenEditField(scope.row)">编辑</span>
+                        <span @click="handleOpenDelField('power',scope.row)">删除</span>
+                      </div>
+                      <span class="table_control writingMode">···</span>
+                    </el-tooltip>
                   </template>
                 </el-table-column>
               </el-table>
@@ -657,7 +688,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 2,//tab切换
+        chooseTab: 5,//tab切换
         selects: [
           {
             id: 1,
@@ -735,8 +766,6 @@
     mounted() {
       this.getDepartList();
       this.getPowerList();
-
-
     },
     watch: {},
     computed: {
@@ -1400,6 +1429,20 @@
 
   #theme_name.theme1 {
     #departments {
+      .table_control {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        font-size: 34px;
+        color: #F4AF40;
+        cursor: pointer;
+        border-radius: 3px;
+        text-align: center;
+        &:hover {
+          background-color: #F4AF40;
+          color: white;
+        }
+      }
       .departList {
         .mainList {
           p {

@@ -285,7 +285,10 @@
         line-height: 40px;
         min-height: 80px;
         writing-mode: vertical-rl;
-        writing-mode: tb-rl; }
+        writing-mode: tb-rl;
+        text-align: left; }
+        #theme_name #organization > div .organ-tree .strt-info-mini a {
+          opacity: .6; }
       #theme_name #organization > div .organ-tree .strt-part .line-h {
         height: 1px;
         display: block;

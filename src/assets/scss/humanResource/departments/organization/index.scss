@@ -125,6 +125,10 @@
           min-height: 80px;
           writing-mode: vertical-rl;
           writing-mode: tb-rl;
+          text-align: left;
+          a {
+            opacity: .6;
+          }
         }
         .strt-part .line-h {
           height: 1px;

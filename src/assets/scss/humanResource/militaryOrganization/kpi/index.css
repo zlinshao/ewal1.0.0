@@ -178,4 +178,48 @@
 .color874 {
   color: #686874; }
 
+#theme_name #kpi {
+  background-color: white;
+  height: 100%; }
+  #theme_name #kpi .kpiTable {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; }
+    #theme_name #kpi .kpiTable .table {
+      width: 100%;
+      margin-right: 100px; }
+    #theme_name #kpi .kpiTable .periodButton {
+      height: 330px;
+      margin-top: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end; }
+      #theme_name #kpi .kpiTable .periodButton .changeButton {
+        width: 110px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #dfdfdf;
+        font-family: MicrosoftYaHei;
+        font-size: 18px;
+        line-height: 24px;
+        border-radius: 10px 0px 0px 10px; }
+        #theme_name #kpi .kpiTable .periodButton .changeButton:hover {
+          background-color: #cf2e33;
+          color: white; }
+      #theme_name #kpi .kpiTable .periodButton .chooseButton {
+        width: 110px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #cf2e33;
+        color: white;
+        font-family: MicrosoftYaHei;
+        font-size: 18px;
+        line-height: 24px;
+        border-radius: 10px 0px 0px 10px; }
+
 /*# sourceMappingURL=index.css.map */

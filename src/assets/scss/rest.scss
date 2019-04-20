@@ -26,6 +26,18 @@ html, body {
     color: white;
   }
 }
+.control-btn {
+  span {
+    padding: 5px 20px;
+    cursor: pointer;
+    color: white;
+    margin: 0 8px;
+    &:hover {
+      color: $colorE33;
+      @include bgImage('../image/components/theme1/xzgj.png');
+    }
+  }
+}
 
 ol, ul {
   list-style: none;
