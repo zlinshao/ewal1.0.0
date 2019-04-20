@@ -268,7 +268,7 @@
         </div>
         <div class='dialog_main detail_dialog'>
           <ul>
-            <li v-for='item in record' :key='item.uid'>
+            <li v-for='item in record' :key='item.time'>
               <div class='detail_dialog_left'>
                 <p>{{item.add_user || '----'}}</p>
                 <p>{{item.time}}</p>
@@ -387,7 +387,23 @@ export default {
         {
           value: '2',
           label: '中介'
-        }]
+        },
+        {
+          value: '3',
+          label: '老房东'
+        },
+        {
+          value: '4',
+          label: '广告'
+        }, {
+          value: '5',
+          label: '网络'
+        },
+        {
+          value: '6',
+          label: '其他'
+        }
+        ]
       },
       recordDetail: null,
       recordFree: 0,

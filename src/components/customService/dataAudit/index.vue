@@ -810,11 +810,21 @@ export default {
     },
     //资料不齐
     handleGetRecord () {
-      this.contract_detail_visible = false
-      this.dataRecord_visible = true;
+      if (this.contract_detail_visible && this.contractDetail.checkout_remark && this.contractDetail.checkout_remark.length > 0) {
+        this.contract_detail_visible = false
+        this.dataRecord_visible = true;
+      } else {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: '暂无记录'
+        });
+      }
+
     },
     handleCloseRecord () {
       this.dataRecord_visible = false;
+      this.contractDetail = null
+      this.currentRow = null
       this.contractDetail = null
     },
     // 合同作废
@@ -824,6 +834,7 @@ export default {
     },
     // 合同作废
     handleSubmitRewrite () {
+      console.log(this.contractDetail)
       this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
         note: this.rewrite_note
       }).then(res => {
