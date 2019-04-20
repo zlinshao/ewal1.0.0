@@ -162,7 +162,7 @@ const GroupCoreIndicators = () => import('@/components/riskManagement/GroupCoreI
 const ComprehensiveEarlyWarning = () => import('@/components/riskManagement/ComprehensiveEarlyWarning/index.vue') //企业综合预警2级列表
 const MajorStrategicMonitoring = () => import('@/components/riskManagement/MajorStrategicMonitoring/index.vue') //重大战略监测2级列表
 
-const RiskManagementCommon = () => import('@/components/riskManagement/GroupCoreIndicators/common/index.vue');//三级列表
+const RiskManagementCommon = () => import('@/components/riskManagement/common/index.vue');//三级列表
 // const GroupCoreIndicatorsMenuLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue') //制度列表
 
 const RiskManagementMenu = () => import('@/components/riskManagement/common/index.vue') //三级列表
