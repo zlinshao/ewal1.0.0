@@ -77,7 +77,7 @@
         },
         mounted(){
             this.getDataLists();
-            this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);
+            // this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);
         },
         methods:{
             getDataLists(){
@@ -87,54 +87,54 @@
                     }
                 })
             },
-            throttle(fn, delay, atleast) {
-                /**函数节流方法
-                 @param Function fn 延时调用函数
-                 @param Number dalay 延迟多长时间
-                 @param Number atleast 至少多长时间触发一次
-                 @return Function 延迟执行的方法
-                 */
-                let timer = null;
-                let previous = null;
-                return function () {
-                    var now = +new Date();
-                    if (!previous) previous = now;
-                    if (atleast && now - previous > atleast) {
-                        fn();
-                        // 重置上一次开始时间为本次结束时间
-                        previous = now;
-                        clearTimeout(timer);
-                    } else {
-                        clearTimeout(timer);
-                        timer = setTimeout(function () {
-                            fn();
-                            previous = null;
-                        }, delay);
-                    }
-                }
-            },
-            setpage() {
-                if (this.nomore && !this.loaded) return;//到达底部不再执行
-                if (this.$refs.viewBox.scrollTop + this.$refs.viewBox.offsetHeight + 20 >= this.$refs.viewBox.scrollHeight) {
-                    // this.loadingTip = true;  //loading提示语
-                    this.showLoading(true);
-                    this.params.page +=1;
-                    this.$http.get(globalConfig.newMedia_sever + '/api/humanity/excellent', this.params).then(res => {
-                            let arr = res.data.data;
-                            if (arr.length === 0) {
-                                //some tips
-                                this.loaded = false;
-                                this.nomore = true;//没有更多
-                                return
-                            }
-                            this.staffData = [...this.staffData, ...arr];
-                            this.showLoading(false);
-                        }
-                    ).catch(err => {
-                        console.log(err)
-                    })
-                }
-            },
+            // throttle(fn, delay, atleast) {
+            //     /**函数节流方法
+            //      @param Function fn 延时调用函数
+            //      @param Number dalay 延迟多长时间
+            //      @param Number atleast 至少多长时间触发一次
+            //      @return Function 延迟执行的方法
+            //      */
+            //     let timer = null;
+            //     let previous = null;
+            //     return function () {
+            //         var now = +new Date();
+            //         if (!previous) previous = now;
+            //         if (atleast && now - previous > atleast) {
+            //             fn();
+            //             // 重置上一次开始时间为本次结束时间
+            //             previous = now;
+            //             clearTimeout(timer);
+            //         } else {
+            //             clearTimeout(timer);
+            //             timer = setTimeout(function () {
+            //                 fn();
+            //                 previous = null;
+            //             }, delay);
+            //         }
+            //     }
+            // },
+            // setpage() {
+            //     if (this.nomore && !this.loaded) return;//到达底部不再执行
+            //     if (this.$refs.viewBox.scrollTop + this.$refs.viewBox.offsetHeight + 20 >= this.$refs.viewBox.scrollHeight) {
+            //         // this.loadingTip = true;  //loading提示语
+            //         this.showLoading(true);
+            //         this.params.page +=1;
+            //         this.$http.get(globalConfig.newMedia_sever + '/api/humanity/excellent', this.params).then(res => {
+            //                 let arr = res.data.data;
+            //                 if (arr.length === 0) {
+            //                     //some tips
+            //                     this.loaded = false;
+            //                     this.nomore = true;//没有更多
+            //                     return
+            //                 }
+            //                 this.staffData = [...this.staffData, ...arr];
+            //                 this.showLoading(false);
+            //             }
+            //         ).catch(err => {
+            //             console.log(err)
+            //         })
+            //     }
+            // },
 
             onMousteIn: function (index) {
                 this.seen = true; //鼠标移入显示

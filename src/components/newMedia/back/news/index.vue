@@ -99,7 +99,7 @@
                     <div class="unUse-txt">将此文章下架吗？</div>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="mini" @click="comfirmStatus">确定</el-button>
+                    <el-button type="danger" size="mini" @click="confirmWithdraw">确定</el-button>
                     <el-button size="mini" @click="withdraw_visible = false">取消</el-button>
                 </div>
             </div>
@@ -176,10 +176,10 @@
                 <div class="dialog_main borderNone">
                     <el-form label-width="80px">
                         <el-form-item label="类型">
-                            <el-input></el-input>
+                            <el-input v-model="form.type_id"></el-input>
                         </el-form-item>
                         <el-form-item label="标题">
-                            <el-input></el-input>
+                            <el-input v-model="form.title"></el-input>
                         </el-form-item>
                         <el-form-item label="文章内容">
                             <div class="item_content">
@@ -190,7 +190,7 @@
                 </div>
                 <div class="dialog_footer">
                     <el-button size="small" type="warning" @click="getUEContent()">预览</el-button>
-                    <el-button size="small" type="danger" @click="postReceivable_tag()">发布</el-button>
+                    <el-button size="small" type="danger" @click="confirm()">发布</el-button>
                     <el-button size="small" type="info" @click="publish_visible = false">取消</el-button>
                 </div>
             </div>
@@ -261,10 +261,17 @@
                     search: '',
                     startRange: '',
                     endRange: '',
-                    page: 1,
+                    offset: 1,
                     limit: 12,
                     department_ids: '',
                     export: '',
+                },
+                form: {
+                    type_id: '',
+                    title: '',
+                    content:'',
+                    is_open:'',//是否发布
+
                 },
                 defaultMsg: '',
                 config: {
@@ -337,7 +344,7 @@
                         this.type = 'news';
                         break;
                     case 3:
-                        this.type ='announcement';
+                        this.type = 'announcement';
                         break;
                 }
                 this.getDataLists();
@@ -446,8 +453,8 @@
                     console.log(this.statusParams.is_great);
                 }
             },
-            //操作确认
-            comfirmStatus() {
+            //操作下架
+            confirmWithdraw() {
                 this.$http.post(globalConfig.newMedia_sever + '/api/article/status', this.statusParams).then(res => {
                     if (res.status === 200) {
                         this.$LjNotify('success', {

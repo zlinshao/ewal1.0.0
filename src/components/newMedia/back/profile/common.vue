@@ -207,7 +207,7 @@
                     startRange: '',
                     endRange: '',
                     offset: 1,
-                    limit: 12,
+                    limit:10,
                     department_ids: '',
                     export: '',
                     type_id: 1,
