@@ -700,7 +700,7 @@
         modules: false,
 
         //录入offer信息
-        write_offer_visible: true,
+        write_offer_visible: false,
         baoDao: {
           year: '',
           month: '',

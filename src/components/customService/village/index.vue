@@ -424,6 +424,9 @@
       handleCloseControlVillage() {
         this.edit_info = '';
         this.new_village_visible = false;
+        setTimeout(() => {
+          this.getVillageList();
+        },2000);
       },
       handleEditVillage(village) {
         this.edit_info = village;
@@ -512,7 +515,7 @@
             this.outer_net_data = res.data.outer_net_data ? res.data.outer_net_data : [];
             var location = [res.data.longitude,res.data.latitude];
             this.village_pic = res.data && res.data.album && res.data.album.village_photo ? res.data.album.village_photo : [];
-            this.house_pic = res.data && res.data.album && res.data.album.house_pic ? res.data.album.house_pic : [];
+            this.house_pic = res.data && res.data.album && res.data.album.home_photo ? res.data.album.home_photo : [];
             this.files = res.data && res.data.album && res.data.album.files ? res.data.album.files : [];
             this.$nextTick(() => {
               this.handleDetailMap(location);

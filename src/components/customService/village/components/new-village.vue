@@ -282,7 +282,6 @@
       },
       //初始化编辑小区
       handleInitialVillage(village) {
-        console.log(village);
         for (var key in this.new_village_form) {
           this.new_village_form[key] = village[key] || '';
         }
@@ -295,7 +294,6 @@
         this.new_village_form.city = village.city && parseInt(village.city.city_id);
         this.new_village_form.area = village.area && parseInt(village.area.area_id);
         this.new_village_form.region = village.region && parseInt(village.region.region_id);
-
         var province = village.province && village.province.province_id;
         var city = village.city && village.city.city_id;
         var area = village.area && village.area.area_id;
