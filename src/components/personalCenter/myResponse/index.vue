@@ -7,10 +7,10 @@
             <span class="checked">收到的回复</span>
             <span>发出的评论</span>
           </div>
-          <div class="toolbar-left-below">
+          <!--<div class="toolbar-left-below">
             <span class="checked">员工广场</span>
             <span>会议记录</span>
-          </div>
+          </div>-->
         </div>
         <div class="toolbar-right">
           <search-bar placeholder="搜索姓名/岗位/时间" v-model="searchValue"></search-bar>

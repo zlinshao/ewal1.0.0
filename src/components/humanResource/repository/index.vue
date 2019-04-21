@@ -11,7 +11,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>内务库房</h1>
+        <h1>资产管理</h1>
         <h2 class="items-center" v-if="chooseTab">
           <span v-for="item in selects" @click="changeTabs(item.id)" :key="item" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -27,8 +27,8 @@
 
     <div v-if="!chooseTab" class="main-container repository-container">
       <div class="content flex-center" v-if="!chooseTab">
-        <div class="bg-container flex-center" @click="chooseTab=1"><span>库房总览</span></div>
-        <div class="bg-container flex-center" @click="chooseTab=2"><span>借用领用</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=1"><span>入库</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=2"><span>领用借用</span></div>
         <div class="bg-container flex-center" @click="chooseTab=3"><span>资料库</span></div>
       </div>
       <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
@@ -96,11 +96,11 @@
         selects: [
           {
             id: 1,
-            title: '库房总览',
+            title: '入库',
           },
           {
             id: 2,
-            title: '借用领用',
+            title: '领用借用',
           },
           {
             id: 3,

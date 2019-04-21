@@ -23,6 +23,23 @@
                 </div>
             </div>
 
+            <!--分页-->
+            <footer class="flex-center bottomPage">
+                <div class="develop flex-center">
+                    <i class="el-icon-d-arrow-right"></i>
+                </div>
+                <div class="page">
+                    <el-pagination
+                            :total="count"
+                            layout="total,jumper,prev,pager,next"
+                            :current-page="params.offset"
+                            :page-size="params.limit"
+                            @current-change="handleChangePage"
+                    >
+                    </el-pagination>
+                </div>
+            </footer>
+
             <!--删除寿星信息-->
             <lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
                        @close="delete_visible = false">
@@ -35,13 +52,14 @@
                     </div>
                     <div class="dialog_footer">
                         <el-button type="danger" size="small" @click="delOk">确定</el-button>
-                        <el-button type="info" size="small" @click="delete_visible = false;current_id = ''">取消</el-button>
+                        <el-button type="info" size="small" @click="delete_visible = false;current_id = ''">取消
+                        </el-button>
                     </div>
                 </div>
             </lj-dialog>
 
-            <lj-dialog :visible="visible" :size="{width: 400 + 'px',height: 400 + 'px'}"
-                       @close="visible = false">
+            <lj-dialog :visible="add_visible" :size="{width: 400 + 'px',height: 400 + 'px'}"
+                       @close="cancelAddStatus">
                 <div class="dialog_container">
                     <div class="dialog_header">
                         <h3>新增寿星</h3>
@@ -59,14 +77,13 @@
                             </el-form-item>
 
                             <el-form-item label="寿星照片">
-                                <lj-upload v-model="file_info" size="40"
-                                           style="position: absolute; top: -12px;"></lj-upload>
+                                <lj-upload v-model="form.file_info" size="40" style="position: absolute; top: -12px;"></lj-upload>
                             </el-form-item>
                         </el-form>
                     </div>
                     <div class="dialog_footer">
                         <el-button type="danger" size="small" @click="submit">确定</el-button>
-                        <el-button type="info" size="small" @click="visible = false;current_row = ''">取消
+                        <el-button type="info" size="small" @click="cancelAddStatus">取消
                         </el-button>
                     </div>
                 </div>
@@ -89,138 +106,85 @@
             LjUpload,
             StaffOrgan
         },
-        props: ['chooseTabType','chooseType'],
+        props: ['add_status','choose_type'],
         data() {
             return {
                 delete_visible: false,
-                visible: false,
-                staffModule: false,
+                add_visible: false,//新增
+                staffModule: false,//员工
                 current: '',//当前
                 seen: false,//显隐
                 current_id: '',
+
                 params: {//查询参数
                     search: '',
-                    startRange: '',
-                    endRange: '',
-                    page: 1,
-                    limit: 12,
-                    department_ids: '',
-                    export: '',
+                    offset: 1,
+                    limit: 10,
                 },
+                count:0,
                 todayBirthday: [],
-                file_info: [],
                 form: {
                     name: '',
                     user_id: '',
                     birthday_type: '',
-                    image_file_id: '',
+                    file_info: [],
                 },
+                loaded: true,
+                nomore: false,
+
 
             }
         },
         mounted() {
+            this.add_visible = this.add_status;
             this.getDataLists();
-            this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);
         },
         watch: {
-            chooseType: {
-                handler(val) {
-                    if (val === 3) {
-                        this.visible = true;
-                    }
-                },
-                deep: true
+            add_status:{
+                handler(val){
+                    this.add_visible = val;
+                },deep:true
+
+            },
+            choose_type:{
+                handler(val){
+                    this.chooseTab = val;
+                },deep:true
             }
         },
 
         methods: {
-            throttle(fn, delay, atleast) {
-                /**函数节流方法
-                 @param Function fn 延时调用函数
-                 @param Number dalay 延迟多长时间
-                 @param Number atleast 至少多长时间触发一次
-                 @return Function 延迟执行的方法
-                 */
-                let timer = null;
-                let previous = null;
-                return function () {
-                    var now = +new Date();
-                    if (!previous) previous = now;
-                    if (atleast && now - previous > atleast) {
-                        fn();
-                        // 重置上一次开始时间为本次结束时间
-                        previous = now;
-                        clearTimeout(timer);
-                    } else {
-                        clearTimeout(timer);
-                        timer = setTimeout(function () {
-                            fn();
-                            previous = null;
-                        }, delay);
-                    }
-                }
+
+            handleChangePage(page) {//分页
+                this.params.offset = page;
+                this.getDataLists();
             },
-            setpage() {
-                if (this.nomore && !this.loaded) return;//到达底部不再执行
-                if (this.$refs.viewBox.scrollTop + this.$refs.viewBox.offsetHeight + 20 >= this.$refs.viewBox.scrollHeight) {
-                    // this.loadingTip = true;  //loading提示语
-                    this.showLoading(true);
-                    this.params.page += 1;
-                    this.$http.get(globalConfig.newMedia_sever + '/api/humanity/birthday', this.params).then(res => {
-                            let arr =[] ;
-                            for (let item of res.data.data) {
-                                arr.push({
-                                    name: item.user_id.name,
-                                    avatar: item.image_file_id.uri,
-                                    department_name: item.user_id.org.length > 0 ? item.user_id.org[0].name : '',
-                                    id: item.id
-                                })
-                            }
-                            if (arr.length === 0) {
-                                //some tips
-                                this.loaded = false;
-                                this.nomore = true;//没有更多
-                                return
-                            }
-                            this.todayBirthday = [...this.todayBirthday, ...arr];
-                            this.showLoading(false);
-                        }
-                    ).catch(err => {
-                        console.log(err)
-                    })
-                }
+            cancelAddStatus(){//取消
+              this.add_visible = false;
+              this.current_id = '';
+              this.$emit('cancelAdd',this.add_visible)
             },
-            onMousteIn: function (index) {
-                this.seen = true; //鼠标移入显示
+
+            onMousteIn: function (index) {//鼠标移入
+                this.seen = true;
                 this.current = index;
             },
-            onMousteOut: function (index) {
-                this.seen = false; //鼠标移出隐藏
+            onMousteOut: function (index) {//鼠标移出
+                this.seen = false;
                 this.current = null;
             },
-            //获取bus传值
-            getVal(val) {
-                this.visible = val;//新增弹窗显示
-                console.log(Object.keys(this.form));
-                for (let item of Object.keys(this.form)) {
-                    this.form[item] = '';
-                }
-            },
-            //获取员工信息
-            hiddenStaff(ids, names, arr) {
+            hiddenStaff(ids, names, arr) {//获取员工信息
                 this.staffModule = false;
                 if (ids !== 'close') {
                     this.form.name = names;
                     this.form.user_id = ids[0];
                 }
             },
-            //删除弹框
-            del(id, index) {
+            del(id, index) {//删除弹框
                 this.delete_visible = true;
                 this.current_id = id;
             },
-            //确认删除
-            delOk() {
+            delOk() {//确认删除
                 this.$http.delete(globalConfig.newMedia_sever + '/api/humanity/birthday/' + this.current_id,).then(res => {
                     if (res.status === 200) {
                         this.$LjNotify('success', {
@@ -240,12 +204,11 @@
                     }
                 })
             },
-            //获取列表
-            getDataLists() {
+            getDataLists() {//获取列表
                 this.$http.get(globalConfig.newMedia_sever + '/api/humanity/birthday', this.params).then(res => {
                     if (res.status === 200) {
-                        // this.todayBirthday = res.data.data;
                         let birthdayData = res.data.data;
+                        this.count = res.data.total;
                         let list = [];
                         for (let item of birthdayData) {
                             list.push({
@@ -259,25 +222,47 @@
                     }
                 })
             },
-            //提交
-            submit() {
-                this.form.image_file_id = this.file_info[0];
-                this.$http.post(globalConfig.newMedia_sever + '/api/humanity/birthday', this.form).then(res => {
+
+            submit() {//提交表单
+                let paramsForm ={
+                    user_id:this.form.user_id,
+                    birthday_type:this.form.birthday_type,
+                    image_file_id:this.form.file_info[0],
+                };
+
+                this.$http.post(globalConfig.newMedia_sever + '/api/humanity/birthday', paramsForm).then(res => {
                     if (res.status === 200) {
                         this.$LjNotify('success', {
                             title: '成功',
                             message: res.msg,
                             subMessage: '',
                         });
-                        this.visible = false;
+                        this.add_visible = false;
                         this.current_id = '';
+
+                        this.form.user_id = '';
+                        this.form.birthday_type='';
+                        this.form.file_info =[];
+                        this.form.name ='';
+
+                        this.$emit('cancelAdd',this.add_visible);
                         this.getDataLists();
+
                     } else {
                         this.$LjNotify('error', {
                             title: '失败',
                             message: res.msg,
                             subMessage: '',
                         });
+                        this.add_visible = false;
+                        this.current_id = '';
+
+                        this.form.user_id = '';
+                        this.form.birthday_type='';
+                        this.form.file_info =[];
+                        this.form.name ='';
+
+                        this.$emit('cancelAdd',this.add_visible);
                     }
                 })
             },

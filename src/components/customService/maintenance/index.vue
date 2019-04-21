@@ -273,16 +273,16 @@
                   <b @click='handleAddRecord'>+</b>
                 </div>
                 <div class='detail_box scroll_bar'>
-                  <div class="content flex" v-for='follow in detail_form.record' :key='follow.payper' v-if='detail_form.follow_data'>
+                  <div class="content flex" v-for='follow in detail_form.record' :key='follow.payper' v-if='detail_form.record'>
                     <div class='detail_dialog_left'>
-                      <p>{{follow.payper}}</p>
+                      <p>{{follow.create_name}}</p>
                       <p>{{follow.next_follow_time}}</p>
                     </div>
                     <div class="detail_dialog_center">
                       <div class="circle"></div>
                     </div>
                     <div class='detail_dialog_right'>
-                      <p>{{follow.next_follow_name}}</p>
+                      <p>{{follow.follow_status_name || '暂无'}}</p>
                       <p>{{follow.content}}</p>
                     </div>
                   </div>
@@ -804,7 +804,11 @@ export default {
         })
       }
       this.urgedDeal_visible = false
-      this.urgedDeal_note = null
+      this.urgedDeal = {
+        note: null,
+        person: null,
+        personName: null
+      }
       this.currentRow = null
     },
     // 删除
@@ -1135,11 +1139,12 @@ export default {
       this.currentRow = row
       this.$http.get(this.market_server + `v1.0/csd/work_order/ServiceDetail/${row.id}`).then(res => {
         if (res.code === 200) {
-          console.log(res)
+
           this.detail_form = {
             data: res.data.order_data,
             record: res.data.follow_data
           }
+          console.log(this.detail_form)
           this.detail_visible = true;
         }
       })

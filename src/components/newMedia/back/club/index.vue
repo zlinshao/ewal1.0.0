@@ -15,7 +15,7 @@
         <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}" ref='viewBox'>
             <div class="list">
                 <div class="list-info flex-center" v-for="(item,index) in dataLists">
-                    <div class="list-box" @click="detail(item.id,index,item.over_time)">
+                    <div class="list-box" @click="detail(item)">
                         <div class="list-modal" v-if="item.is_enter ===1"></div>
                         <div class="list-top"><img src="../../../../assets/image/newMedia/theme1/active.png" alt="">
                         </div>
@@ -175,7 +175,7 @@
                     startRange: '',
                     endRange: '',
                     offset: 1,
-                    limit: 10,
+                    limit: 6,
                     department_ids: '',
                     export: '',
                 },
@@ -191,11 +191,15 @@
 
                 endTimes: [],
                 is_end: '',
+
                 defaultMsg: '',
                 config: {
                     initialFrameWidth: null,
                     initialFrameHeight: 350
                 },
+
+                loaded: true,
+                nomore: false,
 
 
             }
@@ -235,23 +239,22 @@
             setpage() {
                 if (this.nomore && !this.loaded) return;//到达底部不再执行
                 if (this.$refs.viewBox.scrollTop + this.$refs.viewBox.offsetHeight + 20 >= this.$refs.viewBox.scrollHeight) {
-                    // this.loadingTip = true;  //loading提示语
                     this.showLoading(true);
-                    this.params.offset +=1;
+                    this.params.offset += 1;
                     this.$http.get(globalConfig.newMedia_sever + '/api/club/event', this.params).then(res => {
+                            this.showLoading(false);
                             let arr = res.data.data;
                             if (arr.length === 0) {
-                                //some tips
                                 this.loaded = false;
                                 this.nomore = true;//没有更多
                                 return
                             }
                             this.dataLists = [...this.dataLists, ...arr];
-                            this.showLoading(false);
+
                         }
                     ).catch(err => {
-                            console.log(err)
-                        })
+                        console.log(err)
+                    })
                 }
             },
             getUEContent() {
@@ -348,8 +351,10 @@
             },
             //获取列表
             getDataLists() {
+                this.showLoading(true);
                 this.$http.get(globalConfig.newMedia_sever + '/api/club/event', this.params).then(res => {
                     if (res.status === 200) {
+                        this.showLoading(false);
                         this.dataLists = res.data.data.sort(
                             function (a, b) {
                                 return a.id - b.id

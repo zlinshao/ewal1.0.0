@@ -27,16 +27,48 @@
             </div>
 
         </div>
+
+        <!--新增-->
+        <lj-dialog
+                :visible="add_visible"
+                :size="{width:1200 + 'px' ,height: 800 + 'px'}"
+                @close="add_visible = false">
+            <div class="dialog_container">
+                <div class="dialog_header">
+                    <h3>乐伽之星</h3>
+                </div>
+                <div class="dialog_main borderNone">
+                    <el-form  v-model="form" label-width="80px">
+                        <el-form-item label="姓名">
+                            <el-input v-model="form.name"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="文章内容">
+                            <div class="item_content">
+                                <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>
+                            </div>
+                        </el-form-item>
+                    </el-form>
+                </div>
+                <div class="dialog_footer">
+                    <el-button size="small" type="warning" @click="getUEContent()">预览</el-button>
+                    <el-button size="small" type="danger" @click="postReceivable_tag()">发布</el-button>
+                    <el-button size="small" type="info" @click="add_visible = false">取消</el-button>
+                </div>
+            </div>
+        </lj-dialog>
     </div>
 
 </template>
 
 <script>
     import LjDialog from '../../../../common/lj-dialog.vue';
+    import UE from '../../../../common/UE.vue';
     export default {
         name: "leJiaStars",
         components:{
             LjDialog,
+            UE,
         },
         data() {
             return {
@@ -46,6 +78,11 @@
                     content:'国际上的飞机上的就发生的纠纷双方品搜东方'
                 },
                 starInfo:{},
+                defaultMsg: '',
+                config: {
+                    initialFrameWidth: null,
+                    initialFrameHeight: 350
+                },
             }
         },
         mounted(){

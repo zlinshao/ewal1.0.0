@@ -254,7 +254,7 @@
           }
         }
         .content {
-          padding-top: 50px;
+          padding: 50px 10px 0;
           @include flex('justify-center');
           @include flex('items-center');
           .detail_dialog_left {
@@ -267,7 +267,7 @@
           }
           .detail_dialog_center {
             height: 100%;
-            margin: 0 80px;
+            margin: 0 40px;
             .circle {
               width: 15px;
               height: 15px;
@@ -512,6 +512,21 @@
     .icon_del {
       @include confirmImg('shanchu.png', 'theme1');
     }
+    .emergency2 {
+      font-size: 14px;
+      color: #ffad0d;
+      @include confirmImg('jinji.png', 'theme1');
+    }
+    .emergency3 {
+      font-size: 14px;
+      color: #fff;
+      @include confirmImg('teji.png', 'theme1');
+    }
+    .emergency4 {
+      font-size: 14px;
+      color: #0c66ff;
+      @include confirmImg('zhongyao.png', 'theme1');
+    }
     .addOrder_dialog {
       .el-col {
         p {
@@ -621,6 +636,10 @@
         background: #ffffff;
         .content-top {
           color: #d5d5d5;
+          li:hover {
+            color: #ffad0d;
+            font-weight: 700;
+          }
         }
         .active_record {
           color: #ffad0d;

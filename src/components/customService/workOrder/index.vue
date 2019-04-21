@@ -22,7 +22,7 @@
         header-row-class-name="tableHeader" style="width: 100%" :key='"orderTable"+chooseTab'>
         <el-table-column align="center" label="紧急程度">
           <template slot-scope="scope">
-            <div class="status" :class="['status' + scope.row.emergency]">
+            <div class="status" :class="['emergency' + scope.row.emergency]">
               <p>{{scope.row.emergency_name}}</p>
             </div>
           </template>
@@ -264,7 +264,7 @@
                     </div>
 
                   </div>
-                  <ul>
+                  <ul v-if='show_Contract_Detail'>
                     <li v-for='item in seeRecord' :key='item.label' :class="[seeRecord_status == item.value ?'active_record':'']"
                       @click='chosenActiveRecord(item.value)'>{{item.label}}</li>
                   </ul>
@@ -309,17 +309,18 @@
                 </div>
 
                 <!-- 合同信息 -->
-                <el-row :gutter="10" class='detail_contract' v-if='addOrderChosen == 1 && customer_info.contract_Detail'>
-                  <el-col :span="6" class='detail_col el-border' v-if='customer_info.contract_Detail.customer_info'>
+                <el-row :gutter="10" class='detail_contract' v-if='addOrderChosen == 1 &&show_Contract_Detail'>
+                  <el-col :span="6" class='detail_col el-border' v-if='show_Contract_Detail'>
                     <h5>客户信息</h5>
-                    <div class='detail_col_box detail_col_box2' width='100%'>
+                    <div class='detail_col_box detail_col_box2' width='100%' v-for='info in customer_info.contract_Detail.customer_info'
+                      :key='info.phone'>
                       <div>
                         <span class='tit'>姓名</span>
-                        <span class="content_tit">{{customer_info.contract_Detail.customer_info.name || '--'}}</span>
+                        <span class="content_tit">{{info.name|| '--'}}</span>
                       </div>
                       <div>
                         <span class='tit'>性别</span>
-                        <span class="content_tit">{{customer_info.contract_Detail.customer_info.sex == 1 ? "男":"女"}}</span>
+                        <span class="content_tit">{{info.sex == 1 ? "男":"女"}}</span>
                       </div>
                       <div>
                         <span class='tit'>性质</span>
@@ -327,11 +328,11 @@
                       </div>
                       <div>
                         <span class='tit'>手机号</span>
-                        <span class="content_tit">{{customer_info.contract_Detail.customer_info.phone || '--'}}</span>
+                        <span class="content_tit">{{info.phone || '--'}}</span>
                       </div>
                       <div>
                         <span class='tit'>身份证号</span>
-                        <span class="content_tit">{{customer_info.contract_Detail.customer_info.idcard || '--'}}</span>
+                        <span class="content_tit">{{info.idcard || '--'}}</span>
                       </div>
                     </div>
                   </el-col>
@@ -506,7 +507,7 @@
     <LjDialog :visible="detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container dialog_detail" v-if='detail_visible&&detail_form'>
         <div class="dialog_header">
-          <h3>{{ detail_form.type==1?"报销": (detail_form.type == 699?"投诉":"普通")}}工单</h3>
+          <h3>{{ orderTypeObj[detail_form.type] || "普通"}}工单</h3>
         </div>
         <div class="dialog_main">
           <div class="back_info scroll_bar">
@@ -527,19 +528,54 @@
                   <el-form-item label='紧急程度'>
                     <el-input v-model="detail_form.emergency_name" type="text" disabled> </el-input>
                   </el-form-item>
-                  <el-form-item label='报销类型'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                  <!-- 水费 -->
+                  <el-form-item label='报销类型' v-if='detail_form.reimburse_water'>
+                    <el-input v-model="detail_form.reimburse_water" type="text" disabled> </el-input>
                   </el-form-item>
-                  <el-form-item label='报销金额'>
-                    <el-input v-model="detail_form.payer_all_money" type="text" disabled> </el-input>
+                  <el-form-item label='报销金额' v-if='detail_form.reimburse_water'>
+                    <el-input v-model="detail_form.reimburse_water_money" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <!-- 电费 -->
+                  <el-form-item label='报销类型' v-if='detail_form.reimburse_electricity'>
+                    <el-input v-model="detail_form.reimburse_electricity" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <el-form-item label='报销金额' v-if='detail_form.reimburse_electricity'>
+                    <el-input v-model="detail_form.reimburse_electricity_money" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <!-- 燃气费 -->
+                  <el-form-item label='报销类型' v-if='detail_form.reimburse_gas'>
+                    <el-input v-model="detail_form.reimburse_gas" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <el-form-item label='报销金额' v-if='detail_form.reimburse_gas'>
+                    <el-input v-model="detail_form.reimburse_gas_money" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <!-- 物业费 -->
+                  <el-form-item label='报销类型' v-if="detail_form.reimburse_property">
+                    <el-input v-model="detail_form.reimburse_property" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <el-form-item label='报销金额' v-if="detail_form.reimburse_property">
+                    <el-input v-model="detail_form.reimburse_property_money" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <!-- 维修费 -->
+                  <el-form-item label='报销类型' v-if="detail_form.reimburse_service">
+                    <el-input v-model="detail_form.reimburse_service" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <el-form-item label='报销金额' v-if="detail_form.reimburse_service">
+                    <el-input v-model="detail_form.reimburse_service" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <!-- 其他 -->
+                  <el-form-item label='报销类型' v-if="detail_form.reimburse_other">
+                    <el-input v-model="detail_form.reimburse_other" type="text" disabled> </el-input>
+                  </el-form-item>
+                  <el-form-item label='报销金额' v-if="detail_form.reimburse_other">
+                    <el-input v-model="detail_form.reimburse_other" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='处理人'>
-                    <el-input v-model="detail_form.operate_user_name" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.reimburse_property" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='部门'>
-                    <el-input v-model="detail_form.operate_org_name" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.reimburse_property_money" type="text" disabled> </el-input>
                   </el-form-item>
-
                   <el-form-item label='截止时间'>
                     <el-input v-model="detail_form.finish_time" type="text" disabled> </el-input>
                   </el-form-item>
@@ -562,13 +598,13 @@
                     <el-input v-model="detail_form.house_name" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='投诉类型'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.type_of_complaint" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='投诉渠道'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.channel_of_complaint" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='被投诉人'>
-                    <el-input v-model="detail_form.creatTime" type="text" disabled> </el-input>
+                    <el-input v-model="detail_form.complained_user_id" type="text" disabled> </el-input>
                   </el-form-item>
                   <el-form-item label='回复电话'>
                     <el-input v-model="detail_form.replay_phone" type="text" disabled> </el-input>
@@ -632,20 +668,19 @@
               <el-col :span='10'>
                 <div class='detail_tit'>
                   <span>跟进进度</span>
-                  <!-- + 只有投诉 v-if='detail_form.type == 699'-->
-                  <b @click='handleAddRecord'>+</b>
+                  <b @click='handleAddRecord' v-if='detail_form.type == 699'>+</b>
                 </div>
                 <div class='detail_box scroll_bar'>
                   <div class="content flex" v-for='follow in detail_form.follow_data' :key='follow.payper' v-if='detail_form.follow_data'>
                     <div class='detail_dialog_left'>
-                      <p>{{follow.payper}}</p>
+                      <p>{{follow.create_name}}</p>
                       <p>{{follow.next_follow_time}}</p>
                     </div>
                     <div class="detail_dialog_center">
                       <div class="circle"></div>
                     </div>
                     <div class='detail_dialog_right'>
-                      <p>{{follow.next_follow_name}}</p>
+                      <p>{{follow.follow_status_name || '暂无'}}</p>
                       <p>{{follow.content}}</p>
                     </div>
                   </div>
@@ -695,7 +730,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='chooseTab !==338 && followRecord.type == 2' v-for='(com,index) in followRecord.complained'
+            <el-row :gutter="20" width='100%' v-if='chooseTab !==338 && followRecord.type == 2' v-for='(com,index) in followRecord.pay_method'
               :key='"comp"+index'>
               <el-col :span="8">
                 <el-form-item label="认责人">
@@ -706,7 +741,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="姓名">
-                  <el-input placeholder="请填写" v-model='com.name'></el-input>
+                  <el-input @focus="handlerOrgan('add_record_renze',index)" readonly v-model="com.name" placeholder="请选择"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -806,10 +841,10 @@
           <h3>回访记录</h3>
         </div>
         <div class='dialog_main'>
-          <ul v-if='record_table.length > 0'>
-            <li v-for='item in record_table'>
+          <ul v-if='temporaryRecord.dataCount> 0'>
+            <li v-for='item in  temporaryRecord.data'>
               <div class='detail_dialog_left'>
-                <p>{{item.user || '----'}}</p>
+                <p>{{item.add_user || '----'}}</p>
                 <p>{{item.time}}</p>
               </div>
               <div class="detail_dialog_center">
@@ -917,6 +952,18 @@ export default {
       tableData: [],
       tableDateCount: 0,
       currentRow: null,
+      orderTypeObj: {
+        1: '报销',
+        2: '核实信息',
+        3: '催缴',
+        4: '续租',
+        5: '调房',
+        6: '退租',
+        697: '报修',
+        698: '转租',
+        699: '投诉',
+        700: '其他'
+      },
       //删除row
       delete_visible: false,
       // 增加
@@ -1105,6 +1152,7 @@ export default {
         data: [],
         contract_Detail: null
       },
+      show_Contract_Detail: false,
       chosenCustomer: null,
       history_info: { //历史工单
         page: 1,
@@ -1125,7 +1173,7 @@ export default {
         type: '',
         emergency: '',
         note: '',
-        complained: [
+        pay_method: [
           {
             id: '',
             type: '',
@@ -1239,6 +1287,7 @@ export default {
         }
       ],
       seeRecord_status: 0,
+      currentIndex: null
     }
   },
   mounted () {
@@ -1284,30 +1333,14 @@ export default {
   },
   computed: {},
   methods: {
-    // 查看记录
-    chosenActiveRecord (val) {
-      this.seeRecord_status = val
-      if (val == 1) { //回访
-        this.record_visible = true
-      }
-      if (val == 2) { // 财务
-        this.financial_visible = true
-      }
-      if (val == 3) { // 退租
-        this.without_visible = true
-      }
-      if (val == 4) { // 报销
-        this.expense_visible = true
-
-      }
-    },
     // 用户信息分页
     handleCustomerChange (val) {
       this.customer_info.page = val
       this.addOrder_search()
     },
     handleCloseAddOrder () {
-      if (!this.current_customer) {
+      console.log(this.chosenCustomer)
+      if (!this.chosenCustomer) {
         this.$LjNotify('warning', {
           title: '提示',
           message: '数据未填写'
@@ -1315,18 +1348,23 @@ export default {
         return
       }
 
-      this.addOrder_visible = false
+      this.createOrder_visible = false
       this.add_visible = true
-      this.currentMethod = 'addOrder'
+      this.currentMethod = 'created'
     },
     // 取消新增
     handleCloseOrder () {
-      this.addOrder_visible = false
+      this.createOrder_visible = false
+      this.add_visible = false
+      this.show_Contract_Detail = false
+      this.chosenCustomer = null
+      this.seeRecord_status = 0
       // 将用户列表清空
       this.customer_info = {
         page: 1,
         dataCount: 0,
-        data: []
+        data: [],
+        contract_Detail: null
       }
       this.history_info = {
         page: 1,
@@ -1338,8 +1376,42 @@ export default {
         dataCount: 0,
         data: []
       }
-      this.customer_search = ''
-      this.current_customer = null
+      this.createOrder = {
+        house_id: '',
+        house_name: '', //房屋名称
+        type: '',  // 工单类型
+        operate_user: { // 处理人
+          id: '',
+          name: '',
+        },
+        operate_org: { // 处理部门 
+          id: '',
+          name: ''
+        },
+        replay_phone: '', // 回复电话
+        emergency: '', // 紧急程度
+        next_follow_time: '', //跟进时间
+        content: '', // 工单内容
+        album: [], //上传图片
+        complain_type: '', // 投诉类型
+        complain_channel: '', //投诉渠道
+        complained_user: { // 被投诉人
+          id: '',
+          name: ''
+        },
+        reimburse_user: { //报销人
+          id: '',
+          name: ''
+        },
+        reimburse: [ //报销明细
+          {
+            type: '',
+            money: '',
+            disable: [false, false, false, false, false],
+          }
+        ]
+      },
+        this.customer_search = ''
     },
     // 选择报销类型
     chosenComplaintsType (val) {
@@ -1419,7 +1491,11 @@ export default {
         })
       }
       this.urgedDeal_visible = false
-      this.urgedDeal_note = null
+      this.urgedDeal = {
+        note: null,
+        person: null,
+        personName: null
+      }
       this.currentRow = null
     },
     // 删除
@@ -1446,9 +1522,10 @@ export default {
       }
 
     },
-    handlerOrgan (params) {
+    handlerOrgan (params, index) {
       this.staffModule = true
       this.currentStaff = params
+      this.currentIndex = index || 0
     },
     // 关闭 选择人员
     hiddenOrgan (ids, names, arr) {
@@ -1457,13 +1534,16 @@ export default {
         if (this.currentStaff == 'cuiban') {
           this.urgedDeal.personName = names
           this.urgedDeal.person = ids
+        } else if (this.currentStaff == 'add_record_renze') {
+          this.followRecord.pay_method[this.currentIndex].name = names
+          this.followRecord.pay_method[this.currentIndex].id = ids
         } else {
           this.createOrder[this.currentStaff] = {
             name: names,
             id: ids
           }
         }
-
+        this.currentIndex = 0
         this.currentStaff = ''
       }
     },
@@ -1500,6 +1580,24 @@ export default {
         id == 3 && this.temporary_search() // 来电
       }
     },
+    // 查看记录
+    chosenActiveRecord (val) {
+      this.seeRecord_status = val
+      if (val == 1) { //回访
+        this.record_visible = true
+        this.temporary_search()
+      }
+      if (val == 2) { // 财务
+        this.financial_visible = true
+      }
+      if (val == 3) { // 退租
+        this.without_visible = true
+      }
+      if (val == 4) { // 报销
+        this.expense_visible = true
+
+      }
+    },
     // 历史工单搜索
     history_search () {
       if (this.chosenCustomer) {
@@ -1510,7 +1608,6 @@ export default {
           search: this.chosenCustomer.contract_num,
         }
         this.$http.get(`${this.market_server}v1.0/csd/work_order/history`, history).then(res => {
-          console.log(res)
           if (res.code === 200) {
             this.history_info.data = res.data.data
             this.history_info.dataCount = res.data.all_count
@@ -1522,14 +1619,7 @@ export default {
     // 来电记录
     temporary_search () {
       if (this.chosenCustomer) {
-        let temporary = {
-          type: -1,
-          page: this.temporaryRecord.page,
-          limit: 5,
-          search: this.chosenCustomer.contract_num,
-        }
-        this.$http.get(`${this.market_server}v1.0/csd/work_order/temporaryRecord`, temporary).then(res => {
-          console.log(res)
+        this.$http.get(`${this.market_server}v1.0/csd/revisit/${this.chosenCustomer.contract_type}/${this.chosenCustomer.contract_id}`).then(res => {
           if (res.code === 200) {
             this.temporaryRecord.data = res.data.data
             this.temporaryRecord.dataCount = res.data.all_count
@@ -1541,6 +1631,7 @@ export default {
     addOrder_search () {
       this.customer_info.chosenCustomer = null
       this.customer_info.contract_Detail = null
+      this.show_Contract_Detail = false
       let params = {
         type: 3,
         search: this.customer_search,
@@ -1567,10 +1658,11 @@ export default {
     changeCustmInfo (val) {
       this.createOrder.house_id = val.house_id
       this.createOrder.house_name = val.house_name
-      this.createOrder.chooseTab = 1
-      this.$http.get(this.market_server + `v1.0/market/contract/1/${val.contract_id}`).then(res => {
+      this.createOrder.chooseTab = val.contract_type
+      this.$http.get(this.market_server + `v1.0/market/contract/${val.contract_type}/${val.contract_id}`).then(res => {
         if (res.code === 200) {
           this.customer_info.contract_Detail = res.data
+          this.show_Contract_Detail = true
         }
       })
 
@@ -1587,12 +1679,17 @@ export default {
       this.$http.get(this.market_server + `v1.0/csd/work_order/ServiceDetail/${row.id}`).then(res => {
         if (res.code === 200) {
           this.detail_form = res.data.order_data
+          this.detail_form.follow_data = res.data.follow_data
           this.detail_visible = true;
         }
       })
 
     },
-    handleCloseDetail () { },
+    handleCloseDetail () {
+      this.detail_visible = false;
+      this.currentRow = null
+      this.detail_form = null
+    },
     // 转交
     handleTransfer () {
       this.detail_visible = false
@@ -1656,24 +1753,18 @@ export default {
     handleAddNewRecord () {
       this.followRecord_visible = false
       this.currentMethod = 'addRecord'
-      if (this.followRecord_info.folow_status == 337) {
+      if (this.followRecord.folow_status == 337) {
         this.add_visible = true
       } else {
         this.sureEnding_visible = true
       }
     },
-    //确定新增
-    handleAddNewRecord () {
-      this.followRecord_visible = false
-      this.add_visible = true
-      this.currentMethod = 'addRecord'
-    },
     addRecordFun (par) {
       if (par) {
         let params = this.followRecord,
           pay_method = [];
-        if (params.folow_status == 338 && this.pay_method[0].type) {
-          this.pay_method.forEach(el => {
+        if (params.type == 2) {
+          params.pay_method.forEach(el => {
             pay_method.push([el.type || '', el.name || '', el.money || ''])
           });
         }
@@ -1700,14 +1791,12 @@ export default {
         payer: '', // 实际支付人
         pay_all_money: '', //维修金额
         content: '', // 跟进内容
+        pay_method: [
+          {            type: '',
+            name: '',
+            money: ''          }
+        ]
       }
-      this.pay_method = [
-        {
-          type: '',
-          name: '',
-          money: ''
-        }
-      ]// 认责人 
     },
     //确认添加
     handleCloseAdd (params) {
@@ -1719,17 +1808,16 @@ export default {
         this.createOrderFun(params)
       }
 
-
       this.currentMethod = null
     },
     createOrderFun (isCreate) {
       if (isCreate) {
         let order = {
-          house_id: this.current_customer.house_id,
-          house_name: this.current_customer.house_name,
-          contract_id: this.current_customer.contract_id,
-          contract_num: this.current_customer.contract_num,
-          contract_type: this.current_customer.contract_type,
+          house_id: this.chosenCustomer.house_id,
+          house_name: this.chosenCustomer.house_name,
+          contract_id: this.chosenCustomer.contract_id,
+          contract_num: this.chosenCustomer.contract_num,
+          contract_type: this.chosenCustomer.contract_type,
           type: this.createOrder.type,
           album: this.createOrder.album,
           content: this.createOrder.content,
@@ -1738,13 +1826,13 @@ export default {
           operate_org_id: this.createOrder.operate_org.id,
           replay_phone: this.createOrder.replay_phone,
           emergency: this.createOrder.emergency,
-          complained_user: this.createOrder.complained_user.name,
+          complained_user_name: this.createOrder.complained_user.name,
           complained_user_id: this.createOrder.complained_user.id,
           complain_type: this.createOrder.complain_type,
           type_of_complaint: this.createOrder.complain_channel,
           next_follow_time: this.createOrder.next_follow_time,
         }
-
+        console.log(this.createOrder)
 
         this.$http.post(`${this.market_server}v1.0/csd/work_order`, order).then(res => {
           this.$LjNotify('warning', {
@@ -1771,18 +1859,16 @@ export default {
         payer: '', // 实际支付人
         pay_all_money: '', //维修金额
         content: '', // 跟进内容
-        ablum: [] // 上传图片
+        ablum: [],// 上传图片
+        pay_method: [
+          {            type: '',
+            name: '',
+            money: ''          }
+        ]
       }
-      this.pay_method = [
-        {
-          type: '',
-          name: '',
-          money: ''
-        }
-      ] // 认责人
     },
     addComplaintsType () {
-      this.followRecord.complained.push({
+      this.followRecord.pay_method.push({
         id: '',
         type: '',
         name: '',
@@ -1790,7 +1876,7 @@ export default {
       })
     },
     delComplaintsType (index) {
-      this.followRecord.complained.splice(index, 1)
+      this.followRecord.pay_method.splice(index, 1)
     },
 
     // 财务记录 换页

@@ -717,8 +717,8 @@
           real_salary: '',
           registion_date: '',
           effect_date: '',
-          contract_length: '3年',
-          try_out_length: '3个月',
+          contract_length: '3',
+          try_out_length: '3',
           leader_id: '',
         },
 

@@ -6,18 +6,6 @@
 
 #theme_name {
   #visitToRecord {
-    .active-warning {
-      background: #e6a23c;
-      color: #fff;
-    }
-    .active-primary {
-      background: #409eff;
-      color: #fff;
-    }
-    .active-danger {
-      background: #f56c6c;
-      color: #fff;
-    }
     .dialog_container {
       .dialog_header {
         height: 90px;
@@ -289,6 +277,26 @@
 
 #theme_name.theme1 {
   #visitToRecord {
+    .el-button--danger {
+      background: #fef0f0;
+      color: #fbc4c4;
+      &:hover {
+        background: #f56c6c;
+        color: #fff;
+      }
+    }
+    .active-warning {
+      background: #e6a23c;
+      color: #fff;
+    }
+    .active-primary {
+      background: #409eff;
+      color: #fff;
+    }
+    .active-danger {
+      background: #f56c6c;
+      color: #fff;
+    }
     .dialog_header {
       .main_header {
         .left_tips {
