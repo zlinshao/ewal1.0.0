@@ -4,7 +4,7 @@
       <div class="library-header flex">
         <div class="left">
           <h3>{{params.paper_name}}</h3>
-          <div>
+          <div class="left-content">
             <span>{{params.title}}</span>
             <span>{{params.sub_title}}</span>
           </div>
@@ -580,7 +580,7 @@
       },
       //删除题库form
       handlePopExamForm() {
-        if (this.exam_form_list.length < 2) {
+        if (this.exam_form_list.length < 1) {
           return false;
         }
         this.exam_form_list.pop();

@@ -30,13 +30,17 @@
       arr: [Object, Array],
       jsonArr: [Object, Array],
       disabled: [Boolean],
-      size: {
+      size: {//medium / small / mini
         type: [String],
         default: '',
       },//高度
       root: {//接口返回数据data层级   //默认2级
         type: [String, Number],
         default: 2,
+      },
+      cache: {//是否缓存
+        type:Boolean,
+        default:true
       }
     },
     data() {
@@ -109,8 +113,11 @@
         this.$http.get(this.url, queryParams).then((res) => {
           if (res.code.endsWith('0')) {
             this.dropdown_list = res.data.data;
-            let keys = this.url + JSON.stringify(queryParams);
-            storage.set(keys, this.dropdown_list);
+            if(this.cache) {
+              let keys = this.url + JSON.stringify(queryParams);
+              storage.set(keys, this.dropdown_list);
+            }
+
           } else {
             console.log("获取类型失败");
           }

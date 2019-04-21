@@ -142,6 +142,7 @@
       file: {
         handler(val, oldVal) {
           if (val.setFile.length > 0) {
+            this.showFile = [];
             for (let item of val.setFile) {
               this.ids.push(Number(item.id));
               this.showFile.push(item);

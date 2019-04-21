@@ -52,6 +52,40 @@
           }
         }
       }
+
+      .user-item-mini{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 40px;
+        height: 40px;
+        margin:0 3px ;
+        .user-item-mini-top {
+          width: 28px;
+          height: 28px;
+          flex: none;
+          //margin-right: 10px;
+          img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+          }
+          &.bg-img {
+
+          }
+        }
+        .user-item-mini-bottom {
+          //height: 12px;
+          flex: 1;
+          .user-name {
+            font-size: 12px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
     }
   }
 }

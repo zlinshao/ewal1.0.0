@@ -89,7 +89,6 @@
       .attence-table {
         width: 100%;
         height: 90%;
-        background-color: gray;
 
         .table-operate {
           &.no-send {
@@ -105,7 +104,6 @@
       }
       .attence-pagination {
         height: 10%;
-        //background-color: red;
         width: 100%;
 
       }
@@ -122,8 +120,6 @@
       .confirm-table {
         width: 100%;
         height: 90%;
-        background-color: gray;
-
 
         .icon-pdf {
           cursor: pointer;
