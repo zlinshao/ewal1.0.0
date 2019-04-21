@@ -7,7 +7,7 @@
                 </p>
                 <h1>公司资料</h1>
                 <h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id,item.url)" class="items-column"
+          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
           </span>
@@ -18,8 +18,7 @@
             </div>
         </div>
 
-        <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}" ref='viewBox'
-             v-if="chooseTab===1">
+        <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}" ref='viewBox' v-if="chooseTab===1">
             <div id="profile_video_back">
                 <div class="mainList scroll_bar">
                     <div class="video-lists">
@@ -169,6 +168,7 @@
 
     export default {
         name: "common",
+        props:[],
         components: {
             mediaList,
             LjDialog,
@@ -235,6 +235,7 @@
             '$route': 'getPath',
         },
         mounted() {
+            this.chooseTab = this.$route.query.type;
             this.getDataLists();
             // this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);//滚动加载
         },
@@ -252,7 +253,7 @@
                 console.log(val);
                 window.open(val);
             },
-            changeTabs(id, url) {
+            changeTabs(id) {
                 this.chooseTab = id;
             },
             openAdd() {

@@ -8,7 +8,9 @@
                 <h1>付款</h1>
             </div>
             <div class="items-center listTopRight">
-                <div class="icons home_icon"></div>
+                <div class="icons upLoad"></div>
+                <div class="icons allInsert"></div>
+                <!--<div class="icons home_icon"></div>-->
                 <div class="icons add" @click="add_visible=true;"><b>+</b></div>
                 <div class="icons search" @click="highSearch"></div>
             </div>
@@ -59,20 +61,7 @@
                         <span>{{ scope.row.status === 1?'待入账':scope.row.status === 2?'待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
                     </template>
                 </el-table-column>
-                <!--<el-table-column label="操作" prop="" align="center" width="550">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<el-tooltip-->
-                                <!--v-for="(item,index) in btnData" :key="index"-->
-                                <!--effect="light" :content="item.content" placement="top">-->
-                            <!--<el-button-->
-                                    <!--:size="item.size"-->
-                                    <!--@click="handleClickBtn(item.methods,scope.row,scope.$index,item.key)"-->
-                                    <!--:type="item.type">{{item.content}}-->
-                            <!--</el-button>-->
-                        <!--</el-tooltip>-->
 
-                    <!--</template>-->
-                <!--</el-table-column>-->
             </el-table>
             <!--分页-->
             <footer class="flex-center bottomPage">
@@ -101,20 +90,11 @@
                 <div class="dialog_header">
                     <h3>修改应付金额</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="formData" ref="payForm" class="demo-ruleForm" size="mini">
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>应付金额</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="formData.amount_payable" :disabled="current_row.is_rank===1?true:false"></el-input>
-                                </div>
-                            </div>
+                <div class="dialog_main borderNone">
+                    <el-form :model="formData" ref="payForm" class="demo-ruleForm" label-width="80px">
+                        <el-form-item prop="name" label="应付金额">
+                            <el-input placeholder="请输入" v-model="formData.amount_payable"
+                                      :disabled="current_row.is_rank===1?true:false"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -131,21 +111,11 @@
                 <div class="dialog_header">
                     <h3>修改科目</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="formData" ref="payForm" class="demo-ruleForm" size="mini">
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>科目</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="subject_val"
-                                              @focus="handleOpenSubject('subject')"></el-input>
-                                </div>
-                            </div>
+                <div class="dialog_main borderNone">
+                    <el-form :model="formData" ref="payForm" class="demo-ruleForm" label-width="80px">
+                        <el-form-item prop="name" label="科目">
+                            <el-input placeholder="请输入" v-model="subject_val"
+                                      @focus="handleOpenSubject('subject')"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -163,22 +133,12 @@
                 <div class="dialog_header">
                     <h3>修改补齐时间</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="formData" ref="payForm" class="demo-ruleForm" size="mini">
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>补齐时间</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-date-picker
-                                            v-model="formData.complete_date" type="date">
-                                    </el-date-picker>
-                                </div>
-                            </div>
+                <div class="dialog_main borderNone">
+                    <el-form :model="formData" ref="payForm" class="demo-ruleForm" label-width="80px">
+                        <el-form-item prop="name" label="补齐时间">
+                            <el-date-picker
+                                    v-model="formData.complete_date" type="date">
+                            </el-date-picker>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -198,23 +158,13 @@
                 <div class="dialog_header">
                     <h3>修改应付时间</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="formData" ref="payForm" class="demo-ruleForm" size="mini">
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>应付时间</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-date-picker
-                                            value-format="yyyy-MM-dd"
-                                            v-model="formData.pay_date" type="date">
-                                    </el-date-picker>
-                                </div>
-                            </div>
+                <div class="dialog_main borderNone">
+                    <el-form :model="formData" ref="payForm" class="demo-ruleForm" label-width="80px">
+                        <el-form-item prop="name" label="应付时间">
+                            <el-date-picker
+                                    value-format="yyyy-MM-dd"
+                                    v-model="formData.pay_date" type="date">
+                            </el-date-picker>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -232,130 +182,51 @@
                 <div class="dialog_header">
                     <h3>应付入账</h3>
                 </div>
-                <div class="dialog_main">
+                <div class="dialog_main borderNone">
 
-                    <el-form :model="transferForm" :rules="rules" ref="transferForm" class="demo-ruleForm" size="mini">
-                        <el-form-item >
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>付款方式</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-select placeholder="请选择" v-model="params.cate" @change="getAccount">
-                                        <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
-                                                   :key="index"></el-option>
-                                    </el-select>
-                                </div>
-                            </div>
+                    <el-form :model="transferForm" :rules="rules" ref="transferForm" class="demo-ruleForm" label-width="80px">
+                        <el-form-item label="付款方式">
+                            <el-select placeholder="请选择" v-model="params.cate" @change="getAccount">
+                                <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
+                                           :key="index"></el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item >
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>付款账号</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-select placeholder="请选择" v-model="transferForm.account_id" :disabled="is_disabled">
-                                        <el-option v-for="(item,index) in accountLists" :label="item.name" :value="item.id"
-                                                   :key="index"></el-option>
-                                    </el-select>
-                                    <!--<el-input placeholder="请输入"-->
-                                              <!--v-model="transferForm.customer_account_num"-->
-                                    <!--&gt;</el-input>-->
-                                </div>
-                            </div>
+                        <el-form-item label="付款账号">
+                            <el-select placeholder="请选择" v-model="transferForm.account_id"
+                                       :disabled="is_disabled">
+                                <el-option v-for="(item,index) in accountLists" :label="item.name"
+                                           :value="item.id"
+                                           :key="index"></el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item >
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>客户账户</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="transferForm.customer_account_num" :disabled="true"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item label="客户账户">
+                            <el-input placeholder="请输入" v-model="transferForm.customer_account_num"
+                                      :disabled="true"></el-input>
                         </el-form-item>
-                        <el-form-item >
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>账户类型</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-select placeholder="请选择" v-model="transferForm.customer_account_type" :disabled="true">
-                                        <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
-                                                   :key="index"></el-option>
-                                    </el-select>
-                                </div>
-                            </div>
+                        <el-form-item label="账户类型">
+                            <el-select placeholder="请选择" v-model="transferForm.customer_account_type"
+                                       :disabled="true">
+                                <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
+                                           :key="index"></el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item >
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>付款金额</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="transferForm.amount_paid"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item label="付款金额">
+                            <el-input placeholder="请输入" v-model="transferForm.amount_paid"></el-input>
                         </el-form-item>
-                        <el-form-item >
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>备注</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="transferForm.remark"
-                                              type="textarea"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item label="备注">
+                            <el-input placeholder="请输入" v-model="transferForm.remark"
+                                      type="textarea"></el-input>
                         </el-form-item>
-                        <el-form-item >
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>付款时间</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-date-picker
-                                            v-model="transferForm.pay_date" type="date">
-                                    </el-date-picker>
-                                </div>
-                            </div>
+                        <el-form-item label="付款时间">
+                            <el-date-picker
+                                    v-model="transferForm.pay_date" type="date">
+                            </el-date-picker>
                         </el-form-item>
 
-                        <el-form-item >
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>补齐时间</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-date-picker
-                                            v-model="transferForm.complete_date" type="date">
-                                    </el-date-picker>
-                                </div>
-                            </div>
+                        <el-form-item label="补齐时间">
+                            <el-date-picker
+                                    v-model="transferForm.complete_date" type="date">
+                            </el-date-picker>
                         </el-form-item>
                     </el-form>
 
@@ -373,138 +244,46 @@
                 <div class="dialog_header">
                     <h3>新增</h3>
                 </div>
-                <div class="dialog_main">
+                <div class="dialog_main borderNone">
 
-                    <el-form :model="ruleForm" :rules="rules" ref="payForm" class="demo-ruleForm" size="mini">
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>客户名称</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请点击选择客户名称" v-model="ruleForm.customer_name"
-                                              @focus="handleOpenCustomer" readonly="readonly"></el-input>
-                                </div>
-                            </div>
+                    <el-form :model="ruleForm" :rules="rules" ref="payForm" class="demo-ruleForm" label-width="80px">
+                        <el-form-item prop="name" label="客户名称">
+                            <el-input placeholder="请点击选择客户名称" v-model="ruleForm.customer_name"
+                                      @focus="handleOpenCustomer" readonly="readonly"></el-input>
                         </el-form-item>
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>客户身份</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请点击选择客户名称"
-                                              :disabled="true" :value="ruleForm.identity===1?'业主':ruleForm.identity===2 ?'租客':''"></el-input>
-                                    <!--<el-select placeholder="请选择" v-model="ruleForm.identity" :disabled="true">-->
-                                        <!--<el-option v-for="(item,index) in types" :label="item.title" :value="item.val" :key="item.val"></el-option>-->
-                                    <!--</el-select>-->
-                                </div>
-                            </div>
+                        <el-form-item prop="name" label="客户身份">
+                            <el-input placeholder="请点击选择客户名称"
+                                      :disabled="true"
+                                      :value="ruleForm.identity===1?'业主':ruleForm.identity===2 ?'租客':''"></el-input>
                         </el-form-item>
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>账户类型</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-select placeholder="请选择" v-model="ruleForm.customer_account_type">
-                                        <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
-                                                   :key="index"></el-option>
-                                    </el-select>
-                                </div>
-                            </div>
+                        <el-form-item prop="name" label="账户类型">
+                            <el-select placeholder="请选择" v-model="ruleForm.customer_account_type">
+                                <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
+                                           :key="index"></el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>客户账户</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="ruleForm.customer_account_num"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item prop="name" label="客户账户">
+                            <el-input placeholder="请输入" v-model="ruleForm.customer_account_num"></el-input>
                         </el-form-item>
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>应付金额</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="ruleForm.amount_payable"
-                                              type="number"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item prop="name" label="应付金额">
+                            <el-input placeholder="请输入" v-model="ruleForm.amount_payable"
+                                      type="number"></el-input>
                         </el-form-item>
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>科目</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="subject.parent_name"
-                                              @focus="handleOpenSubject('subject')"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item prop="name" label="科目">
+                            <el-input placeholder="请输入" v-model="subject.parent_name"
+                                      @focus="handleOpenSubject('subject')"></el-input>
                         </el-form-item>
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>付款时间</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-date-picker
-                                            v-model="ruleForm.pay_date" type="date" placeholder="请输入">
-                                    </el-date-picker>
-                                </div>
-                            </div>
+                        <el-form-item prop="name" label="付款时间">
+                            <el-date-picker
+                                    v-model="ruleForm.pay_date" type="date" placeholder="请输入">
+                            </el-date-picker>
                         </el-form-item>
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>详情</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="ruleForm.description"
-                                              type="textarea"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item prop="name" label="详情">
+                            <el-input placeholder="请输入" v-model="ruleForm.description"
+                                      type="textarea"></el-input>
                         </el-form-item>
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>备注</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input placeholder="请输入" v-model="ruleForm.remark" type="textarea"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item prop="name" label="备注">
+                            <el-input placeholder="请输入" v-model="ruleForm.remark" type="textarea"></el-input>
                         </el-form-item>
                     </el-form>
 
@@ -532,7 +311,8 @@
             </div>
         </lj-dialog>
         <!--科目-->
-        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject" style="z-index:1000"></lj-subject>
+        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"
+                    style="z-index:1000"></lj-subject>
         <!--客户列表-->
         <lj-dialog :visible="customer_visible" :size="{width: 900 + 'px',height: 720 + 'px'}"
                    @close="customer_visible = false">
@@ -541,10 +321,10 @@
                     <h3>请选择客户</h3>
                 </div>
                 <div class="dialog_main">
-                    <customer-lists  @getCustomer="getCurrentCustomer"></customer-lists>
+                    <customer-lists @getCustomer="getCurrentCustomer"></customer-lists>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="handleChooseCustomer"  >确定</el-button>
+                    <el-button type="danger" size="small" @click="handleChooseCustomer">确定</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -569,9 +349,9 @@
                                 width="55">
                         </el-table-column>
 
-                        <el-table-column  align="center" label="ID" prop="id">
+                        <el-table-column align="center" label="ID" prop="id">
                         </el-table-column>
-                        <el-table-column  align="center" label="明细" prop="desc">
+                        <el-table-column align="center" label="明细" prop="desc">
                         </el-table-column>
 
 
@@ -597,16 +377,16 @@
 
     export default {
         name: "index",
-        components: {SearchHigh, LjDialog, FinMenuList, LjSubject,CustomerLists},
+        components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists},
         data() {
             return {
                 paySearchList,
-                action_visible:false,//操作栏作态
-                action_status:{//操作条状态
-                    delete_visible:false,
-                    edit_visible:false,
-                    details_visible:false,
-                    is_check:false,
+                action_visible: false,//操作栏作态
+                action_status: {//操作条状态
+                    delete_visible: false,
+                    edit_visible: false,
+                    details_visible: false,
+                    is_check: false,
                 },
                 current_row: '',
                 multipleSelection: [],//多选
@@ -627,23 +407,23 @@
                     limit: 12,
                     department_ids: '',
                     export: '',
-                    cate:'',
+                    cate: '',
                 },
 
                 delete_visible: false,//删除
                 add_visible: false,//新增
                 pay_visible: false,//应付金额
-                recall_visible:false,//回滚
+                recall_visible: false,//回滚
                 payData_visible: false,//应付时间
                 complete_visible: false,//补齐时间
                 transfer_visible: false,//应付入账
                 subject_visible: false,//科目
                 show_subject: false,//科目
                 customer_visible: false,//客户列表
-                is_disabled:true,
+                is_disabled: true,
 
-                running_account_record:[],//回滚数据
-                ra_ids:[],
+                running_account_record: [],//回滚数据
+                ra_ids: [],
 
                 which_subject: '',
                 new_subject_visible: false,
@@ -689,7 +469,7 @@
                 count: 0,
                 ruleForm: {
                     customer_id: '',//客户id
-                    customer_name:'',
+                    customer_name: '',
                     customer_account_type: '',//账号类型
                     customer_account_num: '',//账户号码
                     amount_payable: '',//金额
@@ -700,7 +480,7 @@
                     subject_id: '',
 
                 },
-                subject_val:'',
+                subject_val: '',
                 formData: {
                     amount_payable: '',
                     tag: '',
@@ -732,9 +512,9 @@
                         {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
                     ],
                 },
-                types:[
-                    {title:"业主",value:1},
-                    {title:"租客",value:2}
+                types: [
+                    {title: "业主", value: 1},
+                    {title: "租客", value: 2}
                 ],
                 btnData: [
                     {
@@ -745,7 +525,7 @@
                         methods: "handleEditPay",
                         content: "金额",
                         key: "pay_visible",
-                        class:'edit'
+                        class: 'edit'
                     },
                     {
                         label: "",
@@ -755,7 +535,7 @@
                         methods: "handleSub",
                         content: "科目",
                         key: "show_subject",
-                        class:'edit'
+                        class: 'edit'
                     },
                     {
                         label: "",
@@ -765,7 +545,7 @@
                         methods: "handleComplete",
                         content: "补齐时间",
                         key: "complete_visible",
-                        class:'edit'
+                        class: 'edit'
                     },
                     {
                         label: "",
@@ -775,7 +555,7 @@
                         methods: "handlePayTime",
                         content: "应付时间",
                         key: "payData_visible",
-                        class:'edit'
+                        class: 'edit'
                     },
                     {
                         label: "",
@@ -785,7 +565,7 @@
                         methods: "handleComplete",
                         content: "应付入账",
                         key: "transfer_visible",
-                        class:'edit'
+                        class: 'edit'
                     },
                     {
                         label: "",
@@ -795,7 +575,7 @@
                         methods: "handleProcess",
                         content: "回滚",
                         key: "recall_visible",
-                        class:'edit'
+                        class: 'edit'
                     },
                     {
                         label: "",
@@ -805,11 +585,11 @@
                         methods: "handleDelete",
                         content: "删除",
                         key: "delete_visible",
-                        class:'delete'
+                        class: 'delete'
                     },
                 ],
-                accountLists:[],
-                chooseRowIds:[],
+                accountLists: [],
+                chooseRowIds: [],
             }
         },
         mounted() {
@@ -819,19 +599,18 @@
         activated() {
         },
         watch: {
-            formData:{
-                handler(val){
+            formData: {
+                handler(val) {
 
                 },
-                deep:true
+                deep: true
             },
-            subject_val:{
-                handler(val){
+            subject_val: {
+                handler(val) {
 
                 },
-                deep:true
+                deep: true
             }
-
 
 
         },
@@ -841,14 +620,14 @@
         methods: {
             selectionChange(val) {
                 this.multipleSelection = val;
-                if(val.length>0){
+                if (val.length > 0) {
                     this.action_visible = true;
                     this.current_row = val[0];
                     console.log(val);
-                }else {
+                } else {
                     this.action_visible = false;
                 }
-                this.$emit('getMultipleSelection',val)
+                this.$emit('getMultipleSelection', val)
             },
 
             // 当前点击
@@ -951,18 +730,18 @@
                 })
             },
             //获取账户list
-            getAccount(){
-                this.$http.get(globalConfig.temporary_server + "account",this.params).then(res => {
-                    if(res.code===200){
-                       this.accountLists = res.data.data;
-                       this.is_disabled = false;
+            getAccount() {
+                this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
+                    if (res.code === 200) {
+                        this.accountLists = res.data.data;
+                        this.is_disabled = false;
                     }
                 }).catch(err => {
                     console.log(err);
                 })
             },
             //应付入账
-            handleOkTransfer(row,val) {
+            handleOkTransfer(row, val) {
                 console.log(val);
                 // alert(row.id);
                 this.$http.put(globalConfig.temporary_server + "account_payable/transfer/" + row.id, val).then(res => {
@@ -974,21 +753,21 @@
                 })
             },
             // 多选
-            handleSelectionChange(val){
-                this.ra_ids=[];
+            handleSelectionChange(val) {
+                this.ra_ids = [];
                 this.multipleSelection = val;
                 console.log(val);
-                for(let item in val){
+                for (let item in val) {
                     this.ra_ids.push(val[item].id);
                 }
                 console.log(this.ra_ids);
             },
 
             //确认回滚
-            handleOkRecall(){
-                this.$http.put(globalConfig.temporary_server + 'account_payable/revert/'+this.current_row.id,{running_account_ids:this.ra_ids}).then(res => {
+            handleOkRecall() {
+                this.$http.put(globalConfig.temporary_server + 'account_payable/revert/' + this.current_row.id, {running_account_ids: this.ra_ids}).then(res => {
 
-                    if(res.code===200){
+                    if (res.code === 200) {
                         this.$LjNotify('success', {
                             title: '成功',
                             message: res.msg,
@@ -996,7 +775,7 @@
                         });
                         this.recall_visible = false;
 
-                    }else {
+                    } else {
                         this.$LjNotify('error', {
                             title: '失败',
                             message: res.msg,
@@ -1012,15 +791,15 @@
                 this.customer_visible = true;
             },
             //确认选择
-            handleChooseCustomer(){
-                if(this.ruleForm.customer_id != ''){
+            handleChooseCustomer() {
+                if (this.ruleForm.customer_id != '') {
                     this.$LjNotify('success', {
                         title: '成功',
                         message: "操作成功",
                         subMessage: '',
                     });
                     this.customer_visible = false;
-                }else{
+                } else {
                     this.$LjNotify('success', {
                         title: '提示',
                         message: "请选择客户",
@@ -1031,7 +810,7 @@
             },
 
             //返回数据
-            getCurrentCustomer(data){
+            getCurrentCustomer(data) {
                 this.ruleForm = JSON.parse(data);
             },
 
@@ -1072,12 +851,15 @@
                 //回滚
                 if (key === "recall_visible") {
                     this.recall_visible = true;
-                    this.running_account_record=[];
+                    this.running_account_record = [];
                     // this.current_row = row;
                     this.recall_visible = true;
                     console.log(row.running_account_record);
-                    for( let item in row.running_account_record){
-                        this.running_account_record.push({id:item,desc:this.current_row.running_account_record[item]});
+                    for (let item in row.running_account_record) {
+                        this.running_account_record.push({
+                            id: item,
+                            desc: this.current_row.running_account_record[item]
+                        });
                     }
                     console.log(this.running_account_record);
 
@@ -1113,24 +895,24 @@
 
             //加载列表
             getPaymentList() {
-              this.showLoading(true);
-              this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(res => {
-                if (res.code === 200) {
-                  this.showLoading(false);
-                  // this.tableLists = res.data.data;
-                    this.tableLists = res.data.data.sort(
-                        function (a,b) {
-                            return a.id-b.id
-                        }
-                    );
-                  this.count = res.data.count;
-                } else {
-                  this.tableLists = [];
-                  this.count = 0;
-                }
-              }).catch(err => {
-                console.log(err);
-              })
+                this.showLoading(true);
+                this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(res => {
+                    if (res.code === 200) {
+                        this.showLoading(false);
+                        // this.tableLists = res.data.data;
+                        this.tableLists = res.data.data.sort(
+                            function (a, b) {
+                                return a.id - b.id
+                            }
+                        );
+                        this.count = res.data.count;
+                    } else {
+                        this.tableLists = [];
+                        this.count = 0;
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
             },
 
             // 高级搜索
@@ -1143,7 +925,7 @@
                 this.showSearch = false;
                 if (val !== 'close') {
                     console.log(val);
-                    for (let item of Object.keys(this.params)){
+                    for (let item of Object.keys(this.params)) {
                         this.params[item] = val[item];
                     }
                     this.params.staff_id = val.staff[0];
@@ -1157,10 +939,19 @@
 </script>
 
 <style lang="scss" scoped>
-
+    @import "../../../assets/scss/finance/payment/index.scss";
+    @mixin paymentImg($n, $m) {
+        $url: '../../../assets/image/finance/' + $m + '/' + $n;
+        @include bgImage($url);
+    }
     #theme_name.theme1 {
-        #customer {
-
+        #payment {
+            .upLoad{
+                @include paymentImg('upLoad.png','theme1')
+            }
+            .allInsert{
+                @include paymentImg('allInsert.png','theme1')
+            }
 
         }
     }

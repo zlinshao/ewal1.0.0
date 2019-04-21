@@ -11,7 +11,7 @@
         <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}">
             <div class="club-lists">
                 <div class="club-lists-info" v-for="(item,index) in clubData">
-                    <div class="club-box"  @click="handleClubDetail(item.is_enter,item.id,index)">
+                    <div class="club-box"  @click="openReport(item)">
                         <div class="club-box-top"><img src="../../../../assets/image/newMedia/theme1/active.png" alt=""></div>
                         <div class="club-box-middle">
                             <div>
@@ -19,14 +19,14 @@
                                 <p><span>{{item.created_at}}</span></p>
                             </div>
                             <div>
-                                <span class="" :class="item.status===1?'end':'active'">{{item.status===1?'已结束':'进行中'}}</span>
+                                <span class="" :class="item.status===0?'active':item.status===1?'active':item.status===2?'end':''">{{item.status===0?'未开始':item.status===1?'进行中':item.status===2?'已结束':''}}</span>
                             </div>
                         </div>
                         <div class="club-box-bottom">
                             <span><i></i>{{item.day}}</span>
-                            <span><i :class="item.status===1?'post':'unPost'"  @click="openReport(item)">{{item.status===1?'已报名':'我要报名'}}</i><i></i>{{item.click}}</span>
+                            <span><i :class="item.status===0?'unPost':item.status===1?'unPost':item.status===2?'post':''"  @click="openReport(item)">{{item.status===0?'我要报名':item.status===1?'我要报名':item.status===2?'已结束':''}}</i><i></i>{{item.click}}</span>
                         </div>
-                        <div class="club-modal" v-if="item.status===1"></div>
+                        <div class="club-modal" v-if="item.status===2"></div>
                     </div>
                 </div>
             </div>
@@ -64,15 +64,40 @@
                         <p><span>活动内容</span><span>{{showData.content}}</span></p>
                     </div>
                 </div>
-                <div class="dialog_footer">
+                <div class="dialog_footer" v-if="showData.status!=2">
                     <el-button type="danger" size="small" @click="confirmReport(showData.id)">我要报名</el-button>
                     <el-button type="info" size="small" @click="look_visible = false;current_row = ''">取消</el-button>
                 </div>
             </div>
 
-            <div class="dengLong">
+            <div class="dengLong" @click="getReportedUsers" style="cursor:pointer;">
                 <p>已报名</p>
                 <p>{{showData.click}}</p>
+            </div>
+        </lj-dialog>
+
+        <lj-dialog
+                :visible="person_visible"
+                :size="{width: 900 + 'px' ,height: 500 + 'px'}"
+                @close="person_visible = false">
+            <div class="dialog_container">
+                <div class="dialog_header">
+                    <h3>报名状态</h3>
+                </div>
+                <div class="dialog_main all-birthday">
+                    <h5>已报名人员</h5>
+                    <div>
+                        <div class="all-birthday-list" v-for="(item,index) in allPerson">
+                            <div class="all-birthday-info">
+                                <img src="../../../../assets/image/newMedia/theme1/active.png" alt="">
+                                <div class="" style="text-align: left">
+                                    <p style="font-weight: bold">赵丽颖</p>
+                                    <p>南京二区一组</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </lj-dialog>
 
@@ -93,51 +118,35 @@
         },
         data() {
             return {
-                clubStatus:'',
                 params: {//查询参数
                     search: '',
                     offset: 1,
                     limit: 6,
                 },
+                allPerson:[
+                    {title:1},
+                    {title:1},
+                    {title:1},
+                    {title:1},
+                    {title:1},
+                    {title:1},
+                    {title:1},
+
+                ],
 
                 count:0,
                 showFinMenuList: false,
                 showModal:false,
-                showData:{
-                    // name:'',
-                    // start_time:'',
-                    // over_time:'',
-                    // address:'',
-                    // content:'',
-                },
-                current_id:'',
+                person_visible:false,
+                showData:{},
                 clubData:[],
                 look_visible:false,//详情
-                end_visible:false,//结束
-                add_visible:false,//新增
             }
         },
         mounted(){
           this.getDataLists()
         },
         methods:{
-            openReport(item){
-                this.look_visible = true;
-                this.clubStatus=item.status;
-                this.showData=item
-            },
-            confirmReport(id){//报名
-                this.$http.get(globalConfig.newMedia_sever+'/api/club/event/create',{event_id:id}).then(res => {
-                   this.callbackSuccess(res);
-                   this.look_visible = false;
-                })
-            },
-
-
-            handleChangePage(page) {//分页
-                this.params.offset = page;
-                this.getDataLists();
-            },
             callbackSuccess(res) {//回调
                 if (res.status === 200) {
                     this.$LjNotify('success', {
@@ -154,18 +163,6 @@
                     });
                 }
             },
-            handleClubDetail(status,id,index){//详情
-                this.clubStatus = status;
-                this.look_visible= true;
-                this.current_id = id;
-                this.$http.get(globalConfig.newMedia_sever+'/api/club/event/'+id,).then(res => {
-                    if(res.status===200){
-                        this.showData = res.data.data[index];
-                        console.log(res)
-                    }
-
-                })
-            },
             getDataLists(){//列表
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
                     if(res.status===200){
@@ -174,6 +171,33 @@
                     }
                 })
             },
+            handleChangePage(page) {//分页
+                this.params.offset = page;
+                this.getDataLists();
+            },
+            openReport(item){//报名弹窗
+                this.look_visible = true;
+                this.showData=item
+            },
+            confirmReport(id){//报名
+                this.$http.get(globalConfig.newMedia_sever+'/api/club/event/create',{event_id:id}).then(res => {
+                   this.callbackSuccess(res);
+                   this.look_visible = false;
+                })
+            },
+            getReportedUsers(){//获取参加活动的所有用户列表
+                this.person_visible=true;
+                this.$http.get(globalConfig.newMedia_sever+'/api/club/event/user/'+this.showData.id,).then(res => {
+                    if(res.status===200){
+                        // this.allPerson = res.data.data;
+                    }
+                })
+            },
+
+
+
+
+
         }
     }
 </script>
@@ -264,6 +288,18 @@
 
         .dengLong{
             @include clubImg('theme1','denglong.png');
+        }
+        .all-birthday{
+            h5{
+                width: 120px;
+                height: 30px;
+                @include clubImg('theme1','weiyuedu.png');
+                color: #ffffff;
+                line-height: 30px;
+                text-align: center;
+                /*margin-top: 20px;*/
+                margin-bottom: 20px;
+            }
         }
 
 

@@ -54,8 +54,7 @@ const CurrentMonthAssessment = () => import('@/components/currentMonthAssessment
 
 //财务中心
 const Finance = () => import('@/components/finance/index.vue')
-const AccountManage = () =>
-  import('@/components/finance/accountManage/index.vue') //帐户
+const AccountManage = () => import('@/components/finance/accountManage/index.vue') //帐户
 const Subject = () => import('@/components/finance/subject/index.vue') //科目
 const BudgetStream = () => import('@/components/finance/budgetStream/index.vue') //收支流水
 const Gathering = () => import('@/components/finance/gathering/index.vue') //收款
@@ -71,8 +70,8 @@ const Humanity = () => import('@/components/newMedia/front/humanity/index.vue') 
 const Profile = () => import('@/components/newMedia/front/profile/index.vue') //资料
 
 //前台资料
-const Video = () => import('@/components/newMedia/front/profile/components/video.vue')
-const Document = () => import('@/components/newMedia/front/profile/components/video.vue')
+const Video = () => import('@/components/newMedia/front/profile/components/common.vue')
+const Document = () => import('@/components/newMedia/front/profile/components/common.vue')
 
 //前台乐伽人文
 const LeJiaStars = () =>

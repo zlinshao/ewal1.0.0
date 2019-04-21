@@ -1,9 +1,9 @@
 <template>
     <div id="videoLearning">
         <div class="video-lists">
-            <div class="video-list-info" v-for="(item,index) in dataLists">
+            <div class="video-list-info" v-for="(item,index) in dataLists"  @click.stop="detail(item)">
                 <div class="video-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)"
-                     @click.stop="detail(item)">
+                    >
                     <div class="video-box-top justify-end items-bet" v-show="is_show&&index===current">
                         <span><i @click.stop="edit(item)">编辑</i><i
                                 @click.stop="del(item)">删除</i></span>

@@ -82,7 +82,7 @@
                 <div class="dialog_header">
                     <h3>结算单详情</h3>
                 </div>
-                <div class="dialog_main">
+                <div class="dialog_main borderBgColor">
                     <div class="balance-detail">
                         <div class="balance-detail-title">
                             <span v-for="(item,index) in tabs"
@@ -93,7 +93,7 @@
 
                         <div class="balance-detail-info">
                             <div v-if="selectTab===1" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
+                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="收款周期">
                                             <el-input v-model="form.name"></el-input>
@@ -143,7 +143,7 @@
 
                             </div>
                             <div v-if="selectTab===2" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
+                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="收款周期">
                                             <el-input v-model="form.name"></el-input>
@@ -193,7 +193,7 @@
 
                             </div>
                             <div v-if="selectTab===3" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
+                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="收款周期">
                                             <el-input v-model="form.name"></el-input>
@@ -243,7 +243,7 @@
 
                             </div>
                             <div v-if="selectTab===4" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
+                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="收款周期">
                                             <el-input v-model="form.name"></el-input>
@@ -293,7 +293,7 @@
 
                             </div>
                             <div v-if="selectTab===5" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
+                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" >
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="退房原因">
                                             <el-input v-model="form.name" type="textarea" :rows="10"></el-input>
@@ -319,7 +319,7 @@
 
                             </div>
                             <div v-if="selectTab===6" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
+                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="退房原因">
                                             <el-input v-model="form.name" type="textarea" :rows="10"></el-input>
@@ -345,7 +345,7 @@
 
                             </div>
                             <div v-if="selectTab===7" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" size="small">
+                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
                                     <div class="balance-detail-form-info">
                                         <el-form-item label="退房原因">
                                             <el-input v-model="form.name" type="textarea" :rows="10"></el-input>

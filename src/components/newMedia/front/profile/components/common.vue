@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <div v-if="chooseTab===2" class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}" ref='viewBox'>
+        <div v-if="chooseTab===2" class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}">
             <div id="file">
                 <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px'}">
                     <div class="InternalRegulations-info">
@@ -50,10 +50,10 @@
                                 <div v-for="(item,index) in fileData" class="right-info-list flex-center">
                                     <div class="right-info-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
                                         <p class="flex-center">
-                                        <!--<span v-show="seen&&index===current">-->
+                                            <!--<span v-show="seen&&index===current">-->
                                             <!--<i @click.stop="openEdit(item.id,index)">编辑</i>-->
                                             <!--<i @click.stop="openDel(item.id,index)">删除</i>-->
-                                        <!--</span>-->
+                                            <!--</span>-->
                                             <a class="word_icon" @click="openFile(item.file_id[0].uri)"></a>
                                         </p>
                                         <p><span>营销中心制度及相关操作…</span></p>
@@ -70,51 +70,51 @@
 
                 <!--新增-->
                 <!--<lj-dialog-->
-                        <!--:visible="add_visible"-->
-                        <!--:size="{width: 450 + 'px' ,height:450 + 'px'}"-->
-                        <!--@close="add_visible = false">-->
-                    <!--<div class="dialog_container">-->
-                        <!--<div class="dialog_header">-->
-                            <!--<h3>新增文档</h3>-->
-                        <!--</div>-->
-                        <!--<div class="dialog_main borderNone">-->
-                            <!--<el-form  label-width="80px">-->
-                                <!--<el-form-item label="所属部门">-->
-                                    <!--<el-input placeholder="请选择"></el-input>-->
-                                <!--</el-form-item>-->
-                                <!--<el-form-item label="文件类型">-->
-                                    <!--<el-input placeholder="请选择"></el-input>-->
-                                <!--</el-form-item>-->
-                                <!--<el-form-item label="添加文件">-->
-                                    <!--<el-input placeholder="请选择"></el-input>-->
-                                <!--</el-form-item>-->
-                                <!--<el-form-item label="可见范围">-->
-                                    <!--<el-input placeholder="请选择"></el-input>-->
-                                <!--</el-form-item>-->
-                            <!--</el-form>-->
-                        <!--</div>-->
-                        <!--<div class="dialog_footer">-->
-                            <!--<el-button size="small" type="danger" @click="postReceivable_tag()">确定</el-button>-->
-                            <!--<el-button size="small" type="info" @click="add_visible = false">取消</el-button>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--:visible="add_visible"-->
+                <!--:size="{width: 450 + 'px' ,height:450 + 'px'}"-->
+                <!--@close="add_visible = false">-->
+                <!--<div class="dialog_container">-->
+                <!--<div class="dialog_header">-->
+                <!--<h3>新增文档</h3>-->
+                <!--</div>-->
+                <!--<div class="dialog_main borderNone">-->
+                <!--<el-form  label-width="80px">-->
+                <!--<el-form-item label="所属部门">-->
+                <!--<el-input placeholder="请选择"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="文件类型">-->
+                <!--<el-input placeholder="请选择"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="添加文件">-->
+                <!--<el-input placeholder="请选择"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="可见范围">-->
+                <!--<el-input placeholder="请选择"></el-input>-->
+                <!--</el-form-item>-->
+                <!--</el-form>-->
+                <!--</div>-->
+                <!--<div class="dialog_footer">-->
+                <!--<el-button size="small" type="danger" @click="postReceivable_tag()">确定</el-button>-->
+                <!--<el-button size="small" type="info" @click="add_visible = false">取消</el-button>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</lj-dialog>-->
 
                 <!--删除讲师-->
                 <!--<lj-dialog :visible="delete_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"-->
-                           <!--@close="delete_visible = false">-->
-                    <!--<div class="dialog_container">-->
-                        <!--<div class="dialog_header">-->
-                            <!--<h3>删除</h3>-->
-                        <!--</div>-->
-                        <!--<div class="dialog_main">-->
-                            <!--<div class="unUse-txt">确定删除该讲师吗？</div>-->
-                        <!--</div>-->
-                        <!--<div class="dialog_footer">-->
-                            <!--<el-button type="danger" size="small" @click="delOk">确定</el-button>-->
-                            <!--<el-button type="info" size="small" @click="delete_visible = false;current_id = ''">取消</el-button>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--@close="delete_visible = false">-->
+                <!--<div class="dialog_container">-->
+                <!--<div class="dialog_header">-->
+                <!--<h3>删除</h3>-->
+                <!--</div>-->
+                <!--<div class="dialog_main">-->
+                <!--<div class="unUse-txt">确定删除该讲师吗？</div>-->
+                <!--</div>-->
+                <!--<div class="dialog_footer">-->
+                <!--<el-button type="danger" size="small" @click="delOk">确定</el-button>-->
+                <!--<el-button type="info" size="small" @click="delete_visible = false;current_id = ''">取消</el-button>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</lj-dialog>-->
             </div>
         </div>
@@ -145,8 +145,8 @@
     import LjUpload from '../../../../common/lightweightComponents/lj-upload';
 
     export default {
-        props: ['is_add'],
-        name: "backVideo",
+        // props: ['is_add'],
+        name: "common",
         components: {
             mediaList,
             LjDialog,
@@ -163,8 +163,7 @@
                 current: '',//当前
                 seen: false,//显隐
                 selects: [
-                    {id: 1, title: "视频"},
-                    {id: 2, title: "文档"}
+                    {id: 1, title: "视频"}, {id: 2, title: "文档"}
                 ],
                 params: {//查询参数
                     search: '',
@@ -209,6 +208,7 @@
             '$route': 'getPath',
         },
         mounted() {
+            this.chooseTab = this.$route.query.type;
             this.getDataLists();
 
         },
@@ -221,9 +221,11 @@
                 console.log(val);
                 window.open(val);
             },
+            openDetail(){
+
+            },
             getPath() {
                 this.chooseTab = this.$route.query.type;
-                console.log(this.chooseTab);
             },
             // 查看详情
             // openDetail(row) {
@@ -290,8 +292,8 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../../../../../assets/scss/newMedia/back/profile/video.scss";
-    @import "../../../../../assets/scss/newMedia/back/profile/file.scss";
+    @import "../../../../../assets/scss/newMedia/front/profile/components/common.scss";
+    /*@import "../../../../../assets/scss/newMedia/back/profile/file.scss";*/
 
     @mixin profile_video($n, $m) {
         $url: '../../../../../assets/image/newMedia/' + $n + '/' + $m;
