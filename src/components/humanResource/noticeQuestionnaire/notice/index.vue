@@ -766,7 +766,6 @@
 
       //添加或删除奖罚信息
       handleSanctionInfo(idx) {
-        debugger
         if (idx == 0) {
           this.publish_notice_form.sanction_info.push(
             {

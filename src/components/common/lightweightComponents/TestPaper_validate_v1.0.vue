@@ -36,19 +36,28 @@
           </el-row>
         </div>
         <div class="paper-main borderNone scroll_bar">
-          <el-form size="small">
-            <div v-for="(item,index) in exam_form_list" :key="index" class="form_item_border">
-              <el-form-item>
+          <el-form ref="testPaperFormRef" :model="exam_form_all" :rules="rules.testPaper" size="small">
+            <div v-for="(item,index) in exam_form_all.exam_form_list" :key="index" class="form_item_border">
+              <el-form-item
+                required
+                :prop="'exam_form_list.'+index+'.stem'"
+                :rules="{required: true, message: '请输入题干', trigger: 'blur'}"
+              >
                 <el-row :gutter="20">
                   <el-col :span="2" class="left-tip">
                     <span>{{'题干' + (index + 1)}}</span>
                   </el-col>
                   <el-col :span="22">
-                    <el-input v-model="item.stem" type="textarea" :rows="6" placeholder="请输入题干"></el-input>
+                    <el-input
+                      v-model="item.stem" type="textarea" :rows="6" placeholder="请输入题干"></el-input>
                   </el-col>
                 </el-row>
               </el-form-item>
-              <el-form-item v-if="item.category==1" v-for="(subVal,subKey,idx) in item.choice" :key="subKey">
+              <el-form-item
+                required
+                :prop="'exam_form_list.'+index+'.choice'"
+                :rules="{required: true, message: '请输入选项', trigger: ['blur','change']}"
+                v-if="item.category==1" v-for="(subVal,subKey,idx) in item.choice" :key="subKey">
                 <el-row :gutter="20">
                   <el-col :span="2" class="left-tip">
                     <span :class="{'hide_label': idx !== 0}">选项</span>
@@ -262,11 +271,13 @@
               <div v-for="(item,index) in statisticsResult" :key="index" class="exam-single-item">
                 <div class="single-item-stem">{{index+1}}、{{item.exam_question_info.stem}}
                 </div>
-                <div :key="subIndex" v-for="(subVal,subKey,subIndex) in item.exam_question_info.choice" class="single-item-choice">
+                <div :key="subIndex" v-for="(subVal,subKey,subIndex) in item.exam_question_info.choice"
+                     class="single-item-choice">
                   {{subKey}}、{{subVal}}
                   <div class="single-item-stem-process">
                     <div class="single-item-stem-process-container">
-                      <el-progress :text-inside="true" :stroke-width="18" :percentage="Number(((item.count[subKey]/(params.response_count))*100).toFixed(2))"></el-progress>
+                      <el-progress :text-inside="true" :stroke-width="18"
+                                   :percentage="Number(((item.count[subKey]/(params.response_count))*100).toFixed(2))"></el-progress>
                     </div>
                     <div class="single-item-stem-process-tip">{{params.response_count}}</div>
                   </div>
@@ -348,11 +359,39 @@
             this.paper_type = 3;
           }
         },
-        immediate:true,
+        immediate: true,
       },
     },
     data() {
       return {
+
+        rules: {
+          testPaper: {
+            paper_type: [
+              {required: true, message: '请选择试卷类型', trigger: 'blur'},
+              // {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
+            ],
+            paper_name: [
+              {required: true, message: '请输入试卷名称', trigger: 'blur'},
+              {min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur'}
+            ],
+            /*            meeting_type: [
+                          {required: true, message: '请选择会议类型', trigger: 'blur'},
+                          //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                        ],
+                        presenter_id: [
+                          {required: true, message: '请选择主持人', trigger: 'blur'},
+                          //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                        ],
+                        participants: [
+                          {required: true, message: '请选择参会人员', trigger: 'blur'},
+                          //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                        ],*/
+
+          },
+        },
+
+
         url: globalConfig.humanResource_server,
 
         paper_visible: false,
@@ -364,21 +403,26 @@
         exam_form_item_choose: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
         exam_form_item_judge: ['A', 'B'],
         //exam_form_item_key: ['关键字1', '关键字2', '关键字3', '关键字4', '关键字5', '关键字6'],
-        exam_form_list: [//题列表
-          {
-            category: 1,//1单选 2判断 3简答题
-            stem: '',
-            choice: {
-              A: '',
-              B: '',
-              C: '',
-              D: '',
-            },
-            score: '',
-            answer: '',
-            user_answer: '',
-          }
-        ],
+
+        exam_form_all: {
+          exam_form_list: [//题列表
+            {
+              category: 1,//1单选 2判断 3简答题
+              stem: '',
+              choice: {
+                A: '',
+                B: '',
+                C: '',
+                D: '',
+              },
+              score: '',
+              answer: '',
+              user_answer: '',
+            }
+          ],
+        },
+
+
         exam_total_score: 0,
         /*exam_category_list: {
           single: {
@@ -481,10 +525,7 @@
             exam_list: [],
           },//简答题
         };
-        _.forEach(this.exam_form_list, (item, index) => {
-          /*if(item.category==1) {
-            this.exam_category_list.single.exam_list.push(item);
-          }*/
+        _.forEach(this.exam_form_all.exam_form_list, (item, index) => {
           this.exam_total_score += item.score || 0;
           switch (item.category) {
             case 1:
@@ -502,46 +543,52 @@
 
       handleAddChooseItem(index, type = 1) {
         if (type == 1) {
-          this.exam_form_list[index].choice['z'] = '';
+          this.exam_form_all.exam_form_list[index].choice['z'] = '';
           let newChoice = {};
           let iter = 0;
-          _.forEach(this.exam_form_list[index].choice, (o, oIndex) => {
+          _.forEach(this.exam_form_all.exam_form_list[index].choice, (o, oIndex) => {
             newChoice[this.exam_form_item_choose[iter++]] = o;
           });
-          this.exam_form_list[index].choice = newChoice;
+          this.exam_form_all.exam_form_list[index].choice = newChoice;
           this.$forceUpdate();
         }
         if (type == 3) {
-          this.exam_form_list[index].answer.push('');
+          this.exam_form_all.exam_form_list[index].answer.push('');
         }
       },
       handleDeleteChoose(index, idx, type = 1) {
         if (type == 1) {
-          console.log(this.exam_form_list[index])
-          delete this.exam_form_list[index].choice[idx];
-          //console.log(this.exam_form_list[index]);
+          console.log(this.exam_form_all.exam_form_list[index])
+          delete this.exam_form_all.exam_form_list[index].choice[idx];
+          //console.log(this.exam_form_all.exam_form_list[index]);
           let newChoice = {};
           let iter = 0;
-          _.forEach(this.exam_form_list[index].choice, (o, oIndex) => {
+          _.forEach(this.exam_form_all.exam_form_list[index].choice, (o, oIndex) => {
             newChoice[this.exam_form_item_choose[iter++]] = o;
           });
-          this.exam_form_list[index].choice = newChoice;
+          this.exam_form_all.exam_form_list[index].choice = newChoice;
           this.$forceUpdate();
         }
         if (type == 3) {
-          this.exam_form_list[index].answer.splice(idx, 1);
+          this.exam_form_all.exam_form_list[index].answer.splice(idx, 1);
           //this.$forceUpdate();
         }
       },
       //提交题库
       handleSubmitExam() {
-        this.$emit('success', this.exam_form_list);
-        this.paper_visible = false;
+        this.$refs['testPaperFormRef'].validate((valid) => {
+          debugger
+          if (valid) {
+            this.$emit('success', this.exam_form_all.exam_form_list);
+            this.paper_visible = false;
+          }
+        });
+
       },
       //添加题库form
       handleAddExamForm() {
         if (this.exam_type == 1) {
-          this.exam_form_list.push({
+          this.exam_form_all.exam_form_list.push({
             category: 1,//1单选 2判断 3简答题
             stem: '',
             choice: {
@@ -555,7 +602,7 @@
             user_answer: '',
           })
         } else if (this.exam_type == 2) {
-          this.exam_form_list.push({
+          this.exam_form_all.exam_form_list.push({
             category: 2,
             stem: '',
             choice: {
@@ -567,7 +614,7 @@
             user_answer: '',
           })
         } else if (this.exam_type == 3) {
-          this.exam_form_list.push({
+          this.exam_form_all.exam_form_list.push({
             category: 3,
             stem: '',
             choice: [],
@@ -580,10 +627,10 @@
       },
       //删除题库form
       handlePopExamForm() {
-        if (this.exam_form_list.length < 1) {
+        if (this.exam_form_all.exam_form_list.length < 1) {
           return false;
         }
-        this.exam_form_list.pop();
+        this.exam_form_all.exam_form_list.pop();
       },
 
 
@@ -591,9 +638,9 @@
       statisticsResultConfirm() {
         this.paper_visible = false;
         let _this = this;
-        setTimeout(()=> {
+        setTimeout(() => {
           _this.paper_type = 1;
-        },1000);
+        }, 1000);
       },
     },
   }
