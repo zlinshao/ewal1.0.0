@@ -19,7 +19,7 @@
         <div v-if="!item.img" class="user-item-mini-top bg-img">
         </div>
         <div class="user-item-mini-bottom">
-          <div class="user-name">{{item.name}}</div>
+          <div class="user-name" :style="{color: color}">{{item.name}}</div>
         </div>
       </div>
     </div>
@@ -41,6 +41,10 @@
       mini: {
         type:Boolean,
         default: false,
+      },
+      color: {
+        type:String,
+        default:'#686874',
       },
     },
     data() {

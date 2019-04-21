@@ -322,7 +322,7 @@
             params: {
               //search: '',
               page: 1,
-              limit: 1000,
+              limit: 5,
 
             },
             init() {
@@ -332,27 +332,8 @@
             chooseRowIds: [],
             currentSelection: {},//当前选择行
 
-            departmentId: [106],
-            isShowMultiSelection: false,//是否显示多选框
-            multipleSelection: [],
-
             table_dialog_visible: false,//form表单控制
             tableData: [],//表格数据
-            /*showData: {
-              name: '姓名',
-              department: '部门',
-              post: '岗位',
-              attRest: '出勤/休息天数',
-              wednesday: '出勤班次',
-              thursday: '迟到缺卡次数',
-              friday: '矿工天数',
-              saturday: '出差天数',
-              weekday: '公出时长',
-              leave: '请假时长',
-              workOvertime: '加班统计',
-              operate: '考勤确认结果',
-
-            },*/
             formData: {},//详情表格数据
             searchParams: '',// dialog中的模糊搜索
           },
