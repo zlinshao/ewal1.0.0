@@ -3,13 +3,13 @@
     <div class="work-log-container">
       <div class="work-log-container-left scroll_bar">
         <div class="work-log-toolbar">
-          <div v-for="item in toolbarList" @click="switchToolbar(item.id)" :class="{checked:toolbarChoosed==item.id}"
+          <div v-for="(item,index) in toolbarList" :key="index" @click="switchToolbar(item.id)" :class="{checked:toolbarChoosed==item.id}"
                class="work-log-toolbar-item">{{item.name}}
           </div>
         </div>
         <div class="work-log-input-list scroll_bar">
           <div class="work-log-input-list-container">
-            <div v-for="item in inputList[inputIndexName]" class="work-log-input-list-item">
+            <div v-for="(item,index) in inputList[inputIndexName]" :key="index" class="work-log-input-list-item">
               <div class="work-log-input-list-item-tip">
                 {{item.name}}
               </div>

@@ -7,9 +7,9 @@
         <div class="m-container-item-decorate">
           <span class="m-container-item-decorate-circle"></span>
         </div>
-        <div title="点击查看详情" @click="showDialogDetail" class="m-container-item-content">
+        <div title="点击查看详情" @click="showDialogDetail(item)" class="m-container-item-content">
           <span class="red-circle"></span>
-          【{{item.content}}】
+          【{{item.growthTime}}{{item.content}}】
           <span class="red-circle"></span>
         </div>
       </div>
@@ -23,14 +23,8 @@
         </div>
         <div class="timeline-container">
           <el-timeline>
-            <el-timeline-item color="#CF2E33" timestamp="2018/4/12 12:24:52" placement="top">
-              <p>由张晓莲（员工关系组-基础人事专员）为您办理了入职手续，入职部门：研发中心</p>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/3" placement="top">
-              <p>由张晓莲（员工关系组-基础人事专员）为您办理了入职办理了入职办理了入职办理了入职手续，入职部门：研发中心，入职岗位：测试，等级：实习</p>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/2" placement="top">
-              <p>由张晓莲（员工关系组-基础人事专员）为您办理了入职手续，入职部门：研发中心</p>
+            <el-timeline-item color="#CF2E33" v-for="(item,index) in growthDetailList" :key="index" :timestamp="item.timestamp" placement="top">
+              <p>由{{item.operatorName}}为您办理了{{item.growthContent}}{{item.detail}}</p>
             </el-timeline-item>
           </el-timeline>
         </div>
@@ -49,56 +43,89 @@
     },
     data() {
       return {
-        growthList: [
-          {
-            content: '2019年3月11日入职',
-          },
-          {
-            content: '2019年4月11日离职',
-          },
-          {
-            content: '2019年5月11日入职',
-          },
-          {
-            content: '2019年4月11日离职',
-          },
-          {
-            content: '2019年5月11日入职',
-          },
-          {
-            content: '2019年4月11日离职',
-          },
-          {
-            content: '2019年5月11日入职',
-          },
-          {
-            content: '2019年4月11日离职',
-          },
-          {
-            content: '2019年5月11日入职',
-          },
-          {
-            content: '2019年4月11日离职',
-          },
-          {
-            content: '2019年5月11日入职',
-          },
-          {
-            content: '2019年4月11日离职',
-          },
-          {
-            content: '2019年5月11日入职',
-          },
-
-
-        ],
-
+        url: globalConfig.humanResource_server,
         dialog_visible: false,
+        growthList: [],
+        growthDetailList: []
       }
     },
+    mounted() {
+      this.getGrowthList();
+    },
     methods: {
-      showDialogDetail() {
-        this.dialog_visible = true;
+      getGrowthList: function() {
+        let params = {
+          id: 60
+        }
+        this.$http.get(`${this.url}/staff/user/289/growth`).then(res => {
+          if (res.code==="20000") {
+            for(var i = 0; i < res.data.data.length; i++){
+              let date = new Date(res.data.data[0].created_at)
+              let year = date.getFullYear();
+              let month = date.getMonth()+1;
+              let day = date.getDate();
+              let obj = {
+                id: res.data.data[i].id,
+                growthTime: `${year}年${month}月${day}日`,
+                content: res.data.data[i].zh
+              }
+              this.growthList.push(obj)
+            }
+          }
+        })
+      },
+      showDialogDetail: function(item) {
+        this.growthDetailList = []
+        let params = {
+          id: 60,
+          growth_id: item.id
+        }
+        
+        this.$http.get(`${this.url}/staff/user/289/growth_record`).then(res => {
+          if (res.code==="20000") {
+            for(var i = 0; i < res.data.data.length; i++){
+              let data = res.data.data[i]
+              let obj = {}
+              //判断系统或者操作员
+              if(data.growth.hasOwnProperty("operator")){
+                if(data.growth.operator !== null && data.growth.operator.hasOwnProperty("name")){
+                  obj = {
+                          timestamp: data.created_at.toString(),
+                          growthContent: item.content,
+                          operatorName: data.growth.operator.name,
+                        }
+                }
+                else{
+                  obj = {
+                    timestamp: data.created_at.toString(),
+                    growthContent: item.content,
+                    operatorName: '系统'
+                  }
+                }
+              }
+              else{
+                  obj = {
+                    timestamp: data.created_at.toString(),
+                    growthContent: item.content,
+                    operatorName: '系统'
+                  }
+              }
+              if(data.new_data !== null){
+                let new_dataName = ''
+                for(var j = 0; j< data.new_data.length; j++){
+                  if(data.new_data[j].name !== undefined){
+                    new_dataName = new_dataName + ',' + data.new_data[j].name
+                  }
+                }
+                if(new_dataName !== ''){
+                  obj.detail =  '，转到：' + new_dataName.substring(1)
+                }
+              }
+              this.growthDetailList.push(obj);
+            }
+            this.dialog_visible = true;
+          }
+        })
       },
     },
   }
@@ -109,6 +136,9 @@
   #growth_process {
     #dialog_timeline {
       .timeline-container {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
         .el-timeline-item__wrapper {
           text-align: left;
           .el-timeline-item__timestamp {
