@@ -10,18 +10,26 @@
             <el-row :gutter="10" width='100%'>
               <el-col :span="12">
                 <el-form-item label="工单状态">
-                  <el-radio v-model="followRecord.folow_status" label="1">跟进中</el-radio>
-                  <el-radio v-model="followRecord.folow_status" label="2">已完成</el-radio>
+                  <el-radio v-model="followRecord.folow_status" label="337">跟进中</el-radio>
+                  <el-radio v-model="followRecord.folow_status" label="338">已完成</el-radio>
                 </el-form-item>
               </el-col>
-              <el-col :span="12" v-if='moduleData.chooseTab !== 338 && followRecord.folow_status == 2'>
+              <el-col :span="12" v-if='followRecord.folow_status == 338 && moduleData.type == "workOrder" && moduleData.chosenTag != 338'>
                 <el-form-item label="投诉有效性">
                   <el-radio v-model="followRecord.emergency" label="1">有效</el-radio>
                   <el-radio v-model="followRecord.emergency" label="2">无效</el-radio>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 1'>
+
+            <el-row :gutter="20" width='100%' v-if='moduleData.type == "maintenance" && followRecord.folow_status == 338'>
+              <el-col :span="8">
+                <el-form-item label="维修金额">
+                  <el-input placeholder="请填写" v-model='followRecord.pay_all_money'></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 337 && moduleData.type == "workOrder" && moduleData.chosenTag != 338'>
               <el-col :span="8">
                 <el-form-item label="紧急程度">
                   <el-select v-model="followRecord.emergency" placeholder="请选择">
@@ -33,8 +41,8 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='moduleData.chooseTab !==338 && followRecord.folow_status == 2'
-              v-for='(com,index) in followRecord.pay_method' :key='"comp"+index'>
+            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 338' v-for='(com,index) in followRecord.pay_method'
+              :key='"comp"+index'>
               <el-col :span="8">
                 <el-form-item label="认责人">
                   <el-select placeholder="请选择" v-model='com.type'>
@@ -55,10 +63,30 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <el-row :gutter="20" width='100%' v-if='moduleData.type == "maintenance" && followRecord.folow_status == 338'>
+              <el-col :span="8">
+                <el-form-item label="实际支付">
+                  <el-select v-model="followRecord.payer_type" placeholder="请选择">
+                    <el-option v-for="(exp,idex) in complainedType" :key="exp.value" :label="exp.label" :value="exp.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="姓名">
+                  <el-input @focus="handlerOrgan('payer')" readonly placeholder="业务员" v-model='followRecord.payer'></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="部门">
+                  <el-input @focus="departSearch" readonly placeholder="部门" v-model='followRecord.payer_org_name'></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
             <el-row :gutter="20" width='100%'>
               <el-col :span="24" :gutter="20" width='100%'>
                 <el-form-item label="跟进记录">
-                  <el-input placeholder="请填写" type='textarea' v-model="followRecord.note"></el-input>
+                  <el-input placeholder="请填写" type='textarea' v-model="followRecord.content"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -79,6 +107,8 @@
     </LjDialog>
     <!-- 人员选择 -->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan" />
+    <!--选择部门-->
+    <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart"></DepartOrgan>
   </div>
 </template>
 
@@ -86,20 +116,21 @@
 import LjDialog from '../../../common/lj-dialog.vue';
 import Ljupload from '../../../common/lightweightComponents/lj-upload';
 import StaffOrgan from '../../../common/staffOrgan.vue'
+import DepartOrgan from '../../../common/departOrgan';
 export default {
   props: ['visible', 'moduleData'],
   components: {
     LjDialog,
     Ljupload,
-    StaffOrgan
+    StaffOrgan,
+    DepartOrgan
   },
   data () {
     return {
-      followRecord_visible: false,
       followRecord: {
         folow_status: '',
         emergency: '',
-        note: '',
+        content: '',
         pay_method: [
           {
             id: '',
@@ -140,6 +171,10 @@ export default {
       organData: {
         num: 1
       },
+      departModule: false, //部门选择
+      departData: {
+        num: 1,
+      },
       currentIndex: 0,
     }
   },
@@ -157,23 +192,36 @@ export default {
     },
     handlerOrgan (index) {
       this.staffModule = true
-      this.currentIndex = index || 0
+      this.currentIndex = index
+    },
+    departSearch () {
+      this.departModule = true
     },
     // 关闭 选择人员
     hiddenOrgan (ids, names, arr) {
       this.staffModule = false;
       if (ids !== 'close') {
-        this.followRecord.pay_method[this.currentIndex].name = names
-        this.followRecord.pay_method[this.currentIndex].id = ids
+        if (this.currentIndex == 'payer') {
+          this.followRecord.payer = names
+          this.followRecord.payer_id = ids
+        } else {
+          this.followRecord.pay_method[this.currentIndex].name = names
+          this.followRecord.pay_method[this.currentIndex].id = ids
+        }
         this.currentIndex = 0
+      }
+    },
+    hiddenDepart (ids, str, arr) {
+      this.departModule = false
+      if (ids != 'close') {
+        this.followRecord.payer_org_name = str
       }
     },
     // 新增记录
     handleAddNewRecord () {
-      this.followRecord_visible = false
       this.$emit('close', {
         isCreate: false,
-        createdType: this.followRecord.folow_status == 1 ? "doing" : "finish",
+        createdType: this.followRecord.folow_status == 337 ? "doing" : "finish",
         content: this.followRecord
       })
       this.clearInfo()
@@ -191,7 +239,7 @@ export default {
       this.followRecord = {
         folow_status: '',
         emergency: '',
-        note: '',
+        content: '',
         pay_method: [
           {
             id: '',
