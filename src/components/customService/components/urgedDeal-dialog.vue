@@ -21,7 +21,6 @@
         </div>
       </div>
     </LjDialog>
-
     <!-- 人员选择 -->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hidden" />
   </div>
@@ -72,12 +71,15 @@ export default {
           message: res.message
         });
         if (res.code === 200) {
-          this.$emit('close', false)
+          this.handleCloseUrgedDeal()
         }
       })
     },
     handleCloseUrgedDeal () {
       this.$emit('close', false)
+      this.post_name = ''
+      this.post_id = ''
+      this.post_note = ''
     }
   }
 }

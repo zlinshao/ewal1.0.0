@@ -504,8 +504,12 @@ export default {
           value: 4
         },
         {
-          label: '其他',
+          label: '维修费',
           value: 5
+        },
+        {
+          label: '其他',
+          value: 6
         }
       ],
       expenseTypeDisable: [],
@@ -613,6 +617,46 @@ export default {
         electricity_card_photo: '电卡',
         gas_card_photo: '气卡'
       },
+      complaintsType: [ //投诉类型
+        {
+          label: 'A类原则性投诉',
+          value: 1
+        },
+        {
+          label: 'B类重大投诉',
+          value: 2
+        },
+        {
+          label: 'C类一般性投诉(被动)',
+          value: 3
+        },
+        {
+          label: 'D类一般性投诉(主动)',
+          value: 4
+        },
+      ],
+      complaintsChannels: [
+        {
+          label: '400客服',
+          value: 1
+        },
+        {
+          label: '回访',
+          value: 2
+        },
+        {
+          label: '微信',
+          value: 3
+        },
+        {
+          label: '微博',
+          value: 4
+        },
+        {
+          label: '贴吧',
+          value: 5
+        }
+      ],
       chosenCustomer: null, // 当前选中的
       show_Contract_Detail: false, // 合同详情
       seeRecord_status: 0, // 当前记录查看type
@@ -650,6 +694,18 @@ export default {
       // 过期：    end_at 小于当前日期，并且 end_real_at 为null
       // 结束：    end_real_at  不为null 或者 end_type 不为 null
     }
+  },
+  watch: {
+    createOrder: {
+      handler (newVal) {
+        if (newVal.type == 699 || newVal.type == 1) {
+          this.createOrder_span = 6
+        } else {
+          this.createOrder_span = 8
+        }
+      },
+      deep: true
+    },
   },
   methods: {
     handleCloseOrder () {
@@ -714,7 +770,7 @@ export default {
     },
     // 删除报销
     delComplaintsType (index) {
-      this.createOrder.complaintsType.splice(index, 1)
+      this.createOrder.reimburse.splice(index, 1)
     },
     // 新建工单 客户信息 历史工单 来电记录
     chosenOptions (id) {
@@ -876,8 +932,9 @@ export default {
             money: ''
           }
         ]
-      },
-        this.customer_search = ''
+      }
+      this.chosenCustomer = null
+      this.customer_search = ''
     },
     handleCloseAdd (params) {
       this.add_visible = false
@@ -906,7 +963,47 @@ export default {
         type_of_complaint: this.createOrder.complain_channel,
         next_follow_time: this.createOrder.next_follow_time,
       }
-
+      console.log(this.createOrder.reimburse)
+      this.createOrder.reimburse.forEach(item => {
+        if (item.type) {
+          let money_type = null, type_name = null, type = null;
+          switch (item.type) {
+            case 1:
+              type = '水费'
+              type_name = 'reimburse_water'
+              money_type = 'reimburse_water_money'
+              break;
+            case 2:
+              type = '电费'
+              type_name = 'reimburse_electricity'
+              money_type = 'reimburse_electricity_money'
+              break;
+            case 3:
+              type = '燃气费'
+              type_name = 'reimburse_gas'
+              money_type = 'reimburse_gas_money'
+              break;
+            case 4:
+              type = '物业费'
+              type_name = 'reimburse_property'
+              money_type = 'reimburse_property_money'
+              break;
+            case 5:
+              type = '维修费'
+              type_name = 'reimburse_service'
+              money_type = 'reimburse_service_money'
+              break;
+            default:
+              type = '其他'
+              type_name = 'reimburse_other'
+              money_type = 'reimburse_other_money'
+              break;
+          }
+          order[type_name] = type
+          order[money_type] = item.money
+        }
+      })
+      console.log(order)
       this.$http.post(`${this.market_server}v1.0/csd/work_order`, order).then(res => {
         this.$LjNotify('warning', {
           title: '提示',

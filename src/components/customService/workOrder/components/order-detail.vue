@@ -28,7 +28,7 @@
                 <b @click='handleAddRecord' v-if='detail_form.type == 699'>+</b>
               </div>
               <div class='detail_box scroll_bar'>
-                <div class="content flex" v-for='follow in follow_data' :key='follow.next_follow_time' v-if='detail_form.follow_data'>
+                <div class="content flex" v-for='follow in follow_data' :key='follow.next_follow_time' v-if='follow_data'>
                   <div class='detail_dialog_left'>
                     <p>{{follow.create_name}}</p>
                     <p>{{follow.next_follow_time}}</p>
@@ -144,6 +144,7 @@ export default {
         if (res.code === 200) {
           this.detail_form = res.data.order_data
           this.follow_data = res.data.follow_data
+          console.log(this.follow_data)
           this.detail_visible = true;
         }
       })
@@ -151,18 +152,27 @@ export default {
     handleTransfer () {
       this.$emit('close', {
         type: '转交',
-        close: false
+        close: false,
+        detail: null
       })
     },
     handleNotice () {
       this.$emit('close', {
         type: '通知',
-        close: false
+        close: false,
+        detail: null
       })
     },
     handleEnd () {
       this.$emit('close', {
         type: '结束',
+        close: false,
+        detail: this.detail_form
+      })
+    },
+    handleAddRecord () {
+      this.$emit('close', {
+        type: '新增跟进',
         close: false,
         detail: this.detail_form
       })

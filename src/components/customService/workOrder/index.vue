@@ -27,15 +27,8 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="创建时间" prop='create_time'></el-table-column>
-        <el-table-column align="center" label="工单编号" prop='num'></el-table-column>
-        <el-table-column align="center" label="类型" prop='type_name'></el-table-column>
-        <el-table-column align="center" label="地址" prop='house_name'></el-table-column>
-        <el-table-column align="center" label="内容" prop='content'></el-table-column>
-        <el-table-column align="center" label="截止时间" prop='finish_time'></el-table-column>
-        <el-table-column align="center" label="处理人" prop='operate_user_name'></el-table-column>
-        <el-table-column align="center" label="创建人" prop='create_name'></el-table-column>
-        <el-table-column align="center" label="部门" prop='org_name'></el-table-column>
+
+        <el-table-column align="center" v-for='item in Object.keys(tableShowData)' :key='item' :prop='item' :label="tableShowData[item]"></el-table-column>
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
@@ -56,9 +49,7 @@
       </footer>
     </div>
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
-
     <MenuList :list="customService" :module="visibleStatus" :backdrop=true @close="visibleStatus = false"></MenuList>
-
     <!--新增跟进记录-->
     <LjDialog :visible="followRecord_visible" :size="{width: 720 + 'px',height: 480 + 'px'}" @close="handleCloseAddNewRecord">
       <div class="dialog_container followRecord">
@@ -70,18 +61,18 @@
             <el-row :gutter="10" width='100%'>
               <el-col :span="12">
                 <el-form-item label="工单状态">
-                  <el-radio v-model="followRecord.type" label="1">跟进中</el-radio>
-                  <el-radio v-model="followRecord.type" label="2">已完成</el-radio>
+                  <el-radio v-model="followRecord.folow_status" label="1">跟进中</el-radio>
+                  <el-radio v-model="followRecord.folow_status" label="2">已完成</el-radio>
                 </el-form-item>
               </el-col>
-              <el-col :span="12" v-if='chooseTab !== 338 && followRecord.type == 2'>
+              <el-col :span="12" v-if='chooseTab !== 338 && followRecord.folow_status == 2'>
                 <el-form-item label="投诉有效性">
                   <el-radio v-model="followRecord.emergency" label="1">有效</el-radio>
                   <el-radio v-model="followRecord.emergency" label="2">无效</el-radio>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='followRecord.type == 1'>
+            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 1'>
               <el-col :span="8">
                 <el-form-item label="紧急程度">
                   <el-select v-model="followRecord.emergency" placeholder="请选择">
@@ -93,7 +84,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='chooseTab !==338 && followRecord.type == 2' v-for='(com,index) in followRecord.pay_method'
+            <el-row :gutter="20" width='100%' v-if='chooseTab !==338 && followRecord.folow_status == 2' v-for='(com,index) in followRecord.pay_method'
               :key='"comp"+index'>
               <el-col :span="8">
                 <el-form-item label="认责人">
@@ -104,7 +95,7 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="姓名">
-                  <el-input @focus="handlerOrgan('add_record_renze',index)" readonly v-model="com.name" placeholder="请选择"></el-input>
+                  <el-input @focus="handlerOrgan(index)" readonly v-model="com.name" placeholder="请选择"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -143,9 +134,6 @@
     <CreateOrder :visible='createOrder_visible' @close="handleCloseOrder" />
     <!-- 人员选择 -->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan" />
-    <!--选择部门-->
-    <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart" />
-
     <!-- 催办 -->
     <UrgedDealDialog :visible="urgedDeal_visible" @close="handleCloseUrgedDeal" :moduleData='urgedDeal_info' />
     <!-- 转交 -->
@@ -162,21 +150,18 @@
 <script>
 import SearchHigh from '../../common/searchHigh.vue'
 import MenuList from '../../common/menuList.vue';
-import { workOrderSearch } from '../../../assets/js/allSearchData.js';
-import { customService } from '../../../assets/js/allModuleList.js';
+import StaffOrgan from '../../common/staffOrgan.vue'
+import Ljupload from '../../common/lightweightComponents/lj-upload'
+import LjDialog from '../../common/lj-dialog.vue';
 import DeleteDialog from '../components/delete-dialog';
 import AddDialog from '../components/add-dialog';
-
 import TransferDialog from '../components/transfer-dialog';
 import SureEndDialog from '../components/sureEnd-dialog';
 import UrgedDealDialog from '../components/urgedDeal-dialog';
 import OrderDetail from './components/order-detail';
 import CreateOrder from './components/createOrder'
-import LjDialog from '../../common/lj-dialog.vue';
-
-import StaffOrgan from '../../common/staffOrgan.vue'
-import DepartOrgan from '../../common/departOrgan';
-import Ljupload from '../../common/lightweightComponents/lj-upload'
+import { workOrderSearch } from '../../../assets/js/allSearchData.js';
+import { customService } from '../../../assets/js/allModuleList.js';
 
 export default {
   name: "index",
@@ -187,7 +172,6 @@ export default {
     AddDialog,
     LjDialog,
     StaffOrgan,
-    DepartOrgan,
     Ljupload,
     TransferDialog,
     SureEndDialog,
@@ -230,23 +214,21 @@ export default {
         }
       ],
       market_server: globalConfig.market_server,
-
       //tableList
       tableData: [],
+      tableShowData: {
+        create_time: '创建时间',
+        num: '工单编号',
+        type_name: '类型',
+        house_name: '地址',
+        content: '内容',
+        finish_time: '截止时间',
+        operate_user_name: '处理人',
+        create_name: '创建人',
+        org_name: '部门'
+      },
       tableDateCount: 0,
       currentRow: null,
-      orderTypeObj: {
-        1: '报销',
-        2: '核实信息',
-        3: '催缴',
-        4: '续租',
-        5: '调房',
-        6: '退租',
-        697: '报修',
-        698: '转租',
-        699: '投诉',
-        700: '其他'
-      },
       //删除row
       delete_visible: false,
       // 增加
@@ -259,65 +241,16 @@ export default {
       },
       //创建新工单
       createOrder_visible: false,
-
-      departModule: false, //部门选择
-      departData: {
-        dataType: '',
-        num: 1,
-      },
       staffModule: false, // 选择人员
       organData: {
         num: 1
       },
-      currentStaff: '',//当前选择人员的对象
       currentOrg: '',//当前选择部门的对象
-
-      complaintsType: [
-        {
-          label: 'A类原则性投诉',
-          value: 1
-        },
-        {
-          label: 'B类重大投诉',
-          value: 2
-        },
-        {
-          label: 'C类一般性投诉(被动)',
-          value: 3
-        },
-        {
-          label: 'D类一般性投诉(主动)',
-          value: 4
-        },
-      ],
-      complaintsChannels: [
-        {
-          label: '400客服',
-          value: 1
-        },
-        {
-          label: '回访',
-          value: 2
-        },
-        {
-          label: '微信',
-          value: 3
-        },
-        {
-          label: '微博',
-          value: 4
-        },
-        {
-          label: '贴吧',
-          value: 5
-        }
-      ],
       sureEnd_info: {
         payer: '',
         payer_org_name: ''
       },
 
-      // ================
       // 工单详情
       detail_visible: false,
       detail_info: {
@@ -328,7 +261,7 @@ export default {
       //新增跟进记录
       followRecord_visible: false,
       followRecord: {
-        type: '',
+        folow_status: '',
         emergency: '',
         note: '',
         pay_method: [
@@ -341,7 +274,7 @@ export default {
         ],
         album: []
       },
-      complainedType: [
+      complainedType: [ // 认责人类型
         {
           label: '业务员',
           value: 0
@@ -368,7 +301,6 @@ export default {
         }
       ],
       currentMethod: null, // 记录当前操作
-
       transfer_visible: false,  // 转交
       sureEnding_visible: false, // 确定结束
       currentIndex: null
@@ -489,41 +421,17 @@ export default {
       }
 
     },
-    handlerOrgan (params, index) {
+    handlerOrgan (index) {
       this.staffModule = true
-      this.currentStaff = params
       this.currentIndex = index || 0
     },
     // 关闭 选择人员
     hiddenOrgan (ids, names, arr) {
       this.staffModule = false;
       if (ids !== 'close') {
-        if (this.currentStaff == 'add_record_renze') {
-          this.followRecord.pay_method[this.currentIndex].name = names
-          this.followRecord.pay_method[this.currentIndex].id = ids
-        } else {
-          this.createOrder[this.currentStaff] = {
-            name: names,
-            id: ids
-          }
-        }
+        this.followRecord.pay_method[this.currentIndex].name = names
+        this.followRecord.pay_method[this.currentIndex].id = ids
         this.currentIndex = 0
-        this.currentStaff = ''
-      }
-    },
-    handlerDepart (params) {
-      this.departModule = true
-      this.currentOrg = params
-    },
-    // 关闭 选择部门
-    hiddenDepart (ids, str, arr) {
-      this.departModule = false
-      if (ids != 'close') {
-        this.createOrder[this.currentOrg] = {
-          name: str,
-          id: ids
-        }
-        this.currentOrg = ''
       }
     },
     handleCurrentChange (val) {
@@ -542,7 +450,8 @@ export default {
         this.detail_visible = true;
     },
     handleCloseDetail (params) {
-      let { type, close } = params
+      let { type, close, detail } = params
+      if (detail) this.detail_form = detail;
       this.detail_visible = false;
       if (type == '转交') {
         this.transfer_visible = true
@@ -551,8 +460,10 @@ export default {
         this.handleCuiBan(this.currentRow)
       }
       if (type == '结束') {
-        this.detail_form = params.detail
         this.handleEnd()
+      }
+      if (type == '新增跟进') {
+        this.followRecord_visible = true
       }
     },
     // 转交
@@ -568,7 +479,6 @@ export default {
     },
     //结束
     handleEnd () {
-      console.log(this.detail_form)
       this.sureEnd_info = {
         payer: this.detail_form.payer,
         payer_org_name: this.detail_form.payer
@@ -577,11 +487,13 @@ export default {
     },
     handleCloseSure (params) {
       let { isSure, isCreated } = params
+      console.log(isSure, isCreated)
       if (isSure) {
 
         // 跟进工单中的结束
         if (this.currentMethod == 'addRecord') {
-          this.addRecordFun(isSure)
+          this.addRecordFun(params)
+          this.sureEnding_visible = false
           return
         }
 
@@ -611,30 +523,31 @@ export default {
         this.detail_form = null
       }
     },
-    handleAddRecord () {
-      this.followRecord_visible = true
-      this.detail_visible = false
-    },
+    // handleAddRecord () {
+    //   this.followRecord_visible = true
+    //   this.detail_visible = false
+    // },
 
     // 新增记录
     handleAddNewRecord () {
       this.followRecord_visible = false
       this.currentMethod = 'addRecord'
-      if (this.followRecord.folow_status == 337) {
+      if (this.followRecord.folow_status == 1) {
         this.add_visible = true
       } else {
         this.sureEnding_visible = true
       }
     },
     addRecordFun (par) {
-      let { isSure, isCreate } = params
+      let { isSure } = par
       if (isSure) {
         let params = this.followRecord,
           pay_method = [];
-        if (params.type == 2) {
+        if (params.folow_status == 2) {
           params.pay_method.forEach(el => {
             pay_method.push([el.type || '', el.name || '', el.money || ''])
           });
+          params.flag = par.isCreated ? 1 : 0
         }
         params.pay_method = pay_method
         params.work_order_id = this.currentRow.id
