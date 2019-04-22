@@ -120,16 +120,16 @@
           </el-row>
 
           <el-row :gutter="10" class="detail" v-if='recordDetail'>
-            <el-col :span="6" class='detail_col el-border' v-if='recordDetail.customer_info'>
+            <el-col :span="6" class='detail_col el-border'>
               <h5>客户信息</h5>
               <div class='detail_col_box detail_col_box2' width='100%'>
                 <div>
                   <span class='tit'>姓名</span>
-                  <span class="content">{{recordDetail.customer_info.name}}</span>
+                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info.name || '--'}}</span>
                 </div>
                 <div>
                   <span class='tit'>性别</span>
-                  <span class="content">{{recordDetail.customer_info.sex == 1 ? "男":"女"}}</span>
+                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info.sex == 2 ? "男":"女"}}</span>
                 </div>
                 <div>
                   <span class='tit'>性质</span>
@@ -137,11 +137,11 @@
                 </div>
                 <div>
                   <span class='tit'>手机号</span>
-                  <span class="content">{{recordDetail.customer_info.phone || '/'}}</span>
+                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info.phone || '--'}}</span>
                 </div>
                 <div>
                   <span class='tit'>身份证号</span>
-                  <span class="content">{{recordDetail.customer_info.idcard || '/'}}</span>
+                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info.idcard || '--'}}</span>
                 </div>
               </div>
             </el-col>
@@ -151,23 +151,23 @@
                 <el-col :span='12'>
                   <div>
                     <span class='tit'>签约人</span>
-                    <span class="content">{{recordDetail.sign_user}}</span>
+                    <span class="content">{{recordDetail.sign_user || '--'}}</span>
                   </div>
                   <div>
                     <span class='tit'>负责人</span>
-                    <span class="content">{{recordDetail.org_leader}}</span>
+                    <span class="content">{{recordDetail.org_leader || '--'}}</span>
                   </div>
                   <div>
                     <span class='tit'>合同编号</span>
-                    <span class="content">{{recordDetail.contract_number}}</span>
+                    <span class="content">{{recordDetail.contract_number || '--'}}</span>
                   </div>
                   <div>
                     <span class='tit'>签约时间</span>
-                    <span class="content">{{recordDetail.sign_at}}</span>
+                    <span class="content">{{recordDetail.sign_at || '--'}}</span>
                   </div>
                   <div>
                     <span class='tit'>合约时长</span>
-                    <span class="content">{{recordDetail.sign_month.moth_to_year}}</span>
+                    <span class="content">{{recordDetail.sign_month && recordDetail.sign_month.moth_to_year || '--'}}</span>
                   </div>
                   <div>
                     <span class='tit'>合同照片</span>
@@ -180,15 +180,18 @@
                 <el-col :span='12'>
                   <div>
                     <span class='tit'>部门</span>
-                    <span class="content">{{recordDetail.sign_org}}</span>
+                    <span class="content">{{recordDetail.sign_org || '--'}}</span>
                   </div>
                   <div>
                     <span class='tit'>付款方式</span>
-                    <span class="content">{{recordDetail.pay_way}}</span>
+                    <span class="content">{{recordDetail.pay_way || '--'}}</span>
                   </div>
                   <div>
                     <span class='tit'>收费价格</span>
-                    <span class="content">{{recordDetail.month_price[0].price + "元"}}</span>
+                    <p class="content" v-if="recordDetail.month_price && recordDetail.month_price.length > 0">
+                      <span v-for="(item,key) in recordDetail.month_price" :key="key"> {{ item.price }}元 {{
+                        item.period }}个月</span>
+                    </p>
                   </div>
                   <div>
                     <span class='tit'>合同状态</span>
@@ -213,14 +216,14 @@
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span='6' class='detail_col' v-if='recordDetail.house_extension'>
+            <el-col :span='6' class='detail_col'>
               <h5>房屋信息</h5>
-              <div class='detail_col_box detail_col_box2'>
+              <div class='detail_col_box'>
                 <span class='tit'>房屋地址</span>
                 <span class="content">{{recordDetail.house_extension && recordDetail.house_extension.address || '--'}}</span>
               </div>
             </el-col>
-            <el-col :span='6' class='detail_col' v-if='recordDetail.is_agency == 1 && recordDetail.agency_info'>
+            <el-col :span='6' class='detail_col' v-if='recordDetail.is_agency == 1'>
               <h5>中介信息</h5>
               <div class='detail_col_box  detail_col_box2'>
                 <div>
@@ -446,7 +449,6 @@ export default {
     changeTabs (id) {
       if (this.chooseTab !== id) {
         this.chooseTab = id
-        this.accessTab = 1 // 改变访问状态
         this.getRecordList()
       }
     },
