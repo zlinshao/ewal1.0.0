@@ -1,5 +1,5 @@
 <template>
-  <LjDialog :visible="add_visible" :size="{width: 480 + 'px',height: 310 + 'px'}" @close="handleCloseAdd" id='add_dailog'>
+  <LjDialog :visible="add_visible" :size="{width: 480 + 'px',height: 310 + 'px'}" @close="handleClose" id='add_dailog'>
     <div class='dialog_container'>
       <div class="dialog_main">
         <div class='img_box'></div>
@@ -7,8 +7,8 @@
         <p class='notice'>确定要添加吗?</p>
       </div>
       <div class="dialog_footer">
-        <el-button type="danger" size="small" @click="handleCloseAddOrder">新增</el-button>
-        <el-button type="info" size="small" @click="handleCloseAdd">取消</el-button>
+        <el-button type="danger" size="small" @click="handleAdd">新增</el-button>
+        <el-button type="info" size="small" @click="handleClose">取消</el-button>
       </div>
     </div>
   </LjDialog>
@@ -20,12 +20,12 @@ export default {
   components: { LjDialog },
   props: ['add_visible'],
   methods: {
-    handleCloseAdd () {
+    handleAdd () {
       this.$emit('close', {
         isSure: true
       })
     },
-    handleCloseAddOrder () {
+    handleClose () {
       this.$emit('close', {
         isSure: false
       })
