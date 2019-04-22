@@ -960,6 +960,7 @@
         handler(val) {
           this.departInfo = val;
           this.interview_info_detail.depart = val.name;
+          this.interview_info_detail.org_id = [];
           this.interview_info_detail.org_id.push(val.id);
           this.staffParams.org_id = val.id;
           this.getStaffList();

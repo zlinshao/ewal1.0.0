@@ -149,7 +149,7 @@ export default {
         this.reset[word] = '';
         this.reset.page = val.page ? val.page : 1;
         this.reset.limit = val.limit ? val.limit : 30;
-        this.resetting();
+        // this.resetting();
       },
       deep: true
     },

@@ -32,6 +32,7 @@ const ContractManagement = () =>
   import('@/components/marketCentre/contractManagement/index.vue') //合同管理
 const CustomerManagement = () =>
   import('@/components/marketCentre/customerManagement/index.vue') //客户管理
+const Performance = () => import('@/components/marketCentre/performanceManagement/index.vue'); //业绩工资
 
 // 人力资源中心
 const HumanResource = () => import('@/components/humanResource/index.vue')
@@ -655,6 +656,11 @@ export default new Router({
       path: '/customerManagement',
       name: '客户管理',
       component: CustomerManagement
+    },
+    {
+      path: '/performance',
+      name: '业绩工资',
+      component: Performance
     },
     {
       path: '/demo',
