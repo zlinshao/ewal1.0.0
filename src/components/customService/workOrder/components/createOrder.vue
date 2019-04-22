@@ -198,7 +198,9 @@
                       :key='info.phone'>
                       <div v-for='item in Object.keys(contract_showInfo[0])' :key='item'>
                         <span class='tit'>{{contract_showInfo[0][item]}}</span>
-                        <span class="content_tit">{{info[item]|| '--'}}</span>
+                        <span class="content_tit" v-if='item == "sex"'>{{info[item] == 2?"男":"女"}}</span>
+                        <span class="content_tit" v-else-if='item == "type"'>{{chosenCustomer.customer_type || '--'}}</span>
+                        <span class="content_tit" v-else>{{info[item] || '--'}}</span>
                       </div>
                     </div>
                   </el-col>

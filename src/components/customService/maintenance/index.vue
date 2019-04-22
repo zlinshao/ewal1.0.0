@@ -317,8 +317,8 @@
               <el-col :span="6">
                 <p class='el-col-p'><i class='icon type'></i><span>类型</span></p>
                 <div class='input_box'>
-                  <el-radio v-model="createOrder_form.type" label="1">维修</el-radio>
-                  <el-radio v-model="createOrder_form.type" label="2">保洁</el-radio>
+                  <el-radio v-model="createOrder_form.type" label="7">维修</el-radio>
+                  <el-radio v-model="createOrder_form.type" label="8">保洁</el-radio>
                 </div>
               </el-col>
 

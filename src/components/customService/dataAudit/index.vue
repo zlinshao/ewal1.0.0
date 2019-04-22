@@ -162,17 +162,21 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="押金">
-                    <span>{{ contractDetail.deposit_payed + '元'|| '--'}}</span>
+                    <span>{{ contractDetail.deposit_payed || '--' + '元'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="违约金">
-                    <span>{{ contractDetail.mortgage_price + '元'|| '--'}}</span>
+                    <span>{{ contractDetail.mortgage_price || '--' + '元'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="价格">
-                    <span>{{ contractDetail.month_price[0].price + '元'|| '--'}}</span>
+                    <p v-if='contractDetail.month_price && contractDetail.month_price.length >0' class='price-box'>
+                      <span v-for='(item,key) in contractDetail.month_price' :key='key'>{{ item.price }}元/{{item.period
+                        }}个月;</span>
+                    </p>
+                    <span v-else></span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -753,9 +757,10 @@ export default {
     },
     // 合同通过 驳回
     handleContract (isTrue) {
+      console.log(this.contractDetail)
       let params = {
         process_id: this.contractDetail.process_instance_id,
-        contract_type: this.contractDetail.contract_type,
+        contract_type: this.tag_status,
         task_id: this.complete.task_id,
         data: {}
       }
@@ -864,6 +869,10 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/scss/customService/dataAudit/index.scss";
+.price-box {
+  overflow-x: scroll;
+  @include scroll;
+}
 </style>
 
 

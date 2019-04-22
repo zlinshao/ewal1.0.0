@@ -60,14 +60,18 @@
         </el-table-column>
         <el-table-column :label="chooseTab == 1 ? '收房价格':'出租价格'" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.month_price[0].price + '元'}}</span>
+            <p class="content" v-if="scope.row.month_price &&scope.row.month_price.length > 0">
+              <span v-for="(item,key) in scope.row.month_price" :key="key"> {{ item.price }}元 {{
+                item.period }}个月</span>
+            </p>
           </template>
         </el-table-column>
         <el-table-column label="付款方式" align="center">
           <template slot-scope="scope">
-            <span v-if='scope.row.pay_way[0]'>{{scope.row.pay_way[0].pay_way_str?scope.row.pay_way[0].pay_way_str :'押'+
-              scope.row.pay_way[0].pay_way_bet + '付'+
-              scope.row.pay_way[0].pay_way}}</span>
+            <p v-if='scope.row.pay_way&& scope.row.pay_way.length >0'>
+              <span v-for='(item,key) in scope.row.pay_way'>{{item.pay_way_str? item.pay_way_str :'押'+ item.pay_way_bet
+                + '付'+ item.pay_way}}</span>
+            </p>
             <span v-else>--</span>
           </template>
         </el-table-column>
@@ -174,7 +178,7 @@
           <!--合同信息-->
           <p class='main_tit'>合同信息</p>
           <div class="common_info">
-            <el-form label-width="120px">
+            <el-form label-width="128px">
               <el-row :gutter="8">
                 <el-col :span="8">
                   <el-form-item label="合同类型">
@@ -182,12 +186,12 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="签约时间">
+                  <el-form-item label="签约时长">
                     <span v-if='contractDetail.sign_month'>{{ contractDetail.sign_month.moth_to_year || '/'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="签约时长">
+                  <el-form-item label="签约时间">
                     <span>{{ contractDetail.sign_at || '--' }}</span>
                   </el-form-item>
                 </el-col>
@@ -208,17 +212,20 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="押金">
-                    <span>{{ contractDetail.deposit_payed + '元'|| '--'}}</span>
+                    <span>{{ contractDetail.deposit_payed || '--' + '元'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="违约金">
-                    <span>{{ contractDetail.mortgage_price + '元'|| '--'}}</span>
+                    <span>{{ contractDetail.mortgage_price || '--' + '元'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="价格">
-                    <span>{{ contractDetail.month_price[0].price + '元'|| '--'}}</span>
+                    <p v-if="contractDetail.month_price && contractDetail.month_price.length > 0">
+                      <span v-for="(item,key) in contractDetail.month_price" :key="key"> {{ item.price }}元 {{
+                        item.period }}个月</span>
+                    </p>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
