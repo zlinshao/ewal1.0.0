@@ -2,7 +2,14 @@
   <lj-dialog :visible="visible" :size="{width: 720 + 'px',height: 680 + 'px'}" @close="handleCloserecord">
     <div class="dialog_container" id='red-log'>
       <div class="dialog_header">
-        <h3>回访记录</h3>
+        <h3>{{typeName}}</h3>
+        <div class="main_header" v-if='type == 1'>
+          <p class='left_tips'>
+            <i class='icon'></i>回访记录</p>
+          <div class='right_tips' @click='addRecord'>
+            <b>+</b>
+          </div>
+        </div>
       </div>
       <div class='dialog_main'>
         <ul v-if='tableCount> 0'>
@@ -19,12 +26,21 @@
               <p>未接通</p>
             </div>
             <div class='detail_dialog_right' v-else>
+              <template v-if='type == 1'>
+                <p>来源:{{item.from}}</p>
+                <p v-if='item.other_fee.length == 0'>其他费用:无</p>
+                <div class='other_fee' v-else>
+                  其他费用：
+                  <p v-for='fee in  item.other_fee' :key='fee.name'>{{fee.name + ':' + fee.money + '元'}}</p>
+                </div>
+              </template>
               <p class='detail_dialog_note'>{{item.remark}}</p>
               <el-rate class='detail_dialog_rato' v-model="item.star" disabled score-template="{value}">
               </el-rate>
             </div>
           </li>
         </ul>
+        <p v-else>暂无记录</p>
       </div>
     </div>
   </lj-dialog>
@@ -41,6 +57,8 @@ export default {
     return {
       table: [],
       tableCount: 0,
+      type: 0,
+      typeName: '回访记录',
       market_server: globalConfig.market_server,
     }
   },
@@ -49,20 +67,28 @@ export default {
       if (val) {
         this.getData()
       }
+    },
+    moduleData (val) {
+      if (val.type) {
+        this.typeName = val.house_name
+        this.type = val.type
+      }
     }
   },
   methods: {
     handleCloserecord () {
       this.$emit('close', true)
     },
+    addRecord () {
+      this.$emit('close', 'add')
+    },
     getData () {
       this.$http.get(`${this.market_server}v1.0/csd/revisit/${this.moduleData.contract_type}/${this.moduleData.contract_id}`).then(res => {
         if (res.code === 200) {
-          this.table = res.data.data
-          this.tableCount = res.data.all_count
+          this.table = res.data.record || []
+          this.tableCount = res.data.times || 0
         }
       })
-
     }
   }
 }
@@ -146,10 +172,12 @@ export default {
 
 #theme_name.theme1 {
   #red-log {
-    background: #ffffff;
     color: #686874;
     .circle {
       @include confirmImg("biaoji.png", "theme1");
+    }
+    .dialog_main {
+      background: #fff;
     }
   }
 }

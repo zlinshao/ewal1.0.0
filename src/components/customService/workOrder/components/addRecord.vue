@@ -1,0 +1,209 @@
+<template>
+  <div>
+    <LjDialog :visible="visible" :size="{width: 720 + 'px',height: 480 + 'px'}" @close="handleCloseAddNewRecord">
+      <div class="dialog_container followRecord">
+        <div class="dialog_header">
+          <h3>新增跟进记录</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form label-width='80px'>
+            <el-row :gutter="10" width='100%'>
+              <el-col :span="12">
+                <el-form-item label="工单状态">
+                  <el-radio v-model="followRecord.folow_status" label="1">跟进中</el-radio>
+                  <el-radio v-model="followRecord.folow_status" label="2">已完成</el-radio>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12" v-if='moduleData.chooseTab !== 338 && followRecord.folow_status == 2'>
+                <el-form-item label="投诉有效性">
+                  <el-radio v-model="followRecord.emergency" label="1">有效</el-radio>
+                  <el-radio v-model="followRecord.emergency" label="2">无效</el-radio>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 1'>
+              <el-col :span="8">
+                <el-form-item label="紧急程度">
+                  <el-select v-model="followRecord.emergency" placeholder="请选择">
+                    <el-option label="一般" value="1"></el-option>
+                    <el-option label="紧急" value="2"></el-option>
+                    <el-option label="特急" value="3"></el-option>
+                    <el-option label="重要" value="4"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" width='100%' v-if='moduleData.chooseTab !==338 && followRecord.folow_status == 2'
+              v-for='(com,index) in followRecord.pay_method' :key='"comp"+index'>
+              <el-col :span="8">
+                <el-form-item label="认责人">
+                  <el-select placeholder="请选择" v-model='com.type'>
+                    <el-option v-for='label in complainedType' :key='label.label' :value='label.value' :label="label.label"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="姓名">
+                  <el-input @focus="handlerOrgan(index)" readonly v-model="com.name" placeholder="请选择"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="认责金额" class='record_money'>
+                  <el-input placeholder="请填写" v-model='com.money'></el-input>
+                  <i class='icons icon_add' v-if='index == 0' @click='addComplaintsType'></i>
+                  <i class='icons icon_del' v-else @click="delComplaintsType(index)"></i>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20" width='100%'>
+              <el-col :span="24" :gutter="20" width='100%'>
+                <el-form-item label="跟进记录">
+                  <el-input placeholder="请填写" type='textarea' v-model="followRecord.note"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24" :gutter="20" width='100%'>
+                <el-form-item label="上传图片">
+                  <Ljupload size='40' v-model='followRecord.album'></Ljupload>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleAddNewRecord">确定</el-button>
+          <el-button type="info" size="small" @click="handleCloseAddNewRecord">取消</el-button>
+        </div>
+      </div>
+    </LjDialog>
+    <!-- 人员选择 -->
+    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan" />
+  </div>
+</template>
+
+<script>
+import LjDialog from '../../../common/lj-dialog.vue';
+import Ljupload from '../../../common/lightweightComponents/lj-upload';
+import StaffOrgan from '../../../common/staffOrgan.vue'
+export default {
+  props: ['visible', 'moduleData'],
+  components: {
+    LjDialog,
+    Ljupload,
+    StaffOrgan
+  },
+  data () {
+    return {
+      followRecord_visible: false,
+      followRecord: {
+        folow_status: '',
+        emergency: '',
+        note: '',
+        pay_method: [
+          {
+            id: '',
+            type: '',
+            name: '',
+            money: ''
+          }
+        ],
+        album: []
+      },
+      complainedType: [ // 认责人类型
+        {
+          label: '业务员',
+          value: 0
+        },
+        {
+          label: '片区经理',
+          value: 1
+        },
+        {
+          label: '房东',
+          value: 2
+        },
+        {
+          label: '现租客',
+          value: 3
+        },
+        {
+          label: '公司',
+          value: 4
+        },
+        {
+          label: '前租客',
+          value: 5
+        }
+      ],
+      staffModule: false, // 选择人员
+      organData: {
+        num: 1
+      },
+      currentIndex: 0,
+    }
+  },
+  methods: {
+    addComplaintsType () {
+      this.followRecord.pay_method.push({
+        id: '',
+        type: '',
+        name: '',
+        money: ''
+      })
+    },
+    delComplaintsType (index) {
+      this.followRecord.pay_method.splice(index, 1)
+    },
+    handlerOrgan (index) {
+      this.staffModule = true
+      this.currentIndex = index || 0
+    },
+    // 关闭 选择人员
+    hiddenOrgan (ids, names, arr) {
+      this.staffModule = false;
+      if (ids !== 'close') {
+        this.followRecord.pay_method[this.currentIndex].name = names
+        this.followRecord.pay_method[this.currentIndex].id = ids
+        this.currentIndex = 0
+      }
+    },
+    // 新增记录
+    handleAddNewRecord () {
+      this.followRecord_visible = false
+      this.$emit('close', {
+        isCreate: false,
+        createdType: this.followRecord.folow_status == 1 ? "doing" : "finish",
+        content: this.followRecord
+      })
+      this.clearInfo()
+    },
+    // 取消
+    handleCloseAddNewRecord () {
+      this.$emit('close', {
+        isCreate: false,
+        createdType: null,
+        content: {}
+      })
+      this.clearInfo()
+    },
+    clearInfo () {
+      this.followRecord = {
+        folow_status: '',
+        emergency: '',
+        note: '',
+        pay_method: [
+          {
+            id: '',
+            type: '',
+            name: '',
+            money: ''
+          }
+        ],
+        album: []
+      }
+    }
+  }
+}
+</script>
+

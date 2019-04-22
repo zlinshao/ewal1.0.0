@@ -254,57 +254,7 @@
     </lj-dialog>
 
     <!-- 回访记录 -->
-    <lj-dialog :visible="detail_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseDetail">
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>{{record_housename}}</h3>
-          <div class="main_header">
-            <p class='left_tips'>
-              <i class='icon'></i>回访记录</p>
-            <div class='right_tips' @click='record_addRecord'>
-              <b>+</b>
-            </div>
-          </div>
-        </div>
-        <div class='dialog_main detail_dialog'>
-          <ul>
-            <li v-for='item in record' :key='item.time'>
-              <div class='detail_dialog_left'>
-                <p>{{item.add_user || '----'}}</p>
-                <p>{{item.time}}</p>
-              </div>
-              <div class="detail_dialog_center">
-
-                <div class='circle'></div>
-              </div>
-              <div class='detail_dialog_right' v-if='item.is_connect== 0'>
-                <p>未接通</p>
-              </div>
-              <div class='detail_dialog_right' v-else>
-                <p>来源:{{item.from}}</p>
-                <p v-if='item.other_fee.length == 0'>其他费用:无</p>
-                <div class='other_fee' v-else>
-                  其他费用：
-                  <p v-for='fee in  item.other_fee' :key='fee.name'>{{fee.name + ':' + fee.money + '元'}}</p>
-                </div>
-                <div>
-                  满意度:
-                  <el-rate class='detail_dialog_rato' v-model="item.star" disabled score-template="{value}">
-                  </el-rate>
-                </div>
-                <p class='detail_dialog_note'>备注：{{item.remark}}</p>
-              </div>
-
-            </li>
-          </ul>
-        </div>
-        <div class='dialog_footer'>
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info">取消</el-button>
-        </div>
-      </div>
-    </lj-dialog>
-
+    <RecordeDialog :moduleData='record_info' :visible='detail_visible' @close='handleCloseDetail' />
     <!--menu-->
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
   </div>
@@ -314,6 +264,7 @@
 import SearchHigh from '../../common/searchHigh.vue'
 import LjDialog from '../../common/lj-dialog.vue';
 import MenuList from '../../common/menuList.vue';
+import RecordeDialog from '../components/recorde-dialog';
 import { visitToRecordSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 export default {
@@ -321,7 +272,8 @@ export default {
   components: {
     SearchHigh,
     LjDialog,
-    MenuList
+    MenuList,
+    RecordeDialog
   },
   data () {
     return {
@@ -437,7 +389,8 @@ export default {
         water_card_photo: '水卡',
         electricity_card_photo: '电卡',
         gas_card_photo: '气卡'
-      }
+      },
+      record_info: {}
     }
   },
   created () {
@@ -524,21 +477,13 @@ export default {
     },
     // 双击查看回访记录
     tableClickRow (row) {
-      this.$http.get(this.market_server + `v1.0/csd/revisit/${this.chooseTab}/${row.con_id}`).then(res => {
-        if (res.code === 200) {
-          if (res.data.record && res.data.record.length > 0) {
-            this.record = res.data.record
-            this.detail_visible = true;
-            this.record_housename = row.house_name || '----'
-            return
-          }
-        }
-        this.record = []
-        this.$LjNotify('warning', {
-          title: '警告',
-          message: '暂无回访记录'
-        })
-      })
+      this.record_info = {
+        type: 1,
+        house_name: row.house_name || '----',
+        contract_type: this.chooseTab,
+        contract_id: row.con_id
+      }
+      this.detail_visible = true
       this.currentRow = row
     },
     //切换分页
@@ -616,8 +561,8 @@ export default {
       })
     },
     record_addRecord () {
-      this.detail_visible = false
       this.handleAddRecord(this.currentRow)
+      this.detail_visible = false
     },
     handleCloseAdd () {
       this.add_visible = false;
@@ -637,11 +582,14 @@ export default {
       this.recordFree = 0
       this.currentRow = null
     },
-    handleCloseDetail () {
-      this.detail_visible = false;
-      this.record = [];
-      this.record_housename = '';
-      this.currentRow = null
+    handleCloseDetail (param) {
+      if (param == 'add') {
+        this.add_visible = true
+        this.record_addRecord()
+      } else {
+        this.currentRow = null
+        this.detail_visible = false;
+      }
     },
   }
 }

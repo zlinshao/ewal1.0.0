@@ -48,109 +48,32 @@
         </div>
       </footer>
     </div>
-    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
-    <MenuList :list="customService" :module="visibleStatus" :backdrop=true @close="visibleStatus = false"></MenuList>
-    <!--新增跟进记录-->
-    <LjDialog :visible="followRecord_visible" :size="{width: 720 + 'px',height: 480 + 'px'}" @close="handleCloseAddNewRecord">
-      <div class="dialog_container followRecord">
-        <div class="dialog_header">
-          <h3>新增跟进记录</h3>
-        </div>
-        <div class="dialog_main">
-          <el-form label-width='80px'>
-            <el-row :gutter="10" width='100%'>
-              <el-col :span="12">
-                <el-form-item label="工单状态">
-                  <el-radio v-model="followRecord.folow_status" label="1">跟进中</el-radio>
-                  <el-radio v-model="followRecord.folow_status" label="2">已完成</el-radio>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12" v-if='chooseTab !== 338 && followRecord.folow_status == 2'>
-                <el-form-item label="投诉有效性">
-                  <el-radio v-model="followRecord.emergency" label="1">有效</el-radio>
-                  <el-radio v-model="followRecord.emergency" label="2">无效</el-radio>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 1'>
-              <el-col :span="8">
-                <el-form-item label="紧急程度">
-                  <el-select v-model="followRecord.emergency" placeholder="请选择">
-                    <el-option label="一般" value="1"></el-option>
-                    <el-option label="紧急" value="2"></el-option>
-                    <el-option label="特急" value="3"></el-option>
-                    <el-option label="重要" value="4"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" width='100%' v-if='chooseTab !==338 && followRecord.folow_status == 2' v-for='(com,index) in followRecord.pay_method'
-              :key='"comp"+index'>
-              <el-col :span="8">
-                <el-form-item label="认责人">
-                  <el-select placeholder="请选择" v-model='com.type'>
-                    <el-option v-for='label in complainedType' :key='label.label' :value='label.value' :label="label.label"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="姓名">
-                  <el-input @focus="handlerOrgan(index)" readonly v-model="com.name" placeholder="请选择"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="认责金额" class='record_money'>
-                  <el-input placeholder="请填写" v-model='com.money'></el-input>
-                  <i class='icons icon_add' v-if='index == 0' @click='addComplaintsType'></i>
-                  <i class='icons icon_del' v-else @click="delComplaintsType(index)"></i>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20" width='100%'>
-              <el-col :span="24" :gutter="20" width='100%'>
-                <el-form-item label="跟进记录">
-                  <el-input placeholder="请填写" type='textarea' v-model="followRecord.note"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24" :gutter="20" width='100%'>
-                <el-form-item label="上传图片">
-                  <Ljupload size='40' v-model='followRecord.album'></Ljupload>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
-        </div>
-        <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleAddNewRecord">确定</el-button>
-          <el-button type="info" size="small" @click="handleCloseAddNewRecord">取消</el-button>
-        </div>
-      </div>
-    </LjDialog>
-    <!--工单详情-->
-    <OrderDetail :visible="detail_visible" @close="handleCloseDetail" :moduleData='detail_info' />
-    <!--新建工单-->
+    <!-- 高级搜索 -->
+    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule" />
+    <!-- 新建工单 -->
     <CreateOrder :visible='createOrder_visible' @close="handleCloseOrder" />
-    <!-- 人员选择 -->
-    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan" />
+    <!-- 工单详情 -->
+    <OrderDetail :visible="detail_visible" @close="handleCloseDetail" :moduleData='detail_info' />
+    <!--新增跟进记录-->
+    <AddRecord :visible='followRecord_visible' :moduleData='followRecord_info' @close='handleCloseRecord' />
     <!-- 催办 -->
     <UrgedDealDialog :visible="urgedDeal_visible" @close="handleCloseUrgedDeal" :moduleData='urgedDeal_info' />
     <!-- 转交 -->
     <TransferDialog :visible='transfer_visible' :data="currentRow" @close='handleCloseTranfer' />
-    <!--确定结束-->
+    <!-- 确定结束 -->
     <SureEndDialog :visible="sureEnding_visible" @close="handleCloseSure" :moduleData='sureEnd_info' />
-    <!--确定删除-->
+    <!-- 确定删除 -->
     <DeleteDialog :delete_visible='delete_visible' @close='handleCloseDelete' />
-    <!--确定增加-->
+    <!-- 确定增加 -->
     <AddDialog :add_visible='add_visible' @close='handleCloseAdd' />
+    <!-- 导航 -->
+    <MenuList :list="customService" :module="visibleStatus" :backdrop=true @close="visibleStatus = false" />
   </div>
 </template>
 
 <script>
 import SearchHigh from '../../common/searchHigh.vue'
 import MenuList from '../../common/menuList.vue';
-import StaffOrgan from '../../common/staffOrgan.vue'
 import Ljupload from '../../common/lightweightComponents/lj-upload'
 import LjDialog from '../../common/lj-dialog.vue';
 import DeleteDialog from '../components/delete-dialog';
@@ -160,6 +83,7 @@ import SureEndDialog from '../components/sureEnd-dialog';
 import UrgedDealDialog from '../components/urgedDeal-dialog';
 import OrderDetail from './components/order-detail';
 import CreateOrder from './components/createOrder'
+import AddRecord from './components/addRecord'
 import { workOrderSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 
@@ -168,11 +92,11 @@ export default {
   components: {
     SearchHigh,
     MenuList,
+    Ljupload,
+    LjDialog,
     DeleteDialog,
     AddDialog,
-    LjDialog,
-    StaffOrgan,
-    Ljupload,
+    AddRecord,
     TransferDialog,
     SureEndDialog,
     UrgedDealDialog,
@@ -214,7 +138,6 @@ export default {
         }
       ],
       market_server: globalConfig.market_server,
-      //tableList
       tableData: [],
       tableShowData: {
         create_time: '创建时间',
@@ -229,28 +152,19 @@ export default {
       },
       tableDateCount: 0,
       currentRow: null,
-      //删除row
-      delete_visible: false,
-      // 增加
-      add_visible: false,
-      //催办
-      urgedDeal_visible: false,
+      delete_visible: false, //删除row
+      add_visible: false,  // 增加
+      urgedDeal_visible: false,// 催办
       urgedDeal_info: {
         work_order_id: '',
         default_Person: ''
       },
-      //创建新工单
-      createOrder_visible: false,
-      staffModule: false, // 选择人员
-      organData: {
-        num: 1
-      },
-      currentOrg: '',//当前选择部门的对象
+      createOrder_visible: false, //创建新工单
+      sureEnding_visible: false, // 确定结束
       sureEnd_info: {
         payer: '',
         payer_org_name: ''
       },
-
       // 工单详情
       detail_visible: false,
       detail_info: {
@@ -260,68 +174,18 @@ export default {
       detail_form: null,
       //新增跟进记录
       followRecord_visible: false,
-      followRecord: {
-        folow_status: '',
-        emergency: '',
-        note: '',
-        pay_method: [
-          {
-            id: '',
-            type: '',
-            name: '',
-            money: ''
-          }
-        ],
-        album: []
+      followRecord: null,
+      followRecord_info: {
+        work_id: null,
+        chooseTab: null
       },
-      complainedType: [ // 认责人类型
-        {
-          label: '业务员',
-          value: 0
-        },
-        {
-          label: '片区经理',
-          value: 1
-        },
-        {
-          label: '房东',
-          value: 2
-        },
-        {
-          label: '现租客',
-          value: 3
-        },
-        {
-          label: '公司',
-          value: 4
-        },
-        {
-          label: '前租客',
-          value: 5
-        }
-      ],
       currentMethod: null, // 记录当前操作
       transfer_visible: false,  // 转交
-      sureEnding_visible: false, // 确定结束
-      currentIndex: null
     }
   },
   mounted () {
     this.getDataList();
   },
-  watch: {
-    createOrder: {
-      handler (newVal) {
-        if (newVal.type == 699 || newVal.type == 1) {
-          this.createOrder_span = 6
-        } else {
-          this.createOrder_span = 8
-        }
-      },
-      deep: true
-    },
-  },
-  computed: {},
   methods: {
     getDataList () {
       this.showLoading(true);
@@ -421,34 +285,21 @@ export default {
       }
 
     },
-    handlerOrgan (index) {
-      this.staffModule = true
-      this.currentIndex = index || 0
-    },
-    // 关闭 选择人员
-    hiddenOrgan (ids, names, arr) {
-      this.staffModule = false;
-      if (ids !== 'close') {
-        this.followRecord.pay_method[this.currentIndex].name = names
-        this.followRecord.pay_method[this.currentIndex].id = ids
-        this.currentIndex = 0
-      }
-    },
     handleCurrentChange (val) {
       this.currentPage = val
       this.getDataList()
     },
     // 双击 详情
     tableDblClick (row) {
-      //判断工单类型
       this.currentRow = row
       this.detail_info = {
         currentId: row.id,
         chosenTag: this.chooseTab,
         currentRow: this.currentRow
-      },
-        this.detail_visible = true;
+      }
+      this.detail_visible = true;
     },
+    // 关闭详情
     handleCloseDetail (params) {
       let { type, close, detail } = params
       if (detail) this.detail_form = detail;
@@ -483,140 +334,85 @@ export default {
         payer: this.detail_form.payer,
         payer_org_name: this.detail_form.payer
       }
+      this.currentMethod = 'ending'
       this.sureEnding_visible = true
     },
     handleCloseSure (params) {
       let { isSure, isCreated } = params
-      console.log(isSure, isCreated)
+      this.sureEnding_visible = false
       if (isSure) {
-
-        // 跟进工单中的结束
-        if (this.currentMethod == 'addRecord') {
-          this.addRecordFun(params)
-          this.sureEnding_visible = false
-          return
-        }
-
-        let option = {
-          work_order_id: this.currentRow.id,
-          payer_all_money: this.currentRow.payer_all_money || 0,
-          flag: isCreated ? 1 : 0
-        }
-
-        this.$http.post(`${this.market_server}v1.0/csd/work_order/finish`, option).then(res => {
-          this.$LjNotify('success', {
-            title: '提示',
-            message: res.message
-          });
-
-          if (res.code === 200) {
-            this.sureEnding_visible = false
-            this.currentRow = null
-            this.detail_form = null
-            this.getDataList()
-          }
-        })
-
+        this.currentMethod == 'addRecord' && this.addRecordFun(params)
+        this.currentMethod == 'ending' && this.handleSure(isCreated)
       } else {
-        this.sureEnding_visible = false
         this.currentRow = null
         this.detail_form = null
       }
     },
-    // handleAddRecord () {
-    //   this.followRecord_visible = true
-    //   this.detail_visible = false
-    // },
-
-    // 新增记录
-    handleAddNewRecord () {
-      this.followRecord_visible = false
-      this.currentMethod = 'addRecord'
-      if (this.followRecord.folow_status == 1) {
-        this.add_visible = true
-      } else {
-        this.sureEnding_visible = true
+    handleSure (isCreated) {
+      let option = {
+        work_order_id: this.currentRow.id,
+        payer_all_money: this.currentRow.payer_all_money || 0,
+        flag: isCreated ? 1 : 0
       }
-    },
-    addRecordFun (par) {
-      let { isSure } = par
-      if (isSure) {
-        let params = this.followRecord,
-          pay_method = [];
-        if (params.folow_status == 2) {
-          params.pay_method.forEach(el => {
-            pay_method.push([el.type || '', el.name || '', el.money || ''])
-          });
-          params.flag = par.isCreated ? 1 : 0
+
+      this.$http.post(`${this.market_server}v1.0/csd/work_order/finish`, option).then(res => {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: res.message
+        });
+
+        if (res.code === 200) {
+          this.currentRow = null
+          this.detail_form = null
+          this.getDataList()
         }
-        params.pay_method = pay_method
-        params.work_order_id = this.currentRow.id
-
-        this.$http.post(`${this.market_server}v1.0/csd/work_order/follow`, params).then(res => {
-          this.$LjNotify('success', {
-            title: '提示',
-            message: res.message
-          });
-
-          this.add_visible = false
-        })
-      } else {
-        this.add_visible = false
+      })
+    },
+    // 新增记录
+    handleCloseRecord (params) {
+      let { isCreated, createdType, content } = params
+      this.followRecord_visible = false
+      this.followRecord = content
+      if (createdType == 'doing') {
+        this.add_visible = true
       }
-
-      this.followRecord = {
-        folow_status: 1, // 工单状态
-        emergency: '', // 紧急程度
-        payer_type: '', // 实际支付人 type
-        payer_id: '', // 实际支付人id
-        payer: '', // 实际支付人
-        pay_all_money: '', //维修金额
-        content: '', // 跟进内容
-        pay_method: [
-          {            type: '',
-            name: '',
-            money: ''          }
-        ]
+      if (createdType == 'finish') {
+        this.sureEnd_info = {
+          payer: '',
+          payer_org_name: ''
+        }
+        this.currentMethod = 'addRecord'
+        this.sureEnding_visible = true
       }
     },
     //确认添加
     handleCloseAdd (params) {
-      if (this.currentMethod == 'addRecord') {
-        this.addRecordFun(params)
-      }
+      this.add_visible = false
+      params.isSure && this.addRecordFun(params)
       this.currentMethod = null
     },
-    handleCloseAddNewRecord () {
-      this.followRecord_visible = false
-      this.detail_form = null
-      this.followRecord = {
-        folow_status: 1, // 工单状态
-        emergency: '', // 紧急程度
-        payer_type: '', // 实际支付人 type
-        payer_id: '', // 实际支付人id
-        payer: '', // 实际支付人
-        pay_all_money: '', //维修金额
-        content: '', // 跟进内容
-        ablum: [],// 上传图片
-        pay_method: [
-          {            type: '',
-            name: '',
-            money: ''          }
-        ]
+    addRecordFun (par) {
+      let params = this.followRecord,
+        pay_method = [];
+      console.log(params)
+      if (params.folow_status == 2) {
+        params.pay_method.forEach(el => {
+          pay_method.push([el.type || '', el.name || '', el.money || ''])
+        });
+        params.flag = par.isCreated ? 1 : 0
       }
-    },
-    addComplaintsType () {
-      this.followRecord.pay_method.push({
-        id: '',
-        type: '',
-        name: '',
-        money: ''
+      params.pay_method = pay_method
+      params.work_order_id = this.currentRow.id
+
+      this.$http.post(`${this.market_server}v1.0/csd/work_order/follow`, params).then(res => {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: res.message
+        });
+        this.followRecord = null
+        this.currentRow = null
       })
     },
-    delComplaintsType (index) {
-      this.followRecord.pay_method.splice(index, 1)
-    },
-
     // 客服入口
     moduleList () {
       this.visibleStatus = !this.visibleStatus;
