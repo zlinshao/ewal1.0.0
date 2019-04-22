@@ -12,11 +12,11 @@
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
-        <div class="action-bar changeChoose">
+        <div class="action-bar changeChoose" v-show="action_visible">
             <div class="action-bar-left">
-                <el-checkbox>全选</el-checkbox>
-                <span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>
-                <span class="action-bar-name" v-show="action_visible">
+                <!--<el-checkbox>全选</el-checkbox>-->
+                <span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+                <span class="action-bar-name">
                     <span class="edit" @click="handleOpenEdit(current_row)">编辑</span>
                     <span class="edit" @click="handleMoveSubject(current_row)">迁移</span>
                     <span class="edit" @click="handleUnUseSubject(current_row)">{{current_row.is_enable===2 ? '禁用' : '启用'}}</span>
@@ -91,15 +91,14 @@
         <!--编辑科目-->
         <lj-dialog
                 :visible="edit_visible"
-                :size="{width: 500 + 'px',height: 420 + 'px'}"
-                @close="edit_visible = false"
-        >
+                :size="{width: 500 + 'px',height: 450 + 'px'}"
+                @close="edit_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>编辑</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="edit_subject" size="mini" label-width="100px">
+                <div class="dialog_main borderNone">
+                    <el-form :model="edit_subject"  label-width="100px">
                         <el-form-item label="科目名称">
                             <el-input placeholder="请输入" v-model="edit_subject.title"></el-input>
                         </el-form-item>
@@ -126,14 +125,13 @@
         <lj-dialog
                 :visible="move_visible"
                 @close="handleCancelMove"
-                :size="{width: 500 + 'px',height: 360 + 'px'}"
-        >
+                :size="{width: 500 + 'px',height: 360 + 'px'}">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>迁移</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="move_subject" size="mini" label-width="100px">
+                <div class="dialog_main borderNone">
+                    <el-form :model="move_subject"  label-width="100px">
                         <el-form-item label="原科目">
                             <el-input disabled v-model="move_subject.initial"></el-input>
                         </el-form-item>
@@ -175,15 +173,14 @@
         <!--新增科目-->
         <lj-dialog
                 :visible="new_subject_visible"
-                :size="{width: 500 + 'px', height: 450 + 'px'}"
-                @close="new_subject_visible = false"
-        >
+                :size="{width: 500 + 'px', height: 500 + 'px'}"
+                @close="new_subject_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>新增</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="new_subject" size="mini" ref="addSubject" label-width="100px">
+                <div class="dialog_main borderNone">
+                    <el-form :model="new_subject" ref="addSubject" label-width="100px">
                         <el-form-item prop="parent_id" label="上级科目" align="center">
                             <el-input placeholder="必选项" @focus="handleOpenSubject('new_subject')"
                                       v-model="new_subject.parent_name"></el-input>
@@ -215,8 +212,7 @@
         <lj-dialog
                 :visible="del_subject_visible"
                 :size="{width: 500 + 'px',height: 300 + 'px'}"
-                @close="del_subject_visible = false"
-        >
+                @close="del_subject_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>确认</h3>
@@ -231,8 +227,7 @@
             </div>
         </lj-dialog>
         <!--科目-->
-        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"
-                    style="z-index: 1000"></lj-subject>
+        <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject" style="z-index: 1000"></lj-subject>
 
     </div>
 </template>
@@ -333,15 +328,17 @@
                 this.$http.delete(globalConfig.temporary_server + `subject/delete/${this.currentRow.id}`).then(res => {
                     console.log(res);
                     if (res.code === 200) {
-                        this.$notify.success({
+                        this.$LjNotify('success', {
                             title: '成功',
-                            message: res.msg
+                            message: res.msg,
+                            subMessage: '',
                         });
                         this.getSubjectList();
                     } else {
-                        this.$notify.warning({
+                        this.$LjNotify('error', {
                             title: '失败',
-                            message: res.msg
+                            message: res.msg,
+                            subMessage: '',
                         });
                         return false;
                     }
@@ -393,9 +390,14 @@
             },
             handleOkMove() {
                 if (!this.move_subject.parent_id) {
-                    this.$notify.warning({
+                    // this.$notify.warning({
+                    //     title: '警告',
+                    //     message: '请选择父级科目'
+                    // });
+                    this.$LjNotify('error', {
                         title: '警告',
-                        message: '请选择父级科目'
+                        message: '请选择父级科目',
+                        subMessage: '',
                     });
                     return false;
                 }
@@ -440,6 +442,7 @@
                     this.new_subject.parent_name = val.title;
                     this.new_subject.parent_id = val.id;
                 }
+                console.log(val)
             },
             //编辑
             handleOpenEdit(row) {

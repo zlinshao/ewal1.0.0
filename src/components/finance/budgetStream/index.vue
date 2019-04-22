@@ -14,7 +14,9 @@
                 </h2>
             </div>
             <div class="items-center listTopRight">
+                <div class="icons export" @click="handleExportInfo"></div>
                 <el-popover
+                        v-if="chooseTab===1"
                         placement="bottom-end"
                         :visible-arrow="false"
                         trigger="hover"
@@ -24,22 +26,7 @@
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
-        <!--<div class="action-bar changeChoose">-->
-            <!--<div class="action-bar-left">-->
-                <!--<el-checkbox>全选</el-checkbox>-->
-                <!--<span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
-                <!--<span class="action-bar-name" v-show="action_visible">-->
-                    <!--<span class="edit" @click="handleOpenEdit(current_row)">编辑</span>-->
-                    <!--<span class="edit" @click="handleMoveSubject(current_row)">迁移</span>-->
-                    <!--<span class="edit" @click="handleUnUseSubject(current_row)">{{current_row.is_enable===2 ? '禁用' : '启用'}}</span>-->
-                    <!--<span class="delete" @click="handleDeleteSubject(current_row)">删除</span>-->
-                <!--</span>-->
-            <!--</div>-->
-            <!--<div class="action-bar-right">-->
 
-            <!--</div>-->
-
-        <!--</div>-->
         <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
             <el-table
                     :data="tableData"
@@ -48,51 +35,28 @@
                     :row-class-name="tableChooseRow"
                     @cell-click="tableClickRow"
                     header-row-class-name="tableHeader"
-                    @selection-change="handleSelectionChange"
                     style="width: 100%">
 
-                <!--<el-table-column-->
-                        <!--type="selection" width="40">-->
-                <!--</el-table-column>-->
                 <el-table-column
                         align="center"
                         label="收入支出">
                     <template slot-scope="scope">
-                        <div class="status" :class="['status' + scope.row.scope]">
-                            <p>{{status[scope.row.scope]}}</p>
+                        <div class="status" :class="['status' + scope.row.cate]">
+                            <p>{{status[scope.row.cate]}}</p>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="账户" prop="account_num" min-width="150px" align="center"></el-table-column>
                 <el-table-column label="交易金额" prop="amount_received" min-width="150px" align="center"></el-table-column>
-                <el-table-column label="交易前账户金额" prop="amount_receivable" min-width="150px" align="center"></el-table-column>
+                <el-table-column label="交易前账户金额" prop="amount_receivable" min-width="150px"
+                                 align="center"></el-table-column>
                 <el-table-column label="地址" prop="operate_time" min-width="150px" align="center"></el-table-column>
                 <el-table-column label="交易后账户金额" prop="balance" min-width="150px" align="center"></el-table-column>
                 <el-table-column label="交易时间" prop="create_time" min-width="150px" align="center"></el-table-column>
                 <el-table-column label="操作人" prop="operator.name" min-width="150px" align="center"></el-table-column>
                 <el-table-column label="操作时间" prop="update_time" min-width="150px" align="center"></el-table-column>
-                <el-table-column label="备注" prop="remark" min-width="150px" align="center" show-overflow-tooltip></el-table-column>
-
-                <!--<el-table-column label="客户姓名" prop="fund.description.customer" align="center"></el-table-column>-->
-                <!--<el-table-column min-width="180px" label="地址" prop="address" align="center"></el-table-column>-->
-                <!--<el-table-column label="科目名称" prop="subject.title" align="center"></el-table-column>-->
-                <!--<el-table-column label="类型" prop="cate" align="center">-->
-                    <!--<template slot-scope="scope">-->
-                        <!--<span>{{ scope.row.cate === 1 ? '收入' : '支出'}}</span>-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
-                <!--<el-table-column min-width="130px" label="账户名称" prop="name" align="center"-->
-                                 <!--show-overflow-tooltip></el-table-column>-->
-                <!--<el-table-column min-width="150px" label="卡号" prop="account_num" align="center"></el-table-column>-->
-                <!--<el-table-column label="应收金额" prop="amount_receivable" align="center"></el-table-column>-->
-                <!--<el-table-column label="实收金额" prop="amount_received" align="center"></el-table-column>-->
-                <!--<el-table-column label="应付金额" prop="amount_payable" align="center"></el-table-column>-->
-                <!--<el-table-column label="实付金额" prop="amount_paid" align="center"></el-table-column>-->
-                <!--<el-table-column label="账户余额" prop="balance" align="center"-->
-                                 <!--show-overflow-tooltip></el-table-column>-->
-                <!--<el-table-column label="详细信息" prop="fund.description.description" min-width="300px" align="center"-->
-                                 <!--show-overflow-tooltip></el-table-column>-->
-                <!--<el-table-column label="收/付款人员" prop="operator.name" align="center"></el-table-column>-->
+                <el-table-column label="备注" prop="remark" min-width="150px" align="center"
+                                 show-overflow-tooltip></el-table-column>
             </el-table>
             <!--分页-->
             <footer class="flex-center bottomPage">
@@ -118,46 +82,53 @@
         <lj-dialog
                 :visible="bank_run_visible"
                 :size="bank_run_size"
-                @close="bank_run_visible = false"
+                @close="bank_run_visible = false;current_row=''"
         >
             <div class="dialog_container">
                 <div class="dialog_header flex-center">
                     <h3>银行流水</h3>
-                    <!--<div>-->
-                    <!--<span class="bank"></span>-->
-                    <!--<span class="search"></span>-->
-                    <!--</div>-->
                 </div>
-                <div class="dialog_main">
+                <div class="dialog_main changeChoose">
+                    <div class="action-bar">
+                        <div class="action-bar-left">
+                            <!--<el-checkbox>全选</el-checkbox>-->
+                            <span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+
+                            <span class="action-bar-name" v-show="action_visible">
+                                <span class="delete" v-if="current_row.status===2" @click="handleOpenBankRunUpdate(current_row)">补充/移除</span>
+                                <span class="edit" @click="handleOpenBankRunArchive(current_row)">归档</span>
+                                <span class="edit" @click="handleOpenBankRunDetail(current_row)">详情</span>
+                            </span>
+                        </div>
+
+                    </div>
+
                     <el-table
                             :data="bank_run_data"
-                    >
+                            highlight-current-row
+                            :row-class-name="tableChooseRow"
+                            @cell-click="tableClickRow"
+                            header-row-class-name="tableHeader"
+                            @selection-change="handleSelectionChange"
+                            style="width: 100%">
+
+                        <el-table-column type="selection" width="40"></el-table-column>
                         <el-table-column prop="create_time" label="导入时间" align="center"></el-table-column>
                         <el-table-column prop="id" label="流水导入批次" align="center"
                                          show-overflow-tooltip></el-table-column>
                         <el-table-column prop="account_num" label="包含账户数量" align="center"></el-table-column>
                         <el-table-column prop="bank_flow_num" label="流水数量" align="center"></el-table-column>
                         <el-table-column prop="operator" label="操作人" align="center"></el-table-column>
-                        <el-table-column prop="" label="操作" align="center" min-width="120px">
-                            <template slot-scope="scope">
-                                <el-button size="mini" type="warning" v-if="status===4"
-                                           @click="handleOpenBankRunUpdate(scope.row,scope.$index)">补充
-                                </el-button>
-                                <el-button size="mini" type="danger"
-                                           @click="handleOpenBankRunArchive(scope.row,scope.$index)">归档
-                                </el-button>
-                                <el-button size="mini" type="primary"
-                                           @click="handleOpenBankRunDetail(scope.row,scope.$index)">详情
-                                </el-button>
-                            </template>
-                        </el-table-column>
                     </el-table>
                 </div>
                 <div class="dialog_footer">
                     <div class="page">
                         <el-pagination
                                 :total="bank_run_count"
-                                layout="total,prev,pager,next"
+                                layout="total,jumper,prev,pager,next"
+                                :current-page="params.page"
+                                :page-size="params.limit"
+                                @current-change="handleChangePage_bank"
                         ></el-pagination>
                     </div>
                 </div>
@@ -167,12 +138,16 @@
         <!--银行流水详情-->
         <lj-dialog
                 :visible="bank_run_detail_visible"
-                :size="{width: 700 + 'px',height: 640 + 'px'}"
-                @close="bank_run_detail_visible = false"
+                :size="{width: 1000 + 'px',height: 750 + 'px'}"
+                @close="bank_run_detail_visible = false;current_row=''"
         >
             <div class="dialog_container">
-                <div class="dialog_header flex-center">
-                    <h3>银行流水详情</h3>
+                <div class="dialog_header justify-bet" style="margin-bottom: 20px">
+                    <h3>
+                        银行流水详情<br>
+                        <span style="font-size: 14px">[ {{current_row.id}} ]</span>
+                    </h3>
+                    <h3 style="text-align: right">total: {{bank_run_detail_count}}</h3>
                 </div>
                 <div class="dialog_main">
                     <el-table
@@ -188,11 +163,13 @@
                     <div class="page">
                         <el-pagination
                                 :total="bank_run_detail_count"
-                                layout="total,prev,pager,next"
-                        ></el-pagination>
+                                layout="total,jumper,prev,pager,next"
+                                :current-page="params.page"
+                                :page-size="params.limit"
+                                @current-change="handleChangePage_bankDetail"
+                        >
+                        </el-pagination>
                     </div>
-                </div>
-                <div class="dialog_footer">
                     <el-button type="danger" size="small" @click="bank_run_detail_visible = false;current_row = ''">关闭
                     </el-button>
                 </div>
@@ -200,7 +177,7 @@
         </lj-dialog>
         <!--归档-->
         <lj-dialog :visible="archive_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
-                   @close="archive_visible = false">
+                   @close="archive_visible = false;current_row=''">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>归档</h3>
@@ -215,14 +192,24 @@
             </div>
         </lj-dialog>
         <!--补充-->
-        <lj-dialog :visible="update_visible" :size="{width: 700 + 'px',height: 560 + 'px'}"
-                   @close="update_visible = false">
+        <lj-dialog :visible="update_visible"
+                   :size="{width: 1000 + 'px',height: 750 + 'px'}"
+                   @close="update_visible = false;current_row=''">
             <div class="dialog_container">
                 <div class="dialog_header">
-                    <h3>补充</h3>
+                    <h3>补充/移除</h3>
                 </div>
                 <div class="dialog_main">
+                    <div class="bank-run-list" >
+                        <div v-for="item in bankRunData" class="flex-center">
+                            <div class="bank-run-info">
+                                <i></i>
+                                <span style="text-align: left">交通银行131233....</span>
 
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
                 <div class="dialog_footer">
                     <el-button type="danger" size="small">导入</el-button>
@@ -231,44 +218,25 @@
         </lj-dialog>
         <!--账户-->
         <lj-dialog :visible="account_visible" :size="{width: 500 + 'px',height: 350 + 'px'}"
-                   @close="account_visible = false">
+                   @close="account_visible = false;current_row=''">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>请选择账户</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="params" :rules="rules_account" ref="accountForm" class="demo-ruleForm" size="mini">
-                        <el-form-item >
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>付款方式</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-select placeholder="请选择" @change="getAccount" v-model="account_type">
-                                        <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
-                                                   :key="index"></el-option>
-                                    </el-select>
-                                </div>
-                            </div>
+                <div class="dialog_main borderNone">
+                    <el-form :model="params" :rules="rules_account" ref="accountForm" class="demo-ruleForm"
+                             label-width="100px">
+                        <el-form-item label="付款方式">
+                            <el-select placeholder="请选择" @change="getAccount" v-model="account_type">
+                                <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
+                                           :key="index"></el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item  prop="account_id">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>付款账号</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-select placeholder="请选择" v-model="params.account_id" :disabled="is_disabled">
-                                        <el-option v-for="(item,index) in accountLists" :label="item.name" :value="item.id"
-                                                   :key="index"></el-option>
-                                    </el-select>
-                                </div>
-                            </div>
+                        <el-form-item label="付款账号">
+                            <el-select placeholder="请选择" v-model="params.account_id" :disabled="is_disabled">
+                                <el-option v-for="(item,index) in accountLists" :label="item.name" :value="item.id"
+                                           :key="index"></el-option>
+                            </el-select>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -295,21 +263,25 @@
         data() {
             return {
                 accountRunSearch,
-                current_row: '',
+                current_row: '',//当前选项
+                action_visible:false,//操作栏
                 selects: [
                     {id: 1, title: '流水',},
                     {id: 2, title: '回滚',},
                     {id: 3, title: '归档',},
                 ],
-                account_type:'',
+                account_type: '',
                 cate: [
                     {title: "银行卡", value: 1,},
                     {title: "支付宝", value: 2,},
                     {title: "微信", value: 3,},
                     {title: "银行卡(数据来自房管中心)", value: 4,},
                 ],
-                is_disabled:true,
-                accountLists:[],
+                bankRunData:[
+                    {title:'1'},{title:'1'},{title:'1'},{title:'1'},{title:'1'},{title:'1'},{title:'1'},{title:'1'},{title:'1'},{title:'1'},{title:'1'},{title:'1'},{title:'1'},
+                ],
+                is_disabled: true,
+                accountLists: [],
                 chooseTab: 1,
                 staff_visible: false,
                 bank_run_visible: false,
@@ -326,10 +298,10 @@
                 detail_params: {
                     search: '',
                     page: 1,
-                    limit: 6,
+                    limit: 8,
                     export: '',
                 },
-                rules_account:{
+                rules_account: {
                     account_id: [
                         {required: true, message: '请选择账户', trigger: 'change'},
                     ],
@@ -357,15 +329,17 @@
                 tableCount: 0,
 
                 status: {
-                    3: '收入',
-                    5: '支出',
+                    1: '收入',
+                    2: '支出',
                 },
                 chooseRowIds: [],
 
                 showSearch: false,
                 searchData: {},
-                multipleSelection:[],
-                action_visible:false
+                multipleSelection: [],
+                //导出报表
+                exportInfo: '',
+                current_item:'',
 
             }
         },
@@ -375,20 +349,21 @@
         watch: {},
         computed: {},
         methods: {
-            handleSelectionChange(val){
+            handleExportInfo() {//导出报表
+                this.exportInfo += this.chooseTab;
+            },
+            handleSelectionChange(val) {//多选项
                 this.multipleSelection = val;
-                if(val.length>0){
+                if (val.length > 0) {
                     this.action_visible = true;
                     this.current_row = val[0];
-                }else {
+                } else {
                     this.action_visible = false;
                 }
-                console.log(val);
             },
-            //账户字典
-            getAccount(){
-                this.$http.get(globalConfig.temporary_server + "account",this.params).then(res => {
-                    if(res.code===200){
+            getAccount() {//账户字典项
+                this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
+                    if (res.code === 200) {
                         this.accountLists = res.data.data;
                         this.is_disabled = false;
                     }
@@ -396,8 +371,7 @@
                     console.log(err);
                 })
             },
-            // 归档
-            getArchive(formName){
+            getArchive(formName) {// 归档
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.account_visible = false;
@@ -406,7 +380,7 @@
                 });
 
             },
-            changeTabs(id) {
+            changeTabs(id) {//
                 this.chooseTab = id;
                 switch (id) {
                     case 1:
@@ -428,7 +402,7 @@
                         this.params.is_archive = 2;
                         this.account_visible = true;
                         this.tableData = [];
-                        this.account_type='';
+                        this.account_type = '';
                         this.params.account_id = '';
                         break;
                 }
@@ -452,13 +426,8 @@
                     });
                 }
             },
-            // 切换分页
-            handleChangePage(page) {
-                this.params.page = page;
-                this.getAccountRunList();
-            },
-            //收支流水
-            getAccountRunList() {
+
+            getAccountRunList() {//收支流水列表
                 this.$http.get(globalConfig.temporary_server + 'fund_flow_record', this.params).then(res => {
                     if (res.code === 200) {
                         this.tableData = res.data.data;
@@ -471,44 +440,56 @@
                     console.log(err);
                 })
             },
+            handleChangePage(page) {
+                this.params.page = page;
+                this.getAccountRunList();
+            },
 
-            handleOpenBankRun() {
+            handleOpenBankRun() {//银行流水弹窗
                 this.bank_run_size = 'large';
                 this.bank_run_visible = true;
                 this.getBankRun();
             },
 
-            handleOpenBankRunDetail(row, index) {
+            handleOpenBankRunDetail(row) {//银行流水详情弹窗
                 this.bank_run_detail_visible = true;
+                console.log(row);
                 this.getBankRunDetail(row.id);
             },
-            //银行流水详情
-            getBankRunDetail(code) {
+            getBankRunDetail(code) {//银行流水详情
                 this.$http.get(globalConfig.temporary_server + 'bank_fund_flow?batch_flow_code=' + code, this.detail_params).then(res => {
                     if (res.code === 200) {
                         this.bank_run_detail_data = res.data.data;
-                        this.bank_run_detail_count = res.data.data.length;
+                        this.bank_run_detail_count = res.data.count;
                     }
-
                 })
             },
-            //银行流水
-            getBankRun() {
+            handleChangePage_bankDetail(page) {// 详情分页
+                this.detail_params.page = page;
+                this.getBankRunDetail(this.current_row.id);
+            },
+            getBankRun() { //银行流水列表
                 this.$http.get(globalConfig.temporary_server + 'bank_batch_count', this.params).then(res => {
                     if (res.code === 200) {
-                        console.log(res.data.data);
                         this.bank_run_data = res.data.data;
-                        this.bank_run_count = res.data.data.length;
+                        this.bank_run_count = res.data.count;
+                    } else {
+                        this.bank_run_data = [];
+                        this.bank_run_count = 0;
                     }
 
                 })
             },
-            handleOpenBankRunArchive(row, index) {
-                this.archive_visible = true;
-                this.current_row = row;
+            handleChangePage_bank(page) {//
+                this.params.page = page;
+                this.getBankRun();
             },
-            //归档
-            handleBankRunArchive() {
+            handleOpenBankRunArchive(row) {
+                this.archive_visible = true;
+                // this.current_row = row;
+            },
+
+            handleBankRunArchive() {//确认归档
                 this.$http.put(globalConfig.temporary_server + 'bank_batch_count/archive', {id: this.current_row.id}).then(res => {
                     if (res.code === 200) {
                         this.callbackSuccess(res);
@@ -517,10 +498,10 @@
                 })
             },
 
-            //补充
-            handleOpenBankRunUpdate(row, index) {
+
+            handleOpenBankRunUpdate(row) {//补充/移除
                 this.update_visible = true;
-                this.current_row = row;
+                // this.current_row = row;
             },
 
             // 当前点击
@@ -568,13 +549,13 @@
                     color: $colorFFF;
                 }
 
-                .status3 {
+                .status1 {
                     p {
                         @include budgetStreamImg('shouru.png', 'theme1');
                     }
                 }
 
-                .status5 {
+                .status2 {
                     p {
                         @include budgetStreamImg('zhichu.png', 'theme1');
                     }
@@ -603,6 +584,18 @@
 
                     .search {
                         background-color: #008A7B;
+                    }
+                }
+            }
+
+            //导出
+            .export {
+                @include budgetStreamImg('upLoad.png', 'theme1');
+            }
+            .bank-run-list{
+                .bank-run-info{
+                    i{
+                        @include budgetStreamImg('bank-run.png', 'theme1');
                     }
                 }
             }

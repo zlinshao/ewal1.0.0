@@ -338,8 +338,10 @@
             this.detailData.operator_name = dataInfo.operator.name;
             this.detailData.staff_name = dataInfo.staff.name;
             this.detailData.org_name = dataInfo.staff.org.name;
-            // this.detailData.org_name = dataInfo.staff.org.name;
-        },
+            this.detailData.collect_rent = dataInfo.collect_rent===1?'收款':dataInfo.collect_rent===2?'租款':'';
+            this.detailData.item_type = dataInfo.item_type===0?'暂未处理':dataInfo.item_type===1?'违约':dataInfo.item_type===2?'转租':dataInfo.item_type===3?'调租':dataInfo.item_type===4?'退租':dataInfo.item_type===5?'收房炸单':dataInfo.item_type===6?'租房炸单':'';
+            this.detailData.account_type = dataInfo.account_type===0?'暂无':dataInfo.account_type===1?'银行卡':dataInfo.account_type===2?'支付宝':dataInfo.account_type===3?'微信':'';
+            },
         methods: {
             handleSelectionChange(val){//获取选项
                 this.multipleSelection = val;

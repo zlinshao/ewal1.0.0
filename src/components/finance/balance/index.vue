@@ -18,21 +18,7 @@
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
-        <div class="action-bar changeChoose">
-            <div class="action-bar-left">
-                <el-checkbox>全选</el-checkbox>
-                <span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>
-                <span class="action-bar-name" v-show="action_visible">
-                    <span class="edit" @click="handleOpenEdit(current_row)">编辑</span>
-                    <span class="edit" @click="handleMoveSubject(current_row)">迁移</span>
-                    <span class="edit" @click="handleUnUseSubject(current_row)">{{current_row.is_enable===2 ? '禁用' : '启用'}}</span>
-                    <span class="delete" @click="handleDeleteSubject(current_row)">删除</span>
-                </span>
-            </div>
-            <div class="action-bar-right">
 
-            </div>
-        </div>
         <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
             <el-table
                     :data="balanceData"
@@ -41,18 +27,25 @@
                     :row-class-name="tableChooseRow"
                     @cell-click="tableClickRow"
                     header-row-class-name="tableHeader"
-                    @selection-change="handleSelectionChange"
                     style="width: 100%">
 
-                <el-table-column type="selection" width="40"></el-table-column>
-                <el-table-column label="创建时间" prop="creat_time" align="center"></el-table-column>
-                <el-table-column label="交接单编号" prop="number" align="center"></el-table-column>
+
+                <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
+                <el-table-column label="交接单编号" prop="id" align="center"></el-table-column>
                 <el-table-column label="地址" prop="address" align="center"></el-table-column>
                 <el-table-column label="结算费用组成" prop="data" align="center"></el-table-column>
-                <el-table-column label="账户信息" prop="account" align="center"></el-table-column>
-                <el-table-column label="发起人" prop="name" align="center"></el-table-column>
-                <el-table-column label="发起部门" prop="department" align="center"></el-table-column>
-                <el-table-column label="状态" prop="status" align="center"></el-table-column>
+                <el-table-column label="账户信息"  align="center">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.account_bank}} {{scope.row.account_num}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="发起人" prop="creator" align="center"></el-table-column>
+                <el-table-column label="发起部门" prop="org.name" align="center"></el-table-column>
+                <el-table-column label="状态"  align="center">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.status===1?'未生成款项':''}}</span>
+                    </template>
+                </el-table-column>
 
             </el-table>
             <footer class="flex-center bottomPage">
@@ -520,8 +513,6 @@
         data() {
             return {
                 params: {
-                    er_type: '',
-                    parent_id: '',
                     search: '',
                     page: 1,
                     limit: 12
@@ -631,68 +622,7 @@
                 selectTab: 1,
                 detail_visible: false,
                 count: 0,
-                balanceData: [
-                    {
-                        creat_time: '2019-10-11',
-                        number: 2121211,
-                        address: '放假就破发票佛阿婆',
-                        data: 'fsdfsdfdsfd',
-                        account: 4214141,
-                        name: '赵丽颖',
-                        department: '发阿富汗',
-                        status: 1
-                    },
-                    {
-                        creat_time: '2019-10-11',
-                        number: 2121211,
-                        address: '放假就破发票佛阿婆',
-                        data: 'fsdfsdfdsfd',
-                        account: 4214141,
-                        name: '赵丽颖',
-                        department: '发阿富汗',
-                        status: 1
-                    },
-                    {
-                        creat_time: '2019-10-11',
-                        number: 2121211,
-                        address: '放假就破发票佛阿婆',
-                        data: 'fsdfsdfdsfd',
-                        account: 4214141,
-                        name: '赵丽颖',
-                        department: '发阿富汗',
-                        status: 1
-                    },
-                    {
-                        creat_time: '2019-10-11',
-                        number: 2121211,
-                        address: '放假就破发票佛阿婆',
-                        data: 'fsdfsdfdsfd',
-                        account: 4214141,
-                        name: '赵丽颖',
-                        department: '发阿富汗',
-                        status: 1
-                    },
-                    {
-                        creat_time: '2019-10-11',
-                        number: 2121211,
-                        address: '放假就破发票佛阿婆',
-                        data: 'fsdfsdfdsfd',
-                        account: 4214141,
-                        name: '赵丽颖',
-                        department: '发阿富汗',
-                        status: 1
-                    },
-                    {
-                        creat_time: '2019-10-11',
-                        number: 2121211,
-                        address: '放假就破发票佛阿婆',
-                        data: 'fsdfsdfdsfd',
-                        account: 4214141,
-                        name: '赵丽颖',
-                        department: '发阿富汗',
-                        status: 1
-                    },
-                ],
+                balanceData: [],
                 chooseTab: 1,
                 selects: [
                     {id: 1, title: '收房',},
@@ -712,7 +642,7 @@
             }
         },
         mounted() {
-            // this.getSubjectList();
+            this.getDataLists();
         },
         activated() {
         },
@@ -732,46 +662,44 @@
         },
         computed: {},
         methods: {
-            selectTabs(id) {
-                this.selectTab = id;
-            },
-            // 多选
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-                if (val.length > 0) {
-                    this.action_visible = true;
-                    this.current_row = val[0];
-                } else {
-                    this.action_visible = false;
-                }
-                console.log(val);
-            },
-            handleChangePage() {
 
-            },
-
-            // getSubjectList() {
-            //     this.showLoading(true);
-            //     this.$http.get(globalConfig.temporary_server + 'subject', this.params).then(res => {
-            //         if (res.code === 200) {
-            //             this.showLoading(false);
-            //             this.balanceData = res.data.data;
-            //             this.count = res.data.count;
-            //         }
-            //     }).catch(err => {
-            //         console.log(err);
-            //     })
-            // },
-            // tab切换
-            changeTabs(id) {
+            changeTabs(id) {// 首页tab切换
                 this.chooseTab = id;
             },
+            selectTabs(id) {//结算单详情tab切换
+                this.selectTab = id;
+            },
+            handleOkDel(){//
+
+            },
+            handleSelectionChange(val) {// 多选
+                this.multipleSelection = val;
+                console.log(val);
+            },
+            handleChangePage(page) {
+                this.params.page=page;
+            },
+            getDataLists() {//结算单列表
+                this.showLoading(true);
+                this.$http.get(globalConfig.temporary_server + 'customer_settle', this.params).then(res => {
+                    this.showLoading(false);
+                    if (res.code === 200) {
+                        this.balanceData = res.data.data;
+                        this.count = res.data.count;
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+
             // 当前点击
             tableClickRow(row) {
                 let ids = this.chooseRowIds;
                 ids.push(row.id);
                 this.chooseRowIds = this.myUtils.arrayWeight(ids);
                 this.detail_visible = true;
+
+                this.$http.get()
 
             },
             // 点击过
