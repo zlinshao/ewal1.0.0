@@ -204,9 +204,17 @@
       },
       //离职短信
       handleControlMsg(row,where) {
-        this.confirm_row = row;
-        this.confirm_type = where;
-        this.confirm_visible = true;
+        if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
+          this.$LjMessage('success',{
+            title: '提示',
+            msg: '已发送'
+          });
+          return false;
+        } else {
+          this.confirm_row = row;
+          this.confirm_type = where;
+          this.confirm_visible = true;
+        }
       },
       handleCloseLookInfo() {
         this.look_info = [];
