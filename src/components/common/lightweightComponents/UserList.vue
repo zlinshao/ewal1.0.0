@@ -1,7 +1,7 @@
 <template>
   <div id="user_list">
     <div class="user-list-container">
-      <div v-for="item in userList" class="user-item">
+      <div v-if="!mini" v-for="item in userList" class="user-item">
         <div v-if="item.img" class="user-item-left">
           <img :src="item.img">
         </div>
@@ -10,6 +10,16 @@
         <div class="user-item-right">
           <div class="user-name">{{item.name}}</div>
           <div class="user-post">{{item.post}}</div>
+        </div>
+      </div>
+      <div v-if="mini" v-for="item in userList" class="user-item-mini">
+        <div v-if="item.img" class="user-item-mini-top">
+          <img :src="item.img">
+        </div>
+        <div v-if="!item.img" class="user-item-mini-top bg-img">
+        </div>
+        <div class="user-item-mini-bottom">
+          <div class="user-name" :style="{color: color}">{{item.name}}</div>
         </div>
       </div>
     </div>
@@ -27,7 +37,15 @@
         default() {
           return [];
         }
-      }
+      },
+      mini: {
+        type:Boolean,
+        default: false,
+      },
+      color: {
+        type:String,
+        default:'#686874',
+      },
     },
     data() {
       return {
@@ -87,14 +105,8 @@
   }
   #theme_name {
     #user_list {
-      .user-list-container {
-        .user-item {
-          .user-item-left {
-            &.bg-img {
-              @include UserListImg('touxiang.png','theme1');
-            }
-          }
-        }
+      .bg-img {
+        @include UserListImg('touxiang.png','theme1');
       }
     }
   }

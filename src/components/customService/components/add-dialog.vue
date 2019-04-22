@@ -21,10 +21,14 @@ export default {
   props: ['add_visible'],
   methods: {
     handleCloseAdd () {
-      this.$emit('close', false)
+      this.$emit('close', {
+        isSure: true
+      })
     },
     handleCloseAddOrder () {
-      this.$emit('close', true)
+      this.$emit('close', {
+        isSure: false
+      })
     }
   }
 }

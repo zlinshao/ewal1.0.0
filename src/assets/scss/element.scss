@@ -135,6 +135,15 @@ div.el-popover {
       background-color: $colorFFF !important;
     }
   }
+  .borderBgColor{
+    .el-input__inner,
+    .el-textarea__inner {
+      border: none;
+      background-color: #F9F9F9 !important;
+    }
+  }
+
+
   //input仅有背景
   .onlyBg {
     .el-input__inner,

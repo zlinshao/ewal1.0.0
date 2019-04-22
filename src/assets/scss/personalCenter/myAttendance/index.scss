@@ -86,6 +86,27 @@
           width: 100%;
           border: 1px solid #E4E4E4;
           border-top: none;
+          .calendar-days-item {
+            width: 100%;
+            height: 100%;
+            user-select: none;
+            display: flex;
+            background-color: $color9F9;
+            justify-content: flex-start;
+            &.rest {
+              background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="100%" y1="0" x2="0" y2="100%" style="stroke:rgb(228,228,228);stroke-width:1"/></svg>');
+            }
+            &.current {
+              color: white;
+              background-color: $colorE33;
+            }
+            .days-item-content-container {
+              padding: 10% 0 0 10%;
+              .days-item-content-date {
+                font-size: 18px;
+              }
+            }
+          }
         }
         .calendar-useless {
           flex: 10%;

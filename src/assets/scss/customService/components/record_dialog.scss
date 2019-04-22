@@ -1,0 +1,52 @@
+@import '../../common.scss';
+
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/customService/workOrder/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
+#theme_name {
+  #record_dialog {
+    .warn_icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+    }
+    .cell {
+      @include flex('flex-center');
+    }
+    .el-pagination {
+      margin-top: 20px;
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #record_dialog {
+    .warn_icon {
+      @include confirmImg('koukuanmingxi_hui.png', 'theme1');
+    }
+    .hover-row,
+    .current-row {
+      .warn_icon {
+        @include confirmImg('koukuanmingxi.png', 'theme1');
+      }
+    }
+  }
+}
+
+#theme_name.theme2 {
+  #workOrder {
+  }
+}
+
+#theme_name.theme3 {
+  #workOrder {
+  }
+}
+
+#theme_name.theme4 {
+  #workOrder {
+  }
+}

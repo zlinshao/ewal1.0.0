@@ -3,8 +3,8 @@
         <div class="dialog_header">
             <h3>{{checkOrEdit.is_check===false?'编辑': '查看'}}</h3>
         </div>
-        <div class="dialog_main">
-            <el-form :model="formParams" size="mini" ref="formParams" :rules="rulesForm" label-width="150px">
+        <div class="dialog_main borderNone">
+            <el-form :model="formParams"  ref="formParams" :rules="rulesForm" label-width="150px">
                 <el-row>
                     <el-col :span="8">
                         <div class="">

@@ -163,7 +163,8 @@
                 current: '',//当前
                 seen: false,//显隐
                 selects: [
-                    {id: 1, title: "视频"}, {id: 2, title: "文档"}
+                    {id: 1, title: "视频"},
+                    {id: 2, title: "文档"}
                 ],
                 params: {//查询参数
                     search: '',
@@ -222,6 +223,7 @@
             },
             getPath() {
                 this.chooseTab = this.$route.query.type;
+                console.log(this.chooseTab);
             },
             // 查看详情
             // openDetail(row) {

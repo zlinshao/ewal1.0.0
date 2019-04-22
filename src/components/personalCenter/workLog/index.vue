@@ -3,13 +3,13 @@
     <div class="work-log-container">
       <div class="work-log-container-left scroll_bar">
         <div class="work-log-toolbar">
-          <div v-for="item in toolbarList" @click="switchToolbar(item.id)" :class="{checked:toolbarChoosed==item.id}"
+          <div v-for="(item,index) in toolbarList" :key="index" @click="switchToolbar(item.id)" :class="{checked:toolbarChoosed==item.id}"
                class="work-log-toolbar-item">{{item.name}}
           </div>
         </div>
         <div class="work-log-input-list scroll_bar">
           <div class="work-log-input-list-container">
-            <div v-for="item in inputList[inputIndexName]" class="work-log-input-list-item">
+            <div v-for="(item, index) in inputList[inputIndexName]" :key="index" class="work-log-input-list-item">
               <div class="work-log-input-list-item-tip">
                 {{item.name}}
               </div>
@@ -25,15 +25,15 @@
             <div class="work-log-input-list-item-footer">
               <div class="footer-upload">
                 上传附件:
-                <lj-upload style="display: inline-block;margin-left: 30px"></lj-upload>
+                <lj-upload style="display: inline-block;margin-left: 30px" v-model="file_info"></lj-upload>
               </div>
               <div class="footer-user-choose">
                 通知人:
-                <user-choose title="请选择发送人员" style="margin-left: 30px"></user-choose>
+                <user-choose title="请选择发送人员" style="margin-left: 30px" v-model="conformUser"></user-choose>
               </div>
 
               <div class="footer-button">
-                <el-button style="width:100px" size="small" type="danger">提交</el-button>
+                <el-button style="width:100px" size="small" type="danger" @click="submitWorkLog()">提交</el-button>
               </div>
 
             </div>
@@ -74,8 +74,8 @@
     data() {
       return {
         url: globalConfig.humanResource_server,
-
         toolbarChoosed: 1,
+        file_info: [],
         toolbarList: [
           {
             id: 1,
@@ -94,11 +94,10 @@
             name: '业绩日报'
           },
         ],
-        textarea: '',
-
-        inputIndexName: 'daily',
+        conformUser: [],
+        inputIndexName: 'day',
         inputList: {
-          daily: [
+          day: [
             {
               id: 1,
               name: '今日完成工作',
@@ -120,7 +119,7 @@
               textarea: '',
             },
           ],
-          weekly: [
+          week: [
             {
               id: 1,
               name: '本周完成工作',
@@ -147,7 +146,7 @@
               textarea: '',
             },
           ],
-          monthly: [
+          month: [
             {
               id: 1,
               name: '本月完成工作',
@@ -174,7 +173,7 @@
               textarea: '',
             },
           ],
-          pfeDaily: [//业绩日报
+          achievement_daily: [//业绩日报
             {
               id: 1,
               name: '今日营业额',
@@ -210,21 +209,85 @@
       }
     },
     methods: {
-      switchToolbar(index) {
+      switchToolbar: function(index) {
         this.toolbarChoosed = index;
         switch (index) {
           case 1:
-            this.inputIndexName = 'daily';
+            this.inputIndexName = 'day';
             break;
           case 2:
-            this.inputIndexName = 'weekly';
+            this.inputIndexName = 'week';
             break;
           case 3:
-            this.inputIndexName = 'monthly';
+            this.inputIndexName = 'month';
             break;
           case 4:
-            this.inputIndexName = 'pfeDaily';
+            this.inputIndexName = 'achievement_daily';
             break;
+        }
+      },
+      submitWorkLog: function() {
+        let params = {
+          type: this.inputIndexName,
+        }
+        switch (this.inputIndexName) {
+          case 'day':
+            params.log_info = { 
+                                complete_work: this.inputList.day[0].textarea,
+                                uncompleted_work: this.inputList.day[1].textarea,
+                                coordinate_work: this.inputList.day[2].textarea,
+                                ps: this.inputList.day[3].textarea
+            }
+            break;
+          case 'week':
+            params.log_info = {
+                                complete_work: this.inputList.week[0].textarea,
+                                work_summary: this.inputList.week[1].textarea,
+                                work_plan: this.inputList.week[2].textarea,
+                                coordinate_work: this.inputList.week[3].textarea,
+                                ps: this.inputList.week[4].textarea
+            }
+            break;
+          case 'month':
+            params.log_info = {
+                                complete_work: this.inputList.month[0].textarea,
+                                work_summary: this.inputList.month[1].textarea,
+                                work_plan: this.inputList.month[2].textarea,
+                                coordinate_work: this.inputList.month[3].textarea,
+                                ps: this.inputList.month[4].textarea
+            }
+            break;
+          case 'achievement_daily':
+            params.log_info = {
+                                business_volume: this.inputList.achievement_daily[0].textarea,
+                                customer_number: this.inputList.achievement_daily[0].textarea,
+                                month_total_business_volume: this.inputList.achievement_daily[0].textarea,
+                                month_target: this.inputList.achievement_daily[0].textarea,
+                                cogitate: this.inputList.achievement_daily[0].textarea,
+                                ps: this.inputList.achievement_daily[0].textarea
+            }
+            break;
+        }
+        if(this.file_info.length > 0) {
+          params.file_info = this.file_info
+        }
+        if(this.conformUser.length > 0) {
+          params.choose_ids = this.conformUser
+        }
+        if(this.inputIndexName !== 'achievement_daily' && params.log_info.complete_work !== '') {
+          this.$http.post(`${this.url}/staff/log`,params).then(res => {
+            this.$LjMessageEasy(res);
+          })
+        }else if(this.inputIndexName == 'achievement_daily'){
+          this.$http.post(`${this.url}/staff/log`,params).then(res => {
+            this.$LjMessageEasy(res);
+          })
+        }else{
+          let res = {
+            code: '-1',
+            msg: '请输入已完成工作'
+          }
+          this.$LjMessageEasy(res);
         }
       }
     },

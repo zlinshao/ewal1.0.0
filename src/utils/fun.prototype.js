@@ -103,5 +103,22 @@ export default {
         });
       }
     }
+
+    Vue.prototype.$LjMessageEasy = function(res,callback) {
+      if (res.code.endsWith('0')) {
+        this.$LjMessage('success', {
+          title: '成功',
+          msg: res.msg,
+        });
+        if(callback) {
+          callback();
+        }
+      } else {
+        this.$LjMessage('error', {
+          title: '失败',
+          msg: res.msg,
+        });
+      }
+    }
   }
 }

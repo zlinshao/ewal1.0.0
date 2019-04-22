@@ -14,7 +14,7 @@
         </div>
         <div class="mainList flex-center">
             <div class="menu_images flex-center justify-bet">
-                <div v-for="(item,index) in profileType" class="menu_img_type flex-center"  @click="routerLink(item.url,{url:item.url,type:item.type})" :key="index">
+                <div v-for="(item,index) in profileType" class="menu_img_type flex-center"  @click="routerLink(item.url,{type:item.type})" :key="index">
                     <span>{{item.title}}</span>
                 </div>
             </div>

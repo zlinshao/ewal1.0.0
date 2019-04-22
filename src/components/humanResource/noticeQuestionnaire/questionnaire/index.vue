@@ -214,7 +214,7 @@
         paper_params: {
           paper_name: '新建问卷',
           title:'',
-          sub_title: '关于春节挂春联选一副',
+          sub_title: '',
           btn_name: '预览问卷',
         },
 
@@ -263,6 +263,7 @@
         this.$refs['addQuestionnaireFormRef'].validate(valid => {
           if (valid) {
             this.paper_visible = true;
+            this.paper_params.title = this.add_questionnaire_form.name;
           }
         });
       },

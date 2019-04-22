@@ -815,7 +815,7 @@
           meeting_type: '',//会议类型id
           //meetingTime:'',//会议时间
           start_time: '',//会议开始时间
-          end_time: '',//会议开始时间
+          end_time: '',//会议结束时间
           presenter_id: [],//主持人id数组
           //counts:'',//应到人数
           //meetingTips:{},//会议提醒

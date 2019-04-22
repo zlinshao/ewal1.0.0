@@ -7,16 +7,16 @@
                 </p>
                 <h1>客户</h1>
                 <h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}<i></i>
-          </span>
+                  <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
+                        :class="{'chooseTab': chooseTab === item.id}">
+                    {{item.title}}<i></i>
+                  </span>
                 </h2>
             </div>
 
             <div class="items-center listTopRight">
                 <p class="status-icon" v-for="item in statusBar"   v-if="chooseTab===1||chooseTab===2">
-                    <span style="margin-left: 16px"><i :style="{'background-color':item.iconColor}"></i><span>{{item.iconText}}</span></span>
+                    <span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>
                 </p>
                 <div class="icons home_icon"></div>
                 <div class="icons search" @click="highSearch(chooseTab)"></div>
@@ -30,18 +30,14 @@
                 <span class="action-bar-name" v-show="action_visible">
                     <span class="edit" @click="action_status.details_visible=true;action_status.is_check=true">查看</span>
                     <span class="edit" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
-                    <span class="edit" @click="cancelRemark(chooseTab,current_row)">取消重复标记</span>
-                    <span class="edit" @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
+                    <span class="edit" @click="cancelRemark(chooseTab,current_row)" style="color: #FFAB40">取消重复标记</span>
+                    <span class="edit" style="color: orangered" @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
                         {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
                     </span>
-                    <span class="delete" @click="action_status.delete_visible=true">删除</span>
+                    <span class="delete" style="color: #CF2E33" @click="action_status.delete_visible=true">删除</span>
                 </span>
             </div>
-            <div class="action-bar-right">
-                <span>应收金额（元） <i class="edit">234525</i></span>
-                <span>实收金额（元） <i class="check">54554</i></span>
-                <span>剩余款项（元） <i class="delete">324324</i></span>
-            </div>
+
         </div>
         <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
         <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
@@ -77,7 +73,6 @@
     import SearchHigh from '../../common/searchHigh.vue';
     import lord from './lord/index.vue';
     import renter from './renter/index.vue';
-    import pending from './pending/index.vue';
     import LjDialog from '../../common/lj-dialog.vue';
     import FinMenuList from '../components/finMenuList.vue';
     import LjSubject from '../../common/lj-subject.vue';
@@ -101,7 +96,6 @@
             LjSubject,
             lord,
             renter,
-            pending,
             StaffOrgan,
             DepartOrgan,
             PostOrgan,
@@ -119,9 +113,9 @@
                     {id: 2, title: '租客',},
                 ],
                 statusBar: [
-                    {iconColor: "#14e731", iconText: "手机"},
-                    {iconColor: "#e6a23c", iconText: "姓名"},
-                    {iconColor: "#f56c6c", iconText: "地址"},
+                    {class: "phone", iconText: "手机"},
+                    {class: "name", iconText: "姓名"},
+                    {class: "address", iconText: "地址"},
                 ],
                 search_params: {},
                 showSearch: false,//搜索
@@ -395,7 +389,10 @@
 
 <style lang="scss" scoped>
     @import "../../../assets/scss/finance/customer/index.scss";
-
+    @mixin financeImg($m, $n) {
+        $url: '../../../assets/image/finance/' + $n + '/' + $m;
+        @include bgImage($url);
+    }
     #theme_name.theme1 {
         #customer {
             .statusBar {
@@ -406,6 +403,15 @@
                     border-radius: 50%;
                     margin-left: 4px;
                 }
+            }
+            .phone{
+                @include financeImg('dianhua.png','theme1')
+            }
+            .name{
+                @include financeImg('kehu.png','theme1')
+            }
+            .address{
+                @include financeImg('dizhi.png','theme1')
             }
 
         }

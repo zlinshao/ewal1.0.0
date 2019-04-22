@@ -15,18 +15,16 @@
                     type="selection" width="40">
             </el-table-column>
 
-            <el-table-column label="前缀" align="center" width="90">
+            <el-table-column label="标记" align="center" width="90">
                 <template slot-scope="scope">
                     <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===1">
                         /
                     </div>
                     <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
-                        <span style="background-color: #14e731;"
-                              v-if="LordStatus[scope.$index]['is_contact']===0"></span>
-                        <span style="background-color: #e6a23c;" v-if="LordStatus[scope.$index]['is_name']===1"></span>
-                        <span style="background-color: #f56c6c;"
-                              v-if="LordStatus[scope.$index]['is_address']===2"></span>
-                        <span v-if="freeze[scope.$index]===1" style="background-color: #409eff;"></span>
+                        <span v-if="LordStatus[scope.$index]['is_contact']===0"></span>
+                        <span  v-if="LordStatus[scope.$index]['is_name']===1"></span>
+                        <span v-if="LordStatus[scope.$index]['is_address']===2"></span>
+                        <span v-if="freeze[scope.$index]===1" ></span>
                     </div>
                 </template>
             </el-table-column>
@@ -332,7 +330,10 @@
 <style lang="scss">
 
     @import "../../../../assets/scss/finance/customer/index.scss";
-
+    @mixin financeImg($m, $n) {
+        $url: '../../../../assets/image/finance/' + $n + '/' + $m;
+        @include bgImage($url);
+    }
     #theme_name.theme1 {
         #customer {
 
@@ -344,6 +345,19 @@
                     border-radius: 50%;
                     margin-left: 4px;
                 }
+                span:first-child{
+                    @include financeImg('dianhua.png','theme1')
+                }
+                span:nth-child(2){
+                    @include financeImg('kehu.png','theme1')
+                }
+                span:nth-child(3){
+                     @include financeImg('dizhi.png','theme1')
+                 }
+                span:last-child{
+                    @include financeImg('yanjing.png','theme1')
+                }
+
             }
 
             .el-table .success-row {

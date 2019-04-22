@@ -204,73 +204,6 @@
           }
         }
       }
-      // 回访记录
-      .detail_dialog {
-        width: 830px;
-        height: 380px;
-        margin: 0 auto;
-        overflow-y: scroll;
-        ul {
-          padding: 0 30px 50px;
-          li + li {
-            position: relative;
-            &:before {
-              content: '';
-              width: 1px;
-              height: 70%;
-              background-color: #cf2e33;
-              position: absolute;
-              top: -10%;
-            }
-          }
-          li {
-            @include flex('justify-center');
-            @include flex('items-center');
-            font-family: 'Microsoft Yahei';
-            padding-top: 50px;
-            .detail_dialog_left {
-              flex: 1;
-              font-size: 14px;
-              text-align: right;
-              p + p {
-                margin-top: 10px;
-              }
-            }
-            .detail_dialog_center {
-              height: 100%;
-              margin: 0 80px;
-              .circle {
-                width: 15px;
-                height: 15px;
-              }
-            }
-            .detail_dialog_right {
-              flex: 1;
-              text-align: left;
-              font-size: 10px;
-              p + p {
-                margin-top: 10px;
-              }
-              .other_fee {
-                p {
-                  margin-top: 5px;
-                  padding-left: 10px;
-                }
-              }
-              .detail_dialog_rato {
-                margin-left: 20px;
-                display: inline-block;
-                .el-rate__icon {
-                  font-size: 12px;
-                }
-              }
-              .detail_dialog_note {
-                margin-top: 0;
-              }
-            }
-          }
-        }
-      }
     }
   }
 }
@@ -427,13 +360,6 @@
             color: #686874;
           }
         }
-      }
-    }
-    .detail_dialog {
-      background: #ffffff;
-      color: #686874;
-      .circle {
-        @include confirmImg('biaoji.png', 'theme1');
       }
     }
   }

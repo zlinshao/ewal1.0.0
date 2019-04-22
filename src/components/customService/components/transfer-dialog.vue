@@ -75,8 +75,6 @@ export default {
           });
 
           if (res.code === 200) {
-            this.$emit('close', true)
-          } else {
             this.$emit('close', false)
           }
         })

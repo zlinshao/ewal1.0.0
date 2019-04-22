@@ -344,6 +344,12 @@ div.el-popover {
 #theme_name .borderNone .el-textarea__inner {
   border: none;
   background-color: #ffffff !important; }
+
+#theme_name .borderBgColor .el-input__inner,
+#theme_name .borderBgColor .el-textarea__inner {
+    border: none;
+    background-color: #F9F9F9 !important; }
+
 #theme_name .onlyBg .el-input__inner,
 #theme_name .onlyBg .el-textarea__inner {
   border: none;

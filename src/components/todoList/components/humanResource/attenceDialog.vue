@@ -9,7 +9,7 @@
         <div class="dialog_header">
           <img :src="imgUrl" style="width:40px;height:40px"/>
           <div class="personMsg">
-            <h3 class="name">张无忌</h3>
+            <h3 class="name">{{name}}</h3>
             <h3 class="time">{{this.datetime.getFullYear()}}年{{this.datetime.getMonth()+1}}月考核</h3>
           </div>
           <h3>{{this.datetime.getMonth()+1}}月</h3>
@@ -95,6 +95,7 @@
         url: globalConfig.humanResource_server,
         submit_attence_visible: false,
         datetime: new Date("2019-03"),
+        name: '',
         imgUrl: require('../../../../assets/image/todoList/components/humanResource/theme1/rili.png'),
         daysList: [],
         attendance_day: 0,
@@ -137,6 +138,7 @@
         this.$http.get(`${this.url}attendance/attendance/`,params).then(res => {
           if (res.code==="20000") {
             for (let item of res.data.data) {
+              this.name=  item.name || '-',
               this.imgUrl = item.avatar;
               this.attendance_day = item.attendance[0]?.attendance_day || '-';
               this.rest_day = item.attendance[0]?.rest_day || '-';
@@ -146,7 +148,7 @@
                 attendance: item.attendance,
               };
               this.attence.tableData.push(obj);
-              this.formData = this.attence.tableData[0].attendance[0].attendance_data
+              this.formData = this.attence.tableData[0].attendance[0]?.attendance_data;
             }
           }
         }).then(()=> {
