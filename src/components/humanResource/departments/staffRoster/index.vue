@@ -226,6 +226,7 @@
       //获取当前员工详情
       getStaffDetail(id) {
         this.$http.get(`staff/user/${id}`).then(res => {
+          console.log(res);
           if (res.code === '20020') {
             this.staff_detail_info = res.data;
             this.filesVisible = true;

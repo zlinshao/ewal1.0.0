@@ -142,8 +142,8 @@
                     <el-col :span="6">
                       <el-form-item label="户口性质:">
                         <el-select v-model="staffDetail.household_register">
-                          <el-option :value="1" label="农村"></el-option>
-                          <el-option :value="2" label="城市"></el-option>
+                          <el-option :value="0" label="农村"></el-option>
+                          <el-option :value="1" label="城市"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -207,7 +207,7 @@
                           <el-option :value="6" label="首席信才"></el-option>
                           <el-option :value="7" label="德盛人才"></el-option>
                           <el-option :value="8" label="校园招聘会"></el-option>
-                          <el-option :value="9" label="其他"></el-option>
+                          <el-option :value="10" label="其他"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -268,7 +268,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="离职原因:">
-                        <el-input v-model="staffDetail.dismiss_time"></el-input>
+                        <el-input v-model="staffDetail.dismiss_reason.dismiss_mess"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -501,7 +501,7 @@
           position_name: '', //岗位名称
           org_id: [], //部门id
           org_name: '', //部门名称
-
+          enroll: '',
           email: '',
           gender: '',
           education: '',
@@ -519,6 +519,7 @@
           dismiss_time: '',
           dismiss_reason: {
             dismiss_type: '',
+            dismiss_mess: '',
           },
           agreement_first_time: '',
           agreement_first_end_time: '',
@@ -528,6 +529,8 @@
           branch_bank: '',
           branch_bank_code: '',
           account_bank: '',
+          bank_num: '',
+          origin_addr: '',
           city: '',
           criminal_history: '',
           household_register: '',
