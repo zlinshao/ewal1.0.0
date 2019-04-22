@@ -31,28 +31,28 @@
                 通知人:
                 <user-choose title="请选择发送人员" style="margin-left: 30px" v-model="conformUser"></user-choose>
               </div>
-
               <div class="footer-button">
                 <el-button style="width:100px" size="small" type="danger" @click="submitWorkLog()">提交</el-button>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
       <div class="work-log-container-right">
-        <div class="timeline-container">
+        <div class="timeline-container scroll_bar">
           <el-timeline>
-            <el-timeline-item timestamp="2018/4/12 12:24:52" placement="top">
-              <h3>今日完成工作:</h3>
-              <p>由张晓莲（员工关系组-基础人事专员）为您办理了入职手续，入职部门：研发中心</p>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/3" placement="top">
-              <p>由张晓莲（员工关系组-基础人事专员）为您办理了入职办理了入职办理了入职办理了入职手续，入职部门：研发中心，入职岗位：测试，等级：实习</p>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/2" placement="top">
-              <p>由张晓莲（员工关系组-基础人事专员）为您办理了入职手续，入职部门：研发中心</p>
+            <el-timeline-item :timestamp="item.time" placement="top" v-for="(item, index) in worklogList" :key="index">
+              <el-collapse v-model="item.activeNames" accordion  class="collapseContainer">
+                <el-collapse-item name="1" class="collapseItem">
+                  <h3 class="logTitle">今日完成工作:</h3>
+                  <p>{{item.complete_work}}</p>
+                  <p>备注：{{item.ps}}</p>
+                  <div class="readAvatar">
+                    <h6>全部已读</h6>
+                    <img :src="items" v-for="(items, index) in item.read_avatar" :key="index" height="40px" width="40px" border-radius="20px"/>
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
             </el-timeline-item>
           </el-timeline>
         </div>
@@ -206,7 +206,12 @@
             },
           ]
         },
+        worklogList: [],
+        activeNames: ["1"]
       }
+    },
+    mounted() {
+      this.getWorklogList();
     },
     methods: {
       switchToolbar: function(index) {
@@ -276,11 +281,15 @@
         }
         if(this.inputIndexName !== 'achievement_daily' && params.log_info.complete_work !== '') {
           this.$http.post(`${this.url}/staff/log`,params).then(res => {
-            this.$LjMessageEasy(res);
+            this.$LjMessageEasy(res,() => {
+              this.getWorklogList();
+            })
           })
         }else if(this.inputIndexName == 'achievement_daily'){
           this.$http.post(`${this.url}/staff/log`,params).then(res => {
-            this.$LjMessageEasy(res);
+            this.$LjMessageEasy(res,() => {
+              this.getWorklogList();
+            });
           })
         }else{
           let res = {
@@ -289,8 +298,34 @@
           }
           this.$LjMessageEasy(res);
         }
+      },
+      getWorklogList: function() {
+        let params = {
+          type: "day",
+          page: 1,
+          limit: 7
+        }
+        this.$http.get(`${this.url}/staff/log`,params).then(res => {
+            if(res.code === "20000") {
+              for(var i = 0; i <res.data.data.length; i++){
+                let obj = {
+                  time: res.data.data[i].log_time.timeFormat.split(" ")[0],
+                  complete_work: res.data.data[i].log_info.complete_work,
+                  ps: res.data.data[i].log_info.complete_work,
+                  read_avatar: [],
+                  activeNames: ["1"],
+                }
+                if(res.data.data[i].read_data.length > 0){
+                  for(var j = 0; j < res.data.data[i].read_data.length; j++){
+                    obj.read_avatar.push(res.data.data[i].read_data[j].avatar)
+                  }
+                }
+                this.worklogList.push(obj)
+              }
+            }
+        })
       }
-    },
+    }
   }
 </script>
 
@@ -298,6 +333,7 @@
 <style lang="scss">
   #work_log {
     .timeline-container {
+      height: 100%;
       .el-timeline-item__wrapper {
         text-align: left;
         .el-timeline-item__timestamp {
@@ -312,13 +348,38 @@
           font-family: MicrosoftYaHei-Bold;
           font-weight: 700;
         }
-        h3 {
-          font-family: MicrosoftYaHei-Bold;
-          font-weight: bold;
-          height: 26px;
-          line-height: 26px;
-          font-size: 14px;
-          color: #686874;
+        
+        .collapseContainer{
+          .collapseItem{
+            .logTitle{
+              font-family: MicrosoftYaHei-Bold;
+              font-weight: bold;
+              height: 26px;
+              line-height: 26px;
+              font-size: 14px;
+              color: #686874;
+            }
+            .readAvatar{
+              height: 40px;
+              display: flex;
+              justify-content: flex-start;
+              h6{
+                display: flex;
+                align-items: center;
+                width:52px;
+                height:40px;
+                font-size:12px;
+                font-family:MicrosoftYaHei;
+                color:rgba(104,104,116,1);
+                line-height:26px;
+              }
+              >img{
+                width: 40px;
+                margin-left: 10px;
+                border-radius: 20px;
+              }
+            }
+          }
         }
       }
     }
