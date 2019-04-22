@@ -146,7 +146,7 @@
                       <!--<el-button type="success" size="mini" plain @click="handleOpenAddModule(scope.row)">新增模块</el-button>-->
                       <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('system',scope.row)">编辑</el-button>-->
                       <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
-                      <span @click="handleOpenAddModule(scope.row)">编辑模块</span>
+                      <span @click="handleOpenAddModule(scope.row)">新增模块</span>
                       <span @click="handleOpenEdit('system',scope.row)">编辑</span>
                       <span @click="handleDelControl('system',scope.row)">删除</span>
                     </div>

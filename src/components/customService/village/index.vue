@@ -19,6 +19,7 @@
         </div>
         <div class="items-center listTopRight">
           <el-button size="small" style="width: 80px" type="success" plain @click="handleAllotVillage">分配</el-button>
+          <el-button size="small" style="width: 80px" type="primary" plain @click="handleMergeVillage">合并</el-button>
           <div class="sort-control flex-center">
             <span @click="handleChangeSort(tmp)" v-for="tmp in sort_list" :key="tmp.id + 1" :class="{'current-choose': current_sort === tmp.id }">{{ tmp.val }}</span>
           </div>
@@ -68,7 +69,7 @@
               <div class="village-footer">
                 <div class="flex-center">
                   <el-button type="info" size="small" @click="handleEditVillage(village)">编辑</el-button>
-                  <el-button type="primary" size="small" plain @click.stop="handleOpenMergeVillage(village)">合并</el-button>
+                  <!--<el-button type="primary" size="small" plain @click.stop="handleOpenMergeVillage(village)">合并</el-button>-->
                 </div>
                 <div class="flex-center">
                   <div class="flex-center" :class="{'choose-village': check_choose.includes(index)}" @click.stop="handleCheckVillage(village,index)">
@@ -233,6 +234,32 @@
         </div>
       </lj-dialog>
 
+      <!--合并小区-->
+      <lj-dialog
+        :visible="merge_visible"
+        :size="{width: 500 + 'px',height: 350 + 'px'}"
+        @close="handleCancelMergeVillage"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>合并小区</h3>
+          </div>
+          <div class="dialog_main">
+            <el-form label-width="120px" class="borderNone">
+              <el-form-item label="保留小区">
+                <el-input v-model="merge_form.save_village" placeholder="请选择" readonly @focus="handleOpenMergeVillage('save')"></el-input>
+              </el-form-item>
+              <el-form-item label="被合并小区">
+                <el-input v-model="merge_form.merge_village" placeholder="请选择" readonly @focus="handleOpenMergeVillage('merge')"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" @click="handleConfirmMerge">确定</el-button>
+            <el-button type="info" @click="handleCancelMergeVillage">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
@@ -253,6 +280,18 @@
     components: { SearchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer,LjUpload},
     data() {
       return {
+        //合并小区
+        merge_visible: false,
+        merge_form: {
+          save_village: '',
+          merge_village: '',
+          id: '',
+          merge_to_community_id: '',
+        },
+        merge_village_visible: false,
+        merge_choose: '',
+        is_control: '',
+
         //小区编辑
         edit_info: '',
 
@@ -401,14 +440,6 @@
         },
         allot_village_visible: false,
 
-        //合同小区
-        merge_village_visible: false,
-        merge_choose: '',
-
-        current_community: '',
-        merge_village_params: {
-          merge_to_community_id: '',
-        },
         map: null,
 
         village_pic: [],
@@ -422,6 +453,51 @@
     watch: {},
     computed: {},
     methods: {
+      handleGetVillage(val) {
+        console.log(val);
+        if (this.is_control === 'save') {
+          this.merge_form.save_village = val[0].village_name;
+          this.merge_form.id = val[0].village_id;
+        } else {
+          this.merge_form.merge_to_community_id = val[0].village_id;
+          this.merge_form.merge_village = val[0].village_name;
+        }
+        this.merge_choose = 'all';
+        this.merge_village_visible = false;
+      },
+      //合并小区
+      handleConfirmMerge() {
+        this.$http.put(this.http_server + `v1.0/market/community/merge/${this.merge_form.id}`,this.merge_form).then(res => {
+          if (res.code === 200) {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.message
+            });
+            this.is_control = '';
+            this.getVillageList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.message
+            })
+          }
+        })
+      },
+      handleOpenMergeVillage(type) {
+        this.is_control = type;
+        this.merge_choose = 'village';
+        this.merge_village_visible = true;
+      },
+      handleCancelMergeVillage() {
+        for (var key in this.merge_form) {
+          this.merge_form[key] = '';
+        }
+        this.merge_visible = false;
+      },
+      //合并
+      handleMergeVillage() {
+        this.merge_visible = true;
+      },
       //关闭操作小区
       handleCloseControlVillage() {
         this.edit_info = '';
@@ -534,50 +610,6 @@
       handleOpenMenu() {
         this.menu_visible = !this.visibleStatus;
         this.$store.dispatch('route_animation');
-      },
-      //合并小区
-      handleConfirmMerge() {
-        this.$http.put(this.http_server + `v1.0/market/community/merge/${this.current_community.id}`,this.merge_village_params).then(res => {
-          if (res.code === 200) {
-            this.$LjNotify('success',{
-              title: '成功',
-              message: res.message
-            })
-          } else {
-            this.$LjNotify('warning',{
-              title: '失败',
-              message: res.message
-            })
-          }
-        })
-      },
-      handleGetVillage(val,type) {
-        if (val && type) {
-          if (type === 'office') {
-            if (val.length > 1) {
-              this.$LjNotify('warning',{
-                title: '提示',
-                message: '小区合并为一对一'
-              });
-              return false;
-            } else {
-              this.merge_village_params.merge_to_community_id = val[0].village_id;
-              this.handleConfirmMerge();
-            }
-          } else {
-            this.$LjNotify('warning',{
-              title: '提示',
-              message: '请选择小区'
-            });
-            return false;
-          }
-        }
-        this.merge_village_visible = false;
-      },
-      handleOpenMergeVillage(village) {
-        this.current_community = village;
-        this.merge_choose = 'village';
-        this.merge_village_visible = true;
       },
       //打开部门
       handleOpenDepart(type) {
