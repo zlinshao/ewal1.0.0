@@ -81,7 +81,7 @@ import AddDialog from '../components/add-dialog';
 import TransferDialog from '../components/transfer-dialog';
 import SureEndDialog from '../components/sureEnd-dialog';
 import UrgedDealDialog from '../components/urgedDeal-dialog';
-import OrderDetail from './components/order-detail';
+import OrderDetail from '../components/order-detail';
 import CreateOrder from './components/createOrder'
 import AddRecord from './components/addRecord'
 import { workOrderSearch } from '../../../assets/js/allSearchData.js';
@@ -314,19 +314,18 @@ export default {
         this.handleEnd()
       }
       if (type == '新增跟进') {
+        this.followRecord_info = {
+          chooseTab: this.chooseTab,
+          type: 'workOrder'
+        }
         this.followRecord_visible = true
       }
     },
     // 转交
-    handleCloseTranfer (transfer) {
+    handleCloseTranfer () {
       this.transfer_visible = false
       this.currentRow = null
       this.detail_form = null
-    },
-    // 通知
-    handleNotice () {
-      this.detail_visible = false
-      this.handleCuiBan(this.currentRow)
     },
     //结束
     handleEnd () {
@@ -394,10 +393,9 @@ export default {
     addRecordFun (par) {
       let params = this.followRecord,
         pay_method = [];
-      console.log(params)
-      if (params.folow_status == 2) {
+      if (params.folow_status == 338) {
         params.pay_method.forEach(el => {
-          pay_method.push([el.type || '', el.name || '', el.money || ''])
+          pay_method.push([el.type || 0, el.name || '', el.money || ''])
         });
         params.flag = par.isCreated ? 1 : 0
       }

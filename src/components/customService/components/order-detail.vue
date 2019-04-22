@@ -10,10 +10,35 @@
             <el-col :span='14'>
               <p class='detail_tit'>工单详情</p>
               <el-form label-width='80px'>
-                <el-form-item v-for='item in Object.keys(getOrder_type(detail_form.type))' :key='item' :label='currentType[item]'
-                  v-if='detail_form[item] && detail_form[item]!="0.00"'>
+                <el-form-item label='创建时间'>
+                  <el-input v-model="detail_form.create_time" type="text" disabled> </el-input>
+                </el-form-item>
+                <el-form-item label='房屋地址'>
+                  <el-input v-model="detail_form.house_name" type="text" disabled> </el-input>
+                </el-form-item>
+
+                <el-form-item label='维修方' v-if='detail_form.type == 7'>
+                  <el-input :value="detail_form.send_order_type == 1 ? '内部保修':'外部保修'" type="text" disabled>
+                  </el-input>
+                </el-form-item>
+
+                <template v-if='detail_form.type == 1'>
+                  <el-form-item v-for='item in Object.keys(reimburse_type)' :key='item' :label='reimburse_type[item]'
+                    v-if='detail_form[item] && detail_form[item]!="0.00"'>
+                    <el-input v-model="detail_form[item]" type="text" disabled> </el-input>
+                  </el-form-item>
+                </template>
+
+                <template v-if='detail_form.type == 699'>
+                  <el-form-item v-for='item in Object.keys(complaint_type)' :key='item' :label='complaint_type[item]'>
+                    <el-input v-model="detail_form[item]" type="text" disabled> </el-input>
+                  </el-form-item>
+                </template>
+
+                <el-form-item v-for='item in Object.keys(default_type)' :key='item' :label='default_type[item]'>
                   <el-input v-model="detail_form[item]" type="text" disabled> </el-input>
                 </el-form-item>
+
                 <el-form-item label='照片' style='width:100%;'>
                   <div style="width: 90%;text-align: left">
                     <img v-for="tmp in detail_form.imagic" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri"
@@ -25,7 +50,7 @@
             <el-col :span='10'>
               <div class='detail_tit'>
                 <span>跟进进度</span>
-                <b @click='handleAddRecord' v-if='detail_form.type == 699'>+</b>
+                <b @click='handleAddRecord' v-if='detail_form.type == 699 || detail_form.type == 7 || detail_form.type == 8'>+</b>
               </div>
               <div class='detail_box scroll_bar'>
                 <div class="content flex" v-for='follow in follow_data' :key='follow.next_follow_time' v-if='follow_data'>
@@ -56,7 +81,7 @@
 </template>
 
 <script>
-import LjDialog from '../../../common/lj-dialog.vue';
+import LjDialog from '../../common/lj-dialog.vue';
 export default {
   props: ['visible', 'moduleData'], // id
   components: {
@@ -64,54 +89,34 @@ export default {
   },
   data () {
     return {
-      order_type: {
-        1: {
-          create_time: '创建时间',
-          house_name: '房屋地址',
-          reimburse_water: '报销类型',
-          reimburse_water_money: '报销金额',
-          reimburse_water: '报销类型', // 水费
-          reimburse_water_money: '报销金额',
-          reimburse_electricity: '报销类型', //   电费
-          reimburse_electricity_money: '报销金额',
-          reimburse_gas: '报销类型', //  燃气费
-          reimburse_gas_money: '报销金额',
-          reimburse_property: '报销类型', //  物业费
-          reimburse_property_money: '报销金额',
-          reimburse_service: '报销类型', //  维修费
-          reimburse_service_money: '报销金额',
-          reimburse_other: '报销类型', //  其他
-          reimburse_other_money: '报销金额',
-          replay_phone: '回复电话',
-          emergency_name: '紧急程度',
-          reimburse_property: '处理人',
-          reimburse_property_money: '部门',
-          finish_time: '截止时间',
-          content: '工单内容'
-        },
-        699: {
-          create_time: '创建时间',
-          house_name: '房屋地址',
-          type_of_complaint: '投诉类型',
-          channel_of_complaint: '投诉渠道',
-          complained_user_id: '被投诉人',
-          replay_phone: '回复电话',
-          emergency_name: '紧急程度',
-          reimburse_property: '处理人',
-          reimburse_property_money: '部门',
-          finish_time: '截止时间',
-          content: '工单内容'
-        },
-        11: {
-          create_time: '创建时间',
-          house_name: '房屋地址',
-          replay_phone: '回复电话',
-          emergency_name: '紧急程度',
-          reimburse_property: '处理人',
-          reimburse_property_money: '部门',
-          finish_time: '截止时间',
-          content: '工单内容'
-        }
+      reimburse_type: {
+        reimburse_water: '报销类型',
+        reimburse_water_money: '报销金额',
+        reimburse_water: '报销类型', // 水费
+        reimburse_water_money: '报销金额',
+        reimburse_electricity: '报销类型', //   电费
+        reimburse_electricity_money: '报销金额',
+        reimburse_gas: '报销类型', //  燃气费
+        reimburse_gas_money: '报销金额',
+        reimburse_property: '报销类型', //  物业费
+        reimburse_property_money: '报销金额',
+        reimburse_service: '报销类型', //  维修费
+        reimburse_service_money: '报销金额',
+        reimburse_other: '报销类型', //  其他
+        reimburse_other_money: '报销金额',
+      },
+      complaint_type: {
+        type_of_complaint: '投诉类型',
+        channel_of_complaint: '投诉渠道',
+        complained_user_id: '被投诉人',
+      },
+      default_type: {
+        replay_phone: '回复电话',
+        emergency_name: '紧急程度',
+        reimburse_property: '处理人',
+        reimburse_property_money: '部门',
+        finish_time: '截止时间',
+        content: '工单内容'
       },
       currentType: null,
       currentRow: null,
@@ -182,5 +187,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../assets/scss/common.scss";
+@import "../../../assets/scss/common.scss";
 </style>
