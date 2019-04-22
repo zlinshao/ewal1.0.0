@@ -4,7 +4,7 @@
       <lj-dialog :visible.sync="dialog_visible" :size="{width: 1200 + 'px',height: 830 + 'px'}"  @close="dialog_visible = false">
         <div class="dialog_container">
           <div class="dialog_header">
-            <h3>请选择房屋地址</h3>
+            <h3>{{ activeName === 'first' ? '请选择房屋地址' : '请选择小区地址'}}</h3>
             <div class="header_right borderNone">
               <el-input style="width: 200px;" size="small" v-if="show_search" v-model="params.key"></el-input>
               <div class="search" @click="handleGoSearch"></div>
@@ -16,11 +16,11 @@
                 <div class="flex">
                   <div class="left_container changeChoose">
                     <div class="header_control flex">
-                      <el-checkbox v-model="choose_all" label="1" @change="handleChooseAll">全选</el-checkbox>
+                      <el-checkbox v-model="choose_all" label="1" @change="handleChooseAll" v-show="only_choose !== 'house'">全选</el-checkbox>
                     </div>
                     <div class="house-address scroll_bar">
                       <div>
-                        <el-checkbox-group v-model="house_choose" @change="handleChangeItem">
+                        <el-checkbox-group v-model="house_choose" @change="handleChangeItem" :max="only_choose === 'house' ? 1 : 30">
                           <div class="checkbox_item" v-for="(item,index) in house_resource">
                             <el-checkbox :label="index">{{ item.house_name }}</el-checkbox>
                           </div>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="plot_container changeChoose scroll_bar">
                       <div>
-                        <el-checkbox-group v-model="office_choose" @change="handleChooseOffice">
+                        <el-checkbox-group v-model="office_choose" @change="handleChooseOffice" :max="only_choose === 'village' ? 1 : 30">>
                           <div class="office_content" v-for="(office,index) in office_resource" :key="index">
                             <el-checkbox :label="index">
                               <div class="checkbox_content flex">
@@ -152,7 +152,7 @@
   export default {
     name: "index",
     components: { LjDialog },
-    props: ['visible'],
+    props: ['visible','onlyChoose'],
     data() {
       return {
         market_server: globalConfig.market_server,
@@ -203,6 +203,8 @@
         office_resource: [],
         office_choose: [], //已选择小区
         show_office: [],
+
+        only_choose: 'all',
       }
     },
     mounted() {},
@@ -212,6 +214,12 @@
         if (val) {
           this.getHouseList();
         }
+      },
+      onlyChoose(val) {
+        console.log(val);
+        this.only_choose = val;
+        this.activeName = this.only_choose === 'all' || this.only_choose === 'house'  ? 'first' : 'second';
+        this.params.type = this.only_choose === 'all' || this.only_choose === 'house' ? 1 : 2;
       },
     },
     computed: {},

@@ -7,9 +7,9 @@
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>选择人员</h3>
-          <div class="items-center">
-            <!--<el-input type="text" size="small" v-model="search"></el-input>-->
-            <span class="search"></span>
+          <div class="items-center borderNone">
+            <el-input type="text" clearable size="small" v-model="search" placeholder="请输入需要搜索的人员"></el-input>
+            <span class="search" style="margin-left: 10px" @click="handleSearchStaff"></span>
             <!--<ul style="position: absolute;top: 30px;left: 0;right: 28px;">-->
             <!--<li class="items-bet">-->
             <!--<b>发货的是</b>-->
@@ -142,6 +142,9 @@
     },
     computed: {},
     methods: {
+      handleSearchStaff() {
+        this.searchStaff('',this.search);
+      },
       handleCloseLjDialog() {
         this.$emit('close', 'close');
       },

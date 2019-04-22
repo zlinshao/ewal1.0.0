@@ -134,7 +134,7 @@
               user-select: none;
               padding: 4px 5px;
               > span {
-                width: 50px;
+                width: 80px;
                 padding: 4px 10px;
                 position: relative;
                 z-index: 1;
@@ -173,9 +173,9 @@
 
 @keyframes zhuan {
   0% {
-    transform: translateY(-100%);
+    transform: rotateY(180deg);
   }
   100% {
-    transform: translateY(0);
+    transform: rotateY(0);
   }
 }

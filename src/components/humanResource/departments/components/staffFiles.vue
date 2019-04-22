@@ -271,31 +271,6 @@
                         <el-input v-model="staffDetail.dismiss_time"></el-input>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="银行卡照片:">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="劳务合同:">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="应聘人员信息登记表:">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="学籍验证报告:">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="离职证明:">
-
-                      </el-form-item>
-                    </el-col>
                   </el-row>
                 </el-form>
               </el-tab-pane>
@@ -351,6 +326,28 @@
                         <el-checkbox v-for="tmp in entry_materials_checkbox" :key="tmp.id" :label="tmp.id">{{ tmp.val }}</el-checkbox>
                     </el-checkbox-group>
                   </el-form-item>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="银行卡照片:">
+
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="劳务合同:">
+
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="学籍验证报告:">
+
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="离职证明:">
+
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
                 </el-form>
                 <div v-if="!reviseInfo" style="text-align: right">
                   <el-button type="danger" size="mini" style="width: 120px" @click="handleAddItem('eduction')">添加</el-button>

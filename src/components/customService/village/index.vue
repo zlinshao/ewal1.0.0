@@ -159,7 +159,7 @@
       </lj-dialog>
 
       <!--选小区-->
-      <HouseFilter :visible="merge_village_visible" @close="handleGetVillage"></HouseFilter>
+      <HouseFilter :visible="merge_village_visible" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
 
       <!--MenuList-->
       <MenuList :module="menu_visible" :list="customService" :backdrop="true" @close="menu_visible = false"></MenuList>
@@ -403,6 +403,8 @@
 
         //合同小区
         merge_village_visible: false,
+        merge_choose: '',
+
         current_community: '',
         merge_village_params: {
           merge_to_community_id: '',
@@ -574,6 +576,7 @@
       },
       handleOpenMergeVillage(village) {
         this.current_community = village;
+        this.merge_choose = 'village';
         this.merge_village_visible = true;
       },
       //打开部门
