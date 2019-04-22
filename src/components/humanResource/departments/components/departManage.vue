@@ -1461,6 +1461,7 @@
       },
       //获取员工列表
       getStaffList() {
+        console.log(this.staffParams);
         this.$http.get('staff/user',this.staffParams).then(res => {
           if (res.code === '20000') {
             this.staffList = res.data.data;

@@ -955,14 +955,14 @@
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
-              message: '入职成功'
+              message: res.msg
             });
             this.getLabourInfo(res.data.user_id);
             this.work_success = true;
           } else {
             this.$LjNotify('warning',{
               title: '失败',
-              message: '入职失败'
+              message: res.msg
             })
           }
         }).catch(err => {

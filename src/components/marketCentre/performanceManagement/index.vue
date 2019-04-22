@@ -51,15 +51,15 @@
             :data="performance_list"
             :height="this.mainListHeight(130) + 'px'"
           >
-            <el-table-column label="业绩月份" prop="a"></el-table-column>
-            <el-table-column label="姓名" prop="b"></el-table-column>
-            <el-table-column label="收房套数" prop="c"></el-table-column>
-            <el-table-column label="租房套数" prop="d"></el-table-column>
-            <el-table-column label="实际业绩" prop="e"></el-table-column>
-            <el-table-column label="溢出业绩" prop="f"></el-table-column>
-            <el-table-column label="开单人" prop="g"></el-table-column>
-            <el-table-column label="负责人" prop="h"></el-table-column>
-            <el-table-column label="所属部门" prop="i"></el-table-column>
+            <el-table-column label="业绩月份" prop="a" align="center"></el-table-column>
+            <el-table-column label="姓名" prop="b" align="center"></el-table-column>
+            <el-table-column label="收房套数" prop="c" align="center"></el-table-column>
+            <el-table-column label="租房套数" prop="d" align="center"></el-table-column>
+            <el-table-column label="实际业绩" prop="e" align="center"></el-table-column>
+            <el-table-column label="溢出业绩" prop="f" align="center"></el-table-column>
+            <el-table-column label="开单人" prop="g" align="center"></el-table-column>
+            <el-table-column label="负责人" prop="h" align="center"></el-table-column>
+            <el-table-column label="所属部门" prop="i" align="center"></el-table-column>
           </el-table>
         </div>
 
