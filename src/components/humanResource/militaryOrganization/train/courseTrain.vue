@@ -656,7 +656,6 @@
            case 'jobTrain':
              this.tableSettingData[currentTable].params.page = val;
              this.getTrainList();
-             //this.getBorrowReceiveList();
              break;
            default :
              break;

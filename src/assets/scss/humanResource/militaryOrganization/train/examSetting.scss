@@ -59,7 +59,7 @@
 
   .content {
     width: 60%;
-    height: 500px;
+    height: 580px;
     margin: 0 auto;
     position: relative;
     top: 50%;
@@ -203,6 +203,23 @@
             font-family: 'jingDianXingShu';
             cursor: pointer;
             width: 100%;
+
+            &.question-paper-name {
+              display: flex;
+              align-items: flex-start;
+              padding-top: 20px;
+              >span {
+                display: inline-block;
+                height: 100%;
+                text-align: start;
+              }
+            }
+
+            &.question-paper-category-name {
+              display: flex;
+              align-items: flex-end;
+              padding-bottom: 20px;
+            }
             &:nth-child(2) {
               margin-bottom: 10%;
             }
@@ -241,44 +258,70 @@
 
       .exam-paper {
         width: 80%;
-
-        > div {
+        .exam-paper-container {
           width: 80px;
           height: 100%;
           font-family: 'jingDianXingShu';
-          @include flex('flex-center');
+          //@include flex('flex-center');
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
           flex-direction: column;
 
           > div {
+            height: 50%;
+            width: 100%;
+            flex: none;
             font-size: 26px;
             font-family: 'jingDianXingShu';
             cursor: pointer;
 
             &:first-child {
-              margin-bottom: 80px;
+              display: flex;
+              justify-content: center;
+              align-items: flex-start;
+              padding-top: 50px;
             }
           }
+
+          .exam_span {
+            vertical-align: top;
+            /*display: flex;
+            align-items: flex-start;
+            justify-content: center;*/
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 30px;
+            > span {
+
+              font-family: 'jingDianXingShu';
+
+              &:first-child {
+                font-size: 12px;
+              }
+
+              &:last-child {
+                font-size: 26px;
+              }
+            }
+          }
+          .exam-paper-status{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            span {
+              font-family: jingDianXingShu;
+            }
+          }
+
 
           &:hover {
             color: $colorE33;
           }
         }
 
-        .exam_span {
-          vertical-align: top;
 
-          > span {
-            font-family: 'jingDianXingShu';
-
-            &:first-child {
-              font-size: 12px;
-            }
-
-            &:last-child {
-              font-size: 26px;
-            }
-          }
-        }
       }
 
       .exam-control {

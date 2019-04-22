@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="right flex-center">
-          <el-button @click="preView" size="mini" type="primary">{{params.btn_name}}</el-button>
+          <el-button @click="preView();paper_type=2" size="mini" type="primary">{{params.btn_name}}</el-button>
         </div>
       </div>
       <div class="library-main scroll_bar">
@@ -142,7 +142,7 @@
         <div class="library-footer">
           <div>
             <el-button size="mini" type="danger" @click="handleSubmitExam">提交</el-button>
-            <el-button size="mini" type="info" @click="paper_visible = false;paper_type=1">取消</el-button>
+            <el-button size="mini" type="info" @click="handleCancelExam">取消</el-button>
           </div>
 
         </div>
@@ -242,7 +242,7 @@
         <div class="library-footer">
           <div>
             <el-button size="mini" type="danger" @click="handleSubmitExam">提交</el-button>
-            <el-button size="mini" type="info" @click="paper_visible = false">取消</el-button>
+            <el-button size="mini" type="info" @click="handleCancelExam">取消</el-button>
           </div>
 
         </div>
@@ -262,11 +262,13 @@
               <div v-for="(item,index) in statisticsResult" :key="index" class="exam-single-item">
                 <div class="single-item-stem">{{index+1}}、{{item.exam_question_info.stem}}
                 </div>
-                <div :key="subIndex" v-for="(subVal,subKey,subIndex) in item.exam_question_info.choice" class="single-item-choice">
+                <div :key="subIndex" v-for="(subVal,subKey,subIndex) in item.exam_question_info.choice"
+                     class="single-item-choice">
                   {{subKey}}、{{subVal}}
                   <div class="single-item-stem-process">
                     <div class="single-item-stem-process-container">
-                      <el-progress :text-inside="true" :stroke-width="18" :percentage="Number(((item.count[subKey]/(params.response_count))*100).toFixed(2))"></el-progress>
+                      <el-progress :text-inside="true" :stroke-width="18"
+                                   :percentage="Number(((item.count[subKey]/(params.response_count))*100).toFixed(2))"></el-progress>
                     </div>
                     <div class="single-item-stem-process-tip">{{params.response_count}}</div>
                   </div>
@@ -309,6 +311,7 @@
             title: '入职考试',
             sub_title: '文职入职考试',
             btn_name: '预览题库',
+            initial_page:1,
           }
         }
       },
@@ -321,7 +324,13 @@
       statisticsResult: {//问卷调查统计结果页面数据
         type: Array,
         default() {
-          return []
+          return [];
+        }
+      },
+      examList: {//外界传过来的题目列表
+        type: Array,
+        default() {
+          return [];
         }
       },
     },
@@ -341,6 +350,16 @@
         immediate: true,
       },
 
+      'params.initial_page': {
+        handler(val, oldVal) {
+          if (val) {
+            this.paper_type = val;
+          }
+        },
+        deep: true,
+        immediate: true,
+      },
+
       statisticsResult: {
         handler(val, oldVal) {
           if (val && val.length > 0) {
@@ -348,7 +367,35 @@
             this.paper_type = 3;
           }
         },
-        immediate:true,
+        immediate: true,
+      },
+      examList: {
+        handler(val, oldVal) {
+          this.is_edit_paper = true;
+          if (val && val.length > 0) {
+            val.forEach((item, index) => {
+              if (item.category != 3) {
+                item.answer = item.answer.join();
+              }
+            });
+            val = _.sortBy(val, ['category']);
+            this.exam_form_list = val;
+          } else {
+            this.exam_form_list = [];
+          }
+          this.preView();
+        },
+        immediate: true,
+      },
+
+      //触发预览试卷事件
+      paper_type: {
+        handler(val,oldVal) {
+          if(val==2) {
+            this.preView();
+          }
+        },
+        immediate:true
       },
     },
     data() {
@@ -359,13 +406,15 @@
 
         paper_type: 1,//1编辑试卷/问卷 2预览试卷/问卷 3查看问卷统计结果
 
+        is_edit_paper:false,//判断进入页面时是否为编辑试卷 当为编辑试卷时 sucees 方法传入第二个参数 is_edit ，当为true时 父组件调用test-paper的success方法中 调用试卷修改方法
+
 
         exam_type: 1,//1单选 2判断 3简答题
         exam_form_item_choose: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
         exam_form_item_judge: ['A', 'B'],
         //exam_form_item_key: ['关键字1', '关键字2', '关键字3', '关键字4', '关键字5', '关键字6'],
         exam_form_list: [//题列表
-          {
+          /*{
             category: 1,//1单选 2判断 3简答题
             stem: '',
             choice: {
@@ -377,7 +426,7 @@
             score: '',
             answer: '',
             user_answer: '',
-          }
+          }*/
         ],
         exam_total_score: 0,
         /*exam_category_list: {
@@ -469,7 +518,7 @@
     methods: {
       //预览题库/问卷
       preView() {
-
+        this.exam_total_score = 0;
         this.exam_category_list = {
           single: {
             exam_list: [],
@@ -497,7 +546,6 @@
               this.exam_category_list.short.exam_list.push(item);
           }
         });
-        this.paper_type = 2;
       },
 
       handleAddChooseItem(index, type = 1) {
@@ -535,8 +583,28 @@
       },
       //提交题库
       handleSubmitExam() {
-        this.$emit('success', this.exam_form_list);
+        /*this.exam_form_list.forEach(function(item,index) {
+          if(item.id) {
+            this.is_edit_paper = true;
+          }
+        });*/
+        /*for (let item of this.exam_form_list) {
+          if(item.id) {
+            this.is_edit_paper = true;
+            break;
+          }
+        }*/
+        this.$emit('success', this.exam_form_list,this.is_edit_paper);
         this.paper_visible = false;
+        this.is_edit_paper = false;
+      },
+
+      //取消按钮
+      handleCancelExam() {
+        this.paper_visible = false;
+        this.paper_type=1;
+        this.exam_form_list = [];
+        this.$emit('cancel');
       },
       //添加题库form
       handleAddExamForm() {
@@ -583,17 +651,29 @@
         if (this.exam_form_list.length < 1) {
           return false;
         }
-        this.exam_form_list.pop();
+        let item = this.exam_form_list[this.exam_form_list.length - 1];
+        debugger
+        if (item.id) {
+          this.$LjConfirm({
+            icon: 'delete',
+          }).then(() => {
+            this.$http.delete(`${this.url}train/exam_question/${item.id}`).then(res => {
+              this.$LjMessageEasy(res);
+              this.exam_form_list.pop();
+            });
+          });
+        } else {
+          this.exam_form_list.pop();
+        }
       },
-
 
       //查看统计结果确认事件
       statisticsResultConfirm() {
         this.paper_visible = false;
         let _this = this;
-        setTimeout(()=> {
+        setTimeout(() => {
           _this.paper_type = 1;
-        },1000);
+        }, 1000);
       },
     },
   }
