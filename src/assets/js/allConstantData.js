@@ -20,10 +20,15 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
 
     },//领取待办
   },
-  TRAINING: {//培训开发
+  TRAINING: {//培训考核
     NEWQUESTION: {//新建题库
       QUESTIONTYPE: [{id:1,name:'面试考核'},{id:2,name:'技能考核'},{id:3,name:'入职培训考核'}],//题库类型
     },
+    EXAM: {//考试
+      /*考试类型*/
+      EXAMTYPE:[{id:1,name:'入职'},{id:2,name:'培训'}],
+      ITEMTYPE:[{id:1,name:'单选'},{id:2,name:'判断'},{id:3,name:'简答'}],
+    }
   },
   NOTICEQUESTIONNAIRE: {//公告问卷
     PUBLISHNOTICE:{//发公告
@@ -36,4 +41,11 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
   INSPECT_STATUS:[{id:0,name:'未开始'},{id:1,name:'已开始'},{id:2,name:'已结束'}],
 };
 
-export{ DROPDOWN_CONSTANT };
+const GLOBAL_CONSTANT = {
+  TRAINING:{//培训考核
+    /*考试状态*/
+    EXAM_STATUS:[{id:0,name:'未开始'},{id:1,name:'进行中'},{id:2,name:'已结束'}]
+  }
+};
+
+export{ DROPDOWN_CONSTANT,GLOBAL_CONSTANT };

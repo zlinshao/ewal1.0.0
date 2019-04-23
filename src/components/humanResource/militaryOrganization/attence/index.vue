@@ -3,9 +3,12 @@
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
         <!--<div class="icons add" @click="new_train_visible = true"><b>+</b></div>-->
-        <div style="display: inline-block;width:230px;margin-right: 0">
-          <month-choose v-if="chooseTab==1" v-model="monthValue"></month-choose>
-          <year-choose v-if="chooseTab==2" v-model="yearValue"></year-choose>
+        <div v-if="chooseTab==1" style="display: inline-flex;justify-content: flex-end">
+          <month-choose v-model="monthValue"></month-choose>
+          <el-button>导入报表</el-button>
+        </div>
+        <div v-if="chooseTab==2" style="display: inline-block;width:230px;margin-right: 0">
+          <year-choose  v-model="yearValue"></year-choose>
         </div>
       </div>
 
@@ -21,18 +24,17 @@
         >{{ item.val }}</span>
       </div>
       <div v-if="chooseTab==1" class="nav-right changeChoose">
-        <span style="color: #0BB07B;" v-if="tableSettingData.attence.isShowMultiSelection==false"
+        <!--<span style="color: #0BB07B;" v-if="tableSettingData.attence.isShowMultiSelection==false"
               @click="tableSettingData.attence.isShowMultiSelection = true">选择</span>
 
         <span class="button-all-close" v-if="tableSettingData.attence.isShowMultiSelection">
           <span @click="toggleSelection(tableSettingData.attence.tableData)">全选/</span>
           <span @click="tableSettingData.attence.isShowMultiSelection = false">取消</span>
-          <!--<span class="user-leave"><i></i><span>离职员工</span></span>-->
-        </span>
+        </span>-->
 
         <el-checkbox v-model="tableSettingData.attence.isLeave">离职员工</el-checkbox>
         <org-choose num="1" width="200" title="请选择部门" v-model="tableSettingData.attence.departmentId"></org-choose>
-        <span @click="confirmAttence" class="colorE33">考勤确认</span>
+        <span @click="confirmAttence" class="colorE33">生成考勤确认表</span>
       </div>
       <div v-if="chooseTab==2" class="nav-right">
         <org-choose width="140" title="请选择部门"></org-choose>
@@ -599,14 +601,14 @@
               let off_work_count = item.attendance[0]?.not_signed_count[1] || 0;//下班缺卡次数
 
 
-              let shijia = item.attendance[0]?.vacate_data[0] || 0;//事假
-              let bingjia = item.attendance[0]?.vacate_data[1] || 0;
-              let nianjia = item.attendance[0]?.vacate_data[2] || 0;
-              let tiaoxiu = item.attendance[0]?.vacate_data[3] || 0;
-              let hunjia = item.attendance[0]?.vacate_data[4] || 0;
-              let chanjia = item.attendance[0]?.vacate_data[5] || 0;
-              let peichanjia = item.attendance[0]?.vacate_data[6] || 0;
-              let sangjia = item.attendance[0]?.vacate_data[7] || 0;
+              let shijia = Number(item.attendance[0]?.vacate_data[0] || 0);//事假
+              let bingjia = Number(item.attendance[0]?.vacate_data[1] || 0);
+              let nianjia = Number(item.attendance[0]?.vacate_data[2] || 0);
+              let tiaoxiu = Number(item.attendance[0]?.vacate_data[3] || 0);
+              let hunjia = Number(item.attendance[0]?.vacate_data[4] || 0);
+              let chanjia = Number(item.attendance[0]?.vacate_data[5] || 0);
+              let peichanjia = Number(item.attendance[0]?.vacate_data[6] || 0);
+              let sangjia = Number(item.attendance[0]?.vacate_data[7] || 0);
 
 
               let obj = {
@@ -774,7 +776,33 @@
 
       //考勤确认
       confirmAttence() {
-        let rows = this.tableSettingData.attence.multipleSelection;
+        let org_id = this.tableSettingData.attence.departmentId;
+        this.$LjConfirm({content:'月度统计表将发送至对应部门待办中'}).then(()=> {
+          let params = {
+            org_id: org_id,
+            date: this.monthValue
+          };
+          this.$http.get(`${this.url}attendance/attendance/todo`, params).then(res => {
+            if(res.code.endsWith('0')) {
+              this.$LjNotify('success',{
+                title:'成功',
+                message:res.msg,
+              });
+              rows = [];
+            }else {
+              this.$LjNotify('error',{
+                title:'失败',
+                message:res.msg,
+              });
+            }
+          });
+        });
+
+
+
+
+
+        /*let rows = this.tableSettingData.attence.multipleSelection;
         if (rows && rows.length > 0) {
           this.$LjConfirm({content:'月度统计表将发送至对应员工待办中'}).then(()=> {
             let users = _.map(rows, 'id');
@@ -802,7 +830,7 @@
             title: '警告',
             msg: '请至少选择一人',
           });
-        }
+        }*/
       },
 
 
