@@ -340,8 +340,8 @@
             .statusBar {
                 span {
                     display: block;
-                    width: 10px;
-                    height: 10px;
+                    width: 15px;
+                    height: 15px;
                     border-radius: 50%;
                     margin-left: 4px;
                 }

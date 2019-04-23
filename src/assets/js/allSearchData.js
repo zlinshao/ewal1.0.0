@@ -447,6 +447,7 @@ export const maintenanceSearch = {
 //科目
 export const subjectSearch = {
   status: 'subject',
+    keywords: 'search',
   data: [
     {
       keyType: 'radio',
@@ -462,24 +463,7 @@ export const subjectSearch = {
     }
   ]
 }
-//客户搜索
-export const customerSearch = {
-  status: 'subject',
-  data: [
-    {
-      keyType: 'radio',
-      title: '客户类别',
-      placeholder: '请选择客户类别',
-      keyName: 'er_type',
-      dataType: '',
-      value: [
-        { id: 1, title: '房东' },
-        { id: 2, title: '租客' },
-        { id: 3, title: '其他' }
-      ]
-    }
-  ]
-}
+
 
 //收支流水
 export const accountRunSearch = {
@@ -488,18 +472,18 @@ export const accountRunSearch = {
   data: [
     {
       keyType: 'date',
-      title: '交易日期',
+      title: '开始日期',
       placeholder: '请选择开始日期',
       keyName: 'start_date',
       dataType: ''
     },
-    // {
-    //     keyType: 'date',
-    //     title: '结束日期',
-    //     placeholder: '请选择结束日期',
-    //     keyName: 'end_date',
-    //     dataType: '',
-    // },
+    {
+        keyType: 'date',
+        title: '结束日期',
+        placeholder: '请选择结束日期',
+        keyName: 'end_date',
+        dataType: '',
+    },
     {
       keyType: 'radio',
       title: '类别',
@@ -507,21 +491,21 @@ export const accountRunSearch = {
       keyName: 'cate',
       dataType: '',
       value: [{ id: 1, title: '收入' }, { id: 2, title: '支出' }]
-    }
-    // {
-    //     keyType: 'date',
-    //     title: '操作开始日期',
-    //     placeholder: '请选择操作开始日期',
-    //     keyName: 'operate_start_date',
-    //     dataType: '',
-    // },
-    // {
-    //     keyType: 'date',
-    //     title: '操作结束日期',
-    //     placeholder: '请选择操作结束日期',
-    //     keyName: 'operate_end_date',
-    //     dataType: '',
-    // },
+    },
+    {
+        keyType: 'date',
+        title: '操作开始日期',
+        placeholder: '请选择操作开始日期',
+        keyName: 'operate_start_date',
+        dataType: '',
+    },
+    {
+        keyType: 'date',
+        title: '操作结束日期',
+        placeholder: '请选择操作结束日期',
+        keyName: 'operate_end_date',
+        dataType: '',
+    },
   ]
 }
 
@@ -849,6 +833,53 @@ export const lordRenterSearchList = {
   ]
 }
 
+//结算单
+export const balanceSearch = {
+    status: 'balanceSearch',
+    keywords: 'search',
+    data: [
+        {
+            keyType: 'date',
+            title: '开始日期',
+            placeholder: '请选择开始日期',
+            keyName: 'start_date',
+            dataType: ''
+        },
+        {
+            keyType: 'date',
+            title: '结束日期',
+            placeholder: '请选择结束日期',
+            keyName: 'end_date',
+            dataType: '',
+        },
+        {
+            keyType: 'date',
+            title: '操作开始日期',
+            placeholder: '请选择操作开始日期',
+            keyName: 'operate_start_date',
+            dataType: '',
+        },
+        {
+            keyType: 'date',
+            title: '操作结束日期',
+            placeholder: '请选择操作结束日期',
+            keyName: 'operate_end_date',
+            dataType: '',
+        },
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'department_ids',
+            dataType: [],
+            value: {
+                num: '',
+                arr: []
+            }
+        }
+    ]
+}
+
 //应收款
 export const gatheringSearchList = {
   status: 'gatheringSearchList',
@@ -901,7 +932,7 @@ export const gatheringSearchList = {
       keyType: 'staff',
       title: '员工',
       placeholder: '请选择员工',
-      keyName: 'staff',
+      keyName: 'staff_ids',
       dataType: [],
       value: {
         num: ''
@@ -911,7 +942,7 @@ export const gatheringSearchList = {
       keyType: 'depart',
       title: '部门',
       placeholder: '请选择部门',
-      keyName: 'department',
+      keyName: 'department_ids',
       dataType: [],
       value: {
         num: '',
@@ -974,7 +1005,7 @@ export const paySearchList = {
       keyType: 'radio',
       title: '入账状态',
       keyName: 'status',
-      dataType: [],
+      dataType: '',
       value: [
         { id: 1, title: '待入账' },
         { id: 2, title: '待结清' },

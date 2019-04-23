@@ -131,6 +131,9 @@
       .search {
         @include commonImg('search.png', 'theme1');
       }
+      .btn_output{
+        @include commonImg('search.png', 'theme1');
+      }
       //离职管理
       .dimission {
         @include commonImg('lizhiguanli.png', 'theme1');
@@ -386,6 +389,7 @@
     @include commonImg('search.png','theme1');
     vertical-align: middle;
   }
+
   .btn_square_add {
     @include btn_square(4px);
     margin-right: 15px;

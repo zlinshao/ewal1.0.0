@@ -18,16 +18,16 @@
                 <p class="status-icon" v-for="item in statusBar"   v-if="chooseTab===1||chooseTab===2">
                     <span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>
                 </p>
-                <div class="icons home_icon"></div>
+                <div class="icons btn_output"></div>
                 <div class="icons search" @click="highSearch(chooseTab)"></div>
             </div>
         </div>
-        <div class="action-bar changeChoose">
-            <div class="action-bar-left">
-                <el-checkbox>全选</el-checkbox>
-                <span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+        <div class="action-bar changeChoose" v-show="action_visible">
+            <div class="action-bar-left" >
+                <!--<el-checkbox>全选</el-checkbox>-->
+                <span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>
 
-                <span class="action-bar-name" v-show="action_visible">
+                <span class="action-bar-name">
                     <span class="edit" @click="action_status.details_visible=true;action_status.is_check=true">查看</span>
                     <span class="edit" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
                     <span class="edit" @click="cancelRemark(chooseTab,current_row)" style="color: #FFAB40">取消重复标记</span>
@@ -403,6 +403,9 @@
                     border-radius: 50%;
                     margin-left: 4px;
                 }
+            }
+            .btn_output{
+                @include financeImg('upLoad.png','theme1')
             }
             .phone{
                 @include financeImg('dianhua.png','theme1')

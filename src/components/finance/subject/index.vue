@@ -455,10 +455,13 @@
             getSubjectList() {
                 this.showLoading(true);
                 this.$http.get(globalConfig.temporary_server + 'subject', this.params).then(res => {
+                    this.showLoading(false);
                     if (res.code === 200) {
-                        this.showLoading(false);
                         this.subjectData = res.data.data;
                         this.subjectCount = res.data.count;
+                    }else{
+                        this.subjectData = [];
+                        this.subjectCount = 0;
                     }
                 }).catch(err => {
                     console.log(err);
@@ -541,6 +544,7 @@
                 this.showSearch = false;
                 if (val !== 'close') {
                     this.params.er_type = val.er_type;
+                    this.params.search = val.search;
                     this.getSubjectList();
                 }
             },

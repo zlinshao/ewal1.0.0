@@ -562,10 +562,9 @@
                 this.showSearch = false;
                 if (val !== 'close') {
                     console.log(val);
-                    this.params = val;
-                    for (let item of Object.keys(this.params)){
-                        this.params[item] = val[item];
-                    }
+                    this.params.search= val.search;
+                    this.params.scope= val.scope;
+                    this.params.cate= val.cate;
                     this.getAccountList();
                 }
             },
