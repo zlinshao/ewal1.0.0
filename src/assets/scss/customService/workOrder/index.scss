@@ -14,6 +14,15 @@
     .el-form-item__label {
       white-space: nowrap;
     }
+    .emergency {
+      width: 90px;
+      height: 30px;
+      line-height: 30px;
+      font-weight: 700;
+    }
+    .is-center > .cell {
+      @include flex('flex-center');
+    }
     //详情
     .dialog_detail {
       cursor: pointer;

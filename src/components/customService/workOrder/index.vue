@@ -22,8 +22,8 @@
         header-row-class-name="tableHeader" style="width: 100%" :key='"orderTable"+chooseTab'>
         <el-table-column align="center" label="紧急程度">
           <template slot-scope="scope">
-            <div class="status" :class="['emergency' + scope.row.emergency]">
-              <p>{{scope.row.emergency_name}}</p>
+            <div class="emergency" :class="['emergency' + scope.row.emergency]">
+              {{scope.row.emergency_name}}
             </div>
           </template>
         </el-table-column>
@@ -204,13 +204,20 @@ export default {
 
       this.$http.get(this.market_server + `v1.0/csd/work_order`, params).then(res => {
         if (res.code === 200) {
-          this.tableData = res.data.data;
-          this.tableDateCount = res.data.all_count;
+          let data = res.data.data;
+          if (data.length == 0 && this.currentPage != 1) {
+            this.currentPage--;
+            this.getDataList()
+          } else {
+            this.tableData = res.data.data;
+            this.tableDateCount = res.data.all_count;
+            this.showLoading(false)
+          }
         } else {
           this.tableData = [];
           this.tableDateCount = 0;
+          this.showLoading(false)
         }
-        this.showLoading(false);
       })
     },
     // 高级搜索

@@ -11,7 +11,10 @@
               <el-col :span='createOrder_span'>
                 <p class='el-col-p'><i class='icon house_name'></i>房屋地址</p>
                 <div class='input_box'>
-                  <el-input placeholder="请填写" v-model='createOrder.house_name'></el-input>
+                  <div class='el-input'>
+                    <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='createOrder.house_name'
+                      @mousedown="clearSearch" v-on:keyup.enter='addOrder_search'>
+                  </div>
                 </div>
               </el-col>
 
@@ -153,20 +156,10 @@
                 </div>
               </el-col>
               <el-col :span='22' class='el-col-content'>
-                <div class='content-top' v-if='addOrderChosen == 1'>
-                  <div class='info_search'>
-                    <i class='icon'></i>
-                    <div class='el-input'>
-                      <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model="customer_search"
-                        v-on:keyup.enter='addOrder_search'>
-                    </div>
-
-                  </div>
-                  <ul v-if='show_Contract_Detail'>
-                    <li v-for='item in seeRecord' :key='item.label' :class="[seeRecord_status == item.value ?'active_record':'']"
-                      @click='chosenActiveRecord(item.value)'>{{item.label}}</li>
-                  </ul>
-                </div>
+                <ul class='content-top' v-if='addOrderChosen == 1 && show_Contract_Detail'>
+                  <li v-for='item in seeRecord' :key='item.label' :class="[seeRecord_status == item.value ?'active_record':'']"
+                    @click='chosenActiveRecord(item.value)'>{{item.label}}</li>
+                </ul>
                 <!-- 客户信息 -->
                 <div class='custmer_info' v-if='addOrderChosen == 1 && !customer_info.contract_Detail'>
                   <div class='nothing' v-if='customer_info.count == 0'>
@@ -782,14 +775,19 @@ export default {
         id == 3 && this.temporary_search() // 来电
       }
     },
-    // 模糊搜索
-    addOrder_search () {
+    clearSearch () {
+      this.createOrder.house_name = ''
+      this.customer_info.page = 1
+      this.customer_info.count = 0
       this.customer_info.chosenCustomer = null
       this.customer_info.contract_Detail = null
       this.show_Contract_Detail = false
+    },
+    // 模糊搜索
+    addOrder_search () {
       let params = {
         type: 3,
-        search: this.customer_search,
+        search: this.createOrder.house_name,
         limit: 5,
         page: this.customer_info.page
       }
@@ -860,7 +858,7 @@ export default {
     // 用户信息分页
     handleCustomerChange (val) {
       this.customer_info.page = val
-      this.addOrder_search()
+      this.addOrder_search(val)
     },
     // 历史工单分页
     handleHistoryChange (val) {
@@ -1127,12 +1125,8 @@ export default {
         height: 32px;
         margin-left: 60px;
         margin-bottom: 20px;
-        ul {
-          display: flex;
-          margin-left: 30px;
-          li {
-            margin-right: 18px;
-          }
+        li {
+          margin-right: 18px;
         }
       }
 

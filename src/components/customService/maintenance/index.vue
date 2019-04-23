@@ -24,8 +24,8 @@
         header-row-class-name="tableHeader" style="width: 100%" :key='"orderTable"+chooseTab'>
         <el-table-column align="center" label="紧急程度">
           <template slot-scope="scope">
-            <div class="status" :class="['emergency' + scope.row.emergency]">
-              <p>{{scope.row.emergency_name}}</p>
+            <div class="emergency" :class="['emergency' + scope.row.emergency]">
+              {{scope.row.emergency_name}}
             </div>
           </template>
         </el-table-column>
@@ -77,7 +77,10 @@
               <el-col :span='6'>
                 <p class='el-col-p'><i class='icon house_name'></i>房屋地址</p>
                 <div class='input_box'>
-                  <el-input placeholder="请填写" v-model='createOrder_form.house_name' disabled></el-input>
+                  <div class='el-input'>
+                    <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='createOrder_form.house_name'
+                      @mousedown="clearSearch" v-on:keyup.enter='addOrder_search'>
+                  </div>
                 </div>
               </el-col>
 
@@ -163,13 +166,6 @@
                 </div>
               </el-col>
               <el-col :span='22' class='el-col-content'>
-                <div class='info_search' v-if='addOrderChosen == 1'>
-                  <i class='icon'></i>
-                  <div class='el-input'>
-                    <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model="customer_search"
-                      v-on:keyup.enter='addOrder_search'>
-                  </div>
-                </div>
                 <!--客户信息-->
                 <div class='custmer_info' v-if='addOrderChosen == 1'>
                   <div class='nothing' v-if='customer_info.dataCount == 0'>
@@ -506,13 +502,20 @@ export default {
       }
       this.$http.get(`${this.market_server}v1.0/csd/work_order`, params).then(res => {
         if (res.code === 200) {
-          this.tableData = res.data.data;
-          this.tableDateCount = res.data.all_count;
+          let data = res.data.data
+          if (data.length == 0 && this.currentPage != 1) {
+            this.currentPage--
+            this.getDateList()
+          } else {
+            this.tableData = data;
+            this.tableDateCount = res.data.all_count;
+            this.showLoading(false);
+          }
         } else {
           this.tableData = [];
           this.tableDateCount = 0;
+          this.showLoading(false);
         }
-        this.showLoading(false);
       })
     },
     // 催办
@@ -609,10 +612,19 @@ export default {
         data: []
       }
     },
+
+    clearSearch () {
+      this.createOrder_form.house_name = ''
+      this.customer_info.page = 1
+      this.customer_info.dataCount = 0
+      this.customer_info.chosenCustomer = null
+      this.customer_info.contract_Detail = null
+      this.show_Contract_Detail = false
+    },
     // 模糊搜索 用户
     addOrder_search () {
       let params = {
-        search: this.customer_search,
+        search: this.createOrder_form.house_name,
         limit: 5,
         page: this.customer_info.page
       }

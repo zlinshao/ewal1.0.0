@@ -12,6 +12,15 @@
     .icons.add {
       margin-left: 20px;
     }
+    .emergency {
+      width: 90px;
+      height: 30px;
+      line-height: 30px;
+      font-weight: 700;
+    }
+    .is-center > .cell {
+      @include flex('flex-center');
+    }
     //增加order
     .addOrder_dialog {
       .el-col {
@@ -130,13 +139,6 @@
                   span {
                     padding-right: 40px;
                   }
-                }
-                .status1 {
-                  font-weight: 600;
-                  color: #0bb07b;
-                }
-                .status2 {
-                  color: #ffad0d;
                 }
               }
             }
@@ -344,6 +346,7 @@
       color: #0c66ff;
       @include confirmImg('zhongyao.png', 'theme1');
     }
+
     //增加order
     .addOrder_dialog {
       .el-col {
