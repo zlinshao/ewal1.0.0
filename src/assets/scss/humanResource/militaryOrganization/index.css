@@ -140,7 +140,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +159,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,15 +168,86 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
 
 #theme_name .militaryOrganization {
   height: 100%; }
   #theme_name .militaryOrganization > div {
     height: 100%;
     position: relative;
-    overflow: hidden; }
+    overflow: hidden;
+    background-color: #ffffff; }
+  #theme_name .militaryOrganization .listTopCss .listTopRight .assessment {
+    width: 90px;
+    height: 25px;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 7px;
+    font-family: MicrosoftYaHei;
+    color: white; }
+  #theme_name .militaryOrganization .military-container {
+    width: 100%;
+    height: calc(100% - 160px);
+    position: absolute;
+    left: 0;
+    top: 160px;
+    transition: all ease 1s; }
+    #theme_name .militaryOrganization .military-container .content {
+      height: calc(100% - 321px); }
+      #theme_name .militaryOrganization .military-container .content > div {
+        width: 180px;
+        height: 360px;
+        margin: 0 110px;
+        position: relative;
+        display: flex;
+        flex-direction: column; }
+        #theme_name .militaryOrganization .military-container .content > div:hover {
+          cursor: pointer;
+          transform: scale(1.05);
+          transition: all 1s; }
+        #theme_name .militaryOrganization .military-container .content > div .bg-container {
+          width: 100%;
+          height: 50%; }
+        #theme_name .militaryOrganization .military-container .content > div .below-container {
+          padding-top: 5%;
+          height: 45%;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          /*width: 100%;
+          height: 140px;*/
+          word-wrap: break-word;
+          word-break: break-all;
+          font-size: 32px;
+          font-family: 'jingDianXingShu'; }
+          #theme_name .militaryOrganization .military-container .content > div .below-container .container-left {
+            width: 40%;
+            height: 80%;
+            display: flex;
+            align-items: center;
+            border-right: 1px solid #686874;
+            writing-mode: vertical-rl;
+            writing-mode: tb-rl;
+            font-family: 'jingDianXingShu'; }
+          #theme_name .militaryOrganization .military-container .content > div .below-container .container-right {
+            padding-left: 15px;
+            width: 60%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start; }
+            #theme_name .militaryOrganization .military-container .content > div .below-container .container-right span {
+              font-size: 18px; }
 
 /*# sourceMappingURL=index.css.map */

@@ -1,7 +1,7 @@
 <template>
     <div id="button_upload">
       <label>
-        <el-button type="primary" plain @click="triggerFile">导入报表</el-button>
+        <el-button size="small" type="primary" plain @click="triggerFile">导入报表</el-button>
         <input type="file" id="button_upload_file" hidden multiple @change="uploadPic">
       </label>
     </div>
@@ -130,18 +130,13 @@
               data.size = fileSize;
               that.$http.uploadServer(data).then(res => {
                 if (res.code === "110100") {
-                  debugger
                   that.ids.push(Number(res.data.id));
                   let status = that.ids.length === that.showFile.length;
-                  //that.$emit('success', [that.file.keyName, that.ids, status]);
-                  //alert("上传成功");
-                  //alert(that.ids[0]);
                   let params = {
                     id:that.ids[0],
                   };
                   that.$http.post(`${that.url}attendance/attendance/import`,params).then(res=> {
-                    debugger
-                    this.$LjMessageEasy(res);
+                    that.$LjMessageEasy(res);
                   });
                 }
               })

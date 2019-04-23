@@ -219,14 +219,21 @@
   #theme_name.theme1 #kpiCheck .dialog_container .dialog_main .listTopCss {
     margin-top: 20px; }
     #theme_name.theme1 #kpiCheck .dialog_container .dialog_main .listTopCss .listTopLeft img {
-      width: 50px;
-      height: 50px; }
+      width: 30px;
+      height: 30px; }
     #theme_name.theme1 #kpiCheck .dialog_container .dialog_main .listTopCss .listTopLeft .personNameTime {
-      margin-right: 195px; }
+      margin-right: 144px;
+      font-family: MicrosoftYaHei;
+      font-size: 14px;
+      color: #686874; }
       #theme_name.theme1 #kpiCheck .dialog_container .dialog_main .listTopCss .listTopLeft .personNameTime span {
         margin-left: 15px; }
-    #theme_name.theme1 #kpiCheck .dialog_container .dialog_main .listTopCss .listTopLeft .info span {
-      margin-left: 15px;
-      color: red; }
+    #theme_name.theme1 #kpiCheck .dialog_container .dialog_main .listTopCss .listTopLeft .info {
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874; }
+      #theme_name.theme1 #kpiCheck .dialog_container .dialog_main .listTopCss .listTopLeft .info span {
+        margin-left: 15px;
+        color: red; }
 
 /*# sourceMappingURL=index.css.map */

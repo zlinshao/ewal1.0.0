@@ -140,7 +140,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +159,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,9 +168,15 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
 
 #theme_name #login {
   position: fixed;
@@ -179,7 +185,7 @@
   right: 0;
   bottom: 0;
   z-index: 42;
-  background-color: #F2F2F2; }
+  background-color: #f2f2f2; }
   #theme_name #login header {
     position: absolute;
     top: 50px;
@@ -206,7 +212,7 @@
     #theme_name #login .login > div .p2 {
       width: 600px;
       height: 500px;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
       position: relative;
       -webkit-border-radius: 6px;
       -moz-border-radius: 6px;
@@ -241,7 +247,7 @@
       width: 60px;
       height: 120px;
       padding-right: 4px;
-      color: #FFFFFF;
+      color: #ffffff;
       cursor: pointer; }
     #theme_name #login .login footer {
       margin: 100px 0 0 94px;
@@ -255,7 +261,7 @@
   -moz-border-radius: 0 100px 100px 0;
   border-radius: 0 100px 100px 0; }
 #theme_name.theme1 #login .login > div .p2 .forgetPassword {
-  color: #C0C0C0; }
+  color: #c0c0c0; }
 #theme_name.theme1 #login .login > div .p2, #theme_name.theme1 #login .login > div .p3 {
   -webkit-box-shadow: -6px 10px 20px 0px #dfdfdf;
   -moz-box-shadow: -6px 10px 20px 0px #dfdfdf;
@@ -263,31 +269,35 @@
 
 #theme_name.theme2 #login .login > div .p2 input {
   background-color: transparent; }
-#theme_name.theme2 #login .login > div .p2 input::-webkit-input-placeholder, #theme_name.theme2 #login .login > div .p2 textarea::-webkit-input-placeholder {
-  color: #00FDFF; }
-#theme_name.theme2 #login .login > div .p2 input::-moz-placeholder, #theme_name.theme2 #login .login > div .p2 textarea::-moz-placeholder {
+#theme_name.theme2 #login .login > div .p2 input::-webkit-input-placeholder,
+#theme_name.theme2 #login .login > div .p2 textarea::-webkit-input-placeholder {
+  color: #00fdff; }
+#theme_name.theme2 #login .login > div .p2 input::-moz-placeholder,
+#theme_name.theme2 #login .login > div .p2 textarea::-moz-placeholder {
   /* Mozilla Firefox 19+ */
-  color: #00FDFF; }
-#theme_name.theme2 #login .login > div .p2 input:-moz-placeholder, #theme_name.theme2 #login .login > div .p2 textarea:-moz-placeholder {
+  color: #00fdff; }
+#theme_name.theme2 #login .login > div .p2 input:-moz-placeholder,
+#theme_name.theme2 #login .login > div .p2 textarea:-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
-  color: #00FDFF; }
-#theme_name.theme2 #login .login > div .p2 input:-ms-input-placeholder, #theme_name.theme2 #login .login > div .p2 textarea:-ms-input-placeholder {
+  color: #00fdff; }
+#theme_name.theme2 #login .login > div .p2 input:-ms-input-placeholder,
+#theme_name.theme2 #login .login > div .p2 textarea:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: #00FDFF; }
+  color: #00fdff; }
 #theme_name.theme2 #login .login > div .p2 .forgetPassword {
   bottom: 80px;
   right: 40px;
-  color: #00FDFF; }
+  color: #00fdff; }
 #theme_name.theme2 #login .login > div .p2 input {
-  color: #00FDFF; }
+  color: #00fdff; }
 #theme_name.theme2 #login .login > div .p3 {
-  color: #00FDFF;
+  color: #00fdff;
   opacity: .8;
   padding-right: 22px; }
   #theme_name.theme2 #login .login > div .p3:hover {
     opacity: 1; }
 #theme_name.theme2 #login footer span + span {
-  border-color: #00FDFF; }
+  border-color: #00fdff; }
 
 #theme_name.theme3 #login .login > div .p2 > div {
   margin-right: 70px; }
@@ -316,7 +326,7 @@
   transform: translateY(-50%); }
   #theme_name.theme3 #login .login > div .p2 .loginBtn span {
     font-weight: bold;
-    color: #FFFFFF; }
+    color: #ffffff; }
 #theme_name.theme3 #login .login > div .p3 {
   display: none; }
 #theme_name.theme3 #login h1 {
@@ -341,9 +351,9 @@
     -o-transition: all 0.8s linear;
     transition: all 0.8s linear; }
     #theme_name.theme4 #login .login > div .p2 .forgetPassword {
-      color: #008A7B; }
+      color: #008a7b; }
     #theme_name.theme4 #login .login > div .p3 {
-      background-color: #008A7B;
+      background-color: #008a7b;
       -webkit-border-radius: 0 20px 20px 0;
       -moz-border-radius: 0 20px 20px 0;
       border-radius: 0 20px 20px 0; }

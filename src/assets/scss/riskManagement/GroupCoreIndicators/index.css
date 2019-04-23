@@ -172,6 +172,12 @@
   .action-bar .check {
     color: #0bb07b; }
 
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name #GroupCoreIndicators {
   width: 100%;
   height: 100%; }
@@ -180,7 +186,9 @@
     height: 100%;
     background: #FFFFFF; }
     #theme_name #GroupCoreIndicators > div .mainList {
-      position: relative; }
+      position: relative;
+      width: 100%;
+      height: 100%; }
       #theme_name #GroupCoreIndicators > div .mainList .menu-list {
         width: 100%;
         padding: 0 150px;

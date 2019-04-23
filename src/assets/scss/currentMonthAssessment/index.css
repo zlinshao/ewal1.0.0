@@ -222,5 +222,45 @@
       color: #686874;
       line-height: 13px;
       letter-spacing: 1px; }
+  #theme_name.theme1 #currentMonthAssessment .tableHeader .redStatus {
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    background: #cf2e33;
+    margin-left: 40px; }
+  #theme_name.theme1 #currentMonthAssessment .dialog_container .dialog_header .listTopCss .listTopLeft {
+    margin-left: 25px; }
+    #theme_name.theme1 #currentMonthAssessment .dialog_container .dialog_header .listTopCss .listTopLeft > img {
+      width: 40px;
+      height: 40px; }
+    #theme_name.theme1 #currentMonthAssessment .dialog_container .dialog_header .listTopCss .listTopLeft > div {
+      margin-left: 20px; }
+      #theme_name.theme1 #currentMonthAssessment .dialog_container .dialog_header .listTopCss .listTopLeft > div .personName {
+        font-size: 20px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        letter-spacing: 1px; }
+      #theme_name.theme1 #currentMonthAssessment .dialog_container .dialog_header .listTopCss .listTopLeft > div .timeInfo {
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        letter-spacing: 1px; }
+  #theme_name.theme1 #currentMonthAssessment .dialog_container .dialog_header .listTopCss .listTopRight {
+    margin-right: 10px; }
+    #theme_name.theme1 #currentMonthAssessment .dialog_container .dialog_header .listTopCss .listTopRight > div .personName {
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      letter-spacing: 1px; }
+      #theme_name.theme1 #currentMonthAssessment .dialog_container .dialog_header .listTopCss .listTopRight > div .personName span {
+        font-size: 15px;
+        color: #CF2E33; }
+    #theme_name.theme1 #currentMonthAssessment .dialog_container .dialog_header .listTopCss .listTopRight > div .timeInfo {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 7px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      letter-spacing: 1px; }
 
 /*# sourceMappingURL=index.css.map */

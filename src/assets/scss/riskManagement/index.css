@@ -172,6 +172,12 @@
   .action-bar .check {
     color: #0bb07b; }
 
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name #riskManagement {
   width: 100%;
   height: 100%; }
@@ -183,7 +189,7 @@
       position: relative; }
       #theme_name #riskManagement > div .mainList .menu-list {
         width: 70%;
-        padding: 0 150px;
+        padding: 0 100px;
         display: flex;
         flex-direction: row;
         align-items: center;

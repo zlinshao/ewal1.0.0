@@ -1084,9 +1084,6 @@
       handleSubmitSetPower() {
         this.set_power.permission_id = this.checkList;
         this.set_power.permission_field_id = this.field_list;
-        console.log(this.checkList,'权限');
-        console.log(this.field_list,'字段');
-        return false;
         this.set_power.system_id = this.powerChildName;
         this.$http.post('organization/permission/set',this.set_power).then(res => {
           if (res.code === '20000') {
@@ -1149,13 +1146,13 @@
       // 权限复选
       handleCheck(value) {
         console.log(value);
+        console.log(this.field_list);
         this.field_list = [];
         let checkCount = value.length;
         let list = this.power_list;
         let count = 0;
         for (let item of  Object.keys(list)) {
           count = count + list[item].length;
-          console.log(list[item]);
           for (let tmp of list[item]) {
             // if (tmp.id === value[value.length - 1]) {
             //   if (tmp.fields) {

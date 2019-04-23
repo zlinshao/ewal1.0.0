@@ -140,7 +140,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +159,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,9 +168,15 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
 
 #theme_name .salary .listTopCss {
   height: 0; }
@@ -187,13 +193,43 @@
       width: 30px;
       height: 30px; }
 #theme_name .salary .main-nav {
-  margin-left: 50px;
-  padding: 15px 0; }
-  #theme_name .salary .main-nav > span {
+  padding: 15px 40px;
+  background-color: #F5F5F5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; }
+  #theme_name .salary .main-nav .nav-left > span {
     padding: 5px 30px;
     margin: 0 10px;
     cursor: pointer;
     font-size: 14px; }
+  #theme_name .salary .main-nav .nav-right {
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center; }
+    #theme_name .salary .main-nav .nav-right > span {
+      padding: 5px 30px;
+      margin: 0 10px;
+      cursor: pointer;
+      font-size: 20px;
+      position: relative; }
+      #theme_name .salary .main-nav .nav-right > span.user-leave {
+        display: inline-block;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center; }
+        #theme_name .salary .main-nav .nav-right > span.user-leave i {
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          background-color: #cf2e33;
+          border-radius: 50%; }
+        #theme_name .salary .main-nav .nav-right > span.user-leave span {
+          margin-left: 10px; }
+      #theme_name .salary .main-nav .nav-right > span.colorE33 {
+        color: #cf2e33; }
 #theme_name .salary .salary-container {
   width: 100%;
   height: calc(100% - 131px);
