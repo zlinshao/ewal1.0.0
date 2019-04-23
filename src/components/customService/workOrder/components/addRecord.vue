@@ -14,22 +14,22 @@
                   <el-radio v-model="followRecord.folow_status" label="338">已完成</el-radio>
                 </el-form-item>
               </el-col>
-              <el-col :span="12" v-if='followRecord.folow_status == 338 && moduleData.type == "workOrder" && moduleData.chosenTag != 338'>
-                <el-form-item label="投诉有效性">
+              <el-col :span="12">
+                <el-form-item label="投诉有效性" v-if="followRecord.folow_status == 338 && moduleData.type_name=='投诉'">
                   <el-radio v-model="followRecord.emergency" label="1">有效</el-radio>
                   <el-radio v-model="followRecord.emergency" label="2">无效</el-radio>
                 </el-form-item>
               </el-col>
             </el-row>
 
-            <el-row :gutter="20" width='100%' v-if='moduleData.type == "maintenance" && followRecord.folow_status == 338'>
+            <el-row :gutter="20" width='100%' v-if='moduleData.type_name == "报销" && followRecord.folow_status == 338'>
               <el-col :span="8">
                 <el-form-item label="维修金额">
                   <el-input placeholder="请填写" v-model='followRecord.pay_all_money'></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 337 && moduleData.type == "workOrder" && moduleData.chosenTag != 338'>
+            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 337'>
               <el-col :span="8">
                 <el-form-item label="紧急程度">
                   <el-select v-model="followRecord.emergency" placeholder="请选择">
@@ -41,8 +41,8 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 338' v-for='(com,index) in followRecord.pay_method'
-              :key='"comp"+index'>
+            <el-row :gutter="20" width='100%' v-if='followRecord.folow_status == 338 && (moduleData.type_name=="报销" || moduleData.type_name=="投诉")'
+              v-for='(com,index) in followRecord.pay_method' :key='"comp"+index'>
               <el-col :span="8">
                 <el-form-item label="认责人">
                   <el-select placeholder="请选择" v-model='com.type'>
@@ -63,7 +63,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" width='100%' v-if='moduleData.type == "maintenance" && followRecord.folow_status == 338'>
+            <el-row :gutter="20" width='100%' v-if='moduleData.type_name == "报销" && followRecord.folow_status == 338'>
               <el-col :span="8">
                 <el-form-item label="实际支付">
                   <el-select v-model="followRecord.payer_type" placeholder="请选择">
@@ -128,7 +128,7 @@ export default {
   data () {
     return {
       followRecord: {
-        folow_status: '',
+        folow_status: 337,
         emergency: '',
         content: '',
         pay_method: [
@@ -237,7 +237,7 @@ export default {
     },
     clearInfo () {
       this.followRecord = {
-        folow_status: '',
+        folow_status: 337,
         emergency: '',
         content: '',
         pay_method: [
