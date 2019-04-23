@@ -180,7 +180,7 @@
       <lj-dialog
         :visible="check_visible"
         :size="{width: 500 + 'px',height: 600 + 'px'}"
-        @close=""
+        @close="handleCancelAddCheck"
       >
         <div class="dialog_container">
           <div class="dialog_header">
@@ -189,7 +189,7 @@
           <div class="dialog_main">
             <el-form label-width="80px" size="small" class="borderNone">
               <el-form-item label="检查时间" placeholder="请输入">
-                <el-date-picker v-model="check_form.check_datetime"></el-date-picker>
+                <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" v-model="check_form.check_datetime"></el-date-picker>
               </el-form-item>
               <el-form-item label="检查人">
                 <el-input v-model="check_form.user_name" placeholder="请选择" readonly @focus="staff_visible = true"></el-input>
@@ -211,8 +211,8 @@
             </el-form>
           </div>
           <div class="dialog_footer">
-            <el-button type="danger">确定</el-button>
-            <el-button type="info">取消</el-button>
+            <el-button type="danger" @click="handleConfirmCheck">确定</el-button>
+            <el-button type="info" @click="handleCancelAddCheck">取消</el-button>
           </div>
         </div>
       </lj-dialog>
@@ -235,17 +235,17 @@
               //行政检查
               check_visible: false,
               check_form: {
-                album_file: [],
+                check_photo: [],
                 check_content: '',
                 check_datetime: '',
                 check_level: '',
                 house_id: '',
                 user_name: '',
-                check_user_id: ''
+                checker: ''
               },
               staff_visible: false,
               check_file: {
-                keyName: 'album_file',
+                keyName: 'check_photo',
                 setFile: [],
                 size: {
                   width: '50px',
@@ -350,16 +350,26 @@
         },
         computed: {},
         methods: {
+          //确定检查
+          handleConfirmCheck() {
+            this.$http.post(this.market_server + 'v1.0/market/check',this.check_form).then(res => {
+              console.log(res);
+            })
+          },
+          //取消行政检查
+          handleCancelAddCheck() {
+            this.check_visible = false;
+          },
           //获取文件
           handleGetFile(val) {
             if (val !== 'close') {
-              this.check_form.album_file = val[1];
+              this.check_form.check_photo = val[1];
             }
           },
           //获取人员
           handleGetStaff(id,name) {
             if (id !== 'close') {
-              this.check_form.check_user_id = id[0];
+              this.check_form.checker = id[0];
               this.check_form.user_name = name;
             }
             this.staff_visible = false;

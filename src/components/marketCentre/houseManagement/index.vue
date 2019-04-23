@@ -639,15 +639,31 @@
           console.log(res);
         })
       },
+      getContractList(house_id,contract_type) {
+        this.$http.get(this.market_server + 'v1.0/market/contract',{
+          ...this.table_params,
+          contract_type,
+          house_id
+        }).then(res => {
+          console.log(res);
+        })
+      },
       //切换列表信息
       handleCheckModule(item) {
-        console.log(item);
+        this.table_params.limit = 15;
+        this.table_params.page = 1;
+        this.current_house_type = item.id;
         var url = '';
         switch (item.id) {
           case 1:
             url = `/v1.0/market/house/houseVillage/${this.current_house.id}`;
             this.getDetailTableList(url);
             break;
+          case 6:
+            this.getContractList(this.current_house.id,1);
+            break;
+          case 7:
+            this.getContractList(this.current_house.id,2);
         }
       },
       handleChangePage(page) {
