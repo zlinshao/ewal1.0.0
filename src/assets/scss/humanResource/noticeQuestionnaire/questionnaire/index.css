@@ -178,50 +178,53 @@
 .color874 {
   color: #686874; }
 
-#theme_name #questionnaire {
-  height: 100%;
-  background-color: red; }
-  #theme_name #questionnaire .listTopCss {
-    height: 0; }
-    #theme_name #questionnaire .listTopCss .search-toolbar {
-      position: fixed;
-      top: 106px;
-      right: 70px;
-      height: 30px;
-      display: flex;
-      display: -webkit-flex;
-      justify-content: flex-end;
-      width: 40%; }
-      #theme_name #questionnaire .listTopCss .search-toolbar > div {
-        width: 30px;
-        height: 30px; }
-      #theme_name #questionnaire .listTopCss .search-toolbar .icons-font {
-        height: 30px;
-        width: 70px;
-        display: flex;
-        display: -webkit-flex;
-        align-items: center;
-        justify-content: center; }
-        #theme_name #questionnaire .listTopCss .search-toolbar .icons-font b {
-          color: white;
-          font-size: 14px; }
-
-#theme_name.theme1 #questionnaire .header_right {
-  display: flex;
-  flex-direction: row-reverse; }
-  #theme_name.theme1 #questionnaire .header_right .icon-add {
-    width: 30px;
+#theme_name #questionnaire .icon-edit {
+  display: inline-block;
+  height: 26px;
+  width: 26px;
+  cursor: pointer; }
+#theme_name #questionnaire .listTopCss {
+  height: 0; }
+  #theme_name #questionnaire .listTopCss .search-toolbar {
+    position: fixed;
+    top: 106px;
+    right: 70px;
     height: 30px;
-    display: inline-block;
     display: flex;
     display: -webkit-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: #CF2E33; }
-    #theme_name.theme1 #questionnaire .header_right .icon-add b {
-      color: #ffffff;
-      font-size: 30px;
-      margin-bottom: 6px; }
+    justify-content: flex-end;
+    width: 40%; }
+    #theme_name #questionnaire .listTopCss .search-toolbar > div {
+      width: 30px;
+      height: 30px; }
+    #theme_name #questionnaire .listTopCss .search-toolbar .icons-font {
+      height: 30px;
+      width: 70px;
+      display: flex;
+      display: -webkit-flex;
+      align-items: center;
+      justify-content: center; }
+      #theme_name #questionnaire .listTopCss .search-toolbar .icons-font b {
+        color: white;
+        font-size: 14px; }
+
+#theme_name.theme1 #questionnaire {
+  /*.header_right {
+    display: flex;
+    flex-direction: row-reverse;
+    .icon-add {
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+      @include flex('flex-center');
+      cursor: pointer;
+      background-color: #CF2E33;
+      b {
+        color: $colorFFF;
+        font-size: 30px;
+        margin-bottom: 6px;
+      }
+    }
+  }*/ }
 
 /*# sourceMappingURL=index.css.map */

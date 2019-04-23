@@ -325,7 +325,7 @@
             </div>
             <div class="dialog_footer">
               <el-button type="danger" size="small" @click="handleSubmitMoveOut">确定</el-button>
-              <el-button type="info" size="small" @close="move_out_visible = false">取消</el-button>
+              <el-button type="info" size="small" @click="move_out_visible = false">取消</el-button>
             </div>
           </div>
         </lj-dialog>

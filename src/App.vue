@@ -183,7 +183,7 @@
     },
     methods: {
       todoListHandler() {
-        //this.routerLink('/todoList');
+        //this.routerLink('/to
         this.$store.dispatch('change_todo_list_visible');
       },
 

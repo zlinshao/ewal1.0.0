@@ -235,13 +235,12 @@
               //行政检查
               check_visible: false,
               check_form: {
-                check_photo: [],
+                album_file: [],
                 check_content: '',
                 check_datetime: '',
                 check_level: '',
-                house_id: '',
                 user_name: '',
-                checker: ''
+                check_user_id: ''
               },
               staff_visible: false,
               check_file: {
@@ -352,7 +351,10 @@
         methods: {
           //确定检查
           handleConfirmCheck() {
-            this.$http.post(this.market_server + 'v1.0/market/check',this.check_form).then(res => {
+            this.$http.post(this.market_server + 'v1.0/market/check',{
+              house_id: this.currentHouse.id,
+              ...this.check_form
+            }).then(res => {
               console.log(res);
             })
           },
@@ -363,13 +365,13 @@
           //获取文件
           handleGetFile(val) {
             if (val !== 'close') {
-              this.check_form.check_photo = val[1];
+              this.check_form.album_file = val[1];
             }
           },
           //获取人员
           handleGetStaff(id,name) {
             if (id !== 'close') {
-              this.check_form.checker = id[0];
+              this.check_form.check_user_id = id[0];
               this.check_form.user_name = name;
             }
             this.staff_visible = false;
