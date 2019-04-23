@@ -357,10 +357,28 @@
   }
 
   .exam_detail_control {
+    position: relative;
     width: 100%;
     padding: 15px 0;
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
     border-bottom: 1px solid $color874;
+
+    button {
+      margin-right: 30px;
+    }
+
+    .edit-container {
+      display: inline-block;
+      //padding-right: 20px;
+      //margin-left: 30px;
+      .icon-edit {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+    }
   }
 
   .text_color {

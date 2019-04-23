@@ -162,7 +162,7 @@
         <div class="control flex">
           <!--<div class="btn_square_minus" @click="handlePopExamForm">-</div>
           <div class="btn_square_add" @click="handleAddExamForm">+</div>-->
-          <i @click="paper_type=1" class="icon-edit"></i>
+          <i v-if="params.edit_btn_visible" @click="paper_type=1" class="icon-edit"></i>
           <!-- <div></div>-->
         </div>
         <!--题型-->
@@ -312,6 +312,7 @@
             sub_title: '文职入职考试',
             btn_name: '预览题库',
             initial_page:1,
+            edit_btn_visible: true,
           }
         }
       },
@@ -602,7 +603,6 @@
       //取消按钮
       handleCancelExam() {
         this.paper_visible = false;
-        this.paper_type=1;
         this.exam_form_list = [];
         this.$emit('cancel');
       },
