@@ -454,15 +454,16 @@
     computed: {},
     methods: {
       handleGetVillage(val) {
-        console.log(val);
-        if (this.is_control === 'save') {
-          this.merge_form.save_village = val[0].village_name;
-          this.merge_form.id = val[0].village_id;
-        } else {
-          this.merge_form.merge_to_community_id = val[0].village_id;
-          this.merge_form.merge_village = val[0].village_name;
+        if (val !== 'close') {
+          if (this.is_control === 'save') {
+            this.merge_form.save_village = val[0].village_name;
+            this.merge_form.id = val[0].village_id;
+          } else {
+            this.merge_form.merge_to_community_id = val[0].village_id;
+            this.merge_form.merge_village = val[0].village_name;
+          }
+          this.merge_choose = 'all';
         }
-        this.merge_choose = 'all';
         this.merge_village_visible = false;
       },
       //合并小区
