@@ -15,7 +15,16 @@
       <div class="items-center">
         <div class="items-center funTop ">
           <span @click="todoListHandler">待办</span>
-          <span @click="openMessage">审批</span>
+          <div @click="showMessage" class='shenpi'>
+            <span>审批</span>
+            <ul v-if='open_message_visible'>
+              <li>
+                <span>web前端-面试任务</span>
+                <span>2019/1/20 21:00</span>
+              </li>
+              <li class='seeMore' @click.stop='openMessage'>更多</li>
+            </ul>
+          </div>
           <span @click="openNotify">更多</span>
         </div>
         <div>
@@ -26,20 +35,20 @@
             <option value="4">文艺森系</option>
           </select>
         </div>
-        <div class="items-center personal" >
+        <div class="items-center personal">
           <span>冯宝宝</span>
           <p @click="routerLink('login')">
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
           </p>
 
-            <span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span>
+          <span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span>
         </div>
       </div>
     </header>
     <div id="moduleList" :class="{'moduleList':moduleList}" style="z-index: 1000">
       <div class="justify-around">
-        <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules"
-             @click="routerLink(item.url);moduleList = false" :key='index'>
+        <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules" @click="routerLink(item.url);moduleList = false"
+          :key='index'>
           <p></p>
           <div class="justify-center">
             <h1 class="writingMode items-center">
@@ -54,7 +63,7 @@
     </div>
     <div id="theme_name" :class="'theme' + theme_name">
       <keep-alive>
-        <router-view/>
+        <router-view />
       </keep-alive>
     </div>
     <div class="flex-center changeLoad" v-if="changeLoad">
@@ -89,167 +98,179 @@
     </div>
 
     <todo-list></todo-list>
+    <!-- <Approval></Approval> -->
   </div>
 </template>
 
 <script>
-  import TodoList from './components/todoList/index';
+import TodoList from './components/todoList/index';
+import Approval from './components/approval/index';
 
-  export default {
-    name: 'App',
-    components: {
-      TodoList,
-    },
-    data() {
-      return {
-        theme_name: '1',
-        moduleList: false,
-        changeLoad: false,
-        modules: [
-          {
-            url: '/president',
-            title: '总裁办',
-            English: 'Presidents',
-          },
-          {
-            url: '/finance',
-            title: '财务中心',
-            English: 'Finacial Center',
-          },
-          {
-            url: '/humanResource',
-            title: '人力资源中心',
-            English: 'Personal Adminstration',
-          },
-          {
-            url: '/mediaCenter',
-            title: '新媒体运营中心',
-            English: 'Social Media Center',
-          },
-          {
-            url: '/marketCentre',
-            title: '营销中心',
-            English: 'Marketing Center',
-          },
-          {
-            url: '/customService',
-            title: '客服中心',
-            English: 'Customer Service',
-          },
-          {
-            url: '/leJiaCollege',
-            title: '乐伽大学',
-            English: 'Lejia College',
-          },
-          {
-            url: '/riskManagement',
-            title: '风险控制',
-            English: 'Risk Management',
-          },
-          {
-            url: '/intellectualPropertyProtection',
-            title: '知识产权保护',
-            English: 'Intellectual Property Protection',
-          },
-        ],
-
-      }
-    },
-    mounted() {},
-    watch: {
-      $route: {
-        handler(val, oldVal) {
-          this.moduleList = false;
-          this.$store.dispatch('route_animation');
+export default {
+  name: 'App',
+  components: {
+    TodoList,
+    Approval
+  },
+  data () {
+    return {
+      theme_name: '1',
+      moduleList: false,
+      changeLoad: false,
+      modules: [
+        {
+          url: '/president',
+          title: '总裁办',
+          English: 'Presidents',
         },
-        deep: true// 深度观察监听
+        {
+          url: '/finance',
+          title: '财务中心',
+          English: 'Finacial Center',
+        },
+        {
+          url: '/humanResource',
+          title: '人力资源中心',
+          English: 'Personal Adminstration',
+        },
+        {
+          url: '/mediaCenter',
+          title: '新媒体运营中心',
+          English: 'Social Media Center',
+        },
+        {
+          url: '/marketCentre',
+          title: '营销中心',
+          English: 'Marketing Center',
+        },
+        {
+          url: '/customService',
+          title: '客服中心',
+          English: 'Customer Service',
+        },
+        {
+          url: '/leJiaCollege',
+          title: '乐伽大学',
+          English: 'Lejia College',
+        },
+        {
+          url: '/riskManagement',
+          title: '风险控制',
+          English: 'Risk Management',
+        },
+        {
+          url: '/intellectualPropertyProtection',
+          title: '知识产权保护',
+          English: 'Intellectual Property Protection',
+        },
+      ],
+      open_message_visible: false
+    }
+  },
+  mounted () { },
+  watch: {
+    $route: {
+      handler (val, oldVal) {
+        this.moduleList = false;
+        this.$store.dispatch('route_animation');
+      },
+      deep: true// 深度观察监听
+    }
+  },
+  computed: {
+    routeAnimation () {
+      return this.$store.state.app.routeAnimation;
+    },
+    all_loading () {
+      return this.$store.state.app.loading;
+    },
+    global_notify () {
+      return this.$store.state.app.globalNotify;
+    },
+    global_message () {
+      return this.$store.state.app.globalMessage;
+    },
+    showMessage_visible () {
+      return this.$store.state.approval.approval_message_visible
+    }
+  },
+  methods: {
+    todoListHandler () {
+      //this.routerLink('/todoList');
+      this.$store.dispatch('change_todo_list_visible');
+    },
+
+    showMessage () {
+      if (this.showMessage_visible) {
+        this.$store.dispatch('change_message_visible');
+      } else {
+        this.open_message_visible = true
       }
     },
-    computed: {
-      routeAnimation() {
-        return this.$store.state.app.routeAnimation;
-      },
-      all_loading() {
-        return this.$store.state.app.loading;
-      },
-      global_notify() {
-        return this.$store.state.app.globalNotify;
-      },
-      global_message() {
-        return this.$store.state.app.globalMessage;
-      },
-
+    openMessage () {
+      this.open_message_visible = false
+      this.$store.dispatch('change_message_visible');
+      // this.$LjMessage('warning', {
+      //   title: '警告',
+      //   msg: '审批失败！'
+      // });
     },
-    methods: {
-      todoListHandler() {
-        //this.routerLink('/todoList');
-        this.$store.dispatch('change_todo_list_visible');
-      },
-
-      openMessage() {
-        this.$LjMessage('warning',{
-          title: '警告',
-          msg: '审批失败！'
-        });
-      },
-      openNotify() {
-        this.$LjNotify('success',{
-          title: '成功',
-          message: '请求成功了~',
-          subMessage: '这是一个子标题',
-        });
-      },
-      //关闭提示
-      handleCloseNotify() {
-        this.$store.dispatch('close_notify',false);
-      },
-      changeLoading() {
-        this.$store.dispatch('theme_name', this.theme_name);
-        this.changeLoad = true;
-        let that = this;
-        setTimeout(function () {
-          that.changeLoad = false;
-        }, 2000);
-      },
-      showModules() {
-        this.moduleList = !this.moduleList;
-      }
+    openNotify () {
+      this.$LjNotify('success', {
+        title: '成功',
+        message: '请求成功了~',
+        subMessage: '这是一个子标题',
+      });
     },
-  }
+    //关闭提示
+    handleCloseNotify () {
+      this.$store.dispatch('close_notify', false);
+    },
+    changeLoading () {
+      this.$store.dispatch('theme_name', this.theme_name);
+      this.changeLoad = true;
+      let that = this;
+      setTimeout(function () {
+        that.changeLoad = false;
+      }, 2000);
+    },
+    showModules () {
+      this.moduleList = !this.moduleList;
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  @import "./assets/scss/app/index.scss";
+@import "./assets/scss/app/index.scss";
 
-  @mixin notifyImg($m,$n) {
-    $url: './assets/image/common/' + $n + '/' + $m;
-    @include bgImage($url);
+@mixin notifyImg($m, $n) {
+  $url: "./assets/image/common/" + $n + "/" + $m;
+  @include bgImage($url);
+}
+
+#app {
+  .global_notify {
+    @include notifyImg("bg.png", "theme1/notify");
+  }
+  .notify_icon__success {
+    @include notifyImg("success.png", "theme1/notify");
+  }
+  .notify_icon__error {
+    @include notifyImg("error.png", "theme1/notify");
+  }
+  .notify_icon__info {
+    @include notifyImg("info.png", "theme1/notify");
+  }
+  .notify_icon__warning {
+    @include notifyImg("warning.png", "theme1/notify");
+  }
+  .global_message {
+    @include notifyImg("message_bg.png", "theme1/notify");
   }
 
-  #app {
-    .global_notify {
-      @include notifyImg('bg.png','theme1/notify');
-    }
-    .notify_icon__success {
-      @include notifyImg('success.png','theme1/notify');
-    }
-    .notify_icon__error {
-      @include notifyImg('error.png','theme1/notify');
-    }
-    .notify_icon__info {
-      @include notifyImg('info.png','theme1/notify');
-    }
-    .notify_icon__warning {
-      @include notifyImg('warning.png','theme1/notify');
-    }
-    .global_message {
-      @include notifyImg('message_bg.png','theme1/notify');
-    }
-
-    .icon-personal-center {
-      @include notifyImg('personal_center.png','theme1');
-    }
-
-
+  .icon-personal-center {
+    @include notifyImg("personal_center.png", "theme1");
   }
+}
 </style>

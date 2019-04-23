@@ -1,11 +1,11 @@
-@import "../common.scss";
+@import '../common.scss';
 
 @mixin appImg($l) {
   $url: './assets/image/' + $l;
   @include bgImage($url);
 }
 
-@mixin moduleImg($n ,$m) {
+@mixin moduleImg($n, $m) {
   $url: './assets/image/module/' + $m + '/' + $n;
   @include bgImage($url);
 }
@@ -51,7 +51,8 @@
     z-index: 30;
     .headLeft {
       > span {
-        b, span {
+        b,
+        span {
           margin-right: 20px;
         }
         b {
@@ -65,7 +66,7 @@
         font-family: 'jianyue';
         margin-left: 30px;
         cursor: pointer;
-        border: 1px solid #D2D2D2;
+        border: 1px solid #d2d2d2;
         padding: 0 30px;
         @include radius(20px);
         &:hover {
@@ -76,12 +77,49 @@
     }
     .items-center {
       .funTop {
+        height: 45px;
         margin-right: 40px;
+        .shenpi {
+          height: 45px;
+          line-height: 45px;
+          position: relative;
+          ul {
+            position: absolute;
+            right: 40px;
+            top: 40px;
+            background: #fff;
+            width: 230px;
+            // height: 260px;
+            border: 1px solid #eaeaea;
+            padding: 0 18px;
+            li {
+              height: 50px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              font-size: 10px;
+              color: #686874;
+              border-bottom: 1px solid #f2f2f2;
+              span {
+                max-width: 84px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                margin: 0;
+              }
+            }
+            .seeMore {
+              justify-content: flex-end;
+              border: none;
+              color: #cf2e33;
+            }
+          }
+        }
       }
       .personal div {
         margin-left: 30px;
       }
-      .personal, .funTop {
+      .personal,
+      .funTop {
         cursor: pointer;
         span {
           margin: 0 30px;
@@ -105,7 +143,7 @@
   select {
     color: $colorFFF;
     padding: 6px 18px;
-    background-color: rgba(0, 0, 0, .4);
+    background-color: rgba(0, 0, 0, 0.4);
     @include radius(6px);
     appearance: none;
     -moz-appearance: none;
@@ -137,7 +175,7 @@
     opacity: 0;
     @include transform(scale(0));
     @include transOrigin(50%);
-    @include transition(all .6s linear);
+    @include transition(all 0.6s linear);
     > div {
       .list {
         cursor: pointer;
@@ -178,7 +216,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     color: #212121;
     z-index: 100;
   }
@@ -200,17 +238,17 @@
       position: absolute;
       left: 50%;
       top: 40%;
-      transform: translate(-50%,-50%);
+      transform: translate(-50%, -50%);
       .lang {
         width: 100%;
         height: 100%;
-        @include moduleImg('loading.gif','theme1');
+        @include moduleImg('loading.gif', 'theme1');
         background-size: contain;
         span {
           position: absolute;
           bottom: 10%;
           left: 50%;
-          transform: translate(-50%,-50%);
+          transform: translate(-50%, -50%);
           font-size: 24px;
           //font-family: 'jingDianXingShu';
         }
@@ -224,7 +262,7 @@
     top: -950px;
     right: 15px;
     z-index: 1001;
-    transition: all ease .5s;
+    transition: all ease 0.5s;
     overflow: hidden;
     text-align: center;
     padding: 30px 40px;
@@ -242,7 +280,7 @@
 
     .subMessage {
       font-size: 14px;
-      color: #D8D8D8;
+      color: #d8d8d8;
     }
   }
   .message {
@@ -263,16 +301,16 @@
     font-family: 'jingDianXingShu';
   }
   .notify_title__success {
-    color: #2ECF74;
+    color: #2ecf74;
   }
   .notify_title__error {
-    color: #CF2E33;
+    color: #cf2e33;
   }
   .notify_title__info {
-    color: #9AE863;
+    color: #9ae863;
   }
   .notify_title__warning {
-    color: #FEC000;
+    color: #fec000;
   }
   .notify_show {
     top: 95px;
@@ -282,11 +320,11 @@
   .global_message {
     width: 300px;
     height: 180px;
-    background-color: #9CCC65;
+    background-color: #9ccc65;
     position: absolute;
     top: 52%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     text-align: center;
     padding: 20px;
     z-index: 1001;
@@ -305,7 +343,7 @@
   #moduleList {
     background-color: $colorFFF;
     > div {
-      @include moduleImg("modulebg.png", 'theme1');
+      @include moduleImg('modulebg.png', 'theme1');
       background-size: 30% 66%;
       @include defaultImg('theme1');
       @include hoverImg('theme1');
@@ -321,7 +359,7 @@
       }
       .list:hover {
         div {
-          @include moduleImg("moduledianji.png", 'theme1');
+          @include moduleImg('moduledianji.png', 'theme1');
         }
       }
     }
@@ -330,26 +368,26 @@
 
 #app.app2 {
   color: $colorDFF;
-  @include appImg("2.jpg");
+  @include appImg('2.jpg');
   header {
     select {
       color: $colorDFF;
     }
   }
   #moduleList {
-    @include bgImage("./assets/image/2.jpg");
+    @include bgImage('./assets/image/2.jpg');
     > div {
       @include defaultImg('theme2');
       .list {
         p {
-          opacity: .35;
+          opacity: 0.35;
           width: 44px;
           height: 44px;
           margin-bottom: 40px;
         }
         div {
-          color: #04D8EE;
-          @include moduleImg("moduleweidianji.png", 'theme2');
+          color: #04d8ee;
+          @include moduleImg('moduleweidianji.png', 'theme2');
           h1 {
             span:first-of-type {
               font-size: 26px;
@@ -363,7 +401,7 @@
         }
         div {
           color: $colorDFF;
-          @include moduleImg("moduledianji.png", 'theme2');
+          @include moduleImg('moduledianji.png', 'theme2');
         }
       }
     }
@@ -371,12 +409,12 @@
 }
 
 #app.app3 {
-  @include appImg("3.jpg");
+  @include appImg('3.jpg');
   header {
     color: $color874;
   }
   #moduleList {
-    @include moduleImg("modulebg.png", 'theme3');
+    @include moduleImg('modulebg.png', 'theme3');
     > div {
       .list {
         width: 140px;
@@ -397,7 +435,7 @@
         }
       }
       .list:hover {
-        @include moduleImg("moduledianji.png", 'theme3');
+        @include moduleImg('moduledianji.png', 'theme3');
         div {
           color: $color000;
         }
@@ -407,13 +445,13 @@
 }
 
 #app.app4 {
-  @include appImg("4.png");
+  @include appImg('4.png');
   header {
     color: $color874;
   }
   #moduleList {
     padding-top: 100px;
-    @include moduleImg("modulebg.png", 'theme4');
+    @include moduleImg('modulebg.png', 'theme4');
     > div {
       .list {
         position: relative;
@@ -462,7 +500,7 @@
             margin-top: 20px;
           }
           b {
-            @include moduleImg("topimage.png", 'theme4');
+            @include moduleImg('topimage.png', 'theme4');
           }
         }
       }
