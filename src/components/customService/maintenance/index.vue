@@ -854,7 +854,7 @@ export default {
       if (type == '新增跟进') {
         this.followRecord_info = {
           chooseTab: this.chooseTab,
-          type: 'maintenance'
+          type_name: this.detail_form.type_name
         }
         this.followRecord_visible = true
       }

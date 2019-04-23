@@ -50,7 +50,7 @@
             <el-col :span='10'>
               <div class='detail_tit'>
                 <span>跟进进度</span>
-                <b @click='handleAddRecord' v-if='detail_form.type == 699 || detail_form.type == 7 || detail_form.type == 8'>+</b>
+                <b @click='handleAddRecord'>+</b>
               </div>
               <div class='detail_box scroll_bar'>
                 <div class="content flex" v-for='follow in follow_data' :key='follow.next_follow_time' v-if='follow_data'>
