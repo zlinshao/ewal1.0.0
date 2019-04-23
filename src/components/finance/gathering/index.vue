@@ -164,7 +164,7 @@
                         <!--</el-form-item>-->
                         <el-form-item label="款项来源">
                             <el-select v-model="receive_form.identity" placeholder="请选择" disabled>
-                                <el-option v-for="item in identityData" :label="item.name" :value="item.id"></el-option>
+                                <el-option v-for="(item,index) in identityData" :label="item.name" :value="item.id" :key="index"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="收款时间">
@@ -264,9 +264,9 @@
                             </el-date-picker>
                         </el-form-item>
 
-                        <el-form-item label="款项">
+                        <el-form-item label="款项来源">
                             <el-select v-model="addForm.identity" placeholder="请选择">
-                                <el-option v-for="item in identityData" :label="item.name" :value="item.id"></el-option>
+                                <el-option v-for="(item,index) in identityData" :label="item.name" :value="item.id" :key="index"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="收款金额">
@@ -566,7 +566,7 @@
                 <div class="dialog_main">
                     <div class="bank-compare">
                         <div class="bank-left">
-                            <div class="">
+                            <div class="bank-left-top">
                                 <span>
                                     <i v-for="item in bankRun_type"
                                        @click="chooseBankType(item.value)"
@@ -580,8 +580,12 @@
                                 <el-table-column label="收款金额" prop="amount" align="center"></el-table-column>
                                 <el-table-column label="收款时间" prop="collection_time" align="center"></el-table-column>
                                 <el-table-column label="账户" prop="account.account_num" align="center"></el-table-column>
-                                <el-table-column label="截图" prop="category" align="center"></el-table-column>
-                                <el-table-column label="操作" prop="category" align="center">
+                                <el-table-column label="截图" prop="collect_img" align="center">
+                                    <template slot-scope="scope">
+                                        <img class="collect_img" v-for="item in Object.keys(scope.row.collect_img)" :src="scope.row.collect_img[item]" alt="">
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="操作" prop="category" align="center" width="150">
                                     <template slot-scope="scope">
                                         <el-button size="small" @click="handleCompareBankRun(scope.row.id)" type="danger">对比银行流水</el-button>
                                     </template>
@@ -589,36 +593,38 @@
                             </el-table>
                         </div>
                         <div class="bank-right borderNone">
-                            <el-form label-width="120px" :inline="true">
-                                <el-form-item label="时间误差数">
-                                    <el-input type="number" size="small" v-model="compareBankParams.date_deviation"></el-input>
-                                </el-form-item>
-                                <el-form-item label="金额误差数">
-                                    <el-input type="number" size="small" v-model="compareBankParams.amount_deviation"></el-input>
-                                </el-form-item>
-                            </el-form>
-                            <el-form label-width="120px" :inline="true">
-                                <el-form-item label="时间误差类型">
-                                    <el-button
-                                            size="mini"
-                                            v-for="(index,item) in date_deviation"
-                                            :key="item" style="margin-bottom: 10px"
-                                            :class="buttonChoose_date===index.value?'active':''"
-                                            @click.stop="get_date_deviation(index.value)"
-                                    >{{index.title}}
-                                    </el-button>
-                                </el-form-item>
-                                <el-form-item label="权重">
-                                    <el-button
-                                            size="mini"
-                                            v-for="(index,item) in order"
-                                            :class="buttonChoose_order===index.value?'active':''"
-                                            :key="item" style="margin-bottom: 10px"
-                                            @click.stop="getOrder(index.value)"
-                                    >{{index.title}}
-                                    </el-button>
-                                </el-form-item>
-                            </el-form>
+                            <div class="bank-right-top">
+                                <el-form label-width="120px" :inline="true">
+                                    <el-form-item label="时间误差数">
+                                        <el-input type="number" size="small" v-model="compareBankParams.date_deviation"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="金额误差数">
+                                        <el-input type="number" size="small" v-model="compareBankParams.amount_deviation"></el-input>
+                                    </el-form-item>
+                                </el-form>
+                                <el-form label-width="120px" :inline="true">
+                                    <el-form-item label="时间误差类型">
+                                        <el-button
+                                                size="mini"
+                                                v-for="(index,item) in date_deviation"
+                                                :key="item" style="margin-bottom: 10px"
+                                                :class="buttonChoose_date===index.value?'active':''"
+                                                @click.stop="get_date_deviation(index.value)"
+                                        >{{index.title}}
+                                        </el-button>
+                                    </el-form-item>
+                                    <el-form-item label="权重">
+                                        <el-button
+                                                size="mini"
+                                                v-for="(index,item) in order"
+                                                :class="buttonChoose_order===index.value?'active':''"
+                                                :key="item" style="margin-bottom: 10px"
+                                                @click.stop="getOrder(index.value)"
+                                        >{{index.title}}
+                                        </el-button>
+                                    </el-form-item>
+                                </el-form>
+                            </div>
 
                             <el-table
                                     :data="compareBankData"
@@ -703,8 +709,8 @@
                 },
                 params: {
                     is_del: '',
-                    staff_ids: '',
-                    department_ids: '',
+                    staff_ids: [],
+                    department_ids: [],
                     status: '',
                     startRange: '',
                     endRange: '',
@@ -910,7 +916,7 @@
                 compareParams:{
                     limit:12,
                     page:1,
-                    status:''
+                    status:9
                 },
                 compareData:[],
                 compareCount:0,
@@ -923,13 +929,15 @@
                     {title: "已匹配", value: 3},
                     {title: "未匹配", value: 5},
                     {title: "未找到", value: 7},
-                    {title: "未开始", value: 9},
+                    {title: "暂未开始匹配", value: 9},
                 ],
                 chooseTabI:'',
+                collect_img:'',
 
             }
         },
         mounted() {
+            this.chooseTabI = this.compareParams.status;
             this.getReceiveList();
         },
         activated() {
@@ -952,8 +960,11 @@
                 }
 
             },
-            chooseBankType(id){
+
+            chooseBankType(id){//操作匹配未匹配tab
                 this.chooseTabI=id;
+                this.compareParams.status = id;
+                this.getCompareDataLists();
             },
 
             hiddenCustomer(val){//获取客户
@@ -964,19 +975,19 @@
                 this.addForm.customer_id = val.id;
 
             },
-            get_date_deviation(val) {
+            get_date_deviation(val) {//获取时间误差
                 this.compareBankParams.select=val;
                 this.buttonChoose_date=val;
             },
-            getOrder(val){
+            getOrder(val){//获取权重
                 this.compareBankParams.order=val;
                 this.buttonChoose_order=val;
             },
-            handleCompareChangePage(page){
+            handleCompareChangePage(page){//收款记录分页
               this.compareParams.page=page;
               this.getCompareDataLists();
             },
-            getCompareDataLists(){//获取登记记录
+            getCompareDataLists(){//获取收款记录
                 this.$http.get(globalConfig.temporary_server + 'registration',this.compareParams).then(res => {
                     console.log(res);
                     if (res.code === 200) {
@@ -1000,7 +1011,6 @@
                   amount_deviation:this.compareBankParams.amount_deviation,
                   order:this.compareBankParams.order,
               };
-
                 this.$http.put(globalConfig.temporary_server + 'registration/match/'+id,paramsForm).then(res => {
                     if (res.code === 200) {
                         console.log(res)
@@ -1463,19 +1473,33 @@
                 this.showSearch = false;
                 if (val !== 'close') {
                     console.log(val);
-                    for (let item of Object.keys(this.params)) {
-                        this.params[item] = val[item];
+                    let startTag='';let endTag='';let startRange='';let endRange='';
+                    if(val.tagDate){
+                        startTag = val.tagDate[0];
+                        endTag = val.tagDate[1];
                     }
-                    if (val.gatherDate) {
-                        this.params.startRange = val.gatherDate[0];
-                        this.params.endRange = val.gatherDate[1];
+                    if(val.gatherDate){
+                        endRange = val.gatherDate[0];
+                        startRange = val.gatherDate[1];
                     }
-                    if (val.tagDate) {
-                        this.params.startTag = val.tagDate[0];
-                        this.params.endTag = val.tagDate[1];
-                    }
-                    this.params.staff_ids = val.staff;
-                    this.params.department_ids = val.department;
+
+                   let paramsData={
+                       page:1,
+                       limit:12,
+                       staff_ids:val.staff_ids,
+                       department_ids:val.department_ids,
+                       startTag:startTag,
+                       endTag:endTag,
+                       endRange:endRange,
+                       startRange:startRange,
+                       status:val.status,
+                       tag_status:val.tag_status,
+                       search: val.search,
+
+                   };
+                   for (let item of Object.keys(this.params)){
+                       this.params[item] = paramsData[item];
+                   }
                     console.log(this.params);
                     this.getReceiveList();
                 }

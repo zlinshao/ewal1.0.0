@@ -26,13 +26,14 @@
           </div>
         </div>
         <div class="exam-paper flex-center" v-show="is_exam_guide!==1">
-          <div class="exam-paper-container" v-for="item in tableSettingData.exam.tableData" :key="item.id" @click="exam_detail_visible = true">
+          <div class="exam-paper-container" v-for="item in tableSettingData.exam.tableData.slice(0,8)" :key="item.id"
+               @click="getExamDetail(item)">
             <div class="exam_span">
               <span class="writingMode">{{ item.time }}</span>
               <span class="writingMode">{{ item.name }}</span>
             </div>
             <div class="exam-paper-status">
-              <span class="writingMode">{{ item.status }}</span>
+              <span :style="{color:item.status=='未开始'?'rgba(0,0,0,1)':'rgba(0,0,0,.5)'}" class="writingMode">{{ item.status }}</span>
             </div>
           </div>
         </div>
@@ -40,7 +41,7 @@
           <div>
             <span class="writingMode" @click="new_question_bank_dialog_visible = true"
                   v-if="is_exam_guide === 1">新建题库</span>
-            <span class="writingMode" @click="new_exam_visible = true" v-else>新建考试</span>
+            <span class="writingMode" @click="showAddExam" v-else>新建考试</span>
           </div>
           <div>
             <span class="writingMode" @click="showQuestionBankList" v-if="is_exam_guide === 1">更多</span>
@@ -63,13 +64,13 @@
         <div class="dialog_main borderNone">
           <el-form :rules="rules.addQuestionBank" ref="addQuestionBankRef" :model="new_question_bank_form" size="mini"
                    class="showPadding" label-width="100px">
-            <el-form-item required prop="category" label="试卷类型">
+            <el-form-item required prop="category" label="题库类型">
               <dropdown-list width="220"
                              :json-arr="DROPDOWN_CONSTANT.TRAINING.NEWQUESTION.QUESTIONTYPE"
                              v-model="new_question_bank_form.category"></dropdown-list>
             </el-form-item>
-            <el-form-item required prop="name" label="试卷名称">
-              <el-input v-model="new_question_bank_form.name" placeholder="请输入试卷名称"></el-input>
+            <el-form-item required prop="name" label="题库名称">
+              <el-input v-model="new_question_bank_form.name" placeholder="请输入题库名称"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -89,7 +90,9 @@
         <div class="dialog_header">
           <h3>新建题库</h3>
           <div class="header_right">
-            <el-button v-if="new_question_bank_form.attachment.length==0" size="mini" type="danger" @click="paper_params.initial_page=1;paper_visible = true;">自己录入</el-button>
+            <el-button v-if="new_question_bank_form.attachment.length==0" size="mini" type="danger"
+                       @click="paper_params.initial_page=1;paper_visible = true;">自己录入
+            </el-button>
           </div>
         </div>
         <div class="dialog_main borderNone">
@@ -105,10 +108,12 @@
             </el-form-item>
             <div v-if="new_question_bank_exam_list.length==0">
               <el-form-item label="批量导入试题">
-                <lj-upload size="40" style="position: absolute;top:-10px" v-model="new_question_bank_form.attachment"></lj-upload>
+                <lj-upload size="40" style="position: absolute;top:-10px"
+                           v-model="new_question_bank_form.attachment"></lj-upload>
               </el-form-item>
               <el-form-item label="下载模板">
-                <lj-upload size="40" :disabled="true" style="position: absolute;top:-10px" v-model="paper_template_ids"></lj-upload>
+                <lj-upload size="40" :disabled="true" style="position: absolute;top:-10px"
+                           v-model="paper_template_ids"></lj-upload>
               </el-form-item>
             </div>
 
@@ -133,7 +138,7 @@
         <div class="dialog_main">
           <el-table
             :data="tableSettingData.question.tableData"
-            @row-dblclick="tableDblClick($event);"
+            @row-dblclick="tableDblClick($event,'question');"
             height="400px"
           >
             <el-table-column label="题库名称" prop="name" align="center"></el-table-column>
@@ -166,12 +171,12 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>题库列表</h3>
+          <h3>考试列表</h3>
         </div>
         <div class="dialog_main">
           <el-table
             :data="tableSettingData.exam.tableData"
-            @row-dblclick="tableDblClick($event);"
+            @row-dblclick="tableDblClick($event,'exam');"
             height="400px"
           >
             <el-table-column label="考试名称" prop="name" align="center"></el-table-column>
@@ -201,105 +206,129 @@
 
     <!--新建考试-->
     <lj-dialog
-      :visible="new_exam_visible"
+      :visible="new_exam_form_dialog_visible"
       :size="{width: 600 + 'px',height: 650 + 'px'}"
-      @close="new_exam_visible = false"
+      @close="new_exam_form_dialog_visible = false"
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>新建考试</h3>
+          <h3>{{exam_form_type==1?'新建考试':'编辑考试'}}</h3>
           <div class="header_right">
-            <el-button size="mini" type="primary" plain>预览试卷</el-button>
+            <el-button v-if="exam_form_type==1" @click="previewPaper" size="mini" type="primary" plain>预览试卷</el-button>
           </div>
         </div>
         <div class="dialog_main borderNone">
-          <el-form :model="new_exam_form_params" label-width="80px" style="width: 80%">
-            <el-form-item label="考试场次">
-              <el-input v-model="new_exam_form_params.exam_ci" placeholder="请输入场次"></el-input>
+          <el-form :model="new_exam_form" ref="newExamFormRef" :rules="rules.addExam" label-width="110px"
+                   style="width: 80%">
+            <el-form-item prop="name" required label="考试场次">
+              <el-input :disabled="exam_form_type==2" v-model="new_exam_form.name" placeholder="请输入场次"></el-input>
             </el-form-item>
-            <el-form-item label="考试类型">
-              <el-select v-model="new_exam_form_params.exam_type" placeholder="请选择考试类型">
-                <el-option :value="1" label="入职考试"></el-option>
-              </el-select>
+            <!--<el-form-item prop="type" required label="考试类型">
+              <dropdown-list
+                :disabled="exam_form_type==2"
+                title="请选择考试类型"
+                :json-arr="DROPDOWN_CONSTANT.TRAINING.EXAM.EXAMTYPE"
+                v-model="new_exam_form.type"></dropdown-list>
+            </el-form-item>-->
+            <el-form-item v-if="exam_form_type==1" prop="exam_question_bank_id" required label="题库名称">
+              <dropdown-list
+
+                title="请选择题库名称"
+                :cache="false"
+                :url="`${this.url}train/exam_question_bank`"
+                v-model="new_exam_form.exam_question_bank_id"></dropdown-list>
             </el-form-item>
-            <el-form-item label="试题类型">
-              <el-row :gutter="10">
-                <el-col :span="10">
-                  <el-select v-model="new_exam_form_params.paper_type" placeholder="请选择题型">
-                    <el-option :value="1" label="入职考试"></el-option>
-                  </el-select>
-                </el-col>
-                <el-col :span="10">
-                  <el-input v-model="new_exam_form_params.paper_num" placeholder="请输入题数"></el-input>
-                </el-col>
-                <el-col :span="2">
-                  <div class="btn_add">+</div>
-                </el-col>
-              </el-row>
-            </el-form-item>
-            <el-form-item label="参加人员">
-              <div class="items-center iconInput">
-                <el-input v-model="new_exam_form_params.exam_people" placeholder="请选择参考人员"></el-input>
+
+            <div v-for="(item,index) in new_exam_form.question_category" :key="index">
+              <el-form-item label="试题设置">
+                <el-row :gutter="10">
+                  <el-col :span="14">
+                    <dropdown-list width="220"
+                                   :disabled="true"
+                                   :json-arr="DROPDOWN_CONSTANT.TRAINING.EXAM.ITEMTYPE"
+                                   v-model.number="new_exam_form.question_category[index].category"></dropdown-list>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-input style="width: 140px" v-model="new_exam_form.question_category[index].number"
+                              placeholder="请输入题数"></el-input>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+            </div>
+
+            <el-form-item v-if="exam_form_type==1" prop="student_id" required label="参加人员">
+              <user-choose v-model="new_exam_form.student_id"></user-choose>
+              <!--<div class="items-center iconInput">
+                <el-input v-model="new_exam_form.exam_people" placeholder="请选择参考人员"></el-input>
                 <p class="icons user"></p>
-              </div>
+              </div>-->
             </el-form-item>
-            <el-form-item label="开考时间">
-              <el-date-picker v-model="new_exam_form_params.exam_start_time"
-                              placeholder="请选择"></el-date-picker>
+            <el-form-item prop="start_time" required label="开考时间">
+
+              <el-date-picker
+                v-model="new_exam_form.start_time"
+                type="datetime"
+                placeholder="选择日期时间">
+              </el-date-picker>
+
             </el-form-item>
-            <el-form-item label="试卷时长">
-              <el-input v-model="new_exam_form_params.exam_during_time" placeholder="请输入分钟"></el-input>
+            <el-form-item prop="duration" required label="试卷时长">
+              <el-input v-model="new_exam_form.duration" placeholder="请输入分钟"></el-input>
             </el-form-item>
-            <el-form-item label="开考后">
-              <el-input v-model="new_exam_form_params.exam_start_end" placeholder="请输入分钟"></el-input>
+            <el-form-item prop="late_tolerance" required label="开考后">
+              <el-input v-model="new_exam_form.late_tolerance" placeholder="请输入分钟 设置时间后,不能登录考试系统"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger">提交</el-button>
-          <el-button size="small" type="info" @click="new_exam_visible = false">取消</el-button>
+          <el-button size="small" type="danger" v-if="exam_form_type==1" @click="handleSubmitExam">提交</el-button>
+          <el-button size="small" type="danger" v-else @click="handleEditExamConfirm">修改</el-button>
+          <el-button size="small" type="info" @click="new_exam_form_dialog_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
+
     <!--考试详情-->
     <lj-dialog
-      :visible="exam_detail_visible"
+      :visible.sync="exam_detail_dialog_visible"
       :size="{width: 650 + 'px',height: 760 + 'px'}"
-      @close="exam_detail_visible = false"
     >
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>南京新人训</h3>
           <div class="header_right">
-            距离开考还有 <span class="time_over">01:15:21</span>
+            距离开考还有 <count-down :datetime="new_exam_form.start_time"></count-down>
           </div>
           <div class="exam_detail_control">
             <el-button size="mini" type="danger" @click="is_delete_exam = !is_delete_exam">删除本场考试</el-button>
+            <div class="edit-container">
+              <i @click="showEditExamForm" title="编辑考试" class="icon-edit"></i>
+            </div>
           </div>
         </div>
         <div class="dialog_main borderNone">
           <el-form label-width="120px" style="margin-top: 50px;width: 80%;text-align: left">
             <el-form-item label="考试场次">
-              <div>南京新人训</div>
+              <div>{{new_exam_form.name}}</div>
             </el-form-item>
             <el-form-item label="试卷类型">
-              <div>入职考试</div>
+              <div>{{new_exam_form.type_name}}</div>
             </el-form-item>
             <el-form-item label="试题设置">
-              <div>单选20 简答20 判断5 <span class="text_color">修改</span></div>
+              <div>单选{{new_exam_form.single}} 简答{{new_exam_form.judge}} 判断{{new_exam_form.short}}</div>
             </el-form-item>
             <el-form-item label="参加人员">
-              <div>...</div>
+              <user-list :mini="true" :ids="new_exam_form.enrolls"></user-list>
             </el-form-item>
             <el-form-item label="开考时间">
-              <div>2019-02-20 10:00:00 <span class="text_color">修改</span></div>
+              <div>{{new_exam_form.start_time}}</div>
             </el-form-item>
             <el-form-item label="试卷时长">
-              <div>60分钟<span class="text_color">修改</span></div>
+              <div>{{new_exam_form.duration}}分钟</div>
             </el-form-item>
             <el-form-item label="开考后">
-              <div>5分钟不能再登录考试系统<span class="text_color">修改</span></div>
+              <div>{{new_exam_form.late_tolerance}}分钟不能再登录考试系统</div>
             </el-form-item>
             <el-form-item label="删除本场考试" v-show="is_delete_exam">
               <el-input v-model="delete_info" placeholder="请输入删除本场考试理由"></el-input>
@@ -307,17 +336,16 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="exam_score_visible = true">确定</el-button>
-          <el-button type="info" size="small" @click="exam_detail_visible = false">取消</el-button>
+          <el-button type="danger" size="small" @click="handleExamDetailConfirm">确定</el-button>
+          <el-button type="info" size="small" @click="exam_detail_dialog_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
     <!--考试得分-->
     <lj-dialog
-      :visible="exam_score_visible"
+      :visible.sync="exam_score_visible"
       :size="{width: 600 + 'px',height: 650 + 'px'}"
-      @close="exam_detail_visible = false"
     >
       <div class="dialog_container">
         <div class="dialog_header">
@@ -342,45 +370,77 @@
     </lj-dialog>
 
 
-
-
-
     <test-paper :visible.sync="paper_visible" :params="paper_params" :exam-list="exam_list"
                 @success="handleSubmitExamList" @cancel="handlePaperCancel"></test-paper>
+
+
+    <test-paper :visible.sync="preview_paper_visible" :params="preview_paper_params" :exam-list="preview_exam_list"
+    ></test-paper>
   </div>
 </template>
 
 <script>
   import _ from 'lodash';
-  import {DROPDOWN_CONSTANT} from '@/assets/js/allConstantData';
+  import {DROPDOWN_CONSTANT, GLOBAL_CONSTANT} from '@/assets/js/allConstantData';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
   import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import LjDialog from '../../../common/lj-dialog.vue';
   import TestPaper from '../../../common/lightweightComponents/TestPaper';
+  import UserChoose from '../../../common/lightweightComponents/UserChoose';
+  import UserList from "../../../common/lightweightComponents/UserList";
+  import CountDown from '../../../common/lightweightComponents/CountDown';
 
   export default {
     name: "examSetting",
     components: {
+      UserList,
       LjDialog,
       DropdownList,
       LjUpload,
       TestPaper,
+      UserChoose,
+      CountDown,
     },
     data() {
       return {
         url: globalConfig.humanResource_server,
 
         DROPDOWN_CONSTANT,
+        GLOBAL_CONSTANT,
 
         rules: {
           addQuestionBank: {
             category: [
-              {required: true, message: '请选择试卷类型', trigger: 'blur'},
-              // {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
+              {required: true, message: '请选择题库类型', trigger: 'blur'},
             ],
             name: [
-              {required: true, message: '请输入试卷名称', trigger: 'blur'},
+              {required: true, message: '请输入题库名称', trigger: 'blur'},
               {min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: ['blur', 'change']}
+            ],
+          },
+
+          addExam: {
+            name: [
+              {required: true, message: '请输入考试场次', trigger: 'blur'},
+              {min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: ['blur', 'change']}
+            ],
+            type: [
+              {required: true, message: '请选择考试类型', trigger: 'blur'},
+            ],
+            exam_question_bank_id: [
+              {required: true, message: '请选择题库名称', trigger: 'blur'},
+            ],
+            student_id: [
+              {required: true, message: '请选择参加人员', trigger: 'blur'},
+            ],
+            start_time: [
+              {required: true, message: '请选择开考时间', trigger: 'blur'},
+            ],
+            duration: [
+              {required: true, message: '请选择试卷时长', trigger: 'blur'},
+            ],
+            late_tolerance: [
+              {required: true, message: '请选择最迟进场时间', trigger: 'blur'},
             ],
           },
         },
@@ -392,10 +452,24 @@
           //sub_title: '关于春节挂春联选一副',
           btn_name: '预览题库',
           initial_page: 1,
+          edit_btn_visible: false,
         },
         exam_list: [],//题库列表=> 传给test-paper的数据
-        paper_current_edit_id:null,//当前编辑的题库id
-        paper_template_ids:[4225740],
+
+        preview_paper_visible: false,//预览试卷组件
+        preview_paper_params: {//预览试卷组件参数配置
+          //paper_name: '新建试卷',
+          title: '入职考试',
+          //sub_title: '关于春节挂春联选一副',
+          btn_name: '预览题库',
+          initial_page: 2,
+          edit_btn_visible: false,
+        },
+        preview_exam_list: [],
+
+
+        paper_current_edit_id: null,//当前编辑的题库id
+        paper_template_ids: [4225740],
 
 
         tableSettingData: {
@@ -474,7 +548,8 @@
         ],
 
         //考试详情
-        exam_detail_visible: false,
+        exam_detail_dialog_visible: false,
+        exam_detail_form: {},
         delete_info: '',
         is_delete_exam: false,
 
@@ -490,16 +565,31 @@
 
 
         //新建考试
-        new_exam_visible: false,
-        new_exam_form_params: {
-          exam_ci: '',
-          exam_type: '',
-          paper_type: '',
-          paper_num: '',
-          exam_people: '',
-          exam_start_time: '',
-          exam_during_time: '',
-          exam_start_end: '',
+        exam_form_type: 1,  //1为新建考试 2为编辑考试
+        new_exam_form_dialog_visible: false,
+        new_exam_form: {
+          name: '',//考试场次
+          type: '',//考试类型
+          exam_question_bank_id: '',//题库名称=》 id
+
+          student_id: [],//考试id
+          question_category: [
+            {
+              category: 1,
+              number: null
+            },
+            {
+              category: 2,
+              number: null
+            },
+            {
+              category: 3,
+              number: null
+            }
+          ],
+          start_time: '',//开考时间
+          rand: 0,
+          late_tolerance: null,//开考后多久不允许登录
         },
       }
     },
@@ -574,7 +664,7 @@
 
       //提交题库
       handleSubmitQuestionBank() {
-        if ((!this.new_question_bank_exam_list || this.new_question_bank_exam_list.length == 0) && this.new_question_bank_form.attachment.length==0) {
+        if ((!this.new_question_bank_exam_list || this.new_question_bank_exam_list.length == 0) && this.new_question_bank_form.attachment.length == 0) {
           this.$LjMessage('warning', {
             title: '警告',
             msg: '请至少录入一道题目',
@@ -585,7 +675,7 @@
           ...this.new_question_bank_form
         };
         debugger
-        if(this.new_question_bank_exam_list) {
+        if (this.new_question_bank_exam_list) {
           this.$http.post(`${this.url}train/exam_question_bank`, params).then(res => {
             return res;
           }).then(res => {
@@ -613,9 +703,9 @@
             }
           });
         }
-        if(this.new_question_bank_form.attachment.length>0) {
-          this.$http.post(`${this.url}train/exam_question/import`,this.new_question_bank_form).then(res=> {
-            this.$LjMessageEasy(res,()=> {
+        if (this.new_question_bank_form.attachment.length > 0) {
+          this.$http.post(`${this.url}train/exam_question/import`, this.new_question_bank_form).then(res => {
+            this.$LjMessageEasy(res, () => {
               this.new_question_bank_confirm_dialog_visible = false;
               this.new_question_bank_dialog_visible = false;
               this.getQuestionList();
@@ -641,21 +731,21 @@
 
 
       //题目列表提交后触发的事件=>录入题目列表
-      handleSubmitExamList(examList,isEditPaper) {
+      handleSubmitExamList(examList, isEditPaper) {
         debugger
         //console.log(examList);
         this.new_question_bank_exam_list = examList;
 
-        if(isEditPaper) {//是在修改试卷
-          if(this.paper_current_edit_id) {
+        if (isEditPaper) {//是在修改试卷
+          if (this.paper_current_edit_id) {
             let submitExamList = _.cloneDeep(this.new_question_bank_exam_list);
-            _.forEach(submitExamList,(o)=> {
+            _.forEach(submitExamList, (o) => {
               o.exam_question_bank_id = this.paper_current_edit_id;
-              if(o.category!==3) {
+              if (o.category !== 3) {
                 o.answer = [o.answer];
               }
             });
-            this.$http.put(`${this.url}train/exam_question/update`,submitExamList).then(res=> {
+            this.$http.put(`${this.url}train/exam_question/update`, submitExamList).then(res => {
               this.$LjMessageEasy(res);
               this.exam_list = [];
             });
@@ -673,26 +763,165 @@
       //获取考试列表
       getExamList() {
         this.tableSettingData['exam'].tableData = [];
-        this.$http.get(`${this.url}train/exam`).then(res=> {
-          if(res.code.endsWith('0')) {
-            for(let item of res.data.data) {
-              let time = `${this.myUtils.formatDate(item.start_time,'yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.end_time,'hh:mm')}`;
+        this.$http.get(`${this.url}train/exam`).then(res => {
+          if (res.code.endsWith('0')) {
+            for (let item of res.data.data) {
+              let time = `${this.myUtils.formatDate(item.start_time, 'yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.end_time, 'hh:mm')}`;
               let obj = {
                 ...item,
-                id:item.id,
-                name:item.name||'-',
-                time:time,
-                status:'未开始',
+                id: item.id,
+                name: item.name || '-',
+                time: time,
+                status: _.find(GLOBAL_CONSTANT.TRAINING.EXAM_STATUS, {id: item.status || 0}).name,
               };
               this.tableSettingData['exam'].tableData.push(obj);
             }
-            this.tableSettingData['exam'].counts = res.count;
+            this.tableSettingData['exam'].counts = res.data.count;
+          }
+        });
+      },
+
+      //显示新建考试dialog
+      showAddExam() {
+        this.new_exam_form_dialog_visible = true;
+        this.exam_form_type = 1;
+        this.new_exam_form = {
+          name: '',//考试场次
+          type: 2,//考试类型  默认传2
+          exam_question_bank_id: '',//题库名称=》 id
+
+          student_id: [],//考试id
+          question_category: [
+            {
+              category: 1,
+              number: null
+            },
+            {
+              category: 2,
+              number: null
+            },
+            {
+              category: 3,
+              number: null
+            }
+          ],
+          start_time: '',//开考时间
+          rand: 0,
+          late_tolerance: null,//开考后多久不允许登录
+        };
+      },
+
+
+      /*预览试卷*/
+      previewPaper() {
+        if (this.new_exam_form.exam_question_bank_id) {
+          this.preview_paper_visible = true;
+          this.preview_paper_params.initial_page = 2;
+          let params = {
+            exam_question_bank_id: this.new_exam_form.exam_question_bank_id,
+          };
+          this.$http.get(`${this.url}/train/exam_question`, params).then(res => {
+            if (res.code.endsWith('0')) {
+              this.preview_exam_list = res.data.data;
+            }
+          });
+
+        } else {
+          this.$LjMessage('warning', {
+            title: '警告',
+            msg: '请选择一个题库名称',
+          });
+        }
+      },
+
+      //处理新增考试事件
+      handleSubmitExam() {
+        this.$refs['newExamFormRef'].validate((valid) => {
+          if (valid) {
+            this.new_exam_form.question_category.forEach((item, index) => {
+              item.number = item.number || 0;
+            });
+            this.new_exam_form.start_time = this.myUtils.formatDate(this.new_exam_form.start_time, 'yyyy-MM-dd hh:mm:ss');
+            this.$http.post(`${this.url}train/exam`, this.new_exam_form).then(res => {
+              this.$LjMessageEasy(res, () => {
+                this.getExamList();
+                this.new_exam_form_dialog_visible = false;
+              });
+            });
           }
         });
       },
 
 
+      //获取考试详细
+      getExamDetail(row) {
+        this.exam_detail_dialog_visible = true;
 
+        this.$http.get(`${this.url}train/exam/${row.id}`).then(res => {
+          if (res.code.endsWith('0')) {
+            this.new_exam_form = res.data;
+            this.new_exam_form.type_name = _.find(DROPDOWN_CONSTANT.TRAINING.EXAM.EXAMTYPE, {id: this.new_exam_form.type}).name;
+            this.new_exam_form.single = _.find(this.new_exam_form.question_category, {category: 1}).number;
+            this.new_exam_form.judge = _.find(this.new_exam_form.question_category, {category: 2}).number;
+            this.new_exam_form.short = _.find(this.new_exam_form.question_category, {category: 3}).number;
+          }
+        });
+
+
+      },
+
+
+      //显示编辑考试form
+      showEditExamForm() {
+        this.exam_form_type = 2;
+        this.new_exam_form_dialog_visible = true;
+
+      },
+
+      //考试表单编辑确认
+      handleEditExamConfirm() {
+        this.$refs['newExamFormRef'].validate((valid)=> {
+          if(valid) {
+            let params = {
+              ...this.new_exam_form,
+              start_time:this.myUtils.formatDate(this.new_exam_form.start_time,'yyyy-MM-dd hh:mm:ss'),
+            };
+            this.$http.put(`${this.url}train/exam/${this.new_exam_form.id}`,params).then(res=> {
+              this.$LjMessageEasy(res,()=> {
+                this.new_exam_form_dialog_visible = false;
+                this.getExamList();
+              });
+            });
+          }
+        });
+      },
+
+      //处理考试详细确定按钮
+      handleExamDetailConfirm() {
+        if (this.is_delete_exam) {
+          if (!this.delete_info) {
+            this.$LjMessage('warning', {
+              title: '警告',
+              msg: '请输入删除理由',
+            });
+            return;
+          }
+          this.$LjConfirm().then(() => {
+            let id = this.new_exam_form.id;
+            if (!id) return;
+            this.$http.delete(`${this.url}train/exam/${id}`).then(res => {
+              this.$LjMessageEasy(res, () => {
+                this.exam_detail_dialog_visible = false;
+                this.getExamList();
+                this.delete_info = null;
+              });
+            });
+          });
+
+        } else {
+          this.exam_detail_dialog_visible = false;
+        }
+      },
 
 
       /*考试管理模块    end*/
@@ -717,10 +946,20 @@
         }
       },
 
-      tableDblClick(row) {
-        this.getQuestionDetail(row);
+      tableDblClick(row, currentTable) {
+        switch (currentTable) {
+          case 'question':
+            this.getQuestionDetail(row);
+            break;
+          case 'exam':
+            this.getExamDetail(row);
+            break;
+        }
+
         //this.showTrainDetail(row.id);
       },
+
+
     },
   }
 </script>
@@ -790,6 +1029,11 @@
           }
         }
       }
+    }
+
+
+    .icon-edit {
+      @include militaryImg('bianji_2.png', 'theme1');
     }
 
     .exam-container {

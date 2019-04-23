@@ -32,13 +32,22 @@
       .bank-left{
         width: 50%;
         height: 600px;
+        padding-right: 30px;
         border-right: 1px dashed #999999;
+        .bank-left-top{
+          height:100px;
+
+        }
+        .collect_img{
+          width: 50px;
+          height: 50px;
+        }
         span{
           display: flex;
           flex-direction: row;
           i{
             display: block;
-            padding: 5px 20px;
+            padding: 5px 30px;
             font-style: normal;
             cursor: pointer;
           }
@@ -46,7 +55,12 @@
       }
       .bank-right{
         width: 50%;
+        padding-left: 30px;
         height: 600px;
+        .bank-right-top{
+          height: 100px;
+
+        }
       }
       .active{
         background: #ff4545;

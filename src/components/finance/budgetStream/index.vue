@@ -82,7 +82,7 @@
         <lj-dialog
                 :visible="bank_run_visible"
                 :size="bank_run_size"
-                @close="bank_run_visible = false;current_row=''"
+                @close="bank_run_visible = false;"
         >
             <div class="dialog_container">
                 <div class="dialog_header flex-center">
@@ -139,7 +139,7 @@
         <lj-dialog
                 :visible="bank_run_detail_visible"
                 :size="{width: 1000 + 'px',height: 750 + 'px'}"
-                @close="bank_run_detail_visible = false;current_row=''"
+                @close="bank_run_detail_visible = false;"
         >
             <div class="dialog_container">
                 <div class="dialog_header justify-bet" style="margin-bottom: 20px">
@@ -159,6 +159,7 @@
                         <el-table-column prop="bank.name" label="所属银行" align="center"></el-table-column>
                     </el-table>
                 </div>
+
                 <div class="dialog_footer">
                     <div class="page">
                         <el-pagination
@@ -170,14 +171,16 @@
                         >
                         </el-pagination>
                     </div>
-                    <el-button type="danger" size="small" @click="bank_run_detail_visible = false;current_row = ''">关闭
+                </div>
+                <div class="dialog_footer">
+                    <el-button type="danger" size="small" @click="bank_run_detail_visible = false;">关闭
                     </el-button>
                 </div>
             </div>
         </lj-dialog>
         <!--归档-->
         <lj-dialog :visible="archive_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
-                   @close="archive_visible = false;current_row=''">
+                   @close="archive_visible = false;">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>归档</h3>
@@ -187,14 +190,14 @@
                 </div>
                 <div class="dialog_footer">
                     <el-button type="danger" size="small" @click="handleBankRunArchive">确定</el-button>
-                    <el-button type="info" size="small" @click="archive_visible = false;current_row = ''">取消</el-button>
+                    <el-button type="info" size="small" @click="archive_visible = false;">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
         <!--补充-->
         <lj-dialog :visible="update_visible"
                    :size="{width: 1000 + 'px',height: 750 + 'px'}"
-                   @close="update_visible = false;current_row=''">
+                   @close="update_visible = false;">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>补充/移除</h3>

@@ -10,10 +10,11 @@
   #customer {
       >div{
         .status-icon{
+          margin-right: 30px;
           i{
             display:inline-block;
-            width: 14px;
-            height: 14px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             margin-right: 8px;
           }

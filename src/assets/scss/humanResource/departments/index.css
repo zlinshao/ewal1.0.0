@@ -140,7 +140,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +159,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,13 +168,19 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
 
 #theme_name #departments {
   height: 100%;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   overflow: hidden;
   position: relative; }
   #theme_name #departments .departList {
@@ -199,7 +205,7 @@
         backface-visibility: hidden; }
         #theme_name #departments .departList .mainList p:hover {
           cursor: pointer;
-          color: #CF2E33; }
+          color: #cf2e33; }
           #theme_name #departments .departList .mainList p:hover a.control {
             display: inline-block; }
         #theme_name #departments .departList .mainList p span {
@@ -227,7 +233,7 @@
             margin-top: 25px;
             display: inline-block; }
             #theme_name #departments .departList .mainList p a.control:hover b:hover {
-              color: #CF2E33; }
+              color: #cf2e33; }
           #theme_name #departments .departList .mainList p a.control:hover a.pointer {
             display: none; }
       #theme_name #departments .departList .mainList p:nth-child(1) {
@@ -293,7 +299,7 @@
             backface-visibility: hidden; }
             #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p:hover {
               cursor: pointer;
-              color: #CF2E33; }
+              color: #cf2e33; }
               #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p:hover a.control {
                 display: inline-block; }
             #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p span {
@@ -321,7 +327,7 @@
                 margin-top: 25px;
                 display: inline-block; }
                 #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p a.control:hover b:hover {
-                  color: #CF2E33; }
+                  color: #cf2e33; }
               #theme_name #departments .departList .depart-detail .depart-detail-main .depart-left p a.control:hover a.pointer {
                 display: none; }
         #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right {
@@ -351,7 +357,7 @@
               #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .next_btn {
                 width: 40px;
                 height: 195px;
-                color: #CF2E33;
+                color: #cf2e33;
                 font-size: 24px;
                 line-height: 195px;
                 text-align: center;
@@ -372,8 +378,8 @@
                   background-color: white;
                   cursor: pointer; }
                   #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div:hover {
-                    color: #CF2E33;
-                    border: 1px solid #CF2E33; }
+                    color: #cf2e33;
+                    border: 1px solid #cf2e33; }
             #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .staff_list {
               height: 60%; }
     #theme_name #departments .departList .show-depart-detail {

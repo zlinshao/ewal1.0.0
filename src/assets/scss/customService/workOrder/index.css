@@ -1,21 +1,21 @@
 /*
-Error: Invalid GBK character "\xE5"
-        on line 17 of index.scss
+Error: Invalid GBK character "\xE8"
+        on line 26 of index.scss
 
-12:       margin-right: 0 !important;
-13:     }
-14:     .el-form-item__label {
-15:       white-space: nowrap;
-16:     }
-17:     //增加order
-18:     .addOrder_dialog {
-19:       .el-col {
-20:         height: 40px;
-21:         margin-bottom: 30px;
-22:         @include flex('items-center');
+21:       font-weight: 700;
+22:     }
+23:     .is-center > .cell {
+24:       @include flex('flex-center');
+25:     }
+26:     //详情
+27:     .dialog_detail {
+28:       cursor: pointer;
+29:       .detail_tit {
+30:         @include flex('items-bet');
+31:         font-size: 20px;
 
 Backtrace:
-index.scss:17
+index.scss:26
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
@@ -43,4 +43,4 @@ D:/Ruby24-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE5\"\A         on line 17 of index.scss\A \A 12:       margin-right: 0 !important;\A 13:     }\A 14:     .el-form-item__label {\A 15:       white-space: nowrap;\A 16:     }\A 17:     //增加order\A 18:     .addOrder_dialog {\A 19:       .el-col {\A 20:         height: 40px;\A 21:         margin-bottom: 30px;\A 22:         @include flex('items-center');"; }
+  content: "Error: Invalid GBK character \"\xE8\"\A         on line 26 of index.scss\A \A 21:       font-weight: 700;\A 22:     }\A 23:     .is-center > .cell {\A 24:       @include flex('flex-center');\A 25:     }\A 26:     //详情\A 27:     .dialog_detail {\A 28:       cursor: pointer;\A 29:       .detail_tit {\A 30:         @include flex('items-bet');\A 31:         font-size: 20px;"; }

@@ -72,6 +72,7 @@
       @include flex('flex-center');
       .month-content {
         height: 35px;
+        width: 103px;
         font-size: 26px;
         line-height: 35px;
         color: $color874;

@@ -1051,8 +1051,14 @@
         this.set_power.permission_type = type;
         this.self_power_params.type = type;
       },
+      handleGetPowerLen() {
+        let count = 0;
+        for (let key in this.power_list) {
+          count += this.power_list[key].length;
+        }
+        return count;
+      },
       handleCheckField(val) {
-        console.log(val);
         if (val.length > 0) {
           if (this.checkList.indexOf(this.current_field.id) === -1) {
             this.checkList.push(this.current_field.id);
@@ -1061,7 +1067,8 @@
           var idx = this.checkList.indexOf(this.current_field.id);
           this.checkList.splice(idx,1);
         }
-        console.log(this.checkList);
+        let count = this.handleGetPowerLen();
+        this.checkAll = count === this.checkList.length;
       },
       //查看该权限下的字段
       handleSearchField(tmp) {
@@ -1138,6 +1145,8 @@
       },
       // 权限复选
       handleCheck(value) {
+        console.log(value);
+        console.log(this.field_list);
         this.field_list = [];
         let checkCount = value.length;
         let list = this.power_list;
@@ -1145,6 +1154,13 @@
         for (let item of  Object.keys(list)) {
           count = count + list[item].length;
           for (let tmp of list[item]) {
+            // if (tmp.id === value[value.length - 1]) {
+            //   if (tmp.fields) {
+            //     for (let field of tmp.fields) {
+            //       this.field_list.push(field.id);
+            //     }
+            //   }
+            // }
             for (let i=0;i<value.length;i++) {
               if (tmp.id === value[i]) {
                 if (tmp.fields) {
@@ -1156,6 +1172,7 @@
             }
           }
         }
+        console.log(this.field_list);
         this.checkAll = checkCount === count;
       },
       // 全选

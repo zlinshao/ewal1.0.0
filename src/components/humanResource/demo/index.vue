@@ -1,9 +1,11 @@
 <template>
   <div class="demo-container" style="width: 800px">
-    <el-button @click="paper_visible=true">测试</el-button>
+    <button-upload></button-upload>
+<!--    <count-down :datetime="datetime"></count-down>-->
+    <!--<el-button @click="paper_visible=true">测试</el-button>
     <el-button @click="demo2">测试222</el-button>
     <test-paper :visible.sync="paper_visible" :params="paper_params" :type="2" :statisticsResult="view_result_list"
-                @success="demoSuccess"></test-paper>
+                @success="demoSuccess"></test-paper>-->
 <!--        <name-shower type="user" :ids="org_list"></name-shower>-->
 <!--    <user-list :mini="true" :ids="user_list"></user-list>-->
     <!--<calendar week-type="en" style="width: 1366px;height: 768px">
@@ -25,6 +27,7 @@
 
 <script>
   import _ from 'lodash';
+  import CountDown from '@/components/common/lightweightComponents/CountDown.vue';
   import TestPaper from '@/components/common/lightweightComponents/TestPaper.vue';
   import NameShower from '@/components/common/lightweightComponents/NameShower.vue';
   import UserList from '@/components/common/lightweightComponents/UserList.vue';
@@ -32,6 +35,7 @@
   import mixins from '@/assets/js/mixins/calendar.js';
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
   import LjUpload from "../../common/lightweightComponents/lj-upload";
+  import ButtonUpload from '@/components/common/lightweightComponents/ButtonUpload.vue';
 
   export default {
     name: "index",
@@ -42,10 +46,13 @@
       ImgSlider,
       UserList,
       NameShower,
-      TestPaper
+      TestPaper,
+      CountDown,
+      ButtonUpload,
     },
     data() {
       return {
+        datetime:'2019-05-01',
         daysList: [],
         sliders: [
           {

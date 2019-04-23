@@ -1,21 +1,21 @@
 /*
 Error: Invalid GBK character "\xE6"
-        on line 47 of index.scss
+        on line 35 of index.scss
 
-42:             font-size: 24px;
-43:             line-height: 20px;
-44:           }
-45:         }
-46:       }
-47:       // 新增
-48:       .dialog_main {
-49:         .el-row {
-50:           margin-right: 0 !important;
-51:         }
-52:         .dialog_main_box {
+30:             font-size: 24px;
+31:             line-height: 20px;
+32:           }
+33:         }
+34:       }
+35:       // 新增
+36:       .dialog_main {
+37:         .el-row {
+38:           margin-right: 0 !important;
+39:         }
+40:         .dialog_main_box {
 
 Backtrace:
-index.scss:47
+index.scss:35
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
 D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
@@ -43,4 +43,4 @@ D:/Ruby24-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE6\"\A         on line 47 of index.scss\A \A 42:             font-size: 24px;\A 43:             line-height: 20px;\A 44:           }\A 45:         }\A 46:       }\A 47:       // 新增\A 48:       .dialog_main {\A 49:         .el-row {\A 50:           margin-right: 0 !important;\A 51:         }\A 52:         .dialog_main_box {"; }
+  content: "Error: Invalid GBK character \"\xE6\"\A         on line 35 of index.scss\A \A 30:             font-size: 24px;\A 31:             line-height: 20px;\A 32:           }\A 33:         }\A 34:       }\A 35:       // 新增\A 36:       .dialog_main {\A 37:         .el-row {\A 38:           margin-right: 0 !important;\A 39:         }\A 40:         .dialog_main_box {"; }

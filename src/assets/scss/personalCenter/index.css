@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .flex {
   display: flex;
   display: -webkit-flex; }
@@ -140,7 +141,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #F2F2F2; }
+  border-top: 1px solid #f2f2f2; }
   .action-bar div {
     display: flex;
     flex-direction: row;
@@ -159,7 +160,7 @@
     .action-bar .action-bar-name span {
       display: inline-block;
       text-align: center;
-      border-left: 1px solid #9B9B9B;
+      border-left: 1px solid #9b9b9b;
       font-size: 18px;
       padding: 0 10px;
       cursor: pointer; }
@@ -168,21 +169,32 @@
   .action-bar .delete {
     color: #ff4545; }
   .action-bar .edit {
-    color: #0C66FF; }
+    color: #0c66ff; }
   .action-bar .check {
-    color: #0BB07B; }
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
 
 #theme_name #personal_center {
-  height: 100%; }
+  background-color: #FCFCFC;
+  height: 100%;
+  width: 100%; }
   #theme_name #personal_center .personal-center-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
-    padding-top: 15px; }
+    width: 100%;
+    padding-top: 15px;
+    /*宸﹁竟瀹瑰櫒*/
+    /*鍙宠竟瀹瑰櫒*/ }
     #theme_name #personal_center .personal-center-container .container-left {
       width: 18%;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
       height: 100%; }
       #theme_name #personal_center .personal-center-container .container-left .container-left-up {
         height: 40%;
@@ -233,7 +245,7 @@
                 display: inline-block;
                 height: 19px;
                 font-size: 10px;
-                color: #CF2E33;
+                color: #cf2e33;
                 display: flex;
                 display: -webkit-flex;
                 align-items: center;
@@ -289,7 +301,7 @@
         #theme_name #personal_center .personal-center-container .container-left .container-left-up .hr-horizontal {
           width: 80%;
           height: 1px;
-          background-color: #D8D8D8; }
+          background-color: #d8d8d8; }
       #theme_name #personal_center .personal-center-container .container-left .container-left-down {
         height: 60%; }
         #theme_name #personal_center .personal-center-container .container-left .container-left-down ul {
@@ -319,12 +331,9 @@
                 color: #686874;
                 padding-left: 20px; }
     #theme_name #personal_center .personal-center-container .container-right {
+      width: 82%;
       flex: 1;
       height: 100%;
-      padding: 15px; }
-      #theme_name #personal_center .personal-center-container .container-right .calendar {
-        height: 100%;
-        width: 100%;
-        background-color: blue; }
+      padding: 0 15px 15px 15px; }
 
 /*# sourceMappingURL=index.css.map */

@@ -1,6 +1,20 @@
 @import "../../common.scss";
 #theme_name {
   #payment {
-
+      .batchEntry-icon{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        i{
+          font-style: normal;
+          display: block;
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+        }
+        i:first-child{
+          margin-right: 20px;
+        }
+      }
   }
 }

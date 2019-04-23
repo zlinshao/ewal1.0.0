@@ -69,7 +69,7 @@
 
         <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
         <!--结算单详情-->
-        <lj-dialog :visible="detail_visible" :size="{width: 1200 + 'px',height: 700 + 'px'}"
+        <lj-dialog :visible="detail_visible" :size="{width: 1200 + 'px',height: 760 + 'px'}"
                    @close="detail_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
@@ -85,9 +85,9 @@
                         </div>
 
                         <div class="balance-detail-info">
-                            <div v-if="selectTab===1" class="tab">
+                            <div v-if="selectTab===1||selectTab===2||selectTab===3" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
-                                    <div class="balance-detail-form-info">
+                                    <div class="balance-detail-form-info" :class="selectTab===1?'activeBorder':''">
                                         <el-form-item label="收款周期">
                                             <el-input v-model="form.name"></el-input>
                                         </el-form-item>
@@ -101,18 +101,18 @@
                                             <el-input v-model="form.name"></el-input>
                                         </el-form-item>
                                     </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="活动名称">
+                                    <div class="balance-detail-form-info" :class="selectTab===2?'activeBorder':''">
+                                        <el-form-item label="收款周期">
                                             <el-input v-model="form.name"></el-input>
                                         </el-form-item>
-                                        <el-form-item label="活动名称">
+                                        <el-form-item label="应收">
                                             <el-input v-model="form.name"></el-input>
                                         </el-form-item>
-                                        <el-form-item label="活动名称">
+                                        <el-form-item label="备注">
                                             <el-input v-model="form.name"></el-input>
                                         </el-form-item>
                                     </div>
-                                    <div class="balance-detail-form-info">
+                                    <div class="balance-detail-form-info" :class="selectTab===3?'activeBorder':''">
                                         <el-form-item label="退房时间">
                                             <el-input v-model="form.name"></el-input>
                                         </el-form-item>
@@ -132,219 +132,40 @@
                                             <el-input v-model="form.name"></el-input>
                                         </el-form-item>
                                     </div>
-                                </el-form>
 
+                                </el-form>
                             </div>
-                            <div v-if="selectTab===2" class="tab">
+                            <div v-if="selectTab===4||selectTab===5||selectTab===6" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="收款周期">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="应收">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="实收">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="备注">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="活动名称">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="活动名称">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="活动名称">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="退房时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退房性质">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="结算人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="审核人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                </el-form>
-
-                            </div>
-                            <div v-if="selectTab===3" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="收款周期">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="应收">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="实收">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="备注">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="活动名称">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="活动名称">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="活动名称">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="退房时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退房性质">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="结算人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="审核人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                </el-form>
-
-                            </div>
-                            <div v-if="selectTab===4" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="收款周期">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="应收">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="实收">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="备注">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="活动名称">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="活动名称">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="活动名称">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="退房时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退房性质">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="结算人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="审核人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                </el-form>
-
-                            </div>
-                            <div v-if="selectTab===5" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form" >
-                                    <div class="balance-detail-form-info">
+                                    <div class="balance-detail-form-info" :class="selectTab===4?'activeBorder':''">
                                         <el-form-item label="退房原因">
-                                            <el-input v-model="form.name" type="textarea" :rows="10"></el-input>
+                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
                                         </el-form-item>
                                     </div>
-                                    <div class="balance-detail-form-info">
+                                    <div class="balance-detail-form-info" :class="selectTab===5?'activeBorder':''">
                                         <el-form-item label="报备内容">
-                                            <el-input v-model="form.name" type="textarea" :rows="10"></el-input>
+                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
                                         </el-form-item>
                                     </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="退房时间">
-                                            <el-input v-model="form.name"></el-input>
+                                    <div class="balance-detail-form-info" :class="selectTab===6?'activeBorder':''">
+                                        <el-form-item label="" label-width="0px">
+                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
                                         </el-form-item>
-                                        <el-form-item label="退房性质">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
+
                                     </div>
                                 </el-form>
 
                             </div>
-                            <div v-if="selectTab===6" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="退房原因">
-                                            <el-input v-model="form.name" type="textarea" :rows="10"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="报备内容">
-                                            <el-input v-model="form.name" type="textarea" :rows="10"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="退房时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退房性质">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                </el-form>
 
-                            </div>
-                            <div v-if="selectTab===7" class="tab">
+                            <div v-if="selectTab===7||selectTab===9" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
-                                    <div class="balance-detail-form-info">
-                                        <el-form-item label="退房原因">
-                                            <el-input v-model="form.name" type="textarea" :rows="10"></el-input>
+                                    <div class="balance-detail-form-info" :class="selectTab===6?'activeBorder':''">
+                                        <el-form-item label="" label-width="0px">
+                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
                                         </el-form-item>
+
                                     </div>
-                                    <div class="balance-detail-form-info">
+                                    <div class="balance-detail-form-info" :class="selectTab===7?'activeBorder':''">
                                         <div class="balance-detail-form-table">
                                             <el-table
                                                     size="small"
@@ -373,14 +194,15 @@
                                         </div>
 
                                     </div>
-                                    <div class="balance-detail-form-info">
+                                    <div class="balance-detail-form-info" :class="selectTab===9?'activeBorder':''">
                                         <el-form-item label="评论">
-                                            <el-input v-model="form.name" type="textarea" :rows="10"></el-input>
+                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
                                         </el-form-item>
                                     </div>
                                 </el-form>
 
                             </div>
+
                             <div v-if="selectTab===8" class="tab8">
                                 <el-table
                                         size="small"

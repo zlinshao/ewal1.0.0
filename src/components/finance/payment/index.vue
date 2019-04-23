@@ -9,18 +9,17 @@
             </div>
             <div class="items-center listTopRight">
                 <div class="icons upLoad"></div>
-                <div class="icons allInsert"></div>
-                <!--<div class="icons home_icon"></div>-->
-                <div class="icons add" @click="add_visible=true;"><b>+</b></div>
+                <div class="icons allInsert" @click="openBatchEntry"></div>
+                <div class="icons add" @click="openAdd"><b>+</b></div>
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
         <div class="action-bar changeChoose">
-            <div class="action-bar-left">
-                <el-checkbox>全选</el-checkbox>
-                <span class="check-count" v-show="action_visible">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+            <div class="action-bar-left" v-show="action_visible">
+                <!--<el-checkbox>全选</el-checkbox>-->
+                <span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>
 
-                <span class="action-bar-name" v-show="action_visible">
+                <span class="action-bar-name">
                     <span v-for="(item,index) in btnData"
                           :key="index"
                           :class="item.class"
@@ -91,7 +90,7 @@
                     <h3>修改应付金额</h3>
                 </div>
                 <div class="dialog_main borderNone">
-                    <el-form :model="formData" ref="payForm" class="demo-ruleForm" label-width="80px">
+                    <el-form :model="formData"  label-width="80px">
                         <el-form-item prop="name" label="应付金额">
                             <el-input placeholder="请输入" v-model="formData.amount_payable"
                                       :disabled="current_row.is_rank===1?true:false"></el-input>
@@ -114,7 +113,7 @@
                 <div class="dialog_main borderNone">
                     <el-form :model="formData" ref="payForm" class="demo-ruleForm" label-width="80px">
                         <el-form-item prop="name" label="科目">
-                            <el-input placeholder="请输入" v-model="subject_val"
+                            <el-input placeholder="请输入" v-model="formData.subject_name"
                                       @focus="handleOpenSubject('subject')"></el-input>
                         </el-form-item>
                     </el-form>
@@ -184,9 +183,9 @@
                 </div>
                 <div class="dialog_main borderNone">
 
-                    <el-form :model="transferForm" :rules="rules" ref="transferForm" class="demo-ruleForm" label-width="80px">
+                    <el-form :model="transferForm"  label-width="80px">
                         <el-form-item label="付款方式">
-                            <el-select placeholder="请选择" v-model="params.cate" @change="getAccount">
+                            <el-select placeholder="请选择" v-model="transferForm.pay_type" @change="getAccount">
                                 <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
                                            :key="index"></el-option>
                             </el-select>
@@ -232,7 +231,7 @@
 
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="handleOkTransfer(current_row,transferForm)">确定
+                    <el-button type="danger" size="small" @click="handleOkTransfer(current_row)">确定
                     </el-button>
                     <el-button type="info" size="small" @click="transfer_visible = false">取消</el-button>
                 </div>
@@ -246,15 +245,15 @@
                 </div>
                 <div class="dialog_main borderNone">
 
-                    <el-form :model="ruleForm" :rules="rules" ref="payForm" class="demo-ruleForm" label-width="80px">
+                    <el-form :model="ruleForm"  label-width="80px">
                         <el-form-item prop="name" label="客户名称">
                             <el-input placeholder="请点击选择客户名称" v-model="ruleForm.customer_name"
-                                      @focus="handleOpenCustomer" readonly="readonly"></el-input>
+                                      @focus="openCustomer" readonly="readonly"></el-input>
                         </el-form-item>
                         <el-form-item prop="name" label="客户身份">
                             <el-input placeholder="请点击选择客户名称"
                                       :disabled="true"
-                                      :value="ruleForm.identity===1?'业主':ruleForm.identity===2 ?'租客':''"></el-input>
+                                      :value="ruleForm.customer_identity===1?'业主':ruleForm.customer_identity===2 ?'租客':''"></el-input>
                         </el-form-item>
                         <el-form-item prop="name" label="账户类型">
                             <el-select placeholder="请选择" v-model="ruleForm.customer_account_type">
@@ -263,15 +262,20 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item prop="name" label="客户账户">
-                            <el-input placeholder="请输入" v-model="ruleForm.customer_account_num"></el-input>
+                            <el-input placeholder="请输入" v-model="ruleForm.customer_account_num" type="number"></el-input>
                         </el-form-item>
                         <el-form-item prop="name" label="应付金额">
                             <el-input placeholder="请输入" v-model="ruleForm.amount_payable"
                                       type="number"></el-input>
                         </el-form-item>
                         <el-form-item prop="name" label="科目">
-                            <el-input placeholder="请输入" v-model="subject.parent_name"
+                            <el-input placeholder="请输入" v-model="ruleForm.subject_name"
                                       @focus="handleOpenSubject('subject')"></el-input>
+                        </el-form-item>
+                        <el-form-item label="款项来源">
+                            <el-select v-model="ruleForm.identity" placeholder="请选择">
+                                <el-option v-for="(item,index) in identityData" :label="item.name" :value="item.id" :key="index"></el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item prop="name" label="付款时间">
                             <el-date-picker
@@ -313,21 +317,6 @@
         <!--科目-->
         <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"
                     style="z-index:1000"></lj-subject>
-        <!--客户列表-->
-        <lj-dialog :visible="customer_visible" :size="{width: 900 + 'px',height: 720 + 'px'}"
-                   @close="customer_visible = false">
-            <div class="dialog_container">
-                <div class="dialog_header">
-                    <h3>请选择客户</h3>
-                </div>
-                <div class="dialog_main">
-                    <customer-lists @getCustomer="getCurrentCustomer"></customer-lists>
-                </div>
-                <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="handleChooseCustomer">确定</el-button>
-                </div>
-            </div>
-        </lj-dialog>
 
         <!--回滚-->
         <lj-dialog :visible="recall_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
@@ -364,6 +353,53 @@
             </div>
         </lj-dialog>
 
+        <customer :module="customerModule" @close="hiddenCustomer"></customer>
+
+        <!--批量入账-->
+        <lj-dialog :visible="batchEntry_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
+                   @close="batchEntry_visible = false;current_row = ''">
+            <div class="dialog_container">
+                <div class="dialog_header justify-bet">
+                    <h3>批量入账</h3>
+                    <h3 class="batchEntry-icon"><i class=""></i><i class=""></i></h3>
+                </div>
+                <div class="dialog_main changeChoose">
+                    <el-table
+                            :data="batchEntryData"
+                            :row-class-name="tableChooseRow"
+                            @cell-click="tableClickRow"
+                            header-row-class-name="tableHeader"
+                            @selection-change="handleSelectionChange"
+                    >
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+
+                        <el-table-column align="center" label="操作时间" prop="create_time"></el-table-column>
+                        <el-table-column align="center" label="入账时间" prop="create_time"></el-table-column>
+                        <el-table-column align="center" label="初始金额" prop="amount"></el-table-column>
+                        <el-table-column align="center" label="入账金额" prop="amount"></el-table-column>
+                        <el-table-column align="center" label="当前金额" prop="amount"></el-table-column>
+                        <el-table-column align="center" label="操作人" prop="amount"></el-table-column>
+
+
+                    </el-table>
+                </div>
+                <div class="dialog_footer">
+                    <div class="page">
+                        <el-pagination
+                                :total="batchEntryCount"
+                                layout="total,jumper,prev,pager,next"
+                                :current-page="batchEntryParams.page"
+                                :page-size="batchEntryParams.limit"
+                                @current-change="handleBatchEntryChangePage"
+                        ></el-pagination>
+                    </div>
+                </div>
+            </div>
+        </lj-dialog>
+
     </div>
 </template>
 
@@ -374,10 +410,11 @@
     import LjSubject from '../../common/lj-subject.vue';
     import CustomerLists from './components/customerLists';
     import {paySearchList} from "../../../assets/js/allSearchData.js";
+    import Customer from '../../common/customer.vue';
 
     export default {
         name: "index",
-        components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists},
+        components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists,Customer},
         data() {
             return {
                 paySearchList,
@@ -388,6 +425,15 @@
                     details_visible: false,
                     is_check: false,
                 },
+                identityData:[//款项来源
+                    {id:1,name:'房东'},
+                    {id:2,name:'租客'},
+                    {id:3,name:'未知客户'},
+                    {id:5,name:'结算单'},
+                    {id:6,name:'片区费用'},
+                    {id:7,name:'报备费用'},
+                    {id:8,name:'应收款项'},
+                ],
                 current_row: '',
                 multipleSelection: [],//多选
                 params: {
@@ -444,9 +490,8 @@
 
                 showSearch: false,
                 showFinMenuList: false,
-                searchData: {
-                    status: 'gathering',
-                    data: [],
+                searchData: {//查询参数
+
                 },
 
                 tableLists: [],
@@ -467,37 +512,24 @@
                     "org.name": "部门"
                 },
                 count: 0,
-                ruleForm: {
+                ruleForm: {//新增应付款项
                     customer_id: '',//客户id
-                    customer_name: '',
-                    customer_account_type: '',//账号类型
-                    customer_account_num: '',//账户号码
-                    amount_payable: '',//金额
+                    amount_receivable: '',//金额
                     description: '',//描述
                     remark: '',
-                    identity: '',//款项标志
+                    customer_identity:'',//客户身份
+                    identity: '',//款项
                     pay_date: '',//付款时间
-                    subject_id: '',
-
+                    subject_id: '',//科目id
+                    customer_name: '',
+                    subject_name:'',//科目名
                 },
                 subject_val: '',
                 formData: {
-                    amount_payable: '',
-                    tag: '',
-                    pay_date: '',
-                    subject_val: '',
-                    complete_date: '',
-                    subject_id: '',
+
                 },
 
-                transferForm: {
-                    customer_account_num: '',
-                    customer_account_type: '',
-                    account_id: '',
-                    amount_paid: '',
-                    remark: '',
-                    pay_date: '',
-                    complete_date: '',
+                transferForm: {//应付入账
                 },
                 cate: [
                     {title: "银行卡", value: 1,},
@@ -590,6 +622,17 @@
                 ],
                 accountLists: [],
                 chooseRowIds: [],
+                customerModule:false,//
+
+                batchEntry_visible:false,//批量入账
+                batchEntryData:[],
+                batchEntryCount:0,
+                batchEntryParams:{
+                    limit: 12,
+                    page:1,
+
+                }
+
             }
         },
         mounted() {
@@ -599,54 +642,72 @@
         activated() {
         },
         watch: {
-            formData: {
-                handler(val) {
-
-                },
-                deep: true
-            },
-            subject_val: {
-                handler(val) {
-
-                },
-                deep: true
-            }
-
-
         },
         created() {
         },
         computed: {},
         methods: {
-            selectionChange(val) {
+            selectionChange(val) {//首页表单多选
                 this.multipleSelection = val;
                 if (val.length > 0) {
                     this.action_visible = true;
                     this.current_row = val[0];
-                    console.log(val);
+                    this.formData = val[0];
                 } else {
                     this.action_visible = false;
                 }
-                this.$emit('getMultipleSelection', val)
+            },
+            openBatchEntry(){
+                this.batchEntry_visible=true;
+                this.getBatchEntryData();
+
+            },
+            getBatchEntryData(){
+                this.$http.get(globalConfig.temporary_server + "batch_payable",this.batchEntryParams).then(res => {
+                    if(res.code===200){
+                        this.batchEntryData=res.data.data;
+                        this.batchEntryCount=res.data.count;
+                    }else{
+                        this.batchEntryData=[];
+                        this.batchEntryCount=0;
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
             },
 
-            // 当前点击
-            tableClickRow(row) {
+            openAdd(){
+                this.add_visible = true;
+                for(let item of Object.keys(this.ruleForm)){
+                    this.ruleForm[item] = '';
+                }
+            },
+            handleBatchEntryChangePage(page){//批量入账分页
+                this.batchEntryParams.page=page;
+                this.getBatchEntryData();
+            },
+            openCustomer(){//客户组件
+                this.customerModule=true;
+            },
+            hiddenCustomer(val){//获取客户
+                this.customerModule=false;
+                this.ruleForm.customer_name = val.name;
+                this.ruleForm.customer_identity = val.identity;
+                this.ruleForm.customer_id = val.id;
+            },
+            tableClickRow(row) {// 当前点击
                 let ids = this.chooseRowIds;
                 ids.push(row.id);
                 this.chooseRowIds = this.myUtils.arrayWeight(ids);
             },
-            // 点击过
-            tableChooseRow({row, rowIndex}) {
+            tableChooseRow({row, rowIndex}) {// 点击过
                 return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
             },
-            //换页
-            handleChangePage(page) {
+            handleChangePage(page) {//分页
                 this.params.page = page;
                 this.getPaymentList();
             },
-            //请求回调
-            callbackSuccess(res) {
+            callbackSuccess(res) {//请求回调
                 if (res.code === 200) {
                     this.$LjNotify('success', {
                         title: '成功',
@@ -662,9 +723,8 @@
                     });
                 }
             },
-            //修改金额
-            handleOkPay(row, val) {
-                console.log(val);
+
+            handleOkPay(row, val) {//修改金额
                 this.$http.put(globalConfig.temporary_server + "account_payable/edit_pay_amount/" + row.id, {amount_payable: val}).then(res => {
                     this.callbackSuccess(res);
                     this.pay_visible = false;
@@ -673,13 +733,13 @@
                     console.log(err);
                 })
             },
-            //显示科目组件
-            handleOpenSubject(which) {
+
+            handleOpenSubject(which) {//显示科目组件
                 this.which_subject = which;
                 this.subject_visible = true;
             },
-            //科目确定
-            handleConfirmSubject(val) {
+
+            handleConfirmSubject(val) { //科目确定
                 console.log(this.which_subject);
                 if (this.which_subject === 'move_subject') {
                     this.move_subject.parent_id = val.id;
@@ -690,15 +750,14 @@
                     this.subject.parent_id = val.id;
 
                     this.formData.subject_id = val.id;
-                    this.formData.subject_val = val.title;
-                    this.subject_val = val.title;
+                    this.formData.subject_name = val.title;
 
                     this.ruleForm.subject_id = val.id;
+                    this.ruleForm.subject_name = val.title;
                 }
             },
-            //修改科目
-            handleOkSubject(row, val) {
-                console.log(row, val);
+
+            handleOkSubject(row, val) { //修改科目
                 this.$http.put(globalConfig.temporary_server + "account_payable/subject/" + row.id, {subject_id: val}).then(res => {
                     this.callbackSuccess(res);
                     this.show_subject = false;
@@ -707,9 +766,8 @@
                     console.log(err);
                 })
             },
-            //修改补齐时间
-            handleOkCompleteData(row, val) {
 
+            handleOkCompleteData(row, val) {//修改补齐时间
                 this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: val}).then(res => {
                     this.callbackSuccess(res);
                     this.complete_visible = false;
@@ -718,9 +776,7 @@
                     console.log(err);
                 })
             },
-            //修改付款时间
-            handleOkPayDate(row) {
-                // console.log(this.formData.pay_date);
+            handleOkPayDate(row) {//修改付款时间
                 this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: this.formData.pay_date}).then(res => {
                     this.callbackSuccess(res);
                     this.payData_visible = false;
@@ -729,8 +785,8 @@
                     console.log(err);
                 })
             },
-            //获取账户list
-            getAccount() {
+
+            getAccount() {//获取账户字典
                 this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
                     if (res.code === 200) {
                         this.accountLists = res.data.data;
@@ -740,11 +796,18 @@
                     console.log(err);
                 })
             },
-            //应付入账
-            handleOkTransfer(row, val) {
-                console.log(val);
-                // alert(row.id);
-                this.$http.put(globalConfig.temporary_server + "account_payable/transfer/" + row.id, val).then(res => {
+
+            handleOkTransfer(row) { //确认应付入账
+               let paramsForm={
+                   customer_account_num:this.transferForm.customer_account_num,
+                   customer_account_type:this.transferForm.customer_account_type,
+                   account_id:this.transferForm.account_id,
+                   amount_paid:this.transferForm.amount_paid,
+                   remark:this.transferForm.remark,
+                   pay_date:this.transferForm.pay_date,
+                   complete_date:this.transferForm.complete_date,
+               }
+                this.$http.put(globalConfig.temporary_server + "account_payable/transfer/" + row.id, paramsForm).then(res => {
                     this.callbackSuccess(res);
                     this.transfer_visible = false;
                     this.current_row = '';
@@ -752,8 +815,7 @@
                     console.log(err);
                 })
             },
-            // 多选
-            handleSelectionChange(val) {
+            handleSelectionChange(val) {// 回滚多选
                 this.ra_ids = [];
                 this.multipleSelection = val;
                 console.log(val);
@@ -763,8 +825,7 @@
                 console.log(this.ra_ids);
             },
 
-            //确认回滚
-            handleOkRecall() {
+            handleOkRecall() {//确认回滚
                 this.$http.put(globalConfig.temporary_server + 'account_payable/revert/' + this.current_row.id, {running_account_ids: this.ra_ids}).then(res => {
 
                     if (res.code === 200) {
@@ -786,36 +847,7 @@
                     console.log(err);
                 })
             },
-            //显示客户列表
-            handleOpenCustomer() {
-                this.customer_visible = true;
-            },
-            //确认选择
-            handleChooseCustomer() {
-                if (this.ruleForm.customer_id != '') {
-                    this.$LjNotify('success', {
-                        title: '成功',
-                        message: "操作成功",
-                        subMessage: '',
-                    });
-                    this.customer_visible = false;
-                } else {
-                    this.$LjNotify('success', {
-                        title: '提示',
-                        message: "请选择客户",
-                        subMessage: '',
-                    });
-                }
-
-            },
-
-            //返回数据
-            getCurrentCustomer(data) {
-                this.ruleForm = JSON.parse(data);
-            },
-
-            //新增
-            handleOkAdd() {
+            handleOkAdd() {//新增
                 console.log(this.ruleForm);
                 this.$http.post(globalConfig.temporary_server + 'account_payable', this.ruleForm).then(res => {
                     this.callbackSuccess(res);
@@ -824,9 +856,7 @@
                     console.log(err);
                 })
             },
-
-            //删除
-            handleOkDel(row) {
+            handleOkDel(row) {//删除
                 console.log(row.id);
                 this.$http.delete(globalConfig.temporary_server + 'account_payable/delete/' + row.id).then(res => {
                     this.callbackSuccess(res);
@@ -836,23 +866,18 @@
                     console.log(err);
                 })
             },
-
-            // 操作按钮回调
-            handleClickBtn(func, row, index, key) {
+            handleClickBtn(func, row, index, key) { // 操作栏回调
                 this.current_row = row;
-                console.log(row);
                 if (key === "complete_visible") {
                     this.complete_visible = true;
                     this.formData.complete_date = this.current_row.complete_date;
                 }
-                if (key === "subject_visible") {
+                if (key === "subject_visible") {//科目
                     this.subject_visible = true;
                 }
-                //回滚
-                if (key === "recall_visible") {
+                if (key === "recall_visible") {//回滚
                     this.recall_visible = true;
                     this.running_account_record = [];
-                    // this.current_row = row;
                     this.recall_visible = true;
                     console.log(row.running_account_record);
                     for (let item in row.running_account_record) {
@@ -862,8 +887,6 @@
                         });
                     }
                     console.log(this.running_account_record);
-
-
                 }
                 if (key === "pay_visible") {
                     this.pay_visible = true;
@@ -878,28 +901,19 @@
                 }
                 if (key === "show_subject") {
                     this.show_subject = true;
-                    this.formData.subject_val = this.current_row.subject.title;
+                    this.formData.subject_name = this.current_row.subject.title;
                     this.formData.subject_id = this.current_row.subject_id;
-                    this.subject_val = this.current_row.subject.title;
                 }
-                if (key === "transfer_visible") {
+                if (key === "transfer_visible") {//应付入账
                     this.transfer_visible = true;
-                    // alert(this.current_row.id);
-                    for (let item of Object.keys(this.transferForm)) {
-                        this.transferForm[item] = this.current_row[item];
-                    }
-                    console.log(this.current_row);
-                    console.log(this.transferForm)
+                    this.transferForm = row;
                 }
             },
-
-            //加载列表
-            getPaymentList() {
+            getPaymentList() {//加载应付款项列表
                 this.showLoading(true);
                 this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(res => {
                     if (res.code === 200) {
                         this.showLoading(false);
-                        // this.tableLists = res.data.data;
                         this.tableLists = res.data.data.sort(
                             function (a, b) {
                                 return a.id - b.id
@@ -914,14 +928,11 @@
                     console.log(err);
                 })
             },
-
-            // 高级搜索
-            highSearch() {
+            highSearch() {// 高级搜索
                 this.showSearch = true;
                 this.searchData = this.paySearchList;
             },
-            // 确认搜索
-            hiddenModule(val) {
+            hiddenModule(val) {// 确认搜索
                 this.showSearch = false;
                 if (val !== 'close') {
                     console.log(val);
@@ -951,6 +962,17 @@
             }
             .allInsert{
                 @include paymentImg('allInsert.png','theme1')
+            }
+            .batchEntry-icon{
+                i{
+
+                }
+                i:first-child{
+                    @include paymentImg('output.png','theme1')
+                }
+                i:last-child{
+                    @include paymentImg('input.png','theme1')
+                }
             }
 
         }
