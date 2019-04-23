@@ -356,8 +356,6 @@
     <!--选择部门-->
     <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart" />
 
-    <!--确定增加-->
-    <AddDialog :add_visible='add_visible' @close='handleCloseAdd' />
     <!-- 财务记录 -->
     <FinancialDialog :visible='financial_visible' :moduleData='record_data' @close='handkeCloseFinancial' />
     <!-- 报销记录 -->
@@ -374,7 +372,6 @@ import LjDialog from '../../../common/lj-dialog.vue';
 import StaffOrgan from '../../../common/staffOrgan.vue'
 import DepartOrgan from '../../../common/departOrgan';
 import Ljupload from '../../../common/lightweightComponents/lj-upload'
-import AddDialog from '../../components/add-dialog';
 import RecordeDialog from '../../components/recorde-dialog';
 import WithoutDialog from '../../components/without-dialog';
 import ExpenseDialog from '../../components/expense-dialog';
@@ -386,7 +383,6 @@ export default {
     StaffOrgan,
     DepartOrgan,
     Ljupload,
-    AddDialog,
     RecordeDialog,
     WithoutDialog,
     ExpenseDialog,
@@ -394,7 +390,6 @@ export default {
   },
   data () {
     return {
-      add_visible: false,
       departModule: false, //部门选择
       departData: {
         dataType: '',
@@ -406,36 +401,36 @@ export default {
       },
       createOrder_span: 8,
       createOrder: {
-        house_id: '',
-        house_name: '', //房屋名称
-        type: '',  // 工单类型
+        house_id: null,
+        house_name: null, //房屋名称
+        type: null,  // 工单类型
         operate_user: { // 处理人
-          id: '',
-          name: '',
+          id: null,
+          name: null,
         },
         operate_org: { // 处理部门 
-          id: '',
-          name: ''
+          id: null,
+          name: null
         },
-        replay_phone: '', // 回复电话
-        emergency: '', // 紧急程度
-        next_follow_time: '', //跟进时间
-        content: '', // 工单内容
+        replay_phone: null, // 回复电话
+        emergency: null, // 紧急程度
+        next_follow_time: null, //跟进时间
+        content: null, // 工单内容
         album: [], //上传图片
-        complain_type: '', // 投诉类型
-        complain_channel: '', //投诉渠道
+        complain_type: null, // 投诉类型
+        complain_channel: null, //投诉渠道
         complained_user: { // 被投诉人
-          id: '',
-          name: ''
+          id: null,
+          name: null
         },
         reimburse_user: { //报销人
-          id: '',
-          name: ''
+          id: null,
+          name: null
         },
         reimburse: [ //报销明细
           {
-            type: '',
-            money: ''
+            type: null,
+            money: null
           }
         ]
       },
@@ -871,14 +866,15 @@ export default {
       this.temporary_search()
     },
     handleCloseAddOrder () {
-      if (!this.chosenCustomer) {
+      let warning = this.checkOutWarn()
+      if (warning) {
         this.$LjNotify('warning', {
           title: '提示',
-          message: '数据未填写'
+          message: warning
         });
         return
       }
-      this.add_visible = true
+      this.createOrderFun()
     },
     clearInfo () {
       this.show_Contract_Detail = false
@@ -901,46 +897,107 @@ export default {
       }
       this.createOrder = {
         house_id: '',
-        house_name: '', //房屋名称
-        type: '',  // 工单类型
+        house_name: null, //房屋名称
+        type: null,  // 工单类型
         operate_user: { // 处理人
-          id: '',
-          name: '',
+          id: null,
+          name: null,
         },
         operate_org: { // 处理部门 
-          id: '',
-          name: ''
+          id: null,
+          name: null
         },
-        replay_phone: '', // 回复电话
-        emergency: '', // 紧急程度
-        next_follow_time: '', //跟进时间
-        content: '', // 工单内容
+        replay_phone: null, // 回复电话
+        emergency: null, // 紧急程度
+        next_follow_time: null, //跟进时间
+        content: null, // 工单内容
         album: [], //上传图片
-        complain_type: '', // 投诉类型
-        complain_channel: '', //投诉渠道
+        complain_type: null, // 投诉类型
+        complain_channel: null, //投诉渠道
         complained_user: { // 被投诉人
-          id: '',
-          name: ''
+          id: null,
+          name: null
         },
         reimburse_user: { //报销人
-          id: '',
-          name: ''
+          id: null,
+          name: null
         },
         reimburse: [ //报销明细
           {
-            type: '',
-            money: ''
+            type: null,
+            money: null
           }
         ]
       }
       this.chosenCustomer = null
       this.customer_search = ''
     },
-    handleCloseAdd (params) {
-      this.add_visible = false
-      if (params) {
-        this.createOrderFun()
+    checkOutWarn () {
+      let warning = null
+      if (!this.createOrder.house_name) {
+        return '房屋地址未填写'
       }
+
+      if (!this.createOrder.type) {
+        return '工单类型未选择'
+      }
+
+      if (this.createOrder.type == 699) {
+        if (!this.createOrder.complain_type) {
+          return '投诉类型未选择'
+        }
+        if (!this.createOrder.complain_channel) {
+          return '投诉渠道未选择'
+        }
+        if (!this.createOrder.complained_user.name) {
+          return '被投诉人未选择'
+        }
+      }
+
+      if (this.createOrder.type == 1) {
+        if (!this.createOrder.reimburse_user.name) {
+          return '报销人未选择'
+        }
+
+        let arr = this.createOrder.reimburse
+        for (let i = 0; i < arr.length; i++) {
+          const ele = arr[i];
+          if (!ele.type) return '报销类型未选择'
+          if (!ele.money) return '报销金额未填写'
+        }
+      }
+
+      if (!this.createOrder.operate_user.name) {
+        return '处理人未选择'
+      }
+
+      if (!this.createOrder.operate_org.name) {
+        return '部门未选择'
+      }
+
+      if (!this.createOrder.replay_phone) {
+        return '回复电话未填写'
+      }
+      if (!/^[1][3-9][0-9]{9}$/.test(this.createOrder.replay_phone)) {
+        return '回复电话填写有误'
+      }
+
+      if (!this.createOrder.emergency) {
+        return '紧急程度未选择'
+      }
+
+      if (!this.createOrder.next_follow_time) {
+        return '截止时间未选择'
+      }
+
+      if (!this.createOrder.content) {
+        return '工单内容未填写'
+      }
+
+      if (this.createOrder.album.length == 0) {
+        return '图片未上传'
+      }
+      return warning
     },
     createOrderFun () {
       let order = {
@@ -963,7 +1020,7 @@ export default {
         type_of_complaint: this.createOrder.complain_channel,
         next_follow_time: this.createOrder.next_follow_time,
       }
-      console.log(this.createOrder.reimburse)
+
       this.createOrder.reimburse.forEach(item => {
         if (item.type) {
           let money_type = null, type_name = null, type = null;
@@ -1003,19 +1060,24 @@ export default {
           order[money_type] = item.money
         }
       })
-      console.log(order)
+
       this.$http.post(`${this.market_server}v1.0/csd/work_order`, order).then(res => {
-        this.$LjNotify('warning', {
-          title: '提示',
-          message: res.message
-        });
+        let warn = null
         if (res.code === 200) {
           this.$emit('close', {
             visible: false,
             method: 'created'
           })
           this.clearInfo()
+          warn = '工单创建成功'
+        } else {
+          warn = '工单创建失败'
         }
+
+        this.$LjNotify('warning', {
+          title: '提示',
+          message: res.message
+        });
       })
 
     },
