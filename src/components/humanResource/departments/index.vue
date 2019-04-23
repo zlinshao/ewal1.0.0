@@ -131,7 +131,7 @@
             </div>
             <el-table
               :data="system_list"
-              height="400px"
+              height="370px"
               @row-click="handleClickSystem"
             >
               <el-table-column label="ID" prop="id" align="center"></el-table-column>
@@ -155,6 +155,14 @@
                 </template>
               </el-table-column>
             </el-table>
+            <el-pagination
+              :total="system_count"
+              layout="total,prev,pager,next"
+              :current-page="power_params.page"
+              :page-size="power_params.limit"
+              @current-change="handleChangeSystemPage"
+              style="text-align: right;margin-top: 10px"
+            ></el-pagination>
           </div>
           <div>
             <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">模块</p>
@@ -162,7 +170,7 @@
               <el-table
                 :data="module_list"
                 @row-click="handleClickModule"
-                height="400px"
+                height="370px"
               >
                 <el-table-column label="ID" prop="id" align="center"></el-table-column>
                 <el-table-column label="模块标识" prop="sign" align="center"></el-table-column>
@@ -185,12 +193,20 @@
                   </template>
                 </el-table-column>
               </el-table>
+              <el-pagination
+                :total="module_count"
+                layout="total,prev,pager,next"
+                :current-page="module_params.page"
+                :page-size="module_params.limit"
+                @current-change="handleChangeModulePage"
+                style="text-align: right;margin-top: 10px"
+              ></el-pagination>
             </div>
           </div>
           <div>
             <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">权限</p>
             <div style="background-color: white;padding: 20px">
-              <el-table :data="power_list" height="400px" @row-click="handleClickPower">
+              <el-table :data="power_list" height="370px" @row-click="handleClickPower">
                 <el-table-column label="ID" prop="id" align="center"></el-table-column>
                 <el-table-column label="权限标示" prop="sign" align="center"></el-table-column>
                 <el-table-column label="权限名称" prop="name" align="center"></el-table-column>
@@ -212,12 +228,20 @@
                   </template>
                 </el-table-column>
               </el-table>
+              <el-pagination
+                :total="power_count"
+                layout="total,prev,pager,next"
+                :current-page="bottom_params.page"
+                :page-size="bottom_params.limit"
+                @current-change="handleChangePowerPage"
+                style="text-align: right;margin-top: 10px"
+              ></el-pagination>
             </div>
           </div>
           <div>
             <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">字段</p>
             <div style="background-color: white;padding: 20px">
-              <el-table :data="field_list" height="400px">
+              <el-table :data="field_list" height="370px">
                 <el-table-column label="项目名称" prop="app_name" align="center"></el-table-column>
                 <el-table-column label="控制器全称" prop="controller" align="center"></el-table-column>
                 <el-table-column label="方法名称" prop="method" align="center"></el-table-column>
@@ -237,6 +261,14 @@
                   </template>
                 </el-table-column>
               </el-table>
+              <el-pagination
+                :total="field_count"
+                layout="total,prev,pager,next"
+                :current-page="permission_params.page"
+                :page-size="permission_params.limit"
+                @current-change="handleChangePermissionPage"
+                style="text-align: right;margin-top: 10px"
+              ></el-pagination>
             </div>
           </div>
         </div>
@@ -344,16 +376,21 @@
             <el-form-item label="名称">
               <el-input v-model="edit_module_form.name"></el-input>
             </el-form-item>
-            <el-form-item label="父级模块">
-              <el-select v-model="edit_module_form.parent_id" :disabled="edit_type === 'system'">
+            <el-form-item label="父级模块" v-show="edit_type === 'power'">
+              <el-select v-model="edit_module_form.system_id">
+                <el-option v-for="item in edit_current_list" :key="item.id" :value="item.id" :label="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="父级模块" v-show="edit_type === 'module'">
+              <el-select v-model="edit_module_form.parent_id" disabled>
                 <el-option v-for="item in edit_current_list" :key="item.id" :value="item.id" :label="item.name"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="描述">
               <el-input type="textarea" v-model="edit_module_form.description"></el-input>
             </el-form-item>
-            <el-form-item label="权限类型" v-if="edit_type === 'power'">
-              <el-select v-model="edit_module_form.type">
+            <el-form-item label="权限类型" v-show="edit_type === 'power'">
+              <el-select v-model="edit_module_form.type" @change="handlechange">
                 <el-option value="index" label="index"></el-option>
                 <el-option value="read" label="read"></el-option>
                 <el-option value="add" label="add"></el-option>
@@ -602,6 +639,12 @@
 
         //权限字段管理
         field_list: [],
+        field_count: 0,
+        permission_params: {
+          page: 1,
+          limit: 5,
+          permission_id: ''
+        },
         new_field_visible: false,
         current_field: '',
         field_form: {
@@ -613,7 +656,6 @@
           name: ''
         },
         is_edit_field: false,
-        current_power: '',
         del_field_visible: false,
 
         //新增模块
@@ -657,18 +699,31 @@
           search: '',
           parent_id: '',
           is_permissions: '',
-          limit: 999
+          page: 1,
+          limit: 5
+        },
+        //模块参数
+        module_params: {
+          search: '',
+          parent_id: '',
+          is_permissions: '',
+          page: 1,
+          limit: 5
         },
         system_list: [],
+        system_count: 0,
         module_list: [],
+        module_count: 0,
 
         bottom_params: {
           search: '',
           system_id: '',
           type: '',
-          limit: 999
+          page: 1,
+          limit: 5
         },
         power_list: [],
+        power_count: 0,
 
         del_depart_visible: false,
         del_depart: '',
@@ -688,7 +743,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 1,//tab切换
+        chooseTab: 5,//tab切换
         selects: [
           {
             id: 1,
@@ -761,6 +816,12 @@
 
         //导出报表
         exportInfo: '',
+
+        //记录当前点击的row
+        current_system: '',
+        current_module: '',
+        current_power: '',
+        current_promisstion: '',
       }
     },
     mounted() {
@@ -774,6 +835,28 @@
       },
     },
     methods: {
+      handleChangePermissionPage(page) {
+        this.permission_params.page = page;
+        let id = this.current_power && this.current_power.id;
+        this.getFieldList(id);
+      },
+      handleChangePowerPage(page) {
+        this.bottom_params.page = page;
+        let id = this.current_module && this.current_module.id || 0;
+        this.getPowerBottomList(id);
+      },
+      handleChangeModulePage(page) {
+        this.module_params.page = page;
+        let id = this.current_system ? this.current_system.id : 0;
+        this.getModuleList(id);
+      },
+      handleChangeSystemPage(page) {
+        this.power_params.page = page;
+        this.getPowerList();
+      },
+      handlechange(val) {
+        this.edit_module_form.type = val;
+      },
       handleGetPost(id,name) {
         if (id !== 'close') {
           this.departForm.position = name;
@@ -970,18 +1053,19 @@
         this.getFieldList(row.id);
       },
       getFieldList(permission_id) {
-        this.$http.get('organization/permission_field',{
-          permission_id,
-          limit: 999
-        }).then(res => {
+        this.permission_params.permission_id = permission_id;
+        this.$http.get('organization/permission_field',this.permission_params).then(res => {
           if (res.code === '20000') {
             this.field_list = res.data.data;
+            this.field_count = res.data.count;
           } else {
+            this.field_count = 0;
             this.field_list = [];
           }
         })
       },
       handleOpenAddPower(row) {
+        this.current_module = row;
         this.new_power_form.system_id = row.id;
         this.new_power_visible = true;
       },
@@ -993,7 +1077,8 @@
               message: res.msg
             });
             this.handleCancelAddPower();
-            this.getPowerList();
+            let id = this.current_module && this.current_module.id || 0;
+            this.getPowerBottomList(id);
           } else {
             this.$LjNotify('warning',{
               title: '失败',
@@ -1083,7 +1168,6 @@
         this.edit_module_visible = false;
       },
       handleOpenEdit(type,row) {
-        console.log(row);
         this.edit_row = row;
         this.edit_type = type;
         if (type === 'module') {
@@ -1092,11 +1176,12 @@
         if (type === 'power') {
           this.edit_current_list = this.module_list;
         }
-        this.edit_module_form.system_id = row.system_id || '';
+        this.edit_module_form.system_id = Number(row.system_id) || '';
         this.edit_module_form.description = row.description;
         this.edit_module_form.name = row.name;
         this.edit_module_form.parent_id = row.parent_id || 0;
         this.edit_module_form.parent = row.parent && row.parent.name || '';
+        this.edit_module_form.type = row.type;
         this.edit_module_visible = true;
       },
       handleConfirmDel() {
@@ -1145,28 +1230,36 @@
         this.$http.get('organization/permission',this.bottom_params).then(res => {
           if (res.code === '20000') {
             this.power_list = res.data.data;
+            this.power_count = res.data.count;
             this.getFieldList(res.data.data[0].id);
           } else {
+            this.power_count = 0;
             this.power_list = [];
           }
         })
       },
       handleClickModule(row) {
+        this.current_module = row;
+        this.field_list = [];
+        this.power_list = [];
         this.getPowerBottomList(row.id);
       },
       handleClickSystem(row) {
+        this.current_system = row;
         this.module_list = [];
         this.power_list = [];
         this.field_list = [];
         this.getModuleList(row.id);
       },
       getModuleList(id) {
-        this.power_params.parent_id = id;
-        this.$http.get('organization/system',this.power_params).then(res => {
+        this.module_params.parent_id = id;
+        this.$http.get('organization/system',this.module_params).then(res => {
           if (res.code === '20000') {
             this.module_list = res.data.data;
+            this.module_count = res.data.count;
             this.getPowerBottomList(res.data.data[0].id);
           } else {
+            this.module_count = 0;
             this.module_list = [];
           }
         })
@@ -1174,15 +1267,20 @@
       //权限管理
       getPowerList() {
         this.power_params.parent_id = '';
+        this.module_list = [];
+        this.module_count = 0;
+        this.power_list = [];
+        this.power_count = 0;
+        this.field_list = [];
+        this.field_count = 0;
         this.$http.get('organization/system',this.power_params).then(res => {
           if (res.code === '20000') {
             this.system_list = res.data.data;
+            this.system_count = res.data.count;
             this.getModuleList(res.data.data[0].id);
           } else {
+            this.system_count = 0;
             this.system_list = [];
-            this.module_list = [];
-            this.power_list = [];
-            this.field_list = [];
           }
         })
       },

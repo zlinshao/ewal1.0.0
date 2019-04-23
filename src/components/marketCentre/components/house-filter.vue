@@ -216,7 +216,6 @@
         }
       },
       onlyChoose(val) {
-        console.log(val);
         this.only_choose = val;
         this.activeName = this.only_choose === 'all' || this.only_choose === 'house'  ? 'first' : 'second';
         this.params.type = this.only_choose === 'all' || this.only_choose === 'house' ? 1 : 2;
@@ -299,7 +298,7 @@
           this.handleResetOffice();
         }
         this.dialog_visible = false;
-        this.$emit('close');
+        this.$emit('close','close');
       },
       //删除一个
       handleDeleteItem(house,idx) {

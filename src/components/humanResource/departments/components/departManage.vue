@@ -9,7 +9,7 @@
       <div class="scroll_bar" v-if="tabsManage === 'staff'" @click="checkOverflow()">
         <div id="scroll-body" class="staffManage" v-if="staffList.length > 0">
           <div v-for="item in staffList">
-            <div class="items-center" @click="reviseStaff(item)">
+            <div class="items-center" :class="{'is_enable': item.is_enable}" @click="reviseStaff(item)">
               <p>
                 <img :src="item.avatar" alt="" v-if="item.avatar">
                 <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
@@ -20,7 +20,9 @@
               </div>
             </div>
             <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-              <span v-for="label in operateList" @click="operateModule(label.type,item,'user')">{{label.label}}</span>
+              <span v-for="label in operateList" @click="operateModule(label.type,item,'user')">
+                {{ label.label = label.type === 'disabled' ? item.is_enable ? '启用' : '禁用' : label.label }}
+              </span>
               <b v-if="!operatePos"></b>
               <i v-if="operatePos"></i>
             </h5>
@@ -660,7 +662,7 @@
           <h3>禁用</h3>
         </div>
         <div class="dialog_main">
-          <div class="unUse-txt">确定禁用该员工吗？</div>
+          <div class="unUse-txt">确定{{ currentStaff.is_enable ? '启用' : '禁用'}}该员工吗？</div>
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkDisable">确定</el-button>

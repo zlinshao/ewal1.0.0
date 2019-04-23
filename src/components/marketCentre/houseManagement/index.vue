@@ -685,35 +685,37 @@
       },
       //确定选择房源
       handleGetHouseResource(house, type) {
-        if (house) {
-          if (this.currentSelType === 'bottom') {
-            this.set_price_form.bottom_name = '';
-            this.set_price_form.bottom_id = [];
-            house.map(item => {
-              this.set_price_form.bottom_name += item.house_name + ',';
-              if (type === 'house') {
-                this.set_price_form.bottom_type = 1;
-                this.set_price_form.bottom_id.push(item.house_id);
-              } else {
-                this.set_price_form.bottom_type = 2;
-                this.set_price_form.bottom_id.push(item.village_id);
-              }
-            });
-            this.set_price_form.bottom_name = this.set_price_form.bottom_name.substring(0, this.set_price_form.bottom_name.length - 1);
-          } else {
-            this.set_price_form.suggest_name = '';
-            this.set_price_form.suggest_id = [];
-            house.map(item => {
-              this.set_price_form.suggest_name += item.house_name;
-              if (type === 'house') {
-                this.set_price_form.suggest_type = 1;
-                this.set_price_form.suggest_id.push(item.house_id);
-              } else {
-                this.set_price_form.suggest_type = 2;
-                this.set_price_form.suggest_id.push(item.village_id);
-              }
-            });
-            this.set_price_form.suggest_name = this.set_price_form.suggest_name.substr(0, this.set_price_form.suggest_name.length - 1);
+        if (house !=='close') {
+          if (house) {
+            if (this.currentSelType === 'bottom') {
+              this.set_price_form.bottom_name = '';
+              this.set_price_form.bottom_id = [];
+              house.map(item => {
+                this.set_price_form.bottom_name += item.house_name + ',';
+                if (type === 'house') {
+                  this.set_price_form.bottom_type = 1;
+                  this.set_price_form.bottom_id.push(item.house_id);
+                } else {
+                  this.set_price_form.bottom_type = 2;
+                  this.set_price_form.bottom_id.push(item.village_id);
+                }
+              });
+              this.set_price_form.bottom_name = this.set_price_form.bottom_name.substring(0, this.set_price_form.bottom_name.length - 1);
+            } else {
+              this.set_price_form.suggest_name = '';
+              this.set_price_form.suggest_id = [];
+              house.map(item => {
+                this.set_price_form.suggest_name += item.house_name;
+                if (type === 'house') {
+                  this.set_price_form.suggest_type = 1;
+                  this.set_price_form.suggest_id.push(item.house_id);
+                } else {
+                  this.set_price_form.suggest_type = 2;
+                  this.set_price_form.suggest_id.push(item.village_id);
+                }
+              });
+              this.set_price_form.suggest_name = this.set_price_form.suggest_name.substr(0, this.set_price_form.suggest_name.length - 1);
+            }
           }
         }
         this.house_filter_visible = false;
