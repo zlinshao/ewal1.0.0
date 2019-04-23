@@ -37,11 +37,16 @@
         </div>
         <div class="items-center personal">
           <span>冯宝宝</span>
-          <p @click="routerLink('login')">
+          <!--@click="routerLink('login')"-->
+          <p @click="routerLink('/personalCenter')" >
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
           </p>
 
+<<<<<<< HEAD
           <span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span>
+=======
+            <span class="icon3024 icon-personal-center"></span>
+>>>>>>> 79312132a262716c08ae3f3bae76880b08a65020
         </div>
       </div>
     </header>
@@ -199,6 +204,14 @@ export default {
       //this.routerLink('/todoList');
       this.$store.dispatch('change_todo_list_visible');
     },
+<<<<<<< HEAD
+=======
+    methods: {
+      todoListHandler() {
+        //this.routerLink('/to
+        this.$store.dispatch('change_todo_list_visible');
+      },
+>>>>>>> 79312132a262716c08ae3f3bae76880b08a65020
 
     showMessage () {
       if (this.showMessage_visible) {
