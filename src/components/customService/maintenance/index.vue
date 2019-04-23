@@ -262,7 +262,7 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleCloseAddOrder">新增</el-button>
+          <el-button type="danger" size="small" @click="createOrderFun">新增</el-button>
           <el-button type="info" size="small" @click="handleCloseOrder">取消</el-button>
         </div>
       </div>
@@ -558,20 +558,21 @@ export default {
 
     },
     //确定新增
-    handleAddNewRecord () {
-      this.followRecord_visible = false
-      this.currentMethod = 'addRecord'
-      if (this.followRecord_info.folow_status == 337) {
-        this.add_visible = true
-      } else {
-        this.sureEnding_visible = true
-      }
-    },
+    // handleAddNewRecord () {
+    //   this.followRecord_visible = false
+    //   this.currentMethod = 'addRecord'
+    //   if (this.followRecord_info.folow_status == 337) {
+    //     this.add_visible = true
+    //   } else {
+    //     this.sureEnding_visible = true
+    //   }
+    // },
 
     //确认添加
     handleCloseAdd (params) {
       this.add_visible = false
-      params.isSure && this.addRecordFun(params)
+      // this.currentMethod == 'created' && this.createOrderFun(params)
+      this.currentMethod != 'created' && this.addRecordFun(params)
       this.currentMethod = null
     },
     // tab切换
@@ -705,45 +706,141 @@ export default {
         dataCount: 0,
         data: []
       }
+      this.createOrder_form = {
+        house_name: '',
+        type: '',
+        send_order_type: '',
+        operate_user_id: '',
+        operate_user_name: '',
+        operate_org_id: '',
+        operate_org_name: '',
+        replay_phone: '',
+        expected_finish_time: '',
+        emergency: '',
+        content: '',
+        album: ''
+      }
       this.customer_search = ''
       this.current_customer = null
     },
-    // 关闭新增工单
-    handleCloseAddOrder () {
-      if (!this.current_customer) {
+    checkOutWarn () {
+      let warning = null
+      if (!this.createOrder_form.house_name) {
+        return '房屋地址未填写'
+      }
+
+      if (!this.createOrder_form.type) {
+        return '工单类型未选择'
+      }
+
+
+      if (!this.createOrder_form.send_order_type) {
+        return '派单至未选择'
+      }
+
+
+      if (!this.createOrder_form.operate_user_name) {
+        return '处理人未选择'
+      }
+
+      if (!this.createOrder_form.operate_org_name) {
+        return '部门未选择'
+      }
+
+      if (!this.createOrder_form.replay_phone) {
+        return '回复电话未填写'
+      }
+      if (!/^[1][3-9][0-9]{9}$/.test(this.createOrder_form.replay_phone)) {
+        return '回复电话填写有误'
+      }
+
+      if (!this.createOrder_form.emergency) {
+        return '紧急程度未选择'
+      }
+
+      if (!this.createOrder_form.expected_finish_time) {
+        return '截止时间未选择'
+      }
+
+      if (!this.createOrder_form.content) {
+        return '工单内容未填写'
+      }
+
+      if (this.createOrder_form.album.length == 0) {
+        return '图片未上传'
+      }
+      return warning
+    },
+    createOrderFun () {
+      let warning = this.checkOutWarn()
+      if (warning) {
         this.$LjNotify('warning', {
           title: '提示',
-          message: '数据未填写'
+          message: warning
         });
         return
       }
 
-      this.addOrder_visible = false
-      this.add_visible = true
-      this.currentMethod = 'created'
-    },
-    createOrderFun (isCreate) {
-      if (isCreate) {
-        let order = this.createOrder_form;
-        order.house_id = this.current_customer.house_id
-        order.house_name = this.current_customer.house_name
-        order.contract_id = this.current_customer.contract_id
-        order.contract_type = this.current_customer.contract_type
-        order.type_name = this.createOrder_form.type == 7 ? "维修" : "保洁"
+      let order = this.createOrder_form;
+      order.house_id = this.current_customer.house_id || ''
+      order.house_name = this.current_customer.house_name || ''
+      order.contract_id = this.current_customer.contract_id || ''
+      order.contract_type = this.current_customer.contract_type || ''
+      order.type_name = this.createOrder_form.type == 7 ? "维修" : "保洁"
 
-        this.$http.post(`${this.market_server}v1.0/csd/work_order/ServiceOrder`, order).then(res => {
+      this.$http.post(`${this.market_server}v1.0/csd/work_order/ServiceOrder`, order).then(res => {
+        let word = null
+        if (res.code === 200) {
+          this.createdTodo(order)
+          this.handleCloseOrder()
+          this.getDateList()
+          word = '工单创建成功'
+        } else {
+          word = '工单创建失败'
+        }
+
+        this.$LjNotify('warning', {
+          title: '提示',
+          message: word
+        });
+      })
+    },
+    createdTodo (params) {
+      if (params.type == 7) { //维修
+        let order = {
+          repair_time: params.expected_finish_time,
+          repair_item: params.content,
+          album: JSON.stringify({ before: params.album }),
+          contract_id: params.contract_id,
+          receive_id: params.operate_user_id,
+          contract_type: params.contract_type,
+          repair_type: Number(params.send_order_type),
+        }
+        this.$http.post(`${this.market_server}v1.0/market/task/HouseRepair`, order).then(res => {
           this.$LjNotify('warning', {
             title: '提示',
             message: res.message
           });
-          if (res.code === 200) {
-            this.handleCloseOrder()
-            this.getDateList()
-          }
         })
-      } else {
-        this.handleCloseOrder()
       }
+      if (params.type == 8) { //保洁
+        let order = {
+          cleaning_type: Number(params.send_order_type),
+          cleaning_time: params.expected_finish_time,
+          cleaning_reason: params.content,
+          album: JSON.stringify({ before: params.album }),
+          contract_id: params.contract_id,
+          contract_type: params.contract_type,
+          receive_id: params.operate_user_id,
+        }
+        this.$http.post(`${this.market_server}v1.0/market/task/HouseCleaning`, order).then(res => {
+          this.$LjNotify('warning', {
+            title: '提示',
+            message: res.message
+          });
+        })
+      }
+
     },
     //新增跟进记录
     handleAddRecord () {

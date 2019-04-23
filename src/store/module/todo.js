@@ -1,86 +1,91 @@
 const todo = {
   state: {
     todo_list_visible: false, //待办事项显示/隐藏
-    // todo_list_toolbar: {
-    //   customerService: [
-    //     {
-    //       id: 1,
-    //       content: '维修保洁',
-    //       tipCount: ''
-    //     },
-    //     {
-    //       id: 2,
-    //       content: '工单管理',
-    //       tipCount: ''
-    //     },
-    //     {
-    //       id: 3,
-    //       content: '房屋到期',
-    //       tipCount: ''
-    //     },
-    //     {
-    //       id: 4,
-    //       content: '资料审核',
-    //       tipCount: ''
-    //     },
-    //     {
-    //       id: 5,
-    //       content: '回访记录',
-    //       tipCount: ''
-    //     }
-    //   ]
-    // },
-    todo_list_toolbar: [
-      /*{
-        id: 1,
-        content: '全部',
-        tipCount: '13',
-      },*/
-      {
-        id: 2,
-        content: '面试',
-        tipCount: ''
-      },
-      {
-        id: 3,
-        content: '入职资料',
-        tipCount: '12'
-      },
-      {
-        id: 4,
-        content: '考勤核对',
-        tipCount: ''
-      },
-      {
-        id: 5,
-        content: '培训考试',
-        tipCount: ''
-      },
-      {
-        id: 6,
-        content: '缴纳罚款',
-        tipCount: '3'
-      },
-      {
-        id: 7,
-        content: '物品领取',
-        tipCount: '3'
-      },
-      {
-        id: 8,
-        content: '会议任务',
-        tipCount: ''
-      },
-      {
-        id: 9,
-        content: '其他',
-        tipCount: ''
-      }
-    ],
+    todo_list_toolbar: {
+      customerService: [
+        {
+          id: 0,
+          content: '全部',
+          tipCount: ''
+        },
+        {
+          id: 1,
+          content: '维修保洁',
+          tipCount: ''
+        },
+        {
+          id: 2,
+          content: '工单管理',
+          tipCount: ''
+        },
+        {
+          id: 3,
+          content: '房屋到期',
+          tipCount: ''
+        },
+        {
+          id: 4,
+          content: '资料审核',
+          tipCount: ''
+        },
+        {
+          id: 5,
+          content: '回访记录',
+          tipCount: ''
+        }
+      ]
+    },
+    // todo_list_toolbar: [
+    //   /*{
+    //     id: 1,
+    //     content: '全部',
+    //     tipCount: '13',
+    //   },*/
+    //   {
+    //     id: 2,
+    //     content: '面试',
+    //     tipCount: ''
+    //   },
+    //   {
+    //     id: 3,
+    //     content: '入职资料',
+    //     tipCount: '12'
+    //   },
+    //   {
+    //     id: 4,
+    //     content: '考勤核对',
+    //     tipCount: ''
+    //   },
+    //   {
+    //     id: 5,
+    //     content: '培训考试',
+    //     tipCount: ''
+    //   },
+    //   {
+    //     id: 6,
+    //     content: '缴纳罚款',
+    //     tipCount: '3'
+    //   },
+    //   {
+    //     id: 7,
+    //     content: '物品领取',
+    //     tipCount: '3'
+    //   },
+    //   {
+    //     id: 8,
+    //     content: '会议任务',
+    //     tipCount: ''
+    //   },
+    //   {
+    //     id: 9,
+    //     content: '其他',
+    //     tipCount: ''
+    //   }
+    // ],
     todo_list_container: [
       {
         id: 1,
-        title: '资料补齐',
+        title: '维修工单',
         tip: '距离考试20分钟',
         money: '扣款200元',
         project: '研发中心会议',
@@ -167,7 +172,13 @@ const todo = {
     humanResource_interview_evaluate_visible: false, //面试评价界面显示隐藏
     humanResource_repository_visible: false, //内务库房页面显示隐藏
     humanResource_attence_visible: false, //考勤界面显示隐藏
-    humanResource_finespayment_visible: false //罚款缴纳显示隐藏
+    humanResource_finespayment_visible: false, //罚款缴纳显示隐藏
+
+    // 客服 待办模块
+    customerService_createdTodo_visible: false, //客服创建待办
+    customerService_order_visible: false, // 客服工单详情
+
+    currentTodoModule: 'customerService' // 待办模块
   },
   // 计算属性
   getter: {},

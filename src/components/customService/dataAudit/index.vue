@@ -80,7 +80,7 @@
             <el-button type='danger' size='mini' @click='handleRewrite' style='margin-left:10px'>作废重签</el-button>
           </div>
         </div>
-        <div class="dialog_main contract_detail">
+        <div class="dialog_main contract_detail" v-if='this.contractDetail'>
           <!---房屋信息-->
           <p class='main_tit noMarginTop'>房屋信息</p>
           <div class="common_info">
@@ -415,7 +415,7 @@
         <div class="dialog_header">
           <h3>资料不齐记录</h3>
         </div>
-        <div class="dialog_main dataRecord_dialog_main">
+        <div class="dialog_main dataRecord_dialog_main" v-if='dataRecord_visible'>
           <div v-for='remark in contractDetail.checkout_remark' class='dataRecord_cell' :key='remark.create_uid' v-if='dataRecord_visible && contractDetail.checkout_remark'>
             <div class='detail_dialog_left'>
               <p>{{remark.create.name}}</p>
@@ -435,7 +435,8 @@
     </lj-dialog>
 
     <!-- 作废重签 -->
-    <lj-dialog :visible="rewrite_visible" :size="{width: 400 + 'px',height: 300 + 'px'}" @close="handleCancelRewrite">
+    <InvalidDialog :visible='rewrite_visible' :moduleData='rewrite_info' @close='handleCancelRewrite' />
+    <!-- <lj-dialog :visible="rewrite_visible" :size="{width: 400 + 'px',height: 300 + 'px'}" @close="handleCancelRewrite">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>作废重签</h3>
@@ -452,7 +453,7 @@
           <el-button type="info" size="mini" @click="handleCancelRewrite">取消</el-button>
         </div>
       </div>
-    </lj-dialog>
+    </lj-dialog> -->
 
     <!--menu-->
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -464,6 +465,7 @@ import SearchHigh from '../../common/searchHigh.vue'
 import StaffOrgan from '../../common/staffOrgan.vue'
 import MenuList from '../../common/menuList.vue';
 import LjDialog from '../../common/lj-dialog.vue';
+import InvalidDialog from '../components/invalid-dialog';
 import { dataAuditSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 
@@ -473,7 +475,8 @@ export default {
     SearchHigh,
     StaffOrgan,
     MenuList,
-    LjDialog
+    LjDialog,
+    InvalidDialog
   },
   data () {
     return {
@@ -508,50 +511,7 @@ export default {
 
       //合同详情
       contract_detail_visible: false,
-      contractDetail: {
-        contract_number: 'LHZF2014020312',
-        property_address: '东方花园',
-        property_address2: '南京路',
-        water_card: 320115121561,
-        electric_card: 320115121561,
-        gas_card: 320115121561,
-        contract_type: '电子合同',
-        createTime: '2019-1-1',
-        timeDuring: '3年',
-        vacancy: '30天',
-        startTime: '2019.02.04',
-        endTime: '2019.03.23',
-        deposit: '5000元',
-        breach: '5000元',
-        price: '4500-12个月，4600元-24个月',
-        payType: '季付-12个月，月份-12个月，月付-6个月',
-        firstClean: '2019.02.01',
-        secondClean: '2019.03.23',
-        houserPay: '物业费/水费/电费',
-        noHouserPay: '燃气费/网费/管理费/公摊费',
-        decorate: '允许',
-        addGoods: '允许',
-        channel: '是',
-        channelName: '链家',
-        channelPay: '500元',
-        channelPer: '介价是',
-        channelPhone: 13844564121,
-        dataTime: '2019.02.04 12:45',
-        note: '还是发顺丰舒服撒',
-        noteTerms: '1.sdfsf 2.sdfdsf',
-        carry_person: '收房是',
-        department: '地方大师傅',
-        contractor: {
-          name: '东方朔',
-          contact: 14738920482,
-          id_card: 384903820190384934
-        },
-        property_person: {
-          name: '乐乐了',
-          contact: 14738920482,
-          id_card: 384903820190384934
-        },
-      },
+      contractDetail: null,
 
       staffModule: false,//显示人员选择
       organData: {
@@ -599,6 +559,10 @@ export default {
       // 合同作废重签
       rewrite_visible: false,
       rewrite_note: '',
+      rewrite_info: {
+        contract_number: null,
+        album: []
+      },
       // params {
       //   limit: 10,
       //   page: 1,
@@ -815,16 +779,8 @@ export default {
     },
     //资料不齐
     handleGetRecord () {
-      if (this.contract_detail_visible && this.contractDetail.checkout_remark && this.contractDetail.checkout_remark.length > 0) {
-        this.contract_detail_visible = false
-        this.dataRecord_visible = true;
-      } else {
-        this.$LjNotify('success', {
-          title: '提示',
-          message: '暂无记录'
-        });
-      }
-
+      this.contract_detail_visible = false
+      this.dataRecord_visible = true;
     },
     handleCloseRecord () {
       this.dataRecord_visible = false;
@@ -835,32 +791,36 @@ export default {
     // 合同作废
     handleRewrite () {
       this.contract_detail_visible = false
+      this.rewrite_info = {
+        contract_number: this.contractDetail.contract_number,
+        album: this.contractDetail.album
+      }
       this.rewrite_visible = true
     },
     // 合同作废
-    handleSubmitRewrite () {
-      console.log(this.contractDetail)
-      this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
-        note: this.rewrite_note
-      }).then(res => {
-        if (res.code === 200) {
-          this.$LjNotify('success', {
-            title: '成功',
-            message: res.message
-          });
-          this.handleCancelRewrite();
-        } else {
-          this.$LjNotify('warning', {
-            title: '失败',
-            message: res.message
-          })
-        }
-      })
-    },
+    // handleSubmitRewrite () {
+    //   this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
+    //     note: this.rewrite_note
+    //   }).then(res => {
+    //     if (res.code === 200) {
+    //       this.$LjNotify('success', {
+    //         title: '成功',
+    //         message: res.message
+    //       });
+    //       this.handleCancelRewrite();
+    //     } else {
+    //       this.$LjNotify('warning', {
+    //         title: '失败',
+    //         message: res.message
+    //       })
+    //     }
+    //   })
+    // },
     // 取消合同作废
     handleCancelRewrite () {
-      this.rewrite_note = '';
+      // this.rewrite_note = '';
       this.rewrite_visible = false
+      this.contractDetail = null
       this.currentRow = null
     },
   }
