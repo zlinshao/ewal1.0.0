@@ -58,11 +58,12 @@
             this.dropdown_code = '';
             return;
           }
-          if (this.arr) {
+          this.dropdown_code = Number(this.value);
+          /*if (this.arr) {
             this.dropdown_code = Number(this.value);
           } else {
             this.dropdown_code = Number(this.value) || '';
-          }
+          }*/
         },
         immediate: true//第一次绑定也执行
       },

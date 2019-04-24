@@ -729,6 +729,9 @@
       sendReceiveNotify() {
         let id = this.is_notify_form.id;
         let user_id = this.is_notify_form.user_id;
+        if(user_id.constructor==Array) {
+          user_id = user_id[0];
+        }
         let params = {user_id: user_id};
         this.$http.get(`${this.url}/eam/process/${id}/todo`, params).then(res => {
           if (res.code.endsWith('0')) {
