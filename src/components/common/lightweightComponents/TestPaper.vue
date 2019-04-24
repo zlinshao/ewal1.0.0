@@ -366,6 +366,14 @@
           if (val && val.length > 0) {
             this.paper_visible = true;
             this.paper_type = 3;
+          }else {
+            if(val&&oldVal) {
+              this.$LjMessage('warning',{
+                title:'警告',
+                msg:'当前问卷无人回复',
+              });
+            }
+
           }
         },
         immediate: true,

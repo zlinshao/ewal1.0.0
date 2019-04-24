@@ -914,21 +914,23 @@
           let postArr = this.tableSettingData.goods.tableData;//要修改的数据
           for (let item of postArr) {
             delete item['receive_time'];
-            debugger
             item['receive_user_id'] = item['receive_user_id'].constructor === Array ? item['receive_user_id'][0] : item['receive_user_id'];
-            debugger
             item['return_date'] = utils.formatDate(item['return_date']);
             // item['return_date'] =item['return_date']?utils.formatDate(item['return_date']):item['return_date'];
             let params = {goods: [item]};
             this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-              if (res.code.endsWith('0')) {
+              /*if (res.code.endsWith('0')) {
                 this.$LjNotify('success', {
                   title: '成功',
                   message: res.msg
                 });
                 control.showSaveCancel = false;
                 control.modifyAll = false;
-              }
+              }*/
+              this.$LjMessageEasy(res,()=> {
+                control.showSaveCancel = false;
+                control.modifyAll = false;
+              });
             });
           }
         }

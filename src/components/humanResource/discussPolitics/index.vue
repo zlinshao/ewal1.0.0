@@ -37,7 +37,7 @@
                       <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
                            @click="openMeetingDialog(contentItem)"
                            :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
-                        {{contentItem.content}}
+                        <div class="content-item-span">{{contentItem.content}}</div>
                         <div class="icon-list">
                         <span v-if="contentItem.status==0" title="取消"
                               @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
@@ -273,7 +273,7 @@
           <h3>{{meeting_detail_form.meetingType}} {{meeting_detail_form.meetingTime}}</h3>
 
           <div class="header_right" style="height: 30px">
-            <i title="编辑" v-if="meeting_detail_form.status==0" class="icon30 icon-edit"
+            <i title="编辑" v-if="meeting_detail_form.status!=2" class="icon30 icon-edit"
                @click="showEditMeetingDialog"></i>
           </div>
         </div>
@@ -966,6 +966,8 @@
 
       //修改会议
       editMeeting() {
+
+
         this.$refs['addMeetingForm'].validate((valid) => {
           if (valid) {//成功
             let id = this.add_meeting_form.id;
@@ -994,7 +996,20 @@
 
       //显示修改会议dialog
       showEditMeetingDialog() {
-        console.log(this.meeting_detail_form);
+
+        let startTime = this.meeting_detail_form.start_time;
+        let endTime = this.meeting_detail_form.end_time;
+        debugger
+        if(this.myUtils.judgeDateInRange(startTime,endTime)) {
+          this.$LjMessage('warning',{
+            title:'警告',
+            msg:'当前会议正在进行,不允许修改',
+          });
+          return;
+        }
+
+
+        //console.log(this.meeting_detail_form);
         this.add_meeting_dialog_visible = true;
         this.add_meeting_dialog_title_type = 2;
 

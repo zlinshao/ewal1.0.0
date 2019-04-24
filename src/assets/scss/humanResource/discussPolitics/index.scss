@@ -113,12 +113,18 @@
                   line-height: 20px;
 
                   &.cancel-status {
-                    //color: rgba(255,255,255,.4);
+                    color: rgba(255,255,255,.4);
                     //color: #919191;
                     font-family: "Microsoft YaHei Light";
                     //font-weight: 400;
                   }
-
+                  .content-item-span {
+                    display: inline-block;
+                    width: 150px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
                   .icon-list {
                     position: absolute;
                     right: 0;
