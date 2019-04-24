@@ -123,6 +123,7 @@
         cursor: pointer;
         span {
           margin: 0 30px;
+          white-space: nowrap;
         }
         p {
           @include radius(10px);

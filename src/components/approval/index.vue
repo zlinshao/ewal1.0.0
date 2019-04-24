@@ -1,14 +1,14 @@
 <template>
-  <div id='theme_name' class='theme1'>
+  <div id="theme_name" class='theme1'>
     <div id='approval' :class="{'approval':message_visible}">
-      <div class="header">
-        <div class="header_btns">
-          <p :class='{"activeTag":chosenTag == item.value}' v-for='item in shenHe_type' :key='item.value' @click='changeShenTag(item.value)'>
-            <i :class='["icons",item.icons]'></i>
-            <span>{{item.tit}}</span>
-          </p>
-        </div>
+      <div class="header_btns">
+        <p :class='{"activeTag":chosenTag == item.value}' v-for='item in shenHe_type' :key='item.value' @click='changeShenTag(item.value)'>
+          <i :class='["icons",item.icons]'></i>
+          <span>{{item.tit}}</span>
+        </p>
+      </div>
 
+      <div class="header">
         <div class='header_methods'>
           <div :class='["methods_box",item.value == current_status_type ?"methods_box_active":""]' v-for='item in methods_type'
             :key='item.value' @click='change_status_type(item.value)'>{{item.tit}}</div>
@@ -20,21 +20,22 @@
             {{isRevice ? "接收":"挂起"}}
           </p>
           <div class="margin">
-            <p :class='["ele_p",revice_check_type.length >0?"revice_span":""]'>{{revice_check_type.length == 0 ?
+            <p :class='["ele_p",revice_check_type.length >0?"revice_span":""]' @click='isRevice_visible = true'>{{revice_check_type.length
+              == 0 ?
               "接收类型" :
               revice_check_type.join('-')}}</p>
-            <div class='revice_box'>
+            <div class='revice_box' v-if='isRevice_visible'>
               <el-checkbox-group v-model="revice_check_type">
                 <el-checkbox v-for='type in revice_type' :key='type.tit' :label="type.tit"></el-checkbox>
               </el-checkbox-group>
 
               <div class="dialog_footer">
-                <el-button type="danger" size="small">确定</el-button>
-                <el-button type="info" size="small">取消</el-button>
+                <el-button type="danger" size="small" @click='handleChangeRevice'>确定</el-button>
+                <el-button type="info" size="small" @click='handleCancleRevice'>取消</el-button>
               </div>
             </div>
           </div>
-          <i class='icons icons_main' v-if='current_type == 1'></i>
+          <i class='icons icons_main' v-if='current_type == 1' @click='handleSeeMain'></i>
           <i class='icons icons_search' @click='highSearch'></i>
         </div>
       </div>
@@ -53,7 +54,7 @@
           </el-table-column>
         </el-table>
 
-        <footer class="flex-center bottomPage">
+        <footer class="flex-center bottomPage" v-if="!controlPanel_visible">
           <div class="develop flex-center">
             <i class="el-icon-d-arrow-right"></i>
           </div>
@@ -67,16 +68,20 @@
 
       <!-- 搜索 -->
       <SearchHigh :module="showSearch" :showData="searchHigh" @close="hiddenModule"></SearchHigh>
-
+      <!-- 控制面板 -->
+      <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' />
     </div>
   </div>
 </template>
 
 <script>
 import SearchHigh from '../common/searchHigh.vue'
+import ControlPanel from './commponents/controlPanel'
 export default {
   components: {
     SearchHigh, //高级搜索
+    ControlPanel, // 控制面板
+
   },
   data () {
     return {
@@ -267,7 +272,9 @@ export default {
         }
       ],
       revice_check_type: [],
-      revice_check_type_name: '接收类型'
+      isRevice_visible: false,
+      // 控制面板
+      controlPanel_visible: false
     }
   },
   computed: {
@@ -319,6 +326,22 @@ export default {
     // 接收 挂起
     change_revice_type () {
       this.isRevice = !this.isRevice
+    },
+    // 选择 接收类型
+    handleChangeRevice () {
+      console.log(this.revice_check_type)
+    },
+    // 取消 接收类型
+    handleCancleRevice () {
+      this.isRevice_visible = false
+      this.revice_check_type = []
+    },
+    // 组长 控制面板
+    handleSeeMain () {
+      this.controlPanel_visible = true
+    },
+    hiddenControlPanel () {
+      this.controlPanel_visible = false
     },
     // table 分页
     handleCurrentChange (val) {

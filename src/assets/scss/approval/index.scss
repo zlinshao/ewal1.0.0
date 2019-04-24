@@ -6,8 +6,6 @@
 }
 
 #theme_name {
-  // height: auto !important;
-  // padding-top: 0 !important;
   #approval {
     overflow: hidden;
     position: fixed;
@@ -34,31 +32,41 @@
       top: 0 !important;
     }
 
+    .header_btns {
+      height: 180px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 999;
+      p {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 130px;
+        height: 40px;
+        font-family: 'jingDianXingShu';
+        .icons {
+          display: inline-block;
+          width: 19px;
+          height: 17px;
+          margin-right: 12px;
+        }
+      }
+      p + p {
+        margin-top: 20px;
+      }
+    }
+
     // 头部
     .header {
       height: 180px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      .header_btns {
-        p {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 130px;
-          height: 40px;
-          font-family: 'jingDianXingShu';
-          .icons {
-            display: inline-block;
-            width: 19px;
-            height: 17px;
-            margin-right: 12px;
-          }
-        }
-        p + p {
-          margin-top: 20px;
-        }
-      }
+      position: relative;
       .header_methods {
         display: flex;
         .methods_box {
@@ -73,6 +81,9 @@
         }
       }
       .header_right {
+        position: absolute;
+        right: 0;
+        bottom: 0;
         display: flex;
         height: 180px;
         align-items: flex-end;
@@ -168,29 +179,29 @@
 #theme_name.theme1 {
   #approval {
     // 头部
-    .header {
-      .header_btns {
-        p {
-          color: #d2d2d2;
-          @include confirmImg('juxing_hui.png', 'theme1');
-          .icons_app {
-            @include confirmImg('baobeishenhe_hui.png', 'theme1');
-          }
-          .icons_ban {
-            @include confirmImg('bangongshenpi_hui.png', 'theme1');
-          }
+    .header_btns {
+      p {
+        color: #d2d2d2;
+        @include confirmImg('juxing_hui.png', 'theme1');
+        .icons_app {
+          @include confirmImg('baobeishenhe_hui.png', 'theme1');
         }
-        p.activeTag {
-          color: #fff;
-          @include confirmImg('juxing_hong.png', 'theme1');
-          .icons_app {
-            @include confirmImg('baobeishenhe_bai.png', 'theme1');
-          }
-          .icons_ban {
-            @include confirmImg('bangongshenpi_bai.png', 'theme1');
-          }
+        .icons_ban {
+          @include confirmImg('bangongshenpi_hui.png', 'theme1');
         }
       }
+      p.activeTag {
+        color: #fff;
+        @include confirmImg('juxing_hong.png', 'theme1');
+        .icons_app {
+          @include confirmImg('baobeishenhe_bai.png', 'theme1');
+        }
+        .icons_ban {
+          @include confirmImg('bangongshenpi_bai.png', 'theme1');
+        }
+      }
+    }
+    .header {
       .header_methods {
         .methods_box {
           color: #bbbbbb;
