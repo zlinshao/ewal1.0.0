@@ -23,46 +23,34 @@
             return {
                 menuType:[
                     {
-                        url: 'examArrangement',
-                        title: '考试安排',
-                        letter:'Exam arrangement',
-                        type:1
-                    },
-                    {
-                        url: 'jobTraining',
-                        title: '岗位培训',
-                        letter:'On-the-job training',
-                        type:2
-                    },
-                    {
                         url: 'videoLearning',
                         title: '视频学习',
                         letter:'Video learning',
-                        type:3
+                        type:1
                     },
                     {
                         url: 'postPlanning',
                         title: '岗位规划',
                         letter:'Post planning',
-                        type:4
+                        type:2
                     },
                     {
                         url: 'faculty',
                         title: '师资力量',
                         letter:'Faculty',
-                        type:5
+                        type:3
                     },
                     {
                         url: 'industryDynamic',
                         title: '行业动态',
                         letter:'Industry dynamic',
-                        type:6
+                        type:4
                     },
                     {
                         url: 'practicalProblems',
                         title: '实践问题',
                         letter:'Practical problems',
-                        type:7
+                        type:5
                     },
                 ],
                 showFinMenuList: false,
@@ -88,6 +76,9 @@
                             @include leJiaCollegeImg('theme1','border-grey.png');
                             &:hover{
                                 @include leJiaCollegeImg('theme1','boder-red.png');
+                                span{
+                                    color: #CF2E33;
+                                }
                             }
                         }
 

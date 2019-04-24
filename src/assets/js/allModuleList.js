@@ -234,13 +234,11 @@ export const headLines = {
 export const leJiaCollegeMenu = {
   type: 'leJiaCollegeMenu',
   data: [
-    { id: 1, title: '考试安排', url: 'examArrangement' },
-    { id: 2, title: '岗位培训', url: 'jobTraining' },
-    { id: 3, title: '视频学习', url: 'videoLearning' },
-    { id: 4, title: '岗位规划', url: 'postPlanning' },
-    { id: 5, title: '师资力量', url: 'faculty' },
-    { id: 6, title: '行业动态', url: 'industryDynamic' },
-    { id: 7, title: '实践问题', url: 'practicalProblems' }
+    { id: 1, title: '视频学习', url: 'videoLearning' },
+    { id: 2, title: '岗位规划', url: 'postPlanning' },
+    { id: 3, title: '师资力量', url: 'faculty' },
+    { id: 4, title: '行业动态', url: 'industryDynamic' },
+    { id: 5, title: '实践问题', url: 'practicalProblems' }
   ]
 }
 

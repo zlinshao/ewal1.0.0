@@ -43,7 +43,7 @@
           </p>
 
 
-            <span class="icon3024 icon-personal-center"   @click="routerLink('/messageCenter')"></span>
+            <!--<span class="icon3024 icon-personal-center"   @click="routerLink('/messageCenter')"></span>-->
 
           <!--<span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span>-->
 

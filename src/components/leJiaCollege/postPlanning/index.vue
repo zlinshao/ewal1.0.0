@@ -335,7 +335,9 @@
                 this.chooseTab = id;
             },
             getDataLists(){
+                this.showLoading(true);
                 this.$http.get(globalConfig.leJiaCollege_server+'/api/position/level', this.params).then(res => {
+                    this.showLoading(false);
                     if(res.status===200){
                         this.levelData = res.data.sort(
                             function (a, b) {

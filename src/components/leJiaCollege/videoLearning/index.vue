@@ -307,7 +307,9 @@
             },
             //获取列表
             getDataLists() {
+                // this.showLoading(true);
                 this.$http.get(globalConfig.leJiaCollege_server + '/api/video/study', this.params).then(res => {
+                    this.showLoading(false);
                     if (res.status === 200) {
                         this.dataLists = res.data.data;
                         this.count = res.data.total;

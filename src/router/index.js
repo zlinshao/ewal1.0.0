@@ -103,19 +103,13 @@ const BackClub = () => import('@/components/newMedia/back/club/index.vue')
 
 //乐伽大学
 const LeJiaCollege = () => import('@/components/leJiaCollege/index.vue')
-const ExamArrangement = () =>
-  import('@/components/leJiaCollege/components/common.vue') //考试安排
+const ExamArrangement = () => import('@/components/leJiaCollege/components/common.vue') //考试安排
 const Faculty = () => import('@/components/leJiaCollege/components/common.vue') //师资力量
-const IndustryDynamic = () =>
-  import('@/components/leJiaCollege/components/common.vue') //行业动态
-const JobTraining = () =>
-  import('@/components/leJiaCollege/components/common.vue') //工作培训
-const PostPlanning = () =>
-  import('@/components/leJiaCollege/components/common.vue') //岗位规划
-const PracticalProblems = () =>
-  import('@/components/leJiaCollege/components/common.vue') //实践问题
-const VideoLearning = () =>
-  import('@/components/leJiaCollege/components/common.vue') //视频学习
+const IndustryDynamic = () => import('@/components/leJiaCollege/components/common.vue') //行业动态
+const JobTraining = () => import('@/components/leJiaCollege/components/common.vue') //工作培训
+const PostPlanning = () => import('@/components/leJiaCollege/components/common.vue') //岗位规划
+const PracticalProblems = () => import('@/components/leJiaCollege/components/common.vue') //实践问题
+const VideoLearning = () => import('@/components/leJiaCollege/components/common.vue') //视频学习
 
 // 岗位规划
 const Partner = () => import('@/components/leJiaCollege/components/common.vue') //合伙人

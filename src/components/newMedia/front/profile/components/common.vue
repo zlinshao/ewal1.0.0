@@ -47,7 +47,7 @@
                     <div class="InternalRegulations-info">
                         <div class="right-info flex-center">
                             <div class="scroll_bar">
-                                <div v-for="(item,index) in fileData" class="right-info-list flex-center">
+                                <div v-for="(item,index) in dataLists" class="right-info-list flex-center">
                                     <div class="right-info-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
                                         <p class="flex-center">
                                             <!--<span v-show="seen&&index===current">-->
@@ -56,8 +56,8 @@
                                             <!--</span>-->
                                             <a class="word_icon" @click="openFile(item.file_id[0].uri)"></a>
                                         </p>
-                                        <p><span>营销中心制度及相关操作…</span></p>
-                                        <p><span>2019-04-07</span></p>
+                                        <p><span>{{item.name}}</span></p>
+                                        <p><span>{{item.created_at}}</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -166,15 +166,10 @@
                     {id: 1, title: "视频"}, {id: 2, title: "文档"}
                 ],
                 params: {//查询参数
-                    search: '',
-                    startRange: '',
-                    endRange: '',
+
                     offset: 1,
-                    limit: 6,
-                    department_ids: '',
-                    export: '',
+                    limit: 10,
                     type_id: 1,
-                    all:1
                 },
                 dataLists: [],
                 form: {
@@ -208,7 +203,7 @@
             '$route': 'getPath',
         },
         mounted() {
-            this.chooseTab = this.$route.query.type;
+            // this.chooseTab = this.$route.query.type;
             this.getDataLists();
 
         },
@@ -226,6 +221,7 @@
             },
             getPath() {
                 this.chooseTab = this.$route.query.type;
+                this.params.type_id=this.$route.query.type;
             },
             // 查看详情
             // openDetail(row) {
@@ -262,6 +258,9 @@
             //tab切换
             changeTabs(id) {
                 this.chooseTab = id;
+                this.params.type_id=id;
+                this.dataLists=[];
+                this.getDataLists();
             },
             //移入
             onMousteIn: function (index) {
@@ -275,7 +274,9 @@
             },
             //获取列表
             getDataLists() {
+                this.showLoading(true);
                 this.$http.get(globalConfig.newMedia_sever + '/api/datum/admin', this.params).then(res => {
+                    this.showLoading(false);
                     if (res.status === 200) {
                         this.dataLists = res.data.data;
                         this.count = res.data.total;

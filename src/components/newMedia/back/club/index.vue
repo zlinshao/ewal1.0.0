@@ -149,7 +149,9 @@
 
                         <el-form-item label="活动内容">
                             <div class="item_content">
-                                <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>
+                                <!--<UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>-->
+                                <editor-bar v-model="showData.content" :isClear="isClear" @change="change"></editor-bar>
+                                <!--<lj-editor> </lj-editor>-->
                             </div>
                         </el-form-item>
                     </el-form>
@@ -170,14 +172,19 @@
 <script>
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
-    import UE from '../../../common/UE.vue';
+    // import UE from '../../../common/UE.vue';
+    import EditorBar from '../../../common/wangEditor.vue';
+    // import LjEditor from '../../../common/lj-editor.vue';
+
 
     export default {
         name: "club",
         components: {
             mediaList,
             LjDialog,
-            UE
+            // UE,
+            EditorBar
+            // LjEditor
         },
         data() {
             return {
@@ -186,6 +193,7 @@
                 end_visible: false,//结束活动
                 add_visible: false,//新增活动
                 count:0,
+                isClear: false,
                 params: {//查询参数
                     search: '',
                     startRange: '',
@@ -215,6 +223,7 @@
                 // nomore: false,
 
 
+
             }
         },
         mounted() {
@@ -223,6 +232,13 @@
         },
 
         methods: {
+            change(val) {
+                console.log(val);
+                this.showData.content = val
+            },
+            catchData(val){
+                this.showData.content = val
+            },
             // throttle(fn, delay, atleast) {
             //     /**函数节流方法
             //      @param Function fn 延时调用函数
@@ -351,7 +367,7 @@
             },
 
             preview() {//预览
-                let content = this.$refs.ue.getUEContent();
+                // let content = this.$refs.ue.getUEContent();
                 this.detail_visible = true;
                 this.showData.start_time = this.actionTime[0];
                 this.showData.over_time = this.actionTime[1];
@@ -362,8 +378,9 @@
             getDataLists() {//获取列表
                 this.showLoading(true);
                 this.$http.get(globalConfig.newMedia_sever + '/api/club/event', this.params).then(res => {
+                    this.showLoading(false);
                     if (res.status === 200) {
-                        this.showLoading(false);
+
                         this.dataLists = res.data.data.sort(
                             function (a, b) {
                                 return a.id - b.id

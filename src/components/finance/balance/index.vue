@@ -7,7 +7,7 @@
                 </p>
                 <h1>结算</h1>
                 <h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
+          <span v-for="item in selects" @click="changeTabs(item.id,item.settle_type)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
           </span>
@@ -39,7 +39,7 @@
                         <span>{{scope.row.account_bank}} {{scope.row.account_num}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="发起人" prop="creator" align="center"></el-table-column>
+                <el-table-column label="发起人" prop="staff" align="center"></el-table-column>
                 <el-table-column label="发起部门" prop="org.name" align="center"></el-table-column>
                 <el-table-column label="状态"  align="center">
                     <template slot-scope="scope">
@@ -85,125 +85,28 @@
                         </div>
 
                         <div class="balance-detail-info">
-                            <div v-if="selectTab===1||selectTab===2||selectTab===3" class="tab">
+                            <div v-if="selectTab===2||selectTab===3||selectTab===4" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
-                                    <div class="balance-detail-form-info" :class="selectTab===1?'activeBorder':''">
-                                        <el-form-item label="收款周期">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="应收">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="实收">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="备注">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                    </div>
                                     <div class="balance-detail-form-info" :class="selectTab===2?'activeBorder':''">
-                                        <el-form-item label="收款周期">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="应收">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="备注">
-                                            <el-input v-model="form.name"></el-input>
+                                        <el-form-item label="" label-width="0px">
+                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
                                         </el-form-item>
                                     </div>
                                     <div class="balance-detail-form-info" :class="selectTab===3?'activeBorder':''">
-                                        <el-form-item label="退房时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退房性质">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款时间">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="结算人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="退款人">
-                                            <el-input v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item label="审核人">
-                                            <el-input v-model="form.name"></el-input>
+                                        <el-form-item label="备注">
+                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
                                         </el-form-item>
                                     </div>
-
-                                </el-form>
-                            </div>
-                            <div v-if="selectTab===4||selectTab===5||selectTab===6" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
                                     <div class="balance-detail-form-info" :class="selectTab===4?'activeBorder':''">
-                                        <el-form-item label="退房原因">
-                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info" :class="selectTab===5?'activeBorder':''">
-                                        <el-form-item label="报备内容">
-                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
-                                        </el-form-item>
-                                    </div>
-                                    <div class="balance-detail-form-info" :class="selectTab===6?'activeBorder':''">
-                                        <el-form-item label="" label-width="0px">
-                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
-                                        </el-form-item>
-
-                                    </div>
-                                </el-form>
-
-                            </div>
-
-                            <div v-if="selectTab===7||selectTab===9" class="tab">
-                                <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
-                                    <div class="balance-detail-form-info" :class="selectTab===6?'activeBorder':''">
-                                        <el-form-item label="" label-width="0px">
-                                            <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
-                                        </el-form-item>
-
-                                    </div>
-                                    <div class="balance-detail-form-info" :class="selectTab===7?'activeBorder':''">
-                                        <div class="balance-detail-form-table">
-                                            <el-table
-                                                    size="small"
-                                                    max-height="260"
-                                                    :data="balanceDataDetail"
-                                                    highlight-current-row
-                                                    :row-class-name="tableChooseRow"
-                                                    @cell-click="tableClickRow"
-                                                    header-row-class-name="tableHeader"
-                                                    @selection-change="handleSelectionChange"
-                                            >
-
-                                                <el-table-column  label="序号" prop="creat_time" align="center" width="60"></el-table-column>
-                                                <el-table-column label="名称" prop="number" align="center" width="60"></el-table-column>
-                                                <el-table-column label="金额" prop="address" align="center" width="60"></el-table-column>
-                                                <el-table-column label="查看" prop="data" align="center" width="80">
-                                                    <template slot-scope="scope">
-                                                        <el-button type="danger" plain size="mini" @click="check_visible = true">查看</el-button>
-                                                    </template>
-                                                </el-table-column>
-
-                                            </el-table>
-                                        </div>
-                                        <div class="balance-detail-total flex-center">
-                                            <span >合计:<span>200</span></span>
-                                        </div>
-
-                                    </div>
-                                    <div class="balance-detail-form-info" :class="selectTab===9?'activeBorder':''">
                                         <el-form-item label="评论">
                                             <el-input v-model="form.name" type="textarea" :rows="14"></el-input>
                                         </el-form-item>
                                     </div>
+
                                 </el-form>
 
                             </div>
-
-                            <div v-if="selectTab===8" class="tab8">
+                            <div v-if="selectTab===1" class="tab8">
                                 <el-table
                                         size="small"
                                         max-height="340"
@@ -216,7 +119,7 @@
                                         @selection-change="handleSelectionChange"
                                 >
 
-                                    <el-table-column  label="项目" prop="creat_time" align="center" ></el-table-column>
+                                    <el-table-column  label="项目" prop="fee_name" align="center" ></el-table-column>
                                     <el-table-column label="金额" prop="number" align="center" ></el-table-column>
                                     <el-table-column label="状态" prop="address" align="center" ></el-table-column>
                                     <el-table-column label="角色" prop="data" align="center" ></el-table-column>
@@ -237,6 +140,122 @@
                                     </el-pagination>
                                 </div>
                             </div>
+                            <!--<div v-if="selectTab===1||selectTab===2||selectTab===3" class="tab">-->
+                                <!--<el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">-->
+                                    <!--<div class="balance-detail-form-info" :class="selectTab===1?'activeBorder':''">-->
+                                        <!--<el-form-item label="收款周期">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="应收">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="实收">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="备注">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                    <!--</div>-->
+                                    <!--<div class="balance-detail-form-info" :class="selectTab===2?'activeBorder':''">-->
+                                        <!--<el-form-item label="收款周期">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="应收">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="备注">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                    <!--</div>-->
+                                    <!--<div class="balance-detail-form-info" :class="selectTab===3?'activeBorder':''">-->
+                                        <!--<el-form-item label="退房时间">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="退房性质">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="退款时间">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="结算人">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="退款人">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                        <!--<el-form-item label="审核人">-->
+                                            <!--<el-input v-model="form.name"></el-input>-->
+                                        <!--</el-form-item>-->
+                                    <!--</div>-->
+
+                                <!--</el-form>-->
+                            <!--</div>-->
+                            <!--<div v-if="selectTab===4||selectTab===5||selectTab===6" class="tab">-->
+                                <!--<el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">-->
+                                    <!--<div class="balance-detail-form-info" :class="selectTab===4?'activeBorder':''">-->
+                                        <!--<el-form-item label="退房原因">-->
+                                            <!--<el-input v-model="form.name" type="textarea" :rows="14"></el-input>-->
+                                        <!--</el-form-item>-->
+                                    <!--</div>-->
+                                    <!--<div class="balance-detail-form-info" :class="selectTab===5?'activeBorder':''">-->
+                                        <!--<el-form-item label="报备内容">-->
+                                            <!--<el-input v-model="form.name" type="textarea" :rows="14"></el-input>-->
+                                        <!--</el-form-item>-->
+                                    <!--</div>-->
+                                    <!--<div class="balance-detail-form-info" :class="selectTab===6?'activeBorder':''">-->
+                                        <!--<el-form-item label="" label-width="0px">-->
+                                            <!--<el-input v-model="form.name" type="textarea" :rows="14"></el-input>-->
+                                        <!--</el-form-item>-->
+
+                                    <!--</div>-->
+                                <!--</el-form>-->
+
+                            <!--</div>-->
+
+                            <!--<div v-if="selectTab===7||selectTab===9" class="tab">-->
+                                <!--<el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">-->
+                                    <!--<div class="balance-detail-form-info" :class="selectTab===6?'activeBorder':''">-->
+                                        <!--<el-form-item label="" label-width="0px">-->
+                                            <!--<el-input v-model="form.name" type="textarea" :rows="14"></el-input>-->
+                                        <!--</el-form-item>-->
+
+                                    <!--</div>-->
+                                    <!--<div class="balance-detail-form-info" :class="selectTab===7?'activeBorder':''">-->
+                                        <!--<div class="balance-detail-form-table">-->
+                                            <!--<el-table-->
+                                                    <!--size="small"-->
+                                                    <!--max-height="260"-->
+                                                    <!--:data="balanceDataDetail"-->
+                                                    <!--highlight-current-row-->
+                                                    <!--:row-class-name="tableChooseRow"-->
+                                                    <!--@cell-click="tableClickRow"-->
+                                                    <!--header-row-class-name="tableHeader"-->
+                                                    <!--@selection-change="handleSelectionChange"-->
+                                            <!--&gt;-->
+
+                                                <!--<el-table-column  label="序号" prop="creat_time" align="center" width="60"></el-table-column>-->
+                                                <!--<el-table-column label="名称" prop="number" align="center" width="60"></el-table-column>-->
+                                                <!--<el-table-column label="金额" prop="address" align="center" width="60"></el-table-column>-->
+                                                <!--<el-table-column label="查看" prop="data" align="center" width="80">-->
+                                                    <!--<template slot-scope="scope">-->
+                                                        <!--<el-button type="danger" plain size="mini" @click="check_visible = true">查看</el-button>-->
+                                                    <!--</template>-->
+                                                <!--</el-table-column>-->
+
+                                            <!--</el-table>-->
+                                        <!--</div>-->
+                                        <!--<div class="balance-detail-total flex-center">-->
+                                            <!--<span >合计:<span>200</span></span>-->
+                                        <!--</div>-->
+
+                                    <!--</div>-->
+                                    <!--<div class="balance-detail-form-info" :class="selectTab===9?'activeBorder':''">-->
+                                        <!--<el-form-item label="评论">-->
+                                            <!--<el-input v-model="form.name" type="textarea" :rows="14"></el-input>-->
+                                        <!--</el-form-item>-->
+                                    <!--</div>-->
+                                <!--</el-form>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
@@ -337,7 +356,8 @@
                 params: {
                     search: '',
                     page: 1,
-                    limit: 12
+                    limit: 12,
+                    settle_type:2,
                 },
                 check_visible:false,//查看
                 balanceDataDetail:[
@@ -430,16 +450,22 @@
                 form: {
                     name: ''
                 },
+                // tabs: [
+                //     {id: 1, title: '财务收款'},
+                //     {id: 2, title: '合同收款'},
+                //     {id: 3, title: '退房信息'},
+                //     {id: 4, title: '退房原因'},
+                //     {id: 5, title: '报备内容'},
+                //     {id: 6, title: '照片'},
+                //     {id: 7, title: '款项明细'},
+                //     {id: 8, title: '收付结算'},
+                //     {id: 9, title: '评论'},
+                // ],
                 tabs: [
-                    {id: 1, title: '财务收款'},
-                    {id: 2, title: '合同收款'},
-                    {id: 3, title: '退房信息'},
-                    {id: 4, title: '退房原因'},
-                    {id: 5, title: '报备内容'},
-                    {id: 6, title: '照片'},
-                    {id: 7, title: '款项明细'},
-                    {id: 8, title: '收付结算'},
-                    {id: 9, title: '评论'},
+                    {id: 1, title: '款项明细'},
+                    {id: 2, title: '照片'},
+                    {id: 3, title: '备注'},
+                    {id: 4, title: '评论'},
                 ],
                 selectTab: 1,
                 detail_visible: false,
@@ -447,10 +473,11 @@
                 balanceData: [],
                 chooseTab: 1,
                 selects: [
-                    {id: 1, title: '收房',},
-                    {id: 2, title: '租房退租',},
-                    {id: 3, title: '收房退租',},
-                    {id: 4, title: '租房入住',},
+                    {id: 1, title: '收房交接',settle_type:2},
+                    {id: 2, title: '租房退租',settle_type:4},
+                    {id: 3, title: '收房退租',settle_type:6},
+                    {id: 4, title: '租房入住',settle_type:8},
+                    {id: 5, title: '报销交接',settle_type:2},
                 ],
                 showFinMenuList: false,
                 chooseRowIds: [],
@@ -485,8 +512,11 @@
         computed: {},
         methods: {
 
-            changeTabs(id) {// 首页tab切换
+            changeTabs(id,type) {// 首页tab切换
                 this.chooseTab = id;
+                this.params.settle_type = type;
+                this.balanceData =[];
+                this.getDataLists();
             },
             selectTabs(id) {//结算单详情tab切换
                 this.selectTab = id;
@@ -521,7 +551,15 @@
                 this.chooseRowIds = this.myUtils.arrayWeight(ids);
                 this.detail_visible = true;
 
-                this.$http.get()
+                this.$http.get(globalConfig.temporary_server + 'customer_settle/settle_fee/'+row.id, this.params).then(res => {
+                    this.showLoading(false);
+                    if (res.code === 200) {
+                        this.balanceDataDetail = res.data.data;
+                        this.count = res.data.count;
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
 
             },
             // 点击过

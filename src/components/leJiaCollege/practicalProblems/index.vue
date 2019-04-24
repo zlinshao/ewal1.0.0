@@ -197,7 +197,9 @@
             },
             //获取列表
             getProblemLists(){
+                this.showLoading(true);
                 this.$http.get(globalConfig.leJiaCollege_server+'/api/practice/question', this.params).then(res => {
+                    this.showLoading(false);
                     if (res.status === 200) {
                         this.problemsData  = res.data.data;
                         this.count=res.data.total;

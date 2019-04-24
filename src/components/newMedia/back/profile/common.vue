@@ -22,7 +22,7 @@
             <div id="profile_video_back">
                 <div class="mainList scroll_bar">
                     <div class="video-lists">
-                        <div class="video-list-info flex-center" v-for="(item,index) in videoData">
+                        <div class="video-list-info flex-center" v-for="(item,index) in tableData">
                             <div class="video-box">
                                 <div class="video-box-top" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
                                     <img-slider :arr="item.file_id" :single="true"
@@ -34,11 +34,39 @@
                                         <span class="time">{{item.created_at}}</span>
                                         <span class="btn">
                                     <i @click.stop="openEdit(item)"></i>
-                                    <i @click.stop="delete_visible=true;current_item=item"></i>
+                                    <i @click.stop="openDel(item)"></i>
                                 </span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="chooseTab===2" class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}">
+            <div id="file">
+                <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px'}">
+                    <div class="InternalRegulations-info">
+                        <div class="right-info flex-center">
+                            <div class="scroll_bar">
+                                <div v-for="(item,index) in tableData" class="right-info-list flex-center">
+                                    <div class="right-info-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
+                                        <p class="flex-center">
+                                            <span v-show="seen&&index===current">
+                                            <i @click.stop="openEdit(item)">编辑</i>
+                                            <i @click.stop="openDel(item)">删除</i>
+                                            </span>
+                                            <a class="word_icon" @click="openFile(item.file_id[0].uri)"></a>
+                                        </p>
+                                        <p><span>{{item.name}}</span></p>
+                                        <p><span>{{item.created_at}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-img"></div>
                         </div>
                     </div>
                 </div>
@@ -61,30 +89,6 @@
                 </el-pagination>
             </div>
         </footer>
-
-        <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px'}" v-if="chooseTab===2">
-            <div id="profile_file_back">
-                <div class="right-info flex-center">
-                    <div class="scroll_bar">
-                        <div v-for="(item,index) in fileData" class="right-info-list flex-center">
-                            <div class="right-info-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
-                                <p class="flex-center">
-                                        <span v-show="seen&&index===current">
-                                            <i @click.stop="openEdit(item)">编辑</i>
-                                            <i @click.stop="delete_visible=true;current_item=item">删除</i>
-                                        </span>
-                                    <a class="word_icon" @click="openFile(item.file_id[0].uri)"></a>
-                                </p>
-                                <p><span>营销中心制度及相关操作…</span></p>
-                                <p><span>2019-04-07</span></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-img"></div>
-                </div>
-            </div>
-        </div>
 
         <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
         <!--删除-->
@@ -192,29 +196,19 @@
                 postModule: false,//岗位
                 departModule: false,//部门
                 staffModule: false,//员工
-                module_type: '',
-
-
+                module_type: '',//共用组件类型
                 organData: {},// 组织架构配置 选择数量 num
-
-                flag: 1,
+                flag: 1,//标记
                 current: '',//当前
-                current_item: '',
+                current_row: '',
                 seen: false,//显隐
                 count: 0,
                 params: {//查询参数
-                    search: '',
-                    startRange: '',
-                    endRange: '',
                     offset: 1,
                     limit:10,
-                    department_ids: '',
-                    export: '',
                     type_id: 1,
-                    all: 1
                 },
-                videoData: [],
-                fileData: [],
+                tableData:[],//列表数据
                 form: {
                     name: '',//文件名
                     type_id: '',//文件类型
@@ -228,71 +222,49 @@
                     permission_org_name: '',//部门名称
                     permission_user_name: '',//用户名称
                 },
-
             }
         },
         watch: {
             '$route': 'getPath',
         },
         mounted() {
-            this.chooseTab = this.$route.query.type;
+            // this.chooseTab = this.$route.query.type;
             this.getDataLists();
             // this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);//滚动加载
         },
 
         methods: {
-            //换页
-            handleChangePage(page) {
+
+            handleChangePage(page) {//分页
                 this.params.offset = page;
                 this.getDataLists();
             },
-            getPath() {
+            getPath() {//获取路由参数
                 this.chooseTab = this.$route.query.type;
+                this.params.type_id=this.$route.query.type;
             },
-            openFile(val) {
+            openFile(val) {//打开文档
                 console.log(val);
                 window.open(val);
             },
-            changeTabs(id) {
+            changeTabs(id) {//切换tab
                 this.chooseTab = id;
+                this.params.type_id=id;
+                this.tableData=[];
+                this.getDataLists();
             },
-            openAdd() {
+            openDel(item){
+              this.delete_visible=true;
+              this.current_row = item;
+            },
+            openAdd() {//新增弹出
                 this.visible = true;
                 this.flag = 2;
-
-                this.form.permission.org_id= [];
-                this.form.permission.user_id= [];
-                this.form.file_info= [];
-                this.form.permission_org= [];
-                this.form.permission_user= [];
-                this.form.permission_org_name='';
-                this.form.permission_user_name='';
-                this.form.type_id= '';
-                this.form.file_info = [];
-                this.form.name='';
-
             },
-            //编辑弹出
-            openEdit(row) {
-                // for (let item of Object.keys(this.form)) {
-                //     this.form[item] = '';
-                // }
-                // this.form.permission.org_id= [];
-                // this.form.permission.user_id= [];
-                // this.form.file_info = [];
-                this.form.permission.org_id= [];
-                this.form.permission.user_id= [];
-                this.form.file_info= [];
-                this.form.permission_org= [];
-                this.form.permission_user= [];
-                this.form.permission_org_name='';
-                this.form.permission_user_name='';
-                this.form.type_id= '';
-                this.form.file_info = [];
-                this.form.name='';
 
+            openEdit(row) {//编辑弹出
                 this.visible = true;
-                this.current_item = row;
+                this.current_row = row;
                 this.flag = 1;
                 this.$http.get(globalConfig.newMedia_sever + '/api/datum/admin/' + row.id).then(res => {
                     if (res.status === 200) {
@@ -362,7 +334,7 @@
             //         })
             //     }
             // },
-            callbackSuccess(res) {
+            callbackSuccess(res) {//
                 if (res.status === 200) {
                     this.$LjNotify('success', {
                         title: '成功',
@@ -414,7 +386,7 @@
             //         }
             //     })
             // },
-            organSearch(type) {
+            organSearch(type) {//部门组件
                 if (type === 'department') {
                     this.departModule = true;
                     this.module_type = type;
@@ -438,57 +410,26 @@
                     }
                 }
             },
-
-            //移入
-            onMousteIn: function (index) {
-                this.seen = true; //鼠标移入显示
+            onMousteIn: function (index) {//移入
+                this.seen = true;
                 this.current = index;
             },
-            //移出
-            onMousteOut: function (index) {
-                this.seen = false; //鼠标移出隐藏
+            onMousteOut: function (index) {//移出
+                this.seen = false;
                 this.current = null;
             },
-            //获取列表
-            getDataLists() {
+            getDataLists() {//获取资料列表
+                this.showLoading(true);
                 this.$http.get(globalConfig.newMedia_sever + '/api/datum/admin', this.params).then(res => {
+                    this.showLoading(false);
                     if (res.status === 200) {
-                        // this.dataLists = res.data.data;
-                        this.fileData = [];
-                        this.videoData = [];
-                        for (let item of res.data.data) {
-                            if (item.type_id === 2) {
-                                this.fileData.push(item)
-                            } else if (item.type_id === 1) {
-                                this.videoData.push(item)
-                            }
-                        }
+                        this.tableData = res.data.data;
                         this.count = res.data.total;
                     } else {
-                        this.fileData = [];
-                        this.videoData = [];
+                        this.tableData = [];
                         this.count = 0
                     }
                 })
-                // if(this.chooseTab===1){
-                //
-                // }else if(this.chooseTab===2){
-                //     this.params.limit = 15;
-                //     this.$http.get(globalConfig.newMedia_sever + '/api/datum/admin', this.params).then(res => {
-                //         if (res.status === 200) {
-                //             this.fileData = [];
-                //             for(let item of res.data.data){
-                //                 if(item.type_id===2){
-                //                     this.fileData.push(item)
-                //                 }
-                //             }
-                //             this.count = res.data.total;
-                //         }else{
-                //             this.dataLists = [];
-                //             this.count = 0
-                //         }
-                //     })
-                // }
             },
 
             //编辑提交
@@ -501,26 +442,26 @@
                     file_id: this.form.file_info[0],//int
                 };
                 if (type === 1) {//编辑
-                    this.$http.put(globalConfig.newMedia_sever + '/api/datum/admin/' + this.current_item.id, paramsForm).then(res => {
+                    this.$http.put(globalConfig.newMedia_sever + '/api/datum/admin/' + this.current_row.id, paramsForm).then(res => {
                         this.callbackSuccess(res);
                         this.visible = false;
-                        this.current_item = '';
+                        this.current_row = '';
 
                     })
                 } else if (type === 2) {//新增
                     this.$http.post(globalConfig.newMedia_sever + '/api/datum/admin', paramsForm).then(res => {
                         this.callbackSuccess(res);
                         this.visible = false;
-                        this.current_item = '';
+                        this.current_row = '';
                     })
                 }
             },
             //确认删除
             delOk() {
-                this.$http.delete(globalConfig.newMedia_sever + '/api/datum/admin/' + this.current_item.id).then(res => {
+                this.$http.delete(globalConfig.newMedia_sever + '/api/datum/admin/' + this.current_row.id).then(res => {
                     this.callbackSuccess(res);
                     this.delete_visible = false;
-                    this.current_item = '';
+                    this.current_row = '';
                 })
             },
 
@@ -581,64 +522,82 @@
             }
         }
 
-        #profile_file_back {
+        #file{
+            .InternalRegulations-info {
 
-            .left-info {
+                .right-info {
 
-                div {
-                    span {
 
-                        i {
+                    > div {
 
-                        }
+                        .right-info-list {
 
-                        i:first-child {
 
-                        }
-                    }
-                }
-            }
+                            .right-info-box {
 
-            .right-info {
-
-                > div {
-
-                    .right-info-list {
-
-                        .right-info-box {
-                            .word_icon {
-                                @include profile_common('theme1', 'word_icon.png');
-                            }
-
-                            p {
 
                             }
+                            .right-info-box {
+                                .word_icon {
+                                    @include profile_common('theme1', 'word_icon.png');
 
-                            p:first-child {
-
-                                &:hover {
+                                }
+                                p {
 
                                 }
 
-                                span {
-                                    i {
-                                        &:hover {
+                                p:first-child {
 
-                                        }
+
+                                    &:hover {
+
                                     }
 
-                                }
-                            }
+                                    span {
 
-                            p:last-child {
+                                        i {
+
+
+                                            &:hover {
+                                                @include profile_common('theme1', 'huidi2.png');
+                                            }
+                                        }
+                                    }
+                                }
 
                             }
                         }
                     }
+
+                    .bg-img {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 360px;
+                        height: 360px;
+                        z-index: 11;
+                    }
                 }
 
-                .bg-img {
+                .add-icons {
+                    position: absolute;
+                    top: 30px;
+                    right: 130px;
+                    width: 30px;
+                    height: 30px;
 
+                    background: #CF2E33;
+                    color: #ffffff;
+                    font-size: 30px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    text-align: center;
+
+                    span {
+                        display: block;
+                        line-height: 26px;
+                    }
                 }
             }
         }

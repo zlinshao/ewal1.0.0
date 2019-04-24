@@ -6,11 +6,12 @@ globalConfig = {
   temporary_server:'http://test.financial.api.ewal.lejias.cn/api/',
   leJiaCollege_server:'http://ewal_university.test',//乐伽大学
   risk_sever:'http://test.risk.api.ewal.lejias.cn',//风险控制
-  newMedia_sever:'http://ewal_new_media.test',//新媒体  http://test.new_media.api.ewal.lejias.cn/  测试地址  http://ewal_new_media.test
+  newMedia_sever:'http://test.new_media.api.ewal.lejias.cn',//新媒体  http://test.new_media.api.ewal.lejias.cn/  测试地址  http://ewal_new_media.test
   organ_server: 'http://gml.vaiwan.com/ewal/public/',
   upload_sever: 'http://recommend.ewal.lejias.cn/',
   humanResource_server: 'http://test.hr.api.ewal.lejias.cn/',
   market_server: 'http://test.market.api.ewal.lejias.cn/',
   intellectualPropertyProtection:'http://ewal_knowledge_right.test/', //http://test.knowledge.api.ewal.lejias.cn/
-  kpi: "http://test.kpi.api.ewal.lejias.cn/"
+  kpi: "http://test.kpi.api.ewal.lejias.cn/",
+    uploadPath:'',
 };

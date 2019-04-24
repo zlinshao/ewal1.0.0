@@ -10,11 +10,11 @@
                     </div>
                     <div class="faculty-box-middle">
                         <div>
-                            <img :src="item.cover[0].uri" alt="">
+                            <img :src="item.cover===null?'':item.cover[0].uri" alt="">
                         </div>
                     </div>
                     <div class="faculty-box-bottom">
-                        <span>{{item.user_id.name}}</span>
+                        <span>{{item.user_id===null?'':item.user_id.name}}</span>
                         <span>{{item.desc}}</span>
                     </div>
                 </div>
@@ -198,7 +198,9 @@
             },
             //获取列表
             getDataLists(){
+                this.showLoading(true);
                 this.$http.get(globalConfig.leJiaCollege_server+'/api/teachers/lecturer', this.params).then(res => {
+                    this.showLoading(false);
                     if(res.status===200){
                         this.dataLists  = res.data.data;
                         this.count=res.data.total;

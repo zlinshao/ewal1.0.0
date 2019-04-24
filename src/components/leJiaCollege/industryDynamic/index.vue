@@ -187,7 +187,9 @@
             },
             //获取列表
             getIndustryList() {
+                this.showLoading(true);
                 this.$http.get(globalConfig.leJiaCollege_server+'/api/trade/dynamic', this.params).then(res => {
+                    this.showLoading(false);
                     if (res.status === 200) {
                         this.dataLists = res.data.data;
                         this.count=res.data.total;
