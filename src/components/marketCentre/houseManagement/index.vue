@@ -107,8 +107,33 @@
                 <el-table-column label="跟进时间" prop="created_at" align="center"></el-table-column>
                 <el-table-column label="备注" prop="follow_content" align="center"></el-table-column>
                 <el-table-column label="预警调整" prop="warning_name" align="center"></el-table-column>
-                <el-table-column label="照片" prop="album_photo" align="center"></el-table-column>
+                <el-table-column label="照片" prop="album_photo" align="center">
+                  <template slot-scope="scope">
+                    <i class="el-icon-picture" @click="handleOpenLookPic(scope.row)"></i>
+                  </template>
+                </el-table-column>
                 <el-table-column label="跟进人" prop="follow_name" align="center"></el-table-column>
+              </el-table>
+              <el-table :data="contract_list" height="250" v-show="current_house_type === 6 || current_house_type === 7">
+                <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
+                <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
+                <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
+                <el-table-column label="合同性质" prop="type" align="center"></el-table-column>
+                <!--<el-table-column label="所属公司" prop="" align="center"></el-table-column>-->
+                <el-table-column label="收房价格" prop="month_price" align="center">
+                  <template slot-scope="scope">
+                    <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
+                <span v-for="(item,index) in scope.row.month_price">
+                  {{ item.price }} 元 / {{ item.period }}月 <a v-if="index !== scope.row.month_price.length - 1">;</a>
+                </span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column label="付款方式" prop="pay_way" align="center"></el-table-column>
+                <el-table-column label="开单人" prop="sign_user" align="center"></el-table-column>
+                <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
+                <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
+                <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
               </el-table>
             </div>
             <div class="page">
@@ -197,6 +222,26 @@
         </div>
       </lj-dialog>
 
+      <!--看图片-->
+      <lj-dialog
+        :visible="look_pic_visible"
+        :size="{width: 400 + 'px',height: 300 + 'px'}"
+        @close="look_pic_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>查看图片</h3>
+          </div>
+          <div class="dialog_main">
+            <div class="flex" v-if="pic_row && pic_row.album_photo && pic_row.album_photo.length > 0">
+              <img :src="item.uri" :data-src="item.uri" :key="item.id" data-magnify="" data-caption="图片查看器" style="width: 70px;height: 70px;margin: 0 5px" alt="" v-for="item in pic_row.album_photo">
+            </div>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" @click="look_pic_visible = false">确定</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
@@ -438,6 +483,9 @@
         ],
 
         currentSelType: '',
+        contract_list: [],
+        pic_row: '',
+        look_pic_visible: ''
       }
     },
     mounted() {
@@ -447,6 +495,10 @@
     watch: {},
     computed: {},
     methods: {
+      handleOpenLookPic(row) {
+        this.pic_row = row;
+        this.look_pic_visible = true;
+      },
       handleChangePageDetail(page) {
         this.table_params.page = page;
       },
@@ -467,15 +519,20 @@
           contract_type,
           house_id
         }).then(res => {
-          console.log(res);
+          if (res.code === 200) {
+            this.contract_list = res.data.data;
+            this.table_params.count = res.data.count;
+          } else {
+            this.contract_list = [];
+            this.table_params.count = 0;
+          }
         })
       },
       getSettingPrice(id,url) {
         this.$http.get(this.market_server + url,{
-          id: 4,
+          id,
           ...this.table_params
         }).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.price_setting = res.data.data;
             this.table_params.count = res.data.all_count;
@@ -493,12 +550,10 @@
         var url = '';
         switch (item.id) {
           case 1:
-            url = `v1.0/market/house/houseVillage/41224`;
-            // url = `v1.0/market/house/houseVillage/${this.current_house.id}`;
+            url = `v1.0/market/house/houseVillage/${this.current_house.id}`;
             this.getDetailTableList(url);
             break;
           case 6:
-            console.log(this.current_house);
             this.getContractList(this.current_house.id,1);
             break;
           case 7:

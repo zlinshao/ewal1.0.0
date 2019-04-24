@@ -50,6 +50,8 @@
       <!--罚款缴纳相关-->
       <finespayment-dialog></finespayment-dialog>
 
+      <!--收租房带看-->
+      <SeeHouse></SeeHouse>
     </div>
   </div>
 
@@ -60,6 +62,10 @@ import interviewDialog from './components/humanResource/interviewDialog';
 import repositoryDialog from './components/humanResource/repositoryDialog';
 import attenceDialog from './components/humanResource/attenceDialog';
 import finespaymentDialog from './components/humanResource/finespaymentDialog';
+
+//市场客服
+import SeeHouse from './components/marketCentre/see-house.vue';
+
 export default {
   name: "todoList",
   components: {
@@ -67,6 +73,7 @@ export default {
     repositoryDialog,
     attenceDialog,
     finespaymentDialog,
+    SeeHouse
   },
   computed: {
     currentTodoModule () {
@@ -111,7 +118,8 @@ export default {
   },
   methods: {
     handleCreateTodo () {
-
+      //  收租房带看
+      this.$store.dispatch('switch_see_house',true);
     },
     demo () {
       console.log(this.todo_list_current_selection);
