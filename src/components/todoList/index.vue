@@ -76,7 +76,7 @@ export default {
       return this.$store.state.todo.todo_list_visible;
     },
     todo_list_toolbar () {
-      return this.$store.state.todo.todo_list_toolbar[this.currentTodoModule];
+      return this.$store.state.todo.todo_list_toolbar;
     },
     todo_list_container () {
       return this.$store.state.todo.todo_list_container;

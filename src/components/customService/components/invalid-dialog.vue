@@ -6,7 +6,7 @@
       </div>
       <div class="dialog_main" v-if='visible'>
         <el-checkbox-group v-model="invalidCheck" @change="handleChecked">
-          <el-checkbox v-for="item in Object.keys(ablum)" :label="item" :key="item" class='checkbox'>
+          <el-checkbox v-for="(item,index) in Object.keys(ablum)" :label="index + 1" :key="item" class='checkbox'>
             <p class='tit'>
               <span>{{ablum[item]}}</span>
               <span v-if='item == "photo"'>(重新报备)</span>
@@ -67,13 +67,12 @@ export default {
       this.$http.post(`${this.market_server}v1.0/market/contract/re-generate`, option).then(res => {
         let warn = null
         if (res.code === 200) {
-          this.$emit('close', false)
-          this.invalidCheck = []
           warn = '作废重签'
         } else {
           warn = '作废失败'
         }
-
+        this.$emit('close', false)
+        this.invalidCheck = []
         this.$LjNotify('success', {
           title: '提示',
           message: warn
