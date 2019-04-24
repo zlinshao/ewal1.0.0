@@ -31,7 +31,7 @@
         </el-table>
       </div>
       <div class="periodButton">
-        <el-button v-for="(item, index) in period"  :key="index" @click="choosePeriod(index)" :class="choosedPeriod==index ? 'chooseButton' : 'changeButton'">{{item.title}}</el-button>
+        <el-button v-for="(item, index) in period" :key="index" @click="choosePeriod(index)" :class="choosedPeriod==index ? 'chooseButton' : 'changeButton'">{{item.title}}</el-button>
       </div>
     </div>
     <footer class="flex-center bottomPage">

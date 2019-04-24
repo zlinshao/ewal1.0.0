@@ -1,6 +1,7 @@
 <template>
   <div id="sub_log">
     <div class="log-container">
+
       <div class="log-toolbar">
         <div class="toolbar-left">
           <span class="toolbar-left-static">下属日志</span>
@@ -9,214 +10,207 @@
           <search-bar placeholder="搜索姓名/岗位/时间" v-model="searchValue"></search-bar>
         </div>
       </div>
+
       <div class="log-table">
-        <div class="log-table-list">
-          <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
-            <el-table
-              :data="tableSettingData.subLog.tableData"
-              highlight-current-row
-              :height="this.mainListHeight(30) + 'px'"
-              :row-class-name="tableChooseRow"
-              @cell-click="tableClickRow"
-              @row-dblclick="tableDblClick($event,'subLog')"
-              header-row-class-name="tableHeader"
-              :row-style="{height:'70px'}"
-              style="width: 100%">
-              <el-table-column
-                v-for="(item,index) in Object.keys(tableSettingData.subLog.showData)" :key="item"
-                v-if="index<2"
-                align="center"
-                :prop="item"
-                :label="tableSettingData.subLog.showData[item]">
-              </el-table-column>
-              <el-table-column
-                v-for="(item,index) in Object.keys(tableSettingData.subLog.showData)" :key="item"
-                v-if="index>=2"
-                align="center"
-                :prop="item"
-                :label="tableSettingData.subLog.showData[item]">
-                <template slot-scope="scope">
-                  <span @click="showCardDetail(scope.row,item)" style="cursor: pointer">{{scope.row[item]}}</span>
-                </template>
-              </el-table-column>
-
-            </el-table>
-
-          </div>
-
-          <!--<div :key="index" v-for="index of 7" class="log-table-item">
-            <div class="item-upper">
-              <div class="item-upper-photo">
-                <img
-                  src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
-              </div>
-              <div class="item-upper-content">
-                <div title="文章标题文章标题文章标题">文章标题文章标题文章标题文章标题文章标题文章标题</div>
-              </div>
-              <div class="item-upper-operate">
-                <div class="item-response">
-                  <i class="icon-response"></i>
-                  <span>90</span>
-                </div>
-                <div class="item-view">
-                  <i class="icon-view"></i>
-                  <span>587</span>
-                </div>
-                <div class="item-like">
-                  <i class="icon-like"></i>
-                  <span>12</span>
-                </div>
-              </div>
-            </div>
-            <div class="item-lower">
-              <div class="item-lower-left">
-                <img
-                  src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
-                <span>张三</span>
-              </div>
-              <div class="item-lower-right">
-                2019-04-13
-              </div>
-            </div>
-          </div>-->
-        </div>
-        <div class="log-table-pagination flex-center common-page">
-          <div class="page">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="tableSettingData.subLog.params.page"
-              :page-size="tableSettingData.subLog.params.limit"
-              :total="tableSettingData.subLog.counts"
-              layout="total,jumper,prev,pager,next">
-            </el-pagination>
-          </div>
+        <div class="mainListTable">
+          <el-table
+            :data="tableData"
+            highlight-current-row
+            header-row-class-name="tableHeader"
+            :row-style="{height:'115px'}"
+            >
+            <el-table-column
+              v-for="(item,index) in Object.keys(showData)" :key="index"
+              v-if="index<2"
+              align="center"
+              :prop="item"
+              :label="showData[item]"
+              width="98px">
+            </el-table-column>
+            <el-table-column
+              v-for="(item,index) in Object.keys(showData)" :key="index"
+              v-if="index>=2"
+              align="center"
+              :prop="item"
+              :label="showData[item]">
+              <template slot-scope="scope">
+                <span  style="cursor: pointer" @click="showCardDetail(scope.row,showData[item])">{{scope.row[item]}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </div>
+
+      <div class="log-table-pagination flex-center common-page">
+        <div class="page">
+          <el-pagination
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total"
+            layout="total,jumper,prev,pager,next">
+          </el-pagination>
+        </div>
+      </div>
+
+
+      <lj-dialog :size="{width:'40%',height:'80%'}" :visible.sync="logDetail_visible">
+        <div class="logHeader">
+          {{userName}} <span></span> {{logTime}}
+        </div>
+        <div class="dayLog">
+          日报<p>{{dayLog}}</p>
+        </div>
+        <div class="weekLog">
+          周报<p>{{weekLog}}</p>
+        </div>
+        <div class="monthLog">
+          月报<p>{{monthLog}}</p>
+        </div>
+        <div class="achievement_daily">
+          业绩日报<p>{{achievement_daily}}</p>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
 
 <script>
   import SearchBar from '@/components/common/lightweightComponents/SearchBar';
+  import LjDialog from '@/components/common/lj-dialog.vue';
 
   export default {
     name: "subLog",
     components: {
       SearchBar,
+      LjDialog
     },
     data() {
       return {
         url: globalConfig.humanResource_server,
+        logDetail_visible: false,
         searchValue: '',
-        logList: [],
-        currentTable: 'subLog',
-        tableSettingData: {
-          subLog: {
-            counts: 0,
-            params: {
-              //search: '',
-              page: 1,
-              limit: 5,
-
-            },
-            init() {
-              this.params.page = 1;
-              this.params.limit = 5;
-            },
-            chooseRowIds: [],
-            currentSelection: {},//当前选择行
-
-            table_dialog_visible: false,//form表单控制
-            table_dialog_title: '',
-            tableData: [],//表格数据
-            showData: {
-              name: '姓名',
-              department: '部门',
-              'date1': '2019-04-13',
-              'date2': '2019-04-12',
-              'date3': '2019-04-11',
-              'date4': '2019-04-10',
-              'date5': '2019-04-09',
-            },
-            formData: {},//详情表格数据
-            searchParams: '',// dialog中的模糊搜索
-          },
+        currentPage: 1,
+        pageSize: 5,
+        total: 0,
+        tableData: [],
+        showData: {
+          name: '姓名',
+          department: '部门',
+          dateFirst: '2019-04-13',
+          dateSecond: '2019-04-12',
+          dateThird: '2019-04-11',
+          dateForth: '2019-04-10',
+          dateFifth: '2019-04-09'
         },
+        userName: '',
+        logTime: '',
+        dayLog: {},
+        weekLog: {},
+        monthLog: {},
+        achievement_daily: {}
       }
     },
     mounted() {
       this.initData();
     },
-    methods: {
-      showCardDetail() {
-
-      },
-
-      initData() {
-        for (let i = 0; i < 5; i++) {
-          let obj = {
-            name: '张三',
-            department: '研发部',
-            'date1': '2019-04-13',
-            'date2': '2019-04-12',
-            'date3': '2019-04-11',
-            'date4': '2019-04-10',
-            'date5': '2019-04-09',
-          };
-          this.tableSettingData.subLog.tableData.push(obj);
-        }
-        this.tableSettingData.subLog.counts = 10;
-      },
-
-      handleSelectionChange(row) {
-        //this.tableSettingData.goods.multipleSelection = row;
-      },
-
-
-      // 当前点击
-      tableClickRow(row) {
-        /*this.tableSettingData[this.currentTable].currentSelection = row;
-        let ids = this.tableSettingData[this.currentTable].chooseRowIds;
-        ids.push(row.id);
-        this.ids = this.myUtils.arrayWeight(ids);*/
-      },
-      //表格某一行双击
-      tableDblClick(row, currentTable) {
-        /*if (currentTable) {
-          switch (currentTable) {
-            case 'borrowReceive':
-              this.tableSettingData[currentTable].table_dialog_visible = true;
-              this.tableSettingData[currentTable].formData = row;
-              this.tableSettingData[currentTable].currentSelection = row;
-              this.getItemsDetailList();
-              break;
-          }
-        }*/
-      },
-
-      // 点击过
-      tableChooseRow({row, rowIndex}) {
-        //return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-      },
-      handleSizeChange(val) {
-        //console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val, currentTable) {
-        /* switch (currentTable) {
-           case 'borrowReceive':
-             this.params.page = val;
-             this.getBorrowReceiveList();
-             break;
-           case 'goods':
-             this.tableSettingData[currentTable].params.page = val;
-             this.getGoodsDetailList();
-             break;
-           default :
-             break;
-         }*/
+    watch: {
+      currentPage() {
+        this.initData();
       }
     },
+    methods: {
+      showCardDetail(row,time) {
+        this.userName = row.name
+        this.logTime = time
+        let param = {
+          time: new Date(time),
+          user_id: row.id
+        }
+        this.$http.post(`${this.url}/staff/log/dayLog`,param).then(res => {
+          if(res.code === "20000") {
+            let id = []
+            for(var i = 0; i < res.data.length; i++){
+              switch (res.data[i].type) {
+                case 'day':
+                  this.dayLog = res.data[i].log_info
+                  break;
+                case 'week':
+                  this.weekLog = res.data[i].log_info
+                  break;
+                case 'month':
+                  this.monthLog = res.data[i].log_info
+                  break;
+                case 'achievement_daily':
+                  this.achievement_daily = res.data[i].log_info
+                  break;
+              }
+              id.push(res.data[i].id)
+            }
+            this.logDetail_visible = true
+            let params = {
+              id: id
+            }
+            this.$http.post(`${this.url}/staff/log/read`,params).then(res => {
+              this.initData();
+            })
+          }
+        })
+      },
+      initData() {
+        this.showData.dateFirst = this.getDay(-1)
+        this.showData.dateSecond = this.getDay(-2)
+        this.showData.dateThird = this.getDay(-3)
+        this.showData.dateForth = this.getDay(-4)
+        this.showData.dateFifth = this.getDay(-5)
+        let param = {
+          page: this.currentPage,
+          limit: 5
+        }
+        this.tableData = []
+        this.$http.post(`${this.url}/staff/log/downLog`,param).then(res => {
+          if(res.code === "20000") {
+            this.total = res.data.data.length
+            for (let i = 0; i < res.data.data.length; i++) {
+              // 遍历获取此用户所在部门
+              let department = ''
+              for(let j = 0; j < res.data.data[i].org.length; j++){
+                department = department + res.data.data[i].org[j].name + '-'
+              }
+              let obj = {
+                id: res.data.data[i].id,
+                name: res.data.data[i].name,
+                department: department.substring(0,department.length-1),
+                dateFirst: res.data.data[i].user_log[0].length == 0 ? '' : res.data.data[i].user_log[0].log_info.complete_work,
+                dateSecond: res.data.data[i].user_log[1].length == 0 ? '' : res.data.data[i].user_log[1].log_info.complete_work,
+                dateThird: res.data.data[i].user_log[2].length == 0 ? '' : res.data.data[i].user_log[2].log_info.complete_work,
+                dateForth: res.data.data[i].user_log[3].length == 0 ? '' : res.data.data[i].user_log[3].log_info.complete_work,
+                dateFifth: res.data.data[i].user_log[4].length == 0 ? '' : res.data.data[i].user_log[4].log_info.complete_work,
+              };
+              this.tableData.push(obj);
+            }
+          }
+        })
+      },
+      //获取最近五天的日期并处理格式
+      getDay(day){
+        var today = new Date();
+        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+        today.setTime(targetday_milliseconds);
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = this.doHandleMonth(tMonth + 1);
+        tDate = this.doHandleMonth(tDate);
+        return tYear+"-"+tMonth+"-"+tDate;
+      },
+      doHandleMonth(month){
+        var m = month;
+        if(month.toString().length == 1){
+        m = "0" + month;
+        }
+        return m;
+      }
+    }
   }
 </script>
 

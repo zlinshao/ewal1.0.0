@@ -171,6 +171,8 @@ const RiskManagementDetail = () => import('@/components/riskManagement/common/de
 // const DocumentLists = () => import('@/components/riskManagement/GroupCoreIndicators/common/documentLists.vue');//集团指标文件列表
 // const InternalRegulations = () => import('@/components/riskManagement/GroupCoreIndicators/complianceRisk/InternalRegulations.vue') //公司内部规定
 
+const MessageCenter = () => import('@/components/messageCenter/index.vue') //消息中心
+
 Vue.use(Router);
 
 export default new Router({
@@ -721,6 +723,11 @@ export default new Router({
         name: 'kpi核对',
         component: KpiCheck
     },
+      {
+          path: '/messageCenter',
+          name: '消息中心',
+          component: MessageCenter
+      },
     // {
     //     path: '/offerDetail',
     //     name: '录用通知书',
