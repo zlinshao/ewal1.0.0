@@ -802,7 +802,6 @@
         this.chooseDetailTabs = 1;
         this.tableSettingData[this.currentTable].tableData = [];
         this.$http.get(`${this.url}/eam/process/${ids}/collection`, this.tableSettingData[this.currentTable].params).then(res => {
-          debugger
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let obj = {
@@ -821,13 +820,11 @@
 
       //获取物品详情list
       getGoodsDetailList() {
-        //debugger
         let ids = this.tableSettingData.borrowReceive.currentSelection.id;
         this.chooseDetailTabs = 2;
         this.currentTable = 'goods';
         this.tableSettingData[this.currentTable].tableData = [];//清空上次数据
         this.$http.get(`${this.url}eam/process/${ids}/goods`, this.tableSettingData[this.currentTable].params).then(res => {
-          debugger
           console.log(res);
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
@@ -856,7 +853,6 @@
 
       //打开照片dialog
       showPictureList() {
-        //debugger
         let _this = this;
         setTimeout(() => {
           //let shorts = this.tableSettingData.goods.form.photo;
@@ -873,7 +869,6 @@
           goods: [form]
         }
         this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-          //debugger
           if (res.code.endsWith('0')) {
             this.$LjNotify('success', {
               title: '成功',
@@ -918,18 +913,18 @@
         if (control.modifyAll) {//批量修改
           let postArr = this.tableSettingData.goods.tableData;//要修改的数据
           for (let item of postArr) {
-            debugger
             delete item['receive_time'];
-            item['receive_user_id'] = typeof item['receive_user_id'] === 'Array' ? item['receive_user_id'][0] : item['receive_user_id'];
+            debugger
+            item['receive_user_id'] = item['receive_user_id'].constructor === Array ? item['receive_user_id'][0] : item['receive_user_id'];
+            debugger
             item['return_date'] = utils.formatDate(item['return_date']);
             // item['return_date'] =item['return_date']?utils.formatDate(item['return_date']):item['return_date'];
             let params = {goods: [item]};
             this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-              debugger
               if (res.code.endsWith('0')) {
                 this.$LjNotify('success', {
                   title: '成功',
-                  message: '修改成功'
+                  message: res.msg
                 });
                 control.showSaveCancel = false;
                 control.modifyAll = false;
@@ -939,19 +934,25 @@
         }
         if (control.batchSetUser) {
           if (!control.batchUser || control.batchUser.length == 0) {
-            this.$LjNotify('error', {
-              title: '失败',
-              message: '请设置领取人',
+            this.$LjMessage('warning', {
+              title: '警告',
+              msg: '请设置领取人',
             });
             return;
           }
           let multiRows = control.multipleSelection;
-          if (multiRows) {
+          if(!multiRows || multiRows.length==0) {
+            this.$LjMessage('warning',{
+              title:'警告',
+              msg:'请至少选择一项',
+            });
+            return;
+          }
+          if (multiRows&&multiRows.length>0) {
             for (let myItem of multiRows) {
               myItem['receive_user_id'] = control.batchUser[0];
               let params = {goods: [myItem]};
               this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-                debugger
                 if (res.code.endsWith('0')) {
                   this.$LjNotify('success', {
                     title: '成功',
@@ -966,7 +967,6 @@
           }
         }
         if (control.batchSetReturnDate) {
-          debugger
           if (!control.batchReturnDate) {
             this.$LjNotify('error', {
               title: '失败',
@@ -980,7 +980,6 @@
               returnDateItem['return_date'] = utils.formatDate(control.batchReturnDate);
               let params = {goods: [returnDateItem]};
               this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-                debugger
                 if (res.code.endsWith('0')) {
                   this.$LjNotify('success', {
                     title: '成功',
