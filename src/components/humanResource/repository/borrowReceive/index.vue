@@ -133,7 +133,7 @@
     >
       <div class="dialog_container repository-overview">
         <div class="dialog_header">
-          <h3>{{tableSettingData.borrowReceive.formData.approvalId}} 详情</h3>
+          <h3 :title="tableSettingData.borrowReceive.formData.approvalId+'详情'" class="dialog-header-title">{{tableSettingData.borrowReceive.formData.approvalId}} 详情</h3>
           <div class="header_right">
 
             <div class="detail-container">

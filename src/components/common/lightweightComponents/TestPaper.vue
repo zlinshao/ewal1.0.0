@@ -1,5 +1,5 @@
 <template>
-  <div id="test_paper" :class="{active:paper_visible}">
+  <div ref="testPaper" id="test_paper" :class="{active:paper_visible}">
     <div v-show="paper_type==1" class="edit-paper">
       <div class="library-header flex">
         <div class="left">
@@ -313,6 +313,7 @@
             btn_name: '预览题库',
             initial_page:1,
             edit_btn_visible: true,
+            is_edit_paper:false,
           }
         }
       },
@@ -339,6 +340,12 @@
       visible: {
         handler(val, oldVal) {
           this.paper_visible = val;
+          this.$store.dispatch('add_dialog_z_index');
+          this.$nextTick(() => {
+            if (this.$refs.testPaper) {
+              this.$refs.testPaper.style.zIndex = this.dialogZIndex;
+            }
+          })
           //this.$emit('update:visible', this.dialog_visible);
         },
         immediate: true,
@@ -380,7 +387,6 @@
       },
       examList: {
         handler(val, oldVal) {
-          this.is_edit_paper = true;
           if (val && val.length > 0) {
             val.forEach((item, index) => {
               if (item.category != 3) {
@@ -407,6 +413,11 @@
         immediate:true
       },
     },
+    computed: {
+      dialogZIndex () {
+        return this.$store.state.app.dialogZIndex;
+      },
+    },
     data() {
       return {
         url: globalConfig.humanResource_server,
@@ -415,7 +426,7 @@
 
         paper_type: 1,//1编辑试卷/问卷 2预览试卷/问卷 3查看问卷统计结果
 
-        is_edit_paper:false,//判断进入页面时是否为编辑试卷 当为编辑试卷时 sucees 方法传入第二个参数 is_edit ，当为true时 父组件调用test-paper的success方法中 调用试卷修改方法
+        //is_edit_paper:false,//判断进入页面时是否为编辑试卷 当为编辑试卷时 sucees 方法传入第二个参数 is_edit ，当为true时 父组件调用test-paper的success方法中 调用试卷修改方法
 
 
         exam_type: 1,//1单选 2判断 3简答题
@@ -592,26 +603,55 @@
       },
       //提交题库
       handleSubmitExam() {
-        /*this.exam_form_list.forEach(function(item,index) {
-          if(item.id) {
-            this.is_edit_paper = true;
-          }
+        /*_.forEach(this.exam_form_list,(o)=> {
+            switch (o.category) {
+              case 1:
+                let keys1 = Object.keys(o.choice);
+                let result = _.find(keys1,o.answer);
+                if(!result) {
+                  this.$LjMessage('warning',{
+                    title:'警告',
+                    msg:'请选择正确的选项',
+                  });
+                }
+                break;
+              case 2:
+                break;
+              case 3:
+                break;
+            }
         });*/
-        /*for (let item of this.exam_form_list) {
-          if(item.id) {
-            this.is_edit_paper = true;
-            break;
+
+        for (let item of this.exam_form_list) {
+          if(isNaN(item.score)) {
+            this.$LjMessage('warning',{
+              title:'警告',
+              msg:'请输入正确的分值',
+            });
+            return;
           }
-        }*/
-        this.$emit('success', this.exam_form_list,this.is_edit_paper);
+          if(item.category==1 || item.category==2) {
+            let keys1 = Object.keys(item.choice);
+            let result = _.find(keys1,item.answer);
+            if(!result) {
+              this.$LjMessage('warning',{
+                title:'警告',
+                msg:'请输入正确的选项',
+              });
+              return;
+            }
+          }
+        }
+        this.$emit('success', this.exam_form_list,this.params.is_edit_paper);
         this.paper_visible = false;
-        this.is_edit_paper = false;
+        this.params.is_edit_paper = false;
       },
 
       //取消按钮
       handleCancelExam() {
         this.paper_visible = false;
         this.exam_form_list = [];
+        this.params.is_edit_paper = false;
         this.$emit('cancel');
       },
       //添加题库form
@@ -660,7 +700,6 @@
           return false;
         }
         let item = this.exam_form_list[this.exam_form_list.length - 1];
-        debugger
         if (item.id) {
           this.$LjConfirm({
             icon: 'delete',

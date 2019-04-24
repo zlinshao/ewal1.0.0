@@ -70,15 +70,29 @@
 
     .left-guide {
       width: 40%;
-      padding: 100px 50px;
+      padding: 50px 50px;
       justify-content: space-between;
       flex-direction: column;
+      display: flex;
+      align-items: center;
 
-      > div {
+
+      .icon-btn-up, .icon-btn-down {
+        width: 50px;
+        height: 18px;
+        display: inline-block;
+        cursor: pointer;
+      }
+      .icon-btn-up {
+        transform:rotate(180deg);
+      }
+
+      .left-block {
         width: 100px;
         height: 100px;
         text-align: center;
         cursor: pointer;
+        //margin: 20px 0;
 
         span {
           display: inline-block;
@@ -163,7 +177,7 @@
 }
 
 .listTopCss {
-  height: 0;
+  height: 0 !important;
   .search-toolbar {
     position: fixed;
     top: 106px;

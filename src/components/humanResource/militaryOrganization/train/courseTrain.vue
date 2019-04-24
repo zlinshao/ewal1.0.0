@@ -7,35 +7,24 @@
     </div>
 
     <div class="content flex">
-      <div class="left-guide flex-center">
+      <div class="left-guide">
+        <i @click="handleIconClick('up')" class="icon-btn-up"></i>
+
         <div
-          v-for="tmp in left_guide"
-          :key="tmp.id"
-          class="flex-center"
-          :class="{'is-choose-guide': left_guide_choose === tmp.id}"
-          @click="left_guide_choose = tmp.id"
+          v-for="item in left_guide.slice(0,2)"
+          :key="item.id"
+          class="flex-center left-block"
+          :class="{'is-choose-guide': left_guide_choose === item.id}"
+          @click="left_guide_choose = item.id"
+          :title="item.name"
         >
-          <span>{{ tmp.val }}</span>
+          <span>{{ item.name.slice(0,4) }}</span>
         </div>
+
+        <i @click="handleIconClick('down')" class="icon-btn-down"></i>
+
       </div>
       <div class="right-content flex-center">
-       <!-- <div class="list"
-             v-for="item in train_list"
-             :key="item.id"
-             :class="{'trainActive': isTrain === item.id}"
-             @click="isTrain = item.id;train_detail_dialog_visible = true"
-        >
-          <div class="content-top">
-            <span>{{ item.title }}</span>
-            <div>
-              <span class="writingMode">{{ item.time }}</span>
-              <span class="writingMode">{{ item.name }}</span>
-            </div>
-          </div>
-          <div class="content-bottom">
-            <span class="writingMode">{{ item.lecturer }}</span>
-          </div>
-        </div>-->
 
         <div class="list"
              v-for="(item,index) in tableSettingData['jobTrain'].tableData.slice(0,5)"
@@ -58,12 +47,12 @@
     </div>
     <div class="guidance">
       <div class="subject items-center"
-           v-for="tmp in guidance" :key="tmp.id"
-           @click="handleClickTrainManagement(tmp.id)"
-           :class="{'isGuidance': isGuidance === tmp.id}"
+           v-for="item in guidance" :key="item.id"
+           @click="handleClickTrainManagement(item.id)"
+           :class="{'isGuidance': isGuidance === item.id}"
       >
         <div class="title flex-center">
-          <span class="writingMode">{{ tmp.val }}</span>
+          <span class="writingMode">{{ item.name }}</span>
         </div>
         <div class="line"></div>
       </div>
@@ -363,7 +352,6 @@
         url: globalConfig.humanResource_server,
 
 
-
         tableSettingData: {
           jobTrain: {
             counts: 0,
@@ -393,19 +381,21 @@
         },
 
         guidance: [ //右边向导
-          {id: 1, val: '培训类型'},
-          {id: 2, val: '更多'}
+          {id: 1, name: '培训类型'},
+          {id: 2, name: '更多'}
         ],
         isGuidance: 1,
 
         left_guide: [
-          {id: 1, val: '入职培训'},
-          {id: 2, val: '技能培训'},
+          /*{id: 1, name: '入职培训'},
+          {id: 2, name: '技能培训'},*/
         ],
+        left_guide_all_list: [],//所有培训类型列表
         left_guide_choose: 1,
+        left_guide_index: 0,
 
         isTrain: 1,
-        upperNumberList:['一','二','三','四','五','六','七'],
+        upperNumberList: ['一', '二', '三', '四', '五', '六', '七'],
 
         //培训详情
         train_detail_dialog_visible: false,
@@ -437,23 +427,22 @@
           },
           participants: [],//参会人员数组
           attachment: [],//附件id数组
-          exam_id:'',//试卷id
+          exam_id: '',//试卷id
         },
 
         //培训详情表单
         train_detail_form: {
-          train_type_name:'',//培训类型名称
-          name:'',//培训名称
-          train_location:'',//培训地点
-          time:'',//培训时间
-          presenter:'',//讲师
-          participants:[],//应到人员数组
+          train_type_name: '',//培训类型名称
+          name: '',//培训名称
+          train_location: '',//培训地点
+          time: '',//培训时间
+          presenter: '',//讲师
+          participants: [],//应到人员数组
           remind_data: {
             minute: 0,
             hour: 0,
           },
-          attachment:[],//附件id数组
-
+          attachment: [],//附件id数组
         },
 
         //添加培训类型
@@ -465,9 +454,76 @@
       }
     },
     mounted() {
-      this.getTrainList();
+      //this.getTrainList();
+      this.getTrainTypeList();
+    },
+    watch: {
+      left_guide_all_list: {
+        handler(val, oldVal) {
+          if (val && val.length > 0) {
+            this.left_guide = val.slice(0, 2);
+            this.left_guide_choose = val[0]?.id;
+            this.left_guide_index = 0;
+          }
+        },
+        immediate: true,
+      },
+      left_guide_choose: {
+        handler(val,oldVal) {
+          if(val) {
+            this.getTrainList();
+          }
+        },
+        immediate:true,
+      },
     },
     methods: {
+      handleIconClick(direction = 'up') {
+        if (direction == 'up') {
+          if(this.left_guide_index==0) {
+            return;
+          }
+          let obj = _.find(this.left_guide, {id: this.left_guide_choose});
+          let index = _.findIndex(this.left_guide, obj);
+          if (index == 1) {
+            this.left_guide_choose = this.left_guide[0].id;
+          } else {
+            //处理换数据
+            this.left_guide_index--;
+            this.left_guide = this.left_guide_all_list.slice(this.left_guide_index, this.left_guide_index + 2);
+            this.left_guide_choose = this.left_guide[0].id;
+          }
+
+          /*console.log('***');
+          console.log(this.left_guide_all_list.length);
+          console.log(this.left_guide_index);
+          console.log('***');*/
+        }
+        else {//往下
+          if(this.left_guide_all_list.length<this.left_guide_index+2) {
+            return;
+          }
+          //v-if="left_guide_all_list.length>left_guide_index+2"
+          let obj = _.find(this.left_guide, {id: this.left_guide_choose});
+          let index = _.findIndex(this.left_guide, obj);
+          if (index == 0) {
+            this.left_guide_choose = this.left_guide[1].id;
+          } else {
+            //处理换数据
+            //this.left_guide_index++;
+            this.left_guide = this.left_guide_all_list.slice(this.left_guide_index, this.left_guide_index + 2);
+            this.left_guide_choose = this.left_guide[1].id;
+          }
+          this.left_guide_index++;
+          /*console.log('***');
+          console.log(this.left_guide_all_list.length);
+          console.log(this.left_guide_index);
+          console.log('***');*/
+        }
+
+        //this.getTrainList();
+      },
+
       //显示新增培训对话框
       showNewTrainDialog() {
         this.new_train_dialog_visible = true;
@@ -481,12 +537,12 @@
 
             let params = {
               ...this.new_train_form,
-              start_time: this.myUtils.formatDate(this.new_train_form.train_time[0],'yyyy-MM-dd hh:mm:ss'),
-              end_time: this.myUtils.formatDate(this.new_train_form.train_time[1],'yyyy-MM-dd hh:mm:ss'),
+              start_time: this.myUtils.formatDate(this.new_train_form.train_time[0], 'yyyy-MM-dd hh:mm:ss'),
+              end_time: this.myUtils.formatDate(this.new_train_form.train_time[1], 'yyyy-MM-dd hh:mm:ss'),
             };
             debugger
-            this.$http.post(`${this.url}meeting/meeting`,params).then(res=> {
-              this.$LjMessageEasy(res,()=> {
+            this.$http.post(`${this.url}meeting/meeting`, params).then(res => {
+              this.$LjMessageEasy(res, () => {
                 this.new_train_dialog_visible = false;
                 this.getTrainList();
               });
@@ -561,25 +617,29 @@
         this.$http.get(`${this.url}meeting/category`, params).then(res => {
           if (res.code.endsWith('0')) {
             this.train_type_list = res.data.data;
+            this.left_guide_all_list = res.data.data;
           }
         });
       },
 
       //获取培训列表
-      getTrainList() {
-        this.tableSettingData['jobTrain'].tableData = [];
+      async getTrainList() {//meetingType为会议类型
         let params = {
-          type:3
+          type: 3
         };
-        this.$http.get(`${this.url}meeting/meeting`,params).then(res=> {
-          if(res.code.endsWith('0')) {
-            for(let item of res.data.data) {
+        if(this.left_guide_choose) {
+          params.meeting_type = this.left_guide_choose;
+        }
+        await this.$http.get(`${this.url}meeting/meeting`, params).then(res => {
+          this.tableSettingData['jobTrain'].tableData = [];
+          if (res.code.endsWith('0')) {
+            for (let item of res.data.data) {
               let obj = {
-                id:item.id,
-                name:item.name||'-',//培训名称
+                id: item.id,
+                name: item.name || '-',//培训名称
                 //time: `${this.myUtils.formatDate(item.start_time||'','yyyy-MM-dd hh:mm')}`,
-                time: `${this.myUtils.formatDate(item.start_time||'','yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.end_time,'hh:mm')}`,
-                lecturer:_.map(item.presenter||[],'user.name').join(','),//主持人
+                time: `${this.myUtils.formatDate(item.start_time || '', 'yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.end_time, 'hh:mm')}`,
+                lecturer: _.map(item.presenter || [], 'user.name').join(','),//主持人
               };
               this.tableSettingData['jobTrain'].tableData.push(obj);
             }
@@ -592,18 +652,18 @@
       showTrainDetail(id) {
         this.isTrain = id;
         this.train_detail_dialog_visible = true;
-        this.$http.get(`${this.url}meeting/meeting/${id}`).then(res=> {
-          if(res.code.endsWith('0')) {
+        this.$http.get(`${this.url}meeting/meeting/${id}`).then(res => {
+          if (res.code.endsWith('0')) {
             let item = res.data;
             this.train_detail_form = {
-              train_type_name:item.type?.name||'-',//培训类型名称
-              name:item.name||'-',//培训名称
-              train_location:item.room?.name||'-',//培训地点
-              time:`${this.myUtils.formatDate(item.start_time||'','yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.end_time,'hh:mm')}`,//培训时间
-              presenter:_.map(item.presenter||[],'user.name').join(','),//讲师
-              participants:_.map(item.participant||[],'user.id'),//应到人员数组
+              train_type_name: item.type?.name || '-',//培训类型名称
+              name: item.name || '-',//培训名称
+              train_location: item.room?.name || '-',//培训地点
+              time: `${this.myUtils.formatDate(item.start_time || '', 'yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.end_time, 'hh:mm')}`,//培训时间
+              presenter: _.map(item.presenter || [], 'user.name').join(','),//讲师
+              participants: _.map(item.participant || [], 'user.id'),//应到人员数组
               remind_data: item.remind_data,
-              attachment:item.attachment||[],//附件id数组
+              attachment: item.attachment || [],//附件id数组
             };
           }
         });
@@ -613,17 +673,17 @@
       handleTrainDetail() {
         this.train_detail_dialog_visible = false;
         this.train_detail_form = {
-          train_type_name:'',//培训类型名称
-          name:'',//培训名称
-          train_location:'',//培训地点
-          time:'',//培训时间
-          presenter:'',//讲师
-          participants:[],//应到人员数组
+          train_type_name: '',//培训类型名称
+          name: '',//培训名称
+          train_location: '',//培训地点
+          time: '',//培训时间
+          presenter: '',//讲师
+          participants: [],//应到人员数组
           remind_data: {
             minute: 0,
             hour: 0,
           },
-          attachment:[],//附件id数组
+          attachment: [],//附件id数组
         };
       },
 
@@ -647,19 +707,18 @@
       },
 
 
-
       handleSizeChange(val) {
         //console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val, currentTable) {
-         switch (currentTable) {
-           case 'jobTrain':
-             this.tableSettingData[currentTable].params.page = val;
-             this.getTrainList();
-             break;
-           default :
-             break;
-         }
+        switch (currentTable) {
+          case 'jobTrain':
+            this.tableSettingData[currentTable].params.page = val;
+            this.getTrainList();
+            break;
+          default :
+            break;
+        }
       },
 
 
@@ -673,8 +732,8 @@
 
 <style lang="scss">
   .train-detail-form {
-    .el-form-item__label{
-      color:rgba(104, 104, 116, .5);
+    .el-form-item__label {
+      color: rgba(104, 104, 116, .5);
     }
   }
 </style>
@@ -712,7 +771,24 @@
 
           .content {
             .left-guide {
-              > div {
+              .icon-btn-up {
+                @include militaryImg('xiaw.png', 'theme1');
+
+                &:hover {
+                  @include militaryImg('xia.png', 'theme1');
+                }
+              }
+
+              .icon-btn-down {
+                @include militaryImg('xiaw.png', 'theme1');
+
+                &:hover {
+                  @include militaryImg('xia.png', 'theme1');
+                }
+              }
+
+
+              .left-block {
                 @include militaryImg('rzpxw.png', 'theme1');
               }
 
