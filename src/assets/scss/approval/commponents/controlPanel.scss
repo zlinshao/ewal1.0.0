@@ -25,6 +25,11 @@
       opacity: 1;
     }
     .header {
+      height: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
       .header_methods {
         display: flex;
         .methods_box {
@@ -37,6 +42,16 @@
         .methods_box + .methods_box {
           margin-left: 40px;
         }
+      }
+      .header_right {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        height: 180px;
+        align-items: flex-end;
+        padding-bottom: 24px;
+        padding-right: 50px;
       }
 
       .icons_panel {
@@ -202,6 +217,10 @@
           @include confirmImg('ren_hong.png', 'theme1');
         }
       }
+    }
+
+    .check_type_dialog {
+      background: #fff;
     }
   }
 }

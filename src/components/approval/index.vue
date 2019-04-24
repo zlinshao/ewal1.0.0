@@ -24,7 +24,7 @@
               == 0 ?
               "接收类型" :
               revice_check_type.join('-')}}</p>
-            <div class='revice_box' v-if='isRevice_visible'>
+            <div class='revice_box' v-if='isRevice_visible' @mouseleave.stop="isRevice_visible =false">
               <el-checkbox-group v-model="revice_check_type">
                 <el-checkbox v-for='type in revice_type' :key='type.tit' :label="type.tit"></el-checkbox>
               </el-checkbox-group>
@@ -41,7 +41,7 @@
       </div>
 
       <div class="mainListTable" :style="{'height': this.mainListHeight(30) + 'px'}">
-        <el-table :data="tableData" :height="this.mainListHeight(180) + 'px'" highlight-current-row @row-dblclick=""
+        <el-table :data="tableData" :height="this.mainListHeight(180) + 'px'" highlight-current-row @row-dblclick="handlerDbclick"
           header-row-class-name="tableHeader" style="width: 100%">
 
           <el-table-column align="center" v-for='item in Object.keys(tableShow)' :key='item' :prop='item' :label="tableShow[item]"></el-table-column>
@@ -70,6 +70,10 @@
       <SearchHigh :module="showSearch" :showData="searchHigh" @close="hiddenModule"></SearchHigh>
       <!-- 控制面板 -->
       <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' />
+      <!-- 详情 -->
+      <ContractDetail :visible='contract_detail_visible' @close='hiddenContractDetail' />
+      <!-- 拓展新盘 -->
+      <DevelopNewDish :visible='develop_visible' @close='hiddenDevelopNew' />
     </div>
   </div>
 </template>
@@ -77,11 +81,14 @@
 <script>
 import SearchHigh from '../common/searchHigh.vue'
 import ControlPanel from './commponents/controlPanel'
+import ContractDetail from './commponents/contract_detail'
+import DevelopNewDish from './commponents/developNewDish'
 export default {
   components: {
     SearchHigh, //高级搜索
     ControlPanel, // 控制面板
-
+    ContractDetail, //详情
+    DevelopNewDish //新盘详情
   },
   data () {
     return {
@@ -274,7 +281,10 @@ export default {
       revice_check_type: [],
       isRevice_visible: false,
       // 控制面板
-      controlPanel_visible: false
+      controlPanel_visible: false,
+      contract_detail_visible: false, //详情
+      develop_visible: false, //新盘
+      current_row: null
     }
   },
   computed: {
@@ -329,6 +339,7 @@ export default {
     // 选择 接收类型
     handleChangeRevice () {
       console.log(this.revice_check_type)
+      this.isRevice_visible = false
     },
     // 取消 接收类型
     handleCancleRevice () {
@@ -347,6 +358,19 @@ export default {
       this.currentPage = val
       // 获取数据
     },
+    // 详情
+    handlerDbclick (row) {
+      this.current_row = row
+      this.contract_detail_visible = true
+
+      // this.develop_visible = true
+    },
+    hiddenContractDetail () {
+      this.contract_detail_visible = false
+    },
+    hiddenDevelopNew () {
+
+    }
   }
 }
 </script>
@@ -354,4 +378,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/scss/approval/index.scss";
 </style>
+<style lang="scss">
+</style>
+
 

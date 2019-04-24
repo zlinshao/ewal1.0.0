@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='panel_box'>
     <div id='panel' :class="{'panel':visible}">
       <div class="header">
         <div class='header_methods'>
@@ -44,7 +44,7 @@
               <span class='cell_content cell_blue'>8min</span>
             </div>
             <div class='cell_setting' v-if='current_status_type == 1'>
-              <i class='icons_setting'></i>
+              <i class='icons_setting' @click='handleSetting'></i>
             </div>
           </div>
         </div>
@@ -61,15 +61,33 @@
         </footer>
       </div>
     </div>
-    <PanelDialog :visible='panner_info_visible' :moduleData='panner_info' />
+    <PanelDialog :visible='panel_info_visible' :moduleData='panel_info' @close='handleClosePanel' />
+    <LjDialog :visible="show_set_visible" :size="{width: 600 + 'px',height: 400 + 'px'}" @close="handleCheckType(false)">
+      <div class='dialog_container'>
+        <div class='dialog_header'>
+          <h3>接收类型</h3>
+        </div>
+        <div class='dialog_main check_type_dialog'>
+          <el-checkbox-group v-model="revice_check_type">
+            <el-checkbox v-for='type in revice_type' :key='type.tit' :label="type.tit"></el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div class='dialog_footer'>
+          <el-button type="danger" size="small" @click='handleCheckType(true)'>同意</el-button>
+          <el-button type="info" size="small" @click='handleCheckType(true)'>取消</el-button>
+        </div>
+      </div>
+    </LjDialog>
   </div>
 </template>
 
 <script>
-import PanelDialog from './panel-dialog'
+import PanelDialog from './panel-dialog';
+import LjDialog from '../../common/lj-dialog.vue';
 export default {
   components: {
-    PanelDialog
+    PanelDialog,
+    LjDialog
   },
   props: ['visible'],
   data () {
@@ -89,10 +107,61 @@ export default {
       current_page: 1,
       tableCount: 0,
       cellType: ['收房', '收房', '收房', '收房'],
-      panner_info_visible: false,
-      panner_info: {
+      panel_info_visible: false,
+      panel_info: {
         current_type: 1
-      }
+      },
+      show_set_visible: false,
+      revice_type: [
+        {
+          tit: '取消预定',
+          value: 1
+        },
+        {
+          tit: '家居补齐',
+          value: 2
+        },
+        {
+          tit: '收房报备',
+          value: 3
+        },
+        {
+          tit: '租房报备',
+          value: 4
+        },
+        {
+          tit: '续收报备',
+          value: 5
+        },
+        {
+          tit: '续租报备',
+          value: 6
+        }, {
+          tit: '转租报备',
+          value: 7
+        },
+        {
+          tit: '调房报备',
+          value: 8
+        },
+        {
+          tit: '退租报备',
+          value: 9
+        },
+        {
+          tit: '拓展新盘',
+          value: 10
+        },
+        {
+          tit: '收房补充协议',
+          value: 11
+        },
+        {
+          tit: '租房补充协议',
+          value: 12
+        }
+      ],
+      revice_check_type: [],
     }
   },
   methods: {
@@ -108,17 +177,58 @@ export default {
       this.current_page = val
     },
     showCards (i) {
-      this.panner_info = {
+      console.log(2)
+      this.panel_info = {
         current_type: this.current_status_type
       }
-      this.panner_info_visible = true
+      this.panel_info_visible = true
+    },
+    handleClosePanel () {
+      this.panel_info_visible = false
+    },
+    handleSetting () {
+      this.show_set_visible = true
+    },
+    handleCheckType (par) {
+      this.show_set_visible = false
+      if (par) {
+
+      }
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../../../assets/scss/approval/commponents/controlPanel.scss";
 </style>
+
+<style lang="scss">
+#panel_box {
+  .lj_dialog > .flex-center {
+    top: 0px !important;
+  }
+  .check_type_dialog {
+    padding: 0 10px;
+    .el-checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .el-checkbox {
+        margin-bottom: 30px;
+      }
+      .el-checkbox__inner {
+        border-radius: 50%;
+      }
+      .el-checkbox__label {
+        font-size: 14px;
+        color: #686875;
+      }
+    }
+  }
+}
+</style>
+
+
 
 
