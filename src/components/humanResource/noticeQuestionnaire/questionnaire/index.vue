@@ -218,10 +218,8 @@
           btn_name: '预览问卷',
         },
 
-
         //问卷调查结果
         statistics_result:[],
-
       }
     },
     activated() {
@@ -280,7 +278,6 @@
 
       //获取试题列表 并提交数据到新增公告接口
       getExamList(examList) {
-        debugger
         this.add_questionnaire_form.exam_info = examList;
         this.add_questionnaire_form.start_time = this.myUtils.formatDate(this.add_questionnaire_form.start_time, 'yyyy-MM-dd hh:mm:ss');
         this.$http.post(`${this.url}questionnaire`, this.add_questionnaire_form).then(res => {
@@ -319,7 +316,6 @@
           id:row.id
         };
         this.$http.post(`${this.url}questionnaire/submitCount`,params).then(res=> {
-          debugger
           if(res.code.endsWith('0')) {
             this.statistics_result = res.data;
             this.paper_params.title = row.name;
@@ -327,7 +323,6 @@
           }
         });
       },
-
 
 
       // 当前点击

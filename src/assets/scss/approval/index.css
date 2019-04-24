@@ -178,32 +178,23 @@
 .color874 {
   color: #686874; }
 
-#theme_name #approval {
-  overflow: hidden;
-  position: fixed;
-  top: 80px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 24;
-  background-color: #f2f2f2;
-  -webkit-transform: scale(0);
-  -moz-transform: scale(0);
-  -ms-transform: scale(0);
-  -o-transform: scale(0);
-  transform: scale(0);
-  -webkit-transform-origin: 50% 0 0;
-  -moz-transform-origin: 50% 0 0;
-  -ms-transform-origin: 50% 0 0;
-  -o-transform-origin: 50% 0 0;
-  transform-origin: 50% 0 0;
-  -webkit-transition: all 0.6s linear;
-  -moz-transition: all 0.6s linear;
-  -ms-transition: all 0.6s linear;
-  -o-transition: all 0.6s linear;
-  transition: all 0.6s linear;
-  opacity: 0; }
-  #theme_name #approval.approval {
+#theme_name {
+  height: auto !important;
+  padding-top: 0 !important; }
+  #theme_name #approval {
+    overflow: hidden;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 24;
+    background-color: #f2f2f2;
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
     -webkit-transform-origin: 50% 0 0;
     -moz-transform-origin: 50% 0 0;
     -ms-transform-origin: 50% 0 0;
@@ -214,133 +205,158 @@
     -ms-transition: all 0.6s linear;
     -o-transition: all 0.6s linear;
     transition: all 0.6s linear;
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    -o-transform: scale(1);
-    transform: scale(1);
-    opacity: 1; }
-  #theme_name #approval .searchModule,
-  #theme_name #approval .searchContent {
-    top: 0 !important; }
-  #theme_name #approval .header {
-    height: 180px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center; }
-    #theme_name #approval .header .header_btns p {
+    opacity: 0; }
+    #theme_name #approval.approval {
+      -webkit-transform-origin: 50% 0 0;
+      -moz-transform-origin: 50% 0 0;
+      -ms-transform-origin: 50% 0 0;
+      -o-transform-origin: 50% 0 0;
+      transform-origin: 50% 0 0;
+      -webkit-transition: all 0.6s linear;
+      -moz-transition: all 0.6s linear;
+      -ms-transition: all 0.6s linear;
+      -o-transition: all 0.6s linear;
+      transition: all 0.6s linear;
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -ms-transform: scale(1);
+      -o-transform: scale(1);
+      transform: scale(1);
+      opacity: 1; }
+    #theme_name #approval .searchModule,
+    #theme_name #approval .searchContent {
+      top: 0 !important; }
+    #theme_name #approval .header_btns {
+      height: 180px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 999; }
+      #theme_name #approval .header_btns p {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 130px;
+        height: 40px;
+        font-family: 'jingDianXingShu'; }
+        #theme_name #approval .header_btns p .icons {
+          display: inline-block;
+          width: 19px;
+          height: 17px;
+          margin-right: 12px; }
+      #theme_name #approval .header_btns p + p {
+        margin-top: 20px; }
+    #theme_name #approval .header {
+      height: 180px;
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 130px;
-      height: 40px;
-      font-family: 'jingDianXingShu'; }
-      #theme_name #approval .header .header_btns p .icons {
-        display: inline-block;
-        width: 19px;
-        height: 17px;
-        margin-right: 12px; }
-    #theme_name #approval .header .header_btns p + p {
-      margin-top: 20px; }
-    #theme_name #approval .header .header_methods {
-      display: flex; }
-      #theme_name #approval .header .header_methods .methods_box {
-        width: 80px;
-        height: 80px;
-        text-align: center;
-        line-height: 80px;
-        font-size: 10px; }
-      #theme_name #approval .header .header_methods .methods_box + .methods_box {
-        margin-left: 40px; }
-    #theme_name #approval .header .header_right {
-      display: flex;
-      height: 180px;
-      align-items: flex-end;
-      padding-bottom: 24px;
-      padding-right: 50px; }
-      #theme_name #approval .header .header_right .ele_p {
-        line-height: 40px;
-        padding: 0 20px;
-        font-size: 14px;
-        border-radius: 4px; }
-      #theme_name #approval .header .header_right .margin {
-        margin-left: 30px;
-        position: relative; }
-        #theme_name #approval .header .header_right .margin .revice_span {
-          max-width: 250px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden; }
-        #theme_name #approval .header .header_right .margin .revice_box {
-          width: 324px;
-          padding: 0 30px;
-          position: absolute;
-          right: 0;
-          top: 60px;
-          z-index: 900;
-          box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1); }
-          #theme_name #approval .header .header_right .margin .revice_box .el-checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between; }
-            #theme_name #approval .header .header_right .margin .revice_box .el-checkbox-group .el-checkbox {
-              font-size: 14px;
-              margin-top: 30px; }
-              #theme_name #approval .header .header_right .margin .revice_box .el-checkbox-group .el-checkbox .el-checkbox__inner {
-                border-radius: 50%; }
-          #theme_name #approval .header .header_right .margin .revice_box .dialog_footer {
-            margin: 50px 0 36px;
-            text-align: center; }
-          #theme_name #approval .header .header_right .margin .revice_box:before {
-            content: '';
-            width: 0px;
-            height: 0px;
-            position: absolute;
-            top: -10px;
-            right: 60px;
-            border-bottom: 10px solid #fff;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 0px solid transparent; }
-      #theme_name #approval .header .header_right .gua {
+      position: relative; }
+      #theme_name #approval .header .header_methods {
+        display: flex; }
+        #theme_name #approval .header .header_methods .methods_box {
+          width: 80px;
+          height: 80px;
+          text-align: center;
+          line-height: 80px;
+          font-size: 10px; }
+        #theme_name #approval .header .header_methods .methods_box + .methods_box {
+          margin-left: 40px; }
+      #theme_name #approval .header .header_right {
+        position: absolute;
+        right: 0;
+        bottom: 0;
         display: flex;
-        align-items: center;
-        padding: 0 10px; }
-        #theme_name #approval .header .header_right .gua .icons {
+        height: 180px;
+        align-items: flex-end;
+        padding-bottom: 24px;
+        padding-right: 50px; }
+        #theme_name #approval .header .header_right .ele_p {
+          line-height: 40px;
+          padding: 0 20px;
+          font-size: 14px;
+          border-radius: 4px; }
+        #theme_name #approval .header .header_right .margin {
+          margin-left: 30px;
+          position: relative; }
+          #theme_name #approval .header .header_right .margin .revice_span {
+            max-width: 250px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden; }
+          #theme_name #approval .header .header_right .margin .revice_box {
+            width: 324px;
+            padding: 0 30px;
+            position: absolute;
+            right: 0;
+            top: 60px;
+            z-index: 900;
+            box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1); }
+            #theme_name #approval .header .header_right .margin .revice_box .el-checkbox-group {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: space-between; }
+              #theme_name #approval .header .header_right .margin .revice_box .el-checkbox-group .el-checkbox {
+                font-size: 14px;
+                margin-top: 30px; }
+                #theme_name #approval .header .header_right .margin .revice_box .el-checkbox-group .el-checkbox .el-checkbox__inner {
+                  border-radius: 50%; }
+            #theme_name #approval .header .header_right .margin .revice_box .dialog_footer {
+              margin: 50px 0 36px;
+              text-align: center; }
+            #theme_name #approval .header .header_right .margin .revice_box:before {
+              content: '';
+              width: 0px;
+              height: 0px;
+              position: absolute;
+              top: -10px;
+              right: 60px;
+              border-bottom: 10px solid #fff;
+              border-left: 10px solid transparent;
+              border-right: 10px solid transparent;
+              border-top: 0px solid transparent; }
+        #theme_name #approval .header .header_right .gua {
+          display: flex;
+          align-items: center;
+          padding: 0 10px; }
+          #theme_name #approval .header .header_right .gua .icons {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px; }
+        #theme_name #approval .header .header_right .icons {
           display: inline-block;
-          width: 20px;
-          height: 20px;
-          margin-right: 10px; }
-      #theme_name #approval .header .header_right .icons {
-        display: inline-block;
-        width: 40px;
-        height: 40px; }
-      #theme_name #approval .header .header_right .icons_main {
-        margin: 0 30px; }
-  #theme_name #approval .mainListTable {
-    margin: 0 30px; }
-    #theme_name #approval .mainListTable .status {
-      font-size: 14px;
-      font-weight: 700; }
+          width: 40px;
+          height: 40px; }
+        #theme_name #approval .header .header_right .icons_main {
+          margin: 0 30px; }
+    #theme_name #approval .mainListTable {
+      margin: 0 30px; }
+      #theme_name #approval .mainListTable .status {
+        font-size: 14px;
+        font-weight: 700; }
 
-#theme_name.theme1 #approval .header .header_btns p {
+#theme_name.theme1 #approval .header_btns p {
   color: #d2d2d2;
   background: url("../../assets/image/approval/theme1/juxing_hui.png") no-repeat scroll center;
   background-size: 100% 100%; }
-  #theme_name.theme1 #approval .header .header_btns p .icons_app {
+  #theme_name.theme1 #approval .header_btns p .icons_app {
     background: url("../../assets/image/approval/theme1/baobeishenhe_hui.png") no-repeat scroll center;
     background-size: 100% 100%; }
-  #theme_name.theme1 #approval .header .header_btns p .icons_ban {
+  #theme_name.theme1 #approval .header_btns p .icons_ban {
     background: url("../../assets/image/approval/theme1/bangongshenpi_hui.png") no-repeat scroll center;
     background-size: 100% 100%; }
-#theme_name.theme1 #approval .header .header_btns p.activeTag {
+#theme_name.theme1 #approval .header_btns p.activeTag {
   color: #fff;
   background: url("../../assets/image/approval/theme1/juxing_hong.png") no-repeat scroll center;
   background-size: 100% 100%; }
-  #theme_name.theme1 #approval .header .header_btns p.activeTag .icons_app {
+  #theme_name.theme1 #approval .header_btns p.activeTag .icons_app {
     background: url("../../assets/image/approval/theme1/baobeishenhe_bai.png") no-repeat scroll center;
     background-size: 100% 100%; }
-  #theme_name.theme1 #approval .header .header_btns p.activeTag .icons_ban {
+  #theme_name.theme1 #approval .header_btns p.activeTag .icons_ban {
     background: url("../../assets/image/approval/theme1/bangongshenpi_bai.png") no-repeat scroll center;
     background-size: 100% 100%; }
 #theme_name.theme1 #approval .header .header_methods .methods_box {

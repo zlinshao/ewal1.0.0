@@ -327,7 +327,8 @@
       handleChangeItem(val) {
         this.house_choose_items = [];
         for (var k=0;k<val.length;k ++) {
-          this.house_choose_items.push(this.house_resource[val[k]]);
+          var item = this.house_resource[val[k]];
+          this.house_choose_items.push(item);
         }
         var house_len = this.house_resource.length;
         var choose_len = this.house_choose.length;

@@ -11,6 +11,7 @@
         </div>
       </div>
 
+
       <div class="log-table">
         <div class="mainListTable">
           <el-table
@@ -18,6 +19,7 @@
             highlight-current-row
             header-row-class-name="tableHeader"
             :row-style="{height:'115px'}"
+            class="subLogTable"
             >
             <el-table-column
               v-for="(item,index) in Object.keys(showData)" :key="index"
@@ -32,14 +34,32 @@
               v-if="index>=2"
               align="center"
               :prop="item"
-              :label="showData[item]">
+              :label="showData[item]"
+              class="tableCell">
               <template slot-scope="scope">
-                <span  style="cursor: pointer" @click="showCardDetail(scope.row,showData[item])">{{scope.row[item]}}</span>
+                <el-popover placement="bottom" trigger="click">
+                    <div>
+                      {{userName}}{{logTime}}
+                    </div>
+                    <div class="dayLog">
+                      今日完成工作
+                      <h1>{{dayLog.complete_work}}</h1>
+                      未完成工作
+                      <h1>{{dayLog.uncompleted_work}}</h1>
+                      需协调工作
+                      <h1>{{dayLog.coordinate_work}}</h1>
+                      备注
+                      <h1>{{dayLog.ps}}</h1>
+                      全部已读
+                    </div>
+                  <div slot="reference" style="cursor: pointer"><div @click="showCardDetail(scope.row,showData[item])">{{scope.row[item]}}</div></div>
+                </el-popover>
               </template>
             </el-table-column>
           </el-table>
         </div>
       </div>
+
 
       <div class="log-table-pagination flex-center common-page">
         <div class="page">
@@ -51,43 +71,21 @@
           </el-pagination>
         </div>
       </div>
-
-
-      <lj-dialog :size="{width:'40%',height:'80%'}" :visible.sync="logDetail_visible">
-        <div class="logHeader">
-          {{userName}} <span></span> {{logTime}}
-        </div>
-        <div class="dayLog">
-          日报<p>{{dayLog}}</p>
-        </div>
-        <div class="weekLog">
-          周报<p>{{weekLog}}</p>
-        </div>
-        <div class="monthLog">
-          月报<p>{{monthLog}}</p>
-        </div>
-        <div class="achievement_daily">
-          业绩日报<p>{{achievement_daily}}</p>
-        </div>
-      </lj-dialog>
     </div>
   </div>
 </template>
 
 <script>
   import SearchBar from '@/components/common/lightweightComponents/SearchBar';
-  import LjDialog from '@/components/common/lj-dialog.vue';
 
   export default {
     name: "subLog",
     components: {
       SearchBar,
-      LjDialog
     },
     data() {
       return {
         url: globalConfig.humanResource_server,
-        logDetail_visible: false,
         searchValue: '',
         currentPage: 1,
         pageSize: 5,
@@ -146,12 +144,10 @@
               }
               id.push(res.data[i].id)
             }
-            this.logDetail_visible = true
             let params = {
               id: id
             }
             this.$http.post(`${this.url}/staff/log/read`,params).then(res => {
-              this.initData();
             })
           }
         })
@@ -213,7 +209,13 @@
     }
   }
 </script>
-
+<style lang="scss">
+.el-popover{
+  background-color: transparent!important; 
+  padding: 0px!important;
+  color: black!important;
+}
+</style>
 
 <style scoped lang="scss">
   @import "../../../assets/scss/personalCenter/subLog/index";

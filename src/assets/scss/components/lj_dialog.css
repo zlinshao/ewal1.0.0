@@ -185,7 +185,7 @@
   right: 0; }
   #theme_name .lj_dialog > div {
     position: fixed;
-    top: 81px;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;

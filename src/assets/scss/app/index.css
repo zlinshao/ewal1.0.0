@@ -251,7 +251,8 @@
       cursor: pointer; }
       #app header .items-center .personal span,
       #app header .items-center .funTop span {
-        margin: 0 30px; }
+        margin: 0 30px;
+        white-space: nowrap; }
       #app header .items-center .personal p,
       #app header .items-center .funTop p {
         -webkit-border-radius: 10px;

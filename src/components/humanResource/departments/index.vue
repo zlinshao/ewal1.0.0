@@ -970,7 +970,7 @@
       handleRemoveItem(item,index) {
         this.setFormData.splice(index,1);
       },
-      handleOpenDelField(row) {
+      handleOpenDelField(type,row) {
         this.current_field = row;
         this.del_field_visible = true;
       },
@@ -1009,7 +1009,6 @@
       handleSubmitOk() {
         if (this.is_edit_field) {
           this.$http.put(`organization/permission_field/${this.current_field.id}`,this.field_form).then(res => {
-            console.log(res);
             if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -1027,7 +1026,6 @@
           return false;
         }
         this.$http.post('organization/permission_field',this.field_form).then(res => {
-          console.log(res);
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1123,7 +1121,6 @@
       handleSubmitEdit() {
         if (this.edit_type === 'system' || this.edit_type === 'module') {
           this.$http.put(`organization/system/${this.edit_row.id}`,this.edit_module_form).then(res => {
-            console.log(res);
             if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -1140,7 +1137,6 @@
           })
         }else {
           this.$http.put(`organization/permission/${this.edit_row.id}`,this.edit_module_form).then(res => {
-            console.log(res);
             if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -1187,7 +1183,6 @@
       handleConfirmDel() {
         if (this.confirm_type === 'system') {
           this.$http.delete(`organization/system/${this.confirm_row.id}`).then(res => {
-            console.log(res);
             if (res.code === '20040') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -1210,7 +1205,7 @@
                 message: res.msg
               });
               this.confirm_visible = false;
-
+              this.getPowerList();
             } else {
               this.$LjNotify('warning',{
                 title: '失败',
@@ -1449,7 +1444,6 @@
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
           switch (this.chooseTab) {
             case 3:
               this.searchFruit3 = val;

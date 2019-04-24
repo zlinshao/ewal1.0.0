@@ -1,6 +1,6 @@
 <template>
   <div class="demo-container" style="width: 800px">
-    <button-upload></button-upload>
+<!--    <button-upload></button-upload>-->
 <!--    <count-down :datetime="datetime"></count-down>-->
     <!--<el-button @click="paper_visible=true">测试</el-button>
     <el-button @click="demo2">测试222</el-button>
@@ -21,6 +21,9 @@
     </calendar>-->
     <!--<img-slider :size="{width:'100%',height:'100%'}" :single="true" :arr="sliders"></img-slider>-->
     <!--<lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>-->
+    <!--<dropdown-list
+                   :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
+                   v-model="demo"></dropdown-list>-->
   </div>
 
 </template>
@@ -36,6 +39,8 @@
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
   import LjUpload from "../../common/lightweightComponents/lj-upload";
   import ButtonUpload from '@/components/common/lightweightComponents/ButtonUpload.vue';
+  import {DROPDOWN_CONSTANT} from "../../../assets/js/allConstantData";
+  import DropdownList from '../../../components/common/lightweightComponents/dropdown-list';
 
   export default {
     name: "index",
@@ -49,11 +54,14 @@
       TestPaper,
       CountDown,
       ButtonUpload,
+      DropdownList
     },
     data() {
       return {
+        DROPDOWN_CONSTANT,
         datetime:'2019-05-01',
         daysList: [],
+        demo:'',
         sliders: [
           {
             id: 10086,
