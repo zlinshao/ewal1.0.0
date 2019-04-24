@@ -21,7 +21,7 @@
           v-for="item in chooseTabs"
           :key="item.id"
           :class="{'isActive': item.id === chooseTab}"
-          @click="chooseTab = item.id"
+          @click="changeTabs(item)"
         >{{ item.val }}</span>
       </div>
       <div v-if="chooseTab==1" class="nav-right changeChoose">
@@ -218,7 +218,8 @@
               :prop="item"
               :label="tableSettingData.confirm.showData[item]">
               <template slot-scope="scope">
-                <div class="icon-pdf"></div>
+<!--                <div>{{scope.row[item]}}</div>-->
+                <div v-if="Object.keys(scope.row[item]).length>0" class="icon-pdf"></div>
               </template>
             </el-table-column>
           </el-table>
@@ -262,7 +263,7 @@
                      class="calendar-days-item" :class="{rest:item.week==0||item.week==6,current:item.today}"
                 >
                   <div class="days-item-content-container"
-                       :class="{colorE33:item.attendance_data&&item.attendance_data!=='正常'}">
+                       :class="{colorE33:item.attendance_data&&item.attendance_data!=='正常'&&!item.today}">
                     <span class="days-item-content-date">{{item.date}}</span>
                     <span style="font-size: 13px" v-if="item.attendance_data">{{item.attendance_data}}</span>
 
@@ -557,6 +558,58 @@
         monthContent: '',
         yearValue: new Date(),
         daysList: [],
+
+
+        monthNameList:[
+          {
+            id:1,
+            name:'january',
+          },
+          {
+            id:2,
+            name:'february',
+          },
+          {
+            id:3,
+            name:'march',
+          },
+          {
+            id:4,
+            name:'april',
+          },
+          {
+            id:5,
+            name:'may',
+          },
+          {
+            id:6,
+            name:'june',
+          },
+          {
+            id:7,
+            name:'july',
+          },
+          {
+            id:8,
+            name:'august',
+          },
+          {
+            id:9,
+            name:'september',
+          },
+          {
+            id:10,
+            name:'october',
+          },
+          {
+            id:11,
+            name:'november',
+          },
+          {
+            id:12,
+            name:'december',
+          },
+        ],
       }
     },
     watch: {
@@ -583,6 +636,14 @@
       },
     },
     methods: {
+      changeTabs(item) {
+        this.chooseTab = item.id;
+        if(this.chooseTab==2) {
+          this.getAttenceConfirmList();
+        }
+      },
+
+
       getAttenceList() {
         this.tableSettingData.attence.tableData = [];
         let params = {
@@ -793,34 +854,53 @@
 
       //获取考勤确认表
       getAttenceConfirmList() {
+        this.tableSettingData['confirm'].tableData = [];
         let params = {
-          date:'2019',
-
+          date:this.myUtils.formatDate(this.yearValue,'yyyy'),
         };
+
+        this.$http.get(`${this.url}attendance/attendance/get_confirm`,params).then(res=> {
+          if(res.code.endsWith('0')) {
+            for (let item of res.data.data) {
+              let obj = {
+                department:item.org?.name||'-',
+              };
+              for (let subItem of this.monthNameList) {
+                let result = _.find(item.data,(o)=> {
+                  let oMonth = Number(this.myUtils.formatDate(o.month,'MM'));
+                  return oMonth==subItem.id;
+                });
+                obj[subItem.name] = result||{};
+              }
+              this.tableSettingData['confirm'].tableData.push(obj);
+            }
+            this.tableSettingData['confirm'].counts = res.count;
+          }
+        });
       },
 
 
-      initData() {
+      /*initData() {
         for (let i = 0; i < 6; i++) {
           let obj = {
             department: '人力资源中心',
-            january: '1月',
-            february: '2月',
-            march: '3月',
-            april: '4月',
-            may: '5月',
-            june: '6月',
-            july: '7月',
-            august: '8月',
-            september: '9月',
-            october: '10月',
-            november: '11月',
-            december: '12月',
+            january: {},
+            february: {},
+            march: {},
+            april: {},
+            may: {},
+            june: {},
+            july: {},
+            august: {},
+            september: {},
+            october: {},
+            november: {},
+            december: {},
           };
           this.tableSettingData.confirm.tableData.push(obj);
         }
         this.tableSettingData.confirm.counts = 10;
-      },
+      },*/
 
 
       //全选切换
@@ -897,7 +977,7 @@
       }
     },
     mounted() {
-      this.initData();
+      //this.initData();
     },
   }
 </script>
@@ -1103,37 +1183,7 @@
         }
       }
 
-      .calendar-days-item {
-        width: 100%;
-        height: 100%;
-        user-select: none;
-        display: flex;
-        background-color: $color9F9;
-        justify-content: flex-start;
-        //background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="100%" y1="0" x2="0" y2="100%" style="stroke:rgb(99,99,99);stroke-width:2" stroke="gray" stroke-width="1"/></svg>');
-        &.rest {
-          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="100%" y1="0" x2="0" y2="100%" style="stroke:rgb(228,228,228);stroke-width:1"/></svg>');
-        }
 
-        &.current {
-          color: white;
-          background-color: $colorE33;
-        }
-
-        //background-color: red;
-        .days-item-content-container {
-          padding: 10% 0 0 10%;
-
-          .days-item-content-date {
-            font-size: 18px;
-          }
-
-          /*.days-item-content-reason {
-            font-size:14px;
-            color: $colorE33;
-          }*/
-        }
-      }
     }
   }
 

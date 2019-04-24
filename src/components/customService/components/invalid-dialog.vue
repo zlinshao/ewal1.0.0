@@ -39,7 +39,8 @@ export default {
         photo: '合同作废',
         auth_photo: '仅作废合同',
         checkin_photo: '交接单作废',
-      }
+      },
+      market_server: globalConfig.market_server,
     }
   },
   methods: {
@@ -51,8 +52,36 @@ export default {
       this.invalidCheck = []
     },
     handleAdd () {
-      this.$emit('close', false)
-      this.invalidCheck = []
+      if (this.invalidCheck.length == 0) {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: '作废类型未选择'
+        });
+        return
+      }
+      let option = {
+        obsolete_type: this.invalidCheck,
+        contract_id: this.moduleData.contract_id,
+        contract_type: this.moduleData.contract_type
+      }
+      this.$http.post(`${this.market_server}v1.0/market/contract/re-generate`, option).then(res => {
+        let warn = null
+        if (res.code === 200) {
+          this.$emit('close', false)
+          this.invalidCheck = []
+          warn = '作废重签'
+        } else {
+          warn = '作废失败'
+        }
+
+        this.$LjNotify('success', {
+          title: '提示',
+          message: warn
+        });
+
+      })
+
+
     },
   }
 }
