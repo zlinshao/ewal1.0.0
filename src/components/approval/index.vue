@@ -312,7 +312,6 @@ export default {
     },
     // 高级搜索
     highSearch () {
-
       this.showSearch = true
       // this.searchData = this.searchHigh[this.current_type - 1]
 
@@ -352,7 +351,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../../assets/scss/approval/index.scss";
 </style>
 

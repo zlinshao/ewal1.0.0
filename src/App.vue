@@ -206,18 +206,20 @@ export default {
     },
 
     showMessage () {
-      if (this.$store.state.todo.todo_list_visible) {
-        this.$store.dispatch('change_todo_list_visible');
-      }
       if (this.showMessage_visible) {
         this.$store.dispatch('change_message_visible');
       } else {
         this.open_message_visible = true
       }
+
     },
     openMessage () {
       this.open_message_visible = false
       this.$store.dispatch('change_message_visible');
+
+      if (this.$store.state.todo.todo_list_visible) {
+        this.$store.dispatch('change_todo_list_visible');
+      }
       // this.$LjMessage('warning', {
       //   title: '警告',
       //   msg: '审批失败！'

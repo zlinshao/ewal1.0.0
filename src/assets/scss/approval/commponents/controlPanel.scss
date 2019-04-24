@@ -25,6 +25,20 @@
       opacity: 1;
     }
     .header {
+      .header_methods {
+        display: flex;
+        .methods_box {
+          width: 80px;
+          height: 80px;
+          text-align: center;
+          line-height: 80px;
+          font-size: 10px;
+        }
+        .methods_box + .methods_box {
+          margin-left: 40px;
+        }
+      }
+
       .icons_panel {
         display: inline-block;
         width: 40px;
@@ -137,6 +151,16 @@
 #theme_name.theme1 {
   #panel {
     .header {
+      .header_methods {
+        .methods_box {
+          color: #bbbbbb;
+          @include confirmImg('duobiankuang_hui.png', 'theme1');
+        }
+        .methods_box_active {
+          color: #cf2e33;
+          @include confirmImg('duobiankuang_hong.png', 'theme1');
+        }
+      }
       .icons_panel {
         @include confirmImg('guankongmianban_dianji.png', 'theme1');
       }
