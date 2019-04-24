@@ -42,8 +42,7 @@
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
           </p>
 
-
-            <span class="icon3024 icon-personal-center"   @click="routerLink('/messageCenter')"></span>
+          <span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span>
 
           <!--<span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span>-->
 
@@ -207,6 +206,9 @@ export default {
     },
 
     showMessage () {
+      if (this.$store.state.todo.todo_list_visible) {
+        this.$store.dispatch('change_todo_list_visible');
+      }
       if (this.showMessage_visible) {
         this.$store.dispatch('change_message_visible');
       } else {
