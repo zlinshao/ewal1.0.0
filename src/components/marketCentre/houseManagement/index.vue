@@ -90,20 +90,35 @@
                     :class="{'current-change': item.id === current_house_type}">{{ item.val }}</span>
             </div>
             <div class="table_list scroll_bar">
-              <el-table :data="table_data" height="250">
-                <el-table-column label="签约时间" prop="time"></el-table-column>
-                <el-table-column label="合同编号" prop="num"></el-table-column>
-                <el-table-column label="收放价格" prop="price"></el-table-column>
-                <el-table-column label="付款方式" prop="way"></el-table-column>
-                <el-table-column label="空置期" prop="kong"></el-table-column>
-                <el-table-column label="签约时长" prop="long"></el-table-column>
-                <el-table-column label="合同开始时间" prop="start_time"></el-table-column>
-                <el-table-column label="合同结束时间" prop="end_time"></el-table-column>
-                <el-table-column label="签约人" prop="people"></el-table-column>
+              <el-table :data="house_resource" height="250" v-show="current_house_type === 1">
+                <el-table-column label="房屋名称" prop="name" align="center"></el-table-column>
+                <el-table-column label="房屋描述" prop="hk" align="center"></el-table-column>
+                <el-table-column label="类型" prop="decorate" align="center"></el-table-column>
+                <el-table-column label="成交月单价" prop="month_price" align="center"></el-table-column>
+              </el-table>
+              <el-table :data="price_setting" height="250" v-show="current_house_type === 2">
+                <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
+                <el-table-column label="调整前价格" prop="before_price" align="center"></el-table-column>
+                <el-table-column label="调整后价格" prop="price" align="center"></el-table-column>
+                <el-table-column label="调整人" prop="creator_name" align="center"></el-table-column>
+                <el-table-column label="价格类型" prop="type_name" align="center"></el-table-column>
+              </el-table>
+              <el-table :data="price_setting" height="250" v-show="current_house_type === 3">
+                <el-table-column label="跟进时间" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="备注" prop="follow_content" align="center"></el-table-column>
+                <el-table-column label="预警调整" prop="warning_name" align="center"></el-table-column>
+                <el-table-column label="照片" prop="album_photo" align="center"></el-table-column>
+                <el-table-column label="跟进人" prop="follow_name" align="center"></el-table-column>
               </el-table>
             </div>
             <div class="page">
-              <el-pagination :total="1000" layout="total,prev,pager,next"></el-pagination>
+              <el-pagination
+                :total="table_params.count"
+                :current-page="table_params.page"
+                :page-size="table_params.limit"
+                @current-change="handleChangePageDetail"
+                layout="total,prev,pager,next"
+              ></el-pagination>
             </div>
           </div>
         </div>
@@ -202,6 +217,9 @@
         //房屋详情
         house_detail: '',
         current_house: '',
+
+        house_resource: [],//已出租房源
+        price_setting: [], //价格调整
 
         market_server: globalConfig.market_server,
         //设置
@@ -364,14 +382,14 @@
             id: 3,
             val: '跟进记录'
           },
-          {
-            id: 4,
-            val: '家具补齐'
-          },
-          {
-            id: 5,
-            val: '物品搬移记录'
-          },
+          // {
+          //   id: 4,
+          //   val: '家具补齐'
+          // },
+          // {
+          //   id: 5,
+          //   val: '物品搬移记录'
+          // },
           {
             id: 6,
             val: '收房合同'
@@ -388,214 +406,9 @@
         current_house_type: 1,
         table_params: {
           page: 1,
-          limit: 15
+          limit: 15,
+          count: 0,
         },
-        table_data: [
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-        ],
         look_data: [
           {
             id: 1,
@@ -634,9 +447,18 @@
     watch: {},
     computed: {},
     methods: {
+      handleChangePageDetail(page) {
+        this.table_params.page = page;
+      },
       getDetailTableList(url) {
         this.$http.get(this.market_server + url, this.table_params).then(res => {
-          console.log(res);
+          if (res.code === 200) {
+            this.house_resource = res.data.data;
+            this.table_params.count = res.data.count;
+          } else {
+            this.house_resource = [];
+            this.table_params.count = 0;
+          }
         })
       },
       getContractList(house_id,contract_type) {
@@ -648,6 +470,21 @@
           console.log(res);
         })
       },
+      getSettingPrice(id,url) {
+        this.$http.get(this.market_server + url,{
+          id: 4,
+          ...this.table_params
+        }).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.price_setting = res.data.data;
+            this.table_params.count = res.data.all_count;
+          } else {
+            this.price_setting = [];
+            this.table_params.count = 0;
+          }
+        })
+      },
       //切换列表信息
       handleCheckModule(item) {
         this.table_params.limit = 15;
@@ -656,14 +493,24 @@
         var url = '';
         switch (item.id) {
           case 1:
-            url = `/v1.0/market/house/houseVillage/${this.current_house.id}`;
+            url = `v1.0/market/house/houseVillage/41224`;
+            // url = `v1.0/market/house/houseVillage/${this.current_house.id}`;
             this.getDetailTableList(url);
             break;
           case 6:
+            console.log(this.current_house);
             this.getContractList(this.current_house.id,1);
             break;
           case 7:
             this.getContractList(this.current_house.id,2);
+            break;
+          case 2:
+            url = 'v1.0/market/house/getHouseChPrice';
+            this.getSettingPrice(this.current_house.id,url);
+            break;
+          case 3:
+            url = 'v1.0/market/house/getFollowRecord';
+            this.getSettingPrice(this.current_house.id,url);
         }
       },
       handleChangePage(page) {
