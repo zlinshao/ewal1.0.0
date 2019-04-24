@@ -203,7 +203,7 @@
             @cell-click="tableClickRow"
             @row-dblclick="tableDblClick($event,'confirm')"
             header-row-class-name="tableHeader"
-            :row-style="{height:'60px'}"
+            :row-style="{height:'80px'}"
             style="width: 100%">
             <el-table-column
               key="department"
@@ -217,9 +217,14 @@
               align="center"
               :prop="item"
               :label="tableSettingData.confirm.showData[item]">
-              <template slot-scope="scope">
+              <template slot-scope="scope" id="templadd" style="height: 100%">
 <!--                <div>{{scope.row[item]}}</div>-->
-                <div v-if="Object.keys(scope.row[item]).length>0" class="icon-pdf"></div>
+<!--                <div style="width: 100%;height: 60px;background-color: red;"></div>-->
+                <div @click="sendAttenceResult(scope.row[item])" v-if="Object.keys(scope.row[item]).length>0" class="icon-pdf">
+                  <div v-if="scope.row[item].is_send==0" class="icon-no-send"></div>
+                  <div v-if="scope.row[item].is_send==1"  class="icon-sent"></div>
+                </div>
+                <div v-else>-</div>
               </template>
             </el-table-column>
           </el-table>
@@ -874,8 +879,28 @@
               }
               this.tableSettingData['confirm'].tableData.push(obj);
             }
-            this.tableSettingData['confirm'].counts = res.count;
+            this.tableSettingData['confirm'].counts = res.data.count;
           }
+        });
+      },
+
+      //发送考勤确认单
+      sendAttenceResult(item) {
+        if(item.is_send) {
+          return;
+        }
+        this.$LjConfirm({
+          content:'考勤确认单将发送到指定部门下',
+        }).then(()=> {
+          let params = {
+            date:item.month,
+            org_id:item.org_id,
+          };
+          this.$http.get(`${this.url}attendance/attendance/todo`,params).then(res=> {
+            this.$LjMessageEasy(res,()=> {
+              this.getAttenceConfirmList();
+            });
+          });
         });
       },
 
@@ -1087,6 +1112,9 @@
         padding: 0;
         height: 40px;
       }*/
+
+
+
       .tableHeader {
         th:nth-child(1) {
           border-left: 1px solid #EBEEF5;
@@ -1097,6 +1125,10 @@
       .el-table__body {
         tbody {
           .el-table__row {
+            .cell {
+              overflow: auto !important;
+              height: 60px;
+            }
             td:nth-child(1) {
               border-left: 1px solid #EBEEF5;
             }
@@ -1164,10 +1196,22 @@
       .confirm-container {
         .icon-pdf {
           @include militaryImg('s.png', 'theme1');
-
           &:hover {
             @include militaryImg('t.png', 'theme1');
+
+            .icon-sent {
+              @include militaryImg('yifasong.png','theme1');
+            }
           }
+
+          .icon-no-send {
+            @include militaryImg('fasong.png','theme1');
+          }
+
+          .icon-sent {
+            @include militaryImg('yidu_copy.png','theme1');
+          }
+
         }
       }
 
