@@ -177,6 +177,7 @@ export default {
     $route: {
       handler (val, oldVal) {
         this.moduleList = false;
+        this.showLoading(false);
         this.$store.dispatch('route_animation');
       },
       deep: true// 深度观察监听

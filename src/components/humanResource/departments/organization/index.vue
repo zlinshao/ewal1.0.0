@@ -30,7 +30,9 @@
                         <p>{{ next_depart_item.leader && next_depart_item.leader.name }}</p>
                       </div>
                       <div class="line-v" v-if="child_depart[index][idx] && child_depart[index][idx].length > 0"><span></span></div>
-                      <div class="strt-block" v-show="child_depart[index][idx] && child_depart[index][idx].length > 0">
+                      <!--<div class="strt-block" v-show="child_depart[index][idx] && child_depart[index][idx].length > 0">-->
+                      <!--判断该部门是否为营销中心,其下级部门显示城市名加负责人-->
+                      <div class="strt-block" v-show="next_depart_item.id !== market_id && child_depart[index][idx] && child_depart[index][idx].length > 0">
                         <div class="strt-part" v-for="(child_depart_item,child_idx) in child_depart[index][idx]">
                           <span class="line-h line-h-r" v-if="child_idx === 0"></span>
                           <span class="line-h line-h-l" v-else-if="child_idx === child_depart[index][idx].length - 1"></span>
@@ -47,6 +49,41 @@
                               <span class="line-h line-h-c" v-else></span>
                               <div class="line-v"><span></span></div>
                               <div class="strt-info-mini">{{ staff_item.name }}&nbsp;<a>{{ staff_item.position && staff_item.position.length > 0 && staff_item.position[0].name }}</a></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--如果是营销中心显示-->
+                      <div class="strt-block" v-show="next_depart_item.id === market_id && market_next_depart.length > 0">
+                        <div class="strt-part" v-for="(market_depart,market_idx) in market_next_depart">
+                          <span class="line-h line-h-r" v-if="market_idx === 0"></span>
+                          <span class="line-h line-h-l" v-else-if="market_idx === market_next_depart.length - 1"></span>
+                          <span class="line-h line-h-c" v-else></span>
+                          <div class="line-v"><span></span></div>
+                          <div class="strt-info">
+                            <p>{{ market_depart.name }}</p>
+                            <p>{{ market_depart.leader && market_depart.leader.name }}</p>
+                          </div>
+                          <div class="line-v" v-show="market_child[market_idx] && market_child[market_idx].length > 0"><span></span></div>
+                          <div class="strt-block" v-show="market_child[market_idx] && market_child[market_idx].length >0">
+                            <div class="strt-part" v-for="(market_child_item,market_child_idx) in market_child[market_idx]">
+                              <span class="line-h line-h-r" v-if="market_child_idx === 0"></span>
+                              <span class="line-h line-h-l" v-else-if="market_child_idx === market_child[market_idx].length - 1"></span>
+                              <span class="line-h line-h-c" v-else></span>
+                              <div class="line-v"><span></span></div>
+                              <div class="strt-name strt-name-mini" @click="handleGetMarketGroup(market_child_item,market_child_idx)">
+                                {{ market_child_item.name }}
+                              </div>
+                              <div class="line-v" v-show="market_group[market_child_idx] && market_group[market_child_idx].length >0"><span></span></div>
+                              <div class="strt-block" v-show="market_group[market_child_idx] && market_group[market_child_idx].length >0">
+                                <div class="strt-part" v-for="(group_guy,group_idx) in market_group[market_child_idx]">
+                                  <span class="line-h line-h-r" v-if="group_idx === 0"></span>
+                                  <span class="line-h line-h-l" v-else-if="group_idx === market_group[market_child_idx].length - 1"></span>
+                                  <span class="line-h line-h-c" v-else></span>
+                                  <div class="line-v"><span></span></div>
+                                  <div class="strt-info-mini">{{ group_guy.name }}</div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -80,6 +117,14 @@
         staff_list: {
 
         },
+        market_id: 9,
+        market_next_depart: [],
+        market_child: {
+
+        },
+        market_group: {
+
+        }
       }
     },
     mounted() {
@@ -88,6 +133,57 @@
     watch: {},
     computed: {},
     methods: {
+      //获取城市分部下的组
+      handleGetMarketGroup(item,key) {
+        if (this.market_group[key] && this.market_group[key].length >0) {
+          this.market_group[key] = [];
+          console.log(this.market_group);
+          return false;
+        } else {
+          this.market_group = Object.assign({},this.market_group,{
+            [key]: []
+          });
+        }
+        this.$http.get('organization/organization',{
+          parent_id: item.id
+        }).then(res => {
+          if (res.code === '20000') {
+            this.market_group[key] = res.data.data;
+          } else {
+            this.market_group[key] = [];
+          }
+        });
+        console.log(this.market_group);
+      },
+      //获取营销中心下级部门
+      handleGetMarketNext() {
+        this.$http.get('organization/organization',{
+          parent_id: this.market_id
+        }).then(res => {
+          if (res.code === '20000') {
+            this.market_next_depart = res.data.data;
+            for (let key in res.data.data) {
+              this.handleGetMarketChild(res.data.data[key].id,key);
+            }
+          } else {
+            this.market_next_depart = [];
+          }
+        })
+      },
+      handleGetMarketChild(parent_id,key) {
+        this.market_child = Object.assign({},this.market_child,{
+          [key]: {}
+        });
+        this.$http.get('organization/organization',{
+          parent_id
+        }).then(res => {
+          if (res.code === '20000') {
+            this.market_child[key] = res.data.data;
+          } else {
+            this.market_child[key] = [];
+          }
+        });
+      },
       //获取部门下面的人
       handleGetStaff(child_depart,child_idx,idx,index) {
         console.log(child_depart,child_idx,idx,index);
@@ -144,6 +240,9 @@
             });
             for (var key in this.next_depart) {
               for (var i =0;i<this.next_depart[key].length;i++) {
+                if (this.next_depart[key][i].id === this.market_id) {
+                  this.handleGetMarketNext();
+                }
                 this.handleGetChildDepart(this.next_depart[key][i],i,key);
               }
             }

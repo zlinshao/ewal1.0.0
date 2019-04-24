@@ -193,7 +193,8 @@
     right: 0;
     padding: 0 60px;
     z-index: 30; }
-    #app header .headLeft > span b, #app header .headLeft > span span {
+    #app header .headLeft > span b,
+    #app header .headLeft > span span {
       margin-right: 20px; }
     #app header .headLeft > span b {
       font-size: 30px; }
@@ -203,7 +204,7 @@
       font-family: 'jianyue';
       margin-left: 30px;
       cursor: pointer;
-      border: 1px solid #D2D2D2;
+      border: 1px solid #d2d2d2;
       padding: 0 30px;
       -webkit-border-radius: 20px;
       -moz-border-radius: 20px;
@@ -212,14 +213,47 @@
         color: #cf2e33;
         border-color: #cf2e33; }
     #app header .items-center .funTop {
+      height: 45px;
       margin-right: 40px; }
+      #app header .items-center .funTop .shenpi {
+        height: 45px;
+        line-height: 45px;
+        position: relative; }
+        #app header .items-center .funTop .shenpi ul {
+          position: absolute;
+          right: 40px;
+          top: 40px;
+          background: #fff;
+          width: 230px;
+          border: 1px solid #eaeaea;
+          padding: 0 18px; }
+          #app header .items-center .funTop .shenpi ul li {
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #686874;
+            border-bottom: 1px solid #f2f2f2; }
+            #app header .items-center .funTop .shenpi ul li span {
+              max-width: 84px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              margin: 0; }
+          #app header .items-center .funTop .shenpi ul .seeMore {
+            justify-content: flex-end;
+            border: none;
+            color: #cf2e33; }
     #app header .items-center .personal div {
       margin-left: 30px; }
-    #app header .items-center .personal, #app header .items-center .funTop {
+    #app header .items-center .personal,
+    #app header .items-center .funTop {
       cursor: pointer; }
-      #app header .items-center .personal span, #app header .items-center .funTop span {
+      #app header .items-center .personal span,
+      #app header .items-center .funTop span {
         margin: 0 30px; }
-      #app header .items-center .personal p, #app header .items-center .funTop p {
+      #app header .items-center .personal p,
+      #app header .items-center .funTop p {
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
         border-radius: 10px;
@@ -303,7 +337,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     color: #212121;
     z-index: 100; }
   #app .loading {
@@ -344,7 +378,7 @@
     top: -950px;
     right: 15px;
     z-index: 1001;
-    transition: all ease .5s;
+    transition: all ease 0.5s;
     overflow: hidden;
     text-align: center;
     padding: 30px 40px;
@@ -359,7 +393,7 @@
       cursor: pointer; }
     #app .global_notify .subMessage {
       font-size: 14px;
-      color: #D8D8D8; }
+      color: #d8d8d8; }
   #app .message {
     font-size: 18px;
     margin-bottom: 15px;
@@ -374,20 +408,20 @@
     margin: 15px auto;
     font-family: 'jingDianXingShu'; }
   #app .notify_title__success {
-    color: #2ECF74; }
+    color: #2ecf74; }
   #app .notify_title__error {
-    color: #CF2E33; }
+    color: #cf2e33; }
   #app .notify_title__info {
-    color: #9AE863; }
+    color: #9ae863; }
   #app .notify_title__warning {
-    color: #FEC000; }
+    color: #fec000; }
   #app .notify_show {
     top: 95px;
     opacity: 1; }
   #app .global_message {
     width: 300px;
     height: 180px;
-    background-color: #9CCC65;
+    background-color: #9ccc65;
     position: absolute;
     top: 52%;
     left: 50%;
@@ -507,12 +541,12 @@
       background: url("./assets/image/module/theme2/module9.png") no-repeat scroll center;
       background-size: 100% 100%; }
     #app.app2 #moduleList > div .list p {
-      opacity: .35;
+      opacity: 0.35;
       width: 44px;
       height: 44px;
       margin-bottom: 40px; }
     #app.app2 #moduleList > div .list div {
-      color: #04D8EE;
+      color: #04d8ee;
       background: url("./assets/image/module/theme2/moduleweidianji.png") no-repeat scroll center;
       background-size: 100% 100%; }
       #app.app2 #moduleList > div .list div h1 span:first-of-type {
