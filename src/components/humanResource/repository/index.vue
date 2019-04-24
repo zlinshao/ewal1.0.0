@@ -13,7 +13,7 @@
         </p>
         <h1>资产管理</h1>
         <h2 class="items-center" v-if="chooseTab">
-          <span v-for="item in selects" @click="changeTabs(item.id)" :key="item" class="items-column"
+          <span v-for="(item,index) in selects" @click="changeTabs(item.id)" :key="index" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
           </span>

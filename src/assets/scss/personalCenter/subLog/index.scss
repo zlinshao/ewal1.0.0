@@ -37,15 +37,12 @@
         display: flex;
         flex-direction: column;
         padding-top: 20px;
-        .log-table-list {
-          height: 85%;
-          .log-table-item:not(:nth-child(5n+5)) {
-            margin-right: 3.75%;
-          }
+        .log-table-item:not(:nth-child(5n+5)) {
+          margin-right: 3.75%;
         }
-        .log-table-pagination {
-          height: 15%;
-        }
+      }
+      .log-table-pagination {
+        height: 15%;
       }
     }
   }
