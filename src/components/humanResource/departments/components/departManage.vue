@@ -1131,6 +1131,7 @@
       },
       // 权限切换
       handleClick(val) {
+        this.show_field_list = [];
         var id = parseInt(val.name);
         this.getModuleList(id);
       },
@@ -1145,34 +1146,27 @@
       },
       // 权限复选
       handleCheck(value) {
-        console.log(value);
-        console.log(this.field_list);
-        this.field_list = [];
         let checkCount = value.length;
         let list = this.power_list;
         let count = 0;
         for (let item of  Object.keys(list)) {
           count = count + list[item].length;
           for (let tmp of list[item]) {
-            // if (tmp.id === value[value.length - 1]) {
-            //   if (tmp.fields) {
-            //     for (let field of tmp.fields) {
-            //       this.field_list.push(field.id);
-            //     }
-            //   }
-            // }
-            for (let i=0;i<value.length;i++) {
-              if (tmp.id === value[i]) {
-                if (tmp.fields) {
-                  for (let field of tmp.fields) {
-                    this.field_list.push(field.id);
-                  }
+            if (!value.includes(tmp.id)) {
+              for (var field of tmp.fields) {
+                this.field_list = this.field_list.filter(item => item !== field.id);
+              }
+            }
+            if (tmp.id === value[value.length - 1]) {
+              if (tmp.fields) {
+                for (var tmp2 of tmp.fields) {
+                  this.field_list = this.field_list.filter(item => item !== tmp2.id);
+                  this.field_list.push(tmp2.id);
                 }
               }
             }
           }
         }
-        console.log(this.field_list);
         this.checkAll = checkCount === count;
       },
       // 全选
@@ -1195,7 +1189,7 @@
         } else {
           this.checkList = [];
           this.field_list = [];
-          this.show_field_list = [];
+          // this.show_field_list = [];
         }
       },
       getPowerList(id) {

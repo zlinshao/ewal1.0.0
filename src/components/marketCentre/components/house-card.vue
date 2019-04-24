@@ -356,10 +356,26 @@
               ...this.check_form
             }).then(res => {
               console.log(res);
+              if (res.code === 200) {
+                this.$LjMessage('success',{
+                  title: '成功',
+                  message: res.message
+                });
+                this.handleCancelAddCheck();
+              } else {
+                this.$LjMessage('warning',{
+                  title: '失败',
+                  message: res.message
+                })
+              }
             })
           },
           //取消行政检查
           handleCancelAddCheck() {
+            for (var key in this.check_form) {
+              this.check_form[key] = '';
+            }
+            this.check_form.album_file = [];
             this.check_visible = false;
           },
           //获取文件

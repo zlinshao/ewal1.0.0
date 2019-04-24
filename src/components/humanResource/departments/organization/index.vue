@@ -186,7 +186,10 @@
       },
       //获取部门下面的人
       handleGetStaff(child_depart,child_idx,idx,index) {
-        console.log(child_depart,child_idx,idx,index);
+        if (this.staff_list[index][idx][child_idx] && this.staff_list[index][idx][child_idx].length >0) {
+          this.staff_list[index][idx][child_idx] = [];
+          return false;
+        }
         this.$http.get('staff/user',{
           page: 1,
           limit: 999,
@@ -201,7 +204,6 @@
               [child_idx]: []
             })
           }
-          console.log(this.staff_list);
         })
       },
       //获取下级部门
