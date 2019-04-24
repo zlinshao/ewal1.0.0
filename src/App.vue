@@ -99,7 +99,7 @@
     </div>
 
     <todo-list></todo-list>
-    <!-- <Approval></Approval> -->
+    <Approval></Approval>
   </div>
 </template>
 
