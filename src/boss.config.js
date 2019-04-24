@@ -6,21 +6,13 @@ globalConfig = {
   temporary_server:'http://test.financial.api.ewal.lejias.cn/api/',
   leJiaCollege_server:'http://test.university.api.ewal.lejias.cn/',//乐伽大学  测试地址 http://ewal_university.test
   risk_sever:'http://test.risk.api.ewal.lejias.cn',//风险控制
-<<<<<<< HEAD
   newMedia_sever:'http://test.new_media.api.ewal.lejias.cn',//新媒体  http://test.new_media.api.ewal.lejias.cn/  测试地址  http://ewal_new_media.test
-=======
-  newMedia_sever:'http://test.new_media.api.ewal.lejias.cn/',//新媒体  http://test.new_media.api.ewal.lejias.cn/  测试地址  http://ewal_new_media.test
->>>>>>> 7c13d1d74faa223afb42844aca33086e0616637c
   organ_server: 'http://gml.vaiwan.com/ewal/public/',
   upload_sever: 'http://recommend.ewal.lejias.cn/',
   humanResource_server: 'http://test.hr.api.ewal.lejias.cn/',
   market_server: 'http://test.market.api.ewal.lejias.cn/',
-<<<<<<< HEAD
-  intellectualPropertyProtection:'http://ewal_knowledge_right.test/', //http://test.knowledge.api.ewal.lejias.cn/
-  kpi: "http://test.kpi.api.ewal.lejias.cn/",
-    uploadPath:'',
-=======
+  // intellectualPropertyProtection:'http://ewal_knowledge_right.test/', //http://test.knowledge.api.ewal.lejias.cn/
   intellectualPropertyProtection:'http://test.knowledge.api.ewal.lejias.cn/', 
   kpi: "http://test.kpi.api.ewal.lejias.cn/"
->>>>>>> 7c13d1d74faa223afb42844aca33086e0616637c
+
 };
