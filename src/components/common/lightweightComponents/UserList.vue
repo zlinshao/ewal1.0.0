@@ -19,7 +19,7 @@
         <div v-if="!item.img" class="user-item-mini-top bg-img">
         </div>
         <div class="user-item-mini-bottom">
-          <div class="user-name" :style="{color: color}">{{item.name}}</div>
+          <div :title="item.name" class="user-name" :style="{color: color}">{{item.name}}</div>
         </div>
       </div>
     </div>

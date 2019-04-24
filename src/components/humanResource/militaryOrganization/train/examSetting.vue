@@ -452,7 +452,7 @@
           //sub_title: '关于春节挂春联选一副',
           btn_name: '预览题库',
           initial_page: 1,
-          edit_btn_visible: false,
+          edit_btn_visible: true,
         },
         exam_list: [],//题库列表=> 传给test-paper的数据
 
@@ -613,6 +613,7 @@
           if (valid) {//成功
             this.new_question_bank_confirm_dialog_visible = true;
             this.new_question_bank_exam_list = [];//清空题目列表
+            this.paper_params.edit_btn_visible  = true;
           }
         });
       },
@@ -657,6 +658,7 @@
             this.paper_visible = true;
             this.paper_params.initial_page = 2;
             this.paper_params.title = item.name;
+            this.paper_params.edit_btn_visible = false;
           }
         });
       },

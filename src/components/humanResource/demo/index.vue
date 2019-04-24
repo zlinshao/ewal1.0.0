@@ -1,5 +1,7 @@
 <template>
   <div class="demo-container" style="width: 800px">
+    <el-button>测试</el-button>
+    <search-high></search-high>
 <!--    <button-upload></button-upload>-->
 <!--    <count-down :datetime="datetime"></count-down>-->
     <!--<el-button @click="paper_visible=true">测试</el-button>
@@ -30,6 +32,7 @@
 
 <script>
   import _ from 'lodash';
+  import SearchHigh from '../../../components/common/lightweightComponents/SearchHigh/index';
   import CountDown from '@/components/common/lightweightComponents/CountDown.vue';
   import TestPaper from '@/components/common/lightweightComponents/TestPaper.vue';
   import NameShower from '@/components/common/lightweightComponents/NameShower.vue';
@@ -54,7 +57,8 @@
       TestPaper,
       CountDown,
       ButtonUpload,
-      DropdownList
+      DropdownList,
+      SearchHigh,
     },
     data() {
       return {
