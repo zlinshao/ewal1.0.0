@@ -216,6 +216,52 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, input, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
   padding: 0;
   margin: 0;
@@ -231,6 +277,23 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, input,
 
 html, body {
   height: 100%; }
+  html .amap-sug-result, body .amap-sug-result {
+    border: none; }
+  html div.el-tooltip__popper,
+  html div.is-dark, body div.el-tooltip__popper,
+  body div.is-dark {
+    background-color: #cf2e33 !important;
+    color: white; }
+
+.control-btn span {
+  padding: 5px 20px;
+  cursor: pointer;
+  color: white;
+  margin: 0 8px; }
+  .control-btn span:hover {
+    color: #cf2e33;
+    background: url("../image/components/theme1/xzgj.png") no-repeat scroll center;
+    background-size: 100% 100%; }
 
 ol, ul {
   list-style: none; }
@@ -256,18 +319,22 @@ table {
 input {
   background-color: transparent; }
 
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
   color: #CDCDCD; }
 
-input::-moz-placeholder, textarea::-moz-placeholder {
+input::-moz-placeholder,
+textarea::-moz-placeholder {
   /* Mozilla Firefox 19+ */
   color: #CDCDCD; }
 
-input:-moz-placeholder, textarea:-moz-placeholder {
+input:-moz-placeholder,
+textarea:-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
   color: #CDCDCD; }
 
-input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #CDCDCD; }
 

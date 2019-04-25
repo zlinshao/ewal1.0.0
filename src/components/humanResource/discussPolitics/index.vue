@@ -5,7 +5,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>奏事议政</h1>
+        <h1>会议管理</h1>
         <div class="date-value-container">
           <el-date-picker
             v-model="dateValue"
@@ -19,48 +19,42 @@
     <div class="main-container discuss-politics-container">
       <div class="calendar-container">
         <div class="container-left scroll_bar">
-          <div class="calendar-week">
-            <div class="ui-container">
-              <div v-for="(item,index) in weekList" class="calendar-week-item">
-                <div class="calendar-week-item-container">
-                  <span :class="{weekday:index>4}" class="week-item-date">{{item}}</span>
-                </div>
-              </div>
+          <!--时间线-->
+          <div class="timeline">
+            <div class="timeline-bg"></div>
+            <div @click="getCurrentSelectMonthMeetingCounts" class="monthTitle">
+              <span title="本月会议数">{{monthContent}}</span>
+            </div>
+            <div class="eltimeline-container">
+              <el-timeline>
+                <el-timeline-item
+                  :key="index"
+                  :color="item.todoType==0?'#50E38F':item.todoType==1?'#FFDC75':'#FF7A3C'"
+                  v-if="item.todoListTimeLine&&item.todoListTimeLine.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
+                  placement="top">
+                  <el-card>
+                    <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
+                      <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
+                           @click="openMeetingDialog(contentItem)"
+                           :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
+                        <div class="content-item-span">{{contentItem.content}}</div>
+                        <div class="icon-list">
+                        <span v-if="contentItem.status==0" title="取消"
+                              @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
+                              class="icon15 icon-cancel"></span>
+                          <span title="删除"
+                                @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
+                                class="icon15 icon-delete-red"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
             </div>
 
           </div>
-          <div class="calendar-day">
-            <div class="ui-container">
-              <div @click="showAddNewMeetingDialog(item)" v-for="item in daysList" class="calendar-day-item">
-                <div class="calendar-day-item-container">
-                  <div class="calendar-day-item-container-tip">
-                    <el-badge :value="item.todoList.length>0?item.todoList.length:''" class="item">
-                      <div :class="{'gray':item.type=='prev'||item.type=='next','current':item.today}"
-                           class="calendar-day-item-container-date">
-                        {{item.date}}
-                      </div>
-                    </el-badge>
-                  </div>
-                  <div class="calendar-day-item-container-content">
-                    <div @click.stop="openMeetingDialog(contentItem)"
-                         :class="[contentItem.status==0?'default':contentItem.type==1?'warning':'danger']"
-                         :title="contentItem.content"
-                         v-for="(contentItem,index) in item.todoList"
-                         v-if="index<2">
-                      {{contentItem.content}}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="container-right scroll_bar">
-          <div @click="getCurrentSelectMonthMeetingCounts" class="monthTitle">
-            <span title="本月会议数">{{monthContent}}</span>
-          </div>
-          <!--时间线-->
-          <div class="timeline">
+          <!--<div class="timeline">
             <el-timeline>
               <el-timeline-item
                 :key="index"
@@ -86,8 +80,46 @@
                 </el-card>
               </el-timeline-item>
             </el-timeline>
+          </div>-->
+        </div>
+        <div class="container-right scroll_bar">
+          <div class="calendar-week">
+            <div class="ui-container">
+              <div v-for="(item,index) in weekList" class="calendar-week-item">
+                <div class="calendar-week-item-container">
+                  <span :class="{weekday:index>4}" class="week-item-date">{{item}}</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="calendar-day">
+            <div class="ui-container">
+              <div @click="showAddNewMeetingDialog(item)" v-for="item in daysList" class="calendar-day-item">
+                <div class="calendar-day-item-container">
+                  <div class="calendar-day-item-container-tip">
+                    <el-badge :value="item.todoList.length>0?item.todoList.length:''" class="item">
+                      <div :class="{'gray':item.type=='prev'||item.type=='next','current':item.today}"
+                           class="calendar-day-item-container-date">
+                        {{item.date}}
+                      </div>
+                    </el-badge>
+                  </div>
+                  <div class="calendar-day-item-container-content">
+                    <div @click.stop="openMeetingDialog(contentItem)"
+                         :class="[contentItem.status==0?'default':contentItem.status==1?'warning':'danger']"
+                         :title="contentItem.content"
+                         v-for="(contentItem,index) in item.todoList"
+                         v-if="index<2">
+                      {{contentItem.content}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -241,7 +273,7 @@
           <h3>{{meeting_detail_form.meetingType}} {{meeting_detail_form.meetingTime}}</h3>
 
           <div class="header_right" style="height: 30px">
-            <i title="编辑" v-if="meeting_detail_form.status==0" class="icon icon-edit"
+            <i title="编辑" v-if="meeting_detail_form.status!=2" class="icon30 icon-edit"
                @click="showEditMeetingDialog"></i>
           </div>
         </div>
@@ -783,7 +815,7 @@
           meeting_type: '',//会议类型id
           //meetingTime:'',//会议时间
           start_time: '',//会议开始时间
-          end_time: '',//会议开始时间
+          end_time: '',//会议结束时间
           presenter_id: [],//主持人id数组
           //counts:'',//应到人数
           //meetingTips:{},//会议提醒
@@ -934,6 +966,8 @@
 
       //修改会议
       editMeeting() {
+
+
         this.$refs['addMeetingForm'].validate((valid) => {
           if (valid) {//成功
             let id = this.add_meeting_form.id;
@@ -962,7 +996,20 @@
 
       //显示修改会议dialog
       showEditMeetingDialog() {
-        console.log(this.meeting_detail_form);
+
+        let startTime = this.meeting_detail_form.start_time;
+        let endTime = this.meeting_detail_form.end_time;
+        debugger
+        if(this.myUtils.judgeDateInRange(startTime,endTime)) {
+          this.$LjMessage('warning',{
+            title:'警告',
+            msg:'当前会议正在进行,不允许修改',
+          });
+          return;
+        }
+
+
+        //console.log(this.meeting_detail_form);
         this.add_meeting_dialog_visible = true;
         this.add_meeting_dialog_title_type = 2;
 
@@ -979,6 +1026,8 @@
           participants: [],//参会人员数组
           attachment: _.map(this.meeting_detail_form.attachment, 'id'),//附件id
         };
+
+
         //let id = this.meeting_detail_form.id;
         /*this.$http.put(`${this.url}/meeting/meeting/${id}`,this.add_meeting_form).then(res=> {
           debugger
@@ -1218,8 +1267,6 @@
           }
         });
 
-
-        //console.log(item);
       },
 
 
@@ -1233,6 +1280,7 @@
           let daysList = [...this.getPrevMonthRestList(date), ...this.getCurrentMonthList(date), ...this.getNextMonthRestList(date)];
           daysList.forEach((item, index) => {
             item.id = ++index;
+            item.todoListTimeLine = [];
           });
           //处理数据
           let startTime = utils.formatDate(daysList[0].datetime, 'yyyy-MM-dd hh:mm:ss');
@@ -1257,7 +1305,11 @@
                   };
                   //mStatus.push(sObj.status);
                   daysList[mIdx].todoType = sObj.status > (daysList[mIdx].todoType || 0) ? sObj.status : (daysList[mIdx].todoType || 0);
-                  daysList[mIdx].todoList.push(sObj);
+                  if(sObj.status==0||sObj.status==1) {
+                    daysList[mIdx].todoList.push(sObj);
+                  }
+
+                  daysList[mIdx].todoListTimeLine.push(sObj);
                 }
                 //console.log(curData);
               });
@@ -1453,9 +1505,34 @@
   }
 </script>
 
+<style lang="scss">
+
+  #discussPolitics {
+
+    .calendar-day {
+      .ui-container {
+        .calendar-day-item-container {
+          &:hover {
+            sup {
+              display: none !important;
+            }
+          }
+        }
+      }
+    }
+
+    .timeline {
+      .el-card {
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+</style>
+
 <style scoped lang="scss">
   @import "../../../assets/scss/humanResource/discussPolitics/index";
-  @import "../../../assets/scss/icon";
+  //@import "../../../assets/scss/icon";
 
   @mixin discussPoliticsImg($m, $n) {
     $url: '../../../assets/image/humanResource/discussPolitics/' + $n + '/' + $m;
@@ -1466,7 +1543,7 @@
     #discussPolitics {
       /*.icon-delete {
         @include discussPoliticsImg('shanchu.png', 'theme1');
-      }*/
+      }
 
       .icon-delete-red {
         @include discussPoliticsImg('shanchu1.png', 'theme1');
@@ -1477,12 +1554,59 @@
       }
 
       .icon-edit {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
+        @include discussPoliticsImg('bianji_2.png', 'theme1');
+      }*/
+    }
+  }
+
+  #theme_name.theme1 {
+    #discussPolitics {
+      @include discussPoliticsImg('di.png','theme1');
+
+      .icon-delete {
+        @include discussPoliticsImg('shanchu.png', 'theme1');
+      }
+
+      .icon-delete-red {
+        @include discussPoliticsImg('shanchu1.png', 'theme1');
+      }
+
+      .icon-upload {
+        @include discussPoliticsImg('ckfj.png', 'theme1');
+      }
+
+      .icon-cancel {
+        @include discussPoliticsImg('xzquxiao.png', 'theme1');
+      }
+
+      .icon-edit {
         @include discussPoliticsImg('bianji_2.png', 'theme1');
       }
+
+      .timeline  {
+        .timeline-bg {
+          @include discussPoliticsImg('椭圆形.png','theme1');
+        }
+
+      }
+    }
+  }
+
+  #theme_name.theme2 {
+    #discussPolitics {
+
+    }
+  }
+
+  #theme_name.theme3 {
+    #discussPolitics {
+
+    }
+  }
+
+  #theme_name.theme4 {
+    #discussPolitics {
+
     }
   }
 </style>

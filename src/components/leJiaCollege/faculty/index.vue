@@ -3,19 +3,19 @@
         <div class="faculty-lists">
             <div class="faculty-list-info flex-center" v-for="(item,index) in dataLists">
                 <div class="faculty-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)"
-                     @click.stop="detail(item.id,index)">
-                    <div class="faculty-box-top justify-end items-bet" v-show="seen&&index===current">
-                        <span><i @click.stop="edit(item.id,index)">编辑</i><i
-                                @click.stop="del(item.id,index)">删除</i></span>
+                     @click.stop="detail(item)">
+                    <div class="faculty-box-top justify-end items-bet" v-show="seen&&index===current_type">
+                        <span><i @click.stop="edit(item)">编辑</i><i
+                                @click.stop="del(item)">删除</i></span>
                     </div>
                     <div class="faculty-box-middle">
                         <div>
-                            <img src="../../../assets/image/newMedia/theme1/staff.png" alt="">
+                            <img :src="item.cover===null?'':item.cover[0].uri" alt="">
                         </div>
                     </div>
                     <div class="faculty-box-bottom">
-                        <span>{{item.name}}</span>
-                        <span>{{item.abstract}}</span>
+                        <span>{{item.user_id===null?'':item.user_id.name}}</span>
+                        <span>{{item.desc}}</span>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <el-pagination
                         :total="count"
                         layout="total,jumper,prev,pager,next"
-                        :current-page="params.page"
+                        :current-page="params.offset"
                         :page-size="params.limit"
                         @current-change="handleChangePage"
                 >
@@ -43,54 +43,31 @@
                    @close="visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
-                    <h3>{{flag===1?'编辑讲师详情':'新增讲师详情'}}</h3>
+                    <h3>{{flag===1?'编辑讲师':flag===2?'新增讲师':flag===3?'讲师详情':''}}</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form size="mini" v-model="form" :rules="rules" label-width="80px" >
-                        <el-form-item label="讲师头像">
-                            <!--<el-input v-model="ruleForm.photo"></el-input>-->
-                            <!--<Upload :file="photo1" @success="getImgIds"></Upload>-->
+                <div class="dialog_main borderNone">
+                    <el-form  v-model="form"  label-width="80px" >
+                        <el-form-item label="讲师头像" v-if="flag===1||flag===2">
+                            <lj-upload size="40"   v-model="form.file_info"></lj-upload>
+                        </el-form-item>
+                        <el-form-item label="讲师头像" v-if="flag===3">
+                            <lj-upload size="40"   :data="form.file_info" disabled="disabled"></lj-upload>
                         </el-form-item>
                         <el-form-item label="讲师姓名" prop="name">
-                            <el-input v-model="form.name"></el-input>
+                            <el-input v-model="form.name" :disabled="flag===3" @focus="staffModule=true"></el-input>
                         </el-form-item>
                         <el-form-item label="点评摘要" prop="abstract">
-                            <el-input v-model="form.abstract"></el-input>
+                            <el-input v-model="form.comment" :disabled="flag===3"></el-input>
                         </el-form-item>
                         <el-form-item label="讲师介绍" prop="desc">
-                            <el-input v-model="form.desc" type="textarea" :rows="10"></el-input>
+                            <el-input v-model="form.desc" type="textarea" :rows="10" :disabled="flag===3"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="submit">确定</el-button>
-                    <el-button type="info" size="small" @click="visible = false;current_id = ''">取消</el-button>
-                </div>
-            </div>
-        </lj-dialog>
-
-        <!--讲师详情-->
-        <lj-dialog :visible="detail_visible" :size="{width: 500 + 'px',height: 600 + 'px'}"
-                   @close="detail_visible = false">
-            <div class="dialog_container">
-                <div class="dialog_header">
-                    <h3>讲师详情</h3>
-                </div>
-                <div class="dialog_main">
-                    <div class="detail-info">
-                        <div class="top">
-                            <img src="../../../assets/image/newMedia/theme1/staff.png" alt="">
-                            <span>{{form.name}}</span>
-                            <span>{{form.abstract}}</span>
-                        </div>
-                        <div class="content scroll_bar">
-                            <span>{{form.desc}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="detail_visible = false;current_id = ''">关闭
-                    </el-button>
+                    <el-button type="danger" v-if="flag===1||flag===2" size="small" @click="submit(flag)">确定</el-button>
+                    <el-button type="info" v-if="flag===1||flag===2" size="small" @click="visible = false;current_item = ''">取消</el-button>
+                    <el-button type="danger" v-if="flag===3" size="small" @click="visible = false;current_item = ''">关闭</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -107,10 +84,12 @@
                 </div>
                 <div class="dialog_footer">
                     <el-button type="danger" size="small" @click="delOk">确定</el-button>
-                    <el-button type="info" size="small" @click="delete_visible = false;current_id = ''">取消</el-button>
+                    <el-button type="info" size="small" @click="delete_visible = false;current_item = ''">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
+
+        <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
 
     </div>
 </template>
@@ -118,169 +97,46 @@
 <script>
     import LjDialog from '../../common/lj-dialog.vue';
     import Upload from '../../common/upload';
+    import StaffOrgan from '../../common/staffOrgan.vue';
+    import LjUpload from '../../common/lightweightComponents/lj-upload';
 
     export default {
         name: "faculty",
         components: {
             LjDialog,
             Upload,
+            StaffOrgan,
+            LjUpload
         },
         data() {
             return {
                 count: 0,
                 seen: true,
-                current: '',
-                current_item:'',
-                current_id:'',
+                current_type: '',//当前类型
+                current_item:'',//当前项
                 visible: false,
-                flag:1,
+                staffModule:false,//员工
+                flag:'',
                 detail_visible: false,//讲师详情
                 delete_visible: false,//删除讲师
                 params: {//查询参数
                     search: '',
                     startRange: '',
                     endRange: '',
-                    page: 1,
+                    offset: 1,
                     limit: 10,
                     department_ids: '',
                     export: '',
                 },
-                dataLists: [
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-                    {
-                        id:1,
-                        avatar: '',
-                        time: '',
-                        view: 232,
-                        name:'赵丽颖',
-                        abstract:'一句话概括讲师的优秀',
-                        desc:'一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀一句话概括讲师的优秀'
-                    },
-
-                ],
-
-
-                photo1: {
-                    keyName: 'photo1',
-                    setFile: [
-                        {
-                            id: 55,
-                            url: 'http://static.lejias.cn/lejia8e9013abd8af58047660bc8616f775a8.jpg',
-                        },
-                        {
-                            id: 44,
-                            url: 'http://static.lejias.cn/lejia20c807d28018c05cb2950017673d93f2.jpg',
-                        },
-                    ],
-                    size: {},
-                },
-                photo2: {
-                    keyName: 'photo2',
-                    setFile: {},
-                },
+                dataLists: [],
                 form:{
-                    id:'',
-                    name:'',
-                    desc:'',
-                    abstract:'',
+                    name:'',//讲师名称
+                    desc:'',//讲师简介
+                    comment:'',//点评概要
+                    file_info:'',//文件参数
+                    user_id:'',//用户id
                 },
-                rules: {
-                    photo:[
-                        { required: true, message: '请输入姓名', trigger: 'blur' },
-                    ],
-                    name: [
-                        { required: true, message: '请输入姓名', trigger: 'blur' },
 
-                    ],
-                    abstract: [
-                        { required: true, message: '请输入点评内容', trigger: 'blur' },
-
-                    ],
-                    desc: [
-                        { required: true, message: '请输入介绍内容', trigger: 'blur' },
-                        // { min: 10, max: 30, message: '长度在 10 到 30 个字符', trigger: 'blur' }
-                    ],
-                },
             }
         },
         mounted(){
@@ -292,10 +148,26 @@
         beforeDestroy(){
             this.$bus.off('add',this.getVal);
         },
+        watch:{
+            form:{
+                handler(val){
+
+                },
+                deep:true
+            }
+        },
 
         methods: {
+            //获取员工信息
+            hiddenStaff(ids, names, arr) {
+                this.staffModule = false;
+                if (ids !== 'close') {
+                    this.form.name = names;
+                    this.form.user_id = ids[0];
+                }
+            },
             callbackSuccess(res) {
-                if (res.code === 200) {
+                if (res.status === 200) {
                     this.$LjNotify('success', {
                         title: '成功',
                         message: res.msg,
@@ -310,77 +182,109 @@
                     });
                 }
             },
-            //获取bus传值
+            //新增弹窗
             getVal(val){
-                this.visible = val;//新增弹窗显示
+                this.visible = val;
                 this.flag = 2;
-                console.log(Object.keys(this.form));
-                for(let item of Object.keys(this.form)){
-                    this.form[item] = '';
+                this.current_item = '';
+                for (let item of Object.keys(this.form)){
+                    this.form[item] = ''
                 }
             },
             //换页
             handleChangePage(page) {
-                this.params.page = page;
+                this.params.offset = page;
                 this.getDataLists();
             },
             //获取列表
             getDataLists(){
-                this.$http.get('', this.params).then(res => {
-                    if(res.code===200){
+                this.showLoading(true);
+                this.$http.get(globalConfig.leJiaCollege_server+'/api/teachers/lecturer', this.params).then(res => {
+                    this.showLoading(false);
+                    if(res.status===200){
                         this.dataLists  = res.data.data;
+                        this.count=res.data.total;
+                    }else {
+                        this.dataLists  = [];
+                        this.count=0;
                     }
                 })
             },
             //详情弹窗
-            detail(id,index){
-                this.detail_visible = true;
+            detail(row){
+                this.visible = true;
+                this.flag = 3;
+                this.current_item = row;
                 for(let item of Object.keys(this.form)){
-                    this.form[item] = this.dataLists[index][item];
+                    this.form[item]=row[item];
                 }
-                this.current_id = id;
-
+                let arr=[];
+                arr.push(row.cover);
+                this.form.file_info = arr;
+                this.form.name = row.user_id.name;
             },
             //删除弹窗
-            del(id,index) {
+            del(row) {
                 this.delete_visible = true;
-                this.current_id = id;
+                this.current_item = row;
             },
             //确认删除
             delOk(){
-                this.$http.delete('', this.current_id).then(res => {
+                this.$http.delete(globalConfig.leJiaCollege_server+'/api/teachers/lecturer/'+this.current_item.id).then(res => {
                     this.callbackSuccess(res);
+                    this.delete_visible = false;
+                    this.current_item = '';
                 })
             },
             //编辑弹窗
-            edit(id,index){
+            edit(row){
                 this.visible = true;
                 this.flag = 1;
-                this.current_id = id;
+                this.current_item = row;
                 for(let item of Object.keys(this.form)){
-                    this.form[item] = this.dataLists[index][item];
+                    this.form[item]=row[item];
                 }
+                let arr=[];
+                arr.push(row.cover);
+                console.log(row);
+                this.form.file_info = arr;
+                this.form.name = row.user_id.name;
+                this.form.user_id = row.user_id.id;
             },
             //提交
-            submit(){
-                this.$http.post('', this.form).then(res => {
-                    this.callbackSuccess(res);
-                })
+            submit(type){
+                console.log(this.form.file_info);
+                let paramsForm={
+                    user_id:this.form.user_id,
+                    cover:this.form.file_info[0],
+                    comment:this.form.comment,
+                    desc:this.form.desc,
+                };
+                if(type===1){
+                    this.$http.put(globalConfig.leJiaCollege_server+'/api/teachers/lecturer/'+this.current_item.id, paramsForm).then(res => {
+                        this.callbackSuccess(res);
+                        this.visible=false;
+                        this.current_item = '';
+                    })
+                }else if(type===2){
+                    this.$http.post(globalConfig.leJiaCollege_server+'/api/teachers/lecturer', paramsForm).then(res => {
+                        this.callbackSuccess(res);
+                        this.visible=false;
+                        this.current_item = '';
+                    })
+                }
+
             },
-            //获取上传图片信息
-            // getImgIds(val) {
-            //     console.log(val);
-            // },
 
             //鼠标移入
             onMousteIn: function (index) {
                 this.seen = true; //鼠标移入显示
-                this.current = index;
+                this.current_type = index;
             },
             //鼠标移出
             onMousteOut: function (index) {
                 this.seen = false; //鼠标移出隐藏
-                this.current = null;
+                this.current_type = null;
             },
         }
     }

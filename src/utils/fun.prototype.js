@@ -1,9 +1,9 @@
 export default {
   install(Vue, options) {
     // 路由跳转
-    Vue.prototype.routerLink = function (url, data) {
+    Vue.prototype.routerLink = function (url, data,url_name) {
       if (data) {
-        this.$router.push({path: url, query: data});
+        this.$router.push({path: url, query: data,name:url_name});
       } else {
         this.$router.push(url);
       }
@@ -85,5 +85,58 @@ export default {
         }
     })
     Vue.prototype.$bus = Bus;
+
+    //统一管理接口处理结果
+    Vue.prototype.$LjNotifyEasy = function(res,callback) {
+      if (res.code.endsWith('0')) {
+        this.$LjNotify('success', {
+          title: '成功',
+          message: res.msg,
+        });
+        if(callback) {
+          callback();
+        }
+      } else {
+        this.$LjNotify('error', {
+          title: '失败',
+          message: res.msg,
+        });
+      }
+    }
+
+    Vue.prototype.$LjMessageEasy = function(res,callback) {
+      if (res.code.endsWith('0')) {
+        this.$LjMessage('success', {
+          title: '成功',
+          msg: res.msg,
+        });
+        if(callback) {
+          callback();
+        }
+      } else {
+        this.$LjMessage('error', {
+          title: '失败',
+          msg: res.msg,
+        });
+      }
+    }
+
+    Vue.prototype.$resetForm = function (form) {
+      //重置表单
+      if (!form) {
+        return false;
+      }
+      for (var key in form) {
+        if (typeof form[key] === 'string' || typeof form[key] === 'number') {
+          form[key] = '';
+        }
+        if (form[key] instanceof Array) {
+          form[key] = [];
+        }
+        if (form[key] instanceof Object) {
+          this.$resetForm(form[key]);
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,175 @@
+@import "../../../common.scss";
+
+#theme_name {
+  #notice {
+    .listTopCss {
+      height: 0;
+      .search-toolbar {
+        position: fixed;
+        top: 106px;
+        right: 70px;
+        height: 30px;
+        @include flex('justify-end');
+        width: 40%;
+        > div {
+          width: 30px;
+          height: 30px;
+          //margin-right: 50px;
+        }
+
+        .icons-font {
+          height: 30px;
+          width: 70px;
+          @include flex('flex-center');
+          b {
+            color: white;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .header_right {
+      display: flex;
+      flex-direction: row-reverse;
+      .icon-add {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        @include flex('flex-center');
+        cursor: pointer;
+        background-color: #CF2E33;
+        b {
+          color: $colorFFF;
+          font-size: 30px;
+          margin-bottom: 6px;
+        }
+      }
+    }
+
+    .read-dialog {
+      .dialog_main {
+        display: flex;
+        flex-direction: column;
+        .read-toolbar {
+          height: 10%;
+          //background-color: red;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
+          .read-icon {
+            height: 30px;
+            width: 100px;
+            cursor: pointer;
+            margin-right: 20px;
+            @include flex('flex-center');
+            b {
+              color: #797982;
+              font-size: 14px;
+            }
+            &.checked {
+              b {
+                color: white;
+              }
+            }
+          }
+        }
+        .read-container {
+          flex: 1 0 auto;
+          padding: 20px;
+          background-color: white;
+          //background-color: blue;
+        }
+
+      }
+
+    }
+
+
+    .notice-detail-dialog {
+      .dialog_main {
+        display: flex;
+        flex-direction: column;
+        .notice-detail-container {
+          height: 300px;
+          .notice-detail-list {
+            font-size: 14px;
+            width: calc(100% - 40px);
+            height: 100%;
+
+            .form-item {
+              width: 100%;
+              padding: 12px 0;
+              vertical-align: center;
+              position: relative;
+
+              .form-item-title {
+                opacity: .5;
+                text-align: right;
+              }
+
+              .form-item-content {
+                //height: 100%;
+                position: relative;
+                text-align: left;
+                font-weight: 700;
+                letter-spacing: 2px;
+
+                &.attachment-container {
+                  position: absolute;
+                  top: -20px;
+                }
+
+                .form-item-content-span-red {
+                  color: #D1373C;
+                }
+
+                .form-item-content-span-input {
+                  display: inline-block;
+                  height: 30px;
+                  line-height: 30px;
+                  width: 40px;
+                  background-color: #fff;
+                  text-align: center;
+                }
+
+              }
+            }
+
+            //会议个数dialog
+
+          }
+        }
+        .notice-table-container {
+          flex: 1;
+          //background-color: gray;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #notice {
+
+  }
+}
+
+#theme_name.theme2 {
+  #notice {
+
+  }
+}
+
+#theme_name.theme3 {
+  #notice {
+
+  }
+}
+
+#theme_name.theme4 {
+  #notice {
+
+  }
+}

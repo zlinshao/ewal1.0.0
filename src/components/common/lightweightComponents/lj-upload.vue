@@ -3,7 +3,7 @@
   <div id="lj_upload">
     <div class="upload-container">
       <span v-if="title" class="upload-title">{{title}}</span>
-      <upload :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
+      <upload :max-size="maxSize" :download="download" show :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
     </div>
   </div>
 </template>
@@ -21,6 +21,12 @@
       data:{},
       disabled:{
         default:false,
+      },
+      download: {
+        default: true
+      },
+      maxSize:{
+        type: Number,
       },
     },
     components: {

@@ -1,0 +1,228 @@
+@import "../common.scss";
+
+#theme_name {
+  #personal_center {
+    background-color: #FCFCFC;
+    height: 100%;
+    width: 100%;
+    //width: 100%;
+    .personal-center-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      //background-color: red;
+      height: 100%;
+      width: 100%;
+      padding-top: 15px;
+      //width: 100%;
+      /*左边容器*/
+      .container-left {
+        width: 18%;
+        background-color: $colorFFF;
+        height: 100%;
+        .container-left-up {
+
+          height: 40%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+
+          .personal-info {
+            height: 60%;
+            width: 100%;
+            @include flex('flex-center');
+            flex-direction: column;
+
+            .personal-info-photo {
+              width: 80px;
+              height: 80px;
+              border-radius:50%;
+              overflow: hidden;
+              //background-color: greenyellow;
+              margin-top: 30px;
+              margin-bottom: 20px;
+            }
+            .personal-info-name {
+              @include flex('flex-center');
+              position: relative;
+              font-size:20px;
+              height: 26px;
+              line-height: 26px;
+              //width: 140px;
+              color: $color874;
+              font-weight: 700;
+              margin-bottom: 10px;
+
+              .personal-info-badge {
+                cursor: default;
+                user-select: none;
+                position: absolute;
+                top: 2px;
+                right: -26px;
+                //background-color: #666;
+                height: 19px;
+                width: 22px;
+                @include flex('flex-center');
+                span {
+                  display: inline-block;
+                  height: 19px;
+                  font-size: 10px;
+                  color: $colorE33;
+                  @include flex('flex-center');
+                  position: absolute;
+                  top: -2px;
+                }
+              }
+            }
+            .personal-info-status {
+              //@include flex('flex-center');
+              font-size: 16px;
+              line-height: 21px;
+              width: 160px;
+              height: 21px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              color: $color874;
+            }
+          }
+          .personal-group-button {
+            flex: 1;
+            width: 100%;
+            //background-color: blueviolet;
+            display: flex;
+            justify-content: center;
+
+            .personal-group-button-container {
+              width: 80%;
+              height: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              > div.group-button-item {
+                width: 24%;
+                height: 33%;
+                cursor: pointer;
+                //background-color: red;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+
+                .group-button-item-icon {
+                  width: 21px;
+                  height: 21px;
+                  &.icon-collect {
+                    height: 21px;
+                  }
+                  &.icon-message {
+                    height: 19px;
+                  }
+                  &.icon-log {
+                    height: 18px;
+                  }
+                }
+                .group-button-item-content {
+                  font-family: "Microsoft YaHei";
+                  padding-top: 20%;
+                  font-size: 14px;
+                  height: 19px;
+                  line-height: 19px;
+                  color: $color874;
+                  //overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                }
+              }
+            }
+          }
+          .hr-horizontal {
+            width: 80%;
+            height: 1px;
+            background-color: $color8D8;
+          }
+
+        }
+        .container-left-down {
+          height: 60%;
+          //background-color: #0BB07B;
+          ul {
+            height: 100%;
+            //list-style: ;
+            li {
+              &:hover {
+                background-color: rgba(216,216,216,.15);
+              }
+              &.checked {
+                background-color: rgba(216,216,216,.3);
+              }
+              height: 20%;
+              cursor: pointer;
+              //background-color: red;
+              //padding: 10px 0;
+              //@include flex('flex-center');
+              .li-item {
+                width: 100%;
+                height: 100%;
+                //background-color: red;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding-left: 60px;
+                //padding: 10px 0;
+                .li-item-icon {
+                  display: inline-block;
+                  width: 25px;
+                  height: 25px;
+                }
+
+                .li-item-content {
+                  height: 24px;
+                  font-size: 18px;
+                  line-height: 24px;
+                  color: $color874;
+                  padding-left: 20px;
+                }
+              }
+            }
+          }
+        }
+      }
+      /*右边容器*/
+      .container-right {
+        width: 82%;
+        flex: 1;
+        //background-color: yellow;
+        height: 100%;
+        padding: 0 15px 15px 15px;
+
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #personal_center {
+
+  }
+}
+
+#theme_name.theme2 {
+  #personal_center {
+
+  }
+}
+
+#theme_name.theme3 {
+  #personal_center {
+
+  }
+}
+
+#theme_name.theme4 {
+  #personal_center {
+
+  }
+}

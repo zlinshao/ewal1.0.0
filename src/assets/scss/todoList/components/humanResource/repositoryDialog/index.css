@@ -132,25 +132,96 @@
     background: #747474;
     border-radius: 4px; }
 
-#interview_dialog_list #lj_dialog #interview_form .dialog_header .header_right span, #interview_dialog_list #lj_dialog #interview_form_result .dialog_header .header_right span {
-  cursor: pointer !important; }
-#interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row {
+.action-bar {
   width: 100%;
-  margin: 10px;
-  text-align: left; }
-  #interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row .interview_dialog_form_label, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row .interview_dialog_form_label {
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
     display: inline-block;
-    color: #C8C8CC;
-    text-align: right;
-    width: 190px;
-    padding-right: 30px; }
-  #interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row > span, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row > span {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#repository_dialog_list #lj_dialog .receive-notify .notify-date-time {
+  margin-left: 40px;
+  color: #CCCCCC;
+  font-size: 14px; }
+#repository_dialog_list #lj_dialog .receive-notify .detail-container .detail-item {
+  display: inline-block;
+  margin-right: 24px; }
+  #repository_dialog_list #lj_dialog .receive-notify .detail-container .detail-item > :nth-child(1) {
+    font-size: 12px;
+    font-weight: bold; }
+  #repository_dialog_list #lj_dialog .receive-notify .detail-container .detail-item > :nth-child(2) {
+    font-size: 12px;
+    padding: 8px;
+    color: #686874; }
+#repository_dialog_list #lj_dialog .receive-notify .left-bottom {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  position: absolute;
+  bottom: 80px;
+  left: 80px; }
+  #repository_dialog_list #lj_dialog .receive-notify .left-bottom > div > div {
     font-size: 14px;
-    padding: 0 50px;
-    color: #000000; }
-    #interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row > span.interview_dialog_form_checkbox, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row > span.interview_dialog_form_checkbox {
-      display: inline-block; }
-      #interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row > span.interview_dialog_form_checkbox .el-radio, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row > span.interview_dialog_form_checkbox .el-radio {
-        display: inline-block !important; }
+    margin-right: 20px; }
+#repository_dialog_list #lj_dialog .receive-notify footer.common-page {
+  height: 100px;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 200px;
+  z-index: 6; }
+  #repository_dialog_list #lj_dialog .receive-notify footer.common-page .develop {
+    position: absolute;
+    top: -30px;
+    width: 80px;
+    cursor: pointer;
+    height: 30px;
+    opacity: 1;
+    border-radius: 10px 10px 0 0;
+    background-color: #f2f2f2; }
+#repository_dialog_list #lj_dialog .receive-notify .dialog_footer {
+  text-align: right; }
+  #repository_dialog_list #lj_dialog .receive-notify .dialog_footer button {
+    margin-right: 40px; }
 
 /*# sourceMappingURL=index.css.map */

@@ -4,7 +4,7 @@
         <div class="content scroll_bar" @scroll="handleScroll" @click="show_control = false">
           <div class="flex cards" v-if="house_info.length > 0">
             <div v-for="item in house_info" :key="item.id" class="justify-center">
-              <div class="card" :class="['card_trans-' + item.id]" @dblclick.prevent="handleOpenCard(item)">
+              <div class="card" :class="['card_trans-' + item.id]" @dblclick.stop="handleOpenCard(item)">
                 <div class="photo">
                   <div class="picture">
                     <!--<img class="picture" :src="item.url" alt="...">-->
@@ -25,7 +25,7 @@
                   </div>
                   <div class="notice_info flex-center">
                     <span class="notice_type">{{ item.house_status_name }}</span>
-                    <span :class="['notice-' + item.warning_status ]" class="notice"></span>
+                    <span :class="['announcement-' + item.warning_status ]" class="notice"></span>
                   </div>
                 </div>
                 <div class="control flex-center" @click.stop="" v-if="show_control === item.id ">
@@ -175,19 +175,82 @@
           </div>
         </div>
       </lj-dialog>
+
+      <!--行政检查-->
+      <lj-dialog
+        :visible="check_visible"
+        :size="{width: 500 + 'px',height: 600 + 'px'}"
+        @close="handleCancelAddCheck"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>行政检查</h3>
+          </div>
+          <div class="dialog_main">
+            <el-form label-width="80px" size="small" class="borderNone">
+              <el-form-item label="检查时间" placeholder="请输入">
+                <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" v-model="check_form.check_datetime"></el-date-picker>
+              </el-form-item>
+              <el-form-item label="检查人">
+                <el-input v-model="check_form.user_name" placeholder="请选择" readonly @focus="staff_visible = true"></el-input>
+              </el-form-item>
+              <el-form-item label="现场录像">
+                <Upload :file="check_file" @success="handleGetFile"></Upload>
+              </el-form-item>
+              <el-form-item label="检查评级">
+                <el-select v-model="check_form.check_level" placeholder="请选择">
+                  <el-option :value="1" label="良好"></el-option>
+                  <el-option :value="2" label="一般"></el-option>
+                  <el-option :value="3" label="查"></el-option>
+                  <el-option :value="4" label="特差"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="行政备注">
+                <el-input type="textarea" v-model="check_form.check_content" :rows="6" placeholder="请输入"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" @click="handleConfirmCheck">确定</el-button>
+            <el-button type="info" @click="handleCancelAddCheck">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
+      <StaffOrgan :module="staff_visible" @close="handleGetStaff"></StaffOrgan>
     </div>
 </template>
 
 <script>
   import LjDialog from '../../common/lj-dialog.vue';
   import Upload from '../../common/upload.vue';
+  import StaffOrgan from '../../common/staffOrgan.vue';
 
     export default {
         name: "index",
         props: ['houseSource','info'],
-        components: { LjDialog ,Upload},
+        components: { LjDialog ,Upload,StaffOrgan},
         data() {
             return {
+              //行政检查
+              check_visible: false,
+              check_form: {
+                album_file: [],
+                check_content: '',
+                check_datetime: '',
+                check_level: '',
+                user_name: '',
+                check_user_id: ''
+              },
+              staff_visible: false,
+              check_file: {
+                keyName: 'check_photo',
+                setFile: [],
+                size: {
+                  width: '50px',
+                  height: '50px'
+                }
+              },
               market_server: globalConfig.market_server,
               show_control: false,
               content_height: window.innerHeight - 171,
@@ -197,6 +260,7 @@
                 {id: 2,val: '上传'},
                 {id: 3,val: '标价'},
                 {id: 4,val: '标记'},
+                {id: 5,val: '检查'}
               ],
               is_tip: 0,
               params: {
@@ -285,6 +349,49 @@
         },
         computed: {},
         methods: {
+          //确定检查
+          handleConfirmCheck() {
+            this.$http.post(this.market_server + 'v1.0/market/check',{
+              house_id: this.currentHouse.id,
+              ...this.check_form
+            }).then(res => {
+              console.log(res);
+              if (res.code === 200) {
+                this.$LjMessage('success',{
+                  title: '成功',
+                  message: res.message
+                });
+                this.handleCancelAddCheck();
+              } else {
+                this.$LjMessage('warning',{
+                  title: '失败',
+                  message: res.message
+                })
+              }
+            })
+          },
+          //取消行政检查
+          handleCancelAddCheck() {
+            for (var key in this.check_form) {
+              this.check_form[key] = '';
+            }
+            this.check_form.album_file = [];
+            this.check_visible = false;
+          },
+          //获取文件
+          handleGetFile(val) {
+            if (val !== 'close') {
+              this.check_form.album_file = val[1];
+            }
+          },
+          //获取人员
+          handleGetStaff(id,name) {
+            if (id !== 'close') {
+              this.check_form.check_user_id = id[0];
+              this.check_form.user_name = name;
+            }
+            this.staff_visible = false;
+          },
           //上传
           handleConfirmUpload() {
             this.$http.post(this.market_server + 'v1.0/market/house/album',{
@@ -393,6 +500,7 @@
             this.upload_visible = tmp.id === 2;
             this.setPriceVisible = tmp.id === 3;
             this.mark_visible = tmp.id === 4;
+            this.check_visible = tmp.id === 5;
           },
           handleOpenCard(item) {
             this.$emit('open',item);

@@ -1,21 +1,21 @@
 /*
 Error: Invalid GBK character "\xE9"
-        on line 28 of detail.scss
+        on line 35 of detail.scss
 
-23:       }
-24:       .detail-left-list{
-25:         padding-left: 100px;
-26:         width: 550px;
-27:         border-right:1px solid #D6D6D6;
-28:         //隐藏滚动条
-29:         .element,
-30:         .outer-container {
-31:           width: 400px;
-32:           height: 770px;
-33:         }
+30: 
+31:         .detail-left-list {
+32:           padding-left: 100px;
+33:           width: 550px;
+34:           border-right: 1px solid #D6D6D6;
+35:           //隐藏滚动条
+36:           .element,
+37:           .outer-container {
+38:             width: 400px;
+39:             height: 770px;
+40:           }
 
 Backtrace:
-detail.scss:28
+detail.scss:35
 C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1043:in `rescue in block in find_encoding_error'
 C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1040:in `block in find_encoding_error'
 C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each'
@@ -42,4 +42,4 @@ C:/App/Ruby24-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE9\"\A         on line 28 of detail.scss\A \A 23:       }\A 24:       .detail-left-list{\A 25:         padding-left: 100px;\A 26:         width: 550px;\A 27:         border-right:1px solid #D6D6D6;\A 28:         //隐藏滚动条\A 29:         .element,\A 30:         .outer-container {\A 31:           width: 400px;\A 32:           height: 770px;\A 33:         }"; }
+  content: "Error: Invalid GBK character \"\xE9\"\A         on line 35 of detail.scss\A \A 30: \A 31:         .detail-left-list {\A 32:           padding-left: 100px;\A 33:           width: 550px;\A 34:           border-right: 1px solid #D6D6D6;\A 35:           //隐藏滚动条\A 36:           .element,\A 37:           .outer-container {\A 38:             width: 400px;\A 39:             height: 770px;\A 40:           }"; }

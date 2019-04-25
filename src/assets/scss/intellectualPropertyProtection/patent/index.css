@@ -132,6 +132,52 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name #patent h2 {
   margin-left: 42px;
   height: 32px;
@@ -141,66 +187,96 @@
   line-height: 32px; }
 
 #theme_name.theme1 #patent {
-  background-color: #FFFFFF; }
-  #theme_name.theme1 #patent div .patentContainer {
-    width: 1192px;
-    margin: 0 365px 0 365px;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row; }
-    #theme_name.theme1 #patent div .patentContainer .patentList {
-      width: 33%; }
-      #theme_name.theme1 #patent div .patentContainer .patentList div {
-        width: 282px;
-        height: 282px;
+  background-color: #ffffff;
+  width: 100%;
+  height: 100%; }
+  #theme_name.theme1 #patent > div {
+    width: 100%;
+    height: 100%; }
+    #theme_name.theme1 #patent > div .patentContainer {
+      display: flex;
+      flex-direction: row; }
+      #theme_name.theme1 #patent > div .patentContainer .patentContainerLeft {
+        height: 100%;
+        width: 365px; }
+      #theme_name.theme1 #patent > div .patentContainer .patentContainerMid {
+        width: 1192px;
+        height: 100%;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: 74px 0 19px 0; }
-        #theme_name.theme1 #patent div .patentContainer .patentList div:hover h2, #theme_name.theme1 #patent div .patentContainer .patentList div:hover h3 {
-          color: #cf2e33; }
-        #theme_name.theme1 #patent div .patentContainer .patentList div > h1 {
-          width: 105px;
-          height: 24px;
-          font-size: 24px;
-          font-family: 'jingDianXingShu';
-          color: #686874;
-          line-height: 24px;
-          display: flex;
-          justify-content: center; }
-        #theme_name.theme1 #patent div .patentContainer .patentList div h2 {
-          width: 105px;
-          height: 30px;
-          margin-left: 0px;
-          font-size: 21px;
-          font-family: MicrosoftYaHei-Bold;
-          font-weight: bold;
-          color: #686874;
-          line-height: 27px;
-          display: flex;
-          justify-content: center; }
-        #theme_name.theme1 #patent div .patentContainer .patentList div h3 {
-          width: 136px;
-          height: 26px;
-          font-size: 20px;
-          font-family: MicrosoftYaHei-Bold;
-          font-weight: bold;
-          color: #686874;
-          line-height: 19px;
-          letter-spacing: 1px;
-          display: flex;
-          justify-content: center; }
-      #theme_name.theme1 #patent div .patentContainer .patentList div + span {
-        width: 93px;
-        height: 21px;
-        margin-left: 95px; }
-        #theme_name.theme1 #patent div .patentContainer .patentList div + span span {
-          font-size: 16px;
-          font-family: MicrosoftYaHei;
-          color: #686874;
-          line-height: 19px; }
-          #theme_name.theme1 #patent div .patentContainer .patentList div + span span:hover {
+        flex-wrap: wrap;
+        flex-direction: row; }
+        #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList {
+          width: 33%; }
+          #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div:hover .patentDetail > h3 {
             color: #cf2e33; }
+          #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div:hover .handleTrigger {
+            display: inline; }
+            #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div:hover .handleTrigger .handlePointer {
+              display: inline; }
+          #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .patentDetail {
+            width: 282px;
+            height: 282px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 74px 0 19px 0; }
+            #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .patentDetail > h1 {
+              width: 200px;
+              font-size: 24px;
+              font-family: 'jingDianXingShu';
+              color: #686874;
+              line-height: 24px;
+              display: flex;
+              justify-content: center; }
+            #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .patentDetail > h3 {
+              width: 136px;
+              height: 26px;
+              font-size: 20px;
+              font-family: MicrosoftYaHei-Bold;
+              font-weight: bold;
+              color: #686874;
+              line-height: 19px;
+              letter-spacing: 1px;
+              display: flex;
+              justify-content: center;
+              margin-top: 20px; }
+          #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .handleTrigger {
+            width: 93px;
+            height: 21px;
+            margin-left: 95px;
+            display: none; }
+            #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .handleTrigger:hover .handlePatent {
+              display: inline; }
+            #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .handleTrigger:hover .handlePointer {
+              display: none; }
+            #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .handleTrigger .handlePointer {
+              width: 100%;
+              height: 100%;
+              display: none;
+              position: relative;
+              top: -20px;
+              left: 28px;
+              font-size: 34px;
+              color: #cf2e33; }
+            #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .handleTrigger .handlePatent {
+              display: none;
+              font-size: 16px;
+              font-family: MicrosoftYaHei;
+              color: #686874;
+              line-height: 19px; }
+              #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .handleTrigger .handlePatent:hover {
+                color: #cf2e33; }
+      #theme_name.theme1 #patent > div .patentContainer .patentContainerRight {
+        height: 100%;
+        width: 365px;
+        transform: scaleY(-1); }
+    #theme_name.theme1 #patent > div .noneDataShow {
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+      #theme_name.theme1 #patent > div .noneDataShow > div {
+        width: 594px;
+        height: 551px; }
 
 /*# sourceMappingURL=index.css.map */

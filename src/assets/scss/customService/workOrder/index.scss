@@ -1,32 +1,429 @@
-@import "../../common.scss";
+@import '../../common.scss';
+
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/customService/workOrder/' + $n + '/' + $m;
+  @include bgImage($url);
+}
 
 #theme_name {
   #workOrder {
     height: 100%;
-
+    .el-row {
+      margin-right: 0 !important;
+    }
+    .el-form-item__label {
+      white-space: nowrap;
+    }
+    .emergency {
+      width: 90px;
+      height: 30px;
+      line-height: 30px;
+      font-weight: 700;
+    }
+    .is-center > .cell {
+      @include flex('flex-center');
+    }
+    //详情
+    .dialog_detail {
+      cursor: pointer;
+      .detail_tit {
+        @include flex('items-bet');
+        font-size: 20px;
+        margin-bottom: 20px;
+        b {
+          width: 20px;
+          height: 20px;
+          font-size: 24px;
+          font-weight: 700;
+          line-height: 20px;
+        }
+      }
+      .el-form {
+        @include flex('items-bet');
+        padding-right: 70px;
+        flex-wrap: wrap;
+        .el-form-item {
+          width: 48%;
+          .el-form-item__label {
+            font-size: 14px;
+          }
+          input {
+            border: none;
+          }
+        }
+      }
+      .detail_box {
+        height: 500px;
+        padding-bottom: 50px;
+        .content + .content {
+          position: relative;
+          &:before {
+            content: '';
+            width: 1px;
+            height: 70%;
+            background-color: #cf2e33;
+            position: absolute;
+            top: -10%;
+            left: 50%;
+          }
+        }
+        .content {
+          padding: 50px 10px 0;
+          @include flex('justify-center');
+          @include flex('items-center');
+          .detail_dialog_left {
+            flex: 1;
+            font-size: 14px;
+            text-align: right;
+            p + p {
+              margin-top: 10px;
+            }
+          }
+          .detail_dialog_center {
+            height: 100%;
+            margin: 0 40px;
+            .circle {
+              width: 15px;
+              height: 15px;
+            }
+          }
+          .detail_dialog_right {
+            flex: 1;
+            text-align: left;
+            font-size: 10px;
+            p + p {
+              margin-top: 10px;
+            }
+            .other_fee {
+              p {
+                margin-top: 5px;
+                padding-left: 10px;
+              }
+            }
+            .detail_dialog_rato {
+              margin-left: 20px;
+              display: inline-block;
+              .el-rate__icon {
+                font-size: 12px;
+              }
+            }
+            .detail_dialog_note {
+              margin-top: 0;
+            }
+          }
+        }
+      }
+      .dialog_footer {
+        @include flex('justify-end');
+      }
+    }
+    // 新增记录
+    .followRecord {
+      .el-form-item__content {
+        height: 40px;
+        @include flex('items-center');
+      }
+      input {
+        border-color: none;
+      }
+      .record_money {
+        position: relative;
+        .icons {
+          width: 16px;
+          height: 16px;
+          position: absolute;
+          right: 10px;
+          bottom: 10px;
+        }
+      }
+    }
+    // // 记录表格
+    // .recordList {
+    //   .warn_icon {
+    //     display: inline-block;
+    //     width: 20px;
+    //     height: 20px;
+    //     margin-left: 10px;
+    //   }
+    //   .cell {
+    //     @include flex('flex-center');
+    //   }
+    //   .el-pagination {
+    //     margin-top: 20px;
+    //   }
+    // }
+    // 回访记录
+    .detail_dialog {
+      ul {
+        padding: 0 30px 50px;
+        li + li {
+          position: relative;
+          &:before {
+            content: '';
+            width: 1px;
+            height: 70%;
+            background-color: #cf2e33;
+            position: absolute;
+            top: -10%;
+          }
+        }
+        li {
+          @include flex('justify-center');
+          @include flex('items-center');
+          font-family: 'Microsoft Yahei';
+          padding-top: 50px;
+          .detail_dialog_left {
+            flex: 1;
+            font-size: 14px;
+            text-align: right;
+            p + p {
+              margin-top: 10px;
+            }
+          }
+          .detail_dialog_center {
+            height: 100%;
+            margin: 0 80px;
+            .circle {
+              width: 15px;
+              height: 15px;
+            }
+          }
+          .detail_dialog_right {
+            flex: 1;
+            text-align: left;
+            font-size: 10px;
+            p + p {
+              margin-top: 10px;
+            }
+            .other_fee {
+              p {
+                margin-top: 5px;
+                padding-left: 10px;
+              }
+            }
+            .detail_dialog_rato {
+              margin-left: 20px;
+              display: inline-block;
+              .el-rate__icon {
+                font-size: 12px;
+              }
+            }
+            .detail_dialog_note {
+              margin-top: 0;
+            }
+          }
+        }
+      }
+    }
+    .detail_contract {
+      height: 408px;
+      overflow-y: scroll;
+      @include scroll;
+      flex-wrap: wrap;
+      @include flex('items-start');
+      .detail_col {
+        display: block;
+        height: 320px;
+        .detail_col_box {
+          height: 250px;
+          overflow-y: scroll;
+          @include scroll;
+        }
+        .detail_col_box2 {
+          @include flex('space-column');
+          @include flex('justify-start');
+        }
+      }
+      .el-col {
+        display: block !important;
+        h5 {
+          font-size: 14px;
+          font-family: 'jingDianXingShu';
+          word-spacing: 2px;
+          text-align: left;
+          margin-bottom: 30px;
+          padding-left: 40px !important;
+        }
+        div {
+          margin-bottom: 18px;
+          @include flex('justify-start');
+          span {
+            font-size: 14px;
+            font-family: 'Microsoft Yahei';
+          }
+          .tit {
+            width: 40%;
+            text-align: right;
+            padding-right: 10px;
+          }
+          .content_tit {
+            width: 60%;
+            text-align: left;
+            img {
+              width: 50px;
+              height: 50px;
+            }
+          }
+          .content_album {
+            @include flex('space-column');
+            .imgs_box {
+              @include flex('space-column');
+              margin-bottom: 5px;
+              div {
+                flex-wrap: wrap;
+              }
+            }
+          }
+        }
+      }
+      .el-border {
+        position: relative;
+        &:after {
+          content: '';
+          width: 1px;
+          height: 285px;
+          position: absolute;
+          right: 0;
+          top: 10px;
+        }
+        .el-col {
+          padding-top: 0;
+          @include flex('space-column');
+          @include flex('justify-start');
+        }
+      }
+    }
   }
 }
 
 #theme_name.theme1 {
   #workOrder {
+    //增加order
+    .icon_add {
+      @include confirmImg('tianjia.png', 'theme1');
+    }
+    .icon_del {
+      @include confirmImg('shanchu.png', 'theme1');
+    }
+    .emergency2 {
+      font-size: 14px;
+      color: #ffad0d;
+      @include confirmImg('jinji.png', 'theme1');
+    }
+    .emergency3 {
+      font-size: 14px;
+      color: #fff;
+      @include confirmImg('teji.png', 'theme1');
+    }
+    .emergency4 {
+      font-size: 14px;
+      color: #0c66ff;
+      @include confirmImg('zhongyao.png', 'theme1');
+    }
 
+    .dialog_detail {
+      .detail_tit {
+        color: #686874;
+        b {
+          background: #cf2e33;
+          color: #fff;
+        }
+      }
+      .el-form {
+        .el-form-item {
+          .el-form-item__label {
+            color: #686874;
+          }
+        }
+      }
+      .detail_box {
+        background: #fff;
+        .circle {
+          @include confirmImg('biaoji.png', 'theme1');
+        }
+      }
+    }
+    .followRecord {
+      .el-col:hover {
+        input {
+          border-color: #cf2e33;
+        }
+      }
+      .el-select .el-input.is-focus .el-input__inner {
+        border-color: #cf2e33;
+      }
+    }
+    // // 记录表格
+    // .recordList {
+    //   .warn_icon {
+    //     @include confirmImg('koukuanmingxi_hui.png', 'theme1');
+    //   }
+    //   .hover-row,
+    //   .current-row {
+    //     .warn_icon {
+    //       @include confirmImg('koukuanmingxi.png', 'theme1');
+    //     }
+    //   }
+    // }
+    // 回访记录
+    .detail_dialog {
+      color: #686874;
+      .dialog_main {
+        background: #fff;
+      }
+      .circle {
+        @include confirmImg('biaoji.png', 'theme1');
+      }
+    }
+    .detail_contract {
+      background-color: #ffffff;
+      .el-col {
+        h5 {
+          color: #cf2e33;
+          @include confirmImg('dianxian.png', 'theme1');
+          background-size: 30px 5px;
+          background-position: 110px 50%;
+        }
+        div {
+          .tit {
+            color: #d5d5d5;
+          }
+          .content_tit {
+            color: #686874;
+          }
+        }
+      }
+      .el-border {
+        &:after {
+          background: #f2f2f2;
+        }
+      }
+
+      ul {
+        li {
+          span {
+            color: #d5d5d5;
+          }
+          .content_tit {
+            color: #686874;
+          }
+        }
+      }
+    }
   }
 }
 
 #theme_name.theme2 {
   #workOrder {
-
   }
 }
 
 #theme_name.theme3 {
   #workOrder {
-
   }
 }
 
 #theme_name.theme4 {
   #workOrder {
-
   }
 }

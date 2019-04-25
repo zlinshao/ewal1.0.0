@@ -216,6 +216,52 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name h5.operate {
   position: absolute;
   top: -60px;
@@ -223,24 +269,24 @@
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
-  background-color: #CF2E33;
+  background-color: #cf2e33;
   display: flex;
   display: -webkit-flex;
   align-items: center; }
   #theme_name h5.operate span {
     white-space: nowrap;
-    color: #FFFFFF;
+    color: #ffffff;
     padding: 6px 30px; }
     #theme_name h5.operate span:hover {
       cursor: pointer;
-      color: #CF2E33;
+      color: #cf2e33;
       background: url("../../assets/image/common/theme1/xzgj.png") no-repeat scroll center;
       background-size: 100% 100%; }
   #theme_name h5.operate b, #theme_name h5.operate i {
     position: absolute;
     width: 10px;
     height: 10px;
-    background-color: #CF2E33;
+    background-color: #cf2e33;
     bottom: -5px;
     transform: rotateZ(45deg); }
   #theme_name h5.operate b {
@@ -252,7 +298,7 @@
 #theme_name h5.right.operate {
   right: 0; }
 #theme_name .listTopCss {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   height: 80px; }
   #theme_name .listTopCss .listTopLeft p {
     width: 42px;
@@ -270,9 +316,9 @@
     font-size: 32px;
     padding: 0 40px; }
   #theme_name .listTopCss .listTopLeft h2 {
-    border-left: 1px solid #F2F2F2; }
+    border-left: 1px solid #f2f2f2; }
     #theme_name .listTopCss .listTopLeft h2 span {
-      color: #D2D2D2;
+      color: #d2d2d2;
       margin-left: 40px;
       cursor: pointer;
       padding-top: 6px;
@@ -281,6 +327,7 @@
         width: 16px;
         height: 3px;
         margin-top: 6px;
+        border-radius: 30px 30px 0 0;
         background-color: transparent; }
   #theme_name .listTopCss .listTopRight > div, #theme_name .listTopCss .listTopRight > span {
     margin-right: 40px; }
@@ -297,10 +344,16 @@
     align-items: center;
     justify-content: center; }
     #theme_name .listTopCss .listTopRight .add b {
-      color: #FFFFFF;
+      color: #ffffff;
       font-size: 30px;
       padding-bottom: 6px; }
+  #theme_name .listTopCss .listTopRight .report {
+    background: url("../../assets/image/common/theme1/jubao.png") no-repeat scroll center;
+    background-size: 100% 100%; }
   #theme_name .listTopCss .listTopRight .search {
+    background: url("../../assets/image/common/theme1/search.png") no-repeat scroll center;
+    background-size: 100% 100%; }
+  #theme_name .listTopCss .listTopRight .btn_output {
     background: url("../../assets/image/common/theme1/search.png") no-repeat scroll center;
     background-size: 100% 100%; }
   #theme_name .listTopCss .listTopRight .dimission {
@@ -338,7 +391,7 @@
   z-index: 10; }
 #theme_name .mainListTable {
   padding: 0 30px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin-top: 9px;
   font-size: 14px; }
   #theme_name .mainListTable .status {
@@ -362,7 +415,7 @@
   white-space: nowrap;
   -ms-text-overflow: ellipsis;
   text-overflow: ellipsis;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin: 0 20px 10px 0;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -430,7 +483,7 @@
       width: 25px;
       height: 25px;
       vertical-align: middle;
-      background-color: #C0C0C0;
+      background-color: #c0c0c0;
       margin-right: 20px;
       -webkit-border-radius: 50%;
       -moz-border-radius: 50%;
@@ -441,7 +494,7 @@
         height: 50%; }
     #theme_name .form_item_container .item_label > span {
       min-width: 60px;
-      color: #C0C0C0;
+      color: #c0c0c0;
       text-align-last: justify; }
   #theme_name .form_item_container .item_content {
     width: 60%;
@@ -451,7 +504,7 @@
   #theme_name .form_item_container .all_width {
     width: 100%; }
   #theme_name .form_item_container:hover .item_icons {
-    background-color: #CF2E33; }
+    background-color: #cf2e33; }
   #theme_name .form_item_container .icon_mark {
     background: url("../image/finance/gathering/theme1/beizhu.png") no-repeat scroll center;
     background-size: 100% 100%; }
@@ -480,7 +533,7 @@
     background: url("../image/finance/gathering/theme1/yinhang.png") no-repeat scroll center;
     background-size: 100% 100%; }
 #theme_name .iconInput {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -507,12 +560,20 @@
   color: white;
   text-align: center;
   line-height: 20px;
-  background-color: #CF2E33;
+  background-color: #cf2e33;
   vertical-align: middle;
   cursor: pointer;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%; }
+#theme_name .all-choose {
+  background: url("../../assets/image/common/theme1/quanxuan.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name .icon-address {
+  width: 20px;
+  height: 20px;
+  background: url("../../assets/image/common/theme1/dizhi.png") no-repeat scroll center;
+  background-size: 100% 100%; }
 #theme_name .search {
   display: inline-block;
   width: 30px;
@@ -530,7 +591,7 @@
   color: white;
   text-align: center;
   line-height: 20px;
-  background-color: #CF2E33;
+  background-color: #cf2e33;
   vertical-align: middle;
   cursor: pointer;
   -webkit-border-radius: 4px;
@@ -546,13 +607,13 @@
   color: white;
   text-align: center;
   line-height: 20px;
-  background-color: #CF2E33;
+  background-color: #cf2e33;
   vertical-align: middle;
   cursor: pointer;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background-color: #D2D2D2; }
+  background-color: #d2d2d2; }
 #theme_name .btn_look {
   width: 15px;
   height: 19px;
@@ -575,7 +636,7 @@
   left: 0;
   right: 0;
   bottom: -100px;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   z-index: 6;
   -webkit-transition: bottom 0.5s;
   -moz-transition: bottom 0.5s;
@@ -595,7 +656,7 @@
     -o-transition: all 0.5s;
     transition: all 0.5s;
     border-radius: 10px 10px 0 0;
-    background-color: #F2F2F2; }
+    background-color: #f2f2f2; }
     #theme_name footer.bottomPage .develop i {
       -webkit-animation: bounce-up 1s linear infinite;
       animation: bounce-up 1s linear infinite;
@@ -607,7 +668,7 @@
       transition: transform 0.5s;
       text-align: center;
       font-size: 24px;
-      color: #CF2E33; }
+      color: #cf2e33; }
   #theme_name footer.bottomPage:hover {
     bottom: 0; }
     #theme_name footer.bottomPage:hover .develop {
@@ -635,17 +696,17 @@
     transform: translateY(0) rotateZ(-90deg); } }
 #theme_name.theme1 .highChoose {
   background-color: #FFEAEA;
-  color: #CF2E33; }
+  color: #cf2e33; }
 #theme_name.theme1 .listTopCss .listTopLeft p {
-  background-color: #DFDFDF; }
+  background-color: #dfdfdf; }
 #theme_name.theme1 .listTopCss .listTopLeft h1 {
   font-family: 'jingDianXingShu'; }
 #theme_name.theme1 .listTopCss .listTopLeft h2 .chooseTab {
-  color: #CF2E33; }
+  color: #cf2e33; }
   #theme_name.theme1 .listTopCss .listTopLeft h2 .chooseTab i {
-    background-color: #CF2E33; }
+    background-color: #cf2e33; }
 #theme_name.theme1 .listTopCss .listTopRight .add {
-  background-color: #CF2E33; }
+  background-color: #cf2e33; }
 #theme_name.theme1 .listTopCss .listTopRight .searchTerm > b {
   padding-right: 15px; }
 

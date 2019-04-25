@@ -132,6 +132,52 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name #part_three {
   height: 100%; }
   #theme_name #part_three > div {
@@ -158,9 +204,9 @@
       position: absolute;
       top: -90px;
       left: 0;
-      background-color: #F2F2F2;
+      background-color: #f2f2f2;
       transition: all ease 1s;
-      z-index: 201; }
+      z-index: 211; }
       #theme_name #part_three > div .paper_resume .btn_group {
         position: absolute;
         top: 30px;
@@ -168,7 +214,7 @@
         #theme_name #part_three > div .paper_resume .btn_group > div {
           width: 80px;
           height: 40px;
-          background-color: #C0C0C0;
+          background-color: #c0c0c0;
           text-align: center;
           line-height: 40px;
           border-radius: 0 8px 8px 0;
@@ -177,7 +223,7 @@
             margin-bottom: 20px; }
         #theme_name #part_three > div .paper_resume .btn_group .is_select {
           color: white;
-          background-color: #CF2E33; }
+          background-color: #cf2e33; }
       #theme_name #part_three > div .paper_resume .top_title {
         width: 100%;
         padding: 10px 100px; }
@@ -192,7 +238,7 @@
             padding-right: 20%; }
             #theme_name #part_three > div .paper_resume .top_title > div:last-child > span {
               font-size: 18px;
-              color: #CF2E33; }
+              color: #cf2e33; }
       #theme_name #part_three > div .paper_resume .content {
         width: 80%;
         height: 100%;
@@ -213,6 +259,7 @@
           border: none; }
     #theme_name #part_three > div .hide_resume {
       top: -1080px;
-      left: -1920px; }
+      left: -1920px;
+      z-index: 211; }
 
 /*# sourceMappingURL=part_three.css.map */

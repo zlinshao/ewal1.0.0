@@ -8,9 +8,11 @@
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
+        :default-sort="{prop: 'staff.enroll',order: 'descending'}"
+        :key="random_key"
         style="width: 100%">
         <div v-for="(item,index) in table_column" :key="index">
-          <el-table-column min-width = "120px"  :label="item.val" :prop="item.key" align="center" v-if="item.info">
+          <el-table-column min-width="120px"  :label="item.val" :prop="item.key" align="center" v-if="item.info">
             <template slot-scope="scope">
               <span v-if="item.key.indexOf('staff') === -1">
                 {{ item.info[scope.row[item.key]] ? item.info[scope.row[item.key]] : '/' }}
@@ -20,17 +22,17 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column min-width="120px" :label="item.val" align="center" v-else-if="item.isArray">
+          <el-table-column min-width="120px" :label="item.val" align="center" v-else-if="item.isArray" :fixed="item.key === 'position'">
             <template slot-scope="scope">
               <span v-if="item.key.indexOf('staff') === -1">
                 <span v-if="scope.row[item.key] && scope.row[item.key].length > 0">
-                  <span v-for="(tmp,idx) in scope.row[item.key]">{{ tmp[item.showKey ]}} <a v-if="idx !== scope.row[item.key].length - 1">;</a></span>
+                  <span v-for="(tmp,idx) in scope.row[item.key]" :key="idx">{{ tmp[item.showKey ]}} <a v-if="idx !== scope.row[item.key].length - 1">;</a></span>
                 </span>
                 <span v-else>/</span>
               </span>
               <span v-else>
                 <span v-if="scope.row.staff && scope.row.staff[item.key.split('.')[1]] && scope.row.staff[item.key.split('.')].length > 0">
-                  <span v-for="(tmp,idx) in scope.row.staff[item.key.split(',')[1]]">{{ tmp[item.showKey] }} <a v-if="idx !== scope.row.staff[item.key.split('.')[1]] - 1">;</a></span>
+                  <span v-for="(tmp,idx) in scope.row.staff[item.key.split(',')[1]]" :key="idx">{{ tmp[item.showKey] }} <a v-if="idx !== scope.row.staff[item.key.split('.')[1]] - 1">;</a></span>
                 </span>
                 <span v-else>/</span>
               </span>
@@ -41,6 +43,7 @@
               <el-button type="text" size="small" @click.stop="handleLookInfo(scope.row,item.key)">查看</el-button>
             </template>
           </el-table-column>
+          <el-table-column min-width="120px" :label="item.val" :prop="item.key" align="center" v-else-if="item.key === 'name'" fixed="left" style="background-color: white"></el-table-column>
           <el-table-column min-width="120px" :label="item.val" :prop="item.key" align="center" v-else></el-table-column>
         </div>
       </el-table>
@@ -86,6 +89,7 @@
           { key: 'staff.origin_addr',val: '籍贯'},
           { key: 'staff.political_status',val: '政治面貌',info: {1: '群众',2: '团员',3: '党员',4: '其他'}},
           { key: 'staff.birthday',val: '出生年月'},
+          { key: 'staff.enroll',val: '入职时间'},
           { key: 'staff.city',val: '城市'},
           { key: 'staff.origin_addr',val: '家庭住址'},
           { key: 'phone',val: '联系方式'},
@@ -99,13 +103,14 @@
           { key: 'staff.graduation_time',val: '毕业时间'},
           { key: 'staff.major',val: '专业'},
           { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
-          { key: 'staff.enroll',val: '入职时间'},
           { key: 'staff.dismiss_time',val: '离职时间'},
           // { key: 'staff.dismiss_reason.dismiss_type',val: '离职类型',info: {1: '主动离职',2: '旷工离职',3: '劝退',4: '开除',5: '其他'}},
           // { key: 'staff.dismiss_reason.dismiss_mess',val: '离职原因'},
           { key: 'staff.bank_num',val: '银行卡号'},
           { key: 'staff.account_name',val: '户主'},
           { key: 'staff.account_bank',val: '开户行'},
+          { key: 'staff.contract_number',val: '劳务合同',isBtn: true},
+          { key: 'staff.leave_proof_number',val: '上家单位离职证明',isBtn: true},
           { key: 'staff.commitment_number',val: '入职承诺书',isBtn: true},
           { key: 'staff.employ_proof_number',val: '在职证明',isBtn: true},
           { key: 'staff.income_proof_number',val: '收入证明',isBtn: true},
@@ -128,18 +133,25 @@
 
         //员工详情
         staff_detail_info: '',
+
+        random_key: '',
       }
     },
     mounted() {
       this.getStaffList();
+      this.handleSetData();
     },
     activated() {
     },
     watch: {
       exportData: {
         handler(val) {
+          this.export_params.field = [];
           this.export_params.field = ['id'];
           this.table_column = val;
+          this.random_key = 'staffTable';
+          var random = Math.random();
+          this.random_key = this.random_key + random.toString().substring(3,10);
           val.map(item => {
             this.export_params.field.push(item.key);
           });
@@ -147,11 +159,10 @@
         deep: true
       },
       exportInfo(val) {
-        if (val === 3) {
-          this.export_params.export = 1;
-          this.export_params = Object.assign({},this.export_params,this.params);
-          this.exportStaffList();
-        }
+        console.log(val);
+        this.export_params.export = 1;
+        this.export_params = Object.assign({},this.export_params,this.params);
+        this.exportStaffList();
       },
       searchParams: {
         handler(val) {
@@ -170,6 +181,13 @@
     },
     computed: {},
     methods: {
+      //设置导出数据
+      handleSetData() {
+        this.export_params.field = ['id'];
+        this.table_column.map(item => {
+          this.export_params.field.push(item.key);
+        });
+      },
       //列表按钮
       handleLookInfo(row,key) {
         console.log(row,key);
@@ -184,7 +202,6 @@
       },
       exportStaffList() {
         this.$http.get('staff/user/record',this.export_params,'arraybuffer').then(res => {
-          console.log(res);
           if (!res) {
             return;
           }
@@ -196,7 +213,9 @@
           document.body.appendChild(link);
           link.click();
           link.remove();
-        })
+          this.export_params.field = [];
+          this.export_params.export = 0;
+        });
       },
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {
@@ -207,6 +226,7 @@
       //获取当前员工详情
       getStaffDetail(id) {
         this.$http.get(`staff/user/${id}`).then(res => {
+          console.log(res);
           if (res.code === '20020') {
             this.staff_detail_info = res.data;
             this.filesVisible = true;

@@ -7,40 +7,34 @@
         </p>
         <h1>工单</h1>
         <h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
+          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column" :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
           </span>
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons add"><b>+</b></div>
+        <div class="icons add" @click='createOrder_visible = true'><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
-      <el-table
-        :data="tableSettingData['workOrder'].tableData"
-        :height="this.mainListHeight(30) + 'px'"
-        highlight-current-row
-        :row-class-name="tableChooseRow"
-        @cell-click="tableClickRow"
-        header-row-class-name="tableHeader"
-        style="width: 100%">
-        <el-table-column
-          align="center"
-          label="紧急程度">
+      <el-table :data="tableData" :height="this.mainListHeight(30) + 'px'" highlight-current-row @row-dblclick="tableDblClick"
+        header-row-class-name="tableHeader" style="width: 100%" :key='"orderTable"+chooseTab'>
+        <el-table-column align="center" label="紧急程度">
           <template slot-scope="scope">
-            <div class="status" :class="['status' + scope.row.status]">
-              <p>{{tableSettingData.workOrder.status[scope.row.status]}}</p>
+            <div class="emergency" :class="['emergency' + scope.row.emergency]">
+              {{scope.row.emergency_name}}
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          v-for="item in Object.keys(tableSettingData.workOrder.showData)" :key="item"
-          align="center"
-          :prop="item"
-          :label="tableSettingData.workOrder.showData[item]">
+
+        <el-table-column align="center" v-for='item in Object.keys(tableShowData)' :key='item' :prop='item' :label="tableShowData[item]"></el-table-column>
+
+        <el-table-column align="center" label="操作">
+          <template slot-scope="scope">
+            <el-button type="primary" plain size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
+            <el-button type="warning" plain size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <footer class="flex-center bottomPage">
@@ -48,279 +42,436 @@
           <i class="el-icon-d-arrow-right"></i>
         </div>
         <div class="page">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="tableSettingData.workOrder.params.page"
-            :page-size="tableSettingData.workOrder.params.limit"
-            :total="tableSettingData.workOrder.counts"
+          <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" :total="tableDateCount"
             layout="total,jumper,prev,pager,next">
           </el-pagination>
         </div>
       </footer>
     </div>
-    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
-
-    <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
+    <!-- 高级搜索 -->
+    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule" />
+    <!-- 新建工单 -->
+    <CreateOrder :visible='createOrder_visible' @close="handleCloseOrder" />
+    <!-- 工单详情 -->
+    <OrderDetail :visible="detail_visible" @close="handleCloseDetail" :moduleData='detail_info' />
+    <!--新增跟进记录-->
+    <AddRecord :visible='followRecord_visible' :moduleData='followRecord_info' @close='handleCloseRecord' />
+    <!-- 催办 -->
+    <UrgedDealDialog :visible="urgedDeal_visible" @close="handleCloseUrgedDeal" :moduleData='urgedDeal_info' />
+    <!-- 转交 -->
+    <TransferDialog :visible='transfer_visible' :data="currentRow" @close='handleCloseTranfer' />
+    <!-- 确定结束 -->
+    <SureEndDialog :visible="sureEnding_visible" @close="handleCloseSure" :moduleData='sureEnd_info' />
+    <!-- 确定删除 -->
+    <DeleteDialog :delete_visible='delete_visible' @close='handleCloseDelete' />
+    <!-- 确定增加 -->
+    <AddDialog :add_visible='add_visible' @close='handleCloseAdd' />
+    <!-- 导航 -->
+    <MenuList :list="customService" :module="visibleStatus" :backdrop=true @close="visibleStatus = false" />
   </div>
 </template>
 
 <script>
-  import SearchHigh from '../../common/searchHigh.vue'
-  import MenuList from '../../common/menuList.vue';
-  import {workOrderSearch} from '../../../assets/js/allSearchData.js';
-  import {customService} from '../../../assets/js/allModuleList.js';
+import SearchHigh from '../../common/searchHigh.vue'
+import MenuList from '../../common/menuList.vue';
+import Ljupload from '../../common/lightweightComponents/lj-upload'
+import LjDialog from '../../common/lj-dialog.vue';
+import DeleteDialog from '../components/delete-dialog';
+import AddDialog from '../components/add-dialog';
+import TransferDialog from '../components/transfer-dialog';
+import SureEndDialog from '../components/sureEnd-dialog';
+import UrgedDealDialog from '../components/urgedDeal-dialog';
+import OrderDetail from '../components/order-detail';
+import CreateOrder from './components/createOrder'
+import AddRecord from './components/addRecord'
+import { workOrderSearch } from '../../../assets/js/allSearchData.js';
+import { customService } from '../../../assets/js/allModuleList.js';
 
-  export default {
-    name: "index",
-    components: {SearchHigh, MenuList},
-    data() {
-      return {
-        workOrderSearch,
-        customService,
-        visibleStatus: false,
-        chooseTab: 1,
-        selects: [
-          {
-            id: 1,
-            title: '待处理',
-          },
-          {
-            id: 2,
-            title: '跟进中',
-          },
-          {
-            id: 3,
-            title: '已完成',
+export default {
+  name: "index",
+  components: {
+    SearchHigh,
+    MenuList,
+    Ljupload,
+    LjDialog,
+    DeleteDialog,
+    AddDialog,
+    AddRecord,
+    TransferDialog,
+    SureEndDialog,
+    UrgedDealDialog,
+    OrderDetail,
+    CreateOrder
+  },
+  data () {
+    return {
+      customService,
+      visibleStatus: false,
+      showSearch: false, // 显示高级搜索
+      searchData: { // 高级搜索参数
+        status: 'workOrder',
+        data: []
+      },
+      searchParams: {  //高级搜索
+        create_time: [],
+        department: [],
+        emergency: '',
+        end_time: [],
+        search: '',
+        staff: [],
+        type: ''
+      },
+      currentPage: 1,//当前页
+      chooseTab: 336, //待处理 跟进中 已完成
+      selects: [
+        {
+          id: 336,
+          title: '待处理',
+        },
+        {
+          id: 337,
+          title: '跟进中',
+        },
+        {
+          id: 338,
+          title: '已完成',
+        }
+      ],
+      market_server: globalConfig.market_server,
+      tableData: [],
+      tableShowData: {
+        create_time: '创建时间',
+        num: '工单编号',
+        type_name: '类型',
+        house_name: '地址',
+        content: '内容',
+        finish_time: '截止时间',
+        operate_user_name: '处理人',
+        create_name: '创建人',
+        org_name: '部门'
+      },
+      tableDateCount: 0,
+      currentRow: null,
+      delete_visible: false, //删除row
+      add_visible: false,  // 增加
+      urgedDeal_visible: false,// 催办
+      urgedDeal_info: {
+        work_order_id: '',
+        default_Person: ''
+      },
+      createOrder_visible: false, //创建新工单
+      sureEnding_visible: false, // 确定结束
+      sureEnd_info: {
+        payer: '',
+        payer_org_name: ''
+      },
+      // 工单详情
+      detail_visible: false,
+      detail_info: {
+        currentId: null,
+        chosenTag: null
+      },
+      detail_form: null,
+      //新增跟进记录
+      followRecord_visible: false,
+      followRecord: null,
+      followRecord_info: {
+        work_id: null,
+        chooseTab: null
+      },
+      currentMethod: null, // 记录当前操作
+      transfer_visible: false,  // 转交
+    }
+  },
+  mounted () {
+    this.getDataList();
+  },
+  methods: {
+    getDataList () {
+      this.showLoading(true);
+      let params = {
+        type: this.searchParams.type || 0,
+        page: this.currentPage,
+        limit: 10,
+        follow_status: this.chooseTab,
+        search: this.searchParams.search,
+        create_time: this.searchParams.create_time,
+        finish_time: this.searchParams.end_time,
+        operate_user_id: this.searchParams.staff,
+        operate_org_id: this.searchParams.department,
+        emergency: this.searchParams.emergency,
+      }
+
+      this.$http.get(this.market_server + `v1.0/csd/work_order`, params).then(res => {
+        if (res.code === 200) {
+          let data = res.data.data;
+          if (data.length == 0 && this.currentPage != 1) {
+            this.currentPage--;
+            this.getDataList()
+          } else {
+            this.tableData = res.data.data;
+            this.tableDateCount = res.data.all_count;
+            this.showLoading(false)
           }
-        ],
-
-
-        currentTable:'workOrder',
-        tableSettingData: {
-          workOrder: {//工单
-            counts: 1,
-            params: {
-              search: '',
-              page: 1,
-              limit: 10,
-            },
-            showData: {
-              createTime:'创建时间',
-              workOrderId:'工单编号',
-              type:'类型',
-              address: '地址',
-              content:'内容',
-              endTime:'截至时间',
-              handler:'处理人',
-              createUser:'创建人',
-              department:'部门',
-            },
-            tableData:[],
-            status:{
-              1: '特急',
-              2: '紧急',
-              3: '重要',
-              4: '一般',
-            },
-            chooseRowIds: [],
-            currentSelection: {}//当前选择行
-          },
-          goods: {
-            counts: 0,
-            params: {
-              search: '',
-              page: 1,
-              limit: 8,
-            },
-            chooseRowIds: [],
-            currentSelection: {},//当前选择行,
-            multiSelection:[],//多选行
-            isShowMulti:false,//是否显示多选
-          },
-        },
-
-        chooseRowIds: [],
-
-        showSearch: false,
-        searchData: {
-          status: 'workOrder',
-          data: [],
-        },
+        } else {
+          this.tableData = [];
+          this.tableDateCount = 0;
+          this.showLoading(false)
+        }
+      })
+    },
+    // 高级搜索
+    highSearch () {
+      this.showSearch = true;
+      this.searchData = workOrderSearch
+    },
+    // 确认搜索
+    hiddenModule (val) {
+      this.showSearch = false;
+      if (val !== 'close') {
+        this.currentPage = 1;
+        this.searchParams = val
+        this.getDataList()
       }
     },
-    mounted() {
-      this.initData();
-    },
-    activated() {
-    },
-    watch: {},
-    computed: {},
-    methods: {
-
-      //初始化数据
-      initData() {
-        //工单表格数据初始化
-        for (let i=0; i<10;i++) {
-          let obj = {
-            id:i+1,
-            status:'1',
-            createTime:'2019-03-28',
-            workOrderId:'10086',
-            type:'维修',
-            address: '地址',
-            content:'内容',
-            endTime:'2019-04-25',
-            handler:'处理人',
-            createUser:'创建人',
-            department:'部门',
-          };
-          this.tableSettingData[this.currentTable].tableData.push(obj);
-        }
-      },
-
-
-
-      /*// tab切换
-      changeTabs(id) {
+    // 切换 待处理 跟进中 已完成
+    changeTabs (id) {
+      if (this.chooseTab != id) {
         this.chooseTab = id;
-      },
-      // 当前点击
-      tableClickRow(row) {
-        let ids = this.chooseRowIds;
-        ids.push(row.id);
-        this.chooseRowIds = this.myUtils.arrayWeight(ids);
-      },
-      // 点击过
-      tableChooseRow({row, rowIndex}) {
-        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-      },*/
-      // 当前点击
-      tableClickRow(row) {
-        this.tableSettingData[this.currentTable].currentSelection = row;
-        let ids = this.tableSettingData[this.currentTable].chooseRowIds;
-        ids.push(row.id);
-        this.ids = this.myUtils.arrayWeight(ids);
-      },
-
-      //表格某一行双击
-      tableDblClick(row) {
-        console.log(row);
-        //this.in_workOrder_table_visible = true;
-      },
-      //table多选时触发的事件
-      handleSelectionChange(val) {
-        switch (this.currentTable) {
-          case 'workOrder':
-            console.log('re'+val);
-            break;
-          case 'goods':
-            this.tableSettingData[this.currentTable].multiSelection = val;
-            break;
-          default:
-            break;
-        }
-        console.log(val);
-      },
-      // 点击过
-      tableChooseRow({row, rowIndex}) {
-        return this.tableSettingData[this.currentTable].chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-      },
-      handleSizeChange(val) {
-        //console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-
-        this.tableSettingData[this.currentTable].params.page = val;
-        switch (this.currentTable) {
-          case 'workOrder':
-            this.getRepositoryList();
-            break;
-          case 'goods':
-            this.getGoodsList();
-            break;
-          default:
-            break;
-        }
-        //this.getRepositoryList();
-        //console.log(`当前页: ${val}`);
-      },
-
-
-
-
-
-
-
-      // 高级搜索
-      highSearch() {
-        this.showSearch = true;
-        this.searchData = workOrderSearch;
-      },
-      // 确认搜索
-      hiddenModule(val) {
-        this.showSearch = false;
-        if (val !== 'close') {
-          console.log(val);
-        }
-      },
-      // 客服入口
-      moduleList() {
-        this.visibleStatus = !this.visibleStatus;
-        this.$store.dispatch('route_animation');
+        this.getDataList()
       }
     },
-  }
+    // 关闭 添加工单
+    handleCloseOrder (params) {
+      let { visible, method } = params
+      this.createOrder_visible = false
+      if (method != 'cancle') {
+        this.getDataList()
+      }
+    },
+    // 催办
+    handleCuiBan (row) {
+      this.urgedDeal_info = {
+        work_order_id: row.id,
+        default_Person: row.create_name || row.operate_user_name
+      }
+      this.urgedDeal_visible = true
+      this.currentRow = row
+    },
+    // 关闭催办
+    handleCloseUrgedDeal (params) {
+      this.urgedDeal_visible = false
+      this.currentRow = null
+      this.detail_form = null
+      this.urgedDeal_info = {
+        work_order_id: '',
+        default_Person: ''
+      }
+    },
+    // 删除
+    handleDeleteRow (row) {
+      this.currentRow = row
+      this.delete_visible = true
+    },
+    //关闭删除
+    handleCloseDelete (val) {
+      if (val) { //确定删除
+        this.$http.delete(`${this.market_server}v1.0/csd/work_order/delete/${this.currentRow.id}`).then(res => {
+          this.$LjNotify('success', {
+            title: '提示',
+            message: res.message
+          });
+          if (res.code === 200) {
+            this.delete_visible = false
+            this.getDataList()
+          }
+        })
+      } else {
+        this.currentRow = null
+        this.delete_visible = false
+      }
+
+    },
+    handleCurrentChange (val) {
+      this.currentPage = val
+      this.getDataList()
+    },
+    // 双击 详情
+    tableDblClick (row) {
+      this.currentRow = row
+      this.detail_info = {
+        currentId: row.id,
+        chosenTag: this.chooseTab,
+        currentRow: this.currentRow
+      }
+      this.detail_visible = true;
+    },
+    // 关闭详情
+    handleCloseDetail (params) {
+      let { type, close, detail } = params
+      if (detail) this.detail_form = detail;
+      this.detail_visible = false;
+      if (type == '转交') {
+        this.transfer_visible = true
+      }
+      if (type == '通知') {
+        this.handleCuiBan(this.currentRow)
+      }
+      if (type == '结束') {
+        this.handleEnd()
+      }
+      if (type == '新增跟进') {
+        this.followRecord_info = {
+          chooseTab: this.chooseTab,
+          type_name: this.detail_form.type_name
+        }
+        this.followRecord_visible = true
+      }
+    },
+    // 转交
+    handleCloseTranfer () {
+      this.transfer_visible = false
+      this.currentRow = null
+      this.detail_form = null
+    },
+    //结束
+    handleEnd () {
+      this.sureEnd_info = {
+        payer: this.detail_form.payer,
+        payer_org_name: this.detail_form.payer
+      }
+      this.currentMethod = 'ending'
+      this.sureEnding_visible = true
+    },
+    handleCloseSure (params) {
+      let { isSure, isCreated } = params
+      this.sureEnding_visible = false
+      if (isSure) {
+        this.currentMethod == 'addRecord' && this.addRecordFun(params)
+        this.currentMethod == 'ending' && this.handleSure(isCreated)
+      } else {
+        this.currentRow = null
+        this.detail_form = null
+      }
+    },
+    handleSure (isCreated) {
+      let option = {
+        work_order_id: this.currentRow.id,
+        payer_all_money: this.currentRow.payer_all_money || 0,
+        flag: isCreated ? 1 : 0
+      }
+
+      this.$http.post(`${this.market_server}v1.0/csd/work_order/finish`, option).then(res => {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: res.message
+        });
+
+        if (res.code === 200) {
+          this.currentRow = null
+          this.detail_form = null
+          this.getDataList()
+        }
+      })
+    },
+    // 新增记录
+    handleCloseRecord (params) {
+      let { isCreated, createdType, content } = params
+      this.followRecord_visible = false
+      this.followRecord = content
+      if (createdType == 'doing') {
+        this.add_visible = true
+      }
+      if (createdType == 'finish') {
+        this.sureEnd_info = {
+          payer: '',
+          payer_org_name: ''
+        }
+        this.currentMethod = 'addRecord'
+        this.sureEnding_visible = true
+      }
+    },
+    //确认添加
+    handleCloseAdd (params) {
+      this.add_visible = false
+      params.isSure && this.addRecordFun(params)
+      this.currentMethod = null
+    },
+    addRecordFun (par) {
+      let params = this.followRecord,
+        pay_method = [];
+      if (params.folow_status == 338) {
+        params.pay_method.forEach(el => {
+          pay_method.push([el.type || 0, el.name || '', el.money || ''])
+        });
+        params.flag = par.isCreated ? 1 : 0
+      }
+      params.pay_method = pay_method
+      params.work_order_id = this.currentRow.id
+
+      this.$http.post(`${this.market_server}v1.0/csd/work_order/follow`, params).then(res => {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: res.message
+        });
+        this.followRecord = null
+        this.currentRow = null
+      })
+    },
+    // 客服入口
+    moduleList () {
+      this.visibleStatus = !this.visibleStatus;
+      this.$store.dispatch('route_animation');
+    }
+  },
+}
 </script>
 
 <style lang="scss">
-  @import "../../../assets/scss/customService/workOrder/index.scss";
+@import "../../../assets/scss/customService/workOrder/index.scss";
 
-  @mixin workOrderImg($m, $n) {
-    $url: '../../../assets/image/customService/workOrder/' + $n + '/' + $m;
-    @include bgImage($url);
-  }
+@mixin workOrderImg($m, $n) {
+  $url: "../../../assets/image/customService/workOrder/" + $n + "/" + $m;
+  @include bgImage($url);
+}
 
-  #theme_name.theme1 {
-    #workOrder {
-      .mainListTable {
-        .status1 {
-          p {
-            color: $colorFFF;
-            @include workOrderImg('teji.png', 'theme1');
-          }
+#theme_name.theme1 {
+  #workOrder {
+    .mainListTable {
+      .status1 {
+        p {
+          color: $colorFFF;
+          @include workOrderImg("teji.png", "theme1");
         }
-        .status2 {
-          p {
-            color: #FFAD0D;
-            @include workOrderImg('jinji.png', 'theme1');
-          }
+      }
+      .status2 {
+        p {
+          color: #ffad0d;
+          @include workOrderImg("jinji.png", "theme1");
         }
-        .status3 {
-          p {
-            color: #0C66FF;
-            @include workOrderImg('zhongyao.png', 'theme1');
-          }
+      }
+      .status3 {
+        p {
+          color: #0c66ff;
+          @include workOrderImg("zhongyao.png", "theme1");
         }
       }
     }
   }
+}
 
-  #theme_name.theme2 {
-    #workOrder {
-
-    }
+#theme_name.theme2 {
+  #workOrder {
   }
+}
 
-  #theme_name.theme3 {
-    #workOrder {
-
-    }
+#theme_name.theme3 {
+  #workOrder {
   }
+}
 
-  #theme_name.theme4 {
-    #workOrder {
-
-    }
+#theme_name.theme4 {
+  #workOrder {
   }
+}
 </style>

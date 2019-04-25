@@ -1,14 +1,14 @@
 <template>
     <div id="practicalProblems">
         <div class="problems-lists">
-            <div class="problems-list-info flex-center" v-for="(item,index) in problemsData">
+            <div class="problems-list-info flex-center" v-for="(item,index) in problemsData" @click.stop="details(item.id)">
                 <div class="problems-box">
                     <div class="problems-box-top flex-center">
                         <span>{{item.title}}</span>
                     </div>
                     <div class="video-box-bottom justify-around">
-                        <span @click="edit(item.id,index)">编 辑</span>
-                        <span @click="del(item.id,index)">删 除</span>
+                        <span @click.stop="edit(item.id,index)">编 辑</span>
+                        <span @click.stop="del(item.id,index)">删 除</span>
                     </div>
                 </div>
             </div>
@@ -19,18 +19,23 @@
                    @close="edit_visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
-                    <h3>收房时应该注意哪些问题</h3>
+                    <h3>{{current_type===1?'新增实践问题':current_type===2?'收房时应该注意哪些问题':current_type===3?'详情':''}}</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form ref="form" :model="form"   size="small" :rules="rules">
-                        <el-form-item>
-                            <el-input v-model="form.content" size="small" type="textarea" :rows="16"></el-input>
+                <div class="dialog_main borderNone">
+                    <el-form  label-width="80px" v-model="form" :rules="rules" ref="form">
+                        <el-form-item label="标题" prop="title">
+                            <el-input v-model="form.title" placeholder="请输入标题" :disabled="current_type===3"></el-input>
+                        </el-form-item>
+                        <el-form-item label="内容" prop="content">
+                            <el-input v-model="form.content" type="textarea" :rows="12"
+                                      placeholder="请输入内容" :disabled="current_type===3"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="submit">确定</el-button>
-                    <el-button type="info" size="small" @click="edit_visible = false;current_id = ''">取消</el-button>
+                    <el-button v-if="current_type===1||current_type===2" type="danger" size="small" @click="submit(current_type)">确定</el-button>
+                    <el-button v-if="current_type===1||current_type===2" type="info" size="small" @click="edit_visible = false;current_id = ''">取消</el-button>
+                    <el-button v-if="current_type===3" type="danger" size="small" @click="edit_visible = false;current_id = ''">关闭</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -61,7 +66,7 @@
                 <el-pagination
                         :total="count"
                         layout="total,jumper,prev,pager,next"
-                        :current-page="params.page"
+                        :current-page="params.offset"
                         :page-size="params.limit"
                         @current-change="handleChangePage"
                 >
@@ -83,6 +88,7 @@
             return{
                 chooseTab:7,
                 count:0,
+                current_type:'',
                 current_id:'',//当前项id
                 edit_visible:false,
                 delete_visible:false,
@@ -90,38 +96,49 @@
                     search:'',
                     startRange: '',
                     endRange: '',
-                    page: 1,
+                    offset: 1,//页数
                     limit: 8,
                     department_ids: '',
                     export: '',
                 },
-                problemsData:[//列表
-                    {id:1,title:'收房时应该注意 哪些问题？',content:'收房时应该注意收房时应该注意收房时应该注意收房时应该注意'},
-                    {id:2,title:'收房时应该注意 哪些问题？',content:'收房时应该注意收房时应该注意收房时应该注意收房时应该注意'},
-                    {id:3,title:'收房时应该注意 哪些问题？',content:'收房时应该注意收房时应该注意收房时应该注意收房时应该注意'},
-                    {id:4,title:'收房时应该注意 哪些问题？',content:'收房时应该注意收房时应该注意收房时应该注意收房时应该注意'},
-                    {id:5,title:'收房时应该注意 哪些问题？',content:'收房时应该注意收房时应该注意收房时应该注意收房时应该注意'},
-                    {id:6,title:'收房时应该注意 哪些问题？',content:'收房时应该注意收房时应该注意收房时应该注意收房时应该注意'},
-                    {id:7,title:'收房时应该注意 哪些问题？',content:'收房时应该注意收房时应该注意收房时应该注意收房时应该注意'},
-                    {id:8,title:'收房时应该注意 哪些问题？',content:'收房时应该注意收房时应该注意收房时应该注意收房时应该注意'},
-                ],
+                problemsData:[],
                 form:{//表单
                     id:'',
-                    content:''
+                    content:'',
+                    title:'',
                 },
-                rules:{//规则验证
-                    content:[
-                        { required: true, message: '请输入', trigger: 'blur' },
-                    ]
+                rules:{
                 }
             }
+        },
+        created() {
+            this.$bus.on('add', this.getData)
+        },
+        beforeDestroy() {
+            this.$bus.off('add', this.getData);
         },
         mounted(){
             this.getProblemLists();
         },
         methods:{
+            getData(val) {
+                this.edit_visible = val;//新增弹出显示
+                this.current_type = 1;
+                for (let item of Object.keys(this.form)) {
+                    this.form[item] = '';
+                }
+            },
+            details(id){
+                this.edit_visible=true;
+                this.current_type = 3;
+                this.$http.get(globalConfig.leJiaCollege_server+'/api/practice/question/'+id).then(res => {
+                   if(res.status===200){
+
+                   }
+                })
+            },
             callbackSuccess(res) {
-                if (res.code === 200) {
+                if (res.status === 200) {
                     this.$LjNotify('success', {
                         title: '成功',
                         message: res.msg,
@@ -143,35 +160,52 @@
             },
             //确认删除
             delOk(){
-                this.$http.delete('', this.current_id).then(res => {
+                this.$http.delete(globalConfig.leJiaCollege_server+'/api/practice/question/'+this.current_id).then(res => {
                     this.callbackSuccess(res);
+                    this.delete_visible =false;
                 })
             },
             //编辑弹出
             edit(id,index){
                 console.log(id,index);
                 this.edit_visible = true;
+                this.current_type = 2;
                 this.current_id = id;
                 for(let item of Object.keys(this.form)){
                     this.form[item] = this.problemsData[index][item];
                 }
             },
             // 换页
-            handleChangePage(){
-                this.params.page = page;
+            handleChangePage(page){
+                this.params.offset = page;
+                this.problemsData=[];
                 this.getProblemLists();
             },
             //提交
-            submit(){
-                this.$http.post('', this.form).then(res => {
-                    this.callbackSuccess(res);
-                })
+            submit(val){
+                if(val===1){
+                    this.$http.post(globalConfig.leJiaCollege_server+'/api/practice/question/', this.form).then(res => {
+                        this.callbackSuccess(res);
+                        this.edit_visible = false;
+                    })
+                }else if(val===2){
+                    this.$http.put(globalConfig.leJiaCollege_server+'/api/practice/question/'+this.current_id, this.form).then(res => {
+                        this.callbackSuccess(res);
+                        this.edit_visible = false;
+                    })
+                }
             },
             //获取列表
             getProblemLists(){
-                this.$http.get('', this.params).then(res => {
-                    if (res.code === 200) {
+                this.showLoading(true);
+                this.$http.get(globalConfig.leJiaCollege_server+'/api/practice/question', this.params).then(res => {
+                    this.showLoading(false);
+                    if (res.status === 200) {
                         this.problemsData  = res.data.data;
+                        this.count=res.data.total;
+                    }else{
+                        this.problemsData  = [];
+                        this.count=0;
                     }
                 })
             },

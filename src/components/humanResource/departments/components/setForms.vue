@@ -7,11 +7,14 @@
         </div>
         <div class="dialog_main">
           <div class="tHeader">
-            <p v-for="(item,index) in showData">
-              <i class="el-icon-remove" @click="handleClickRemove(item,index)"></i>
+            <p v-for="(item,index) in showData" class="flex" :key="index">
               <b>{{ item.val }}</b>
+              <span class="flex-center">
+                <i class="el-icon-arrow-up" @click="handleClickMoveUp(item,index)" v-if="index !== 0"></i>
+                <i class="el-icon-arrow-down" @click="handleClickMoveDown(item,index)" v-if="index !== showData.length - 1"></i>
+                <i class="el-icon-delete" @click="handleClickRemove(item,index)"></i>
+              </span>
             </p>
-            <!--<p><i class="el-icon-circle-plus"></i></p>-->
           </div>
         </div>
         <div class="footerBtn">
@@ -47,7 +50,7 @@
       },
       module(val) {
         this.depart_visible = val;
-        this.lj_size = 'large';
+        this.lj_size = {width: 600 + 'px',height: 800 + 'px'};
       },
       depart_visible(val) {
         if (!val) {
@@ -57,6 +60,12 @@
     },
     computed: {},
     methods: {
+      handleClickMoveUp(item,index) {
+        this.showData[index] = this.showData.splice(index - 1,1,this.showData[index])[0];
+      },
+      handleClickMoveDown(item,index) {
+        this.showData[index] = this.showData.splice(index + 1,1,this.showData[index])[0];
+      },
       handleClickRemove(item,index) {
         this.$emit('remove',item,index);
       },

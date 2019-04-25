@@ -12,7 +12,8 @@
         </div>
       </div>
 
-      <house-card :house-source="house_source" :info="house_params" @close="handleCloseOverview" @open="handleOpenCardDetail"
+      <house-card :house-source="house_source" :info="house_params" @close="handleCloseOverview"
+                  @open="handleOpenCardDetail"
                   @change="handleChangePage"></house-card>
       <market-menu-list :show-market="show_market" :show-shadow="show_shadow"
                         @close="handleCloseMenu"></market-menu-list>
@@ -29,18 +30,17 @@
           <div class="base_info flex">
             <div class="house_photo">
               <div class="big_img">
-                <img src="./swipe6.jpg" alt="">
                 <div class="sijiao"></div>
+                <img v-if="house_detail.house_detail && house_detail.house_detail.cover" :src="house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器" :data-src="house_detail.house_detail && house_detail.house_detail.cover">
+                <img v-else src="./swipe6.jpg" data-magnify="" data-caption="图片查看器" data-src="./swipe6.jgp">
               </div>
               <div class="small_img">
-                <div class="img_container items-center" ref="img_contain" :style="{'left': img_trams + '%'}">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
-                  <img src="./swipe6.jpg" alt="">
+                <div v-if="house_detail.album_photo" class="img_container items-center" ref="img_contain"
+                     :style="{'left': img_trams + '%'}">
+                  <img data-magnify="" data-caption="图片查看器" :data-src="item.uri"
+                       v-for="item in house_detail.album_photo" :src="item.uri" alt="" style="min-height: 80px">
                 </div>
+                <div v-else style="margin-top: 30px">暂无照片信息</div>
                 <span class="btn left_btn" @click="handleTransLeft"><i class="el-icon-arrow-left"></i></span>
                 <span class="btn right_btn" @click="handleTransRight"><i class="el-icon-arrow-right"></i></span>
               </div>
@@ -49,32 +49,33 @@
               <div class="easy_info">
                 <div class="title flex-center">
                   <div class="flex">
-                    <span class="address">{{ current_house.name || '江南雅苑1-2-3(test)'}}</span>
+                    <span class="address">{{ current_house.name }}</span>
                     <span class="mark"></span>
                   </div>
                   <div style="text-align: right">
-                    <span class="look" @click="look_visible = true"></span>
+                    <span class="look" @click="handleLookInfo"></span>
                     <span class="status">{{ house_detail.house_status_name }}</span>
                   </div>
                 </div>
                 <div class="h_type">
                   <div class="flex info">
-                    <!--<span v-for="item in h_info" :key="item.id">{{ item }}</span>-->
                     <span>{{ house_detail.hk }}</span>
                     <span>{{ house_detail.area }}</span>
                     <span>{{ house_detail.decorate }}</span>
-                    <span>{{ house_detail.house_type || '未知'}}</span>
-                    <!--<span>{{ house_detail}}</span>-->
+                    <span>{{ house_detail.property_type && house_detail.property_type.name }}</span>
+                    <span>{{ house_detail.direction && house_detail.direction.name }}</span>
+                    <span v-if="house_detail.floor">{{ house_detail.floor.this }}/{{ house_detail.floor.all }}</span>
                   </div>
                   <div class="le_text">
-                    <span>剩余时长：1年5月12天 当前空置12天 收房：2000/月</span>
+                    <span>空置{{ current_house.warning_current_days }}天 / 剩余 {{ current_house.month }}月 建议{{ current_house.suggest_price }}/月 {{ current_house.month }}月付</span>
                   </div>
                 </div>
               </div>
               <div class="deploy">
                 <h3>房屋配置</h3>
                 <div class="deploy_info flex">
-                  <span v-for="item in deploy_info" :key="item.id" class="items-column">
+                  <span v-for="item in deploy_info" :key="item.id" class="items-column"
+                        :class="{'deploy_none': parseInt(item.num) < 1}">
                     <span class="flex-center">
                       <i :class="[item.icon]"></i>
                     </span>
@@ -86,23 +87,71 @@
           </div>
           <div class="table_info">
             <div class="info_type flex-center">
-              <span v-for="item in house_type" :key="item.id">{{ item.val }}</span>
+              <span @click="handleCheckModule(item)" v-for="item in house_type" :key="item.id"
+                    :class="{'current-change': item.id === current_house_type}">{{ item.val }}</span>
             </div>
             <div class="table_list scroll_bar">
-              <el-table :data="table_data" height="250">
-                <el-table-column label="签约时间" prop="time"></el-table-column>
-                <el-table-column label="合同编号" prop="num"></el-table-column>
-                <el-table-column label="收放价格" prop="price"></el-table-column>
-                <el-table-column label="付款方式" prop="way"></el-table-column>
-                <el-table-column label="空置期" prop="kong"></el-table-column>
-                <el-table-column label="签约时长" prop="long"></el-table-column>
-                <el-table-column label="合同开始时间" prop="start_time"></el-table-column>
-                <el-table-column label="合同结束时间" prop="end_time"></el-table-column>
-                <el-table-column label="签约人" prop="people"></el-table-column>
+              <el-table :data="house_resource" height="250" v-show="current_house_type === 1">
+                <el-table-column label="房屋名称" prop="name" align="center"></el-table-column>
+                <el-table-column label="房屋描述" prop="hk" align="center"></el-table-column>
+                <el-table-column label="类型" prop="decorate" align="center"></el-table-column>
+                <el-table-column label="成交月单价" prop="month_price" align="center"></el-table-column>
+              </el-table>
+              <el-table :data="price_setting" height="250" v-show="current_house_type === 2">
+                <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
+                <el-table-column label="调整前价格" prop="before_price" align="center"></el-table-column>
+                <el-table-column label="调整后价格" prop="price" align="center"></el-table-column>
+                <el-table-column label="调整人" prop="creator_name" align="center"></el-table-column>
+                <el-table-column label="价格类型" prop="type_name" align="center"></el-table-column>
+              </el-table>
+              <el-table :data="price_setting" height="250" v-show="current_house_type === 3">
+                <el-table-column label="跟进时间" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="备注" prop="follow_content" align="center"></el-table-column>
+                <el-table-column label="预警调整" prop="warning_name" align="center"></el-table-column>
+                <el-table-column label="照片" prop="album_photo" align="center">
+                  <template slot-scope="scope">
+                    <i class="el-icon-picture" @click="handleOpenLookPic(scope.row)"></i>
+                  </template>
+                </el-table-column>
+                <el-table-column label="跟进人" prop="follow_name" align="center"></el-table-column>
+              </el-table>
+              <el-table :data="furniture_list" height="250" v-show="current_house_type === 4">
+                <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="描述" prop="description" align="center"></el-table-column>
+                <el-table-column label="补齐物品" prop="follow_content" align="center"></el-table-column>
+                <el-table-column label="状态" prop="status_name" align="center"></el-table-column>
+                <el-table-column label="跟进人" prop="follow_user" align="center"></el-table-column>
+              </el-table>
+              <el-table :data="contract_list" height="250" v-show="current_house_type === 6 || current_house_type === 7">
+                <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
+                <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
+                <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
+                <el-table-column label="合同性质" prop="type" align="center"></el-table-column>
+                <!--<el-table-column label="所属公司" prop="" align="center"></el-table-column>-->
+                <el-table-column label="收房价格" prop="month_price" align="center">
+                  <template slot-scope="scope">
+                    <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
+                <span v-for="(item,index) in scope.row.month_price">
+                  {{ item.price }} 元 / {{ item.period }}月 <a v-if="index !== scope.row.month_price.length - 1">;</a>
+                </span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column label="付款方式" prop="pay_way" align="center"></el-table-column>
+                <el-table-column label="开单人" prop="sign_user" align="center"></el-table-column>
+                <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
+                <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
+                <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
               </el-table>
             </div>
             <div class="page">
-              <el-pagination :total="1000" layout="total,prev,pager,next"></el-pagination>
+              <el-pagination
+                :total="table_params.count"
+                :current-page="table_params.page"
+                :page-size="table_params.limit"
+                @current-change="handleChangePageDetail"
+                layout="total,prev,pager,next"
+              ></el-pagination>
             </div>
           </div>
         </div>
@@ -111,26 +160,47 @@
       <!--带看-->
       <lj-dialog
         :visible="look_visible"
-        :size="{width: 600 + 'px',height: '800' + 'px'}"
+        :size="{width: 700 + 'px',height: '800' + 'px'}"
         @close="look_visible = false">
         <div class="look_info">
           <h3>查看带看记录</h3>
           <div class="flex" style="margin-bottom: 30px">
               <span class="items-column">
-                <span class="all">34</span>
+                <span class="all">{{ all_count }}</span>
                 <span class="txt">总带看次数</span>
               </span>
             <span class="items-column">
-                <span class="current">2</span>
+                <span class="current">{{ current_count }}</span>
                 <span class="txt">本期带看次数</span>
               </span>
           </div>
-          <el-table :data="look_data">
-            <el-table-column label="带看时间" prop="look_time" align="center"></el-table-column>
-            <el-table-column label="带看人" prop="look_man" align="center"></el-table-column>
+          <el-table :data="look_data" height="500px" style="width: 100%">
+            <el-table-column label="带看时间" prop="created_at" align="center"></el-table-column>
+            <el-table-column label="带看人" align="center">
+              <template slot-scope="scope">
+                <div v-if="scope.row.take_user">
+                  <span v-for="(item,idx) in scope.row.take_user">{{ item }}<a v-if="idx !== scope.row.take_user.length - 1">,</a></span>
+                </div>
+                <div v-else>暂无</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="带看图片" align="center">
+              <template slot-scope="scope">
+                <div class="flex" v-if="scope.row.album_photo && scope.row.album_photo.length > 0">
+                  <img :src="item.uri" data-magnify="" data-caption="图片查看器" :data-src="item.uri" style="width: 60px;height: 60px;margin-right: 5px" alt="" v-for="item in scope.row.album_photo">
+                </div>
+                <div v-else>暂无</div>
+              </template>
+            </el-table-column>
           </el-table>
           <div class="page">
-            <el-pagination :total="100" layout="total,prev,pager,next"></el-pagination>
+            <el-pagination
+              :total="all_count"
+              :current-page="look_params.page"
+              :page-size="look_params.limit"
+              layout="total,prev,pager,next"
+              @current-change="handleChangeLookPage"
+            ></el-pagination>
           </div>
         </div>
       </lj-dialog>
@@ -181,6 +251,26 @@
         </div>
       </lj-dialog>
 
+      <!--看图片-->
+      <lj-dialog
+        :visible="look_pic_visible"
+        :size="{width: 400 + 'px',height: 300 + 'px'}"
+        @close="look_pic_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>查看图片</h3>
+          </div>
+          <div class="dialog_main">
+            <div class="flex" v-if="pic_row && pic_row.album_photo && pic_row.album_photo.length > 0">
+              <img :src="item.uri" :data-src="item.uri" :key="item.id" data-magnify="" data-caption="图片查看器" style="width: 70px;height: 70px;margin: 0 5px" alt="" v-for="item in pic_row.album_photo">
+            </div>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" @click="look_pic_visible = false">确定</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
@@ -192,15 +282,20 @@
   import OverviewInfo from '../components/overview-info.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import HouseFilter from '../components/house-filter.vue';
+  import { houseManagementSearch } from '../../../assets/js/allSearchData.js';
 
   export default {
     name: "index",
     components: {MarketMenuList, searchHigh, HouseCard, OverviewInfo, LjDialog, HouseFilter},
     data() {
       return {
+        houseManagementSearch,
         //房屋详情
         house_detail: '',
         current_house: '',
+
+        house_resource: [],//已出租房源
+        price_setting: [], //价格调整
 
         market_server: globalConfig.market_server,
         //设置
@@ -231,11 +326,7 @@
         show_market: false,
         show_shadow: false,
         isHigh: false,
-        searchData: {
-          status: 'houseManagement',
-          keywords: 'search',
-          data: [],
-        },
+        searchData: {},
 
         house_source: [], //房源列表
         house_params: {
@@ -254,91 +345,100 @@
         },
 
         img_trams: 0,
-        h_info: {
-          a: '2室1厅1卫',
-          b: '85㎡',
-          c: '精装',
-          d: '住宅',
-          e: '朝南',
-          f: '15/30'
-        },
+        //房屋配置
         deploy_info: [
           {
             id: 1,
             icon: 'kongtiao',
             txt: '空调',
-            num: 3
+            num: 3,
+            key: 'air_condition'
           },
           {
             id: 2,
             icon: 'bingxiang',
             txt: '冰箱',
-            num: 1
+            num: 1,
+            key: 'fridge'
           },
           {
             id: 3,
             icon: 'dianshi',
             txt: '电视',
-            num: 1
+            num: 1,
+            key: 'television'
           },
           {
             id: 4,
             icon: 'xiyiji',
             txt: '洗衣机',
-            num: 1
+            num: 1,
+            key: 'wash_machine'
           },
           {
             id: 5,
             icon: 'reshuiqi',
             txt: '热水器',
-            num: 1
+            num: 1,
+            key: 'water_heater'
           },
           {
             id: 6,
             icon: 'weibolu',
             txt: '微波炉',
-            num: 1
+            num: 1,
+            key: 'microwave'
           }, {
             id: 7,
             icon: 'shafa',
             txt: '沙发',
-            num: 3
+            num: 3,
+            key: 'sofa'
           }, {
             id: 8,
             icon: 'yizi',
             txt: '椅子',
-            num: 4
+            num: 4,
+            key: 'chair'
           },
           {
             id: 9,
             icon: 'yijia',
             txt: '衣架',
-            num: 2
+            num: 2,
+            key: 'clothe_rack'
           }, {
             id: 10,
             icon: 'ranqizao',
             txt: '燃气灶',
-            num: 2
-          }, {
-            id: 11,
-            icon: 'kuandai',
-            txt: '宽带',
-            num: 1
-          }, {
+            num: 2,
+            key: 'gas_stove'
+          },
+          // {
+          //   id: 11,
+          //   icon: 'kuandai',
+          //   txt: '宽带',
+          //   num: 1,
+          //   key: ''
+          // },
+          {
             id: 12,
             icon: 'nuanqi',
             txt: '暖气',
-            num: 2
+            num: 2,
+            key: 'heater'
           }, {
             id: 13,
             icon: 'canzhuo',
             txt: '餐桌',
-            num: 1
+            num: 1,
+            key: 'dining_table'
           }, {
             id: 14,
             icon: 'yigui',
             txt: '衣柜',
-            num: 1
+            num: 1,
+            key: 'wardrobe'
           }
         ],
         house_type: [
@@ -358,10 +458,10 @@
             id: 4,
             val: '家具补齐'
           },
-          {
-            id: 5,
-            val: '物品搬移记录'
-          },
+          // {
+          //   id: 5,
+          //   val: '物品搬移记录'
+          // },
           {
             id: 6,
             val: '收房合同'
@@ -370,256 +470,159 @@
             id: 7,
             val: '租房合同'
           },
-          {
-            id: 8,
-            val: '报备管理'
-          },
+          // {
+          //   id: 8,
+          //   val: '报备管理'
+          // },
         ],
-        table_data: [
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-          {
-            id: 1,
-            time: '2019-01-02',
-            num: '12312412',
-            price: '2000',
-            way: '月付',
-            kong: '22天',
-            long: '3年',
-            start_time: '2019-03-01',
-            end_time: '2019-11-11',
-            people: '冯宝宝'
-          },
-        ],
-        look_data: [
-          {
-            id: 1,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          },
-          {
-            id: 2,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          },
-          {
-            id: 3,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          },
-          {
-            id: 4,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          },
-          {
-            id: 5,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          }
-        ],
+        current_house_type: 1,
+        table_params: {
+          page: 1,
+          limit: 15,
+          count: 0,
+        },
+        look_params: {
+          page: 1,
+          limit: 15
+        },
+        look_data: [],
+        all_count: 0,
+        current_count: 0,
 
         currentSelType: '',
+        contract_list: [],
+        pic_row: '',
+        look_pic_visible: '',
+
+        furniture_list: [],
+
       }
     },
     mounted() {
       this.getHouseResource();
       this.house_source = [];
-      this.overview_visible = true;
     },
     watch: {},
     computed: {},
     methods: {
+      handleChangeLookPage(page) {
+        this.look_params.page = page;
+        this.handleLookInfo();
+      },
+      handleLookInfo() {
+        console.log(this.current_house);
+        this.$http.get(this.market_server + 'v1.0/market/task/houseTask',{
+          house_id: 4,
+          ...this.look_params
+        }).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.look_data = res.data.data;
+            this.all_count = res.data.all_count;
+            this.current_count = res.data.current_count;
+          }else {
+            this.look_data = [];
+            this.all_count = 0;
+            this.current_count = 0;
+          }
+        });
+        this.look_visible = true
+      },
+      handleOpenLookPic(row) {
+        this.pic_row = row;
+        this.look_pic_visible = true;
+      },
+      handleChangePageDetail(page) {
+        this.table_params.page = page;
+      },
+      getDetailTableList(url) {
+        this.$http.get(this.market_server + url, this.table_params).then(res => {
+          if (res.code === 200) {
+            this.house_resource = res.data.data;
+            this.table_params.count = res.data.count;
+          } else {
+            this.house_resource = [];
+            this.table_params.count = 0;
+          }
+        })
+      },
+      getContractList(house_id,contract_type) {
+        this.$http.get(this.market_server + 'v1.0/market/contract',{
+          ...this.table_params,
+          contract_type,
+          house_id
+        }).then(res => {
+          if (res.code === 200) {
+            this.contract_list = res.data.data;
+            this.table_params.count = res.data.count;
+          } else {
+            this.contract_list = [];
+            this.table_params.count = 0;
+          }
+        })
+      },
+      getSettingPrice(id,url) {
+        this.$http.get(this.market_server + url,{
+          id,
+          ...this.table_params
+        }).then(res => {
+          if (res.code === 200) {
+            this.price_setting = res.data.data;
+            this.table_params.count = res.data.all_count;
+          } else {
+            this.price_setting = [];
+            this.table_params.count = 0;
+          }
+        })
+      },
+      //家具补齐
+      handlePolishFurniture(id){
+          this.$http.get(this.market_server + 'v1.0/market/task/getTask',{
+            house_id: 4,
+            task_type: 10,
+            ...this.table_params
+          }).then(res => {
+            console.log(res);
+            if (res.code === 200) {
+              this.furniture_list = res.data.data;
+              this.table_params.count = res.data.count;
+            }else {
+              this.furniture_list = [];
+              this.table_params.count = 0;
+            }
+          })
+      },
+      //切换列表信息
+      handleCheckModule(item) {
+        this.table_params.limit = 15;
+        this.table_params.page = 1;
+        this.current_house_type = item.id;
+        var url = '';
+        switch (item.id) {
+          case 1:
+            url = `v1.0/market/house/houseVillage/${this.current_house.id}`;
+            this.getDetailTableList(url);
+            break;
+          case 6:
+            this.getContractList(this.current_house.id,1);
+            break;
+          case 7:
+            this.getContractList(this.current_house.id,2);
+            break;
+          case 2:
+            url = 'v1.0/market/house/getHouseChPrice';
+            this.getSettingPrice(this.current_house.id,url);
+            break;
+          case 3:
+            url = 'v1.0/market/house/getFollowRecord';
+            this.getSettingPrice(this.current_house.id,url);
+            break;
+          case 4:
+            this.handlePolishFurniture(this.current_house.id);
+            break;
+
+        }
+      },
       handleChangePage(page) {
         this.house_params.page = page;
         this.getHouseResource();
@@ -655,35 +658,37 @@
       },
       //确定选择房源
       handleGetHouseResource(house, type) {
-        if (house) {
-          if (this.currentSelType === 'bottom') {
-            this.set_price_form.bottom_name = '';
-            this.set_price_form.bottom_id = [];
-            house.map(item => {
-              this.set_price_form.bottom_name += item.house_name + ',';
-              if (type === 'house') {
-                this.set_price_form.bottom_type = 1;
-                this.set_price_form.bottom_id.push(item.house_id);
-              } else {
-                this.set_price_form.bottom_type = 2;
-                this.set_price_form.bottom_id.push(item.village_id);
-              }
-            });
-            this.set_price_form.bottom_name = this.set_price_form.bottom_name.substring(0, this.set_price_form.bottom_name.length - 1);
-          } else {
-            this.set_price_form.suggest_name = '';
-            this.set_price_form.suggest_id = [];
-            house.map(item => {
-              this.set_price_form.suggest_name += item.house_name;
-              if (type === 'house') {
-                this.set_price_form.suggest_type = 1;
-                this.set_price_form.suggest_id.push(item.house_id);
-              } else {
-                this.set_price_form.suggest_type = 2;
-                this.set_price_form.suggest_id.push(item.village_id);
-              }
-            });
-            this.set_price_form.suggest_name = this.set_price_form.suggest_name.substr(0, this.set_price_form.suggest_name.length - 1);
+        if (house !=='close') {
+          if (house) {
+            if (this.currentSelType === 'bottom') {
+              this.set_price_form.bottom_name = '';
+              this.set_price_form.bottom_id = [];
+              house.map(item => {
+                this.set_price_form.bottom_name += item.house_name + ',';
+                if (type === 'house') {
+                  this.set_price_form.bottom_type = 1;
+                  this.set_price_form.bottom_id.push(item.house_id);
+                } else {
+                  this.set_price_form.bottom_type = 2;
+                  this.set_price_form.bottom_id.push(item.village_id);
+                }
+              });
+              this.set_price_form.bottom_name = this.set_price_form.bottom_name.substring(0, this.set_price_form.bottom_name.length - 1);
+            } else {
+              this.set_price_form.suggest_name = '';
+              this.set_price_form.suggest_id = [];
+              house.map(item => {
+                this.set_price_form.suggest_name += item.house_name;
+                if (type === 'house') {
+                  this.set_price_form.suggest_type = 1;
+                  this.set_price_form.suggest_id.push(item.house_id);
+                } else {
+                  this.set_price_form.suggest_type = 2;
+                  this.set_price_form.suggest_id.push(item.village_id);
+                }
+              });
+              this.set_price_form.suggest_name = this.set_price_form.suggest_name.substr(0, this.set_price_form.suggest_name.length - 1);
+            }
           }
         }
         this.house_filter_visible = false;
@@ -695,184 +700,7 @@
       },
       //打开高级设置
       handleOpenHighSearch() {
-        this.searchData.data = [
-          {
-            keyType: 'check',
-            title: '房屋状态',
-            keyName: 'status',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '未出租',
-              },
-              {
-                id: 2,
-                title: '预订',
-              },
-              {
-                id: 3,
-                title: '已出租',
-              },
-              {
-                id: 4,
-                title: '已完成',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '户型',
-            keyName: 'room',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '一室',
-              },
-              {
-                id: 2,
-                title: '两室',
-              },
-              {
-                id: 3,
-                title: '三室',
-              },
-              {
-                id: 4,
-                title: '四室',
-              },
-              {
-                id: 5,
-                title: '其他',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '预警状态',
-            keyName: 'warning_status',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '正常',
-              },
-              {
-                id: 2,
-                title: '黄色预警',
-              },
-              {
-                id: 3,
-                title: '橙色预警',
-              },
-              {
-                id: 4,
-                title: '红色预警',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '建议价格',
-            keyName: 'suggest_price',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '2000以下',
-              },
-              {
-                id: 2,
-                title: '2000~3000',
-              },
-              {
-                id: 3,
-                title: '3000~4000',
-              },
-              {
-                id: 4,
-                title: '4000以上',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '装修',
-            keyName: 'decoration',
-            dataType: [],
-            value: [
-              {
-                id: 405,
-                title: '精装',
-              },
-              {
-                id: 406,
-                title: '简装',
-              },
-              {
-                id: 407,
-                title: '豪装',
-              },
-              {
-                id: 408,
-                title: '毛坯',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '面积',
-            keyName: 'area',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '100以下',
-              },
-              {
-                id: 2,
-                title: '100~150',
-              },
-              {
-                id: 3,
-                title: '150以上',
-              },
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '用途',
-            keyName: 'house_identity',
-            dataType: [],
-            value: [
-              {
-                id: 419,
-                title: '住宅',
-              },
-              {
-                id: 420,
-                title: '公寓',
-              },
-              {
-                id: 421,
-                title: '商用两住',
-              },
-              {
-                id: 422,
-                title: '别墅'
-              },
-              {
-                id: 423,
-                title: '平房'
-              },
-              {
-                id: 424,
-                title: '其他'
-              }
-            ],
-          }
-        ];
+        this.searchData = this.houseManagementSearch;
         this.isHigh = true;
       },
       //关闭设置
@@ -893,29 +721,40 @@
       },
       handleOpenCardDetail(item) {
         this.current_house = item;
-        console.log(this.current_house);
-        this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
+          this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
           if (res.code === 200) {
             this.house_detail = res.data;
             console.log(this.house_detail);
+            if (this.house_detail.house_goods) {
+              for (var item of this.deploy_info) {
+                item.num = this.house_detail.house_goods[item.key] ? this.house_detail.house_goods[item.key] : 0;
+              }
+            } else {
+              for (var item of this.deploy_info) {
+                item.num = 0;
+              }
+            }
+            this.handleCheckModule(this.house_type[this.current_house_type - 1]);
             this.lj_size = {
               width: 1220 + 'px',
               height: 800 + 'px'
             };
             this.lj_visible = true;
-          }else {
+          } else {
             this.house_detail = '';
           }
         });
       },
       handleTransLeft() {
-        console.log(this.$refs['img_contain']);
-        this.img_trams -= 20;
+        var keys = Object.keys(this.house_detail.album_photo);
+        var offset = (keys.length - 4) * 120 - 80;
+        if (this.$refs['img_contain'].offsetLeft > -offset) {
+          this.img_trams -= 10;
+        }
       },
       handleTransRight() {
-        console.log(this.$refs['img_contain']);
         if (this.img_trams < 0) {
-          this.img_trams += 20;
+          this.img_trams += 10;
         }
       },
       handleCloseMenu() {
@@ -1075,10 +914,10 @@
             .info_type {
               > span {
                 color: $colorFDF;
-                &:hover {
-                  @include houseManagementImg('hongdi.png', 'theme1');
-                  color: white;
-                }
+              }
+              .current-change {
+                @include houseManagementImg('hongdi.png', 'theme1');
+                color: white;
               }
             }
             .page {

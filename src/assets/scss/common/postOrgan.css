@@ -133,6 +133,52 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 .flex {
   display: flex;
   display: -webkit-flex; }
@@ -267,6 +313,52 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name #staffOrgan .dialog_container .dialog_header .search, #theme_name #postOrgan .dialog_container .dialog_header .search {
   min-width: 28px;
   max-width: 28px;
@@ -279,10 +371,11 @@
   /*鍙充晶*/ }
   #theme_name #staffOrgan .dialog_container .dialog_main .colorChoose, #theme_name #postOrgan .dialog_container .dialog_main .colorChoose {
     cursor: pointer;
-    color: #CF2E33; }
+    color: #cf2e33; }
   #theme_name #staffOrgan .dialog_container .dialog_main h4, #theme_name #postOrgan .dialog_container .dialog_main h4 {
     width: 50px;
-    height: 50px; }
+    height: 50px;
+    margin-right: 10px; }
     #theme_name #staffOrgan .dialog_container .dialog_main h4 img, #theme_name #postOrgan .dialog_container .dialog_main h4 img {
       -webkit-border-radius: 50%;
       -moz-border-radius: 50%;
@@ -292,7 +385,7 @@
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     text-align: left; }
   #theme_name #staffOrgan .dialog_container .dialog_main .depart, #theme_name #postOrgan .dialog_container .dialog_main .depart {
     flex-direction: column;
@@ -305,7 +398,7 @@
       #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li {
         padding: 15px 0; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li:hover, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li:hover {
-          color: #CF2E33; }
+          color: #cf2e33; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul li b, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul li b {
           color: #c0c4cc;
           padding-left: 6px; }
@@ -329,25 +422,25 @@
       #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul .staff, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul .staff {
         padding: 10px 0; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul .staff:hover, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul .staff:hover {
-          color: #CF2E33; }
+          color: #cf2e33; }
           #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul .staff:hover h5 span + span, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul .staff:hover h5 span + span {
-            color: #CF2E33; }
+            color: #cf2e33; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul .staff h3, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul .staff h3 {
           width: 20px;
           height: 20px;
           -webkit-border-radius: 50%;
           -moz-border-radius: 50%;
           border-radius: 50%;
-          border: 1px solid #DFDFDF; }
+          border: 1px solid #dfdfdf; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul .staff div, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul .staff div {
           cursor: pointer; }
       #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul .checkStaff, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul .checkStaff {
-        color: #CF2E33; }
+        color: #cf2e33; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul .checkStaff h5 span + span, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul .checkStaff h5 span + span {
-          color: #CF2E33; }
+          color: #cf2e33; }
         #theme_name #staffOrgan .dialog_container .dialog_main .depart .organList ul .checkStaff h3, #theme_name #postOrgan .dialog_container .dialog_main .depart .organList ul .checkStaff h3 {
-          background-color: #CF2E33;
-          border: 1px solid #CF2E33; }
+          background-color: #cf2e33;
+          border: 1px solid #cf2e33; }
   #theme_name #staffOrgan .dialog_container .dialog_main .chooseStaff, #theme_name #postOrgan .dialog_container .dialog_main .chooseStaff {
     flex-direction: column;
     margin-left: 20px;
@@ -370,7 +463,7 @@
             margin: 0 auto; }
             #theme_name #staffOrgan .dialog_container .dialog_main .chooseStaff > div > div .lists h4 i, #theme_name #postOrgan .dialog_container .dialog_main .chooseStaff > div > div .lists h4 i {
               font-size: 18px;
-              color: #CF2E33;
+              color: #cf2e33;
               position: absolute;
               top: -6px;
               right: 0;

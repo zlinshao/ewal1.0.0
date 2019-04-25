@@ -1,0 +1,227 @@
+@import '../../common.scss';
+
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/approval/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
+#theme_name {
+  #panel {
+    z-index: 50;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $color2F2;
+    @include transform(scale(0));
+    @include transOrigin(50%);
+    @include transition(all 0.6s linear);
+    opacity: 0;
+    &.panel {
+      @include transOrigin(50%);
+      @include transition(all 0.6s linear);
+      @include transform(scale(1));
+      opacity: 1;
+    }
+    .header {
+      height: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      .header_methods {
+        display: flex;
+        .methods_box {
+          width: 80px;
+          height: 80px;
+          text-align: center;
+          line-height: 80px;
+          font-size: 10px;
+        }
+        .methods_box + .methods_box {
+          margin-left: 40px;
+        }
+      }
+      .header_right {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        height: 180px;
+        align-items: flex-end;
+        padding-bottom: 24px;
+        padding-right: 42px;
+      }
+
+      .icons_panel {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+      }
+    }
+    .mainListTable {
+      padding: 0;
+      margin: 0 30px;
+      // margin-left: 20px;
+      background: transparent;
+    }
+
+    .panel_list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      .panel_cell {
+        width: 340px;
+        box-sizing: border-box;
+        padding: 0 25px 20px;
+        border-width: 1px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        margin-left: 30px;
+        .cell_header {
+          height: 60px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px dashed #d2d2d2;
+          .icons {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+          }
+
+          .cell_header_left {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            span {
+              margin-left: 10px;
+              font-family: 'jingdianxingshu';
+            }
+          }
+        }
+        .cell_list {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 12px;
+          line-height: 30px;
+          margin-top: 20px;
+          .cell_content {
+            max-width: 90px;
+          }
+          .cell_blue,
+          .cell_yellow {
+            display: inline-block;
+            font-size: 12px;
+            padding: 0 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 90px;
+            overflow: hidden;
+          }
+          .cell_type {
+            position: relative;
+            ul {
+              opacity: 0;
+              position: absolute;
+              left: 50px;
+              top: 20px;
+              padding: 6px 0;
+              display: flex;
+              background: #fff;
+              box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
+              li {
+                padding: 0 12px;
+                line-height: 18px;
+                color: #bbbbbb;
+                font-size: 10px;
+                white-space: nowrap;
+              }
+              li + li {
+                border-left: 1px dashed #d2d2d2;
+              }
+            }
+            &:hover {
+              ul {
+                opacity: 1;
+              }
+            }
+          }
+        }
+        .cell_setting {
+          margin-top: 20px;
+          .icons_setting {
+            float: right;
+            width: 30px;
+            height: 30px;
+          }
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #panel {
+    .header {
+      .header_methods {
+        .methods_box {
+          color: #bbbbbb;
+          @include confirmImg('duobiankuang_hui.png', 'theme1');
+        }
+        .methods_box_active {
+          color: #cf2e33;
+          @include confirmImg('duobiankuang_hong.png', 'theme1');
+        }
+      }
+      .icons_panel {
+        @include confirmImg('guankongmianban_dianji.png', 'theme1');
+      }
+    }
+
+    .panel_list {
+      .panel_cell {
+        border-color: #fff;
+        background: #fff;
+        .icons_per {
+          @include confirmImg('ren_hui.png', 'theme1');
+        }
+        .icons_deng {
+          @include confirmImg('chaoshi.png', 'theme1');
+        }
+        .cell_header_left {
+          color: #686874;
+        }
+        .cell_list {
+          .cell_tit {
+            color: #686874;
+          }
+          .cell_yellow {
+            background: #fffcf5;
+            color: #ffad0d;
+          }
+          .cell_blue {
+            background: #f5faff;
+            color: #0c66ff;
+          }
+        }
+        .icons_setting {
+          @include confirmImg('shezhi.png', 'theme1');
+        }
+      }
+      .panel_cell_active {
+        border-color: #cf2e33;
+        .icons_per {
+          @include confirmImg('ren_hong.png', 'theme1');
+        }
+      }
+    }
+
+    .check_type_dialog {
+      background: #fff;
+    }
+  }
+}

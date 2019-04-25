@@ -39,7 +39,8 @@ class myUtils {
     return temp;
   }
 
-  static formatDate(v, format = 'yyyy-MM-dd') {
+  //格式化日期
+  static formatDate(v, format = 'yyyy-MM-dd') {//用法:format="yyyy-MM-dd hh:mm:ss";
     if (!v) return null;
     let d = v;
     if (typeof v === 'string') {
@@ -67,6 +68,22 @@ class myUtils {
     }
     return format;
   }
+
+
+  //判断时间是否在给定的日期范围内
+  //第三个参数传选定的日期 不传默认当前时间
+  static judgeDateInRange(startTime, endTime, inTime = new Date()) {
+    let time = new Date(inTime).getTime();
+    let sTime = new Date(startTime.replace(/-/g, '/')).getTime();
+    let eTime = new Date(endTime.replace(/-/g, '/')).getTime();
+    if (sTime < time && eTime > time) {
+      return true;
+    }
+    ;
+    return false;
+
+  }
+
 }
 
 

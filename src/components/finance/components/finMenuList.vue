@@ -2,7 +2,7 @@
   <div id="finMenuList">
     <div :class="{'dialogVisible': dialogVisible}" @click="dialogVisible = false"></div>
     <div class="list flex-center" :class="{'backdrop': dialogVisible}">
-      <div class="justify-around">
+      <div class="justify-around" style="padding: 0 6.4%">
         <div v-for="item in finance.data" @click="moduleRouter(item.url)">
           <p>
             <span class="writingMode">{{item.title}}</span>
@@ -72,7 +72,7 @@
         width: 70%;
         padding: 0 5%;
         height: 360px;
-        @include finMenuImg('beijingtu2.png', 'theme1');
+        @include finMenuImg('suanbpan2.png', 'theme1');
         div {
           @include flex('flex-center');
           width: 100%;

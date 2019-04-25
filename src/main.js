@@ -25,6 +25,9 @@ import '../static/UE/ueditor.all.min.js'
 import '../static/UE/lang/zh-cn/zh-cn.js'
 import '../static/UE/ueditor.parse.min.js'
 
+import Video from 'video.js'
+import 'video.js/dist/video-js.css'
+
 
 
 Vue.use(Boss);
@@ -39,6 +42,8 @@ Vue.config.productionTip = false;
 Vue.prototype.$http = Axios;
 
 Vue.prototype.$LjConfirm = Confirm.install;
+
+Vue.prototype.$video = Video;
 
 
 /* eslint-disable no-new */

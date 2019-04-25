@@ -1,11 +1,11 @@
 <template>
     <div id="industryDynamic">
         <div class="lists">
-            <div class="list-info flex-center" v-for="(item,index) in dataLists">
+            <div class="list-info flex-center" v-for="(item,index) in dataLists" @click="details(item.id)">
                 <div class="list-info-box">
                     <span>{{item.title}}</span>
                     <span>{{item.content}}</span>
-                    <span><i @click="edit(item.id,index)">编辑</i><i @click="del(item.id,index)">删除</i></span>
+                    <span><i @click.stop="edit(item.id,index)">编辑</i><i @click.stop="del(item.id,index)">删除</i></span>
                 </div>
             </div>
         </div>
@@ -16,9 +16,9 @@
             </div>
             <div class="page">
                 <el-pagination
-                        :total="videoCount"
+                        :total="count"
                         layout="total,jumper,prev,pager,next"
-                        :current-page="params.page"
+                        :current-page="params.offset"
                         :page-size="params.limit"
                         @current-change="handleChangePage"
                 >
@@ -33,22 +33,23 @@
                 @close="visible = false">
             <div class="dialog_container">
                 <div class="dialog_header">
-                    <h3>{{current===1?'编辑行业动态':'新增行业动态'}}</h3>
+                    <h3>{{current===1?'编辑行业动态':current===2?'新增行业动态':current===3?'详情':''}}</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form size="mini" label-width="80px" v-model="form" :rules="rules" ref="form">
+                <div class="dialog_main borderNone">
+                    <el-form  label-width="80px" v-model="form" :rules="rules" ref="form">
                         <el-form-item label="标题" prop="title">
-                            <el-input v-model="form.title" placeholder="请输入标题"></el-input>
+                            <el-input v-model="form.title" placeholder="请输入标题" :disabled="current===3"></el-input>
                         </el-form-item>
                         <el-form-item label="动态内容" prop="content">
                             <el-input v-model="form.content" type="textarea" :rows="12"
-                                      placeholder="请输入动态内容"></el-input>
+                                      placeholder="请输入动态内容" :disabled="current===3"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>
                 <div class="dialog_footer">
-                    <el-button size="small" type="danger" @click="submit">确定</el-button>
-                    <el-button size="small" type="info" @click="visible = false;current_id = ''">取消</el-button>
+                    <el-button v-if="current===1||current===2" type="danger" size="small" @click="submit(current)">确定</el-button>
+                    <el-button v-if="current===1||current===2" type="info" size="small" @click="visible = false;current_id = ''">取消</el-button>
+                    <el-button v-if="current===3" type="danger" size="small" @click="visible = false;current_id = '';">关闭</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -82,49 +83,25 @@
         },
         data() {
             return {
-                videoCount: 0,
+                count: 0,
                 visible: false,
                 delete_visible: false,
-                current: 1,
+                is_add:false,
+                is_disabled:false,
+                is_check:false,
+                current: '',
                 current_id: '',
                 current_item: '',
                 params: {//查询参数
                     search: '',
                     startRange: '',
                     endRange: '',
-                    page: 1,
+                    offset: 1,
                     limit: 6,
                     department_ids: '',
                     export: '',
                 },
-                dataLists: [//列表
-                    {
-                        id: 1,
-                        title: '公告',
-                        content: '还减肥开始的阶段的就是讲方法减肥的时间佛的就发生都放假放假几个破手机高坡上的价格牌手机破公交给偶个就是破地方就是的发生打架的富婆',
-                    },
-                    {
-                        id: 2,
-                        title: '公告',
-                        content: '还减肥开始的阶段的就是讲方法减肥的时间佛的就发生都放假放假几个破手机高坡上的价格牌手机破公交给偶个就是破地方就是的发生打架的富婆',
-                    },
-                    {
-                        title: '公告',
-                        content: '还减肥开始的阶段的就是讲方法减肥的时间佛的就发生都放假放假几个破手机高坡上的价格牌手机破公交给偶个就是破地方就是的发生打架的富婆',
-                    },
-                    {
-                        title: '公告',
-                        content: '还减肥开始的阶段的就是讲方法减肥的时间佛的就发生都放假放假几个破手机高坡上的价格牌手机破公交给偶个就是破地方就是的发生打架的富婆',
-                    },
-                    {
-                        title: '公告',
-                        content: '还减肥开始的阶段的就是讲方法减肥的时间佛的就发生都放假放假几个破手机高坡上的价格牌手机破公交给偶个就是破地方就是的发生打架的富婆',
-                    },
-                    {
-                        title: '公告',
-                        content: '还减肥开始的阶段的就是讲方法减肥的时间佛的就发生都放假放假几个破手机高坡上的价格牌手机破公交给偶个就是破地方就是的发生打架的富婆',
-                    },
-                ],
+                dataLists: [],
 
                 form: {
                     id: '',
@@ -132,15 +109,6 @@
                     content: '',
                 },
                 rules: {
-                    title: [
-                        {required: true, message: '请输入标题名称', trigger: 'blur'},
-                        {min: 10, max: 30, message: '长度在 10 到 30 个字符', trigger: 'blur'}
-                    ],
-                    content: [
-                        {required: true, message: '请输入动态内容', trigger: 'blur'},
-                        {min: 0, max: 300, message: '长度在 300 个字符', trigger: 'blur'}
-                    ],
-
                 }
 
 
@@ -156,8 +124,17 @@
             this.$bus.off('add', this.getData);
         },
         methods: {
+            details(id){
+                this.visible=true;
+                this.current=3;
+                this.$http.get(globalConfig.leJiaCollege_server+'/api/trade/dynamic'+id).then(res => {
+                    if(res.status===200){
+
+                    }
+                })
+            },
             callbackSuccess(res) {
-                if (res.code === 200) {
+                if (res.status === 200) {
                     this.$LjNotify('success', {
                         title: '成功',
                         message: res.msg,
@@ -174,7 +151,7 @@
             },
             //换页
             handleChangePage(page) {
-                this.params.page = page;
+                this.params.offset = page;
                 this.getIndustryList();
 
             },
@@ -203,23 +180,39 @@
             },
             //确认删除
             delOk() {
-                this.$http.delete('', this.current_id).then(res => {
+                this.$http.delete(globalConfig.leJiaCollege_server+'/api/trade/dynamic/'+this.current_id).then(res => {
                     this.callbackSuccess(res);
+                    this.delete_visible=false;
                 })
             },
             //获取列表
             getIndustryList() {
-                this.$http.get('', this.params).then(res => {
-                    if (res.code === 200) {
+                this.showLoading(true);
+                this.$http.get(globalConfig.leJiaCollege_server+'/api/trade/dynamic', this.params).then(res => {
+                    this.showLoading(false);
+                    if (res.status === 200) {
                         this.dataLists = res.data.data;
+                        this.count=res.data.total;
+                    }else{
+                        this.dataLists = [];
+                        this.count=0;
                     }
                 })
             },
             //提交表单
-            submit() {
-                this.$http.post('', this.form).then(res => {
-                    this.callbackSuccess(res);
-                })
+            submit(type) {
+                if(type===1){//编辑
+                    this.$http.put(globalConfig.leJiaCollege_server+'/api/trade/dynamic/'+this.current_id, this.form).then(res => {
+                        this.callbackSuccess(res);
+                        this.visible=false;
+                    })
+                }else if(type===2){//新增
+                    this.$http.post(globalConfig.leJiaCollege_server+'/api/trade/dynamic', this.form).then(res => {
+                        this.callbackSuccess(res);
+                        this.visible=false;
+                    })
+                }
+
             },
         }
     }

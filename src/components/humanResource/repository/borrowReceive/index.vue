@@ -133,7 +133,7 @@
     >
       <div class="dialog_container repository-overview">
         <div class="dialog_header">
-          <h3>{{tableSettingData.borrowReceive.formData.approvalId}} 详情</h3>
+          <h3 :title="tableSettingData.borrowReceive.formData.approvalId+'详情'" class="dialog-header-title">{{tableSettingData.borrowReceive.formData.approvalId}} 详情</h3>
           <div class="header_right">
 
             <div class="detail-container">
@@ -320,7 +320,7 @@
               <template slot-scope="scope">
                 <div :class="{editable:tableSettingData.goods.modifyAll}">
                   <dropdown-list :disabled="!tableSettingData.goods.modifyAll" width="120"
-                                 :arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
+                                 :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                                  v-model="scope.row.status"></dropdown-list>
                 </div>
 
@@ -351,7 +351,7 @@
               <template slot-scope="scope">
                 <div :class="{editable:tableSettingData.goods.modifyAll}">
                   <dropdown-list :disabled="!tableSettingData.goods.modifyAll" width="100"
-                                 :arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS"
+                                 :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS"
                                  v-model="scope.row.goods_status"></dropdown-list>
                 </div>
               </template>
@@ -544,6 +544,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import utils from '../../../../utils/myUtils';
   import LjDialog from '../../../common/lj-dialog.vue';
   //import Upload from '../../../common/upload.vue';
@@ -728,6 +729,9 @@
       sendReceiveNotify() {
         let id = this.is_notify_form.id;
         let user_id = this.is_notify_form.user_id;
+        if(user_id.constructor==Array) {
+          user_id = user_id[0];
+        }
         let params = {user_id: user_id};
         this.$http.get(`${this.url}/eam/process/${id}/todo`, params).then(res => {
           if (res.code.endsWith('0')) {
@@ -769,14 +773,18 @@
                 applyPerson: item.user?.name || '-',//申请人
                 department: item.user?.org[0]?.name || '-',//部门
                 applyTime: item.apply_time || '-',//申请日期
-                applyStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.apply_status],//申请状态
-                goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status],//物品状态
+                //applyStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.apply_status],//申请状态
+                applyStatus: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS, (o)=> {return o.id==item.apply_status})?.name || '-',//申请状态
+                //goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status],//物品状态
+                goodsStatus: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS, (o)=> {return o.id==item.goods_status})?.name || '-',//物品状态
                 repairPrice: item.repair_price || 0,//维修总费用
                 scrapPrice: item.scrap_price || 0,//报废总费用
-                responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type] || '-',//任责人类型
+                //responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type] || '-',//任责人类型
+                responsibleType: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE, (o)=> {return o.id==item.responsible?.type})?.name || '-',//任责人类型
                 responsibleName: item.responsible?.responsible_info?.name || '-',//任责人
                 //costType: item.responsible?.payment_type||0//付款类型-结算方式
-                costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type || 0],//付款类型-结算方式
+                //costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type || 0],//付款类型-结算方式
+                costType: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT, (o)=> {return o.id==item.responsible?.payment_type})?.name || '-',//付款类型-结算方式
                 receive_picture: item.receive_picture || [],
                 user_id: item.user_id,
               };
@@ -794,7 +802,6 @@
         this.chooseDetailTabs = 1;
         this.tableSettingData[this.currentTable].tableData = [];
         this.$http.get(`${this.url}/eam/process/${ids}/collection`, this.tableSettingData[this.currentTable].params).then(res => {
-          debugger
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let obj = {
@@ -813,13 +820,11 @@
 
       //获取物品详情list
       getGoodsDetailList() {
-        //debugger
         let ids = this.tableSettingData.borrowReceive.currentSelection.id;
         this.chooseDetailTabs = 2;
         this.currentTable = 'goods';
         this.tableSettingData[this.currentTable].tableData = [];//清空上次数据
         this.$http.get(`${this.url}eam/process/${ids}/goods`, this.tableSettingData[this.currentTable].params).then(res => {
-          debugger
           console.log(res);
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
@@ -848,7 +853,6 @@
 
       //打开照片dialog
       showPictureList() {
-        //debugger
         let _this = this;
         setTimeout(() => {
           //let shorts = this.tableSettingData.goods.form.photo;
@@ -865,7 +869,6 @@
           goods: [form]
         }
         this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-          //debugger
           if (res.code.endsWith('0')) {
             this.$LjNotify('success', {
               title: '成功',
@@ -910,40 +913,48 @@
         if (control.modifyAll) {//批量修改
           let postArr = this.tableSettingData.goods.tableData;//要修改的数据
           for (let item of postArr) {
-            debugger
             delete item['receive_time'];
-            item['receive_user_id'] = typeof item['receive_user_id'] === 'Array' ? item['receive_user_id'][0] : item['receive_user_id'];
+            item['receive_user_id'] = item['receive_user_id'].constructor === Array ? item['receive_user_id'][0] : item['receive_user_id'];
             item['return_date'] = utils.formatDate(item['return_date']);
             // item['return_date'] =item['return_date']?utils.formatDate(item['return_date']):item['return_date'];
             let params = {goods: [item]};
             this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-              debugger
-              if (res.code.endsWith('0')) {
+              /*if (res.code.endsWith('0')) {
                 this.$LjNotify('success', {
                   title: '成功',
-                  message: '修改成功'
+                  message: res.msg
                 });
                 control.showSaveCancel = false;
                 control.modifyAll = false;
-              }
+              }*/
+              this.$LjMessageEasy(res,()=> {
+                control.showSaveCancel = false;
+                control.modifyAll = false;
+              });
             });
           }
         }
         if (control.batchSetUser) {
           if (!control.batchUser || control.batchUser.length == 0) {
-            this.$LjNotify('error', {
-              title: '失败',
-              message: '请设置领取人',
+            this.$LjMessage('warning', {
+              title: '警告',
+              msg: '请设置领取人',
             });
             return;
           }
           let multiRows = control.multipleSelection;
-          if (multiRows) {
+          if(!multiRows || multiRows.length==0) {
+            this.$LjMessage('warning',{
+              title:'警告',
+              msg:'请至少选择一项',
+            });
+            return;
+          }
+          if (multiRows&&multiRows.length>0) {
             for (let myItem of multiRows) {
               myItem['receive_user_id'] = control.batchUser[0];
               let params = {goods: [myItem]};
               this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-                debugger
                 if (res.code.endsWith('0')) {
                   this.$LjNotify('success', {
                     title: '成功',
@@ -958,7 +969,6 @@
           }
         }
         if (control.batchSetReturnDate) {
-          debugger
           if (!control.batchReturnDate) {
             this.$LjNotify('error', {
               title: '失败',
@@ -972,7 +982,6 @@
               returnDateItem['return_date'] = utils.formatDate(control.batchReturnDate);
               let params = {goods: [returnDateItem]};
               this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-                debugger
                 if (res.code.endsWith('0')) {
                   this.$LjNotify('success', {
                     title: '成功',
@@ -1069,7 +1078,6 @@
     color: #000000 !important;
   }
 
-
   .goods-detail {
     .el-input__inner {
       text-align: center !important;
@@ -1158,7 +1166,6 @@
           }
         }
 
-
         //图片dialog
         .borrow-receive-img-dialog {
           .icons-img {
@@ -1170,7 +1177,6 @@
           }
         }
       }
-
 
       /*.photo-img {
         @include childrenImg('celw.png', 'theme1')

@@ -1,6 +1,6 @@
 <template>
   <div id="finance" class="flex-center">
-    <div class="justify-center">
+    <div class="justify-center" style="padding-left: 50px;padding-right: 50px">
       <div class="mainList" :class="['finance' + (index + 1)]"
            v-for="(item,index) in finance.data" @click="routerLink(item.url)">
         <div class="abacusUp">
@@ -47,7 +47,7 @@
   }
 
   @mixin hoverImg($n) {
-    @for $i from 1 through 5 {
+    @for $i from 1 through 8 {
       .mainList.finance#{$i} {
         .abacusUp {
           .icons {
@@ -69,7 +69,7 @@
     #finance {
       @include financeImg('ditu.png', 'theme1');
       > div {
-        @include financeImg('beijingtu.png', 'theme1');
+        @include financeImg('suanpan.png', 'theme1');
       }
       .mainList {
         .abacusUp {

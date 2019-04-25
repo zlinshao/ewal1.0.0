@@ -4,10 +4,10 @@
             <div class="star_info">
                 <div class="star_info_left">
                     <div class="star_info_title writingMode flex-center"><span>乐伽之星</span></div>
-                    <div class="star_info_avatar"><img src="../../../../../assets/image/newMedia/theme1/staff.png"
+                    <div class="star_info_avatar"><img :src="userInfo.avatar"
                                                        alt=""></div>
-                    <div class="star_info_name writingMode flex-center"><span>李妮</span></div>
-                    <div class="star_info_department writingMode flex-center"><span>南京二区一组</span></div>
+                    <div class="star_info_name writingMode flex-center"><span>{{userInfo.name}}</span></div>
+                    <div class="star_info_department writingMode flex-center"><span>{{userInfo.department}}</span></div>
                 </div>
 
                 <div class="star_info_right flex-center">
@@ -99,7 +99,7 @@
                                     <span>祝福内容</span>
                                 </div>
                                 <div class="item_content">
-                                    <el-input type="textarea" v-model="comment" :rows="8"></el-input>
+                                    <el-input type="textarea"  :rows="8"></el-input>
                                 </div>
                             </div>
                         </el-form-item>
@@ -224,19 +224,9 @@
                 showModal: false,
                 wishes_visible:false,
                 edit_wishes_visible:false,
+                share_navbar_visible:false,
                 chooseTab: 1,
-                detailData:{
-                    title:'这是一则导读标题内标题内容标题内容标题内',
-                    view:222,
-                    point:333,
-                    comment:444,
-                    name:'来来来',
-                    department:'南京二区房东租',
-                    time:'2018-02-12 14:04:12',
-                    avatar:'../../../assets/image/newMedia/theme1/avatar.png',
-                    desc:'这是一则导读标题内标题内容标题内容标题内这是一则导读标题内标题内容标题内容标题内',
-                    content:'小编认为，其实我们每个人都有一个大小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻想着自己行走于市井之间，救死扶伤。长大后，经历过现实的洗礼磨练，发现自己怎么可能成为一代大侠？这辈子看来是实现不了了...... 不！小编要告诉你！大侠不仅仅存在在武侠小说里，其实在咱们乐伽就有一位大侠！小编认为，其实我们每个人都有一个大侠梦，英雄梦！自打小，或幻想着成为一代武林宗师，惩奸除恶；或幻想着自己行走于市井之间，救死扶伤。长大后，经历过现实的洗礼磨练，发现自己怎么可能成为一代大侠？这辈子看来是实现不了了...... 不！小编要告诉你！大侠不仅仅存在在武侠小说里，其实在咱们乐伽就有一位大侠！'
-                },
+                detailData: {},
                 selects: [
                     {id: 1, title: "乐伽之星"}, {id: 2, title: "优秀员工"}, {id: 3, title: "寿星墙"}
                 ],
@@ -269,12 +259,39 @@
                     {name:'齐达内',depart:'南京二区一组',avatar:""},
                     {name:'齐达内',depart:'南京二区一组',avatar:""},
                 ],
+
+                userInfo:{
+                    avatar:'',
+                    name:'',
+                    department:'',
+                },
             }
+        },
+        mounted(){
+          this.getData();
         },
         methods: {
             changeTabs(id) {
                 this.chooseTab = id;
             },
+            handleOkDel(){
+
+            },
+            getData(){
+                this.$http.get(globalConfig.newMedia_sever+'/api/humanity/star',).then(res=>{
+                    if(res.status===200){
+                        console.log(res.data);
+                        this.detailData = res.data;
+                        if(res.data.user_id){
+                            this.userInfo.avatar = res.data.user_id.avatar;
+                            this.userInfo.name = res.data.user_id.name;
+                            this.userInfo.department = res.data.user_id.org[0].name;
+
+                        }
+
+                    }
+                })
+            }
 
         }
     }

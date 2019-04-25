@@ -1,0 +1,145 @@
+@import "../../../../common";
+#attence_dialog {
+  #lj_dialog{
+    .dialog_container{
+      .dialog_header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0px 40px 0px 30px;
+        .personMsg{
+          margin-right: 1065px;
+          .name{
+            height:20px;
+            font-size:15px;
+            font-family:MicrosoftYaHei;
+            color:rgba(104,104,116,1);
+            letter-spacing:1px;
+          }
+          .time{
+            height:20px;
+            font-size:7px;
+            font-family:MicrosoftYaHei;
+            color:rgba(104,104,116,1);
+          }
+        }
+        .rili{
+          width: 15px;
+          height: 13px;
+        }
+      }
+      .dialog_main{
+        margin-right: 50px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .calendar_container{
+          // margin-right: 20px;
+          width: 1100px;
+          .calendar-days-item {
+            width: 100%;
+            height: 100%;
+            user-select: none;
+            display: flex;
+            background-color: $color9F9;
+            justify-content: flex-start;
+            &.rest {
+              background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><line x1="100%" y1="0" x2="0" y2="100%" style="stroke:rgb(228,228,228);stroke-width:1"/></svg>');
+            }
+            &.current {
+              color: white;
+              background-color: $colorE33;
+            }
+            .days-item-content-container {
+              padding: 10% 0 0 10%;
+              .days-item-content-date {
+                font-size: 18px;
+              }
+            }
+          }
+        }
+        .attenceInfo{
+          margin-top: 100px;
+          >div{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .title{
+              >h3{
+                height: 35px;
+                display: flex;
+                justify-content: flex-end;
+                font-family:MicrosoftYaHei;
+                font-size:8px;
+                color:rgba(210,210,210,1);
+              }
+            }
+            .value{
+              margin-left: 10px;
+              >h3{
+                height: 35px;
+                display: flex;
+                justify-content: flex-start;
+                font-family:MicrosoftYaHei;
+                font-size:8px;
+                color:rgba(104,104,116,1);
+              }
+            }
+          }
+          .submitButton{
+            width: 120px;
+            height:40px;
+            margin-top: 200px;
+            display: flex;
+            justify-content: center;
+            background-color: rgba(207,46,51,1);
+            color:white;
+            font-family: PingFangSC-Regular;
+            border-radius:4px;
+            font-size:18px;
+            line-height:13px;
+            letter-spacing:2px;
+          } 
+        }
+      }
+    }
+    .warining_container{
+      margin-top: 10px;
+      .warining_header{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .wariningIcon{
+          width:50px;
+          height:50px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50px;
+          border:3px solid rgba(254,192,0,1);
+          color: rgba(254,192,0,1);
+        }
+        .wariningText{
+          margin-top: 10px;
+          font-size:22px;
+          font-family:MicrosoftYaHei;
+          color: rgba(254,192,0,1);
+        }
+      }
+      .warining_body{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-left: 52px;
+        >h3{
+          font-size:15px;
+          font-family:MicrosoftYaHei;
+          color:rgba(104,104,116,1);
+        }
+      }
+    }
+  }
+}

@@ -7,6 +7,29 @@
   //font-family: MicrosoftYaHeiLight !important;
 }
 
+.icon15 {
+  display: inline-block;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+};
+
+.icon20 {
+  display: inline-block;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+};
+
+
+
+.icon30 {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
 #theme_name {
   #discussPolitics {
     height: 100%;
@@ -28,16 +51,134 @@
         @include flex();
         //padding-left: 100px;
         .container-left {
-          flex: 75%;
+          width: 345px;
+          padding-left:30px;
+
+          padding-right: 12px;
+          //background-color: green;
+
+
+          .monthTitle {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            font-size: 20px;
+            //margin-top: 20px;
+            height: 50px;
+            span {
+              padding-left: 10px;
+              cursor: pointer;
+              position: absolute;
+              color: $colorFFF;
+              //bottom: 0;
+            }
+          }
+
+          .timeline {
+            width: 100%;
+            height: calc(100% - 160px);
+            .timeline-bg {
+              height: 100%;
+              width: 305px;
+              position: fixed;
+            }
+
+            //padding-top: 20px;
+            .eltimeline-container {
+              height: 100%;
+              width: 100%;
+              padding-left: 10px;
+              .timeline-item-container {
+                &.prev {
+                  > div {
+                    color: #A5A5A5;
+                  }
+                }
+
+                .timeline-item-container-content-item {
+                  position: relative;
+                  margin: 8px 5px;
+                  font-size: 14px;
+                  //font-weight: 700;
+                  color: rgba(255,255,255,1);
+                  font-family: MicrosoftYaHei;
+                  //padding: 3px 5px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  cursor: default;
+                  border-radius: 6px;
+                  height: 20px;
+                  line-height: 20px;
+
+                  &.cancel-status {
+                    color: rgba(255,255,255,.4);
+                    //color: #919191;
+                    font-family: "Microsoft YaHei Light";
+                    //font-weight: 400;
+                  }
+                  .content-item-span {
+                    display: inline-block;
+                    width: 150px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+                  .icon-list {
+                    position: absolute;
+                    right: 0;
+                    display: inline-flex;
+                    justify-content: flex-end;
+                    align-items: center;
+
+                    span {
+                      margin-right: 10px;
+                    }
+                  }
+                  /*span.icon-delete {
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                    //background-color: red;
+                    position: absolute;
+                    right: 0;
+                  }*/
+
+                  //background-color: #cccccc;
+
+                  /*&.danger {
+                    color: #FF8248;
+                    background-color: #FFE8DE;
+                  }
+                  &.default {
+                    background-color: #E2FFEE;
+                    color: #50E38F;
+                  }
+                  &.warning {
+                    background-color: #FFF4D4;
+                    color: #FFCD35;
+                  }*/
+                }
+              }
+            }
+
+          }
+        }
+        .container-right {
+          flex: 1;
           margin-bottom: 10px;
+          margin-right: 50px;
 
           .calendar-week {
             margin-top: 20px;
             height: 50px;
 
             .ui-container {
-              padding-left: calc(70px + 2%);
-              margin: 0 70px;
+              padding-left: 20px;
+              //padding-left: calc(70px + 2%);
+              //margin: 0 70px;
               @include flex('');
 
               .calendar-week-item {
@@ -71,8 +212,8 @@
 
             //margin-bottom: 40px;
             .ui-container {
-              padding-left: calc(70px + 2%);
-              margin: 0 70px;
+              //padding-left: calc(70px + 2%);
+              //margin: 0 70px;
               @include flex('');
               flex-wrap: wrap;
               background-color: $colorFFF;
@@ -89,6 +230,23 @@
                   height: 100%;
 
                   &:hover {
+                    color: #fff;
+                    background-color: $colorE33 !important;
+                    .calendar-day-item-container-tip {
+                      .calendar-day-item-container-date {
+                        //display: none;
+                        sup {
+                          display: none !important;
+                        }
+                      }
+                    }
+
+                    .calendar-day-item-container-date {
+                      font-size: 18px;
+                      font-family: MicrosoftYaHei-Bold;
+                      font-weight: 700;
+                    }
+
                     .calendar-day-item-container-date:not(.current) {
                       background-color: $colorE33;
                       color: $colorFFF !important;
@@ -98,12 +256,30 @@
                         background-color: $colorE33 !important;
                       }
                     }
+
+                    .calendar-day-item-container-content {
+                      > div {
+                        color: $colorFFF !important;
+                      }
+                    }
                   }
+
+                  /*&:hover {
+                    .calendar-day-item-container-date:not(.current) {
+                      background-color: $colorE33;
+                      color: $colorFFF !important;
+
+                      &.current {
+                        color: #fff;
+                        background-color: $colorE33 !important;
+                      }
+                    }
+                  }*/
 
                   .calendar-day-item-container-tip {
                     position: absolute;
-                    top: 8px;
-                    left: 5px;
+                    top: 15px;
+                    left: 10px;
                     .calendar-day-item-container-date {
                       //position: absolute;
                       cursor: default;
@@ -122,10 +298,9 @@
                       }
 
                       &.current {
-                        font-size: 20px;
                         font-weight: 700;
-                        color: $colorE33;
-                        background-color: #fff !important;
+                        color: $colorFFF;
+                        background-color: $colorE33;
                       }
                     }
                   }
@@ -200,20 +375,19 @@
                       overflow: hidden;
                       cursor: pointer;
                       border-radius: 6px;
-                      background-color: #cccccc;
 
                       &.danger {
                         color: #FF8248;
-                        background-color: #FFE8DE;
+                        //background-color: #FFE8DE;
                       }
 
                       &.default {
-                        background-color: #E2FFEE;
+                        //background-color: #E2FFEE;
                         color: #50E38F;
                       }
 
                       &.warning {
-                        background-color: #FFF4D4;
+                        //background-color: #FFF4D4;
                         color: #FFCD35;
                       }
                     }
@@ -224,94 +398,7 @@
           }
         }
 
-        .container-right {
-          flex: 25%;
-          //background-color: green;
 
-          .monthTitle {
-            position: relative;
-            font-size: 20px;
-            margin-top: 20px;
-            height: 50px;
-
-            span {
-              cursor: pointer;
-              position: absolute;
-              bottom: 0;
-            }
-          }
-
-          .timeline {
-            padding-top: 20px;
-
-            .timeline-item-container {
-              &.prev {
-                > div {
-                  color: #A5A5A5;
-                }
-              }
-
-              .timeline-item-container-content-item {
-                position: relative;
-                margin: 8px 5px;
-                font-size: 14px;
-                //font-weight: 700;
-                color: #464646;
-                font-family: MicrosoftYaHei;
-                //padding: 3px 5px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                cursor: default;
-                border-radius: 6px;
-                height: 20px;
-                line-height: 20px;
-
-                &.cancel-status {
-                  color: #919191;
-                  font-family: "Microsoft YaHei Light";
-                  //font-weight: 400;
-                }
-
-                .icon-list {
-                  position: absolute;
-                  right: 0;
-                  display: inline-flex;
-                  justify-content: flex-end;
-                  align-items: center;
-
-                  span {
-                    margin-right: 10px;
-                  }
-                }
-                /*span.icon-delete {
-                  display: inline-block;
-                  width: 20px;
-                  height: 20px;
-                  cursor: pointer;
-                  //background-color: red;
-                  position: absolute;
-                  right: 0;
-                }*/
-
-                //background-color: #cccccc;
-
-                /*&.danger {
-                  color: #FF8248;
-                  background-color: #FFE8DE;
-                }
-                &.default {
-                  background-color: #E2FFEE;
-                  color: #50E38F;
-                }
-                &.warning {
-                  background-color: #FFF4D4;
-                  color: #FFCD35;
-                }*/
-              }
-            }
-          }
-        }
       }
     }
 
@@ -435,13 +522,6 @@
       }
 
       .view-meeting-room-container, .view-meeting-type-container {
-
-        span.icon-delete-red {
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          cursor: pointer;
-        }
 
         .meeting-room-list, .meeting-type-list {
           width: 100%;

@@ -5,7 +5,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1 @click="myUtils.emptyPic(photo)">三省六部</h1>
+        <h1 @click="myUtils.emptyPic(photo)">人资规划</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
@@ -17,7 +17,9 @@
         <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
         <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3">设置报表</div>
         <div class="buttons button2" v-if="chooseTab === 3" @click="handleExportInfo">导出报表</div>
-        <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
+        <el-tooltip content="新增部门" placement="bottom" :visible-arrow="false">
+          <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
+        </el-tooltip>
         <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2"></div>
       </div>
     </div>
@@ -30,15 +32,14 @@
     <!--部门管理-->
     <div class="departList" v-if="chooseTab === 2">
       <div class="items-start mainList" :class="{'mainListHover': routeAnimation}">
-        <p v-for="item in departList" @click="showDepartManage(item)">
+        <p v-for="item in departList" @click="handleOpenDepartDetail(item)">
           <span class="writingMode" :title="item.name">
             {{item.name}}
           </span>
           <a class="control flex-center">
-            <i class="el-icon-delete" @click.self.stop="handleDelDepart(item)"></i>
-            <i class="el-icon-edit" @click.self.stop="handleOpenEditDepart(item)"></i>
-            <i class="el-icon-back" @click.self.stop="handleOpenBackParent(item)"></i>
-            <i class="el-icon-view" @click.self.stop="handleOpenLookInfo(item)"></i>
+            <a class="pointer">...</a>
+            <b @click.stop="handleOpenEditDepart(item)">编辑</b>
+            <b @click.stop="handleDelDepart(item)">删除</b>
           </a>
         </p>
       </div>
@@ -57,6 +58,55 @@
           </el-pagination>
         </div>
       </footer>
+
+      <!--部门详情-->
+      <div class="depart-detail" :class="{'show-depart-detail': show_depart_detail}">
+        <div class="depart_nav">
+          <span @click="handleGetCurrentDepart(tmp,idx)" v-for="(tmp,idx) in nav_depart">{{ tmp.name }} <a v-if="idx !== nav_depart.length - 1">/</a></span>
+        </div>
+
+        <div class="depart-detail-main flex-center">
+          <div class="depart-left flex-center">
+            <p @click="handleCloseDepartDetail">
+              <span class="writingMode">
+                {{ current_depart && current_depart.name }}
+              </span>
+              <a class="control flex-center">
+                <a class="pointer">...</a>
+                <b @click.stop="handleOpenEditDepart(current_depart)">编辑</b>
+                <b @click.stop="handleDelDepart(current_depart)">删除</b>
+              </a>
+            </p>
+          </div>
+          <div class="depart-right">
+            <div class="depart-btn flex">
+              <span @click="handleCheckStaffPost(tmp)" v-for="tmp in control_btn" :class="{'choose-span': current_btn === tmp.id}">{{ tmp.val }}</span>
+            </div>
+            <div class="depart-staff">
+              <!--下级部门列表-->
+              <div class="depart_list flex">
+                <!--<div class="next_btn" :class="{'show_next_btn': is_next}"><i class="el-icon-arrow-right"></i></div>-->
+                <!--鼠标移入判断是否有下级部门不合理-->
+                <div class="next_btn"><i class="el-icon-arrow-right"></i></div>
+                <div class="list flex scroll_bar" v-if="next_depart.length > 0">
+                  <div class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>
+                  <!--不合理-->
+                  <!--<div @mouseover="handleConfirmNext(depart)" class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>-->
+                </div>
+                <div v-else class="items-center">
+                  <span>暂无下级部门</span>
+                </div>
+              </div>
+
+              <!--人员列表-->
+              <div class="staff_list">
+                <!--管理部门/员工管理-->
+                <DepartManage :check-info="check_info" :module="departModule" :info="departInfo" @close="departModule = false"></DepartManage>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!--员工名册-->
@@ -70,82 +120,158 @@
     </div>
 
     <!--权限管理-->
-    <div v-if="chooseTab === 5" style="padding: 0 30px;">
+    <div v-if="chooseTab === 5" style="padding: 0 30px;background-color: #F9F9F9" class="scroll_bar">
       <!--系统-->
-      <div style="padding: 10px 0;margin-bottom: 30px">
-        <el-card>
-          <div style="text-align: right">
-            <div class="btn_square_add" @click="add_system_visible = true"><b>+</b></div>
+      <div style="height: 800px">
+        <div style="padding: 10px 0;margin-bottom: 30px">
+          <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">系统</p>
+          <div style="padding: 20px;background-color: white">
+            <div style="text-align: right">
+              <div class="btn_square_add" @click="add_system_visible = true"><b>+</b></div>
+            </div>
+            <el-table
+              :data="system_list"
+              height="370px"
+              @row-click="handleClickSystem"
+            >
+              <el-table-column label="ID" prop="id" align="center"></el-table-column>
+              <el-table-column label="系统标识" prop="sign" align="center"></el-table-column>
+              <el-table-column label="系统名称" prop="name" align="center"></el-table-column>
+              <el-table-column label="系统描述" prop="description" align="center"></el-table-column>
+              <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+              <el-table-column label="操作" align="center">
+                <template slot-scope="scope">
+                  <el-tooltip placement="left" :visible-arrow="false">
+                    <div class="flex control-btn" slot="content">
+                      <!--<el-button type="success" size="mini" plain @click="handleOpenAddModule(scope.row)">新增模块</el-button>-->
+                      <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('system',scope.row)">编辑</el-button>-->
+                      <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
+                      <span @click="handleOpenAddModule(scope.row)">新增模块</span>
+                      <span @click="handleOpenEdit('system',scope.row)">编辑</span>
+                      <span @click="handleDelControl('system',scope.row)">删除</span>
+                    </div>
+                    <span class="table_control writingMode">···</span>
+                  </el-tooltip>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination
+              :total="system_count"
+              layout="total,prev,pager,next"
+              :current-page="power_params.page"
+              :page-size="power_params.limit"
+              @current-change="handleChangeSystemPage"
+              style="text-align: right;margin-top: 10px"
+            ></el-pagination>
           </div>
-          <el-table
-            :data="system_list"
-            height="400px"
-            @row-click="handleClickSystem"
-          >
-            <el-table-column label="ID" prop="id" align="center"></el-table-column>
-            <el-table-column label="系统标识" prop="sign" align="center"></el-table-column>
-            <el-table-column label="系统名称" prop="name" align="center"></el-table-column>
-            <el-table-column label="系统描述" prop="description" align="center"></el-table-column>
-            <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="success" size="mini" @click="handleOpenAddModule(scope.row)">新增模块</el-button>
-                <el-button type="warning" size="mini" @click="handleOpenEdit('system',scope.row)">编辑</el-button>
-                <el-button type="danger" size="mini" @click="handleDelControl('system',scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-        <el-card style="margin: 20px auto">
-          <el-table
-            :data="module_list"
-            @row-click="handleClickModule"
-          >
-            <el-table-column label="ID" prop="id" align="center"></el-table-column>
-            <el-table-column label="模块标识" prop="sign" align="center"></el-table-column>
-            <el-table-column label="模块名称" prop="name" align="center"></el-table-column>
-            <el-table-column label="模块描述" prop="description" align="center"></el-table-column>
-            <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="success" size="mini" @click="handleOpenAddPower(scope.row)">新增权限</el-button>
-                <el-button type="warning" size="mini" @click="handleOpenEdit('module',scope.row)">编辑</el-button>
-                <el-button type="danger" size="mini" @click="handleDelControl('system',scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-        <el-card>
-          <el-table :data="power_list" height="400px" @row-click="handleClickPower">
-            <el-table-column label="ID" prop="id" align="center"></el-table-column>
-            <el-table-column label="权限标示" prop="sign" align="center"></el-table-column>
-            <el-table-column label="权限名称" prop="name" align="center"></el-table-column>
-            <el-table-column label="权限描述" prop="description" align="center"></el-table-column>
-            <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="success" size="mini" @click="handleOpenAddField(scope.row)">添加字段权限</el-button>
-                <el-button type="warning" size="mini" @click="handleOpenEdit('power',scope.row)">编辑</el-button>
-                <el-button type="danger" size="mini" @click="handleDelControl('power',scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-        <el-card style="margin-top: 20px">
-          <el-table :data="field_list" height="400px">
-            <el-table-column label="项目名称" prop="app_name" align="center"></el-table-column>
-            <el-table-column label="控制器全称" prop="controller" align="center"></el-table-column>
-            <el-table-column label="方法名称" prop="method" align="center"></el-table-column>
-            <el-table-column label="权限字段标识" prop="sign" align="center"></el-table-column>
-            <el-table-column label="权限字段名称" prop="name" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="warning" size="mini" @click="handleOpenEditField(scope.row)">编辑</el-button>
-                <el-button type="danger" size="mini" @click="handleOpenDelField(scope.row)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
+          <div>
+            <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">模块</p>
+            <div style="background-color: white;padding: 20px">
+              <el-table
+                :data="module_list"
+                @row-click="handleClickModule"
+                height="370px"
+              >
+                <el-table-column label="ID" prop="id" align="center"></el-table-column>
+                <el-table-column label="模块标识" prop="sign" align="center"></el-table-column>
+                <el-table-column label="模块名称" prop="name" align="center"></el-table-column>
+                <el-table-column label="模块描述" prop="description" align="center"></el-table-column>
+                <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                  <template slot-scope="scope">
+                    <!--<el-button type="success" size="mini" plain @click="handleOpenAddPower(scope.row)">新增权限</el-button>-->
+                    <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('module',scope.row)">编辑</el-button>-->
+                    <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
+                    <el-tooltip placement="left" :visible-arrow="false">
+                      <div class="flex control-btn" slot="content">
+                        <span @click="handleOpenAddPower(scope.row)">新增权限</span>
+                        <span @click="handleOpenEdit('module',scope.row)">编辑</span>
+                        <span @click="handleDelControl('system',scope.row)">删除</span>
+                      </div>
+                      <span class="table_control writingMode">···</span>
+                    </el-tooltip>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination
+                :total="module_count"
+                layout="total,prev,pager,next"
+                :current-page="module_params.page"
+                :page-size="module_params.limit"
+                @current-change="handleChangeModulePage"
+                style="text-align: right;margin-top: 10px"
+              ></el-pagination>
+            </div>
+          </div>
+          <div>
+            <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">权限</p>
+            <div style="background-color: white;padding: 20px">
+              <el-table :data="power_list" height="370px" @row-click="handleClickPower">
+                <el-table-column label="ID" prop="id" align="center"></el-table-column>
+                <el-table-column label="权限标示" prop="sign" align="center"></el-table-column>
+                <el-table-column label="权限名称" prop="name" align="center"></el-table-column>
+                <el-table-column label="权限描述" prop="description" align="center"></el-table-column>
+                <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                  <template slot-scope="scope">
+                    <!--<el-button type="success" size="mini" plain @click="handleOpenAddField(scope.row)">添加字段权限</el-button>-->
+                    <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('power',scope.row)">编辑</el-button>-->
+                    <!--<el-button type="danger" size="mini" plain @click="handleDelControl('power',scope.row)">删除</el-button>-->
+                    <el-tooltip placement="left" :visible-arrow="false">
+                      <div class="flex control-btn" slot="content">
+                        <span @click="handleOpenAddField(scope.row)">添加字段权限</span>
+                        <span @click="handleOpenEdit('power',scope.row)">编辑</span>
+                        <span @click="handleDelControl('power',scope.row)">删除</span>
+                      </div>
+                      <span class="table_control writingMode">···</span>
+                    </el-tooltip>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination
+                :total="power_count"
+                layout="total,prev,pager,next"
+                :current-page="bottom_params.page"
+                :page-size="bottom_params.limit"
+                @current-change="handleChangePowerPage"
+                style="text-align: right;margin-top: 10px"
+              ></el-pagination>
+            </div>
+          </div>
+          <div>
+            <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">字段</p>
+            <div style="background-color: white;padding: 20px">
+              <el-table :data="field_list" height="370px">
+                <el-table-column label="项目名称" prop="app_name" align="center"></el-table-column>
+                <el-table-column label="控制器全称" prop="controller" align="center"></el-table-column>
+                <el-table-column label="方法名称" prop="method" align="center"></el-table-column>
+                <el-table-column label="权限字段标识" prop="sign" align="center"></el-table-column>
+                <el-table-column label="权限字段名称" prop="name" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                  <template slot-scope="scope">
+                    <!--<el-button type="warning" size="mini" plain @click="handleOpenEditField(scope.row)">编辑</el-button>-->
+                    <!--<el-button type="danger" size="mini" plain @click="handleOpenDelField(scope.row)">删除</el-button>-->
+                    <el-tooltip placement="left" :visible-arrow="false">
+                      <div class="flex control-btn" slot="content">
+                        <span @click="handleOpenEditField(scope.row)">编辑</span>
+                        <span @click="handleOpenDelField('power',scope.row)">删除</span>
+                      </div>
+                      <span class="table_control writingMode">···</span>
+                    </el-tooltip>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-pagination
+                :total="field_count"
+                layout="total,prev,pager,next"
+                :current-page="permission_params.page"
+                :page-size="permission_params.limit"
+                @current-change="handleChangePermissionPage"
+                style="text-align: right;margin-top: 10px"
+              ></el-pagination>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -172,6 +298,9 @@
                 <p class="icons user"></p>
               </div>
             </el-form-item>
+            <el-form-item label="部门负责岗位">
+              <el-input v-model="departForm.position" @focus="post_visible = true" readonly></el-input>
+            </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
@@ -183,9 +312,6 @@
 
     <!--设置表单-->
     <SetForms :module="SetFormVisible" :data="setFormData" @close="SetFormVisible = false" @remove="handleRemoveItem" @submit="handleSubmitForm"></SetForms>
-
-    <!--管理部门/员工管理-->
-    <DepartManage :module="departModule" :info="departInfo" @close="departModule = false"></DepartManage>
 
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -250,16 +376,21 @@
             <el-form-item label="名称">
               <el-input v-model="edit_module_form.name"></el-input>
             </el-form-item>
-            <el-form-item label="父级模块">
-              <el-select v-model="edit_module_form.parent_id" :disabled="edit_type === 'system'">
+            <el-form-item label="父级模块" v-show="edit_type === 'power'">
+              <el-select v-model="edit_module_form.system_id">
+                <el-option v-for="item in edit_current_list" :key="item.id" :value="item.id" :label="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="父级模块" v-show="edit_type === 'module'">
+              <el-select v-model="edit_module_form.parent_id" disabled>
                 <el-option v-for="item in edit_current_list" :key="item.id" :value="item.id" :label="item.name"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="描述">
               <el-input type="textarea" v-model="edit_module_form.description"></el-input>
             </el-form-item>
-            <el-form-item label="权限类型" v-if="edit_type === 'power'">
-              <el-select v-model="edit_module_form.type">
+            <el-form-item label="权限类型" v-show="edit_type === 'power'">
+              <el-select v-model="edit_module_form.type" @change="handlechange">
                 <el-option value="index" label="index"></el-option>
                 <el-option value="read" label="read"></el-option>
                 <el-option value="add" label="add"></el-option>
@@ -432,6 +563,9 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!--岗位-->
+    <PostOrgan :module="post_visible" @close="handleGetPost"></PostOrgan>
   </div>
 </template>
 
@@ -449,6 +583,7 @@
   import DepartOrgan from '../../common/departOrgan.vue'
   import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
+  import PostOrgan from '../../common/postOrgan.vue';
 
   export default {
     name: "index",
@@ -463,10 +598,34 @@
       Upload,
       StaffOrgan,
       Organization,
-      DepartOrgan
+      DepartOrgan,
+      PostOrgan
     },
     data() {
       return {
+        post_visible: false,
+
+        //新部门管理
+        show_depart_detail: false,
+        control_btn: [
+          {id: 1,val: '人员管理'},
+          {id: 2,val: '职位管理'},
+        ],
+        current_btn: 1,
+        current_depart: '', //当前部门
+        next_depart: [],
+        next_depart_params: {
+          page: 1,
+          limit: 999,
+          parent_id: ''
+        },
+        nav_depart: [],
+        is_next: true,
+
+        departModule: false,//部门管理/员工管理
+        departInfo: '',
+        check_info: '',
+
         //导出
         export_data: [],
         //添加系统
@@ -480,6 +639,12 @@
 
         //权限字段管理
         field_list: [],
+        field_count: 0,
+        permission_params: {
+          page: 1,
+          limit: 5,
+          permission_id: ''
+        },
         new_field_visible: false,
         current_field: '',
         field_form: {
@@ -491,7 +656,6 @@
           name: ''
         },
         is_edit_field: false,
-        current_power: '',
         del_field_visible: false,
 
         //新增模块
@@ -535,18 +699,31 @@
           search: '',
           parent_id: '',
           is_permissions: '',
-          limit: 999
+          page: 1,
+          limit: 5
+        },
+        //模块参数
+        module_params: {
+          search: '',
+          parent_id: '',
+          is_permissions: '',
+          page: 1,
+          limit: 5
         },
         system_list: [],
+        system_count: 0,
         module_list: [],
+        module_count: 0,
 
         bottom_params: {
           search: '',
           system_id: '',
           type: '',
-          limit: 999
+          page: 1,
+          limit: 5
         },
         power_list: [],
+        power_count: 0,
 
         del_depart_visible: false,
         del_depart: '',
@@ -566,7 +743,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 4,//tab切换
+        chooseTab: 1,//tab切换
         selects: [
           {
             id: 1,
@@ -595,9 +772,6 @@
         setFormData: {},
         SetFormVisible: false,//设置表单
 
-        departModule: false,//部门管理/员工管理
-        departInfo: '',
-
         depart_visible: false,//新增部门
         lj_size: {},//新增部门
         departForm: {
@@ -605,7 +779,9 @@
           leader: '',
           leader_id: [],
           parent_id: [1],
-          parent: ''
+          parent: '南京乐伽商业管理有限公司',
+          position: '',
+          position_id: ''
         },//新增部门
         visibleStatus: false,//弹出部门
 
@@ -639,7 +815,13 @@
         value: '',
 
         //导出报表
-        exportInfo: ''
+        exportInfo: '',
+
+        //记录当前点击的row
+        current_system: '',
+        current_module: '',
+        current_power: '',
+        current_promisstion: '',
       }
     },
     mounted() {
@@ -653,6 +835,109 @@
       },
     },
     methods: {
+      handleChangePermissionPage(page) {
+        this.permission_params.page = page;
+        let id = this.current_power && this.current_power.id;
+        this.getFieldList(id);
+      },
+      handleChangePowerPage(page) {
+        this.bottom_params.page = page;
+        let id = this.current_module && this.current_module.id || 0;
+        this.getPowerBottomList(id);
+      },
+      handleChangeModulePage(page) {
+        this.module_params.page = page;
+        let id = this.current_system ? this.current_system.id : 0;
+        this.getModuleList(id);
+      },
+      handleChangeSystemPage(page) {
+        this.power_params.page = page;
+        this.getPowerList();
+      },
+      handlechange(val) {
+        this.edit_module_form.type = val;
+      },
+      handleGetPost(id,name) {
+        if (id !== 'close') {
+          this.departForm.position = name;
+          this.departForm.position_id = id[0];
+        }
+        this.post_visible = false;
+      },
+      //新部门管理
+      //切换人员管理/职位管理
+      handleCheckStaffPost(tmp) {
+        this.current_btn = tmp.id;
+        this.check_info = tmp;
+      },
+      //部门列表打开部门详情
+      handleOpenDepartDetail(item) {
+        this.departForm.parent = item.name;
+        this.departForm.parent_id = [];
+        this.departForm.parent_id.push(item.id);
+        this.current_depart = item;
+        this.nav_depart = [];
+        this.nav_depart.push(item);
+        this.departModule = true;
+        this.departInfo = item;
+        this.getNextDepart(item);
+        this.show_depart_detail = true;
+      },
+      //关闭部门详情
+      handleCloseDepartDetail() {
+        this.current_btn = 1;
+        this.check_info = '';
+        this.departModule = false;
+        this.show_depart_detail = false;
+        this.departForm.parent_id = [1];
+        this.departForm.parent = '南京乐伽商业管理有限公司';
+      },
+      // 部门管理 搜索下级部门
+      getNextDepart(val,next) {
+        this.next_depart_params.parent_id = val.id;
+        this.$http.get('organization/organization',this.next_depart_params).then(res => {
+          if (res.code === '20000') {
+            this.next_depart = res.data.data;
+            if (next) {
+              this.nav_depart.push(val);
+            }
+          } else {
+            if (!next) {
+              this.next_depart = [];
+            }
+          }
+        })
+      },
+      //子部门点击获取子部门
+      handleInnerNextDepart(item) {
+        this.is_next = true;
+        this.getNextDepart(item,'next');
+        this.departInfo = item;
+      },
+      //判断是否有下级部门
+      handleConfirmNext(depart) {
+        this.$http.get('organization/organization',{
+          page: 1,
+          limit: 999,
+          parent_id: depart.id
+        }).then(res => {
+          if (res.code === '20000') {
+            if (res.data.data.length > 0) {
+              this.is_next = false;
+            } else {
+              this.is_next = true;
+            }
+          } else {
+            this.is_next = true;
+          }
+        })
+      },
+      //点击导航菜单
+      handleGetCurrentDepart(item,idx) {
+        this.departInfo = item;
+        this.getNextDepart(item);
+        this.nav_depart.splice(idx + 1);
+      },
       //取消添加系统
       handleCancelAddSys() {
         this.add_system_visible = false;
@@ -685,7 +970,7 @@
       handleRemoveItem(item,index) {
         this.setFormData.splice(index,1);
       },
-      handleOpenDelField(row) {
+      handleOpenDelField(type,row) {
         this.current_field = row;
         this.del_field_visible = true;
       },
@@ -724,7 +1009,6 @@
       handleSubmitOk() {
         if (this.is_edit_field) {
           this.$http.put(`organization/permission_field/${this.current_field.id}`,this.field_form).then(res => {
-            console.log(res);
             if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -742,7 +1026,6 @@
           return false;
         }
         this.$http.post('organization/permission_field',this.field_form).then(res => {
-          console.log(res);
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -768,18 +1051,19 @@
         this.getFieldList(row.id);
       },
       getFieldList(permission_id) {
-        this.$http.get('organization/permission_field',{
-          permission_id,
-          limit: 999
-        }).then(res => {
+        this.permission_params.permission_id = permission_id;
+        this.$http.get('organization/permission_field',this.permission_params).then(res => {
           if (res.code === '20000') {
             this.field_list = res.data.data;
+            this.field_count = res.data.count;
           } else {
+            this.field_count = 0;
             this.field_list = [];
           }
         })
       },
       handleOpenAddPower(row) {
+        this.current_module = row;
         this.new_power_form.system_id = row.id;
         this.new_power_visible = true;
       },
@@ -791,7 +1075,8 @@
               message: res.msg
             });
             this.handleCancelAddPower();
-            this.getPowerList();
+            let id = this.current_module && this.current_module.id || 0;
+            this.getPowerBottomList(id);
           } else {
             this.$LjNotify('warning',{
               title: '失败',
@@ -836,7 +1121,6 @@
       handleSubmitEdit() {
         if (this.edit_type === 'system' || this.edit_type === 'module') {
           this.$http.put(`organization/system/${this.edit_row.id}`,this.edit_module_form).then(res => {
-            console.log(res);
             if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -853,7 +1137,6 @@
           })
         }else {
           this.$http.put(`organization/permission/${this.edit_row.id}`,this.edit_module_form).then(res => {
-            console.log(res);
             if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -874,14 +1157,13 @@
         this.edit_module_form = {
           name: '',
           description: '',
-          parent_id: '',
+          parent_id: [],
           parent: '',
           system_id: ''
         };
         this.edit_module_visible = false;
       },
       handleOpenEdit(type,row) {
-        console.log(row);
         this.edit_row = row;
         this.edit_type = type;
         if (type === 'module') {
@@ -890,17 +1172,17 @@
         if (type === 'power') {
           this.edit_current_list = this.module_list;
         }
-        this.edit_module_form.system_id = row.system_id || '';
+        this.edit_module_form.system_id = Number(row.system_id) || '';
         this.edit_module_form.description = row.description;
         this.edit_module_form.name = row.name;
         this.edit_module_form.parent_id = row.parent_id || 0;
         this.edit_module_form.parent = row.parent && row.parent.name || '';
+        this.edit_module_form.type = row.type;
         this.edit_module_visible = true;
       },
       handleConfirmDel() {
         if (this.confirm_type === 'system') {
           this.$http.delete(`organization/system/${this.confirm_row.id}`).then(res => {
-            console.log(res);
             if (res.code === '20040') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -923,7 +1205,7 @@
                 message: res.msg
               });
               this.confirm_visible = false;
-
+              this.getPowerList();
             } else {
               this.$LjNotify('warning',{
                 title: '失败',
@@ -943,28 +1225,36 @@
         this.$http.get('organization/permission',this.bottom_params).then(res => {
           if (res.code === '20000') {
             this.power_list = res.data.data;
+            this.power_count = res.data.count;
             this.getFieldList(res.data.data[0].id);
           } else {
+            this.power_count = 0;
             this.power_list = [];
           }
         })
       },
       handleClickModule(row) {
+        this.current_module = row;
+        this.field_list = [];
+        this.power_list = [];
         this.getPowerBottomList(row.id);
       },
       handleClickSystem(row) {
+        this.current_system = row;
         this.module_list = [];
         this.power_list = [];
         this.field_list = [];
         this.getModuleList(row.id);
       },
       getModuleList(id) {
-        this.power_params.parent_id = id;
-        this.$http.get('organization/system',this.power_params).then(res => {
+        this.module_params.parent_id = id;
+        this.$http.get('organization/system',this.module_params).then(res => {
           if (res.code === '20000') {
             this.module_list = res.data.data;
+            this.module_count = res.data.count;
             this.getPowerBottomList(res.data.data[0].id);
           } else {
+            this.module_count = 0;
             this.module_list = [];
           }
         })
@@ -972,42 +1262,39 @@
       //权限管理
       getPowerList() {
         this.power_params.parent_id = '';
+        this.module_list = [];
+        this.module_count = 0;
+        this.power_list = [];
+        this.power_count = 0;
+        this.field_list = [];
+        this.field_count = 0;
         this.$http.get('organization/system',this.power_params).then(res => {
           if (res.code === '20000') {
             this.system_list = res.data.data;
+            this.system_count = res.data.count;
             this.getModuleList(res.data.data[0].id);
           } else {
+            this.system_count = 0;
             this.system_list = [];
-            this.module_list = [];
-            this.power_list = [];
-            this.field_list = [];
           }
         })
       },
       //导出报表
       handleExportInfo() {
-        this.exportInfo = this.chooseTab;
-      },
-      handleOpenLookInfo(val) {
-        this.departModule = true;
-        this.departInfo = val;
-      },
-      //返回上级
-      handleOpenBackParent(item) {
-        this.params.parent_id = item.parent_org && item.parent_org.parent_id || 1;
-        this.getDepartList();
+        this.exportInfo += this.chooseTab;
       },
       handleOpenEditDepart(item) {
         this.edit_depart = item;
         this.departForm.name = item.name;
         this.departForm.leader = item.leader && item.leader.name || '';
-        this.departForm.leader_id = item.leader_id;
+        this.departForm.leader_id.push(item.leader_id);
         this.departForm.parent = item.parent_org && item.parent_org.name || '';
-        this.departForm.parent_id = item.parent_id;
+        this.departForm.parent_id = [];
+        this.departForm.parent_id.push(item.parent_id);
         this.is_edit_depart = true;
         this.lj_size = {
           width: '510px',
-          height: '450px',
+          height: '550px',
         };
         this.depart_visible = true;
       },
@@ -1039,9 +1326,18 @@
          name: '',
          leader: '',
          leader_id: [],
-         parent_id: [1],
+         parent_id: [],
          parent: ''
        };
+       if (!this.show_depart_detail) {
+         this.departForm.parent_id = [1];
+         this.departForm.parent = '南京乐伽商业管理有限公司';
+       }
+       if (this.show_depart_detail) {
+         this.departForm.parent_id = [];
+         this.departForm.parent_id.push(this.current_depart.id);
+         this.departForm.parent = this.current_depart.name;
+       }
        this.is_edit_depart = false;
        this.depart_visible = false;
       },
@@ -1049,8 +1345,19 @@
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
           this.$http.put(`organization/organization/${this.edit_depart.id}`,this.departForm).then(res => {
-            this.getDepartList();
-            this.handleCancelAddDepart();
+            if (res.code === '20030') {
+              this.$LjNotify('success',{
+                title: '成功',
+                message: res.msg
+              });
+              this.getDepartList();
+              this.handleCancelAddDepart();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
           });
           return false;
         }
@@ -1061,6 +1368,9 @@
               message: res.msg
             });
             this.getDepartList();
+            if (this.show_depart_detail) {
+              this.getNextDepart({id: this.departForm.parent_id});
+            }
             this.handleCancelAddDepart();
           } else {
             this.$LjNotify('warning',{
@@ -1070,10 +1380,10 @@
           }
         })
       },
-      handleGetDepart(val,name) {
+      handleGetDepart(id,name) {
         this.chooseDepart = false;
-        if (val !== 'close') {
-          this.departForm.parent_id.push(val);
+        if (id !== 'close') {
+          this.departForm.parent_id = id;
           this.departForm.parent = name;
         }
       },
@@ -1083,6 +1393,8 @@
       },
       // tab切换
       changeTabs(id) {
+        this.departModule = false;
+        this.show_depart_detail = false;
         this.chooseTab = id;
         this.$nextTick(function () {
           switch (id) {
@@ -1096,7 +1408,7 @@
         this.$store.dispatch('route_animation');
       },
       // 部门管理列表
-      getDepartList(val) {
+      getDepartList() {
         this.$http.get('organization/organization',this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;
@@ -1111,15 +1423,10 @@
             this.depart_visible = true;
             this.lj_size = {
               width: '510px',
-              height: '450px',
+              height: '550px',
             };
             break;
         }
-      },
-      // 部门管理
-      showDepartManage(val) {
-        this.params.parent_id = val.id;
-        this.getDepartList(val);
       },
       // 高级搜索
       highSearch(val) {
@@ -1137,7 +1444,6 @@
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
           switch (this.chooseTab) {
             case 3:
               this.searchFruit3 = val;
@@ -1175,6 +1481,8 @@
           { key: 'staff.bank_num',val: '银行卡号'},
           { key: 'staff.account_name',val: '户主'},
           { key: 'staff.account_bank',val: '开户行'},
+          { key: 'staff.contract_number',val: '劳务合同',isBtn: true},
+          { key: 'staff.leave_proof_number',val: '上家单位离职证明',isBtn: true},
           { key: 'staff.commitment_number',val: '入职承诺书',isBtn: true},
           { key: 'staff.employ_proof_number',val: '在职证明',isBtn: true},
           { key: 'staff.income_proof_number',val: '收入证明',isBtn: true},
@@ -1213,12 +1521,59 @@
 
   #theme_name.theme1 {
     #departments {
+      .table_control {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        font-size: 34px;
+        color: #F4AF40;
+        cursor: pointer;
+        border-radius: 3px;
+        text-align: center;
+        &:hover {
+          background-color: #F4AF40;
+          color: white;
+        }
+      }
       .departList {
         .mainList {
           p {
             @include departmentsImg('departmentshui.png', 'theme1');
             &:hover {
               @include departmentsImg('departmentshong.png', 'theme1');
+            }
+          }
+        }
+        .depart-detail {
+          background-color: $color9F9;
+          .depart_nav {
+            span {
+              color: $colorE33;
+              a {
+                color: #999999;
+                margin: 0 10px;
+              }
+            }
+          }
+          .depart-detail-main {
+            .depart-left {
+              p {
+                @include departmentsImg('departmentshui.png', 'theme1');
+                &:hover {
+                  @include departmentsImg('departmentshong.png', 'theme1');
+                }
+              }
+            }
+            .depart-right {
+              .depart-btn {
+                span {
+                  @include departmentsImg('huidikuang.png','theme1');
+                }
+                .choose-span {
+                  @include departmentsImg('hongdikuang.png','theme1');
+                  color: white;
+                }
+              }
             }
           }
         }

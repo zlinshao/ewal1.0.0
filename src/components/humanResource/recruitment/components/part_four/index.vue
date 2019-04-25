@@ -407,11 +407,11 @@
           </p>
           <p>
             二、劳动合同期为
-            <el-input style="width: 50px" v-model="offer_info_form.contract_length"></el-input>
+            <el-input readonly style="width: 50px" v-model="offer_info_form.contract_length"></el-input>
             年，试用期为
-            <el-input style="width: 50px" v-model="offer_info_form.try_out_length"></el-input>
+            <el-input readonly style="width: 50px" v-model="offer_info_form.try_out_length"></el-input>
             个月，试用期工资是
-            <el-input v-model="offer_info_form.try_out_salary_percent" style="width: 100px" type="text"></el-input>%
+            <el-input readonly v-model="offer_info_form.try_out_salary_percent" style="width: 100px" type="text"></el-input>%
           </p>
           <p>
             三、工作报酬
@@ -713,12 +713,12 @@
           time: ''
         },
         offer_info_form: {
-          try_out_salary_percent: '',
+          try_out_salary_percent: '税前工资80',
           real_salary: '',
           registion_date: '',
           effect_date: '',
-          contract_length: '',
-          try_out_length: '',
+          contract_length: '3',
+          try_out_length: '3',
           leader_id: '',
         },
 
@@ -955,14 +955,14 @@
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
-              message: '入职成功'
+              message: res.msg
             });
             this.getLabourInfo(res.data.user_id);
             this.work_success = true;
           } else {
             this.$LjNotify('warning',{
               title: '失败',
-              message: '入职失败'
+              message: res.msg
             })
           }
         }).catch(err => {

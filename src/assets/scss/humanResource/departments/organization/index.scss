@@ -2,7 +2,167 @@
 
 #theme_name {
   #organization {
-
+    width: 100%;
+    height: 100%;
+    > div {
+      height: 100%;
+      padding: 30px 100px;
+      .organ-tree {
+        height: 700px;
+        margin: 0 auto;
+        padding: 30px;
+        text-align: center;
+        overflow: auto;
+        position: relative;
+        .strt-wrap {
+          width: 5000px;
+          min-height: 600px;
+          margin: 10px;
+          cursor: move;
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        .strt-part {
+          text-align: center;
+          float: left;
+          position: relative;
+          //border: 1px solid rebeccapurple;
+        }
+        .strt-part .line-v {
+          position: relative;
+          height: 40px;
+          width: 100%;
+        }
+        .strt-part .line-v span {
+          display: block;
+          position: absolute;
+          top: 0;
+          font-size: 0;
+          background: #70707B;
+          line-height: 1px;
+          width: 1px;
+          height: 40px;
+          left: 50%;
+        }
+        .strt-name {
+          display: inline-block;
+          padding: 0 5px;
+          min-width: 100px;
+          height: 50px;
+          line-height: 50px;
+          border: 1px solid #70707B;
+          margin: 0 10px;
+          border-radius: 20px;
+          font-size: 18px;
+          font-family: 'jingDianXingShu';
+          text-align: center;
+          cursor: pointer;
+          &:hover {
+            border-color: $colorE33;
+            color: $colorE33;
+          }
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            vertical-align: middle;
+          }
+        }
+        .strt-name-mini {
+          min-width: 70px;
+          height: 40px;
+          line-height: 40px;
+        }
+        .primary-name {
+          display: flex;
+          justify-content: space-between;
+          justify-items: center;
+          margin-top: 10px;
+          span {
+            font-size: 16px;
+            writing-mode: vertical-rl;
+            writing-mode: tb-rl;
+            font-family: 'jingDianXingShu';
+          }
+        }
+        .strt-info {
+          //display: inline-block;
+          padding: 10px 5px;
+          min-width: 50px;
+          min-height: 120px;
+          border: 1px solid #70707B;
+          margin: 0 10px;
+          font-size: 18px;
+          text-align: center;
+          cursor: pointer;
+          writing-mode: vertical-rl;
+          writing-mode: tb-rl;
+          position: relative;
+          left: 50%;
+          transform: translateX(-50%);
+          &:hover {
+            border-color: $colorE33;
+            color: $colorE33;
+          }
+          p {
+            font-family: 'jingDianXingShu';
+            text-align: left;
+            width: 50%;
+            line-height: 20px;
+            margin: 3px;
+            &:first-child {
+              font-size: 20px;
+            }
+          }
+        }
+        .strt-info-mini {
+          display: inline-block;
+          padding: 5px 3px;
+          min-width: 40px;
+          line-height: 40px;
+          min-height: 80px;
+          writing-mode: vertical-rl;
+          writing-mode: tb-rl;
+          text-align: left;
+          a {
+            opacity: .6;
+          }
+        }
+        .strt-part .line-h {
+          height: 1px;
+          display: block;
+          background: #70707B;
+          position: absolute;
+          top: 0;
+          font-size: 0;
+        }
+        .strt-part .line-h-l {
+          width: 50%;
+          left: 0;
+        }
+        .strt-part .line-h-c {
+          width: 100%;
+          left: 0;
+        }
+        .strt-part .line-h-r {
+          width: 50%;
+          right: 0;
+        }
+        .strt-block {
+          float: left;
+          //display: flex;
+          //justify-content: space-between;
+          //flex-wrap: nowrap;
+        }
+      }
+      ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        border: none;
+      }
+    }
   }
 }
 

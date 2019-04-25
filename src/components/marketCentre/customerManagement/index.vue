@@ -36,7 +36,7 @@
             <el-table-column prop="sign_user" label="开单人" align="center"></el-table-column>
             <el-table-column prop="org_leader" label="负责人" align="center"></el-table-column>
             <el-table-column prop="sign_org" label="所属部门" align="center"></el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button type="warning" size="mini" plain @click="handleGoMoveOutBlack(scope.row)" v-if="params.is_black !== 0">移出黑名单</el-button>
                 <el-button type="danger" size="mini" @click="handleGoMoveBlack(scope.row)" v-else>移至黑名单</el-button>
@@ -325,7 +325,7 @@
             </div>
             <div class="dialog_footer">
               <el-button type="danger" size="small" @click="handleSubmitMoveOut">确定</el-button>
-              <el-button type="info" size="small" @close="move_out_visible = false">取消</el-button>
+              <el-button type="info" size="small" @click="move_out_visible = false">取消</el-button>
             </div>
           </div>
         </lj-dialog>

@@ -1,0 +1,185 @@
+@import '../../common.scss';
+
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/customService/housingDue/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
+#theme_name {
+  #HousingDue {
+    .cell {
+      span {
+        white-space: nowrap;
+      }
+    }
+    .dialog_main {
+      overflow: hidden;
+      overflow-y: scroll;
+      .detail_dialog_left {
+        flex: 1;
+        font-size: 14px;
+        text-align: right;
+        p + p {
+          margin-top: 10px;
+        }
+      }
+      .detail_dialog_center {
+        height: 100%;
+        margin: 0 80px;
+        .circle {
+          width: 15px;
+          height: 15px;
+        }
+      }
+      .detail_dialog_right {
+        flex: 1;
+        text-align: left;
+        font-size: 10px;
+        p + p {
+          margin-top: 10px;
+        }
+        .other_fee {
+          p {
+            margin-top: 5px;
+            padding-left: 10px;
+          }
+        }
+        .detail_dialog_rato {
+          margin-left: 20px;
+          display: inline-block;
+          .el-rate__icon {
+            font-size: 12px;
+          }
+        }
+        .detail_dialog_note {
+          margin-top: 0;
+        }
+      }
+    }
+    .detail_dialog {
+      .back_info {
+        padding: 0 30px 50px;
+      }
+      .content + .content {
+        position: relative;
+        &:before {
+          content: '';
+          width: 1px;
+          height: 70%;
+          background-color: #cf2e33;
+          position: absolute;
+          top: -10%;
+          left: 50%;
+        }
+      }
+      .content {
+        padding-top: 50px;
+        @include flex('justify-center');
+        @include flex('items-center');
+      }
+    }
+    .cell.time {
+      font-size: 14px;
+    }
+    // 合同详情
+    .contract_detail {
+      .main_tit {
+        font-size: 14px;
+        text-align: left;
+        margin: 20px 0 8px;
+      }
+      .noMarginTop {
+        margin-top: 0;
+      }
+      .common_info {
+        padding: 20px 0 12px;
+      }
+      .el-form-item {
+        margin-bottom: 10px;
+        .el-row {
+          margin-right: 0 !important;
+        }
+        .el-form-item__label {
+          line-height: 20px;
+        }
+        .el-form-item__content {
+          line-height: 20px;
+          text-align: left;
+        }
+      }
+      .house_info {
+      }
+    }
+    .urgedDeal {
+      .el-form {
+        margin-bottom: 0;
+      }
+      .el-textarea {
+        textarea {
+          min-height: 80px !important;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #HousingDue {
+    .active-warning {
+      background: #e6a23c;
+      color: #fff;
+    }
+    .active-primary {
+      background: #409eff;
+      color: #fff;
+    }
+
+    .detail_dialog {
+      background: #ffffff;
+      color: #686874;
+      .circle {
+        @include confirmImg('biaoji.png', 'theme1');
+      }
+    }
+    .mainListTable {
+      .status1 {
+        @include confirmImg('landi.png', 'theme1');
+        color: #0c66ff;
+      }
+      .status2 {
+        @include confirmImg('fendi.png', 'theme1');
+        color: #cf2e33;
+      }
+    }
+    // 合同详情
+    .contract_detail {
+      .main_tit {
+        color: #686874;
+      }
+      .common_info {
+        background-color: #ffffff;
+      }
+      .el-form-item__label {
+        color: #b0b0b0;
+      }
+      .el-form-item__content {
+        color: #686874;
+      }
+    }
+  }
+}
+
+#theme_name.theme2 {
+  #HousingDue {
+  }
+}
+
+#theme_name.theme3 {
+  #HousingDue {
+  }
+}
+
+#theme_name.theme4 {
+  #HousingDue {
+  }
+}

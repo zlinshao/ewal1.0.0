@@ -17,6 +17,26 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, input,
 
 html, body {
   height: 100%;
+  .amap-sug-result {
+    border: none ;
+  }
+  div.el-tooltip__popper,
+  div.is-dark {
+    background-color: $colorE33 !important;
+    color: white;
+  }
+}
+.control-btn {
+  span {
+    padding: 5px 20px;
+    cursor: pointer;
+    color: white;
+    margin: 0 8px;
+    &:hover {
+      color: $colorE33;
+      @include bgImage('../image/components/theme1/xzgj.png');
+    }
+  }
 }
 
 ol, ul {

@@ -1,0 +1,381 @@
+@import '../../common.scss';
+@mixin confirmImg($m, $n) {
+  $url: '../../../assets/image/customService/visitToRecord/' + $n + '/' + $m;
+  @include bgImage($url);
+}
+
+#theme_name {
+  #visitToRecord {
+    .dialog_container {
+      .dialog_header {
+        height: 90px;
+        .main_header {
+          padding-top: 20px;
+          overflow: hidden;
+          @include flex('items-bet');
+          background-color: transparent;
+          .left_tips {
+            font-size: 14px;
+            .icon {
+              display: inline-block;
+              width: 20px;
+              height: 14px;
+              margin-right: 10px;
+            }
+          }
+          .right_tips {
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            font-size: 24px;
+            line-height: 20px;
+          }
+        }
+      }
+      // 新增
+      .dialog_main {
+        .el-row {
+          margin-right: 0 !important;
+        }
+        .dialog_main_box {
+          height: 40px;
+          margin: 0 auto 28px;
+          @include flex('justify-start');
+          .box {
+            .icon {
+              width: 20px;
+              height: 20px;
+            }
+            .title {
+              text-align: left;
+            }
+            .input_box {
+              width: 200px;
+              height: 40px;
+            }
+            .input_box2 {
+              width: 1020px;
+            }
+            .noBackground {
+              background-color: transparent;
+            }
+            .input_box_border {
+              border-color: #ffffff;
+              @include radius(4px);
+            }
+          }
+          div {
+            @include flex('justify-start');
+            @include flex('items-center');
+            i {
+              width: 20px;
+              height: 20px;
+            }
+            .title {
+              width: 60px;
+              box-sizing: border-box;
+              margin: 0 25px 0 15px;
+              font-size: 14px;
+              color: #686874;
+            }
+            .title1 {
+              line-height: 40px;
+              white-space: nowrap;
+            }
+          }
+        }
+        .add_record_form {
+          margin-bottom: 20px;
+          .el-col {
+            height: 40px;
+            @include flex('justify-start');
+            p {
+              width: 36%;
+              font-size: 14px;
+              margin-right: 10px;
+              @include flex('justify-start');
+              @include flex('items-center');
+              .icon {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                margin-right: 15px;
+              }
+              span {
+                width: 60px;
+              }
+            }
+
+            .input_box {
+              flex: 1;
+              @include flex('justify-start');
+              @include flex('items-center');
+              position: relative;
+              .icons {
+                width: 20px;
+                height: 20px;
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+              }
+            }
+          }
+          .note {
+            p {
+              width: 96px;
+            }
+          }
+        }
+        .detail {
+          height: 406px;
+          overflow-y: scroll;
+          padding-bottom: 60px;
+          @include scroll;
+          flex-wrap: wrap;
+          @include flex('items-start');
+          .detail_col {
+            margin-top: 60px;
+            .detail_col_box {
+              height: 250px;
+              overflow-y: scroll;
+              @include scroll;
+            }
+            .detail_col_box2 {
+              @include flex('space-column');
+              @include flex('justify-start');
+            }
+          }
+          .el-col {
+            h5 {
+              font-size: 14px;
+              font-family: 'jingDianXingShu';
+              word-spacing: 2px;
+              text-align: left;
+              margin-bottom: 30px;
+              padding-left: 40px !important;
+            }
+            div {
+              margin-bottom: 18px;
+              @include flex('justify-start');
+              span {
+                font-size: 14px;
+                font-family: 'Microsoft Yahei';
+              }
+              .tit {
+                width: 40%;
+                text-align: right;
+                padding-right: 10px;
+              }
+              .content {
+                width: 60%;
+                text-align: left;
+                img {
+                  width: 50px;
+                  height: 50px;
+                }
+              }
+              .content_album {
+                @include flex('space-column');
+                .imgs_box {
+                  @include flex('space-column');
+                  margin-bottom: 5px;
+                  div {
+                    flex-wrap: wrap;
+                  }
+                }
+              }
+            }
+          }
+          .el-border {
+            position: relative;
+            &:after {
+              content: '';
+              width: 1px;
+              height: 285px;
+              position: absolute;
+              right: 0;
+              top: 10px;
+            }
+            .el-col {
+              padding-top: 0;
+              @include flex('space-column');
+              @include flex('justify-start');
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #visitToRecord {
+    .el-button--danger {
+      background: #fef0f0;
+      color: #fbc4c4;
+      &:hover {
+        background: #f56c6c;
+        color: #fff;
+      }
+    }
+    .active-warning {
+      background: #e6a23c;
+      color: #fff;
+    }
+    .active-primary {
+      background: #409eff;
+      color: #fff;
+    }
+    .active-danger {
+      background: #f56c6c;
+      color: #fff;
+    }
+    .dialog_header {
+      .main_header {
+        .left_tips {
+          color: #686874;
+          .icon {
+            @include confirmImg('kefu.png', 'theme1');
+          }
+        }
+        .right_tips {
+          background-color: #cf2e33;
+          color: #ffffff;
+        }
+      }
+    }
+
+    .dialog_main_box {
+      .box {
+        .input_box {
+          background-color: #ffffff;
+        }
+      }
+    }
+    .add_record_form {
+      .el-col {
+        p {
+          color: #686874;
+        }
+        .input_box {
+          .icon_add {
+            @include confirmImg('tianjia.png', 'theme1');
+          }
+          .icon_del {
+            @include confirmImg('shanchu.png', 'theme1');
+          }
+        }
+      }
+      .contact {
+        .icon {
+          @include confirmImg('dianhua_.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('dianhua_hong.png', 'theme1');
+          }
+        }
+      }
+      .origin {
+        .icon {
+          @include confirmImg('gognzuoneirong.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('neirong.png', 'theme1');
+          }
+        }
+      }
+      .freePay {
+        .icon {
+          @include confirmImg('jine_hui.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('jine.png', 'theme1');
+          }
+        }
+      }
+      .satisfied {
+        .icon {
+          @include confirmImg('manyidu.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('manyidu_hong.png', 'theme1');
+          }
+        }
+      }
+      .note {
+        .icon {
+          @include confirmImg('beizhu.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('beizhu_hong.png', 'theme1');
+          }
+        }
+      }
+      .feiyong {
+        .icon {
+          @include confirmImg('feiyongmingcheng.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('feiyongmingcheng_hong.png', 'theme1');
+          }
+        }
+      }
+    }
+    .detail {
+      background-color: #ffffff;
+      .el-col {
+        h5 {
+          color: #cf2e33;
+          @include confirmImg('dianxian.png', 'theme1');
+          background-size: 30px 5px;
+          background-position: 110px 50%;
+        }
+        div {
+          .tit {
+            color: #d5d5d5;
+          }
+          .content {
+            color: #686874;
+          }
+        }
+      }
+      .el-border {
+        &:after {
+          background: #f2f2f2;
+        }
+      }
+
+      ul {
+        li {
+          span {
+            color: #d5d5d5;
+          }
+          .content {
+            color: #686874;
+          }
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme2 {
+  #visitToRecord {
+  }
+}
+
+#theme_name.theme3 {
+  #visitToRecord {
+  }
+}
+
+#theme_name.theme4 {
+  #visitToRecord {
+  }
+}

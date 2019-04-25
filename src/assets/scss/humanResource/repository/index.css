@@ -132,9 +132,55 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name #repository {
   height: 100%;
-  background-color: #FFFFFF; }
+  background-color: #ffffff; }
   #theme_name #repository .listTopRight .icons-font {
     height: 30px;
     width: 50px;
@@ -154,24 +200,26 @@
     transition: all ease 1s; }
     #theme_name #repository .repository-container .content {
       height: calc(100% - 341px); }
-      #theme_name #repository .repository-container .content > div {
+      #theme_name #repository .repository-container .content .bg-container {
         width: 240px;
         height: 160px;
         margin: 0 110px; }
-        #theme_name #repository .repository-container .content > div:hover {
+        #theme_name #repository .repository-container .content .bg-container:hover {
           cursor: pointer;
           transform: scale(1.05);
           transition: all 1s; }
-        #theme_name #repository .repository-container .content > div span {
+          #theme_name #repository .repository-container .content .bg-container:hover span {
+            color: #ffffff; }
+        #theme_name #repository .repository-container .content .bg-container span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
           width: 80px;
           word-wrap: break-word;
           word-break: break-all;
-          color: #fff;
+          color: #686874;
           font-size: 32px;
-          font-family: 'jingDianXingShu';
-          position: relative;
-          left: 8px; }
-          #theme_name #repository .repository-container .content > div span.gray {
-            color: #686874; }
+          font-family: 'jingDianXingShu'; }
 
 /*# sourceMappingURL=index.css.map */

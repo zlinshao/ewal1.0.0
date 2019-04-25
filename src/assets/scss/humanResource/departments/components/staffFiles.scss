@@ -21,13 +21,14 @@
             height: 60px;
             margin-left: 15px;
             position: relative;
+            top: 10px;
             img {
               @include radius(50%);
             }
             b, i {
               position: absolute;
-              top: 0;
-              right: -4px;
+              top: -8px;
+              right: -10px;
               width: 24px;
               height: 24px;
             }
@@ -50,10 +51,12 @@
           }
           .mainRight {
             width: 100%;
+            min-height: 460px;
             padding: 40px;
             margin-left: 30px;
             position: relative;
             background-color: $colorFFF;
+            overflow: auto;
             b {
               position: absolute;
               top: 30px;
@@ -78,9 +81,12 @@
               }
             }
             .grow {
-              width: 100%;
-              height: 150px;
+              min-width: 590px;
+              width: 50%;
+              min-height: 150px;
               position: relative;
+              background-color: #9CCC65;
+              display: inline-block;
               i {
                 display: inline-block;
                 width: 8px;
@@ -105,6 +111,7 @@
                 }
                 p {
                   white-space: nowrap;
+                  cursor: pointer;
                   i {
                     background-color: $colorE33;
                   }
@@ -128,6 +135,48 @@
                   }
                 }
               }
+            }
+          }
+        }
+      }
+      .staff-line {
+        width: 100%;
+        cursor: pointer;
+        .left-line {
+          width: 10%;
+          text-align: center;
+          height: 100px;
+          i {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #999999;
+            border-radius: 50%;
+          }
+          div {
+            width: 2px;
+            height: 100px;
+            background-color: #999999;
+            margin: 0 auto;
+            position: relative;
+            top: -5px;
+            z-index: -1;
+          }
+        }
+        .right-content {
+          width: 90%;
+          text-align: left;
+          > p:last-child {
+            margin-top: 10px;
+          }
+        }
+        &:hover {
+          .right-content {
+            color: $colorE33;
+          }
+          .left-line {
+            i {
+              background-color: $colorE33;
             }
           }
         }

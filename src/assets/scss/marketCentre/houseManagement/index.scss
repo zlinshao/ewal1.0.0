@@ -74,7 +74,7 @@
                 left: 0;
                 transition: all ease .5s;
                 > img {
-                  max-width: 120px;
+                  width: 115px;
                   max-height: 70px;
                   &:not(:last-child) {
                     margin-right: 10px;
@@ -170,6 +170,9 @@
                 width: 100%;
                 margin-top: 20px;
                 flex-wrap: wrap;
+                .deploy_none {
+                  color: #DFDFE0;
+                }
                 > span {
                   margin-right: 25px;
                   margin-top: 20px;
@@ -211,7 +214,6 @@
       .look_info {
         width: 80%;
         height: 100%;
-        padding: 10px;
         text-align: left;
         margin: 0 auto;
         h3 {

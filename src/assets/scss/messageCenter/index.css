@@ -1,0 +1,278 @@
+.flex {
+  display: flex;
+  display: -webkit-flex; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #747474;
+    border-radius: 4px; }
+
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#theme_name #messageCenter {
+  width: 100%;
+  height: 100%;
+  background: #ffffff; }
+  #theme_name #messageCenter > div {
+    width: 100%;
+    height: 100%; }
+  #theme_name #messageCenter .mainList {
+    width: 100%;
+    height: 100%; }
+    #theme_name #messageCenter .mainList .messageCenter-menu-card {
+      width: 100%;
+      height: 30%;
+      padding: 30px 50px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap; }
+      #theme_name #messageCenter .mainList .messageCenter-menu-card .messageCenter-card-info {
+        width: calc(100%/5);
+        padding: 20px; }
+        #theme_name #messageCenter .mainList .messageCenter-menu-card .messageCenter-card-info div {
+          width: 320px;
+          height: 150px;
+          border-radius: 5px;
+          box-shadow: #DFDFDF 0px 0px 5px 5px;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center; }
+          #theme_name #messageCenter .mainList .messageCenter-menu-card .messageCenter-card-info div h1 {
+            margin-bottom: 10px; }
+    #theme_name #messageCenter .mainList .messageCenter-main {
+      width: 100%;
+      height: 60%;
+      padding: 0 70px;
+      display: flex;
+      flex-direction: row;
+      align-items: center; }
+      #theme_name #messageCenter .mainList .messageCenter-main .messageCenter-main-left {
+        width: 61%;
+        height: 500px;
+        padding-right: 100px; }
+        #theme_name #messageCenter .mainList .messageCenter-main .messageCenter-main-left .message-tab {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 30px; }
+          #theme_name #messageCenter .mainList .messageCenter-main .messageCenter-main-left .message-tab > div {
+            display: flex;
+            flex-direction: row;
+            align-items: center; }
+            #theme_name #messageCenter .mainList .messageCenter-main .messageCenter-main-left .message-tab > div span {
+              display: block;
+              padding: 5px 20px;
+              margin-right: 20px;
+              cursor: pointer; }
+        #theme_name #messageCenter .mainList .messageCenter-main .messageCenter-main-left .message-table span {
+          display: inline-block; }
+          #theme_name #messageCenter .mainList .messageCenter-main .messageCenter-main-left .message-table span i {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            font-style: normal; }
+          #theme_name #messageCenter .mainList .messageCenter-main .messageCenter-main-left .message-table span i:last-child {
+            width: 30px;
+            height: 30px;
+            color: #ffffff;
+            font-size: 24px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            background: #B9292D;
+            margin-left: 10px; }
+      #theme_name #messageCenter .mainList .messageCenter-main .messageCenter-main-right {
+        width: 39%;
+        height: 500px;
+        background: #FBFBFD;
+        position: relative; }
+        #theme_name #messageCenter .mainList .messageCenter-main .messageCenter-main-right i {
+          display: block;
+          width: 100px;
+          height: 100px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%); }
+    #theme_name #messageCenter .mainList .messageCenter-bottom {
+      text-align: center;
+      height: 10%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center; }
+
+/*# sourceMappingURL=index.css.map */

@@ -132,6 +132,52 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name #staffFiles .dialog_container .staffFiles {
   padding: 0 40px;
   display: flex;
@@ -150,15 +196,16 @@
       width: 60px;
       height: 60px;
       margin-left: 15px;
-      position: relative; }
+      position: relative;
+      top: 10px; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesTop p img {
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesTop p b, #theme_name #staffFiles .dialog_container .staffFiles .filesTop p i {
         position: absolute;
-        top: 0;
-        right: -4px;
+        top: -8px;
+        right: -10px;
         width: 24px;
         height: 24px; }
   #theme_name #staffFiles .dialog_container .staffFiles .filesMain {
@@ -169,22 +216,24 @@
       padding: 13px 16px 16px;
       cursor: pointer;
       margin-bottom: 40px;
-      background-color: #CF2E33; }
+      background-color: #cf2e33; }
     #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainLeft .hover {
-      color: #FFFFFF; }
+      color: #ffffff; }
     #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight {
       width: 100%;
+      min-height: 460px;
       padding: 40px;
       margin-left: 30px;
       position: relative;
-      background-color: #FFFFFF; }
+      background-color: #ffffff;
+      overflow: auto; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight b {
         position: absolute;
         top: 30px;
         right: 30px;
         width: 30px;
         height: 30px;
-        background-color: #CF2E33;
+        background-color: #cf2e33;
         cursor: pointer; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form {
         width: 100%; }
@@ -195,9 +244,12 @@
           #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form .info .item_margin {
             margin-top: 15px; }
       #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow {
-        width: 100%;
-        height: 150px;
-        position: relative; }
+        min-width: 590px;
+        width: 50%;
+        min-height: 150px;
+        position: relative;
+        background-color: #9CCC65;
+        display: inline-block; }
         #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow i {
           display: inline-block;
           width: 8px;
@@ -205,7 +257,7 @@
           -webkit-border-radius: 50%;
           -moz-border-radius: 50%;
           border-radius: 50%;
-          background-color: #D8D8D8; }
+          background-color: #d8d8d8; }
         #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div {
           width: 100%;
           display: flex;
@@ -216,15 +268,16 @@
             position: absolute;
             left: 49%;
             height: 100px;
-            border-left: 1px solid #D8D8D8; }
+            border-left: 1px solid #d8d8d8; }
             #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div span i {
               position: absolute;
               left: -4px;
-              background-color: #D8D8D8; }
+              background-color: #d8d8d8; }
           #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div p {
-            white-space: nowrap; }
+            white-space: nowrap;
+            cursor: pointer; }
             #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div p i {
-              background-color: #CF2E33; }
+              background-color: #cf2e33; }
         #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .tops {
           top: -120px; }
           #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .tops span {
@@ -237,5 +290,35 @@
             top: -110px; }
             #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .bottoms span i {
               bottom: 0; }
+#theme_name #staffFiles .dialog_container .staff-line {
+  width: 100%;
+  cursor: pointer; }
+  #theme_name #staffFiles .dialog_container .staff-line .left-line {
+    width: 10%;
+    text-align: center;
+    height: 100px; }
+    #theme_name #staffFiles .dialog_container .staff-line .left-line i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background-color: #999999;
+      border-radius: 50%; }
+    #theme_name #staffFiles .dialog_container .staff-line .left-line div {
+      width: 2px;
+      height: 100px;
+      background-color: #999999;
+      margin: 0 auto;
+      position: relative;
+      top: -5px;
+      z-index: -1; }
+  #theme_name #staffFiles .dialog_container .staff-line .right-content {
+    width: 90%;
+    text-align: left; }
+    #theme_name #staffFiles .dialog_container .staff-line .right-content > p:last-child {
+      margin-top: 10px; }
+  #theme_name #staffFiles .dialog_container .staff-line:hover .right-content {
+    color: #cf2e33; }
+  #theme_name #staffFiles .dialog_container .staff-line:hover .left-line i {
+    background-color: #cf2e33; }
 
 /*# sourceMappingURL=staffFiles.css.map */

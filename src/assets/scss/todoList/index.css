@@ -132,6 +132,52 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
 #theme_name {
   height: auto !important;
   padding-top: 0 !important; }
@@ -144,7 +190,7 @@
   right: 0;
   bottom: 0;
   z-index: 24;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   -webkit-transform: scale(0);
   -moz-transform: scale(0);
   -ms-transform: scale(0);
@@ -201,7 +247,7 @@
         top: 65px;
         left: 50px;
         cursor: default;
-        background-color: #FFFFFF;
+        background-color: #ffffff;
         font-family: "jingDianXingShu";
         font-size: 24px; }
       #todo_list .pendant-container .pendant .item-list {
@@ -239,7 +285,7 @@
               bottom: 0;
               left: 0;
               z-index: -1;
-              background-color: #FFFFFF;
+              background-color: #ffffff;
               transform: rotateZ(45deg); }
           #todo_list .pendant-container .pendant .item-list .item-detail i {
             font-size: 20px;
@@ -252,9 +298,9 @@
             #todo_list .pendant-container .pendant .item-list .item-detail i.multi-font {
               left: 3px; }
           #todo_list .pendant-container .pendant .item-list .item-detail.checked span {
-            color: #CF2E33; }
+            color: #cf2e33; }
           #todo_list .pendant-container .pendant .item-list .item-detail.checked i {
-            color: #CF2E33; }
+            color: #cf2e33; }
       #todo_list .pendant-container .pendant .search-bar {
         width: 100%;
         height: 30px;
@@ -325,6 +371,6 @@
       height: 30px;
       opacity: 1;
       border-radius: 10px 10px 0 0;
-      background-color: #F2F2F2; }
+      background-color: #f2f2f2; }
 
 /*# sourceMappingURL=index.css.map */

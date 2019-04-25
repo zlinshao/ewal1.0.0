@@ -1,157 +1,141 @@
 <template>
-    <div id="excellentStaff">
-        <div class="staff_info">
-            <div class="staff_list_info">
-                <div class="staff_box" v-for="(item,index) in staffData">
-                    <div class="flex-center" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
-                        <div class="img-modal" v-if="seen&&index===current">
-                            <span @click="routerLink(staffDetailUrl,item.id)"></span>
-                            <span @click="withdraw_visible = true"></span>
+    <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}" ref='viewBox'>
+        <div id="excellentStaff">
+            <div class="staff_info" ref='viewBox'>
+                <div class="staff_list_info">
+                    <div class="staff_box" v-for="(item,index) in staffData">
+                        <div class="flex-center" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
+                            <div class="img-modal" v-if="seen&&index===current">
+                                <span @click="routerLink(staffDetailUrl,item.id)"></span>
+                                <span @click="withdraw_visible = true;current_id = item.id"></span>
+                            </div>
+                            <img :src="item.user_id.avatar" alt="">
                         </div>
-                        <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
+                        <p><span>{{item.depart}}</span><span>{{item.user_id.name}}</span></p>
                     </div>
-                    <p><span>{{item.depart}}</span><span>{{item.name}}</span></p>
-                </div>
 
+                </div>
             </div>
+
+            <!--撤下优秀员工-->
+            <lj-dialog :visible="withdraw_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
+                       @close="withdraw_visible = false">
+                <div class="dialog_container">
+                    <div class="dialog_header">
+                        <h3>撤下</h3>
+                    </div>
+                    <div class="dialog_main">
+                        <div class="unUse-txt">确定撤下该优秀员工吗？</div>
+                    </div>
+                    <div class="dialog_footer">
+                        <el-button type="danger" size="small" @click="withdraw">确定</el-button>
+                        <el-button type="info" size="small" @click="withdraw_visible = false;current_id = ''">取消
+                        </el-button>
+                    </div>
+                </div>
+            </lj-dialog>
+
+
+
         </div>
-
-        <!--撤下优秀员工-->
-        <lj-dialog :visible="withdraw_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
-                   @close="withdraw_visible = false">
-            <div class="dialog_container">
-                <div class="dialog_header">
-                    <h3>撤下</h3>
-                </div>
-                <div class="dialog_main">
-                    <div class="unUse-txt">确定撤下该优秀员工吗？</div>
-                </div>
-                <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="withdraw">确定</el-button>
-                    <el-button type="info" size="small" @click="withdraw_visible = false;current_id = ''">取消
-                    </el-button>
-                </div>
-            </div>
-        </lj-dialog>
-
-        <!--优秀员工-->
-        <lj-dialog
-                :visible="visible"
-                :size="{width: 800 + 'px' ,height: 500 + 'px'}"
-                @close="visible = false">
-            <div class="dialog_container">
-                <div class="dialog_header">
-                    <h3>优秀员工</h3>
-                </div>
-                <div class="dialog_main">
-                    <el-form size="mini" v-model="form" label-width="80px">
-                        <el-form-item label="姓名">
-                            <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="文章内容">
-                            <el-input type="textarea" v-model="form.name" :rows="12"></el-input>
-                        </el-form-item>
-                    </el-form>
-                </div>
-                <div class="dialog_footer">
-                    <el-button size="small" type="warning" @click="postReceivable_tag()">预览</el-button>
-                    <el-button size="small" type="danger" @click="postReceivable_tag()">发布</el-button>
-                    <el-button size="small" type="info" @click="visible = false">取消</el-button>
-                </div>
-            </div>
-        </lj-dialog>
-
     </div>
+
 </template>
 
 <script>
     import LjDialog from '../../../../common/lj-dialog.vue';
+    import UE from '../../../../../components/common/UE.vue';
     export default {
         name: "excellentStaff",
         components:{
             LjDialog,
+            UE,
         },
         data(){
             return{
+                params: {//查询参数
+                    search: '',
+                    startRange: '',
+                    endRange: '',
+                    page: 1,
+                    limit: 8,
+                    department_ids: '',
+                    export: '',
+                },
                 current: '',//当前
                 seen: false,//显隐
                 staffDetailUrl: 'staffDetail',
                 withdraw_visible:false,//撤下
                 visible:false,
                 current_id:'',
-                staffData: [
-                    {
-                        avatar: '',
-                        name: '赵晓刀',
-                        depart: '南京一区二组',
-                        id: 1
-                    },
-                    {
-                        avatar: '',
-                        name: '赵晓刀',
-                        depart: '南京一区二组',
-                        id: 2,
-                    },
-                    {
-                        avatar: '',
-                        name: '赵晓刀',
-                        depart: '南京一区二组',
-                        id: 3
-                    },
-                    {
-                        avatar: '',
-                        name: '赵晓刀',
-                        depart: '南京一区二组',
-                        id: 4
-                    },
-                    {
-                        avatar: '',
-                        name: '赵晓刀',
-                        depart: '南京一区二组',
-                        id: 5,
-                    },
-                    {
-                        avatar: '',
-                        name: '赵晓刀',
-                        depart: '南京一区二组',
-                        id: 6,
-                    },
-                    {
-                        avatar: '',
-                        name: '赵晓刀',
-                        depart: '南京一区二组',
-                        id: 7,
-                    },
-                    {
-                        avatar: '',
-                        name: '赵晓刀',
-                        depart: '南京一区二组'
-                        , id: 8,
-                    },
-                ],
+                staffData: [],
                 form:{
                     name:'赵丽颖',
                     content:'国际上的飞机上的就发生的纠纷双方品搜东方'
                 },
             }
         },
-        created(){
-            this.$bus.on('add',this.getVal)
-        },
-        beforeDestroy(){
-            this.$bus.off('add',this.getVal);
+        mounted(){
+            this.getDataLists();
+            // this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);
         },
         methods:{
-            //获取bus传值
-            getVal(val){
-                this.visible = val;//新增弹窗显示
-                // this.flag = 2;
-                console.log(Object.keys(this.form));
-                for(let item of Object.keys(this.form)){
-                    this.form[item] = '';
-                }
+            getDataLists(){
+                this.$http.get(globalConfig.newMedia_sever+'/api/humanity/excellent',this.params).then(res=>{
+                    if(res.status===200){
+                        this.staffData = res.data.data;
+                    }
+                })
             },
+            // throttle(fn, delay, atleast) {
+            //     /**函数节流方法
+            //      @param Function fn 延时调用函数
+            //      @param Number dalay 延迟多长时间
+            //      @param Number atleast 至少多长时间触发一次
+            //      @return Function 延迟执行的方法
+            //      */
+            //     let timer = null;
+            //     let previous = null;
+            //     return function () {
+            //         var now = +new Date();
+            //         if (!previous) previous = now;
+            //         if (atleast && now - previous > atleast) {
+            //             fn();
+            //             // 重置上一次开始时间为本次结束时间
+            //             previous = now;
+            //             clearTimeout(timer);
+            //         } else {
+            //             clearTimeout(timer);
+            //             timer = setTimeout(function () {
+            //                 fn();
+            //                 previous = null;
+            //             }, delay);
+            //         }
+            //     }
+            // },
+            // setpage() {
+            //     if (this.nomore && !this.loaded) return;//到达底部不再执行
+            //     if (this.$refs.viewBox.scrollTop + this.$refs.viewBox.offsetHeight + 20 >= this.$refs.viewBox.scrollHeight) {
+            //         // this.loadingTip = true;  //loading提示语
+            //         this.showLoading(true);
+            //         this.params.page +=1;
+            //         this.$http.get(globalConfig.newMedia_sever + '/api/humanity/excellent', this.params).then(res => {
+            //                 let arr = res.data.data;
+            //                 if (arr.length === 0) {
+            //                     //some tips
+            //                     this.loaded = false;
+            //                     this.nomore = true;//没有更多
+            //                     return
+            //                 }
+            //                 this.staffData = [...this.staffData, ...arr];
+            //                 this.showLoading(false);
+            //             }
+            //         ).catch(err => {
+            //             console.log(err)
+            //         })
+            //     }
+            // },
+
             onMousteIn: function (index) {
                 this.seen = true; //鼠标移入显示
                 this.current = index;
@@ -162,7 +146,24 @@
             },
             //撤下
             withdraw(){
+                this.$http.delete(globalConfig.newMedia_sever+'/api/humanity/excellent/'+this.current_id,).then(res=>{
+                    if(res.status===200){
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.withdraw_visible=false;
+                        this.getDataLists();
 
+                    }else {
+                        this.$LjNotify('error', {
+                            title: '失败',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                    }
+                })
             },
         }
     }

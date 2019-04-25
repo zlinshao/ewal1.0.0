@@ -220,7 +220,7 @@
       },
 
       getRewardDownList() {
-        this.$http.get(this.url + 'rewardDown/xxx', this.params).then(res => {
+        this.$http.get(this.url + 'questionnaire/xxx', this.params).then(res => {
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })

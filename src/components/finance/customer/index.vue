@@ -7,43 +7,64 @@
                 </p>
                 <h1>客户</h1>
                 <h2 class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}<i></i>
-          </span>
+                  <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
+                        :class="{'chooseTab': chooseTab === item.id}">
+                    {{item.title}}<i></i>
+                  </span>
                 </h2>
             </div>
 
             <div class="items-center listTopRight">
                 <p class="status-icon" v-for="item in statusBar"   v-if="chooseTab===1||chooseTab===2">
-                    <span style="margin-left: 16px"><i :style="{'background-color':item.iconColor}"></i><span>{{item.iconText}}</span></span>
+                    <span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>
                 </p>
-                <div class="icons home_icon"></div>
-                <!--<div v-if="chooseTab===1||chooseTab===2">-->
-                    <!--<el-button type="danger" size="small" @click="cancelRemark">取消重复标记</el-button>-->
-                <!--</div>-->
+                <div class="icons btn_output"></div>
                 <div class="icons search" @click="highSearch(chooseTab)"></div>
             </div>
+        </div>
+        <div class="action-bar changeChoose" v-show="action_visible">
+            <div class="action-bar-left" >
+                <!--<el-checkbox>全选</el-checkbox>-->
+                <span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>
+
+                <span class="action-bar-name">
+                    <span class="edit" @click="action_status.details_visible=true;action_status.is_check=true">查看</span>
+                    <span class="edit" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
+                    <span class="edit" @click="cancelRemark(chooseTab,current_row)" style="color: #FFAB40">取消重复标记</span>
+                    <span class="edit" style="color: orangered" @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
+                        {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
+                    </span>
+                    <span class="delete" style="color: #CF2E33" @click="action_status.delete_visible=true">删除</span>
+                </span>
+            </div>
+
         </div>
         <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
         <FinMenuList :module="showFinMenuList" @close="showFinMenuList = false"></FinMenuList>
         <!--房东-->
         <div v-if="chooseTab === 1">
-            <lord :searchParams="search_params"></lord>
+            <lord :searchParams="search_params"
+                  @getMultipleSelection="getSelectionVal"
+                  ref="lord"
+                  :status="action_status"
+                  :current_row_info="current_row">
+
+            </lord>
         </div>
         <!--租客-->
         <div v-if="chooseTab === 2">
-            <renter :searchParams="search_params"></renter>
+            <renter @getMultipleSelection="getSelectionVal"
+                    ref="renter"
+                    :searchParams="search_params"
+                    :status="action_status"
+                    :current_row_info="current_row">
+            </renter>
         </div>
-        <!--待处理项-->
-        <!--<div v-if="chooseTab === 3">-->
-            <!--<pending :searchParams="search_params"></pending>-->
-        <!--</div>-->
-        <!--新增-->
-        <lj-dialog :visible="add_visible" :size="{width: 960 + 'px',height: 820 + 'px'}" @close="add_visible = false">
-            <lord-form v-if="chooseTab===1" :formData="lord_form" :current_row="current_row"></lord-form>
-            <renter-form v-if="chooseTab===2" :formData="renter_form" :current_row="current_row"></renter-form>
-        </lj-dialog>
+
+        <HouseFilter :visible="commonModule.house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
+        <StaffOrgan :module="commonModule.staffModule" @close="hiddenStaff"></StaffOrgan>
+        <DepartOrgan :module="commonModule.departModule" @close="hiddenDepart"></DepartOrgan>
+        <PostOrgan :module="commonModule.postModule" @close="hiddenPost"></PostOrgan>
 
     </div>
 </template>
@@ -52,7 +73,6 @@
     import SearchHigh from '../../common/searchHigh.vue';
     import lord from './lord/index.vue';
     import renter from './renter/index.vue';
-    import pending from './pending/index.vue';
     import LjDialog from '../../common/lj-dialog.vue';
     import FinMenuList from '../components/finMenuList.vue';
     import LjSubject from '../../common/lj-subject.vue';
@@ -60,6 +80,10 @@
     import renterForm from "./renter/renterForm.vue";
     import {pendingSearchList,lordRenterSearchList} from "../../../assets/js/allSearchData.js";
 
+    import StaffOrgan from '../../common/staffOrgan.vue';
+    import DepartOrgan from '../../common/departOrgan.vue';
+    import PostOrgan from '../../common/postOrgan.vue';
+    import HouseFilter from '../../marketCentre/components/house-filter.vue';
 
     export default {
         name: "index",
@@ -72,29 +96,30 @@
             LjSubject,
             lord,
             renter,
-            pending,
-
-
+            StaffOrgan,
+            DepartOrgan,
+            PostOrgan,
+            HouseFilter
         },
         data() {
             return {
                 pendingSearchList,
                 lordRenterSearchList,
+                multipleSelection:[],//选中的信息
+                action_visible:false,//操作栏作态
                 chooseTab: 1,
                 selects: [
                     {id: 1, title: '房东',},
                     {id: 2, title: '租客',},
-                    // {id: 3, title: '待处理项',},
                 ],
                 statusBar: [
-                    {iconColor: "#14e731", iconText: "手机"}, {iconColor: "#e6a23c", iconText: "姓名"},
-                    {iconColor: "#f56c6c", iconText: "地址"}, {iconColor: "#409eff", iconText: "待处理项"},
+                    {class: "phone", iconText: "手机"},
+                    {class: "name", iconText: "姓名"},
+                    {class: "address", iconText: "地址"},
                 ],
                 search_params: {},
-                current_row: '',
-                showSearch: false,
-                showFinMenuList: false,
-                add_visible: false,
+                showSearch: false,//搜索
+                showFinMenuList: false,//收起
                 searchData: {},//搜索项
                 lord_form: {
                     "address": "",
@@ -174,31 +199,114 @@
                     "v3_contract_id": "",
                     "cate": "",
                 },
+                action_status:{//操作条状态
+                    delete_visible:false,
+                    edit_visible:false,
+                    details_visible:false,
+                    is_check:false,
+                },
+                current_row:'',//选中的行
+                commonModule: {
+                    postModule: false,//岗位
+                    departModule: false,//部门
+                    staffModule: false,//员工
+                    house_filter_visible:false,//房屋地址
+                },//共用组件状态
+                commonModuleData:{
+                    leader_name:'',
+                    leader_id:'',
+                    department_id:'',
+                    department_name:'',
+                    staff_name:'',
+                    staff_id:'',
 
-
+                    address_name:'',
+                    address_id:[],
+                    address_type:'',
+                },//共用组件数据
             }
         },
         mounted() {
         },
-
         created() {
+            this.$bus.on('openCommonModule',this.getCommonModule);
 
         },
-
-        watch: {},
-        created() {
+        beforeDestroy(){
+            this.$bus.off('openCommonModule',this.getCommonModule);
         },
+        watch: {
+            current_row:{
+                handler(val){
+
+                },
+                deep:true
+            },
+            action_status:{
+                handler(val){
+
+                },
+                deep:true
+            },
+            commonModuleData:{
+                handler(val){
+                    this.$bus.emit('moduleData',val)
+                },
+                deep:true,
+            },
+            commonModule:{
+                handler(val){
+                    this.$bus.emit('moduleDataStatus',val)
+                },
+                deep:true,
+            },
+        },
+
         computed: {},
         methods: {
+            // 切换
             changeTabs(id) {
                 this.chooseTab = id;
-            },
-            addCustomer() {
-                this.add_visible = true;
-                this.current_row = ''
-            },
+                this.current_row='';
+                this.action_visible = false;
+                console.log(this.current_row);
 
-
+            },
+            //取消重复标记
+            cancelRemark(tab,val){
+                if(tab===1){
+                    this.$refs.lord.handleRemark(val);
+                }else if(tab===2){
+                    this.$refs.renter.handleRemarkRenter(val);
+                }
+            },
+            //生成处理项
+            handleProcess(tab,val){
+                if(tab===1){
+                    this.$refs.lord.handleProcessLord(val);
+                }else if(tab===2){
+                    this.$refs.renter.handleProcessRenter(val);
+                }
+            },
+            //取消处理项
+            handleCancelProcess(tab,val){
+                if(tab===1){
+                    this.$refs.lord.handleCancelProcessLord(val);
+                }else if(tab===2){
+                    this.$refs.renter.handleCancelProcessRenter(val);
+                }
+            },
+            // 获取选项值
+            getSelectionVal(val){
+                this.multipleSelection = val;
+                if(val.length>0){
+                    this.action_visible = true;
+                    this.current_row = val[0];
+                    console.log(val);
+                }else {
+                    this.action_visible = false;
+                }
+            },
             // 高级搜索
             highSearch(val) {
                 this.showSearch = true;
@@ -208,9 +316,6 @@
                         break;
                     case 2:
                         this.searchData = this.lordRenterSearchList;
-                        break;
-                    case 3:
-                        this.searchData = this.pendingSearchList;
                         break;
                 }
 
@@ -225,17 +330,69 @@
                 }
             },
 
-            //取消重复标记
-            // cancelRemark() {
-            //     this.$bus.emit('cancelRemarkFun', 1);
-            // }
+            //获取共用组件状态
+            getCommonModule(val){
+                if(val){
+                    for(let item of Object.keys(this.commonModule)){
+                        this.commonModule[item] = val[item];
+                    }
+                }
+            },
+            //获取部门信息
+            hiddenDepart(ids, names, arr) {
+                this.commonModule.departModule = false;
+                if (ids !== 'close') {
+                    this.commonModuleData.department_id = ids[0];
+                    this.commonModuleData.leader_name = arr[0].leader.name;
+                    this.commonModuleData.leader_id = arr[0].leader_id;
+                    this.commonModuleData.department_name  = names;
+                }
+            },
+            //获取员工信息
+            hiddenStaff(ids, names, arr) {
+                this.commonModule.staffModule = false;
+                if (ids !== 'close') {
+                    this.commonModuleData.staff_name = names;
+                    this.commonModuleData.staff_id = ids[0];
+                }
+            },
+            //获取岗位信息
+            hiddenPost(ids, names, arr) {
+                this.commonModule.postModule = false;
+            },
+            //获取房源信息
+            handleGetHouseResource(house, type) {
+                console.log(house);
+                console.log(type);
+                if (house) {
+                    this.commonModuleData.address_name = '';
+                    this.commonModuleData.address_id = [];
+                    house.map(item => {
+                        this.commonModuleData.address_name += item.house_name + ',';
+                        if (type === 'house') {
+                            this.commonModuleData.address_type = 1;
+                            this.commonModuleData.address_id.push(item.house_id);
+                        } else {
+                            this.commonModuleData.address_type = 2;
+                            this.commonModuleData.address_id.push(item.village_id);
+                        }
+                    });
+                    this.commonModuleData.address_name = this.commonModuleData.address_name.substring(0, this.commonModuleData.address_name.length - 1);
+
+                }
+                this.commonModule.house_filter_visible = false;
+
+            },
         },
     }
 </script>
 
 <style lang="scss" scoped>
     @import "../../../assets/scss/finance/customer/index.scss";
-
+    @mixin financeImg($m, $n) {
+        $url: '../../../assets/image/finance/' + $n + '/' + $m;
+        @include bgImage($url);
+    }
     #theme_name.theme1 {
         #customer {
             .statusBar {
@@ -246,6 +403,18 @@
                     border-radius: 50%;
                     margin-left: 4px;
                 }
+            }
+            .btn_output{
+                @include financeImg('upLoad.png','theme1')
+            }
+            .phone{
+                @include financeImg('dianhua.png','theme1')
+            }
+            .name{
+                @include financeImg('kehu.png','theme1')
+            }
+            .address{
+                @include financeImg('dizhi.png','theme1')
             }
 
         }

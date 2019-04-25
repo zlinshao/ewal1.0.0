@@ -12,38 +12,40 @@
                 <div class="icons search" @click="highSearch"></div>
             </div>
         </div>
-        <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+        <div class="action-bar changeChoose" v-show="action_visible">
+            <div class="action-bar-left">
+                <!--<el-checkbox>全选</el-checkbox>-->
+                <span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>
+                <span class="action-bar-name" >
+                    <span class="edit" @click="handleOpenUpdateAccount(current_row)">更新</span>
+                    <span class="edit" @click="handleOpenRecharge(current_row)">充值</span>
+                    <span class="edit" @click="initial_visible = true;">归零</span>
+                    <span class="edit" @click="handleOpenInfo(current_row)">记录</span>
+                    <span class="delete" @click="handleOpenDel(current_row)">删除</span>
+                </span>
+            </div>
+            <div class="action-bar-right">
+
+            </div>
+        </div>
+        <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
             <el-table
                     :data="accountData"
                     :height="this.mainListHeight(30) + 'px'"
                     highlight-current-row
                     :row-class-name="tableChooseRow"
                     @cell-click="tableClickRow"
+                    @selection-change="handleSelectionChange"
                     header-row-class-name="tableHeader"
                     style="width: 100%">
+                <el-table-column
+                        type="selection" width="40">
+                </el-table-column>
                 <el-table-column
                         v-for="item in Object.keys(showData)" :key="item"
                         align="center"
                         :prop="item"
                         :label="showData[item]">
-                </el-table-column>
-                <el-table-column
-                        align="center"
-                        label="操作"
-                >
-                    <template slot-scope="scope">
-                        <div class="operate">
-                            <!--<el-button size="mini" type="primary" plain @click="info_visible = true">点击查看</el-button>-->
-                            <el-button size="mini" type="success" @click="handleOpenUpdateAccount(scope.row)">更新
-                            </el-button>
-                            <el-button size="mini" type="danger" @click="handleOpenDel(scope.row)">删除</el-button>
-                            <el-button size="mini" type="warning" @click="handleOpenRecharge(scope.row)">充值</el-button>
-                            <el-button size="mini" type="danger"
-                                       @click="initial_visible = true;current_row = scope.row">归零
-                            </el-button>
-                            <el-button size="mini" type="success" @click="handleOpenInfo(scope.row)">记录</el-button>
-                        </div>
-                    </template>
                 </el-table-column>
             </el-table>
             <footer class="flex-center bottomPage">
@@ -107,7 +109,10 @@
                     <div class="page">
                         <el-pagination
                                 :total="info_count"
-                                layout="total,prev,pager,next"
+                                :current-page="info_params.page"
+                                :page-size="info_params.limit"
+                                layout="total,jumper,prev,pager,next"
+                                @current-change="handleChangePage_infoData"
                         ></el-pagination>
                     </div>
                 </div>
@@ -124,134 +129,43 @@
                 <div class="dialog_header">
                     <h3>{{ current_row ? '更新账户' : '新增账户'}}</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="add_account" :rules="add_account_rules" size="mini" ref="addAccount">
-                        <el-form-item prop="name">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_account"></i>
-                                    </b>
-                                    <span>账户名称</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input v-model="add_account.name" placeholder="请输入"></el-input>
-                                </div>
-                            </div>
+                <div class="dialog_main borderNone">
+                    <el-form :model="add_account" :rules="add_account_rules"  ref="addAccount" label-width="80px">
+                        <el-form-item  label="账户名称">
+                            <el-input v-model="add_account.name" placeholder="请输入"></el-input>
                         </el-form-item>
-                        <el-form-item prop="account_owner">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>所有人</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input v-model="add_account.account_owner" placeholder="请输入"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item  label="所有人">
+                            <el-input v-model="add_account.account_owner" placeholder="请输入"></el-input>
                         </el-form-item>
-                        <el-form-item prop="cate">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>账户类型</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-select class="all_width" v-model="add_account.cate" placeholder="请输入">
-                                        <el-option v-for="(item,key) in cate" :value="parseInt(key)" :key="key"
-                                                   :label="item"></el-option>
-                                    </el-select>
-                                </div>
-                            </div>
+                        <el-form-item  label="账户类型">
+                            <el-select class="all_width" v-model="add_account.cate" placeholder="请输入">
+                                <el-option v-for="(item,key) in cate" :value="parseInt(key)" :key="key"
+                                           :label="item"></el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item v-if="add_account.cate === 1">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_bank"></i>
-                                    </b>
-                                    <span>银行</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-select class="all_width" v-model="add_account.bank" placeholder="请选择">
-                                        <el-option v-for="(item,key) in banks" :value="item" :key="key"
-                                                   :label="item"></el-option>
-                                    </el-select>
-                                </div>
-                            </div>
+                        <el-form-item v-if="add_account.cate === 1" label="银行">
+                            <el-select class="all_width" v-model="add_account.bank" placeholder="请选择">
+                                <el-option v-for="(item,key) in banks" :value="item" :key="key"
+                                           :label="item"></el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item v-if="add_account.cate === 1">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>支行</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input v-model="add_account.sub_bank" placeholder="请输入"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item v-if="add_account.cate === 1" label="支行">
+                            <el-input v-model="add_account.sub_bank" placeholder="请输入"></el-input>
                         </el-form-item>
-                        <el-form-item prop="account_num">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>账户账号</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input v-model="add_account.account_num" placeholder="请输入"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item  label="账户账号">
+                            <el-input v-model="add_account.account_num" placeholder="请输入"></el-input>
                         </el-form-item>
-                        <el-form-item prop="amount_base">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>初始金额</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input type="number" v-model="add_account.amount_base"
-                                              placeholder="请输入"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item  label="初始金额">
+                            <el-input type="number" v-model="add_account.amount_base"
+                                      placeholder="请输入"></el-input>
                         </el-form-item>
-                        <el-form-item prop="scope">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_subject"></i>
-                                    </b>
-                                    <span>账户范围</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-select class="all_width" v-model="add_account.scope" placeholder="请选择">
-                                        <el-option :value="3" label="收款"></el-option>
-                                        <el-option :value="5" label="付款"></el-option>
-                                    </el-select>
-                                </div>
-                            </div>
+                        <el-form-item  label="账户范围">
+                            <el-select class="all_width" v-model="add_account.scope" placeholder="请选择">
+                                <el-option  v-for="(item,index) in account_types" :value="item.val" :label="item.title" :key="index"></el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item>
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_mark"></i>
-                                    </b>
-                                    <span>备注</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input v-model="add_account.remark" type="textarea" placeholder="请输入"></el-input>
-                                </div>
-                            </div>
+                        <el-form-item label="备注">
+                            <el-input v-model="add_account.remark" type="textarea" placeholder="请输入" :rows="8"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -287,27 +201,17 @@
         <!--充值-->
         <lj-dialog
                 :visible="account_recharge_visible"
-                :size="{width: 400 + 'px',height: 260 + 'px'}"
+                :size="{width: 400 + 'px',height: 300 + 'px'}"
         >
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>充值</h3>
                 </div>
-                <div class="dialog_main">
-                    <el-form :model="recharge" size="mini">
-                        <el-form-item prop="amount">
-                            <div class="form_item_container">
-                                <div class="item_label">
-                                    <b class="item_icons">
-                                        <i class="icon_money"></i>
-                                    </b>
-                                    <span>充值金额</span>
-                                </div>
-                                <div class="item_content">
-                                    <el-input class="all_width" v-model="recharge.amount" type="number"
-                                              placeholder="请输入"></el-input>
-                                </div>
-                            </div>
+                <div class="dialog_main borderNone">
+                    <el-form :model="recharge" label-width="80px">
+                        <el-form-item label="充值金额">
+                            <el-input class="all_width" v-model="recharge.amount" type="number"
+                                      placeholder="请输入"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -348,12 +252,14 @@
     import SearchHigh from '../../common/searchHigh.vue'
     import FinMenuList from '../components/finMenuList.vue'
     import LjDialog from '../../common/lj-dialog.vue';
+    import {accountSearchList} from "../../../assets/js/allSearchData.js";
 
     export default {
         name: "index",
         components: {SearchHigh, FinMenuList, LjDialog},
         data() {
             return {
+                accountSearchList,
                 //查看记录
                 info_size: '',
                 info_type: {
@@ -363,11 +269,17 @@
                     4: '归档',
                     5: '充值'
                 },
+                account_types:[
+                    {title:'收款',val:3},
+                    {title:'付款',val:5},
+                ],
                 infoData: [],
                 info_count: 0,
                 info_params: {
                     account_id: '',
-                    operation: 1
+                    operation: 1,
+                    limit:12,
+                    page:1,
                 },
 
                 //归零
@@ -420,6 +332,7 @@
                     cate: '',
                     account_owner: '',
                     account_num: '',
+                    scope:'',
                 },
 
                 //参数
@@ -432,7 +345,9 @@
                 account_recharge_visible: false,
                 recharge: {
                     amount: ''
-                }
+                },
+                multipleSelection:[],
+                action_visible:false,
             }
         },
         mounted() {
@@ -450,11 +365,27 @@
         },
         computed: {},
         methods: {
+            // 多选
+            handleSelectionChange(val){
+                this.multipleSelection = val;
+                if(val.length>0){
+                    this.action_visible = true;
+                    this.current_row = val[0];
+                }else {
+                    this.action_visible = false;
+                }
+                console.log(val);
+            },
             handleCloseInfo() {
                 this.info_params.operation = '';
                 this.info_params.account_id = '';
                 this.info_visible = false;
             },
+            handleChangePage_infoData(page){
+               this.info_params.page = page;
+               this.getInfoList();
+            },
+
             getInfoList() {
                 this.infoData = [];
                 this.info_count = 0;
@@ -524,6 +455,7 @@
                     this.add_account[key] = row[key];
                 }
                 this.add_account_visible = true;
+                console.log(this.add_account_visible)
 
             },
             handleChangePage(page) {
@@ -623,55 +555,16 @@
             // 高级搜索
             highSearch() {
                 this.showSearch = true;
-                this.searchData.data = [
-
-                    {
-                        keyType: 'radio',
-                        title: '账户范围',
-                        keyName: 'scope',
-                        dataType: '',
-                        value: [
-                            {
-                                id: 3,
-                                title: '收',
-                            },
-                            {
-                                id: 5,
-                                title: '付',
-                            },
-
-                        ],
-                    },
-                    {
-                        keyType: 'radio',
-                        title: '账户类型',
-                        keyName: 'cate',
-                        dataType: '',
-                        value: [
-                            {
-                                id: 1,
-                                title: '银行卡',
-                            },
-                            {
-                                id: 2,
-                                title: '支付宝',
-                            },
-                            {
-                                id: 3,
-                                title: '微信',
-                            },
-                        ],
-                    },
-
-                ];
+                this.searchData = this.accountSearchList;
             },
             // 确认搜索
             hiddenModule(val) {
                 this.showSearch = false;
                 if (val !== 'close') {
                     console.log(val);
-                    console.log(val);
-                    this.params = val;
+                    this.params.search= val.search;
+                    this.params.scope= val.scope;
+                    this.params.cate= val.cate;
                     this.getAccountList();
                 }
             },

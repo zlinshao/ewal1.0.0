@@ -18,6 +18,7 @@
         .video-box{
           width: 100%;
           height: 100%;
+          cursor: pointer;
           //border: 1px solid #ff4545;
           position: relative;
           .video-box-top{
@@ -52,59 +53,34 @@
           .video-box-middle{
             width: 100%;
             height:240px;
-            //border: 1px solid #ff4545;
             position: relative;
-
             .video-border{
               width: 100%;
               height: 240px;
-              //border: 1px solid #F6DE46;
               position: absolute;
               top: 50%;
               left: 50%;
               transform: translate(-50%,-50%);
-              z-index: 100;
-
+              z-index: 4;
+              >div{
+                width: 100%;
+                height: 240px;
+              }
             }
             .video-inner{
               width: 100%;
               height: 240px;
               padding: 13px 9px;
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%,-50%);
               div{
                 width: 100%;
                 height: 100%;
-                cursor: pointer;
-                //border: 1px solid #FF7131;
-                position: relative;
                 video{
                   width: 100%;
                   height: 100%;
                   object-fit: fill;
                 }
-
-                span{
-
-                  position: absolute;
-                  display: block;
-                  width: 50px;
-                  height: 50px;
-                  border-radius: 50%;
-                  top: 50%;
-                  left: 50%;
-                  transform: translate(-50%,-50%);
-
-
-                }
               }
-
             }
-
-
-
           }
           .video-box-bottom{
             padding: 10px;

@@ -1,0 +1,79 @@
+@import "../../common.scss";
+
+#theme_name {
+  #nq {
+    height: 100%;
+    background-color: $colorFFF;
+    .listTopRight {
+      .icons-font {
+        height: 30px;
+        width: 70px;
+        @include flex('flex-center');
+        b {
+          color: white;
+          font-size: 14px;
+        }
+      }
+    }
+    .nq-container {
+      width: 100%;
+      height: calc(100% - 160px);
+      //background-color: $color9F9;
+      position: absolute;
+      left: 0;
+      top: 160px;
+      transition: all ease 1s;
+      .content {
+        height: 100%;
+        //@extend .flex-center;
+        > div {
+          width:300px;
+          height:300px;
+          margin: 0 110px;
+          &:hover {
+            cursor: pointer;
+            transform: scale(1.05);
+            transition: all 1s;
+          }
+          //border:1px solid rgba(207,46,51,1);
+          span {
+            @extend .writingMode;
+            color: #fff;
+            font-size: 32px;
+            font-family: 'jingDianXingShu';
+            position: relative;
+            left: -2px;
+            &.gray {
+              color: #686874;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
+
+#theme_name.theme1 {
+  #nq {
+
+  }
+}
+
+#theme_name.theme2 {
+  #nq {
+
+  }
+}
+
+#theme_name.theme3 {
+  #nq {
+
+  }
+}
+
+#theme_name.theme4 {
+  #nq {
+
+  }
+}

@@ -132,4 +132,184 @@
     background: #747474;
     border-radius: 4px; }
 
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#theme_name #organization {
+  width: 100%;
+  height: 100%; }
+  #theme_name #organization > div {
+    height: 100%;
+    padding: 30px 100px; }
+    #theme_name #organization > div .organ-tree {
+      height: 700px;
+      margin: 0 auto;
+      padding: 30px;
+      text-align: center;
+      overflow: auto;
+      position: relative; }
+      #theme_name #organization > div .organ-tree .strt-wrap {
+        width: 5000px;
+        min-height: 600px;
+        margin: 10px;
+        cursor: move;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%); }
+      #theme_name #organization > div .organ-tree .strt-part {
+        text-align: center;
+        float: left;
+        position: relative; }
+      #theme_name #organization > div .organ-tree .strt-part .line-v {
+        position: relative;
+        height: 40px;
+        width: 100%; }
+      #theme_name #organization > div .organ-tree .strt-part .line-v span {
+        display: block;
+        position: absolute;
+        top: 0;
+        font-size: 0;
+        background: #70707B;
+        line-height: 1px;
+        width: 1px;
+        height: 40px;
+        left: 50%; }
+      #theme_name #organization > div .organ-tree .strt-name {
+        display: inline-block;
+        padding: 0 5px;
+        min-width: 100px;
+        height: 50px;
+        line-height: 50px;
+        border: 1px solid #70707B;
+        margin: 0 10px;
+        border-radius: 20px;
+        font-size: 18px;
+        font-family: 'jingDianXingShu';
+        text-align: center;
+        cursor: pointer; }
+        #theme_name #organization > div .organ-tree .strt-name:hover {
+          border-color: #cf2e33;
+          color: #cf2e33; }
+        #theme_name #organization > div .organ-tree .strt-name img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          vertical-align: middle; }
+      #theme_name #organization > div .organ-tree .strt-name-mini {
+        min-width: 70px;
+        height: 40px;
+        line-height: 40px; }
+      #theme_name #organization > div .organ-tree .primary-name {
+        display: flex;
+        justify-content: space-between;
+        justify-items: center;
+        margin-top: 10px; }
+        #theme_name #organization > div .organ-tree .primary-name span {
+          font-size: 16px;
+          writing-mode: vertical-rl;
+          writing-mode: tb-rl;
+          font-family: 'jingDianXingShu'; }
+      #theme_name #organization > div .organ-tree .strt-info {
+        padding: 10px 5px;
+        min-width: 50px;
+        min-height: 120px;
+        border: 1px solid #70707B;
+        margin: 0 10px;
+        font-size: 18px;
+        text-align: center;
+        cursor: pointer;
+        writing-mode: vertical-rl;
+        writing-mode: tb-rl;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%); }
+        #theme_name #organization > div .organ-tree .strt-info:hover {
+          border-color: #cf2e33;
+          color: #cf2e33; }
+        #theme_name #organization > div .organ-tree .strt-info p {
+          font-family: 'jingDianXingShu';
+          text-align: left;
+          width: 50%;
+          line-height: 20px;
+          margin: 3px; }
+          #theme_name #organization > div .organ-tree .strt-info p:first-child {
+            font-size: 20px; }
+      #theme_name #organization > div .organ-tree .strt-info-mini {
+        display: inline-block;
+        padding: 5px 3px;
+        min-width: 40px;
+        line-height: 40px;
+        min-height: 80px;
+        writing-mode: vertical-rl;
+        writing-mode: tb-rl;
+        text-align: left; }
+        #theme_name #organization > div .organ-tree .strt-info-mini a {
+          opacity: .6; }
+      #theme_name #organization > div .organ-tree .strt-part .line-h {
+        height: 1px;
+        display: block;
+        background: #70707B;
+        position: absolute;
+        top: 0;
+        font-size: 0; }
+      #theme_name #organization > div .organ-tree .strt-part .line-h-l {
+        width: 50%;
+        left: 0; }
+      #theme_name #organization > div .organ-tree .strt-part .line-h-c {
+        width: 100%;
+        left: 0; }
+      #theme_name #organization > div .organ-tree .strt-part .line-h-r {
+        width: 50%;
+        right: 0; }
+      #theme_name #organization > div .organ-tree .strt-block {
+        float: left; }
+    #theme_name #organization > div ::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      border: none; }
+
 /*# sourceMappingURL=index.css.map */

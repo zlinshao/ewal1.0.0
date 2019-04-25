@@ -1,0 +1,144 @@
+@import "../common.scss";
+#theme_name {
+  #currentMonthAssessment {
+      >div{
+      }
+        >div{
+        }
+          h2{
+            margin-left: 42px;
+            height:32px;
+            font-size:32px;
+            font-family: 'jingDianXingShu';
+            color:rgba(104,104,116,1);
+            line-height:32px;
+          }
+  }
+}
+#theme_name.theme1 {
+  #currentMonthAssessment {
+    width: 100%;
+    height: 100%;
+    background-color: $colorFFF;
+    .listTopRight{
+      .daochu{
+        width: 30px;
+        height: 30px;
+      }
+    }
+    .currentMonthAssessmentContainer{
+      .containerTop{
+        width: 100%;
+        height: 54px;
+        padding: 0 50px 0 800px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        button{
+          width: 108px;
+          height: 36px;
+          border-radius:28px;
+          border:1px solid rgba(207,46,51,1);
+          background-color: $colorFFF;
+          font-family:MicrosoftYaHei;
+          color:rgba(207,46,51,1);
+
+        }
+        >div{
+          width:18px;
+          height:18px;
+          border-radius:18px;
+          background:rgba(207,46,51,1);
+          margin-left: 40px;
+        }
+        >h2{
+          height:13px;
+          margin-left: 10px;
+          font-size:20px;
+          font-family:MicrosoftYaHei;
+          color:rgba(104,104,116,1);
+          line-height:13px;
+          letter-spacing:1px;
+        }
+      }
+    }
+    .tableHeader{
+      .redStatus{
+        width:18px;
+          height:18px;
+          border-radius:18px;
+          background:rgba(207,46,51,1);
+          margin-left: 40px;
+      }
+    }
+    .dialog_container{
+      .dialog_header{
+        .listTopCss{
+          .listTopLeft{
+            margin-left: 25px;
+            >img{
+              width: 40px;
+              height: 40px;
+            }
+            >div{
+              margin-left: 20px;
+              .personName{
+                font-size: 20px;
+                font-family: MicrosoftYaHei;
+                color:rgba(104,104,116,1);
+                letter-spacing: 1px;
+              }
+              .timeInfo{
+                font-size: 14px;
+                font-family :MicrosoftYaHei;
+                color:rgba(104,104,116,1);
+                letter-spacing: 1px;
+              }
+            }
+          }
+          .listTopRight{
+            margin-right: 10px;
+            >div{
+              .personName{
+                font-size: 14px;
+                font-family: MicrosoftYaHei;
+                color:rgba(104,104,116,1);
+                letter-spacing: 1px;
+                span{
+                  font-size: 15px;
+                  color: #CF2E33;
+                }
+              }
+              .timeInfo{
+                display: flex;
+                justify-content: flex-end;
+                font-size: 7px;
+                font-family :MicrosoftYaHei;
+                color:rgba(104,104,116,1);
+                letter-spacing: 1px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme2 {
+  #intellectualPropertyProtection {
+
+  }
+}
+
+#theme_name.theme3 {
+  #intellectualPropertyProtection {
+
+  }
+}
+
+#theme_name.theme4 {
+  #intellectualPropertyProtection {
+
+  }
+}

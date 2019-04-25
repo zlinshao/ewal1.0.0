@@ -11,9 +11,9 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>内务库房</h1>
+        <h1>资产管理</h1>
         <h2 class="items-center" v-if="chooseTab">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
+          <span v-for="(item,index) in selects" @click="changeTabs(item.id)" :key="index" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
           </span>
@@ -21,26 +21,32 @@
       </div>
       <div class="items-center listTopRight">
         <div class="icons-font" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>入库</b></div>
+        <div class="icons add" @click="addContract(chooseTab)" v-if="chooseTab === 3"><b>+</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
       </div>
     </div>
 
-    <div class="main-container repository-container">
+    <div v-if="!chooseTab" class="main-container repository-container">
       <div class="content flex-center" v-if="!chooseTab">
-        <div class="left flex-center" @click="chooseTab=1"><span>库房总览</span></div>
-        <div class="right flex-center" @click="chooseTab=2"><span class="gray">借用领用</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=1"><span>入库</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=2"><span>领用借用</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=3"><span>资料库</span></div>
       </div>
       <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
                  @change="handleChangeDate"></work-info>
     </div>
     <!--库房总览-->
-    <div class="up" v-if="chooseTab==1">
+    <div v-if="chooseTab==1">
       <OverView :searchVal="searchFruit1" :in_repository_visible="in_repository_visible" ></OverView>
     </div>
 
     <!--借用领用-->
-    <div class="down" v-if="chooseTab==2">
+    <div v-if="chooseTab==2">
       <borrow-receive :searchVal="searchFruit2"></borrow-receive>
+    </div>
+
+    <div v-if="chooseTab==3">
+      <data-base :addContract_visiable="addContract_visiable" v-on:changeAddContrat="changeAddContrat"></data-base>
     </div>
 
     <!--模块入口-->
@@ -59,6 +65,7 @@
   import OverView from './overView/index.vue';//库房总览
   import ImgSlider from '../../common/lightweightComponents/ImgSlider';
   import BorrowReceive from './borrowReceive/index';//借用领用
+  import DataBase from './dataBase/index';//资料库
   import WorkInfo from '../../common/work-info';
   import LjDialog from '../../common/lj-dialog.vue';
   import SearchHigh from '../../common/searchHigh.vue';
@@ -79,6 +86,7 @@
       SearchHigh,
       LjUpload,
       ImgSlider,
+      DataBase,//资料库
     },
     data() {
       return {
@@ -86,14 +94,20 @@
         borrowReceiveSearch,
         humanResource,
         resourceDepart,
+        url: globalConfig.humanResource_server,
+        addContract_visiable: false,//是否显示添加合同弹窗传递给资料库 传给子组件
         selects: [
           {
             id: 1,
-            title: '库房总览',
+            title: '入库',
           },
           {
             id: 2,
-            title: '借用领用',
+            title: '领用借用',
+          },
+          {
+            id: 3,
+            title: '资料库',
           }
         ],//tab切换
 
@@ -202,6 +216,13 @@
         this.visibleStatus = !this.visibleStatus;
         this.$store.dispatch('route_animation');
       },
+      //通过字符组件传值判断是否显示添加合同弹窗
+      addContract(chooseTab){
+        this.addContract_visiable= true
+      },
+      changeAddContrat(val){
+        this.addContract_visiable= val
+      }
     },
   }
 </script>
@@ -227,12 +248,12 @@
         .content {
           //@include repositoryImg('sffmbj.png', 'theme1');
 
-          .left {
-            @include repositoryImg('kfzlx.png', 'theme1')
-          }
-
-          .right {
+          .bg-container {
             @include repositoryImg('lwkfw.png', 'theme1')
+
+            &:hover {
+              @include repositoryImg('kfzlx.png', 'theme1')
+            }
           }
         }
       }

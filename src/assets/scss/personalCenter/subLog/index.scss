@@ -1,0 +1,73 @@
+@import "../../common.scss";
+
+#theme_name {
+  #sub_log {
+    height: 100%;
+    .log-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 0 30px;
+      .log-toolbar {
+        height: 8%;
+        display: flex;
+        justify-content: space-between;
+        .toolbar-left {
+          height: 100%;
+          @include flex('flex-center');
+          color: $color874;
+          .toolbar-left-static {
+            font-size: 20px;
+            font-family: MicrosoftYaHei;
+            padding-right: 15px;
+          }
+          .toolbar-left-dynamic {
+            font-size: 16px;
+            opacity: .7;
+          }
+        }
+        .toolbar-right {
+          height: 100%;
+          width: 200px;
+          @include flex('flex-center');
+        }
+      }
+      .log-table {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+        .log-table-item:not(:nth-child(5n+5)) {
+          margin-right: 3.75%;
+        }
+      }
+      .log-table-pagination {
+        height: 15%;
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #sub_log {
+
+  }
+}
+
+#theme_name.theme2 {
+  #sub_log {
+
+  }
+}
+
+#theme_name.theme3 {
+  #sub_log {
+
+  }
+}
+
+#theme_name.theme4 {
+  #sub_log {
+
+  }
+}

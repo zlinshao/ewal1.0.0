@@ -2,7 +2,27 @@
 
 #theme_name {
   #budgetStream {
+      .bank-run-list{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        >div{
+          width: calc(100%/7);
+          padding: 20px;
 
+          .bank-run-info{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            i{
+              display: block;
+              width: 60px;
+              height: 80px;
+            }
+          }
+        }
+
+      }
   }
 }
 

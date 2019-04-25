@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 
-let url = globalConfig.humanResource_server;
-axios.defaults.timeout = 10000;
+let url = globalConfig.server;
+axios.defaults.timeout = 100000;
 
-axios.defaults.baseURL = globalConfig.humanResource_server; // 域名
+axios.defaults.baseURL = globalConfig.server; // 域名
 
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {
@@ -17,9 +17,11 @@ axios.interceptors.response.use(response => {
         break;
       case 401:
         console.log('未授权，请重新登录');
+        // window.location.href = window.location.origin + '/jurisdiction';
         break;
       case 403:
         console.log('拒绝访问');
+        // window.location.href = window.location.origin + '/jurisdiction';
         break;
       case 404:
         console.log('请求错误,未找到该资源');
@@ -32,6 +34,7 @@ axios.interceptors.response.use(response => {
         break;
       case 500:
         console.log('服务器端出错');
+        // window.location.href = window.location.origin + '/network_error';
         break;
       case 501:
         console.log('网络未实现');
@@ -121,7 +124,9 @@ class Axios {
   static getOrganization(org) {
     return new Promise((resolve, reject) => {
       this.get(url + 'organization/organization', {
-        parent_id: org
+        parent_id: org,
+        page: 1,
+        limit: 999
       }).then(res => {
         resolve(res);
       });

@@ -16,15 +16,12 @@
 
             <div class="items-center listTopRight">
                 <div class="icons home_icon"></div>
-                <div class="icons add" @click="add"><b>+</b></div>
+                <div class="icons add" @click="add_visible = true"><b>+</b></div>
             </div>
         </div>
-
-        <div class="mainList" :style="{'height': this.mainListHeight(-9) + 'px'}">
-            <keep-alive>
-                <component :is="tabView"></component>
-            </keep-alive>
-        </div>
+        <keep-alive>
+            <component :is="tabView"  :add_status="add_visible" @cancelAdd="getCancelAdd" :choose_type="chooseTab"></component>
+        </keep-alive>
         <media-list :module="showFinMenuList" @close="showFinMenuList = false"></media-list>
     </div>
 
@@ -37,6 +34,7 @@
     import birthday from './components/birthday.vue';
     import excellentStaff from './components/excellentStaff.vue';
 
+
     export default {
         name: "leJiaHumanity",
         components: {
@@ -44,15 +42,15 @@
             LjDialog,
             leJiaStars,
             excellentStaff,
-            birthday
+            birthday,
         },
         data() {
             return {
                 showFinMenuList: false,
-                add_visible:false,
+                staffModule: false,
+                add_visible:false,//新增
                 chooseTab: 1,
                 tabView:'leJiaStars',
-                staffDetailUrl: 'staffDetail',//
                 selects: [
                     {id: 1, title: "乐伽之星",url:'leJiaStars'},
                     {id: 2, title: "优秀员工",url:'excellentStaff'},
@@ -64,13 +62,10 @@
             changeTabs(id,url) {
                 this.chooseTab = id;
                 this.tabView = url;
-                this.add_visible = false;
             },
-            add() {
-                this.add_visible = true;
-                this.$bus.emit('add',this.add_visible);
-            },
-
+            getCancelAdd(val){
+                this.add_visible = val;
+            }
         }
     }
 </script>

@@ -19,7 +19,6 @@
         </div>
 
         <div @click="showImgSlider(showFile,index)" v-else-if="item.info.mime.includes('video') && !editable">
-          <!--<div class="playVideo" @click="videoPlay(index)">播放</div>-->
           <video :id="'video' + file.keyName + index">
             <source :src="item.uri" type="video/ogg"/>
             <source :src="item.uri" type="video/mp4"/>
@@ -52,7 +51,7 @@
         <input type="file" :id="file.keyName" hidden multiple @change="uploadPic">
       </label>
       <!--下载按钮-->
-      <label title="下载全部" @click="downloadAll" v-if="!editable" class="uploadPic" :key="1" :style="uploadCss"
+      <label title="下载全部" @click="downloadAll" v-if="!editable && download &&showFile.length>0" class="uploadPic" :key="1" :style="uploadCss"
              :for="file.keyName">
         <img src="../../../assets/image/common/theme1/xiazai_xue.png">
       </label>
@@ -109,7 +108,15 @@
 
   export default {
     name: "upload",
-    props: ['file', 'disabled'],
+    //props: ['file', 'disabled','download'],
+    props: {
+      file: {},
+      disabled:{},
+      download:{},
+      maxSize: {
+        type:[Number],
+      },
+    },
     components: {
       LjDialog,
       ImgSlider,
@@ -135,6 +142,7 @@
       file: {
         handler(val, oldVal) {
           if (val.setFile.length > 0) {
+            this.showFile = [];
             for (let item of val.setFile) {
               this.ids.push(Number(item.id));
               this.showFile.push(item);
@@ -178,7 +186,7 @@
 
         Promise.all(promises).then(() => {
           zip.generateAsync({type: "blob"}).then(content => { // 生成二进制流
-            FileSaver.saveAs(content, "打包下载.zip") // 利用file-saver保存文件
+            FileSaver.saveAs(content, "附件.zip") // 利用file-saver保存文件
           })
         })
       },
@@ -188,7 +196,6 @@
         let mIdx = 0;
         showFile = _.filter(showFile, (value) => {
 
-          debugger
           let sResult = value.info.mime.includes('image') || value.info.mime.includes('video');
           if(!sResult) {
             if(index>mIdx) {
@@ -245,6 +252,15 @@
           let fileType = '';
           let fileName = file.name;
           let fileSize = file.size;
+          if(this.maxSize) {
+            if(this.maxSize*1024*1024<=file.size) {
+              this.$LjMessage('warning',{
+                title:'警告',
+                msg:`超过最大上传限制${this.maxSize}M`,
+              });
+              return;
+            }
+          }
           let key = "lejia" + md5(fileName + new Date().getTime()).toLowerCase() + "." + fileName.split(".")[1];
           reader.readAsDataURL(file);
           reader.onload = function (event) {

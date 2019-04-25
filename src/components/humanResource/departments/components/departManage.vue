@@ -1,51 +1,46 @@
 <template>
   <div id="departManage">
     <!--员工管理/部门管理-->
-    <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
-      <div class="dialog_container">
-        <div class="dialog_header">
-          <h3>{{ departInfo && departInfo.name }}</h3>
-        </div>
-        <div class="dialog_main space-column departPosition">
-          <div class="items-bet mainTop">
-            <div class="items-bet">
-              <span @click="chooseManage('staff')" :class="{'hover': tabsManage === 'staff'}">员工管理</span>
-              <span @click="chooseManage('position')" :class="{'hover': tabsManage === 'position'}">职位管理</span>
-            </div>
-            <h2 class="add" @click="operateModule(tabsManage)">
-              <b>+</b>
-            </h2>
-          </div>
-          <div class="scroll_bar staffManage" id="scroll-body" v-if="tabsManage === 'staff'" @click="checkOverflow()">
-            <div v-for="item in staffList">
-              <div class="items-center" @click="reviseStaff(item)">
-                <p>
-                  <img :src="item.avatar" alt="" v-if="item.avatar">
-                  <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
-                </p>
-                <div>
-                  <h4>{{ item.name }}</h4>
-                  <h5>{{ item.position[0].name }}</h5>
-                </div>
-              </div>
-              <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-                <span v-for="label in operateList" @click="operateModule(label.type,item)">{{label.label}}</span>
-                <b v-if="!operatePos"></b>
-                <i v-if="operatePos"></i>
-              </h5>
-            </div>
-          </div>
-          <div class="scroll_bar orgManage" v-if="tabsManage === 'position'">
-            <div v-for="item in dutyList">
-              <p @click="operateModule('positionManagement',item)">
-                <span class="writingMode">{{ item.name }}</span>
-              </p>
-            </div>
-          </div>
-        </div>
+    <div class="dialog_main space-column departPosition">
+      <div class="items-bet mainTop">
+        <div></div>
+        <el-button type="text" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>
       </div>
-    </lj-dialog>
-
+      <div class="scroll_bar" v-if="tabsManage === 'staff'" @click="checkOverflow()">
+        <div id="scroll-body" class="staffManage" v-if="staffList.length > 0">
+          <div v-for="item in staffList">
+            <div class="items-center" :class="{'is_enable': item.is_enable}" @click="reviseStaff(item)">
+              <p>
+                <img :src="item.avatar" alt="" v-if="item.avatar">
+                <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+              </p>
+              <div>
+                <h4>{{ item.name }}</h4>
+                <h5>{{ item.position[0].name }}</h5>
+              </div>
+            </div>
+            <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
+              <span v-for="label in operateList" @click="operateModule(label.type,item,'user')">
+                {{ label.label = label.type === 'disabled' ? item.is_enable ? '启用' : '禁用' : label.label }}
+              </span>
+              <b v-if="!operatePos"></b>
+              <i v-if="operatePos"></i>
+            </h5>
+          </div>
+        </div>
+        <div class="staffManage items-center" v-else><span>暂无员工信息</span></div>
+      </div>
+      <div class="scroll_bar" v-if="tabsManage === 'position'">
+        <div class="orgManage" v-if="dutyList.length > 0">
+          <div v-for="item in dutyList">
+            <p @click="operateModule('positionManagement',item)">
+              <span class="writingMode">{{ item.name }}</span>
+            </p>
+          </div>
+        </div>
+        <div v-else class="orgManage items-center"><span>暂无职位信息</span></div>
+      </div>
+    </div>
     <!--新增员工-->
     <lj-dialog
       :visible="add_newStaff_visible"
@@ -85,7 +80,7 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="身份证号">
-                      <el-input v-model="interview_info_detail.id_num" placeholder="请输入"></el-input>
+                      <el-input v-model="interview_info_detail.id_num" placeholder="请输入" @blur="handleGetStaffInfo"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -96,7 +91,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="部门">
-                      <el-input placeholder="请选择" readonly @focus="" v-model="interview_info_detail.depart"></el-input>
+                      <el-input placeholder="请选择" readonly @focus="departOrgan_visible = true" v-model="interview_info_detail.depart"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -170,19 +165,19 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="薪资">
-                      <el-input v-model="interview_info_detail.real_salary" placeholder="请输入"></el-input>
+                      <el-input v-model="interview_info_detail.salary" placeholder="请输入"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="推荐人">
-                      <el-input readonly v-model="interview_info_detail.recommender_name" @focus=""></el-input>
+                      <el-input readonly v-model="interview_info_detail.recommenders.name" @focus="staff_visible = true"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="入职时间">
-                      <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.enroll" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                      <el-date-picker placeholder="请选择" type="date" v-model="interview_info_detail.enroll" value-format="yyyy-MM-dd"></el-date-picker>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -249,27 +244,12 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="毕业院校">
-                      <el-input v-model="interview_info_detail.school" placeholder="请输入"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="专业">
-                      <el-input v-model="interview_info_detail.major" placeholder="请输入"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="毕业时间">
-                      <el-date-picker format="yyyy-DD-mm" type="date" v-model="interview_info_detail.graduation_time" placeholder="请选择"></el-date-picker>
-                    </el-form-item>
-                  </el-col>
                 </el-row>
               </el-form>
             </el-tab-pane>
             <el-tab-pane label="学历信息" name="second">
               <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.education_history.length > 0">
-                <div v-for="item in interview_info_detail.education_history" :key="item.id">
+                <div v-for="item in interview_info_detail.education_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="起始时间:">
@@ -314,15 +294,22 @@
                     </el-col>
                   </el-row>
                 </div>
+                <el-form-item label="入职材料:">
+                  <el-checkbox-group v-model="interview_info_detail.entry_materials" class="changeChoose">
+                    <div class="flex-center" style="margin-top: 8px">
+                      <el-checkbox v-for="tmp in entry_materials_checkbox" :key="tmp.id" :label="tmp.id">{{ tmp.val }}</el-checkbox>
+                    </div>
+                  </el-checkbox-group>
+                </el-form-item>
               </el-form>
               <div style="text-align: right">
-                <el-button type="success" size="mini" style="width: 120px" @click="handleAddEducation">添加</el-button>
-                <el-button type="danger" size="mini" style="width: 120px" v-if="interview_info_detail.education_history.length > 1" @click="handleDelEducation">删除</el-button>
+                <el-button type="danger" size="mini" style="width: 120px" @click="handleAddEducation">添加</el-button>
+                <el-button type="info" size="mini" style="width: 120px" v-if="interview_info_detail.education_history.length > 1" @click="handleDelEducation">删除</el-button>
               </div>
             </el-tab-pane>
             <el-tab-pane label="工作履历" name="third">
               <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.work_history.length > 0">
-                <div v-for="item in interview_info_detail.work_history" :key="item.id">
+                <div v-for="item in interview_info_detail.work_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="起始时间:">
@@ -366,8 +353,8 @@
                 </div>
               </el-form>
               <div style="text-align: right">
-                <el-button type="success" size="mini" style="width: 120px" @click="handleAddWork">添加</el-button>
-                <el-button type="danger" size="mini" style="width: 120px" v-if="interview_info_detail.work_history.length > 1" @click="handleDelWork">删除</el-button>
+                <el-button type="danger" size="mini" style="width: 120px" @click="handleAddWork">添加</el-button>
+                <el-button type="info" size="mini" style="width: 120px" v-if="interview_info_detail.work_history.length > 1" @click="handleDelWork">删除</el-button>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -406,16 +393,16 @@
       </div>
     </lj-dialog>
     <!--权限管理===============================================================================================-->
-    <lj-dialog :visible="powerVisible" :size="power_size" @close="powerVisible = false">
+    <lj-dialog :visible="powerVisible" :size="power_size" @close="handleCancelSetPower">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>权限</h3>
         </div>
         <div class="dialog_main powerContent space-column">
           <div class="powerHead items-bet">
-            <div class="inputLabel">
+            <div class="inputLabel borderNone">
               <h4>权限类型</h4>
-              <el-select :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.permission_type" size="small" @change="handleChangePowerType">
+              <el-select disabled :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.type" size="small" @change="handleChangePowerType">
                 <el-option value="position" label="岗位"></el-option>
                 <el-option value="user" label="用户"></el-option>
                 <el-option value="ban" label="黑名单"></el-option>
@@ -445,10 +432,10 @@
               <div v-for="(item,key) in power_list">
                 <el-checkbox-group v-model="checkList" @change="handleCheck">
                   <el-row v-for="(tmp,idx) in power_list[key]" :key="idx">
-                    <el-col :span="12">
+                    <el-col :span="6">
                       <el-button type="text" size="large" @click="handleSearchField(tmp)" icon="el-icon-view" style="color: #CF2E33;font-size: 18px"></el-button>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="18">
                       <el-checkbox :label="tmp.id" :key="tmp.id" style="margin-top: 13px">
                         {{tmp.name}}
                       </el-checkbox>
@@ -479,7 +466,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleSubmitSetPower">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="info" size="small" @click="handleCancelSetPower">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -490,7 +477,7 @@
           <h3>{{ currentDutyInfo && currentDutyInfo.name }}</h3>
         </div>
         <div class="dialog_main positionContent space-column">
-          <div class="items-bet mainTop">
+          <div class="items-bet mainTop" style="margin-bottom: 10px">
             <div class="items-bet">
               <span class="hover">岗位</span>
             </div>
@@ -509,9 +496,19 @@
                   header-row-class-name="tableHeader"
                   height="250px"
                   style="width: 100%">
-                  <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+                  <el-table-column label="名称" prop="name" align="center"></el-table-column>
                   <el-table-column label="人数" prop="users_count" align="center"></el-table-column>
+                  <el-table-column label="职级" prop="level" align="center">
+                    <template slot-scope="scope">
+                      <span>P{{ scope.row.level }}</span>
+                    </template>
+                  </el-table-column>
                   <el-table-column label="部门" prop="duty.org.name" align="center"></el-table-column>
+                  <el-table-column label="权限" align="center">
+                    <template slot-scope="scope">
+                      <el-button type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
             </div>
@@ -526,6 +523,11 @@
                   <el-table-column label="员工姓名" prop="name" align="center"></el-table-column>
                   <el-table-column label="手机号" prop="phone" align="center"></el-table-column>
                   <el-table-column label="入职时间" prop="created_at" align="center"></el-table-column>
+                  <el-table-column label="权限" align="center">
+                    <template slot-scope="scope">
+                      <el-button type="text" size="mini" @click="operateModule('power',scope.row,'user')">查看</el-button>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
             </div>
@@ -553,7 +555,7 @@
       </div>
     </lj-dialog>
     <!--新增岗位===============================================================================================-->
-    <lj-dialog :visible="addPostVisible" :size="{width: 500 + 'px',height: 550 + 'px'}" @close="handleCancelAdd">
+    <lj-dialog :visible="addPostVisible" :size="{width: 550 + 'px',height:750 + 'px'}" @close="handleCancelAdd">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>新建岗位</h3>
@@ -566,8 +568,22 @@
             <el-form-item label="岗位描述" required>
               <el-input v-model="add_position_form.description" type="textarea" placeholder="请输入"></el-input>
             </el-form-item>
+            <el-form-item label="岗位职级" required>
+              <el-select v-model="add_position_form.level">
+                <el-option v-for="item in position_level" :key="item.id" :value="item.id" :label="item.val"></el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="岗位标识" required>
               <el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="顶级岗位" required>
+              <div class="changeChoose flex-center" style="margin-top: 12px">
+                <el-radio v-model="add_position_form.is_top" :label="0">否</el-radio>
+                <el-radio v-model="add_position_form.is_top" :label="1">是</el-radio>
+              </div>
+            </el-form-item>
+            <el-form-item label="岗位排序" required>
+              <el-input v-model="add_position_form.order" type="number" placeholder="值越小，越靠前"></el-input>
             </el-form-item>
             <el-form-item label="所属部门" required>
               <div class="items-center iconInput">
@@ -646,7 +662,7 @@
           <h3>禁用</h3>
         </div>
         <div class="dialog_main">
-          <div class="unUse-txt">确定禁用该员工吗？</div>
+          <div class="unUse-txt">确定{{ currentStaff.is_enable ? '启用' : '禁用'}}该员工吗？</div>
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="handleOkDisable">确定</el-button>
@@ -674,20 +690,50 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!--选人-->
+    <StaffOrgan :module="staff_visible" @close="handleGetStaff"></StaffOrgan>
+
+    <!--选部门-->
+    <DepartOrgan :module="departOrgan_visible" @close="handleGetDepart"></DepartOrgan>
   </div>
 </template>
 
 <script>
   import ljDialog from '../../../common/lj-dialog.vue';
   import PositionOrgan from '../../../common/postOrgan.vue';
+  import StaffOrgan from '../../../common/staffOrgan.vue';
+  import DepartOrgan from '../../../common/departOrgan.vue';
 
   export default {
     name: "depart-manage",
-    props: ['module','info'],
-    components: {ljDialog,PositionOrgan},
+    props: ['module','info','checkInfo'],
+    components: {ljDialog,PositionOrgan,StaffOrgan,DepartOrgan},
     data() {
       return {
+        staff_visible: false,
+        departOrgan_visible: false,
+
+        entry_materials_checkbox: [
+          {id: 1,val: '意外险'},
+          {id: 2,val: '五险'},
+          {id: 3,val: '身份证复印件'},
+          {id: 4,val: '银行卡照片'},
+          {id: 5,val: '劳务合同'},
+          {id: 6,val: '应聘信息登记表'},
+          {id: 7,val: '学籍验证报告'},
+          {id: 8,val: '离职证明'},
+        ],
         confirm_send_visible: false,
+        position_level: [
+          {id: 1, val: 'P1'},
+          {id: 2, val: 'P2'},
+          {id: 3, val: 'P3'},
+          {id: 4, val: 'P4'},
+          {id: 5, val: 'P5'},
+          {id: 6, val: 'P6'},
+          {id: 7, val: 'P7'},
+        ],
 
         show_field_list: [],
         field_list: [],
@@ -726,8 +772,11 @@
           branch_bank: '',
           account_name: '',
           enroll: '',
-          real_salary: '',
-          recommender_name: '',
+          salary: '',
+          recommender: '',
+          recommenders: {
+            name: ''
+          },
           political_status: '',
           education: '',
           level: '',
@@ -755,7 +804,8 @@
               witness: '',
               witness_phone: ''
             }
-          ]
+          ],
+          entry_materials: []
         },
 
         departInfo: '',
@@ -841,6 +891,8 @@
           org_id: [],
           description: '',
           sign: '',
+          is_top: '',
+          order: ''
         },
 
         //禁用
@@ -872,15 +924,15 @@
 
         //个人权限
         self_power_params: {
-          user_id: 3057,
+          user_id: '',
           system_id: '',
-          type: 'user',
+          type: '',
           position_id: '',
         },
         //设置权限
         set_power: {
           system_id: '',
-          type_id: 3057,
+          type_id: '',
           permission_type: 'user',
           permission_id: '',
           permission_field_id: '',
@@ -893,27 +945,43 @@
     activated() {
     },
     watch: {
+      checkInfo: {
+        handler(val) {
+          if (val.id === 1) {
+            this.tabsManage = 'staff';
+            this.getStaffList();
+          }
+          if (val.id === 2) {
+            this.tabsManage = 'position';
+            this.getDutyList();
+          }
+        },
+        deep: true
+      },
       info: {
         handler(val) {
           this.departInfo = val;
           this.interview_info_detail.depart = val.name;
+          this.interview_info_detail.org_id = [];
           this.interview_info_detail.org_id.push(val.id);
           this.staffParams.org_id = val.id;
           this.getStaffList();
-          this.getDutyList();
+          // this.getDutyList();
         },
         deep: true
       },
       module(val) {
-        this.getSystemList();
+        // this.getDutyList();
         this.depart_visible = val;
         this.lj_size = 'large';
-      },
-      depart_visible(val) {
         if (!val) {
-          this.$emit('close');
+          this.tabsManage = 'staff';
+          this.departInfo = '';
+          this.interview_info_detail.depart = '';
+          this.interview_info_detail.org_id = [];
+          this.staffParams.org_id = '';
         }
-      }
+      },
     },
     computed: {
       themeName() {
@@ -921,6 +989,35 @@
       }
     },
     methods: {
+      //身份验证
+      handleGetStaffInfo() {
+        console.log(this.interview_info_detail.id_num);
+        this.$http.post('staff/user/check',{
+          id_num: this.interview_info_detail.id_num
+        }).then(res => {
+          if (res.code === "20000") {
+            this.interview_info_detail.birthday = res.data.birthday;
+            this.interview_info_detail.home_addr = res.data.area.result;
+          } else {
+            this.interview_info_detail.birthday = '';
+            this.interview_info_detail.home_addr = '';
+          }
+        })
+      },
+      handleGetDepart(id,name) {
+        if (id !== 'close') {
+          this.interview_info_detail.depart = name;
+          this.interview_info_detail.org_id = id;
+        }
+        this.departOrgan_visible = false;
+      },
+      handleGetStaff(id,name) {
+        if (id !== 'close') {
+          this.interview_info_detail.recommender = id[0];
+          this.interview_info_detail.recommenders.name = name;
+        }
+        this.staff_visible = false;
+      },
       handleConfirmSendMsg() {
         console.log(this.checkLists);
         var type = [];
@@ -951,9 +1048,17 @@
       },
       handleChangePowerType(type) {
         console.log(type);
+        this.set_power.permission_type = type;
+        this.self_power_params.type = type;
+      },
+      handleGetPowerLen() {
+        let count = 0;
+        for (let key in this.power_list) {
+          count += this.power_list[key].length;
+        }
+        return count;
       },
       handleCheckField(val) {
-        console.log(val);
         if (val.length > 0) {
           if (this.checkList.indexOf(this.current_field.id) === -1) {
             this.checkList.push(this.current_field.id);
@@ -962,16 +1067,24 @@
           var idx = this.checkList.indexOf(this.current_field.id);
           this.checkList.splice(idx,1);
         }
-        console.log(this.checkList);
+        let count = this.handleGetPowerLen();
+        this.checkAll = count === this.checkList.length;
       },
       //查看该权限下的字段
       handleSearchField(tmp) {
         this.current_field = tmp;
         this.show_field_list = tmp.fields || [];
       },
+      handleCancelSetPower() {
+        this.checkList = [];
+        this.field_list = [];
+        this.checkAll = false;
+        this.powerVisible = false;
+      },
       handleSubmitSetPower() {
         this.set_power.permission_id = this.checkList;
         this.set_power.permission_field_id = this.field_list;
+        this.set_power.system_id = this.powerChildName;
         this.$http.post('organization/permission/set',this.set_power).then(res => {
           if (res.code === '20000') {
             this.$LjNotify('success',{
@@ -1002,7 +1115,14 @@
                 permission.push(tmp.id);
               }
             }
+            var count = 0;
+            for (var key in this.power_list) {
+              count += this.power_list[key].length;
+            }
             this.$nextTick(() => {
+              if (permission.length >= count) {
+                this.checkAll = true;
+              }
               this.checkList = permission;
               this.field_list = field;
             });
@@ -1011,6 +1131,7 @@
       },
       // 权限切换
       handleClick(val) {
+        this.show_field_list = [];
         var id = parseInt(val.name);
         this.getModuleList(id);
       },
@@ -1025,19 +1146,22 @@
       },
       // 权限复选
       handleCheck(value) {
-        this.field_list = [];
         let checkCount = value.length;
         let list = this.power_list;
         let count = 0;
         for (let item of  Object.keys(list)) {
           count = count + list[item].length;
           for (let tmp of list[item]) {
-            for (let i=0;i<value.length;i++) {
-              if (tmp.id === value[i]) {
-                if (tmp.fields) {
-                  for (let field of tmp.fields) {
-                    this.field_list.push(field.id);
-                  }
+            if (!value.includes(tmp.id)) {
+              for (var field of tmp.fields) {
+                this.field_list = this.field_list.filter(item => item !== field.id);
+              }
+            }
+            if (tmp.id === value[value.length - 1]) {
+              if (tmp.fields) {
+                for (var tmp2 of tmp.fields) {
+                  this.field_list = this.field_list.filter(item => item !== tmp2.id);
+                  this.field_list.push(tmp2.id);
                 }
               }
             }
@@ -1065,13 +1189,12 @@
         } else {
           this.checkList = [];
           this.field_list = [];
-          this.show_field_list = [];
+          // this.show_field_list = [];
         }
       },
       getPowerList(id) {
         this.power_params.system_id = id;
         this.$http.get('organization/permission',this.power_params).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.power_list = res.data.data;
             let count = 0;
@@ -1256,7 +1379,10 @@
           depart: '',
           org_id: [],
           description: '',
-          sign: ''
+          sign: '',
+          level: '',
+          is_top: '',
+          order: ''
         };
         this.addPostVisible = false;
       },
@@ -1301,7 +1427,10 @@
           account_name: '',
           enroll: '',
           real_salary: '',
-          recommender_name: '',
+          recommender: '',
+          recommenders: {
+            name: ''
+          },
           political_status: '',
           education: '',
           level: '',
@@ -1345,6 +1474,7 @@
       },
       //获取员工列表
       getStaffList() {
+        console.log(this.staffParams);
         this.$http.get('staff/user',this.staffParams).then(res => {
           if (res.code === '20000') {
             this.staffList = res.data.data;
@@ -1360,14 +1490,6 @@
         this.$nextTick(function () {
           this.operatePos = obj.offsetHeight - obj.clientHeight > 0;
         })
-      },
-      // 员工/部门 切换
-      chooseManage(val, status = '') {
-        if (status === 'post') {
-          this.tabsPost = val;
-        } else {
-          this.tabsManage = val;
-        }
       },
       reviseStaff(val) {
         if (this.staffId === val) {
@@ -1386,19 +1508,20 @@
             this.positionList = res.data.data;
           } else {
             this.positionList = [];
-          };
+          }
           this.positionVisible = true;
         })
       },
       // 权限/禁用/修改/离职
-      operateModule(val,item) {
+      operateModule(val,item,type) {
         if (val === 'revise') {
           this.currentStaff = item;
           this.is_edit = true;
           this.add_newStaff_visible = true;
           for (var key in this.interview_info_detail) {
-            this.interview_info_detail[key] = item.staff[key] || '';
+            this.interview_info_detail[key] = item.staff && item.staff[key] || '';
           }
+          this.interview_info_detail.recommenders = item.staff && item.staff.recommenders || {name: ''};
           this.interview_info_detail.name = item.name;
           this.interview_info_detail.position = item.position[0].name;
           this.interview_info_detail.position_id = [];
@@ -1406,10 +1529,18 @@
           this.interview_info_detail.position_id.push(item.position[0].id);
           this.interview_info_detail.org_id.push(item.org[0].id);
           this.interview_info_detail.depart = item.org[0].name;
-          this.interview_info_detail.work_history = item.staff.work_history || [];
-          this.interview_info_detail.education_history = item.staff.education_history || [];
+          this.interview_info_detail.work_history = item.staff && item.staff.work_history || [];
+          if (this.interview_info_detail.work_history === "[]") {
+            this.interview_info_detail.work_history = [];
+          }
+          this.interview_info_detail.education_history = item.staff && item.staff.education_history || [];
+          if (this.interview_info_detail.education_history === "[]") {
+            this.interview_info_detail.education_history = [];
+          }
           this.interview_info_detail.phone = item.phone;
           this.interview_info_detail.gender = item.gender;
+
+          console.log(this.interview_info_detail);
         }
         if (val === 'disabled') {
           this.currentStaff = item;
@@ -1419,7 +1550,17 @@
         }
         switch (val) {
           case 'power'://权限
+            this.getSystemList();
             this.powerVisible = true;
+            this.set_power.type_id = item.id;
+            if (type === 'user') {
+              this.self_power_params.user_id = item.id;
+            } else if (type === 'position') {
+              this.self_power_params.position_id = item.id;
+            }
+            this.self_power_params.type = type;
+            this.set_power.permission_type = type;
+            this.getSelfPower(this.powerChildName);
             break;
           case 'leave'://离职
             this.currentStaff = item;
@@ -1492,6 +1633,7 @@
       // 岗位管理
       // 当前点击
       tableClickRow(row) {
+        console.log(row);
         this.positionStaffList = row.users;
         let ids = this.chooseRowIds;
         ids.push(row.id);
@@ -1520,33 +1662,29 @@
 
   #theme_name.theme1 {
     #departManage {
-      .dialog_container {
-        .dialog_main {
-          .mainTop {
-            span {
-              @include organImg('huidi.png', 'theme1');
-            }
-            .hover {
-              @include organImg('hongdi.png', 'theme1');
-            }
-          }
-          .iconInput {
-            .organization {
-              @include commonImg('zuzhijiagou.png', 'theme1');
-            }
-            .position {
-              @include commonImg('zhiwei.png', 'theme1');
-            }
-            .user {
-              @include commonImg('yonghu.png', 'theme1');
-            }
-          }
+      .mainTop {
+        span {
+          @include organImg('huidi.png', 'theme1');
         }
-        .powerContent {
-          .powerHead {
-            i {
-              @include commonImg('xiugai.png', 'theme1');
-            }
+        .hover {
+          @include organImg('hongdi.png', 'theme1');
+        }
+      }
+      .iconInput {
+        .organization {
+          @include commonImg('zuzhijiagou.png', 'theme1');
+        }
+        .position {
+          @include commonImg('zhiwei.png', 'theme1');
+        }
+        .user {
+          @include commonImg('yonghu.png', 'theme1');
+        }
+      }
+      .powerContent {
+        .powerHead {
+          i {
+            @include commonImg('xiugai.png', 'theme1');
           }
         }
       }

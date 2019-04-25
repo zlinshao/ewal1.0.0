@@ -26,7 +26,7 @@
       .content {
         height: calc(100% - 341px);
         //@extend .flex-center;
-        > div {
+        .bg-container {
           width:240px;
           height:160px;
           margin: 0 110px;
@@ -34,23 +34,24 @@
             cursor: pointer;
             transform: scale(1.05);
             transition: all 1s;
+            span {
+              color: $colorFFF;
+            }
           }
           //border:1px solid rgba(207,46,51,1);
           span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
             //@extend .writingMode;
             //display: block;
             width: 80px;
             word-wrap:break-word;
             word-break:break-all;
-            color: #fff;
+            color: #686874;;
             font-size: 32px;
             font-family: 'jingDianXingShu';
-            position: relative;
-            left: 8px;
-            &.gray {
-              color: #686874;
-            }
-
           }
         }
       }

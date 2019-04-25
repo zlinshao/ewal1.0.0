@@ -27,15 +27,20 @@
       title: String,
       url: [String],  //请求地址
       params: [Object, String],
-      arr:[Object,Array],
-      disabled:[Boolean],
-      size: {
-        type:[String],
-        default:'',
+      arr: [Object, Array],
+      jsonArr: [Object, Array],
+      disabled: [Boolean],
+      size: {//medium / small / mini
+        type: [String],
+        default: '',
       },//高度
       root: {//接口返回数据data层级   //默认2级
-        type:[String,Number],
+        type: [String, Number],
         default: 2,
+      },
+      cache: {//是否缓存
+        type:Boolean,
+        default:true
       }
     },
     data() {
@@ -49,15 +54,16 @@
     watch: {
       value: {
         handler(val, oldVal) {
-          if(val==='') {
+          if (val === '') {
             this.dropdown_code = '';
             return;
           }
-          if(this.arr) {
+          this.dropdown_code = Number(this.value);
+          /*if (this.arr) {
             this.dropdown_code = Number(this.value);
-          }else {
+          } else {
             this.dropdown_code = Number(this.value) || '';
-          }
+          }*/
         },
         immediate: true//第一次绑定也执行
       },
@@ -70,8 +76,8 @@
         immediate: true//第一次绑定也执行
       },
       height: {
-        handler(val,oldVal) {
-          if(val) {
+        handler(val, oldVal) {
+          if (val) {
 
           }
         },
@@ -108,29 +114,36 @@
         this.$http.get(this.url, queryParams).then((res) => {
           if (res.code.endsWith('0')) {
             this.dropdown_list = res.data.data;
-            let keys = this.url + JSON.stringify(queryParams);
-            storage.set(keys, this.dropdown_list);
+            if(this.cache) {
+              let keys = this.url + JSON.stringify(queryParams);
+              storage.set(keys, this.dropdown_list);
+            }
+
           } else {
             console.log("获取类型失败");
           }
         });
       },
       getDropdownList() {
-        if(this.arr) {
+        if (this.arr) {
           let myArr = [];
-          this.arr.forEach((item,index)=> {
+          this.arr.forEach((item, index) => {
             let myItem = {
-              id:index,
-              name:item
+              id: index,
+              name: item
             }
             myArr.push(myItem);
           })
           this.dropdown_list = myArr;
 
-        } else {
+        }
+        else if (this.jsonArr) {
+          this.dropdown_list = this.jsonArr;
+        }
+        else {
           //this.$http.get(`${this.url}eam/category`,
           let queryParams = this.getQueryParams();
-          let keys = this.url + (JSON.stringify(queryParams)=='{}'?'':JSON.stringify(queryParams));
+          let keys = this.url + (JSON.stringify(queryParams) == '{}' ? '' : JSON.stringify(queryParams));
           let caches = storage.get(keys);
           if (caches) {
             this.dropdown_list = caches;

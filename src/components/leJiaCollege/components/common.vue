@@ -14,9 +14,10 @@
                 </h2>
             </div>
             <div class="items-center listTopRight">
-                <div  @click.stop="add" v-show="chooseTab===3"><b>添加视频</b></div>
-                <div  @click.stop="add" v-show="chooseTab===5"><b>添加讲师</b></div>
-                <div  @click.stop="add" v-show="chooseTab===6"><b>添加行业动态</b></div>
+                <div  @click.stop="add" v-show="chooseTab===1"><b>添加视频</b></div>
+                <div  @click.stop="add" v-show="chooseTab===3"><b>添加讲师</b></div>
+                <div  @click.stop="add" v-show="chooseTab===4"><b>添加行业动态</b></div>
+                <div  @click.stop="add" v-show="chooseTab===5"><b>添加实践问题</b></div>
             </div>
         </div>
         <div class="mainList">
@@ -28,8 +29,6 @@
 </template>
 
 <script>
-    import jobTraining from '../jobTraining/index.vue';
-    import examArrangement from '../examArrangement/index.vue';
     import faculty from '../faculty/index.vue';
     import industryDynamic from '../industryDynamic/index.vue';
     import postPlanning from '../postPlanning/menu.vue';
@@ -41,13 +40,11 @@
     export default {
         name: "common",
         components:{
-            jobTraining,
             industryDynamic,
             postPlanning,
             practicalProblems,
             videoLearning,
             faculty,
-            examArrangement,
             LjDialog,
             postPlanningLists,
         },
@@ -56,7 +53,7 @@
                 leJiaCollegeMenu,
                 chooseTab: 1,
                 showFinMenuList:false,
-                tabView:'examArrangement',//显示组件
+                tabView:'videoLearning',//显示组件
                 add_video:false,//新增视频
                 add_faculty:false,//新增讲师
                 add_visible:false,
@@ -90,7 +87,7 @@
                 this.tabView = this.$route.query.url;
                 this.chooseTab = this.$route.query.type;
                 if(from.path==='/newTraining'||from.path==='/reserveTraining'){
-                    this.chooseTab = 4;
+                    this.chooseTab = 2;
                 }
                 this.tabId = this.$route.query.id;
                 this.tab = this.$route.query.tab;
