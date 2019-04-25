@@ -243,14 +243,14 @@
       height: 180px;
       align-items: flex-end;
       padding-bottom: 24px;
-      padding-right: 50px; }
+      padding-right: 42px; }
     #theme_name #panel .header .icons_panel {
       display: inline-block;
       width: 40px;
       height: 40px; }
   #theme_name #panel .mainListTable {
     padding: 0;
-    margin-left: 20px;
+    margin: 0 30px;
     background: transparent; }
   #theme_name #panel .panel_list {
     display: flex;

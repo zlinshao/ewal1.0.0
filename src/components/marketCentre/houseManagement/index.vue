@@ -52,7 +52,7 @@
                     <span class="mark"></span>
                   </div>
                   <div style="text-align: right">
-                    <span class="look" @click="look_visible = true"></span>
+                    <span class="look" @click="handleLookInfo"></span>
                     <span class="status">{{ house_detail.house_status_name }}</span>
                   </div>
                 </div>
@@ -165,20 +165,33 @@
           <h3>查看带看记录</h3>
           <div class="flex" style="margin-bottom: 30px">
               <span class="items-column">
-                <span class="all">34</span>
+                <span class="all">{{ all_count }}</span>
                 <span class="txt">总带看次数</span>
               </span>
             <span class="items-column">
-                <span class="current">2</span>
+                <span class="current">{{ current_count }}</span>
                 <span class="txt">本期带看次数</span>
               </span>
           </div>
-          <el-table :data="look_data">
-            <el-table-column label="带看时间" prop="look_time" align="center"></el-table-column>
-            <el-table-column label="带看人" prop="look_man" align="center"></el-table-column>
+          <el-table :data="look_data" height="500px" style="width: 100%">
+            <el-table-column label="带看时间" prop="created_at" align="center"></el-table-column>
+            <el-table-column label="带看人" align="center">
+              <template slot-scope="scope">
+                <div v-if="scope.row.take_user">
+                  <span v-for="(item,idx) in scope.row.take_user">{{ item }}<a v-if="idx !== scope.row.take_user.length - 1">,</a></span>
+                </div>
+                <div v-else>暂无</div>
+              </template>
+            </el-table-column>
           </el-table>
           <div class="page">
-            <el-pagination :total="100" layout="total,prev,pager,next"></el-pagination>
+            <el-pagination
+              :total="all_count"
+              :current-page="look_params.page"
+              :page-size="look_params.limit"
+              layout="total,prev,pager,next"
+              @current-change="handleChangeLookPage"
+            ></el-pagination>
           </div>
         </div>
       </lj-dialog>
@@ -461,33 +474,13 @@
           limit: 15,
           count: 0,
         },
-        look_data: [
-          {
-            id: 1,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          },
-          {
-            id: 2,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          },
-          {
-            id: 3,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          },
-          {
-            id: 4,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          },
-          {
-            id: 5,
-            look_time: '2019-01-01',
-            look_man: '冯宝宝'
-          }
-        ],
+        look_params: {
+          page: 1,
+          limit: 15
+        },
+        look_data: [],
+        all_count: 0,
+        current_count: 0,
 
         currentSelType: '',
         contract_list: [],
@@ -495,6 +488,7 @@
         look_pic_visible: '',
 
         furniture_list: [],
+
       }
     },
     mounted() {
@@ -504,6 +498,29 @@
     watch: {},
     computed: {},
     methods: {
+      handleChangeLookPage(page) {
+        this.look_params.page = page;
+        this.handleLookInfo();
+      },
+      handleLookInfo() {
+        console.log(this.current_house);
+        this.$http.get(this.market_server + 'v1.0/market/task/houseTask',{
+          house_id: 4,
+          ...this.look_params
+        }).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.look_data = res.data.data;
+            this.all_count = res.data.all_count;
+            this.current_count = res.data.current_count;
+          }else {
+            this.look_data = [];
+            this.all_count = 0;
+            this.current_count = 0;
+          }
+        });
+        this.look_visible = true
+      },
       handleOpenLookPic(row) {
         this.pic_row = row;
         this.look_pic_visible = true;
