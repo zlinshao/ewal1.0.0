@@ -56,7 +56,27 @@
         if (this.type == 'org') {
           this.getOrgNameList();
         }
+        if(this.type=='user') {
+          this.getUserNameList();
+        }
       },
+
+      getUserNameList() {
+        if (!this.ids || this.ids.length == 0) {
+          return;
+        }
+        let params = {
+          user_id: this.ids,
+          staff:1,
+          limit:1000,
+        };
+        this.$http.get(`${this.url}staff/user`, params).then(res => {
+          if (res.code.endsWith('0')) {
+            this.nameList = res.data.data;
+          }
+        });
+      },
+
       getOrgNameList() {
         if (!this.ids || this.ids.length == 0) {
           return;

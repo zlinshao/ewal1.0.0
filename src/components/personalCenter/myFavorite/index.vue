@@ -4,62 +4,60 @@
       <div class="favorite-toolbar">
         <div class="toolbar-left">
           <span class="toolbar-left-static">我的收藏</span>
-          <span class="toolbar-left-dynamic">共7个内容</span>
+          <span class="toolbar-left-dynamic">共{{total}}个内容</span>
         </div>
         <div class="toolbar-right">
           <search-bar placeholder="搜索姓名/岗位/时间" v-model="searchValue"></search-bar>
         </div>
       </div>
       <div class="favorite-table">
+
         <div class="favorite-table-list">
-          <div :key="index" v-for="index of 7" class="favorite-table-item">
+          <div :key="index" v-for="(item,index) in favoriteList" class="favorite-table-item">
             <div class="item-upper">
               <div class="item-upper-photo">
-                <img
-                  src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+                <img :src="item.user_id.avatar">
               </div>
               <div class="item-upper-content">
-                <div title="文章标题文章标题文章标题">文章标题文章标题文章标题文章标题文章标题文章标题</div>
+                <div>{{item.title}}</div>
               </div>
               <div class="item-upper-operate">
                 <div class="item-response">
                   <i class="icon-response"></i>
-                  <span>90</span>
+                  <span>{{item.comment.length}}</span>
                 </div>
                 <div class="item-view">
                   <i class="icon-view"></i>
-                  <span>587</span>
+                  <span>{{item.status.read_people}}</span>
                 </div>
                 <div class="item-like">
                   <i class="icon-like"></i>
-                  <span>12</span>
+                  <span>{{item.thumbs_up_number}}</span>
                 </div>
               </div>
             </div>
             <div class="item-lower">
               <div class="item-lower-left">
-                <img
-                  src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
-                <span>张三</span>
+                <img :src="item.user_id.avatar">
               </div>
               <div class="item-lower-right">
-                2019-04-13
+                {{item.created_at.split(" ")[0]}}
               </div>
             </div>
           </div>
         </div>
+
         <div class="favorite-table-pagination flex-center common-page">
           <div class="page">
             <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="params.page"
-              :page-size="params.limit"
-              :total="counts"
+              :current-page="currentPage"
+              :page-size="10"
+              :total="total"
               layout="total,jumper,prev,pager,next">
             </el-pagination>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -75,22 +73,33 @@
     },
     data() {
       return {
-        url: globalConfig.humanResource_server,
+        url: globalConfig.favorite,
         searchValue: '',
-        params: {
-          page: 1,
-          limit: 5
-        },
-        counts: 0,
+        currentPage: 1,
+        total: 20,
         favoriteList: [],
-
       }
     },
+    watch: {
+      currentPage(){
+        
+      }
+    },
+    mounted(){
+      this.getFavoriteList();
+    },
     methods: {
-      handleSizeChange() {
-      },
-      handleCurrentChange() {
-      },
+      getFavoriteList: function () {
+        this.$http.post(`${this.url}api/article/collect/userCollect`).then(res => {
+          if (res.status=== 200) { 
+            for (let i = 0; i < res.data.length; i++) {
+              this.total = res.data.length
+              console.log(res.data[i])
+              this.favoriteList.push(res.data[i])
+            }
+          }
+        })
+      }
     },
   }
 </script>
