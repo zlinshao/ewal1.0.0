@@ -16,7 +16,7 @@
                   <div class="line-v"><span></span></div>
                   <span class="strt-name" @click="handleTopGetDepart(item,index)">
                     <img :src="item.users && item.users.length > 0 && item.users[0].avatar" alt="">
-                    {{ item.name }} {{ item.users && item.users.length > 0 && item.users[0].name }}
+                    {{ item.name || '' }} {{ item.users && item.users.length > 0 && item.users[0] && item.users[0].name || '' }}
                   </span>
                   <div class="line-v" v-if="next_depart[index] && next_depart[index].length > 0"><span></span></div>
                   <div class="strt-block" v-show="next_depart[index] && next_depart[index].length > 0">
@@ -26,10 +26,11 @@
                       <span v-else class="line-h line-h-c"></span>
                       <div class="line-v"><span></span></div>
                       <div class="strt-info" @click="handleGetChildDepart(next_depart_item,idx,index)">
-                        <p>{{ next_depart_item.name }}</p>
-                        <p>{{ next_depart_item.leader && next_depart_item.leader.name }}</p>
+                        <p>{{ next_depart_item.name || '' }}</p>
+                        <p>{{ next_depart_item.leader && next_depart_item.leader.name || '' }}</p>
                       </div>
-                      <div class="line-v" v-if="child_depart[index][idx] && child_depart[index][idx].length > 0"><span></span></div>
+                      <div class="line-v" v-if="child_depart[index][idx] && child_depart[index][idx].length > 0 && next_depart_item.id !== market_id"><span></span></div>
+                      <div class="line-v" v-else-if="child_depart[index][idx] && child_depart[index][idx].length > 0 && next_depart_item.id === market_id && market_next_depart.length > 0"><span></span></div>
                       <!--<div class="strt-block" v-show="child_depart[index][idx] && child_depart[index][idx].length > 0">-->
                       <!--判断该部门是否为营销中心,其下级部门显示城市名加负责人-->
                       <div class="strt-block" v-show="next_depart_item.id !== market_id && child_depart[index][idx] && child_depart[index][idx].length > 0">
@@ -39,7 +40,7 @@
                           <span v-else class="line-h line-h-c"></span>
                           <div class="line-v"><span></span></div>
                           <div class="strt-name strt-name-mini" @click="handleGetStaff(child_depart_item,child_idx,idx,index)">
-                            {{ child_depart_item.name }}
+                            {{ child_depart_item.name || '' }}
                           </div>
                           <div class="line-v" v-show="staff_list[index][idx][child_idx] && staff_list[index][idx][child_idx].length >0"><span></span></div>
                           <div class="strt-block" v-show="staff_list[index][idx][child_idx] && staff_list[index][idx][child_idx].length >0">
@@ -48,7 +49,7 @@
                               <span class="line-h line-h-l" v-else-if="staff_idx === staff_list[index][idx][child_idx].length - 1"></span>
                               <span class="line-h line-h-c" v-else></span>
                               <div class="line-v"><span></span></div>
-                              <div class="strt-info-mini">{{ staff_item.name }}&nbsp;<a>{{ staff_item.position && staff_item.position.length > 0 && staff_item.position[0].name }}</a></div>
+                              <div class="strt-info-mini">{{ staff_item.name || '' }}&nbsp;<a>{{ staff_item.position && staff_item.position.length > 0 && staff_item.position[0] && staff_item.position[0].name || ''}}</a></div>
                             </div>
                           </div>
                         </div>
@@ -60,7 +61,7 @@
                           <span class="line-h line-h-l" v-else-if="market_idx === market_next_depart.length - 1"></span>
                           <span class="line-h line-h-c" v-else></span>
                           <div class="line-v"><span></span></div>
-                          <div class="strt-info">
+                          <div class="strt-info" @click="handleGetMarketNextDepart(market_depart,market_idx)">
                             <p>{{ market_depart.name }}</p>
                             <p>{{ market_depart.leader && market_depart.leader.name }}</p>
                           </div>
@@ -133,11 +134,18 @@
     watch: {},
     computed: {},
     methods: {
+      handleGetMarketNextDepart(item,idx) {
+        if (this.market_child[idx] && this.market_child[idx].length > 0) {
+          this.market_child[idx] = [];
+          return false;
+        } else {
+          this.handleGetMarketChild(item.id,idx);
+        }
+      },
       //获取城市分部下的组
       handleGetMarketGroup(item,key) {
         if (this.market_group[key] && this.market_group[key].length >0) {
           this.market_group[key] = [];
-          console.log(this.market_group);
           return false;
         } else {
           this.market_group = Object.assign({},this.market_group,{
@@ -153,7 +161,6 @@
             this.market_group[key] = [];
           }
         });
-        console.log(this.market_group);
       },
       //获取营销中心下级部门
       handleGetMarketNext() {
@@ -208,6 +215,19 @@
       },
       //获取下级部门
       handleGetChildDepart(next_depart,idx,index) {
+        if (next_depart.id !== this.market_id) {
+          if (this.child_depart[index][idx] && this.child_depart[index][idx].length >0) {
+            this.child_depart[index][idx] = [];
+            return false;
+          }
+        } else {
+          if (this.market_next_depart && this.market_next_depart.length >0) {
+            this.market_next_depart = [];
+            return false;
+          } else {
+            this.handleGetMarketNext();
+          }
+        }
         this.staff_list[index] = Object.assign({},this.staff_list[index],{
           [idx]:{}
         });
@@ -227,6 +247,10 @@
       },
       //获取领导管辖的部门
       handleTopGetDepart(item,index) {
+        if (this.next_depart[index] && this.next_depart[index].length > 0) {
+          this.next_depart[index] = [];
+          return false;
+        }
         this.child_depart = Object.assign({},this.child_depart,{
           [index]: {}
         });

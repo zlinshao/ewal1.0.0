@@ -282,12 +282,14 @@
   import OverviewInfo from '../components/overview-info.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import HouseFilter from '../components/house-filter.vue';
+  import { houseManagementSearch } from '../../../assets/js/allSearchData.js';
 
   export default {
     name: "index",
     components: {MarketMenuList, searchHigh, HouseCard, OverviewInfo, LjDialog, HouseFilter},
     data() {
       return {
+        houseManagementSearch,
         //房屋详情
         house_detail: '',
         current_house: '',
@@ -324,11 +326,7 @@
         show_market: false,
         show_shadow: false,
         isHigh: false,
-        searchData: {
-          status: 'houseManagement',
-          keywords: 'search',
-          data: [],
-        },
+        searchData: {},
 
         house_source: [], //房源列表
         house_params: {
@@ -702,184 +700,7 @@
       },
       //打开高级设置
       handleOpenHighSearch() {
-        this.searchData.data = [
-          {
-            keyType: 'check',
-            title: '房屋状态',
-            keyName: 'status',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '未出租',
-              },
-              {
-                id: 2,
-                title: '预订',
-              },
-              {
-                id: 3,
-                title: '已出租',
-              },
-              {
-                id: 4,
-                title: '已完成',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '户型',
-            keyName: 'room',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '一室',
-              },
-              {
-                id: 2,
-                title: '两室',
-              },
-              {
-                id: 3,
-                title: '三室',
-              },
-              {
-                id: 4,
-                title: '四室',
-              },
-              {
-                id: 5,
-                title: '其他',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '预警状态',
-            keyName: 'warning_status',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '正常',
-              },
-              {
-                id: 2,
-                title: '黄色预警',
-              },
-              {
-                id: 3,
-                title: '橙色预警',
-              },
-              {
-                id: 4,
-                title: '红色预警',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '建议价格',
-            keyName: 'suggest_price',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '2000以下',
-              },
-              {
-                id: 2,
-                title: '2000~3000',
-              },
-              {
-                id: 3,
-                title: '3000~4000',
-              },
-              {
-                id: 4,
-                title: '4000以上',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '装修',
-            keyName: 'decoration',
-            dataType: [],
-            value: [
-              {
-                id: 405,
-                title: '精装',
-              },
-              {
-                id: 406,
-                title: '简装',
-              },
-              {
-                id: 407,
-                title: '豪装',
-              },
-              {
-                id: 408,
-                title: '毛坯',
-              }
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '面积',
-            keyName: 'area',
-            dataType: [],
-            value: [
-              {
-                id: 1,
-                title: '100以下',
-              },
-              {
-                id: 2,
-                title: '100~150',
-              },
-              {
-                id: 3,
-                title: '150以上',
-              },
-            ],
-          },
-          {
-            keyType: 'check',
-            title: '用途',
-            keyName: 'house_identity',
-            dataType: [],
-            value: [
-              {
-                id: 419,
-                title: '住宅',
-              },
-              {
-                id: 420,
-                title: '公寓',
-              },
-              {
-                id: 421,
-                title: '商用两住',
-              },
-              {
-                id: 422,
-                title: '别墅'
-              },
-              {
-                id: 423,
-                title: '平房'
-              },
-              {
-                id: 424,
-                title: '其他'
-              }
-            ],
-          }
-        ];
+        this.searchData = this.houseManagementSearch;
         this.isHigh = true;
       },
       //关闭设置
