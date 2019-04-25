@@ -108,6 +108,20 @@
         font-family: 'jingDianXingShu';
       }
     }
+    .expand-container {
+      .expand-top {
+        width: 100%;
+        background-color: #E6F6F1;
+      }
+    }
+    .nav-bar {
+      width: 100%;
+      padding-top: 35px;
+      background-color: #FFEDCD;
+      > div {
+        width: 100%;
+      }
+    }
   }
 }
 

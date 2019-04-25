@@ -182,12 +182,12 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-between; }
+  align-items: center; }
   #theme_name #balance .balance-detail .balance-detail-title span {
     display: inline-block;
     padding: 6px 30px;
-    cursor: pointer; }
+    cursor: pointer;
+    margin-right: 10px; }
 #theme_name #balance .balance-detail .balance-detail-info {
   width: 100%; }
   #theme_name #balance .balance-detail .balance-detail-info .tab {

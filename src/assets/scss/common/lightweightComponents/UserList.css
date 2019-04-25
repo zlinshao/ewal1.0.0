@@ -241,6 +241,8 @@
       #theme_name #user_list .user-list-container .user-item-mini .user-item-mini-bottom .user-name {
         font-size: 12px;
         white-space: nowrap;
-        text-overflow: ellipsis; }
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 40px; }
 
 /*# sourceMappingURL=UserList.css.map */

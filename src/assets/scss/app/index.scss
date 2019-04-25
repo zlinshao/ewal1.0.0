@@ -84,6 +84,8 @@
           line-height: 45px;
           position: relative;
           ul {
+            opacity: 0;
+            display: none;
             position: absolute;
             right: 40px;
             top: 40px;
@@ -111,6 +113,12 @@
               justify-content: flex-end;
               border: none;
               color: #cf2e33;
+            }
+          }
+          &:hover {
+            ul {
+              opacity: 1;
+              display: block;
             }
           }
         }

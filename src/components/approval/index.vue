@@ -9,6 +9,7 @@
       </div>
 
       <div class="header">
+        <!--全部 我审批的 暂不处理 抄送我的-->
         <div class='header_methods'>
           <div :class='["methods_box",item.value == current_status_type ?"methods_box_active":""]' v-for='item in methods_type'
             :key='item.value' @click='change_status_type(item.value)'>{{item.tit}}</div>
@@ -284,7 +285,8 @@ export default {
       controlPanel_visible: false,
       contract_detail_visible: false, //详情
       develop_visible: false, //新盘
-      current_row: null
+      current_row: null,
+      market_server: globalConfig.market_server,
     }
   },
   computed: {
@@ -310,6 +312,12 @@ export default {
         )
       }
     },
+    // 获取列表数据
+    getDataTable () {
+      // this.$http.get(`${this.market_server}v1.0/market`).then(res=>{
+
+      // })
+    },
     changeShenTag (value) {
       if (this.chosenTag != value) {
         this.chosenTag = value
@@ -318,6 +326,9 @@ export default {
     change_status_type (val) {
       if (this.current_status_type !== val) {
         this.current_status_type = val
+
+        this.currentPage = 1;
+        this.getDataTable() // 获取列表数据
       }
     },
     // 高级搜索
@@ -377,6 +388,16 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../assets/scss/approval/index.scss";
+
+#theme_name {
+  #approval {
+    footer.bottomPage {
+      background: #ffffff;
+      width: auto;
+      margin: 0 30px;
+    }
+  }
+}
 </style>
 <style lang="scss">
 </style>

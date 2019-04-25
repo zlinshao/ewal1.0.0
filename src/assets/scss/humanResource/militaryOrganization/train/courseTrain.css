@@ -231,15 +231,24 @@
       height: 100%; }
     .main-container .content .left-guide {
       width: 40%;
-      padding: 100px 50px;
+      padding: 50px 50px;
       justify-content: space-between;
-      flex-direction: column; }
-      .main-container .content .left-guide > div {
+      flex-direction: column;
+      display: flex;
+      align-items: center; }
+      .main-container .content .left-guide .icon-btn-up, .main-container .content .left-guide .icon-btn-down {
+        width: 50px;
+        height: 18px;
+        display: inline-block;
+        cursor: pointer; }
+      .main-container .content .left-guide .icon-btn-up {
+        transform: rotate(180deg); }
+      .main-container .content .left-guide .left-block {
         width: 100px;
         height: 100px;
         text-align: center;
         cursor: pointer; }
-        .main-container .content .left-guide > div span {
+        .main-container .content .left-guide .left-block span {
           display: inline-block;
           width: 70%;
           height: 55%;
@@ -295,7 +304,7 @@
           font-size: 22px; }
 
 .listTopCss {
-  height: 0; }
+  height: 0 !important; }
   .listTopCss .search-toolbar {
     position: fixed;
     top: 106px;

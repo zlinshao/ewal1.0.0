@@ -15,9 +15,9 @@
       <div class="items-center">
         <div class="items-center funTop ">
           <span @click="todoListHandler">待办</span>
-          <div @click="showMessage" class='shenpi'>
-            <span>审批</span>
-            <ul v-if='open_message_visible'>
+          <div class='shenpi'>
+            <span @click.stop='openMessage'>审批</span>
+            <ul>
               <li>
                 <span>web前端-面试任务</span>
                 <span>2019/1/20 21:00</span>
@@ -42,8 +42,13 @@
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
           </p>
 
+<<<<<<< HEAD
             <!--&lt;!&ndash;<span class="icon3024 icon-personal-center"   @click="routerLink('/messageCenter')"></span>&ndash;&gt;-->
           <!--<span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span>-->
+=======
+          <span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span>
+
+>>>>>>> 185f7a9b815e30c3644a514fe10e777153c69d51
           <!--<span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span>-->
         </div>
       </div>
@@ -167,7 +172,6 @@ export default {
           English: 'Intellectual Property Protection',
         },
       ],
-      open_message_visible: false
     }
   },
   mounted () { },
@@ -204,16 +208,8 @@ export default {
       this.$store.dispatch('change_todo_list_visible');
     },
 
-    showMessage () {
-      if (this.showMessage_visible) {
-        this.$store.dispatch('change_message_visible');
-      } else {
-        this.open_message_visible = true
-      }
-
-    },
     openMessage () {
-      this.open_message_visible = false
+
       this.$store.dispatch('change_message_visible');
 
       if (this.$store.state.todo.todo_list_visible) {

@@ -48,26 +48,108 @@
         <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
       </div>
     </footer>
+    
+    <lj-dialog :visible="addContract_visiable" :size="{width: 580 + 'px',height: 700 + 'px'}" @close="closeAddContrat()">
+      <div class="dialog_container">
+        <div class="dialog_header">
+            添加采购合同
+        </div>
+        <div class="dialog_main flex-center borderNone">
+          <el-form label-width="120px" class="depart_visible">
+            <el-form-item label="采购申请">
+              <div class="items-center iconInput">
+                <el-select v-model="process_id" placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in approvalDetail"
+                    :key="index"
+                    :label="item.title"
+                    :value="item.id"
+                    >
+                  </el-option>
+                </el-select>
+              </div>
+            </el-form-item>
+            <el-form-item label="供应商">
+              <div class="items-center iconInput">
+                <el-select v-model="supplierId" placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in supplierDetail"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                    >
+                  </el-option>
+                </el-select>
+              </div>
+            </el-form-item>
+            <el-form-item label="签订时间">
+              <div class="items-center iconInput">
+                <el-date-picker v-model="signTime" type="date" placeholder="选择日期">
+                </el-date-picker>
+              </div>
+            </el-form-item>
+            <el-form-item label="合同到期时间">
+              <div class="items-center iconInput">
+                <el-date-picker v-model="expireTime" type="date" placeholder="选择日期">
+                </el-date-picker>
+              </div>
+            </el-form-item>
+            <el-form-item label="签订人">
+              <div class="items-center iconInput">
+                <user-choose title="请选择人员" v-model="signerId"></user-choose>
+              </div>
+            </el-form-item>
+            <el-form-item label="合同照片">
+              <lj-upload :max-size="5" v-model="contractImg"></lj-upload>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="addContract()">确定</el-button>
+            <el-button type="info" size="small" @click="closeAddContrat()">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
 <script>
+  import LjDialog from '../../../common/lj-dialog.vue';
+  import LjUpload from '../../../common/lightweightComponents/lj-upload.vue';
+  import UserChoose from '../../../common/lightweightComponents/UserChoose';
   export default {
     name: "index",
+    props: ["addContract_visiable"],
+    components: {
+      LjDialog,
+      LjUpload,
+      UserChoose
+    },
     data() {
       return {
-        areaChangeOrder: [],
         url: globalConfig.humanResource_server,
         activeName: 0,
         active: [
           {id: 0, val: '片区异动交接单'},
           {id: 1, val: '采购合同'}
         ],
-        contractList: []
+        areaChangeOrder: [],
+        contractList: [],
+        contractRequisition: '',
+        supplierDetail: [],
+        supplierId: 0,
+        signTime: new Date(),
+        expireTime: '',
+        signerId: [],
+        contractImg: [],
+        approvalDetail:[],
+        process_id: 0,
+        approvalTitle: '',
       }
     },
     mounted(){
       this.getAreaChangeOrder();
+      this.getApprovalDetail();
     },
     methods: {
       changeTab: function (index) {
@@ -101,6 +183,90 @@
                 electronicData: res.data.data[i].attachment
               }
               this.contractList.push(obj)
+            }
+          }
+        })
+      },
+      addContract(chooseTab){
+        for(let i = 0; i <this.approvalDetail.length; i++){
+          if(this.process_id == this.approvalDetail[i].id) {
+            this.approvalTitle = this.approvalDetail[i].title
+          }
+        }
+        let param = {
+          process_id: this.process_id,
+          start_time: this.signTime,
+          end_time: this.expireTime,
+          source_id: this.supplierId,
+          user_id: this.signerId[0],
+          attachment: this.contractImg,
+          title: this.approvalTitle
+        }
+        if(param.process_id == -1){
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请选择采购申请',
+          });
+        }
+        if(param.source_id == -1){
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请选择供应商',
+          });
+        }
+        if(param.start_time == ''){
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请选择签订时间',
+          });
+        }
+        if(param.user_id == -1){
+          this.$LjNotify('error', {
+              title: '失败',
+              message: '请选择签订人',
+          });
+        }
+        else{
+          this.$http.post(`${this.url}eam/contract`,param).then(res => {
+            this.$LjMessageEasy(res,() => {
+                this.getContractList();
+                this.$emit('changeAddContrat', false)
+            });
+            this.contractRequisition = ''
+            this.supplierId = 0
+            this.signTime = new Date()
+            this.expireTime = ''
+            this.signerId = 0
+            this.contractImg = []
+          })
+        }
+      },
+      closeAddContrat: function() {
+        this.$emit('changeAddContrat', false)
+      },
+      getApprovalDetail: function() {
+        this.$http.get(`${this.url}eam/storage/process`).then(res => {
+          if(res.code == "20000"){
+            for(let i = 0; i< res.data.data.length; i++){
+              let obj = {
+                id: res.data.data[i].id,
+                title: res.data.data[i].title
+              }
+              this.approvalDetail.push(obj)
+            }
+          }
+        })
+        this.$http.get(`${this.url}eam/category`).then(res => {
+          if(res.code == "20000"){
+            for(let i = 0; i< res.data.data.length; i++){
+              if(res.data.data[i].type ==5){
+                console.log(res.data.data[i])
+                let obj = {
+                  id: res.data.data[i].id,
+                  name: res.data.data[i].name
+                }
+                this.supplierDetail.push(obj)
+              }
             }
           }
         })

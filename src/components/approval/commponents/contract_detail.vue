@@ -362,7 +362,7 @@ export default {
       comment_show_visible: false,
       comment_words: null,
       record_show_visible: false,
-      http_server: globalConfig.market_server,
+      market_server: globalConfig.market_server,
     }
   },
   methods: {
@@ -383,7 +383,7 @@ export default {
       console.log('暂缓')
     },
     handleGetDetail (village) {
-      this.$http.get(this.http_server + `v1.0/market/community/${village.id}`).then(res => {
+      this.$http.get(this.market_server + `v1.0/market/community/${village.id}`).then(res => {
         if (res.code === 200) {
           console.log(res.data);
           this.current_village_detail = res.data;

@@ -11,7 +11,7 @@
     </div>
     <div class="currentMonthAssessmentContainer">
       <div class="containerTop">
-        <button>KPI确认</button>
+        <button @click="sendTodoList = true">KPI确认</button>
         <div></div>
         <h2 @click="selectAll()">全选</h2>
       </div>
@@ -27,8 +27,8 @@
           </el-table-column>
           <el-table-column label="发送状态" align="center" prop='sendStatus'>
             <template slot-scope="scope">
-              <el-button plain type="primary" size="small" v-if="scope.row.sendStatus=== 0" @click="sendTodoList = true">未发送</el-button>
-              <el-button plain type="danger" size="small" v-if="scope.row.sendStatus=== 2" @click="kpi_detail_visible = true">发送失败</el-button>
+              <el-button plain type="primary" size="small" v-if="scope.row.sendStatus=== 0">未发送</el-button>
+              <el-button plain type="danger" size="small" v-if="scope.row.sendStatus=== 2">发送失败</el-button>
               <el-button plain type="success" size="small" v-if="scope.row.sendStatus=== 1">已发送</el-button>
             </template>
           </el-table-column>
