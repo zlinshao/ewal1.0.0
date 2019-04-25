@@ -38,19 +38,28 @@
               class="tableCell">
               <template slot-scope="scope">
                 <el-popover placement="bottom" trigger="click">
-                    <div>
+                    <div class="popoverHeader">
                       {{userName}}{{logTime}}
                     </div>
-                    <div class="dayLog">
+                    <div class="popoverComplete_work">
                       今日完成工作
-                      <h1>{{dayLog.complete_work}}</h1>
+                      <h6>{{dayLog.complete_work}}</h6>
+                    </div>
+                    <div class="popoverComplete_work">
                       未完成工作
-                      <h1>{{dayLog.uncompleted_work}}</h1>
+                      <h6>{{dayLog.uncompleted_work}}</h6>
+                    </div>
+                    <div class="popoverComplete_work">
                       需协调工作
-                      <h1>{{dayLog.coordinate_work}}</h1>
+                      <h6>{{dayLog.coordinate_work}}</h6>
+                    </div>
+                    <div class="popoverComplete_work">
                       备注
-                      <h1>{{dayLog.ps}}</h1>
-                      全部已读
+                      <h6>{{dayLog.ps}}</h6>
+                    </div>
+                    <div class="popoverAlreadyRead">
+                      <h6>全部已读</h6>
+                      <img :src="item" v-for="(item, index) in readAvatar" :key="index"/>
                     </div>
                   <div slot="reference" style="cursor: pointer"><div @click="showCardDetail(scope.row,showData[item])">{{scope.row[item]}}</div></div>
                 </el-popover>
@@ -105,7 +114,8 @@
         dayLog: {},
         weekLog: {},
         monthLog: {},
-        achievement_daily: {}
+        achievement_daily: {},
+        readAvatar:[]
       }
     },
     mounted() {
@@ -124,6 +134,7 @@
           time: new Date(time),
           user_id: row.id
         }
+        this.readAvatar = []
         this.$http.post(`${this.url}/staff/log/dayLog`,param).then(res => {
           if(res.code === "20000") {
             let id = []
@@ -131,6 +142,11 @@
               switch (res.data[i].type) {
                 case 'day':
                   this.dayLog = res.data[i].log_info
+                  if(res.data[i].read_data.length > 0){
+                    for(let j = 0; j < res.data[i].read_data.length; j++){
+                      this.readAvatar.push(res.data[i].read_data[j].avatar)
+                    }
+                  }
                   break;
                 case 'week':
                   this.weekLog = res.data[i].log_info
@@ -212,8 +228,57 @@
 <style lang="scss">
 .el-popover{
   background-color: transparent!important; 
-  padding: 0px!important;
+  padding: 0px 0px 0px 36px!important;
   color: black!important;
+  width: 376px!important;
+  .popoverHeader{
+    height:20px;
+    margin-bottom: 3px;
+    font-size:15px;
+    font-family:MicrosoftYaHei-Bold;
+    font-weight:bold;
+    color:rgba(104,104,116,1);
+    line-height:20px;
+    letter-spacing:1px;
+  }
+  .popoverComplete_work{
+    padding-top: 10px;
+    font-size:15px;
+    font-family:MicrosoftYaHei-Bold;
+    font-weight:bold;
+    color:rgba(104,104,116,1);
+    line-height:20px;
+    letter-spacing:1px;
+  }
+  .popoverunCompleted_work{
+    
+  }
+  .popoverCoordinate_work{
+    
+  }
+  .popoverPs{
+    
+  }
+  .popoverAlreadyRead{
+    height: 40px;
+    display: flex;
+    justify-content: flex-start;
+    h6{
+      display: flex;
+      align-items: center;
+      width:52px;
+      height:40px;
+      font-size:12px;
+      font-family:MicrosoftYaHei;
+      color:rgba(104,104,116,1);
+      line-height:26px;
+    }
+    >img{
+      width: 40px;
+      margin-left: 10px;
+      border-radius: 20px;
+    }
+  }
 }
 </style>
 

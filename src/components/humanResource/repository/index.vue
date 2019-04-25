@@ -21,6 +21,7 @@
       </div>
       <div class="items-center listTopRight">
         <div class="icons-font" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>入库</b></div>
+        <div class="icons add" @click="addContract(chooseTab)" v-if="chooseTab === 3"><b>+</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
       </div>
     </div>
@@ -45,7 +46,7 @@
     </div>
 
     <div v-if="chooseTab==3">
-      <data-base></data-base>
+      <data-base :addContract_visiable="addContract_visiable" v-on:changeAddContrat="changeAddContrat"></data-base>
     </div>
 
     <!--模块入口-->
@@ -93,6 +94,8 @@
         borrowReceiveSearch,
         humanResource,
         resourceDepart,
+        url: globalConfig.humanResource_server,
+        addContract_visiable: false,//是否显示添加合同弹窗传递给资料库 传给子组件
         selects: [
           {
             id: 1,
@@ -213,6 +216,13 @@
         this.visibleStatus = !this.visibleStatus;
         this.$store.dispatch('route_animation');
       },
+      //通过字符组件传值判断是否显示添加合同弹窗
+      addContract(chooseTab){
+        this.addContract_visiable= true
+      },
+      changeAddContrat(val){
+        this.addContract_visiable= val
+      }
     },
   }
 </script>

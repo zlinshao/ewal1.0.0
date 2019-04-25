@@ -28,10 +28,7 @@
         <el-button class="footButton" @click="confirm()">确定</el-button>
       </div>
     </div>
-    <lj-dialog
-      :visible="dialogVisible"
-      :size="{width: 700 + 'px',height: 600 + 'px'}"
-    >
+    <lj-dialog :visible="dialogVisible" :size="{width: 700 + 'px',height: 600 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>申诉</h3>
