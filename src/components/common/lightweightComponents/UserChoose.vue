@@ -1,7 +1,7 @@
 <template>
   <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div class="input-container">
-      <el-input :disabled="disabled" @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <el-input :size="size" :disabled="disabled" @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p class="icons user"></p>
     </div>
 
@@ -16,7 +16,17 @@
 
   export default {
     name: "UserChoose",
-    props: ['value', 'width', 'num', 'title', 'disabled'],
+    //props: ['value', 'width', 'num', 'title', 'disabled'],
+    props: {
+      value: {},
+      width: {},
+      num: {},
+      title:{},
+      disabled: {},
+      size: {
+        default:'',
+      },
+    },
     components: {
       StaffOrgan
     },

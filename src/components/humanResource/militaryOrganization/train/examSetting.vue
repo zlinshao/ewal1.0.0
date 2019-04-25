@@ -297,10 +297,13 @@
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>南京新人训</h3>
-          <div class="header_right">
+          <div v-if="new_exam_form.status!='已结束'" class="header_right">
             距离开考还有 <count-down :datetime="new_exam_form.start_time"></count-down>
           </div>
-          <div class="exam_detail_control">
+          <div v-if="new_exam_form.status=='已结束'" class="header_right">
+            已结束
+          </div>
+          <div v-if="new_exam_form.status!='已结束'" class="exam_detail_control">
             <el-button size="mini" type="danger" @click="is_delete_exam = !is_delete_exam">删除本场考试</el-button>
             <div class="edit-container">
               <i @click="showEditExamForm" title="编辑考试" class="icon-edit"></i>
@@ -321,6 +324,9 @@
             <el-form-item label="参加人员">
               <user-list :mini="true" :ids="new_exam_form.enrolls"></user-list>
             </el-form-item>
+            <el-form-item label="未参加人员">
+              <user-list :mini="true" color="#cf2e33" :ids="new_exam_form.enrolls"></user-list>
+            </el-form-item>
             <el-form-item label="开考时间">
               <div>{{new_exam_form.start_time}}</div>
             </el-form-item>
@@ -336,8 +342,9 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleExamDetailConfirm">确定</el-button>
-          <el-button type="info" size="small" @click="exam_detail_dialog_visible = false">取消</el-button>
+          <el-button v-if="new_exam_form.status=='已结束'" type="danger" size="small" @click="handleExamDetailConfirm">得分</el-button>
+          <el-button v-if="new_exam_form.status!='已结束'" type="danger" size="small" @click="handleExamDetailConfirm">确定</el-button>
+          <el-button v-if="new_exam_form.status!='已结束'" type="info" size="small" @click="exam_detail_dialog_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -734,7 +741,6 @@
 
       //题目列表提交后触发的事件=>录入题目列表
       handleSubmitExamList(examList, isEditPaper) {
-        debugger
         //console.log(examList);
         this.new_question_bank_exam_list = examList;
 
@@ -863,9 +869,10 @@
           if (res.code.endsWith('0')) {
             this.new_exam_form = res.data;
             this.new_exam_form.type_name = _.find(DROPDOWN_CONSTANT.TRAINING.EXAM.EXAMTYPE, {id: this.new_exam_form.type}).name;
-            this.new_exam_form.single = _.find(this.new_exam_form.question_category, {category: 1}).number;
-            this.new_exam_form.judge = _.find(this.new_exam_form.question_category, {category: 2}).number;
-            this.new_exam_form.short = _.find(this.new_exam_form.question_category, {category: 3}).number;
+            this.new_exam_form.single = _.find(this.new_exam_form.question_category, {category: 1})?.number||0;
+            this.new_exam_form.judge = _.find(this.new_exam_form.question_category, {category: 2})?.number||0;
+            this.new_exam_form.short = _.find(this.new_exam_form.question_category, {category: 3})?.number||0;
+            this.new_exam_form.status = row.status;
           }
         });
 

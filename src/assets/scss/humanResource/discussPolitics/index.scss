@@ -439,46 +439,79 @@
         flex-direction: column;
       }
 
-      .meeting_detail_form_container {
-        font-size: 14px;
-        width: calc(100% - 40px);
-        height: 100%;
+      .meeting-detail-container {
+        display: flex;
+        flex-direction: row;
 
-        .form-item {
-          width: 100%;
-          padding: 12px 0;
-          vertical-align: center;
 
-          .form-item-title {
-            text-align: right;
+        .meeting-detail-form-container {
+          font-size: 14px;
+          width: 90%;
+          height: 100%;
+
+          .form-item {
+            width: 100%;
+            padding: 12px 0;
+            vertical-align: center;
+
+            .form-item-title {
+              text-align: right;
+            }
+
+            .form-item-content {
+              //height: 100%;
+              position: relative;
+              text-align: left;
+              font-weight: 700;
+              letter-spacing: 2px;
+
+              .form-item-content-span-red {
+                color: #D1373C;
+              }
+
+              .form-item-content-span-input {
+                display: inline-block;
+                height: 30px;
+                line-height: 30px;
+                width: 40px;
+                background-color: #fff;
+                text-align: center;
+              }
+
+            }
           }
 
-          .form-item-content {
-            //height: 100%;
-            position: relative;
-            text-align: left;
-            font-weight: 700;
-            letter-spacing: 2px;
+          //会议个数dialog
 
-            .form-item-content-span-red {
-              color: #D1373C;
+        }
+        .meeting-detail-vertical-toolbar {
+          width: 10%;
+          height: 100%;
+          //background-color: red;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+
+          .meeting-detail-toolbar-item {
+            user-select: none;
+            cursor: pointer;
+            width: 40px;
+            height: 123px;
+            @include flex('flex-center');
+            //background-color: red;
+            span {
+              margin-bottom: 15px;
+              font-family: MicrosoftYaHei-Bold;
+              font-weight: 700;
+              color: $colorFFF;
+              font-size: 14px;
             }
-
-            .form-item-content-span-input {
-              display: inline-block;
-              height: 30px;
-              line-height: 30px;
-              width: 40px;
-              background-color: #fff;
-              text-align: center;
-            }
-
           }
         }
-
-        //会议个数dialog
-
       }
+
+
 
       .meeting-counts-container {
         width: calc(100% - 80px);
