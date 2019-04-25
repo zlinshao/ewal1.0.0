@@ -2,279 +2,91 @@
   <div id="my_KPI">
     <div class="my-kpi-container">
       <div class="my-kpi-toolbar">
-        <div v-for="item in toolbarList" @click="switchToolbar(item.id)" :class="{checked:toolbarChoosed==item.id}"
-             class="my-kpi-toolbar-item">{{item.name}}
+        <div v-for="(item,index) in period" @click="choosePeriod(index)" :class="{checked:choosedPeriod==index}" :key="index"
+            class="my-kpi-toolbar-item">{{item.title}}
         </div>
       </div>
+
       <div class="my-kpi-table-container">
-        <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
-          <div v-show="toolbarChoosed==1" class="table-weekly">
-            <el-table
-              :data="tableSettingData.weekly.tableData"
-              highlight-current-row
-              :height="this.mainListHeight(30) + 'px'"
-              :row-class-name="tableChooseRow"
-              @cell-click="tableClickRow"
-              @row-dblclick="tableDblClick($event,'weekly')"
-              header-row-class-name="tableHeader"
-              :row-style="{height:'70px'}"
-              style="width: 100%">
-              <el-table-column
-                v-for="(item,index) in Object.keys(tableSettingData.weekly.showData)" :key="item"
-                v-if="index<2"
-                align="center"
-                :prop="item"
-                :label="tableSettingData.weekly.showData[item]">
-              </el-table-column>
-              <el-table-column
-                v-for="(item,index) in Object.keys(tableSettingData.weekly.showData)" :key="item"
-                v-if="index>=2"
-                align="center"
-                :prop="item"
-                :label="tableSettingData.weekly.showData[item]">
-                <template slot-scope="scope">
-                  <span @click="showWeeklyForm(scope.row,item)" style="cursor: pointer">{{scope.row[item]}}</span>
-                </template>
-              </el-table-column>
-
-            </el-table>
-            <footer class="flex-center bottomPage">
-              <div class="develop flex-center">
-                <i class="el-icon-d-arrow-right"></i>
-              </div>
-              <div class="page">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="tableSettingData.weekly.params.page"
-                  :page-size="tableSettingData.weekly.params.limit"
-                  :total="tableSettingData.weekly.counts"
-                  layout="total,jumper,prev,pager,next">
-                </el-pagination>
-              </div>
-            </footer>
-          </div>
-
-          <div v-show="toolbarChoosed==2" class="table-monthly">
-            <el-table
-              :data="tableSettingData.monthly.tableData"
-              highlight-current-row
-              :height="this.mainListHeight(30) + 'px'"
-              :row-class-name="tableChooseRow"
-              @cell-click="tableClickRow"
-              @row-dblclick="tableDblClick($event,'monthly')"
-              header-row-class-name="tableHeader"
-              :row-style="{height:'70px'}"
-              style="width: 100%">
-              <el-table-column
-                v-for="item in Object.keys(tableSettingData.monthly.showData)" :key="item"
-                align="center"
-                :prop="item"
-                :label="tableSettingData.monthly.showData[item]">
-              </el-table-column>
-
-            </el-table>
-            <footer class="flex-center bottomPage">
-              <div class="develop flex-center">
-                <i class="el-icon-d-arrow-right"></i>
-              </div>
-              <div class="page">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="tableSettingData.monthly.params.page"
-                  :page-size="tableSettingData.monthly.params.limit"
-                  :total="tableSettingData.monthly.counts"
-                  layout="total,jumper,prev,pager,next">
-                </el-pagination>
-              </div>
-            </footer>
-          </div>
-
-
-          <div v-show="toolbarChoosed==3" class="table-quarter">
-            <el-table
-              :data="tableSettingData.quarter.tableData"
-              highlight-current-row
-              :height="this.mainListHeight(30) + 'px'"
-              :row-class-name="tableChooseRow"
-              @cell-click="tableClickRow"
-              @row-dblclick="tableDblClick($event,'quarter')"
-              header-row-class-name="tableHeader"
-              :row-style="{height:'70px'}"
-              style="width: 100%">
-              <el-table-column
-                v-for="item in Object.keys(tableSettingData.quarter.showData)" :key="item"
-                align="center"
-                :prop="item"
-                :label="tableSettingData.quarter.showData[item]">
-              </el-table-column>
-
-            </el-table>
-            <footer class="flex-center bottomPage">
-              <div class="develop flex-center">
-                <i class="el-icon-d-arrow-right"></i>
-              </div>
-              <div class="page">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="tableSettingData.quarter.params.page"
-                  :page-size="tableSettingData.quarter.params.limit"
-                  :total="tableSettingData.quarter.counts"
-                  layout="total,jumper,prev,pager,next">
-                </el-pagination>
-              </div>
-            </footer>
-          </div>
-
-          <div v-show="toolbarChoosed==4" class="table-halfyear">
-            <el-table
-              :data="tableSettingData.halfYear.tableData"
-              highlight-current-row
-              :height="this.mainListHeight(30) + 'px'"
-              :row-class-name="tableChooseRow"
-              @cell-click="tableClickRow"
-              @row-dblclick="tableDblClick($event,'halfYear')"
-              header-row-class-name="tableHeader"
-              :row-style="{height:'70px'}"
-              style="width: 100%">
-              <el-table-column
-                v-for="item in Object.keys(tableSettingData.halfYear.showData)" :key="item"
-                align="center"
-                :prop="item"
-                :label="tableSettingData.halfYear.showData[item]">
-              </el-table-column>
-
-            </el-table>
-            <footer class="flex-center bottomPage">
-              <div class="develop flex-center">
-                <i class="el-icon-d-arrow-right"></i>
-              </div>
-              <div class="page">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="tableSettingData.halfYear.params.page"
-                  :page-size="tableSettingData.halfYear.params.limit"
-                  :total="tableSettingData.halfYear.counts"
-                  layout="total,jumper,prev,pager,next">
-                </el-pagination>
-              </div>
-            </footer>
-          </div>
-
-          <div v-show="toolbarChoosed==5" class="table-year">
-            <el-table
-              :data="tableSettingData.year.tableData"
-              highlight-current-row
-              :height="this.mainListHeight(30) + 'px'"
-              :row-class-name="tableChooseRow"
-              @cell-click="tableClickRow"
-              @row-dblclick="tableDblClick($event,'year')"
-              header-row-class-name="tableHeader"
-              :row-style="{height:'70px'}"
-              style="width: 100%">
-              <el-table-column
-                v-for="item in Object.keys(tableSettingData.year.showData)" :key="item"
-                align="center"
-                :prop="item"
-                :label="tableSettingData.year.showData[item]">
-              </el-table-column>
-
-            </el-table>
-            <footer class="flex-center bottomPage">
-              <div class="develop flex-center">
-                <i class="el-icon-d-arrow-right"></i>
-              </div>
-              <div class="page">
-                <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="tableSettingData.year.params.page"
-                  :page-size="tableSettingData.year.params.limit"
-                  :total="tableSettingData.year.counts"
-                  layout="total,jumper,prev,pager,next">
-                </el-pagination>
-              </div>
-            </footer>
-          </div>
-        </div>
+        <el-table :data="weekData" v-if="choosedPeriod===0" highlight-current-row header-row-class-name="tableHeader">
+          <el-table-column label="姓名" align="left" prop="name"></el-table-column>
+          <el-table-column label="部门"  align="center" prop="department"></el-table-column>
+          <el-table-column v-for="(item, index) in week" :key="index" :label="item"  align="center" :prop="item">
+            <template slot-scope="scope">
+              <div @click="showKpiDetail(scope.row,item,scope.row[item])">{{scope.row[item]}}</div>
+            </template>
+          </el-table-column>
+        </el-table >
+        <el-table :data="monthData" v-if="choosedPeriod===1" highlight-current-row header-row-class-name="tableHeader" key="tableDataInstall">
+          <el-table-column label="姓名" prop="name" align="left"></el-table-column>
+          <el-table-column label="部门" prop="department" align="center"></el-table-column>
+          <el-table-column v-for="(item,index) in month" :key="index" :label="item"  align="center" :prop="item"></el-table-column>
+          <el-table-column label="年平均" align="center" prop="yearAverageScore"></el-table-column>
+        </el-table>
+        <el-table  :data="seasonData" v-if="choosedPeriod===2" highlight-current-row header-row-class-name="tableHeader">
+          <el-table-column label="姓名" prop="name" align="left"></el-table-column>
+          <el-table-column label="部门" prop="department" align="center"></el-table-column>
+          <el-table-column label="第一季度" prop="first" align="right"></el-table-column>
+          <el-table-column label="第二季度" prop="second" align="right"></el-table-column>
+          <el-table-column label="第三季度" prop="third" align="right"></el-table-column>
+          <el-table-column label="第四季度" prop="forth" align="right"></el-table-column>
+        </el-table>
+        <el-table  :data="halfyearData" v-if="choosedPeriod===3" highlight-current-row header-row-class-name="tableHeader">
+          <el-table-column label="姓名" prop="name" align="left" width="200px"></el-table-column>
+          <el-table-column label="部门" prop="department" align="center" width="200px"></el-table-column>
+          <el-table-column label="上半年" prop="first" align="center" width="400px"></el-table-column>
+          <el-table-column label="下半年" prop="second" align="center" width="400px"></el-table-column>
+        </el-table>
+        <el-table  :data="yearData" v-if="choosedPeriod===4" highlight-current-row header-row-class-name="tableHeader">
+          <el-table-column label="姓名" prop="name" align="left" width="200px"></el-table-column>
+          <el-table-column label="部门" prop="department" align="center" width="200px"></el-table-column>
+          <el-table-column label="年度考核成绩" prop="yearScore" align="center" width="700px"></el-table-column>
+        </el-table>
       </div>
-
     </div>
-
 
     <lj-dialog
       :size="{width:'40%',height:'80%'}"
-      :visible.sync="tableSettingData.weekly.table_dialog_visible">
-
+      :visible.sync="table_dialog_visible">
       <div class="dialog_container dialog-weekly-form">
         <div class="dialog-header">
           <div class="dialog-header-user">
             <div class="header-user-photo">
-              <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+              <img :src="imgUrl"/>
             </div>
             <div class="header-user-info">
-              <div class="header-user-info-name">张三</div>
-              <div class="header-user-info-address">苏州吴江组</div>
+              <div class="header-user-info-name">{{showStaffName}}</div>
+              <div class="header-user-info-address">{{showStaffOrg}}</div>
             </div>
           </div>
           <div class="dialog-header-score">
             <div class="dialog-header-score-detail">
-              <span>KPI总得分</span><span class="dialog-header-score-number colorE33">8</span><span class="colorE33">分</span>
+              <span>KPI总得分</span><span class="dialog-header-score-number colorE33">{{showStaffScore}}</span><span class="colorE33">分</span>
             </div>
-            <div class="dialog-header-score-date">2019-04-12</div>
+            <div class="dialog-header-score-date">{{showStaffTime}}</div>
           </div>
         </div>
         <div class="dialog_main">
-          <div class="mainListTable" :style="{'height': 100 + '%'}">
-            <div v-show="toolbarChoosed==1" class="table-weekly">
-              <el-table
-                :data="tableSettingData.kpi.tableData"
-                highlight-current-row
-                :height="this.mainListHeight(430) + 'px'"
-                :row-class-name="tableChooseRow"
-                @cell-click="tableClickRow"
-                @row-dblclick="tableDblClick($event,'kpi')"
-                header-row-class-name="tableHeader"
-                :row-style="{height:'70px'}"
-                style="width: 100%">
-                <el-table-column
-                  v-for="(item,index) in Object.keys(tableSettingData.kpi.showData)" :key="item"
-                  v-if="index<2"
-                  align="center"
-                  :prop="item"
-                  :label="tableSettingData.kpi.showData[item]">
-                </el-table-column>
-                <el-table-column
-                  v-for="(item,index) in Object.keys(tableSettingData.kpi.showData)" :key="item"
-                  v-if="index>=2"
-                  align="center"
-                  :prop="item"
-                  :label="tableSettingData.kpi.showData[item]">
-                  <template slot-scope="scope">
-                    <span @click="showWeeklyForm(scope.row,item)" style="cursor: pointer">{{scope.row[item]}}</span>
-                  </template>
-                </el-table-column>
-
-              </el-table>
-            </div>
-          </div>
+          <el-table highlight-current-row header-row-class-name="tableHeader" :row-style="{height:'70px'}" style="width: 100%" :data="kpiDetail">
+            <el-table-column label="考核项" align="center" prop="name">
+            </el-table-column>
+            <el-table-column label="指标值" align="center" prop="full_mark">
+            </el-table-column>
+            <el-table-column label="得分" align="center" prop="actual_score">
+            </el-table-column>
+          </el-table>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger">确定</el-button>
-          <el-button size="small" type="info" @click="tableSettingData.weekly.table_dialog_visible=false">取消</el-button>
+          <el-button size="small" type="danger" @click="table_dialog_visible=false">确定</el-button>
+          <el-button size="small" type="info" @click="table_dialog_visible=false">取消</el-button>
         </div>
       </div>
-
     </lj-dialog>
   </div>
 </template>
 
 <script>
   import LjDialog from '@/components/common/lj-dialog.vue';
-
 
   export default {
     name: "myKPI",
@@ -283,330 +95,253 @@
     },
     data() {
       return {
-        url: globalConfig.humanResource_server,
-
-        toolbarChoosed: 1,
-        toolbarList: [
-          {
-            id: 1,
-            name: '周度考核'
-          },
-          {
-            id: 2,
-            name: '月度考核'
-          },
-          {
-            id: 3,
-            name: '季度考核'
-          },
-          {
-            id: 4,
-            name: '半年度考核'
-          },
-          {
-            id: 5,
-            name: '年度考核'
-          },
+        url: globalConfig.kpi,
+        table_dialog_visible: false,
+        choosedPeriod: 0,
+        period:[
+          {id: 0, title: '周度考核'},
+          {id: 1, title: '月度考核'},
+          {id: 2, title: '季度考核'},
+          {id: 3, title: '半年度考核'},
+          {id: 4, title: '年度考核'}
         ],
-
-        currentTable: 'weekly',
-        tableSettingData: {
-          weekly: {
-            counts: 0,
-            params: {
-              //search: '',
-              page: 1,
-              limit: 5,
-
-            },
-            init() {
-              this.params.page = 1;
-              this.params.limit = 5;
-            },
-            chooseRowIds: [],
-            currentSelection: {},//当前选择行
-
-            table_dialog_visible: false,//form表单控制
-            table_dialog_title: '',
-            tableData: [],//表格数据
-            showData: {
-              name: '姓名',
-              department: '部门',
-              monday: '星期一',
-              tuesday: '星期二',
-              wednesday: '星期三',
-              thursday: '星期四',
-              friday: '星期五',
-              saturday: '星期六',
-              weekday: '星期日'
-            },
-            formData: {},//详情表格数据
-            searchParams: '',// dialog中的模糊搜索
-          },
-          monthly: {
-            counts: 0,
-            params: {
-              //search: '',
-              page: 1,
-              limit: 5,
-
-            },
-            init() {
-              this.params.page = 1;
-              this.params.limit = 5;
-            },
-            chooseRowIds: [],
-            currentSelection: {},//当前选择行
-
-            table_dialog_visible: false,//form表单控制
-            table_dialog_title: '',
-            tableData: [],//表格数据
-            formData: {},//详情表格数据
-            showData: {
-              name: '姓名',
-              department: '部门',
-              january: '1月',
-              february: '2月',
-              march: '3月',
-              april: '4月',
-              may: '5月',
-              june: '6月',
-              july: '7月',
-              august: '8月',
-              september: '9月',
-              october: '10月',
-              november: '11月',
-              december: '12月',
-              average: '年平均',
-            },
-            searchParams: '',// dialog中的模糊搜索
-
-            //photo_table_dialog_visible: false,
-            is_show_photo_detail_dialog: false,
-            photo_detail_arr: [21321, 213, 4224740],//要显示的图片数组
-          },
-          quarter: {//季度
-            counts: 0,
-            params: {
-              //search: '',
-              page: 1,
-              limit: 5,
-
-            },
-            init() {
-              this.params.page = 1;
-              this.params.limit = 5;
-            },
-            chooseRowIds: [],
-            currentSelection: {},//当前选择行
-
-            table_dialog_visible: false,//table表单控制
-            table_dialog_title: '',
-            tableData: [],//表格数据
-            formData: {},//详情表格数据
-            showData: {
-              name: '姓名',
-              department: '部门',
-              one: '第一季度',
-              two: '第二季度',
-              three: '第三季度',
-              four: '第四季度',
-            },
-            searchParams: '',// dialog中的模糊搜索
-
-          },
-          halfYear: {//半年
-            counts: 0,
-            params: {
-              //search: '',
-              page: 1,
-              limit: 5,
-
-            },
-            init() {
-              this.params.page = 1;
-              this.params.limit = 5;
-            },
-            chooseRowIds: [],
-            currentSelection: {},//当前选择行
-
-            table_dialog_visible: false,//table表单控制
-            table_dialog_title: '',
-            tableData: [],//表格数据
-            formData: {},//详情表格数据
-            showData: {
-              name: '姓名',
-              department: '部门',
-              up: '上半年',
-              down: '下半年',
-            },
-            searchParams: '',// dialog中的模糊搜索
-
-          },
-          year: {//年度
-            counts: 0,
-            params: {
-              //search: '',
-              page: 1,
-              limit: 5,
-
-            },
-            init() {
-              this.params.page = 1;
-              this.params.limit = 5;
-            },
-            chooseRowIds: [],
-            currentSelection: {},//当前选择行
-
-            table_dialog_visible: false,//table表单控制
-            table_dialog_title: '',
-            tableData: [],//表格数据
-            formData: {},//详情表格数据
-            showData: {
-              name: '姓名',
-              department: '部门',
-              grade: '年度考核成绩',
-            },
-            searchParams: '',// dialog中的模糊搜索
-
-          },
-          kpi: {//详情
-            counts: 0,
-            params: {
-              //search: '',
-              page: 1,
-              limit: 5,
-
-            },
-            init() {
-              this.params.page = 1;
-              this.params.limit = 5;
-            },
-            chooseRowIds: [],
-            currentSelection: {},//当前选择行
-
-            table_dialog_visible: false,//table表单控制
-            table_dialog_title: '',
-            tableData: [],//表格数据
-            formData: {},//详情表格数据
-            showData: {
-              name: '考核项',
-              department: '指标值',
-              grade: '得分',
-            },
-            searchParams: '',// dialog中的模糊搜索
-
-          },
-        },
-      }
-    },
-    methods: {
-      initData(index) {
-        switch (index) {
-          case 1:
-            this.getWeeklyList();
-        }
-      },
-
-      getWeeklyList() {
-        this.tableSettingData[this.currentTable].tableData = [];
-        for (let i = 0; i < 5; i++) {
-          let obj = {
-            name: '张三',
-            department: '研发部',
-            monday: '7',
-            tuesday: '6',
-            wednesday: '8',
-            thursday: '4',
-            friday: '6',
-            saturday: '9',
-            weekday: '7.4'
-          };
-          this.tableSettingData[this.currentTable].tableData.push(obj);
-        }
-        this.tableSettingData[this.currentTable].counts = 10;
-      },
-
-      //显示周度考核详情表单
-      showWeeklyForm(row, columnName) {
-        this.tableSettingData.weekly.table_dialog_visible = true
-        //console.log(row);
-        //console.log(columnName);
-      },
-
-      switchToolbar(index) {
-        this.toolbarChoosed = index;
-        switch (index) {
-          case 1:
-            this.currentTable = 'weekly';
-            break;
-          case 2:
-            this.currentTable = 'monthly';
-            break;
-          case 3:
-            this.currentTable = 'quarter';
-            break;
-          case 4:
-            this.currentTable = 'halfYear';
-            break;
-          case 5:
-            this.currentTable = 'year';
-            break;
-        }
-        this.initData(index);
-      },
-
-
-      handleSelectionChange(row) {
-        //this.tableSettingData.goods.multipleSelection = row;
-      },
-
-
-      // 当前点击
-      tableClickRow(row) {
-        /*this.tableSettingData[this.currentTable].currentSelection = row;
-        let ids = this.tableSettingData[this.currentTable].chooseRowIds;
-        ids.push(row.id);
-        this.ids = this.myUtils.arrayWeight(ids);*/
-      },
-      //表格某一行双击
-      tableDblClick(row, currentTable) {
-        /*if (currentTable) {
-          switch (currentTable) {
-            case 'borrowReceive':
-              this.tableSettingData[currentTable].table_dialog_visible = true;
-              this.tableSettingData[currentTable].formData = row;
-              this.tableSettingData[currentTable].currentSelection = row;
-              this.getItemsDetailList();
-              break;
-          }
-        }*/
-      },
-
-      // 点击过
-      tableChooseRow({row, rowIndex}) {
-        //return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-      },
-      handleSizeChange(val) {
-        //console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val, currentTable) {
-        /* switch (currentTable) {
-           case 'borrowReceive':
-             this.params.page = val;
-             this.getBorrowReceiveList();
-             break;
-           case 'goods':
-             this.tableSettingData[currentTable].params.page = val;
-             this.getGoodsDetailList();
-             break;
-           default :
-             break;
-         }*/
+        week: ['星期一','星期二','星期三','星期四','星期五','星期六','星期日'],
+        month: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+        weekData:[],
+        monthData: [],
+        seasonData: [],
+        halfyearData: [],
+        yearData: [],
+        kpiDetail: [],
+        showStaffName: '',
+        showStaffOrg: '',
+        showStaffTime: '',
+        showStaffScore: 0,
+        imgUrl:'',
       }
     },
     mounted() {
-      this.switchToolbar(1);
+      this.getWeekData()
+    },
+    methods: {
+      choosePeriod: function(index) {
+        this.choosedPeriod = index
+        switch (index) {
+          case 0:
+            this.getWeekData();
+            break
+          case 1:
+            this.getMonthData();
+            break
+          case 2:
+            this.getSeasonData();
+            break
+          case 3:
+            this.getHalfyearData();
+            break
+          case 4:
+            this.getYearData();
+            break
+        }
+      },
+      getWeekData: function() {
+        let param = {
+          search: 'myself'
+        }
+        this.weekData = []
+        this.$http.get(`${this.url}kpi/week`,param).then(res => {
+          if (res.status === 200) {
+            for(let i = 0; i < res.data.length; i++){
+              let obj = {
+                name: res.data[i].staff_name,
+                department: res.data[i].org_name,
+              }
+              if(res.data[i].kpi.length > 0){
+                obj.staff_id = res.data[i].kpi[0].staff_id
+                for( let k = 0; k < res.data[i].kpi.length; k++){
+                  switch (res.data[i].kpi[k].week) {
+                    case '1':
+                      obj['星期一'] = res.data[i].kpi[k].staff_score
+                      obj['一'] = res.data[i].kpi[k].checked_at
+                      break;
+                    case '2':
+                      obj['星期二'] = res.data[i].kpi[k].staff_score
+                      obj['二'] = res.data[i].kpi[k].checked_at
+                      break;
+                    case '3':
+                      obj['星期三'] = res.data[i].kpi[k].staff_score
+                      obj['三'] = res.data[i].kpi[k].checked_at
+                      break;
+                    case '4':
+                      obj['星期四'] = res.data[i].kpi[k].staff_score
+                      obj['四'] = res.data[i].kpi[k].checked_at
+                      break;
+                    case '5':
+                      obj['星期五'] = res.data[i].kpi[k].staff_score
+                      obj['五'] = res.data[i].kpi[k].checked_at
+                      break;
+                    case '6':
+                      obj['星期六'] = res.data[i].kpi[k].staff_score
+                      obj['六'] = res.data[i].kpi[k].checked_at
+                      break;
+                    case '0':
+                      obj['星期日'] = res.data[i].kpi[k].staff_score
+                      obj['日'] = res.data[i].kpi[k].checked_at
+                      break;
+                  }
+                }
+              }
+              this.weekData.push(obj)
+            }
+          }
+        })
+      },
+      getMonthData: function() {
+        let year = new Date();
+        let param = {
+          year: year.getFullYear(),
+          search: 'myself'
+        }
+        this.monthData = []
+        this.$http.get(`${this.url}kpi/month_year`,param).then(res => {
+          if (res.status === 200) {
+            for(let i = 0; i < res.data.length; i++){
+              let obj = {
+                name: res.data[i].staff_info.name,
+                department: res.data[i].org_info.name,
+              }
+              this.handleMonthKpi(obj,res.data[i].value);
+              this.monthData.push(obj)
+            }
+          }
+        })
+      },
+      getSeasonData: function() {
+        let year = new Date()
+        let param = {
+          year: year.getFullYear(),
+          search: 'myself'
+        }
+        this.seasonData = []
+        this.$http.get(`${this.url}kpi/quarter_year`,param).then(res => {
+          if (res.status === 200) {
+            for(let i = 0; i < res.data.length; i++){
+              let obj = {
+                name: res.data[i].staff_info.name,
+                department: res.data[i].org_info.name,
+              }
+              for(let j = 0; j < res.data[i].value.length; j++){
+                switch (res.data[i].value[j].quarter){
+                  case 1:
+                    obj.first = res.data[i].value[j].score
+                    break;
+                  case 2:
+                    obj.second = res.data[i].value[j].score
+                    break;
+                  case 3:
+                    obj.third = res.data[i].value[j].score
+                    break;
+                  case 4:
+                    obj.forth = res.data[i].value[j].score
+                    break;
+                }
+              }
+              this.seasonData.push(obj)
+            }
+          }
+        })
+      },
+      getHalfyearData: function() {
+        let year = new Date()
+        let param = {
+          year: year.getFullYear(),
+          search: 'myself'
+        }
+        this.halfyearData = []
+        this.$http.get(`${this.url}kpi/half_year`,param).then(res => {
+          if (res.status === 200) {
+            for(let i = 0; i < res.data.length; i++){
+              let obj = {
+                name: res.data[i].staff_info.name,
+                department: res.data[i].org_info.name,
+              }
+              for(let j = 0; j < res.data[i].value.length; j++){
+                if(res.data[i].value[j].half == '上半年'){
+                  obj.first = res.data[i].value[j].score
+                }
+                if(res.data[i].value[j].half == '下半年'){
+                  obj.second = res.data[i].value[j].score
+                }
+              }
+              this.halfyearData.push(obj)
+            }
+          }
+        })
+      },
+      getYearData: function() {
+        let year = new Date()
+        let param = {
+          year: year.getFullYear(),
+          search: 'myself'
+        }
+        this.yearData = []
+        this.$http.get(`${this.url}kpi/year`,param).then(res => {
+          if (res.status === 200) {
+            for(let i = 0; i < res.data.length; i++){
+              let obj = {
+                name: res.data[i].staff_name.name,
+                department: res.data[i].org_name.name,
+                yearScore: res.data[i].year_score ? res.data[i].year_score : '-' 
+              }
+              this.yearData.push(obj)
+            }
+          }
+        })
+      },
+      handleMonthKpi: function(obj,data) {
+        let score = 0;
+        for(let i = 0; i < data.length; i++){
+          let strMonth = data[i].month;
+          let numMonth = Number(strMonth.substring(strMonth.length-2))
+          score += data[i].sum_score
+          for(let j = 0; j < this.month.length; j++){
+            let stringMonth = this.month[j]
+            let numberMonth = Number(stringMonth.substring(0,stringMonth.length-1))
+            if(numMonth == numberMonth) {
+              obj[this.month[j]] = data[i].sum_score
+            }
+          }
+          if(i == data.length-1) {
+            obj.yearAverageScore = parseInt(score/12)
+          }
+        }
+      },
+      showKpiDetail: function (row,item,score) {
+        this.showStaffName = row.name
+        this. showStaffOrg = row.department
+        this.showStaffTime = row[item.substring(item.length-1)]
+        this.showStaffScore = score
+        let param = {
+          staff_id: row.staff_id,
+          checked_at: new Date(this.showStaffTime),
+          month_day_id: 0
+        }
+        this.kpiDetail= []
+        this.$http.get(`${this.url}kpi`,param).then(res => {
+          if (res.status === 200) {
+            this.imgUrl = res.extend.avatar
+            for(let i = 0; i < res.data.length; i++){
+              let obj = {
+                name: res.data[i].standard.name,
+                full_mark: res.data[i].standard.full_mark,
+                actual_score: res.data[i].actual_score
+              }
+              this.kpiDetail.push(obj)
+            }
+            this.table_dialog_visible = true
+          }
+        })
+      }
     },
   }
 </script>
