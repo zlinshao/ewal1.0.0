@@ -35,7 +35,8 @@
                   placement="top">
                   <el-card>
                     <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
-                      <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
+                      <div :class="{'cancel-status':contentItem.status==2,'finish-status':contentItem.status==1}"
+                           class="timeline-item-container-content-item"
                            @click="openMeetingDialog(contentItem)"
                            :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
                         <div class="content-item-span">{{contentItem.content}}</div>
@@ -406,8 +407,9 @@
 
     <!--会议详情1.2  -->
     <lj-dialog :visible.sync="meeting_detail_dialog_visible"
-               :size="{width: 1100 + 'px',height: 600 + 'px'}">
-      <div class="dialog_container scroll_bar meeting-detail-container">
+               @close="meeting_summary_editable = false;meeting_detail_choose_id=1"
+               :size="{width: 1100 + 'px',height: 700 + 'px'}">
+      <div class="dialog_container scroll_bar meeting-detail-container-outer">
         <div class="dialog_header">
           <h3>{{meeting_detail_form.meetingType}} {{meeting_detail_form.meetingTime}}</h3>
 
@@ -455,7 +457,10 @@
                   <div class="form-item-title">主持人</div>
                 </el-col>
                 <el-col :span="20">
-                  <div class="form-item-content">{{meeting_detail_form.compere}}</div>
+                  <div class="form-item-content">
+                    <name-shower type="user" :ids="meeting_detail_form.presenter_id"></name-shower>
+<!--                    {{meeting_detail_form.compere}}-->
+                  </div>
                 </el-col>
               </el-row>
             </div>
@@ -528,7 +533,8 @@
           </div>
           <div v-show="meeting_detail_choose_id==2" class="meeting-detail-form-container">
 
-            <el-form ref="meetingSummaryFormRef" :disabled="!meeting_summary_editable" :rules="rules.meetingSummary" :model="meeting_summary_form"
+            <el-form ref="meetingSummaryFormRef" :disabled="!meeting_summary_editable" :rules="rules.meetingSummary"
+                     :model="meeting_summary_form"
                      style="text-align: left"
                      size="small" label-width="140px">
 
@@ -540,7 +546,7 @@
                 <user-choose width="700" size="mini" v-model="meeting_summary_form.range"></user-choose>
               </el-form-item>
 
-              <el-form-item align="center" label="上传会议纪要">
+              <el-form-item align="center" label="会议纪要附件">
                 <lj-upload :disabled="!meeting_summary_editable" v-model="meeting_summary_form.attachment" size="40"
                            style="position: absolute; top: -12px;"></lj-upload>
               </el-form-item>
@@ -566,12 +572,14 @@
                               :prop="'list.'+index+'.question'"
                               :rules="{required: true, message: '请输入遗留问题', trigger: 'blur'}"
                               label="遗留问题">
-                  <el-input style="width: 700px" v-model="meeting_remaining_form.list[index].question"></el-input>
-                  <span v-if="index==0 && meeting_summary_editable" class="btn_add" style="position: absolute;right: 60px;top: 3px;"
+                  <el-input style="width: 700px" placeholder="请输入遗留问题"
+                            v-model="meeting_remaining_form.list[index].question"></el-input>
+                  <span v-if="index==0 && meeting_summary_editable" class="btn_add"
+                        style="position: absolute;right: 60px;top: 3px;"
                         @click="handleRemainingInfo(index)"
                   >+</span>
                   <span v-if="index>=1 && meeting_summary_editable" class="btn_add"
-                        @click="handleRemainingInfo(index)"
+                        @click="handleRemainingInfo(index,item)"
                         style="position: absolute;right: 60px;top: 3px;background-color: #D2D2D2;"
                   >-</span>
                 </el-form-item>
@@ -586,21 +594,24 @@
                 <el-form-item required :prop="'list.'+index+'.result'"
                               :rules="{required: true, message: '请输入跟进情况', trigger: 'blur'}"
                               label="跟进情况">
-                  <el-input style="width: 700px" v-model="meeting_remaining_form.list[index].result" title="请输入跟进情况"></el-input>
+                  <el-input placeholder="请输入跟进情况" style="width: 700px"
+                            v-model="meeting_remaining_form.list[index].result" title="请输入跟进情况"></el-input>
                 </el-form-item>
 
                 <el-form-item
-                              label="上传附件">
-                  <lj-upload :disabled="!meeting_summary_editable" size="40" style="position: absolute;top: -14px;" v-model="meeting_remaining_form.list[index].attachment"></lj-upload>
+                  label="遗留问题附件">
+                  <lj-upload :disabled="!meeting_summary_editable" size="40" style="position: absolute;top: -14px;"
+                             v-model="meeting_remaining_form.list[index].attachment"></lj-upload>
                 </el-form-item>
               </div>
-
 
             </el-form>
 
           </div>
           <div class="meeting-detail-vertical-toolbar">
-            <div v-for="item in meeting_detail_choose_list" :class="{checked:meeting_detail_choose_id==item.id}" @click="meeting_detail_choose_id=item.id;meeting_summary_editable = false" class="meeting-detail-toolbar-item">
+            <div v-for="item in meeting_detail_choose_list" :class="{checked:meeting_detail_choose_id==item.id}"
+                 @click="meeting_detail_choose_id=item.id;meeting_summary_editable = false"
+                 class="meeting-detail-toolbar-item">
               <span class="writingMode">{{item.name}}</span>
             </div>
           </div>
@@ -608,9 +619,13 @@
         </div>
         <div class="dialog_footer" style="padding: 0;text-align: right">
           <div style="padding-right: 40px">
-            <el-button v-if="!meeting_summary_editable" type="primary" @click="meeting_detail_dialog_visible=false" plain>确定</el-button>
-            <el-button v-if="meeting_summary_editable" type="primary" @click="handleSaveSummaryAndRemaining" plain>保存</el-button>
-            <el-button v-if="meeting_summary_editable" type="primary" @click="meeting_summary_editable=false" plain>取消</el-button>
+            <el-button v-if="!meeting_summary_editable" type="primary" @click="meeting_detail_dialog_visible=false"
+                       plain>确定
+            </el-button>
+            <el-button v-if="meeting_summary_editable" type="primary" @click="handleSaveSummaryAndRemaining" plain>保存
+            </el-button>
+            <el-button v-if="meeting_summary_editable" type="primary" @click="meeting_summary_editable=false" plain>取消
+            </el-button>
           </div>
         </div>
       </div>
@@ -937,7 +952,7 @@
               {required: true, message: '请选择会议类型', trigger: 'blur'},
             ],
           },
-          meetingSummary:{
+          meetingSummary: {
             record: [
               {required: true, message: '请选择会议记录人', trigger: 'blur'},
             ],
@@ -1077,19 +1092,19 @@
             name: '会议纪要',
           }
         ],
-        meeting_summary_editable:false,//会议纪要及历史遗留问题 是否可以编辑
-        meeting_summary_form:{//会议纪要表单
-          record:[],//会议记录人
-          range:[],//会议纪要查看范围
-          attachment:[],//附件=》会议纪要文件
+        meeting_summary_editable: false,//会议纪要及历史遗留问题 是否可以编辑
+        meeting_summary_form: {//会议纪要表单
+          record: [],//会议记录人
+          range: [],//会议纪要查看范围
+          attachment: [],//附件=》会议纪要文件
         },
-        meeting_remaining_form:{//历史遗留问题form表单
-          list:[
+        meeting_remaining_form: {//历史遗留问题form表单
+          list: [
             {
-              follow_id:null,//跟进人id int类型
-              question:'',//遗留问题
-              attachment:[],//遗留问题附件
-              result:'',//跟进情况
+              follow_id: null,//跟进人id int类型
+              question: '',//遗留问题
+              attachment: [],//遗留问题附件
+              result: '',//跟进情况
             }
           ],
         },
@@ -1257,31 +1272,59 @@
           ...this.meeting_summary_form
         };
         debugger
-        if(params.id) {//修改
-          this.$http.put(`${this.url}meeting/minutes/${params.id}`,params).then(res=> {
-            this.$LjMessageEasy(res,()=> {
+
+        const promises = [];
+        let promise1,promise2;
+        if (params.id) {//修改
+          promise1 = this.$http.put(`${this.url}meeting/minutes/${params.id}`, params).then(res => {
+            return res;
+            /*this.$LjMessageEasy(res,()=> {
               this.meeting_summary_editable = false;
-            });
+            });*/
           });
-          return;
+        } else {
+          promise1 = this.$http.post(`${this.url}meeting/minutes`, params).then(res => {//添加
+            return res;
+            /*this.$LjMessageEasy(res,()=> {
+              this.meeting_summary_editable = false;
+            });*/
+          });
         }
-        this.$http.post(`${this.url}meeting/minutes`,params).then(res=> {//添加
-          this.$LjMessageEasy(res,()=> {
-            this.meeting_summary_editable = false;
-          });
+        promises.push(promise1);
+
+        let list = this.meeting_remaining_form.list;
+        list.forEach(function(item,index) {
+          item.meeting_id = meeting_id;
+          item.follow_id = item.follow_id[0]||[];
         });
+        promise2 = this.$http.put(`${this.url}meeting/question/${meeting_id}`,list).then(res=> {
+          return res;
+        });
+        promises.push(promise2);
+
+        Promise.all(promises).then(([res,res2])=> {
+          if(res.code.endsWith('0')&&res2.code.endsWith('0')) {
+            this.$LjMessage('success',{
+              title:'成功',
+              msg:'操作成功',
+            });
+            this.meeting_summary_editable = false;
+          }else {
+            this.$LjMessage('error',{
+              title:'失败',
+              msg:'操作失败',
+            });
+          }
+        });
+
+
       },
 
 
       //显示修改会议dialog
       showEditMeetingDialog() {
-        if(this.meeting_detail_choose_id==2) {
+        if (this.meeting_detail_choose_id == 2) {
           this.meeting_summary_editable = true;
-
-
-
-
-
           return;
         }
 
@@ -1307,12 +1350,13 @@
           meeting_type: this.meeting_detail_form.meeting_type,//会议类型id
           start_time: this.meeting_detail_form.start_time,//会议开始时间
           end_time: this.meeting_detail_form.end_time,//会议开始时间
-          presenter_id: [],//主持人id数组
+          presenter_id: this.meeting_detail_form.presenter_id,//主持人id数组
           remind_data: this.meeting_detail_form.remind_data,
-          participants: [],//参会人员数组
+          participants: this.meeting_detail_form.participant,//参会人员数组
           attachment: _.map(this.meeting_detail_form.attachment, 'id'),//附件id
           remark: this.meeting_detail_form.remark,//备注
         };
+        debugger
       },
       //新建会议打开dialog
       showAddNewMeetingDialog(item) {
@@ -1530,7 +1574,8 @@
               remind_data: item.remind_data,//提醒时间
               meetingType: item.type?.name,//会议类型
               attachment: item.attachment,//附件
-              compere,//主持人
+              //compere,//主持人
+              presenter_id:_.map(item.presenter,'user_id'),//主持人id数组
               participant,//参加人员
               participantCount: participant.length || 0,
               meetingTime: `${utils.formatDate(item.start_time, 'hh:mm')}-${utils.formatDate(item.end_time, 'hh:mm')}`,//会议时间
@@ -1545,38 +1590,60 @@
             };
           }
           return res;
-        }).then(res=> {
-          debugger
+        }).then(res => {
           let meeting_id = res.data.id;
-          this.$http.get(`${this.url}meeting/minutes/meeting/${meeting_id}`).then(res2=> {
-            if(res2.code.endsWith('0')) {
+          this.$http.get(`${this.url}meeting/minutes/meeting/${meeting_id}`).then(res2 => {
+            if (res2.code.endsWith('0')) {
               let item = res2.data;
               this.meeting_summary_form = item;
-              this.meeting_summary_form.attachment = _.map(item.attachment,'id');
-              this.meeting_summary_form.range = item.ranges||[];
-              this.meeting_summary_form.record = item.records||[];
+              this.meeting_summary_form.attachment = _.map(item.attachment, 'id');
+              this.meeting_summary_form.range = item.ranges || [];
+              this.meeting_summary_form.record = item.records || [];
             }
           });
+          let params2 = {
+            meeting_id
+          };
+          this.$http.get(`${this.url}meeting/question`,params2).then(res=> {
+            if(res.code.endsWith('0')) {
+              let mList = res.data.data;
+              mList.forEach(function(value,index) {
+                value.attachment = _.map(value.attachment,'id');
+                value.follow_id = [value.follow_id];
+              });
+              mList = _.sortBy(mList,'id');
+              this.meeting_remaining_form.list = mList;
+            }
+          });
+
         });
 
       },
 
       //添加或删除历史遗留问题
-      handleRemainingInfo(idx) {
+      handleRemainingInfo(idx,item) {
         if (idx == 0) {
           this.meeting_remaining_form.list.push(
             {
-              follow_id:null,//跟进人id int类型
-              question:'',//遗留问题
-              attachment:[],//遗留问题附件
-              result:'',//跟进情况
+              follow_id: null,//跟进人id int类型
+              question: '',//遗留问题
+              attachment: [],//遗留问题附件
+              result: '',//跟进情况
             });
         } else {
-          this.meeting_remaining_form.list.splice(idx, 1);
-          //_.pullAt(this.publish_notice_form.sanction_info,[idx]);
+          if(item&&item.id) {
+            this.$LjConfirm({content:'确认删除吗?'}).then(()=> {
+              this.$http.delete(`${this.url}meeting/question/${item.id}`).then(res=> {
+                this.$LjMessageEasy(res,()=> {
+                  this.meeting_remaining_form.list.splice(idx, 1);
+                });
+              });
+            });
+          }else {
+            this.meeting_remaining_form.list.splice(idx, 1);
+          }
         }
       },
-
 
 
       moduleList() {
@@ -1900,9 +1967,10 @@
       }
 
       .meeting-detail-toolbar-item {
-        @include discussPoliticsImg('gd.png','theme1');
+        @include discussPoliticsImg('gd.png', 'theme1');
+
         &.checked {
-          @include discussPoliticsImg('xjtk.png','theme1');
+          @include discussPoliticsImg('xjtk.png', 'theme1');
         }
       }
     }
