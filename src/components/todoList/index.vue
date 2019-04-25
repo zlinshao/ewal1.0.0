@@ -116,6 +116,11 @@ export default {
       todo_list_container_arr: [],
     }
   },
+  mounted() {
+    this.$http.get('http://47.101.204.100:8080/runtime/tasks?taskAssignee=61').then(res => {
+      console.log(res);
+    })
+  },
   methods: {
     handleCreateTodo () {
       //  收租房带看
