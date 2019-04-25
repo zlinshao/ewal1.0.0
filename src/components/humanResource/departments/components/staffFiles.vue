@@ -591,7 +591,6 @@
       detailInfo: {
         handler(val) {
           this.currentStaffInfo = val;
-          console.log(val);
           for (var key in this.staffDetail) {
             this.staffDetail[key] = key in val ? val[key] : val.staff && key in val.staff ? val.staff[key] : '';
           }
