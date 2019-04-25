@@ -31,13 +31,14 @@
             <div class="house_photo">
               <div class="big_img">
                 <div class="sijiao"></div>
-                <img :src="house_detail.house_detail && house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器" :data-src="house_detail.house_detail && house_detail.house_detail.cover">
+                <img v-if="house_detail.house_detail && house_detail.house_detail.cover" :src="house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器" :data-src="house_detail.house_detail && house_detail.house_detail.cover">
+                <img v-else src="./swipe6.jpg" data-magnify="" data-caption="图片查看器" data-src="./swipe6.jgp">
               </div>
               <div class="small_img">
                 <div v-if="house_detail.album_photo" class="img_container items-center" ref="img_contain"
                      :style="{'left': img_trams + '%'}">
                   <img data-magnify="" data-caption="图片查看器" :data-src="item.uri"
-                       v-for="item in house_detail.album_photo" :src="item.uri" alt="">
+                       v-for="item in house_detail.album_photo" :src="item.uri" alt="" style="min-height: 80px">
                 </div>
                 <div v-else style="margin-top: 30px">暂无照片信息</div>
                 <span class="btn left_btn" @click="handleTransLeft"><i class="el-icon-arrow-left"></i></span>
@@ -159,7 +160,7 @@
       <!--带看-->
       <lj-dialog
         :visible="look_visible"
-        :size="{width: 600 + 'px',height: '800' + 'px'}"
+        :size="{width: 700 + 'px',height: '800' + 'px'}"
         @close="look_visible = false">
         <div class="look_info">
           <h3>查看带看记录</h3>
@@ -179,6 +180,14 @@
               <template slot-scope="scope">
                 <div v-if="scope.row.take_user">
                   <span v-for="(item,idx) in scope.row.take_user">{{ item }}<a v-if="idx !== scope.row.take_user.length - 1">,</a></span>
+                </div>
+                <div v-else>暂无</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="带看图片" align="center">
+              <template slot-scope="scope">
+                <div class="flex" v-if="scope.row.album_photo && scope.row.album_photo.length > 0">
+                  <img :src="item.uri" data-magnify="" data-caption="图片查看器" :data-src="item.uri" style="width: 60px;height: 60px;margin-right: 5px" alt="" v-for="item in scope.row.album_photo">
                 </div>
                 <div v-else>暂无</div>
               </template>
@@ -891,8 +900,7 @@
       },
       handleOpenCardDetail(item) {
         this.current_house = item;
-        this.$http.get(this.market_server + `/v1.0/market/house/detail/328`).then(res => {
-          // this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
+          this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
           if (res.code === 200) {
             this.house_detail = res.data;
             console.log(this.house_detail);
