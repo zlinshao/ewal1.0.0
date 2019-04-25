@@ -219,18 +219,28 @@
 #theme_name #borrowReceive .dialog_container .dialog_main.notify-borrow-receive {
   background-color: transparent !important;
   margin-left: 0 !important; }
+#theme_name #borrowReceive .dialog_container .dialog-header-title {
+  width: 30%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
 #theme_name #borrowReceive .dialog_container .header_right {
-  top: 20px; }
-  #theme_name #borrowReceive .dialog_container .header_right .detail-container .detail-item {
-    display: inline-block;
-    margin-right: 24px; }
-    #theme_name #borrowReceive .dialog_container .header_right .detail-container .detail-item > :nth-child(1) {
-      font-size: 12px;
-      font-weight: bold; }
-    #theme_name #borrowReceive .dialog_container .header_right .detail-container .detail-item > :nth-child(2) {
-      font-size: 12px;
-      padding: 8px;
-      color: #686874; }
+  width: 65%;
+  top: 0px;
+  height: 60px; }
+  #theme_name #borrowReceive .dialog_container .header_right .detail-container {
+    display: flex;
+    flex-wrap: wrap; }
+    #theme_name #borrowReceive .dialog_container .header_right .detail-container .detail-item {
+      display: inline-block;
+      margin-right: 24px; }
+      #theme_name #borrowReceive .dialog_container .header_right .detail-container .detail-item > :nth-child(1) {
+        font-size: 12px;
+        font-weight: bold; }
+      #theme_name #borrowReceive .dialog_container .header_right .detail-container .detail-item > :nth-child(2) {
+        font-size: 12px;
+        padding: 8px;
+        color: #686874; }
 #theme_name #borrowReceive .dialog_container .detail-bottom-container {
   position: fixed;
   width: 85%;

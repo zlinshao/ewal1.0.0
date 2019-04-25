@@ -219,20 +219,35 @@
     -o-transform: scale(1);
     transform: scale(1);
     opacity: 1; }
-  #theme_name #panel .header .header_methods {
-    display: flex; }
-    #theme_name #panel .header .header_methods .methods_box {
-      width: 80px;
-      height: 80px;
-      text-align: center;
-      line-height: 80px;
-      font-size: 10px; }
-    #theme_name #panel .header .header_methods .methods_box + .methods_box {
-      margin-left: 40px; }
-  #theme_name #panel .header .icons_panel {
-    display: inline-block;
-    width: 40px;
-    height: 40px; }
+  #theme_name #panel .header {
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; }
+    #theme_name #panel .header .header_methods {
+      display: flex; }
+      #theme_name #panel .header .header_methods .methods_box {
+        width: 80px;
+        height: 80px;
+        text-align: center;
+        line-height: 80px;
+        font-size: 10px; }
+      #theme_name #panel .header .header_methods .methods_box + .methods_box {
+        margin-left: 40px; }
+    #theme_name #panel .header .header_right {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      height: 180px;
+      align-items: flex-end;
+      padding-bottom: 24px;
+      padding-right: 50px; }
+    #theme_name #panel .header .icons_panel {
+      display: inline-block;
+      width: 40px;
+      height: 40px; }
   #theme_name #panel .mainListTable {
     padding: 0;
     margin-left: 20px;
@@ -351,5 +366,7 @@
   #theme_name.theme1 #panel .panel_list .panel_cell_active .icons_per {
     background: url("../../../assets/image/approval/theme1/ren_hong.png") no-repeat scroll center;
     background-size: 100% 100%; }
+#theme_name.theme1 #panel .check_type_dialog {
+  background: #fff; }
 
 /*# sourceMappingURL=controlPanel.css.map */

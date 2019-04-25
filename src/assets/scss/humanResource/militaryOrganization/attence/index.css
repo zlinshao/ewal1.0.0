@@ -265,7 +265,21 @@
       #theme_name #attence .confirm-container .confirm-table .icon-pdf {
         cursor: pointer;
         width: 36px;
-        height: 41px; }
+        height: 41px;
+        position: relative; }
+        #theme_name #attence .confirm-container .confirm-table .icon-pdf div {
+          position: absolute; }
+          #theme_name #attence .confirm-container .confirm-table .icon-pdf div.icon-no-send {
+            width: 9px;
+            height: 9px;
+            top: 2px;
+            right: -20px;
+            cursor: pointer; }
+          #theme_name #attence .confirm-container .confirm-table .icon-pdf div.icon-sent {
+            width: 14px;
+            height: 14px;
+            bottom: -7px;
+            right: -7px; }
     #theme_name #attence .confirm-container .confirm-pagination {
       height: 10%;
       width: 100%; }

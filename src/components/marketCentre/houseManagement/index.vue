@@ -114,6 +114,13 @@
                 </el-table-column>
                 <el-table-column label="跟进人" prop="follow_name" align="center"></el-table-column>
               </el-table>
+              <el-table :data="furniture_list" height="250" v-show="current_house_type === 4">
+                <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="描述" prop="description" align="center"></el-table-column>
+                <el-table-column label="补齐物品" prop="follow_content" align="center"></el-table-column>
+                <el-table-column label="状态" prop="status_name" align="center"></el-table-column>
+                <el-table-column label="跟进人" prop="follow_user" align="center"></el-table-column>
+              </el-table>
               <el-table :data="contract_list" height="250" v-show="current_house_type === 6 || current_house_type === 7">
                 <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
                 <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
@@ -427,10 +434,10 @@
             id: 3,
             val: '跟进记录'
           },
-          // {
-          //   id: 4,
-          //   val: '家具补齐'
-          // },
+          {
+            id: 4,
+            val: '家具补齐'
+          },
           // {
           //   id: 5,
           //   val: '物品搬移记录'
@@ -443,10 +450,10 @@
             id: 7,
             val: '租房合同'
           },
-          {
-            id: 8,
-            val: '报备管理'
-          },
+          // {
+          //   id: 8,
+          //   val: '报备管理'
+          // },
         ],
         current_house_type: 1,
         table_params: {
@@ -485,7 +492,9 @@
         currentSelType: '',
         contract_list: [],
         pic_row: '',
-        look_pic_visible: ''
+        look_pic_visible: '',
+
+        furniture_list: [],
       }
     },
     mounted() {
@@ -542,6 +551,23 @@
           }
         })
       },
+      //家具补齐
+      handlePolishFurniture(id){
+          this.$http.get(this.market_server + 'v1.0/market/task/getTask',{
+            house_id: 4,
+            task_type: 10,
+            ...this.table_params
+          }).then(res => {
+            console.log(res);
+            if (res.code === 200) {
+              this.furniture_list = res.data.data;
+              this.table_params.count = res.data.count;
+            }else {
+              this.furniture_list = [];
+              this.table_params.count = 0;
+            }
+          })
+      },
       //切换列表信息
       handleCheckModule(item) {
         this.table_params.limit = 15;
@@ -566,6 +592,11 @@
           case 3:
             url = 'v1.0/market/house/getFollowRecord';
             this.getSettingPrice(this.current_house.id,url);
+            break;
+          case 4:
+            this.handlePolishFurniture(this.current_house.id);
+            break;
+
         }
       },
       handleChangePage(page) {

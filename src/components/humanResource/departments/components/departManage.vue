@@ -432,10 +432,10 @@
               <div v-for="(item,key) in power_list">
                 <el-checkbox-group v-model="checkList" @change="handleCheck">
                   <el-row v-for="(tmp,idx) in power_list[key]" :key="idx">
-                    <el-col :span="12">
+                    <el-col :span="6">
                       <el-button type="text" size="large" @click="handleSearchField(tmp)" icon="el-icon-view" style="color: #CF2E33;font-size: 18px"></el-button>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="18">
                       <el-checkbox :label="tmp.id" :key="tmp.id" style="margin-top: 13px">
                         {{tmp.name}}
                       </el-checkbox>
