@@ -337,9 +337,13 @@ div.el-popover {
   color: #686874;
   font-weight: bold; }
 #theme_name .el-table tbody tr.current-row td {
-  background-color: #f9f9f9 !important; }
+  background-color: white !important; }
 #theme_name .el-table tbody tr:hover td {
-  background-color: #f9f9f9 !important; }
+  background-color: white !important; }
+#theme_name .el-table tbody tr .expand-container .expand-top thead th.is_leaf {
+  background-color: #E6F6F1; }
+#theme_name .el-table tbody tr .expand-container .expand-top .el-table__empty-block {
+  background-color: #E6F6F1; }
 #theme_name .borderNone .el-input__inner,
 #theme_name .borderNone .el-textarea__inner {
   border: none;

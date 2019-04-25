@@ -114,15 +114,32 @@ div.el-popover {
         }
       }
     }
+    thead {
+
+    }
     tbody {
       tr.current-row {
         td {
-          background-color: $color9F9 !important;
+          background-color: white !important;
         }
       }
       tr:hover {
         td {
-          background-color: $color9F9 !important;
+          background-color: white !important;
+        }
+      }
+      tr {
+        .expand-container {
+          .expand-top {
+            thead {
+              th.is_leaf {
+                background-color: #E6F6F1;
+              }
+            }
+            .el-table__empty-block {
+              background-color: #E6F6F1;
+            }
+          }
         }
       }
     }
