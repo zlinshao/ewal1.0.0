@@ -124,11 +124,7 @@
       <div class="dialog_container" v-if='contract_detail_visible'>
         <div class="dialog_header">
           <h3>合同详情</h3>
-          <div class="header_right">
-            <span>
-              {{ contractDetail.contract_number }}
-            </span>
-          </div>
+          <div class="header_right" style='line-height:30px;'>{{contractDetail.contract_number}}</div>
         </div>
         <div class="dialog_main contract_detail">
           <!---房屋信息-->
@@ -460,7 +456,7 @@
               <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="6"></el-input>
             </el-form-item>
             <el-form-item label="上传图片">
-              <Upload :file="mark_upload" @success="handleGetMarkUpload"></Upload>
+              <Ljupload size='50' v-model='mark_form.album'></Ljupload>
             </el-form-item>
           </el-form>
         </div>
@@ -531,14 +527,15 @@ import MenuList from '../../common/menuList.vue';
 import { housingDueSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 import LjDialog from '../../common/lj-dialog.vue';
-import Upload from '../../common/upload.vue';
+import Ljupload from '../../common/lightweightComponents/lj-upload'
+// import Upload from '../../common/upload.vue';
 export default {
   name: 'index',
   components: {
     SearchHigh,
     MenuList,
     LjDialog,
-    Upload
+    Ljupload
   },
   data () {
     return {
@@ -624,29 +621,22 @@ export default {
       // 添加标记
       mark_visible: false,
       mark_form: {
-        tag_status: '',
-        appointment_time: '',
-        remark: '',
+        tag_status: null,
+        appointment_time: null,
+        remark: null,
         album: [],
       },
       mark_status: [
         { id: 1, val: '续租' },
         { id: 2, val: '退租' },
       ],
-      mark_upload: {
-        keyName: 'album',
-        setFile: [],
-        size: {
-          width: '50px',
-          height: '50px'
-        }
-      },
+
       // 回访记录
       backInfo_visible: false,
       backInfo: [],
       // 催办
       urgedDeal_visible: false,
-      urgedDeal_note: '',
+      urgedDeal_note: null,
       // 当前点击的row
       currentRow: null,
       market_server: globalConfig.market_server,
@@ -750,10 +740,12 @@ export default {
     },
     // close 添加标记
     handleCancelMark () {
-      for (var key in this.mark_form) {
-        this.mark_form[key] = '';
+      this.mark_form= {
+        tag_status: null,
+        appointment_time: null,
+        remark: null,
+        album: [],
       }
-      this.mark_form.album = [];
       this.currentRow = null
       this.mark_visible = false;
     },
@@ -761,14 +753,33 @@ export default {
     chooseMarkRadio (item) {
       this.mark_form.tag_status = item.id;
     },
-    // 标记图片上传
-    handleGetMarkUpload (file) {
-      if (file !== 'close') {
-        this.mark_form[file[0]] = file[1];
+    validation_mark_form () {
+      let { tag_status, appointment_time, remark, album } = this.mark_form;
+      if (!tag_status) {
+        return '标记类型未选择'
       }
+      if (!appointment_time) {
+        return '预约时间未选择'
+      }
+      if (!remark) {
+        return '备注信息未填写'
+      }
+      if (album.length == 0) {
+        return '图片未上传'
+      }
+      return warn
     },
     // 标记上传
     handleSubmitMark () {
+      let warn = this.validation_mark_form()
+      if (warn) {
+        this.$LjNotify('warning', {
+          title: '提示',
+          message: warn
+        });
+        return
+      }
+
       if (this.tagType == 1) {
         this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
           if (res.code === 200) {
@@ -865,6 +876,14 @@ export default {
     },
     // 确定催办
     handleUrgedDeal () {
+      if (!this.urgedDeal_note) {
+        this.$LjNotify('warning', {
+          title: '提示',
+          message: '备注信息未填写'
+        });
+        return
+      }
+
       let params = {
         sign_user_id: '',
         content: this.urgedDeal_note
@@ -876,6 +895,7 @@ export default {
             title: '提示',
             message: '建立催办成功'
           });
+          this.urgedDeal_note = null
           this.getDateList()
         } else {
           this.$LjNotify('warning', {

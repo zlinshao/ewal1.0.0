@@ -15,9 +15,9 @@
       <div class="items-center">
         <div class="items-center funTop ">
           <span @click="todoListHandler">待办</span>
-          <div @click="showMessage" class='shenpi'>
-            <span>审批</span>
-            <ul v-if='open_message_visible'>
+          <div class='shenpi'>
+            <span @click.stop='openMessage'>审批</span>
+            <ul>
               <li>
                 <span>web前端-面试任务</span>
                 <span>2019/1/20 21:00</span>
@@ -168,7 +168,6 @@ export default {
           English: 'Intellectual Property Protection',
         },
       ],
-      open_message_visible: false
     }
   },
   mounted () { },
@@ -205,16 +204,8 @@ export default {
       this.$store.dispatch('change_todo_list_visible');
     },
 
-    showMessage () {
-      if (this.showMessage_visible) {
-        this.$store.dispatch('change_message_visible');
-      } else {
-        this.open_message_visible = true
-      }
-
-    },
     openMessage () {
-      this.open_message_visible = false
+
       this.$store.dispatch('change_message_visible');
 
       if (this.$store.state.todo.todo_list_visible) {
