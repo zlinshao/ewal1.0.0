@@ -358,7 +358,7 @@ export default {
       outer_house_pic: [],
       outer_net_data: [],
       current_village_detail: '',
-      type: 2,
+      type: 1,
       comment_show_visible: false,
       comment_words: null,
       record_show_visible: false,
