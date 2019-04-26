@@ -191,7 +191,6 @@
         tableData: [],
         counts: 0,
         params: {
-          search: '',
           page: 1,
           limit: 8,
         },
@@ -227,7 +226,8 @@
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          this.params = val;
+          //this.params = val;
+          this.getQuestionnaireList(val);
         },
         deep: true,
       },
@@ -296,12 +296,16 @@
       },
 
       //获取问卷列表
-      getQuestionnaireList() {
+      getQuestionnaireList(outerParams) {
         //this.tableData = [];
         let params = {
+          ...outerParams,
           ...this.params,
           all: 1,
         };
+        if(params.search) {
+          params.name
+        }
         this.$http.get(`${this.url}questionnaire`, params).then(res => {
           if (res.code.endsWith('0')) {
             this.tableData = res.data.data;

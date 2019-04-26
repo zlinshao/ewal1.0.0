@@ -1,17 +1,17 @@
 <template>
   <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
-    <div class="input-container">
+    <div :title="inputContent" class="input-container">
       <el-input :size="size" :disabled="disabled" @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p class="icons user"></p>
     </div>
 
 
-    <StaffOrgan :module="staffModule" :organ-data="organData" @close="hiddenOrgan"></StaffOrgan>
+    <StaffOrgan :initial="value" :module="staffModule" :organ-data="organData" @close="hiddenOrgan"></StaffOrgan>
   </div>
 </template>
 
 <script>
-  import StaffOrgan from '../staffOrgan';
+  import StaffOrgan from './origin/staffOrgan';
   import storage from '../../../utils/storage';
 
   export default {
@@ -42,7 +42,25 @@
       }
     },
     watch: {
+
       value: {
+        handler(val, oldVal) {
+          if (val && val.length > 0) {
+            let params = {
+              limit:1000,
+              user_id:val,
+              staff:1,
+            };
+            this.$http.get(`${this.url}staff/user`,params).then(res=> {
+              this.inputContent = _.map(res.data.data,'name').join(',');
+            });
+          }
+        },
+        immediate: true,
+      },
+
+
+      /*value: {
         handler(val, oldVal) {
           if (val) {
             if (val.constructor == Array) {
@@ -54,7 +72,6 @@
               return;
             }
             this.$http.get(`${this.url}/staff/user/${val}`).then(res => {
-              debugger
               if (res.code.endsWith('0')) {
                 this.inputContent = res.data.name;
                 storage.set(`user-id${val}`, res.data.name);
@@ -63,7 +80,7 @@
           }
         },
         immediate: true//第一次绑定也执行
-      },
+      },*/
       width: {
         handler(val, oldVal) {
           if (val) {

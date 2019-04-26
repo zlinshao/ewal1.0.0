@@ -5,8 +5,8 @@
         <div class='dialog_header'>
           <h3>house_name</h3>
         </div>
-        <div class="dialog_main">
-          <el-form label-width='120px' v-for='(title,index) in showTitle' :key='index' v-if='type == 1'>
+        <div class="dialog_main" v-if='visible && form_data'>
+          <el-form label-width='120px' v-for='(title,index) in showTitle' :key='index'>
             <div class='dialog_tit' v-if='index != 0'>
               <div class='dialog_tit_img'></div>
               <p>{{title}}</p>
@@ -53,78 +53,12 @@
                 <el-form-item v-for='(cell,idx) in Object.keys(row)' :key='cell' :label="row[cell]" :class='[cell== 55 ? "house_video":""]'>
                   <!-- 房屋影像 -->
                   <img v-if='cell == 55'></img>
-                  <span v-else>{{idx}}</span>
+                  <span v-else>{{form_data[row]}}</span>
                 </el-form-item>
               </el-col>
             </el-row>
 
           </el-form>
-
-          <template v-if='type == 2'>
-            <el-form label-width="80px" readonly style='marginBottom:20px'>
-              <el-row>
-                <el-col :span="6">
-                  <el-form-item label="处理人" style="text-align: left;width: 100%">
-                    <div style="word-break: break-all">第三方</div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item label="部门" style="text-align: left;width: 100%">
-                    <div style="word-break: break-all">第三方</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-            <VillageContainer village="基本信息">
-              <el-form label-width="80px" class="borderNone" readonly>
-                <el-row>
-                  <el-col :span="8" v-for="(item,idx) in village_detail_form" :key="idx">
-                    <el-form-item :label="item.label" style="text-align: left;width: 100%">
-                      <div style="word-break: break-all">{{ item.val }}</div>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-form-item label="小区照片">
-                  <div class="flex">
-                    <LjUpload v-model="village_pic" :disabled="true" :download="false"></LjUpload>
-                  </div>
-                </el-form-item>
-                <el-form-item label="房屋照片">
-                  <LjUpload v-model="house_pic" :disabled="true" :download="false"></LjUpload>
-                </el-form-item>
-                <el-form-item label="调研报告">
-                  <LjUpload v-model="files" :disabled="true" :download="false"></LjUpload>
-                </el-form-item>
-              </el-form>
-            </VillageContainer>
-            <VillageContainer village="全站大数据房源匹配">
-              <div id="village-detail" style="min-height: 400px"></div>
-            </VillageContainer>
-            <VillageContainer village="房型价格-区块链推荐">
-              <el-table :data="outer_net_data" @row-click="handleClickRow">
-                <el-table-column label="房型" prop="house_type" align="center"></el-table-column>
-                <el-table-column label="价格" prop="price" align="center"></el-table-column>
-                <el-table-column align="center">
-                  <template slot-scope="scope">
-                    <el-button type="primary" size="mini" plain @click="handleOpenOuterHouse(scope.row)">查看详情</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </VillageContainer>
-            <VillageContainer village="自适应聚类房型图">
-              <div style="text-align: left" v-if="outer_house_pic.length > 0">
-                <img :src="url" alt="" style="width: 60px;height: 60px;margin-right: 15px;cursor: pointer;border-radius: 4px"
-                  v-for="url in outer_house_pic" data-magnify="" data-caption="图片查看器" :data-src="url">
-              </div>
-              <div style="text-align: center" v-else>暂无数据</div>
-            </VillageContainer>
-            <VillageContainer village="所属部门">
-              <div v-if="current_village_detail.org && current_village_detail.org.length > 0" style="text-align: left"
-                class="flex">
-                <p v-for="(item,idx) in current_village_detail.org">{{ item.name }}<a v-if="idx !== current_village_detail.org.length - 1">、</a></p>
-              </div>
-            </VillageContainer>
-          </template>
 
           <div class='float-btns'>
             <div class="float_box float_box_active" @click='changeBtns_type'>
@@ -198,6 +132,8 @@
         </div>
       </div>
     </LjDialog>
+
+    <!-- <FormDetail :visible='show_form_visible' /> -->
   </div>
 </template>
 
@@ -205,20 +141,22 @@
 import LjDialog from '../../common/lj-dialog.vue';
 import VillageContainer from '../../customService/village/components/village-container.vue';
 import LjUpload from '../../common/lightweightComponents/lj-upload';
+
 export default {
   props: ['visible'],
   components: {
     LjDialog,
     VillageContainer,
-    LjUpload
+    LjUpload,
+    // FormDetail
   },
   data () {
     return {
       showDetail: [
         [
           {
-            type: '收房报备',
-            department: '部门'
+            bulletin_name: '收房报备',
+            department_name: '部门'
           }, {
             status: "状态",
             org_name: '处理人'
@@ -226,143 +164,101 @@ export default {
         ],
         [
           {
-            20: '产权地产',
-            23: '持有证件',
-            26: '户型',
-            29: '面积',
-            32: '装修',
-            35: '房屋类型',
-            38: '朝向',
-            41: '楼层',
-            44: '物业电话',
-            47: '物业费单价',
-            50: '暖气',
-            53: '门锁类型',
-            55: '房屋影像'
+            property_address: '产权地址',
+            holding_documents_type: '持有证件',
+            house_type: '户型',
+            area: '面积',
+            can_decorate: '装修',
+            property_type35: '房屋类型',
+            direction: '朝向',
+            floors: '楼层',
+            property_phone: '物业电话',
+            property_fee: '物业费单价',
+            has_heater: '暖气',
+            lock_type: '门锁类型',
+            house_video: '房屋影像'
+          }, 
+          {
+            property_right_card_number: '产权证号',
+            gas_stove: '燃气灶',
+            wash_machine: '洗衣机',
+            clothe_rack: '晾衣架',
+            fridge: '冰箱',
+            hood: '油烟机',
+            water_heater: '热水器',
+            dining_table: '餐桌',
+            has_gas: '天然气',
+            curtain: '窗帘',
+            wardrobe: '衣柜',
+            other_remark: '其它问题',
           }, {
-            21: '产权证号',
-            24: '燃气灶',
-            27: '洗衣机',
-            30: '晾衣架',
-            33: '冰箱',
-            36: '油烟机',
-            39: '热水器',
-            42: '餐桌',
-            45: '天然气',
-            48: '窗帘',
-            51: '衣柜',
-            54: '其他问题',
-          }, {
-            22: '丘权号',
-            25: '空调',
-            28: '电视',
-            31: '微波炉',
-            34: '沙发',
-            37: '椅子',
-            40: '床+床垫',
-            43: '卫生状况',
-            46: '家电',
-            49: '备注',
-            52: '补齐时间',
+          qiu_quan_number: '丘权号',
+           air_condition: '空调',
+            television: '电视',
+            microwave: '微波炉',
+            sofa: '沙发',
+            chair: '椅子',
+           bed: '床+床垫',
+            is_clean: '卫生状况',
+            is_fill: '家电',
+            remark: '备注',
+            // 52: '补齐时间',
           }
         ],
         [
           {
-            60: '签约时间',
-            61: '合同开始时间',
-            62: '合同结束时间',
-            63: '签约时长',
-            64: '空置期天数',
-            65: '是否渠道',
-            66: '渠道费',
-            67: '保修期',
-            68: '月单价',
-            68: '付款方式',
+            sign_date: '签约时间',
+            begin_date: '合同开始时间',
+            end_date: '合同结束时间',
+            month: '签约时长',
+            vacancy: '空置期天数',
+            is_agency: '是否渠道',
+            agency_price: '渠道费',
+            month_unit_price: '月单价',
+            pay_way: '付款方式',
           }, {
-            70: '第一次付款时间',
-            71: '第二次付款时间',
-            72: '公司合同',
-            73: '备注条款',
+            pay_first_date: '第一次付款时间',
+            pay_second_date: '第二次付款时间',
+            is_electronic_contract: '电子合同',
+            remark_terms: '备注条款',
           }, {
-            81: '合同编号',
+            contract_number: '合同编号',
           }
         ],
       ],
-      collection_show: {
-        91: '开户名',
-        92: '卡号',
-        93: '开户行',
-        94: '支行',
-        95: '与房东关系'
-      },
-      customer_show: {
-        11: '姓名',
-        12: '手机号',
-        13: '证件类型',
-        14: '证件号',
-      },
+      // collection_show: {
+      //   91: '开户名',
+      //   92: '卡号',
+      //   93: '开户行',
+      //   94: '支行',
+      //   95: '与房东关系'
+      // },
+      // customer_show: {
+      //   11: '姓名',
+      //   12: '手机号',
+      //   13: '证件类型',
+      //   14: '证件号',
+      // },
       showTitle: ['', '房屋信息', '合同信息', '相关信息', '收款信息', '客户信息'],
-      village_detail_form: {
-        city_name: {
-          label: '城市名称',
-          val: ''
-        },
-        area_name: {
-          label: '区/县名称',
-          val: ''
-        },
-        village_alias: {
-          label: '小区别名',
-          val: '',
-        },
-        address: {
-          label: '街道地址',
-          val: ''
-        },
-        built_year: {
-          label: '建筑年代',
-          val: ''
-        },
-        house_type: {
-          label: '房屋类型',
-          val: ''
-        },
-        total_buildings: {
-          label: '总栋数',
-          val: ''
-        },
-        property_fee: {
-          label: '物业费',
-          val: ''
-        },
-        property_phone: {
-          label: '物业电话',
-          val: ''
-        },
-        property_com: {
-          label: '物业公司',
-          val: ''
-        },
-        peripheral_info: {
-          label: '周边信息',
-          val: ''
-        },
-        remark: {
-          label: '备注',
-          val: ''
-        }
-      },
+
       village_pic: [],
       house_pic: [],
       files: [],
       outer_house_pic: [],
       outer_net_data: [],
       current_village_detail: '',
-      type: 2,
+      type: 1,
       comment_show_visible: false,
       comment_words: null,
       record_show_visible: false,
+      show_form_visible: false,
+      form_data: null,
       market_server: globalConfig.market_server,
+    }
+  },
+  watch: {
+    visible (val) {
+      if (val) this.handleGetDetail()
     }
   },
   methods: {
@@ -373,7 +269,6 @@ export default {
       this.comment_show_visible = !this.comment_show_visible
     },
     handleRecord () {
-      console.log(22)
       this.record_show_visible = true
     },
     handleCloseRecord () {
@@ -383,21 +278,23 @@ export default {
       console.log('暂缓')
     },
     handleGetDetail (village) {
-      this.$http.get(this.market_server + `v1.0/market/community/${village.id}`).then(res => {
+      // ${village.id}
+      this.$http.get(this.market_server + `v1.0/market/process/edit/197`).then(res => {
         if (res.code === 200) {
           console.log(res.data);
-          this.current_village_detail = res.data;
-          this.village_detail_visible = true;
-          for (var key in this.village_detail_form) {
-            this.village_detail_form[key].val = res.data[key] ? res.data[key] : '';
-          }
-          this.village_detail_form.city_name.val = res.data.city && res.data.city.city_name;
-          this.village_detail_form.area_name.val = res.data.area && res.data.area.area_name;
-          this.outer_net_data = res.data.outer_net_data ? res.data.outer_net_data : [];
-          var location = [res.data.longitude, res.data.latitude];
-          this.village_pic = res.data && res.data.album && res.data.album.village_photo ? res.data.album.village_photo : [];
-          this.house_pic = res.data && res.data.album && res.data.album.home_photo ? res.data.album.home_photo : [];
-          this.files = res.data && res.data.album && res.data.album.files ? res.data.album.files : [];
+          this.form_data = res.data.content
+          // this.current_village_detail = res.data;
+          // this.village_detail_visible = true;
+          // for (var key in this.village_detail_form) {
+          //   this.village_detail_form[key].val = res.data[key] ? res.data[key] : '';
+          // }
+          // this.village_detail_form.city_name.val = res.data.city && res.data.city.city_name;
+          // this.village_detail_form.area_name.val = res.data.area && res.data.area.area_name;
+          // this.outer_net_data = res.data.outer_net_data ? res.data.outer_net_data : [];
+          // var location = [res.data.longitude, res.data.latitude];
+          // this.village_pic = res.data && res.data.album && res.data.album.village_photo ? res.data.album.village_photo : [];
+          // this.house_pic = res.data && res.data.album && res.data.album.home_photo ? res.data.album.home_photo : [];
+          // this.files = res.data && res.data.album && res.data.album.files ? res.data.album.files : [];
           this.$nextTick(() => {
             this.handleDetailMap(location);
           })
@@ -409,33 +306,7 @@ export default {
           return false;
         }
       })
-    },
-    handleDetailMap (position) {
-      let that = this;
-      this.map = new AMap.Map('village-detail', {
-        resizeEnable: true,
-        center: position, //初始化地图中心点
-        zoom: 13
-      });
-      let infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(5, -20) });
-      var marker = new AMap.Marker({
-        position,
-        map: that.map
-      });
-      marker.content = this.current_village_detail && this.current_village_detail.village_name;
-      marker.on('click', markerClick);
-      marker.emit('click', { target: marker });
-      this.map.add(marker);
-      function markerClick (e) {
-        infoWindow.setContent(e.target.content);
-        infoWindow.open(that.map, e.target.getPosition());
-      }
-    },
-    //点击获取房型图
-    handleClickRow (row) {
-      console.log(row);
-      this.outer_house_pic = row.pic_address || [];
-    },
+    }
   }
 }
 </script>

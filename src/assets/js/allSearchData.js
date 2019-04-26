@@ -525,12 +525,16 @@ export const rewardDownSearch = {
 //公告
 export const noticeSearch = {
   status: 'noticeSearch',
-  data: []
+  placeholder: '请输入公告名称',
+  keywords: 'search',
+  data: [],
 }
 //问卷调查
 export const questionnaireSearch = {
   status: 'questionnaireSearch',
-  data: []
+  placeholder: '请输入问卷调查名称',
+  keywords: 'search',
+  data: [],
 }
 
 /*内务库房*/
@@ -543,18 +547,24 @@ export const overViewSearch = {
 //借用领用
 export const borrowReceiveSearch = {
   status: 'borrowReceiveSearch',
+  placeholder: '请输入搜索内容',
+  keywords: 'search',
   data: [
     {
-      keyType: 'organ',
+      keyType: 'depart',
       title: '部门',
       placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
+      keyName: 'org_id',
+      dataType: [],
+      value: {
+        num: 1,
+        arr: []
+      }
     },
     {
       keyType: 'radio',
       title: '申请类型',
-      keyName: 'radio',
+      keyName: 'type',
       dataType: '',
       value: [
         {
@@ -571,41 +581,42 @@ export const borrowReceiveSearch = {
     {
       keyType: 'radio',
       title: '申领状态',
-      keyName: 'radio',
+      keyName: 'apply_status',
       dataType: '',
       value: [
         {
-          id: 3,
+          id: 0,
           title: '待通知'
         },
         {
-          id: 4,
+          id: 1,
           title: '待领取'
         },
         {
-          id: 5,
+          id: 2,
           title: '部分领取'
         },
         {
-          id: 6,
+          id: 3,
           title: '已领取'
+        },
+        {
+          id: 4,
+          title: '放弃领取'
+        },
+        {
+          id: 5,
+          title: '待归还'
+        },
+        {
+          id: 6,
+          title: '部分已归还'
         },
         {
           id: 7,
           title: '已归还'
         },
-        {
-          id: 8,
-          title: '待归还'
-        },
-        {
-          id: 9,
-          title: '部分归还'
-        },
-        {
-          id: 10,
-          title: '放弃领取'
-        }
+
       ]
     },
 
@@ -613,52 +624,36 @@ export const borrowReceiveSearch = {
       keyType: 'dateRange',
       title: '申领日期',
       placeholder: '请选择日期',
-      keyName: 'date1',
+      keyName: 'apply_time',
       dataType: []
     },
 
     {
       keyType: 'radio',
       title: '物品状态',
-      keyName: 'radio',
+      keyName: 'goods_status',
       dataType: '',
       value: [
         {
-          id: 11,
+          id: 0,
+          title: '无'
+        },
+        {
+          id: 1,
           title: '待维修'
         },
         {
-          id: 12,
+          id: 2,
           title: '维修中'
         },
         {
-          id: 13,
+          id: 3,
           title: '已维修'
         },
         {
-          id: 14,
-          title: '维修报废'
+          id: 4,
+          title: '报废'
         },
-        {
-          id: 15,
-          title: '直接报废'
-        },
-        {
-          id: 16,
-          title: '部分维修'
-        },
-        {
-          id: 17,
-          title: '部分报废'
-        },
-        {
-          id: 18,
-          title: '完好'
-        },
-        {
-          id: 19,
-          title: '无'
-        }
       ]
     }
   ]
@@ -1036,6 +1031,33 @@ export const paySearchList = {
       }
     }
   ]
+}
+export const currentMonthAssessmentSearch = {
+    status: 'currentMonthAssessmentSearch',
+    keywords: 'search',
+    data: [
+      {
+        keyType: 'radio',
+        title: '发送状态',
+        keyName: 'sendStatus',
+        dataType: [],
+        value: [
+          { id: 1, title: '未发送' },
+          { id: 2, title: '已发送' }
+        ]
+      },
+      {
+        keyType: 'radio',
+        title: '确认状态',
+        keyName: 'confirmStatus',
+        dataType: [],
+        value: [
+          { id: 1, title: '未确认' },
+          { id: 2, title: '已确认' },
+          { id: 3, title: '有异议' }
+        ]
+      }
+    ]
 }
 
 //房源管理

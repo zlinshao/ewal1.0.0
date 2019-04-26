@@ -13,7 +13,7 @@
               <div class="personal-info-badge"><span>P2</span></div>
             </div>
             <div class="personal-info-status" title="工作状态工作状态工作状态">
-              工作状态工作状态工作状态
+              工作状态工作状态
             </div>
           </div>
           <div class="personal-group-button">

@@ -329,21 +329,51 @@ div.el-popover {
   #theme_name .el-button--info:hover {
     background-color: #dfdfdf;
     opacity: 1; }
-#theme_name .el-table::before {
-  height: 0; }
-#theme_name .el-table .tableHeader th div {
-  height: 40px;
-  line-height: 40px;
-  color: #686874;
-  font-weight: bold; }
-#theme_name .el-table tbody tr.current-row td {
+#theme_name .el-table {
+  background-color: transparent !important; }
+  #theme_name .el-table::before {
+    height: 0; }
+  #theme_name .el-table tr {
+    background-color: transparent !important; }
+  #theme_name .el-table th {
+    background-color: transparent !important; }
+  #theme_name .el-table .tableHeader th div {
+    height: 40px;
+    line-height: 40px;
+    color: #686874;
+    font-weight: bold; }
+  #theme_name .el-table tbody tr.current-row td {
+    background-color: transparent !important; }
+  #theme_name .el-table tbody tr:hover td {
+    background-color: transparent !important; }
+  #theme_name .el-table tbody tr td.el-table__expanded-cell[class*=cell] {
+    padding: 0; }
+  #theme_name .el-table tbody tr .expand-container .expand-top {
+    padding: 15px;
+    background-color: #E6F6F1 !important; }
+    #theme_name .el-table tbody tr .expand-container .expand-top td {
+      background-color: #E6F6F1 !important; }
+    #theme_name .el-table tbody tr .expand-container .expand-top th.is-leaf {
+      background-color: #E6F6F1 !important; }
+    #theme_name .el-table tbody tr .expand-container .expand-top .el-table__empty-block {
+      background-color: #E6F6F1 !important; }
+  #theme_name .el-table tbody tr .expand-container .expand-bottom {
+    padding: 15px;
+    background-color: #FFF6E5 !important; }
+    #theme_name .el-table tbody tr .expand-container .expand-bottom td {
+      background-color: #FFF6E5 !important; }
+    #theme_name .el-table tbody tr .expand-container .expand-bottom th.is-leaf {
+      background-color: #FFF6E5 !important; }
+    #theme_name .el-table tbody tr .expand-container .expand-bottom .el-table__empty-block {
+      background-color: #FFF6E5 !important; }
+#theme_name #staffRoster .el-table {
   background-color: white !important; }
-#theme_name .el-table tbody tr:hover td {
-  background-color: white !important; }
-#theme_name .el-table tbody tr .expand-container .expand-top thead th.is_leaf {
-  background-color: #E6F6F1; }
-#theme_name .el-table tbody tr .expand-container .expand-top .el-table__empty-block {
-  background-color: #E6F6F1; }
+  #theme_name #staffRoster .el-table tr, #theme_name #staffRoster .el-table th {
+    background-color: white !important; }
+  #theme_name #staffRoster .el-table tbody tr.current-row td {
+    background-color: white !important; }
+  #theme_name #staffRoster .el-table tbody tr:hover td {
+    background-color: white !important; }
 #theme_name .borderNone .el-input__inner,
 #theme_name .borderNone .el-textarea__inner {
   border: none;

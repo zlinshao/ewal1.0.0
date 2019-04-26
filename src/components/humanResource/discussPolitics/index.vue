@@ -420,7 +420,7 @@
         </div>
         <div class="meeting-detail-container" style="margin: 20px 0 0 0">
 
-          <div v-show="meeting_detail_choose_id==1" class="meeting-detail-form-container">
+          <div v-if="meeting_detail_choose_id==1" class="meeting-detail-form-container">
             <div class="form-item">
               <el-row :gutter="40">
                 <el-col :span="4">
@@ -531,7 +531,7 @@
               </el-row>
             </div>
           </div>
-          <div v-show="meeting_detail_choose_id==2" class="meeting-detail-form-container">
+          <div v-if="meeting_detail_choose_id==2" class="meeting-detail-form-container">
 
             <el-form ref="meetingSummaryFormRef" :disabled="!meeting_summary_editable" :rules="rules.meetingSummary"
                      :model="meeting_summary_form"
@@ -552,10 +552,10 @@
               </el-form-item>
 
               <el-form-item label="会议纪要上传人">
-                张三
+                {{meeting_summary_form.uploader}}
               </el-form-item>
               <el-form-item label="上传时间">
-                2019-08-23 12:21:22
+                {{meeting_summary_form.upload_time}}
               </el-form-item>
 
             </el-form>
@@ -572,7 +572,7 @@
                               :prop="'list.'+index+'.question'"
                               :rules="{required: true, message: '请输入遗留问题', trigger: 'blur'}"
                               label="遗留问题">
-                  <el-input style="width: 700px" placeholder="请输入遗留问题"
+                  <el-input style="width: 700px"
                             v-model="meeting_remaining_form.list[index].question"></el-input>
                   <span v-if="index==0 && meeting_summary_editable" class="btn_add"
                         style="position: absolute;right: 60px;top: 3px;"
@@ -587,14 +587,14 @@
                 <el-form-item required :prop="'list.'+index+'.follow_id'"
                               :rules="{required: true, message: '请选择跟进人', trigger: 'blur'}"
                               label="跟进人">
-                  <user-choose width="700" num="1" title="请选择跟进人"
+                  <user-choose width="700" num="1"
                                v-model="meeting_remaining_form.list[index].follow_id"></user-choose>
                 </el-form-item>
 
                 <el-form-item required :prop="'list.'+index+'.result'"
                               :rules="{required: true, message: '请输入跟进情况', trigger: 'blur'}"
                               label="跟进情况">
-                  <el-input placeholder="请输入跟进情况" style="width: 700px"
+                  <el-input style="width: 700px"
                             v-model="meeting_remaining_form.list[index].result" title="请输入跟进情况"></el-input>
                 </el-form-item>
 
@@ -619,12 +619,12 @@
         </div>
         <div class="dialog_footer" style="padding: 0;text-align: right">
           <div style="padding-right: 40px">
-            <el-button v-if="!meeting_summary_editable" type="primary" @click="meeting_detail_dialog_visible=false"
-                       plain>确定
+            <el-button v-if="!meeting_summary_editable" type="danger" @click="meeting_detail_dialog_visible=false"
+                       >确定
             </el-button>
-            <el-button v-if="meeting_summary_editable" type="primary" @click="handleSaveSummaryAndRemaining" plain>保存
+            <el-button v-if="meeting_summary_editable" type="danger" @click="handleSaveSummaryAndRemaining" >保存
             </el-button>
-            <el-button v-if="meeting_summary_editable" type="primary" @click="meeting_summary_editable=false" plain>取消
+            <el-button v-if="meeting_summary_editable" type="danger" @click="meeting_summary_editable=false" >取消
             </el-button>
           </div>
         </div>
@@ -1097,6 +1097,8 @@
           record: [],//会议记录人
           range: [],//会议纪要查看范围
           attachment: [],//附件=》会议纪要文件
+          uploader:'',//上传者
+          upload_time:'',//上传时间
         },
         meeting_remaining_form: {//历史遗留问题form表单
           list: [
@@ -1591,6 +1593,21 @@
           }
           return res;
         }).then(res => {
+          this.meeting_summary_form = {
+            record: [],//会议记录人
+            range: [],//会议纪要查看范围
+            attachment: [],//附件=》会议纪要文件
+          };
+          this.meeting_remaining_form = {
+            list: [
+              {
+                follow_id: null,//跟进人id int类型
+                question: '',//遗留问题
+                attachment: [],//遗留问题附件
+                result: '',//跟进情况
+              }
+            ],
+          };
           let meeting_id = res.data.id;
           this.$http.get(`${this.url}meeting/minutes/meeting/${meeting_id}`).then(res2 => {
             if (res2.code.endsWith('0')) {
@@ -1599,6 +1616,8 @@
               this.meeting_summary_form.attachment = _.map(item.attachment, 'id');
               this.meeting_summary_form.range = item.ranges || [];
               this.meeting_summary_form.record = item.records || [];
+              this.meeting_summary_form.uploader = item.user?.name;
+              this.meeting_summary_form.upload_time = item.created_at;
             }
           });
           let params2 = {

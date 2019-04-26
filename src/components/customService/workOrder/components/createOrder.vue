@@ -845,7 +845,7 @@ export default {
       switch (val) {
         case 1: this.record_visible = true; break;  //回访
         case 2: this.financial_visible = true; break; // 财务
-        case 3: this.financial_visible = true; break; // 退租
+        case 3: this.without_visible = true; break; // 退租
         case 4: this.expense_visible = true; break; // 报销
         default: break;
       }

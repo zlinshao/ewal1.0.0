@@ -22,22 +22,25 @@
             class="subLogTable"
             >
             <el-table-column
-              v-for="(item,index) in Object.keys(showData)" :key="index"
-              v-if="index<2"
               align="center"
-              :prop="item"
-              :label="showData[item]"
+              prop="name"
+              label="姓名"
               width="98px">
             </el-table-column>
             <el-table-column
-              v-for="(item,index) in Object.keys(showData)" :key="index"
-              v-if="index>=2"
               align="center"
-              :prop="item"
-              :label="showData[item]"
+              prop="department"
+              label="部门"
+              width="98px">
+            </el-table-column>
+            <el-table-column
+              v-for="(item, index) in showData" :key="index"
+              align="center"
+              prop="2019-04-21"
+              :label="item.date"
               class="tableCell">
               <template slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
+                <el-popover placement="bottom" trigger="click" v-if="index !== 4">
                     <div class="popoverHeader">
                       {{userName}}{{logTime}}
                     </div>
@@ -61,7 +64,33 @@
                       <h6>全部已读</h6>
                       <img :src="item" v-for="(item, index) in readAvatar" :key="index"/>
                     </div>
-                  <div slot="reference" style="cursor: pointer"><div @click="showCardDetail(scope.row,showData[item])">{{scope.row[item]}}</div></div>
+                  <div slot="reference" style="cursor: pointer"><div @click="showCardDetail(scope.row,showData[index].date)">{{scope.row[item.date]}}</div></div>
+                </el-popover>
+                <el-popover placement="bottom" trigger="click" offset="0" v-if="index == 4">
+                    <div class="popoverHeader">
+                      {{userName}}{{logTime}}
+                    </div>
+                    <div class="popoverComplete_work">
+                      今日完成工作
+                      <h6>{{dayLog.complete_work}}</h6>
+                    </div>
+                    <div class="popoverComplete_work">
+                      未完成工作
+                      <h6>{{dayLog.uncompleted_work}}</h6>
+                    </div>
+                    <div class="popoverComplete_work">
+                      需协调工作
+                      <h6>{{dayLog.coordinate_work}}</h6>
+                    </div>
+                    <div class="popoverComplete_work">
+                      备注
+                      <h6>{{dayLog.ps}}</h6>
+                    </div>
+                    <div class="popoverAlreadyRead">
+                      <h6>全部已读</h6>
+                      <img :src="item" v-for="(item, index) in readAvatar" :key="index"/>
+                    </div>
+                  <div slot="reference" style="cursor: pointer"><div @click="showCardDetail(scope.row,showData[index].date)">{{scope.row[item.date]}}</div></div>
                 </el-popover>
               </template>
             </el-table-column>
@@ -100,15 +129,13 @@
         pageSize: 5,
         total: 0,
         tableData: [],
-        showData: {
-          name: '姓名',
-          department: '部门',
-          dateFirst: '2019-04-13',
-          dateSecond: '2019-04-12',
-          dateThird: '2019-04-11',
-          dateForth: '2019-04-10',
-          dateFifth: '2019-04-09'
-        },
+        showData: [
+          {date:""},
+          {date:""},
+          {date:""},
+          {date:""},
+          {date:""},
+        ],
         userName: '',
         logTime: '',
         dayLog: {},
@@ -169,21 +196,20 @@
         })
       },
       initData() {
-        this.showData.dateFirst = this.getDay(-1)
-        this.showData.dateSecond = this.getDay(-2)
-        this.showData.dateThird = this.getDay(-3)
-        this.showData.dateForth = this.getDay(-4)
-        this.showData.dateFifth = this.getDay(-5)
+        //获取表头时间
+        for(let i = 0; i < this.showData.length; i++){
+          this.showData[i].date = this.getDay(-1-i)
+        }
         let param = {
           page: this.currentPage,
           limit: 5
         }
-        this.tableData = []
         this.$http.post(`${this.url}/staff/log/downLog`,param).then(res => {
           if(res.code === "20000") {
+            this.tableData = []
             this.total = res.data.data.length
             for (let i = 0; i < res.data.data.length; i++) {
-              // 遍历获取此用户所在部门
+              // 获取用户部门
               let department = ''
               for(let j = 0; j < res.data.data[i].org.length; j++){
                 department = department + res.data.data[i].org[j].name + '-'
@@ -192,12 +218,12 @@
                 id: res.data.data[i].id,
                 name: res.data.data[i].name,
                 department: department.substring(0,department.length-1),
-                dateFirst: res.data.data[i].user_log[0].length == 0 ? '' : res.data.data[i].user_log[0].log_info.complete_work,
-                dateSecond: res.data.data[i].user_log[1].length == 0 ? '' : res.data.data[i].user_log[1].log_info.complete_work,
-                dateThird: res.data.data[i].user_log[2].length == 0 ? '' : res.data.data[i].user_log[2].log_info.complete_work,
-                dateForth: res.data.data[i].user_log[3].length == 0 ? '' : res.data.data[i].user_log[3].log_info.complete_work,
-                dateFifth: res.data.data[i].user_log[4].length == 0 ? '' : res.data.data[i].user_log[4].log_info.complete_work,
               };
+              obj[this.showData[0].date] = res.data.data[i].user_log[0].length == 0 ? '' : res.data.data[i].user_log[0].log_info.complete_work
+              obj[this.showData[1].date] = res.data.data[i].user_log[1].length == 0 ? '' : res.data.data[i].user_log[1].log_info.complete_work
+              obj[this.showData[2].date] = res.data.data[i].user_log[2].length == 0 ? '' : res.data.data[i].user_log[2].log_info.complete_work
+              obj[this.showData[3].date] = res.data.data[i].user_log[3].length == 0 ? '' : res.data.data[i].user_log[3].log_info.complete_work
+              obj[this.showData[4].date] = res.data.data[i].user_log[4].length == 0 ? '' : res.data.data[i].user_log[4].log_info.complete_work
               this.tableData.push(obj);
             }
           }
@@ -230,9 +256,10 @@
   background-color: transparent!important; 
   padding: 0px 0px 0px 36px!important;
   color: black!important;
-  width: 376px!important;
+  // width: 315px!important;
   .popoverHeader{
     height:20px;
+    // width: 315px;
     margin-bottom: 3px;
     font-size:15px;
     font-family:MicrosoftYaHei-Bold;
