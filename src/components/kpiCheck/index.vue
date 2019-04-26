@@ -70,12 +70,14 @@
     },
     data() {
       return {
+        url: globalConfig.kpi,
         imgUrl: require('../../assets/image/todoList/components/humanResource/theme1/rili.png'),
         dialogVisible: false,
         feedBack: '反馈：',
       }
     },
     mounted() {
+      this.getKpiList()
     },
     activated() {
     },
@@ -94,7 +96,12 @@
     methods: {
       confirm: function(){
         this.dialogVisible = !this.dialogVisible
-      }
+      },
+      getKpiList(){
+        this.$http.get(`${this.url}/kpi/last_kpi?month=2019-03`).then(res => {
+        })
+      },
+
     },
   }
 </script>

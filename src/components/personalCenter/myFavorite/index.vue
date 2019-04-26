@@ -94,7 +94,6 @@
           if (res.status=== 200) { 
             for (let i = 0; i < res.data.length; i++) {
               this.total = res.data.length
-              console.log(res.data[i])
               this.favoriteList.push(res.data[i])
             }
           }
