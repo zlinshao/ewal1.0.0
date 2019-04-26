@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import Upload from './origin/upload';
+  import Upload from './upload';
 
   export default {
     name: "lj-upload",

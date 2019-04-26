@@ -552,10 +552,10 @@
               </el-form-item>
 
               <el-form-item label="会议纪要上传人">
-                张三
+                {{meeting_summary_form.uploader}}
               </el-form-item>
               <el-form-item label="上传时间">
-                2019-08-23 12:21:22
+                {{meeting_summary_form.upload_time}}
               </el-form-item>
 
             </el-form>
@@ -572,7 +572,7 @@
                               :prop="'list.'+index+'.question'"
                               :rules="{required: true, message: '请输入遗留问题', trigger: 'blur'}"
                               label="遗留问题">
-                  <el-input style="width: 700px" placeholder="请输入遗留问题"
+                  <el-input style="width: 700px"
                             v-model="meeting_remaining_form.list[index].question"></el-input>
                   <span v-if="index==0 && meeting_summary_editable" class="btn_add"
                         style="position: absolute;right: 60px;top: 3px;"
@@ -587,14 +587,14 @@
                 <el-form-item required :prop="'list.'+index+'.follow_id'"
                               :rules="{required: true, message: '请选择跟进人', trigger: 'blur'}"
                               label="跟进人">
-                  <user-choose width="700" num="1" title="请选择跟进人"
+                  <user-choose width="700" num="1"
                                v-model="meeting_remaining_form.list[index].follow_id"></user-choose>
                 </el-form-item>
 
                 <el-form-item required :prop="'list.'+index+'.result'"
                               :rules="{required: true, message: '请输入跟进情况', trigger: 'blur'}"
                               label="跟进情况">
-                  <el-input placeholder="请输入跟进情况" style="width: 700px"
+                  <el-input style="width: 700px"
                             v-model="meeting_remaining_form.list[index].result" title="请输入跟进情况"></el-input>
                 </el-form-item>
 
@@ -1097,6 +1097,8 @@
           record: [],//会议记录人
           range: [],//会议纪要查看范围
           attachment: [],//附件=》会议纪要文件
+          uploader:'',//上传者
+          upload_time:'',//上传时间
         },
         meeting_remaining_form: {//历史遗留问题form表单
           list: [
@@ -1614,6 +1616,8 @@
               this.meeting_summary_form.attachment = _.map(item.attachment, 'id');
               this.meeting_summary_form.range = item.ranges || [];
               this.meeting_summary_form.record = item.records || [];
+              this.meeting_summary_form.uploader = item.user?.name;
+              this.meeting_summary_form.upload_time = item.created_at;
             }
           });
           let params2 = {
