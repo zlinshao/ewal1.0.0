@@ -75,6 +75,8 @@
       <ContractDetail :visible='contract_detail_visible' @close='hiddenContractDetail' />
       <!-- 拓展新盘详情 -->
       <DevelopNewDish :visible='develop_visible' @close='hiddenDevelopNew' />
+
+      <FormDetail :visible='show_form_visible' />
     </div>
   </div>
 </template>
@@ -84,16 +86,18 @@ import SearchHigh from '../common/searchHigh.vue'
 import ControlPanel from './commponents/controlPanel'
 import ContractDetail from './commponents/contract_detail'
 import DevelopNewDish from './commponents/developNewDish'
-
+import FormDetail from './commponents/form_detail'
 export default {
   components: {
     SearchHigh, //高级搜索
     ControlPanel, // 控制面板
     ContractDetail, //详情
-    DevelopNewDish//新盘详情
+    DevelopNewDish,//新盘详情
+    FormDetail
   },
   data () {
     return {
+      show_form_visible:false,
       chosenTag: 1,
       shenHe_type: [
         {
@@ -142,6 +146,27 @@ export default {
       },
       params: {
         param1: {
+          search: '',
+          start_time: [],
+          finish_time: [],
+          type: null,
+          department: ''
+        },
+        param2: {
+          search: '',
+          start_time: [],
+          finish_time: [],
+          type: null,
+          department: ''
+        },
+        param3: {
+          search: '',
+          start_time: [],
+          finish_time: [],
+          type: null,
+          department: ''
+        },
+        param4: {
           search: '',
           start_time: [],
           finish_time: [],
@@ -314,7 +339,8 @@ export default {
     }
   },
   mounted () {
-    this.getTableData_all()
+    this.show_form_visible = true
+   // this.getTableData_all()
   },
   computed: {
     message_visible () {
@@ -374,18 +400,12 @@ export default {
     // 高级搜索
     highSearch () {
       this.showSearch = true
-      // this.searchData = this.searchHigh[this.current_type - 1]
-
     },
     changeShenTag (value) {
       if (this.chosenTag != value) {
         this.chosenTag = value
       }
     },
-
-    // 
-
-
     // 接收 挂起
     change_revice_type () {
       this.isRevice = !this.isRevice
@@ -415,9 +435,9 @@ export default {
     // 详情
     handlerDbclick (row) {
       this.current_row = row
-      if(row.type == 2){ // 拓展新盘
+      if (row.type == 2) { // 拓展新盘
         this.develop_visible = true
-      }else{
+      } else {
         this.contract_detail_visible = true
       }
     },
@@ -425,7 +445,7 @@ export default {
       this.contract_detail_visible = false
     },
     hiddenDevelopNew () {
-
+      this.develop_visible = false
     }
   }
 }
