@@ -17,14 +17,18 @@
             <el-table-column label="入职资料反馈" prop="info_status" align="center"></el-table-column>
             <el-table-column label="入职结果" align="center">
               <template slot-scope="scope">
-                <el-button size="mini" type="warning" plain @click="handleOpenEdit(scope.row)">{{
-                  entry_feedback[scope.row.entry_feedback]}}
+                <el-button v-if="scope.row.entry_feedback===0" size="mini" type="warning" plain @click="handleOpenEdit(scope.row)">未反馈
                 </el-button>
+                <el-button v-if="scope.row.entry_feedback===1" size="mini" type="warning" plain @click="handleEntryEdit(scope.row)">入职
+                </el-button>
+                <span v-if="scope.row.entry_feedback===2">拒绝入职</span>
+                <span v-if="scope.row.entry_feedback===3">已经入职</span>
               </template>
             </el-table-column>
             <el-table-column label="入职通知" align="center">
               <template slot-scope="scope">
-                <el-button size="mini" type="primary" plain @click="handleSendOffer(scope.row)">发送offer</el-button>
+                <el-button  v-if="!scope.row.offer_status" size="mini" type="primary" plain @click="handleSendOffer(scope.row)">发送offer</el-button>
+                <span v-else>offer已发送</span>
               </template>
             </el-table-column>
           </el-table>
@@ -224,10 +228,39 @@
                   </el-row>
                   <el-row>
                     <el-col :span="8">
+                      <el-form-item label="薪资等级">
+                        <el-input v-model="interview_info_detail.salary_level" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="职位等级">
+                        <el-input v-model="interview_info_detail.position_level" placeholder="请输入"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
                       <el-form-item label="支行行号">
                         <el-input v-model="interview_info_detail.branch_bank_code" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="第一次合同开始时间">
+                        <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.agreement_first_time" value-format="yyyy-MM-dd"></el-date-picker>
+                      </el-form-item>
+                    </el-col><el-col :span="8">
+                      <el-form-item label="第一次合同结束时间">
+                        <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.agreement_first_end_time" value-format="yyyy-MM-dd"></el-date-picker>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="第二次合同开始时间">
+                        <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.agreement_second_time" value-format="yyyy-MM-dd"></el-date-picker>
+                      </el-form-item>
+                    </el-col>
+
+                  </el-row>
+                  <el-row>
                     <el-col :span="8">
                       <el-form-item label="银行卡">
                         <a v-if="interviewee_info.bank_card_image_url && interviewee_info.bank_card_image_url.indexOf('.pdf') !== -1" :href="interviewee_info.bank_card_image_url" target="_blank">点击查看</a>
@@ -242,8 +275,6 @@
                         <a v-else>暂无</a>
                       </el-form-item>
                     </el-col>
-                  </el-row>
-                  <el-row>
                     <el-col :span="8">
                       <el-form-item label="原单位离职证明">
                         <img style="width: 30px;height: 30px;cursor: pointer" v-if="interviewee_info.leaveproof_image_url" :src="interviewee_info.leaveproof_image_url" data-magnify="" data-caption="图片查看器" :data-src="interviewee_info.leaveproof_image_url" alt="">
@@ -957,8 +988,12 @@
               title: '成功',
               message: res.msg
             });
-            this.getLabourInfo(res.data.user_id);
-            this.work_success = true;
+              this.ok_interviewee_visible = false;
+              setTimeout(() => {
+                  this.handleCancelEdit();
+                  this.interviewee_info_visible = false;
+              },1000);
+              this.getTableList();
           } else {
             this.$LjNotify('warning',{
               title: '失败',
@@ -975,48 +1010,69 @@
         this.interviewee_info_visible = false;
       },
       handleOkEdit() {
-        if (this.edit_result_form.entry_feedback === 1) {
-          this.$http.get(`recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
-            if (res.code === '20030') {
-              this.interviewee_info = res.data;
-              console.log(this.interviewee_info);
-              for (var key in this.interview_info_detail) {
-                this.interview_info_detail[key] = res.data[key] ? res.data[key] : null;
-              }
-              this.interviewee_info_visible = true;
-            } else {
-              this.interviewee_info = '';
-              this.$LjNotify('warning', {
-                title: '警告',
-                message: '未获取到信息'
-              });
-            }
-          }).catch(err => {
-            console.log(err);
-          })
-        } else if (this.edit_result_form.entry_feedback === 2) {
           this.$http.put(`recruitment/interviewer_process/entry_feedback/${this.currentRow.id}`, {
-            entry_feedback: this.edit_result_form.entry_feedback,
-            unentry_reason: this.edit_result_form.unentry_reason
+              entry_feedback: this.edit_result_form.entry_feedback,
+              unentry_reason: this.edit_result_form.unentry_reason
           }).then(res => {
-            if (res.code === '20000') {
-              this.$LjNotify('success', {
-                title: '成功',
-                message: '编辑成功'
-              })
-            } else {
-              this.$LjNotify('warning', {
-                title: '失败',
-                message: '编辑失败'
-              })
-            }
-            this.handleCancelEdit();
-            this.getTableList();
+              if (res.code === '20000') {
+                  this.$LjNotify('success', {
+                      title: '成功',
+                      message: '编辑成功'
+                  })
+              } else {
+                  this.$LjNotify('warning', {
+                      title: '失败',
+                      message: '编辑失败'
+                  })
+              }
+              this.handleCancelEdit();
+              this.getTableList();
           }).catch(err => {
-            console.log(err);
+              console.log(err);
           })
-        }
       },
+      //   if (this.edit_result_form.entry_feedback === 1) {
+      //     this.$http.get(`recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
+      //       if (res.code === '20030') {
+      //         this.interviewee_info = res.data;
+      //         console.log(this.interviewee_info);
+      //         for (var key in this.interview_info_detail) {
+      //           this.interview_info_detail[key] = res.data[key] ? res.data[key] : null;
+      //         }
+      //         this.interviewee_info_visible = true;
+      //       } else {
+      //         this.interviewee_info = '';
+      //         this.$LjNotify('warning', {
+      //           title: '警告',
+      //           message: '未获取到信息'
+      //         });
+      //       }
+      //     }).catch(err => {
+      //       console.log(err);
+      //     })
+      //   } else if (this.edit_result_form.entry_feedback === 2) {
+      //     this.$http.put(`recruitment/interviewer_process/entry_feedback/${this.currentRow.id}`, {
+      //       entry_feedback: this.edit_result_form.entry_feedback,
+      //       unentry_reason: this.edit_result_form.unentry_reason
+      //     }).then(res => {
+      //       if (res.code === '20000') {
+      //         this.$LjNotify('success', {
+      //           title: '成功',
+      //           message: '编辑成功'
+      //         })
+      //       } else {
+      //         this.$LjNotify('warning', {
+      //           title: '失败',
+      //           message: '编辑失败'
+      //         })
+      //       }
+      //       this.handleCancelEdit();
+      //       this.getTableList();
+      //     }).catch(err => {
+      //       console.log(err);
+      //     })
+      //   }
+      // },
       handleOpenEdit(row) {
         this.currentRow = row;
         this.edit_result_form.position = row.position.name;
@@ -1025,6 +1081,27 @@
         this.edit_result_form.info_status = row.info_status;
         this.edit_result_visible = true;
       },
+      handleEntryEdit(row) {
+        this.currentRow = row;
+        this.$http.get(`recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
+          if (res.code === '20030') {
+            this.interviewee_info = res.data;
+            console.log(this.interviewee_info);
+            for (var key in this.interview_info_detail) {
+              this.interview_info_detail[key] = res.data[key] ? res.data[key] : null;
+            }
+            this.interviewee_info_visible = true;
+          } else {
+            this.interviewee_info = '';
+            this.$LjNotify('warning', {
+              title: '警告',
+              message: '未获取到信息'
+            });
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+    },
       handleCancelEdit() {
         this.edit_result_form = {
           position: '',
