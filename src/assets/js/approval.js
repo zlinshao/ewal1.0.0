@@ -1,22 +1,3 @@
-// {
-// label: '房屋地址',// 标题
-// placeholder: '必填 请选择',// placeholder
-// readonly: 'readonly',// 只读 picker必须有值
-// disabled: 'disabled',// 禁用
-// keyName: 'house_address',// 字段名
-// keyType: '',// 数据类型
-//type: 'text',// input 类型
-// date为正常日期选择  arr picker源数据为数组确定值为int  obj picker源数据为对象确定值为{id:'',name:''}格式 arrs多列选择确定值为[] objInt确定值为 int 弹窗内选择日期dateformSpan
-// status: '',
-// picker: 'searchVillage',// 是否显示在弹窗内 不存在为正常输入框 值为picker正常选择 searchVillage 搜索小区
-// showForm: 'formatData',//picker 显示form 或 formatData
-// prompts: '',//红色提示信息
-// pickerRead: 'no', // 在弹窗内是否为readonly// 1房屋信息 2物品信息 3合同信息 4客户信息
-// formSpan: '',// 预留字段
-// },
-
-// checkbox  picktime radio()
-
 defineReport = {
   1: {
     slither0: [
@@ -24,505 +5,386 @@ defineReport = {
         label: '产权地址',
         placeholder: '必填 请输入',
         keyName: 'house_address',
-        keyType: '',
-        type: 'text',
-        status: 'input',
-        showForm: 'formatData'
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '门锁类型',
         placeholder: '必填 请选择',
         keyName: 'lock_type',
-        keyType: '1',
-        type: 'picker',
-        status: 'checkbox',
-        valueType: 'objInt',
-        showForm: 'formatData'
+        keyValue: '',
+        type: 'picker'
       },
       {
         label: '衣柜',
         placeholder: '必填 请选择',
         keyName: 'wardrobe',
-        keyType: '1',
-        type: 'picker',
-        status: 'checkbox',
-        valueType: 'objInt',
-        showForm: 'formatData'
+        keyValue: '',
+        type: 'picker'
       },
       {
         label: '持有证件',
         placeholder: '必填 请填入',
         keyName: 'holding_documents_type',
-        keyType: '',
-        type: 'text',
-        status: 'input',
-        showForm: 'formatData'
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '产权证号',
         placeholder: '必填 请填入',
         keyName: 'property_right_card_number',
-        keyType: '',
-        type: 'text',
-        status: 'input',
-        showForm: 'formatData'
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '丘权号',
         placeholder: '必填 请填入',
         keyName: 'qiu_quan_number',
-        keyType: '',
-        type: 'text',
-        status: 'input',
-        showForm: 'formatData'
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '户型',
-        placeholder: '必填',
+        placeholder: '必填 请填入',
         keyName: 'house_type',
-        keyType: [],
+        keyValue: [],
         type: 'picker',
-        status: 'checkbox',
-        showForm: 'formatData',
         children: [
-          [
-            {
-              placeholder: '-室',
-              keyName: 'room',
-              keyType: 0
-            },
-            {
-              placeholder: '-厅',
-              keyName: 'ting',
-              keyType: 0
-            },
-            {
-              placeholder: '-卫',
-              keyName: 'wei',
-              keyType: 0
-            }
-          ]
-        ] //picker 显示form 或 formatData
+          {
+            placeholder: '-室',
+            keyName: 'room',
+            keyValue: 0
+          },
+          {
+            placeholder: '-厅',
+            keyName: 'ting',
+            keyValue: 0
+          },
+          {
+            placeholder: '-卫',
+            keyName: 'wei',
+            keyValue: 0
+          }
+        ]
       },
       {
         label: '燃气灶',
+        placeholder: '必填 请填入',
         keyName: 'gas_stove',
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        num: 1,
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'input'
       },
       {
         label: '空调',
-        placeholder: '请填写',
+        placeholder: '必填 请填入',
         keyName: 'air_condition',
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        num: 1,
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '面积',
         placeholder: '请填写',
         keyName: 'area',
-        keyType: 0,
-        number: 0,
-        status: 'input',
-        type: 'number'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '洗衣机',
+        placeholder: '请填写',
         keyName: 'wash_machine',
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        num: 1,
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '电视',
+        placeholder: '请填写',
         keyName: 'television',
-        keyType: 1,
-        num: 1,
-        type: 'number',
-        status: 'input',
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '装修',
         placeholder: '必填',
         keyName: 'decorate',
-        keyType: '',
-        type: 'text',
-        status: 'input',
-        showForm: 'formatData' //picker 显示form 或 formatData
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '微波炉',
-        key: 'microwave',
-        keyType: 1,
-        num: 1,
-        type: 'number',
-        status: 'input',
-        showForm: 'formateData'
+        keyName: 'microwave',
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '衣架',
         keyName: 'clothe_rack',
-        num: 1,
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        status: 'number'
       },
       {
         label: '房屋类型',
-        placeholder: '必填',
-        disabled: 'disabled',
+        placeholder: '请选择',
         keyName: 'property_type',
-        keyType: '',
-        type: 'text',
-        status: 'checkbox',
-        showForm: 'formatData' //picker 显示form 或 formatDat
+        keyValue: '',
+        type: 'picker'
       },
       {
         label: '冰箱',
         keyName: 'fridge',
-        num: 1,
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '沙发',
         keyName: 'sofa',
-        num: 1,
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '朝向',
-        placeholder: '必填',
-        disabled: 'disabled',
+        placeholder: '请选择',
         keyName: 'direction',
-        keyType: '1',
-        type: 'text',
-        status: 'checkbox',
-        showForm: 'formatData' //picker 显示form 或 formatData
+        keyValue: '',
+        type: 'picker'
       },
       {
         label: '油烟机',
         keyName: 'hood',
-        num: 1,
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '椅子',
         keyName: 'chair',
-        num: 1,
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
-
       {
         label: '楼层',
         placeholder: '必填',
-        disabled: 'disabled',
         keyName: 'floors',
-        keyType: '',
-        type: 'text',
-        status: 'input',
-        showForm: 'formatData' //picker 显示form 或 formatData
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '热水器',
         keyName: 'water_heater',
-        placeholder: '',
-        num: 1,
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '床和床垫的情况',
         placeholder: '必填 请选择',
-        readonly: 'readonly',
         keyName: 'bed',
-        keyType: '1',
-        type: 'text',
-        status: 'checkbox',
-        showForm: 'formatData', //picker 显示form 或 formatData
-        picker: 'pickerArticle'
+        keyValue: '1',
+        type: 'picker'
       },
       {
         label: '物业电话',
-        disabled: 'disabled',
-        placeholder: '必填',
         keyName: 'property_phone',
-        keyType: '',
-        type: 'text',
-        status: 'input'
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'input'
       },
       {
         label: '餐桌',
         keyName: 'dining_table',
-        num: 1,
-        keyType: 1,
-        type: 'number',
-        status: 'input',
-        showForm: 'formateData'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'number'
       },
       {
         label: '卫生情况',
         placeholder: '必填 请选择',
-        readonly: 'readonly',
         keyName: 'is_clean',
-        keyType: '1',
-        type: 'text',
-        status: 'radio',
-        showForm: 'formatData', //picker 显示form 或 formatData
-        picker: 'pickerArticle'
+        keyValue: '1',
+        type: 'radio'
       },
       {
         label: '物业费',
-        disabled: 'disabled',
         placeholder: '必填',
         keyName: 'property_fee',
-        keyType: '',
-        type: 'text',
-        status: 'input'
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '是否有天然气',
         placeholder: '必填 请选择',
-        readonly: 'readonly',
         keyName: 'has_gas',
-        keyType: 1,
-        type: 'text',
-        status: 'radio',
-        showForm: 'formatData', //picker 显示form 或 formatData
-        picker: 'pickerArticle'
+        keyValue: 0,
+        type: 'radio'
       },
       {
         label: '家电是否补齐',
         placeholder: '必填 请选择',
-        readonly: 'readonly',
         keyName: 'is_fill',
-        keyType: 1,
-        type: 'text',
-        status: 'radio',
-        showForm: 'formatData', //picker 显示form 或 formatData
-        picker: 'pickerArticle'
+        keyValue: 0,
+        type: 'radio'
       },
       {
         label: '是否有暖气',
-        placeholder: '必填 请选择',
-        readonly: 'readonly',
         keyName: 'has_heater',
-        keyType: 1,
-        type: 'text',
-        status: 'radio',
-        showForm: 'formatData', //picker 显示form 或 formatData
-        picker: 'pickerArticle'
+        keyValue: 0,
+        type: 'radio'
       },
       {
         label: '窗帘情况',
         placeholder: '必填 请选择',
-        readonly: 'readonly',
         keyName: 'curtain',
-        keyType: 1,
-        type: 'text',
-        status: 'checkbox',
-        showForm: 'formatData', //picker 显示form 或 formatData
-        picker: 'pickerArticle'
+        keyValue: 0,
+        type: 'picker'
       },
       {
         label: '结束时间',
-        placeholder: '必填',
-        disabled: 'disabled',
         keyName: 'end_date',
-        keyType: '',
-        type: 'text',
-        status: 'picktimer',
-        picker: '',
-        length: 1,
+        keyValue: '',
+        type: 'picktimer',
         format: 'yyyy 年 MM 月 dd 日'
       },
       {
         label: '备注',
-        placeholder: '请输入',
         keyName: 'remark',
-        keyType: '',
-        type: 'textarea',
-        status: 'input',
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'textarea',
         formSpan: 24
       },
       {
         label: '其它问题',
-        placeholder: '请输入',
         keyName: 'other_remark',
-        keyType: '',
-        type: 'textarea',
-        status: 'input',
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'textarea',
         formSpan: 24
       },
       {
         label: '房屋影像',
-        placeholder: '请输入',
         keyName: 'ablum',
-        keyType: '',
+        keyValue: [],
         status: 'upload'
       }
     ],
     slither1: [
       {
         label: '签约时间',
-        placeholder: '必填 请选择',
         keyName: 'sign_date',
-        keyType: '',
-        status: 'picktimer',
-        picker: '',
-        length: 1,
+        keyValue: '',
+        type: 'picktimer',
         format: 'yyyy 年 MM 月 dd 日'
       },
       {
         label: '是否渠道',
-        placeholder: '必填 请选择',
         keyName: 'is_agency',
-        keyType: '',
-        type: 'text',
-        status: 'radio',
-        showForm: 'formatData' //picker 显示form 或 formatData
+        keyValue: '',
+        type: 'radio'
       },
       {
         label: '第一次付款时间',
-        placeholder: '必填 请选择',
         keyName: 'pay_first_date',
-        keyType: '',
-        status: 'picktimer',
-        picker: '',
-        length: 1,
+        keyValue: '',
+        type: 'picktimer',
         format: 'yyyy 年 MM 月 dd 日'
       },
       {
         label: '合同开始时间',
-        placeholder: '必填 请选择',
         keyName: 'begin_date',
-        keyType: '',
-        status: 'picktimer',
-        picker: '',
-        length: 1,
+        keyValue: '',
+        type: 'picktimer',
         format: 'yyyy 年 MM 月 dd 日'
       },
       {
         label: '渠道费',
-        placeholder: '请输入',
         keyName: 'agency_price',
-        keyType: '',
-        type: 'text',
-        status: 'input'
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '第二次付款时间',
         placeholder: '必填 请选择',
         keyName: 'pay_second_date',
-        keyType: '',
-        status: 'picktimer',
-        picker: '',
-        length: 1,
+        keyValue: '',
+        type: 'picktimer',
         format: 'yyyy 年 MM 月 dd 日'
       },
       {
         label: '合同结束时间',
         placeholder: '必填 请选择',
         keyName: 'end_date',
-        keyType: '',
+        keyValue: '',
         status: 'picktimer',
-        picker: '',
-        length: 1,
         format: 'yyyy 年 MM 月 dd 日'
       },
       {
         label: '是否是电子合同',
         placeholder: '必填 请选择',
         keyName: 'is_electronic_contract',
-        keyType: 1,
-        type: 'text',
-        status: 'radio',
-        showForm: 'formatData' //picker 显示form 或 formatData
+        keyValue: '',
+        type: 'radio'
       },
       {
         label: '签约时长',
         placeholder: '请输入',
         keyName: 'month',
-        keyType: 0,
-        type: 'number',
-        status: 'input'
-        // children: [
-        //   {
-        //     placeholder: '必填',
-        //     keyName: 'month',
-        //     keyType: 0,
-        //     spanLabel: '月'
-        //   },
-        //   {
-        //     placeholder: '选填',
-        //     keyName: 'day',
-        //     keyType: 0,
-        //     spanLabel: '天'
-        //   }
-        // ]
+        keyValue: 0,
+        type: 'input',
+        status: 'text'
       },
       {
         label: '月单价',
-        placeholder: '必填 月单价',
         keyName: 'month_unit_price',
-        keyType: 0,
-        type: 'number',
-        status: 'input'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '合同编号',
-        placeholder: '必填 请填写',
         keyName: 'contract_number',
-        keyType: 'LJSHE',
-        type: 'text',
-        status: 'input'
+        keyValue: 'LJSHE',
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '空置期天数',
-        placeholder: '请输入',
         keyName: 'vacancy',
-        keyType: 0,
-        type: 'number',
-        status: 'input'
+        keyValue: 0,
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '付款方式',
         placeholder: '请输入',
         keyName: 'pay_way',
-        keyType: '',
-        type: 'text',
-        status: 'input'
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'text'
       },
       {
         label: '备注条款',
         placeholder: '请输入',
         keyName: 'remark_terms',
-        keyType: '',
-        type: 'textarea',
-        status: 'input',
+        keyValue: '',
+        type: 'input',
+        typeStatus: 'textarea',
         formSpan: 24
       }
     ],
@@ -531,131 +393,83 @@ defineReport = {
         label: '开户名',
         placeholder: '必填 请输入',
         keyName: 'account_name',
-        keyType: '',
-        type: 'text',
-        status: 'input'
+        keyValue: '',
+        typeStatus: 'text',
+        type: 'input'
       },
       {
         label: '开户行',
         placeholder: '必填 请输入',
         keyName: 'bank',
-        keyType: '',
-        type: 'text',
-        status: 'input',
-        icon: 'bank'
+        keyValue: '',
+        typeStatus: 'text',
+        type: 'input'
       },
       {
         label: '与房东关系',
         placeholder: '必填 请输入',
         keyName: 'relationship',
-        keyType: '',
-        type: 'text',
-        status: 'input'
+        keyValue: '',
+        typeStatus: 'text',
+        type: 'input'
       },
       {
         label: '卡号',
         placeholder: '必填 请输入',
         keyName: 'account',
-        keyType: '',
-        type: 'text',
-        status: 'input'
+        keyValue: '',
+        typeStatus: 'text',
+        type: 'input'
       },
       {
         label: '支行',
         placeholder: '请输入',
         keyName: 'subbranch',
-        keyType: '',
-        type: 'text',
-        status: 'input'
+        keyValue: '',
+        typeStatus: 'text',
+        type: 'input'
       }
-      // {
-      //   keyName: null,
-      //   picker: 'addCustomer',
-      //   button: '增加房东'
-      // }
     ],
     slither3: [
       {
         keyName: 'subsidiary_customer',
-        keyType: [],
+        keyValue: [],
         button: '增加',
-        status: 'changeCount', // 会增加 删减客户
+        type: 'change', // 会增加 删减客户
         formSpan: 8,
         children: [
           [
             {
               label: '客户姓名',
-              placeholder: '必填 请输入',
               keyName: 'customer_name',
-              keyType: '',
-              type: 'text',
-              status: 'input'
+              keyValue: '',
+              typeStatus: 'text',
+              type: 'input'
             },
             {
               label: '手机号码',
-              placeholder: '必填 请输入',
               keyName: 'contact_phone',
-              keyType: '',
-              type: 'text',
-              status: 'input'
+              keyValue: '',
+              typeStatus: 'text',
+              type: 'input'
             },
             {
               label: '证件类型',
-              placeholder: '必填 请选择',
-              readonly: 'readonly',
               keyName: 'card_type',
-              keyType: '',
-              type: 'text',
-              status: 'input',
-              showForm: 'formatData', //picker 显示form 或 formatData
-              picker: 'picker'
+              keyValue: '',
+              typeStatus: 'text',
+              type: 'input'
             },
             {
               label: '证件号',
-              placeholder: '必填 请输入',
               keyName: 'card_id',
-              keyType: '',
-              type: 'text',
-              status: 'input'
+              keyValue: '',
+              typeStatus: 'text',
+              type: 'input'
             }
           ]
         ]
       }
-      // {
-      //   label: '客户姓名',
-      //   placeholder: '必填 请输入',
-      //   keyName: 'customer_name',
-      //   keyType: '',
-      //   type: 'text',
-      //   status: 'input',
-      // },
-      // {
-      //   label: '手机号码',
-      //   placeholder: '必填 请输入',
-      //   keyName: 'contact_phone',
-      //   keyType: '',
-      //   type: 'text',
-      //   status: 'input',
-      // },
-      // {
-      //   label: '证件类型',
-      //   placeholder: '必填 请选择',
-      //   readonly: 'readonly',
-      //   keyName: 'card_type',
-      //   keyType: '',
-      //   type: 'text',
-      //   status: 'checkbox',
-      //   showForm: 'formatData', //picker 显示form 或 formatData
-      //   picker: 'picker',
-      // },
-      // {
-      //   label: '证件号',
-      //   placeholder: '必填 请输入',
-      //   keyName: 'card_id',
-      //   keyType: '',
-      //   type: 'text',
-      //   status: 'input',
-      // }
     ]
   }
 }
