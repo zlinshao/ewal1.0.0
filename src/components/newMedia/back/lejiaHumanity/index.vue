@@ -16,7 +16,7 @@
 
             <div class="items-center listTopRight">
                 <div class="icons home_icon"></div>
-                <div class="icons add" @click="add_visible = true"><b>+</b></div>
+                <div class="icons add" @click="add"><b>+</b></div>
             </div>
         </div>
         <keep-alive>
@@ -65,6 +65,10 @@
             },
             getCancelAdd(val){
                 this.add_visible = val;
+            },
+            add(){
+                this.add_visible = true;
+                // alert(this.chooseTab)
             }
         }
     }

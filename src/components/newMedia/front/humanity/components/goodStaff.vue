@@ -5,15 +5,32 @@
             <div class="goodStaff-lists-info" v-for="(item,index) in goodStaffData">
                 <div class="goodStaff-box">
                     <div>
-                        <img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">
+                        <!--<img src="../../../../../assets/image/newMedia/theme1/staff.png" alt="">-->
+                        <img v-for="(ter,inx) in item.cover" :src="ter.uri" alt="" :key="inx">
                     </div>
                     <p>
-                        <span>{{item.user_id.org[0].name}}</span>
+                        <span v-for="(ters,inxd) in item.user_id.org" :key="inxd">{{ters.name}}</span>
                         <span>{{item.user_id.name}}</span>
                     </p>
                 </div>
             </div>
         </div>
+        <!--分页-->
+        <footer class="flex-center bottomPage">
+            <div class="develop flex-center">
+                <i class="el-icon-d-arrow-right"></i>
+            </div>
+            <div class="page">
+                <el-pagination
+                        :total="count"
+                        layout="total,jumper,prev,pager,next"
+                        :current-page="params.offset"
+                        :page-size="params.limit"
+                        @current-change="handleChangePage"
+                >
+                </el-pagination>
+            </div>
+        </footer>
     </div>
 </template>
 <script>
@@ -22,6 +39,11 @@
         data(){
             return{
                 goodStaffData:[],
+                params:{
+                    offset:1,
+                    limit:8,
+                },
+                count:0,
 
             }
         },
@@ -29,11 +51,16 @@
           this.getDataLists();
         },
         methods:{
+            handleChangePage(page){
+              this.params.offset=page;
+              this.getDataLists();
+            },
             getDataLists(){
                 this.$http.get(globalConfig.newMedia_sever+'/api/humanity/excellent',this.params).then(res=>{
                     if(res.status===200){
-                        this.goodStaffData = res.data.data;
+                        this.goodStaffData = res.data;
                         console.log(res);
+                        this.count=res.data.length;
                     }
                 })
             }

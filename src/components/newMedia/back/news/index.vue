@@ -183,7 +183,7 @@
                         </el-form-item>
                         <el-form-item label="文章内容">
                             <div class="item_content">
-                                <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>
+                                <lj-editor  :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
                             </div>
                         </el-form-item>
                     </el-form>
@@ -245,14 +245,14 @@
 
 <script>
     import LjDialog from '../../../common/lj-dialog.vue';
-    import UE from '../../../../components/common/UE.vue';
+    import LjEditor from '../../../common/lj-editor.vue';
     import mediaList from '../../components/mediaList.vue';
 
     export default {
         name: "index",
         components: {
             LjDialog,
-            UE,
+            LjEditor,
             mediaList
         },
         data() {

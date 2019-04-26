@@ -4,18 +4,39 @@
             <div class="staff_info" ref='viewBox'>
                 <div class="staff_list_info">
                     <div class="staff_box" v-for="(item,index) in staffData">
-                        <div class="flex-center" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
-                            <div class="img-modal" v-if="seen&&index===current">
-                                <span @click="routerLink(staffDetailUrl,item.id)"></span>
-                                <span @click="withdraw_visible = true;current_id = item.id"></span>
+                        <div class="staff_box_info">
+                            <div class="flex-center" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
+                                <div class="img-modal" v-if="seen&&index===current">
+                                    <span @click="routerLink(staffDetailUrl,item.id)"></span>
+                                    <span @click="withdraw_visible = true;current_id = item.id"></span>
+                                </div>
+                                <img v-for="(ter,inx) in item.cover" :src="ter.uri" alt="" :key="inx">
                             </div>
-                            <img :src="item.user_id.avatar" alt="">
+                            <p>
+                                <span v-for="(ters,inxd) in item.user_id.org" :key="inxd">{{ters.name}}</span>
+                                <span>{{item.user_id.name}}</span>
+                            </p>
                         </div>
-                        <p><span>{{item.depart}}</span><span>{{item.user_id.name}}</span></p>
                     </div>
 
                 </div>
             </div>
+            <!--分页-->
+            <footer class="flex-center bottomPage">
+                <div class="develop flex-center">
+                    <i class="el-icon-d-arrow-right"></i>
+                </div>
+                <div class="page">
+                    <el-pagination
+                            :total="count"
+                            layout="total,jumper,prev,pager,next"
+                            :current-page="params.offset"
+                            :page-size="params.limit"
+                            @current-change="handleChangePage"
+                    >
+                    </el-pagination>
+                </div>
+            </footer>
 
             <!--撤下优秀员工-->
             <lj-dialog :visible="withdraw_visible" :size="{width: 400 + 'px',height: 250 + 'px'}"
@@ -35,7 +56,35 @@
                 </div>
             </lj-dialog>
 
+            <!--新增-->
+            <lj-dialog :visible="add_visible" :size="{width:1200 + 'px' ,height: 800 + 'px'}" @close="cancelAddStatus">
+                <div class="dialog_container">
+                    <div class="dialog_header">
+                        <h3>新增优秀员工</h3>
+                    </div>
+                    <div class="dialog_main borderNone">
+                        <div>
+                            <el-form v-model="form" label-width="100px">
+                                <el-form-item label="员工姓名">
+                                    <el-input v-model="form.name" @focus="staffModule=true"></el-input>
+                                </el-form-item>
+                                <el-form-item label="员工照片">
+                                    <lj-upload v-model="form.file_info" size="40" style="position: absolute; top: -12px;"></lj-upload>
+                                </el-form-item>
+                                <el-form-item label="员工介绍">
+                                    <lj-editor  :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </div>
+                    <div class="dialog_footer">
+                        <el-button type="danger" size="small" @click="confirmAdd">确定</el-button>
+                        <el-button type="info" size="small" @close="cancelAddStatus">取消</el-button>
+                    </div>
+                </div>
+            </lj-dialog>
 
+            <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
 
         </div>
     </div>
@@ -44,23 +93,26 @@
 
 <script>
     import LjDialog from '../../../../common/lj-dialog.vue';
-    import UE from '../../../../../components/common/UE.vue';
+    import LjUpload from '../../../../common/lightweightComponents/lj-upload';
+    import StaffOrgan from '../../../../common/staffOrgan.vue';
+    import LjEditor from '../../../../common/lj-editor.vue';
+
     export default {
         name: "excellentStaff",
         components:{
             LjDialog,
-            UE,
+            LjEditor,
+            LjUpload,
+            StaffOrgan
         },
+        props: ['add_status','choose_type'],
         data(){
             return{
+                staffModule: false,//员工
                 params: {//查询参数
                     search: '',
-                    startRange: '',
-                    endRange: '',
-                    page: 1,
+                    offset: 1,
                     limit: 8,
-                    department_ids: '',
-                    export: '',
                 },
                 current: '',//当前
                 seen: false,//显隐
@@ -69,22 +121,80 @@
                 visible:false,
                 current_id:'',
                 staffData: [],
+                count:0,
                 form:{
-                    name:'赵丽颖',
-                    content:'国际上的飞机上的就发生的纠纷双方品搜东方'
+                    name:'',
+                    content:'',
+                    file_info:'',
+                    user_id:'',
                 },
+                add_visible:false,//新增
+                addForm:{
+
+                },
+                chooseTab:'',
             }
+        },
+        watch:{
+            add_status:{
+                handler(val){
+                    this.add_visible = val;
+                },deep:true
+
+            },
+            choose_type:{
+                handler(val){
+                    this.chooseTab = val;
+                },deep:true
+            },
         },
         mounted(){
             this.getDataLists();
             // this.$refs.viewBox.addEventListener('scroll', this.throttle(this.setpage, 200), false);
         },
         methods:{
-            getDataLists(){
+            hiddenStaff(ids, names, arr) {//获取员工信息
+                this.staffModule = false;
+                if (ids !== 'close') {
+                    this.form.name = names;
+                    this.form.user_id = ids[0];
+                }
+            },
+            cancelAddStatus(){//取消
+                this.add_visible = false;
+                this.current_id = '';
+                this.$emit('cancelAdd',this.add_visible)
+            },
+            confirmAdd(){//新增优秀员工
+              let paramsForm={
+                  user_id:this.form.user_id,
+                  content:this.form.content,
+                  cover:this.form.file_info[0],
+              }
+                this.$http.post(globalConfig.newMedia_sever+'/api/humanity/excellent',paramsForm).then(res=>{
+                    if(res.status===200){
+                        this.$LjNotify('success', {
+                            title: '成功',
+                            message: res.msg,
+                            subMessage: '',
+                        });
+                        this.add_visible=false;
+                        this.getDataLists();
+                        this.$emit('cancelAdd',this.add_visible);
+                    }
+                })
+            },
+            handleChangePage(page){
+              this.params.offset=page;
+              this.getDataLists();
+            },
+            getDataLists(){//加载列表
                 this.$http.get(globalConfig.newMedia_sever+'/api/humanity/excellent',this.params).then(res=>{
                     if(res.status===200){
-                        this.staffData = res.data.data;
+                        this.staffData = res.data;
+                        this.count=res.data.length;
                     }
+                    console.log(this.staffData);
                 })
             },
             // throttle(fn, delay, atleast) {
@@ -187,24 +297,27 @@
 
                 .staff_list_info {
                     .staff_box {
-                        > div {
-                            .img-modal {
-                                span:nth-child(1) {
-                                    @include starImg('theme1', 'staff_bianji.png');
+                        .staff_box_info{
+                            > div {
+                                .img-modal {
+                                    span:nth-child(1) {
+                                        @include starImg('theme1', 'staff_bianji.png');
+                                    }
+
+                                    span:nth-child(2) {
+                                        @include starImg('theme1', 'staff_shanchu.png');
+                                    }
                                 }
 
-                                span:nth-child(2) {
-                                    @include starImg('theme1', 'staff_shanchu.png');
+                                @include starImg('theme1', 'youxiu_grey.png');
+
+                                &:hover {
+                                    @include starImg('theme1', 'youxiu_red.png');
                                 }
+
                             }
-
-                            @include starImg('theme1', 'youxiu_grey.png');
-
-                            &:hover {
-                                @include starImg('theme1', 'youxiu_red.png');
-                            }
-
                         }
+
                     }
 
                 }

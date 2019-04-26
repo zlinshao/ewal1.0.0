@@ -136,7 +136,7 @@
             }
         },
         mounted() {
-            this.add_visible = this.add_status;
+            // this.add_visible = this.add_status;
             this.getDataLists();
         },
         watch: {
@@ -208,17 +208,19 @@
                 this.$http.get(globalConfig.newMedia_sever + '/api/humanity/birthday', this.params).then(res => {
                     if (res.status === 200) {
                         let birthdayData = res.data.data;
+                        // this.todayBirthday = res.data.data;
                         this.count = res.data.total;
                         let list = [];
                         for (let item of birthdayData) {
                             list.push({
-                                name: item.user_id.name,
-                                avatar: item.image_file_id.uri,
-                                department_name: item.user_id.org.length > 0 ? item.user_id.org[0].name : '',
+                                name: item.user_id?.name,
+                                avatar: item.cover[0]?.uri,
+                                department_name: item.user_id?.org[0]?.name,
                                 id: item.id
                             })
                         }
                         this.todayBirthday = list;
+                        console.log(this.todayBirthday)
                     }
                 })
             },
@@ -227,7 +229,7 @@
                 let paramsForm ={
                     user_id:this.form.user_id,
                     birthday_type:this.form.birthday_type,
-                    image_file_id:this.form.file_info[0],
+                    cover:this.form.file_info[0],
                 };
 
                 this.$http.post(globalConfig.newMedia_sever + '/api/humanity/birthday', paramsForm).then(res => {

@@ -187,7 +187,7 @@
                 </span>
             </div>
             <div class="edit_btn">
-                <span @click="">编 辑</span>
+                <span @click="openEditNewTraining">编 辑</span>
             </div>
             <!--新人训-->
             <div class="train-box" v-if="chooseTab===1">
@@ -232,6 +232,27 @@
                     <el-button type="info" size="small" @click="edit_visible = false;current_id = ''">取消</el-button>
                 </div>
             </div>
+        </lj-dialog>
+
+        <lj-dialog  :visible="newTraining_visible" :size="{width: 460 + 'px',height: 550 + 'px'}"
+                    @close="newTraining_visible = false">
+            <div class="dialog_container borderNone">
+                <div class="dialog_header">
+                    <h3>{{chooseTab===1?'新人训':'储备培训'}}</h3>
+                </div>
+                <div class="dialog_main">
+                    <el-form >
+                        <el-form-item v-for="(item,index) in chooseTab===1?newTrainData:storeData" :key="index">
+                            <el-input placeholder="请输入" v-model="item.title"></el-input>
+                        </el-form-item>
+                    </el-form>
+                </div>
+                <div class="dialog_footer">
+                    <el-button type="danger" size="small" @click="submit(flag)">确定</el-button>
+                    <el-button type="info" size="small" @click="newTraining_visible = false;">取消</el-button>
+                </div>
+            </div>
+
         </lj-dialog>
 
     </div>
@@ -294,6 +315,7 @@
                         promote_direction:'',//晋升方向介绍
                     }
                 },
+                newTraining_visible:false,//新人训储备培训
             }
         },
         computed:{
@@ -317,6 +339,9 @@
         methods:{
             openEdit(){
                 this.edit_visible=true;
+            },
+            openEditNewTraining(){
+                this.newTraining_visible=true;
             },
             selectTab(val,index){//切换menu
                 this.tab = val;
