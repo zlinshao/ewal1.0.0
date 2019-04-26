@@ -1,11 +1,11 @@
 <template>
+<div>
   <LjDialog :visible="visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleClose">
     <div class='dialog_container' id='form_detail'>
       <div class='dialog_header'>仙居雅苑</div>
-      <div class='dialog_main'>
+      <div class='dialog_main' v-if='visible && formData'>
 
         <el-form label-width='120px' v-for='(form,slither,index) in defineReport' :key='slither' v-if='visible && formData'>
-
           <VillageContainer :village="titleTips[index]">
             <!-- 付款信息 循环 row -->
             <el-row :gutter='10' v-if='titleTips[index]=="付款信息"'>
@@ -16,21 +16,29 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter='10'>
-              <el-col :span='cell.formSpan ? cell.formSpan : formSpan' v-for='(cell,cellIndex) in form' :key='cell.keyName'>
+            <!-- 可增加或者减少 -->
 
-                <!-- 可增加或者减少 -->
-                <el-form-item :label='child.label' v-for='(child,child_index) in cell.children' :key='child_index' v-if='cell.status == "changeCount"'>
-                  <el-input :type='child.type' v-model='formData[cell.keyName][cellIndex][child.keyName]' :placeholder='child.placeholder' />
+            <el-row :gutter='10' v-for='(cell,cellIndex) in form' :key='cell.keyName' v-if='cell.status == "changeCount"'>
+              <el-col :span='cell.formSpan ? cell.formSpan : formSpan' v-for='(child,child_index) in cell.children'
+                :key='child_index'>
+
+                <el-form-item :label='col.label' v-for='(col,col_index) in child' :key='col_index'>
+                  <el-input :type='col.type' v-model='formData[cell.keyName][child_index][col.keyName]' :placeholder='col.placeholder' />
                 </el-form-item>
 
                 <!-- 按钮 -->
                 <div v-if='cell.button' class='button_box'>
-                  <i class='icons icons_add' @click='changeCount(cell.keyName,cell.children)'></i>
-                  <span>{{cell.button}}</span>
+                  <i class='icons icons_add' v-if='child_index==0' @click='changeAddCount(cell.keyName,slither,cellIndex,child)'></i>
+                  <i class='icons icons_del' v-else @click='changeDelCount(cell.keyName,slither,cellIndex,child_index)'></i>
+                  <span>{{child_index==0?"增加":"删除"}}</span>
                 </div>
+              </el-col>
+            </el-row>
 
-                <el-form-item :label='cell.label' v-else-if='cell.status != "changeCount"'>
+            <el-row :gutter='10' v-if='form.status != "changeCount"'>
+              <el-col :span='cell.formSpan ? cell.formSpan : formSpan' v-for='(cell,cellIndex) in form' :key='cell.keyName'>
+
+                <el-form-item :label='cell.label'>
 
                   <template v-if='cell.status== "radio"'>
                     <el-radio v-model="formData[cell.keyName]" :label="dict_index" v-for='(dict,dict_index) in dicties[cell.keyName]'
@@ -73,12 +81,9 @@
                     <Ljupload size='40' v-model='formData[cell.keyName]'></Ljupload>
                   </template>
                 </el-form-item>
-
               </el-col>
-
             </el-row>
           </VillageContainer>
-
         </el-form>
 
       </div>
@@ -88,30 +93,47 @@
       </div>
     </div>
   </LjDialog>
+
+  
+  </div>
 </template>
 
 <script>
 import LjDialog from '../../common/lj-dialog.vue';
 import VillageContainer from '../../customService/village/components/village-container.vue';
 import Ljupload from '../../common/lightweightComponents/lj-upload'
+
 export default {
   props: ['visible'],
   components: {
     LjDialog,
     VillageContainer,
-    Ljupload
+    Ljupload,
+    
   },
   data () {
     return {
       formSpan: 8,
       formData: null,
       dicties,
-      defineReport,
-      titleTips: ['房屋信息', '合同信息', '付款信息', '客户信息'],
+      defineReports: JSON.parse(JSON.stringify(defineReport)),
+      titleTip: {
+        1:['房屋信息', '合同信息', '付款信息', '客户信息'],
+       
+      },
+      type:1,
       market_server: globalConfig.market_server,
     }
   },
-  created () {
+  computed:{
+    defineReport(){
+      return this.defineReports[this.type]
+    },
+    titleTips(){
+      return this.titleTip[this.type]
+    }
+  },
+  mounted () {
     this.resetForm()
   },
   methods: {
@@ -124,7 +146,7 @@ export default {
           formData[item.keyName] = item.keyType
           if (item.children) {
             let newval = {}
-            item.children.forEach(child => {
+            item.children[0].forEach(child => {
               newval[child.keyName] = child.keyType
             })
             formData[item.keyName].push(newval)
@@ -134,8 +156,13 @@ export default {
       this.formData = formData
       console.log(this.formData)
     },
-    changeCount (keyName, item) {
-      this.formData[keyName].push(item[0])
+    changeAddCount (keyName, slither, index, child) { // 添加keyname  index 和 approval中的children
+      this.formData[keyName].push(JSON.parse(JSON.stringify(this.formData[keyName][0])))
+      this.defineReport[slither][index].children.push(child)
+    },
+    changeDelCount (keyName, slither, cellIndex, childIndex) {
+      this.formData[keyName].splice(childIndex, 1)
+      this.defineReport[slither][cellIndex].children.splice(childIndex, 1)
     },
     handleClose () { },
     handlerSure () {

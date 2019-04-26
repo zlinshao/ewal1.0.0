@@ -73,10 +73,8 @@
       <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' />
       <!-- 详情 -->
       <ContractDetail :visible='contract_detail_visible' @close='hiddenContractDetail' />
-      <!-- 拓展新盘 -->
+      <!-- 拓展新盘详情 -->
       <DevelopNewDish :visible='develop_visible' @close='hiddenDevelopNew' />
-
-      <FormDetail :visible='show_form_visible' />
     </div>
   </div>
 </template>
@@ -86,18 +84,16 @@ import SearchHigh from '../common/searchHigh.vue'
 import ControlPanel from './commponents/controlPanel'
 import ContractDetail from './commponents/contract_detail'
 import DevelopNewDish from './commponents/developNewDish'
-import FormDetail from './commponents/form_detail'
+
 export default {
   components: {
     SearchHigh, //高级搜索
     ControlPanel, // 控制面板
     ContractDetail, //详情
-    DevelopNewDish,//新盘详情
-    FormDetail
+    DevelopNewDish//新盘详情
   },
   data () {
     return {
-      show_form_visible: false,
       chosenTag: 1,
       shenHe_type: [
         {
@@ -349,7 +345,6 @@ export default {
       type == 4 && this.getTableData_chao() // 抄送我的
     },
     getTableData_all () {
-      this.show_form_visible = true
       // let type = this.current_status_type
       // this.$http.get(`${this.approval_sever}${this.getHttpUrl(type)}?includeTaskLocalVariables=true`, this.params['param' + type]).then(res => {
       //   this.tableData['data' + type] = res.data
@@ -420,9 +415,11 @@ export default {
     // 详情
     handlerDbclick (row) {
       this.current_row = row
-      this.contract_detail_visible = true
-
-      // this.develop_visible = true
+      if(row.type == 2){ // 拓展新盘
+        this.develop_visible = true
+      }else{
+        this.contract_detail_visible = true
+      }
     },
     hiddenContractDetail () {
       this.contract_detail_visible = false
