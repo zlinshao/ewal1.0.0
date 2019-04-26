@@ -3,7 +3,8 @@
 
 
     <el-button @click="demo">测试</el-button>
-    <org-choose v-model="org_list"></org-choose>
+    <user-choose v-model="user_list"></user-choose>
+<!--    <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>
     <search-high></search-high>-->
 <!--    <button-upload></button-upload>-->
@@ -48,6 +49,7 @@
   import ButtonUpload from '@/components/common/lightweightComponents/ButtonUpload.vue';
   import {DROPDOWN_CONSTANT} from "../../../assets/js/allConstantData";
   import DropdownList from '../../../components/common/lightweightComponents/dropdown-list';
+  import UserChoose from '../../../components/common/lightweightComponents/UserChoose';
   import OrgChoose from '../../../components/common/lightweightComponents/OrgChoose.vue';
 
   export default {
@@ -65,6 +67,7 @@
       DropdownList,
       SearchHigh,
       OrgChoose,
+      UserChoose,
     },
     data() {
       return {
@@ -85,8 +88,9 @@
           }
         ],
         list: [4225067],
-        user_list: [211, 289, 3604, 3623, 3590, 3589],
-        org_list: [395, 396],
+        //user_list: [211, 289, 3604, 3623, 3590, 3589],
+        user_list: [3604, 3335, 3338, 3337, 3339, 3336, 3334, 3343, 3388, 3630],
+        org_list: [411,418, 419],
         paper_params: {
           paper_name: '新建问卷',
           title: '入职考试',
@@ -108,7 +112,7 @@
       },
 
       demo() {
-        console.log(this.org_list);
+        console.log(this.user_list);
       },
 
       demo2() {

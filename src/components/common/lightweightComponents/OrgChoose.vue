@@ -1,25 +1,27 @@
 <template>
-  <div id="orgChoose"  :style="{width:`${this.dropdownListWidth}px`}">
+  <div id="orgChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div class="input-container">
-      <el-input @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <el-input :title="inputContent" @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p class="icons organization"></p>
     </div>
 
-    <DepartOrgan :module="departModule" :organ-data="organData" @close="hiddenOrgan"></DepartOrgan>
+    <DepartOrgan :initial="value" :module="departModule" :organ-data="organData" @close="hiddenOrgan"></DepartOrgan>
   </div>
 </template>
 
 <script>
-  import DepartOrgan from './departOrgan';
+  import _ from 'lodash';
+  import DepartOrgan from './origin/departOrgan';
 
   export default {
     name: "OrgChoose",
-    props: ['value', 'width', 'num','title'],
+    props: ['value', 'width', 'num', 'title'],
     components: {
       DepartOrgan
     },
     data() {
       return {
+        url: globalConfig.humanResource_server,
         departModule: false,
         organData: {
           //num:1,
@@ -29,13 +31,26 @@
       }
     },
     watch: {
+      value: {
+        handler(val, oldVal) {
+          if (val && val.length > 0) {
+            let params = {
+              org_id:val
+            };
+            this.$http.get(`${this.url}organization/organization`,params).then(res=> {
+              this.inputContent = _.map(res.data.data,'name').join(',');
+            });
+          }
+        },
+        immediate: true,
+      },
       width: {
         handler(val, oldVal) {
           if (val) {
             this.dropdownListWidth = val;
           }
         },
-        immediate: true//第一次绑定也执行
+        immediate: true
       },
       num: {
         handler(val, oldVal) {
@@ -43,7 +58,7 @@
             this.organData.num = parseInt(val);
           }
         },
-        immediate: true//第一次绑定也执行
+        immediate: true
       }
     },
     methods: {

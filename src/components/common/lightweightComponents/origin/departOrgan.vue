@@ -45,12 +45,23 @@
 </template>
 
 <script>
-  import ljDialog from '../lj-dialog.vue';
+  import ljDialog from '../../lj-dialog.vue';
 
   export default {
     name: "depart-organ",
     components: {ljDialog},
-    props: ['module', 'organData'],
+    //props: ['module', 'organData'],
+
+    props: {
+      module: {},
+      organData: {},
+      value: {},
+      initial:{
+        default() {
+          return [];
+        }
+      },
+    },
     data() {
       return {
         depart_visible: false,
@@ -89,7 +100,7 @@
         },
         deep: true,
         immediate: true
-      }
+      },
     },
     computed: {},
     methods: {
@@ -105,7 +116,7 @@
       },
       //下级部门
       handleGetNextDepart(item) {
-        this.checkList = [];
+        //this.checkList = [];
         this.choose_list.push(item);
         this.getList(item.id);
       },
@@ -119,10 +130,20 @@
           this.fullLoading = false;
           if (res.code === '20000') {
             this.departList = res.data.data;
+            if(this.initial&&this.initial.length>0) {
+              _.forEach(this.initial,(o)=> {
+                let curOrg = _.find(this.departList,{id:o});
+                if(curOrg) {
+                  this.checkList.push(curOrg.id);
+                  this.checkList = _.uniq(this.checkList);
+                }
+              });
+            }
           }
         });
       },
       departInfo() {
+        this.checkList = _.uniq(this.checkList);
         let names = [], arr = [], str = '';
         for (let item of this.checkList) {
           for (let key of this.departList) {
@@ -141,10 +162,10 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../assets/scss/common/departOrgan.scss";
+  @import "../../../../assets/scss/common/departOrgan";
 
   @mixin organImg($m, $n) {
-    $url: '../../assets/image/departOrgan/' + $n + '/' + $m;
+    $url: '../../../../assets/image/departOrgan/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
