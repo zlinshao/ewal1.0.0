@@ -933,6 +933,7 @@
                 this.searchData = this.paySearchList;
             },
             hiddenModule(val) {// 确认搜索
+                console.log(val)
                 this.showSearch = false;
                 if (val !== 'close') {
                     console.log(val);

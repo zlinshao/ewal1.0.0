@@ -73,8 +73,10 @@
       <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' />
       <!-- 详情 -->
       <ContractDetail :visible='contract_detail_visible' @close='hiddenContractDetail' />
-      <!-- 拓展新盘 -->
+      <!-- 拓展新盘详情 -->
       <DevelopNewDish :visible='develop_visible' @close='hiddenDevelopNew' />
+
+      <FormDetail :visible='show_form_visible' />
     </div>
   </div>
 </template>
@@ -84,15 +86,18 @@ import SearchHigh from '../common/searchHigh.vue'
 import ControlPanel from './commponents/controlPanel'
 import ContractDetail from './commponents/contract_detail'
 import DevelopNewDish from './commponents/developNewDish'
+import FormDetail from './commponents/form_detail'
 export default {
   components: {
     SearchHigh, //高级搜索
     ControlPanel, // 控制面板
     ContractDetail, //详情
-    DevelopNewDish //新盘详情
+    DevelopNewDish,//新盘详情
+    FormDetail
   },
   data () {
     return {
+      show_form_visible:false,
       chosenTag: 1,
       shenHe_type: [
         {
@@ -127,15 +132,59 @@ export default {
       current_status_type: 1,
       current_type: 1, // 组员 或者 组长
       tableShow: {
-        start_time: '发起时间',
+        startTime: '发起时间',
         type: '报备类型',
         person: '报备人',
         house_name: '房屋地址',
         finish_tinme: '完成时间',
       },
+      tableData: {
+        data1: [],
+        data2: [],
+        data3: [],
+        data4: []
+      },
+      params: {
+        param1: {
+          search: '',
+          start_time: [],
+          finish_time: [],
+          type: null,
+          department: ''
+        },
+        param2: {
+          search: '',
+          start_time: [],
+          finish_time: [],
+          type: null,
+          department: ''
+        },
+        param3: {
+          search: '',
+          start_time: [],
+          finish_time: [],
+          type: null,
+          department: ''
+        },
+        param4: {
+          search: '',
+          start_time: [],
+          finish_time: [],
+          type: null,
+          department: ''
+        },
+      },
       tableData: [],
       tableCount: 8,
       currentPage: 1,
+      // 高级搜索参数
+      table_params: {
+        search: '',
+        start_time: [],
+        finish_time: [],
+        type: null,
+        department: ''
+      },
       //高级搜索
       searchHigh: {
         status: 'approval_leader',
@@ -286,61 +335,75 @@ export default {
       contract_detail_visible: false, //详情
       develop_visible: false, //新盘
       current_row: null,
-      market_server: globalConfig.market_server,
+      approval_sever: globalConfig.approval_sever
     }
+  },
+  mounted () {
+    this.show_form_visible = true
+   // this.getTableData_all()
   },
   computed: {
     message_visible () {
       return this.$store.state.approval.approval_message_visible
     },
   },
-  created () {
-    this.initData()
-  },
   methods: {
-    initData () {
-      for (let index = 0; index < 10; index++) {
-        this.tableData.push(
-          {
-            start_time: '发起时间',
-            type: '报备类型',
-            person: '报备人',
-            house_name: '房屋地址',
-            finish_tinme: '完成时间',
-            status: index < 3 ? 1 : index < 5 ? 2 : 3
-          }
-        )
+    // 获取 url 地址
+    getHttpUrl (type) {
+      let url = '';
+      switch (type) {
+        case 1:
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        case 4:
+          break;
+        default: break;
       }
+      return url
     },
-    // 获取列表数据
-    getDataTable () {
-      // this.$http.get(`${this.market_server}v1.0/market`).then(res=>{
-
+    getTableData (type) {
+      type == 1 && this.getTableData_all() //全部
+      type == 2 && this.getTableData_shen() // 我审批的
+      type == 3 && this.getTableData_buff() // 暂不处理
+      type == 4 && this.getTableData_chao() // 抄送我的
+    },
+    getTableData_all () {
+      // let type = this.current_status_type
+      // this.$http.get(`${this.approval_sever}${this.getHttpUrl(type)}?includeTaskLocalVariables=true`, this.params['param' + type]).then(res => {
+      //   this.tableData['data' + type] = res.data
       // })
     },
-    changeShenTag (value) {
-      if (this.chosenTag != value) {
-        this.chosenTag = value
-      }
+
+    getTableData_shen () {
+      this.$http.get(`${this.approval_sever}runtime/tasks/1/variables/outcome`).then(res => {
+        console.log(res)
+      })
     },
+    getTableData_buff () { },
+    getTableData_chao () { },
     change_status_type (val) {
       if (this.current_status_type !== val) {
-        this.current_status_type = val
-
+        this.current_status_type = val;
         this.currentPage = 1;
-        this.getDataTable() // 获取列表数据
+        this.getTableData(val)
+      }
+    },
+    hiddenModule (val) {
+      this.showSearch = false
+      if (val != 'close') {
+        this.getTableData(val)
       }
     },
     // 高级搜索
     highSearch () {
       this.showSearch = true
-      // this.searchData = this.searchHigh[this.current_type - 1]
-
     },
-    hiddenModule (val) {
-      this.showSearch = false
-      if (val != 'close') {
-        console.log(val)
+    changeShenTag (value) {
+      if (this.chosenTag != value) {
+        this.chosenTag = value
       }
     },
     // 接收 挂起
@@ -372,15 +435,17 @@ export default {
     // 详情
     handlerDbclick (row) {
       this.current_row = row
-      this.contract_detail_visible = true
-
-      // this.develop_visible = true
+      if (row.type == 2) { // 拓展新盘
+        this.develop_visible = true
+      } else {
+        this.contract_detail_visible = true
+      }
     },
     hiddenContractDetail () {
       this.contract_detail_visible = false
     },
     hiddenDevelopNew () {
-
+      this.develop_visible = false
     }
   }
 }
@@ -400,6 +465,12 @@ export default {
 }
 </style>
 <style lang="scss">
+#approval {
+  .searchModule,
+  .searchContent {
+    top: 0 !important;
+  }
+}
 </style>
 
 

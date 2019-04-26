@@ -432,7 +432,6 @@
         tableData: [],
         counts: 0,
         params: {
-          search: '',
           page: 1,
           limit: 8,
         },
@@ -521,7 +520,8 @@
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          this.params = val;
+          this.getNoticeList(val);
+          //this.params = val;
         },
         deep: true
       },
@@ -530,14 +530,12 @@
     methods: {
       //显示已读未读dialog对话框
       showReadDialog(id) {
-        debugger
         this.read_dialog_visible = true;
         this.detailData = [];
         this.userList_ids = [];
         this.read_choose_tab = 1;
         let params = {};
         this.$http.get(`${this.url}announcement/announcement/${id}`, params).then(res => {
-          debugger
           if (res.code.endsWith('0')) {
             this.detailData = res.data;
             this.userList_ids = this.detailData?.unread_user_id || [];
@@ -557,12 +555,18 @@
       },
 
       //获取公告列表
-      getNoticeList() {
+      getNoticeList(outerParams) {
         let params = {
+          ...outerParams,
           all: 1,
           ...this.params
         };
+        /*if(params.search) {
+          params.title = params.search;
+          //delete params.search;
+        }*/
         this.$http.get(`${this.url}announcement/announcement`, params).then(res => {
+          this.tableData = [];
           if (res.code.endsWith('0')) {
             this.tableData = res.data.data;
             this.counts = res.data.count;
@@ -607,7 +611,6 @@
               ...newForm
             };
             this.$http.post(`${this.url}announcement/announcement`, params).then(res => {
-              debugger
               if (res.code.endsWith('0')) {
                 this.$LjNotify('success', {
                   title: '成功',
@@ -635,7 +638,9 @@
         this.$http.get(`${this.url}announcement/announcement/${id}`).then(res => {
           if (res.code.endsWith('0')) {
             let mData = res.data;
-            debugger
+            _.forEach(mData.sanction_info,(o)=> {
+              o.user_id = [o.user_id];
+            });
             /*mData.sanction_info = _.forEach(mData.sanction_info,(o)=> {
               o.user_id = [parseInt(o.user_id)];
             });*/
@@ -646,16 +651,14 @@
 
       //提交编辑公告请求
       handleConfirmEditNotice() {
-        debugger
         this.$refs['publishNoticeForm'].validate(valid => {
-          debugger
           if (valid) {
             let newForm = this.publish_notice_form;
-            newForm.sanction_info = _.forEach(newForm.sanction_info, (o) => {
+            /*newForm.sanction_info = _.forEach(newForm.sanction_info, (o) => {
               if (o.user_id.constructor == Array) {
                 o.user_id = parseInt(o.user_id.join());
               }
-            });
+            });*/
             let params = {
               ...newForm
             };
@@ -711,7 +714,6 @@
               ...this.add_notice_type_form
             };
             this.$http.post(`${this.url}announcement/announcement_type`, params).then(res => {
-              //debugger
               if (res.code.endsWith('0')) {
                 this.$LjNotify('success', {
                   title: '成功',

@@ -35,9 +35,9 @@ export default {
   data () {
     return {
       transfer: {
-        personName: '',
-        person: "",
-        note: ""
+        personName: null,
+        person: null,
+        note: null
       },
       staffModule: false, // 选择人员
       organData: {
@@ -61,6 +61,14 @@ export default {
     },
     handleCloseTranfer (isTrue) {
       if (isTrue) {
+        if (!this.transfer.personName) {
+          this.$LjNotify('success', {
+            title: '提示',
+            message: '转交对象未选择'
+          });
+          return
+        }
+
         let option = {
           work_order_id: this.data.id,
           operate_user_id: this.transfer.person[0],
@@ -69,14 +77,17 @@ export default {
         }
 
         this.$http.post(`${this.market_server}v1.0/csd/work_order/tranfer`, option).then(res => {
+          let warn = null
+          if (res.code === 200) {
+            warn = '转交成功'
+            this.$emit('close', false)
+          } else {
+            warn = '转交失败'
+          }
           this.$LjNotify('success', {
             title: '提示',
-            message: res.message
+            message: warn
           });
-
-          if (res.code === 200) {
-            this.$emit('close', false)
-          }
         })
       } else {
         this.$emit('close', true)

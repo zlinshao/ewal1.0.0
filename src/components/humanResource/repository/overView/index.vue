@@ -1120,7 +1120,8 @@
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          this.params = val;
+          debugger
+          //this.params = val;
           this.getRepositoryList();
         },
         deep: true
@@ -1500,8 +1501,8 @@
 
       getRepositoryList() {
         this.currentTable = 'repository';
-        this.tableSettingData[this.currentTable].tableData = [];
         this.$http.get(this.url + 'eam/eam', this.tableSettingData[this.currentTable].params).then(res => {
+          this.tableSettingData[this.currentTable].tableData = [];
           if (res.code == '20000') {
             for (let item of res.data.data) {
               let obj = {
@@ -1529,8 +1530,8 @@
         this.tableSettingData.borrowReceive.table_dialog_visible = true;
         this.currentTable = 'borrowReceive';
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
-        this.tableSettingData[this.currentTable].tableData = [];
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, this.tableSettingData[this.currentTable].params).then(res => {
+          this.tableSettingData[this.currentTable].tableData = [];
           if (res.code == '20000') {
             for (let item of res.data.data) {
               let obj = {

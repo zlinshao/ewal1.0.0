@@ -58,7 +58,7 @@
             this.dropdown_code = '';
             return;
           }
-          this.dropdown_code = Number(this.value);
+          this.dropdown_code = Number(this.value)||'';
           /*if (this.arr) {
             this.dropdown_code = Number(this.value);
           } else {

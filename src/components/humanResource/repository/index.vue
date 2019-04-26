@@ -1,10 +1,5 @@
 <template>
-<!--  <img-slider></img-slider>-->
-
   <div id="repository">
-    <!--<div>
-      <img-slider></img-slider>
-    </div>-->
     <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
@@ -173,10 +168,10 @@
         if (val !== 'close') {
           switch (this.chooseTab) {
             case 1:
-              this.searchFruit1 = val;
+              this.searchFruit1 = _.cloneDeep(val);
               break;
             case 2:
-              this.searchFruit2 = val;
+              this.searchFruit2 = _.cloneDeep(val);
               break;
           }
         }
@@ -200,7 +195,7 @@
         this.$nextTick(function () {
           switch (id) {
             case 1:
-              this.searchFruit1 = this.handleSearch(this.staffBookSearch);
+              this.searchFruit1 = this.handleSearch(this.borrowReceiveSearch);
               break;
           }
         });

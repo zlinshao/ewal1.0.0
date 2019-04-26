@@ -17,13 +17,13 @@
           <span @click="todoListHandler">待办</span>
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
-            <ul>
-              <li>
-                <span>web前端-面试任务</span>
-                <span>2019/1/20 21:00</span>
+            <!-- <ul>
+              <li v-for='(item,index) in messageTable' :key='item.id' v-if='item.id && index<4'>
+                <span>{{item.owner}}-{{item.name}}</span>
+                <span>{{item.createTime}}</span>
               </li>
-              <li class='seeMore' @click.stop='openMessage'>更多</li>
-            </ul>
+              <li class='seeMore' @click.stop='openMessage' v-if='messageTable.length > 4'>更多</li>
+            </ul> -->
           </div>
           <span @click="openNotify">更多</span>
         </div>
@@ -41,11 +41,10 @@
           <p @click="routerLink('/personalCenter')">
             <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
           </p>
-
-          <span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span>
-
+            <!--&lt;!&ndash;<span class="icon3024 icon-personal-center"   @click="routerLink('/messageCenter')"></span>&ndash;&gt;-->
+          <!--<span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span>-->
+          <!--<span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span>-->
           <!--<span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span>-->
-
         </div>
       </div>
     </header>
@@ -168,9 +167,10 @@ export default {
           English: 'Intellectual Property Protection',
         },
       ],
+      messageTable: [],
+      market_server: globalConfig.market_server,
     }
   },
-  mounted () { },
   watch: {
     $route: {
       handler (val, oldVal) {
@@ -198,7 +198,18 @@ export default {
       return this.$store.state.approval.approval_message_visible
     }
   },
+  created () {
+    this.getPerson()
+  },
   methods: {
+    getPerson () {
+      this.$http.get(`${this.market_server}v1.0/market/dictionary/parent_son`).then(res => {
+        if (res.success) {
+          console.log(res)
+          diact = res.data
+        }
+      })
+    },
     todoListHandler () {
       //this.routerLink('/todoList');
       this.$store.dispatch('change_todo_list_visible');

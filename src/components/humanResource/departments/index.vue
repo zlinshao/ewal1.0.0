@@ -20,7 +20,7 @@
         <el-tooltip content="新增部门" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
-        <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2"></div>
+        <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2 && chooseTab !== 1"></div>
       </div>
     </div>
 
