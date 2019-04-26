@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import DepartOrgan from '../departOrgan';
+  import DepartOrgan from './departOrgan';
 
   export default {
     name: "OrgChoose",

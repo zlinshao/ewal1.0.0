@@ -1,7 +1,11 @@
 <template>
   <div class="demo-container" style="width: 800px">
-    <el-button>测试</el-button>
-    <search-high></search-high>
+
+
+    <el-button @click="demo">测试</el-button>
+    <org-choose v-model="org_list"></org-choose>
+    <!--<el-button>测试</el-button>
+    <search-high></search-high>-->
 <!--    <button-upload></button-upload>-->
 <!--    <count-down :datetime="datetime"></count-down>-->
     <!--<el-button @click="paper_visible=true">测试</el-button>
@@ -44,6 +48,7 @@
   import ButtonUpload from '@/components/common/lightweightComponents/ButtonUpload.vue';
   import {DROPDOWN_CONSTANT} from "../../../assets/js/allConstantData";
   import DropdownList from '../../../components/common/lightweightComponents/dropdown-list';
+  import OrgChoose from '../../../components/common/lightweightComponents/OrgChoose.vue';
 
   export default {
     name: "index",
@@ -59,13 +64,13 @@
       ButtonUpload,
       DropdownList,
       SearchHigh,
+      OrgChoose,
     },
     data() {
       return {
         DROPDOWN_CONSTANT,
         datetime:'2019-05-01',
         daysList: [],
-        demo:'',
         sliders: [
           {
             id: 10086,
@@ -100,6 +105,10 @@
       demoSuccess(exam) {
         debugger
         console.log(exam);
+      },
+
+      demo() {
+        console.log(this.org_list);
       },
 
       demo2() {

@@ -420,7 +420,7 @@
         </div>
         <div class="meeting-detail-container" style="margin: 20px 0 0 0">
 
-          <div v-show="meeting_detail_choose_id==1" class="meeting-detail-form-container">
+          <div v-if="meeting_detail_choose_id==1" class="meeting-detail-form-container">
             <div class="form-item">
               <el-row :gutter="40">
                 <el-col :span="4">
@@ -531,7 +531,7 @@
               </el-row>
             </div>
           </div>
-          <div v-show="meeting_detail_choose_id==2" class="meeting-detail-form-container">
+          <div v-if="meeting_detail_choose_id==2" class="meeting-detail-form-container">
 
             <el-form ref="meetingSummaryFormRef" :disabled="!meeting_summary_editable" :rules="rules.meetingSummary"
                      :model="meeting_summary_form"
@@ -1591,6 +1591,21 @@
           }
           return res;
         }).then(res => {
+          this.meeting_summary_form = {
+            record: [],//会议记录人
+            range: [],//会议纪要查看范围
+            attachment: [],//附件=》会议纪要文件
+          };
+          this.meeting_remaining_form = {
+            list: [
+              {
+                follow_id: null,//跟进人id int类型
+                question: '',//遗留问题
+                attachment: [],//遗留问题附件
+                result: '',//跟进情况
+              }
+            ],
+          };
           let meeting_id = res.data.id;
           this.$http.get(`${this.url}meeting/minutes/meeting/${meeting_id}`).then(res2 => {
             if (res2.code.endsWith('0')) {

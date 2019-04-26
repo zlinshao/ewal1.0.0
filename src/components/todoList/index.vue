@@ -96,11 +96,17 @@ export default {
     todo_list_container: {
       handler (val, oldVal) {
         //console.log(val, oldVal);
-        this.todo_list_container_arr[0] = val.slice(0, 5);
-        this.todo_list_container_arr[1] = val.slice(5);
+        if(val&&val.length>=0&&val.length<=5) {
+          this.todo_list_container_arr[0] = val.slice(0, val.length);
+        }else if(val.length<=10) {
+          this.todo_list_container_arr[0] = val.slice(0, 5);
+          this.todo_list_container_arr[1] = val.slice(5,val.length);
+        } else {
+          this.todo_list_container_arr[0] = val.slice(0, 5);
+          this.todo_list_container_arr[1] = val.slice(5);
+        }
       },
-      //deep:true,
-      immediate: true//第一次绑定也执行
+      immediate: true
     },
   },
   data () {
