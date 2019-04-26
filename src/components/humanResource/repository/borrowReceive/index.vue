@@ -133,7 +133,8 @@
     >
       <div class="dialog_container repository-overview">
         <div class="dialog_header">
-          <h3 :title="tableSettingData.borrowReceive.formData.approvalId+'详情'" class="dialog-header-title">{{tableSettingData.borrowReceive.formData.approvalId}} 详情</h3>
+          <h3 :title="tableSettingData.borrowReceive.formData.approvalId+'详情'" class="dialog-header-title">
+            {{tableSettingData.borrowReceive.formData.approvalId}} 详情</h3>
           <div class="header_right">
 
             <div class="detail-container">
@@ -215,7 +216,7 @@
                 <select disabled>
                   <option value="1">{{tableSettingData.borrowReceive.formData.responsibleType}}</option>
                 </select>
-                <select disabled>
+                <select disabled style="width: 160px">
                   <option value="1">{{tableSettingData.borrowReceive.formData.responsibleName}}</option>
                 </select>
               </div>
@@ -547,6 +548,7 @@
   import _ from 'lodash';
   import utils from '../../../../utils/myUtils';
   import LjDialog from '../../../common/lj-dialog.vue';
+
   //import Upload from '../../../common/upload.vue';
   import ImgSlider from '../../../common/lightweightComponents/ImgSlider';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
@@ -578,11 +580,8 @@
         tableData: [],
         counts: 0,
         params: {
-          search: '',
           page: 1,
-          limit: 30,
-          org_id: '',
-          position_id: '',
+          limit: 10,
         },
 
         currentTable: '',
@@ -712,7 +711,10 @@
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          this.params = val;
+          debugger
+          //this.getBorrowReceiveList(val);
+          this.getBorrowReceiveList(val);
+          //this.params = val;
         },
         deep: true
       },
@@ -729,7 +731,7 @@
       sendReceiveNotify() {
         let id = this.is_notify_form.id;
         let user_id = this.is_notify_form.user_id;
-        if(user_id.constructor==Array) {
+        if (user_id.constructor == Array) {
           user_id = user_id[0];
         }
         let params = {user_id: user_id};
@@ -751,18 +753,20 @@
       },
 
       setPerson(row) {
-        console.log(row);
         this.is_notify_visible = true;
         this.is_notify_form.user_id = row.user_id;
         this.is_notify_form.id = row.id;//流程id
       },
 
       //获取借用领用详情list
-      getBorrowReceiveList() {
+      getBorrowReceiveList(outerParams = {}) {
         this.currentTable = 'borrowReceive';
-        this.tableSettingData[this.currentTable].tableData = [];
-        this.$http.get(this.url + 'eam/process', this.tableSettingData[this.currentTable].params).then(res => {
-          console.log(res);
+        let params = {
+          ...outerParams,
+          ...this.tableSettingData[this.currentTable].params,
+        };
+        this.$http.get(this.url + 'eam/process', params).then(res => {
+          this.tableSettingData[this.currentTable].tableData = [];
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let obj = {
@@ -774,17 +778,25 @@
                 department: item.user?.org[0]?.name || '-',//部门
                 applyTime: item.apply_time || '-',//申请日期
                 //applyStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS[item.apply_status],//申请状态
-                applyStatus: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS, (o)=> {return o.id==item.apply_status})?.name || '-',//申请状态
+                applyStatus: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS, (o) => {
+                  return o.id == item.apply_status
+                })?.name || '-',//申请状态
                 //goodsStatus: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS[item.goods_status],//物品状态
-                goodsStatus: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS, (o)=> {return o.id==item.goods_status})?.name || '-',//物品状态
+                goodsStatus: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.GOODS_STATUS, (o) => {
+                  return o.id == item.goods_status
+                })?.name || '-',//物品状态
                 repairPrice: item.repair_price || 0,//维修总费用
                 scrapPrice: item.scrap_price || 0,//报废总费用
                 //responsibleType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE[item.responsible?.type] || '-',//任责人类型
-                responsibleType: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE, (o)=> {return o.id==item.responsible?.type})?.name || '-',//任责人类型
+                responsibleType: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RESPONSIBLE, (o) => {
+                  return o.id == item.responsible?.type
+                })?.name || '-',//任责人类型
                 responsibleName: item.responsible?.responsible_info?.name || '-',//任责人
                 //costType: item.responsible?.payment_type||0//付款类型-结算方式
                 //costType: DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT[item.responsible?.payment_type || 0],//付款类型-结算方式
-                costType: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT, (o)=> {return o.id==item.responsible?.payment_type})?.name || '-',//付款类型-结算方式
+                costType: _.find(DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.PAYMENT, (o) => {
+                  return o.id == item.responsible?.payment_type
+                })?.name || '-',//付款类型-结算方式
                 receive_picture: item.receive_picture || [],
                 user_id: item.user_id,
               };
@@ -840,7 +852,7 @@
                 repair_price: item.repair_price || 0,//维修费用
                 scrap_price: item.scrap_price || 0,//报废费用
                 username: item.user?.name || '-',//领取人name
-                receive_user_id: item.user_id,//领取人id
+                receive_user_id: [item.user_id],//领取人id
                 return_date: item.return_date,//归还日期
               };
               this.tableSettingData[this.currentTable].tableData.push(obj);
@@ -906,7 +918,6 @@
 
       //保存
       btnSave() {
-        debugger
         //is_show_selection = false;batch_set_return_time_visible = false;batch_set_receive_person_visible = false
         let ids = this.tableSettingData.borrowReceive.currentSelection.id;
         let control = this.tableSettingData.goods;
@@ -927,7 +938,7 @@
                 control.showSaveCancel = false;
                 control.modifyAll = false;
               }*/
-              this.$LjMessageEasy(res,()=> {
+              this.$LjMessageEasy(res, () => {
                 control.showSaveCancel = false;
                 control.modifyAll = false;
               });
@@ -943,14 +954,14 @@
             return;
           }
           let multiRows = control.multipleSelection;
-          if(!multiRows || multiRows.length==0) {
-            this.$LjMessage('warning',{
-              title:'警告',
-              msg:'请至少选择一项',
+          if (!multiRows || multiRows.length == 0) {
+            this.$LjMessage('warning', {
+              title: '警告',
+              msg: '请至少选择一项',
             });
             return;
           }
-          if (multiRows&&multiRows.length>0) {
+          if (multiRows && multiRows.length > 0) {
             for (let myItem of multiRows) {
               myItem['receive_user_id'] = control.batchUser[0];
               let params = {goods: [myItem]};

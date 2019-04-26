@@ -525,12 +525,16 @@ export const rewardDownSearch = {
 //公告
 export const noticeSearch = {
   status: 'noticeSearch',
-  data: []
+  placeholder: '请输入公告名称',
+  keywords: 'search',
+  data: [],
 }
 //问卷调查
 export const questionnaireSearch = {
   status: 'questionnaireSearch',
-  data: []
+  placeholder: '请输入问卷调查名称',
+  keywords: 'search',
+  data: [],
 }
 
 /*内务库房*/
@@ -547,16 +551,20 @@ export const borrowReceiveSearch = {
   keywords: 'search',
   data: [
     {
-      keyType: 'organ',
+      keyType: 'depart',
       title: '部门',
       placeholder: '请选择部门',
-      keyName: 'organ',
-      dataType: ''
+      keyName: 'org_id',
+      dataType: [],
+      value: {
+        num: 1,
+        arr: []
+      }
     },
     {
       keyType: 'radio',
       title: '申请类型',
-      keyName: 'apply_type',
+      keyName: 'type',
       dataType: '',
       value: [
         {
@@ -616,7 +624,7 @@ export const borrowReceiveSearch = {
       keyType: 'dateRange',
       title: '申领日期',
       placeholder: '请选择日期',
-      keyName: 'date1',
+      keyName: 'apply_time',
       dataType: []
     },
 
@@ -632,7 +640,7 @@ export const borrowReceiveSearch = {
         },
         {
           id: 1,
-          title: '维修中'
+          title: '待维修'
         },
         {
           id: 2,

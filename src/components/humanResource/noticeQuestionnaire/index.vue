@@ -97,8 +97,8 @@
         searchData: {},//搜索项
 
 
-        searchFruit1: {},//扬善搜索结果
-        searchFruit2: {},//惩恶搜索结果
+        searchFruit1: {},//搜索结果1
+        searchFruit2: {},//搜索结果2
 
         //乐伽dialog
         reward_order_visible: false,
@@ -139,7 +139,7 @@
             ]
           },
           {
-            title:'赏善令:',
+            title:'ABC:',
             value:[
               {value: 500, name: '一般'},
               {value: 300, name: '特殊'},
@@ -182,10 +182,10 @@
         if (val !== 'close') {
           switch (this.chooseTab) {
             case 1:
-              this.searchFruit1 = val;
+              this.searchFruit1 = JSON.parse(JSON.stringify(val));
               break;
             case 2:
-              this.searchFruit2 = val;
+              this.searchFruit2 = JSON.parse(JSON.stringify(val));
               break;
           }
         }
@@ -204,7 +204,7 @@
         this.$nextTick(function () {
           switch (id) {
             case 1:
-              this.searchFruit1 = this.handleSearch(this.staffBookSearch);
+              this.searchFruit1 = this.handleSearch(this.noticeSearch);
               break;
           }
         });

@@ -619,12 +619,12 @@
         </div>
         <div class="dialog_footer" style="padding: 0;text-align: right">
           <div style="padding-right: 40px">
-            <el-button v-if="!meeting_summary_editable" type="primary" @click="meeting_detail_dialog_visible=false"
-                       plain>确定
+            <el-button v-if="!meeting_summary_editable" type="danger" @click="meeting_detail_dialog_visible=false"
+                       >确定
             </el-button>
-            <el-button v-if="meeting_summary_editable" type="primary" @click="handleSaveSummaryAndRemaining" plain>保存
+            <el-button v-if="meeting_summary_editable" type="danger" @click="handleSaveSummaryAndRemaining" >保存
             </el-button>
-            <el-button v-if="meeting_summary_editable" type="primary" @click="meeting_summary_editable=false" plain>取消
+            <el-button v-if="meeting_summary_editable" type="danger" @click="meeting_summary_editable=false" >取消
             </el-button>
           </div>
         </div>
