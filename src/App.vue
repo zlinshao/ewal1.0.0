@@ -17,13 +17,13 @@
           <span @click="todoListHandler">待办</span>
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
-            <ul>
-              <li>
-                <span>web前端-面试任务</span>
-                <span>2019/1/20 21:00</span>
+            <!-- <ul>
+              <li v-for='(item,index) in messageTable' :key='item.id' v-if='item.id && index<4'>
+                <span>{{item.owner}}-{{item.name}}</span>
+                <span>{{item.createTime}}</span>
               </li>
-              <li class='seeMore' @click.stop='openMessage'>更多</li>
-            </ul>
+              <li class='seeMore' @click.stop='openMessage' v-if='messageTable.length > 4'>更多</li>
+            </ul> -->
           </div>
           <span @click="openNotify">更多</span>
         </div>
@@ -167,9 +167,10 @@ export default {
           English: 'Intellectual Property Protection',
         },
       ],
+      messageTable: [],
+      market_server: globalConfig.market_server,
     }
   },
-  mounted () { },
   watch: {
     $route: {
       handler (val, oldVal) {
@@ -197,7 +198,18 @@ export default {
       return this.$store.state.approval.approval_message_visible
     }
   },
+  created () {
+    this.getPerson()
+  },
   methods: {
+    getPerson () {
+      this.$http.get(`${this.market_server}v1.0/market/dictionary/parent_son`).then(res => {
+        if (res.success) {
+          console.log(res)
+          diact = res.data
+        }
+      })
+    },
     todoListHandler () {
       //this.routerLink('/todoList');
       this.$store.dispatch('change_todo_list_visible');

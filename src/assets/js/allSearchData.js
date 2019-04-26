@@ -1032,6 +1032,33 @@ export const paySearchList = {
     }
   ]
 }
+export const currentMonthAssessmentSearch = {
+    status: 'currentMonthAssessmentSearch',
+    keywords: 'search',
+    data: [
+      {
+        keyType: 'radio',
+        title: '发送状态',
+        keyName: 'sendStatus',
+        dataType: [],
+        value: [
+          { id: 1, title: '未发送' },
+          { id: 2, title: '已发送' }
+        ]
+      },
+      {
+        keyType: 'radio',
+        title: '确认状态',
+        keyName: 'confirmStatus',
+        dataType: [],
+        value: [
+          { id: 1, title: '未确认' },
+          { id: 2, title: '已确认' },
+          { id: 3, title: '有异议' }
+        ]
+      }
+    ]
+}
 
 //房源管理
 export const houseManagementSearch = {

@@ -6,39 +6,38 @@
       </div>
       <div class="items-center listTopRight">
         <div class="daochu"></div>
-        <div class="icons search" @click="highSearch()"></div>
+        <div class="icons search" @click="showHighSearch()"></div>
       </div>
     </div>
-    <div class="currentMonthAssessmentContainer">
+    <div class="currentMonthAssessmentContainer changeChoose">
       <div class="containerTop">
-        <button @click="sendTodoList = true">KPI确认</button>
+        <button @click="sendKpi()">KPI确认</button>
         <div></div>
         <h2 @click="selectAll()">全选</h2>
       </div>
-      <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiList" height="650px">
-          <el-table-column align="right" type="selection">
-          </el-table-column>
-          <el-table-column label="姓名" align="center" prop="name"></el-table-column>
-          <el-table-column label="部门" align="center" prop='department'></el-table-column>
-          <el-table-column v-for="(item,index) in days" :key="index" :label="item.toString()" :prop="item.toString()" align="center" width="40px">
-            <template slot-scope="scope">
-              <div @click="showKpiDetail(scope.row,item)">{{ scope.row[item.toString()]}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="发送状态" align="center" prop='sendStatus'>
-            <template slot-scope="scope">
-              <el-button plain type="primary" size="small" v-if="scope.row.sendStatus=== 0">未发送</el-button>
-              <el-button plain type="danger" size="small" v-if="scope.row.sendStatus=== 2">发送失败</el-button>
-              <el-button plain type="success" size="small" v-if="scope.row.sendStatus=== 1">已发送</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column label="确认状态" align="center" prop='confirmStatus'>
-            <template slot-scope="scope">
-              <el-button plain size="small" background="rgba(10,31,68,1)" v-if="scope.row.confirmStatus=== 0">未确认</el-button>
-              <el-button plain type="success" size="small" v-if="scope.row.confirmStatus=== 2">有异议</el-button>
-              <el-button plain type="danger" size="small" v-if="scope.row.confirmStatus=== 1">已确认</el-button>
-            </template>
-          </el-table-column>
+      <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiList" height="650px" ref="multipleTable" @selection-change="handleSelectionChange">
+        <el-table-column type="selection"></el-table-column>
+        <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+        <el-table-column label="部门" align="center" prop='department'></el-table-column>
+        <el-table-column v-for="(item,index) in days" :key="index" :label="item.toString()" :prop="item.toString()" align="center" width="40px">
+          <template slot-scope="scope">
+            <div @click="showKpiDetail(scope.row,item)">{{ scope.row[item.toString()]}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="发送状态" align="center" prop='sendStatus'>
+          <template slot-scope="scope">
+            <el-button plain type="primary" size="small" v-if="scope.row.sendStatus=== 0">未发送</el-button>
+            <el-button plain type="danger" size="small" v-if="scope.row.sendStatus=== 2">发送失败</el-button>
+            <el-button plain type="success" size="small" v-if="scope.row.sendStatus=== 1">已发送</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="确认状态" align="center" prop='confirmStatus'>
+          <template slot-scope="scope">
+            <el-button plain size="small" background="rgba(10,31,68,1)" v-if="scope.row.confirmStatus=== 0">未确认</el-button>
+            <el-button plain type="success" size="small" v-if="scope.row.confirmStatus=== 2">有异议</el-button>
+            <el-button plain type="danger" size="small" v-if="scope.row.confirmStatus=== 1">已确认</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="page flex-center">
@@ -55,8 +54,8 @@
       center>
       <span class="flex-center">月度KPI统计将发送至对应员工待办</span>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" type="danger">确定</el-button>
-        <el-button size="small" type="info">取消</el-button>
+        <el-button size="small" type="danger" @click="confirmSendKpi()">确定</el-button>
+        <el-button size="small" type="info" @click="sendTodoList = false">取消</el-button>
       </span>
     </el-dialog>
     <lj-dialog
@@ -137,6 +136,7 @@
 <script>
 import SearchHigh from '../common/searchHigh.vue';
 import ljDialog from '../common/lj-dialog';
+import {currentMonthAssessmentSearch} from "../../assets/js/allSearchData.js"
 export default {
   name: "index",
   components:{
@@ -145,41 +145,16 @@ export default {
   },
   data() {
     return {
+      currentMonthAssessmentSearch,
       url: globalConfig.kpi,
       showSearch: false,
       total: 0,
       currentPage: 1,
-      searchData: {
-        status: 'assessmentSearchList',
-        keywords: 'search',
-        data: [
-          {
-            keyType: 'radio',
-            title: '发送状态',
-            keyName: 'sendStatus',
-            dataType: [],
-            value: [
-              { id: 1, title: '未发送' },
-              { id: 2, title: '已发送' }
-            ]
-          },
-          {
-            keyType: 'radio',
-            title: '确认状态',
-            keyName: 'confirmStatus',
-            dataType: [],
-            value: [
-              { id: 1, title: '未确认' },
-              { id: 2, title: '已确认' },
-              { id: 3, title: '有异议' }
-            ]
-          }
-        ]
-      },
+      searchData: {},
       sendTodoList: false,
       kpi_detail_visible: false,
       kpi_modify_visible: false,
-      imgUrl: require('../../assets/image/todoList/components/humanResource/theme1/rili.png'),
+      imgUrl: '',
       staffName: '',
       staffDepartment: '',
       fullScore: 0,
@@ -194,6 +169,7 @@ export default {
       kpiDetail: [],
       row: {},
       item: 0,
+      multipleSelection: [],
     }
   },
   mounted() {
@@ -342,8 +318,40 @@ export default {
       this.getKpiList();
       this.kpi_detail_visible = false
     },
+    handleSelectionChange(row) {
+      this.multipleSelection = row;
+    },
     selectAll: function() {
-      
+      this.$refs.multipleTable.toggleAllSelection()
+    },
+    sendKpi: function() {
+      if(this.multipleSelection.length > 0){
+        this.sendTodoList = true
+      }else{
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '请选择发送员工',
+        });
+      }
+    },
+    confirmSendKpi: function () {
+      let param = {
+        send_ids: []
+      }
+      for(let i = 0; i < this.multipleSelection.length; i++){
+        param.send_ids.push(this.multipleSelection[i].id)
+      }
+      this.$http.post(`${this.url}/kpi/send`,param).then(res => {
+        if(res.status == 200){
+          this.$LjNotify('success', {
+              title: '成功',
+              message: '发送成功',
+          });
+          this.kpiList = []
+          this.getKpiList();
+        }
+      })
+      this.sendTodoList = false
     },
     handleKpi: function(obj,kpi) {
       for(var i = 0; i < kpi.length; i ++){
@@ -360,18 +368,23 @@ export default {
         }
       }
     },
-    highSearch: function() {
+    showHighSearch: function() {
       this.showSearch = true
+      this.searchData = this.currentMonthAssessmentSearch
     },
-    hiddenModule: function() {
-      this.showSearch = false
-    },
+    hiddenModule: function(val) {
+      // this.showSearch = false
+      // if (val == 'close') {
+      //   console.log(val);
+      //   console.log(1)
+      //   this.kpiList = []
+      //   this.getKpiList()
+      //   console.log(this.kpiList)
+      // }
+    }
   },
 }
 </script>
-<style lang="scss">
-
-</style>
 
 <style lang="scss" scoped>
   @import "../../assets/scss/currentMonthAssessment/index.scss";

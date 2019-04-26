@@ -198,6 +198,8 @@
         </div>
       </div>
     </LjDialog>
+
+    <FormDetail :visible='show_form_visible' />
   </div>
 </template>
 
@@ -205,12 +207,14 @@
 import LjDialog from '../../common/lj-dialog.vue';
 import VillageContainer from '../../customService/village/components/village-container.vue';
 import LjUpload from '../../common/lightweightComponents/lj-upload';
+import FormDetail from './form_detail'
 export default {
   props: ['visible'],
   components: {
     LjDialog,
     VillageContainer,
-    LjUpload
+    LjUpload,
+    FormDetail
   },
   data () {
     return {
@@ -358,10 +362,11 @@ export default {
       outer_house_pic: [],
       outer_net_data: [],
       current_village_detail: '',
-      type: 2,
+      type: 1,
       comment_show_visible: false,
       comment_words: null,
       record_show_visible: false,
+      show_form_visible: false,
       market_server: globalConfig.market_server,
     }
   },
