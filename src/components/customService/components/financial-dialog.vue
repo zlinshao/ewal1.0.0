@@ -6,15 +6,20 @@
       </div>
       <div class='dialog_main'>
         <el-table :data="table" height="480px" highlight-current-row header-row-class-name="tableHeader" style="width: 100%">
-          <el-table-column key="应付时间" align="center" prop="time" label="应付时间"></el-table-column>
-          <el-table-column key="实付时间" align="center" prop="real_time" label="实付时间"></el-table-column>
-          <el-table-column key="应付金额" align="center" prop="money" label="应付金额"></el-table-column>
-          <el-table-column key="实付金额" align="center" label="实付金额">
+          <el-table-column align="center" prop="create_time" label="应付时间"></el-table-column>
+          <el-table-column align="center" prop="operate_time" label="实付时间"></el-table-column>
+          <el-table-column align="center" :label="moduleData.contract_type == 1 ?'应付金额':'应收金额'">
+             <template slot-scope="scope">
+              <span>{{moduleData.contract_type == 1 ? scope.row.amount_payable : scope.row.amount_receivable }}</span>
+              </template>
+            </el-table-column>
+
+          <el-table-column align="center" :label="moduleData.contract_type == 1 ?'实付金额':'实收金额'">
             <template slot-scope="scope">
-              <span>{{scope.row.real_money}}</span>
-              <el-tooltip class="item" effect="light" :content="scope.row.real_money" placement="right">
+              <span>{{moduleData.contract_type == 1 ? scope.row.amount_paid : scope.row.amount_received }}</span>
+              <!-- <el-tooltip class="item" effect="light" :content="formateContent(scope.row.remark)" placement="right" popper-class='light_tooltip'>
                 <i class='warn_icon'></i>
-              </el-tooltip>
+              </el-tooltip> -->
             </template>
           </el-table-column>
         </el-table>
@@ -53,12 +58,18 @@ export default {
       this.$emit('close', true)
     },
     getData () {
-      // this.$http.get(`${this.market_server}v1.0/csd/revisit/${this.moduleData.contract_type}/${this.moduleData.contract_id}`).then(res => {
-      //   if (res.code === 200) {
-      //     this.table = res.data.data
-      //     this.tableCount = res.data.all_count
-      //   }
-      // })
+      let param = {
+        contract_id: this.moduleData.contract_id,
+        contract_type: this.moduleData.contract_type
+      }
+      this.$http.get(`${this.market_server}v1.0/csd/work_order/financeRunning`, param).then(res => {
+        if (res.code === 200) {
+          let running = res.data.running;
+          this.table = this.moduleData.contract_type == 1 ? running.receive : running.payable
+          // this.tableCount = res.data.all_count
+
+        }
+      })
     },
     handleFinancialCurrentPage (val) {
       this.page = Val
@@ -70,5 +81,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../../assets/scss/customService/components/record_dialog.scss";
+</style>
+<style lang="scss">
+div.light_tooltip.el-tooltip__popper {
+  background: #fff !important;
+  color: #333;
+}
 </style>
 

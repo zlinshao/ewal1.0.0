@@ -29,12 +29,12 @@
         </div>
 
         <!--其它类型-->
-        <img src="../../../../assets/image/file/xls.png" v-else-if="item.info.mime.includes('xls')">
+        <img src="../../../assets/image/file/xls.png" v-else-if="item.info.mime.includes('xls')">
         <!--<img @click="downloadFile(item)" src="../../../assets/image/file/xls.png" v-else-if="item.info.mime.includes('xls')&& !editable">-->
-        <img src="../../../../assets/image/file/doc.png" v-else-if="item.info.mime.includes('doc')">
-        <img src="../../../../assets/image/file/txt.png" v-else-if="item.info.mime.includes('text')">
-        <img src="../../../../assets/image/file/pdf.png" v-else-if="item.info.mime.includes('pdf')">
-        <img src="../../../../assets/image/file/file.png" v-else>
+        <img src="../../../assets/image/file/doc.png" v-else-if="item.info.mime.includes('doc')">
+        <img src="../../../assets/image/file/txt.png" v-else-if="item.info.mime.includes('text')">
+        <img src="../../../assets/image/file/pdf.png" v-else-if="item.info.mime.includes('pdf')">
+        <img src="../../../assets/image/file/file.png" v-else>
         <!--<img @click="downloadFile(item)" src="../../../assets/image/file/file.png" v-else-if="!editable">-->
         <!--进图条-->
         <div v-if="editable" class="progress" :id="'progress' + file.keyName + index"
@@ -42,18 +42,18 @@
         </div>
         <!--删除按钮-->
         <div v-if="editable" class="remove flex" @click="removeFile(index)">
-          <img src="../../../../assets/image/common/theme1/closeBtn.png">
+          <img src="../../../assets/image/common/theme1/closeBtn.png">
         </div>
       </div>
       <!--上传按钮-->
       <label v-if="editable" class="uploadPic" :key="1" :style="uploadCss" :for="file.keyName">
-        <img src="../../../../assets/image/common/theme1/upload.png">
+        <img src="../../../assets/image/common/theme1/upload.png">
         <input type="file" :id="file.keyName" hidden multiple @change="uploadPic">
       </label>
       <!--下载按钮-->
       <label title="下载全部" @click="downloadAll" v-if="!editable && download &&showFile.length>0" class="uploadPic" :key="1" :style="uploadCss"
              :for="file.keyName">
-        <img src="../../../../assets/image/common/theme1/xiazai_xue.png">
+        <img src="../../../assets/image/common/theme1/xiazai_xue.png">
       </label>
     </transition-group>
 
@@ -81,12 +81,12 @@
 </template>
 
 <script>
-  import _ from '_lodash@4.17.11@lodash';
-  import axios from '_axios@0.18.0@axios/index';
-  import * as qiniu from '_qiniu-js@2.5.4@qiniu-js'
-  import {md5} from '../../../../../static/js/MD5.js'
-  import JSZip from '../../../../../static/js/jszip'
-  import FileSaver from '../../../../../static/js/FileSaver'
+  import _ from 'lodash';
+  import axios from 'axios';
+  import * as qiniu from 'qiniu-js'
+  import {md5} from '../../../../static/js/MD5.js'
+  import JSZip from '../../../../static/js/jszip'
+  import FileSaver from '../../../../static/js/FileSaver'
   import LjDialog from '@/components/common/lj-dialog';
   import ImgSlider from '@/components/common/lightweightComponents/ImgSlider';
 
@@ -334,7 +334,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../../assets/scss/common";
+  @import "../../../assets/scss/common.scss";
 
   #upLoad {
     .notify-size {

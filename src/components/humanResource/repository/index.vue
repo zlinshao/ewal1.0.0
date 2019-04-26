@@ -177,6 +177,7 @@
               break;
             case 2:
               this.searchFruit2 = val;
+              console.log(val);
               break;
           }
         }

@@ -1,6 +1,6 @@
 <template>
   <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
-    <div class="input-container">
+    <div :title="inputContent" class="input-container">
       <el-input :size="size" :disabled="disabled" @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p class="icons user"></p>
     </div>

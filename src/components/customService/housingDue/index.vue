@@ -740,7 +740,7 @@ export default {
     },
     // close 添加标记
     handleCancelMark () {
-      this.mark_form= {
+      this.mark_form = {
         tag_status: null,
         appointment_time: null,
         remark: null,

@@ -361,17 +361,17 @@ export default {
         ]
       },
       recordDetail: null,
-      recordFree: 0,
+      recordFree: null,
       recordOption: {
         contract_id: null,
         contract_number: null,
-        is_connect: '',
-        from: '',
-        star: 0,
-        record: '',
+        is_connect: null,
+        from: null,
+        star: null,
+        record: null,
         other_free: [{
-          name: '',
-          money: ''
+          name: null,
+          money: null
         }]
       },
       //暂存 点击row
@@ -513,29 +513,34 @@ export default {
     delFeiyong (index) {
       this.recordOption.other_free.splice(index, 1)
     },
+    vailRecord () {
+      let { is_connect, from, star, record, other_free } = this.recordOption
+      if (!is_connect && is_connect != 0) return '是否接通未选择'
+      if (is_connect == 1) {
+        if (!from) return '来源未选择'
+        if (!this.recordFree) return '是否收取其他费用未选择'
+        if (star == 0) return '满意度未选择,满意度至少一分'
+        if (!record) return '备注未填写'
+        if (this.recordFree == 1) {
+          for (let i = 0; i < other_free.length; i++) {
+            let el = other_free[i]
+            if (!el.name) return '费用名称未填写'
+            if (!el.money) return '费用金额未填写'
+          }
+        }
+      } else {
+        if (!record) return '备注未填写'
+      }
+      return null
+    },
     addRecord () {
-      //判断内容填写
-      if (!this.recordOption.is_connect ||
-        !this.recordOption.from ||
-        !this.recordFree ||
-        !this.recordOption.star ||
-        !this.recordOption.record) {
+      let warn = this.vailRecord()
+      if (warn) {
         this.$LjNotify('warning', {
-          title: '警告',
-          message: '记录数据未全部填写'
+          title: '提示',
+          message: warn
         })
         return
-      }
-
-      if (this.recordFree == 1) {
-        let free = this.recordOption.other_free[0]
-        if (free.name == '' || (!free.money && free.money != 0)) {
-          this.$LjNotify('warning', {
-            title: '警告',
-            message: '填写其他费用'
-          })
-          return
-        }
       }
 
       let recordOption = this.recordOption
@@ -545,7 +550,6 @@ export default {
       } else {
         recordOption.other_free = ''
       }
-
 
       this.$http.post(this.market_server + 'v1.0/csd/revisit', recordOption).then(res => {
         if (res.code === 200) {
@@ -572,16 +576,16 @@ export default {
       this.recordOption = {
         contract_id: null,
         contract_number: null,
-        is_connect: '',
-        from: '',
-        star: 0,
-        record: '',
+        is_connect: null,
+        from: null,
+        star: null,
+        record: null,
         other_free: [{
-          name: '',
-          money: ''
+          name: null,
+          money: null
         }]
       }
-      this.recordFree = 0
+      this.recordFree = null
       this.currentRow = null
     },
     handleCloseDetail (param) {

@@ -258,5 +258,19 @@
           #theme_name #balance .check-box .check-box-list .check-box-info > div div p:last-child {
             margin-top: 30px;
             margin-left: 100px; }
+#theme_name #balance .form-reduce-icon {
+  display: inline-block;
+  cursor: pointer;
+  position: absolute;
+  right: -30px;
+  top: 0;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 25px;
+  color: #ffffff;
+  font-style: normal;
+  font-size: 20px; }
 
 /*# sourceMappingURL=index.css.map */

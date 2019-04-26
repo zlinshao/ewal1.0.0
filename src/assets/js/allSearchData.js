@@ -543,6 +543,8 @@ export const overViewSearch = {
 //借用领用
 export const borrowReceiveSearch = {
   status: 'borrowReceiveSearch',
+  placeholder: '请输入搜索内容',
+  keywords: 'search',
   data: [
     {
       keyType: 'organ',
@@ -554,7 +556,7 @@ export const borrowReceiveSearch = {
     {
       keyType: 'radio',
       title: '申请类型',
-      keyName: 'radio',
+      keyName: 'apply_type',
       dataType: '',
       value: [
         {
@@ -571,41 +573,42 @@ export const borrowReceiveSearch = {
     {
       keyType: 'radio',
       title: '申领状态',
-      keyName: 'radio',
+      keyName: 'apply_status',
       dataType: '',
       value: [
         {
-          id: 3,
+          id: 0,
           title: '待通知'
         },
         {
-          id: 4,
+          id: 1,
           title: '待领取'
         },
         {
-          id: 5,
+          id: 2,
           title: '部分领取'
         },
         {
-          id: 6,
+          id: 3,
           title: '已领取'
+        },
+        {
+          id: 4,
+          title: '放弃领取'
+        },
+        {
+          id: 5,
+          title: '待归还'
+        },
+        {
+          id: 6,
+          title: '部分已归还'
         },
         {
           id: 7,
           title: '已归还'
         },
-        {
-          id: 8,
-          title: '待归还'
-        },
-        {
-          id: 9,
-          title: '部分归还'
-        },
-        {
-          id: 10,
-          title: '放弃领取'
-        }
+
       ]
     },
 
@@ -620,45 +623,29 @@ export const borrowReceiveSearch = {
     {
       keyType: 'radio',
       title: '物品状态',
-      keyName: 'radio',
+      keyName: 'goods_status',
       dataType: '',
       value: [
         {
-          id: 11,
-          title: '待维修'
+          id: 0,
+          title: '无'
         },
         {
-          id: 12,
+          id: 1,
           title: '维修中'
         },
         {
-          id: 13,
+          id: 2,
+          title: '维修中'
+        },
+        {
+          id: 3,
           title: '已维修'
         },
         {
-          id: 14,
-          title: '维修报废'
+          id: 4,
+          title: '报废'
         },
-        {
-          id: 15,
-          title: '直接报废'
-        },
-        {
-          id: 16,
-          title: '部分维修'
-        },
-        {
-          id: 17,
-          title: '部分报废'
-        },
-        {
-          id: 18,
-          title: '完好'
-        },
-        {
-          id: 19,
-          title: '无'
-        }
       ]
     }
   ]
