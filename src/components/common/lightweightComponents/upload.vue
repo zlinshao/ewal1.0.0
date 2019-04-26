@@ -81,9 +81,9 @@
 </template>
 
 <script>
-  import _ from '_lodash@4.17.11@lodash';
-  import axios from '_axios@0.18.0@axios/index';
-  import * as qiniu from '_qiniu-js@2.5.4@qiniu-js'
+  import _ from 'lodash';
+  import axios from 'axios';
+  import * as qiniu from 'qiniu-js'
   import {md5} from '../../../../static/js/MD5.js'
   import JSZip from '../../../../static/js/jszip'
   import FileSaver from '../../../../static/js/FileSaver'
@@ -334,7 +334,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../assets/scss/common.css";
+  @import "../../../assets/scss/common.scss";
 
   #upLoad {
     .notify-size {
