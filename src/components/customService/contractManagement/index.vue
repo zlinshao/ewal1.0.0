@@ -110,22 +110,23 @@
                     <el-table-column label="退款金额" prop="should_be_returned_fees" align="center"></el-table-column>
                   </el-table>
                   <el-table :data="revisit_list" v-show="current_house_type === 4">
-                    <el-table-column label="客户姓名" prop="cus_name" align="center"></el-table-column>
-                    <el-table-column label="开始时间" prop="start_at" align="center"></el-table-column>
-                    <el-table-column label="结束时间" prop="end_at" align="center"></el-table-column>
-                    <el-table-column label="备注" prop="remark" align="center"></el-table-column>
+                    <el-table-column label="创建时间" prop="cus_name" align="center"></el-table-column>
+                    <el-table-column label="回访人" prop="cus_name" align="center"></el-table-column>
+                    <el-table-column label="合同编号" prop="cus_name" align="center"></el-table-column>
+                    <el-table-column label="房屋地址" prop="cus_name" align="center"></el-table-column>
+                    <el-table-column label="合同性质" prop="cus_name" align="center"></el-table-column>
+                    <el-table-column label="是否接通" prop="cus_name" align="center"></el-table-column>
+                    <el-table-column label="开单人" prop="cus_name" align="center"></el-table-column>
+                    <el-table-column label="部门" prop="start_at" align="center"></el-table-column>
                   </el-table>
                   <el-table :data="work_list" v-show="current_house_type === 5">
                     <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
-                    <el-table-column label="跟进时间" prop="newest_follow_time" align="center"></el-table-column>
-                    <el-table-column label="工单编号" prop="num" align="center"></el-table-column>
-                    <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
                     <el-table-column label="房屋地址" prop="address" align="center"></el-table-column>
                     <el-table-column label="工单类型" prop="types" align="center"></el-table-column>
-                    <el-table-column label="工单内容" prop="matters" align="center"></el-table-column>
-                    <el-table-column label="下次跟进时间" prop="follow_time" align="center"></el-table-column>
+                    <el-table-column label="跟进事项" prop="matters" align="center"></el-table-column>
+                    <el-table-column label="预计完成时间" prop="follow_time" align="center"></el-table-column>
                     <el-table-column label="创建人" prop="creator" align="center"></el-table-column>
-                    <el-table-column label="下次跟进人" prop="follow" align="center"></el-table-column>
+                    <el-table-column label="跟进人" prop="creator" align="center"></el-table-column>
                     <el-table-column
                       align="center"
                       label="跟进状态">
@@ -145,14 +146,12 @@
                   </el-table>
                   <el-table :data="fix_clear_list" v-show="current_house_type === 6">
                     <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
-                    <el-table-column label="房屋地址" prop="contract.house" align="center"></el-table-column>
                     <el-table-column label="客户姓名" prop="customer_name" align="center"></el-table-column>
                     <el-table-column label="回复电话" prop="customer_mobile" align="center"></el-table-column>
                     <el-table-column label="维修内容" prop="content" align="center"></el-table-column>
                     <el-table-column label="维修时间" prop="follow[0].repair_time" align="center"></el-table-column>
                     <el-table-column label="维修师傅" prop="follow[0].repair_master" align="center"></el-table-column>
-                    <el-table-column label="下次跟进时间" prop="estimated_time" align="center"></el-table-column>
-                    <el-table-column label="下次跟进人" prop="followor.name" align="center"></el-table-column>
+                    <el-table-column label="跟进人" prop="followor.name" align="center"></el-table-column>
                     <el-table-column label="维修状态" prop="status" align="center">
                       <template slot-scope="scope">
                         <span>{{ scope.row.status === 336 ? '待处理' : scope.row.status === 337 ? '处理中' : scope.row.status === 338 ? '已完成' : '未知'}}</span>
@@ -161,18 +160,19 @@
                   </el-table>
                   <el-table :data="work_list" v-show="current_house_type === 7">
                     <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
-                    <el-table-column label="跟进时间" prop="newest_follow_time" align="center"></el-table-column>
-                    <el-table-column label="工单编号" prop="num" align="center"></el-table-column>
-                    <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
-                    <el-table-column label="房屋地址" prop="address" align="center"></el-table-column>
-                    <el-table-column label="工单类型" prop="types" align="center"></el-table-column>
-                    <el-table-column label="工单内容" prop="matters" align="center"></el-table-column>
-                    <el-table-column label="下次跟进时间" prop="follow_time" align="center"></el-table-column>
                     <el-table-column label="创建人" prop="creator" align="center"></el-table-column>
-                    <el-table-column label="下次跟进人" prop="follow" align="center"></el-table-column>
+                    <el-table-column label="房屋地址" prop="address" align="center"></el-table-column>
+                    <el-table-column label="来源" prop="address" align="center"></el-table-column>
+                    <el-table-column label="报销类型" prop="types" align="center"></el-table-column>
+                    <el-table-column label="报销金额" prop="types" align="center"></el-table-column>
+                    <el-table-column label="开户行" prop="types" align="center"></el-table-column>
+                    <el-table-column label="支行" prop="matters" align="center"></el-table-column>
+                    <el-table-column label="银行卡号" prop="contract_number" align="center"></el-table-column>
+                    <el-table-column label="开户人" prop="follow_time" align="center"></el-table-column>
+                    <el-table-column label="结算人" prop="follow" align="center"></el-table-column>
                     <el-table-column
                       align="center"
-                      label="跟进状态">
+                      label="报销状态">
                       <template slot-scope="scope">
                         <el-button class="btnStatus" v-if="scope.row.follow_statuss === '已完成'" type="primary" size="mini">
                           {{scope.row.follow_statuss}}

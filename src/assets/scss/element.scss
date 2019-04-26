@@ -97,12 +97,12 @@ div.el-popover {
     &::before {
       height: 0;
     }
-    //background-color: white;
+      background-color: transparent !important;
     tr {
-      //background-color: white;
+      background-color: transparent !important;
     }
     th {
-      //background-color: white;
+      background-color: transparent !important;
     }
     .tableHeader {
       th {
@@ -120,12 +120,12 @@ div.el-popover {
     tbody {
       tr.current-row {
         td {
-          background-color: white !important;
+          background-color: transparent !important;
         }
       }
       tr:hover {
         td {
-          background-color: white !important;
+          background-color: transparent !important;
         }
       }
       tr {
@@ -158,6 +158,26 @@ div.el-popover {
             .el-table__empty-block {
               background-color: #FFF6E5 !important;
             }
+          }
+        }
+      }
+    }
+  }
+  #staffRoster {
+    .el-table {
+      background-color: white !important;
+      tr,th{
+        background-color: white !important;
+      }
+      tbody {
+        tr.current-row {
+          td {
+            background-color: white !important;
+          }
+        }
+        tr:hover {
+          td {
+            background-color: white !important;
           }
         }
       }
