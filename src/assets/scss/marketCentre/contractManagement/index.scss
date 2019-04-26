@@ -3,6 +3,18 @@
 #theme_name {
   #contractManagement {
     > div {
+      .info_type {
+        padding: 10px 0;
+        justify-content: space-between;
+        background-color: #FFEDCD;
+        > span {
+          width: 150px;
+          padding: 8px 30px;
+          cursor: pointer;
+          font-size: 14px;
+          text-align: center;
+        }
+      }
       .back_info {
         width: 100%;
         overflow: hidden;
@@ -111,15 +123,11 @@
     .expand-container {
       .expand-top {
         width: 100%;
-        background-color: #E6F6F1;
       }
-    }
-    .nav-bar {
-      width: 100%;
-      padding-top: 35px;
-      background-color: #FFEDCD;
-      > div {
-        width: 100%;
+      .expand-bottom {
+        .page {
+          background-color: #FFF6E5;
+        }
       }
     }
   }

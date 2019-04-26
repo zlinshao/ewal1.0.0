@@ -178,6 +178,16 @@
 .color874 {
   color: #686874; }
 
+#theme_name #contractManagement > div .info_type {
+  padding: 10px 0;
+  justify-content: space-between;
+  background-color: #FFEDCD; }
+  #theme_name #contractManagement > div .info_type > span {
+    width: 150px;
+    padding: 8px 30px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center; }
 #theme_name #contractManagement > div .back_info {
   width: 100%;
   overflow: hidden; }
@@ -269,13 +279,8 @@
     border-radius: 0 5px 5px 0;
     font-family: 'jingDianXingShu'; }
 #theme_name #contractManagement .expand-container .expand-top {
-  width: 100%;
-  background-color: #E6F6F1; }
-#theme_name #contractManagement .nav-bar {
-  width: 100%;
-  padding-top: 35px;
-  background-color: #FFEDCD; }
-  #theme_name #contractManagement .nav-bar > div {
-    width: 100%; }
+  width: 100%; }
+#theme_name #contractManagement .expand-container .expand-bottom .page {
+  background-color: #FFF6E5; }
 
 /*# sourceMappingURL=index.css.map */
