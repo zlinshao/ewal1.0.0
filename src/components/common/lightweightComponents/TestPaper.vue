@@ -629,6 +629,13 @@
               msg:'请输入正确的分值',
             });
             return;
+          };
+          if(!item.stem) {
+            this.$LjMessage('warning',{
+              title:'警告',
+              msg:'请输入题干',
+            });
+            return;
           }
           if(item.category==1 || item.category==2) {
             let keys1 = Object.keys(item.choice);

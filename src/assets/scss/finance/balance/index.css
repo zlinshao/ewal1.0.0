@@ -182,12 +182,12 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-between; }
+  align-items: center; }
   #theme_name #balance .balance-detail .balance-detail-title span {
     display: inline-block;
     padding: 6px 30px;
-    cursor: pointer; }
+    cursor: pointer;
+    margin-right: 10px; }
 #theme_name #balance .balance-detail .balance-detail-info {
   width: 100%; }
   #theme_name #balance .balance-detail .balance-detail-info .tab {
@@ -258,5 +258,19 @@
           #theme_name #balance .check-box .check-box-list .check-box-info > div div p:last-child {
             margin-top: 30px;
             margin-left: 100px; }
+#theme_name #balance .form-reduce-icon {
+  display: inline-block;
+  cursor: pointer;
+  position: absolute;
+  right: -30px;
+  top: 0;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 25px;
+  color: #ffffff;
+  font-style: normal;
+  font-size: 20px; }
 
 /*# sourceMappingURL=index.css.map */

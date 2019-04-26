@@ -57,6 +57,15 @@
               </el-form-item>
               <el-row :gutter="10">
                 <el-col :span="6">
+                  <el-form-item label="小区定位">
+                    <el-select v-model="new_village_form.position">
+                      <el-option :value="1" label="郊区"></el-option>
+                      <el-option :value="2" label="城区"></el-option>
+                      <el-option :value="3" label="城中心"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
                   <el-form-item label="建筑年代">
                     <el-date-picker value-format="yyyy" placeholder="请输入"
                                     v-model="new_village_form.built_year"></el-date-picker>
@@ -191,6 +200,7 @@
           area: ''
         },
         new_village_form: {
+          position: '',
           province: '',
           city: '',
           area: '',

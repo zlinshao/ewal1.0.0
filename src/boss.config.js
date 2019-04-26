@@ -14,5 +14,6 @@ globalConfig = {
   // intellectualPropertyProtection:'http://ewal_knowledge_right.test/', //http://test.knowledge.api.ewal.lejias.cn/
   intellectualPropertyProtection: 'http://test.knowledge.api.ewal.lejias.cn/',
   kpi: 'http://test.kpi.api.ewal.lejias.cn/',
+  favorite: 'http://test.new_media.api.ewal.lejias.cn/',
   approval_sever: 'http://47.101.204.100:8080/'
 }

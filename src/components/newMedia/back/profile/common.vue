@@ -211,7 +211,7 @@
                 tableData:[],//列表数据
                 form: {
                     name: '',//文件名
-                    type_id: '',//文件类型
+                    type_id: 1,//文件类型
                     permission: {
                         org_id: [],
                         user_id: [],
@@ -242,6 +242,8 @@
             getPath() {//获取路由参数
                 this.chooseTab = this.$route.query.type;
                 this.params.type_id=this.$route.query.type;
+
+                this.form.type_id=this.chooseTab;
             },
             openFile(val) {//打开文档
                 console.log(val);
@@ -251,6 +253,7 @@
                 this.chooseTab = id;
                 this.params.type_id=id;
                 this.tableData=[];
+                this.form.type_id=id;
                 this.getDataLists();
             },
             openDel(item){

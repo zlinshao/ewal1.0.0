@@ -17,7 +17,7 @@
                 <div class="list-info flex-center" v-for="(item,index) in dataLists">
                     <div class="list-box" @click="detail(item)">
                         <div class="list-modal" v-if="item.status ===2"></div>
-                        <div class="list-top"><img src="../../../../assets/image/newMedia/theme1/active.png" alt="">
+                        <div class="list-top"><img  v-for="(term,dex) in item.cover" :src="term.uri" alt="" :key="dex">
                         </div>
                         <div class="list-middle">
                             <div class="list-middle-info">
@@ -146,12 +146,13 @@
                         <el-form-item label="活动地点">
                             <el-input v-model="showData.address"></el-input>
                         </el-form-item>
+                        <el-form-item label="活动海报">
+                            <lj-upload size="50"   v-model="showData.file_info"></lj-upload>
+                        </el-form-item>
 
                         <el-form-item label="活动内容">
                             <div class="item_content">
-                                <!--<UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>-->
-                                <editor-bar v-model="showData.content" :isClear="isClear" @change="change"></editor-bar>
-                                <!--<lj-editor> </lj-editor>-->
+                                <lj-editor  :editorContent="showData.content" @changeContent="getContentChange"></lj-editor>
                             </div>
                         </el-form-item>
                     </el-form>
@@ -173,8 +174,9 @@
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
     // import UE from '../../../common/UE.vue';
-    import EditorBar from '../../../common/wangEditor.vue';
-    // import LjEditor from '../../../common/lj-editor.vue';
+    // import EditorBar from '../../../common/wangEditor.vue';
+    import LjEditor from '../../../common/lj-editor.vue';
+    import LjUpload from '../../../common/lightweightComponents/lj-upload';
 
 
     export default {
@@ -182,9 +184,10 @@
         components: {
             mediaList,
             LjDialog,
+            LjUpload,
             // UE,
-            EditorBar
-            // LjEditor
+            // EditorBar,
+            LjEditor
         },
         data() {
             return {
@@ -208,6 +211,7 @@
                     address: '',
                     actionTime:[],
                     content: '',
+                    file_info:[],
                 },
                 actionTime: [],//活动时间
                 dataLists: [],//列表
@@ -232,10 +236,15 @@
         },
 
         methods: {
-            change(val) {
+            // change(val) {
+            //     console.log(val);
+            //     this.showData.content = val
+            // },
+            getContentChange(val){
                 console.log(val);
-                this.showData.content = val
+                this.showData.content=val;
             },
+
             catchData(val){
                 this.showData.content = val
             },
@@ -358,6 +367,7 @@
                    over_time:this.showData.actionTime[1],
                    address:this.showData.address,
                    content:this.showData.content,
+                   cover:this.showData.file_info[0]
                };
                 console.log(this.showData);
                 this.$http.post(globalConfig.newMedia_sever + '/api/club/event', paramsForm).then(res => {

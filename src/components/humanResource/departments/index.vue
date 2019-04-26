@@ -17,10 +17,10 @@
         <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
         <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3">设置报表</div>
         <div class="buttons button2" v-if="chooseTab === 3" @click="handleExportInfo">导出报表</div>
-        <el-tooltip content="新增部门" placement="bottom-end" :visible-arrow="false">
+        <el-tooltip content="新增部门" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
-        <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2"></div>
+        <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2 && chooseTab !== 1"></div>
       </div>
     </div>
 
@@ -743,7 +743,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 2,//tab切换
+        chooseTab: 1,//tab切换
         selects: [
           {
             id: 1,

@@ -187,6 +187,11 @@
                       <div style="word-break: break-all">{{ item.val }}</div>
                     </el-form-item>
                   </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="小区定位" style="text-align: left">
+                      <div>{{ current_village_detail && current_village_detail.position === 1 ? '郊区' : current_village_detail.position === 2 ? '城市' : current_village_detail.position === 2 ? '城中心' : '未知'}}</div>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
                 <el-form-item label="小区照片">
                   <div class="flex">

@@ -20,8 +20,8 @@ const Village = () => import('@/components/customService/village/index.vue') //�
 const Maintenance = () =>
   import('@/components/customService/maintenance/index.vue')
 const ServiceOnline = () => import('@/components/customService/serviceOnline/index.vue'); //客服接线
-const ServiceCustomerManagement = () => import('@/components/customService/customerManagement/index.vue'); //客服客户管理
-const ServiceHouseManagement = () => import('@/components/customService/houseManagement/index.vue'); // 客服房源管理
+const ServiceCustomerManagement = () => import('@/components/marketCentre/customerManagement/index.vue'); //客服客户管理
+const ServiceHouseManagement = () => import('@/components/marketCentre/houseManagement/index.vue'); // 客服房源管理
 const ServiceContractManagement = () => import('@/components/customService/contractManagement/index.vue'); //客服合同管理
 
 // 市场

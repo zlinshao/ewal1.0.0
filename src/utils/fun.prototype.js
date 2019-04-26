@@ -120,5 +120,23 @@ export default {
         });
       }
     }
+
+    Vue.prototype.$resetForm = function (form) {
+      //重置表单
+      if (!form) {
+        return false;
+      }
+      for (var key in form) {
+        if (typeof form[key] === 'string' || typeof form[key] === 'number') {
+          form[key] = '';
+        }
+        if (form[key] instanceof Array) {
+          form[key] = [];
+        }
+        if (form[key] instanceof Object) {
+          this.$resetForm(form[key]);
+        }
+      }
+    }
   }
 }

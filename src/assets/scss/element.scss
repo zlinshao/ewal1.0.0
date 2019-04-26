@@ -114,6 +114,9 @@ div.el-popover {
         }
       }
     }
+    thead {
+
+    }
     tbody {
       tr.current-row {
         td {
@@ -123,6 +126,39 @@ div.el-popover {
       tr:hover {
         td {
           background-color: white !important;
+        }
+      }
+      tr {
+        td.el-table__expanded-cell[class*=cell] {
+          padding: 0;
+        }
+        .expand-container {
+          .expand-top {
+            padding: 15px;
+            background-color: #E6F6F1 !important;
+            td {
+              background-color: #E6F6F1 !important;
+            }
+            th.is-leaf {
+              background-color: #E6F6F1 !important;
+            }
+            .el-table__empty-block {
+              background-color: #E6F6F1 !important;
+            }
+          }
+          .expand-bottom {
+            padding: 15px;
+            background-color: #FFF6E5 !important;
+            td {
+              background-color: #FFF6E5 !important;
+            }
+            th.is-leaf {
+              background-color: #FFF6E5 !important;
+            }
+            .el-table__empty-block {
+              background-color: #FFF6E5 !important;
+            }
+          }
         }
       }
     }

@@ -2,7 +2,7 @@
     <div class="editor">
         <div ref="toolbar" class="toolbar">
         </div>
-        <div ref="editor" class="text">
+        <div ref="editor" class="text" style="text-align: left">
         </div>
     </div>
 </template>
@@ -12,18 +12,6 @@
 
     export default {
         name: 'editorBar',
-
-        data() {
-            return {
-                editor: null,
-                info_: null,
-                token: '',//上传凭证
-            }
-        },
-        model: {
-            prop: 'value',
-            event: 'change'
-        },
         props: {
             value: {
                 type: String,
@@ -34,6 +22,17 @@
                 default: false
             }
         },
+        data() {
+            return {
+                editor: null,
+                info_: null,
+            }
+        },
+        model: {
+            prop: 'value',
+            event: 'change'
+        },
+
         watch: {
             isClear(val) {
                 // 触发清除文本域内容
@@ -50,12 +49,12 @@
             //value为编辑框输入的内容，这里我监听了一下值，当父组件调用得时候，如果给value赋值了，子组件将会显示父组件赋给的值
         },
         mounted() {
-            this.seteditor()
+            this.initEditor()
             this.editor.txt.html(this.value)
         },
         methods: {
 
-            seteditor() {
+            initEditor() {
                 // http://192.168.2.125:8080/admin/storage/create
                 this.editor = new E(this.$refs.toolbar, this.$refs.editor)
                 this.editor.customConfig.uploadImgShowBase64 = true // base 64 存储图片
@@ -65,7 +64,7 @@
                 this.editor.customConfig.uploadImgMaxSize = 2 * 1024 * 1024 // 将图片大小限制为 2M
                 this.editor.customConfig.uploadImgMaxLength = 6 // 限制一次最多上传 3 张图片
                 this.editor.customConfig.uploadImgTimeout = 3 * 60 * 1000 // 设置超时时间
-                this.editor.customConfig.qiniu = true //允许上传至七牛云
+                // this.editor.customConfig.qiniu = true //允许上传至七牛云
 
                 // 配置菜单
                 this.editor.customConfig.menus = [
