@@ -126,8 +126,9 @@
         }
         this.weekData = []
         this.$http.get(`${this.url}kpi/week`,param).then(res => {
+
           if (res.status === 200) {
-            this.total = res.data.length
+            this.total = res.meta.total
             for(let i = 0; i < res.data.length; i++){
               let obj = {
                 name: res.data[i].staff_name,
@@ -173,7 +174,7 @@
         this.monthData = []
         this.$http.get(`${this.url}kpi/month_year`,param).then(res => {
           if (res.status === 200) {
-            this.total = res.data.length
+            this.total = res.meta.total
             for(let i = 0; i < res.data.length; i++){
               let obj = {
                 name: res.data[i].staff_info.name,
@@ -195,7 +196,7 @@
         this.seasonData = []
         this.$http.get(`${this.url}kpi/quarter_year`,param).then(res => {
           if (res.status === 200) {
-            this.total = res.data.length
+            this.total = res.meta.total
             for(let i = 0; i < res.data.length; i++){
               let obj = {
                 name: res.data[i].staff_info.name,
@@ -232,7 +233,7 @@
         this.halfyearData = []
         this.$http.get(`${this.url}kpi/half_year`,param).then(res => {
           if (res.status === 200) {
-            this.total = res.data.length
+            this.total = res.meta.total
             for(let i = 0; i < res.data.length; i++){
               let obj = {
                 name: res.data[i].staff_info.name,
@@ -261,7 +262,7 @@
         this.yearData = []
         this.$http.get(`${this.url}kpi/year`,param).then(res => {
           if (res.status === 200) {
-            this.total = res.data.length
+            this.total = res.meta.total
             for(let i = 0; i < res.data.length; i++){
               let obj = {
                 name: res.data[i].staff_name.name,

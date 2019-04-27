@@ -16,7 +16,7 @@
           <div :key="index" v-for="(item,index) in favoriteList" class="favorite-table-item">
             <div class="item-upper">
               <div class="item-upper-photo">
-                <img :src="item.user_id.avatar">
+                <img :src="item.cover[0].uri">
               </div>
               <div class="item-upper-content">
                 <div>{{item.title}}</div>
@@ -24,11 +24,11 @@
               <div class="item-upper-operate">
                 <div class="item-response">
                   <i class="icon-response"></i>
-                  <span>{{item.comment.length}}</span>
+                  <span>{{item.comment_number}}</span>
                 </div>
                 <div class="item-view">
                   <i class="icon-view"></i>
-                  <span>{{item.status.read_people}}</span>
+                  <span>{{item.status? item.status.read_people : 0}}</span>
                 </div>
                 <div class="item-like">
                   <i class="icon-like"></i>
@@ -82,7 +82,7 @@
     },
     watch: {
       currentPage(){
-        
+        this.getFavoriteList();
       }
     },
     mounted(){
@@ -90,11 +90,16 @@
     },
     methods: {
       getFavoriteList: function () {
-        this.$http.post(`${this.url}api/article/collect/userCollect`).then(res => {
+        let param = {
+          offset: this.currentPage,
+          limit: 10
+        }
+        this.$http.post(`${this.url}api/article/collect/userCollect`,param).then(res => {
+          console.log(res)
           if (res.status=== 200) { 
-            for (let i = 0; i < res.data.length; i++) {
-              this.total = res.data.length
-              this.favoriteList.push(res.data[i])
+            this.total = res.data.data.total
+            for (let i = 0; i < res.data.data.length; i++) {
+              this.favoriteList.push(res.data.data[i])
             }
           }
         })

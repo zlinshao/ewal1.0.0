@@ -5,28 +5,31 @@
         <img :src="imgUrl"/>
         <div>
           <h3 class="personName">张艺兴</h3>
-          <h3 class="timeInfo">1月KPI考核</h3>
+          <h3 class="timeInfo">{{month}}月KPI考核</h3>
         </div>
       </div>
     </div>
     <div class="kpiCheckContainer">
       <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiList">
-          <el-table-column label="考勤天数" align="center"></el-table-column>
-          <el-table-column label="不达标天数" align="center"></el-table-column>
+          <el-table-column label="考勤天数" align="center" prop="ss"></el-table-column>
+          <!-- <el-table-column label="不达标天数" align="center"></el-table-column> -->
           <el-table-column v-for="(item,index) in days" :key="index" :label="item.toString()" :prop="item.toString()" align="center" width="50px">
             <template slot-scope="scope">
-              <div @click="showKpi(scope.row,item)">{{scope.row[item.toString()]}}</div>
+              <div @click="showKpiDetail(scope.row,item)">{{scope.row[item.toString()]}}</div>
             </template>
           </el-table-column>
       </el-table>
-      <div class="assessmentDetail" v-if="showKPI">
-        <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiDetail">
+      <div class="assessmentDetail" v-if="showKpi">
+        <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiDetail" height="600">
           <el-table-column label="考核项" align="left" prop="standardName"></el-table-column>
           <el-table-column label="指标值" align="center" prop="full_mark"></el-table-column>
           <el-table-column label="得分" align="right" prop="actual_score"></el-table-column>
           <el-table-column  align="center" prop="status">
-            <template slot-scope="scope" v-if="scope.row.status == 0">
-                <el-button @click="appeal(scope.row)">申诉</el-button>
+            <template slot-scope="scope">
+                <el-button v-if="scope.row.is_appeal == 1" @click="appeal(scope.row)">已申诉</el-button>
+                <div v-else>
+                  <el-button v-if="!scope.row.status" @click="appeal(scope.row)">申诉</el-button>
+                </div>
             </template>
           </el-table-column>
         </el-table>
@@ -54,18 +57,19 @@
             <div class="items-center listTopLeft">
                 <img :src="imgUrl"/>
                 <div>
-                  <h3 class="personNameTime">张艺兴<span>2019-02-23</span></h3>
+                  <h3 class="personNameTime">张艺兴<span>{{dialogDay}}</span></h3>
                   <h3 class="info">有异议，当天休息，无法进行审批处理<span>评论</span></h3>
                 </div>
               </div>
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="confirmExaminationDetail()">确定</el-button>
-          <el-button size="small" type="info">取消</el-button>
+          <el-button size="small" type="danger" @click="appealOk()">确定</el-button>
+          <el-button size="small" type="info" @click="dialogVisible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
+   
   </div>
 </template>
 
@@ -80,14 +84,19 @@
       return {
         url: globalConfig.kpi,
         imgUrl: require('../../assets/image/todoList/components/humanResource/theme1/rili.png'),
+        month: 0,
+        dialogMonth: '',
+        dialogDay: '',
         total: 0,
         kpiList: [],
-        showKPI: false,
+        showKpi: false,
         dialogVisible: false,
         feedBack: '反馈：',
         kpiDetail: [],
         examinationDetail:[],
         examinationId: 0,
+        row: {},
+        day: 0,
       }
     },
     mounted() {
@@ -127,16 +136,17 @@
       }
     },
     methods: {
-      confirm: function(){
-        
-      },
       getKpiList(){
         this.$http.get(`${this.url}/kpi/last_kpi?month=2019-03`).then(res => {
+          console.log(res)
           if(res.status == 200){
             let obj = {
             id: res.data.id,
-            staff_id: res.data.staff_id
+            staff_id: res.data.staff_id,
+            ss: res.data.assessment_days
           }
+          this.month = res.data.month.substring(5,7)
+          this.dialogMonth = res.data.month.substring(0,7)
           this.handleKpi(obj,res.data.kpi)
           this.kpiList.push(obj)
           }
@@ -157,8 +167,10 @@
           }
         }
       },
-      showKpi: function(row,day) {
-        this.showKPI = true;
+      showKpiDetail: function(row,day) {
+        this.showKpi = true;
+        this.row = row
+        this.day = day
         let year = new Date().getFullYear()
         let month = new Date().getMonth()
         if (month == 0){
@@ -192,14 +204,20 @@
                 standardName: res.data[i].standard.name,
                 full_mark: res.data[i].standard.full_mark,
                 actual_score: res.data[i].actual_score,
+                status: res.data[i].standard.full_mark == res.data[i].actual_score ? true : false,
+                is_appeal: res.data[i].is_appeal
               }
-              obj.status = res.data[i].standard.full_mark == res.data[i].actual_score ? 1 : 0 
               this.kpiDetail.push(obj)
             }
           }
         })
       },
       appeal: function(row) {
+        if(this.day < 10) {
+          this.dialogDay = this.dialogMonth + '-0' +this.day
+        }else{
+        this.dialogDay = this.dialogMonth + '-' +this.day
+        }
         this.examinationDetail = []
         let obj = {
           id: row.id,
@@ -210,14 +228,26 @@
         this.examinationDetail.push(obj)
         this.dialogVisible = true
       },
-      confirmExaminationDetail: function() {
+      appealOk: function() {
         let param = {
             result:2,
             kpi_id: this.examinationDetail[0].id,
             comment: this.feedBack
         }
-        console.log(param)
-      }
+        this.$http.put(`${this.url}/kpi/confirm_kpi/${this.kpiList[0].id}`,param).then(res => {
+          if(res.status == 200) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: '申诉成功',
+            });
+            this.dialogVisible = false
+            this.showKpiDetail(this.row,this.day)
+          }
+        })
+      },
+      confirm: function(){
+        this.showKpi = false
+      },
     },
   }
 </script>

@@ -34,7 +34,7 @@
         <el-table-column label="确认状态" align="center" prop='confirmStatus'>
           <template slot-scope="scope">
             <el-button plain size="small" background="rgba(10,31,68,1)" v-if="scope.row.confirmStatus=== 0">未确认</el-button>
-            <el-button plain type="success" size="small" v-if="scope.row.confirmStatus=== 2">有异议</el-button>
+            <el-button plain type="success" size="small" v-if="scope.row.confirmStatus=== 2" @click="showDissent(scope.row)">有异议</el-button>
             <el-button plain type="danger" size="small" v-if="scope.row.confirmStatus=== 1">已确认</el-button>
           </template>
         </el-table-column>
@@ -130,6 +130,49 @@
           </div>
         </div>
     </lj-dialog>
+     <lj-dialog :visible="dissent_visible" :size="{width: 700 + 'px',height: 600 + 'px'}" @close="dissent_visible = false">
+        <!-- 指标值： {{dissmentDetail.kpi_info.standard.full_mark}}<br>
+        考核描述：{{dissmentDetail.kpi_info.standard.description}}<br> 
+        实际得分:{{dissmentDetail.kpi_info.actual_score}}<br> -->
+        指标值： {{standard.full_mark}}<br>
+        考核描述：{{standard.description}}<br> 
+        实际得分:{{standard}}<br>
+        <div v-for="(item, index) in dissmentDetail.content" :key="index">
+          评论内容{{index+1}}: {{item}}
+        </div> 
+        是否修改考核信息：<el-button @click="modifyKpiInfo()">确认</el-button><el-button @click="dissent_visible = false">取消</el-button>
+    </lj-dialog>
+    <lj-dialog
+        :visible="kpi_modify_visible1"
+        :size="{width: 600 + 'px',height: 500 + 'px'}"
+        @close="kpi_modify_visible1 = false"
+      >
+        <div class="dialog_container borderNone">
+          <div class="dialog_header">
+            <h3>修改</h3>
+          </div>
+          <div class="dialog_main">
+            <el-form ref="form"  label-width="80px">
+              <el-form-item label="考核项">
+                <div>{{standardName}}</div>
+              </el-form-item>
+              <el-form-item label="原始得分">
+                <div>{{oldScore}}</div>
+              </el-form-item>
+              <el-form-item label="现得分">
+                <el-input v-model="currentScore"></el-input>
+              </el-form-item>
+              <el-form-item label="修改原因">
+                <el-input  type="textarea" v-model="modifyReason"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button size="mini" type="danger" @click="modifyConfirm1()">确定</el-button>
+            <el-button size="mini" type="info" @click="kpi_modify_visible = false">取消</el-button>
+          </div>
+        </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -154,6 +197,8 @@ export default {
       sendTodoList: false,
       kpi_detail_visible: false,
       kpi_modify_visible: false,
+      kpi_modify_visible1: false,
+      dissent_visible: false,
       imgUrl: '',
       staffName: '',
       staffDepartment: '',
@@ -170,6 +215,9 @@ export default {
       row: {},
       item: 0,
       multipleSelection: [],
+      dissmentDetail: {},
+      standard: {},
+      kpiInfo: {}
     }
   },
   mounted() {
@@ -381,6 +429,43 @@ export default {
       //   this.getKpiList()
       //   console.log(this.kpiList)
       // }
+    },
+    showDissent: function(row){
+      let param = {
+        month_day_id: row.id
+      }
+      this.$http.get(`${this.url}/kpi/comment`,param).then(res => {
+        if(res.status == 200){
+          this.kpiInfo = res.data
+          this.dissmentDetail = {
+            content: []
+          }
+          this.standard = res.data[0].kpi_info.standard
+          for(let i  = 0; i< res.data.length; i++){
+            this.dissmentDetail.content.push(res.data[i].content)
+          }
+          this.dissent_visible = true;
+        }
+        console.log(this.kpiInfo)
+      })
+    },
+    modifyKpiInfo: function() {
+      this.kpi_modify_visible1 = true
+      this.standardName = this.kpiInfo[0].kpi_info.standard.name
+      this.oldScore = this.kpiInfo[0].kpi_info.actual_score
+      
+    },
+    modifyConfirm1:function(){
+      let param = {
+        month_day_id: this.kpiInfo[0].month_day_id,
+        actual_score: this.currentScore,
+        remarks: this.modifyReason
+      }
+      this.$http.put(`${this.url}/kpi/${this.kpiInfo[0].kpi_id}`,param).then(res => {
+        if(res.status == 200){
+          this.kpi_modify_visible1 = false
+        }
+      })
     }
   },
 }
