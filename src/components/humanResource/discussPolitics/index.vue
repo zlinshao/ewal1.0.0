@@ -538,6 +538,11 @@
                      style="text-align: left"
                      size="small" label-width="140px">
 
+              <el-form-item label="会议附件">
+                <lj-upload :disabled="true" v-model="meeting_summary_form.meeting_file_id" size="40"
+                           style="position: absolute; top: -12px;"></lj-upload>
+              </el-form-item>
+
               <el-form-item required prop="record" label="会议记录人">
                 <user-choose width="700" size="mini" v-model="meeting_summary_form.record"></user-choose>
               </el-form-item>
@@ -570,7 +575,7 @@
 
                 <el-form-item required
                               :prop="'list.'+index+'.question'"
-                              :rules="{required: true, message: '请输入遗留问题', trigger: 'blur'}"
+                              :rules="{required: true, message: '请输入遗留问题', trigger: ['blur','change']}"
                               label="遗留问题">
                   <el-input style="width: 700px"
                             v-model="meeting_remaining_form.list[index].question"></el-input>
@@ -585,14 +590,14 @@
                 </el-form-item>
 
                 <el-form-item required :prop="'list.'+index+'.follow_id'"
-                              :rules="{required: true, message: '请选择跟进人', trigger: 'blur'}"
+                              :rules="{required: true, message: '请选择跟进人', trigger: ['blur','change']}"
                               label="跟进人">
                   <user-choose width="700" num="1"
                                v-model="meeting_remaining_form.list[index].follow_id"></user-choose>
                 </el-form-item>
 
                 <el-form-item required :prop="'list.'+index+'.result'"
-                              :rules="{required: true, message: '请输入跟进情况', trigger: 'blur'}"
+                              :rules="{required: true, message: '请输入跟进情况', trigger: ['blur','change']}"
                               label="跟进情况">
                   <el-input style="width: 700px"
                             v-model="meeting_remaining_form.list[index].result" title="请输入跟进情况"></el-input>
@@ -916,48 +921,66 @@
       NameShower,
     },
     data() {
+      /*let validateArray = (rule, value, callback) => {
+        debugger
+        if (value.length==0) {
+          callback(new Error('请选择'));
+        }else {
+          callback();
+        }
+      };
+      let validateString = (rule, value, callback) => {
+        debugger
+        if (value!='demo') {
+          callback(new Error('请选择demo'));
+        }else {
+          callback();
+        }
+      };*/
+
+
       return {
 
         rules: {
           addMeeting: {
             name: [
-              {required: true, message: '请选择会议主题', trigger: 'blur'},
+              {required: true, message: '请选择会议主题', trigger: ['blur','change']},
               {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
             ],
             room_id: [
-              {required: true, message: '请选择会议室', trigger: 'blur'},
+              {required: true, message: '请选择会议室', trigger: ['blur','change']},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
             meeting_type: [
-              {required: true, message: '请选择会议类型', trigger: 'blur'},
+              {required: true, message: '请选择会议类型', trigger: ['blur','change']},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
             presenter_id: [
-              {required: true, message: '请选择主持人', trigger: 'blur'},
+              {required: true, message: '请选择主持人', trigger: ['blur','change']},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
             participants: [
-              {required: true, message: '请选择参会人员', trigger: 'blur'},
+              {required: true, message: '请选择参会人员', trigger: ['blur','change']},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
 
           },
           addMeetingRoom: {
             meetingRoom: [
-              {required: true, message: '请选择会议室', trigger: 'blur'},
+              {required: true, message: '请选择会议室', trigger: ['blur','change']},
             ],
           },
           addMeetingType: {
             meetingType: [
-              {required: true, message: '请选择会议类型', trigger: 'blur'},
+              {required: true, message: '请选择会议类型', trigger: ['blur','change']},
             ],
           },
           meetingSummary: {
             record: [
-              {required: true, message: '请选择会议记录人', trigger: 'blur'},
+              {required: true, message: '请选择会议记录人', trigger: ['blur','change']},
             ],
             range: [
-              {required: true, message: '请选择会议纪要查看范围', trigger: 'blur'},
+              {required: true, message: '请选择会议纪要查看范围', trigger: ['blur','change']},
             ],
           },
         },
@@ -1094,9 +1117,11 @@
         ],
         meeting_summary_editable: false,//会议纪要及历史遗留问题 是否可以编辑
         meeting_summary_form: {//会议纪要表单
+          demo:'',
           record: [],//会议记录人
           range: [],//会议纪要查看范围
           attachment: [],//附件=》会议纪要文件
+          meeting_file_id:[],//各个上传者上传的文件集合
           uploader:'',//上传者
           upload_time:'',//上传时间
         },
@@ -1268,11 +1293,24 @@
 
       //处理保存会议纪要及历史遗留问题
       handleSaveSummaryAndRemaining() {
+        this.$refs['meetingSummaryFormRef'].validate(valid=> {
+          if(!valid) {
+            return;
+          }
+        });
+        this.$refs['remainingFormRef'].validate(valid=> {
+          if(!valid) {
+            return;
+          }
+        });
+
+
         let meeting_id = this.meeting_detail_form.id;//会议id
         let params = {
           meeting_id,
           ...this.meeting_summary_form
         };
+        //delete params.meeting_file;
         debugger
 
         const promises = [];
@@ -1584,7 +1622,6 @@
               status: item.status,//状态
               remark: item.remark || '',//备注
 
-
               start_time: value.start_time,
               end_time: value.end_time,
               room_id: value.room_id,
@@ -1597,6 +1634,9 @@
             record: [],//会议记录人
             range: [],//会议纪要查看范围
             attachment: [],//附件=》会议纪要文件
+            meeting_file_id:[],//各个上传者上传的文件集合
+            uploader:'',//上传者
+            upload_time:'',//上传时间
           };
           this.meeting_remaining_form = {
             list: [
@@ -1612,12 +1652,18 @@
           this.$http.get(`${this.url}meeting/minutes/meeting/${meeting_id}`).then(res2 => {
             if (res2.code.endsWith('0')) {
               let item = res2.data;
-              this.meeting_summary_form = item;
+              //this.meeting_summary_form = item;
+              this.meeting_summary_form.id = item.id;
               this.meeting_summary_form.attachment = _.map(item.attachment, 'id');
-              this.meeting_summary_form.range = item.ranges || [];
-              this.meeting_summary_form.record = item.records || [];
+              this.meeting_summary_form.range = _.cloneDeep(item.ranges || []);
+              this.meeting_summary_form.record = _.cloneDeep(item.records || []);
               this.meeting_summary_form.uploader = item.user?.name;
               this.meeting_summary_form.upload_time = item.created_at;
+              //let meeting_file = _.map(item.meeting_file,'file_id');
+              this.meeting_summary_form.meeting_file = item.meeting_file;
+              this.meeting_summary_form.meeting_file_id = _(item.meeting_file).map('file_id').flattenDeep().uniq().value();
+              delete this.meeting_summary_form.records;
+              delete this.meeting_summary_form.ranges;
             }
           });
           let params2 = {
