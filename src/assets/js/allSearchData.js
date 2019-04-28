@@ -1032,6 +1032,44 @@ export const paySearchList = {
     }
   ]
 }
+
+//人资kpi考核
+export const kpiSearch = {
+  status: 'kpiSearch',
+  keywords: 'search',
+  data: [
+    // {
+    //   keyType: 'check',
+    //   title: '职级',
+    //   keyName: 'position',
+    //   dataType: [],
+    //   value: [
+    //     { id: 1, title: 'P1' },
+    //     { id: 2, title: 'P2' },
+    //     { id: 3, title: 'P3' },
+    //     { id: 4, title: 'P4' },
+    //     { id: 5, title: 'P5' },
+    //     { id: 6, title: 'P6' },
+    //     { id: 7, title: 'P7' },
+    //   ]
+    // },
+    {
+      keyType: 'radio',
+      title: '确认状态',
+      keyName: 'period',
+      dataType: '',
+      value: [
+        { id: 0, title: '周度' },
+        { id: 1, title: '月度' },
+        { id: 2, title: '季度' },
+        { id: 3, title: '半年度' },
+        { id: 4, title: '年度' }
+      ]
+    }
+  ]
+}
+
+// 本月kpi考核
 export const currentMonthAssessmentSearch = {
     status: 'currentMonthAssessmentSearch',
     keywords: 'search',

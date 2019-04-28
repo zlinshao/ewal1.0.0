@@ -172,7 +172,6 @@
           limit: 10
         }
         this.$http.get(`${this.url}eam/contract`,param).then(res => {
-          console.log(res)
           if(res.code === '20000'){
             this.total = res.data.count
             for(var i = 0; i < res.data.data.length; i++){

@@ -17,7 +17,7 @@
         <div v-if="chooseTab" class="items-center listTopRight">
           <!--<div class="icons add" @click="new_train_visible = true"><b>+</b></div>-->
           <div class="assessment" v-if="chooseTab==3" @click="routerLink('currentMonthAssessment')">本月考核</div>
-          <div v-if="chooseTab==3" class="icons search" @click="highSearch(chooseTab)"></div>
+          <div v-if="chooseTab==3" class="icons search" @click="highSearch()"></div>
 
           <!--<div class="icons search" @click="highSearch(chooseTab)"></div>-->
         </div>
@@ -65,13 +65,11 @@
       <!--培训模块-->
       <train v-if="chooseTab==2"></train>
       <!--薪资模块-->
-      <kpi v-if="chooseTab==3"></kpi>
+      <kpi v-if="chooseTab==3" :showSearch="showSearch" v-on:changeShowSearch="changeShowSearch"></kpi>
 
       <!--模块入口-->
       <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true"
                 @close="visibleStatus = false"></MenuList>
-      <!--高级搜索-->
-      <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
     </div>
   </div>
 </template>
@@ -87,7 +85,6 @@
   import Attence from './attence/index';//考勤
 
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
-  import {overViewSearch, borrowReceiveSearch} from '../../../assets/js/allSearchData.js';
 
 
   export default {
@@ -105,13 +102,9 @@
       return {
         humanResource,
         resourceDepart,
-        overViewSearch,
-        borrowReceiveSearch,
-
+        showSearch: false,
         //common
         visibleStatus: false,//弹出部门
-        showSearch: false,//高级搜索
-        searchData: {},//搜索项
         selects: [
           {id: 1, title: '考勤'},
           {id: 2, title: '培训'},
@@ -140,24 +133,8 @@
     computed: {},
     methods: {
       // 高级搜索
-      highSearch(val) {
-        this.showSearch = true;
-        switch (val) {
-          case 3:
-            this.searchData = this.overViewSearch;
-            break;
-          case 4:
-            this.searchData = this.borrowReceiveSearch;
-            break;
-        }
-      },
-
-      // 确认搜索
-      hiddenModule(val) {
-        this.showSearch = false;
-        if (val !== 'close') {
-          //do
-        }
+      highSearch() {
+        this.showSearch = true
       },
 
       moduleList() {
@@ -176,7 +153,9 @@
       handleChangeDate(id) {
 
       },
-
+      changeShowSearch(val){
+        this.showSearch = val
+      }
     },
   }
 </script>
