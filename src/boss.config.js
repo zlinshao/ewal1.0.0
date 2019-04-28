@@ -17,3 +17,4 @@ globalConfig = {
   favorite: 'http://test.new_media.api.ewal.lejias.cn/',
   approval_sever: 'http://47.101.204.100:8080/'
 }
+

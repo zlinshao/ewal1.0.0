@@ -41,6 +41,14 @@
       <div v-if="showNoneData" class="noneDataShow">
         <div></div>
       </div>
+      <div class="page flex-center common-page" v-if="showAllData">
+        <el-pagination
+        :current-page="currentPage"
+        :page-size="6"
+        :total="total"
+        layout="total,jumper,prev,pager,next">
+        </el-pagination>
+      </div>
     </div>
     
 
@@ -167,20 +175,30 @@
           permission: 0
         },
         patenteDelId:0,
+        currentPage: 1,
+        total: 0,
       }
     },
     mounted() {
       this.getPatentList();
     },
+    watch: {
+      currentPage(){
+        this.getPatentList()
+      }
+    },
     methods: {
       getPatentList: function() {
         let params = {
           classify_id: 1,
-          all: 1
+          all: 1,
+          offset: this.currentPage,
+          limit: 6
         }
         this.$http.get(`${this.url}/api/knowledge/classify_document`,params).then(res => {
           if (res.status===200) {
             this.patentList = [];
+            this.total = this.res.total
             for(var i = 0; i < res.data.data.length; i++){
               let obj ={
                 id: res.data.data[i].id,

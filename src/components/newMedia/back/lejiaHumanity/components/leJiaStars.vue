@@ -32,7 +32,7 @@
         <lj-dialog
                 :visible="add_visible"
                 :size="{width:1200 + 'px' ,height: 800 + 'px'}"
-                @close="add_visible = false">
+                @close="cancelAddStatus">
             <div class="dialog_container">
                 <div class="dialog_header">
                     <h3>乐伽之星</h3>
@@ -45,7 +45,7 @@
 
                         <el-form-item label="文章内容">
                             <div class="item_content">
-                                <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE>
+                                <lj-editor  :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
                             </div>
                         </el-form-item>
                     </el-form>
@@ -53,7 +53,7 @@
                 <div class="dialog_footer">
                     <el-button size="small" type="warning" @click="getUEContent()">预览</el-button>
                     <el-button size="small" type="danger" @click="postReceivable_tag()">发布</el-button>
-                    <el-button size="small" type="info" @click="add_visible = false">取消</el-button>
+                    <el-button size="small" type="info" @click="cancelAddStatus">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
@@ -63,13 +63,14 @@
 
 <script>
     import LjDialog from '../../../../common/lj-dialog.vue';
-    import UE from '../../../../common/UE.vue';
+    import LjEditor from '../../../../common/lj-editor.vue';
     export default {
         name: "leJiaStars",
         components:{
             LjDialog,
-            UE,
+            LjEditor
         },
+        props: ['add_status','choose_type'],
         data() {
             return {
                 visible:false,
@@ -83,6 +84,20 @@
                     initialFrameWidth: null,
                     initialFrameHeight: 350
                 },
+                add_visible:false,
+            }
+        },
+        watch: {
+            add_status:{
+                handler(val){
+                    this.add_visible = val;
+                },deep:true
+
+            },
+            choose_type:{
+                handler(val){
+                    this.chooseTab = val;
+                },deep:true
             }
         },
         mounted(){
@@ -90,7 +105,11 @@
         },
         methods: {
             edit() {
-                this.visible = true;
+                this.add_visible = true;
+            },
+            cancelAddStatus(){//取消
+                this.add_visible = false;
+                this.$emit('cancelAdd',this.add_visible)
             },
             //获取乐伽之星
             getLeJiaStarInfo(){

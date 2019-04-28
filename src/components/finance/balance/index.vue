@@ -90,13 +90,17 @@
                             <div v-if="selectTab===2||selectTab===3||selectTab===4" class="tab">
                                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
                                     <div class="balance-detail-form-info" :class="selectTab===2?'activeBorder':''">
-                                        <el-form-item label="" label-width="0px">
-                                            <el-input v-model="form.remark" type="textarea" :rows="14"></el-input>
-                                        </el-form-item>
+                                        <!--<el-form-item label="" label-width="0px" ></el-form-item>-->
+                                        <div class="img-wall">
+                                            <div class="balance-detail-img" v-for="(item,index) in imgData">
+                                                <img  :src="item" alt="" :key="index">
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="balance-detail-form-info" :class="selectTab===3?'activeBorder':''">
                                         <el-form-item label="备注">
-                                            <el-input v-model="form.remark" type="textarea" :rows="14"></el-input>
+                                            <el-input v-model="form.remark"  @change="getReimburseRemark" type="textarea" :rows="14"></el-input>
                                         </el-form-item>
                                     </div>
                                     <div class="balance-detail-form-info" :class="selectTab===4?'activeBorder':''">
@@ -138,9 +142,8 @@
                                                      v-if="this.params.settle_type===''">
                                         <template slot-scope="scope">
                                             <el-button :type="scope.row.is_result===1?'info':'danger'" size="mini"
-                                                       @click="openAddFee(scope.row)"
-                                                       :disabled="scope.row.is_result===1">
-                                                {{scope.row.is_result===1?'已生成结果':'未生成结果'}}
+                                                       @click="openAddFee(scope.row)">
+                                                {{scope.row.is_result===1?'详情':'未生成结果'}}
                                             </el-button>
                                         </template>
                                     </el-table-column>
@@ -161,14 +164,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="dialog_footer">
+                <div class="dialog_footer" v-if="current_row.status===1">
                     <el-button type="danger" size="small" @click="pass_visible=true">通过</el-button>
                     <el-button type="info" size="small" @click="detail_visible = false;current_row = ''">驳回</el-button>
                 </div>
             </div>
         </lj-dialog>
 
-        <!--新增电费-->
+        <!--报销费用项-->
         <lj-dialog :visible="add_fee_visible" :size="{width: 600 + 'px',height: 700 + 'px'}"
                    @close="add_fee_visible = false">
             <div class="dialog_container">
@@ -185,6 +188,7 @@
                                             type="datetimerange"
                                             value-format="yyyy-MM-dd"
                                             range-separator="至"
+                                            :disabled="current_row.is_result===1"
                                             start-placeholder="开始日期"
                                             end-placeholder="结束日期">
                                     </el-date-picker>
@@ -202,95 +206,93 @@
                                 <el-form-item label="开始时间">
                                     <el-date-picker
                                             value-format="yyyy-MM-dd"
-                                            v-model="item.fee_start" type="date" placeholder="请输入">
+                                            v-model="item.fee_start" type="date" placeholder="请输入" :disabled="current_row.is_result===1">
                                     </el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="结束时间">
                                     <el-date-picker
                                             value-format="yyyy-MM-dd"
-                                            v-model="item.fee_end" type="date" placeholder="请输入">
+                                            v-model="item.fee_end" type="date" placeholder="请输入" :disabled="current_row.is_result===1">
                                     </el-date-picker>
                                 </el-form-item>
 
 
                                 <el-form-item label="客户类型">
-                                    <el-select v-model="item.duty_type">
+                                    <el-select v-model="item.duty_type" :disabled="current_row.is_result===1"  @change="handleDutyChange(item.duty_type)">
                                         <el-option v-for="(cont,dex) in types" :label="cont.title" :value="cont.id"
                                                    :key="dex"></el-option>
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="客户姓名">
-                                    <el-input placeholder="请输入" v-model="item.duty_name"></el-input>
+                                    <el-input placeholder="请输入" v-model="item.duty_name" :disabled="current_row.is_result===1"></el-input>
                                 </el-form-item>
 
                                 <el-form-item label="上次底数(峰)" v-if="current_row.fee_name==='电费'">
-                                    <el-input placeholder="请输入" v-model="item.last_degree" type="number"></el-input>
+                                    <el-input placeholder="请输入" v-model="item.last_degree" type="number" :disabled="current_row.is_result===1"></el-input>
                                 </el-form-item>
                                 <el-form-item label="上次底数"
                                               v-if="current_row.fee_name==='水费'||current_row.fee_name==='燃气费'">
-                                    <el-input placeholder="请输入" v-model="item.last_degree" type="number"></el-input>
+                                    <el-input placeholder="请输入" v-model="item.last_degree" type="number" :disabled="current_row.is_result===1"></el-input>
                                 </el-form-item>
                                 <el-form-item label="本次底数"
                                               v-if="current_row.fee_name==='水费'||current_row.fee_name==='燃气费'">
-                                    <el-input placeholder="请输入" v-model="item.now_degree" type="number"></el-input>
+                                    <el-input placeholder="请输入" v-model="item.now_degree" type="number" :disabled="current_row.is_result===1"></el-input>
                                 </el-form-item>
                                 <el-form-item label="单价()" v-if="current_row.fee_name==='电费'">
-                                    <el-input placeholder="请输入" v-model="item.unit_price" type="number"></el-input>
+                                    <el-input placeholder="请输入" v-model="item.unit_price" type="number" :disabled="current_row.is_result===1"></el-input>
                                 </el-form-item>
                                 <el-form-item label="上次底数(谷)" v-if="current_row.fee_name==='电费'">
-                                    <el-input placeholder="请输入" v-model="item.last_valley_degree"
+                                    <el-input placeholder="请输入" v-model="item.last_valley_degree" :disabled="current_row.is_result===1"
                                               type="number"></el-input>
                                 </el-form-item>
                                 <el-form-item label="本次底数" v-if="current_row.fee_name==='电费'">
-                                    <el-input placeholder="请输入" v-model="item.now_valley_degree"
+                                    <el-input placeholder="请输入" v-model="item.now_valley_degree" :disabled="current_row.is_result===1"
                                               type="number"></el-input>
                                 </el-form-item>
                                 <el-form-item label="单价()" v-if="current_row.fee_name==='电费'||current_row.fee_name==='水费'||current_row.fee_name==='燃气费'">
-                                    <el-input placeholder="请输入" v-model="item.vally_unit_price"
+                                    <el-input placeholder="请输入" v-model="item.vally_unit_price" :disabled="current_row.is_result===1"
                                               type="number"></el-input>
                                 </el-form-item>
                                 <el-form-item label="滞纳金"
                                               v-if="current_row.fee_name==='电费'||current_row.fee_name==='水费'||current_row.fee_name==='燃气费'">
-                                    <el-input placeholder="请输入" v-model="item.late_payment" type="number"></el-input>
+                                    <el-input placeholder="请输入" v-model="item.late_payment" type="number" :disabled="current_row.is_result===1"></el-input>
                                 </el-form-item>
 
                                 <el-form-item label="公摊水费" v-if="current_row.fee_name==='物业费'">
-                                    <el-input placeholder="请输入" v-model="item.public_water_amount"
+                                    <el-input placeholder="请输入" v-model="item.public_water_amount" :disabled="current_row.is_result===1"
                                               type="number"></el-input>
                                 </el-form-item>
                                 <el-form-item label="公摊电费" v-if="current_row.fee_name==='物业费'">
-                                    <el-input placeholder="请输入" v-model="item.public_ele_amount"
+                                    <el-input placeholder="请输入" v-model="item.public_ele_amount" :disabled="current_row.is_result===1"
                                               type="number"></el-input>
                                 </el-form-item>
                                 <el-form-item label="物业费" v-if="current_row.fee_name==='物业费'">
-                                    <el-input placeholder="请输入" v-model="item.late_payment" type="number"></el-input>
+                                    <el-input placeholder="请输入" v-model="item.late_payment" type="number" :disabled="current_row.is_result===1"></el-input>
                                 </el-form-item>
 
                                 <el-form-item label="其他">
-                                    <el-input placeholder="请输入" v-model="item.other_payment" type="number"></el-input>
+                                    <el-input placeholder="请输入" v-model="item.other_payment" type="number" :disabled="current_row.is_result===1"></el-input>
                                 </el-form-item>
                                 <el-form-item label="金额">
-                                    <el-input placeholder="请输入" v-model="item.total_amount" type="number"></el-input>
-                                    <i class="form-reduce-icon" @click="reduceFormData(index)"></i>
+                                    <el-input placeholder="请输入" v-model="item.total_amount" type="number" :disabled="current_row.is_result===1"></el-input>
+                                    <i class="form-reduce-icon" @click="reduceFormData(index)"  v-if="current_row.is_result!=1"></i>
                                 </el-form-item>
                                 <!--<el-form-item label="备注">-->
                                 <!--<el-input placeholder="请输入" v-model="item.remark" type="textarea" :rows="4"></el-input>-->
                                 <!--<i class="form-reduce-icon" @click="reduceFormData(index)"></i>-->
                                 <!--</el-form-item>-->
                             </div>
-
                         </el-form>
                     </div>
 
                 </div>
-                <div class="dialog_footer">
+                <div class="dialog_footer" v-if="current_row.is_result!=1">
                     <el-button type="warning" size="small" @click="addFormData">添加</el-button>
                     <el-button type="danger" size="small" @click="handleOkAdd()">确定</el-button>
                     <el-button type="info" size="small" @click="add_fee_visible = false">取消</el-button>
                 </div>
             </div>
         </lj-dialog>
-
         <!--通过-->
         <lj-dialog :visible="pass_visible" :size="{width: 400 + 'px',height: 300 + 'px'}"
                    @close="pass_visible = false">
@@ -299,14 +301,6 @@
                     <h3>通过</h3>
                 </div>
                 <div class="dialog_main borderNone">
-                    <!--<el-form label-width="100px">-->
-                        <!--<el-form-item label="付款时间">-->
-                            <!--<el-date-picker-->
-                                    <!--value-format="yyyy-MM-dd"-->
-                                    <!--v-model="pay_date" type="date" placeholder="请输入">-->
-                            <!--</el-date-picker>-->
-                        <!--</el-form-item>-->
-                    <!--</el-form>-->
                     <el-form  label-width="80px">
                         <el-form-item label="付款时间">
                             <el-date-picker
@@ -323,17 +317,35 @@
             </div>
         </lj-dialog>
 
+        <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
+        <DepartOrgan :module="departModule" @close="hiddenDepart"></DepartOrgan>
+        <customer :module="customerModule" @close="hiddenCustomer"></customer>
+        <!--<PostOrgan :module="postModule" @close="hiddenPost"></PostOrgan>-->
+
     </div>
 </template>
 
 <script>
     import SearchHigh from '../../common/searchHigh.vue';
     import LjDialog from '../../common/lj-dialog.vue';
-    import FinMenuList from '../components/finMenuList.vue'
+    import FinMenuList from '../components/finMenuList.vue';
+    import Customer from '../../common/customer.vue';
+    import StaffOrgan from '../../common/staffOrgan.vue';
+    import DepartOrgan from '../../common/departOrgan.vue';
+    // import PostOrgan from '../../common/postOrgan.vue';
+
+
 
     export default {
         name: "index",
-        components: {SearchHigh, FinMenuList, LjDialog},
+        components: {
+            SearchHigh,
+            FinMenuList,
+            LjDialog,
+            Customer,
+            StaffOrgan,
+            DepartOrgan,
+        },
         data() {
             return {
                 params: {
@@ -342,6 +354,9 @@
                     limit: 12,
                     settle_type: 2,
                 },
+                customerModule:false,//房东，租客
+                staffModule:false,//员工
+                departModule:false,//部门
                 pass_visible: false,//通过
                 add_fee_visible: false,//费用新增
                 check_visible: false,//查看
@@ -358,8 +373,8 @@
                 types: [
                     {id: 1, title: '房东'},
                     {id: 2, title: '租客'},
-                    {id: 3, title: '未知'},
-                    {id: 6, title: '片区费用'},
+                    {id: 3, title: '员工'},
+                    {id: 6, title: '部门'},
                     {id: 11, title: '公司'},
                 ],
                 tabs: [
@@ -417,6 +432,8 @@
                     ]
                 },
 
+
+
                 fee_data_result: [
                     {
                         "fee_start": "",//认责费用开始时间
@@ -446,8 +463,15 @@
                     limit: 12,
                 },
 
+
                 balance_id: '',
                 pay_date: '',//通过 付款时间
+                imgData:[],
+
+                commonModuleData:{//共用组件数据
+                },
+
+
             }
         },
         mounted() {
@@ -469,6 +493,42 @@
         },
         computed: {},
         methods: {
+            handleDutyChange(type){
+                if(type===1||type===2){
+                    this.customerModule=true;
+                }else if(type===3){
+                    this.staffModule=true;
+                }else if(type===6){
+                    this.departModule=true;
+                }else if(type===11){
+
+                }
+            },
+            //获取员工信息
+            hiddenStaff(ids, names, arr) {
+                this.staffModule = false;
+                if (ids !== 'close') {
+                    this.commonModuleData.staff_name = names;
+                    this.commonModuleData.staff_id = ids[0];
+                }
+            },
+            //获取部门信息
+            hiddenDepart(ids, names, arr) {
+                this.departModule = false;
+                if (ids !== 'close') {
+                    this.commonModuleData.department_id = ids[0];
+                    this.commonModuleData.leader_name = arr[0].leader.name;
+                    this.commonModuleData.leader_id = arr[0].leader_id;
+                    this.commonModuleData.department_name  = names;
+                }
+            },
+            hiddenCustomer(val){//获取客户
+                this.customerModule=false;
+                this.commonModuleData.customer_name = val.name;
+                this.commonModuleData.customer_identity = val.identity;
+                this.commonModuleData.customer_id = val.id;
+            },
+
             getBalanceDataLists() {//结算单列表
                 this.showLoading(true);
                 this.$http.get(globalConfig.temporary_server + 'customer_settle', this.params).then(res => {
@@ -507,6 +567,20 @@
             },
             selectTabs(id) {//结算单详情tab切换
                 this.selectTab = id;
+                if(id===3){
+                    this.getReimburseRemark();
+                }
+            },
+            getReimburseRemark(){//添加报销单备注信息
+
+                this.$http.put(globalConfig.temporary_server + 'customer_reimburse/reimburse_remark/'+this.balance_id,{remark:this.form.remark}).then(res => {
+                    this.showLoading(false);
+                    if (res.code === 200) {
+                        this.getReimburseDetails();
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
             },
             handleOkAdd() {//报销单详情编辑提交
                 let paramsForm = {
@@ -536,23 +610,70 @@
                 })
             },
             handleOkPass() {//通过操作
-                this.$http.post(globalConfig.temporary_server + 'customer_reimburse/reimburse_funds/' + this.balance_id, {pay_date: this.pay_date}).then(res => {
-                    if (res.code === 200) {
-                        this.$LjNotify('success', {
-                            title: '成功',
-                            message: res.msg,
-                            subMessage: '',
-                        });
-                        this.pass_visible = false;
-                    }
-                }).catch(err => {
-                    console.log(err);
-                })
+                if(this.params.settle_type === ''){//报销单通过
+                    this.$http.post(globalConfig.temporary_server + 'customer_reimburse/reimburse_funds/' + this.balance_id, {pay_date: this.pay_date}).then(res => {
+                        if (res.code === 200) {
+                            this.$LjNotify('success', {
+                                title: '成功',
+                                message: res.msg,
+                                subMessage: '',
+                            });
+                            this.pass_visible = false;
+                            this.detail_visible=false;
+                            this.getReimburseDataLists();
+                        }else {
+                            this.$LjNotify('error', {
+                                title: '失败',
+                                message: res.msg,
+                                subMessage: '',
+                            });
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }else{//结算单通过
+                    this.$http.post(globalConfig.temporary_server + 'customer_settle/fund', {pay_date: this.pay_date,settle_id:this.balance_id}).then(res => {
+                        if (res.code === 200) {
+                            this.$LjNotify('success', {
+                                title: '成功',
+                                message: res.msg,
+                                subMessage: '',
+                            });
+                            this.pass_visible = false;
+                            this.detail_visible=false;
+                            this.getBalanceDataLists();
+                        }else {
+                            this.$LjNotify('error', {
+                                title: '失败',
+                                message: res.msg,
+                                subMessage: '',
+                            });
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }
             },
 
             openAddFee(row) {//报销费用详情展开
                 this.add_fee_visible = true;
                 this.current_row = row;
+                this.getReimburseFeeResult(row);
+            },
+            getReimburseFeeResult(row){//获取报销费已生成结果详情
+                let paramsForm={
+                    reimburse_fee_id:row.id
+                };
+                this.$http.get(globalConfig.temporary_server + 'customer_reimburse/reimburse_fee_result',paramsForm).then(res => {
+                    this.showLoading(false);
+                    if (res.code === 200) {
+                        this.fee_data_result = res.data.data;
+                    }else{
+
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
             },
             addFormData() {//添加多个表单
                 this.fee_data_result.push({
@@ -603,18 +724,20 @@
                 }
             },
 
-            getReimburseDetails() {//报销单详情列表
+            getReimburseDetails() {//报销单款项明细列表
                 this.$http.get(globalConfig.temporary_server + 'customer_reimburse/reimburse_fee/' + this.balance_id, this.feeParams).then(res => {
                     this.showLoading(false);
                     if (res.code === 200) {
                         this.balanceDataDetail = res.data.data;
                         this.feeCount = res.data.count;
+                        this.imgData=res.data.urls;
+                        this.form.remark = res.data.remark;
                     }
                 }).catch(err => {
                     console.log(err);
                 })
             },
-            getBalanceDetails() {//结算单详情列表
+            getBalanceDetails() {//结算单款项明细列表
                 this.$http.get(globalConfig.temporary_server + 'customer_settle/settle_fee/' + this.balance_id, this.feeParams).then(res => {
                     this.showLoading(false);
                     if (res.code === 200) {

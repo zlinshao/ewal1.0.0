@@ -1040,21 +1040,22 @@ export const currentMonthAssessmentSearch = {
         keyType: 'radio',
         title: '发送状态',
         keyName: 'sendStatus',
-        dataType: [],
+        dataType: '',
         value: [
-          { id: 1, title: '未发送' },
-          { id: 2, title: '已发送' }
+          { id: 0, title: '未发送' },
+          { id: 1, title: '已发送' },
+          { id: 2, title: '发送失败' }
         ]
       },
       {
         keyType: 'radio',
         title: '确认状态',
         keyName: 'confirmStatus',
-        dataType: [],
+        dataType: '',
         value: [
-          { id: 1, title: '未确认' },
-          { id: 2, title: '已确认' },
-          { id: 3, title: '有异议' }
+          { id: 0, title: '未确认' },
+          { id: 1, title: '已确认' },
+          { id: 2, title: '有异议' }
         ]
       }
     ]
