@@ -621,36 +621,34 @@
                 break;
             }
         });*/
-        if (this.type==1) {
-          for (let item of this.exam_form_list) {
-            if(isNaN(item.score)) {
+
+        for (let item of this.exam_form_list) {
+          if(isNaN(item.score)) {
+            this.$LjMessage('warning',{
+              title:'警告',
+              msg:'请输入正确的分值',
+            });
+            return;
+          };
+          if(!item.stem) {
+            this.$LjMessage('warning',{
+              title:'警告',
+              msg:'请输入题干',
+            });
+            return;
+          }
+          if(item.category==1 || item.category==2) {
+            let keys1 = Object.keys(item.choice);
+            let result = _.find(keys1,item.answer);
+            if(!result) {
               this.$LjMessage('warning',{
                 title:'警告',
-                msg:'请输入正确的分值',
+                msg:'请输入正确的选项',
               });
               return;
-            };
-            if(!item.stem) {
-              this.$LjMessage('warning',{
-                title:'警告',
-                msg:'请输入题干',
-              });
-              return;
-            }
-            if(item.category==1 || item.category==2) {
-              let keys1 = Object.keys(item.choice);
-              let result = _.find(keys1,item.answer);
-              if(!result) {
-                this.$LjMessage('warning',{
-                  title:'警告',
-                  msg:'请输入正确的选项',
-                });
-                return;
-              }
             }
           }
         }
-
         this.$emit('success', this.exam_form_list,this.params.is_edit_paper);
         this.paper_visible = false;
         this.params.is_edit_paper = false;

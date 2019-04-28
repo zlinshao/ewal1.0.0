@@ -17,9 +17,7 @@
                 <div class="list-info flex-center" v-for="(item,index) in dataLists">
                     <div class="list-box" @click="detail(item)">
                         <div class="list-modal" v-if="item.status ===2"></div>
-                        <div class="list-top">
-                            <img src="../../../../assets/image/newMedia/theme1/active.png" alt="" v-if="item.cover[0]===undefined">
-                            <img v-for="(term,dex) in item.cover" :src="term.uri" alt="" :key="dex">
+                        <div class="list-top"><img  v-for="(term,dex) in item.cover" :src="term.uri" alt="" :key="dex">
                         </div>
                         <div class="list-middle">
                             <div class="list-middle-info">
@@ -113,7 +111,7 @@
                     <div class="unUse-txt">该活动暂未到结束时间，确定提前结束吗？</div>
                 </div>
                 <div class="dialog_footer">
-                    <el-button type="danger" size="small" @click="handleOkOver">确定</el-button>
+                    <el-button type="danger" size="small" @click="handleOkDel">确定</el-button>
                     <el-button type="info" size="small" @click="end_visible = false;current_row = ''">取消</el-button>
                 </div>
             </div>
@@ -175,7 +173,8 @@
 <script>
     import mediaList from '../../components/mediaList.vue';
     import LjDialog from '../../../common/lj-dialog.vue';
-
+    // import UE from '../../../common/UE.vue';
+    // import EditorBar from '../../../common/wangEditor.vue';
     import LjEditor from '../../../common/lj-editor.vue';
     import LjUpload from '../../../common/lightweightComponents/lj-upload';
 
@@ -186,6 +185,8 @@
             mediaList,
             LjDialog,
             LjUpload,
+            // UE,
+            // EditorBar,
             LjEditor
         },
         data() {
@@ -327,8 +328,8 @@
                 this.showData.actionTime = arr;
             },
 
-            handleOkOver() {//提前结束
-                this.$http.get(globalConfig.newMedia_sever + '/api/club/event/over/' + this.showData.id,).then(res => {
+            handleOkDel() {//提前结束
+                this.$http.put(globalConfig.newMedia_sever + '/api/club/event/' + this.showData.id,).then(res => {
                     if (res.status === 200) {
                         this.end_visible = false;
                         this.detail_visible =false;
@@ -360,14 +361,14 @@
             },
 
             submit() {//发布
-                let paramsForm = {
-                    name:this.showData.name,
-                    start_time:this.showData.actionTime[0],
-                    over_time:this.showData.actionTime[1],
-                    address:this.showData.address,
-                    content:this.showData.content,
-                    cover:this.showData.file_info[0]
-                };
+               let paramsForm = {
+                   name:this.showData.name,
+                   start_time:this.showData.actionTime[0],
+                   over_time:this.showData.actionTime[1],
+                   address:this.showData.address,
+                   content:this.showData.content,
+                   cover:this.showData.file_info[0]
+               };
                 console.log(this.showData);
                 this.$http.post(globalConfig.newMedia_sever + '/api/club/event', paramsForm).then(res => {
                     this.add_visible = false;

@@ -263,15 +263,6 @@
             openAdd() {//新增弹出
                 this.visible = true;
                 this.flag = 2;
-
-                this.form.name='';
-                this.form.permission.org_id=[];
-                this.form.permission.user_id=[];
-                this.form.file_info=[];
-                this.form.permission_org=[];
-                this.form.permission_user=[];
-                this.form.permission_org_name='';
-                this.form.permission_user_name='';
             },
 
             openEdit(row) {//编辑弹出
@@ -451,7 +442,7 @@
                     type_id: this.form.type_id,//string
                     name: this.form.name,//string
                     permission: this.form.permission,//{}
-                    file_id: this.form.file_info,//int
+                    file_id: this.form.file_info[0],//int
                 };
                 if (type === 1) {//编辑
                     this.$http.put(globalConfig.newMedia_sever + '/api/datum/admin/' + this.current_row.id, paramsForm).then(res => {

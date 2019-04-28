@@ -354,7 +354,10 @@
     <!-- 人员选择 -->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan" />
     <!--选择部门-->
-    <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart" />
+
+    <OrgChoose v-model='createOrder.operate_org.id '></OrgChoose>
+
+    <!-- <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart" /> -->
 
     <!-- 财务记录 -->
     <FinancialDialog :visible='financial_visible' :moduleData='record_data' @close='handkeCloseFinancial' />
@@ -731,26 +734,43 @@ export default {
             id: ids
           }
         }
+
+        if(names){
+          this.getOrganDepart()
+        }else{
+
+        }
         this.currentIndex = 0
         this.currentStaff = ''
       }
     },
-    // 选择部门
-    handlerDepart (params) {
-      this.departModule = true
-      this.currentOrg = params
-    },
-    // 关闭 选择部门
-    hiddenDepart (ids, str, arr) {
-      this.departModule = false
-      if (ids != 'close') {
-        this.createOrder[this.currentOrg] = {
-          name: str,
-          id: ids
+    getOrganDepart (ids) {
+      this.$http.get(`staff/user/${ids}`).then(res => {
+        if (res.code == 20020) {
+          let data = res.data.org[0]
+          this.createOrder.operate_org = {
+            name:data.name,
+            id:data.pivot.org_id ? [data.pivot.org_id] : []
+          }
         }
-        this.currentOrg = ''
-      }
+      })
     },
+    // // 选择部门
+    // handlerDepart (params) {
+    //   this.departModule = true
+    //   this.currentOrg = params
+    // },
+    // // 关闭 选择部门
+    // hiddenDepart (ids, str, arr) {
+    //   this.departModule = false
+    //   if (ids != 'close') {
+    //     this.createOrder[this.currentOrg] = {
+    //       name: str,
+    //       id: ids
+    //     }
+    //     this.currentOrg = ''
+    //   }
+    // },
     // 增加报销
     addComplaintsType () {
       this.createOrder.reimburse.push({

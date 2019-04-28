@@ -59,7 +59,7 @@
     <!--确定结束-->
     <SureEndDialog :visible="sureEnding_visible" @close="handleCloseSure" :moduleData='sureEnd_info' />
     <!--维修详情-->
-    <OrderDetail :visible="detail_visible" :moduleData='detail_info' @close="handleCloseDetail" />
+    <OrderDetail :visible="detail_visible" :moduleData='detail_info' :change='detail_Record_change' @close="handleCloseDetail" @changDetail="handleChangeDetail"/>
     <!--新增跟进记录-->
     <AddRecord :visible='followRecord_visible' :moduleData='followRecord_info' @close='handleCloseRecord' />
     <!--新增跟进记录 认责人选择-->
@@ -76,7 +76,7 @@
             <el-row :gutter="10">
               <el-col :span='6'>
                 <p class='el-col-p'><i class='icon house_name'></i>房屋地址</p>
-                <div class='input_box'>
+                <div class='input_box'>      
                   <div class='el-input'>
                     <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='createOrder_form.house_name'
                       @mousedown="clearSearch" v-on:keyup.enter='addOrder_search'>
@@ -113,7 +113,7 @@
               <el-col :span="6">
                 <p class='el-col-p'><i class='icon org'></i><span>部门</span></p>
                 <div class='input_box'>
-                  <el-input @focus="departSearch" readonly v-model="createOrder_form.operate_org_name" placeholder="请选择"></el-input>
+                  <el-input readonly v-model="createOrder_form.operate_org_name" placeholder="请选择"></el-input>
                 </div>
               </el-col>
 
@@ -276,8 +276,8 @@
     <!--选择人员-->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
 
-    <!--选择部门-->
-    <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart"></DepartOrgan>
+    <!--选择部门  :module="departModule" :organData="departData" @close="hiddenDepart" -->
+    <OrgChoose v-model='createOrder_form.operate_org_id'></OrgChoose>
   </div>
 </template>
 
@@ -285,7 +285,7 @@
 import SearchHigh from '../../common/searchHigh.vue'
 import MenuList from '../../common/menuList.vue';
 import StaffOrgan from '../../common/staffOrgan';
-import DepartOrgan from '../../common/departOrgan';
+import OrgChoose from '../../common/lightweightComponents/orgChoose';
 import Ljupload from '../../common/lightweightComponents/lj-upload'
 import { maintenanceSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
@@ -304,7 +304,7 @@ export default {
     MenuList,
     LjDialog,
     StaffOrgan,
-    DepartOrgan,
+    OrgChoose,
     Ljupload,
     DeleteDialog,
     AddDialog,
@@ -416,6 +416,7 @@ export default {
       },
       // 工单详情
       detail_visible: false,
+      detail_Record_change:false,
       detail_info: {
         currentId: null,
         chosenTag: null
@@ -481,8 +482,7 @@ export default {
           title: '提示',
           message: res.message
         });
-        this.followRecord = null
-        this.currentRow = null
+        this.detail_Record_change = true
       })
     },
     //工单表格数据初始化
@@ -541,6 +541,7 @@ export default {
     },
     //关闭删除
     handleCloseDelete (val) {
+      this.delete_visible = false
       if (val) { //确定删除
         this.$http.delete(`${this.market_server}v1.0/csd/work_order/delete/${this.currentRow.id}`).then(res => {
           this.currentRow = null
@@ -550,7 +551,6 @@ export default {
             message: res.message
           });
           if (res.code === 200) {
-            this.delete_visible = false
             this.getDateList()
           }
         })
@@ -815,12 +815,14 @@ export default {
           receive_id: params.operate_user_id,
           contract_type: params.contract_type,
           repair_type: Number(params.send_order_type),
+          house_id:params.house_id
         }
         this.$http.post(`${this.market_server}v1.0/market/task/HouseRepair`, order).then(res => {
-          this.$LjNotify('warning', {
-            title: '提示',
-            message: res.message
-          });
+          // this.$LjNotify('warning', {
+          //   title: '提示',
+          //   message: res.message
+          // });
+          console.log(res.message)
         })
       }
       if (params.type == 8) { //保洁
@@ -832,12 +834,14 @@ export default {
           contract_id: params.contract_id,
           contract_type: params.contract_type,
           receive_id: params.operate_user_id,
+          house_id:params.house_id
         }
         this.$http.post(`${this.market_server}v1.0/market/task/HouseCleaning`, order).then(res => {
-          this.$LjNotify('warning', {
-            title: '提示',
-            message: res.message
-          });
+          // this.$LjNotify('warning', {
+          //   title: '提示',
+          //   message: res.message
+          // });
+          console.log(res.message)
         })
       }
 
@@ -859,23 +863,37 @@ export default {
         if (this.currentStaff_method == 'add') {  // 创建工单 选择处理人
           this.createOrder_form.operate_user_name = names
           this.createOrder_form.operate_user_id = ids
-
+          if (names) {
+            this.getOrganDepart(ids[0])
+          } else {
+            this.createOrder_form.operate_org_name = ''
+            this.createOrder_form.operate_org_id = []
+          }
         }
         this.currentStaff_method = ''
       }
     },
-    //选择 部门
-    departSearch () {
-      this.departModule = true
+    getOrganDepart (ids) {
+      this.$http.get(`staff/user/${ids}`).then(res => {
+        if (res.code == 20020) {
+          let data = res.data.org[0]
+          this.createOrder_form.operate_org_name = data.name
+          this.createOrder_form.operate_org_id = [data.pivot.org_id]
+        }
+      })
     },
-    // 关闭 部门
-    hiddenDepart (ids, str, arr) {
-      this.departModule = false
-      if (ids != 'close') {
-        this.createOrder_form.operate_org_name = str
-        this.createOrder_form.operate_org_id = ids
-      }
-    },
+    // //选择 部门
+    // departSearch () {
+    //   this.departModule = true
+    // },
+    // // 关闭 部门
+    // hiddenDepart (ids, str, arr) {
+    //   this.departModule = false
+    //   if (ids != 'close') {
+    //     this.createOrder_form.operate_org_name = str
+    //     this.createOrder_form.operate_org_id = ids
+    //   }
+    // },
 
     handleCloseSure (params) {
       let { isSure, isCreated } = params
@@ -883,9 +901,6 @@ export default {
       if (isSure) {
         this.currentMethod == 'addRecord' && this.addRecordFun(params)
         this.currentMethod == 'ending' && this.handleSure(isCreated)
-      } else {
-        this.currentRow = null
-        this.detail_form = null
       }
     },
     handleSure (isCreated) {
@@ -904,7 +919,8 @@ export default {
         if (res.code === 200) {
           this.currentRow = null
           this.detail_form = null
-          this.getDataList()
+          this.getDateList()
+           this.detail_Record_change = true
         }
       })
     },
@@ -923,6 +939,7 @@ export default {
         this.currentMethod = 'addRecord'
         this.sureEnding_visible = true
       }
+
     },
     // 查看详情
     tableDblClick (row) {
@@ -934,33 +951,40 @@ export default {
       }
       this.detail_visible = true;
     },
+    handleChangeDetail(){
+     this.detail_Record_change = false
+    },
     // 关闭详情
     handleCloseDetail (params) {
       let { type, close, detail } = params
       if (detail) this.detail_form = detail;
-      this.detail_visible = false;
-      if (type == '转交') {
-        this.transfer_visible = true
-      }
-      if (type == '通知') {
-        this.handleCuiBan(this.currentRow)
-      }
-      if (type == '结束') {
-        this.handleEnd()
-      }
-      if (type == '新增跟进') {
-        this.followRecord_info = {
-          chooseTab: this.chooseTab,
-          type_name: this.detail_form.type_name
+     
+      if(params){
+        if (type == '转交') {
+          this.transfer_visible = true
         }
-        this.followRecord_visible = true
+        if (type == '通知') {
+          this.handleCuiBan(this.currentRow)
+        }
+        if (type == '结束') {
+          this.handleEnd()
+        }
+        if (type == '新增跟进') {
+          this.followRecord_info = {
+            chooseTab: this.chooseTab,
+            type_name: this.detail_form.type_name
+          }
+          this.followRecord_visible = true
+        }
+      }else{
+        this.detail_visible = false;
+        this.currentRow = null
+        this.detail_form = null
       }
     },
     // 转交
     handleCloseTranfer () {
       this.transfer_visible = false
-      this.currentRow = null
-      this.detail_form = null
     },
     //结束
     handleEnd () {

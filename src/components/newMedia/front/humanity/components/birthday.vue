@@ -12,10 +12,10 @@
                         <div class="birthday_box-left">
                             <div class="birthday_box-info flex-center"v-for="(item,index) in todayBirthday.slice(0,3)" :key="index">
                                 <div class="birthday_box" style="cursor: pointer">
-                                    <img :src="item.avatar" alt="">
+                                    <img :src="item.image_file_id.uri" alt="">
                                     <div class="">
-                                        <span class="writingMode">{{item.department_name}}</span>
-                                        <span class="writingMode">{{item.name}}</span>
+                                        <span class="writingMode">{{item.user_id.org[0].name.slice(0,6)}}</span>
+                                        <span class="writingMode">{{item.user_id.name}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -25,9 +25,9 @@
                                 <div class="inner-container">
                                     <div class="element">
                                         <div class="wishes-list" v-for="(item,index) in wishesData">
-                                            <img :src="item.avatar" alt="">
+                                            <img :src="item.user_id.avatar" alt="">
                                             <div>
-                                                <p>{{item.name}}</p>
+                                                <p>{{item.user_id.name}}</p>
                                                 <p>{{item.content}}</p>
                                             </div>
                                         </div>
@@ -55,10 +55,10 @@
                     <div class="months_birthday_title"><span>本月寿星</span></div>
                     <div class="months_birthday_list">
                         <div class="birthday_box" v-for="(item,index) in monthBirthday" :key="index" style="cursor: pointer">
-                            <img :src="item.avatar" alt="">
+                            <img :src="item.image_file_id.uri" alt="">
                             <div class="">
-                                <span class="writingMode">{{item.department_name}}</span>
-                                <span class="writingMode">{{item.name}}</span>
+                                <span class="writingMode">{{item.user_id.org[0].name.slice(0,6)}}</span>
+                                <span class="writingMode">{{item.user_id.name}}</span>
                             </div>
                         </div>
                     </div>
@@ -84,10 +84,10 @@
                                     <div class="element">
                                         <div class="birthday_box-info flex-center"v-for="(item,index) in todayBirthday" :key="index">
                                             <div class="birthday_box" style="cursor: pointer">
-                                                <img :src="item.avatar" alt="">
+                                                <img :src="item.image_file_id.uri" alt="">
                                                 <div class="">
-                                                    <span class="writingMode">{{item.department_name}}</span>
-                                                    <span class="writingMode">{{item.name}}</span>
+                                                    <span class="writingMode">{{item.user_id.org[0].name.slice(0,6)}}</span>
+                                                    <span class="writingMode">{{item.user_id.name}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -100,9 +100,9 @@
                                 <div class="inner-container">
                                     <div class="element">
                                         <div class="wishes-list" v-for="(item,index) in wishesData">
-                                            <img :src="item.avatar" alt="">
+                                            <img :src="item.user_id.avatar" alt="">
                                             <div>
-                                                <p>{{item.name}}</p>
+                                                <p>{{item.user_id.name}}</p>
                                                 <p>{{item.content}}</p>
                                             </div>
                                         </div>
@@ -145,9 +145,9 @@
                 </div>
                 <div class="dialog_main">
                     <div class="wishes-lists" v-for="(item,index) in wishesData">
-                        <img :src="item.avatar" alt="">
+                        <img :src="item.user_id.avatar" alt="">
                         <div>
-                            <p>{{item.name}}</p>
+                            <p>{{item.user_id.name}}</p>
                             <p>{{item.content}}</p>
                         </div>
                     </div>
@@ -188,10 +188,10 @@
                 <div class="dialog_main all-birthday">
                     <div class="all-birthday-list" v-for="(item,index) in allBirthday">
                         <div class="all-birthday-info" @click.stop="selectPerson(item)" :class="{'selectedBirthday': selectedBirthday.includes(item.id)}">
-                            <img :src="item.avatar" alt="">
+                            <img :src="item.image_file_id.uri" alt="">
                             <div class="" style="text-align: left">
-                                <p style="font-weight: bold">{{item.name}}</p>
-                                <p>{{item.position_name}}</p>
+                                <p style="font-weight: bold">{{item.user_id.name}}</p>
+                                <p>{{item.user_id.position[0].name.slice(0,6)}}</p>
                             </div>
                         </div>
                     </div>
@@ -284,58 +284,27 @@
                 this.$http.get(globalConfig.newMedia_sever + '/api/humanity/birthday', this.params).then(res => {
                     if(res.status===200){
                         console.log(res.data.data);
-                        // this.allBirthday = res.data.data;
-                        let allBirthday = [];
-                        for (let item of res.data.data) {
-                            allBirthday.push({
-                                name: item.user_id?.name,
-                                avatar: item.image_file_id?.uri,
-                                position_name: item.user_id?.position[0]?.name,
-                                id: item.id
-                            })
-                        }
-                        this.allBirthday = allBirthday;
-
+                        this.allBirthday = res.data.data;
                         let arr = res.data.data;
                         let blessingArr  = [];
-                        let wishesData = [];
-                        let monthBirthdayList=[];
-                        let dayBirthdayList=[];
-                        // this.wishesData = [];
+                        this.todayBirthday=[];
+                        this.monthBirthday=[];
+                        this.wishesData = [];
                         for(let item of arr){
                             if(item.birthday_type==='month'){
-                                monthBirthdayList.push({
-                                    name: item.user_id?.name,
-                                    avatar: item.cover[0]?.uri,
-                                    department_name: item.user_id?.org[0]?.name,
-                                    id: item.id
-                                })
+                                this.monthBirthday.push(item);
                             }else{
-                                dayBirthdayList.push({
-                                    name: item.user_id?.name,
-                                    avatar: item.cover[0]?.uri,
-                                    department_name: item.user_id?.org[0]?.name,
-                                    id: item.id
-                                })
+                                this.todayBirthday.push(item);
                             }
                             blessingArr.push(item.blessing);
                         }
 
                         for (var i=0;i < blessingArr.length;i++){
                             for(var j=0;j < blessingArr[i].length;j++){
-                                wishesData.push({
-                                    content:blessingArr[i][j].content,
-                                    avatar:blessingArr[i][j].user_id?.avatar,
-                                    name:blessingArr[i][j].user_id?.name,
-                                    // content:blessingArr[i][j].content,
-
-                                });
+                                this.wishesData.push(blessingArr[i][j]);
                             }
                         }
-                        this.todayBirthday =dayBirthdayList;
-                        this.monthBirthday =monthBirthdayList;
-                        // console.log(this.wishesData);
-                        this.wishesData=wishesData;
+                        console.log(this.wishesData);
                         this.count = res.data.total;
                     }
                 })
