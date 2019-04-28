@@ -11,7 +11,7 @@
     </div>
     <div class="kpiCheckContainer">
       <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiList">
-          <el-table-column label="考勤天数" align="center" prop="ss"></el-table-column>
+          <el-table-column label="考勤天数" align="center" prop="notStandardDay"></el-table-column>
           <!-- <el-table-column label="不达标天数" align="center"></el-table-column> -->
           <el-table-column v-for="(item,index) in days" :key="index" :label="item.toString()" :prop="item.toString()" align="center" width="50px">
             <template slot-scope="scope">
@@ -138,12 +138,11 @@
     methods: {
       getKpiList(){
         this.$http.get(`${this.url}/kpi/last_kpi?month=2019-03`).then(res => {
-          console.log(res)
           if(res.status == 200){
             let obj = {
             id: res.data.id,
             staff_id: res.data.staff_id,
-            ss: res.data.assessment_days
+            notStandardDay: res.data.assessment_days
           }
           this.month = res.data.month.substring(5,7)
           this.dialogMonth = res.data.month.substring(0,7)

@@ -21,7 +21,7 @@
         <el-table-column label="部门" align="center" prop='department'></el-table-column>
         <el-table-column v-for="(item,index) in days" :key="index" :label="item.toString()" :prop="item.toString()" align="center" width="40px">
           <template slot-scope="scope">
-            <div @click="showKpiDetail(scope.row,item)">{{ scope.row[item.toString()]}}</div>
+            <div @click="showKpiDetail(scope.row,item)" :class="scope.row.objectionDay.indexOf(item) !== -1?'is_appeal':''">{{ scope.row[item.toString()]}}</div>
           </template>
         </el-table-column>
         <el-table-column label="发送状态" align="center" prop='sendStatus'>
@@ -34,7 +34,7 @@
         <el-table-column label="确认状态" align="center" prop='confirmStatus'>
           <template slot-scope="scope">
             <el-button plain size="small" background="rgba(10,31,68,1)" v-if="scope.row.confirmStatus=== 0">未确认</el-button>
-            <el-button plain type="success" size="small" v-if="scope.row.confirmStatus=== 2" @click="showDissent(scope.row)">有异议</el-button>
+            <el-button plain type="success" size="small" v-if="scope.row.confirmStatus=== 2">有异议</el-button>
             <el-button plain type="danger" size="small" v-if="scope.row.confirmStatus=== 1">已确认</el-button>
           </template>
         </el-table-column>
@@ -44,7 +44,7 @@
       <el-pagination :total="total" layout="total,jumper,prev,pager,next" :current-page="currentPage" :page-size="9"></el-pagination>
     </div>
 
-    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule()"></SearchHigh>
+    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
     
     <el-dialog
       :visible.sync="sendTodoList"
@@ -83,9 +83,19 @@
           </div>
           <div class="dialog_main">
             <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiDetail">
+              <el-table-column type="expand">
+                <template slot-scope="scope">
+                  <el-card>{{ scope.row.kpi_comment[0].content }}</el-card>
+                </template>
+              </el-table-column>
               <el-table-column label="考核项" align="center" prop="standardName"></el-table-column>
               <el-table-column label="指标值" align="center" prop="full_mark"></el-table-column>
               <el-table-column label="得分" align="center" prop="actual_score"></el-table-column>
+              <el-table-column label="状态" align="center" prop="is_appeal">
+                <template slot-scope="scope" v-if="scope.row.is_appeal == 1">
+                  <el-button plain type="danger" size="small">有异议</el-button>
+                </template>
+              </el-table-column>
               <el-table-column align="center" prop='sendStatus'>
                 <template slot-scope="scope">
                   <el-button plain type="success" size="small" @click="modifyKpi(scope.row)">修改</el-button>
@@ -130,49 +140,6 @@
           </div>
         </div>
     </lj-dialog>
-     <lj-dialog :visible="dissent_visible" :size="{width: 700 + 'px',height: 600 + 'px'}" @close="dissent_visible = false">
-        <!-- 指标值： {{dissmentDetail.kpi_info.standard.full_mark}}<br>
-        考核描述：{{dissmentDetail.kpi_info.standard.description}}<br> 
-        实际得分:{{dissmentDetail.kpi_info.actual_score}}<br> -->
-        指标值： {{standard.full_mark}}<br>
-        考核描述：{{standard.description}}<br> 
-        实际得分:{{standard}}<br>
-        <div v-for="(item, index) in dissmentDetail.content" :key="index">
-          评论内容{{index+1}}: {{item}}
-        </div> 
-        是否修改考核信息：<el-button @click="modifyKpiInfo()">确认</el-button><el-button @click="dissent_visible = false">取消</el-button>
-    </lj-dialog>
-    <lj-dialog
-        :visible="kpi_modify_visible1"
-        :size="{width: 600 + 'px',height: 500 + 'px'}"
-        @close="kpi_modify_visible1 = false"
-      >
-        <div class="dialog_container borderNone">
-          <div class="dialog_header">
-            <h3>修改</h3>
-          </div>
-          <div class="dialog_main">
-            <el-form ref="form"  label-width="80px">
-              <el-form-item label="考核项">
-                <div>{{standardName}}</div>
-              </el-form-item>
-              <el-form-item label="原始得分">
-                <div>{{oldScore}}</div>
-              </el-form-item>
-              <el-form-item label="现得分">
-                <el-input v-model="currentScore"></el-input>
-              </el-form-item>
-              <el-form-item label="修改原因">
-                <el-input  type="textarea" v-model="modifyReason"></el-input>
-              </el-form-item>
-            </el-form>
-          </div>
-          <div class="dialog_footer">
-            <el-button size="mini" type="danger" @click="modifyConfirm1()">确定</el-button>
-            <el-button size="mini" type="info" @click="kpi_modify_visible = false">取消</el-button>
-          </div>
-        </div>
-    </lj-dialog>
   </div>
 </template>
 
@@ -197,8 +164,6 @@ export default {
       sendTodoList: false,
       kpi_detail_visible: false,
       kpi_modify_visible: false,
-      kpi_modify_visible1: false,
-      dissent_visible: false,
       imgUrl: '',
       staffName: '',
       staffDepartment: '',
@@ -215,9 +180,7 @@ export default {
       row: {},
       item: 0,
       multipleSelection: [],
-      dissmentDetail: {},
-      standard: {},
-      kpiInfo: {}
+      getKpiListParam: {}
     }
   },
   mounted() {
@@ -266,12 +229,11 @@ export default {
         month = 12;
         year = year-1
       }
-      let param = {
-        month: new Date(Date.parse(`${year}-${month}`)),
-        page: this.currentPage,
-        limit:  9
-      }
-      this.$http.get(`${this.url}/kpi/month_day`).then(res => {
+      this.getKpiListParam.month = new Date(`${year}-${month}`)
+      this.getKpiListParam.page = this.currentPage
+      this.getKpiListParam.limit = 9
+      this.kpiList = []
+      this.$http.get(`${this.url}/kpi/month_day`,this.getKpiListParam).then(res => {
         if(res.status == 200){
           this.total = res.data.length
           for(let i = 0; i < res.data.length; i++){
@@ -285,6 +247,16 @@ export default {
               confirmStatus: res.data[i].result
             }
             this.handleKpi(obj,res.data[i].kpi)
+            let objection_date = res.data[i].objection_date ? res.data[i].objection_date : [] 
+            let objectionDay = []
+            if(objection_date.length > 0){
+              for(let j = 0; j < objection_date.length; j++){
+                let strday = objection_date[j].split("-")[2].substring(0,1) == '0'? objection_date[j].split("-")[2].substring(1) : objection_date[j].split("-")[2]
+                let intday = Number(strday)
+                objectionDay.push(intday)
+              }
+            }
+            obj.objectionDay = objectionDay
             this.kpiList.push(obj)
           }
         }
@@ -329,6 +301,8 @@ export default {
               standardName: res.data[i].standard.name,
               full_mark: res.data[i].standard.full_mark,
               actual_score: res.data[i].actual_score,
+              is_appeal: res.data[i].is_appeal,
+              kpi_comment: res.data[i].kpi_comment
             }
             this.kpiDetail.push(obj)
           }
@@ -395,7 +369,6 @@ export default {
               title: '成功',
               message: '发送成功',
           });
-          this.kpiList = []
           this.getKpiList();
         }
       })
@@ -421,55 +394,30 @@ export default {
       this.searchData = this.currentMonthAssessmentSearch
     },
     hiddenModule: function(val) {
-      // this.showSearch = false
-      // if (val == 'close') {
-      //   console.log(val);
-      //   console.log(1)
-      //   this.kpiList = []
-      //   this.getKpiList()
-      //   console.log(this.kpiList)
-      // }
-    },
-    showDissent: function(row){
-      let param = {
-        month_day_id: row.id
-      }
-      this.$http.get(`${this.url}/kpi/comment`,param).then(res => {
-        if(res.status == 200){
-          this.kpiInfo = res.data
-          this.dissmentDetail = {
-            content: []
-          }
-          this.standard = res.data[0].kpi_info.standard
-          for(let i  = 0; i< res.data.length; i++){
-            this.dissmentDetail.content.push(res.data[i].content)
-          }
-          this.dissent_visible = true;
+      this.showSearch = false
+      if (val !== 'close') {
+        if(val.sendStatus !== ""){
+          this.getKpiListParam.send_status = val.sendStatus
+        }else{
+          delete this.getKpiListParam.send_status
         }
-        console.log(this.kpiInfo)
-      })
-    },
-    modifyKpiInfo: function() {
-      this.kpi_modify_visible1 = true
-      this.standardName = this.kpiInfo[0].kpi_info.standard.name
-      this.oldScore = this.kpiInfo[0].kpi_info.actual_score
-      
-    },
-    modifyConfirm1:function(){
-      let param = {
-        month_day_id: this.kpiInfo[0].month_day_id,
-        actual_score: this.currentScore,
-        remarks: this.modifyReason
-      }
-      this.$http.put(`${this.url}/kpi/${this.kpiInfo[0].kpi_id}`,param).then(res => {
-        if(res.status == 200){
-          this.kpi_modify_visible1 = false
+        if(val.confirmStatus !== ""){
+          this.getKpiListParam.result = val.confirmStatus
         }
-      })
+        else{
+          delete this.getKpiListParam.result
+        }
+        this.getKpiList();
+      }
     }
   },
 }
 </script>
+<style>
+.is_appeal{
+  color: red;
+}
+</style>
 
 <style lang="scss" scoped>
   @import "../../assets/scss/currentMonthAssessment/index.scss";
