@@ -1211,7 +1211,7 @@ export const houseManagementSearch = {
     },
     {
       keyType: 'check',
-      title: '用途',
+      title: '房屋类型',
       keyName: 'house_identity',
       dataType: [],
       value: [

@@ -842,7 +842,15 @@
           page: 1,
           limit: 15
         },
-        fix_clear_list: []
+        fix_clear_list: [],
+
+        leaseNote_list: [],
+        leaseNote_params: {
+          page: 1,
+          limit: 15,
+          collect_or_rent: 1,
+          contract_id: ''
+        },
       }
     },
     mounted() {
@@ -901,6 +909,11 @@
           }
         })
       },
+      handleGetLeaseNote() {
+        this.$http.get(this.market_server + 'v1.0/market/leaseNote',this.leaseNote_params).then(res => {
+          console.log(res);
+        })
+      },
       handleChangeListPage(page) {
         this.list_params.page = page;
         switch (this.current_house_type) {
@@ -913,6 +926,8 @@
             this.handleCheckOutList();
             break;
           case 3:
+            this.leaseNote_params.page = page;
+            this.handleGetLeaseNote();
             break;
           case 4:
             this.revisit_params.page = page;
@@ -949,11 +964,14 @@
         this.current_house_type = item.id;
         switch (item.id) {
           case 1:
-            this.list_params.address = item.house_name;
             this.handleGetCustomerInfo();
             break;
           case 2:
             this.handleCheckOutList();
+            break;
+          case 3:
+            // this.leaseNote_params.contract_id = item.
+            this.handleGetLeaseNote();
             break;
           case 4:
             this.handleGetRevisitList();
@@ -987,6 +1005,7 @@
       handleExpandRow(row) {
         this.list_params.contract_id = row.contract_id;
         this.expand_params.house_id = row.house_id;
+        this.leaseNote_params.contract_id = row.contract_number;
         this.revisit_params.type = 1;
         this.list_params.address = row.house_name;
         this.getExpandData();
