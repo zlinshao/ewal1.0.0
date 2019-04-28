@@ -10,8 +10,8 @@
             <el-row :gutter="10" width='100%'>
               <el-col :span="11">
                 <el-form-item label="工单状态">
-                  <el-radio v-model="followRecord.folow_status" label="337">跟进中</el-radio>
-                  <el-radio v-model="followRecord.folow_status" label="338">已完成</el-radio>
+                  <el-radio v-model="followRecord.folow_status" value="跟进中" label='337'>跟进中</el-radio>
+                  <el-radio v-model="followRecord.folow_status" value="已完成" label='338'>已完成</el-radio>
                 </el-form-item>
               </el-col>
               <el-col :span="11">
@@ -22,7 +22,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="10" width='100%' v-if='moduleData.type_name == "报销" && followRecord.folow_status == 338'>
+            <el-row :gutter="10" width='100%' v-if='followRecord.folow_status == 338'>
               <el-col :span="7">
                 <el-form-item label="维修金额">
                   <el-input placeholder="请填写" v-model='followRecord.pay_all_money'></el-input>
@@ -41,9 +41,8 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="10" width='100%' v-if='followRecord.folow_status == 338'
-              v-for='(com,index) in followRecord.pay_method' :key='"comp"+index'
-               class='record_money'>
+            <el-row :gutter="10" width='100%' v-if='followRecord.folow_status == 338' v-for='(com,index) in followRecord.pay_method'
+              :key='"comp"+index' class='record_money'>
               <el-col :span="8">
                 <el-form-item label="认责人">
                   <el-select placeholder="请选择" v-model='com.type'>
@@ -57,7 +56,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="7">
-                <el-form-item label="认责金额" >
+                <el-form-item label="认责金额">
                   <el-input placeholder="请填写" v-model='com.money'></el-input>
                 </el-form-item>
 
@@ -81,7 +80,7 @@
               </el-col>
               <el-col :span="7">
                 <el-form-item label="部门">
-                  <el-input @focus="departSearch" readonly placeholder="部门" v-model='followRecord.payer_org_name'></el-input>
+                  <el-input readonly placeholder="部门" v-model='followRecord.payer_org_name'></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -93,7 +92,7 @@
               </el-col>
             </el-row>
             <el-row :gutter="10" width='100%'>
-              <el-col :span="23" >
+              <el-col :span="23">
                 <el-form-item label="上传图片">
                   <Ljupload size='40' v-model='followRecord.album'></Ljupload>
                 </el-form-item>
@@ -178,7 +177,7 @@ export default {
       departData: {
         num: 1,
       },
-      department_id:[],
+      department_id: [],
       currentIndex: 0,
     }
   },
@@ -217,22 +216,56 @@ export default {
       }
     },
     getOrganDepart (ids) {
-    this.$http.get(`staff/user/${ids}`).then(res => {
-      if (res.code == 20020) {
-        let data = res.data.org[0]
-        this.followRecord.payer_org_name = data.name
-        this.department_id = [data.pivot.org_id]
-      }
-    })
-  },
+      this.$http.get(`staff/user/${ids}`).then(res => {
+        if (res.code == 20020) {
+          let data = res.data.org[0]
+          this.followRecord.payer_org_name = data.name
+          this.department_id = [data.pivot.org_id]
+        }
+      })
+    },
     hiddenDepart (ids, str, arr) {
       this.departModule = false
       if (ids != 'close') {
         this.followRecord.payer_org_name = str
       }
     },
+    checkRecord () {
+      if (!this.followRecord.folow_status) {
+        return '工单类型未选择'
+      }
+      if (this.followRecord.folow_status == 337) {
+        if (!this.followRecord.emergency) return '紧急程度未选择'
+      } else {
+        for (let i = 0; i < this.followRecord.pay_method.length; i++) {
+          let ele = this.followRecord.pay_method[i]
+          if (!ele.type) return '认责人未选择'
+          if (!ele.name) return '认责人姓名未填写'
+          if (!ele.money) return '认责金额未填写'
+        }
+
+        if (!followRecord.payer_type) return '实际支付未填写'
+        if (!followRecord.payer) return '实际支付人姓名未填写'
+        if (!followRecord.payer_org_name) return '部门未填写'
+
+      }
+
+      if (!this.followRecord.content) {
+        return '跟进记录未填写'
+      }
+      return null
+    },
     // 新增记录
     handleAddNewRecord () {
+      let warn = this.checkRecord()
+      if (warn) {
+        this.$LjNotify('warning', {
+          title: '提示',
+          message: warn
+        });
+        return
+      }
+
       this.$emit('close', {
         isCreate: false,
         createdType: this.followRecord.folow_status == 337 ? "doing" : "finish",
@@ -251,7 +284,7 @@ export default {
     },
     clearInfo () {
       this.followRecord = {
-        folow_status: 337,
+        folow_status: '',
         emergency: '',
         content: '',
         pay_method: [

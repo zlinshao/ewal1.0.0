@@ -59,7 +59,8 @@
     <!--确定结束-->
     <SureEndDialog :visible="sureEnding_visible" @close="handleCloseSure" :moduleData='sureEnd_info' />
     <!--维修详情-->
-    <OrderDetail :visible="detail_visible" :moduleData='detail_info' :change='detail_Record_change' @close="handleCloseDetail" @changDetail="handleChangeDetail"/>
+    <OrderDetail :visible="detail_visible" :moduleData='detail_info' :change='detail_Record_change' @close="handleCloseDetail"
+      @changDetail="handleChangeDetail" />
     <!--新增跟进记录-->
     <AddRecord :visible='followRecord_visible' :moduleData='followRecord_info' @close='handleCloseRecord' />
     <!--新增跟进记录 认责人选择-->
@@ -76,7 +77,7 @@
             <el-row :gutter="10">
               <el-col :span='6'>
                 <p class='el-col-p'><i class='icon house_name'></i>房屋地址</p>
-                <div class='input_box'>      
+                <div class='input_box'>
                   <div class='el-input'>
                     <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='createOrder_form.house_name'
                       @mousedown="clearSearch" v-on:keyup.enter='addOrder_search'>
@@ -416,7 +417,7 @@ export default {
       },
       // 工单详情
       detail_visible: false,
-      detail_Record_change:false,
+      detail_Record_change: false,
       detail_info: {
         currentId: null,
         chosenTag: null
@@ -724,7 +725,6 @@ export default {
       this.current_customer = null
     },
     checkOutWarn () {
-      let warning = null
       if (!this.createOrder_form.house_name) {
         return '房屋地址未填写'
       }
@@ -769,7 +769,7 @@ export default {
       if (this.createOrder_form.album.length == 0) {
         return '图片未上传'
       }
-      return warning
+      return null
     },
     createOrderFun () {
       let warning = this.checkOutWarn()
@@ -815,7 +815,7 @@ export default {
           receive_id: params.operate_user_id,
           contract_type: params.contract_type,
           repair_type: Number(params.send_order_type),
-          house_id:params.house_id
+          house_id: params.house_id
         }
         this.$http.post(`${this.market_server}v1.0/market/task/HouseRepair`, order).then(res => {
           // this.$LjNotify('warning', {
@@ -834,7 +834,7 @@ export default {
           contract_id: params.contract_id,
           contract_type: params.contract_type,
           receive_id: params.operate_user_id,
-          house_id:params.house_id
+          house_id: params.house_id
         }
         this.$http.post(`${this.market_server}v1.0/market/task/HouseCleaning`, order).then(res => {
           // this.$LjNotify('warning', {
@@ -920,7 +920,7 @@ export default {
           this.currentRow = null
           this.detail_form = null
           this.getDateList()
-           this.detail_Record_change = true
+          this.detail_Record_change = true
         }
       })
     },
@@ -951,15 +951,15 @@ export default {
       }
       this.detail_visible = true;
     },
-    handleChangeDetail(){
-     this.detail_Record_change = false
+    handleChangeDetail () {
+      this.detail_Record_change = false
     },
     // 关闭详情
     handleCloseDetail (params) {
       let { type, close, detail } = params
       if (detail) this.detail_form = detail;
-     
-      if(params){
+
+      if (params) {
         if (type == '转交') {
           this.transfer_visible = true
         }
@@ -976,7 +976,7 @@ export default {
           }
           this.followRecord_visible = true
         }
-      }else{
+      } else {
         this.detail_visible = false;
         this.currentRow = null
         this.detail_form = null
