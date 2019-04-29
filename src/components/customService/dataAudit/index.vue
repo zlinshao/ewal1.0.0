@@ -72,7 +72,7 @@
 
     <!--合同详情-->
     <lj-dialog :visible="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
-      <div class="dialog_container" v-if='contract_detail_visible'>
+      <div class="dialog_container" v-if='contract_detail_visible && contractDetail'>
         <div class="dialog_header">
           <h3>合同详情</h3>
           <div class="header_right">
@@ -674,12 +674,11 @@ export default {
     //双击 合同详情
     handleGetDetail (row) {
       this.currentRow = row
-      // this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_stauts}/${row.contract_id}`).then(res => {
-      this.tag_status = 1
-      this.$http.get(this.market_server + `v1.0/market/contract/1/256901`).then(res => {
+      this.contract_detail_visible = true;
+      this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_status}/${row.contract_id}`).then(res => {
         if (res.code === 200) {
           this.contractDetail = res.data
-          this.contract_detail_visible = true;
+
           this.getProcess_id(res.data.process_instance_id)
           this.$set(this.cookieArr, row.contract_id, new Date().getTime())
           this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
@@ -698,8 +697,8 @@ export default {
     },
     // 关闭详情
     handleCloseDetail () {
-      this.contractDetail = '';
-      this.contract_detail_visible = false;
+      this.contract_detail_visible = false
+      this.contractDetail = null
       this.currentRow = null
     },
     // 合同通过 驳回
@@ -742,6 +741,13 @@ export default {
     },
     // 发送不齐记录
     handlePostRecord () {
+      if (!this.dataRecord.content) {
+        this.$LjNotify('warning', {
+          title: '提示',
+          message: '不齐内容未填写'
+        });
+        return
+      }
       let current = {
         contract_type: this.tag_status,
         contract_id: this.currentRow.contract_id,
@@ -752,28 +758,32 @@ export default {
       }
 
       this.$http.post(this.market_server + `v1.0/market/contract/send-complete-data`, current).then(res => {
+
+        let warning = null
+        if (res.code == 200) {
+          warning = '发送成功'
+          this.rewrite_data = []
+        } else {
+          warning = '发送失败'
+        }
         this.$LjNotify('success', {
           title: '提示',
-          message: res.message
+          message: warning
         });
-        this.rewrite_data = []
+
       })
 
     },
     //资料不齐
     handleGetRecord () {
-      this.contract_detail_visible = false
       this.dataRecord_visible = true;
     },
     handleCloseRecord () {
       this.dataRecord_visible = false;
-      this.contractDetail = null
-      this.currentRow = null
-      this.contractDetail = null
     },
     // 合同作废
     handleRewrite () {
-      this.contract_detail_visible = false
+      // this.contract_detail_visible = false
       this.rewrite_info = {
         contract_id: this.contractDetail.id,
         contract_type: this.contractDetail.type,
@@ -784,8 +794,6 @@ export default {
     // 取消合同作废
     handleCancelRewrite () {
       this.rewrite_visible = false
-      this.contractDetail = null
-      this.currentRow = null
     },
   }
 }

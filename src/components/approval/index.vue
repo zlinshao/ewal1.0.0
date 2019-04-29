@@ -76,7 +76,6 @@
       <!-- 拓展新盘详情 -->
       <DevelopNewDish :visible='develop_visible' @close='hiddenDevelopNew' />
 
-      <FormDetail :visible='show_form_visible' />
     </div>
   </div>
 </template>
@@ -86,14 +85,12 @@ import SearchHigh from '../common/searchHigh.vue'
 import ControlPanel from './commponents/controlPanel'
 import ContractDetail from './commponents/contract_detail'
 import DevelopNewDish from './commponents/developNewDish'
-import FormDetail from './commponents/form_detail'
 export default {
   components: {
     SearchHigh, //高级搜索
     ControlPanel, // 控制面板
     ContractDetail, //详情
     DevelopNewDish,//新盘详情
-    FormDetail
   },
   data () {
     return {
@@ -339,7 +336,7 @@ export default {
     }
   },
   mounted () {
-    this.show_form_visible = true
+    this.contract_detail_visible = true
    // this.getTableData_all()
   },
   computed: {

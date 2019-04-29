@@ -45,7 +45,7 @@
         <i class="el-icon-d-arrow-right"></i>
       </div>
       <div class="page">
-        <el-pagination :total="total" layout="total,jumper,prev,pager,next" :current-page="currentPage" :page-size="10"></el-pagination>
+        <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
       </div>
     </footer>
     
@@ -145,8 +145,6 @@
         approvalDetail:[],
         process_id: 0,
         approvalTitle: '',
-        currentPage: 1,
-        total: 0,
       }
     },
     mounted(){
@@ -167,13 +165,8 @@
       },
       getContractList: function() {
         this.contractList = []
-        let param = {
-          page: this.currentPage,
-          limit: 10
-        }
-        this.$http.get(`${this.url}eam/contract`,param).then(res => {
+        this.$http.get(`${this.url}eam/contract`).then(res => {
           if(res.code === '20000'){
-            this.total = res.data.count
             for(var i = 0; i < res.data.data.length; i++){
               let department = ''
               for(var j = 0; j < res.data.data[i].user.org.length; j++){

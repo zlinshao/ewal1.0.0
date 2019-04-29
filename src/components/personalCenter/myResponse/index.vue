@@ -1,114 +1,126 @@
 <template>
   <div id="my_response">
     <div class="response-container">
-
-
       <div class="response-toolbar">
         <div class="toolbar-left">
           <div class="toolbar-left-upper">
-            <span :class="choosedTab == index? 'checked' : ''" v-for="(item, index) in changeTab" :key="index" @click="chooseTab(index)">{{item.title}}</span>
+            <span class="checked">收到的回复</span>
+            <span>发出的评论</span>
           </div>
+          <!--<div class="toolbar-left-below">
+            <span class="checked">员工广场</span>
+            <span>会议记录</span>
+          </div>-->
         </div>
         <div class="toolbar-right">
           <search-bar placeholder="搜索姓名/岗位/时间" v-model="searchValue"></search-bar>
         </div>
       </div>
-
-      
       <div class="response-table">
-        <div class="response-table-list" v-if="choosedTab ==0">
-          <div class="response-table-item" v-for="(item, index) in responseList" :key="index">
+        <div class="response-table-list">
+          <div class="response-table-item">
             <div class="table-item-container">
               <div class="item-upper">
                 <div class="item-upper-left">
-                  <img :src="item.article.user_id.avatar">
+                  <img
+                    src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
                 </div>
                 <div class="item-upper-right">
                   <div class="upper-right-info">
-                    <span>{{item.article.user_id.name}}</span>
-                    <span>{{item.article.created_at.split(' ')[0]}}</span>
+                    <span>张三</span>
+                    <span>2019-04-13</span>
                   </div>
                   <div class="upper-right-comment">
-                    {{item.article.title}}
+                    按时灯笼裤飞机撒赖咖啡碱斯科拉飞机撒赖咖啡碱飞机撒赖咖啡碱斯科拉附近开了
                   </div>
                 </div>
               </div>
               <div class="item-lower">
                 <div class="lower-content">
                   <div class="lower-content-container">
-                    <div class="content-username">{{item.user_id.staff.real_name}}</div>
+                    <div class="content-username">张三丰</div>
                     <div class="content-detail">
-                      {{item.content}}
+                      上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘
+                      卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见
+                      分厘卡上了看见分厘上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡
+                      卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡上了看见分厘卡
                     </div>
                   </div>
                 </div>
                 <div class="lower-operate">
                   <div class="item-view">
                     <i class="icon-response"></i>
-                    <span>{{item.article.comment_number}}</span>
+                    <span>587</span>
                   </div>
                   <div class="item-like">
                     <i class="icon-like"></i>
-                    <span>{{item.thumbs_up_number? item.thumbs_up_number: 0}}</span>
+                    <span>12</span>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div class="response-table-list" v-if="choosedTab ==1">
-          <div class="response-table-item" v-for="(item, index) in commentList" :key="index">
-            <div class="table-item-container">
-              <div class="item-upper">
-                <div class="item-upper-left">
-                  <img :src="item.article.user_id.avatar">
-                </div>
-                <div class="item-upper-right">
-                  <div class="upper-right-info">
-                    <span>{{item.article.user_id.name}}</span>
-                    <span>{{item.article.created_at.split(' ')[0]}}</span>
-                  </div>
-                  <div class="upper-right-comment">
-                    {{item.article.title}}
-                  </div>
-                </div>
+            <!--<div class="item-lower">
+              <div class="item-lower-left">
+                <img
+                  src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+                <span>张三</span>
               </div>
-              <div class="item-lower">
-                <div class="lower-content">
-                  <div class="lower-content-container">
-                    <div class="content-username">{{item.user_id.staff.real_name}}</div>
-                    <div class="content-detail">
-                      {{item.content}}
-                    </div>
-                  </div>
+              <div class="item-lower-right">
+                2019-04-13
+              </div>
+            </div>-->
+          </div>
+
+          <!--<div :key="index" v-for="index of 7" class="response-table-item">
+            <div class="item-upper">
+              <div class="item-upper-photo">
+                <img
+                  src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+              </div>
+              <div class="item-upper-content">
+                <div title="文章标题文章标题文章标题">文章标题文章标题文章标题文章标题文章标题文章标题</div>
+              </div>
+              <div class="item-upper-operate">
+                <div class="item-response">
+                  <i class="icon-response"></i>
+                  <span>90</span>
                 </div>
-                <div class="lower-operate">
-                  <div class="item-view">
-                    <i class="icon-response"></i>
-                    <span>{{item.article.comment_number}}</span>
-                  </div>
-                  <div class="item-like">
-                    <i class="icon-like"></i>
-                    <span>{{item.thumbs_up_number? item.thumbs_up_number: 0}}</span>
-                  </div>
+                <div class="item-view">
+                  <i class="icon-view"></i>
+                  <span>587</span>
+                </div>
+                <div class="item-like">
+                  <i class="icon-like"></i>
+                  <span>12</span>
                 </div>
               </div>
             </div>
+            <div class="item-lower">
+              <div class="item-lower-left">
+                <img
+                  src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+                <span>张三</span>
+              </div>
+              <div class="item-lower-right">
+                2019-04-13
+              </div>
+            </div>
+          </div>-->
+        </div>
+        <div class="response-table-pagination flex-center common-page">
+          <div class="page">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="params.page"
+              :page-size="params.limit"
+              :total="counts"
+              layout="total,jumper,prev,pager,next">
+            </el-pagination>
           </div>
         </div>
       </div>
-
-
-      <div class="page flex-center common-page">
-        <el-pagination
-          :current-page="currentPage"
-          :page-size="4"
-          :total="total"
-          layout="total,jumper,prev,pager,next">
-        </el-pagination>
-      </div>
-
     </div>
   </div>
 </template>
@@ -123,71 +135,22 @@
     },
     data() {
       return {
-        url: globalConfig.newMedia_sever,
-        changeTab: [{id:0,title: '收到的回复'},{id:1,title: '发出的评论'}],
-        choosedTab: 0,
-        currentPage: 1,
-        total: 1,
+        url: globalConfig.humanResource_server,
         searchValue: '',
+        params: {
+          page: 1,
+          limit: 5
+        },
+        counts: 0,
         responseList: [],
-        commentList: []
-      }
-    },
-    mounted(){
-      this.getResponseList();
-    },
-    watch: {
-      currentPage(){
-        if(this.choosedTab == 0){
-          this.getResponseList()
-        }else{
-          this.getCommentList()
-        }
+
       }
     },
     methods: {
-      chooseTab: function (index) {
-        this.choosedTab = index
-        if(index == 0 ){
-          this.getResponseList()
-        }else{
-          this.getCommentList()
-        }
+      handleSizeChange() {
       },
-      getResponseList: function() {
-        this.responseList = []
-        let param = {
-            type: "be_comment",
-            offset: this.currentPage,
-            limit: 4
-          }
-          this.$http.post(`${this.url}/api/article/comment/userComment`,param).then(res => {
-          if(res.status == 200){
-            this.total = res.data.data.length
-            for(let i = 0; i < res.data.data.length; i++){
-              let obj = res.data.data[i]
-              this.responseList.push(obj)
-            }
-          }
-        })
+      handleCurrentChange() {
       },
-      getCommentList: function() {
-        this.commentList= []
-          let param = {
-            type: "comment",
-            offset: this.currentPage,
-            limit: 4
-          }
-          this.$http.post(`${this.url}/api/article/comment/userComment`,param).then(res => {
-          this.total = res.data.data.length
-          if(res.status == 200){
-            for(let i = 0; i < res.data.data.length; i++){
-              let obj = res.data.data[i]
-              this.commentList.push(obj)
-            }
-          }
-        })
-      }
     },
   }
 </script>

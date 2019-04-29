@@ -21,7 +21,7 @@
         <el-table-column label="部门" align="center" prop='department'></el-table-column>
         <el-table-column v-for="(item,index) in days" :key="index" :label="item.toString()" :prop="item.toString()" align="center" width="40px">
           <template slot-scope="scope">
-            <div @click="showKpiDetail(scope.row,item)" :class="scope.row.objectionDay.indexOf(item) !== -1?'is_appeal':''">{{ scope.row[item.toString()]}}</div>
+            <div @click="showKpiDetail(scope.row,item)">{{ scope.row[item.toString()]}}</div>
           </template>
         </el-table-column>
         <el-table-column label="发送状态" align="center" prop='sendStatus'>
@@ -44,7 +44,7 @@
       <el-pagination :total="total" layout="total,jumper,prev,pager,next" :current-page="currentPage" :page-size="9"></el-pagination>
     </div>
 
-    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule()"></SearchHigh>
     
     <el-dialog
       :visible.sync="sendTodoList"
@@ -83,19 +83,9 @@
           </div>
           <div class="dialog_main">
             <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiDetail">
-              <el-table-column type="expand">
-                <template slot-scope="scope">
-                  <el-card>{{ scope.row.kpi_comment[0].content }}</el-card>
-                </template>
-              </el-table-column>
               <el-table-column label="考核项" align="center" prop="standardName"></el-table-column>
               <el-table-column label="指标值" align="center" prop="full_mark"></el-table-column>
               <el-table-column label="得分" align="center" prop="actual_score"></el-table-column>
-              <el-table-column label="状态" align="center" prop="is_appeal">
-                <template slot-scope="scope" v-if="scope.row.is_appeal == 1">
-                  <el-button plain type="danger" size="small">有异议</el-button>
-                </template>
-              </el-table-column>
               <el-table-column align="center" prop='sendStatus'>
                 <template slot-scope="scope">
                   <el-button plain type="success" size="small" @click="modifyKpi(scope.row)">修改</el-button>
@@ -180,7 +170,6 @@ export default {
       row: {},
       item: 0,
       multipleSelection: [],
-      getKpiListParam: {}
     }
   },
   mounted() {
@@ -229,11 +218,12 @@ export default {
         month = 12;
         year = year-1
       }
-      this.getKpiListParam.month = new Date(`${year}-${month}`)
-      this.getKpiListParam.page = this.currentPage
-      this.getKpiListParam.limit = 9
-      this.kpiList = []
-      this.$http.get(`${this.url}/kpi/month_day`,this.getKpiListParam).then(res => {
+      let param = {
+        month: new Date(Date.parse(`${year}-${month}`)),
+        page: this.currentPage,
+        limit:  9
+      }
+      this.$http.get(`${this.url}/kpi/month_day`).then(res => {
         if(res.status == 200){
           this.total = res.data.length
           for(let i = 0; i < res.data.length; i++){
@@ -247,16 +237,6 @@ export default {
               confirmStatus: res.data[i].result
             }
             this.handleKpi(obj,res.data[i].kpi)
-            let objection_date = res.data[i].objection_date ? res.data[i].objection_date : [] 
-            let objectionDay = []
-            if(objection_date.length > 0){
-              for(let j = 0; j < objection_date.length; j++){
-                let strday = objection_date[j].split("-")[2].substring(0,1) == '0'? objection_date[j].split("-")[2].substring(1) : objection_date[j].split("-")[2]
-                let intday = Number(strday)
-                objectionDay.push(intday)
-              }
-            }
-            obj.objectionDay = objectionDay
             this.kpiList.push(obj)
           }
         }
@@ -301,8 +281,6 @@ export default {
               standardName: res.data[i].standard.name,
               full_mark: res.data[i].standard.full_mark,
               actual_score: res.data[i].actual_score,
-              is_appeal: res.data[i].is_appeal,
-              kpi_comment: res.data[i].kpi_comment
             }
             this.kpiDetail.push(obj)
           }
@@ -369,6 +347,7 @@ export default {
               title: '成功',
               message: '发送成功',
           });
+          this.kpiList = []
           this.getKpiList();
         }
       })
@@ -394,30 +373,18 @@ export default {
       this.searchData = this.currentMonthAssessmentSearch
     },
     hiddenModule: function(val) {
-      this.showSearch = false
-      if (val !== 'close') {
-        if(val.sendStatus !== ""){
-          this.getKpiListParam.send_status = val.sendStatus
-        }else{
-          delete this.getKpiListParam.send_status
-        }
-        if(val.confirmStatus !== ""){
-          this.getKpiListParam.result = val.confirmStatus
-        }
-        else{
-          delete this.getKpiListParam.result
-        }
-        this.getKpiList();
-      }
+      // this.showSearch = false
+      // if (val == 'close') {
+      //   console.log(val);
+      //   console.log(1)
+      //   this.kpiList = []
+      //   this.getKpiList()
+      //   console.log(this.kpiList)
+      // }
     }
   },
 }
 </script>
-<style>
-.is_appeal{
-  color: red;
-}
-</style>
 
 <style lang="scss" scoped>
   @import "../../assets/scss/currentMonthAssessment/index.scss";

@@ -69,17 +69,16 @@
       }
       .response-table {
         flex: 1 0 auto;
-        height: 85%;
         //background-color: #ccc;
         display: flex;
         flex-direction: column;
         padding-top: 20px;
         .response-table-list {
+          height: 85%;
           //background-color: red;
           display: flex;
           justify-content: flex-start;
           flex-wrap: wrap;
-          height: 100%;
           .response-table-item {
             height: 45%;
             width: 33%;
@@ -227,10 +226,9 @@
             margin-right: 3.75%;
           }
         }
-        
-      }
-      .response-table-pagination {
-        height: 15%;
+        .response-table-pagination {
+          height: 15%;
+        }
       }
     }
   }

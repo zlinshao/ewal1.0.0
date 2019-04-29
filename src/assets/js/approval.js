@@ -49,10 +49,11 @@ defineReport = {
       },
       {
         label: '户型',
-        placeholder: '必填 请填入',
+        placeholder: '必填 选择',
         keyName: 'house_type',
         keyValue: [],
         type: 'picker',
+        childType: '',
         children: [
           {
             placeholder: '-室',
@@ -116,8 +117,12 @@ defineReport = {
         placeholder: '必填',
         keyName: 'decorate',
         keyValue: '',
-        type: 'input',
-        typeStatus: 'text'
+        // keyValue: {
+        //   id: '',
+        //   name: ''
+        // },
+        valueStatus: 'obj',
+        type: 'picker'
       },
       {
         label: '微波炉',
@@ -137,7 +142,12 @@ defineReport = {
         label: '房屋类型',
         placeholder: '请选择',
         keyName: 'property_type',
+        // keyValue: {
+        //   id: '',
+        //   name: ''
+        // },
         keyValue: '',
+        valueStatus: 'obj',
         type: 'picker'
       },
       {
@@ -158,7 +168,12 @@ defineReport = {
         label: '朝向',
         placeholder: '请选择',
         keyName: 'direction',
+        // keyValue: {
+        //   id: '',
+        //   name: ''
+        // },
         keyValue: '',
+        valueStatus: 'obj',
         type: 'picker'
       },
       {
@@ -179,7 +194,7 @@ defineReport = {
         label: '楼层',
         placeholder: '必填',
         keyName: 'floors',
-        keyValue: '',
+        keyValue: '1',
         type: 'input',
         typeStatus: 'number'
       },
@@ -194,7 +209,7 @@ defineReport = {
         label: '床和床垫的情况',
         placeholder: '必填 请选择',
         keyName: 'bed',
-        keyValue: '1',
+        keyValue: '0',
         type: 'picker'
       },
       {
@@ -215,7 +230,7 @@ defineReport = {
         label: '卫生情况',
         placeholder: '必填 请选择',
         keyName: 'is_clean',
-        keyValue: '1',
+        keyValue: '',
         type: 'radio'
       },
       {
@@ -230,27 +245,27 @@ defineReport = {
         label: '是否有天然气',
         placeholder: '必填 请选择',
         keyName: 'has_gas',
-        keyValue: 0,
+        keyValue: '',
         type: 'radio'
       },
       {
         label: '家电是否补齐',
         placeholder: '必填 请选择',
         keyName: 'is_fill',
-        keyValue: 0,
+        keyValue: '',
         type: 'radio'
       },
       {
         label: '是否有暖气',
         keyName: 'has_heater',
-        keyValue: 0,
+        keyValue: '',
         type: 'radio'
       },
       {
         label: '窗帘情况',
         placeholder: '必填 请选择',
         keyName: 'curtain',
-        keyValue: 0,
+        keyValue: '',
         type: 'picker'
       },
       {
@@ -280,7 +295,7 @@ defineReport = {
         label: '房屋影像',
         keyName: 'ablum',
         keyValue: [],
-        status: 'upload'
+        type: 'upload'
       }
     ],
     slither1: [
@@ -331,14 +346,14 @@ defineReport = {
         placeholder: '必填 请选择',
         keyName: 'end_date',
         keyValue: '',
-        status: 'picktimer',
+        type: 'picktimer',
         format: 'yyyy 年 MM 月 dd 日'
       },
       {
         label: '是否是电子合同',
         placeholder: '必填 请选择',
         keyName: 'is_electronic_contract',
-        keyValue: '',
+        keyValue: '0',
         type: 'radio'
       },
       {
@@ -375,8 +390,7 @@ defineReport = {
         placeholder: '请输入',
         keyName: 'pay_way',
         keyValue: '',
-        type: 'input',
-        typeStatus: 'text'
+        type: 'picker'
       },
       {
         label: '备注条款',
@@ -423,7 +437,7 @@ defineReport = {
       },
       {
         label: '支行',
-        placeholder: '请输入',
+        placeholder: '必填 请输入',
         keyName: 'subbranch',
         keyValue: '',
         typeStatus: 'text',
@@ -437,10 +451,12 @@ defineReport = {
         button: '增加',
         type: 'change', // 会增加 删减客户
         formSpan: 8,
+        childType: {},
         children: [
           [
             {
               label: '客户姓名',
+              placeholder: '必填 请输入',
               keyName: 'customer_name',
               keyValue: '',
               typeStatus: 'text',
@@ -448,6 +464,7 @@ defineReport = {
             },
             {
               label: '手机号码',
+              placeholder: '必填 请输入',
               keyName: 'contact_phone',
               keyValue: '',
               typeStatus: 'text',
@@ -455,13 +472,14 @@ defineReport = {
             },
             {
               label: '证件类型',
+              placeholder: '必填 请输入',
               keyName: 'card_type',
               keyValue: '',
-              typeStatus: 'text',
-              type: 'input'
+              type: 'picker'
             },
             {
               label: '证件号',
+              placeholder: '必填 请输入',
               keyName: 'card_id',
               keyValue: '',
               typeStatus: 'text',

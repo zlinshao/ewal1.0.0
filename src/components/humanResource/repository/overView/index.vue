@@ -1543,7 +1543,7 @@
                 takeTime: item?.receive_time || '-',
                 returnTime: item?.return_date || '-',
               }
-              this.tableSettingData[this.currentTable].tableData.push(obj);
+              this.tableSettingData[this.currentTable].tableData.push(obj)
             }
             this.tableSettingData[this.currentTable].counts = res.data.count;
           }

@@ -1,63 +1,106 @@
 <template>
   <div id='contract_detail_approval'>
     <LjDialog :visible="visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleClose">
-      <div class='dialog_container'>
+      <div class='dialog_container' v-if='visible && formData'>
         <div class='dialog_header'>
-          <h3>house_name</h3>
+          <h3>{{formData.house_address}}</h3>
         </div>
-        <div class="dialog_main" v-if='visible && form_data'>
-          <el-form label-width='120px' v-for='(title,index) in showTitle' :key='index'>
-            <div class='dialog_tit' v-if='index != 0'>
-              <div class='dialog_tit_img'></div>
-              <p>{{title}}</p>
+        <div class="dialog_main" id='dialog_main'>
+          <el-form label-width='120px'>
+            <el-row :gutter='10'>
+              <el-col :span='cell.formspan' v-for='(cell,cellIndex) in firstDefine' :key='cell.keyName'>
+                <el-form-item :label='cell.label'>
+                  <span>{{formData[cell.keyName]}}</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <div class='seeRecord' @click='handleRecord'>
+              <el-button type="primary" plain>查看审核记录</el-button>
             </div>
+          </el-form>
 
-            <div class='seeRecord' v-if='index== 0'>
-              <el-button type="primary" plain @click='handleRecord'>查看审核记录</el-button>
-            </div>
+          <el-form label-width='120px' v-for='(form,slither,index) in defineReport' :key='slither'>
 
-            <el-row :gutter='10' v-if='title == "相关信息"' class='message_box'>
-              <el-col :span='8'>
-                <el-form-item v-for='i in 5' :key='i' label=" " class='message_form'>
-                  <span>同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元</span>
-                </el-form-item>
-              </el-col>
-              <el-col :span='7' :offset="3" class='message_con'>
-                <p>其中:</p>
-                <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
-              </el-col>
-              <el-col :span='3' class='message_price'>
-                <p>收房价:</p>
-                <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
-              </el-col>
-            </el-row>
+            <VillageContainer :village="titleTips[index]">
+              <!-- 付款信息 循环 row -->
+              <el-row :gutter='10' v-if='titleTips[index]=="付款信息"'>
+                <el-col :span='8' v-for='(cell,cellIndex) in form' :key='cell.keyName'>
+                  <el-form-item :label='cell.label'>
+                    <span>{{formData[cell.keyName]}}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-            <el-row :gutter="10" v-else-if='title == "收款信息"'>
-              <el-col :span='8'>
-                <el-form-item v-for='(cell,idx) in Object.keys(collection_show)' :key='cell' :label="collection_show[cell]">
-                  <span>{{idx}}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
+              <el-row :gutter='10' v-else-if='titleTips[index] == "相关信息"' class='message_box'>
+                <el-col :span='8'>
+                  <el-form-item v-for='i in 5' :key='i' label=" " class='message_form'>
+                    <span>同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span='7' :offset="3" class='message_con'>
+                  <p>其中:</p>
+                  <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
+                </el-col>
+                <el-col :span='3' class='message_price'>
+                  <p>收房价:</p>
+                  <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
+                </el-col>
+              </el-row>
 
-            <el-row :gutter="10" v-else-if='title == "客户信息"'>
-              <el-col :span='8'>
-                <el-form-item v-for='(cell,idx) in Object.keys(customer_show)' :key='cell' :label="customer_show[cell]">
-                  <span>{{idx}}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
+              <template v-else>
+                <el-row :gutter='10' v-for='(cell,cellIndex) in form' :key='cell.keyName' v-if='cell.type == "change"'>
+                  <el-col :span='cell.formSpan || formSpan' v-for='(child,child_index) in cell.children' :key='child_index'>
+                    <el-form-item :label='col.label' v-for='(col,col_index) in child' :key='col_index'>
+                      <span v-if='col.type=="input"'>{{formData[cell.keyName][child_index][col.keyName]}}</span>
+                      <span v-if='col.type=="picker"'>
+                        {{dicties[col.keyName][formData[cell.keyName][child_index][col.keyName]]}}
+                      </span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
 
-            <el-row :gutter='10' v-else>
-              <el-col :span='8' v-for='(row,idex) in showDetail[index]' :key='"row"+idex'>
-                <el-form-item v-for='(cell,idx) in Object.keys(row)' :key='cell' :label="row[cell]" :class='[cell== 55 ? "house_video":""]'>
-                  <!-- 房屋影像 -->
-                  <img v-if='cell == 55'></img>
-                  <span v-else>{{form_data[row]}}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
+                <!-- 正常表单 -->
+                <el-row :gutter='10' v-if='form.type != "change"'>
+                  <el-col :span='cell.formSpan || formSpan' v-for='(cell,cellIndex) in form' :key='cell.keyName'>
+                    <el-form-item :label='cell.label' :class='cell.type == "upload"?"house_video":""'>
 
+                      <template v-if='cell.type== "radio"'>
+                        <span>{{dicties[cell.keyName][formData[cell.keyName]]}}</span>
+                      </template>
+
+                      <!-- 多个选择checkbox -->
+                      <template v-if='cell.type== "picker"'>
+                        <div v-if='cell.children' class='more_checkbox'>
+                          <span v-for='(child,child_index) in cell.children'>{{dicties[cell.keyName]["value_"+child_index][formData[cell.keyName][child_index]]}}</span>
+                        </div>
+                        <span v-else>{{formData[cell.keyName] && formData[cell.keyName].name}}</span>
+                      </template>
+
+                      <template v-if='cell.type== "picktimer"'>
+                        <el-date-picker v-model="formData[cell.keyName]" type="date" :placeholder="cell.placeholder"
+                          :format="cell.format" class='picktimer' />
+                      </template>
+
+                      <template v-if='cell.type == "input"'>
+                        <div class='
+              ' v-for='(child,child_index) in cell.children' :key='child_index'
+                          v-if='cell.children'>
+                          <span>{{formData[cell.keyName][child_index][child.keyName]}}</span>
+                          <span>{{child.spanLabel}}</span>
+                        </div>
+
+                        <span v-if='!cell.children'>{{formData[cell.keyName]}}</span>
+                      </template>
+
+                      <template v-if='cell.type == "upload"'>
+                        <img v-for="tmp in formData.album.photo" :key="tmp.id" data-magnify="" data-caption="图片查看器"
+                          :data-src="tmp.uri" :src="tmp.uri" style="width: 50px;height: 50px;margin-right: 5px" v-if="tmp.uri">
+                      </template>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </template>
+            </VillageContainer>
           </el-form>
 
           <div class='float-btns'>
@@ -69,7 +112,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="info" size="small" @click='handleBuff' v-if='type == 1'>暂缓</el-button>
-          <el-button type="info" size="small" @click='handleRecord'>修改</el-button>
+          <el-button type="info" size="small" @click='handleRewrite'>修改</el-button>
           <el-button type="info" size="small">拒绝</el-button>
           <el-button type="danger" size="small">同意</el-button>
         </div>
@@ -133,141 +176,96 @@
       </div>
     </LjDialog>
 
-    <!-- <FormDetail :visible='show_form_visible' /> -->
+    <FormDetail :visible='show_form_visible' :moduleData='formData' />
   </div>
 </template>
 
 <script>
 import LjDialog from '../../common/lj-dialog.vue';
 import VillageContainer from '../../customService/village/components/village-container.vue';
-import LjUpload from '../../common/lightweightComponents/lj-upload';
-
+import LjUpload from '../../common/lightweightComponents/lj-upload.vue';
+import FormDetail from './form_detail.vue'
 export default {
   props: ['visible'],
   components: {
     LjDialog,
     VillageContainer,
     LjUpload,
-    // FormDetail
+    FormDetail
   },
   data () {
     return {
-      showDetail: [
-        [
-          {
-            bulletin_name: '收房报备',
-            department_name: '部门'
-          }, {
-            status: "状态",
-            org_name: '处理人'
-          }
-        ],
-        [
-          {
-            property_address: '产权地址',
-            holding_documents_type: '持有证件',
-            house_type: '户型',
-            area: '面积',
-            can_decorate: '装修',
-            property_type35: '房屋类型',
-            direction: '朝向',
-            floors: '楼层',
-            property_phone: '物业电话',
-            property_fee: '物业费单价',
-            has_heater: '暖气',
-            lock_type: '门锁类型',
-            house_video: '房屋影像'
-          }, 
-          {
-            property_right_card_number: '产权证号',
-            gas_stove: '燃气灶',
-            wash_machine: '洗衣机',
-            clothe_rack: '晾衣架',
-            fridge: '冰箱',
-            hood: '油烟机',
-            water_heater: '热水器',
-            dining_table: '餐桌',
-            has_gas: '天然气',
-            curtain: '窗帘',
-            wardrobe: '衣柜',
-            other_remark: '其它问题',
-          }, {
-          qiu_quan_number: '丘权号',
-           air_condition: '空调',
-            television: '电视',
-            microwave: '微波炉',
-            sofa: '沙发',
-            chair: '椅子',
-           bed: '床+床垫',
-            is_clean: '卫生状况',
-            is_fill: '家电',
-            remark: '备注',
-            // 52: '补齐时间',
-          }
-        ],
-        [
-          {
-            sign_date: '签约时间',
-            begin_date: '合同开始时间',
-            end_date: '合同结束时间',
-            month: '签约时长',
-            vacancy: '空置期天数',
-            is_agency: '是否渠道',
-            agency_price: '渠道费',
-            month_unit_price: '月单价',
-            pay_way: '付款方式',
-          }, {
-            pay_first_date: '第一次付款时间',
-            pay_second_date: '第二次付款时间',
-            is_electronic_contract: '电子合同',
-            remark_terms: '备注条款',
-          }, {
-            contract_number: '合同编号',
-          }
-        ],
+      formSpan: 8,
+      firstDefine: [
+        {
+          keyName: 'bulletin_name',
+          label: '收房报备',
+          formspan: 8,
+        },
+        {
+          keyName: 'department_name',
+          label: '部门',
+          formspan: 16,
+        },
+        {
+          keyName: 'status',
+          label: '状态',
+          formspan: 8,
+        },
+        {
+          keyName: 'org_name',
+          label: '处理人',
+          formspan: 16,
+        },
       ],
-      // collection_show: {
-      //   91: '开户名',
-      //   92: '卡号',
-      //   93: '开户行',
-      //   94: '支行',
-      //   95: '与房东关系'
-      // },
-      // customer_show: {
-      //   11: '姓名',
-      //   12: '手机号',
-      //   13: '证件类型',
-      //   14: '证件号',
-      // },
-      showTitle: ['', '房屋信息', '合同信息', '相关信息', '收款信息', '客户信息'],
+      dicties,
+      defineReports: JSON.parse(JSON.stringify(defineReport)),
+      type: 1,
+      titleTip: {
+        1: ['房屋信息', '合同信息', '付款信息', '相关信息', '客户信息'],
+      },
 
-      village_pic: [],
-      house_pic: [],
-      files: [],
-      outer_house_pic: [],
-      outer_net_data: [],
-      current_village_detail: '',
       type: 1,
       comment_show_visible: false,
       comment_words: null,
       record_show_visible: false,
       show_form_visible: false,
-      form_data: null,
+      formData: null,
       market_server: globalConfig.market_server,
     }
   },
   watch: {
     visible (val) {
-      if (val) this.handleGetDetail()
+      if (val) this.getDetailForm()
+    }
+  },
+  computed: {
+    defineReport () {
+      let deport = JSON.parse(JSON.stringify(this.defineReports[this.type]))
+      deport.slither4 = deport.slither3
+      deport.slither3 = []
+      return deport
+    },
+    titleTips () {
+      return this.titleTip[this.type]
     }
   },
   methods: {
+    getDetailForm () {
+      this.$http.get(this.market_server + `v1.0/market/process/edit/197`).then(res => {
+        if (res.code === 200) {
+          this.formData = res.data.content
+          console.log(this.formData)
+        }
+      })
+    },
     handleClose () {
       this.$emit('close', close)
     },
     changeBtns_type (val) {
       this.comment_show_visible = !this.comment_show_visible
     },
+
     handleRecord () {
       this.record_show_visible = true
     },
@@ -277,36 +275,10 @@ export default {
     handleBuff () {
       console.log('暂缓')
     },
-    handleGetDetail (village) {
-      // ${village.id}
-      this.$http.get(this.market_server + `v1.0/market/process/edit/197`).then(res => {
-        if (res.code === 200) {
-          console.log(res.data);
-          this.form_data = res.data.content
-          // this.current_village_detail = res.data;
-          // this.village_detail_visible = true;
-          // for (var key in this.village_detail_form) {
-          //   this.village_detail_form[key].val = res.data[key] ? res.data[key] : '';
-          // }
-          // this.village_detail_form.city_name.val = res.data.city && res.data.city.city_name;
-          // this.village_detail_form.area_name.val = res.data.area && res.data.area.area_name;
-          // this.outer_net_data = res.data.outer_net_data ? res.data.outer_net_data : [];
-          // var location = [res.data.longitude, res.data.latitude];
-          // this.village_pic = res.data && res.data.album && res.data.album.village_photo ? res.data.album.village_photo : [];
-          // this.house_pic = res.data && res.data.album && res.data.album.home_photo ? res.data.album.home_photo : [];
-          // this.files = res.data && res.data.album && res.data.album.files ? res.data.album.files : [];
-          this.$nextTick(() => {
-            this.handleDetailMap(location);
-          })
-        } else {
-          this.$LjNotify('warning', {
-            title: '失败',
-            message: res.message
-          });
-          return false;
-        }
-      })
-    }
+    handleRewrite () { // 修改
+      this.show_form_visible = true
+      this.$emit('close', false)
+    },
   }
 }
 </script>
@@ -362,9 +334,6 @@ export default {
           img {
             width: 50px;
             height: 50px;
-          }
-          img + img {
-            margin-left: 15px;
           }
         }
       }
@@ -658,20 +627,41 @@ export default {
           margin-bottom: 0;
           .el-form-item__label,
           .el-form-item__content {
-            line-height: 30px;
+            display: flex;
+            align-items: center;
+            height: 30px;
             font-family: "Microsoft YaHei";
           }
           .el-form-item__label {
             text-align: right;
+            justify-content: flex-end;
           }
           .el-form-item__content {
             text-align: left;
+            display: flex;
+            align-items: center;
+            .more_checkbox {
+              display: flex;
+              .el-select {
+                flex: 1;
+              }
+              .el-input__inner {
+                padding: 0 5px;
+              }
+            }
+          }
+          .el-date-editor--date {
+            input {
+              border: none;
+            }
           }
         }
         .house_video {
+          height: 50px;
           .el-form-item__label,
           .el-form-item__content {
             line-height: 50px;
+            height: 50px;
           }
         }
         .message_box {

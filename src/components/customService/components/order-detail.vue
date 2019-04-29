@@ -83,7 +83,7 @@
 <script>
 import LjDialog from '../../common/lj-dialog.vue';
 export default {
-  props: ['visible', 'moduleData'], // id
+  props: ['visible', 'moduleData','change'], // id
   components: {
     LjDialog
   },
@@ -134,6 +134,11 @@ export default {
     },
     moduleData (val) {
       this.currentRow = val.currentRow
+    },
+    change(val){ //detail 数据发生改变
+      if(val){
+        this.getDetail()
+      }
     }
   },
   methods: {
@@ -142,15 +147,15 @@ export default {
       return this.currentType
     },
     handleCloseDetail () {
-      this.$emit('close', true)
+      this.$emit('close', false)
     },
     getDetail () {
       this.$http.get(this.market_server + `v1.0/csd/work_order/ServiceDetail/${this.moduleData.currentId}`).then(res => {
         if (res.code === 200) {
           this.detail_form = res.data.order_data
           this.follow_data = res.data.follow_data
-          console.log(this.follow_data)
           this.detail_visible = true;
+          this.$emit('changDetail',false)
         }
       })
     },

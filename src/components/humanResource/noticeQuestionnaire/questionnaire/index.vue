@@ -215,7 +215,6 @@
           title:'',
           sub_title: '',
           btn_name: '预览问卷',
-          edit_btn_visible:true,
         },
 
         //问卷调查结果
@@ -287,7 +286,6 @@
               title: '成功',
               message: res.msg,
             });
-            this.add_questionnaire_dialog_visible = false;
           } else {
             this.$LjNotify('error', {
               title: '失败',
