@@ -94,7 +94,7 @@ export default {
   },
   data () {
     return {
-      show_form_visible:false,
+      show_form_visible: false,
       chosenTag: 1,
       shenHe_type: [
         {
@@ -256,7 +256,10 @@ export default {
                 id: 14,
                 title: '家具补齐'
               },
-
+              {
+                id: 15,
+                title: '未收先租'
+              },
             ]
           },
           {
@@ -323,7 +326,11 @@ export default {
         {
           tit: '租房补充协议',
           value: 12
-        }
+        },
+        {
+          id: 13,
+          title: '未收先租'
+        },
       ],
       revice_check_type: [],
       isRevice_visible: false,
@@ -337,7 +344,7 @@ export default {
   },
   mounted () {
     this.contract_detail_visible = true
-   // this.getTableData_all()
+    // this.getTableData_all()
   },
   computed: {
     message_visible () {

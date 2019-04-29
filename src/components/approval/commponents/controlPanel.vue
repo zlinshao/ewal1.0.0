@@ -159,7 +159,11 @@ export default {
         {
           tit: '租房补充协议',
           value: 12
-        }
+        },
+        {
+          id: 13,
+          title: '未收先租'
+        },
       ],
       revice_check_type: [],
     }

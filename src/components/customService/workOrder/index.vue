@@ -82,8 +82,8 @@ import TransferDialog from '../components/transfer-dialog';
 import SureEndDialog from '../components/sureEnd-dialog';
 import UrgedDealDialog from '../components/urgedDeal-dialog';
 import OrderDetail from '../components/order-detail';
-import CreateOrder from './components/createOrder'
-import AddRecord from './components/addRecord'
+import CreateOrder from '../components/createOrder'
+import AddRecord from '../components/addRecord'
 import { workOrderSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 
@@ -261,8 +261,6 @@ export default {
     // 关闭催办
     handleCloseUrgedDeal (params) {
       this.urgedDeal_visible = false
-      this.currentRow = null
-      this.detail_form = null
       this.urgedDeal_info = {
         work_order_id: '',
         default_Person: ''
@@ -310,7 +308,6 @@ export default {
     handleCloseDetail (params) {
       let { type, close, detail } = params
       if (detail) this.detail_form = detail;
-      this.detail_visible = false;
       if (type == '转交') {
         this.transfer_visible = true
       }
@@ -327,12 +324,16 @@ export default {
         }
         this.followRecord_visible = true
       }
+
+      if (type == "close") {
+        this.detail_visible = false
+        this.currentRow = null
+        this.detail_form = null
+      }
     },
     // 转交
     handleCloseTranfer () {
       this.transfer_visible = false
-      this.currentRow = null
-      this.detail_form = null
     },
     //结束
     handleEnd () {
@@ -349,9 +350,6 @@ export default {
       if (isSure) {
         this.currentMethod == 'addRecord' && this.addRecordFun(params)
         this.currentMethod == 'ending' && this.handleSure(isCreated)
-      } else {
-        this.currentRow = null
-        this.detail_form = null
       }
     },
     handleSure (isCreated) {
@@ -360,7 +358,6 @@ export default {
         payer_all_money: this.currentRow.payer_all_money || 0,
         flag: isCreated ? 1 : 0
       }
-
       this.$http.post(`${this.market_server}v1.0/csd/work_order/finish`, option).then(res => {
         this.$LjNotify('success', {
           title: '提示',
@@ -368,8 +365,6 @@ export default {
         });
 
         if (res.code === 200) {
-          this.currentRow = null
-          this.detail_form = null
           this.getDataList()
         }
       })
@@ -414,8 +409,6 @@ export default {
           title: '提示',
           message: res.message
         });
-        this.followRecord = null
-        this.currentRow = null
       })
     },
     // 客服入口

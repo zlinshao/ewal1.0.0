@@ -115,10 +115,10 @@
 </template>
 
 <script>
-import LjDialog from '../../../common/lj-dialog.vue';
-import Ljupload from '../../../common/lightweightComponents/lj-upload';
-import StaffOrgan from '../../../common/staffOrgan.vue'
-import OrgChoose from '../../../common/lightweightComponents/orgChoose';
+import LjDialog from '../../common/lj-dialog.vue';
+import Ljupload from '../../common/lightweightComponents/lj-upload';
+import StaffOrgan from '../../common/staffOrgan.vue'
+import OrgChoose from '../../common/lightweightComponents/orgChoose';
 export default {
   props: ['visible', 'moduleData'],
   components: {

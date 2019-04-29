@@ -11,21 +11,31 @@
               <el-col :span='createOrder_span'>
                 <p class='el-col-p'><i class='icon house_name'></i>房屋地址</p>
                 <div class='input_box'>
-                  <div class='el-input'>
-                    <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='createOrder.house_name'
-                      @mousedown="clearSearch" v-on:keyup.enter='addOrder_search'>
+                  <div class='el-input' @mousedown="clearSearch">
+                    <input type="text" class="el-input__inner" v-model='createOrder.house_name' v-if='createOrder.house_name'
+                      disabled>
+                    <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='customer_search'
+                      v-on:keyup.enter='addOrder_search' v-else>
                   </div>
                 </div>
               </el-col>
 
               <el-col :span="createOrder_span">
                 <p class='el-col-p'><i class='icon type'></i><span>工单类型</span></p>
-                <div class='input_box'>
+
+                <!-- 维修保洁中的创建工单 -->
+                <div class='input_box' v-if='moduleOrder == 78'>
+                  <el-radio v-model="createOrder.type" label="7">维修</el-radio>
+                  <el-radio v-model="createOrder.type" label="8">保洁</el-radio>
+                </div>
+
+                <div class='input_box' v-else>
                   <el-select v-model="createOrder.type" placeholder="请选择">
                     <el-option v-for="item in orderType" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                   </el-select>
                 </div>
+
               </el-col>
 
               <el-col :span="createOrder_span" v-if='createOrder.type == 699'>
@@ -62,6 +72,17 @@
                 </div>
               </el-col>
 
+              <!-- 维修保洁中的创建工单 -->
+              <el-col :span="6" v-if='moduleOrder == 78'>
+                <p class='el-col-p'><i class='icon post'></i><span>派单至</span></p>
+                <div class='input_box'>
+                  <el-select placeholder="请选择" v-model='createOrder.send_order_type'>
+                    <el-option label="内部保修" value="1"> </el-option>
+                    <el-option label="外部保修" value="2"> </el-option>
+                  </el-select>
+                </div>
+              </el-col>
+
               <el-col :span="createOrder_span">
                 <p class='el-col-p'><i class='icon handler'></i><span>处理人</span></p>
                 <div class='input_box'>
@@ -72,7 +93,7 @@
               <el-col :span="createOrder_span">
                 <p class='el-col-p'><i class='icon org'></i><span>部门</span></p>
                 <div class='input_box'>
-                  <el-input @focus="handlerDepart('operate_org')" readonly v-model="createOrder.operate_org.name"></el-input>
+                  <el-input readonly v-model="createOrder.operate_org.name"></el-input>
                 </div>
               </el-col>
 
@@ -354,11 +375,7 @@
     <!-- 人员选择 -->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan" />
     <!--选择部门-->
-
     <OrgChoose v-model='createOrder.operate_org.id '></OrgChoose>
-
-    <!-- <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart" /> -->
-
     <!-- 财务记录 -->
     <FinancialDialog :visible='financial_visible' :moduleData='record_data' @close='handkeCloseFinancial' />
     <!-- 报销记录 -->
@@ -371,16 +388,17 @@
 </template>
 
 <script>
-import LjDialog from '../../../common/lj-dialog.vue';
-import StaffOrgan from '../../../common/staffOrgan.vue'
-import DepartOrgan from '../../../common/departOrgan';
-import Ljupload from '../../../common/lightweightComponents/lj-upload'
-import RecordeDialog from '../../components/recorde-dialog';
-import WithoutDialog from '../../components/without-dialog';
-import ExpenseDialog from '../../components/expense-dialog';
-import FinancialDialog from '../../components/financial-dialog';
+import LjDialog from '../../common/lj-dialog.vue';
+import StaffOrgan from '../../common/staffOrgan.vue'
+import DepartOrgan from '../../common/departOrgan';
+import Ljupload from '../../common/lightweightComponents/lj-upload'
+import RecordeDialog from './recorde-dialog';
+import WithoutDialog from './without-dialog';
+import ExpenseDialog from './expense-dialog';
+import FinancialDialog from './financial-dialog';
+import OrgChoose from '../../common/lightweightComponents/orgChoose';
 export default {
-  props: ['visible'],
+  props: ['visible', 'moduleOrder'], //moduleOrder 工单环境(区分是维修保洁还是工单模块)
   components: {
     LjDialog,
     StaffOrgan,
@@ -390,6 +408,7 @@ export default {
     WithoutDialog,
     ExpenseDialog,
     FinancialDialog,
+    OrgChoose
   },
   data () {
     return {
@@ -411,6 +430,7 @@ export default {
           id: null,
           name: null,
         },
+        send_order_type: null, //派单至
         operate_org: { // 处理部门 
           id: null,
           name: null
@@ -654,7 +674,6 @@ export default {
       show_Contract_Detail: false, // 合同详情
       seeRecord_status: 0, // 当前记录查看type
       currentStaff: null,// 当前人员类型
-      currentIndex: null, // 当前认责index
       currentOrgL: null, // 当前部门
       financial_visible: false, // 财务记录
       expense_visible: false,  //报销记录
@@ -719,28 +738,19 @@ export default {
     handlerOrgan (params, index) {
       this.staffModule = true
       this.currentStaff = params
-      this.currentIndex = index || 0
     },
     // 关闭 选择人员
     hiddenOrgan (ids, names, arr) {
       this.staffModule = false;
       if (ids !== 'close') {
-        if (this.currentStaff == 'add_record_renze') {
-          this.followRecord.pay_method[this.currentIndex].name = names
-          this.followRecord.pay_method[this.currentIndex].id = ids
-        } else {
-          this.createOrder[this.currentStaff] = {
-            name: names,
-            id: ids
-          }
+        this.createOrder[this.currentStaff] = {
+          name: names,
+          id: ids
         }
 
-        if(names){
-          this.getOrganDepart()
-        }else{
-
+        if (names && this.currentStaff == "operate_user") {
+          this.getOrganDepart(ids[0])
         }
-        this.currentIndex = 0
         this.currentStaff = ''
       }
     },
@@ -749,28 +759,12 @@ export default {
         if (res.code == 20020) {
           let data = res.data.org[0]
           this.createOrder.operate_org = {
-            name:data.name,
-            id:data.pivot.org_id ? [data.pivot.org_id] : []
+            name: data.name,
+            id: data.pivot.org_id ? [data.pivot.org_id] : []
           }
         }
       })
     },
-    // // 选择部门
-    // handlerDepart (params) {
-    //   this.departModule = true
-    //   this.currentOrg = params
-    // },
-    // // 关闭 选择部门
-    // hiddenDepart (ids, str, arr) {
-    //   this.departModule = false
-    //   if (ids != 'close') {
-    //     this.createOrder[this.currentOrg] = {
-    //       name: str,
-    //       id: ids
-    //     }
-    //     this.currentOrg = ''
-    //   }
-    // },
     // 增加报销
     addComplaintsType () {
       this.createOrder.reimburse.push({
@@ -791,18 +785,22 @@ export default {
       }
     },
     clearSearch () {
+      this.current_customer = null
+      if (this.createOrder.house_name) {
+        this.customer_search = this.createOrder.house_name
+      }
       this.createOrder.house_name = ''
       this.customer_info.page = 1
       this.customer_info.count = 0
-      this.customer_info.chosenCustomer = null
-      this.customer_info.contract_Detail = null
       this.show_Contract_Detail = false
+      this.customer_info.contract_Detail = null
+      this.chosenCustomer = null
     },
     // 模糊搜索
     addOrder_search () {
       let params = {
         type: 3,
-        search: this.createOrder.house_name,
+        search: this.customer_search,
         limit: 5,
         page: this.customer_info.page
       }
@@ -812,6 +810,8 @@ export default {
           this.customer_info.count = res.data.count
         }
       })
+
+      this.addOrderChosen = 1
     },
     // 选择当前客户
     changeCustmInfo (val) {
@@ -894,7 +894,11 @@ export default {
         });
         return
       }
-      this.createOrderFun()
+      if (this.moduleOrder == 78) {
+        this.createMaintence() // 创建维修保洁
+      } else {
+        this.createOrderFun()  // 创建工单
+      }
     },
     clearInfo () {
       this.show_Contract_Detail = false
@@ -923,6 +927,7 @@ export default {
           id: null,
           name: null,
         },
+        send_order_type: null,
         operate_org: { // 处理部门 
           id: null,
           name: null
@@ -960,6 +965,10 @@ export default {
 
       if (!this.createOrder.type) {
         return '工单类型未选择'
+      }
+
+      if (!this.createOrder.send_order_type) {
+        return '派单未选择'
       }
 
       if (this.createOrder.type == 699) {
@@ -1019,7 +1028,79 @@ export default {
       }
       return warning
     },
-    createOrderFun () {
+    createMaintence () { // 创建维修保洁
+      let order = {
+        house_id: this.chosenCustomer.house_id,
+        house_name: this.chosenCustomer.house_name,
+        contract_id: this.chosenCustomer.contract_id,
+        contract_num: this.chosenCustomer.contract_num,
+        contract_type: this.chosenCustomer.contract_type,
+        type: this.createOrder.type,
+        type_name: this.createOrder.type == 7 ? "维修" : "保洁",
+        replay_phone: this.createOrder.replay_phone,
+        send_order_type: this.createOrder.send_order_type,
+        operate_user_id: this.createOrder.operate_user.id,
+        operate_user_name: this.createOrder.operate_user.name,
+        operate_org_id: this.createOrder.operate_org.id,
+        operate_org_name: this.createOrder.operate_org.name,
+        expected_finish_time: this.createOrder.next_follow_time,
+        album: this.createOrder.album,
+        content: this.createOrder.content
+      }
+      this.$http.post(`${this.market_server}v1.0/csd/work_order/ServiceOrder`, order).then(res => {
+        let word = null
+        if (res.code === 200) {
+          this.$emit('close', {
+            visible: false,
+            method: 'created'
+          })
+          this.createdTodo(order)
+          this.clearInfo()
+          word = '工单创建成功'
+        } else {
+          word = '工单创建失败'
+        }
+
+        this.$LjNotify('warning', {
+          title: '提示',
+          message: word
+        });
+      })
+    },
+    createdTodo (params) { // 维修 保洁创建任务
+      if (params.type == 7) { //维修
+        let order = {
+          repair_time: params.expected_finish_time,
+          repair_item: params.content,
+          album: JSON.stringify({ before: params.album }),
+          contract_id: params.contract_id,
+          receive_id: params.operate_user_id,
+          contract_type: params.contract_type,
+          repair_type: Number(params.send_order_type),
+          house_id: params.house_id
+        }
+        this.$http.post(`${this.market_server}v1.0/market/task/HouseRepair`, order).then(res => {
+          console.log(res.message)
+        })
+      }
+      if (params.type == 8) { //保洁
+        let order = {
+          cleaning_type: Number(params.send_order_type),
+          cleaning_time: params.expected_finish_time,
+          cleaning_reason: params.content,
+          album: JSON.stringify({ before: params.album }),
+          contract_id: params.contract_id,
+          contract_type: params.contract_type,
+          receive_id: params.operate_user_id,
+          house_id: params.house_id
+        }
+        this.$http.post(`${this.market_server}v1.0/market/task/HouseCleaning`, order).then(res => {
+          console.log(res.message)
+        })
+      }
+
+    },
+    createOrderFun () { // 创建工单
       let order = {
         house_id: this.chosenCustomer.house_id,
         house_name: this.chosenCustomer.house_name,
@@ -1123,11 +1204,13 @@ export default {
 </script>
 
 
+
+
 <style lang="scss">
-@import "../../../../assets/scss/common.scss";
+@import "../../../assets/scss/common.scss";
 
 @mixin confirmImg($m, $n) {
-  $url: "../../../../assets/image/customService/workOrder/" + $n + "/" + $m;
+  $url: "../../../assets/image/customService/workOrder/" + $n + "/" + $m;
   @include bgImage($url);
 }
 
@@ -1327,6 +1410,84 @@ export default {
         }
       }
     }
+    .detail_contract {
+      height: 408px;
+      overflow-y: scroll;
+      @include scroll;
+      flex-wrap: wrap;
+      @include flex("items-start");
+      .detail_col {
+        display: block;
+        height: 320px;
+        .detail_col_box {
+          height: 250px;
+          overflow-y: scroll;
+          @include scroll;
+        }
+        .detail_col_box2 {
+          @include flex("space-column");
+          @include flex("justify-start");
+        }
+      }
+      .el-col {
+        display: block !important;
+        h5 {
+          font-size: 14px;
+          font-family: "jingDianXingShu";
+          word-spacing: 2px;
+          text-align: left;
+          margin-bottom: 30px;
+          padding-left: 40px !important;
+        }
+        div {
+          margin-bottom: 18px;
+          @include flex("justify-start");
+          span {
+            font-size: 14px;
+            font-family: "Microsoft Yahei";
+          }
+          .tit {
+            width: 40%;
+            text-align: right;
+            padding-right: 10px;
+          }
+          .content_tit {
+            width: 60%;
+            text-align: left;
+            img {
+              width: 50px;
+              height: 50px;
+            }
+          }
+          .content_album {
+            @include flex("space-column");
+            .imgs_box {
+              @include flex("space-column");
+              margin-bottom: 5px;
+              div {
+                flex-wrap: wrap;
+              }
+            }
+          }
+        }
+      }
+      .el-border {
+        position: relative;
+        &:after {
+          content: "";
+          width: 1px;
+          height: 285px;
+          position: absolute;
+          right: 0;
+          top: 10px;
+        }
+        .el-col {
+          padding-top: 0;
+          @include flex("space-column");
+          @include flex("justify-start");
+        }
+      }
+    }
   }
 }
 
@@ -1476,6 +1637,41 @@ export default {
       .ending {
         .ending_img {
           @include confirmImg("dixian.png", "theme1");
+        }
+      }
+    }
+    .detail_contract {
+      background-color: #ffffff;
+      .el-col {
+        h5 {
+          color: #cf2e33;
+          @include confirmImg("dianxian.png", "theme1");
+          background-size: 30px 5px;
+          background-position: 110px 50%;
+        }
+        div {
+          .tit {
+            color: #d5d5d5;
+          }
+          .content_tit {
+            color: #686874;
+          }
+        }
+      }
+      .el-border {
+        &:after {
+          background: #f2f2f2;
+        }
+      }
+
+      ul {
+        li {
+          span {
+            color: #d5d5d5;
+          }
+          .content_tit {
+            color: #686874;
+          }
         }
       }
     }

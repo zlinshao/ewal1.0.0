@@ -137,21 +137,7 @@
         }
       }
     }
-    // // 记录表格
-    // .recordList {
-    //   .warn_icon {
-    //     display: inline-block;
-    //     width: 20px;
-    //     height: 20px;
-    //     margin-left: 10px;
-    //   }
-    //   .cell {
-    //     @include flex('flex-center');
-    //   }
-    //   .el-pagination {
-    //     margin-top: 20px;
-    //   }
-    // }
+
     // 回访记录
     .detail_dialog {
       ul {
@@ -215,84 +201,84 @@
         }
       }
     }
-    .detail_contract {
-      height: 408px;
-      overflow-y: scroll;
-      @include scroll;
-      flex-wrap: wrap;
-      @include flex('items-start');
-      .detail_col {
-        display: block;
-        height: 320px;
-        .detail_col_box {
-          height: 250px;
-          overflow-y: scroll;
-          @include scroll;
-        }
-        .detail_col_box2 {
-          @include flex('space-column');
-          @include flex('justify-start');
-        }
-      }
-      .el-col {
-        display: block !important;
-        h5 {
-          font-size: 14px;
-          font-family: 'jingDianXingShu';
-          word-spacing: 2px;
-          text-align: left;
-          margin-bottom: 30px;
-          padding-left: 40px !important;
-        }
-        div {
-          margin-bottom: 18px;
-          @include flex('justify-start');
-          span {
-            font-size: 14px;
-            font-family: 'Microsoft Yahei';
-          }
-          .tit {
-            width: 40%;
-            text-align: right;
-            padding-right: 10px;
-          }
-          .content_tit {
-            width: 60%;
-            text-align: left;
-            img {
-              width: 50px;
-              height: 50px;
-            }
-          }
-          .content_album {
-            @include flex('space-column');
-            .imgs_box {
-              @include flex('space-column');
-              margin-bottom: 5px;
-              div {
-                flex-wrap: wrap;
-              }
-            }
-          }
-        }
-      }
-      .el-border {
-        position: relative;
-        &:after {
-          content: '';
-          width: 1px;
-          height: 285px;
-          position: absolute;
-          right: 0;
-          top: 10px;
-        }
-        .el-col {
-          padding-top: 0;
-          @include flex('space-column');
-          @include flex('justify-start');
-        }
-      }
-    }
+    // .detail_contract {
+    //   height: 408px;
+    //   overflow-y: scroll;
+    //   @include scroll;
+    //   flex-wrap: wrap;
+    //   @include flex('items-start');
+    //   .detail_col {
+    //     display: block;
+    //     height: 320px;
+    //     .detail_col_box {
+    //       height: 250px;
+    //       overflow-y: scroll;
+    //       @include scroll;
+    //     }
+    //     .detail_col_box2 {
+    //       @include flex('space-column');
+    //       @include flex('justify-start');
+    //     }
+    //   }
+    //   .el-col {
+    //     display: block !important;
+    //     h5 {
+    //       font-size: 14px;
+    //       font-family: 'jingDianXingShu';
+    //       word-spacing: 2px;
+    //       text-align: left;
+    //       margin-bottom: 30px;
+    //       padding-left: 40px !important;
+    //     }
+    //     div {
+    //       margin-bottom: 18px;
+    //       @include flex('justify-start');
+    //       span {
+    //         font-size: 14px;
+    //         font-family: 'Microsoft Yahei';
+    //       }
+    //       .tit {
+    //         width: 40%;
+    //         text-align: right;
+    //         padding-right: 10px;
+    //       }
+    //       .content_tit {
+    //         width: 60%;
+    //         text-align: left;
+    //         img {
+    //           width: 50px;
+    //           height: 50px;
+    //         }
+    //       }
+    //       .content_album {
+    //         @include flex('space-column');
+    //         .imgs_box {
+    //           @include flex('space-column');
+    //           margin-bottom: 5px;
+    //           div {
+    //             flex-wrap: wrap;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    //   .el-border {
+    //     position: relative;
+    //     &:after {
+    //       content: '';
+    //       width: 1px;
+    //       height: 285px;
+    //       position: absolute;
+    //       right: 0;
+    //       top: 10px;
+    //     }
+    //     .el-col {
+    //       padding-top: 0;
+    //       @include flex('space-column');
+    //       @include flex('justify-start');
+    //     }
+    //   }
+    // }
   }
 }
 

@@ -81,6 +81,11 @@ export default {
           if (res.code === 200) {
             warn = '转交成功'
             this.$emit('close', false)
+            this.transfer = {
+              personName: null,
+              person: null,
+              note: null
+            }
           } else {
             warn = '转交失败'
           }
@@ -91,6 +96,11 @@ export default {
         })
       } else {
         this.$emit('close', true)
+        this.transfer = {
+          personName: null,
+          person: null,
+          note: null
+        }
       }
     },
   }
