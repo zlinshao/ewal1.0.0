@@ -298,6 +298,7 @@ import UrgedDealDialog from '../components/urgedDeal-dialog'
 import TransferDialog from '../components/transfer-dialog'
 import OrderDetail from '../components/order-detail'
 import AddRecord from '../workOrder/components/addRecord'
+import { clearTimeout } from 'timers';
 export default {
   name: "index",
   components: {
@@ -378,6 +379,7 @@ export default {
       ],
       addOrder_visible: false, // 新建工单
       customer_search: '', // 模糊搜索
+      customSearch_timer: null,
       customer_info: {  // 用户信息
         page: 1,
         dataCount: 0,
@@ -637,6 +639,15 @@ export default {
         }
       })
     },
+    // customSearch () {
+    //   if (this.customSearch_timer) {
+    //     console.log(this.customSearch_timer)
+    //     clearTimeout(this.customSearch_timer)
+    //     this.customSearch_timer = null
+    //   }
+
+    //   this.customSearch_timer = setTimeout(this.addOrder_search, 1000);
+    // },
     // 历史工单搜索
     history_search () {
       if (this.current_customer) {
@@ -882,18 +893,6 @@ export default {
         }
       })
     },
-    // //选择 部门
-    // departSearch () {
-    //   this.departModule = true
-    // },
-    // // 关闭 部门
-    // hiddenDepart (ids, str, arr) {
-    //   this.departModule = false
-    //   if (ids != 'close') {
-    //     this.createOrder_form.operate_org_name = str
-    //     this.createOrder_form.operate_org_id = ids
-    //   }
-    // },
 
     handleCloseSure (params) {
       let { isSure, isCreated } = params

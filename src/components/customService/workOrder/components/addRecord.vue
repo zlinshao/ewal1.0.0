@@ -146,27 +146,27 @@ export default {
       complainedType: [ // 认责人类型
         {
           label: '业务员',
-          value: 0
-        },
-        {
-          label: '片区经理',
           value: 1
         },
         {
-          label: '房东',
+          label: '片区经理',
           value: 2
         },
         {
-          label: '现租客',
+          label: '房东',
           value: 3
         },
         {
-          label: '公司',
+          label: '现租客',
           value: 4
         },
         {
-          label: '前租客',
+          label: '公司',
           value: 5
+        },
+        {
+          label: '前租客',
+          value: 6
         }
       ],
       staffModule: false, // 选择人员
@@ -244,9 +244,9 @@ export default {
           if (!ele.money) return '认责金额未填写'
         }
 
-        if (!followRecord.payer_type) return '实际支付未填写'
-        if (!followRecord.payer) return '实际支付人姓名未填写'
-        if (!followRecord.payer_org_name) return '部门未填写'
+        if (!this.followRecord.payer_type) return '实际支付未填写'
+        if (!this.followRecord.payer) return '实际支付人姓名未填写'
+        if (!this.followRecord.payer_org_name) return '部门未填写'
 
       }
 
