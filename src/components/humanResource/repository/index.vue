@@ -26,6 +26,7 @@
         <div class="bg-container flex-center" @click="chooseTab=1"><span>入库</span></div>
         <div class="bg-container flex-center" @click="chooseTab=2"><span>领用借用</span></div>
         <div class="bg-container flex-center" @click="chooseTab=3"><span>资料库</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=4"><span>办公住宿</span></div>
       </div>
       <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
                  @change="handleChangeDate"></work-info>
@@ -43,7 +44,9 @@
     <div v-if="chooseTab==3">
       <data-base :addContract_visiable="addContract_visiable" v-on:changeAddContrat="changeAddContrat"></data-base>
     </div>
-
+    <div v-if="chooseTab==4">
+      <office-dormitory :addContract_visiable="addContract_visiable" v-on:changeAddContrat="changeAddContrat"></office-dormitory>
+    </div>
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
@@ -61,6 +64,7 @@
   import ImgSlider from '../../common/lightweightComponents/ImgSlider';
   import BorrowReceive from './borrowReceive/index';//借用领用
   import DataBase from './dataBase/index';//资料库
+  import OfficeDormitory from './officeDormitory/index';
   import WorkInfo from '../../common/work-info';
   import LjDialog from '../../common/lj-dialog.vue';
   import SearchHigh from '../../common/searchHigh.vue';
@@ -82,6 +86,7 @@
       LjUpload,
       ImgSlider,
       DataBase,//资料库
+      OfficeDormitory,//办公室宿舍管理
     },
     data() {
       return {
@@ -103,6 +108,10 @@
           {
             id: 3,
             title: '资料库',
+          },
+          {
+            id: 4,
+            title: "办公室/宿舍管理"
           }
         ],//tab切换
 

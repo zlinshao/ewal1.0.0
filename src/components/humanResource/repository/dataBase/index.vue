@@ -267,7 +267,6 @@
           if(res.code == "20000"){
             for(let i = 0; i< res.data.data.length; i++){
               if(res.data.data[i].type ==5){
-                console.log(res.data.data[i])
                 let obj = {
                   id: res.data.data[i].id,
                   name: res.data.data[i].name
