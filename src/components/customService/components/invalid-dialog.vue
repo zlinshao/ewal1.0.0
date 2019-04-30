@@ -67,7 +67,7 @@ export default {
       this.$http.post(`${this.market_server}v1.0/market/contract/re-generate`, option).then(res => {
         let warn = null
         if (res.code === 200) {
-          warn = '作废重签'
+          warn = '作废成功'
         } else {
           warn = '作废失败'
         }
@@ -90,8 +90,11 @@ export default {
 @import "../../../assets/scss/common.scss";
 #theme_name {
   #invalid_dailog {
+    .dialog_main {
+      overflow: hidden;
+    }
     .checkbox {
-      height: 80px;
+      height: 100px;
       .el-checkbox__inner {
         border-radius: 50%;
       }
@@ -111,7 +114,13 @@ export default {
           }
         }
         .imgBox {
+          height: 100px;
+          width: 400px;
           overflow-x: scroll;
+          display: flex;
+          justify-content: flex-start;
+          margin-left: 10px;
+          @include scroll;
           img {
             width: 80px;
             height: 80px;
@@ -124,7 +133,7 @@ export default {
       }
     }
     .checkbox + .checkbox {
-      margin-top: 50px;
+      margin-top: 30px;
     }
   }
 }

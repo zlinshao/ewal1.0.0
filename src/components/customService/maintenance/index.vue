@@ -86,7 +86,7 @@ import TransferDialog from '../components/transfer-dialog'
 import OrderDetail from '../components/order-detail'
 import AddRecord from '../components/addRecord'
 import CreateOrder from '../components/createOrder'
-import { clearTimeout } from 'timers';
+
 export default {
   name: "index",
   components: {
@@ -387,24 +387,24 @@ export default {
       let { type, close, detail } = params
       if (detail) this.detail_form = detail;
 
-      if (params) {
-        if (type == '转交') {
-          this.transfer_visible = true
+
+      if (type == '转交') {
+        this.transfer_visible = true
+      }
+      if (type == '通知') {
+        this.handleCuiBan(this.currentRow)
+      }
+      if (type == '结束') {
+        this.handleEnd()
+      }
+      if (type == '新增跟进') {
+        this.followRecord_info = {
+          chooseTab: this.chooseTab,
+          type_name: this.detail_form.type_name
         }
-        if (type == '通知') {
-          this.handleCuiBan(this.currentRow)
-        }
-        if (type == '结束') {
-          this.handleEnd()
-        }
-        if (type == '新增跟进') {
-          this.followRecord_info = {
-            chooseTab: this.chooseTab,
-            type_name: this.detail_form.type_name
-          }
-          this.followRecord_visible = true
-        }
-      } else {
+        this.followRecord_visible = true
+      }
+      if (type == 'close') {
         this.detail_visible = false;
         this.currentRow = null
         this.detail_form = null

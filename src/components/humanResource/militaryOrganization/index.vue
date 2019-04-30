@@ -8,21 +8,19 @@
           </p>
           <h1>培训考核</h1>
           <h2 v-if="chooseTab" class="items-center">
-          <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
-                :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}<i></i>
-          </span>
+            <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column" :class="{'chooseTab': chooseTab === item.id}">
+              {{item.title}}<i></i>
+            </span>
           </h2>
         </div>
         <div v-if="chooseTab" class="items-center listTopRight">
           <!--<div class="icons add" @click="new_train_visible = true"><b>+</b></div>-->
           <div class="assessment" v-if="chooseTab==3" @click="routerLink('currentMonthAssessment')">本月考核</div>
-          <div v-if="chooseTab==3" class="icons search" @click="highSearch(chooseTab)"></div>
+          <div v-if="chooseTab==3" class="icons search" @click="highSearch()"></div>
 
           <!--<div class="icons search" @click="highSearch(chooseTab)"></div>-->
         </div>
       </div>
-
 
       <div v-if="!chooseTab" class="main-container military-container">
         <div class="content flex-center" v-if="!chooseTab">
@@ -57,7 +55,7 @@
           </div>
         </div>
         <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
-                   @change="handleChangeDate"></work-info>
+          @change="handleChangeDate"></work-info>
       </div>
 
       <!--考勤模块-->
@@ -65,173 +63,151 @@
       <!--培训模块-->
       <train v-if="chooseTab==2"></train>
       <!--薪资模块-->
-      <kpi v-if="chooseTab==3"></kpi>
+      <kpi v-if="chooseTab==3" :showSearch="showSearch" v-on:changeShowSearch="changeShowSearch"></kpi>
 
       <!--模块入口-->
-      <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true"
-                @close="visibleStatus = false"></MenuList>
-      <!--高级搜索-->
-      <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+      <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
+
     </div>
   </div>
 </template>
 
 <script>
-  import MenuList from '../../common/menuList.vue';
-  import LjDialog from '../../common/lj-dialog.vue';
-  import SearchHigh from '../../common/searchHigh.vue';//高级搜索
+import MenuList from '../../common/menuList.vue';
+import LjDialog from '../../common/lj-dialog.vue';
+import SearchHigh from '../../common/searchHigh.vue';//高级搜索
 
-  import WorkInfo from '../../common/work-info';
-  import Train from './train/index';//培训模块
-  import Kpi from './kpi/index';//kpi
-  import Attence from './attence/index';//考勤
+import WorkInfo from '../../common/work-info';
+import Train from './train/index';//培训模块
+import Kpi from './kpi/index';//kpi
+import Attence from './attence/index';//考勤
 
-  import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
-  import {overViewSearch, borrowReceiveSearch} from '../../../assets/js/allSearchData.js';
+import { humanResource, resourceDepart } from '../../../assets/js/allModuleList.js';
 
 
-  export default {
-    name: "index",
-    components: {
-      WorkInfo,
-      LjDialog,
-      MenuList,
-      SearchHigh,
-      Attence,//考勤
-      Train,//培训
-      Kpi,//考核
+export default {
+  name: "index",
+  components: {
+    WorkInfo,
+    LjDialog,
+    MenuList,
+    SearchHigh,
+    Attence,//考勤
+    Train,//培训
+    Kpi,//考核
+  },
+  data () {
+    return {
+      humanResource,
+      resourceDepart,
+      showSearch: false,
+      //common
+      visibleStatus: false,//弹出部门
+      selects: [
+        { id: 1, title: '考勤' },
+        { id: 2, title: '培训' },
+        { id: 3, title: '考核' },
+      ], //模块列表
+      chooseTab: 0, //当前选中模块
+
+
+      work_info: [
+        { work: '平均在线时长', val: '8 h' },
+        { work: '平均处理用时', val: '30 min' },
+        { work: '当日处理事件数', val: '16 件' },
+        { work: '本周处理事件数', val: '35 件' },
+      ],
+      event_data: [
+        { value: 500, name: '一般' },
+        { value: 300, name: '特殊' },
+        { value: 200, name: '紧急' },
+      ],
+      attend_data: [10, 5, 2]
+    }
+  },
+  mounted () {
+  },
+  watch: {},
+  computed: {},
+  methods: {
+    // 高级搜索
+    highSearch (val) {
+      this.showSearch = true;
     },
-    data() {
-      return {
-        humanResource,
-        resourceDepart,
-        overViewSearch,
-        borrowReceiveSearch,
 
-        //common
-        visibleStatus: false,//弹出部门
-        showSearch: false,//高级搜索
-        searchData: {},//搜索项
-        selects: [
-          {id: 1, title: '考勤'},
-          {id: 2, title: '培训'},
-          {id: 3, title: '考核'},
-        ], //模块列表
-        chooseTab: 0, //当前选中模块
-
-
-        work_info: [
-          {work: '平均在线时长', val: '8 h'},
-          {work: '平均处理用时', val: '30 min'},
-          {work: '当日处理事件数', val: '16 件'},
-          {work: '本周处理事件数', val: '35 件'},
-        ],
-        event_data: [
-          {value: 500, name: '一般'},
-          {value: 300, name: '特殊'},
-          {value: 200, name: '紧急'},
-        ],
-        attend_data: [10, 5, 2]
-      }
+    moduleList () {
+      this.visibleStatus = !this.visibleStatus;
+      this.$store.dispatch('route_animation');
     },
-    mounted() {
+
+
+
+    // tab切换
+    changeTabs (id) {
+      this.chooseTab = id;
+      this.$store.dispatch('route_animation');
     },
-    watch: {},
-    computed: {},
-    methods: {
-      // 高级搜索
-      highSearch(val) {
-        this.showSearch = true;
-        switch (val) {
-          case 3:
-            this.searchData = this.overViewSearch;
-            break;
-          case 4:
-            this.searchData = this.borrowReceiveSearch;
-            break;
-        }
-      },
 
-      // 确认搜索
-      hiddenModule(val) {
-        this.showSearch = false;
-        if (val !== 'close') {
-          //do
-        }
-      },
-
-      moduleList() {
-        this.visibleStatus = !this.visibleStatus;
-        this.$store.dispatch('route_animation');
-      },
-
-
-
-      // tab切换
-      changeTabs(id) {
-        this.chooseTab = id;
-        this.$store.dispatch('route_animation');
-      },
-
-      handleChangeDate(id) {
-
-      },
+    handleChangeDate (id) {
 
     },
-  }
+    changeShowSearch (val) {
+      this.showSearch = val
+    }
+
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  @import "../../../assets/scss/humanResource/militaryOrganization/index.scss";
+@import "../../../assets/scss/humanResource/militaryOrganization/index.scss";
 
-  @mixin militaryImg($m,$n) {
-    $url: '../../../assets/image/humanResource/militaryOrganization/' + $n + '/' + $m;
-    @include bgImage($url);
-  }
+@mixin militaryImg($m, $n) {
+  $url: "../../../assets/image/humanResource/militaryOrganization/" + $n + "/" +
+    $m;
+  @include bgImage($url);
+}
 
-  #theme_name {
-    .militaryOrganization {
-      .listTopCss{
-        .listTopRight{
-          .assessment{
-            @include militaryImg('cght.png', 'theme1')
-          }
+#theme_name {
+  .militaryOrganization {
+    .listTopCss {
+      .listTopRight {
+        .assessment {
+          @include militaryImg("cght.png", "theme1");
         }
       }
-      .military-container {
-
-        .content {
-
-          /*.left {
+    }
+    .military-container {
+      .content {
+        /*.left {
             @include repositoryImg('kfzlx.png', 'theme1')
           }
 
           .right {
             @include repositoryImg('lwkfw.png', 'theme1')
           }*/
-          .bg-kaoqin {
-            @include militaryImg('m.png', 'theme1');
-            &:hover {
-              @include militaryImg('j.png', 'theme1');
-            }
+        .bg-kaoqin {
+          @include militaryImg("m.png", "theme1");
+          &:hover {
+            @include militaryImg("j.png", "theme1");
           }
+        }
 
-          .bg-peixun {
-            @include militaryImg('k.png', 'theme1');
-            &:hover {
-              @include militaryImg('n.png', 'theme1');
-            }
+        .bg-peixun {
+          @include militaryImg("k.png", "theme1");
+          &:hover {
+            @include militaryImg("n.png", "theme1");
           }
+        }
 
-          .bg-kaohe {
-            @include militaryImg('l.png', 'theme1');
-            &:hover {
-              @include militaryImg('o.png', 'theme1');
-            }
+        .bg-kaohe {
+          @include militaryImg("l.png", "theme1");
+          &:hover {
+            @include militaryImg("o.png", "theme1");
           }
-
         }
       }
     }
   }
+}
 </style>

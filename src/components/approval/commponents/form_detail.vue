@@ -128,7 +128,7 @@ export default {
       formData: null,
       copyFormData: null,
       dicties,
-      defineReports: JSON.parse(JSON.stringify(defineReport)),
+      defineReports: JSON.parse(JSON.stringify(defineReports)),
       titleTip: {
         1: ['房屋信息', '合同信息', '付款信息', '客户信息'],
       },

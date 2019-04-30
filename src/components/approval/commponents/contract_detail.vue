@@ -6,7 +6,7 @@
           <h3>{{formData.house_address}}</h3>
         </div>
         <div class="dialog_main" id='dialog_main'>
-          <el-form label-width='120px'>
+          <!-- <el-form label-width='120px'>
             <el-row :gutter='10'>
               <el-col :span='cell.formspan' v-for='(cell,cellIndex) in firstDefine' :key='cell.keyName'>
                 <el-form-item :label='cell.label'>
@@ -22,7 +22,6 @@
           <el-form label-width='120px' v-for='(form,slither,index) in defineReport' :key='slither'>
 
             <VillageContainer :village="titleTips[index]">
-              <!-- 付款信息 循环 row -->
               <el-row :gutter='10' v-if='titleTips[index]=="付款信息"'>
                 <el-col :span='8' v-for='(cell,cellIndex) in form' :key='cell.keyName'>
                   <el-form-item :label='cell.label'>
@@ -31,21 +30,6 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter='10' v-else-if='titleTips[index] == "相关信息"' class='message_box'>
-                <el-col :span='8'>
-                  <el-form-item v-for='i in 5' :key='i' label=" " class='message_form'>
-                    <span>同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span='7' :offset="3" class='message_con'>
-                  <p>其中:</p>
-                  <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
-                </el-col>
-                <el-col :span='3' class='message_price'>
-                  <p>收房价:</p>
-                  <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
-                </el-col>
-              </el-row>
 
               <template v-else>
                 <el-row :gutter='10' v-for='(cell,cellIndex) in form' :key='cell.keyName' v-if='cell.type == "change"'>
@@ -59,7 +43,7 @@
                   </el-col>
                 </el-row>
 
-                <!-- 正常表单 -->
+                正常表单
                 <el-row :gutter='10' v-if='form.type != "change"'>
                   <el-col :span='cell.formSpan || formSpan' v-for='(cell,cellIndex) in form' :key='cell.keyName'>
                     <el-form-item :label='cell.label' :class='cell.type == "upload"?"house_video":""'>
@@ -68,7 +52,7 @@
                         <span>{{dicties[cell.keyName][formData[cell.keyName]]}}</span>
                       </template>
 
-                      <!-- 多个选择checkbox -->
+                      多个选择checkbox
                       <template v-if='cell.type== "picker"'>
                         <div v-if='cell.children' class='more_checkbox'>
                           <span v-for='(child,child_index) in cell.children'>{{dicties[cell.keyName]["value_"+child_index][formData[cell.keyName][child_index]]}}</span>
@@ -100,6 +84,57 @@
                   </el-col>
                 </el-row>
               </template>
+            </VillageContainer>
+          </el-form> -->
+
+          <el-form label-width="120px" v-for='slither_index in Object.keys(defineForm)' :key='"slither" + slither_index'>
+            <VillageContainer :village="titleTips[slither_index]" :hidden='slither_index==0'>
+
+              <el-row :gutter='10' v-if='titleTips[slither_index] == "相关信息"' class='message_box'>
+                <el-col :span='8'>
+                  <el-form-item v-for='i in 5' :key='i' label=" " class='message_form'>
+                    <span>同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span='7' :offset="3" class='message_con'>
+                  <p>其中:</p>
+                  <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
+                </el-col>
+                <el-col :span='3' class='message_price'>
+                  <p>收房价:</p>
+                  <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="10" v-else <el-col :span='8' v-for='(slit_row,index) in defineForm[slither_index]' :key='index'>
+                <el-form-item :label='slit_row[slither]' v-for='slither in Object.keys(slit_row)' :key='"row"+ slither'>
+                  <template v-if="Array.isArray(formData[slither])">
+                    <div v-for="(val,idx) in formData[slither]" :key='idx'>
+                      <span v-if="val.uri">
+                        <!--图片-->
+                        <img :src="val.uri" alt="" style="width: 40px;height: 40px;margin-right: 15px;cursor: pointer;border-radius: 4px"
+                          data-magnify="" data-caption="图片查看器" :data-src="val.uri" v-if="val.info.ext.includes('image')" />
+                      </span>
+
+                      <div v-else-if="val.period">
+                        <h4 :class="[idx !== 0?'h4':'']">
+                          {{val.begin_date}}至{{val.end_date}}<br>
+                          {{val.pay_way}}：{{val.month_unit_price}}元
+                        </h4>
+                      </div>
+
+                      <span v-else>{{val}}</span>
+
+                    </div>
+                  </template>
+                  <span v-else>{{formData[slither]}}</span>
+
+                </el-form-item>
+                </el-col>
+              </el-row>
+              <div class='seeRecord' @click='handleRecord' v-if='slither_index == 0'>
+                <el-button type="primary" plain>查看审核记录</el-button>
+              </div>
             </VillageContainer>
           </el-form>
 
@@ -142,7 +177,7 @@
     </LjDialog>
 
     <!--审核-->
-    <LjDialog :visible="record_show_visible" :size="{width: 720 + 'px',height: 850 + 'px'}" @close="handleCloseRecord">
+    <LjDialog :visible="record_show_visible" :size="{width: 720 + 'px',height: 480 + 'px'}" @close="handleCloseRecord">
       <div class='dialog_container'>
         <div class='dialog_header'>
           <h3>审核记录</h3>
@@ -182,11 +217,12 @@
 
 <script>
 import LjDialog from '../../common/lj-dialog.vue';
-import VillageContainer from '../../customService/village/components/village-container.vue';
+import VillageContainer from './village-container.vue';
 import LjUpload from '../../common/lightweightComponents/lj-upload.vue';
 import FormDetail from './form_detail.vue'
+import { defineForm, defineTitleTips } from '../../../assets/js/approval/definForm.js'
 export default {
-  props: ['visible'],
+  props: ['visible', 'moduleData'],
   components: {
     LjDialog,
     VillageContainer,
@@ -219,12 +255,9 @@ export default {
         },
       ],
       dicties,
-      defineReports: JSON.parse(JSON.stringify(defineReport)),
-      type: 1,
-      titleTip: {
-        1: ['房屋信息', '合同信息', '付款信息', '相关信息', '客户信息'],
-      },
-
+      defineForms: JSON.parse(JSON.stringify(defineForm)),
+      defineForm: null,
+      titleTips: null,
       type: 1,
       comment_show_visible: false,
       comment_words: null,
@@ -237,28 +270,140 @@ export default {
   watch: {
     visible (val) {
       if (val) this.getDetailForm()
-    }
-  },
-  computed: {
-    defineReport () {
-      let deport = JSON.parse(JSON.stringify(this.defineReports[this.type]))
-      deport.slither4 = deport.slither3
-      deport.slither3 = []
-      return deport
     },
-    titleTips () {
-      return this.titleTip[this.type]
+    moduleData: {
+      handler (val) {
+        if (val) {
+          this.defineForm = this.defineForms[val.type]
+          this.titleTips = defineTitleTips[val.type]
+        }
+      },
+      deeper: true
     }
   },
+
   methods: {
     getDetailForm () {
       this.$http.get(this.market_server + `v1.0/market/process/edit/197`).then(res => {
         if (res.code === 200) {
           this.formData = res.data.content
-          console.log(this.formData)
+          this.handleDetail(res.data.content)
         }
       })
     },
+    // 转换文本显示
+    handleDetail (res) {
+      for (let item of Object.keys(res)) {
+        this.formData[item] = res[item] || this.formData[item];
+        switch (item) {
+          case 'door_address'://门牌地址
+            let door = JSON.parse(JSON.stringify(res[item]));
+            door[0] = door[0] ? door[0] + '栋' : '';
+            door[1] = door[1] ? door[1] + '单元' : '';
+            door[2] = door[2] ? door[2] : '';
+            this.formData[item] = door.join('');
+            break;
+          case 'community':
+            this.formData[item] = res[item].village_name;
+            break;
+          case 'house_type'://户型
+            let house = JSON.parse(JSON.stringify(res[item]));
+            house[0] = house[0] ? house[0] + '室' : '';
+            house[1] = house[1] ? house[1] + '厅' : '';
+            house[2] = house[2] ? house[2] + '卫' : '';
+            this.formData[item] = house.join('');
+            break;
+          case 'decorate'://装修
+          case 'property_type'://房屋类型
+          case 'direction'://朝向
+            this.formData[item] = res[item].name;
+            break;
+          case 'floors':
+            this.formData.floors = res.floor + ' / ' + res.floors;
+            break;
+          case 'holding_documents_type'://持有证件
+          case 'lock_type'://门锁类型
+          case 'bed'://床和床垫的情况
+          case 'wardrobe'://衣柜情况
+          case 'curtain'://窗帘情况
+          case 'is_fill'://家电是否补齐
+          case 'is_lord_fill'://房东是否补齐
+          case 'has_heater'://是否有暖气
+          case 'has_gas'://是否有天然气
+          case 'customer_sex'://性别
+          case 'card_type'://证件类型
+          case 'contact_way'://联系方式
+          case 'is_elevator'://是否有电梯
+          case 'is_clean'://卫生情况
+          case 'is_agency'://是否渠道
+          case 'is_electronic_contract'://是否电子合同
+          case 'can_decorate'://可否装修
+          case 'can_add_goods'://可否添加物品
+          case 'signatory_identity'://签约人身份
+          case 'position'://所属区域
+            let num = this.myUtils.isNum(res[item]) ? Number(res[item]) : (res[item] || '');
+            this.formData[item] = dicties[item][num];
+            break;
+          case 'non_landlord_fee'://非房东费用
+            let names = [];
+            for (let name of this.formData[item]) {
+              names.push(dicties[item][name])
+            }
+            this.formData[item] = names.join(',');
+            break;
+          case 'remark_terms'://备注条款
+            let terms = [];
+            for (let name of res[item]) {
+              terms.push(name + '、' + dicties[item][name]);
+            }
+            this.formData[item] = terms;
+            break;
+          case 'subsidiary_customer'://附属房东
+            if (res[item]) {
+              let customer = ['customer_sex', 'card_type', 'contact_way'];
+              this.formData = this.changeHandle(res, item, customer, this.defineForm, this.formData);
+              for (let val of res[item]) {
+                for (let value of Object.values(val)) {
+                  if (value) {
+                    this.showCustomer = true;
+                  }
+                }
+              }
+            }
+            break;
+          case 'period_price_way_arr'://付款方式变化
+            let pay_way = ['pay_way'];
+            this.formData = this.changeHandle(res, item, pay_way, this.defineForm, this.formData);
+            break;
+        }
+      }
+      if (res.album) {
+        for (let pic of Object.keys(res.album)) {
+          this.formData[pic] = res.album[pic];
+        }
+      }
+      console.log(this.formData)
+    },
+    changeHandle (res, item, val, all, data) {
+      let formatData = data;
+      for (let slither of Object.keys(all)) {
+        for (let list of Object.keys(all[slither])) {
+          if (all[slither][list].keyName === item) {
+            for (let i = 1; i < res[item].length; i++) {
+              all[slither][list].children.push(all[slither][list].children[0]);
+            }
+          }
+        }
+      }
+      formatData[item] = JSON.parse(JSON.stringify(res[item]));
+      res[item].forEach((key, idx) => {
+        for (let key of val) {
+          formatData[item][idx][key] = dicties[key][res[item][idx][key]];
+        }
+      });
+      return formatData;
+    },
+
     handleClose () {
       this.$emit('close', close)
     },
@@ -277,7 +422,6 @@ export default {
     },
     handleRewrite () { // 修改
       this.show_form_visible = true
-      this.$emit('close', false)
     },
   }
 }
@@ -299,7 +443,7 @@ export default {
       overflow-x: hidden;
       .el-form {
         border-radius: 4px;
-        padding: 16px 0 16px 30px;
+        // padding: 16px 0 16px 30px;
         position: relative;
         .seeRecord {
           width: 110px;
@@ -629,7 +773,7 @@ export default {
           .el-form-item__content {
             display: flex;
             align-items: center;
-            height: 30px;
+            // height: 30px;
             font-family: "Microsoft YaHei";
           }
           .el-form-item__label {
@@ -637,6 +781,7 @@ export default {
             justify-content: flex-end;
           }
           .el-form-item__content {
+            // min-height: 30px;
             text-align: left;
             display: flex;
             align-items: center;

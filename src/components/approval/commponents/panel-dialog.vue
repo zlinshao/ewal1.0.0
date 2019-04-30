@@ -57,7 +57,7 @@ export default {
   },
   data () {
     return {
-      current_type: 2, //组员 片区
+      current_type: null, //组员 片区
       tableShow: {
         type: '审核类型',
         time: '提交时间',
@@ -89,7 +89,7 @@ export default {
   watch: {
     moduleData: {
       handler (val) {
-        console.log(1)
+        this.current_type = this.moduleData.current_type
       },
       deeper: true
     }

@@ -226,6 +226,12 @@
       background: #409eff;
       color: #fff;
     }
+    .dialog_footer {
+      .el-button--danger {
+        height: 40px;
+        background: #cf2e33;
+      }
+    }
     .active-danger {
       background: #f56c6c;
       color: #fff;

@@ -456,14 +456,13 @@ export const subjectSearch = {
       keyName: 'er_type',
       dataType: '',
       value: [
-        {id: 1, title: '收入'},
-        {id: 2, title: '支出'},
-        {id: 3, title: '混合'}
+        { id: 1, title: '收入' },
+        { id: 2, title: '支出' },
+        { id: 3, title: '混合' }
       ]
     }
   ]
 }
-
 
 //收支流水
 export const accountRunSearch = {
@@ -482,7 +481,7 @@ export const accountRunSearch = {
       title: '结束日期',
       placeholder: '请选择结束日期',
       keyName: 'end_date',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'radio',
@@ -490,22 +489,22 @@ export const accountRunSearch = {
       placeholder: '请选择类别',
       keyName: 'cate',
       dataType: '',
-      value: [{id: 1, title: '收入'}, {id: 2, title: '支出'}]
+      value: [{ id: 1, title: '收入' }, { id: 2, title: '支出' }]
     },
     {
       keyType: 'date',
       title: '操作开始日期',
       placeholder: '请选择操作开始日期',
       keyName: 'operate_start_date',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'date',
       title: '操作结束日期',
       placeholder: '请选择操作结束日期',
       keyName: 'operate_end_date',
-      dataType: '',
-    },
+      dataType: ''
+    }
   ]
 }
 
@@ -527,14 +526,14 @@ export const noticeSearch = {
   status: 'noticeSearch',
   placeholder: '请输入公告名称',
   keywords: 'search',
-  data: [],
+  data: []
 }
 //问卷调查
 export const questionnaireSearch = {
   status: 'questionnaireSearch',
   placeholder: '请输入问卷调查名称',
   keywords: 'search',
-  data: [],
+  data: []
 }
 
 /*内务库房*/
@@ -615,8 +614,7 @@ export const borrowReceiveSearch = {
         {
           id: 7,
           title: '已归还'
-        },
-
+        }
       ]
     },
 
@@ -653,7 +651,7 @@ export const borrowReceiveSearch = {
         {
           id: 4,
           title: '报废'
-        },
+        }
       ]
     }
   ]
@@ -789,12 +787,12 @@ export const pendingSearchList = {
       keyName: 'event_type',
       dataType: [],
       value: [
-        {id: 1, title: '违约'},
-        {id: 2, title: '转租'},
-        {id: 3, title: '调租'},
-        {id: 4, title: '退租'},
-        {id: 5, title: '收房炸单'},
-        {id: 6, title: '租房炸单'}
+        { id: 1, title: '违约' },
+        { id: 2, title: '转租' },
+        { id: 3, title: '调租' },
+        { id: 4, title: '退租' },
+        { id: 5, title: '收房炸单' },
+        { id: 6, title: '租房炸单' }
       ]
     },
     {
@@ -802,7 +800,7 @@ export const pendingSearchList = {
       title: '收租类型',
       keyName: 'collect_rent',
       dataType: [],
-      value: [{id: 1, title: '收房'}, {id: 2, title: '租房'}]
+      value: [{ id: 1, title: '收房' }, { id: 2, title: '租房' }]
     }
   ]
 }
@@ -845,21 +843,21 @@ export const balanceSearch = {
       title: '结束日期',
       placeholder: '请选择结束日期',
       keyName: 'end_date',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'date',
       title: '操作开始日期',
       placeholder: '请选择操作开始日期',
       keyName: 'operate_start_date',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'date',
       title: '操作结束日期',
       placeholder: '请选择操作结束日期',
       keyName: 'operate_end_date',
-      dataType: '',
+      dataType: ''
     },
     {
       keyType: 'depart',
@@ -900,10 +898,10 @@ export const gatheringSearchList = {
       keyName: 'status',
       dataType: [],
       value: [
-        {id: 1, title: '待入账'},
-        {id: 2, title: '待结清'},
-        {id: 3, title: '已结清'},
-        {id: 4, title: '已超额'}
+        { id: 1, title: '待入账' },
+        { id: 2, title: '待结清' },
+        { id: 3, title: '已结清' },
+        { id: 4, title: '已超额' }
       ]
     },
     {
@@ -912,15 +910,15 @@ export const gatheringSearchList = {
       keyName: 'tag_status',
       dataType: [],
       value: [
-        {id: 1, title: '违约'},
-        {id: 2, title: '延期'},
-        {id: 3, title: '贴条'},
-        {id: 4, title: '换锁'},
-        {id: 5, title: '维修'},
-        {id: 6, title: '资金'},
-        {id: 7, title: '炸单'},
-        {id: 8, title: '调房'},
-        {id: 9, title: '特殊情况'}
+        { id: 1, title: '违约' },
+        { id: 2, title: '延期' },
+        { id: 3, title: '贴条' },
+        { id: 4, title: '换锁' },
+        { id: 5, title: '维修' },
+        { id: 6, title: '资金' },
+        { id: 7, title: '炸单' },
+        { id: 8, title: '调房' },
+        { id: 9, title: '特殊情况' }
       ]
     },
     {
@@ -1002,10 +1000,10 @@ export const paySearchList = {
       keyName: 'status',
       dataType: '',
       value: [
-        {id: 1, title: '待入账'},
-        {id: 2, title: '待结清'},
-        {id: 3, title: '已结清'},
-        {id: 4, title: '已超额'}
+        { id: 1, title: '待入账' },
+        { id: 2, title: '待结清' },
+        { id: 3, title: '已结清' },
+        { id: 4, title: '已超额' }
       ]
     },
 
@@ -1033,31 +1031,32 @@ export const paySearchList = {
   ]
 }
 export const currentMonthAssessmentSearch = {
-    status: 'currentMonthAssessmentSearch',
-    keywords: 'search',
-    data: [
-      {
-        keyType: 'radio',
-        title: '发送状态',
-        keyName: 'sendStatus',
-        dataType: [],
-        value: [
-          { id: 1, title: '未发送' },
-          { id: 2, title: '已发送' }
-        ]
-      },
-      {
-        keyType: 'radio',
-        title: '确认状态',
-        keyName: 'confirmStatus',
-        dataType: [],
-        value: [
-          { id: 1, title: '未确认' },
-          { id: 2, title: '已确认' },
-          { id: 3, title: '有异议' }
-        ]
-      }
-    ]
+  status: 'currentMonthAssessmentSearch',
+  keywords: 'search',
+  data: [
+    {
+      keyType: 'radio',
+      title: '发送状态',
+      keyName: 'sendStatus',
+      dataType: [],
+      value: [
+        { id: 0, title: '未发送' },
+        { id: 1, title: '已发送' },
+        { id: 2, title: '发送失败' }
+      ]
+    },
+    {
+      keyType: 'radio',
+      title: '确认状态',
+      keyName: 'confirmStatus',
+      dataType: [],
+      value: [
+        { id: 0, title: '未确认' },
+        { id: 1, title: '已确认' },
+        { id: 2, title: '有异议' }
+      ]
+    }
+  ]
 }
 
 //房源管理
@@ -1073,21 +1072,21 @@ export const houseManagementSearch = {
       value: [
         {
           id: 1,
-          title: '未出租',
+          title: '未出租'
         },
         {
           id: 2,
-          title: '预订',
+          title: '预订'
         },
         {
           id: 3,
-          title: '已出租',
+          title: '已出租'
         },
         {
           id: 4,
-          title: '已完成',
+          title: '已完成'
         }
-      ],
+      ]
     },
     {
       keyType: 'check',
@@ -1097,25 +1096,25 @@ export const houseManagementSearch = {
       value: [
         {
           id: 1,
-          title: '一室',
+          title: '一室'
         },
         {
           id: 2,
-          title: '两室',
+          title: '两室'
         },
         {
           id: 3,
-          title: '三室',
+          title: '三室'
         },
         {
           id: 4,
-          title: '四室',
+          title: '四室'
         },
         {
           id: 5,
-          title: '其他',
+          title: '其他'
         }
-      ],
+      ]
     },
     {
       keyType: 'check',
@@ -1125,21 +1124,21 @@ export const houseManagementSearch = {
       value: [
         {
           id: 1,
-          title: '正常',
+          title: '正常'
         },
         {
           id: 2,
-          title: '黄色预警',
+          title: '黄色预警'
         },
         {
           id: 3,
-          title: '橙色预警',
+          title: '橙色预警'
         },
         {
           id: 4,
-          title: '红色预警',
+          title: '红色预警'
         }
-      ],
+      ]
     },
     {
       keyType: 'check',
@@ -1149,21 +1148,21 @@ export const houseManagementSearch = {
       value: [
         {
           id: 1,
-          title: '2000以下',
+          title: '2000以下'
         },
         {
           id: 2,
-          title: '2000~3000',
+          title: '2000~3000'
         },
         {
           id: 3,
-          title: '3000~4000',
+          title: '3000~4000'
         },
         {
           id: 4,
-          title: '4000以上',
+          title: '4000以上'
         }
-      ],
+      ]
     },
     {
       keyType: 'check',
@@ -1173,21 +1172,21 @@ export const houseManagementSearch = {
       value: [
         {
           id: 405,
-          title: '精装',
+          title: '精装'
         },
         {
           id: 406,
-          title: '简装',
+          title: '简装'
         },
         {
           id: 407,
-          title: '豪装',
+          title: '豪装'
         },
         {
           id: 408,
-          title: '毛坯',
+          title: '毛坯'
         }
-      ],
+      ]
     },
     {
       keyType: 'check',
@@ -1197,35 +1196,35 @@ export const houseManagementSearch = {
       value: [
         {
           id: 1,
-          title: '100以下',
+          title: '100以下'
         },
         {
           id: 2,
-          title: '100~150',
+          title: '100~150'
         },
         {
           id: 3,
-          title: '150以上',
-        },
-      ],
+          title: '150以上'
+        }
+      ]
     },
     {
       keyType: 'check',
-      title: '用途',
+      title: '房屋类型',
       keyName: 'house_identity',
       dataType: [],
       value: [
         {
           id: 419,
-          title: '住宅',
+          title: '住宅'
         },
         {
           id: 420,
-          title: '公寓',
+          title: '公寓'
         },
         {
           id: 421,
-          title: '商用两住',
+          title: '商用两住'
         },
         {
           id: 422,
@@ -1239,8 +1238,43 @@ export const houseManagementSearch = {
           id: 424,
           title: '其他'
         }
-      ],
+      ]
     }
-  ],
+  ]
 }
 
+//人资kpi考核
+export const kpiSearch = {
+  status: 'kpiSearch',
+  keywords: 'search',
+  data: [
+    // {
+    //   keyType: 'check',
+    //   title: '职级',
+    //   keyName: 'position',
+    //   dataType: [],
+    //   value: [
+    //     { id: 1, title: 'P1' },
+    //     { id: 2, title: 'P2' },
+    //     { id: 3, title: 'P3' },
+    //     { id: 4, title: 'P4' },
+    //     { id: 5, title: 'P5' },
+    //     { id: 6, title: 'P6' },
+    //     { id: 7, title: 'P7' },
+    //   ]
+    // },
+    {
+      keyType: 'radio',
+      title: '确认状态',
+      keyName: 'period',
+      dataType: '',
+      value: [
+        { id: 0, title: '周度' },
+        { id: 1, title: '月度' },
+        { id: 2, title: '季度' },
+        { id: 3, title: '半年度' },
+        { id: 4, title: '年度' }
+      ]
+    }
+  ]
+}

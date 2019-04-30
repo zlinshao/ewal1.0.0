@@ -157,7 +157,6 @@ export default {
         if (res.code === 200) {
           this.detail_form = res.data.order_data
           this.follow_data = res.data.follow_data
-          this.detail_visible = true;
           this.$emit('changDetail', false)
         }
       })
