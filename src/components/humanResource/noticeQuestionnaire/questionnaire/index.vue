@@ -106,7 +106,7 @@
     <!--新建问卷对话框-->
     <lj-dialog
       :visible.sync="add_questionnaire_dialog_visible"
-      :size="{width:'450px',height: '500px'}">
+      :size="{width:'450px',height: '600px'}">
       <div class="dialog_container add-questionnaire-dialog">
         <div class="dialog_header">
           <h3>{{add_questionnaire_form_type==1?'新建问卷':add_questionnaire_form_type==2?'问卷详情':'编辑问卷'}}</h3>
@@ -132,6 +132,10 @@
             </el-form-item>
             <el-form-item prop="object_ids" label="调查对象">
               <user-choose width="290" v-model="add_questionnaire_form.object_ids"></user-choose>
+            </el-form-item>
+
+            <el-form-item label="问卷介绍">
+              <el-input type="textarea" v-model="add_questionnaire_form.desc" placeholder="请输入问卷介绍"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -206,6 +210,7 @@
           validity_time: null,//有效期
           object_ids: [],//人员数组
           exam_info: [],//调查问卷题库
+          desc:'',//问卷简介
         },
 
 
@@ -286,6 +291,7 @@
               title: '成功',
               message: res.msg,
             });
+            this.add_questionnaire_dialog_visible = false;
           } else {
             this.$LjNotify('error', {
               title: '失败',
