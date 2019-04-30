@@ -7,18 +7,51 @@
     .main-nav {
       margin-left: 50px;
       padding: 15px 0;
-      >span {
-        padding: 5px 30px;
-        margin: 0 10px;
-        cursor: pointer;
-        font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      .dataBase-left{
+        >span {
+          padding: 5px 30px;
+          margin: 0 10px;
+          cursor: pointer;
+          font-size: 14px;
+        }
+        .isActive{
+          color: white;
+        }
       }
-      .isActive{
-        color: white;
+      .dataBase-right{
+        >span {
+          width: 31px;
+          height: 58px;
+          padding: 5px 30px;
+          margin: 0 10px;
+          cursor: pointer;
+          font-size: 14px;
+        }
+        .isActive{
+          color: white;
+        }
       }
     }
     .dataBase-container {
-    
+      .contractNumber{
+        width: 1799px;
+        height: 100%;
+        margin: 0 60px 0 61px;
+        .contractNumberTop{
+          width: 1799px;
+          height: 489px;
+        }
+        .contractNumberBottom{
+          width: 1799px;
+          height: 318px;
+          margin-top: 39px;
+        }
+      }
+      .contractNumberEdit{
+
+      }
     }
   }
 }

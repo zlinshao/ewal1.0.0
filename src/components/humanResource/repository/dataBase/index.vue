@@ -1,12 +1,30 @@
 <template>
   <div id="dataBase">
     <div class="main-nav">
-      <span
-        v-for="(item,index) in active"
-        :key="index"
-        :class="{'isActive': item.id === activeName}"
-        @click="changeTab(index)"
-      >{{item.val}}</span>
+      <div class="dataBase-left">
+        <span
+          v-for="(item,index) in active"
+          :key="index"
+          :class="{'isActive': item.id === activeName}"
+          @click="changeTab(index)"
+          >{{item.val}}</span>
+      </div>
+      <div class="dataBase-right" v-if="activeName === 2">
+        <span
+          v-for="(item,index) in contractNumberChoose"
+          :key="index"
+          :class="{'isActive': item.id === contractNumberChoosed}"
+          @click="chooseContartType(index)"
+          >{{item.val}}</span>
+      </div>
+      <div class="dataBase-right" v-if="activeName === 3">
+        <span
+          v-for="(item,index) in contractNumberEditChoose"
+          :key="index"
+          :class="{'isActive': item.id === contractNumberEditChoosed}"
+          @click="chooseContartEditType(index)"
+          >{{item.val}}</span>
+      </div>
     </div>
     <div class="dataBase-container">
       <el-table 
@@ -39,8 +57,114 @@
           <el-table-column prop="department" label="所属部门" align="center"></el-table-column>
           <el-table-column prop="electronicData" label="电子资料" align="center"></el-table-column>
       </el-table>
+      <div v-if="activeName === 2" class="contractNumber">
+        <div class="contractNumberTop" v-if="contractNumberChoosed === 0">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" :data="contractCollectList" @row-click="contractCollect_visible =true">
+            <el-table-column label="姓名" align="center"  prop="name"></el-table-column>
+            <el-table-column label="剩余合同数(收)" align="center"></el-table-column>
+            <el-table-column label="剩余合同数(租)" align="center"></el-table-column>
+            <el-table-column label="已领取合同数(收)" align="center"></el-table-column>
+            <el-table-column label="已领取合同数(租)" align="center"></el-table-column>
+            <el-table-column label="已作废合同数(收)" align="center"></el-table-column>
+            <el-table-column label="已作废合同数(租)" align="center"></el-table-column>
+            <el-table-column label="已上缴合同数(收)" align="center"></el-table-column>
+            <el-table-column label="已上缴合同数(租)" align="center"></el-table-column>
+            <el-table-column label="已丢失合同数(收)" align="center"></el-table-column>
+            <el-table-column label="已丢失合同数(租)" align="center"></el-table-column>
+            <el-table-column label="操作" align="center"></el-table-column>
+          </el-table>
+          <div class="page">
+            <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
+          </div>
+        </div>
+        <div class="contractNumberBottom" v-if="contractNumberChoosed === 0">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%">
+            <el-table-column label="城市" align="center"></el-table-column>
+            <el-table-column label="合同总数(收)" align="center"></el-table-column>
+            <el-table-column label="电子" align="center"></el-table-column>
+            <el-table-column label="纸质" align="center"></el-table-column>
+            <el-table-column label="合同总数(租)" align="center"></el-table-column>
+            <el-table-column label="电子" align="center"></el-table-column>
+            <el-table-column label="纸质" align="center"></el-table-column>
+            <el-table-column label="剩余合同数(收)" align="center"></el-table-column>
+            <el-table-column label="剩余缴合同数(租)" align="center"></el-table-column>
+          </el-table>
+        </div>
+        <div v-if="contractNumberChoosed === 1">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractReceiveList" @row-click="contractReceive_visible = true">
+            <el-table-column label="领取时间" align="center"></el-table-column>
+            <el-table-column label="部门" align="center"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+            <el-table-column label="领取合同数(收)" align="center"></el-table-column>
+            <el-table-column label="领取合同数(租)" align="center"></el-table-column>
+            <el-table-column label="操作" align="center"></el-table-column>
+          </el-table>
+          <div class="page flex-center">
+            <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
+          </div>
+        </div>
+        <div v-if="contractNumberChoosed === 2">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractCancelList"  @row-click="contractCancel_visible = true">
+            <el-table-column label="作废时间" align="center"></el-table-column>
+            <el-table-column label="部门" align="center"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+            <el-table-column label="作废合同数(收)" align="center"></el-table-column>
+            <el-table-column label="作废合同数(租)" align="center"></el-table-column>
+            <el-table-column label="操作" align="center"></el-table-column>
+          </el-table>
+          <div class="page flex-center">
+            <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
+          </div>
+        </div>
+        <div v-if="contractNumberChoosed === 3">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractHandinList"  @row-click="contractHandin_visible = true">
+            <el-table-column label="上缴时间" align="center"></el-table-column>
+            <el-table-column label="部门" align="center"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+            <el-table-column label="上缴合同数(收)" align="center"></el-table-column>
+            <el-table-column label="上缴合同数(租)" align="center"></el-table-column>
+            <el-table-column label="操作" align="center"></el-table-column>
+          </el-table>
+          <div class="page flex-center">
+            <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
+          </div>
+        </div>
+        <div v-if="contractNumberChoosed === 4">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractLoseList"  @row-click="contractLose_visible = true">
+            <el-table-column label="丢失时间" align="center"></el-table-column>
+            <el-table-column label="部门" align="center"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+            <el-table-column label="丢失合同数(收)" align="center"></el-table-column>
+            <el-table-column label="丢失合同数(租)" align="center"></el-table-column>
+            <el-table-column label="操作" align="center"></el-table-column>
+          </el-table>
+          <div class="page flex-center">
+            <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
+          </div>
+        </div>
+      </div>
+      <div v-if="activeName === 3" class="contractNumberEdit">
+        <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" v-if="contractNumberEditChoosed === 0">
+          <el-table-column label="城市" align="center"></el-table-column>
+          <el-table-column label="合同总数(收)" align="center"></el-table-column>
+          <el-table-column label="电子" align="center"></el-table-column>
+          <el-table-column label="纸质" align="center"></el-table-column>
+          <el-table-column label="合同总数(租)" align="center"></el-table-column>
+          <el-table-column label="电子" align="center"></el-table-column>
+          <el-table-column label="纸质" align="center"></el-table-column>
+          <el-table-column label="剩余合同数(收)" align="center"></el-table-column>
+          <el-table-column label="剩余合同数(租)" align="center"></el-table-column>
+        </el-table>
+        <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" v-if="contractNumberEditChoosed === 1">
+          <el-table-column label="操作对象" align="center"></el-table-column>
+          <el-table-column label="部门" align="center"></el-table-column>
+          <el-table-column label="领取上限(收/租)" align="center"></el-table-column>
+          <el-table-column label="操作人" align="center"></el-table-column>
+          <el-table-column label="操作时间" align="center"></el-table-column>
+        </el-table>
+      </div>
     </div>
-    <footer class="flex-center bottomPage">
+    <footer class="flex-center bottomPage" v-if="activeName !==2">
       <div class="develop flex-center">
         <i class="el-icon-d-arrow-right"></i>
       </div>
@@ -48,7 +172,6 @@
         <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
       </div>
     </footer>
-    
     <lj-dialog :visible="addContract_visiable" :size="{width: 580 + 'px',height: 700 + 'px'}" @close="closeAddContrat()">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -110,6 +233,24 @@
         </div>
       </div>
     </lj-dialog>
+    <lj-dialog :visible="contractCollect_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractCollect_visible = false">
+      汇总
+    </lj-dialog>
+    <lj-dialog :visible="contractReceive_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractReceive_visible = false">
+      领取
+    </lj-dialog>
+    <lj-dialog :visible="contractCancel_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractCancel_visible = false">
+      作废
+    </lj-dialog>
+    <lj-dialog :visible="contractHandin_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractHandin_visible = false">
+      上缴
+    </lj-dialog>
+    <lj-dialog :visible="contractLose_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractLose_visible = false">
+      丢失
+    </lj-dialog>
+    <lj-dialog :visible="contractNumberManage_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractNumberManage_visible = false">
+      丢失
+    </lj-dialog>
   </div>
 </template>
 
@@ -131,8 +272,29 @@
         activeName: 0,
         active: [
           {id: 0, val: '片区异动交接单'},
-          {id: 1, val: '采购合同'}
+          {id: 1, val: '采购合同'},
+          {id: 2, val: '合同编号'},
+          {id: 3, val: '合同编号管理'},
         ],
+        contractNumberChoose: [
+          {id: 0, val: '汇总'},
+          {id: 1, val: '领取'},
+          {id: 2, val: '作废'},
+          {id: 3, val: '上缴'},
+          {id: 4, val: '丢失'},
+        ],
+        contractNumberEditChoose: [
+          {id: 0, val: '总合同数'},
+          {id: 1, val: '总合同领取上限'},
+        ],
+        contractCollect_visible: false,
+        contractReceive_visible: false,
+        contractCancel_visible: false,
+        contractHandin_visible: false,
+        contractLose_visible: false,
+        contractNumberManage_visible: false,
+        contractNumberEditChoosed: 0,
+        contractNumberChoosed: 0,
         areaChangeOrder: [],
         contractList: [],
         contractRequisition: '',
@@ -145,6 +307,31 @@
         approvalDetail:[],
         process_id: 0,
         approvalTitle: '',
+        contractCollectList: [
+          {
+            name: "张三",
+          }
+        ],//合同汇总
+        contractReceiveList: [
+          {
+            name: "张三",
+          }
+        ],//合同编号领取
+        contractCancelList: [
+          {
+            name: "张三",
+          }
+        ],//合同编号作废
+        contractHandinList: [
+          {
+            name: "张三",
+          }
+        ],//合同编号上缴
+        contractLoseList: [
+          {
+            name: "张三",
+          }
+        ],//合同编号丢失
       }
     },
     mounted(){
@@ -269,6 +456,12 @@
             }
           }
         })
+      },
+      chooseContartType: function(index) {
+        this.contractNumberChoosed = index
+      },
+      chooseContartEditType: function(index) {
+        this.contractNumberEditChoosed = index
       }
     }
   }
@@ -285,9 +478,15 @@
   #theme_name.theme1{
     #dataBase {
       .main-nav {
-        .isActive {
+        .dataBase-left{
+          .isActive {
           @include childrenImg('teji.png', 'theme1');
-          
+          }
+        }
+        .dataBase-right{
+          .isActive {
+          @include childrenImg('xbx.png', 'theme1');
+          }
         }
       }
     }
