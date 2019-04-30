@@ -1,4 +1,4 @@
-@import "../../common.scss";
+@import '../../common.scss';
 
 #theme_name {
   #my_response {
@@ -69,12 +69,13 @@
       }
       .response-table {
         flex: 1 0 auto;
+        height: 85%;
         //background-color: #ccc;
         display: flex;
         flex-direction: column;
         padding-top: 20px;
         .response-table-list {
-          height: 85%;
+          height: 100%;
           //background-color: red;
           display: flex;
           justify-content: flex-start;
@@ -132,7 +133,7 @@
                         font-weight: bold;
                       }
                       &:nth-child(2) {
-                        opacity: .4;
+                        opacity: 0.4;
                       }
                     }
                   }
@@ -142,7 +143,6 @@
                     width: 100%;
                   }
                 }
-
               }
               .item-lower {
                 height: 70%;
@@ -213,16 +213,13 @@
                       font-size: 14px;
                       color: $color874;
                     }
-
                   }
                   //background-color: yellow;
                 }
               }
             }
-
-
           }
-          .response-table-item:not(:nth-child(5n+5)) {
+          .response-table-item:not(:nth-child(5n + 5)) {
             margin-right: 3.75%;
           }
         }
@@ -236,24 +233,20 @@
 
 #theme_name.theme1 {
   #my_response {
-
   }
 }
 
 #theme_name.theme2 {
   #my_response {
-
   }
 }
 
 #theme_name.theme3 {
   #my_response {
-
   }
 }
 
 #theme_name.theme4 {
   #my_response {
-
   }
 }

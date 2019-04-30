@@ -43,7 +43,7 @@
               <span class='cell_tit'>组长</span>
               <span class='cell_content cell_blue'>8min</span>
             </div>
-            <div class='cell_setting' v-if='current_status_type == 1'>
+            <div class='cell_setting'>
               <i class='icons_setting' @click='handleSetting'></i>
             </div>
           </div>
@@ -61,15 +61,18 @@
         </footer>
       </div>
     </div>
+
+    <!-- 进度展示 -->
     <PanelDialog :visible='panel_info_visible' :moduleData='panel_info' @close='handleClosePanel' />
+
     <LjDialog :visible="show_set_visible" :size="{width: 600 + 'px',height: 400 + 'px'}" @close="handleCheckType(false)">
       <div class='dialog_container'>
         <div class='dialog_header'>
           <h3>接收类型</h3>
         </div>
         <div class='dialog_main check_type_dialog'>
-          <el-checkbox-group v-model="revice_check_type">
-            <el-checkbox v-for='type in revice_type' :key='type.tit' :label="type.tit"></el-checkbox>
+          <el-checkbox-group v-model="revice_check">
+            <el-checkbox v-for='type in revice_type' :key='type.title' :label="type.title" :value='type.id' />
           </el-checkbox-group>
         </div>
         <div class='dialog_footer'>
@@ -89,7 +92,7 @@ export default {
     PanelDialog,
     LjDialog
   },
-  props: ['visible'],
+  props: ['visible', 'revice_type'],
   data () {
     return {
       current_status_type: 1,
@@ -112,60 +115,7 @@ export default {
         current_type: 1
       },
       show_set_visible: false,
-      revice_type: [
-        {
-          tit: '取消预定',
-          value: 1
-        },
-        {
-          tit: '家居补齐',
-          value: 2
-        },
-        {
-          tit: '收房报备',
-          value: 3
-        },
-        {
-          tit: '租房报备',
-          value: 4
-        },
-        {
-          tit: '续收报备',
-          value: 5
-        },
-        {
-          tit: '续租报备',
-          value: 6
-        }, {
-          tit: '转租报备',
-          value: 7
-        },
-        {
-          tit: '调房报备',
-          value: 8
-        },
-        {
-          tit: '退租报备',
-          value: 9
-        },
-        {
-          tit: '拓展新盘',
-          value: 10
-        },
-        {
-          tit: '收房补充协议',
-          value: 11
-        },
-        {
-          tit: '租房补充协议',
-          value: 12
-        },
-        {
-          id: 13,
-          title: '未收先租'
-        },
-      ],
-      revice_check_type: [],
+      revice_check: [],
     }
   },
   methods: {
@@ -181,7 +131,6 @@ export default {
       this.current_page = val
     },
     showCards (i) {
-      console.log(2)
       this.panel_info = {
         current_type: this.current_status_type
       }

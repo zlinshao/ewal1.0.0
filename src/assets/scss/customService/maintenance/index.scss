@@ -6,6 +6,12 @@
 
 #theme_name {
   #miantenance {
+    .mainListTable {
+      .el-button--warning {
+        background: #cf2e33;
+        color: #fbc4c4;
+      }
+    }
     .el-row {
       margin: 0 !important;
     }

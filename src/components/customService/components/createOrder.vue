@@ -8,19 +8,19 @@
         <div class="dialog_main" id='addOrder_dialog'>
           <div class="back_info scroll_bar">
             <el-row :gutter="10">
-              <el-col :span='createOrder_span'>
+              <el-col :span='moduleOrder == 78? 6 : createOrder_span'>
                 <p class='el-col-p'><i class='icon house_name'></i>房屋地址</p>
                 <div class='input_box'>
                   <div class='el-input' @mousedown="clearSearch">
                     <input type="text" class="el-input__inner" v-model='createOrder.house_name' v-if='createOrder.house_name'
                       disabled>
                     <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='customer_search'
-                      v-on:keyup.enter='addOrder_search' v-else>
+                      v-on:keyup.enter='addOrder_search' @input='input_Search' v-else>
                   </div>
                 </div>
               </el-col>
 
-              <el-col :span="createOrder_span">
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span">
                 <p class='el-col-p'><i class='icon type'></i><span>工单类型</span></p>
 
                 <!-- 维修保洁中的创建工单 -->
@@ -38,7 +38,7 @@
 
               </el-col>
 
-              <el-col :span="createOrder_span" v-if='createOrder.type == 699'>
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type == 11'>
                 <p class='el-col-p'><i class='icon comtype'></i><span>投诉类型</span></p>
                 <div class='input_box'>
                   <el-select v-model="createOrder.complain_type" placeholder="请选择">
@@ -48,7 +48,7 @@
                 </div>
               </el-col>
 
-              <el-col :span="createOrder_span" v-if='createOrder.type == 699'>
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type == 11'>
                 <p class='el-col-p'><i class='icon tsqd'></i><span>投诉渠道</span></p>
                 <div class='input_box'>
                   <el-select v-model="createOrder.complain_channel" placeholder="请选择">
@@ -58,14 +58,14 @@
                 </div>
               </el-col>
 
-              <el-col :span="createOrder_span" v-if='createOrder.type == 699'>
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type == 11'>
                 <p class='el-col-p'><i class='icon handler'></i><span>被投诉人</span></p>
                 <div class='input_box'>
                   <el-input @focus="handlerOrgan('complained_user')" readonly v-model="createOrder.complained_user.name"></el-input>
                 </div>
               </el-col>
 
-              <el-col :span="createOrder_span" v-if='createOrder.type == 1'>
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type == 1'>
                 <p class='el-col-p'><i class='icon handler'></i><span>报销人</span></p>
                 <div class='input_box'>
                   <el-input @focus="handlerOrgan('reimburse_user')" readonly v-model="createOrder.reimburse_user.name"></el-input>
@@ -73,38 +73,48 @@
               </el-col>
 
               <!-- 维修保洁中的创建工单 -->
-              <el-col :span="6" v-if='moduleOrder == 78'>
+              <el-col :span="6" v-if='moduleOrder == 78 || createOrder.type == 7 || createOrder.type == 8'>
                 <p class='el-col-p'><i class='icon post'></i><span>派单至</span></p>
                 <div class='input_box'>
                   <el-select placeholder="请选择" v-model='createOrder.send_order_type'>
-                    <el-option label="内部保修" value="1"> </el-option>
-                    <el-option label="外部保修" value="2"> </el-option>
+                    <el-option label="内部员工" value="1"> </el-option>
+                    <el-option :label="createOrder.type== 7? '维修公司' : '保洁公司'" value="2"> </el-option>
+                    <el-option :label="createOrder.type== 7? '维修师傅' : '保洁师傅'" value="3"> </el-option>
                   </el-select>
                 </div>
               </el-col>
 
-              <el-col :span="createOrder_span">
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='(moduleOrder == 78 || createOrder.type == 7 || createOrder.type == 8) && createOrder.send_order_type != 1'>
+                <p class='el-col-p'><i class='icon handler'></i><span>
+                    {{createOrder.type== 7?(createOrder.send_order_type ==
+                    2?'维修公司':'维修师傅'):(createOrder.send_order_type == 2?'保洁公司':'保洁师傅')}}
+                  </span></p>
+                <div class='input_box'>
+                  <el-input @focus="handlerOrgan('operate_user')" readonly v-model="createOrder.operate_user.name" />
+                </div>
+              </el-col>
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-else>
                 <p class='el-col-p'><i class='icon handler'></i><span>处理人</span></p>
                 <div class='input_box'>
-                  <el-input @focus="handlerOrgan('operate_user')" readonly v-model="createOrder.operate_user.name"></el-input>
+                  <el-input @focus="handlerOrgan('operate_user')" readonly v-model="createOrder.operate_user.name" />
                 </div>
               </el-col>
 
-              <el-col :span="createOrder_span">
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='!((moduleOrder == 78 || createOrder.type == 7 || createOrder.type == 8) && createOrder.send_order_type == 1)'>
                 <p class='el-col-p'><i class='icon org'></i><span>部门</span></p>
                 <div class='input_box'>
-                  <el-input readonly v-model="createOrder.operate_org.name"></el-input>
+                  <OrgChoose v-model='createOrder.operate_org.id'></OrgChoose>
                 </div>
               </el-col>
 
-              <el-col :span="createOrder_span">
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span">
                 <p class='el-col-p'><i class='icon phone'></i><span>回复电话</span></p>
                 <div class='input_box'>
                   <el-input placeholder="请填写" v-model.tel='createOrder.replay_phone'></el-input>
                 </div>
               </el-col>
 
-              <el-col :span="createOrder_span">
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span">
                 <p class='el-col-p'><i class='icon status'></i><span>紧急程度</span></p>
                 <div class='input_box'>
                   <el-select v-model="createOrder.emergency" placeholder="请选择">
@@ -116,7 +126,7 @@
                 </div>
               </el-col>
 
-              <el-col :span="createOrder_span" v-if='createOrder.type != 1'>
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type != 1'>
                 <p class='el-col-p'><i class='icon endTime'></i><span>截止时间</span></p>
                 <div class='input_box'>
                   <el-date-picker v-model="createOrder.next_follow_time" value-format="yyyy-MM-dd" align="right" type="date"
@@ -124,7 +134,7 @@
                 </div>
               </el-col>
 
-              <el-col :span='createOrder_span'>
+              <el-col :span='moduleOrder == 78? 6 : createOrder_span'>
                 <p class='el-col-p'><i class='icon content'></i>工单内容</p>
                 <div class='input_box'>
                   <el-input placeholder="请填写" v-model="createOrder.content"></el-input>
@@ -154,7 +164,7 @@
                 </el-row>
               </el-col>
 
-              <el-col :span="createOrder_span" v-if='createOrder.type == 1'>
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type == 1'>
                 <p class='el-col-p'><i class='icon endTime'></i><span>截止时间</span></p>
                 <div class='input_box'>
                   <el-date-picker v-model="createOrder.next_follow_time" value-format="yyyy-MM-dd" align="right" type="date"
@@ -163,7 +173,7 @@
                 </div>
               </el-col>
 
-              <el-col :span='createOrder_span'>
+              <el-col :span='moduleOrder == 78? 6 : createOrder_span'>
                 <p class='el-col-p el-col-p1'><i class='icon upload'></i>上传图片</p>
                 <Ljupload size='40' v-model='createOrder.album'></Ljupload>
               </el-col>
@@ -374,8 +384,7 @@
 
     <!-- 人员选择 -->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan" />
-    <!--选择部门-->
-    <OrgChoose v-model='createOrder.operate_org.id '></OrgChoose>
+
     <!-- 财务记录 -->
     <FinancialDialog :visible='financial_visible' :moduleData='record_data' @close='handkeCloseFinancial' />
     <!-- 报销记录 -->
@@ -396,7 +405,7 @@ import RecordeDialog from './recorde-dialog';
 import WithoutDialog from './without-dialog';
 import ExpenseDialog from './expense-dialog';
 import FinancialDialog from './financial-dialog';
-import OrgChoose from '../../common/lightweightComponents/orgChoose';
+import OrgChoose from '../../common/lightweightComponents/OrgChoose';
 export default {
   props: ['visible', 'moduleOrder'], //moduleOrder 工单环境(区分是维修保洁还是工单模块)
   components: {
@@ -483,20 +492,32 @@ export default {
           value: 6
         },
         {
-          label: '报修',
-          value: 697
+          label: '维修',
+          value: 7
+        },
+        {
+          label: '保洁',
+          value: 8
         },
         {
           label: '转租',
-          value: 698
+          value: 9
+        },
+        {
+          label: '求组',
+          value: 10
         },
         {
           label: '投诉',
-          value: 699
+          value: 11
+        },
+        {
+          label: '托管',
+          value: 12
         },
         {
           label: '其他',
-          value: 700
+          value: 13
         }
       ],
       expenseType: [
@@ -681,6 +702,7 @@ export default {
       record_data: {},   // 参数
       without_visible: false, // 退租记录
       market_server: globalConfig.market_server,
+      timer: null,
     }
   },
   filters: {
@@ -710,14 +732,14 @@ export default {
   watch: {
     createOrder: {
       handler (newVal) {
-        if (newVal.type == 699 || newVal.type == 1) {
+        if (newVal.type == 11 || newVal.type == 1 || newVal.type == 7 || newVal.type == 8) {
           this.createOrder_span = 6
         } else {
           this.createOrder_span = 8
         }
       },
       deep: true
-    },
+    }
   },
   methods: {
     handleCloseOrder () {
@@ -812,6 +834,11 @@ export default {
       })
 
       this.addOrderChosen = 1
+    },
+    input_Search () {
+      clearTimeout(this.timer)
+      this.timer = null
+      this.timer = setTimeout(this.addOrder_search, 1000);
     },
     // 选择当前客户
     changeCustmInfo (val) {
@@ -967,9 +994,12 @@ export default {
         return '工单类型未选择'
       }
 
-      if (!this.createOrder.send_order_type) {
-        return '派单未选择'
+      if (this.moduleOrder == 78) {
+        if (!this.createOrder.send_order_type) {
+          return '派单未选择'
+        }
       }
+
 
       if (this.createOrder.type == 699) {
         if (!this.createOrder.complain_type) {
@@ -1392,8 +1422,8 @@ export default {
         @include flex("space-column");
         @include flex("items-center");
         .nothing_img {
-          width: 70px;
-          height: 180px;
+          width: 50px;
+          height: 140px;
           margin-bottom: 30px;
         }
         .nothing_words {

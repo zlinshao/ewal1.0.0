@@ -1,12 +1,12 @@
-@import "./flex.scss";
-@import "./common.scss";
+@import './flex.scss';
+@import './common.scss';
 
-@mixin gatheringImg($m,$n) {
+@mixin gatheringImg($m, $n) {
   $url: '../image/finance/gathering/' + $n + '/' + $m;
   @include bgImage($url);
 }
 
-@mixin commonImg($m,$n) {
+@mixin commonImg($m, $n) {
   $url: '../../assets/image/common/' + $n + '/' + $m;
   @include bgImage($url);
 }
@@ -43,7 +43,8 @@
         @include bgImage('../../assets/image/common/theme1/xzgj.png');
       }
     }
-    b, i {
+    b,
+    i {
       position: absolute;
       width: 10px;
       height: 10px;
@@ -72,7 +73,7 @@
       p {
         width: 42px;
         height: 50px;
-        background-color: #DFDFDF;
+        background-color: #dfdfdf;
         @include radius(0 4px 4px 0);
         cursor: pointer;
         padding-bottom: 20px;
@@ -104,14 +105,15 @@
       }
     }
     .listTopRight {
-      > div, > span {
+      > div,
+      > span {
         margin-right: 40px;
       }
       > div {
         @include radius(6px);
         cursor: pointer;
       }
-      h4{
+      h4 {
         margin-right: 20px;
       }
       //增加
@@ -131,7 +133,7 @@
       .search {
         @include commonImg('search.png', 'theme1');
       }
-      .btn_output{
+      .btn_output {
         @include commonImg('search.png', 'theme1');
       }
       //离职管理
@@ -140,7 +142,9 @@
       }
       //bank流水
       .bank {
-        @include bgImage('../../assets/image/finance/budgetStream/theme1/yinhangliushui.png');
+        @include bgImage(
+          '../../assets/image/finance/budgetStream/theme1/yinhangliushui.png'
+        );
       }
       .icons {
         width: 30px;
@@ -152,19 +156,19 @@
         line-height: 38px;
       }
       .button1 {
-        background-color: #FFF7E4;
-        color: #FFAD0B;
+        background-color: #fff7e4;
+        color: #ffad0b;
         &:hover {
-          background-color: #FFAD0B;
-          color: #FFF7E4;
+          background-color: #ffad0b;
+          color: #fff7e4;
         }
       }
       .button2 {
-        background-color: #CFF8EA;
-        color: #0BB07B;
+        background-color: #cff8ea;
+        color: #0bb07b;
         &:hover {
-          background-color: #0BB07B;
-          color: #CFF8EA;
+          background-color: #0bb07b;
+          color: #cff8ea;
         }
       }
     }
@@ -176,7 +180,7 @@
     right: 0;
     bottom: 0;
     top: 80px;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 10;
   }
   //表格样式
@@ -238,7 +242,8 @@
       height: 100%;
       overflow: hidden;
       margin: 20px 0;
-      @include scroll();
+      @include scroll;
+
       .unUse-txt {
         font-size: 18px;
       }
@@ -246,6 +251,10 @@
         padding: 0 20px;
       }
     }
+    .dialog_main::-webkit-scrollbar-thumb {
+      background: #999 !important;
+    }
+
     .dialog_footer {
       width: 100%;
       padding: 20px 0;
@@ -374,19 +383,19 @@
     @include btn_square(50%);
   }
   .all-choose {
-    @include commonImg('quanxuan.png','theme1');
+    @include commonImg('quanxuan.png', 'theme1');
   }
   .icon-address {
     width: 20px;
     height: 20px;
-    @include commonImg('dizhi.png','theme1');
+    @include commonImg('dizhi.png', 'theme1');
   }
   .search {
     display: inline-block;
     width: 30px;
     height: 32px;
     cursor: pointer;
-    @include commonImg('search.png','theme1');
+    @include commonImg('search.png', 'theme1');
     vertical-align: middle;
   }
 
@@ -403,15 +412,15 @@
     height: 19px;
     margin-right: 5px;
     display: inline-block;
-    @include commonImg('look.png','theme1');
+    @include commonImg('look.png', 'theme1');
     background-size: contain;
     vertical-align: middle;
   }
   .iconSuccess {
-    @include commonImg('success.png','theme1');
+    @include commonImg('success.png', 'theme1');
   }
   .iconDelete {
-    @include commonImg('delete.png','theme1');
+    @include commonImg('delete.png', 'theme1');
   }
   //失败图标
   //分页
@@ -424,7 +433,7 @@
     bottom: -100px;
     background-color: $color2F2;
     z-index: 6;
-    @include transition(bottom .5s);
+    @include transition(bottom 0.5s);
     .develop {
       position: absolute;
       top: -30px;
@@ -432,14 +441,14 @@
       cursor: pointer;
       height: 30px;
       opacity: 1;
-      @include transition(all .5s);
+      @include transition(all 0.5s);
       border-radius: 10px 10px 0 0;
       background-color: $color2F2;
       i {
         -webkit-animation: bounce-up 1s linear infinite;
         animation: bounce-up 1s linear infinite;
         transform: rotateZ(-90deg);
-        @include transition(transform .5s);
+        @include transition(transform 0.5s);
         text-align: center;
         font-size: 24px;
         color: $colorE33;
@@ -450,8 +459,8 @@
       .develop {
         opacity: 0;
         i {
-          -webkit-animation: bounce-down .8s linear infinite;
-          animation: bounce-down .8s linear infinite;
+          -webkit-animation: bounce-down 0.8s linear infinite;
+          animation: bounce-down 0.8s linear infinite;
         }
       }
     }
@@ -491,7 +500,7 @@
 #theme_name.theme1 {
   // radio check
   .highChoose {
-    background-color: #FFEAEA;
+    background-color: #ffeaea;
     color: $colorE33;
   }
   //表格头部
@@ -526,13 +535,10 @@
 }
 
 #theme_name.theme2 {
-
 }
 
 #theme_name.theme3 {
-
 }
 
 #theme_name.theme4 {
-
 }

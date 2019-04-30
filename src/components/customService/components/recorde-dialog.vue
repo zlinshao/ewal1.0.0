@@ -78,9 +78,11 @@ export default {
   methods: {
     handleCloserecord () {
       this.$emit('close', true)
+      this.table = []
     },
     addRecord () {
       this.$emit('close', 'add')
+      this.table = []
     },
     getData () {
       this.$http.get(`${this.market_server}v1.0/csd/revisit/${this.moduleData.contract_type}/${this.moduleData.contract_id}`).then(res => {

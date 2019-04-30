@@ -1,49 +1,45 @@
-@import "../../../../common.scss";
+@import '../../../../common.scss';
 
 #theme_name {
-  #goodStaff{
+  #goodStaff {
     width: 100%;
     padding-top: 3%;
     padding-right: 10%;
     padding-left: 10%;
-    >h1{
+    > h1 {
       width: 22%;
       padding: 2%;
       margin: 0 auto;
-      span{
+      span {
         font-family: jingDianXingShu;
         font-size: 28px;
-        color:#ffffff;
+        color: #ffffff;
       }
     }
-    .goodStaff-lists{
+    .goodStaff-lists {
       width: 100%;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      .goodStaff-lists-info{
+      .goodStaff-lists-info {
         width: 25%;
         padding: 2%;
-        .goodStaff-box{
+        .goodStaff-box {
           width: 100%;
-          padding:1% 5%;
+          height: 100%;
+          padding: 1% 5%;
           text-align: center;
-          >div{
+          > div {
             width: 100%;
-            height:100%;
+            height: 100%;
             padding: 15%;
-            img{
+            img {
               width: 100%;
               height: 110%;
-
             }
           }
-
         }
-
-
       }
     }
   }
-
 }

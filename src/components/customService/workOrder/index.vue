@@ -53,7 +53,8 @@
     <!-- 新建工单 -->
     <CreateOrder :visible='createOrder_visible' @close="handleCloseOrder" />
     <!-- 工单详情 -->
-    <OrderDetail :visible="detail_visible" @close="handleCloseDetail" :moduleData='detail_info' />
+    <OrderDetail :visible="detail_visible" @close="handleCloseDetail" :moduleData='detail_info' :change='detail_Record_change'
+      @changDetail="handleChangeDetail" />
     <!--新增跟进记录-->
     <AddRecord :visible='followRecord_visible' :moduleData='followRecord_info' @close='handleCloseRecord' />
     <!-- 催办 -->
@@ -167,6 +168,7 @@ export default {
       },
       // 工单详情
       detail_visible: false,
+      detail_Record_change: false,
       detail_info: {
         currentId: null,
         chosenTag: null
@@ -339,7 +341,7 @@ export default {
     handleEnd () {
       this.sureEnd_info = {
         payer: this.detail_form.payer,
-        payer_org_name: this.detail_form.payer
+        payer_org_name: this.detail_form.payer_org_name
       }
       this.currentMethod = 'ending'
       this.sureEnding_visible = true
@@ -366,8 +368,12 @@ export default {
 
         if (res.code === 200) {
           this.getDataList()
+          this.detail_Record_change = true
         }
       })
+    },
+    handleChangeDetail () {
+      this.detail_Record_change = false
     },
     // 新增记录
     handleCloseRecord (params) {
@@ -379,8 +385,8 @@ export default {
       }
       if (createdType == 'finish') {
         this.sureEnd_info = {
-          payer: '',
-          payer_org_name: ''
+          payer: content.payer,
+          payer_org_name: content.payer_org_name
         }
         this.currentMethod = 'addRecord'
         this.sureEnding_visible = true
@@ -409,6 +415,7 @@ export default {
           title: '提示',
           message: res.message
         });
+        this.detail_Record_change = true
       })
     },
     // 客服入口

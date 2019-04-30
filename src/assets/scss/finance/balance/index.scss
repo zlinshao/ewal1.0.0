@@ -1,69 +1,80 @@
-@import "../../common.scss";
+@import '../../common.scss';
 
 #theme_name {
   #balance {
-    .balance-detail{
-      .balance-detail-title{
-        width:100% ;
+    .balance-detail {
+      .balance-detail-title {
+        width: 100%;
         display: flex;
         flex-direction: row;
         align-items: center;
         //justify-content: space-between;
-        span{
+        span {
           display: inline-block;
           padding: 6px 30px;
           cursor: pointer;
           margin-right: 10px;
-
         }
       }
-      .balance-detail-info{
+      .balance-detail-info {
         width: 100%;
 
-        .tab{
+        .tab {
           padding: 50px;
-
         }
-        .tab8{
+        .tab8 {
           width: 90%;
           margin: 0 auto;
           padding: 10px;
-          border:1px solid #f56c6c;
+          border: 1px solid #f56c6c;
           border-radius: 5px;
-          background: #FFFFFF;
+          background: #ffffff;
           margin-top: 50px;
         }
-        .balance-detail-form{
+        .balance-detail-form {
           width: 100%;
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
-          .balance-detail-form-info{
+          .balance-detail-form-info {
             width: 30%;
             height: 400px;
             padding: 20px;
-           //&:hover{
-           // border:1px solid #f56c6c;
-           //}
+            //&:hover{
+            // border:1px solid #f56c6c;
+            //}
             border-radius: 5px;
-            background: #FFFFFF;
-            .balance-detail-form-table{
-
+            background: #ffffff;
+            .balance-detail-form-table {
             }
-            .balance-detail-total{
-                margin-top: 30px;
+            .balance-detail-total {
+              margin-top: 30px;
+            }
+            .img-wall {
+              display: flex;
+              flex-direction: row;
+              flex-wrap: wrap;
+              align-items: flex-start;
+              .balance-detail-img {
+                width: 25%;
+                padding: 10px;
+                img {
+                  width: 50px;
+                  height: 50px;
+                }
+              }
             }
           }
 
-          .activeBorder{
-            border:1px solid #f56c6c;
+          .activeBorder {
+            border: 1px solid #f56c6c;
             border-radius: 5px;
           }
         }
       }
     }
-    .check-box{
+    .check-box {
       position: fixed;
       top: 81px;
       bottom: 0;
@@ -71,94 +82,85 @@
       right: 0;
       background: rgba(0, 0, 0, 0.3);
       z-index: 240;
-      .check-box-list{
+      .check-box-list {
         width: 100%;
         padding: 50px 100px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        .check-box-info{
+        .check-box-info {
           width: 18%;
-          height:440px;
+          height: 440px;
           padding: 30px;
-          >div{
+          > div {
             width: 100%;
 
-            div{
+            div {
               margin-top: 30px;
-              p{
+              p {
                 margin-top: 20px;
                 margin-bottom: 20px;
                 display: flex;
                 flex-direction: row;
                 align-items: flex-start;
-                span{
+                span {
                   display: inline-block;
                   font-size: 14px;
                 }
-                span:first-child{
+                span:first-child {
                   width: 40%;
                   text-align: right;
                 }
-                span:last-child{
+                span:last-child {
                   width: 60%;
                   text-align: justify;
                   padding-left: 20px;
                 }
               }
-              p:last-child{
+              p:last-child {
                 margin-top: 30px;
                 margin-left: 100px;
               }
-
             }
-
           }
-
-
         }
       }
     }
-    .form-reduce-icon{
-      display:inline-block;
+    .form-reduce-icon {
+      display: inline-block;
       cursor: pointer;
       position: absolute;
-      right:-30px;
-      top:0;
+      right: -30px;
+      top: 0;
       width: 25px;
-      height:25px;
+      height: 25px;
       border-radius: 50%;
       //background: #ff4545;
       text-align: center;
       line-height: 25px;
-      color:#ffffff;
+      color: #ffffff;
       font-style: normal;
       font-size: 20px;
-
     }
   }
 }
 
 #theme_name.theme1 {
   #balance {
-
   }
 }
 
 #theme_name.theme2 {
   #balance {
-
   }
 }
 
 #theme_name.theme3 {
   #balance {
-
   }
 }
 
 #theme_name.theme4 {
   #balance {
-
   }
 }

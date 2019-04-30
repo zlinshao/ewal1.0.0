@@ -1,4 +1,4 @@
-defineReport = {
+defineReports = {
   1: {
     slither0: [
       {

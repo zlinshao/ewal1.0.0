@@ -32,8 +32,16 @@
           .el-form-item__content {
             font-size: 14px;
             text-align: left;
+            height: 40px;
             span {
+              display: inline-block;
+              width: 100%;
               white-space: nowrap;
+              overflow-x: scroll;
+              @include scroll;
+            }
+            i {
+              font-style: normal;
             }
           }
         }
@@ -245,6 +253,9 @@
       .circle {
         @include confirmImg('biaoji.png', 'theme1');
       }
+    }
+    .el-textarea.is-disabled .el-textarea__inner {
+      background: transparent;
     }
   }
 }
