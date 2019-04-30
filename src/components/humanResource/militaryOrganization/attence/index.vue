@@ -669,7 +669,6 @@
               let on_work_count = Number(item.attendance[0]?.not_signed_count[0] || 0);//上班缺卡次数
               let off_work_count = Number(item.attendance[0]?.not_signed_count[1] || 0);//下班缺卡次数
 
-
               let shijia = Number(item.attendance[0]?.vacate_data[0] || 0);//事假
               let bingjia = Number(item.attendance[0]?.vacate_data[1] || 0);
               let nianjia = Number(item.attendance[0]?.vacate_data[2] || 0);
@@ -678,7 +677,6 @@
               let chanjia = Number(item.attendance[0]?.vacate_data[5] || 0);
               let peichanjia = Number(item.attendance[0]?.vacate_data[6] || 0);
               let sangjia = Number(item.attendance[0]?.vacate_data[7] || 0);
-
 
               let obj = {
                 id: item.id,//人id

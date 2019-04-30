@@ -110,6 +110,9 @@
           margin-top: 20px;
           .cell_content {
             max-width: 90px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
           }
           .cell_blue,
           .cell_yellow {

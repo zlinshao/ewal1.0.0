@@ -80,7 +80,7 @@
               </el-col>
               <el-col :span="7">
                 <el-form-item label="部门">
-                  <el-input readonly placeholder="部门" v-model='followRecord.payer_org_name'></el-input>
+                  <OrgChoose v-model='followRecord.payer_org_id'></OrgChoose>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -108,9 +108,6 @@
     </LjDialog>
     <!-- 人员选择 -->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan" />
-    <!--选择部门-->
-    <OrgChoose v-model='department_id'></OrgChoose>
-    <!-- <DepartOrgan :module="departModule" :organData="departData" @close="hiddenDepart"></DepartOrgan> -->
   </div>
 </template>
 
@@ -118,7 +115,7 @@
 import LjDialog from '../../common/lj-dialog.vue';
 import Ljupload from '../../common/lightweightComponents/lj-upload';
 import StaffOrgan from '../../common/staffOrgan.vue'
-import OrgChoose from '../../common/lightweightComponents/orgChoose';
+import OrgChoose from '../../common/lightweightComponents/OrgChoose';
 export default {
   props: ['visible', 'moduleData'],
   components: {
@@ -133,6 +130,7 @@ export default {
         folow_status: null,
         emergency: '',
         content: '',
+        payer: '',
         pay_method: [
           {
             id: '',
@@ -141,8 +139,11 @@ export default {
             money: ''
           }
         ],
+        payer_org_name: '',
+        payer_org_id: [],
         album: []
       },
+
       complainedType: [ // 认责人类型
         {
           label: '业务员',
@@ -206,8 +207,13 @@ export default {
       if (ids !== 'close') {
         if (this.currentIndex == 'payer') {
           this.followRecord.payer = names
-          this.followRecord.payer_id = ids
-          this.getOrganDepart(ids[0])
+          if (names) {
+            this.getOrganDepart(ids[0])
+          } else {
+            this.followRecord.payer_org_name = ''
+            this.followRecord.payer_org_id = []
+          }
+
         } else {
           this.followRecord.pay_method[this.currentIndex].name = names
           this.followRecord.pay_method[this.currentIndex].id = ids
@@ -220,16 +226,11 @@ export default {
         if (res.code == 20020) {
           let data = res.data.org[0]
           this.followRecord.payer_org_name = data.name
-          this.department_id = [data.pivot.org_id]
+          this.followRecord.payer_org_id = [data.pivot.org_id]
         }
       })
     },
-    hiddenDepart (ids, str, arr) {
-      this.departModule = false
-      if (ids != 'close') {
-        this.followRecord.payer_org_name = str
-      }
-    },
+
     checkRecord () {
       if (!this.followRecord.folow_status) {
         return '工单类型未选择'

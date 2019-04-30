@@ -172,10 +172,11 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="价格">
-                    <p v-if='contractDetail.month_price && contractDetail.month_price.length >0' class='price-box'>
-                      <span v-for='(item,key) in contractDetail.month_price' :key='key'>{{ item.price }}元/{{item.period
-                        }}个月;</span>
-                    </p>
+                    <span v-if='contractDetail.month_price && contractDetail.month_price.length >0' class='price-box'>
+                      <i v-for='(item,key) in contractDetail.month_price' :key='key'>{{ item.price
+                        }}元/{{item.period
+                        }}个月;</i>
+                    </span>
                     <span v-else></span>
                   </el-form-item>
                 </el-col>
@@ -206,12 +207,12 @@
                 </el-col>
                 <el-col :span="8" v-if="tag_status === 1">
                   <el-form-item label="可否装修">
-                    <span>{{ contractDetail.lease_collect.can_decorate== 1?'是':'否' }}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.can_decorate== 1?'是':'否' }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" v-if="tag_status === 1">
                   <el-form-item label="可否添加物品">
-                    <span>{{ contractDetail.lease_collect.can_add_goods == 1?'是':'否' }}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.can_add_goods == 1?'是':'否' }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -252,7 +253,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="备注条款">
-                    <span>{{ contractDetail.lease_collect.remark_terms || '--'}}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.remark_terms || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -300,17 +301,17 @@
                 </el-col>
                 <el-col :span="7">
                   <el-form-item label="姓名">
-                    <span>{{ contractDetail.lease_collect.proerty_owner || '--'}}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="联系方式">
-                    <span>{{ contractDetail.lease_collect.proerty_owner || '--'}}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="身份证号">
-                    <span>{{ contractDetail.lease_collect.proerty_owner || '--'}}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -358,7 +359,8 @@
           <p class='main_tit'>附件信息</p>
           <div class="common_info">
             <el-checkbox-group v-model='rewrite_data'>
-              <el-checkbox name="type" v-for="(tit,key) in polishing_data[tag_status-1]" :key='tit' :label='key'>
+              <el-checkbox name="type" v-for="(tit,key) in polishing_data[tag_status-1]" :key='tit' :label='key'
+                :disabled="chooseTab == 3">
                 <template>
                   <div class='el_check_box'>
                     <div class='main_tit'> {{tit}}</div>
@@ -385,7 +387,8 @@
             <div class="flex-center flex-center2">
               <div class="flex_center_tit">不齐内容</div>
               <div class="flex_center_content flex_center_content2">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="dataRecord.content">
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="dataRecord.content"
+                  disabled style='background:transparent'>
                 </el-input>
                 <div class='buttons'>
                   <p class='buttons_left' @click='handlePostRecord'>
@@ -416,7 +419,8 @@
           <h3>资料不齐记录</h3>
         </div>
         <div class="dialog_main dataRecord_dialog_main" v-if='dataRecord_visible'>
-          <div v-for='remark in contractDetail.checkout_remark' class='dataRecord_cell' :key='remark.create_uid' v-if='dataRecord_visible && contractDetail.checkout_remark'>
+          <div v-for='(remark,index) in contractDetail.checkout_remark' class='dataRecord_cell' :key='remark.create_uid + "-" + index'
+            v-if='dataRecord_visible && contractDetail.checkout_remark'>
             <div class='detail_dialog_left'>
               <p>{{remark.create.name}}</p>
               <p>2019.1.16</p>
@@ -426,7 +430,7 @@
             </div>
             <div class='detail_dialog_right'>
               <p>{{remark.remark}}</p>
-              <p>发送对象:{{remark.receive}}</p>
+              <p>发送对象:{{remark.receive && remark.receive.name || '--'}}</p>
             </div>
           </div>
           <div v-else>暂无记录</div>
@@ -567,7 +571,10 @@ export default {
     rewrite_data (newVal) {
       this.dataRecord.content = ''
       let data = this.polishing_data[this.tag_status - 1]
-      newVal.forEach(item => {
+      newVal.forEach((item, index) => {
+        if (index != 0) {
+          this.dataRecord.content += ','
+        }
         this.dataRecord.content += data[item]
       })
       this.dataRecord.content += '缺失;'
@@ -610,7 +617,6 @@ export default {
       }
 
       this.$http.get(this.market_server + `v1.0/market/contract`, params).then(res => {
-        console.log(res)
         if (res.code === 200) {
           this.tableData = res.data.data;
           this.tableDataCount = res.data.count;
@@ -673,12 +679,14 @@ export default {
     },
     //双击 合同详情
     handleGetDetail (row) {
+      this.showLoading(true);
       this.currentRow = row
-      this.contract_detail_visible = true;
+
       this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_status}/${row.contract_id}`).then(res => {
         if (res.code === 200) {
+          this.showLoading(false);
           this.contractDetail = res.data
-
+          this.contract_detail_visible = true;
           this.getProcess_id(res.data.process_instance_id)
           this.$set(this.cookieArr, row.contract_id, new Date().getTime())
           this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
@@ -703,7 +711,6 @@ export default {
     },
     // 合同通过 驳回
     handleContract (isTrue) {
-      console.log(this.contractDetail)
       let params = {
         process_id: this.contractDetail.process_instance_id,
         contract_type: this.tag_status,

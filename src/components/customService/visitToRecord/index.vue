@@ -13,11 +13,8 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-button type="warning" plain @click="changeAccessTab(1)" :class='[accessTab ==1 ? "active-warning":""]'>待回访</el-button>
-        <el-button type="primary" plain @click="changeAccessTab(2)" :class='[accessTab ==2 ? "active-primary":""]'>二次回访</el-button>
-        <el-button type="primary" plain @click="changeAccessTab(3)" :class='[accessTab ==3 ? "active-primary":""]'>多次回访</el-button>
-        <el-button type="danger" plain @click="changeAccessTab(4)" :class='[accessTab ==4 ? "active-danger":""]'>已完成</el-button>
-        <div></div>
+        <el-button :type="item.type" plain @click="changeAccessTab(item.id)" :class='[accessTab ==item.id ? "active-warning":""]'
+          v-for='item in method_btns' :key='item.id'>{{item.title}}</el-button>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -68,7 +65,7 @@
               <p><i class='icon'></i>来源</p>
               <div class='input_box'>
                 <el-select v-model="recordOption.from" placeholder="请选择">
-                  <el-option v-for="item in addRecordOption.origin" :key="item.value" :label="item.label" :value="item.value">
+                  <el-option v-for="item in addRecordOption.origin" :key="item.value" :label="item.label" :value="item.label">
                   </el-option>
                 </el-select>
               </div>
@@ -82,24 +79,8 @@
             </el-col>
           </el-row>
 
-          <el-row :gutter="20" class='add_record_form'>
-            <el-col :span="6" class='satisfied'>
-              <p><i class='icon'></i>满意度</p>
-              <div class='input_box'>
-                <el-rate v-model="recordOption.star" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
-                </el-rate>
-              </div>
-            </el-col>
-            <el-col :span="18" class='note'>
-              <p><i class='icon'></i>备注</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.record" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-          </el-row>
-
           <el-row :gutter="5" class='add_record_form' v-if='recordFree == 1'>
-            <el-col :span='12' v-for='(feiyong,index) in recordOption.other_free' :key='"feiyong" + index' class='add_record_form'>
+            <el-col :span='12' v-for='(feiyong,index) in other_free' :key='"feiyong" + index'>
               <el-row :gutter="15">
                 <el-col :span="12" class='feiyong'>
                   <p><i class='icon'></i>费用名称</p>
@@ -116,6 +97,22 @@
                   </div>
                 </el-col>
               </el-row>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="20" class='add_record_form'>
+            <el-col :span="6" class='satisfied'>
+              <p><i class='icon'></i>满意度</p>
+              <div class='input_box'>
+                <el-rate v-model="recordOption.star" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+                </el-rate>
+              </div>
+            </el-col>
+            <el-col :span="18" class='note'>
+              <p><i class='icon'></i>备注</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.record" placeholder="请输入"></el-input>
+              </div>
             </el-col>
           </el-row>
 
@@ -270,6 +267,7 @@ import MenuList from '../../common/menuList.vue';
 import RecordeDialog from '../components/recorde-dialog';
 import { visitToRecordSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
+
 export default {
   name: "index",
   components: {
@@ -292,6 +290,26 @@ export default {
         {
           id: 2,
           title: '租房',
+        }
+      ],
+      method_btns: [
+        {
+          id: 1,
+          title: '待回访',
+          type: 'warning'
+        },
+        {
+          id: 2,
+          title: '二次回访',
+          type: 'primary'
+        }, {
+          id: 3,
+          title: '多次回访',
+          type: 'primary'
+        }, {
+          id: 4,
+          title: '已完成',
+          type: 'danger'
         }
       ],
       showSearch: false,
@@ -366,14 +384,15 @@ export default {
         contract_id: null,
         contract_number: null,
         is_connect: null,
-        from: null,
+        from: '',
         star: null,
-        record: null,
-        other_free: [{
-          name: null,
-          money: null
-        }]
+        record: '',
+
       },
+      other_free: [{
+        name: null,
+        money: null
+      }],
       //暂存 点击row
       currentRow: null,
       market_server: globalConfig.market_server,
@@ -449,15 +468,20 @@ export default {
     changeTabs (id) {
       if (this.chooseTab !== id) {
         this.chooseTab = id
-        this.getRecordList()
+        this.clearTable()
       }
     },
     // 改变访问状态
     changeAccessTab (id) {
       if (this.accessTab !== id) {
         this.accessTab = id
-        this.getRecordList()
+        this.clearTable()
       }
+    },
+    clearTable () {
+      this.tableData = []
+      this.params.page = 1
+      this.getRecordList()
     },
     // 高级搜索
     highSearch () {
@@ -485,8 +509,8 @@ export default {
         contract_type: this.chooseTab,
         contract_id: row.con_id
       }
-      this.detail_visible = true
       this.currentRow = row
+      this.detail_visible = true
     },
     //切换分页
     handleCurrentChange (val) {
@@ -505,31 +529,28 @@ export default {
       })
     },
     addFeiyong () {
-      this.recordOption.other_free.push({
+      this.other_free.push({
         name: '',
         money: ''
       })
     },
     delFeiyong (index) {
-      this.recordOption.other_free.splice(index, 1)
+      this.other_free.splice(index, 1)
     },
     vailRecord () {
-      let { is_connect, from, star, record, other_free } = this.recordOption
+      let { is_connect, from, star, record } = this.recordOption
       if (!is_connect && is_connect != 0) return '是否接通未选择'
       if (is_connect == 1) {
         if (!from) return '来源未选择'
         if (!this.recordFree) return '是否收取其他费用未选择'
         if (star == 0) return '满意度未选择,满意度至少一分'
-        if (!record) return '备注未填写'
         if (this.recordFree == 1) {
-          for (let i = 0; i < other_free.length; i++) {
-            let el = other_free[i]
+          for (let i = 0; i < this.other_free.length; i++) {
+            let el = this.other_free[i]
             if (!el.name) return '费用名称未填写'
             if (!el.money) return '费用金额未填写'
           }
         }
-      } else {
-        if (!record) return '备注未填写'
       }
       return null
     },
@@ -545,8 +566,8 @@ export default {
 
       let recordOption = this.recordOption
       recordOption.contract_type = this.chooseTab
-      if (this.recordOption == 1) {
-        recordOption.other_free = JSON.stringify(recordOption.other_free)
+      if (this.recordFree == 1) {
+        recordOption.other_free = JSON.stringify(this.other_free)
       } else {
         recordOption.other_free = ''
       }
@@ -577,14 +598,14 @@ export default {
         contract_id: null,
         contract_number: null,
         is_connect: null,
-        from: null,
+        from: '',
         star: null,
-        record: null,
-        other_free: [{
-          name: null,
-          money: null
-        }]
+        record: '',
       }
+      this.other_free = [{
+        name: null,
+        money: null
+      }]
       this.recordFree = null
       this.currentRow = null
     },

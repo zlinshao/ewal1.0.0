@@ -28,8 +28,8 @@ import '../static/UE/ueditor.parse.min.js'
 import Video from 'video.js'
 import 'video.js/dist/video-js.css'
 
-import './assets/js/dictionary.js'
-import './assets/js/approval.js'
+import './assets/js/approval/dictionary.js'
+import './assets/js/approval/approval.js'
 
 Vue.use(Boss)
 Vue.use(Vuex)

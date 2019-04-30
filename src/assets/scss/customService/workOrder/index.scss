@@ -8,6 +8,13 @@
 #theme_name {
   #workOrder {
     height: 100%;
+    .mainListTable {
+      .el-button--warning {
+        background: #cf2e33;
+        color: #fbc4c4;
+      }
+    }
+
     .el-row {
       margin-right: 0 !important;
     }

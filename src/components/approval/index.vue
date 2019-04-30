@@ -1,18 +1,18 @@
 <template>
   <div id="theme_name" class='theme1'>
-    <div id='approval' :class="{'approval':message_visible}">
-      <div class="header_btns">
-        <p :class='{"activeTag":chosenTag == item.value}' v-for='item in shenHe_type' :key='item.value' @click='changeShenTag(item.value)'>
+    <div id='approval' :class="{'approval':message_visible}" @click.stop='isRevice_visible = false'>
+      <!-- <div class="header_btns">
+        <p :class='{"activeTag":chosenTag == item.value}' v-for='item in shenHe_type' :key='item.value'>
           <i :class='["icons",item.icons]'></i>
           <span>{{item.tit}}</span>
         </p>
-      </div>
+      </div> -->
 
       <div class="header">
         <!--全部 我审批的 暂不处理 抄送我的-->
         <div class='header_methods'>
-          <div :class='["methods_box",item.value == current_status_type ?"methods_box_active":""]' v-for='item in methods_type'
-            :key='item.value' @click='change_status_type(item.value)'>{{item.tit}}</div>
+          <div :class='["methods_box",item.value == status_type ?"methods_box_active":""]' v-for='item in status_types'
+            :key='item.value' @click='status_type = item.value'>{{item.tit}}</div>
         </div>
 
         <div class='header_right'>
@@ -21,29 +21,28 @@
             {{isRevice ? "接收":"挂起"}}
           </p>
           <div class="margin">
-            <p :class='["ele_p",revice_check_type.length >0?"revice_span":""]' @click='isRevice_visible = true'>{{revice_check_type.length
-              == 0 ?
-              "接收类型" :
-              revice_check_type.join('-')}}</p>
-            <div class='revice_box' v-if='isRevice_visible' @mouseleave.stop="isRevice_visible =false">
-              <el-checkbox-group v-model="revice_check_type">
-                <el-checkbox v-for='type in revice_type' :key='type.tit' :label="type.tit"></el-checkbox>
-              </el-checkbox-group>
+            <p :class='["ele_p",revice_type.length >0?"revice_span":""]' @click.stop='isRevice_visible = true'>
+              {{ revice_check.length == 0 ? "接收类型" : revice_check.join('-') }}</p>
 
+            <div class='revice_box' v-if='isRevice_visible' @mouseleave.stop="isRevice_visible =false">
+              <el-checkbox-group v-model="revice_check">
+                <el-checkbox v-for='type in revice_type' :key='type.title' :label="type.title" :value='type.id' />
+              </el-checkbox-group>
               <div class="dialog_footer">
                 <el-button type="danger" size="small" @click='handleChangeRevice'>确定</el-button>
                 <el-button type="info" size="small" @click='handleCancleRevice'>取消</el-button>
               </div>
             </div>
           </div>
-          <i class='icons icons_main' v-if='current_type == 1' @click='handleSeeMain'></i>
+          <!-- 组长显示 -->
+          <i class='icons icons_main' v-if='isCaputer' @click='handleSeeMain'></i>
           <i class='icons icons_search' @click='highSearch'></i>
         </div>
       </div>
 
       <div class="mainListTable" :style="{'height': this.mainListHeight(30) + 'px'}">
-        <el-table :data="tableData" :height="this.mainListHeight(180) + 'px'" highlight-current-row @row-dblclick="handlerDbclick"
-          header-row-class-name="tableHeader" style="width: 100%">
+        <el-table :data="tableData['data' + status_type ]" :height="this.mainListHeight(180) + 'px'"
+          highlight-current-row @row-dblclick="handlerDbclick" header-row-class-name="tableHeader" style="width: 100%">
 
           <el-table-column align="center" v-for='item in Object.keys(tableShow)' :key='item' :prop='item' :label="tableShow[item]"></el-table-column>
 
@@ -60,22 +59,21 @@
             <i class="el-icon-d-arrow-right"></i>
           </div>
           <div class="page">
-            <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" :total="tableCount"
-              layout="total,jumper,prev,pager,next">
+            <el-pagination @current-change="handleCurrentChange" :current-page="params['param'+ status_type].page"
+              :page-size="10" :total="total['total'+ status_type]" layout="total,jumper,prev,pager,next">
             </el-pagination>
           </div>
         </footer>
       </div>
 
       <!-- 搜索 -->
-      <SearchHigh :module="showSearch" :showData="searchHigh" @close="hiddenModule"></SearchHigh>
+      <SearchHigh :module="showSearch" :showData="searchHigh" @close="hiddenModule" />
       <!-- 控制面板 -->
-      <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' />
+      <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' :revice_type='revice_type' />
       <!-- 详情 -->
-      <ContractDetail :visible='contract_detail_visible' @close='hiddenContractDetail' />
+      <ContractDetail :visible='contract_detail_visible' :moduleData='current_row' @close='hiddenContractDetail' />
       <!-- 拓展新盘详情 -->
-      <DevelopNewDish :visible='develop_visible' @close='hiddenDevelopNew' />
-
+      <DevelopNewDish :visible='develop_visible' :moduleData='current_row' @close='hiddenDevelopNew' />
     </div>
   </div>
 </template>
@@ -85,6 +83,7 @@ import SearchHigh from '../common/searchHigh.vue'
 import ControlPanel from './commponents/controlPanel'
 import ContractDetail from './commponents/contract_detail'
 import DevelopNewDish from './commponents/developNewDish'
+import { revice_type } from '../../assets/js/approval/revice_type.js'
 export default {
   components: {
     SearchHigh, //高级搜索
@@ -94,21 +93,31 @@ export default {
   },
   data () {
     return {
+      revice_type, // 接收类型设置
       show_form_visible: false,
       chosenTag: 1,
+      isCaputer: true, // 当前登录人：组员 或者 组长
       shenHe_type: [
         {
           tit: '报备审核',
           value: 1,
           icons: 'icons_app'
-        },
-        {
-          tit: '办公审核',
-          value: 2,
-          icons: 'icons_ban'
         }
+        // {
+        //   tit: '办公审核',
+        //   value: 2,
+        //   icons: 'icons_ban'
+        // }
       ],
-      methods_type: [
+      tableShow: {  // 表格数据显示
+        startTime: '发起时间',
+        type: '报备类型',
+        person: '报备人',
+        house_name: '房屋地址',
+        finish_tinme: '完成时间',
+      },
+      status_type: 1, // 当前显示表格类型
+      status_types: [
         {
           tit: '全部',
           value: 1
@@ -126,23 +135,37 @@ export default {
           value: 4
         }
       ],
-      current_status_type: 1,
-      current_type: 1, // 组员 或者 组长
-      tableShow: {
-        startTime: '发起时间',
-        type: '报备类型',
-        person: '报备人',
-        house_name: '房屋地址',
-        finish_tinme: '完成时间',
-      },
+      urlApi: '', // 数据请求
       tableData: {
-        data1: [],
+        data1: [
+          {
+            startTime: '2019-12-28',
+            type: '1',
+            person: '11',
+            house_name: '111',
+            finish_tinme: '111',
+          },
+          {
+            startTime: '2019-12-28',
+            type: '2',
+            person: '11',
+            house_name: '111',
+            finish_tinme: '111',
+          }
+        ],
         data2: [],
         data3: [],
         data4: []
       },
+      total: {
+        total1: 0,
+        total2: 0,
+        total3: 0,
+        total4: 0,
+      },
       params: {
         param1: {
+          page: 1,
           search: '',
           start_time: [],
           finish_time: [],
@@ -150,6 +173,7 @@ export default {
           department: ''
         },
         param2: {
+          page: 1,
           search: '',
           start_time: [],
           finish_time: [],
@@ -157,6 +181,7 @@ export default {
           department: ''
         },
         param3: {
+          page: 1,
           search: '',
           start_time: [],
           finish_time: [],
@@ -164,6 +189,7 @@ export default {
           department: ''
         },
         param4: {
+          page: 1,
           search: '',
           start_time: [],
           finish_time: [],
@@ -171,19 +197,87 @@ export default {
           department: ''
         },
       },
-      tableData: [],
-      tableCount: 8,
-      currentPage: 1,
-      // 高级搜索参数
-      table_params: {
+      isRevice: false, //是否接收
+      isRevice_visible: false,  // 接收类型设置 显示隐藏
+      revice_check: [], // 接收类型 选择
+      controlPanel_visible: false, // 控制面板 显示隐藏
+      showSearch: false, // 高级搜索 显示隐藏
+      searchHigh: {}, // 高级搜索 参数
+
+      contract_detail_visible: false, //详情
+      develop_visible: false, //新盘
+      current_row: null,
+
+      approval_sever: globalConfig.approval_sever
+    }
+  },
+  mounted () {
+
+  },
+  computed: {
+    message_visible () {
+      return this.$store.state.approval.approval_message_visible
+    },
+  },
+  watch: {
+    status_type (val) { //类型切换
+      this.getApprovalsList(val)
+    }
+  },
+  methods: {
+    // 页面数据请求
+    getApprovalsList (val) {
+      this.paramsHandle(val)  // 配置
+      this.getApproval(this.urlApi, this.params['param' + val], val)     // 接口请求
+    },
+    // 配置
+    paramsHandle (val) {
+      switch (val) {
+        case 1:
+          this.urlApi = ''
+          break;
+        case 2:
+          this.urlApi = 'runtime/tasks/1/variables/outcome'
+          break;
+        case 3:
+          this.urlApi = 'runtime/tasks'
+          break;
+        case 4:
+          this.urlApi = 'runtime/process-instances'
+          break;
+        default: break;
+      }
+      this.params['param' + val] = {
         search: '',
         start_time: [],
         finish_time: [],
         type: null,
         department: ''
-      },
-      //高级搜索
-      searchHigh: {
+      }
+    },
+    // 接口请求
+    getApproval (url, params, val) {  // page分页
+      this.showLoading(true);
+      this.$http.get(`${this.approval_sever}${url}`, params).then(res => {
+        this.showLoading(false);
+        if (res.code === 200) {
+          this.tableData['data' + val] = res.data.data
+          this.total['total' + val] = res.data.count
+        } else {
+          this.tableData['data' + val] = []
+          this.total['total' + val] = 0
+        }
+      })
+    },
+    // table 分页
+    handleCurrentChange (page) {
+      let val = this.status_type
+      this.params['param' + val].page = page
+      this.getApprovalsList(this.urlApi, this.params['param' + val], val)
+    },
+    // 高级搜索 显示
+    highSearch () {
+      this.searchHigh = {
         status: 'approval_leader',
         placeholder: '',
         keywords: 'sarch',
@@ -207,60 +301,7 @@ export default {
             title: '工单类型',
             keyName: 'type',
             dataType: '',
-            value: [
-              {
-                id: 1,
-                title: '收房'
-              },
-              {
-                id: 2,
-                title: '租房'
-              },
-              {
-                id: 3,
-                title: '续收'
-              },
-              {
-                id: 4,
-                title: '续租'
-              },
-              {
-                id: 5,
-                title: '收房补充协议'
-              },
-              {
-                id: 6,
-                title: '转租'
-              },
-              {
-                id: 9,
-                title: '调房'
-              },
-              {
-                id: 10,
-                title: '退租'
-              },
-              {
-                id: 11,
-                title: '拓展新盘'
-              },
-              {
-                id: 12,
-                title: '租房补充协议'
-              },
-              {
-                id: 13,
-                title: '取消预订'
-              },
-              {
-                id: 14,
-                title: '家具补齐'
-              },
-              {
-                id: 15,
-                title: '未收先租'
-              },
-            ]
+            value: revice_type
           },
           {
             keyType: 'depart',
@@ -274,155 +315,45 @@ export default {
             }
           },
         ]
-      },
-      searchData: {},
-      showSearch: false,
-      isRevice: false, //是否接收
-      // 接收类型
-      revice_type: [
-        {
-          tit: '取消预定',
-          value: 1
-        },
-        {
-          tit: '家居补齐',
-          value: 2
-        },
-        {
-          tit: '收房报备',
-          value: 3
-        },
-        {
-          tit: '租房报备',
-          value: 4
-        },
-        {
-          tit: '续收报备',
-          value: 5
-        },
-        {
-          tit: '续租报备',
-          value: 6
-        }, {
-          tit: '转租报备',
-          value: 7
-        },
-        {
-          tit: '调房报备',
-          value: 8
-        },
-        {
-          tit: '退租报备',
-          value: 9
-        },
-        {
-          tit: '拓展新盘',
-          value: 10
-        },
-        {
-          tit: '收房补充协议',
-          value: 11
-        },
-        {
-          tit: '租房补充协议',
-          value: 12
-        },
-        {
-          id: 13,
-          title: '未收先租'
-        },
-      ],
-      revice_check_type: [],
-      isRevice_visible: false,
-      // 控制面板
-      controlPanel_visible: false,
-      contract_detail_visible: false, //详情
-      develop_visible: false, //新盘
-      current_row: null,
-      approval_sever: globalConfig.approval_sever
-    }
-  },
-  mounted () {
-    this.contract_detail_visible = true
-    // this.getTableData_all()
-  },
-  computed: {
-    message_visible () {
-      return this.$store.state.approval.approval_message_visible
-    },
-  },
-  methods: {
-    // 获取 url 地址
-    getHttpUrl (type) {
-      let url = '';
-      switch (type) {
-        case 1:
-          break;
-        case 2:
-          break;
-        case 3:
-          break;
-        case 4:
-          break;
-        default: break;
       }
-      return url
+      this.showSearch = true
     },
-    getTableData (type) {
-      type == 1 && this.getTableData_all() //全部
-      type == 2 && this.getTableData_shen() // 我审批的
-      type == 3 && this.getTableData_buff() // 暂不处理
-      type == 4 && this.getTableData_chao() // 抄送我的
-    },
-    getTableData_all () {
-      // let type = this.current_status_type
-      // this.$http.get(`${this.approval_sever}${this.getHttpUrl(type)}?includeTaskLocalVariables=true`, this.params['param' + type]).then(res => {
-      //   this.tableData['data' + type] = res.data
-      // })
-    },
-
-    getTableData_shen () {
-      this.$http.get(`${this.approval_sever}runtime/tasks/1/variables/outcome`).then(res => {
-        console.log(res)
-      })
-    },
-    getTableData_buff () { },
-    getTableData_chao () { },
-    change_status_type (val) {
-      if (this.current_status_type !== val) {
-        this.current_status_type = val;
-        this.currentPage = 1;
-        this.getTableData(val)
-      }
-    },
+    // 高级搜索 确定
     hiddenModule (val) {
       this.showSearch = false
       if (val != 'close') {
-        this.getTableData(val)
-      }
-    },
-    // 高级搜索
-    highSearch () {
-      this.showSearch = true
-    },
-    changeShenTag (value) {
-      if (this.chosenTag != value) {
-        this.chosenTag = value
+        this.params['param' + this.status_type] = val
+        this.handleCurrentChange(1)
       }
     },
     // 接收 挂起
     change_revice_type () {
       this.isRevice = !this.isRevice
+      // this.$http.get(`${this.approval_sever}${url}`, params).then(res => {
+      //   let warn = this.isRevice ? "接收" : "挂起",
+      //     type = 'success'
+      //   if (res.code === 200) {
+      //     warn += '设置成功'
+      //     // 重新刷新数据
+      //     this.handleCurrentChange(1)
+      //   } else {
+      //     warn += '设置失败'
+      //     type = 'warning'
+      //   }
+      //   this.$LjNotify(type, {
+      //     title: '提示',
+      //     message: warn
+      //   });
+      // })
     },
     // 选择 接收类型
     handleChangeRevice () {
-      console.log(this.revice_check_type)
       this.isRevice_visible = false
     },
     // 取消 接收类型
     handleCancleRevice () {
       this.isRevice_visible = false
-      this.revice_check_type = []
+      this.revice_type = []
     },
     // 组长 控制面板
     handleSeeMain () {
@@ -430,11 +361,6 @@ export default {
     },
     hiddenControlPanel () {
       this.controlPanel_visible = false
-    },
-    // table 分页
-    handleCurrentChange (val) {
-      this.currentPage = val
-      // 获取数据
     },
     // 详情
     handlerDbclick (row) {

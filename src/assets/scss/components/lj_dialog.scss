@@ -1,4 +1,4 @@
-@import "../common.scss";
+@import '../common.scss';
 
 #theme_name {
   .lj_dialog {
@@ -13,13 +13,13 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(0, 0, 0, .3);
+      background: rgba(0, 0, 0, 0.3);
       //z-index: 99;
       .lj_container {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         text-align: center;
         padding: 30px;
         .close_btn {
@@ -30,7 +30,8 @@
           top: -20px;
           cursor: pointer;
         }
-        .wen_top,.wen_bottom {
+        .wen_top,
+        .wen_bottom {
           width: 50px;
           height: 30px;
           position: absolute;
@@ -44,8 +45,11 @@
           bottom: -2px;
           transform-origin: center center;
         }
-      }
 
+        .dialog_main::-webkit-scrollbar-thumb {
+          background: #999 !important;
+        }
+      }
     }
   }
 }

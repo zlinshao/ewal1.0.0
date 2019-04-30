@@ -20,6 +20,7 @@
       </div>
     </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
+
       <el-table :data="tableData" :height="this.mainListHeight(30) + 'px'" highlight-current-row @row-dblclick="tableClickRow"
         header-row-class-name="tableHeader" style="width: 100%" :key='"table"+ tabType'>
 
@@ -91,14 +92,26 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" v-if='tabType == 1 || tabType ==2 || tabType == 4' width='300'>
-          <template slot-scope="scope">
-            <el-button type="success" plain size="mini" @click.stop="addHousuingTag(scope.row,1)" v-if='tabType == 1 || tabType == 4'>添加标记</el-button>
-            <el-button type="warning" plain size="mini" @click.stop="readHousuingTag(scope.row)" v-if='tabType == 2'>查看标记</el-button>
-            <el-button type="primary" plain size="mini" @click.stop="addHousuingTag(scope.row,2)" v-if='tabType == 2'>修改标记</el-button>
-            <el-button type="success" plain size="mini" @click.stop="postHelp(scope.row)" v-if='tabType == 2&& scope.row.is_send==0'>发送代办</el-button>
+        <el-table-column label="操作" align="center" v-if='tabType == 1' width='300'>
+          <template slot-scope="scope" align='left'>
+            <el-button type="success" plain size="mini" @click.stop="addHousuingTag(scope.row,1)">添加标记</el-button>
+          </template>
+        </el-table-column>
 
-            <el-button type="success" plain size="mini" @click.stop="urgedDealWith(scope.row)" v-if='tabType == 4'>催办</el-button>
+        <el-table-column label="操作" align="center" v-if='tabType ==2' width='300'>
+          <template slot-scope="scope" align='left'>
+            <div style='display:flex;justify-content:flex-start;align-items:center;'>
+              <el-button type="warning" plain size="mini" @click.stop="readHousuingTag(scope.row)">查看标记</el-button>
+              <el-button type="primary" plain size="mini" @click.stop="addHousuingTag(scope.row,2)">修改标记</el-button>
+              <el-button type="success" plain size="mini" @click.stop="postHelp(scope.row)" v-if='scope.row.is_send == 0'>发送代办</el-button>
+            </div>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" align="center" v-if='tabType == 4' width='300'>
+          <template slot-scope="scope" align='left'>
+            <el-button type="success" plain size="mini" @click.stop="addHousuingTag(scope.row,1)">添加标记</el-button>
+            <el-button type="success" plain size="mini" @click.stop="urgedDealWith(scope.row)">催办</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -320,8 +333,7 @@
             <el-form label-width="120px" v-if=' contractDetail.customer_info'>
               <el-row :gutter="10" v-for='item in  contractDetail.customer_info' :key='item.id'>
                 <el-col :span="1">
-                  <el-form-item label="签约人" class='person_tit'>
-                  </el-form-item>
+                  <el-form-item label="签约人" class='person_tit'></el-form-item>
                 </el-col>
                 <el-col :span="7">
                   <el-form-item label="姓名">
@@ -357,6 +369,16 @@
                   <el-form-item label="身份证号">
                     <span>{{ contractDetail.lease_collect.proerty_owner || '--'}}</span>
                   </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+            <el-form label-width="120px" v-else>
+              <el-row :gutter="10" v-if="chooseTab === 1">
+                <el-col :span="1">
+                  <el-form-item :label="chooseTab === 1?'产权人':'签约人'" class='person_tit' />
+                </el-col>
+                <el-col :span="7" style='font-size:14px;'>
+                  <span>暂无资料</span>
                 </el-col>
               </el-row>
             </el-form>
@@ -403,12 +425,12 @@
           <p class='main_tit'>附件信息</p>
           <div class="common_info">
             <div v-if="contractDetail.album">
-              <div class="flex-center" v-for="(item,index) in contractDetail.album" style="min-height: 80px">
-                <div class='main_tit'>{{ polishing_data[chooseTab -
-                  1][index]}}</div>
+              <div class='flex-center' v-for='(item,index) in Object.keys(polishing_data[chooseTab-1])' :key='index'
+                style='min-height:80px;'>
+                <div class='mian_tit'>{{polishing_data[chooseTab-1][item]}}</div>
                 <div style="width: 90%;text-align: left">
-                  <img v-for="tmp in item" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri" :src="tmp.uri"
-                    style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+                  <img v-for="tmp in contractDetail.album[item]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
+                    :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
                 </div>
               </div>
             </div>
@@ -528,7 +550,7 @@ import { housingDueSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 import LjDialog from '../../common/lj-dialog.vue';
 import Ljupload from '../../common/lightweightComponents/lj-upload'
-// import Upload from '../../common/upload.vue';
+
 export default {
   name: 'index',
   components: {
@@ -718,11 +740,11 @@ export default {
     //合同详情
     tableClickRow (row) {
       this.currentRow = row
+      this.contract_detail_visible = true
       // 合同详情
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
         if (res.code === 200) {
           this.contractDetail = res.data
-          this.contract_detail_visible = true
         }
       })
     },
@@ -761,13 +783,16 @@ export default {
       if (!appointment_time) {
         return '预约时间未选择'
       }
-      if (!remark) {
-        return '备注信息未填写'
+      if (this.tagType == 1) {
+        if (!remark) {
+          return '备注信息未填写'
+        }
+        if (album.length == 0) {
+          return '图片未上传'
+        }
       }
-      if (album.length == 0) {
-        return '图片未上传'
-      }
-      return warn
+
+      return null
     },
     // 标记上传
     handleSubmitMark () {
@@ -845,6 +870,9 @@ export default {
     },
     // 发送代办
     postHelp (row) {
+      if (row.is_send != 0) {
+        return
+      }
       let params = {
         house_id: row.house_id,
         contract_id: row.contract_id,
@@ -923,6 +951,10 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/scss/customService/housingDue/index.scss";
+
+.opactiy {
+  opacity: 0;
+}
 </style>
 
 
