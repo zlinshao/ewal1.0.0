@@ -22,15 +22,15 @@
           <el-table-column label="第四季度" prop="forth" align="right"></el-table-column>
         </el-table>
         <el-table :data="halfyearData" v-if="choosedPeriod===3" highlight-current-row header-row-class-name="tableHeader">
-          <el-table-column label="姓名" prop="name" align="center" width="200px"></el-table-column>
-          <el-table-column label="部门" prop="department" align="center" width="200px"></el-table-column>
-          <el-table-column label="上半年" prop="first" align="center" width="400px"></el-table-column>
-          <el-table-column label="下半年" prop="second" align="center" width="400px"></el-table-column>
+          <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+          <el-table-column label="部门" prop="department" align="center"></el-table-column>
+          <el-table-column label="上半年" prop="first" align="center"></el-table-column>
+          <el-table-column label="下半年" prop="second" align="center"></el-table-column>
         </el-table>
         <el-table :data="yearData" v-if="choosedPeriod===4" highlight-current-row header-row-class-name="tableHeader">
-          <el-table-column label="姓名" prop="name" align="center" width="200px"></el-table-column>
-          <el-table-column label="部门" prop="department" align="center" width="200px"></el-table-column>
-          <el-table-column label="年度考核成绩" prop="yearScore" align="center" width="700px"></el-table-column>
+          <el-table-column label="姓名" prop="name" align="center"></el-table-column>
+          <el-table-column label="部门" prop="department" align="center"></el-table-column>
+          <el-table-column label="年度考核成绩" prop="yearScore" align="center"></el-table-column>
         </el-table>
       </div>
       <div class="periodButton">
@@ -107,29 +107,9 @@ export default {
           break
       }
     },
-    choosedPeriod (index) {
-      switch (this.choosedPeriod) {
-        case 0:
-          this.getWeekData();
-          break
-        case 1:
-          this.getMonthData();
-          break
-        case 2:
-          this.getSeasonData();
-          break
-        case 3:
-          this.getHalfyearData();
-          break
-        case 4:
-          this.getYearData();
-          break
-      }
-    }
   },
 
   methods: {
-
     getWeekData: function () {
       let param = {
         page: this.currentPage,
@@ -301,6 +281,29 @@ export default {
           obj.yearAverageScore = parseInt(score / 12)
         }
       }
+    },
+    choosePeriod (index) {
+      this.choosedPeriod = index
+      switch (this.choosedPeriod) {
+        case 0:
+          this.getWeekData();
+          break
+        case 1:
+          this.getMonthData();
+          break
+        case 2:
+          this.getSeasonData();
+          break
+        case 3:
+          this.getHalfyearData();
+          break
+        case 4:
+          this.getYearData();
+          break
+      }
+    },
+    hiddenModule(val){
+      console.log(val)
     }
   }
 }

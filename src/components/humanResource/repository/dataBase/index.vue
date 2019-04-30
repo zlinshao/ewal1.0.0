@@ -269,6 +269,8 @@
           {id: 0, val: '总合同数'},
           {id: 1, val: '总合同领取上限'},
         ],
+        total: 0,
+        currentPage: 1,
         contractCollect_visible: false,
         contractReceive_visible: false,
         contractCancel_visible: false,
