@@ -289,8 +289,6 @@ export default {
       });
     },
 
-
-<<<<<<< HEAD
       // 当前点击
       tableClickRow(row) {
         let ids = this.chooseRowIds;
