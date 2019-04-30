@@ -21,7 +21,7 @@ for (let devName in interfaces) {
     if (
       item.family === 'IPv4' &&
       item.address !== '127.0.0.1' &&
-      !item.internal
+      !item.internal && !item.address.startsWith('172')
     ) {
       HOST = item.address
     }

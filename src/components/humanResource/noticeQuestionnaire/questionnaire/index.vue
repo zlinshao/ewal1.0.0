@@ -64,7 +64,7 @@
         <div class="dialog_header">
           <h3>{{add_questionnaire_form_type==1?'新建问卷':add_questionnaire_form_type==2?'问卷详情':'编辑问卷'}}</h3>
           <div v-if="add_questionnaire_form_type==2" class="header_right">
-            <i @click="add_questionnaire_form_type=3" class="icon-edit"></i>
+            <i @click="showEditQuestionnaire" class="icon-edit"></i>
           </div>
         </div>
         <div class="dialog_main borderNone">
@@ -87,7 +87,7 @@
             </el-form-item>
 
             <el-form-item label="问卷介绍">
-              <el-input type="textarea" v-model="add_questionnaire_form.desc" placeholder="请输入问卷介绍"></el-input>
+              <el-input type="textarea" autosize v-model="add_questionnaire_form.desc" placeholder="请输入问卷介绍"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -163,6 +163,7 @@ export default {
         object_ids: [],//人员数组
         exam_info: [],//调查问卷题库
         desc: '',//问卷简介
+        status:null,
       },
 
 
@@ -211,6 +212,7 @@ export default {
         validity_time: null,//有效期
         object_ids: [],//人员数组
         exam_info: [],//调查问卷题库
+        status:null,
       };
     },
 
@@ -222,6 +224,20 @@ export default {
           this.paper_params.title = this.add_questionnaire_form.name;
         }
       });
+    },
+
+
+    showEditQuestionnaire() {
+
+      if(this.add_questionnaire_form.status==1) {
+        this.$LjMessage('warning',{
+          title:'警告',
+          msg:'正在进行的问卷调查不允许修改',
+        });
+        return;
+      }
+
+      this.add_questionnaire_form_type=3;
     },
 
     //编辑调查问卷
@@ -307,6 +323,7 @@ export default {
           validity_time: row.validity_time,//有效期
           object_ids: row.object_ids,//人员数组
           desc:row.desc,
+          status:row.status
         };
       },
       // 点击过
