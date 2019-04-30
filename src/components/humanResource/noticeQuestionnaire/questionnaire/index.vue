@@ -292,6 +292,7 @@
               message: res.msg,
             });
             this.add_questionnaire_dialog_visible = false;
+            this.getQuestionnaireList();
           } else {
             this.$LjNotify('error', {
               title: '失败',
@@ -352,6 +353,7 @@
           start_time: row.start_time,//开始时间
           validity_time: row.validity_time,//有效期
           object_ids: row.object_ids,//人员数组
+          desc:row.desc,
         };
       },
       // 点击过
