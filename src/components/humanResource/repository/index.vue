@@ -16,7 +16,7 @@
       </div>
       <div class="items-center listTopRight">
         <div class="icons-font" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>入库</b></div>
-        <div class="icons add" @click="addContract(chooseTab)" v-if="chooseTab === 3"><b>+</b></div>
+        <div class="icons add" @click="addDialog(chooseTab)" v-if="chooseTab === 3 || chooseTab===4"><b>+</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
       </div>
     </div>
@@ -42,10 +42,16 @@
     </div>
 
     <div v-if="chooseTab==3">
-      <data-base :addContract_visiable="addContract_visiable" v-on:changeAddContrat="changeAddContrat"></data-base>
+      <data-base :addContract_visiable="addContract_visiable" @changeAddContrat="changeAddContrat"></data-base>
     </div>
     <div v-if="chooseTab==4">
-      <office-dormitory :addContract_visiable="addContract_visiable" v-on:changeAddContrat="changeAddContrat"></office-dormitory>
+      <office-dormitory :addOffice_visiable="addOffice_visiable" 
+                        :addDormitory_visiable="addDormitory_visiable" 
+                        @closeAddOffice="closeAddOffice" 
+                        @closeAddDormitory="closeAddDormitory"
+                        @officeDormitoryChoose="officeDormitoryChoose"
+                        >
+      </office-dormitory>
     </div>
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -96,6 +102,9 @@
         resourceDepart,
         url: globalConfig.humanResource_server,
         addContract_visiable: false,//是否显示添加合同弹窗传递给资料库 传给子组件
+        addOffice_visiable: false,//是否添加办公室传递给子组件
+        addDormitory_visiable: false,//是否添加宿舍传递给子组件
+        officeDormitoryChoosed: 0,//子组件是办公室或者宿舍
         selects: [
           {
             id: 1,
@@ -220,12 +229,30 @@
         this.visibleStatus = !this.visibleStatus;
         this.$store.dispatch('route_animation');
       },
-      //通过字符组件传值判断是否显示添加合同弹窗
-      addContract(chooseTab){
-        this.addContract_visiable= true
+      //通过字符组件传值判断是否显示添加合同,添加办公室,添加宿舍弹窗
+      addDialog(chooseTab){
+        if(chooseTab == 3){
+          this.addContract_visiable= true
+        }
+        if(chooseTab == 4) {
+          if(this.officeDormitoryChoosed == 0){
+            this.addOffice_visiable= true
+          }else{
+            this.addDormitory_visiable = true
+          }
+        }
       },
       changeAddContrat(val){
         this.addContract_visiable= val
+      },
+      closeAddOffice(val){
+        this.addOffice_visiable = val
+      },
+      closeAddDormitory(val){
+        this.addDormitory_visiable = val
+      },
+      officeDormitoryChoose(val){
+        this.officeDormitoryChoosed = val
       }
     },
   }
