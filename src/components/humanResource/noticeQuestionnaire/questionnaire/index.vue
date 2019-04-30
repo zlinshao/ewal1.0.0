@@ -319,39 +319,13 @@ export default {
       handleCurrentChange(val) {
         this.params.page = val;
         this.getQuestionnaireList();
-      }
-=======
+      },
     // 当前点击
     tableClickRow (row) {
       let ids = this.chooseRowIds;
       ids.push(row.id);
       this.chooseRowIds = this.myUtils.arrayWeight(ids);
->>>>>>> 60725d442136c21478ea8d474c9362bf4e109995
     },
-    //表格某一行双击
-    tableDblClick (row) {
-      console.log(row);
-      this.add_questionnaire_form_type = 2;
-      this.add_questionnaire_dialog_visible = true;
-      this.add_questionnaire_form = {
-        id: row.id,
-        name: row.name,//名称
-        start_time: row.start_time,//开始时间
-        validity_time: row.validity_time,//有效期
-        object_ids: row.object_ids,//人员数组
-      };
-    },
-    // 点击过
-    tableChooseRow ({ row, rowIndex }) {
-      return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-    },
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange (val) {
-      this.params.page = val;
-      this.getQuestionnaireList();
-    }
   },
 }
 </script>
