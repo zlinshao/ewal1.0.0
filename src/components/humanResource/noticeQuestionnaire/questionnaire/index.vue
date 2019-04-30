@@ -234,25 +234,27 @@ export default {
       });
     },
 
-    //获取试题列表 并提交数据到新增公告接口
-    getExamList (examList) {
-      this.add_questionnaire_form.exam_info = examList;
-      this.add_questionnaire_form.start_time = this.myUtils.formatDate(this.add_questionnaire_form.start_time, 'yyyy-MM-dd hh:mm:ss');
-      this.$http.post(`${this.url}questionnaire`, this.add_questionnaire_form).then(res => {
-        if (res.code.endsWith('0')) {
-          this.$LjNotify('success', {
-            title: '成功',
-            message: res.msg,
-          });
-          this.add_questionnaire_dialog_visible = false;
-        } else {
-          this.$LjNotify('error', {
-            title: '失败',
-            message: res.msg,
-          });
-        }
-      });
-    },
+      //获取试题列表 并提交数据到新增公告接口
+      getExamList(examList) {
+        this.add_questionnaire_form.exam_info = examList;
+        this.add_questionnaire_form.start_time = this.myUtils.formatDate(this.add_questionnaire_form.start_time, 'yyyy-MM-dd hh:mm:ss');
+        this.$http.post(`${this.url}questionnaire`, this.add_questionnaire_form).then(res => {
+          if (res.code.endsWith('0')) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: res.msg,
+            });
+            this.add_questionnaire_dialog_visible = false;
+            this.getQuestionnaireList();
+          } else {
+            this.$LjNotify('error', {
+              title: '失败',
+              message: res.msg,
+            });
+          }
+        });
+      },
+
 
     //获取问卷列表
     getQuestionnaireList (outerParams) {
@@ -287,37 +289,43 @@ export default {
       });
     },
 
-
+      // 当前点击
+      tableClickRow(row) {
+        let ids = this.chooseRowIds;
+        ids.push(row.id);
+        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+      },
+      //表格某一行双击
+      tableDblClick(row) {
+        console.log(row);
+        this.add_questionnaire_form_type = 2;
+        this.add_questionnaire_dialog_visible = true;
+        this.add_questionnaire_form = {
+          id:row.id,
+          name: row.name,//名称
+          start_time: row.start_time,//开始时间
+          validity_time: row.validity_time,//有效期
+          object_ids: row.object_ids,//人员数组
+          desc:row.desc,
+        };
+      },
+      // 点击过
+      tableChooseRow({row, rowIndex}) {
+        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        this.params.page = val;
+        this.getQuestionnaireList();
+      },
     // 当前点击
     tableClickRow (row) {
       let ids = this.chooseRowIds;
       ids.push(row.id);
       this.chooseRowIds = this.myUtils.arrayWeight(ids);
     },
-    //表格某一行双击
-    tableDblClick (row) {
-      console.log(row);
-      this.add_questionnaire_form_type = 2;
-      this.add_questionnaire_dialog_visible = true;
-      this.add_questionnaire_form = {
-        id: row.id,
-        name: row.name,//名称
-        start_time: row.start_time,//开始时间
-        validity_time: row.validity_time,//有效期
-        object_ids: row.object_ids,//人员数组
-      };
-    },
-    // 点击过
-    tableChooseRow ({ row, rowIndex }) {
-      return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
-    },
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange (val) {
-      this.params.page = val;
-      this.getQuestionnaireList();
-    }
   },
 }
 </script>
