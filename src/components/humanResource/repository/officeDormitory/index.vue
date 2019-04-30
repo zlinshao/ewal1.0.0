@@ -9,7 +9,7 @@
       >{{item.val}}</span>
     </div>
     <div class="office-container" v-if="activeIndex == 0">
-      <el-table highlight-current-row header-row-class-name="tableHeader" height="670px" :data="officeList">
+      <el-table highlight-current-row header-row-class-name="tableHeader" height="670px" :data="officeList" @row-click="officeRecord_visiable = true">
           <el-table-column label="住房地址" align="center" prop="housrAddress"></el-table-column>
           <el-table-column label="小区地址" align="center" prop="communityAddress"></el-table-column>
           <el-table-column label="房型" align="center" prop="houseType"></el-table-column>
@@ -25,6 +25,7 @@
           <el-table-column label="结束时间" align="center" prop="endTime"></el-table-column>
           <el-table-column label="片区经理" align="center" prop="areaManager"></el-table-column>
       </el-table>
+      <!-- 下方滑动展示区域 -->
       <div id="workInfo">
         <div class="tip-icon"></div>
         <div class="info_container">
@@ -85,10 +86,46 @@
     <div class="page flex-center">
       <el-pagination :total="total" layout="total,jumper,prev,pager,next" :current-page="currentPage" :page-size="10"></el-pagination>
     </div>
+    <!-- 新增办公室 -->
     <lj-dialog :visible="addOffice_visiable" :size="{width: 580 + 'px',height: 581 + 'px'}" @close="closeOfficeVisiable()">
       <div class="dialog_container">
         <div class="dialog_header">
             新增办公室
+        </div>
+        <div class="dialog_main flex-center borderNone">
+          <el-form label-width="100px">
+            <el-form-item label="房屋类型">
+              <div class="items-center iconInput">
+                <el-select placeholder="请选择">
+                </el-select>
+              </div>
+            </el-form-item>
+            <el-form-item label="办公室类型">
+              <div class="items-center iconInput">
+                <el-select placeholder="请选择">
+                </el-select>
+              </div>
+            </el-form-item>
+            <el-form-item label="部门">
+              <org-choose title="请选择部门"></org-choose>
+            </el-form-item>
+            <el-form-item label="部门人数">
+              <el-input>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="开始时间">
+              <div class="items-center iconInput">
+                <el-date-picker type="date" placeholder="选择日期">
+                </el-date-picker>
+              </div>
+            </el-form-item>
+            <el-form-item label="备注">
+              <div class="items-center iconInput">
+                <el-input type="textarea" :rows="3">
+                </el-input>
+              </div>
+            </el-form-item>
+          </el-form>
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small">确定</el-button>
@@ -96,10 +133,109 @@
         </div>
       </div>
     </lj-dialog>
+    <!-- 办公室记录 -->
+    <lj-dialog :visible="officeRecord_visiable" :size="{width: 1041 + 'px',height: 900 + 'px'}" @close="officeRecord_visiable = false">
+      <div class="dialog_container">
+        <div class="listTopCss items-bet">
+          <div class="items-center listTopLeft">
+            办公室记录
+          </div>
+          <div class="items-right listTopRight">
+            审批编号: 00001
+            申请人: 张三
+            申请时间: 2019-04-01
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center;height:  160px">
+                  <div width="500px" height="160px">
+                    <el-form>
+                      <el-form-item label="房屋地址">
+                        房屋地址1
+                      </el-form-item>
+                      <el-form-item label="小区地址">
+                        小区地址1
+                      </el-form-item>
+                      <el-form-item label="房型">
+                        一室一厅一卫
+                      </el-form-item>
+                    </el-form>
+                  </div>
+                  <div width="500px" height="160px">
+                    <el-form>
+                      <el-form-item label="办公室类型">
+                        正式
+                      </el-form-item>
+                      <el-form-item label="片区经理">
+                        子虚
+                      </el-form-item>
+                      <el-form-item label="部门">
+                        南京一区一组
+                      </el-form-item>
+                    </el-form>
+                  </div>
+        </div>
+        <div style="width: 869px;height: 490px;margin: 0px 86px 0px 86px;">
+                    <el-timeline>
+                      <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
+                        <h3>开始时间：由为您办理了</h3>
+                        <h3>备注：新办公室</h3>
+                      </el-timeline-item>
+                      <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
+                        <h3>更新时间：由为您办理了</h3>
+                        <h3>备注：新办公室</h3>
+                      </el-timeline-item>
+                      <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
+                        <h3>更新时间：由为您办理了</h3>
+                        <h3>备注：新办公室</h3>
+                      </el-timeline-item>
+                      <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
+                        <h3>结束时间：由为您办理了</h3>
+                        <h3>备注：新办公室</h3>
+                      </el-timeline-item>
+                    </el-timeline>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small">确定</el-button>
+          <el-button type="info" size="small" @click="officeRecord_visiable = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+    <!-- 新增宿舍 -->
     <lj-dialog :visible="addDormitory_visiable" :size="{width: 580 + 'px',height: 532 + 'px'}" @close="closeDomitoryVisiable()">
       <div class="dialog_container">
         <div class="dialog_header">
           新增宿舍
+        </div>
+        <div class="dialog_main flex-center borderNone">
+          <el-form label-width="100px">
+            <el-form-item label="选择房屋">
+              <div class="items-center iconInput">
+                <el-select placeholder="请选择房屋地址">
+                </el-select>
+              </div>
+            </el-form-item>
+            <el-form-item label="总床位">
+              <div class="items-center iconInput">
+                <el-input>
+              </el-input>
+              </div>
+            </el-form-item>
+            <el-form-item label="片区经理">
+              <user-choose title="请选择人员"></user-choose>
+            </el-form-item>
+            <el-form-item label="开始时间">
+              <div class="items-center iconInput">
+                <el-date-picker type="date" placeholder="选择日期">
+                </el-date-picker>
+              </div>
+            </el-form-item>
+            <el-form-item label="备注">
+              <div class="items-center iconInput">
+                <el-input type="textarea" :rows="3">
+                </el-input>
+              </div>
+            </el-form-item>
+          </el-form>
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small">确定</el-button>
@@ -114,12 +250,14 @@
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjUpload from '../../../common/lightweightComponents/lj-upload.vue';
   import UserChoose from '../../../common/lightweightComponents/UserChoose';
+  import OrgChoose from '../../../common/lightweightComponents/OrgChoose';
   export default {
     name: "index",
     components: {
       LjDialog,
       LjUpload,
       UserChoose,
+      OrgChoose,
     },
     props: ['addOffice_visiable','addDormitory_visiable'],
     data() {
@@ -152,6 +290,7 @@
             areaManager: "13"
           }
         ],
+        officeRecord_visiable: false,
         showCharts: false,
         periodChoosed: 0,
         currentPage: 1,
