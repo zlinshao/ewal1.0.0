@@ -102,7 +102,6 @@ export default {
       this.current_page = val
     },
     handleTansfer () {
-      this.$emit('close', false)
       this.transfer_visible = true
     },
     handleCloseTransfer () {

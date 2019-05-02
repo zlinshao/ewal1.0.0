@@ -221,6 +221,7 @@ import VillageContainer from './village-container.vue';
 import LjUpload from '../../common/lightweightComponents/lj-upload.vue';
 import FormDetail from './form_detail.vue'
 import { defineForm, defineTitleTips } from '../../../assets/js/approval/definForm.js'
+import { isNull } from 'util';
 export default {
   props: ['visible', 'moduleData'],
   components: {
@@ -265,17 +266,17 @@ export default {
       show_form_visible: false,
       formData: null,
       market_server: globalConfig.market_server,
+      taskType: ['rtl_detail_request_url', 'ctl_detail_request_url'],
     }
   },
   watch: {
-    visible (val) {
-      if (val) this.getDetailForm()
-    },
     moduleData: {
       handler (val) {
         if (val) {
-          this.defineForm = this.defineForms[val.type]
-          this.titleTips = defineTitleTips[val.type]
+          this.defineForm = this.defineForms[1]
+          this.titleTips = defineTitleTips[1]
+
+          this.getDetailForm(val)
         }
       },
       deeper: true
@@ -283,13 +284,30 @@ export default {
   },
 
   methods: {
-    getDetailForm () {
+    getDetailForm (val) {
+      let { to, key } = this.getContractId(val)
+      console.log(to, val[key])
+      ///v1.0/market/bulletin/:id?to=collect
       this.$http.get(this.market_server + `v1.0/market/process/edit/197`).then(res => {
         if (res.code === 200) {
           this.formData = res.data.content
           this.handleDetail(res.data.content)
         }
       })
+    },
+    getContractId (data) {
+      let key = null;
+      for (let item of Object.keys(data)) {
+        if (this.taskType.includes(item)) {
+          key = item
+        }
+      }
+      //collect => 收房、续收，rent => 租房、转租、续租、未收先租，checkout => 退租，change => 调房，special => 特殊情况，‘agency’ => 中介费报备，‘lose’ =>炸弹报备，‘retainage’ => 尾款报备
+      switch (key) {
+        case 'rtl_detail_request_url': return { to: 'collect', key };
+        default:
+          break;
+      }
     },
     // 转换文本显示
     handleDetail (res) {

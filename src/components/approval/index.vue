@@ -21,7 +21,7 @@
             {{isRevice ? "接收":"挂起"}}
           </p>
           <div class="margin">
-            <p :class='["ele_p",revice_type.length >0?"revice_span":""]' @click.stop='isRevice_visible = true'>
+            <p :class='["ele_p",revice_type.length >0?"revice_span":""]' @click.stop='setRecive_type'>
               {{ revice_check.length == 0 ? "接收类型" : revice_check.join('-') }}</p>
 
             <div class='revice_box' v-if='isRevice_visible' @mouseleave.stop="isRevice_visible =false">
@@ -137,22 +137,7 @@ export default {
       ],
       urlApi: '', // 数据请求
       tableData: {
-        data1: [
-          {
-            startTime: '2019-12-28',
-            type: '1',
-            person: '11',
-            house_name: '111',
-            finish_tinme: '111',
-          },
-          {
-            startTime: '2019-12-28',
-            type: '2',
-            person: '11',
-            house_name: '111',
-            finish_tinme: '111',
-          }
-        ],
+        data1: [],
         data2: [],
         data3: [],
         data4: []
@@ -207,7 +192,7 @@ export default {
       contract_detail_visible: false, //详情
       develop_visible: false, //新盘
       current_row: null,
-
+      taskType: ['rtl_detail_request_url', 'ctl_detail_request_url'],
       approval_sever: globalConfig.approval_sever
     }
   },
@@ -222,6 +207,11 @@ export default {
   watch: {
     status_type (val) { //类型切换
       this.getApprovalsList(val)
+    },
+    message_visible (val) {
+      if (val) {
+        this.getApprovalsList(1)
+      }
     }
   },
   methods: {
@@ -234,25 +224,28 @@ export default {
     paramsHandle (val) {
       switch (val) {
         case 1:
-          this.urlApi = ''
+          this.urlApi = 'history/process-instances'
           break;
         case 2:
-          this.urlApi = 'runtime/tasks/1/variables/outcome'
+          this.urlApi = 'history/tasks'
           break;
         case 3:
-          this.urlApi = 'runtime/tasks'
+          this.urlApi = 'runtime/process-instances'
           break;
         case 4:
-          this.urlApi = 'runtime/process-instances'
+          this.urlApi = 'runtime/tasks'
           break;
         default: break;
       }
       this.params['param' + val] = {
-        search: '',
-        start_time: [],
-        finish_time: [],
-        type: null,
-        department: ''
+        page: 1,
+        title: '',
+        startTimeBefore: '',
+        startTimeAfter: '',
+        endTimeBefore: '',
+        endTimeAfter: '',
+        processDefinitionKey: '',
+        orgId: ''
       }
     },
     // 接口请求
@@ -260,14 +253,25 @@ export default {
       this.showLoading(true);
       this.$http.get(`${this.approval_sever}${url}`, params).then(res => {
         this.showLoading(false);
-        if (res.code === 200) {
-          this.tableData['data' + val] = res.data.data
-          this.total['total' + val] = res.data.count
-        } else {
-          this.tableData['data' + val] = []
-          this.total['total' + val] = 0
-        }
+        this.tableData['data' + val] = this.setFormateApproval(res.data)
+        this.total['total' + val] = res.total
       })
+    },
+    setFormateApproval (data) {
+      let arr = []
+      for (let item of data) {
+        let obj = {};
+        obj.startTime = item.startTime
+        obj.name = item.name
+        obj.id = item.id
+        for (let key of item.variables) {
+          if (this.taskType.includes(key.name)) {
+            obj[key.name] = key.value
+          }
+        }
+        arr.push(obj)
+      }
+      return arr
     },
     // table 分页
     handleCurrentChange (page) {
@@ -345,6 +349,16 @@ export default {
       //     message: warn
       //   });
       // })
+    },
+    setRecive_type () {
+      if (this.isRevice) {
+        this.isRevice_visible = true
+      } else {
+        this.$LjNotify('warning', {
+          title: '提示',
+          message: '挂起状态禁止设置接收类型'
+        });
+      }
     },
     // 选择 接收类型
     handleChangeRevice () {

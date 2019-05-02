@@ -264,12 +264,12 @@
                 </el-col>
                 <el-col :span="8" v-if="chooseTab === 1">
                   <el-form-item label="可否装修">
-                    <span>{{ contractDetail.lease_collect.can_decorate== 1?'是':'否' }}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.can_decorate== 1?'是':'否' }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" v-if="chooseTab === 1">
                   <el-form-item label="可否添加物品">
-                    <span>{{ contractDetail.lease_collect.can_add_goods == 1?'是':'否' }}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.can_add_goods == 1?'是':'否' }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -310,7 +310,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="备注条款">
-                    <span>{{ contractDetail.lease_collect.remark_terms || '--'}}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.remark_terms || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -357,17 +357,17 @@
                 </el-col>
                 <el-col :span="7">
                   <el-form-item label="姓名">
-                    <span>{{ contractDetail.lease_collect.proerty_owner || '--'}}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="联系方式">
-                    <span>{{ contractDetail.lease_collect.proerty_owner || '--'}}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="身份证号">
-                    <span>{{ contractDetail.lease_collect.proerty_owner || '--'}}</span>
+                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -669,6 +669,10 @@ export default {
     this.formateParams()
   },
   methods: {
+    //相关合同label
+    contractLabel (item) {
+      return item.type === 1 ? `新收合同(${item.is_invalid === 0 ? '正常' : '作废'})` : `续收合同(${item.is_invalid === 0 ? '正常' : '作废'})`;
+    },
     // 客服入口
     moduleList () {
       this.visibleStatus = !this.visibleStatus;
