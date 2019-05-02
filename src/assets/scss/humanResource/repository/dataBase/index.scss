@@ -43,14 +43,183 @@
           width: 1799px;
           height: 489px;
         }
+        .page{
+          .el-pagination{
+            padding: 0 0 0 1200px;
+          } 
+        }
         .contractNumberBottom{
           width: 1799px;
-          height: 318px;
           margin-top: 39px;
         }
       }
       .contractNumberEdit{
 
+      }
+    }
+    .collectDialog{
+      .dialog_container{
+        .dialog_body{
+          height: 639px;
+          padding: 0 65px 0 66px;
+          display: flex;
+          justify-content: space-between;
+          .main_left{
+            width: 67px;
+            .fenlei{
+              width: 67px;
+              height: 76px;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            }
+            .all{
+              width: 67px;
+              height: 76px;
+              margin-top: 60px;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            }
+            .contractGatherChoosed{
+              color: white;
+            }
+            .contractGatherChoosedF{
+              color:rgba(121,121,130,1);
+            }
+          }
+          .main_right{
+            width: 1424px;
+            height: 639px;
+            padding: 36px 30px 0 75px;
+            .right_title{
+              height: 35px;
+              display: flex;
+              align-items: center;
+              .words{
+                width:64px;
+                height:35px;
+                font-size:16px;
+                font-family: jingdianxingshu;
+                color:rgba(207,46,51,1);
+                line-height:35px;
+              }
+              .arrow{
+                width: 34px;
+                height: 5px;
+                margin-left: 23px;
+              }
+            }
+            .right_body{
+              height: 100%;
+              padding-top: 46px;
+              .right_body_header{
+                height: 20px;
+                width: 373px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                &:hover {
+                    cursor: pointer;
+                }
+                >h3{
+                  font-size:14px;
+                  font-family:MicrosoftYaHei;
+                  color:rgba(210,210,210,1);
+                  line-height:19px
+                }
+                .remainingUnpaidChoosed{
+                  color:rgba(207,46,51,1);
+                }
+              }
+              .right_body_main{
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                >div{
+                  width: 12.5%;
+                  height: 20px;
+                  margin-top: 16.5px;
+                  font-size:12px;
+                  font-family: MicrosoftYaHei;
+                  color:rgba(104,104,116,1);
+                  line-height:16px
+                }
+              }
+            }
+          }
+        }
+        .dialog_footer{
+          padding-left: 1337px;
+        }
+      }
+    }
+    .distributeDialog{
+      .dialog_header{
+        margin-left: 49px;
+        >h3{
+          font-size:24px;
+          font-family:MicrosoftYaHei;
+          color:rgba(104,104,116,1);
+          line-height:31px;
+        }
+      }
+      .dialog_body{
+        width: 100%;
+        height: 575px;
+        .body_header{
+          height: 40px;
+          padding-right: 215px;
+        }
+        .body_main{
+          width:1060px;
+          height:495px;
+          margin-left: 67px;
+          padding: 80px 0px 0px 60px;
+          background:rgba(255,255,255,1);
+          border-radius:4px;
+          .right_title{
+            height: 35px;
+            display: flex;
+            align-items: center;
+            .words{
+              width:64px;
+              height:35px;
+              font-size:16px;
+              font-family: jingdianxingshu;
+              color:rgba(207,46,51,1);
+              line-height:35px;
+            }
+            .arrow{
+              width: 34px;
+              height: 5px;
+              margin-left: 23px;
+            }
+          }
+          .body_detail{
+            display: flex;
+            flex-wrap: wrap;
+            >div{
+              width: 25%;
+              height: 19px;
+              margin-top: 30px;
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              .selector{
+                width: 18px;
+                height: 18px;
+                border-radius: 9px;
+                background:rgba(207,46,51,1);
+              }
+              .content{
+                margin-left: 20px;
+              }
+            }
+          }
+        }
       }
     }
   }
