@@ -27,22 +27,35 @@
           margin-bottom: 0;
           .el-form-item__label {
             font-size: 14px;
+            line-height: 30px;
             white-space: nowrap;
           }
           .el-form-item__content {
             font-size: 14px;
             text-align: left;
-            height: 40px;
+            width: 230px;
+            height: 36px;
+            line-height: 30px;
+            overflow-x: scroll;
+            @include scroll;
             span {
-              display: inline-block;
-              width: 100%;
               white-space: nowrap;
-              overflow-x: scroll;
-              @include scroll;
             }
             i {
               font-style: normal;
             }
+          }
+        }
+        .person_tit {
+          width: 100px;
+          display: inline-block;
+          font-size: 14px;
+          line-height: 30px;
+          height: 30px;
+        }
+        .el-col-7 {
+          .el-form-item__content {
+            width: 190px;
           }
         }
         .person_tit {
@@ -210,9 +223,6 @@
       @include confirmImg('biao.png', 'theme1');
     }
     .dialog_main {
-      .main_tit {
-        color: #686874;
-      }
       .common_info {
         background-color: #fff;
         .el-form-item {
@@ -222,6 +232,12 @@
           .el-form-item__content {
             color: #686874;
           }
+        }
+        .person_tit {
+          color: #b0b0b0;
+        }
+        .main_tit {
+          color: #686874;
         }
         .collection_info_warning {
           color: #cf2e33;

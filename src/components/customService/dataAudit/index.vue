@@ -88,35 +88,35 @@
               <el-row :gutter="10">
                 <el-col :span="8" v-if='tag_status == 1'>
                   <el-form-item label="物业地址">
-                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).name
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.community'>{{contractDetail.house_extension.community.name
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="产权地址">
-                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).detailed_address
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.community'>{{contractDetail.house_extension.community.detailed_address
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="水卡卡号">
-                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).water_card_number
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{contractDetail.house_extension.cards.water_card_number
                       || '--' }}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="电卡卡号">
-                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).electricity_card_number
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{contractDetail.house_extension.cards.electricity_card_number
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="燃气卡号">
-                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).gas_card_number
+                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{contractDetail.house_extension.cards.gas_card_number
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
@@ -276,7 +276,7 @@
             <el-form label-width="120px" v-if=' contractDetail.customer_info'>
               <el-row :gutter="10" v-for='item in contractDetail.customer_info' :key='item.phone' v-if='item'>
                 <el-col :span="1">
-                  <el-form-item label="签约人" class='person_tit'>
+                  <span class='person_tit'>签约人</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="7">
@@ -297,7 +297,7 @@
               </el-row>
               <el-row :gutter="10" v-if="tag_status === 1">
                 <el-col :span="1">
-                  <el-form-item label="产权人" class='person_tit'></el-form-item>
+                  <span class='person_tit'>产权人</span>
                 </el-col>
                 <el-col :span="7">
                   <el-form-item label="姓名">
@@ -313,6 +313,16 @@
                   <el-form-item label="身份证号">
                     <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
                   </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+            <el-form label-width="120px" v-else>
+              <el-row :gutter="10">
+                <el-col :span="1">
+                  <span class='person_tit'>{{tag_status === 1?'产权人':'签约人'}}</span>
+                </el-col>
+                <el-col :span="7" style='font-size:14px;height:40px;line-height:40px;'>
+                  <span>暂无资料</span>
                 </el-col>
               </el-row>
             </el-form>
@@ -554,6 +564,7 @@ export default {
       //   limit: 10,
       //   page: 1,
       // },
+      payArr: ['水费', '电费', '燃气费', '物业费', '网络费', '其他'],
       currentPage: 1,
       cookieArr: {},
       market_server: globalConfig.market_server,
@@ -685,8 +696,23 @@ export default {
       this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_status}/${row.contract_id}`).then(res => {
         if (res.code === 200) {
           this.showLoading(false);
-          this.contractDetail = res.data
+          let data = res.data;
+          if (data.house_extension) {
+            if (data.house_extension.community && data.house_extension.community != 'null') {
+              data.house_extension.community = JSON.parse(data.house_extension.community)
+            } else {
+              data.house_extension.community = null
+            }
+
+            if (data.house_extension.cards && data.house_extension.cards != 'null') {
+              data.house_extension.cards = JSON.parse(data.house_extension.cards)
+            } else {
+              data.house_extension.cards = null
+            }
+          }
+          this.contractDetail = data
           this.contract_detail_visible = true;
+
           this.getProcess_id(res.data.process_instance_id)
           this.$set(this.cookieArr, row.contract_id, new Date().getTime())
           this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
@@ -808,10 +834,10 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/scss/customService/dataAudit/index.scss";
-.price-box {
-  overflow-x: scroll;
-  @include scroll;
-}
+// .price-box {
+//   overflow-x: scroll;
+//   @include scroll;
+// }
 </style>
 
 

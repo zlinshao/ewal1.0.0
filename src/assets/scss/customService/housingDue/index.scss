@@ -94,17 +94,43 @@
       .common_info {
         padding: 20px 0 12px;
       }
+      .mian_tit {
+        font-size: 14px;
+      }
       .el-form-item {
-        margin-bottom: 10px;
+        // margin-bottom: 5px;
+        margin-right: 0 !important;
         .el-row {
           margin-right: 0 !important;
         }
         .el-form-item__label {
-          line-height: 20px;
+          line-height: 30px;
+          height: 30px;
+          white-space: nowrap;
         }
         .el-form-item__content {
-          line-height: 20px;
+          font-size: 14px;
           text-align: left;
+          width: 230px;
+          line-height: 30px;
+          height: 36px;
+          overflow-x: scroll;
+          @include scroll;
+          span {
+            white-space: nowrap;
+          }
+        }
+      }
+      .person_tit {
+        width: 100px;
+        display: inline-block;
+        font-size: 14px;
+        line-height: 30px;
+        height: 30px;
+      }
+      .el-col-7 {
+        .el-form-item__content {
+          width: 200px;
         }
       }
       .house_info {
@@ -153,9 +179,6 @@
     }
     // 合同详情
     .contract_detail {
-      .main_tit {
-        color: #686874;
-      }
       .common_info {
         background-color: #ffffff;
       }
@@ -163,6 +186,12 @@
         color: #b0b0b0;
       }
       .el-form-item__content {
+        color: #686874;
+      }
+      .person_tit {
+        color: #b0b0b0;
+      }
+      .main_tit {
         color: #686874;
       }
     }

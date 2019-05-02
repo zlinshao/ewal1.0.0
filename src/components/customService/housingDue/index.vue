@@ -333,7 +333,8 @@
             <el-form label-width="120px" v-if=' contractDetail.customer_info'>
               <el-row :gutter="10" v-for='item in  contractDetail.customer_info' :key='item.id'>
                 <el-col :span="1">
-                  <el-form-item label="签约人" class='person_tit'></el-form-item>
+                  <span class='person_tit'>签约人</span>
+                  <!-- <el-form-item label="签约人" class='person_tit'></el-form-item> -->
                 </el-col>
                 <el-col :span="7">
                   <el-form-item label="姓名">
@@ -353,7 +354,8 @@
               </el-row>
               <el-row :gutter="10" v-if="chooseTab === 1">
                 <el-col :span="1">
-                  <el-form-item label="产权人" class='person_tit'></el-form-item>
+                  <span class='person_tit'>产权人</span>
+                  <!-- <el-form-item label="产权人" class='person_tit'></el-form-item> -->
                 </el-col>
                 <el-col :span="7">
                   <el-form-item label="姓名">
@@ -373,9 +375,9 @@
               </el-row>
             </el-form>
             <el-form label-width="120px" v-else>
-              <el-row :gutter="10" v-if="chooseTab === 1">
+              <el-row :gutter="10">
                 <el-col :span="1">
-                  <el-form-item :label="chooseTab === 1?'产权人':'签约人'" class='person_tit' />
+                  <span class='person_tit'>{{chooseTab === 1?'产权人':'签约人'}}</span>
                 </el-col>
                 <el-col :span="7" style='font-size:14px;'>
                   <span>暂无资料</span>
@@ -434,7 +436,7 @@
                 </div>
               </div>
             </div>
-            <div v-else>暂无资料</div>
+            <div class="common_info mian_tit" v-else>暂无资料</div>
           </div>
 
           <p class='main_tit'>相关合同</p>
@@ -449,7 +451,7 @@
               </el-row>
             </el-form>
           </div>
-          <div class="common_info" v-else>暂无资料</div>
+          <div class="common_info mian_tit" v-else>暂无资料</div>
         </div>
       </div>
     </lj-dialog>
@@ -763,7 +765,7 @@ export default {
               data.house_extension.cards = null
             }
           }
-          console.log(data)
+
           this.contractDetail = data
         }
       })
