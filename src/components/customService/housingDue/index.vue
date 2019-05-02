@@ -147,35 +147,35 @@
               <el-row :gutter="10">
                 <el-col :span="8" v-if='chooseTab == 1'>
                   <el-form-item label="物业地址">
-                    <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).name
+                    <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{contractDetail.house_extension.community.name
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="产权地址">
-                    <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{JSON.parse(contractDetail.house_extension.community).detailed_address
+                    <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{contractDetail.house_extension.community.detailed_address
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="水卡卡号">
-                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).water_card_number
+                    <span v-if='contractDetail.house_extension &&contractDetail.house_extension.cards'>{{contractDetail.house_extension.cards.water_card_number
                       || '--' }}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="电卡卡号">
-                    <span v-if='contractDetail.house_extension&& contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).electricity_card_number
+                    <span v-if='contractDetail.house_extension &&contractDetail.house_extension.cards'>{{contractDetail.house_extension.cards.electricity_card_number
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="燃气卡号">
-                    <span v-if='contractDetail.house_extension&&contractDetail.house_extension.cards'>{{JSON.parse(contractDetail.house_extension.cards).gas_card_number
+                    <span v-if='contractDetail.house_extension &&contractDetail.house_extension.cards'>{{contractDetail.house_extension.cards.gas_card_number
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
@@ -662,7 +662,8 @@ export default {
       // 当前点击的row
       currentRow: null,
       market_server: globalConfig.market_server,
-      payArr: ['水费', '电费', '燃气费', '物业费', '网络费', '其他']
+      payArr: ['水费', '电费', '燃气费', '物业费', '网络费', '其他'],
+      currentMethod: '',
     }
   },
   created () {
@@ -748,7 +749,22 @@ export default {
       // 合同详情
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
         if (res.code === 200) {
-          this.contractDetail = res.data
+          let data = res.data
+          if (data.house_extension) {
+            if (data.house_extension.community && data.house_extension.community != 'null') {
+              data.house_extension.community = JSON.parse(data.house_extension.community)
+            } else {
+              data.house_extension.community = null
+            }
+
+            if (data.house_extension.cards && data.house_extension.cards != 'null') {
+              data.house_extension.cards = JSON.parse(data.house_extension.cards)
+            } else {
+              data.house_extension.cards = null
+            }
+          }
+          console.log(data)
+          this.contractDetail = data
         }
       })
     },
@@ -756,6 +772,7 @@ export default {
     handleCloseDetail () {
       this.contract_detail_visible = false
       this.currentRow = null
+      this.contractDetail = {}
     },
 
     // 添加标记
@@ -772,7 +789,11 @@ export default {
         remark: null,
         album: [],
       }
-      this.currentRow = null
+      if (this.currentMethod != 'seeRecord') {
+        this.currentRow = null
+      } else {
+        this.backInfo_visible = true
+      }
       this.mark_visible = false;
     },
     // 标记类型
@@ -810,6 +831,7 @@ export default {
       }
 
       if (this.tagType == 1) {
+        console.log('22')
         this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {
@@ -829,16 +851,21 @@ export default {
       if (this.tagType == 2) {
         this.$http.put(this.market_server + `v1.0/market/contract/tag/${this.currentRow.tag_id}`, this.mark_form).then(res => {
           if (res.code === 200) {
-            this.$LjNotify('success', {
-              title: '修改成功',
-              message: res.message
-            });
+
             this.handleCancelMark();
-            this.getDateList();
+            if (this.currentMethod == 'seeRecord') {
+              this.getHousingRecord(this.currentRow.tag_id)
+            } else {
+              this.getDateList();
+              this.$LjNotify('success', {
+                title: '修改成功',
+                message: ''
+              });
+            }
           } else {
             this.$LjNotify('warning', {
               title: '修改失败',
-              message: res.message
+              message: ''
             })
           }
         })
@@ -848,10 +875,14 @@ export default {
     // 查看标记
     readHousuingTag (row) {
       this.currentRow = row;
-      this.$http.get(this.market_server + `v1.0/market/contract/tag/${row.tag_id}`).then(res => {
+      this.backInfo_visible = true;
+      this.getHousingRecord(row.tag_id)
+    },
+    getHousingRecord (id) {
+      this.$http.get(this.market_server + `v1.0/market/contract/tag/${id}`).then(res => {
         if (res.code === 200) {
           this.backInfo = res.data.data
-          this.backInfo_visible = true;
+
         } else {
           this.$LjNotify('warning', {
             title: '警告',
@@ -862,14 +893,16 @@ export default {
     },
     // 关闭 标记查看
     handleCloseLookBackInfo () {
-      this.currentRow = '';
-      this.backInfo = '';
+      this.currentRow = null;
+      this.backInfo = [];
       this.backInfo_visible = false;
+      this.currentMethod = ''
     },
     // 查看标记中 修改标记
     backInfo_addHousuingTag () {
+      this.currentMethod = 'seeRecord'
       this.addHousuingTag(this.currentRow, 2)
-      this.backInfo = '';
+      // this.backInfo = '';
       this.backInfo_visible = false;
     },
     // 发送代办

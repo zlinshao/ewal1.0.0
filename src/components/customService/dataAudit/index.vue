@@ -387,7 +387,7 @@
             <div class="flex-center flex-center2">
               <div class="flex_center_tit">不齐内容</div>
               <div class="flex_center_content flex_center_content2">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="dataRecord.content"
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请选择不齐内容" v-model="dataRecord.content"
                   disabled style='background:transparent'>
                 </el-input>
                 <div class='buttons'>
@@ -751,7 +751,7 @@ export default {
       if (!this.dataRecord.content) {
         this.$LjNotify('warning', {
           title: '提示',
-          message: '不齐内容未填写'
+          message: '不齐内容未选择'
         });
         return
       }

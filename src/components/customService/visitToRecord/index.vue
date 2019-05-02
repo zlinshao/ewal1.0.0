@@ -168,7 +168,7 @@
                   </div>
                   <div>
                     <span class='tit'>合同照片</span>
-                    <p class='content'>
+                    <p class='content' v-if='recordDetail.album'>
                       <img :src="img.uri" alt="" v-for='img in recordDetail.album.photo' :key='img.id' data-magnify=""
                         data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'>
                     </p>
@@ -412,7 +412,9 @@ export default {
         electricity_card_photo: '电卡',
         gas_card_photo: '气卡'
       },
-      record_info: {}
+      record_info: {},
+      currentMethod: '',
+      isAddRecord: false
     }
   },
   created () {
@@ -503,6 +505,7 @@ export default {
     },
     // 双击查看回访记录
     tableClickRow (row) {
+      console.log(row)
       this.record_info = {
         type: 1,
         house_name: row.house_name || '----',
@@ -578,6 +581,7 @@ export default {
             title: '成功',
             message: '记录添加成功'
           })
+          this.isAddRecord = true
           this.handleCloseAdd()
         } else {
           this.$LjNotify('warning', {
@@ -593,7 +597,17 @@ export default {
     },
     handleCloseAdd () {
       this.add_visible = false;
-      this.recordDetail = null
+      if (this.currentMethod == 'addRecord') {
+        this.tableClickRow(this.currentRow)
+      } else {
+        this.recordDetail = null
+        this.currentRow = null
+
+        if (this.isAddRecord) {
+          this.getRecordList()
+        }
+        this.isAddRecord = false
+      }
       this.recordOption = {
         contract_id: null,
         contract_number: null,
@@ -607,15 +621,21 @@ export default {
         money: null
       }]
       this.recordFree = null
-      this.currentRow = null
     },
     handleCloseDetail (param) {
       if (param == 'add') {
+        this.currentMethod = 'addRecord'
         this.add_visible = true
         this.record_addRecord()
       } else {
         this.currentRow = null
-        this.detail_visible = false;
+        this.detail_visible = false
+        this.recordDetail = null
+        this.currentMethod = ''
+        if (this.isAddRecord) {
+          this.getRecordList()
+        }
+        this.isAddRecord = false
       }
     },
   }
