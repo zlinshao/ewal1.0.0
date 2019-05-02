@@ -59,6 +59,13 @@ export default {
       this.staffModule = true;
     },
     handleCloseTranfer (isTrue) {
+      if (!this.transfer.personName) {
+        this.$LjNotify('success', {
+          title: '提示',
+          message: '未选择转交人'
+        });
+        return
+      }
       if (isTrue) {
         let option = {
           work_order_id: this.moduleData.id,
