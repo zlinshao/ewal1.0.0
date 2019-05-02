@@ -2,7 +2,8 @@
   <div id="questionnaire">
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
-        <div @click="showAddQuestionnaire" class="icons-font"><b>新建问卷</b></div>
+<!--        <div @click="showAddQuestionnaire" class="icons-font"><b>新建问卷</b></div>-->
+        <div @click="showAddQuestionnaire" class="icons add"><b>+</b></div>
       </div>
 
     </div>

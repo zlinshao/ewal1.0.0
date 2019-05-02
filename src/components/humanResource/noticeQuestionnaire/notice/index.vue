@@ -2,7 +2,8 @@
   <div id="notice">
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
-        <div class="icons-font" @click="showPublishNoticeDialog"><b>发公告</b></div>
+<!--        <div class="icons-font" @click="showPublishNoticeDialog"><b>发公告</b></div>-->
+        <div class="icons add" @click="showPublishNoticeDialog"><b>+</b></div>
         <!--<div class="icons add" @click="publish_notice_dialog_visible = true"><b>+</b></div>-->
       </div>
 
