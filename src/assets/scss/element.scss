@@ -403,6 +403,21 @@ div.el-popover {
   }
 }
 
+.el-button {
+  background-color: yellowgreen;
+}
+
+/*隐藏表单验证红色*号*/
+.el-form-item {
+  .el-form-item__label {
+    background-color: red !important;
+  }
+  .el-form-item__label::after {
+    content: '' !important;
+    display: none;
+  }
+}
+
 #theme_name.theme1 {
   .el-table {
     tbody {

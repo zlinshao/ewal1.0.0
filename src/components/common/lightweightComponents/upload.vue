@@ -29,7 +29,7 @@
         </div>
 
         <!--其它类型-->
-        <img src="../../../assets/image/file/xls.png" v-else-if="item.info.mime.includes('xls')">
+        <img src="../../../assets/image/common/theme1/bg(1).png" v-else-if="item.info.mime.includes('xls')">
         <!--<img @click="downloadFile(item)" src="../../../assets/image/file/xls.png" v-else-if="item.info.mime.includes('xls')&& !editable">-->
         <img src="../../../assets/image/file/doc.png" v-else-if="item.info.mime.includes('doc')">
         <img src="../../../assets/image/file/txt.png" v-else-if="item.info.mime.includes('text')">
@@ -46,8 +46,8 @@
         </div>
       </div>
       <!--上传按钮-->
-      <label v-if="editable" class="uploadPic" :key="1" :style="uploadCss" :for="file.keyName">
-        <img src="../../../assets/image/common/theme1/upload.png">
+      <label v-if="editable" class="uploadPic" style="padding: 0" :key="1" :style="uploadCss" :for="file.keyName">
+        <img src="../../../assets/image/common/theme1/tj.png">
         <input type="file" :id="file.keyName" hidden multiple @change="uploadPic">
       </label>
       <!--下载按钮-->
