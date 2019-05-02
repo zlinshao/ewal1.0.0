@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -179,7 +179,12 @@
   color: #686874; }
 
 #theme_name #menuList {
-  background-color: #ffffff; }
+  background-color: #ffffff;
+  position: relative; }
+  #theme_name #menuList .title {
+    position: absolute;
+    top: 30px;
+    left: 30px; }
   #theme_name #menuList .list {
     height: 500px;
     padding: 80px 150px;

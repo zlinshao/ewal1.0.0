@@ -27,7 +27,7 @@
           </el-table-column>
           <el-table-column label="取消面试" prop="" align="center">
             <template slot-scope="scope">
-              <el-button size="mini" type="danger" @click="handleOpenCancel(scope.row)">取消面试</el-button>
+              <el-button size="mini" type="danger" plain @click="handleOpenCancel(scope.row)">取消面试</el-button>
             </template>
           </el-table-column>
           <el-table-column label="修改" prop="" align="center">

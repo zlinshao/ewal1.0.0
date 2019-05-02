@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -182,7 +182,8 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  right: 0; }
+  right: 0;
+  padding-top: 81px; }
   #theme_name .lj_dialog > div {
     position: fixed;
     top: 0;
@@ -204,7 +205,8 @@
         right: -20px;
         top: -20px;
         cursor: pointer; }
-      #theme_name .lj_dialog > div .lj_container .wen_top, #theme_name .lj_dialog > div .lj_container .wen_bottom {
+      #theme_name .lj_dialog > div .lj_container .wen_top,
+      #theme_name .lj_dialog > div .lj_container .wen_bottom {
         width: 50px;
         height: 30px;
         position: absolute;
@@ -215,5 +217,7 @@
       #theme_name .lj_dialog > div .lj_container .wen_bottom {
         bottom: -2px;
         transform-origin: center center; }
+      #theme_name .lj_dialog > div .lj_container .dialog_main::-webkit-scrollbar-thumb {
+        background: #999 !important; }
 
 /*# sourceMappingURL=lj_dialog.css.map */

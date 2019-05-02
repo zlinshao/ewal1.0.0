@@ -26,22 +26,22 @@
                 <el-form label-width="120px" class="borderNone" size="small" :disabled="reviseInfo">
                   <el-row :gutter="10">
                     <el-col :span="6">
-                      <el-form-item label="姓名:">
+                      <el-form-item label="姓名">
                         <el-input v-model="staffDetail.name"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="岗位:">
+                      <el-form-item label="岗位">
                         <el-input v-model="staffDetail.position_name" readonly @focus="post_visible = true"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="部门:">
+                      <el-form-item label="部门">
                         <el-input v-model="staffDetail.org_name" readonly @focus="depart_visible = true"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="职级:">
+                      <el-form-item label="职级">
                         <el-select v-model="staffDetail.position_level">
                         <el-option :value="1" label="P1"></el-option>
                         <el-option :value="2" label="P2"></el-option>
@@ -54,17 +54,17 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="在职状态:">
+                      <el-form-item label="在职状态">
                         <el-input v-model="staffDetail.work_status"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="入职时间:">
+                      <el-form-item label="入职时间">
                         <el-date-picker v-model="staffDetail.enroll" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="入职等级:">
+                      <el-form-item label="入职等级">
                         <el-select v-model="staffDetail.level" placeholder="请选择">
                           <el-option label="实习" :value="0"></el-option>
                           <el-option label="正式" :value="1"></el-option>
@@ -72,17 +72,17 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="转正时间:">
+                      <el-form-item label="转正时间">
                         <el-date-picker v-model="staffDetail.forward_time" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="薪资:">
+                      <el-form-item label="薪资">
                         <el-input v-model="staffDetail.salary"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="性别:">
+                      <el-form-item label="性别">
                         <div class="flex changeChoose" style="margin-top: 10px">
                           <el-radio :label="1" v-model="staffDetail.gender">男</el-radio>
                           <el-radio :label="0" v-model="staffDetail.gender">女</el-radio>
@@ -90,57 +90,57 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="年龄:">
+                      <el-form-item label="年龄">
                         <el-input v-model="staffDetail.age"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="生日:">
+                      <el-form-item label="生日">
                         <el-date-picker value-format="yyyy-MM-dd" v-model="staffDetail.birthday"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="手机:">
+                      <el-form-item label="手机">
                         <el-input v-model="staffDetail.phone"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="身份证:">
+                      <el-form-item label="身份证">
                         <el-input v-model="staffDetail.id_num"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="e-mail:">
+                      <el-form-item label="e-mail">
                         <el-input v-model="staffDetail.email"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="紧急联系人/电话:">
+                      <el-form-item label="紧急联系人/电话">
                         <el-input v-model="staffDetail.emergency_call"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="籍贯:">
+                      <el-form-item label="籍贯">
                         <el-input v-model="staffDetail.origin_addr"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="城市:">
+                      <el-form-item label="城市">
                         <el-input v-model="staffDetail.city"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="民族:">
+                      <el-form-item label="民族">
                         <el-input v-model="staffDetail.national"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="户口属地:">
+                      <el-form-item label="户口属地">
                         <el-input v-model="staffDetail.city"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="户口性质:">
+                      <el-form-item label="户口性质">
                         <el-select v-model="staffDetail.household_register">
                           <el-option :value="0" label="农村"></el-option>
                           <el-option :value="1" label="城市"></el-option>
@@ -148,7 +148,7 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="政治面貌:">
+                      <el-form-item label="政治面貌">
                         <el-select v-model="staffDetail.political_status">
                           <el-option :value="1" label="群众"></el-option>
                           <el-option :value="2" label="团员"></el-option>
@@ -158,7 +158,7 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="婚育状况:">
+                      <el-form-item label="婚育状况">
                         <div class="flex changeChoose" style="margin-top: 10px">
                           <el-radio :label="0" v-model="staffDetail.marital_status">未婚</el-radio>
                           <el-radio :label="1" v-model="staffDetail.marital_status">已婚</el-radio>
@@ -166,12 +166,12 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="英语等级:">
+                      <el-form-item label="英语等级">
                         <el-input v-model="staffDetail.english_level"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="犯罪史:">
+                      <el-form-item label="犯罪史">
                         <div class="flex changeChoose" style="margin-top: 10px">
                           <el-radio :label="0" v-model="staffDetail.criminal_history">有</el-radio>
                           <el-radio :label="1" v-model="staffDetail.criminal_history">无</el-radio>
@@ -179,7 +179,7 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="就业证:">
+                      <el-form-item label="就业证">
                         <el-select v-model="staffDetail.employment_permit">
                           <el-option :value="0" label="有"></el-option>
                           <el-option :value="1" label="无"></el-option>
@@ -187,17 +187,17 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="家庭住址:">
+                      <el-form-item label="家庭住址">
                         <el-input v-model="staffDetail.home_addr"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="社保卡号:">
+                      <el-form-item label="社保卡号">
                         <el-input v-model="staffDetail.society_number"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="入职途径:">
+                      <el-form-item label="入职途径">
                         <el-select v-model="staffDetail.entry_way.entry_type">
                           <el-option :value="1" label="智联招聘"></el-option>
                           <el-option :value="2" label="前程无忧"></el-option>
@@ -212,52 +212,52 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="推荐人:">
+                      <el-form-item label="推荐人">
                         <el-input readonly v-model="staffDetail.recommenders.name" @focus="staff_visible = true"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="开户行:">
+                      <el-form-item label="开户行">
                         <el-input v-model="staffDetail.account_bank"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="开户名:">
+                      <el-form-item label="开户名">
                         <el-input v-model="staffDetail.account_name"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="支行:">
+                      <el-form-item label="支行">
                         <el-input v-model="staffDetail.branch_bank"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="支行行号:">
+                      <el-form-item label="支行行号">
                         <el-input v-model="staffDetail.branch_bank_code"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="银行卡号:">
+                      <el-form-item label="银行卡号">
                         <el-input v-model="staffDetail.bank_num"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="第一次合同时间:">
+                      <el-form-item label="第一次合同时间">
                         <el-date-picker v-model="staffDetail.agreement_first_time" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="第一次合同到期时间:">
+                      <el-form-item label="第一次合同到期时间">
                         <el-date-picker v-model="staffDetail.agreement_first_end_time" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="第二次合同时间:">
+                      <el-form-item label="第二次合同时间">
                         <el-date-picker v-model="staffDetail.agreement_second_time" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="离职时间:">
+                      <el-form-item label="离职时间">
                         <el-select v-model="staffDetail.dismiss_reason.dismiss_type">
                           <el-option :value="1" label="主动离职"></el-option>
                           <el-option :value="2" label="旷工离职"></el-option>
@@ -267,7 +267,7 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                      <el-form-item label="离职原因:">
+                      <el-form-item label="离职原因">
                         <el-input v-model="staffDetail.dismiss_reason.dismiss_mess"></el-input>
                       </el-form-item>
                     </el-col>
@@ -279,7 +279,7 @@
                   <div v-for="item in staffDetail.education_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                     <el-row>
                       <el-col :span="8">
-                        <el-form-item label="起始时间:">
+                        <el-form-item label="起始时间">
                           <el-date-picker
                             v-model="item.start_end_time"
                             type="daterange"
@@ -290,19 +290,19 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                        <el-form-item label="学校名称:">
+                        <el-form-item label="学校名称">
                           <el-input v-model="item.school" placeholder="请输入"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                        <el-form-item label="专业:">
+                        <el-form-item label="专业">
                           <el-input v-model="item.major"  placeholder="请输入"></el-input>
                         </el-form-item>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="8">
-                        <el-form-item label="学历:">
+                        <el-form-item label="学历">
                           <el-select v-model="item.education" placeholder="请选择">
                             <el-option :value="1" label="高中及以上"></el-option>
                             <el-option :value="2" label="大专及以上"></el-option>
@@ -312,7 +312,7 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                        <el-form-item label="学习形式:">
+                        <el-form-item label="学习形式">
                           <el-select v-model="item.learn_type" placeholder="请选择">
                             <el-option :value="1">全日制</el-option>
                             <el-option :value="2">其他</el-option>
@@ -321,29 +321,29 @@
                       </el-col>
                     </el-row>
                   </div>
-                  <el-form-item label="入职材料:">
+                  <el-form-item label="入职材料">
                     <el-checkbox-group v-model="staffDetail.entry_materials" class="changeChoose flex-center">
                         <el-checkbox v-for="tmp in entry_materials_checkbox" :key="tmp.id" :label="tmp.id">{{ tmp.val }}</el-checkbox>
                     </el-checkbox-group>
                   </el-form-item>
                   <el-row>
                     <el-col :span="8">
-                      <el-form-item label="银行卡照片:">
+                      <el-form-item label="银行卡照片">
 
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="劳务合同:">
+                      <el-form-item label="劳务合同">
 
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="学籍验证报告:">
+                      <el-form-item label="学籍验证报告">
 
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="离职证明:">
+                      <el-form-item label="离职证明">
 
                       </el-form-item>
                     </el-col>
@@ -359,7 +359,7 @@
                   <div v-for="item in staffDetail.work_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                     <el-row>
                       <el-col :span="8">
-                        <el-form-item label="起始时间:">
+                        <el-form-item label="起始时间">
                           <el-date-picker
                             v-model="item.start_end_time"
                             type="daterange"
@@ -370,29 +370,29 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                        <el-form-item label="岗位:">
+                        <el-form-item label="岗位">
                           <el-input v-model="item.position" placeholder="请输入"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                        <el-form-item label="工作单位:">
+                        <el-form-item label="工作单位">
                           <el-input v-model="item.work_place" placeholder="请输入"></el-input>
                         </el-form-item>
                       </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="8">
-                        <el-form-item label="薪资:">
+                        <el-form-item label="薪资">
                           <el-input v-model="item.salary" placeholder="请输入"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                        <el-form-item label="证明人:">
+                        <el-form-item label="证明人">
                           <el-input v-model="item.witness" placeholder="请输入"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
-                        <el-form-item label="证明人电话:">
+                        <el-form-item label="证明人电话">
                           <el-input v-model="item.witness_phone" placeholder="请输入"></el-input>
                         </el-form-item>
                       </el-col>
@@ -417,7 +417,7 @@
             </el-tabs>
           </div>
         </div>
-        <div class="dialog_footer">
+        <div class="dialog_footer" style="text-align: right">
           <el-button v-if="!reviseInfo" type="danger" size="small" @click="handleSubmitUpdate">确定</el-button>
           <el-button type="info" size="small" @click="reviseInfo = !reviseInfo">编辑</el-button>
         </div>

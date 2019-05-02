@@ -1,7 +1,7 @@
 <template>
   <div id="humanResource">
     <div>
-      <MenuList :list="humanResource" :module="true"></MenuList>
+      <MenuList :list="humanResource" :module="true" :title="title"></MenuList>
     </div>
   </div>
 </template>
@@ -16,10 +16,11 @@
     data() {
       return {
         humanResource,
+        title: ''
       }
     },
     mounted() {
-
+      this.title = '人力资源中心';
     },
     activated() {
     },

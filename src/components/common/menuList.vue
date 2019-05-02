@@ -9,16 +9,18 @@
         </div>
       </div>
     </div>
+    <div class="title">{{ top_title }}</div>
   </div>
 </template>
 
 <script>
   export default {
     name: "menu-list",
-    props: ['list', 'module', 'backdrop'],
+    props: ['list', 'module', 'backdrop','title'],
     data() {
       return {
         dialogVisible: false,
+        top_title: ''
       }
     },
     mounted() {
@@ -26,6 +28,9 @@
     activated() {
     },
     watch: {
+      title(val) {
+        this.top_title = val;
+      },
       module(val) {
         console.log(val);
         this.dialogVisible = val;

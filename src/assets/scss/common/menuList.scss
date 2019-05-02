@@ -3,6 +3,12 @@
 #theme_name {
   #menuList {
     background-color: $colorFFF;
+    position: relative;
+    .title {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+    }
     .list {
       height: 500px;
       padding: 80px 150px;

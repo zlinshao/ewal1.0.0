@@ -4,11 +4,11 @@
     <div class="dialog_main space-column departPosition">
       <div class="items-bet mainTop">
         <div></div>
-        <el-button type="text" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>
+        <el-button type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>
       </div>
       <div class="scroll_bar" v-if="tabsManage === 'staff'" @click="checkOverflow()">
         <div id="scroll-body" class="staffManage" v-if="staffList.length > 0">
-          <div v-for="item in staffList">
+          <div v-for="item in staffList" style="min-width: 150px">
             <div class="items-center" :class="{'is_enable': item.is_enable}" @click="reviseStaff(item)">
               <p>
                 <img :src="item.avatar" alt="" v-if="item.avatar">
@@ -252,7 +252,7 @@
                 <div v-for="item in interview_info_detail.education_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                   <el-row>
                     <el-col :span="8">
-                      <el-form-item label="起始时间:">
+                      <el-form-item label="起始时间">
                         <el-date-picker
                           v-model="item.start_end_time"
                           type="daterange"
@@ -263,19 +263,19 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="学校名称:">
+                      <el-form-item label="学校名称">
                         <el-input v-model="item.school" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="专业:">
+                      <el-form-item label="专业">
                         <el-input v-model="item.major"  placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row>
                     <el-col :span="8">
-                      <el-form-item label="学历:">
+                      <el-form-item label="学历">
                         <el-select v-model="item.education" placeholder="请选择">
                           <el-option :value="1" label="高中及以上"></el-option>
                           <el-option :value="2" label="大专及以上"></el-option>
@@ -285,7 +285,7 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="学习形式:">
+                      <el-form-item label="学习形式">
                         <el-select v-model="item.learn_type" placeholder="请选择">
                           <el-option :value="1">全日制</el-option>
                           <el-option :value="2">其他</el-option>
@@ -294,7 +294,7 @@
                     </el-col>
                   </el-row>
                 </div>
-                <el-form-item label="入职材料:">
+                <el-form-item label="入职材料">
                   <el-checkbox-group v-model="interview_info_detail.entry_materials" class="changeChoose">
                     <div class="flex-center" style="margin-top: 8px">
                       <el-checkbox v-for="tmp in entry_materials_checkbox" :key="tmp.id" :label="tmp.id">{{ tmp.val }}</el-checkbox>
@@ -312,7 +312,7 @@
                 <div v-for="item in interview_info_detail.work_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                   <el-row>
                     <el-col :span="8">
-                      <el-form-item label="起始时间:">
+                      <el-form-item label="起始时间">
                         <el-date-picker
                           v-model="item.start_end_time"
                           type="daterange"
@@ -323,29 +323,29 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="岗位:">
+                      <el-form-item label="岗位">
                         <el-input v-model="item.position" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="工作单位:">
+                      <el-form-item label="工作单位">
                         <el-input v-model="item.work_place" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row>
                     <el-col :span="8">
-                      <el-form-item label="薪资:">
+                      <el-form-item label="薪资">
                         <el-input v-model="item.salary" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="证明人:">
+                      <el-form-item label="证明人">
                         <el-input v-model="item.witness" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="证明人电话:">
+                      <el-form-item label="证明人电话">
                         <el-input v-model="item.witness_phone" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
@@ -359,7 +359,7 @@
             </el-tab-pane>
           </el-tabs>
         </div>
-        <div class="dialog_footer">
+        <div class="dialog_footer" style="text-align: right">
           <el-button type="danger" size="mini" @click="handleSubmitAddStaff">提交</el-button>
           <el-button type="info" size="mini" @click="handleCancelAddStaff">取消</el-button>
         </div>
