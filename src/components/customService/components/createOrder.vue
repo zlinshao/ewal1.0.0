@@ -78,8 +78,8 @@
                 <div class='input_box'>
                   <el-select placeholder="请选择" v-model='createOrder.send_order_type'>
                     <el-option label="内部员工" value="1"> </el-option>
-                    <el-option :label="createOrder.type== 7? '维修公司' : '保洁公司'" value="2"> </el-option>
-                    <el-option :label="createOrder.type== 7? '维修师傅' : '保洁师傅'" value="3"> </el-option>
+                    <el-option :label="createOrder.type == 7? '维修公司' : '保洁公司'" value="2"> </el-option>
+                    <el-option :label="createOrder.type == 7? '维修师傅' : '保洁师傅'" value="3"> </el-option>
                   </el-select>
                 </div>
               </el-col>
@@ -93,14 +93,14 @@
                   <el-input @focus="handlerOrgan('operate_user')" readonly v-model="createOrder.operate_user.name" />
                 </div>
               </el-col>
+
               <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-else>
                 <p class='el-col-p'><i class='icon handler'></i><span>处理人</span></p>
                 <div class='input_box'>
                   <el-input @focus="handlerOrgan('operate_user')" readonly v-model="createOrder.operate_user.name" />
                 </div>
               </el-col>
-
-              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='!((moduleOrder == 78 || createOrder.type == 7 || createOrder.type == 8) && createOrder.send_order_type == 1)'>
+              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='!((moduleOrder == 78 || createOrder.type == 7 || createOrder.type == 8) && createOrder.send_order_type != 1)'>
                 <p class='el-col-p'><i class='icon org'></i><span>部门</span></p>
                 <div class='input_box'>
                   <OrgChoose v-model='createOrder.operate_org.id'></OrgChoose>
@@ -341,8 +341,8 @@
                         </p>
                         <span v-if='history.type == 697 && history.follow_status == 338'>报销金额 {{'￥'+
                           history.reimburse_money}}</span>
-                        <span v-else-if='history.type == 697 && history.follow_status == 338'>已结束维修</span>
-                        <span v-else-if='history.follow_status != 338'>处理中</span>
+                        <span v-else-if='history.type == 697 && history.follow_status == 337'>已结束维修</span>
+                        <span v-else>处理中</span>
                       </div>
                     </div>
                   </div>
@@ -830,6 +830,7 @@ export default {
         if (res.code === 200) {
           this.customer_info.data = res.data.data
           this.customer_info.count = res.data.count
+          console.log(this.customer_info)
         }
       })
 
@@ -932,7 +933,7 @@ export default {
       // 将用户列表清空
       this.customer_info = {
         page: 1,
-        dataCount: 0,
+        count: 0,
         data: [],
         contract_Detail: null
       }
