@@ -209,8 +209,6 @@ export default {
           dicties.decorate = params[404] // 装修
           dicties.property_type = params[410] // 房屋类型
           dicties.card_type = params[409] //证件类型
-
-          console.log(dicties)
         }
       })
     },
@@ -220,12 +218,7 @@ export default {
     },
 
     openMessage () {
-
       this.$store.dispatch('change_message_visible');
-
-      if (this.$store.state.todo.todo_list_visible) {
-        this.$store.dispatch('change_todo_list_visible');
-      }
       // this.$LjMessage('warning', {
       //   title: '警告',
       //   msg: '审批失败！'
