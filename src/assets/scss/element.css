@@ -213,7 +213,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -498,6 +498,22 @@ div.el-popover {
 #theme_name .page .el-pagination .btn-next,
 #theme_name .page .el-pagination .btn-prev {
   background-color: transparent; }
+#theme_name #recruitment .el-button--success {
+  color: #0EB17D;
+  background: #CFF8EA;
+  font-weight: bold; }
+#theme_name #recruitment .el-button--warning {
+  color: #FFB522;
+  background: #FFF7E4; }
+#theme_name #recruitment .el-button--danger.el-button--mini {
+  background: #FFE9EA;
+  color: #D84D51; }
+#theme_name #part_two .el-button--success.is-plain {
+  border: 1px solid #0EB17D; }
+#theme_name #part_two .el-button--danger.el-button--mini.is-plain {
+  background: #FFE9EA;
+  color: #D84D51;
+  border: 1px solid #D84D51; }
 #theme_name #part_four .offer_container .el-input__inner,
 #theme_name #part_four .labour_contract .el-input__inner {
   border: none;

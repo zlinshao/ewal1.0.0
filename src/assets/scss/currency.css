@@ -213,7 +213,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -282,7 +282,8 @@
       color: #cf2e33;
       background: url("../../assets/image/common/theme1/xzgj.png") no-repeat scroll center;
       background-size: 100% 100%; }
-  #theme_name h5.operate b, #theme_name h5.operate i {
+  #theme_name h5.operate b,
+  #theme_name h5.operate i {
     position: absolute;
     width: 10px;
     height: 10px;
@@ -303,7 +304,7 @@
   #theme_name .listTopCss .listTopLeft p {
     width: 42px;
     height: 50px;
-    background-color: #DFDFDF;
+    background-color: #dfdfdf;
     -webkit-border-radius: 0 4px 4px 0;
     -moz-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0;
@@ -329,7 +330,8 @@
         margin-top: 6px;
         border-radius: 30px 30px 0 0;
         background-color: transparent; }
-  #theme_name .listTopCss .listTopRight > div, #theme_name .listTopCss .listTopRight > span {
+  #theme_name .listTopCss .listTopRight > div,
+  #theme_name .listTopCss .listTopRight > span {
     margin-right: 40px; }
   #theme_name .listTopCss .listTopRight > div {
     -webkit-border-radius: 6px;
@@ -370,17 +372,17 @@
     height: 40px;
     line-height: 38px; }
   #theme_name .listTopCss .listTopRight .button1 {
-    background-color: #FFF7E4;
-    color: #FFAD0B; }
+    background-color: #fff7e4;
+    color: #ffad0b; }
     #theme_name .listTopCss .listTopRight .button1:hover {
-      background-color: #FFAD0B;
-      color: #FFF7E4; }
+      background-color: #ffad0b;
+      color: #fff7e4; }
   #theme_name .listTopCss .listTopRight .button2 {
-    background-color: #CFF8EA;
-    color: #0BB07B; }
+    background-color: #cff8ea;
+    color: #0bb07b; }
     #theme_name .listTopCss .listTopRight .button2:hover {
-      background-color: #0BB07B;
-      color: #CFF8EA; }
+      background-color: #0bb07b;
+      color: #cff8ea; }
 #theme_name .dialogVisible {
   position: fixed;
   left: 0;
@@ -457,12 +459,14 @@
     #theme_name .dialog_container .dialog_main::-webkit-scrollbar-track {
       background: #e4e7ed; }
     #theme_name .dialog_container .dialog_main::-webkit-scrollbar-thumb {
-      background: #747474;
+      background: #999999;
       border-radius: 4px; }
     #theme_name .dialog_container .dialog_main .unUse-txt {
       font-size: 18px; }
     #theme_name .dialog_container .dialog_main .showPadding {
       padding: 0 20px; }
+  #theme_name .dialog_container .dialog_main::-webkit-scrollbar-thumb {
+    background: #999 !important; }
   #theme_name .dialog_container .dialog_footer {
     width: 100%;
     padding: 20px 0;
@@ -674,8 +678,8 @@
     #theme_name footer.bottomPage:hover .develop {
       opacity: 0; }
       #theme_name footer.bottomPage:hover .develop i {
-        -webkit-animation: bounce-down .8s linear infinite;
-        animation: bounce-down .8s linear infinite; }
+        -webkit-animation: bounce-down 0.8s linear infinite;
+        animation: bounce-down 0.8s linear infinite; }
 @keyframes bounce-up {
   25% {
     transform: translateY(-2px) rotateZ(-90deg); }
@@ -695,7 +699,7 @@
   100% {
     transform: translateY(0) rotateZ(-90deg); } }
 #theme_name.theme1 .highChoose {
-  background-color: #FFEAEA;
+  background-color: #ffeaea;
   color: #cf2e33; }
 #theme_name.theme1 .listTopCss .listTopLeft p {
   background-color: #dfdfdf; }

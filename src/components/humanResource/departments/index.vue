@@ -15,8 +15,8 @@
       </div>
       <div class="items-center listTopRight">
         <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
-        <div class="buttons button1" @click="showSetForm" v-if="chooseTab === 3">设置报表</div>
-        <div class="buttons button2" v-if="chooseTab === 3" @click="handleExportInfo">导出报表</div>
+        <div class="buttons button1" style="font-weight: bold" @click="showSetForm" v-if="chooseTab === 3">设置报表</div>
+        <div class="buttons button2" style="font-weight: bold" v-if="chooseTab === 3" @click="handleExportInfo">导出报表</div>
         <el-tooltip content="新增部门" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
@@ -33,7 +33,7 @@
     <div class="departList" v-if="chooseTab === 2">
       <div class="items-start mainList" :class="{'mainListHover': routeAnimation}">
         <p v-for="item in departList" @click="handleOpenDepartDetail(item)">
-          <span class="writingMode" :title="item.name">
+          <span class="writingMode" :title="item.name" style="display: inline-block;max-height: 80%">
             {{item.name}}
           </span>
           <a class="control flex-center">
@@ -87,9 +87,9 @@
               <div class="depart_list flex">
                 <!--<div class="next_btn" :class="{'show_next_btn': is_next}"><i class="el-icon-arrow-right"></i></div>-->
                 <!--鼠标移入判断是否有下级部门不合理-->
-                <div class="next_btn"><i class="el-icon-arrow-right"></i></div>
+                <div class="next_btn"><i class="el-icon-arrow-right" style="visibility: hidden"></i></div>
                 <div class="list flex scroll_bar" v-if="next_depart.length > 0">
-                  <div class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>
+                  <div class="writingMode" style="text-align: left;padding-top: 15px" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>
                   <!--不合理-->
                   <!--<div @mouseover="handleConfirmNext(depart)" class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>-->
                 </div>
@@ -283,23 +283,23 @@
         </div>
         <div class="dialog_main flex-center borderNone">
           <el-form :model="departForm" ref="departForm" label-width="120px" class="depart_visible">
-            <el-form-item label="部门名称" required>
-              <el-input v-model="departForm.name"></el-input>
+            <el-form-item label="部门名称">
+              <el-input v-model="departForm.name" placeholder="必填"></el-input>
             </el-form-item>
-            <el-form-item label="上级部门" required>
+            <el-form-item label="上级部门">
               <div class="items-center iconInput">
                 <el-input v-model="departForm.parent" readonly @focus="chooseDepart = true"></el-input>
                 <p class="icons organization"></p>
               </div>
             </el-form-item>
-            <el-form-item label="部门负责人" required>
+            <el-form-item label="部门负责人">
               <div class="items-center iconInput">
-                <el-input v-model="departForm.leader" readonly @focus="organModule = true"></el-input>
+                <el-input v-model="departForm.leader" placeholder="必填" readonly @focus="organModule = true"></el-input>
                 <p class="icons user"></p>
               </div>
             </el-form-item>
             <el-form-item label="部门负责岗位">
-              <el-input v-model="departForm.position" @focus="post_visible = true" readonly></el-input>
+              <el-input v-model="departForm.position" placeholder="选填" @focus="post_visible = true" readonly></el-input>
             </el-form-item>
           </el-form>
         </div>

@@ -350,7 +350,31 @@ div.el-popover {
       }
     }
   }
-
+  #recruitment {
+    .el-button--success {
+      color: #0EB17D;
+      background: #CFF8EA;
+      font-weight: bold;
+    }
+    .el-button--warning {
+      color: #FFB522;
+      background: #FFF7E4;
+    }
+    .el-button--danger.el-button--mini {
+      background: #FFE9EA;
+      color: #D84D51;
+    }
+  }
+  #part_two {
+    .el-button--success.is-plain {
+      border: 1px solid #0EB17D;
+    }
+    .el-button--danger.el-button--mini.is-plain {
+      background: #FFE9EA;
+      color: #D84D51;
+      border: 1px solid #D84D51;
+    }
+  }
   #part_four {
     .offer_container,
     .labour_contract {

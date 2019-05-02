@@ -30,10 +30,10 @@
           </h2>
         </div>
         <div class="items-center listTopRight">
-          <el-button type="success" size="mini" plain @click="handleSearchInterview" style="margin-right: 20px">查看面试人数</el-button>
-          <el-button size="mini" type="warning" plain v-if="chooseTab === 2" @click="ms_add_visible = true">添加面试人</el-button>
-          <el-button size="mini" type="success" plain v-if="chooseTab === 2" style="margin-right: 10px" @click="msg_add_visible = true">添加面试官</el-button>
-          <el-button size="mini" type="primary" plain v-if="chooseTab === 2" style="margin-right: 10px" @click="handleOpenLookOffer">查看面试官</el-button>
+          <el-button type="success" size="small" @click="handleSearchInterview" style="margin-right: 20px">查看面试人数</el-button>
+          <el-button size="small" type="warning"  v-if="chooseTab === 2" @click="ms_add_visible = true">添加面试人</el-button>
+          <el-button size="small" type="success" v-if="chooseTab === 2" style="margin-right: 10px" @click="msg_add_visible = true">添加面试官</el-button>
+          <el-button size="small" type="success" v-if="chooseTab === 2" style="margin-right: 10px" @click="handleOpenLookOffer">查看面试官</el-button>
           <div class="icons add" v-if="chooseTab === 1" @click="mb_add_visible = true"><b>+</b></div>
           <div class="icons search" @click="handleOpenSearch"></div>
         </div>

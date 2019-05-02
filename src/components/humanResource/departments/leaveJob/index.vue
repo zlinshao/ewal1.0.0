@@ -24,7 +24,7 @@
         <el-table-column label="禁用操作时间" prop="staff.is_enable" align="center"></el-table-column>
         <el-table-column label="联系方式" prop="phone" align="center"></el-table-column>
         <el-table-column label="离职类型" prop="staff.dismiss_reason.dismiss_type" align="center"></el-table-column>
-        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" align="center"></el-table-column>
+        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" align="center" min-width="200px"></el-table-column>
         <el-table-column label="离职交接单" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="handleLookResignation(scope.row)">查看</el-button>
@@ -32,23 +32,20 @@
         </el-table-column>
         <el-table-column label="离职短信" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleControlMsg(scope.row,'sms')">
-              {{ scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1 ? '已发送' : '发送'}}
-            </el-button>
+            <span v-if="scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1">已发送</span>
+            <el-button type="text" @click="handleControlMsg(scope.row,'sms')" style="color: #D33E43" v-else>发送</el-button>
           </template>
         </el-table-column>
         <el-table-column label="离职群消息" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleControlMsg(scope.row,'announcement')">
-              {{ scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1 ? '已发送' : '发送'}}
-            </el-button>
+            <span v-if="scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1">已发送</span>
+            <el-button type="text" @click="handleControlMsg(scope.row,'announcement')" style="color: #D33E43" v-else>发送</el-button>
           </template>
         </el-table-column>
         <el-table-column label="离职证明" align="center">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleLeaveProof(scope.row)">
-              {{ scope.row.staff && scope.row.staff.leave_proof_number ? '查看' : '发送'}}
-            </el-button>
+            <el-button type="text" @click="handleLeaveProof(scope.row)" v-if="scope.row.staff && scope.row.staff.leave_proof_number">查看</el-button>
+            <el-button type="text" @click="handleLeaveProof(scope.row)" style="color: #D33E43" v-else>发送</el-button>
           </template>
         </el-table-column>
       </el-table>
