@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -306,7 +306,7 @@
   text-align: center;
   transition: all ease 1s; }
   .exam-container .content .contain .question-paper {
-    width: 80%; }
+    width: 85%; }
     .exam-container .content .contain .question-paper > div {
       width: 80px;
       height: 100%;
@@ -359,7 +359,7 @@
         .exam-container .content .contain .question-paper .exam_span > span:last-child {
           font-size: 26px; }
   .exam-container .content .contain .exam-paper {
-    width: 80%; }
+    width: 85%; }
     .exam-container .content .contain .exam-paper .exam-paper-container {
       width: 80px;
       height: 100%;
@@ -404,7 +404,10 @@
       .exam-container .content .contain .exam-paper .exam-paper-container:hover {
         color: #cf2e33; }
   .exam-container .content .contain .exam-control {
-    width: 20%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 15%;
     flex-direction: column; }
     .exam-container .content .contain .exam-control > div {
       width: 40px;

@@ -16,6 +16,7 @@
       }
     }
     .repository-container {
+      border-top: 9px solid #F6F6F6;
       width: 100%;
       height: calc(100% - 160px);
       //background-color: $color9F9;
@@ -27,15 +28,15 @@
         height: calc(100% - 341px);
         //@extend .flex-center;
         .bg-container {
-          width:240px;
-          height:160px;
+          width:154px;
+          height:368px;
           margin: 0 110px;
           &:hover {
             cursor: pointer;
             transform: scale(1.05);
             transition: all 1s;
             span {
-              color: $colorFFF;
+              color: #C52525;
             }
           }
           //border:1px solid rgba(207,46,51,1);
@@ -44,9 +45,9 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            //@extend .writingMode;
+            @extend .writingMode;
             //display: block;
-            width: 80px;
+            //width: 80px;
             word-wrap:break-word;
             word-break:break-all;
             color: #686874;;

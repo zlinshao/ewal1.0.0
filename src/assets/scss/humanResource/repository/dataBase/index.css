@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -180,13 +180,165 @@
 
 #theme_name.theme1 #dataBase .main-nav {
   margin-left: 50px;
-  padding: 15px 0; }
-  #theme_name.theme1 #dataBase .main-nav > span {
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between; }
+  #theme_name.theme1 #dataBase .main-nav .dataBase-left > span {
     padding: 5px 30px;
     margin: 0 10px;
     cursor: pointer;
     font-size: 14px; }
-  #theme_name.theme1 #dataBase .main-nav .isActive {
+  #theme_name.theme1 #dataBase .main-nav .dataBase-left .isActive {
     color: white; }
+  #theme_name.theme1 #dataBase .main-nav .dataBase-right > span {
+    width: 31px;
+    height: 58px;
+    padding: 5px 30px;
+    margin: 0 10px;
+    cursor: pointer;
+    font-size: 14px; }
+  #theme_name.theme1 #dataBase .main-nav .dataBase-right .isActive {
+    color: white; }
+#theme_name.theme1 #dataBase .dataBase-container .contractNumber {
+  width: 1799px;
+  height: 100%;
+  margin: 0 60px 0 61px; }
+  #theme_name.theme1 #dataBase .dataBase-container .contractNumber .contractNumberTop {
+    width: 1799px;
+    height: 489px; }
+  #theme_name.theme1 #dataBase .dataBase-container .contractNumber .page .el-pagination {
+    padding: 0 0 0 1200px; }
+  #theme_name.theme1 #dataBase .dataBase-container .contractNumber .contractNumberBottom {
+    width: 1799px;
+    margin-top: 39px; }
+#theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body {
+  height: 639px;
+  padding: 0 65px 0 66px;
+  display: flex;
+  justify-content: space-between; }
+  #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_left {
+    width: 67px; }
+    #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_left .fenlei {
+      width: 67px;
+      height: 76px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; }
+    #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_left .all {
+      width: 67px;
+      height: 76px;
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; }
+    #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_left .contractGatherChoosed {
+      color: white; }
+    #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_left .contractGatherChoosedF {
+      color: #797982; }
+  #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right {
+    width: 1424px;
+    height: 639px;
+    padding: 36px 30px 0 75px; }
+    #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_title {
+      height: 35px;
+      display: flex;
+      align-items: center; }
+      #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_title .words {
+        width: 64px;
+        height: 35px;
+        font-size: 16px;
+        font-family: jingdianxingshu;
+        color: #cf2e33;
+        line-height: 35px; }
+      #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_title .arrow {
+        width: 34px;
+        height: 5px;
+        margin-left: 23px; }
+    #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_body {
+      height: 100%;
+      padding-top: 46px; }
+      #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_body .right_body_header {
+        height: 20px;
+        width: 373px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; }
+        #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_body .right_body_header:hover {
+          cursor: pointer; }
+        #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_body .right_body_header > h3 {
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: #d2d2d2;
+          line-height: 19px; }
+        #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_body .right_body_header .remainingUnpaidChoosed {
+          color: #cf2e33; }
+      #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_body .right_body_main {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap; }
+        #theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_body .main_right .right_body .right_body_main > div {
+          width: 12.5%;
+          height: 20px;
+          margin-top: 16.5px;
+          font-size: 12px;
+          font-family: MicrosoftYaHei;
+          color: #686874;
+          line-height: 16px; }
+#theme_name.theme1 #dataBase .collectDialog .dialog_container .dialog_footer {
+  padding-left: 1337px; }
+#theme_name.theme1 #dataBase .distributeDialog .dialog_header {
+  margin-left: 49px; }
+  #theme_name.theme1 #dataBase .distributeDialog .dialog_header > h3 {
+    font-size: 24px;
+    font-family: MicrosoftYaHei;
+    color: #686874;
+    line-height: 31px; }
+#theme_name.theme1 #dataBase .distributeDialog .dialog_body {
+  width: 100%;
+  height: 575px; }
+  #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_header {
+    height: 40px;
+    padding-right: 215px; }
+  #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_main {
+    width: 1060px;
+    height: 495px;
+    margin-left: 67px;
+    padding: 80px 0px 0px 60px;
+    background: white;
+    border-radius: 4px; }
+    #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_main .right_title {
+      height: 35px;
+      display: flex;
+      align-items: center; }
+      #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_main .right_title .words {
+        width: 64px;
+        height: 35px;
+        font-size: 16px;
+        font-family: jingdianxingshu;
+        color: #cf2e33;
+        line-height: 35px; }
+      #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_main .right_title .arrow {
+        width: 34px;
+        height: 5px;
+        margin-left: 23px; }
+    #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_main .body_detail {
+      display: flex;
+      flex-wrap: wrap; }
+      #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_main .body_detail > div {
+        width: 25%;
+        height: 19px;
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; }
+        #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_main .body_detail > div .selector {
+          width: 18px;
+          height: 18px;
+          border-radius: 9px;
+          background: #cf2e33; }
+        #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_main .body_detail > div .content {
+          margin-left: 20px; }
 
 /*# sourceMappingURL=index.css.map */
