@@ -754,7 +754,7 @@ export default {
           title: '综合页'
         }
       ],
-      chooseTab: 3,
+      chooseTab: 1,
 
       params: {
         page: 1,
@@ -1199,7 +1199,6 @@ export default {
     },
     //获取合同列表
     getContractList () {
-      this.params.contract_type = this.chooseTab === 1 || this.chooseTab === 3 ? 1 : 2;
       this.showLoading(true);
       this.$http.get(this.market_server + 'v1.0/market/contract', this.params).then(res => {
         if (res.code === 200) {
@@ -1271,6 +1270,7 @@ export default {
     },
     changeTabs (id) {
       this.chooseTab = id;
+      this.params.contract_type = id;
       this.getContractList();
     },
     handleChangePage (page) {

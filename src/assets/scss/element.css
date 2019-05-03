@@ -1,4 +1,3 @@
-@charset "UTF-8";
 .flex {
   display: flex;
   display: -webkit-flex; }
@@ -285,7 +284,6 @@ div.el-popover {
 #theme_name .el-form-item__label:before {
   content: '' !important; }
 #theme_name .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:after {
-  /*隐藏*号*/
   display: none;
   content: '*';
   color: #cf2e33;
@@ -349,29 +347,30 @@ div.el-popover {
     background-color: transparent !important; }
   #theme_name .el-table tbody tr:hover td {
     background-color: transparent !important; }
-  #theme_name .el-table tbody tr td.el-table__expanded-cell[class*=cell] {
+  #theme_name .el-table tbody tr td.el-table__expanded-cell[class*='cell'] {
     padding: 0; }
   #theme_name .el-table tbody tr .expand-container .expand-top {
     padding: 15px;
-    background-color: #E6F6F1 !important; }
+    background-color: #e6f6f1 !important; }
     #theme_name .el-table tbody tr .expand-container .expand-top td {
-      background-color: #E6F6F1 !important; }
+      background-color: #e6f6f1 !important; }
     #theme_name .el-table tbody tr .expand-container .expand-top th.is-leaf {
-      background-color: #E6F6F1 !important; }
+      background-color: #e6f6f1 !important; }
     #theme_name .el-table tbody tr .expand-container .expand-top .el-table__empty-block {
-      background-color: #E6F6F1 !important; }
+      background-color: #e6f6f1 !important; }
   #theme_name .el-table tbody tr .expand-container .expand-bottom {
     padding: 15px;
-    background-color: #FFF6E5 !important; }
+    background-color: #fff6e5 !important; }
     #theme_name .el-table tbody tr .expand-container .expand-bottom td {
-      background-color: #FFF6E5 !important; }
+      background-color: #fff6e5 !important; }
     #theme_name .el-table tbody tr .expand-container .expand-bottom th.is-leaf {
-      background-color: #FFF6E5 !important; }
+      background-color: #fff6e5 !important; }
     #theme_name .el-table tbody tr .expand-container .expand-bottom .el-table__empty-block {
-      background-color: #FFF6E5 !important; }
+      background-color: #fff6e5 !important; }
 #theme_name #staffRoster .el-table {
   background-color: white !important; }
-  #theme_name #staffRoster .el-table tr, #theme_name #staffRoster .el-table th {
+  #theme_name #staffRoster .el-table tr,
+  #theme_name #staffRoster .el-table th {
     background-color: white !important; }
   #theme_name #staffRoster .el-table tbody tr.current-row td {
     background-color: white !important; }
@@ -384,7 +383,7 @@ div.el-popover {
 #theme_name .borderBgColor .el-input__inner,
 #theme_name .borderBgColor .el-textarea__inner {
   border: none;
-  background-color: #F9F9F9 !important; }
+  background-color: #f9f9f9 !important; }
 #theme_name .onlyBg .el-input__inner,
 #theme_name .onlyBg .el-textarea__inner {
   border: none;
@@ -502,21 +501,21 @@ div.el-popover {
 #theme_name .page .el-pagination .btn-prev {
   background-color: transparent; }
 #theme_name #recruitment .el-button--success {
-  color: #0EB17D;
-  background: #CFF8EA;
+  color: #0eb17d;
+  background: #cff8ea;
   font-weight: bold; }
 #theme_name #recruitment .el-button--warning {
-  color: #FFB522;
-  background: #FFF7E4; }
+  color: #ffb522;
+  background: #fff7e4; }
 #theme_name #recruitment .el-button--danger.el-button--mini {
-  background: #FFE9EA;
-  color: #D84D51; }
+  background: #ffe9ea;
+  color: #d84d51; }
 #theme_name #part_two .el-button--success.is-plain {
-  border: 1px solid #0EB17D; }
+  border: 1px solid #0eb17d; }
 #theme_name #part_two .el-button--danger.el-button--mini.is-plain {
-  background: #FFE9EA;
-  color: #D84D51;
-  border: 1px solid #D84D51; }
+  background: #ffe9ea;
+  color: #d84d51;
+  border: 1px solid #d84d51; }
 #theme_name #part_four .offer_container .el-input__inner,
 #theme_name #part_four .labour_contract .el-input__inner {
   border: none;
