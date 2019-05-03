@@ -96,7 +96,7 @@
                    size="small" label-width="100px">
 
             <el-form-item required prop="type_id" label="公告类型">
-              <dropdown-list ref="dropdown1" :url="`${this.url}announcement/announcement_type`"
+              <dropdown-list ref="dropdown1" title="必选" :url="`${this.url}announcement/announcement_type`"
                              v-model="publish_notice_form.type_id"></dropdown-list>
               <span class="btn_add" style="position: absolute;right: 13px;top: 3px;"
                     @click="showNoticeTypeDialog"
@@ -104,12 +104,12 @@
             </el-form-item>
 
             <el-form-item required prop="title" label="标题">
-              <el-input v-model="publish_notice_form.title" placeholder="请输入标题" style="width: 320px">
+              <el-input v-model="publish_notice_form.title" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
 
             <el-form-item required prop="content" label="正文">
-              <el-input type="textarea" v-model="publish_notice_form.content" placeholder="请输入正文" style="width: 320px">
+              <el-input type="textarea" v-model="publish_notice_form.content" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
 
@@ -119,7 +119,7 @@
             </el-form-item>
 
             <el-form-item required prop="send_scope" label="发送范围">
-              <org-choose title="请选择发送范围" v-model="publish_notice_form.send_scope.org_id"></org-choose>
+              <org-choose title="必选" v-model="publish_notice_form.send_scope.org_id"></org-choose>
             </el-form-item>
 
             <div v-for="(item,index) in publish_notice_form.sanction_info" :key="index">
@@ -129,7 +129,7 @@
                             :rules="{required: true, message: '请选择类型', trigger: 'blur'}"
                             label="类型">
                 <dropdown-list :json-arr="DROPDOWN_CONSTANT.NOTICEQUESTIONNAIRE.PUBLISHNOTICE.TYPE"
-                               title="请选择类型"
+                               title="必选"
                                v-model="publish_notice_form.sanction_info[index].sanction_type"></dropdown-list>
                 <span v-if="index==0" class="btn_add" style="position: absolute;right: 13px;top: 3px;"
                       @click="handleSanctionInfo(index)"
@@ -143,7 +143,7 @@
               <el-form-item required :prop="'sanction_info.'+index+'.money'"
                             :rules="{required: true, message: '请输入奖罚金额', trigger: 'blur'}"
                             label="奖罚金额">
-                <el-input v-model="publish_notice_form.sanction_info[index].money" placeholder="请输入奖罚金额"
+                <el-input v-model="publish_notice_form.sanction_info[index].money" placeholder="必填"
                           style="width: 320px">
                 </el-input>
               </el-form-item>
@@ -151,7 +151,7 @@
               <el-form-item required :prop="'sanction_info.'+index+'.user_id'"
                             :rules="{required: true, message: '请选择责任人', trigger: 'blur'}"
                             label="责任人">
-                <user-choose num="1" title="请选择责任人"
+                <user-choose num="1" title="必选"
                              v-model="publish_notice_form.sanction_info[index].user_id"></user-choose>
               </el-form-item>
             </div>

@@ -552,7 +552,7 @@
 
                 <el-form-item required :prop="'list.'+index+'.question'" :rules="{required: true, message: '请输入遗留问题', trigger: ['blur','change']}"
                   label="遗留问题">
-                  <el-input style="width: 700px" v-model="meeting_remaining_form.list[index].question"></el-input>
+                  <el-input style="width: 700px" placeholder="必填" v-model="meeting_remaining_form.list[index].question"></el-input>
                   <span v-if="index==0 && meeting_summary_editable" class="btn_add" style="position: absolute;right: 60px;top: 3px;"
                     @click="handleRemainingInfo(index)">+</span>
                   <span v-if="index>=1 && meeting_summary_editable" class="btn_add" @click="handleRemainingInfo(index,item)"
@@ -561,12 +561,12 @@
 
                 <el-form-item required :prop="'list.'+index+'.follow_id'" :rules="{required: true, message: '请选择跟进人', trigger: ['blur','change']}"
                   label="跟进人">
-                  <user-choose width="700" num="1" v-model="meeting_remaining_form.list[index].follow_id"></user-choose>
+                  <user-choose width="700" num="1" title="必选" v-model="meeting_remaining_form.list[index].follow_id"></user-choose>
                 </el-form-item>
 
                 <el-form-item required :prop="'list.'+index+'.result'" :rules="{required: true, message: '请输入跟进情况', trigger: ['blur','change']}"
                   label="跟进情况">
-                  <el-input style="width: 700px" v-model="meeting_remaining_form.list[index].result" title="请输入跟进情况"></el-input>
+                  <el-input style="width: 700px" v-model="meeting_remaining_form.list[index].result" title="必填"></el-input>
                 </el-form-item>
 
                 <el-form-item label="遗留问题附件">
@@ -642,28 +642,28 @@
             size="small" label-width="100px">
 
             <el-form-item required prop="name" label="会议主题">
-              <el-input v-model="add_meeting_form.name" placeholder="请输入会议主题" style="width: 320px">
+              <el-input v-model="add_meeting_form.name" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
 
             <el-form-item required prop="room_id" label="会议室">
-              <dropdown-list ref="dropdown1" :url="`${this.url}meeting/category`" code="1" v-model="add_meeting_form.room_id"></dropdown-list>
+              <dropdown-list ref="dropdown1" title="必选" :url="`${this.url}meeting/category`" code="1" v-model="add_meeting_form.room_id"></dropdown-list>
 
               <span class="btn_add" style="position: absolute;right: 13px;top: 3px;" @click="openMeetingRoomOrType(1)">+</span>
             </el-form-item>
 
             <el-form-item required prop="meeting_type" label="会议类型">
-              <dropdown-list ref="dropdown2" :url="`${this.url}meeting/category`" code="2" v-model="add_meeting_form.meeting_type"></dropdown-list>
+              <dropdown-list ref="dropdown2" title="必选" :url="`${this.url}meeting/category`" code="2" v-model="add_meeting_form.meeting_type"></dropdown-list>
 
               <span class="btn_add" style="position: absolute;right: 13px;top: 3px;" @click="openMeetingRoomOrType(2)">+</span>
             </el-form-item>
 
             <el-form-item label="会议时间">
-              <date-time-picker :clearable="false" ref="meetingTime" :width="320" date-type="timerange"></date-time-picker>
+              <date-time-picker title="必选" :clearable="false" ref="meetingTime" :width="320" date-type="timerange"></date-time-picker>
             </el-form-item>
 
             <el-form-item required prop="presenter_id" label="主持人">
-              <user-choose title="请选择主持人" v-model="add_meeting_form.presenter_id"></user-choose>
+              <user-choose title="必选" v-model="add_meeting_form.presenter_id"></user-choose>
             </el-form-item>
 
             <!--<el-form-item label="应到人数">
@@ -683,7 +683,7 @@
             </el-form-item>
 
             <el-form-item required prop="participants" label="选择人员">
-              <user-choose title="请选择人员" v-model="add_meeting_form.participants"></user-choose>
+              <user-choose title="必选" v-model="add_meeting_form.participants"></user-choose>
             </el-form-item>
 
             <el-form-item label="参会人数">

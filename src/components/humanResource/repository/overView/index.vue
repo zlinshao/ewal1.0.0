@@ -296,7 +296,7 @@
               <div class="items-center iconInput choose-goods" @click="getGoodsList" style="width: 320px">
                 <!--<el-input v-model="in_repository_form.goods" placeholder="请选择物品" style="width: 300px">
                 </el-input>-->
-                <dropdown-list ref="categoryDropdown2" width="300" :url="`${this.url}eam/category`" title="请选择物品"
+                <dropdown-list ref="categoryDropdown2" width="300" :url="`${this.url}eam/category`" title="必填"
                                code="2"
                                v-model="in_repository_form.goods"></dropdown-list>
                 <p class="choose-goods-icon"></p>
@@ -305,19 +305,19 @@
                     @click="add_goods_form_visible = true;add_goods_form_title='添加物品'">+</span>
             </el-form-item>
             <el-form-item prop="counts" label="数量">
-              <el-input v-model.number="in_repository_form.counts" placeholder="请输入数量" style="width: 320px">
+              <el-input v-model.number="in_repository_form.counts" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
             <el-form-item prop="location" label="存放位置">
               <el-select v-model="in_repository_form.department"
-                         placeholder="存储类型" style="width: 120px;display: inline-block">
+                         placeholder="必填" style="width: 120px;display: inline-block">
                 <el-option :value="'user'" label="人员"></el-option>
                 <el-option :value="'org'" label="部门"></el-option>
               </el-select>
               <user-choose v-if="in_repository_form.department==='user'" v-model="in_repository_form.location"
-                           width="196" num="1" title="请选择人员"></user-choose>
+                           width="196" num="1" title="必填"></user-choose>
               <org-choose v-if="in_repository_form.department==='org'" v-model="in_repository_form.location" width="196"
-                          num="1" title="请选择部门"></org-choose>
+                          num="1" title="必填"></org-choose>
               <!--<el-select @change="handleInRepositorySelectionChange" v-model="in_repository_form.department" placeholder="存储类型" style="width: 120px">
                 <el-option :value="'user'" label="人员"></el-option>
                 <el-option :value="'org'" label="部门"></el-option>
@@ -326,21 +326,21 @@
                          :placeholder="in_repository_placeholder"></el-input>-->
             </el-form-item>
             <el-form-item prop="purchasePerson" label="采购人">
-              <user-choose v-model="in_repository_form.purchasePerson" num="1" title="请选择采购人"></user-choose>
+              <user-choose v-model="in_repository_form.purchasePerson" num="1" title="必填"></user-choose>
               <!--<el-select v-model="in_repository_form.purchasePerson" placeholder="请输入采购人" style="width: 320px">
                 <el-option :value="1" label="采购人1"></el-option>
               </el-select>-->
             </el-form-item>
             <el-form-item prop="price" label="单价">
-              <el-input v-model.number="in_repository_form.price" placeholder="请输入单价" style="width: 320px">
+              <el-input v-model.number="in_repository_form.price" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
             <el-form-item prop="totalPrice" required label="总价">
-              <el-input v-model.number="in_repository_form.totalPrice" placeholder="请输入总价" style="width: 320px">
+              <el-input v-model.number="in_repository_form.totalPrice" placeholder="必填" style="width: 320px">
               </el-input>
             </el-form-item>
             <el-form-item prop="resource" required label="采购源">
-              <dropdown-list ref="categoryDropdown5" :url="`${this.url}eam/category`" title="必选" code="5"
+              <dropdown-list ref="categoryDropdown5" :url="`${this.url}eam/category`" title="必填" code="5"
                              v-model="in_repository_form.resource"></dropdown-list>
               <!--<el-input v-model="in_repository_form.resource" placeholder="请选择采购源" style="width: 320px">
               </el-input>-->
@@ -593,7 +593,7 @@
           <el-form ref="addCategoryForm" :rules="rules.addCategory" :model="add_category_form" style="text-align: left"
                    size="small" label-width="100px">
             <el-form-item prop="parent_id" required label="上级分类" v-show="add_category_form.type==1">
-              <dropdown-list v-model="add_category_form.parent_id" title="请选择上级分类"
+              <dropdown-list v-model="add_category_form.parent_id" title="必选"
                              :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.ADD_GOODS.PARENT_CLASSIFY"></dropdown-list>
             </el-form-item>
             <el-form-item prop="name" required :label="add_category_form_tip.label">
@@ -615,7 +615,7 @@
     <!--入库详情table-->
     <lj-dialog
       :visible="in_repository_table_visible"
-      :size="{width: 1150 + 'px',height: 800 + 'px'}"
+      :size="{width: 90 + '%',height: 90 + '%'}"
       @close="in_repository_table_visible = false"
     >
       <div class="dialog_container repository-overview">

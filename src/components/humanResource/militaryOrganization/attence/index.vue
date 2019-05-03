@@ -1020,7 +1020,7 @@
           }
 
           .el-checkbox__label {
-            font-size: 20px;
+            font-size: 16px;
           }
         }
       }

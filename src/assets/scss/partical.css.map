@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEI,wHAAe;EACb,UAAU,EAAE,CAAC;EACb,UAAU,EAAE,iBAAiB",
+"sources": ["partical.scss"],
+"names": [],
+"file": "partical.css"
+}
