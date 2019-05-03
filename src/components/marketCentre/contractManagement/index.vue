@@ -19,7 +19,7 @@
         </div>
       </div>
       <!--表格中部-->
-      <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}" @click="handleCloseControl">
+      <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
 
         <el-table height="780px" :data="contractList" @row-dblclick="handleGetDetail">
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
@@ -632,9 +632,6 @@ export default {
       this.contractDetail = '';
       this.contract_detail_visible = false;
     },
-    handleCloseControl () {
-      // this.show_control = '';
-    },
     handleCancelMark () {
       for (var key in this.mark_form) {
         this.mark_form[key] = '';
@@ -720,7 +717,11 @@ export default {
     },
     handleShowControl (row) {
       this.current_choose_control = '';
-      this.show_control = row.contract_id;
+      if (row.contract_id === this.show_control) {
+        this.show_control = '';
+      } else {
+        this.show_control = row.contract_id;
+      }
     },
     handleSubmitRewrite () {
       this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
@@ -750,8 +751,8 @@ export default {
     //双击详情
     handleGetDetail (row) {
       this.currentRow = row;
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
-        // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+      // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
+        this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
         console.log(res);
         if (res.code === 200) {
           this.contractDetail = res.data;

@@ -91,7 +91,7 @@
 @font-face {
   font-family: 'jianyue';
   src: url("/static/font/BaiZhouRenZhe.otf"); }
-.writingMode {
+.writingMode, #theme_name #repository .repository-container .content .bg-container span {
   writing-mode: vertical-rl;
   writing-mode: tb-rl; }
 
@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -192,6 +192,7 @@
       color: white;
       font-size: 14px; }
   #theme_name #repository .repository-container {
+    border-top: 9px solid #F6F6F6;
     width: 100%;
     height: calc(100% - 160px);
     position: absolute;
@@ -201,21 +202,20 @@
     #theme_name #repository .repository-container .content {
       height: calc(100% - 341px); }
       #theme_name #repository .repository-container .content .bg-container {
-        width: 240px;
-        height: 160px;
+        width: 154px;
+        height: 368px;
         margin: 0 110px; }
         #theme_name #repository .repository-container .content .bg-container:hover {
           cursor: pointer;
           transform: scale(1.05);
           transition: all 1s; }
           #theme_name #repository .repository-container .content .bg-container:hover span {
-            color: #ffffff; }
+            color: #C52525; }
         #theme_name #repository .repository-container .content .bg-container span {
           display: flex;
           justify-content: center;
           align-items: center;
           text-align: center;
-          width: 80px;
           word-wrap: break-word;
           word-break: break-all;
           color: #686874;

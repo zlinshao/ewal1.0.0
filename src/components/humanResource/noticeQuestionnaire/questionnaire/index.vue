@@ -2,7 +2,8 @@
   <div id="questionnaire">
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
-        <div @click="showAddQuestionnaire" class="icons-font"><b>新建问卷</b></div>
+<!--        <div @click="showAddQuestionnaire" class="icons-font"><b>新建问卷</b></div>-->
+        <div @click="showAddQuestionnaire" class="icons add"><b>+</b></div>
       </div>
 
     </div>
@@ -71,19 +72,19 @@
           <el-form :disabled="add_questionnaire_form_type==2" style="text-align: left" size="small" label-width="100px"
             :rules="rules.addQuestionnaire" ref="addQuestionnaireFormRef" :model="add_questionnaire_form">
             <el-form-item prop="name" label="问卷名称">
-              <el-input v-model="add_questionnaire_form.name" placeholder="请输入试卷名称"></el-input>
+              <el-input v-model="add_questionnaire_form.name" placeholder="必填"></el-input>
             </el-form-item>
             <el-form-item prop="start_time" label="开始时间">
               <el-date-picker format="yyyy-MM-dd HH:mm:ss" v-model="add_questionnaire_form.start_time" type="datetime"
-                placeholder="请选择开始时间"></el-date-picker>
+                placeholder="必选"></el-date-picker>
             </el-form-item>
             <el-form-item prop="validity_time" label="有效期">
-              <el-input v-model.number="add_questionnaire_form.validity_time" placeholder="请输入有效期">
+              <el-input v-model.number="add_questionnaire_form.validity_time" placeholder="必填">
                 <template slot="append">天</template>
               </el-input>
             </el-form-item>
             <el-form-item prop="object_ids" label="调查对象">
-              <user-choose width="290" v-model="add_questionnaire_form.object_ids"></user-choose>
+              <user-choose width="290" v-model="add_questionnaire_form.object_ids" title="必选"></user-choose>
             </el-form-item>
 
             <el-form-item label="问卷介绍">

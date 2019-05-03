@@ -8,7 +8,7 @@
 
     <div class="content flex">
       <div class="left-guide">
-        <i @click="handleIconClick('up')" class="icon-btn-up"></i>
+        <i @click="handleIconClick('up')" v-if="(left_guide_index!=0&&left_guide_index!=1)&&left_guide_all_list.length!=2" class="icon-btn-up"></i>
 
         <div
           v-for="item in left_guide.slice(0,2)"
@@ -21,7 +21,7 @@
           <span>{{ item.name.slice(0,4) }}</span>
         </div>
 
-        <i @click="handleIconClick('down')" class="icon-btn-down"></i>
+        <i @click="handleIconClick('down')" v-if="(left_guide_index!=left_guide_all_list.length&&left_guide_index!=left_guide_all_list.length-1)&&left_guide_all_list.length!=2" class="icon-btn-down"></i>
 
       </div>
       <div class="right-content flex-center">
@@ -73,16 +73,16 @@
           <el-form ref="addTrainFormRef" :model="new_train_form" :rules="rules.addTrain" style="text-align: left"
                    size="small" label-width="100px">
             <el-form-item required prop="meeting_type" label="培训类型">
-              <dropdown-list :cache="false" title="请选择培训类型" ref="dropdown1" :url="`${this.url}meeting/category`"
+              <dropdown-list :cache="false" title="必选" ref="dropdown1" :url="`${this.url}meeting/category`"
                              code="3"
                              v-model="new_train_form.meeting_type"></dropdown-list>
               <!--              <span class="btn_add" @click="train_type_dialog_visible = true">+</span>-->
             </el-form-item>
             <el-form-item required prop="name" label="培训名称">
-              <el-input v-model="new_train_form.name" placeholder="请输入培训名称" style="width: 320px"></el-input>
+              <el-input v-model="new_train_form.name" placeholder="必填" style="width: 320px"></el-input>
             </el-form-item>
             <el-form-item required prop="room_id" label="培训地点">
-              <dropdown-list title="请输入培训地点" ref="dropdown2" :url="`${this.url}meeting/category`" code="1"
+              <dropdown-list title="必选" ref="dropdown2" :url="`${this.url}meeting/category`" code="1"
                              v-model="new_train_form.room_id"></dropdown-list>
               <!--              <span class="btn_add">+</span>-->
             </el-form-item>
@@ -98,11 +98,11 @@
               </el-date-picker>
             </el-form-item>
             <el-form-item required prop="presenter_id" label="讲师">
-              <user-choose num="1" title="请选择讲师" v-model="new_train_form.presenter_id"></user-choose>
+              <user-choose num="1" title="必选" v-model="new_train_form.presenter_id"></user-choose>
               <!--              <el-select v-model="new_train_form.train_lecturer" style="width: 320px"></el-select>-->
             </el-form-item>
             <el-form-item required prop="participants" label="参会人员">
-              <user-choose title="请选择参会人员" v-model="new_train_form.participants"></user-choose>
+              <user-choose title="必选" v-model="new_train_form.participants"></user-choose>
               <!--              <el-input v-model="new_train_form.train_people" placeholder="请选择参会人员" style="width: 320px"></el-input>-->
             </el-form-item>
             <el-form-item label="培训提醒">
@@ -148,6 +148,7 @@
           </div>
           <div class="dialog_main">
             <el-table
+              header-row-class-name="tableHeader"
               :data="train_type_list"
               height="400px"
             >
@@ -184,7 +185,7 @@
             <el-form ref="addTrainTypeFormRef" :rules="rules.addTrainType" :model="add_train_type_form" size="small"
                      label-width="100px">
               <el-form-item prop="name" required label="培训类型">
-                <el-input style="width: 220px" v-model="add_train_type_form.name" placeholder="请输入培训类型"></el-input>
+                <el-input style="width: 220px" v-model="add_train_type_form.name" placeholder="必填"></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -210,6 +211,7 @@
         </div>
         <div class="dialog_main">
           <el-table
+            header-row-class-name="tableHeader"
             :data="tableSettingData.jobTrain.tableData"
             @row-dblclick="tableDblClick($event);"
             height="400px"

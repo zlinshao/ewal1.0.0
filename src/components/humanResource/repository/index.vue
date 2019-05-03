@@ -15,7 +15,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons-font" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>入库</b></div>
+        <div class="icons add" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>+</b></div>
         <div class="icons add" @click="addDialog(chooseTab)" v-if="chooseTab === 3 || chooseTab===4"><b>+</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
       </div>
@@ -23,7 +23,7 @@
 
     <div v-if="!chooseTab" class="main-container repository-container">
       <div class="content flex-center" v-if="!chooseTab">
-        <div class="bg-container flex-center" @click="chooseTab=1"><span>入库</span></div>
+        <div class="bg-container flex-center" @click="chooseTab=1"><span>库存管理</span></div>
         <div class="bg-container flex-center" @click="chooseTab=2"><span>领用借用</span></div>
         <div class="bg-container flex-center" @click="chooseTab=3"><span>资料库</span></div>
         <div class="bg-container flex-center" @click="chooseTab=4"><span>办公住宿</span></div>
@@ -108,7 +108,7 @@
         selects: [
           {
             id: 1,
-            title: '入库',
+            title: '库存管理',
           },
           {
             id: 2,
@@ -280,10 +280,10 @@
           //@include repositoryImg('sffmbj.png', 'theme1');
 
           .bg-container {
-            @include repositoryImg('lwkfw.png', 'theme1')
+            @include repositoryImg('sywx.png', 'theme1');
 
             &:hover {
-              @include repositoryImg('kfzlx.png', 'theme1')
+              @include repositoryImg('syxz.png', 'theme1');
             }
           }
         }

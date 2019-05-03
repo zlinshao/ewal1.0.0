@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -198,7 +198,7 @@
       position: relative; }
       .main-container .guidance .subject .title {
         width: 50px;
-        height: 120px;
+        height: 130px;
         text-align: center;
         cursor: pointer;
         border: 1px solid #c0c0c0; }
@@ -232,17 +232,22 @@
     .main-container .content .left-guide {
       width: 40%;
       padding: 50px 50px;
-      justify-content: space-between;
+      justify-content: space-around;
       flex-direction: column;
       display: flex;
-      align-items: center; }
+      align-items: center;
+      position: relative; }
       .main-container .content .left-guide .icon-btn-up, .main-container .content .left-guide .icon-btn-down {
+        position: absolute;
         width: 50px;
         height: 18px;
         display: inline-block;
         cursor: pointer; }
       .main-container .content .left-guide .icon-btn-up {
+        top: 60px;
         transform: rotate(180deg); }
+      .main-container .content .left-guide .icon-btn-down {
+        bottom: 60px; }
       .main-container .content .left-guide .left-block {
         width: 100px;
         height: 100px;

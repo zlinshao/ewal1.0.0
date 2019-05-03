@@ -79,7 +79,7 @@
             </div>
             <div class="dialog_footer">
               <el-button type="danger" size="small" @click="handleSubmitMoveBlack">确定</el-button>
-              <el-button type="info" size="small" @close="handleCancelMoveBlack">取消</el-button>
+              <el-button type="info" size="small" @click="handleCancelMoveBlack">取消</el-button>
             </div>
           </div>
         </lj-dialog>

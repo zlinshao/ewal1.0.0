@@ -165,7 +165,7 @@
                 <div class="single-item-choice">
                   <el-radio-group v-model="item.user_answer">
                     <el-radio :key="subIndex" v-for="(subVal,subKey,subIndex) in item.choice" :label="subKey">
-                      {{subVal}}
+                      {{subKey}}、{{subVal}}
                     </el-radio>
                     <!--                    <el-radio :key="subIndex" v-for="(subItem,subIndex) in item.choice" :label="exam_form_item_choose[subIndex]">{{subItem.val}}</el-radio>-->
                   </el-radio-group>
@@ -731,9 +731,13 @@ export default {
   .preview-paper {
     .exam-single {
       .el-radio-group {
+        width: 100%;
+        flex-wrap: wrap;
         display: flex;
         justify-content: flex-start;
-
+        .el-radio {
+          padding: 5px;
+        };
         > label {
           padding-right: 70px;
         }

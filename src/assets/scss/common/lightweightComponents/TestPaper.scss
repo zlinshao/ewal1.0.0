@@ -160,11 +160,13 @@
       }
 
       .library-main {
+
         padding: 0 200px;
         height: 90%;
         position: relative;
         display: flex;
         flex-direction: column;
+
 
         .control {
           padding: 15px 0;
@@ -175,8 +177,11 @@
         .exam-list {
           flex: 1;
           color: $color874;
+          width: 100%;
+
 
           .exam-single {
+            width: 100%;
             .single-title {
               font-size: 16px;
               font-family: PingFangSC-Regular !important;
@@ -187,6 +192,8 @@
               .exam-single-item {
                 .single-item-stem {}
                 .single-item-choice {
+                  word-break: break-all;
+                  word-wrap: break-word;
                   padding: 10px 15px;
                 }
               }
@@ -194,6 +201,7 @@
           }
 
           .exam-judge {
+            width: 100%;
             padding-top: 30px;
             .judge-title {
               font-size: 16px;
@@ -214,6 +222,7 @@
           }
 
           .exam-short {
+            width: 100%;
             padding-top: 30px;
             .short-title {
               font-size: 16px;

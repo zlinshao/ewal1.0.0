@@ -21,7 +21,7 @@
       <!--表格中部-->
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
 
-        <el-table :data="contractList" @expand-change="handleExpandRow" @row-click="handleGetDetail" :height="this.mainListHeight(30) + 'px'">
+        <el-table :data="contractList" @expand-change="handleExpandRow" @row-dblclick="handleGetDetail" :height="this.mainListHeight(30) + 'px'">
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
           <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
@@ -1085,7 +1085,11 @@ export default {
     },
     handleShowControl (row) {
       this.current_choose_control = '';
-      this.show_control = row.contract_id;
+      if (row.contract_id === this.show_control) {
+        this.show_control = '';
+      } else {
+        this.show_control = row.contract_id;
+      }
     },
     handleSubmitRewrite () {
       this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
@@ -1121,7 +1125,6 @@ export default {
         if (res.code === 200) {
           this.contractDetail = res.data;
           this.contract_detail_visible = true;
-          console.log(this.contractDetail);
         } else {
           this.contractDetail = '';
         }
