@@ -8,21 +8,18 @@
       height: 100%;
       padding: 30px 100px;
       .organ-tree {
+        width: 100%;
         height: 700px;
         margin: 0 auto;
         padding: 30px;
         text-align: center;
-        overflow: auto;
         position: relative;
+        overflow: scroll;
         .strt-wrap {
-          width: 5000px;
+          width: 4000px;
           min-height: 600px;
           margin: 10px;
-          cursor: move;
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
+          cursor: pointer;
         }
         .strt-part {
           text-align: center;
@@ -157,11 +154,11 @@
           //flex-wrap: nowrap;
         }
       }
-      ::-webkit-scrollbar {
-        width: 0;
-        height: 0;
-        border: none;
-      }
+      //::-webkit-scrollbar {
+      //  width: 0;
+      //  height: 0;
+      //  border: none;
+      //}
     }
   }
 }

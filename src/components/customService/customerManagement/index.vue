@@ -5,7 +5,8 @@
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
           <p class="flex-center">
-            <b @click="menu_visible = true">...</b>
+            <b @click="show_market = true">...</b>
+            <!--<b>...</b>-->
           </p>
           <h1>客户管理</h1>
           <h2 class="items-center">
@@ -24,7 +25,7 @@
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
         <el-table
           :data="customerList"
-          :height="this.mainListHeight(30) + 'px'"
+          height="700px"
           @row-dblclick="handleOpenDetail"
         >
           <el-table-column prop="created_at" label="创建时间" align="center"></el-table-column>
@@ -78,7 +79,7 @@
           </div>
           <div class="dialog_footer">
             <el-button type="danger" size="small" @click="handleSubmitMoveBlack">确定</el-button>
-            <el-button type="info" size="small" @close="handleCancelMoveBlack">取消</el-button>
+            <el-button type="info" size="small" @click="handleCancelMoveBlack">取消</el-button>
           </div>
         </div>
       </lj-dialog>
@@ -330,25 +331,23 @@
       </lj-dialog>
 
       <SearchHigh :module="highVisible" :show-data="searchData" @close="handleCloseHigh"></SearchHigh>
-
-      <MenuList :module="menu_visible" :list="customService" :backdrop="true" @close="menu_visible = false"></MenuList>
+      <MenuList :module="show_market" :list="customService" :backdrop="true" @close="handleCloseMenu"></MenuList>
     </div>
   </div>
 </template>
 
 <script>
   import SearchHigh from '../../common/searchHigh.vue';
-  import MarketMenuList from '../../marketCentre/components/market-menu-list.vue';
-  import LjDialog from '../../common/lj-dialog.vue';
   import MenuList from '../../common/menuList.vue';
-  import {customService} from '../../../assets/js/allModuleList.js';
+  import { customService } from '../../../assets/js/allModuleList.js';
+  import LjDialog from '../../common/lj-dialog.vue';
+
   export default {
     name: "index",
-    components: { LjDialog , SearchHigh ,MarketMenuList,MenuList},
+    components: { LjDialog , SearchHigh,MenuList},
     data() {
       return {
         customService,
-        menu_visible: false,
         pay_type: {
           444 : '月付',
           445 :  '双月付',
@@ -361,6 +360,7 @@
         move_row: '',
 
         highVisible: false,
+        show_market: false,
         searchData: {},
 
         market_server: globalConfig.market_server,
@@ -428,6 +428,9 @@
       handleGoMoveOutBlack(row) {
         this.move_row = row;
         this.move_out_visible = true;
+      },
+      handleCloseMenu() {
+        this.show_market = false;
       },
       handleCloseHigh() {
         this.highVisible = false;

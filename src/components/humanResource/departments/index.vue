@@ -33,7 +33,7 @@
     <div class="departList" v-if="chooseTab === 2">
       <div class="items-start mainList" :class="{'mainListHover': routeAnimation}">
         <p v-for="item in departList" @click="handleOpenDepartDetail(item)">
-          <span class="writingMode" :title="item.name" style="display: inline-block;max-height: 80%">
+          <span class="writingMode" :title="item.name">
             {{item.name}}
           </span>
           <a class="control flex-center">
