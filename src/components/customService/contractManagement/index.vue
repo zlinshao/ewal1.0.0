@@ -881,7 +881,12 @@ export default {
       })
     },
     handleClickExpandRow (row) {
-      console.log(row);
+      this.list_params.contract_id = row.contract_id;
+      this.expand_params.house_id = row.house_id;
+      this.leaseNote_params.contract_id = row.contract_number;
+      this.revisit_params.type = row.contract_type;
+      this.list_params.address = row.house_name;
+      this.handleGetCustomerInfo();
     },
     handleCheckOutList () {
       this.$http.get(this.market_server + 'v1.0/market/checkOut', this.list_params).then(res => {
@@ -987,7 +992,7 @@ export default {
       this.list_params.contract_id = row.contract_id;
       this.expand_params.house_id = row.house_id;
       this.leaseNote_params.contract_id = row.contract_number;
-      this.revisit_params.type = 1;
+      this.revisit_params.type = row.contract_type;
       this.list_params.address = row.house_name;
       this.getExpandData();
       this.handleGetCustomerInfo();

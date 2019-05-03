@@ -62,8 +62,8 @@
                     <span>{{ house_detail.hk }}</span>
                     <span>{{ house_detail.area }}</span>
                     <span>{{ house_detail.decorate }}</span>
-                    <span>{{ house_detail.property_type && house_detail.property_type.name }}</span>
-                    <span>{{ house_detail.direction && house_detail.direction.name }}</span>
+                    <span>{{ house_detail.house_identity }}</span>
+                    <span>{{ house_detail.house_toward }}</span>
                     <span v-if="house_detail.floor">{{ house_detail.floor.this }}/{{ house_detail.floor.all }}</span>
                   </div>
                   <div class="le_text">

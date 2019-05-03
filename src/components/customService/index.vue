@@ -1,6 +1,6 @@
 <template>
   <div id="customService">
-    <MenuList :list="customService" :module="true"></MenuList>
+    <MenuList :list="customService" :module="true" :title="top_title"></MenuList>
     <work-info :work-info="work_info" :event-data="event_data" :attend-data="attend_data" @change="handleChangeDate"></work-info>
   </div>
 </template>
@@ -15,6 +15,7 @@
     components: { MenuList,WorkInfo },
     data() {
       return {
+        top_title: '',
         customService,
         show_menu_list: false,
         work_info: [
@@ -35,7 +36,8 @@
       this.show_menu_list = true;
       this.work_info[0].val = '9 h';
       this.event_data[0].value = 900;
-      this.attend_data = [10,5,2]
+      this.attend_data = [10,5,2];
+      this.top_title = '客服中心';
     },
     activated() {
     },

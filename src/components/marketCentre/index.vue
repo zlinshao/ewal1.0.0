@@ -1,7 +1,7 @@
 <template>
   <div id="marketCentre">
     <div class="container">
-      <market-menu-list :show-market="show_market" :show-shadow="false" @close="handleCloseMenu"></market-menu-list>
+      <market-menu-list :show-market="show_market" :show-shadow="false" @close="handleCloseMenu" :title="top_title"></market-menu-list>
     </div>
     <work-info :work-info="work_info" :event-data="event_data" :attend-data="attend_data" @change="handleChangeDate"></work-info>
   </div>
@@ -16,6 +16,7 @@
     components: { WorkInfo,MarketMenuList },
     data() {
       return {
+        top_title: '',
         show_market: false,
         work_info: [
           {work: '平均在线时长', val: '8 h'},
@@ -35,7 +36,8 @@
       this.show_market = true;
       this.work_info[0].val = '7 h';
       this.event_data[0].value = 700;
-      this.attend_data = [8,3,1]
+      this.attend_data = [8,3,1];
+      this.top_title = '营销中心';
     },
     activated() {
     },
