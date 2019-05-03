@@ -627,7 +627,7 @@
     </lj-dialog>
 
     <!--新建会议-->
-    <lj-dialog :visible="add_meeting_dialog_visible" :size="{width: 530 + 'px',height: 800 + 'px'}" @close="add_meeting_dialog_visible = false">
+    <lj-dialog :visible.sync="add_meeting_dialog_visible" :size="{width: 530 + 'px',height: 850 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{add_meeting_dialog_title_type==1?'新建会议':'编辑会议'}}</h3>
@@ -1331,6 +1331,15 @@ export default {
         is_send: false,
       };
       this.add_meeting_form.currentDate = utils.formatDate(item.datetime, 'MM月dd日');
+      if(new Date().getTime()>new Date(item.datetime).getTime()) {
+        if(utils.formatDate(new Date(),'yyyy-MM-dd')!=utils.formatDate(item.datetime,'yyyy-MM-dd')) {
+          this.$LjMessage('warning',{
+            title:'警告',
+            msg:'不允许创建过时会议',
+          });
+          return;
+        }
+      }
       //this.add_meeting_form = [];
       this.currentSelectionDate = item;
 
