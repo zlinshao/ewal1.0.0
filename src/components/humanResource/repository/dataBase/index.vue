@@ -327,11 +327,86 @@
       </div>
     </lj-dialog>
     <!-- 领取 -->
-    <lj-dialog :visible="contractReceive_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractReceive_visible = false">
-    
+    <lj-dialog :visible="contractReceive_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractReceive_visible = false" class="receiveDialog">
+      <div class="dialogHeader">
+        <p>领取合同详情</p>
+      </div>
+      <div class="dialogBody">
+        <div class="basicTitle">
+          <p>基本信息</p>
+        </div>
+        <div class="basicDetail">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="receivedTitle">
+          <p>已领取收房合同</p>
+        </div>
+        <div class="receivedDetail">
+          <p>GFDASFDAFDSA</p>
+        </div>
+        <div class="rentTitle">
+          <p>已领取租房合同</p>
+        </div>
+        <div class="rentDetail">
+          <p>FDASDFGAFDFD</p>
+        </div>
+        <div class="otherTitle">
+          <p>其他</p>
+        </div>
+        <div class="otherDetail">
+          <div class="otherDetailTop">
+            <p>截图</p>
+            <img src="" alt="sss">
+          </div>
+          <div class="otherDetailBottom">
+            <p class="bottomTitle">备注</p>
+            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+          </div>
+        </div>
+      </div>
     </lj-dialog>
     <!-- 作废 -->
-    <lj-dialog :visible="contractCancel_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractCancel_visible = false">
+    <lj-dialog :visible="contractCancel_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractCancel_visible = false" class="receiveDialog">
+      <div class="dialogHeader">
+        <p>作废合同详情</p>
+      </div>
+      <div class="dialogBody">
+        <div class="basicTitle">
+          <p>基本信息</p>
+        </div>
+        <div class="basicDetail">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="receivedTitle">
+          <p>已作废收房合同</p>
+        </div>
+        <div class="receivedDetail">
+          <p>GFDASFDAFDSA</p>
+        </div>
+        <div class="rentTitle">
+          <p>已作废租房合同</p>
+        </div>
+        <div class="rentDetail">
+          <p>FDASDFGAFDFD</p>
+        </div>
+        <div class="otherTitle">
+          <p>其他</p>
+        </div>
+        <div class="otherDetail">
+          <div class="otherDetailTop">
+            <p>截图</p>
+            <img src="" alt="sss">
+          </div>
+          <div class="otherDetailBottom">
+            <p class="bottomTitle">备注</p>
+            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+          </div>
+        </div>
+      </div>
     </lj-dialog>
     <!-- 上缴 -->
     <lj-dialog :visible="contractHandin_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractHandin_visible = false">
@@ -341,7 +416,45 @@
       上缴确认
     </lj-dialog>
     <!-- 丢失 -->
-    <lj-dialog :visible="contractLose_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractLose_visible = false">
+    <lj-dialog :visible="contractLose_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractLose_visible = false" class="receiveDialog">
+      <div class="dialogHeader">
+        <p>丢失合同详情</p>
+      </div>
+      <div class="dialogBody">
+        <div class="basicTitle">
+          <p>基本信息</p>
+        </div>
+        <div class="basicDetail">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="receivedTitle">
+          <p>已丢失收房合同</p>
+        </div>
+        <div class="receivedDetail">
+          <p>GFDASFDAFDSA</p>
+        </div>
+        <div class="rentTitle">
+          <p>已丢失租房合同</p>
+        </div>
+        <div class="rentDetail">
+          <p>FDASDFGAFDFD</p>
+        </div>
+        <div class="otherTitle">
+          <p>其他</p>
+        </div>
+        <div class="otherDetail">
+          <div class="otherDetailTop">
+            <p>截图</p>
+            <img src="" alt="sss">
+          </div>
+          <div class="otherDetailBottom">
+            <p class="bottomTitle">备注</p>
+            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+          </div>
+        </div>
+      </div>
     </lj-dialog>
     <!-- 编号管理合同总数 -->
     <lj-dialog :visible="numberManageTotal_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="numberManageTotal_visible = false">
