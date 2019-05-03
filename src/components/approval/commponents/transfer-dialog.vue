@@ -43,7 +43,7 @@ export default {
         type: '',
         num: 1
       },
-      market_server: globalConfig.market_server,
+      approval_sever: globalConfig.approval_sever
     }
   },
   methods: {
@@ -68,13 +68,12 @@ export default {
       }
       if (isTrue) {
         let option = {
-          work_order_id: this.moduleData.id,
-          operate_user_id: this.transfer.person[0],
-          operate_user_name: this.transfer.personName,
-          content: this.transfer.note
+          action: "delegate",
+          assignee: this.transfer.person[0],
+          remark: this.transfer.note
         }
 
-        this.$http.post(`${this.market_server}v1.0/csd/work_order/tranfer`, option).then(res => {
+        this.$http.post(`${this.market_server}runtime/tasks/${this.moduleData.id}`, option).then(res => {
           this.$LjNotify('success', {
             title: '提示',
             message: res.message

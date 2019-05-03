@@ -120,7 +120,6 @@ export default {
     LjDialog,
     VillageContainer,
     Ljupload,
-
   },
   data () {
     return {
@@ -254,6 +253,7 @@ export default {
             height: 30px;
             margin-left: 10px !important;
             display: flex;
+            flex-direction: row;
             justify-content: flex-start;
             align-items: center;
             // .el-input,
@@ -263,6 +263,9 @@ export default {
             }
             input {
               border: none;
+            }
+            .el-input__icon {
+              line-height: 30px;
             }
             // 一行多个小的checkbox
             .more_checkbox {

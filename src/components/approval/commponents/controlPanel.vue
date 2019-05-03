@@ -14,28 +14,29 @@
 
       <div class="mainListTable" :style="{'height': this.mainListHeight(60) + 'px'}">
         <div class='panel_list'>
-          <div :class='["panel_cell",active_panel == 0?"panel_cell_active":""]' v-for='i in 10' :key="i" @dblclick="showCards(i)">
+          <div :class='["panel_cell",active_panel == 0?"panel_cell_active":""]' v-for='(item,index) in panelList' :key="item.id"
+            @dblclick="showCards(item)">
             <div class='cell_header'>
               <div class='cell_header_left'>
                 <i class='icons icons_per'></i>
-                <span>哈哈哈</span>
+                <span>{{item.name}}</span>
               </div>
               <i class='icons icons_deng'></i>
             </div>
             <div class='cell_list'>
               <span class='cell_tit'>审核中</span>
-              <span class='cell_content cell_yellow'>32条</span>
+              <span class='cell_content cell_yellow'>{{item.shening}}条</span>
             </div>
             <div class='cell_list'>
               <span class='cell_tit'>平均审核时长</span>
-              <span class='cell_content cell_blue'>8min</span>
+              <span class='cell_content cell_blue'>{{item.preTime}}min</span>
             </div>
             <div class='cell_list' v-if='current_status_type == 1'>
               <span class='cell_tit'>接收类型</span>
               <div class='cell_content cell_type'>
-                <span class='cell_blue'>{{cellType.join(',')}}</span>
-                <ul v-if='cellType.length > 1'>
-                  <li v-for='(item,idx) in cellType' :key='idx'>{{item}}</li>
+                <span class='cell_blue'>{{item.type.join(',')}}</span>
+                <ul v-if='item.type.length > 1'>
+                  <li v-for='(item,idx) in item.type' :key='idx'>{{item}}</li>
                 </ul>
               </div>
             </div>
@@ -43,8 +44,8 @@
               <span class='cell_tit'>组长</span>
               <span class='cell_content cell_blue'>8min</span>
             </div>
-            <div class='cell_setting'>
-              <i class='icons_setting' @click='handleSetting'></i>
+            <div class='cell_setting' v-if='current_status_type == 1'>
+              <i class='icons_setting' @click='handleSetting(item,index)'></i>
             </div>
           </div>
         </div>
@@ -66,18 +67,21 @@
     <PanelDialog :visible='panel_info_visible' :moduleData='panel_info' @close='handleClosePanel' />
 
     <LjDialog :visible="show_set_visible" :size="{width: 600 + 'px',height: 400 + 'px'}" @close="handleCheckType(false)">
-      <div class='dialog_container'>
+      <div class='dialog_container set_dialog'>
         <div class='dialog_header'>
           <h3>接收类型</h3>
+          <div :class='["right",!currentInfo.suspend ? "right_active":"right_close"]' @click='closeSetting'>
+            <div class='right_circle'></div>
+          </div>
         </div>
         <div class='dialog_main check_type_dialog'>
-          <el-checkbox-group v-model="revice_check">
+          <el-checkbox-group v-model="currentInfo.type" :disabled='currentInfo.suspend'>
             <el-checkbox v-for='type in revice_type' :key='type.title' :label="type.title" :value='type.id' />
           </el-checkbox-group>
         </div>
         <div class='dialog_footer'>
           <el-button type="danger" size="small" @click='handleCheckType(true)'>同意</el-button>
-          <el-button type="info" size="small" @click='handleCheckType(true)'>取消</el-button>
+          <el-button type="info" size="small" @click='handleCheckType(false)'>取消</el-button>
         </div>
       </div>
     </LjDialog>
@@ -106,6 +110,30 @@ export default {
           value: 2
         }
       ],
+      panelList: [{
+        id: 69,
+        shening: 32,
+        preTime: 8,
+        type: ['收房'],
+        typeId: [1, 2, 3, 4],
+        suspend: true
+      },
+      {
+        id: 70,
+        shening: '32条',
+        preTime: '8min',
+        type: ['收房', '收房', '收房', '收房'],
+        typeId: [1, 2, 3, 4],
+        suspend: false
+      },
+      {
+        id: 71,
+        shening: '32条',
+        preTime: '8min',
+        type: ['收房', '收房', '收房', '收房'],
+        typeId: [1, 2, 3, 4],
+        suspend: false
+      }],
       active_panel: -1,
       current_page: 1,
       tableCount: 0,
@@ -115,7 +143,13 @@ export default {
         current_type: 1
       },
       show_set_visible: false,
+      setting_info: {},
       revice_check: [],
+
+      currentIndex: 0, //设置的是第几个的值
+      currentInfo: {},  // 当前设置类型
+      currentStatus: false,
+      approval_sever: globalConfig.approval_sever
     }
   },
   methods: {
@@ -130,23 +164,46 @@ export default {
     handleCurrentChange (val) {
       this.current_page = val
     },
-    showCards (i) {
+    showCards () {
       this.panel_info = {
-        current_type: this.current_status_type
+        current_type: this.current_status_type,
+        info: this.currentInfo
       }
       this.panel_info_visible = true
     },
     handleClosePanel () {
       this.panel_info_visible = false
     },
-    handleSetting () {
+    handleSetting (item, index) {
+      this.currentIndex = index
+      this.currentInfo = item
       this.show_set_visible = true
     },
     handleCheckType (par) {
-      this.show_set_visible = false
-      if (par) {
 
+      if (par) {  //同意
+        let params = {
+          "receiveTypeList": this.currentInfo.type,
+          "suspend": this.currentInfo.suspend
+        }
+        this.$http.post(`${this.approval_sever}monitor/process-instances/${this.currentInfo.id}`, params).then(res => {
+          console.log(res)
+
+
+          // 改变当前这个值
+          this.panelList.splice(this.currentIndex, 1, this.currentInfo)
+          console.log(this.currentInfo)
+          console.log(this.panelList)
+          this.show_set_visible = false
+          this.currentInfo = {}
+        })
+      } else {  //取消
+        this.show_set_visible = false
+        this.currentInfo = {}
       }
+    },
+    closeSetting () {
+      this.currentInfo.suspend = !this.currentInfo.suspend
     }
   }
 }
@@ -181,6 +238,7 @@ export default {
   }
 }
 </style>
+
 
 
 

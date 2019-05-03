@@ -6,87 +6,6 @@
           <h3>{{formData.house_address}}</h3>
         </div>
         <div class="dialog_main" id='dialog_main'>
-          <!-- <el-form label-width='120px'>
-            <el-row :gutter='10'>
-              <el-col :span='cell.formspan' v-for='(cell,cellIndex) in firstDefine' :key='cell.keyName'>
-                <el-form-item :label='cell.label'>
-                  <span>{{formData[cell.keyName]}}</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <div class='seeRecord' @click='handleRecord'>
-              <el-button type="primary" plain>查看审核记录</el-button>
-            </div>
-          </el-form>
-
-          <el-form label-width='120px' v-for='(form,slither,index) in defineReport' :key='slither'>
-
-            <VillageContainer :village="titleTips[index]">
-              <el-row :gutter='10' v-if='titleTips[index]=="付款信息"'>
-                <el-col :span='8' v-for='(cell,cellIndex) in form' :key='cell.keyName'>
-                  <el-form-item :label='cell.label'>
-                    <span>{{formData[cell.keyName]}}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-
-              <template v-else>
-                <el-row :gutter='10' v-for='(cell,cellIndex) in form' :key='cell.keyName' v-if='cell.type == "change"'>
-                  <el-col :span='cell.formSpan || formSpan' v-for='(child,child_index) in cell.children' :key='child_index'>
-                    <el-form-item :label='col.label' v-for='(col,col_index) in child' :key='col_index'>
-                      <span v-if='col.type=="input"'>{{formData[cell.keyName][child_index][col.keyName]}}</span>
-                      <span v-if='col.type=="picker"'>
-                        {{dicties[col.keyName][formData[cell.keyName][child_index][col.keyName]]}}
-                      </span>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-
-                正常表单
-                <el-row :gutter='10' v-if='form.type != "change"'>
-                  <el-col :span='cell.formSpan || formSpan' v-for='(cell,cellIndex) in form' :key='cell.keyName'>
-                    <el-form-item :label='cell.label' :class='cell.type == "upload"?"house_video":""'>
-
-                      <template v-if='cell.type== "radio"'>
-                        <span>{{dicties[cell.keyName][formData[cell.keyName]]}}</span>
-                      </template>
-
-                      多个选择checkbox
-                      <template v-if='cell.type== "picker"'>
-                        <div v-if='cell.children' class='more_checkbox'>
-                          <span v-for='(child,child_index) in cell.children'>{{dicties[cell.keyName]["value_"+child_index][formData[cell.keyName][child_index]]}}</span>
-                        </div>
-                        <span v-else>{{formData[cell.keyName] && formData[cell.keyName].name}}</span>
-                      </template>
-
-                      <template v-if='cell.type== "picktimer"'>
-                        <el-date-picker v-model="formData[cell.keyName]" type="date" :placeholder="cell.placeholder"
-                          :format="cell.format" class='picktimer' />
-                      </template>
-
-                      <template v-if='cell.type == "input"'>
-                        <div class='
-              ' v-for='(child,child_index) in cell.children' :key='child_index'
-                          v-if='cell.children'>
-                          <span>{{formData[cell.keyName][child_index][child.keyName]}}</span>
-                          <span>{{child.spanLabel}}</span>
-                        </div>
-
-                        <span v-if='!cell.children'>{{formData[cell.keyName]}}</span>
-                      </template>
-
-                      <template v-if='cell.type == "upload"'>
-                        <img v-for="tmp in formData.album.photo" :key="tmp.id" data-magnify="" data-caption="图片查看器"
-                          :data-src="tmp.uri" :src="tmp.uri" style="width: 50px;height: 50px;margin-right: 5px" v-if="tmp.uri">
-                      </template>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </template>
-            </VillageContainer>
-          </el-form> -->
-
           <el-form label-width="120px" v-for='slither_index in Object.keys(defineForm)' :key='"slither" + slither_index'>
             <VillageContainer :village="titleTips[slither_index]" :hidden='slither_index==0'>
 
@@ -109,24 +28,28 @@
               <el-row :gutter="10" v-else <el-col :span='8' v-for='(slit_row,index) in defineForm[slither_index]' :key='index'>
                 <el-form-item :label='slit_row[slither]' v-for='slither in Object.keys(slit_row)' :key='"row"+ slither'>
                   <template v-if="Array.isArray(formData[slither])">
-                    <div v-for="(val,idx) in formData[slither]" :key='idx'>
-                      <span v-if="val.uri">
-                        <!--图片-->
-                        <img :src="val.uri" alt="" style="width: 40px;height: 40px;margin-right: 15px;cursor: pointer;border-radius: 4px"
-                          data-magnify="" data-caption="图片查看器" :data-src="val.uri" v-if="val.info.ext.includes('image')" />
-                      </span>
 
-                      <div v-else-if="val.period">
-                        <h4 :class="[idx !== 0?'h4':'']">
-                          {{val.begin_date}}至{{val.end_date}}<br>
-                          {{val.pay_way}}：{{val.month_unit_price}}元
-                        </h4>
+                    <template v-if='slither == "house_video"'>
+                      <ljupload size='40' v-model="formData[slither]" disabled=true></ljupload>
+                    </template>
+
+                    <template v-else>
+                      <div v-for="(val,idx) in formData[slither]" :key='idx' class='slither_box'>
+                        <div v-if="val.period">
+                          <h4 :class="[idx !== 0?'h4':'']">
+                            {{val.begin_date}}至{{val.end_date}}<br>
+                            {{val.pay_way}}：{{val.month_unit_price}}元
+                          </h4>
+                        </div>
+
+                        <p v-else style='wihte-space:nowrap;line-height:20px;margin-bottom:5px;'>{{val}}</p>
+
                       </div>
 
-                      <span v-else>{{val}}</span>
+                    </template>
 
-                    </div>
                   </template>
+
                   <span v-else>{{formData[slither]}}</span>
 
                 </el-form-item>
@@ -166,8 +89,13 @@
           </div>
         </div>
         <div class='comments_footer'>
-          <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="comment_words">
+          <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="comment_info.content">
           </el-input>
+          <!-- 上传图片 -->
+          <div class='img_box'>
+            <p class='postTit'>发送图片</p>
+            <Ljupload size='30' v-model='comment_info.album'></Ljupload>
+          </div>
           <div class='post'>
             <i class='post_icons'></i>
             发送
@@ -218,7 +146,7 @@
 <script>
 import LjDialog from '../../common/lj-dialog.vue';
 import VillageContainer from './village-container.vue';
-import LjUpload from '../../common/lightweightComponents/lj-upload.vue';
+import Ljupload from '../../common/lightweightComponents/lj-upload.vue';
 import FormDetail from './form_detail.vue'
 import { defineForm, defineTitleTips } from '../../../assets/js/approval/definForm.js'
 import { isNull } from 'util';
@@ -227,7 +155,7 @@ export default {
   components: {
     LjDialog,
     VillageContainer,
-    LjUpload,
+    Ljupload,
     FormDetail
   },
   data () {
@@ -261,7 +189,10 @@ export default {
       titleTips: null,
       type: 1,
       comment_show_visible: false,
-      comment_words: null,
+      comment_info: {
+        content: '',
+        album: []
+      },
       record_show_visible: false,
       show_form_visible: false,
       formData: null,
@@ -275,7 +206,6 @@ export default {
         if (val) {
           this.defineForm = this.defineForms[1]
           this.titleTips = defineTitleTips[1]
-
           this.getDetailForm(val)
         }
       },
@@ -284,31 +214,17 @@ export default {
   },
 
   methods: {
-    getDetailForm (val) {
-      let { to, key } = this.getContractId(val)
-      console.log(to, val[key])
-      ///v1.0/market/bulletin/:id?to=collect
-      this.$http.get(this.market_server + `v1.0/market/process/edit/197`).then(res => {
+    getDetailForm (params) {
+      let url = params.bm_detail_request_url
+      this.$http.get(url).then(res => {
+        console.log(res)
         if (res.code === 200) {
           this.formData = res.data.content
           this.handleDetail(res.data.content)
         }
       })
     },
-    getContractId (data) {
-      let key = null;
-      for (let item of Object.keys(data)) {
-        if (this.taskType.includes(item)) {
-          key = item
-        }
-      }
-      //collect => 收房、续收，rent => 租房、转租、续租、未收先租，checkout => 退租，change => 调房，special => 特殊情况，‘agency’ => 中介费报备，‘lose’ =>炸弹报备，‘retainage’ => 尾款报备
-      switch (key) {
-        case 'rtl_detail_request_url': return { to: 'collect', key };
-        default:
-          break;
-      }
-    },
+
     // 转换文本显示
     handleDetail (res) {
       for (let item of Object.keys(res)) {
@@ -378,15 +294,16 @@ export default {
             break;
           case 'subsidiary_customer'://附属房东
             if (res[item]) {
-              let customer = ['customer_sex', 'card_type', 'contact_way'];
-              this.formData = this.changeHandle(res, item, customer, this.defineForm, this.formData);
-              for (let val of res[item]) {
-                for (let value of Object.values(val)) {
-                  if (value) {
-                    this.showCustomer = true;
-                  }
-                }
-              }
+
+              //   let customer = ['customer_sex', 'card_type', 'contact_way'];
+              //   this.formData = this.changeHandle(res, item, customer, this.defineForm, this.formData);
+              //   for (let val of res[item]) {
+              //     for (let value of Object.values(val)) {
+              //       if (value) {
+              //         this.showCustomer = true;
+              //       }
+              //     }
+              //   }
             }
             break;
           case 'period_price_way_arr'://付款方式变化
@@ -398,6 +315,13 @@ export default {
       if (res.album) {
         for (let pic of Object.keys(res.album)) {
           this.formData[pic] = res.album[pic];
+        }
+
+        this.formData['house_video_name'] = this.formData['house_video']
+        let house_video = this.formData['house_video']
+        this.formData['house_video'] = []
+        for (let item of house_video) {
+          this.formData['house_video'].push(item.id)
         }
       }
       console.log(this.formData)
@@ -463,6 +387,7 @@ export default {
         border-radius: 4px;
         // padding: 16px 0 16px 30px;
         position: relative;
+
         .seeRecord {
           width: 110px;
           height: 30px;
@@ -472,7 +397,7 @@ export default {
           text-align: center;
           line-height: 30px;
           font-size: 14px;
-          z-index: 999;
+          z-index: 9;
         }
         .dialog_tit {
           position: absolute;
@@ -605,6 +530,7 @@ export default {
       width: 350px;
       background: #fff;
       padding: 30px;
+      z-index: 12;
       display: flex;
       flex-direction: column;
       @include transform(scale(0));
@@ -646,7 +572,18 @@ export default {
         }
       }
       .comments_footer {
-        height: 140px;
+        height: 160px;
+        .img_box {
+          height: 50px;
+          @include scroll;
+          .postTit {
+            font-size: 14px;
+            color: #b0b0b0;
+            text-align: left;
+            padding-left: 8px;
+          }
+        }
+
         .post {
           display: flex;
           justify-content: flex-end;
@@ -790,6 +727,7 @@ export default {
           .el-form-item__label,
           .el-form-item__content {
             display: flex;
+
             align-items: center;
             // height: 30px;
             font-family: "Microsoft YaHei";
@@ -799,10 +737,10 @@ export default {
             justify-content: flex-end;
           }
           .el-form-item__content {
-            // min-height: 30px;
             text-align: left;
-            display: flex;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
             .more_checkbox {
               display: flex;
               .el-select {

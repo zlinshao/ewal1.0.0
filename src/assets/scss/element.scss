@@ -22,7 +22,7 @@ div.el-popover {
   @include transform(translateX(35%));
 }
 #theme_name {
-  .el-form-item__label:before{
+  .el-form-item__label:before {
     content: '' !important;
   }
   .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:after {
@@ -74,13 +74,13 @@ div.el-popover {
       opacity: 0.8;
     }
   }
-   .el-button--danger {
+  .el-button--danger {
+    background-color: $colorE33;
+    &:hover {
       background-color: $colorE33;
-     &:hover {
-       background-color: $colorE33;
-       opacity: 1;
-     }
-   }
+      opacity: 1;
+    }
+  }
   .el-button--danger .is-plain {
     color: white;
   }
@@ -97,7 +97,7 @@ div.el-popover {
     &::before {
       height: 0;
     }
-      background-color: transparent !important;
+    background-color: transparent !important;
     tr {
       background-color: transparent !important;
     }
@@ -115,7 +115,6 @@ div.el-popover {
       }
     }
     thead {
-
     }
     tbody {
       tr.current-row {
@@ -129,34 +128,34 @@ div.el-popover {
         }
       }
       tr {
-        td.el-table__expanded-cell[class*=cell] {
+        td.el-table__expanded-cell[class*='cell'] {
           padding: 0;
         }
         .expand-container {
           .expand-top {
             padding: 15px;
-            background-color: #E6F6F1 !important;
+            background-color: #e6f6f1 !important;
             td {
-              background-color: #E6F6F1 !important;
+              background-color: #e6f6f1 !important;
             }
             th.is-leaf {
-              background-color: #E6F6F1 !important;
+              background-color: #e6f6f1 !important;
             }
             .el-table__empty-block {
-              background-color: #E6F6F1 !important;
+              background-color: #e6f6f1 !important;
             }
           }
           .expand-bottom {
             padding: 15px;
-            background-color: #FFF6E5 !important;
+            background-color: #fff6e5 !important;
             td {
-              background-color: #FFF6E5 !important;
+              background-color: #fff6e5 !important;
             }
             th.is-leaf {
-              background-color: #FFF6E5 !important;
+              background-color: #fff6e5 !important;
             }
             .el-table__empty-block {
-              background-color: #FFF6E5 !important;
+              background-color: #fff6e5 !important;
             }
           }
         }
@@ -166,7 +165,8 @@ div.el-popover {
   #staffRoster {
     .el-table {
       background-color: white !important;
-      tr,th{
+      tr,
+      th {
         background-color: white !important;
       }
       tbody {
@@ -191,14 +191,13 @@ div.el-popover {
       background-color: $colorFFF !important;
     }
   }
-  .borderBgColor{
+  .borderBgColor {
     .el-input__inner,
     .el-textarea__inner {
       border: none;
-      background-color: #F9F9F9 !important;
+      background-color: #f9f9f9 !important;
     }
   }
-
 
   //input仅有背景
   .onlyBg {
@@ -352,27 +351,27 @@ div.el-popover {
   }
   #recruitment {
     .el-button--success {
-      color: #0EB17D;
-      background: #CFF8EA;
+      color: #0eb17d;
+      background: #cff8ea;
       font-weight: bold;
     }
     .el-button--warning {
-      color: #FFB522;
-      background: #FFF7E4;
+      color: #ffb522;
+      background: #fff7e4;
     }
     .el-button--danger.el-button--mini {
-      background: #FFE9EA;
-      color: #D84D51;
+      background: #ffe9ea;
+      color: #d84d51;
     }
   }
   #part_two {
     .el-button--success.is-plain {
-      border: 1px solid #0EB17D;
+      border: 1px solid #0eb17d;
     }
     .el-button--danger.el-button--mini.is-plain {
-      background: #FFE9EA;
-      color: #D84D51;
-      border: 1px solid #D84D51;
+      background: #ffe9ea;
+      color: #d84d51;
+      border: 1px solid #d84d51;
     }
   }
   #part_four {

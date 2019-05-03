@@ -24,7 +24,7 @@ export const defineForm = {
         property_fee: '物业费',
         has_heater: '是否有暖气',
         lock_type: '门锁类型',
-        ablum: '房屋影像'
+        house_video: '房屋影像'
       },
       {
         property_right_card_number: '产权证号',
@@ -69,7 +69,7 @@ export const defineForm = {
       {
         pay_first_date: '第一次付款时间',
         pay_second_date: '第二次付款时间',
-        is_electronic_contract: '是否是电子合同',
+        holding_documents_type: '合同类型',
         remark_terms: '备注条款'
       },
       {

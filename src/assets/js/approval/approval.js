@@ -293,7 +293,7 @@ defineReports = {
       },
       {
         label: '房屋影像',
-        keyName: 'ablum',
+        keyName: 'house_video',
         keyValue: [],
         type: 'upload'
       }

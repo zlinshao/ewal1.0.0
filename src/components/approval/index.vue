@@ -48,8 +48,9 @@
 
           <el-table-column align="center" label="状态">
             <template slot-scope="scope">
-              <span :class='["status","status"+ scope.row.status]'>{{scope.row.status == 1 ? "产品管控审核中" :
-                ( scope.row.status == 2 ? "已撤销":"已通过" ) }}</span>
+              <span class='status'>{{scope.row.status}}</span>
+              <!-- <span :class='["status","status"+ scope.row.status]'>{{scope.row.status == 1 ? "产品管控审核中" :
+                ( scope.row.status == 2 ? "已撤销":"已通过" ) }}</span> -->
             </template>
           </el-table-column>
         </el-table>
@@ -111,10 +112,10 @@ export default {
       ],
       tableShow: {  // 表格数据显示
         startTime: '发起时间',
-        type: '报备类型',
-        person: '报备人',
-        house_name: '房屋地址',
-        finish_tinme: '完成时间',
+        bulletin_name: '报备类型',
+        bulletin_staff_name: '报备人',
+        house_address: '房屋地址',
+        endTime: '完成时间',
       },
       status_type: 1, // 当前显示表格类型
       status_types: [
@@ -192,7 +193,14 @@ export default {
       contract_detail_visible: false, //详情
       develop_visible: false, //新盘
       current_row: null,
-      taskType: ['rtl_detail_request_url', 'ctl_detail_request_url'],
+      taskType: [
+        'bulletin_staff_id',  // 报备人id
+        'bulletin_staff_name', // 报备人name
+        'bulletin_name', // 报备类型
+        'bulletin_type',
+        'house_address',  // 房屋地址
+        'bm_detail_request_url', // 报备详情
+      ],
       approval_sever: globalConfig.approval_sever
     }
   },
@@ -239,6 +247,7 @@ export default {
       }
       this.params['param' + val] = {
         page: 1,
+        size: 10,
         title: '',
         startTimeBefore: '',
         startTimeAfter: '',
@@ -261,9 +270,17 @@ export default {
       let arr = []
       for (let item of data) {
         let obj = {};
-        obj.startTime = item.startTime
+        obj.startTime = item.startTime || item.createTime
         obj.name = item.name
+        obj.endTime = item.endTime
         obj.id = item.id
+
+        if (this.status_type == 2 || this.status_type == 4) {
+          obj.status = name
+        } else {
+          obj.status = item.status[0]
+        }
+
         for (let key of item.variables) {
           if (this.taskType.includes(key.name)) {
             obj[key.name] = key.value
@@ -277,7 +294,7 @@ export default {
     handleCurrentChange (page) {
       let val = this.status_type
       this.params['param' + val].page = page
-      this.getApprovalsList(this.urlApi, this.params['param' + val], val)
+      this.getApproval(this.urlApi, this.params['param' + val], val)
     },
     // 高级搜索 显示
     highSearch () {
@@ -379,11 +396,11 @@ export default {
     // 详情
     handlerDbclick (row) {
       this.current_row = row
-      if (row.type == 2) { // 拓展新盘
-        this.develop_visible = true
-      } else {
-        this.contract_detail_visible = true
-      }
+      // if (row.type == 2) { // 拓展新盘
+      //   this.develop_visible = true
+      // } else {
+      this.contract_detail_visible = true
+      // }
     },
     hiddenContractDetail () {
       this.contract_detail_visible = false

@@ -1,5 +1,5 @@
 <template>
-  <div id="village-container">
+  <div id="village-container" :class='{"minHeight":!hidden}'>
     <div class="flex">
       <div class="left">
         <div class="module-icon" v-if='!hidden'></div>
@@ -47,6 +47,7 @@ export default {
 #theme_name.theme1 {
   #village-container {
     width: 100%;
+
     background-color: white;
     margin-bottom: 20px;
     > div {
@@ -73,6 +74,9 @@ export default {
         padding: 20px;
       }
     }
+  }
+  #village-container.minHeight {
+    min-height: 160px;
   }
 }
 </style>

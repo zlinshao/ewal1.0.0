@@ -119,7 +119,7 @@ import VillageContainer from '../../customService/village/components/village-con
 import LjUpload from '../../common/lightweightComponents/lj-upload';
 import NewVillage from '../../customService/village/components/new-village.vue'
 export default {
-  props: ['visible','village'],
+  props: ['visible', 'village'],
   components: {
     LjDialog,
     VillageContainer,
@@ -191,10 +191,10 @@ export default {
       market_server: globalConfig.market_server,
     }
   },
-  watch:{
-    village:{
-      handler(val){
-        if(val){
+  watch: {
+    village: {
+      handler (val) {
+        if (val) {
           this.handleGetDetail(val)
         }
       }
@@ -208,7 +208,7 @@ export default {
       this.comment_show_visible = !this.comment_show_visible
     },
     handleEditor () {
-      
+
       this.newvillage_visible = true
     },
     handleBuff () {
@@ -679,7 +679,8 @@ export default {
     .comments_box {
       .el-textarea__inner {
         border: none;
-        height: 100px;
+        height: 80px;
+        border-bottom: 1px solid #dfdfdf;
       }
     }
   }
