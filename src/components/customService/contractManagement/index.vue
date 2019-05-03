@@ -100,6 +100,7 @@
                     <el-table-column label="退租时间" prop="end_at" align="center"></el-table-column>
                     <el-table-column label="退房时间" prop="check_time" align="center"></el-table-column>
                     <el-table-column label="退款金额" prop="should_be_returned_fees" align="center"></el-table-column>
+                    <el-table-column label="退房备注" prop="checkout_goods_remark" align="center"></el-table-column>
                   </el-table>
                   <el-table :data="revisit_list" v-show="current_house_type === 4">
                     <el-table-column label="创建时间" prop="cus_name" align="center"></el-table-column>
@@ -890,10 +891,9 @@ export default {
     },
     handleCheckOutList () {
       this.$http.get(this.market_server + 'v1.0/market/checkOut', this.list_params).then(res => {
-        console.log(res);
         if (res.code === 200) {
-          this.checkout_list = res.data;
-          this.list_count = res.data.count;
+          this.checkout_list = res.data.data;
+          this.list_count = res.data.all_count;
         } else {
           this.checkout_list = [];
           this.list_count = 0;
