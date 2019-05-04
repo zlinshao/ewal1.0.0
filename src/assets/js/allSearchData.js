@@ -101,7 +101,14 @@ export const LeaveJobSearch = {
       value: {
         num: ''
       }
-    }
+    },
+    {
+      keyType: 'dateRange',
+      title: '离职时间',
+      placeholder: '请选择日期',
+      keyName: 'dismiss_time',
+      dataType: []
+    },
   ]
 }
 

@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -358,7 +358,6 @@
   #theme_name.theme1 #houseManagement .header span.btn {
     background-color: #dfdfdf; }
   #theme_name.theme1 #houseManagement .header span.title {
-    color: #cf2e33;
     font-family: 'jingDianXingShu'; }
 
 /*# sourceMappingURL=index.css.map */

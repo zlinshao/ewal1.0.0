@@ -278,7 +278,7 @@
     </div>
 
     <!--新增部门-->
-    <lj-dialog :visible="depart_visible" :size="lj_size" @close="depart_visible = false">
+    <lj-dialog :visible="depart_visible" :size="lj_size" @close="handleCancelAddDepart">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>{{ is_edit_depart ? '编辑部门' : '添加部门'}}</h3>
@@ -614,7 +614,9 @@
           {id: 2,val: '职位管理'},
         ],
         current_btn: 1,
-        current_depart: '', //当前部门
+        current_depart: {
+          name: ''
+        }, //当前部门
         next_depart: [],
         next_depart_params: {
           page: 1,
@@ -1286,7 +1288,7 @@
         this.exportInfo += this.chooseTab;
       },
       handleOpenEditDepart(item) {
-        console.log(item);
+        this.current_depart.name = item.name;
         this.edit_depart = item;
         this.departForm.name = item.name;
         this.departForm.leader = item.leader && item.leader.name || '';
@@ -1354,6 +1356,7 @@
                 title: '成功',
                 message: res.msg
               });
+              this.current_depart.name = this.departForm.name;
               this.getDepartList();
               this.handleCancelAddDepart();
             } else {

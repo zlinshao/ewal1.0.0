@@ -802,7 +802,7 @@
 
           }
           .base_info {
-            border-bottom: 1px dashed #808080;
+            border-bottom: 1px solid #DCDCDC;
             > div {
 
             }
@@ -912,8 +912,9 @@
 
             }
             .info_type {
+              background-color: #F0F0F0;
               > span {
-                color: $colorFDF;
+                color: #808089;
               }
               .current-change {
                 @include houseManagementImg('hongdi.png', 'theme1');
@@ -932,7 +933,7 @@
             }
           }
           .all {
-            color: $colorDFF;
+            color: #0C66FF;
             font-size: 34px;
           }
           .current {
