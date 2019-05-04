@@ -65,7 +65,7 @@
         left: 250px;
 
         .item-detail {
-          width: 50px;
+          width: 60px;
           height: 80px;
           //background-color: $colorE33;
           position: relative;
@@ -75,7 +75,7 @@
             font-family: jingDianXingShu;
             position: absolute;
             top: -4px;
-            left: 19px;
+            left: 24px;
             display: inline-block;
             width: 14px;
             height: 14px;
@@ -105,10 +105,10 @@
             @include writingMode;
             position: absolute;
             top: 30px;
-            left: 13px;
+            left: 18px;
 
             &.multi-font {
-              left: 3px;
+              left: 8px;
             }
           }
 

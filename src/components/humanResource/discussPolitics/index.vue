@@ -7,7 +7,7 @@
         </p>
         <h1>会议管理</h1>
         <div class="date-value-container">
-          <el-date-picker v-model="dateValue" type="month" placeholder="选择月">
+          <el-date-picker v-model="dateValue" :clearable="false" type="month" placeholder="选择月">
           </el-date-picker>
         </div>
       </div>
@@ -24,12 +24,11 @@
             </div>
             <div class="eltimeline-container">
               <el-timeline>
-                <el-timeline-item :key="index" :color="item.todoType==0?'#50E38F':item.todoType==1?'#FFDC75':'#FF7A3C'"
+                <el-timeline-item :key="index" :color="item.todoType==0?'#50E38F':item.todoType==1?'#FFAE00':'#FF7A3C'"
                   v-if="item.todoListTimeLine&&item.todoListTimeLine.length>0" v-for="(item,index) in daysList"
                   :timestamp="item.datetime" placement="top">
-                  <el-card>
                     <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
-                      <div :class="{'cancel-status':contentItem.status==2,'finish-status':contentItem.status==1}" class="timeline-item-container-content-item"
+                      <div :class="{'cancel-status':contentItem.status==2||contentItem.status==1}" class="timeline-item-container-content-item"
                         @click="openMeetingDialog(contentItem)" :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoListTimeLine">
                         <div class="content-item-span">{{contentItem.content}}</div>
                         <div class="icon-list">
@@ -39,39 +38,11 @@
                         </div>
                       </div>
                     </div>
-                  </el-card>
                 </el-timeline-item>
               </el-timeline>
             </div>
 
           </div>
-          <!--<div class="timeline">
-            <el-timeline>
-              <el-timeline-item
-                :key="index"
-                :color="item.todoType==0?'#50E38F':item.todoType==1?'#FFDC75':'#FF7A3C'"
-                v-if="item.todoList&&item.todoList.length>0" v-for="(item,index) in daysList" :timestamp="item.datetime"
-                placement="top">
-                <el-card>
-                  <div :class="{prev:item.type=='prev'}" class="timeline-item-container">
-                    <div :class="{'cancel-status':contentItem.status==2}" class="timeline-item-container-content-item"
-                         @click="openMeetingDialog(contentItem)"
-                         :title="contentItem.content" v-for="(contentItem,contentItemIndex) in item.todoList">
-                      {{contentItem.content}}
-                      <div class="icon-list">
-                        <span v-if="contentItem.status==0" title="取消"
-                              @click.stop="cancelMeeting(contentItem,index,contentItemIndex)"
-                              class="icon20 icon-cancel"></span>
-                        <span title="删除"
-                              @click.stop="deleteMeeting(contentItem,index,contentItemIndex)"
-                              class="icon20 icon-delete"></span>
-                      </div>
-                    </div>
-                  </div>
-                </el-card>
-              </el-timeline-item>
-            </el-timeline>
-          </div>-->
         </div>
         <div class="container-right scroll_bar">
           <div class="calendar-week">
@@ -659,7 +630,7 @@
             </el-form-item>
 
             <el-form-item label="会议时间">
-              <date-time-picker title="必选" :clearable="false" ref="meetingTime" :width="320" date-type="timerange"></date-time-picker>
+              <date-time-picker :clearable="false" ref="meetingTime" :width="320" date-type="timerange"></date-time-picker>
             </el-form-item>
 
             <el-form-item required prop="presenter_id" label="主持人">
@@ -700,7 +671,10 @@
             </el-form-item>
 
             <el-form-item align="center" label="会议通知">
-              <el-checkbox v-model="add_meeting_form.is_send">发送会议通知</el-checkbox>
+              <div style="position: absolute;top: 7px;">
+                <el-checkbox v-model="add_meeting_form.is_send">发送会议通知</el-checkbox>
+              </div>
+
             </el-form-item>
 
           </el-form>
@@ -1883,6 +1857,13 @@ export default {
     .el-card {
       background-color: transparent;
       border: none;
+    }
+
+    .el-timeline-item__timestamp {
+      color: rgba(255,255,255,.5);
+    }
+    .el-timeline-item__wrapper {
+      padding-left: 14px;
     }
   }
 }
