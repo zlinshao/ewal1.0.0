@@ -1,4 +1,3 @@
-@charset "UTF-8";
 .flex {
   display: flex;
   display: -webkit-flex; }
@@ -285,7 +284,6 @@ div.el-popover {
 #theme_name .el-form-item__label:before {
   content: '' !important; }
 #theme_name .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:after {
-  /*隐藏*号*/
   display: none;
   content: '*';
   color: #cf2e33;

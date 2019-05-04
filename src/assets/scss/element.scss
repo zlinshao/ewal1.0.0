@@ -26,7 +26,6 @@ div.el-popover {
     content: '' !important;
   }
   .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:after {
-    /*隐藏*号*/
     display: none;
     content: '*';
     color: $colorE33;
@@ -457,5 +456,6 @@ div.el-popover {
   &::-webkit-scrollbar-thumb {
     @include radius(10px);
     background: #747474;
+
   }
 }

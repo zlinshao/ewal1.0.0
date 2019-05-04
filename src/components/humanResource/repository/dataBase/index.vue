@@ -1,15 +1,16 @@
 <template>
   <div id="dataBase">
+    <div class="addAll" @click="add()" v-if="activeIndex !==3"><b>+</b></div>
     <div class="main-nav">
       <div class="dataBase-left">
         <span
           v-for="(item,index) in active"
           :key="index"
-          :class="{'isActive': item.id === activeName}"
+          :class="{'isActive': item.id === activeIndex}"
           @click="changeTab(index)"
           >{{item.val}}</span>
       </div>
-      <div class="dataBase-right" v-if="activeName === 2">
+      <div class="dataBase-right" v-if="activeIndex === 2">
         <span
           v-for="(item,index) in contractNumberChoose"
           :key="index"
@@ -17,7 +18,7 @@
           @click="chooseContartType(index)"
           >{{item.val}}</span>
       </div>
-      <div class="dataBase-right" v-if="activeName === 3">
+      <div class="dataBase-right" v-if="activeIndex === 3">
         <span
           v-for="(item,index) in contractNumberEditChoose"
           :key="index"
@@ -27,7 +28,8 @@
       </div>
     </div>
     <div class="dataBase-container">
-      <el-table :data="areaChangeOrder" v-if="activeName === 0" highlight-current-row header-row-class-name="tableHeader"
+      <!-- 片区异动交接单 -->
+      <el-table :data="areaChangeOrder" v-if="activeIndex === 0" highlight-current-row header-row-class-name="tableHeader"
         style="width: 100%">
         <el-table-column label="审批编号" align="center"></el-table-column>
         <el-table-column label="审批名称" align="center"></el-table-column>
@@ -38,7 +40,8 @@
         <el-table-column label="证明人" align="center"></el-table-column>
         <el-table-column label="电子资料" align="center"></el-table-column>
       </el-table>
-      <el-table v-if="activeName === 1" highlight-current-row header-row-class-name="tableHeader" style="width: 100%"
+      <!-- 采购合同 -->
+      <el-table v-if="activeIndex === 1" highlight-current-row header-row-class-name="tableHeader" style="width: 100%"
         :data="contractList">
         <el-table-column prop="process_id" label="审批编号" align="center"></el-table-column>
         <el-table-column prop="title" label="采购申请" align="center"></el-table-column>
@@ -49,7 +52,9 @@
         <el-table-column prop="department" label="所属部门" align="center"></el-table-column>
         <el-table-column prop="electronicData" label="电子资料" align="center"></el-table-column>
       </el-table>
-      <div v-if="activeName === 2" class="contractNumber">
+      <!-- 合同编号 -->
+      <div v-if="activeIndex === 2" class="contractNumber">
+        <!-- 汇总 -->
         <div class="contractNumberTop" v-if="contractNumberChoosed === 0">
           <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" :data="contractCollectList" height="400px">
             <el-table-column label="姓名" align="center"  prop="name">
@@ -90,60 +95,98 @@
             <el-table-column label="剩余缴合同数(租)" align="center"></el-table-column>
           </el-table>
         </div>
+        <!-- 领取 -->
         <div v-if="contractNumberChoosed === 1">
-          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractReceiveList" @row-click="contractReceive_visible = true">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractReceiveList">
             <el-table-column label="领取时间" align="center"></el-table-column>
             <el-table-column label="部门" align="center"></el-table-column>
-            <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="name">
+              <template slot-scope="scope">
+                <div @click="contractReceive_visible = true">{{scope.row.name}}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="领取合同数(收)" align="center"></el-table-column>
             <el-table-column label="领取合同数(租)" align="center"></el-table-column>
-            <el-table-column label="操作" align="center"></el-table-column>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="modifyReceive(scope.row)">修改</el-button>
+                <el-button size="mini" type="danger">删除</el-button>
+              </template>
+            </el-table-column>
           </el-table>
           <div class="page flex-center">
             <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
           </div>
         </div>
+        <!-- 作废 -->
         <div v-if="contractNumberChoosed === 2">
-          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractCancelList"  @row-click="contractCancel_visible = true">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractCancelList">
             <el-table-column label="作废时间" align="center"></el-table-column>
             <el-table-column label="部门" align="center"></el-table-column>
-            <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="name">
+              <template slot-scope="scope">
+                <div @click="contractCancel_visible = true">{{scope.row.name}}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="作废合同数(收)" align="center"></el-table-column>
             <el-table-column label="作废合同数(租)" align="center"></el-table-column>
-            <el-table-column label="操作" align="center"></el-table-column>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="modifyCancel(scope.row)">修改</el-button>
+              </template>
+            </el-table-column>
           </el-table>
           <div class="page flex-center">
             <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
           </div>
         </div>
+        <!-- 上缴 -->
         <div v-if="contractNumberChoosed === 3">
-          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractHandinList"  @row-click="contractHandin_visible = true">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractHandinList">
             <el-table-column label="上缴时间" align="center"></el-table-column>
             <el-table-column label="部门" align="center"></el-table-column>
-            <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="name">
+              <template slot-scope="scope">
+                <div @click="contractHandin_visible = true">{{scope.row.name}}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="上缴合同数(收)" align="center"></el-table-column>
             <el-table-column label="上缴合同数(租)" align="center"></el-table-column>
-            <el-table-column label="操作" align="center"></el-table-column>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="modifyHandin(scope.row)">修改</el-button>
+              </template>
+            </el-table-column>
           </el-table>
           <div class="page flex-center">
             <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
           </div>
         </div>
+        <!-- 丢失 -->
         <div v-if="contractNumberChoosed === 4">
-          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractLoseList"  @row-click="contractLose_visible = true">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractLoseList">
             <el-table-column label="丢失时间" align="center"></el-table-column>
             <el-table-column label="部门" align="center"></el-table-column>
-            <el-table-column label="姓名" align="center" prop="name"></el-table-column>
+            <el-table-column label="姓名" align="center" prop="name">
+              <template slot-scope="scope">
+                <div @click="contractLose_visible = true">{{scope.row.name}}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="丢失合同数(收)" align="center"></el-table-column>
             <el-table-column label="丢失合同数(租)" align="center"></el-table-column>
-            <el-table-column label="操作" align="center"></el-table-column>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="modifyLose(scope.row)">修改</el-button>
+              </template>
+            </el-table-column>
           </el-table>
           <div class="page flex-center">
             <el-pagination :total="250" layout="total,jumper,prev,pager,next" :current-page="1" :page-size="10"></el-pagination>
           </div>
         </div>
       </div>
-      <div v-if="activeName === 3" class="contractNumberEdit">
+      <!-- 合同编号管理 -->
+      <div v-if="activeIndex === 3" class="contractNumberEdit">
         <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" v-if="contractNumberEditChoosed === 0">
           <el-table-column label="城市" align="center"></el-table-column>
           <el-table-column label="合同总数(收)" align="center"></el-table-column>
@@ -164,7 +207,7 @@
         </el-table>
       </div>
     </div>
-    <footer class="flex-center bottomPage" v-if="activeName !==2">
+    <footer class="flex-center bottomPage" v-if="activeIndex !==2">
       <div class="develop flex-center">
         <i class="el-icon-d-arrow-right"></i>
       </div>
@@ -173,7 +216,7 @@
       </div>
     </footer>
     <!-- 添加合同 -->
-    <lj-dialog :visible="addContract_visiable" :size="{width: 580 + 'px',height: 700 + 'px'}" @close="closeAddContrat()">
+    <lj-dialog :visible="addContract_visiable" :size="{width: 580 + 'px',height: 700 + 'px'}" @close="addContract_visiable = false">
       <div class="dialog_container">
         <div class="dialog_header">
           添加采购合同
@@ -220,7 +263,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="addContract()">确定</el-button>
-          <el-button type="info" size="small" @click="closeAddContrat()">取消</el-button>
+          <el-button type="info" size="small" @click="addContract_visiable = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -367,6 +410,119 @@
         </div>
       </div>
     </lj-dialog>
+    <!-- 领取修改 -->
+    <lj-dialog :visible="receiveModify_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="receiveModify_visible = false" class="receiveModify">
+      <div class="dialogHeader">
+        <p>领取合同修改</p>
+      </div>
+      <div class="dialogBody scroll_bar">
+        <div class="basicTitle">
+          <p>基本信息</p>
+        </div>
+        <div class="basicDetail"></div>
+        <div class="operateInfo">
+          <p>操作信息（取消勾选则不再选择）</p>
+        </div>
+        <div class="operateDetail">
+          <div class="right_title">
+            <div class="words">收房合同</div>
+            <div class="arrow"></div>
+          </div>
+          <div class="body_detail">
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+          </div>
+          <div class="right_title">
+            <div class="words">租房合同</div>
+            <div class="arrow"></div>
+          </div>
+          <div class="body_detail">
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+          </div>
+        </div>
+        <div class="basicTitle">
+          <p>剩余合同</p>
+        </div>
+        <div class="otherDetail">
+          <div class="otherDetailTop">
+            <p>截图</p>
+            <img src="" alt="sss">
+          </div>
+          <div class="otherDetailBottom">
+            <p class="bottomTitle">备注</p>
+            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+          </div>
+        </div>
+      </div>
+      <div class="dialog_footer">
+        <el-button type="danger">确定</el-button>
+        <el-button type="info">取消</el-button>
+      </div>
+    </lj-dialog>
+    <!-- 领取合同-创建任务 -->
+    <lj-dialog :visible="receiveMission_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="receiveMission_visible = false" class="receiveMission">
+      <div class="dialogHeader">
+        <p>创建任务</p>
+      </div>
+      <div class="dialogBody">
+        <div class="basicTitle">
+          <p>基本信息</p>
+        </div>
+        <div class="basicDetail">
+          <div></div>
+        </div>
+        <div class="basicTitle">
+          <p>操作信息</p>
+        </div>
+        <div class="operateDetail"></div>
+        <div class="basicTitle">
+          <p>其他</p>
+        </div>
+        <div class="otherDetail">
+          <div class="otherDetailTop">
+            <p>截图</p>
+            <img src="" alt="sss">
+          </div>
+          <div class="otherDetailBottom">
+            <p class="bottomTitle">备注</p>
+            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+          </div>
+        </div>
+      </div>
+      <div class="dialog_footer">
+        <el-button type="danger">确定</el-button>
+        <el-button type="info">取消</el-button>
+      </div>
+    </lj-dialog>
     <!-- 作废 -->
     <lj-dialog :visible="contractCancel_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractCancel_visible = false" class="receiveDialog">
       <div class="dialogHeader">
@@ -408,12 +564,134 @@
         </div>
       </div>
     </lj-dialog>
+    <!-- 作废修改 -->
+    <lj-dialog :visible="cancelModify_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="cancelModify_visible = false" class="receiveModify">
+     <div class="dialogHeader">
+        <p>作废合同修改</p>
+      </div>
+      <div class="dialogBody scroll_bar">
+        <div class="basicTitle">
+          <p>基本信息</p>
+        </div>
+        <div class="basicDetail"></div>
+        <div class="operateInfo">
+          <p>操作信息（取消勾选则不再选择）</p>
+        </div>
+        <div class="operateDetail">
+          <div class="right_title">
+            <div class="words">收房合同</div>
+            <div class="arrow"></div>
+          </div>
+          <div class="body_detail">
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+          </div>
+          <div class="right_title">
+            <div class="words">租房合同</div>
+            <div class="arrow"></div>
+          </div>
+          <div class="body_detail">
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+          </div>
+        </div>
+        <div class="basicTitle">
+          <p>剩余合同</p>
+        </div>
+        <div class="otherDetail">
+          <div class="otherDetailTop">
+            <p>截图</p>
+            <img src="" alt="sss">
+          </div>
+          <div class="otherDetailBottom">
+            <p class="bottomTitle">备注</p>
+            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+          </div>
+        </div>
+      </div>
+      <div class="dialog_footer">
+        <el-button type="danger">确定</el-button>
+        <el-button type="info">取消</el-button>
+      </div>
+    </lj-dialog>
+    <!-- 作废创建任务 -->
+    <lj-dialog :visible="cancelMission_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="cancelMission_visible = false" class="cancelMission">
+      <div class="dialogHeader">
+        <p>创建任务</p>
+      </div>
+      <div class="dialogBody">
+        <div class="basicTitle">
+          <p>基本信息</p>
+        </div>
+        <div class="basicDetail">
+          <div></div>
+        </div>
+        <div class="basicTitle">
+          <p>操作信息</p>
+        </div>
+        <div class="operateDetail"></div>
+        <div class="basicTitle">
+          <p>其他</p>
+        </div>
+        <div class="otherDetail">
+          <div class="otherDetailTop">
+            <p>截图</p>
+            <img src="" alt="sss">
+          </div>
+          <div class="otherDetailBottom">
+            <p class="bottomTitle">备注</p>
+            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+          </div>
+        </div>
+      </div>
+      <div class="dialog_footer">
+        <el-button type="danger">确定</el-button>
+        <el-button type="info">取消</el-button>
+      </div>
+    </lj-dialog>
     <!-- 上缴 -->
     <lj-dialog :visible="contractHandin_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractHandin_visible = false">
+      
     </lj-dialog>
     <!-- 上缴确认 -->
     <lj-dialog :visible="handinConfirm_visible" :size="{width: 471 + 'px',height: 368 + 'px'}" @close="handinConfirm_visible = false">
       上缴确认
+    </lj-dialog>
+    <!-- 上缴修改 -->
+    <lj-dialog :visible="haninModify_visible" :size="{width: 471 + 'px',height: 368 + 'px'}" @close="haninModify_visible = false">
+      上缴修改
+    </lj-dialog>
+    <!-- 上缴创建任务 -->
+    <lj-dialog :visible="handinMission_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="handinMission_visible = false">
+      上缴创建任务
     </lj-dialog>
     <!-- 丢失 -->
     <lj-dialog :visible="contractLose_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="contractLose_visible = false" class="receiveDialog">
@@ -456,6 +734,119 @@
         </div>
       </div>
     </lj-dialog>
+    <!-- 丢失修改 -->
+    <lj-dialog :visible="loseModify_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="loseModify_visible = false" class="receiveModify">
+      <div class="dialogHeader">
+        <p>丢失合同修改</p>
+      </div>
+      <div class="dialogBody scroll_bar">
+        <div class="basicTitle">
+          <p>基本信息</p>
+        </div>
+        <div class="basicDetail"></div>
+        <div class="operateInfo">
+          <p>操作信息（取消勾选则不再选择）</p>
+        </div>
+        <div class="operateDetail">
+          <div class="right_title">
+            <div class="words">收房合同</div>
+            <div class="arrow"></div>
+          </div>
+          <div class="body_detail">
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+          </div>
+          <div class="right_title">
+            <div class="words">租房合同</div>
+            <div class="arrow"></div>
+          </div>
+          <div class="body_detail">
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+            <div>
+              <div class="selector"></div>
+              <div class="content">FDSJKLFDSA</div>
+            </div>
+          </div>
+        </div>
+        <div class="basicTitle">
+          <p>剩余合同</p>
+        </div>
+        <div class="otherDetail">
+          <div class="otherDetailTop">
+            <p>截图</p>
+            <img src="" alt="sss">
+          </div>
+          <div class="otherDetailBottom">
+            <p class="bottomTitle">备注</p>
+            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+          </div>
+        </div>
+      </div>
+      <div class="dialog_footer">
+        <el-button type="danger">确定</el-button>
+        <el-button type="info">取消</el-button>
+      </div>
+    </lj-dialog>
+    <!-- 丢失创建任务 -->
+    <lj-dialog :visible="loseMission_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="loseMission_visible = false" class="cancelMission">
+      <div class="dialogHeader">
+        <p>创建任务</p>
+      </div>
+      <div class="dialogBody">
+        <div class="basicTitle">
+          <p>基本信息</p>
+        </div>
+        <div class="basicDetail">
+          <div></div>
+        </div>
+        <div class="basicTitle">
+          <p>操作信息</p>
+        </div>
+        <div class="operateDetail"></div>
+        <div class="basicTitle">
+          <p>其他</p>
+        </div>
+        <div class="otherDetail">
+          <div class="otherDetailTop">
+            <p>截图</p>
+            <img src="" alt="sss">
+          </div>
+          <div class="otherDetailBottom">
+            <p class="bottomTitle">备注</p>
+            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+          </div>
+        </div>
+      </div>
+      <div class="dialog_footer">
+        <el-button type="danger">确定</el-button>
+        <el-button type="info">取消</el-button>
+      </div>
+    </lj-dialog>
     <!-- 编号管理合同总数 -->
     <lj-dialog :visible="numberManageTotal_visible" :size="{width: 1700 + 'px',height: 900 + 'px'}" @close="numberManageTotal_visible = false">
     </lj-dialog>
@@ -463,241 +854,292 @@
 </template>
 
 <script>
-  import LjDialog from '../../../common/lj-dialog.vue';
-  import LjUpload from '../../../common/lightweightComponents/lj-upload.vue';
-  import UserChoose from '../../../common/lightweightComponents/UserChoose';
-  export default {
-    name: "index",
-    props: ["addContract_visiable"],
-    components: {
-      LjDialog,
-      LjUpload,
-      UserChoose
-    },
-    data() {
-      return {
-        url: globalConfig.humanResource_server,
-        activeName: 0,
-        active: [
-          {id: 0, val: '片区异动交接单'},
-          {id: 1, val: '采购合同'},
-          {id: 2, val: '合同编号'},
-          {id: 3, val: '合同编号管理'},
-        ],
-        contractNumberChoose: [
-          {id: 0, val: '汇总'},
-          {id: 1, val: '领取'},
-          {id: 2, val: '作废'},
-          {id: 3, val: '上缴'},
-          {id: 4, val: '丢失'},
-        ],
-        contractNumberEditChoose: [
-          {id: 0, val: '总合同数'},
-          {id: 1, val: '总合同领取上限'},
-        ],
-        total: 0,
-        currentPage: 1,
-        contractCollect_visible: false,
-        distribute_visible: false,
-        contractReceive_visible: false,
-        contractCancel_visible: false,
-        contractHandin_visible: false,
-        handinConfirm_visible: false,
-        contractLose_visible: false,
-        numberManageTotal_visible: false,
-        contractNumberEditChoosed: 0,
-        contractNumberChoosed: 0,
-        areaChangeOrder: [],
-        contractList: [],
-        contractRequisition: '',
-        supplierDetail: [],
-        supplierId: 0,
-        signTime: new Date(),
-        expireTime: '',
-        signerId: [],
-        contractImg: [],
-        approvalDetail:[],
-        process_id: 0,
-        approvalTitle: '',
-        contractCollectList: [
-          {
-            name: "张三",
-          }
-        ],//合同汇总
-        contractReceiveList: [
-          {
-            name: "张三",
-          }
-        ],//合同编号领取
-        contractCancelList: [
-          {
-            name: "张三",
-          }
-        ],//合同编号作废
-        contractHandinList: [
-          {
-            name: "张三",
-          }
-        ],//合同编号上缴
-        contractLoseList: [
-          {
-            name: "张三",
-          }
-        ],//合同编号丢失
-        contractGatherChoosed: 1,
-        remainingUnpaidChoosed:1,
+import LjDialog from '../../../common/lj-dialog.vue';
+import LjUpload from '../../../common/lightweightComponents/lj-upload.vue';
+import UserChoose from '../../../common/lightweightComponents/UserChoose';
+export default {
+  name: "index",
+  components: {
+    LjDialog,
+    LjUpload,
+    UserChoose
+  },
+  data() {
+    return {
+      url: globalConfig.humanResource_server,
+      activeIndex: 0,
+      active: [
+        {id: 0, val: '片区异动交接单'},
+        {id: 1, val: '采购合同'},
+        {id: 2, val: '合同编号'},
+        {id: 3, val: '合同编号管理'},
+      ],
+      contractNumberChoose: [
+        {id: 0, val: '汇总'},
+        {id: 1, val: '领取'},
+        {id: 2, val: '作废'},
+        {id: 3, val: '上缴'},
+        {id: 4, val: '丢失'},
+      ],
+      contractNumberEditChoose: [
+        {id: 0, val: '总合同数'},
+        {id: 1, val: '总合同领取上限'},
+      ],
+      total: 0,
+      currentPage: 1,
+      addContract_visiable: false,//添加合同
+      contractCollect_visible: false,//汇总
+      distribute_visible: false,//分配
+      contractReceive_visible: false,//领取
+      receiveModify_visible: false,//领取修改
+      receiveMission_visible: false,//领取新建任务
+      contractCancel_visible: false,//作废
+      cancelModify_visible: false,//作废修改
+      cancelMission_visible: false,//作废创建任务
+      contractHandin_visible: false,//上缴
+      handinConfirm_visible: false,//上缴确认
+      haninModify_visible: false,//上缴修改
+      handinMission_visible: false,//上缴创建任务
+      contractLose_visible: false,//丢失
+      loseModify_visible: false,//丢失修改
+      loseMission_visible: false,//丢失创建任务
+      numberManageTotal_visible: false,//合同编号管理总数
+      contractNumberEditChoosed: 0,
+      contractNumberChoosed: 0,
+      areaChangeOrder: [],
+      contractList: [],
+      contractRequisition: '',
+      //添加合同参数
+      supplierDetail: [],
+      supplierId: 0,
+      signTime: new Date(),
+      expireTime: '',
+      signerId: [],
+      contractImg: [],
+      approvalDetail:[],
+      process_id: 0,
+      approvalTitle: '',
+      contractCollectList: [
+        {
+          name: "张三",
+        }
+      ],//合同汇总
+      contractReceiveList: [
+        {
+          name: "张三",
+        }
+      ],//合同编号领取
+      contractCancelList: [
+        {
+          name: "张三",
+        }
+      ],//合同编号作废
+      contractHandinList: [
+        {
+          name: "张三",
+        }
+      ],//合同编号上缴
+      contractLoseList: [
+        {
+          name: "张三",
+        }
+      ],//合同编号丢失
+      //汇总弹框选项
+      contractGatherChoosed: 1,
+      remainingUnpaidChoosed:1,
+    }
+  },
+  mounted () {
+    this.getAreaChangeOrder();
+    this.getApprovalDetail();
+  },
+  methods: {
+    changeTab: function (index) {
+      this.activeIndex = index
+      if (index === 0) {
+        this.getAreaChangeOrder()
+      } 
+      else  if(index === 1){
+        this.getContractList()
+      }
+      else  if(index === 2){
+        this.getContractList()
+      }
+      else{
+        this.getContractList()
       }
     },
-    mounted () {
-      this.getAreaChangeOrder();
-      this.getApprovalDetail();
-    },
-    methods: {
-      changeTab: function (index) {
-        this.activeName = index
-        if (index === 0) {
-          this.getAreaChangeOrder()
-        } else {
-        this.getContractList()
-        }
-      },
-      getAreaChangeOrder: function () {
+    //获取异动交接单
+    getAreaChangeOrder: function () {
 
-      },
-      getContractList: function () {
-        this.contractList = []
-        let param = {
-          page: this.currentPage,
-          limit: 10
-        }
-        this.$http.get(`${this.url}eam/contract`, param).then(res => {
-          if (res.code === '20000') {
-            this.total = res.data.count
-            for (var i = 0; i < res.data.data.length; i++) {
-              let department = ''
-              for (var j = 0; j < res.data.data[i].user.org.length; j++) {
-                department = department + res.data.data[i].user.org[j].name + '-'
-              }
-              let obj = {
-                process_id: res.data.data[i].process_id,
-                title: res.data.data[i].title,
-                source: res.data.data[i].source.name,
-                start_time: res.data.data[i].start_time,
-                end_time: res.data.data[i].end_time,
-                signUser: res.data.data[i].user.name,
-                department: department.substring(0, department.length - 1),
-                electronicData: res.data.data[i].attachment
-              }
-              this.contractList.push(obj)
+    },
+    //获取合同列表
+    getContractList: function () {
+      this.contractList = []
+      let param = {
+        page: this.currentPage,
+        limit: 10
+      }
+      this.$http.get(`${this.url}eam/contract`, param).then(res => {
+        if (res.code === '20000') {
+          this.total = res.data.count
+          for (var i = 0; i < res.data.data.length; i++) {
+            let department = ''
+            for (var j = 0; j < res.data.data[i].user.org.length; j++) {
+              department = department + res.data.data[i].user.org[j].name + '-'
             }
+            let obj = {
+              process_id: res.data.data[i].process_id,
+              title: res.data.data[i].title,
+              source: res.data.data[i].source.name,
+              start_time: res.data.data[i].start_time,
+              end_time: res.data.data[i].end_time,
+              signUser: res.data.data[i].user.name,
+              department: department.substring(0, department.length - 1),
+              electronicData: res.data.data[i].attachment
+            }
+            this.contractList.push(obj)
           }
-        })
-      },
-      addContract (chooseTab) {
-        for (let i = 0; i < this.approvalDetail.length; i++) {
-          if (this.process_id == this.approvalDetail[i].id) {
-            this.approvalTitle = this.approvalDetail[i].title
+        }
+      })
+    },
+    //添加按钮
+    add: function() {
+      if(this.activeIndex == 1) {
+        this.addContract_visiable = true
+      }
+      else if(this.activeIndex == 2){
+        if(this.contractNumberChoosed == 1){
+          this.receiveMission_visible = true
+        }
+        else if(this.contractNumberChoosed == 2){
+          this.cancelMission_visible = true
+        }
+        else if(this.contractNumberChoosed == 3){
+          this.handinMission_visible = true
+        }
+        else if(this.contractNumberChoosed == 4){
+          this.loseMission_visible = true
+        }
+      }
+    },
+    //获取添加合同参数
+    getApprovalDetail: function () {
+      this.$http.get(`${this.url}eam/storage/process`).then(res => {
+        if (res.code == "20000") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            let obj = {
+              id: res.data.data[i].id,
+              title: res.data.data[i].title
+            }
+            this.approvalDetail.push(obj)
           }
         }
-        let param = {
-          process_id: this.process_id,
-          start_time: this.signTime,
-          end_time: this.expireTime,
-          source_id: this.supplierId,
-          user_id: this.signerId[0],
-          attachment: this.contractImg,
-          title: this.approvalTitle
-        }
-        if (param.process_id == -1) {
-          this.$LjNotify('error', {
-            title: '失败',
-            message: '请选择采购申请',
-          });
-        }
-        if (param.source_id == -1) {
-          this.$LjNotify('error', {
-            title: '失败',
-            message: '请选择供应商',
-          });
-        }
-        if (param.start_time == '') {
-          this.$LjNotify('error', {
-            title: '失败',
-            message: '请选择签订时间',
-          });
-        }
-        if (param.user_id == -1) {
-          this.$LjNotify('error', {
-            title: '失败',
-            message: '请选择签订人',
-          });
-        }
-        else {
-          this.$http.post(`${this.url}eam/contract`, param).then(res => {
-            this.$LjMessageEasy(res, () => {
-              this.getContractList();
-              this.$emit('changeAddContrat', false)
-            });
-            this.contractRequisition = ''
-            this.supplierId = 0
-            this.signTime = new Date()
-            this.expireTime = ''
-            this.signerId = 0
-            this.contractImg = []
-          })
-        }
-      },
-      closeAddContrat: function () {
-        this.$emit('changeAddContrat', false)
-      },
-      getApprovalDetail: function () {
-        this.$http.get(`${this.url}eam/storage/process`).then(res => {
-          if (res.code == "20000") {
-            for (let i = 0; i < res.data.data.length; i++) {
+      })
+      this.$http.get(`${this.url}eam/category`).then(res => {
+        if (res.code == "20000") {
+          for (let i = 0; i < res.data.data.length; i++) {
+            if (res.data.data[i].type == 5) {
               let obj = {
                 id: res.data.data[i].id,
-                title: res.data.data[i].title
+                name: res.data.data[i].name
               }
-              this.approvalDetail.push(obj)
+              this.supplierDetail.push(obj)
             }
           }
-        })
-        this.$http.get(`${this.url}eam/category`).then(res => {
-          if (res.code == "20000") {
-            for (let i = 0; i < res.data.data.length; i++) {
-              if (res.data.data[i].type == 5) {
-                let obj = {
-                  id: res.data.data[i].id,
-                  name: res.data.data[i].name
-                }
-                this.supplierDetail.push(obj)
-              }
-            }
-          }
-        })
-      },
-      chooseContartType: function(index) {
-        this.contractNumberChoosed = index
-      },
-      chooseContartEditType: function(index) {
-        this.contractNumberEditChoosed = index
-      },
-      distribute: function(row) {
-        this.distribute_visible = true
-      },
-      contractGatherF: function() {
-        this.contractGatherChoosed = 1
-      },
-      contractGatherS: function() {
-        this.contractGatherChoosed = 2
-      },
-      remainingUnpaidChooseF: function() {
-        this.remainingUnpaidChoosed = 1
-      },
-      remainingUnpaidChooseS: function() {
-        this.remainingUnpaidChoosed = 2
+        }
+      })
+    },
+    
+    //添加合同
+    addContract: function (chooseTab) {
+      for (let i = 0; i < this.approvalDetail.length; i++) {
+        if (this.process_id == this.approvalDetail[i].id) {
+          this.approvalTitle = this.approvalDetail[i].title
+        }
       }
+      let param = {
+        process_id: this.process_id,
+        start_time: this.signTime,
+        end_time: this.expireTime,
+        source_id: this.supplierId,
+        user_id: this.signerId[0],
+        attachment: this.contractImg,
+        title: this.approvalTitle
+      }
+      if (param.process_id == -1) {
+        this.$LjNotify('error', {
+          title: '失败',
+          message: '请选择采购申请',
+        });
+      }
+      if (param.source_id == -1) {
+        this.$LjNotify('error', {
+          title: '失败',
+          message: '请选择供应商',
+        });
+      }
+      if (param.start_time == '') {
+        this.$LjNotify('error', {
+          title: '失败',
+          message: '请选择签订时间',
+        });
+      }
+      if (param.user_id == -1) {
+        this.$LjNotify('error', {
+          title: '失败',
+          message: '请选择签订人',
+        });
+      }
+      else {
+        this.$http.post(`${this.url}eam/contract`, param).then(res => {
+          this.$LjMessageEasy(res, () => {
+            this.getContractList();
+            this.addContract_visiable = false
+          });
+          this.contractRequisition = ''
+          this.supplierId = 0
+          this.signTime = new Date()
+          this.expireTime = ''
+          this.signerId = 0
+          this.contractImg = []
+        })
+      }
+    },
+    chooseContartType: function(index) {
+      this.contractNumberChoosed = index
+    },
+    chooseContartEditType: function(index) {
+      this.contractNumberEditChoosed = index
+    },
+    distribute: function(row) {
+      this.distribute_visible = true
+    },
+    contractGatherF: function() {
+      this.contractGatherChoosed = 1
+    },
+    contractGatherS: function() {
+      this.contractGatherChoosed = 2
+    },
+    remainingUnpaidChooseF: function() {
+      this.remainingUnpaidChoosed = 1
+    },
+    remainingUnpaidChooseS: function() {
+      this.remainingUnpaidChoosed = 2
+    },
+    modifyReceive: function(row) {
+      this.receiveModify_visible = true
+    },
+    modifyCancel: function(row) {
+      this.cancelModify_visible = true
+    },
+    modifyHandin: function(row) {
+      this.haninModify_visible = true
+    },
+    modifyLose: function(row) {
+      this.loseModify_visible = true
     }
+  }
 }
 </script>
 
@@ -747,6 +1189,17 @@
     .distributeDialog{
       .dialog_body{
         .body_main{
+          .right_title{
+            .arrow{
+              @include childrenImg('zs.png', 'theme1');
+            }
+          }
+        }
+      }
+    }
+    .receiveModify{
+      .dialogBody{
+        .operateDetail{
           .right_title{
             .arrow{
               @include childrenImg('zs.png', 'theme1');

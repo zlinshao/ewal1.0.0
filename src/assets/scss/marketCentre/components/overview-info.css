@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {

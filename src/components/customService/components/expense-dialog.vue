@@ -6,22 +6,22 @@
       </div>
       <div class='dialog_main'>
         <el-table :data="table" height="480px" highlight-current-row header-row-class-name="tableHeader" style="width: 100%">
-          <el-table-column key="创建时间" align="center" prop="time" label="应付时间"></el-table-column>
-          <el-table-column key="结算时间" align="center" prop="real_time" label="实付时间"></el-table-column>
-          <el-table-column key="报销金额" align="center" prop="money" label="应付金额"></el-table-column>
-          <el-table-column key="实付金额" align="center" label="实付金额">
-            <template slot-scope="scope">
-              <span>{{scope.row.real_money}}</span>
-              <el-tooltip class="item" effect="light" :content="scope.row.real_money" placement="right" popper-class='light_tooltip'>
+          <el-table-column key="创建时间" align="center" prop="create_time" label="应付时间"></el-table-column>
+          <el-table-column key="结算时间" align="center" prop="pay_date" label="结算时间"></el-table-column>
+          <el-table-column key="报销金额" align="center" prop="amount_paid" label="	实付金额"></el-table-column>
+          <el-table-column key="实付金额" align="center" prop="amount_payable" label="报销金额">
+            <!-- <template slot-scope="scope">
+              <span>{{scope.row.amount_payable}}</span>
+              <el-tooltip class="item" effect="light" :content="scope.row.amount_payable" placement="right" popper-class='light_tooltip'>
                 <i class='warn_icon'></i>
               </el-tooltip>
-            </template>
+            </template> -->
           </el-table-column>
         </el-table>
 
-        <el-pagination @current-change="handleExpenseCurrentPage" :current-page="page" layout="total,  prev, pager, next, jumper"
+        <!-- <el-pagination @current-change="handleExpenseCurrentPage" :current-page="page" layout="total,  prev, pager, next, jumper"
           :total="tableCount">
-        </el-pagination>
+        </el-pagination> -->
       </div>
     </div>
   </ljDialog>
@@ -54,12 +54,16 @@ export default {
       this.$emit('close', true)
     },
     getData () {
-      // this.$http.get(`${this.market_server}v1.0/csd/revisit/${this.moduleData.contract_type}/${this.moduleData.contract_id}`).then(res => {
-      //   if (res.code === 200) {
-      //     this.table = res.data.data
-      //     this.tableCount = res.data.all_count
-      //   }
-      // })
+      let parmas = {
+        contract_type: this.moduleData.contract_type,
+        contract_id: this.moduleData.contract_id,
+      }
+      this.$http.get(`${this.market_server}v1.0/csd/work_order/reimburRecord`, parmas).then(res => {
+        if (res.code === 200) {
+          this.table = res.data.reimbur_data
+          // this.tableCount = res.data.all_count
+        }
+      })
     },
     handleExpenseCurrentPage (val) {
       this.page = Val

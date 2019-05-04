@@ -100,6 +100,7 @@
                     <el-table-column label="退租时间" prop="end_at" align="center"></el-table-column>
                     <el-table-column label="退房时间" prop="check_time" align="center"></el-table-column>
                     <el-table-column label="退款金额" prop="should_be_returned_fees" align="center"></el-table-column>
+                    <el-table-column label="退房备注" prop="checkout_goods_remark" align="center"></el-table-column>
                   </el-table>
                   <el-table :data="revisit_list" v-show="current_house_type === 4">
                     <el-table-column label="创建时间" prop="cus_name" align="center"></el-table-column>
@@ -754,7 +755,7 @@ export default {
           title: '综合页'
         }
       ],
-      chooseTab: 3,
+      chooseTab: 1,
 
       params: {
         page: 1,
@@ -881,14 +882,18 @@ export default {
       })
     },
     handleClickExpandRow (row) {
-      console.log(row);
+      this.list_params.contract_id = row.contract_id;
+      this.expand_params.house_id = row.house_id;
+      this.leaseNote_params.contract_id = row.contract_number;
+      this.revisit_params.type = row.contract_type;
+      this.list_params.address = row.house_name;
+      this.handleGetCustomerInfo();
     },
     handleCheckOutList () {
       this.$http.get(this.market_server + 'v1.0/market/checkOut', this.list_params).then(res => {
-        console.log(res);
         if (res.code === 200) {
-          this.checkout_list = res.data;
-          this.list_count = res.data.count;
+          this.checkout_list = res.data.data;
+          this.list_count = res.data.all_count;
         } else {
           this.checkout_list = [];
           this.list_count = 0;
@@ -987,7 +992,7 @@ export default {
       this.list_params.contract_id = row.contract_id;
       this.expand_params.house_id = row.house_id;
       this.leaseNote_params.contract_id = row.contract_number;
-      this.revisit_params.type = 1;
+      this.revisit_params.type = row.contract_type;
       this.list_params.address = row.house_name;
       this.getExpandData();
       this.handleGetCustomerInfo();
@@ -1199,7 +1204,6 @@ export default {
     },
     //获取合同列表
     getContractList () {
-      this.params.contract_type = this.chooseTab === 1 || this.chooseTab === 3 ? 1 : 2;
       this.showLoading(true);
       this.$http.get(this.market_server + 'v1.0/market/contract', this.params).then(res => {
         if (res.code === 200) {
@@ -1271,6 +1275,7 @@ export default {
     },
     changeTabs (id) {
       this.chooseTab = id;
+      this.params.contract_type = id;
       this.getContractList();
     },
     handleChangePage (page) {

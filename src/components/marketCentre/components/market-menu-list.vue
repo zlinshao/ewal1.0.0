@@ -12,6 +12,7 @@
             </div>
           </div>
         </div>
+        <div class="top_title">{{ top_title }}</div>
       </div>
       <div class="shadow" v-if="show_shadow" @click="handleClose"></div>
     </div>
@@ -20,9 +21,10 @@
 <script>
     export default {
         name: "",
-        props: ['showMarket','showShadow'],
+        props: ['showMarket','showShadow','title'],
         data() {
             return {
+              top_title: '',
               show_Market: false,
               show_shadow: false,
               market_list: [
@@ -53,6 +55,9 @@
         activated() {
         },
         watch: {
+          title(val) {
+            this.top_title = val;
+          },
           showMarket(val) {
             this.show_Market = val;
           },

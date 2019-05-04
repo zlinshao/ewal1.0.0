@@ -124,7 +124,7 @@ export default {
   data () {
     return {
       formSpan: 8,
-      formData: null,
+      formData: {},
       copyFormData: null,
       dicties,
       defineReports: JSON.parse(JSON.stringify(defineReports)),
@@ -137,7 +137,7 @@ export default {
     }
   },
   watch: {
-    moduleData (val) {
+    visible (val) {
       if (val) {
         this.getDetailForm()
       }

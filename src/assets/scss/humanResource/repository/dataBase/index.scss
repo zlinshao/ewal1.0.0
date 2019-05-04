@@ -4,6 +4,24 @@
   }
 #theme_name.theme1 {
   #dataBase {
+    .addAll{
+      width: 30px;
+      height: 30px;
+      position: fixed;
+      bottom: 801px;
+      right: 110px;
+      background-color:#cf2e33;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      cursor: pointer;
+      b{
+        color: #ffffff;
+        font-size: 30px;
+        padding-bottom: 6px;
+      }
+    }
     .main-nav {
       margin-left: 50px;
       padding: 15px 0;
@@ -385,6 +403,329 @@
             }
           }
         }
+      }
+    }
+    //领取修改
+    .receiveModify{
+      .dialogHeader{
+        width: 100%;
+        height: 31px;
+        p{
+          width: 151px;
+          height: 31px;
+          margin-left: 60px;
+          font-size: 24px;
+          font-family: MicrosoftYaHei;
+          color: rgba(104,104,116,1);
+          line-height: 31px;
+          letter-spacing: 1px;
+        }
+      }
+      .dialogBody{
+        width: 1577px;
+        height: 713px;
+        margin: 20px 3px 0px 60px;
+        .basicTitle{
+          width: 100%;
+          height: 24px;
+          p{
+            width:77px;
+            height:24px;
+            font-size:18px;
+            font-family:MicrosoftYaHei;
+            color:rgba(104,104,116,1);
+            line-height:24px;
+            letter-spacing:1px;
+          }
+        }
+        .basicDetail{
+          width: 1503px;
+          height: 112px;
+          margin: 21px 64px 32px 0px;
+        }
+        .operateInfo{
+          width: 100%;
+          height: 24px;
+          p{
+            width:287px;
+            height:24px;
+            font-size:18px;
+            font-family:MicrosoftYaHei;
+            color:rgba(104,104,116,1);
+            line-height:24px;
+            letter-spacing:1px;
+          }
+        }
+        .operateDetail{
+          width: 1503px;
+          margin: 20px 64px 0 0;
+          padding: 46px 51px 0px 30px;
+          .right_title{
+            height: 35px;
+            display: flex;
+            align-items: center;
+            .words{
+              width:64px;
+              height:35px;
+              font-size:16px;
+              font-family: jingdianxingshu;
+              color:rgba(207,46,51,1);
+              line-height:35px;
+            }
+            .arrow{
+              width: 34px;
+              height: 5px;
+              margin-left: 23px;
+            }
+          }
+          .body_detail{
+            margin-bottom: 69px;
+            display: flex;
+            flex-wrap: wrap;
+            >div{
+              width: 25%;
+              height: 19px;
+              margin-top: 30px;
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              .selector{
+                width: 18px;
+                height: 18px;
+                border-radius: 9px;
+                background:rgba(207,46,51,1);
+              }
+              .content{
+                margin-left: 20px;
+              }
+            }
+          }
+          
+        }
+        .otherDetail{
+          width: 1503px;
+          height: 204px;
+          margin-top: 8px;
+          padding: 30px 0px 0px 40px;
+          .otherDetailTop{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: flex-start;
+            p{
+              margin-right: 19px;
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(176,176,176,1);
+              line-height:19px
+            }
+            img{
+              width: 50px;
+              height: 50px;
+              margin-right: 10px; 
+            }
+          }
+          .otherDetailBottom{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            .bottomTitle{
+              margin-right: 24px;
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(176,176,176,1);
+              line-height:19px;
+            }
+            .bottomDetail{
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(104,104,116,1);
+              line-height:19px;
+            }
+          }
+        }
+      }
+      .dialog_footer{
+        padding-left: 1223px;
+      }
+    }
+    //领取新建任务
+    .receiveMission{
+      .dialogHeader{
+        width: 100%;
+        height: 31px;
+        p{
+          width: 101px;
+          height: 31px;
+          margin-left: 60px;
+          font-size: 24px;
+          font-family: MicrosoftYaHei;
+          color: rgba(104,104,116,1);
+          line-height: 31px;
+          letter-spacing: 1px;
+        }
+      }
+      .dialogBody{
+        width: 1597px;
+        height: 719px;
+        margin-top: 23px;
+        padding: 0px 101px 0px 60px;
+        .basicTitle{
+          width: 100%;
+          height: 19px;
+          p{
+            width:60px;
+            height:21px;
+            font-size:14px;
+            font-family:MicrosoftYaHei;
+            color:rgba(104,104,116,1);
+            line-height:19px;
+          }
+        }
+        .basicDetail{
+          height: 173px;
+          margin: 21px 80px 24px 102px;
+        }
+        .operateDetail{
+          height: 112px;
+          margin: 20px 0 37px 0;
+        }
+        .otherDetail{
+          width: 1503px;
+          height: 204px;
+          margin-top: 8px;
+          padding: 30px 0px 0px 40px;
+          .otherDetailTop{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: flex-start;
+            p{
+              margin-right: 19px;
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(176,176,176,1);
+              line-height:19px
+            }
+            img{
+              width: 50px;
+              height: 50px;
+              margin-right: 10px; 
+            }
+          }
+          .otherDetailBottom{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            .bottomTitle{
+              margin-right: 24px;
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(176,176,176,1);
+              line-height:19px;
+            }
+            .bottomDetail{
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(104,104,116,1);
+              line-height:19px;
+            }
+          }
+        }
+      }
+      .dialog_footer{
+        padding-left: 1223px;
+      }
+    }
+    //作废新建任务
+    .cancelMission{
+      .dialogHeader{
+        width: 100%;
+        height: 31px;
+        p{
+          width: 101px;
+          height: 31px;
+          margin-left: 60px;
+          font-size: 24px;
+          font-family: MicrosoftYaHei;
+          color: rgba(104,104,116,1);
+          line-height: 31px;
+          letter-spacing: 1px;
+        }
+      }
+      .dialogBody{
+        width: 1597px;
+        height: 719px;
+        margin-top: 23px;
+        padding: 0px 101px 0px 60px;
+        .basicTitle{
+          width: 100%;
+          height: 19px;
+          p{
+            width:60px;
+            height:21px;
+            font-size:14px;
+            font-family:MicrosoftYaHei;
+            color:rgba(104,104,116,1);
+            line-height:19px;
+          }
+        }
+        .basicDetail{
+          height: 173px;
+          margin: 21px 80px 24px 102px;
+        }
+        .operateDetail{
+          height: 112px;
+          margin: 20px 0 37px 0;
+        }
+        .otherDetail{
+          width: 1503px;
+          height: 204px;
+          margin-top: 8px;
+          padding: 30px 0px 0px 40px;
+          .otherDetailTop{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: flex-start;
+            p{
+              margin-right: 19px;
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(176,176,176,1);
+              line-height:19px
+            }
+            img{
+              width: 50px;
+              height: 50px;
+              margin-right: 10px; 
+            }
+          }
+          .otherDetailBottom{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            .bottomTitle{
+              margin-right: 24px;
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(176,176,176,1);
+              line-height:19px;
+            }
+            .bottomDetail{
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(104,104,116,1);
+              line-height:19px;
+            }
+          }
+        }
+      }
+      .dialog_footer{
+        padding-left: 1223px;
       }
     }
   }

@@ -1120,7 +1120,7 @@
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          debugger
+          // debugger
           //this.params = val;
           this.getRepositoryList();
         },
