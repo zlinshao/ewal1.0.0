@@ -98,8 +98,8 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="薪资范围" prop="salary">
-                <el-input v-model="control_mb_form.salary.min" style="width: 49%" placeholder="请输入薪资最小值"></el-input>
-                <el-input v-model="control_mb_form.salary.max" style="width: 49%" placeholder="请输入薪资最大值"></el-input>
+                <el-input v-model="control_mb_form.salary.min" style="width: 49%" placeholder="请输入薪资最小值(必填)"></el-input>
+                <el-input v-model="control_mb_form.salary.max" style="width: 49%" placeholder="请输入薪资最大值(必填)"></el-input>
               </el-form-item>
               <el-form-item label="工作经验" prop="experience">
                 <el-select v-model="control_mb_form.experience">
@@ -112,10 +112,10 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="岗位职责" prop="content">
-                <el-input v-model="control_mb_form.content" type="textarea"></el-input>
+                <el-input v-model="control_mb_form.content" type="textarea" placeholder="选填"></el-input>
               </el-form-item>
               <el-form-item label="招聘状态" prop="publish_status">
-                <el-input v-model="control_mb_form.publish_status" type="textarea"></el-input>
+                <el-input v-model="control_mb_form.publish_status" type="textarea" placeholder="选填"></el-input>
               </el-form-item>
             </el-form>
           </div>

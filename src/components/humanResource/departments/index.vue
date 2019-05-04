@@ -743,7 +743,7 @@
         LeaveJobSearch,
         humanResource,
         resourceDepart,
-        chooseTab: 1,//tab切换
+        chooseTab: 2,//tab切换
         selects: [
           {
             id: 1,
@@ -1306,6 +1306,7 @@
               message: res.msg
             });
             this.del_depart_visible = false;
+            this.show_depart_detail = false;
             this.getDepartList();
           } else {
             this.$LjNotify('warning',{

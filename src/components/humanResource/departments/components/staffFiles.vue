@@ -314,8 +314,8 @@
                       <el-col :span="8">
                         <el-form-item label="学习形式">
                           <el-select v-model="item.learn_type" placeholder="请选择">
-                            <el-option :value="1">全日制</el-option>
-                            <el-option :value="2">其他</el-option>
+                            <el-option :value="1" label="全日制"></el-option>
+                            <el-option :value="2" label="其他"></el-option>
                           </el-select>
                         </el-form-item>
                       </el-col>
@@ -328,23 +328,23 @@
                   </el-form-item>
                   <el-row>
                     <el-col :span="8">
-                      <el-form-item label="银行卡照片">
-
+                      <el-form-item label="银行卡照片:">
+                        <a v-if="staffDetail.bank_card_image_url && staffDetail.bank_card_image_url.indexOf('.pdf') !== -1" :href="staffDetail.bank_card_image_url" target="_blank">点击查看</a>
+                        <img style="width: 30px;height: 30px;cursor: pointer" v-else-if="staffDetail.bank_card_image_url && staffDetail.bank_card_image_url.indexOf('.pdf') === -1" :src="staffDetail.bank_card_image_url" data-magnify="" data-caption="图片查看器" :data-src="staffDetail.bank_card_image_url" alt="">
+                        <a v-else>暂无</a>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="劳务合同">
-
+                      <el-form-item label="学籍验证报告:">
+                        <a v-if="staffDetail.report_url && staffDetail.report_url.indexOf('.pdf') !== -1" :href="staffDetail.report_url" target="_blank">点击查看</a>
+                        <img style="width: 30px;height: 30px;cursor: pointer" v-if="staffDetail.report_url" :src="staffDetail.report_url" data-magnify="" data-caption="图片查看器" :data-src="staffDetail.report_url" alt="">
+                        <a v-else>暂无</a>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="学籍验证报告">
-
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="8">
-                      <el-form-item label="离职证明">
-
+                      <el-form-item label="离职证明:">
+                        <img style="width: 30px;height: 30px;cursor: pointer" v-if="staffDetail.leaveproof_image_url" :src="staffDetail.leaveproof_image_url" data-magnify="" data-caption="图片查看器" :data-src="staffDetail.leaveproof_image_url" alt="">
+                        <a v-else>暂无</a>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -496,7 +496,9 @@
           name: '',
           id_num: '',
           phone: '',
-
+          bank_card_image_url:'',
+          leaveproof_image_url:'',
+          report_url:'',
           position_id: [], //岗位id
           position_name: '', //岗位名称
           org_id: [], //部门id

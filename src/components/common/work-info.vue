@@ -60,7 +60,6 @@
           },
           attendData: {
             handler(val) {
-              console.log(val);
               this.attend_data = val;
               this.init_attend_chart();
             },
@@ -77,7 +76,7 @@
               orient: 'vertical',
               x: 'left',
               y: 'middle',
-              data: ['一般', '特殊', '紧急']
+              // data: ['一般', '特殊', '紧急']
             },
             series: [
               {

@@ -48,9 +48,10 @@
 
           <el-table-column align="center" label="状态">
             <template slot-scope="scope">
-              <span class='status'>{{scope.row.status}}</span>
-              <!-- <span :class='["status","status"+ scope.row.status]'>{{scope.row.status == 1 ? "产品管控审核中" :
-                ( scope.row.status == 2 ? "已撤销":"已通过" ) }}</span> -->
+              <span class='status status3' v-if='scope.row.status == "已通过" 
+              || scope.row.status == "已读"'>{{scope.row.status}}</span>
+              <span class='status status1' v-else-if='scope.row.status == "已拒绝"'>{{scope.row.status}}</span>
+              <span class='status status2' v-else>{{scope.row.status}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -125,6 +126,10 @@ export default {
           value: 1
         },
         {
+          tit: '我发起的',
+          value: 5
+        },
+        {
           tit: '我审批的',
           value: 2
         },
@@ -142,13 +147,15 @@ export default {
         data1: [],
         data2: [],
         data3: [],
-        data4: []
+        data4: [],
+        data5: []
       },
       total: {
         total1: 0,
         total2: 0,
         total3: 0,
         total4: 0,
+        total5: 0
       },
       params: {
         param1: {
@@ -183,6 +190,14 @@ export default {
           type: null,
           department: ''
         },
+        param5: {
+          page: 1,
+          search: '',
+          start_time: [],
+          finish_time: [],
+          type: null,
+          department: ''
+        }
       },
       isRevice: false, //是否接收
       isRevice_visible: false,  // 接收类型设置 显示隐藏
@@ -238,13 +253,16 @@ export default {
           this.urlApi = 'history/process-instances'
           break;
         case 2:
-          this.urlApi = 'history/tasks'
+          this.urlApi = 'history/tasks?category=approval&processDefinitionKey=MG-BulletinApproval'
           break;
         case 3:
           this.urlApi = 'runtime/process-instances'
           break;
         case 4:
-          this.urlApi = 'runtime/tasks'
+          this.urlApi = 'history/tasks?category=cc'
+          break;
+        case 5:
+          this.urlApi = 'history/process-instances?processDefinitionKey=MC-Bulletin&taskOwner'
           break;
         default: break;
       }
@@ -256,7 +274,6 @@ export default {
         startTimeAfter: '',
         endTimeBefore: '',
         endTimeAfter: '',
-        processDefinitionKey: '',
         orgId: ''
       }
     },
@@ -277,19 +294,37 @@ export default {
         obj.name = item.name
         obj.endTime = item.endTime
         obj.id = item.id
-
-        if (this.status_type == 2 || this.status_type == 4) {
-          obj.status = name
-          obj.suspended = item.suspended
-          obj.rootProcessInstanceId = item.processInstanceId
-        } else {
-          obj.status = item.status[0]
-        }
-
         for (let key of item.variables) {
           if (this.taskType.includes(key.name)) {
             obj[key.name] = key.value
           }
+        }
+
+        obj.isfinish = false
+
+        if (this.status_type == 2 || this.status_type == 4) {
+          if (item.endTime) {
+            obj.isfinish = true
+            if (this.status_type == 2) {
+              let title = JSON.parse(obj.outcome).variableName
+              for (let key of item.variables) {
+                if (key.name == title) {
+                  obj.status = key.value ? "已通过" : "已拒绝"
+                }
+              }
+            } else {
+              obj.status = '已读'
+            }
+          } else {
+            obj.status = this.status_type == 2 ? item.name : '未读'
+          }
+          obj.suspended = item.suspended
+          obj.rootProcessInstanceId = item.processInstanceId
+        } else {
+          if (item.status.includes('已通过')) {
+            obj.isfinish = true
+          }
+          obj.status = item.status.join(',')
         }
         arr.push(obj)
       }
@@ -389,7 +424,7 @@ export default {
     // 取消 接收类型
     handleCancleRevice () {
       this.isRevice_visible = false
-      this.revice_type = []
+      this.revice_check = []
     },
     // 组长 控制面板
     handleSeeMain () {
@@ -405,6 +440,9 @@ export default {
       //   this.develop_visible = true
       // } else {
       this.contract_detail_visible = true
+
+      // 抄送我的 + 未读 已读状态
+
       // }
     },
     handleChange () {

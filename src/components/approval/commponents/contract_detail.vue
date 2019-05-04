@@ -68,13 +68,22 @@
             </div>
           </div>
         </div>
-        <div class="dialog_footer">
-          <el-button :type='moduleData.suspended?"info":"danger"' size="small" @click='handleBuff' v-if='status_type == 2'>{{moduleData.suspended
-            ? "激活":"暂缓"}}</el-button>
+
+        <!-- 我审批的 暂不处理  已通过或者已拒绝 无操作 -->
+        <div class="dialog_footer" v-if='moduleData && !moduleData.isfinish && (status_type == 2 || status_type == 3)'>
+          <el-button type='info' size="small" @click='handleBuff' v-if='status_type == 2 && !moduleData.suspended'>暂缓</el-button>
+
           <el-button type="info" size="small" @click='handleRewrite'>修改</el-button>
           <el-button type="danger" size="small" @click='handleReject'>拒绝</el-button>
           <el-button type="danger" size="small">同意</el-button>
         </div>
+
+        <!-- 我发起的 -->
+        <div class="dialog_footer" v-if='moduleData && !moduleData.isfinish && status_type == 5'>
+          <el-button type="info" size="small" @click='handleRewrite'>修改</el-button>
+          <el-button type="danger" size="small">撤销</el-button>
+        </div>
+
       </div>
 
       <!-- 评论 -->
@@ -168,7 +177,6 @@ import VillageContainer from './village-container.vue';
 import Ljupload from '../../common/lightweightComponents/lj-upload.vue';
 import FormDetail from './form_detail.vue'
 import { defineForm, defineTitleTips } from '../../../assets/js/approval/definForm.js'
-import { isNull } from 'util';
 export default {
   props: ['visible', 'moduleData', 'status_type'],
   components: {
@@ -227,6 +235,9 @@ export default {
           this.defineForm = this.defineForms[1]
           this.titleTips = defineTitleTips[1]
           this.getDetailForm(val)
+          if (this.status_type == 4 && val.status == '未读') {
+            this.AggreeAndReject('已读')
+          }
         }
       },
       deeper: true
@@ -236,8 +247,8 @@ export default {
   methods: {
     getDetailForm (params) {
       let url = params.bm_detail_request_url
+      console.log(url)
       this.$http.get(url).then(res => {
-        console.log(res)
         if (res.code === 200) {
           this.formData = res.data.content
           this.handleDetail(res.data.content)
@@ -385,14 +396,14 @@ export default {
         'action': this.moduleData.suspended ? "activate" : "suspend"
       }
       this.$http.put(`${this.approval_sever}runtime/process-instances/${this.moduleData.rootProcessInstanceId}`, params).then(res => {
-
-        this.$LjNotify('success', {
-          title: this.moduleData.suspended ? "激活成功" : "暂缓成功",
-          message: ''
-        });
-
+        if (this.status_type == 2) {
+          this.$LjNotify('success', {
+            title: this.moduleData.suspended ? "激活成功" : "暂缓成功",
+            message: ''
+          });
+          this.$emit('changeData')
+        }
         this.moduleData.suspended = !this.moduleData.suspended
-        this.$emit('changeData')
       })
     },
     handleRewrite () { // 修改
@@ -413,27 +424,36 @@ export default {
       this.AggreeAndReject('同意')
     },
     AggreeAndReject (tit) {
-      console.log(this.moduleData)
-      let outcome = JSON.parse(this.moduleData.outcome);
-      let outcomeOptions = outcome.outcomeOptions
-      let isReject = null;
-      for (let item of outcomeOptions) {
-        if (item.title = tit) {
-          isReject = item.action
-        }
+      if (this.type == 3 && this.moduleData.suspended) {
+        this.handleBuff()
       }
       let params = {
         "action": "complete",
-        "variables": [
-          {
-            "name": outcome.variableName,
-            "value": isReject
+        "variables": []
+      }
+      if (tit != '已读') {
+        let outcome = this.moduleData.outcome;
+        let outcomeOptions = JSON.parse(outcome).outcomeOptions
+        let isReject = null;
+        for (let item of outcomeOptions) {
+          if (item.title = tit) {
+            isReject = item.action
           }
-        ]
+        }
+        params = {
+          "action": "complete",
+          "variables": [
+            {
+              "name": JSON.parse(outcome).variableName,
+              "value": isReject
+            }
+          ]
+        }
       }
 
+
       this.$http.post(`${this.approval_sever}runtime/tasks/${this.moduleData.id}`, params).then(res => {
-        console.log(res)
+        this.$emit('changeData')
       })
     },
   }
