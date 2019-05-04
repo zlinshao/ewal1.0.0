@@ -10,6 +10,11 @@
       </div>
       <div>
         <p>连续2个月业绩低于10万名单</p>
+        <!--<div class="staff_list flex">-->
+          <!--<div class="staff_list_item" v-for="item in 10">-->
+            <!---->
+          <!--</div>-->
+        <!--</div>-->
       </div>
       <div>
         <span>本月入职员工数：{{ staff_info.enroll }}人</span>

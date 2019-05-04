@@ -314,8 +314,8 @@
                       <el-col :span="8">
                         <el-form-item label="学习形式">
                           <el-select v-model="item.learn_type" placeholder="请选择">
-                            <el-option :value="1">全日制</el-option>
-                            <el-option :value="2">其他</el-option>
+                            <el-option :value="1" label="全日制"></el-option>
+                            <el-option :value="2" label="其他"></el-option>
                           </el-select>
                         </el-form-item>
                       </el-col>

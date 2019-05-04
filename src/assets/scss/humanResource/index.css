@@ -181,11 +181,12 @@
 #theme_name #humanResource .bottom_info {
   width: 100%;
   position: relative;
-  padding: 0 200px; }
+  padding: 0 100px; }
   #theme_name #humanResource .bottom_info > div {
-    width: 100%;
     height: 100%;
     padding: 30px; }
+    #theme_name #humanResource .bottom_info > div:nth-child(2) {
+      width: 40%; }
     #theme_name #humanResource .bottom_info > div span {
       display: block;
       margin-bottom: 50px; }
@@ -204,6 +205,14 @@
       margin-bottom: 10px;
       font-size: 18px;
       cursor: pointer; }
+  #theme_name #humanResource .bottom_info .staff_list {
+    flex-wrap: wrap; }
+    #theme_name #humanResource .bottom_info .staff_list .staff_list_item {
+      min-width: 15%;
+      min-height: 100px;
+      background-color: rebeccapurple;
+      margin-bottom: 15px;
+      margin-right: 15px; }
 
 #theme_name.theme1 #humanResource .bottom_info {
   background-color: white; }
