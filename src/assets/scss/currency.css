@@ -757,7 +757,7 @@
   align-items: center;
   justify-content: space-around;
   white-space: nowrap;
-  text-overflow: hidden;
+  text-overflow: ellipsis;
   overflow: hidden; }
 #theme_name.theme1 .highChoose {
   background-color: #ffeaea;

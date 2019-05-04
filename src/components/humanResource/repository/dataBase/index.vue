@@ -1,6 +1,6 @@
 <template>
   <div id="dataBase">
-    <div class="addAll" @click="add()" v-if="activeIndex == 1 || (activeIndex == 2 && contractNumberChoosed !== 0)"><b>+</b></div>
+    <div class="addAll" @click="add()" v-if="activeIndex == 1 || (activeIndex == 2 && contractNumberChoosed !== 0) || (activeIndex == 3 && contractNumberEditChoosed == 1)"><b>+</b></div>
     <div class="icons search" @click="search()" v-if="(activeIndex == 2 && contractNumberChoosed == 0) || (activeIndex ==3 && contractNumberEditChoosed ==1)"></div>
     <div class="main-nav">
       <div class="dataBase-left">
@@ -1761,16 +1761,16 @@
               <div class="icons add" @click="numberManageAddF_visible = true"><b>+</b></div>
             </div>
           </div>
-          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="570px">
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="570px" :data="numberManageDialogTable">
             <el-table-column label="入库时间" align="center"></el-table-column>
             <el-table-column label="数量(收)" align="center"></el-table-column>
             <el-table-column label="数量(租)" align="center"></el-table-column>
-            <el-table-column label="操作人" align="center"></el-table-column>
+            <el-table-column label="操作人" align="center" prop="name"></el-table-column>
             <el-table-column label="现剩余(收)" align="center"></el-table-column>
             <el-table-column label="现剩余(租)" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <button class="contractNumberButton" @click="numberManageModify_visible=true"></button>
+                <button class="contractNumberButton" @click="numberManageModify_visible=true">修改</button>
               </template>
             </el-table-column>
           </el-table>
@@ -1786,13 +1786,109 @@
       </div>
     </lj-dialog>
     <!-- 编号管理1新增 -->
-    <lj-dialog :visible="numberManageAddF_visible" :size="{width: 680 + 'px',height: 404 + 'px'}" @close="numberManageAddF_visible = false" class="numberManageAdd">
+    <lj-dialog :visible="numberManageAddF_visible" :size="{width: 680 + 'px',height: 404 + 'px'}" @close="numberManageAddF_visible = false" class="numberManageAddF">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增</h3>
+          <h4>操作人：当前登录人 操作时间：当前日期</h4>
+        </div>
+        <div class="dialog_main">
+          <div class="left">
+            <div class="title">
+              <h3>城市</h3>
+              <h3>数量(收)</h3>
+              <h3>数量(租)</h3>
+            </div>
+            <div class="value">
+              <el-select v-model="process_id" placeholder="请选择">
+                <el-option>
+                </el-option>
+              </el-select>
+              <el-input placeholder="请输入"></el-input>
+              <el-input placeholder="请输入"></el-input>
+            </div>
+          </div>
+          <div class="right">
+            <div class="title">
+              <h3>现剩余：</h3>
+              <h3>现剩余：</h3>
+            </div>
+            <div class="value">
+              <h3>10</h3>
+              <h3>10</h3>
+            </div>
+          </div>
+        </div>
+        <div class="dialog_footer">
+            <el-button type="danger" size="small">确定</el-button>
+            <el-button type="info" size="small">取消</el-button>
+        </div>
+      </div>
     </lj-dialog>
     <!-- 编号管理修改 -->
-    <lj-dialog :visible="numberManageModify_visible" :size="{width: 680 + 'px',height: 404 + 'px'}" @close="numberManageModify_visible = false" class="numberManageAdd">
+    <lj-dialog :visible="numberManageModify_visible" :size="{width: 680 + 'px',height: 404 + 'px'}" @close="numberManageModify_visible = false" class="numberManageAddF">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增</h3>
+          <h4>操作人：当前登录人 操作时间：当前日期</h4>
+        </div>
+        <div class="dialog_main">
+          <div class="left">
+            <div class="title">
+              <h3>城市</h3>
+              <h3>数量(收)</h3>
+              <h3>数量(租)</h3>
+            </div>
+            <div class="value">
+              <el-select v-model="process_id" placeholder="请选择">
+                <el-option>
+                </el-option>
+              </el-select>
+              <el-input placeholder="请输入"></el-input>
+              <el-input placeholder="请输入"></el-input>
+            </div>
+          </div>
+          <div class="right">
+            <div class="title">
+              <h3>现剩余：</h3>
+              <h3>现剩余：</h3>
+            </div>
+            <div class="value">
+              <h3>10</h3>
+              <h3>10</h3>
+            </div>
+          </div>
+        </div>
+        <div class="dialog_footer">
+            <el-button type="danger" size="small">确定</el-button>
+            <el-button type="info" size="small">取消</el-button>
+        </div>
+      </div>
     </lj-dialog>
     <!-- 编号管理2新增 -->
-    <lj-dialog :visible="numberManageAddS_visible" :size="{width: 680 + 'px',height: 404 + 'px'}" @close="numberManageAddS_visible = false" class="numberManageAdd">
+    <lj-dialog :visible="numberManageAddS_visible" :size="{width: 680 + 'px',height: 404 + 'px'}" @close="numberManageAddS_visible = false" class="numberManageAddS">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增</h3>
+          <h4>操作人：当前登录人 操作时间：当前日期</h4>
+        </div>
+        <div class="dialog_main">
+          <div class="title">
+            <h3>操作对象</h3>
+            <h3>所在部门</h3>
+            <h3>设置上限</h3>
+          </div>
+          <div class="value">
+            <user-choose title="请选择"></user-choose>
+            <h3>南京一区</h3>
+            <el-input placeholder="请输入"></el-input>
+          </div>
+        </div>
+        <div class="dialog_footer">
+            <el-button type="danger" size="small">确定</el-button>
+            <el-button type="info" size="small">取消</el-button>
+        </div>
+      </div>
     </lj-dialog>
   </div>
 </template>
@@ -1860,6 +1956,9 @@ export default {
       contractRequisition: '',
       contractManageListTotal:[
         {city: "南京"}
+      ],
+      numberManageDialogTable: [
+        {name: "张三"}
       ],
       //添加合同参数
       supplierDetail: [],
@@ -1972,6 +2071,11 @@ export default {
         }
         else if(this.contractNumberChoosed == 4){
           this.loseMission_visible = true
+        }
+      }
+      else if(this.activeIndex ==3){
+        if(this.contractNumberEditChoosed == 1){
+          this.numberManageAddS_visible = true
         }
       }
     },

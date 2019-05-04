@@ -579,7 +579,7 @@
         align-items: center;
         justify-content: space-around;
         white-space: nowrap;
-        text-overflow: hidden;
+        text-overflow: ellipsis;
         overflow: hidden;
       }
     }
