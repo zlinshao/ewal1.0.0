@@ -474,6 +474,12 @@ div.el-popover {
   border-color: #cf2e33; }
 #theme_name .el-select .el-input.is-focus .el-input__inner {
   border-color: #cf2e33; }
+#theme_name #repository .el-input__inner, #theme_name #nq .el-input__inner, #theme_name #discussPolitics .el-input__inner, #theme_name #militaryOrganization .el-input__inner, #theme_name #todo_list .el-input__inner, #theme_name #personal_center .el-input__inner, #theme_name #intellectualPropertyProtection .el-input__inner {
+  transition: none;
+  border: none;
+  color: #000000; }
+  #theme_name #repository .el-input__inner:focus, #theme_name #nq .el-input__inner:focus, #theme_name #discussPolitics .el-input__inner:focus, #theme_name #militaryOrganization .el-input__inner:focus, #theme_name #todo_list .el-input__inner:focus, #theme_name #personal_center .el-input__inner:focus, #theme_name #intellectualPropertyProtection .el-input__inner:focus {
+    border: 1px solid #cf2e33; }
 #theme_name .el-input-group__append,
 #theme_name .el-input-group__prepend {
   background-color: white !important;

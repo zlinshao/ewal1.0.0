@@ -567,9 +567,9 @@
   background-color: #cf2e33;
   vertical-align: middle;
   cursor: pointer;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  border-radius: 50%; }
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px; }
 #theme_name .all-choose {
   background: url("../../assets/image/common/theme1/quanxuan.png") no-repeat scroll center;
   background-size: 100% 100%; }
