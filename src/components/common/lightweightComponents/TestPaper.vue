@@ -603,7 +603,7 @@ export default {
               break;
           }
       });*/
-      if (this.type == 1) {
+      if (this.type == 1&&this.paper_type==1) {
         for (let item of this.exam_form_list) {
           if (isNaN(item.score)) {
             this.$LjMessage('warning', {

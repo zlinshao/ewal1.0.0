@@ -178,6 +178,22 @@
 .color874 {
   color: #686874; }
 
+#theme_name.theme1 #dataBase .addAll {
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  bottom: 801px;
+  right: 110px;
+  background-color: #cf2e33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer; }
+  #theme_name.theme1 #dataBase .addAll b {
+    color: #ffffff;
+    font-size: 30px;
+    padding-bottom: 6px; }
 #theme_name.theme1 #dataBase .main-nav {
   margin-left: 50px;
   padding: 15px 0;
@@ -340,5 +356,400 @@
           background: #cf2e33; }
         #theme_name.theme1 #dataBase .distributeDialog .dialog_body .body_main .body_detail > div .content {
           margin-left: 20px; }
+#theme_name.theme1 #dataBase .receiveDialog .dialogHeader {
+  width: 100%;
+  height: 31px; }
+  #theme_name.theme1 #dataBase .receiveDialog .dialogHeader p {
+    width: 151px;
+    height: 31px;
+    margin-left: 60px;
+    font-size: 24px;
+    font-family: MicrosoftYaHei;
+    color: #686874;
+    line-height: 31px;
+    letter-spacing: 1px; }
+#theme_name.theme1 #dataBase .receiveDialog .dialogBody {
+  width: 1577px;
+  height: 743px;
+  margin: 24px 0 71px 60px; }
+  #theme_name.theme1 #dataBase .receiveDialog .dialogBody .basicTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .receiveDialog .dialogBody .basicTitle p {
+      width: 60px;
+      height: 19px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .receiveDialog .dialogBody .basicDetail {
+    width: 1503px;
+    height: 108px;
+    margin: 8px 0px 0px 20px;
+    display: flex;
+    justify-content: center; }
+    #theme_name.theme1 #dataBase .receiveDialog .dialogBody .basicDetail > div {
+      width: 33%;
+      height: 49px;
+      margin: 29px 0px 30px 0px; }
+  #theme_name.theme1 #dataBase .receiveDialog .dialogBody .receivedTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .receiveDialog .dialogBody .receivedTitle p {
+      width: 105px;
+      height: 19px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .receiveDialog .dialogBody .receivedDetail {
+    width: 1503px;
+    height: 133px;
+    margin: 8px 0px 0px 20px;
+    padding: 25px 40px 31px 41px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; }
+    #theme_name.theme1 #dataBase .receiveDialog .dialogBody .receivedDetail > p {
+      width: 16.7%;
+      height: 15px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px;
+      display: flex;
+      justify-content: flex-start; }
+  #theme_name.theme1 #dataBase .receiveDialog .dialogBody .rentTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .receiveDialog .dialogBody .rentTitle p {
+      width: 105px;
+      height: 19px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .receiveDialog .dialogBody .rentDetail {
+    width: 1503px;
+    height: 130px;
+    margin: 8px 0px 0px 20px;
+    padding: 26px 39px 27px 41px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; }
+    #theme_name.theme1 #dataBase .receiveDialog .dialogBody .rentDetail > p {
+      width: 16.7%;
+      height: 15px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px;
+      display: flex;
+      justify-content: flex-start; }
+  #theme_name.theme1 #dataBase .receiveDialog .dialogBody .otherTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .receiveDialog .dialogBody .otherTitle > p {
+      width: 30px;
+      height: 19px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .receiveDialog .dialogBody .otherDetail {
+    width: 1503px;
+    height: 204px;
+    margin-top: 8px;
+    padding: 30px 0px 0px 40px; }
+    #theme_name.theme1 #dataBase .receiveDialog .dialogBody .otherDetail .otherDetailTop {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .receiveDialog .dialogBody .otherDetail .otherDetailTop p {
+        margin-right: 19px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .receiveDialog .dialogBody .otherDetail .otherDetailTop img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px; }
+    #theme_name.theme1 #dataBase .receiveDialog .dialogBody .otherDetail .otherDetailBottom {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .receiveDialog .dialogBody .otherDetail .otherDetailBottom .bottomTitle {
+        margin-right: 24px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .receiveDialog .dialogBody .otherDetail .otherDetailBottom .bottomDetail {
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        line-height: 19px; }
+#theme_name.theme1 #dataBase .receiveModify .dialogHeader {
+  width: 100%;
+  height: 31px; }
+  #theme_name.theme1 #dataBase .receiveModify .dialogHeader p {
+    width: 151px;
+    height: 31px;
+    margin-left: 60px;
+    font-size: 24px;
+    font-family: MicrosoftYaHei;
+    color: #686874;
+    line-height: 31px;
+    letter-spacing: 1px; }
+#theme_name.theme1 #dataBase .receiveModify .dialogBody {
+  width: 1577px;
+  height: 713px;
+  margin: 20px 3px 0px 60px; }
+  #theme_name.theme1 #dataBase .receiveModify .dialogBody .basicTitle {
+    width: 100%;
+    height: 24px; }
+    #theme_name.theme1 #dataBase .receiveModify .dialogBody .basicTitle p {
+      width: 77px;
+      height: 24px;
+      font-size: 18px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 24px;
+      letter-spacing: 1px; }
+  #theme_name.theme1 #dataBase .receiveModify .dialogBody .basicDetail {
+    width: 1503px;
+    height: 112px;
+    margin: 21px 64px 32px 0px; }
+  #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateInfo {
+    width: 100%;
+    height: 24px; }
+    #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateInfo p {
+      width: 287px;
+      height: 24px;
+      font-size: 18px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 24px;
+      letter-spacing: 1px; }
+  #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateDetail {
+    width: 1503px;
+    margin: 20px 64px 0 0;
+    padding: 46px 51px 0px 30px; }
+    #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateDetail .right_title {
+      height: 35px;
+      display: flex;
+      align-items: center; }
+      #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateDetail .right_title .words {
+        width: 64px;
+        height: 35px;
+        font-size: 16px;
+        font-family: jingdianxingshu;
+        color: #cf2e33;
+        line-height: 35px; }
+      #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateDetail .right_title .arrow {
+        width: 34px;
+        height: 5px;
+        margin-left: 23px; }
+    #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateDetail .body_detail {
+      margin-bottom: 69px;
+      display: flex;
+      flex-wrap: wrap; }
+      #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateDetail .body_detail > div {
+        width: 25%;
+        height: 19px;
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; }
+        #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateDetail .body_detail > div .selector {
+          width: 18px;
+          height: 18px;
+          border-radius: 9px;
+          background: #cf2e33; }
+        #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateDetail .body_detail > div .content {
+          margin-left: 20px; }
+  #theme_name.theme1 #dataBase .receiveModify .dialogBody .otherDetail {
+    width: 1503px;
+    height: 204px;
+    margin-top: 8px;
+    padding: 30px 0px 0px 40px; }
+    #theme_name.theme1 #dataBase .receiveModify .dialogBody .otherDetail .otherDetailTop {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .receiveModify .dialogBody .otherDetail .otherDetailTop p {
+        margin-right: 19px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .receiveModify .dialogBody .otherDetail .otherDetailTop img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px; }
+    #theme_name.theme1 #dataBase .receiveModify .dialogBody .otherDetail .otherDetailBottom {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .receiveModify .dialogBody .otherDetail .otherDetailBottom .bottomTitle {
+        margin-right: 24px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .receiveModify .dialogBody .otherDetail .otherDetailBottom .bottomDetail {
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        line-height: 19px; }
+#theme_name.theme1 #dataBase .receiveModify .dialog_footer {
+  padding-left: 1223px; }
+#theme_name.theme1 #dataBase .receiveMission .dialogHeader {
+  width: 100%;
+  height: 31px; }
+  #theme_name.theme1 #dataBase .receiveMission .dialogHeader p {
+    width: 101px;
+    height: 31px;
+    margin-left: 60px;
+    font-size: 24px;
+    font-family: MicrosoftYaHei;
+    color: #686874;
+    line-height: 31px;
+    letter-spacing: 1px; }
+#theme_name.theme1 #dataBase .receiveMission .dialogBody {
+  width: 1597px;
+  height: 719px;
+  margin-top: 23px;
+  padding: 0px 101px 0px 60px; }
+  #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicTitle p {
+      width: 60px;
+      height: 21px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicDetail {
+    height: 173px;
+    margin: 21px 80px 24px 102px; }
+  #theme_name.theme1 #dataBase .receiveMission .dialogBody .operateDetail {
+    height: 112px;
+    margin: 20px 0 37px 0; }
+  #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherDetail {
+    width: 1503px;
+    height: 204px;
+    margin-top: 8px;
+    padding: 30px 0px 0px 40px; }
+    #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherDetail .otherDetailTop {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherDetail .otherDetailTop p {
+        margin-right: 19px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherDetail .otherDetailTop img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px; }
+    #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherDetail .otherDetailBottom {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherDetail .otherDetailBottom .bottomTitle {
+        margin-right: 24px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherDetail .otherDetailBottom .bottomDetail {
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        line-height: 19px; }
+#theme_name.theme1 #dataBase .receiveMission .dialog_footer {
+  padding-left: 1223px; }
+#theme_name.theme1 #dataBase .cancelMission .dialogHeader {
+  width: 100%;
+  height: 31px; }
+  #theme_name.theme1 #dataBase .cancelMission .dialogHeader p {
+    width: 101px;
+    height: 31px;
+    margin-left: 60px;
+    font-size: 24px;
+    font-family: MicrosoftYaHei;
+    color: #686874;
+    line-height: 31px;
+    letter-spacing: 1px; }
+#theme_name.theme1 #dataBase .cancelMission .dialogBody {
+  width: 1597px;
+  height: 719px;
+  margin-top: 23px;
+  padding: 0px 101px 0px 60px; }
+  #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicTitle p {
+      width: 60px;
+      height: 21px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetail {
+    height: 173px;
+    margin: 21px 80px 24px 102px; }
+  #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail {
+    height: 112px;
+    margin: 20px 0 37px 0; }
+  #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherDetail {
+    width: 1503px;
+    height: 204px;
+    margin-top: 8px;
+    padding: 30px 0px 0px 40px; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherDetail .otherDetailTop {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherDetail .otherDetailTop p {
+        margin-right: 19px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherDetail .otherDetailTop img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherDetail .otherDetailBottom {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherDetail .otherDetailBottom .bottomTitle {
+        margin-right: 24px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherDetail .otherDetailBottom .bottomDetail {
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        line-height: 19px; }
+#theme_name.theme1 #dataBase .cancelMission .dialog_footer {
+  padding-left: 1223px; }
 
 /*# sourceMappingURL=index.css.map */

@@ -1,5 +1,5 @@
 <template>
-  <div id="customService">
+  <div id="customService" ref="customService" :style="mainHeight">
     <MenuList :list="customService" :module="true" :title="top_title"></MenuList>
     <work-info :work-info="work_info" :event-data="event_data" :attend-data="attend_data" @change="handleChangeDate"></work-info>
   </div>
@@ -29,21 +29,54 @@
           {value: 300, name: '特殊'},
           {value: 200, name: '紧急'},
         ],
-        attend_data: []
+        attend_data: [],
+        mainHeight: {
+          height: 0
+        }
       }
     },
     mounted() {
       this.show_menu_list = true;
       this.work_info[0].val = '9 h';
       this.event_data[0].value = 900;
-      this.attend_data = [10,5,2];
+      // this.attend_data = [10,5,2];
       this.top_title = '客服中心';
+
+      var top = this.$refs['customService'].offsetTop;
+      this.mainHeight.height = window.innerHeight - top + 'px';
+
+      this.handleGetWorkInfo();
     },
     activated() {
     },
     watch: {},
     computed: {},
     methods: {
+      handleGetWorkInfo() {
+        var uid = 289;
+        this.$http.get(globalConfig.market_server + 'v1.0/csd/home/dashboard',{
+          uid,
+          // date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
+          date: '2019-03'
+        }).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            var arr1 = [];
+            arr1[0] = res.data && res.data.attendance.late_day;
+            arr1[1] = res.data && res.data.attendance.rest_day;
+            arr1[2] = new Date(new Date().getFullYear(),new Date().getMonth() + 1,0).getDate() - res.data.attendance.attendance_day;
+            this.attend_data = arr1;
+
+            if (res.data.eventRate && res.data.eventRate.length > 0) {
+              var arr2 = [];
+              for (var item of res.data.eventRate) {
+                arr2.push({value: item.num,name: item.emergency_name});
+              }
+              this.event_data = arr2;
+            }
+          }
+        })
+      },
       handleChangeDate(id) {
         console.log(id);
         console.log(this.work_info);
@@ -62,7 +95,7 @@
 
   #theme_name.theme1 {
     #customService {
-
+      background-color: white;
     }
   }
 
