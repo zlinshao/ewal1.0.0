@@ -90,7 +90,7 @@
                     2?'维修公司':'维修师傅'):(createOrder.send_order_type == 2?'保洁公司':'保洁师傅')}}
                   </span></p>
                 <div class='input_box'>
-                  <el-input @focus="handlerOrgan('operate_user')" readonly v-model="createOrder.operate_user.name" />
+                  <el-input v-model="createOrder.operate_user.name" />
                 </div>
               </el-col>
 
@@ -995,9 +995,13 @@ export default {
         return '工单类型未选择'
       }
 
-      if (this.moduleOrder == 78) {
+      if (this.moduleOrder == 78 || this.createOrder.type == 7 || this.createOrder.type == 8) {
         if (!this.createOrder.send_order_type) {
           return '派单未选择'
+        }
+      } else {
+        if (!this.createOrder.operate_org.name) {
+          return '部门未选择'
         }
       }
 
@@ -1031,9 +1035,6 @@ export default {
         return '处理人未选择'
       }
 
-      if (!this.createOrder.operate_org.name) {
-        return '部门未选择'
-      }
 
       if (!this.createOrder.replay_phone) {
         return '回复电话未填写'
