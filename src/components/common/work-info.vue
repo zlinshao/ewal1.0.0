@@ -76,7 +76,7 @@
               orient: 'vertical',
               x: 'left',
               y: 'middle',
-              data: ['一般', '特殊', '紧急']
+              // data: ['一般', '特殊', '紧急']
             },
             series: [
               {

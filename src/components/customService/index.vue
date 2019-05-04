@@ -59,12 +59,21 @@
           // date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
           date: '2019-03'
         }).then(res => {
+          console.log(res);
           if (res.code === 200) {
-            var arr = [];
-            arr[0] = res.data && res.data.attendance.late_day;
-            arr[1] = res.data && res.data.attendance.rest_day;
-            arr[2] = new Date(new Date().getFullYear(),new Date().getMonth() + 1,0).getDate() - res.data.attendance.attendance_day;
-            this.attend_data = arr;
+            var arr1 = [];
+            arr1[0] = res.data && res.data.attendance.late_day;
+            arr1[1] = res.data && res.data.attendance.rest_day;
+            arr1[2] = new Date(new Date().getFullYear(),new Date().getMonth() + 1,0).getDate() - res.data.attendance.attendance_day;
+            this.attend_data = arr1;
+
+            if (res.data.eventRate && res.data.eventRate.length > 0) {
+              var arr2 = [];
+              for (var item of res.data.eventRate) {
+                arr2.push({value: item.num,name: item.emergency_name});
+              }
+              this.event_data = arr2;
+            }
           }
         })
       },
