@@ -1630,6 +1630,150 @@
         }
       }
     }
+    .numberManageAddF{
+      .dialog_header{
+        display: flex;
+        align-items: center;
+        h4{
+          width:271px;
+          height:20px;
+          margin-left: 251px;
+          font-size:14px;
+          font-family:PingFangSC-Regular;
+          font-weight:400;
+          color:rgba(104,104,116,1);
+          line-height:20px;
+        }
+      }
+      .dialog_main{
+        display: flex;
+        justify-content: flex-start;
+        padding: 27px 69px 0 55px;
+        .left{
+          width: 395px;
+          height: 150px;
+          display: flex;
+          justify-content: space-between;
+          .title{
+            width: 70px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            >h3{
+              font-size:14px;
+              font-family:PingFangSC-Regular;
+              font-weight:400;
+              color:rgba(104,104,116,1);
+              line-height:50px;
+              display: flex;
+              justify-content: flex-end;
+            }
+          }
+          .value{
+            width: 285px;
+            height: 37px;
+            padding-top: 5px; 
+            flex-direction: column;
+            justify-content: space-around;
+            .el-select{
+              margin-bottom: 10px;
+            }
+            .el-input{
+              margin-bottom: 10px;
+            }
+          }
+        }
+        .right{
+          width: 71px;
+          height: 150px;
+          margin-left: 20px;
+          padding-top: 50px;
+          display: flex;
+          justify-content: flex-start;
+          .title{
+            h3{
+              width: 70px;
+              font-size:14px;
+              font-family:PingFangSC-Regular;
+              font-weight:400;
+              color:rgba(104,104,116,1);
+              line-height:50px;
+              display: flex;
+              justify-content: flex-end;
+            }
+          }
+          .value{
+            h3{
+              font-size:14px;
+              font-family:PingFangSC-Regular;
+              font-weight:400;
+              color:rgba(104,104,116,1);
+              line-height:50px;
+            }
+          }
+        }
+      }
+    }
+    .numberManageAddS{
+      .dialog_header{
+        display: flex;
+        align-items: center;
+        h4{
+          width:271px;
+          height:20px;
+          margin-left: 251px;
+          font-size:14px;
+          font-family:PingFangSC-Regular;
+          font-weight:400;
+          color:rgba(104,104,116,1);
+          line-height:20px;
+        }
+      }
+      .dialog_main{
+        height: 151px;
+        padding-left: 60px;
+        display: flex;
+        justify-content: flex-start;
+        .title{
+          width: 56px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          >h3{
+            font-size:14px;
+            font-family:PingFangSC-Regular;
+            font-weight:400;
+            color:rgba(104,104,116,1);
+            line-height:50px;
+          }
+        }
+        .value{
+          width: 350px;
+          margin-left: 40px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          #userChoose{
+            width: 350px!important;
+          }
+          h3{
+            width:350px;
+            height:37px;
+            background:rgba(240,240,240,1);
+            border-radius:4px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size:14px;
+            font-family:PingFangSC-Regular;
+            font-weight:400;
+            color:black;
+            line-height:50px;
+          }
+        }
+      }
+    }
   }
 }
 

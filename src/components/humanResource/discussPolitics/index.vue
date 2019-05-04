@@ -1865,6 +1865,12 @@ export default {
     .el-timeline-item__wrapper {
       padding-left: 14px;
     }
+
+  }
+  .el-date-editor {
+    .el-input__inner {
+      border: 1px solid #D2D2D2 !important;
+    }
   }
 }
 </style>
