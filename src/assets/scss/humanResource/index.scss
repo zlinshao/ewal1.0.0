@@ -5,11 +5,13 @@
     .bottom_info {
       width: 100%;
       position: relative;
-      padding: 0 200px;
+      padding: 0 100px;
       > div {
-        width: 100%;
         height: 100%;
         padding: 30px;
+        &:nth-child(2) {
+          width: 40%;
+        }
         span {
           display: block;
           margin-bottom: 50px;
@@ -31,6 +33,16 @@
           margin-bottom: 10px;
           font-size: 18px;
           cursor: pointer;
+        }
+      }
+      .staff_list {
+        flex-wrap: wrap;
+        .staff_list_item {
+          min-width: 15%;
+          min-height: 100px;
+          background-color: rebeccapurple;
+          margin-bottom: 15px;
+          margin-right: 15px;
         }
       }
     }
