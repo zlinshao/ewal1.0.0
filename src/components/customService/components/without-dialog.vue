@@ -55,12 +55,18 @@ export default {
     },
     handleWithoutCurrentPage (val) {
       this.page = val
+      this.getData()
     },
     getData () {
-      this.$http.get(`${this.market_server}v1.0/market/checkOut?collect_or_rent=${this.moduleData.contract_type}&contract_id=${this.moduleData.contract_id }`).then(res => {
+      let params = {
+        collect_or_rent: this.moduleData.contract_type,
+        contract_id: this.moduleData.contract_id,
+        page: this.page,
+        limit: 10
+      }
+      this.$http.get(`${this.market_server}v1.0/market/checkOut`, params).then(res => {
         if (res.code === 200) {
-       
-          if(res.data.length > 0) this.table = res.data
+          if (res.data.length > 0) this.table = res.data
         }
       })
     }

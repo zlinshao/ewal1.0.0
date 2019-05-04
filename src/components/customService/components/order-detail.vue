@@ -17,8 +17,14 @@
                   <el-input v-model="detail_form.house_name" type="text" disabled> </el-input>
                 </el-form-item>
 
-                <el-form-item label='维修方' v-if='detail_form.type == 7'>
-                  <el-input :value="detail_form.send_order_type == 1 ? '内部保修':'外部保修'" type="text" disabled>
+                <el-form-item :label='detail_form.type == 7 ? "维修方":"保洁方"' v-if='detail_form.type == 7 || detail_form.type == 8'>
+                  <el-input :value="detail_form.send_order_type == 1 ? '内部保修':(detail_form.send_order_type == 2 ? '维修公司':'维修师傅')"
+                    type="text" disabled>
+                  </el-input>
+                </el-form-item>
+
+                <el-form-item :label='detail_form.type == 7 ? "维修人":"保洁人"' v-if='(detail_form.type == 7 || detail_form.type == 8) && detail_form.send_order_type != 1'>
+                  <el-input v-model='detail_form.operate_user_name' type="text" disabled>
                   </el-input>
                 </el-form-item>
 
@@ -32,6 +38,16 @@
                 <template v-if='detail_form.type == 699'>
                   <el-form-item v-for='item in Object.keys(complaint_type)' :key='item' :label='complaint_type[item]'>
                     <el-input v-model="detail_form[item]" type="text" disabled> </el-input>
+                  </el-form-item>
+                </template>
+
+                <template v-if='!((detail_form.type == 7 || detail_form.type == 8) && detail_form.send_order_type != 1)'>
+                  <el-form-item label='处理人'>
+                    <el-input v-model="detail_form.operate_user_name" type="text" disabled> </el-input>
+                  </el-form-item>
+
+                  <el-form-item label='部门'>
+                    <el-input v-model="detail_form.operate_org_name" type="text" disabled> </el-input>
                   </el-form-item>
                 </template>
 
@@ -113,8 +129,8 @@ export default {
       default_type: {
         replay_phone: '回复电话',
         emergency_name: '紧急程度',
-        reimburse_property: '处理人',
-        reimburse_property_money: '部门',
+        // operate_user_name: '处理人',
+        // operate_org_name: '部门',
         finish_time: '截止时间',
         content: '工单内容'
       },

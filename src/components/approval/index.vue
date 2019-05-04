@@ -72,7 +72,8 @@
       <!-- 控制面板 -->
       <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' :revice_type='revice_type' />
       <!-- 详情 -->
-      <ContractDetail :visible='contract_detail_visible' :moduleData='current_row' @close='hiddenContractDetail' />
+      <ContractDetail :visible='contract_detail_visible' :moduleData='current_row' :status_type='status_type' @close='hiddenContractDetail'
+        @changeData='handleChange' />
       <!-- 拓展新盘详情 -->
       <DevelopNewDish :visible='develop_visible' :moduleData='current_row' @close='hiddenDevelopNew' />
     </div>
@@ -194,12 +195,14 @@ export default {
       develop_visible: false, //新盘
       current_row: null,
       taskType: [
+        'task_id',
         'bulletin_staff_id',  // 报备人id
         'bulletin_staff_name', // 报备人name
         'bulletin_name', // 报备类型
         'bulletin_type',
         'house_address',  // 房屋地址
         'bm_detail_request_url', // 报备详情
+        'outcome'
       ],
       approval_sever: globalConfig.approval_sever
     }
@@ -277,6 +280,8 @@ export default {
 
         if (this.status_type == 2 || this.status_type == 4) {
           obj.status = name
+          obj.suspended = item.suspended
+          obj.rootProcessInstanceId = item.processInstanceId
         } else {
           obj.status = item.status[0]
         }
@@ -401,6 +406,10 @@ export default {
       // } else {
       this.contract_detail_visible = true
       // }
+    },
+    handleChange () {
+      let val = this.status_type
+      this.getApproval(this.urlApi, this.params['param' + val], val)
     },
     hiddenContractDetail () {
       this.contract_detail_visible = false

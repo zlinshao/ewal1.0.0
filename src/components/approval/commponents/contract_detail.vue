@@ -69,9 +69,10 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="info" size="small" @click='handleBuff' v-if='type == 1'>暂缓</el-button>
+          <el-button :type='moduleData.suspended?"info":"danger"' size="small" @click='handleBuff' v-if='status_type == 2'>{{moduleData.suspended
+            ? "激活":"暂缓"}}</el-button>
           <el-button type="info" size="small" @click='handleRewrite'>修改</el-button>
-          <el-button type="info" size="small">拒绝</el-button>
+          <el-button type="danger" size="small" @click='handleReject'>拒绝</el-button>
           <el-button type="danger" size="small">同意</el-button>
         </div>
       </div>
@@ -138,6 +139,24 @@
         </div>
       </div>
     </LjDialog>
+    <!-- 拒绝 -->
+    <LjDialog :visible='reject_visible' :size='{width:600+"px",height:400+"px"}' @close='handleCloseReject(false)'>
+      <div class='dialog_container'>
+        <div class='dialog_header'>
+          <h3>拒绝</h3>
+        </div>
+        <div class="dialog_main borderNone urgedDeal">
+          <el-form label-width="80px">
+            <el-form-item label="备注">
+              <el-input v-model="reject_mark" type="textarea" placeholder="请输入" :row="10"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleCloseReject(true)">确定</el-button>
+        </div>
+      </div>
+    </LjDialog>
 
     <FormDetail :visible='show_form_visible' :moduleData='formData' />
   </div>
@@ -151,7 +170,7 @@ import FormDetail from './form_detail.vue'
 import { defineForm, defineTitleTips } from '../../../assets/js/approval/definForm.js'
 import { isNull } from 'util';
 export default {
-  props: ['visible', 'moduleData'],
+  props: ['visible', 'moduleData', 'status_type'],
   components: {
     LjDialog,
     VillageContainer,
@@ -187,7 +206,6 @@ export default {
       defineForms: JSON.parse(JSON.stringify(defineForm)),
       defineForm: null,
       titleTips: null,
-      type: 1,
       comment_show_visible: false,
       comment_info: {
         content: '',
@@ -196,7 +214,9 @@ export default {
       record_show_visible: false,
       show_form_visible: false,
       formData: null,
-      market_server: globalConfig.market_server,
+      reject_visible: false, // 拒绝弹框
+      reject_mark: null, // 拒绝理由
+      approval_sever: globalConfig.approval_sever,
       taskType: ['rtl_detail_request_url', 'ctl_detail_request_url'],
     }
   },
@@ -314,14 +334,15 @@ export default {
       }
       if (res.album) {
         for (let pic of Object.keys(res.album)) {
-          this.formData[pic] = res.album[pic];
-        }
-
-        this.formData['house_video_name'] = this.formData['house_video']
-        let house_video = this.formData['house_video']
-        this.formData['house_video'] = []
-        for (let item of house_video) {
-          this.formData['house_video'].push(item.id)
+          if (pic == 'house_video') {
+            this.formData['house_video'] = []
+            let content = res.album[pic];
+            for (let item of content) {
+              this.formData['house_video'].push(item.id)
+            }
+          } else {
+            this.formData[pic] = res.album[pic];
+          }
         }
       }
       console.log(this.formData)
@@ -359,11 +380,61 @@ export default {
     handleCloseRecord () {
       this.record_show_visible = false
     },
-    handleBuff () {
-      console.log('暂缓')
+    handleBuff () { // 暂缓
+      let params = {
+        'action': this.moduleData.suspended ? "activate" : "suspend"
+      }
+      this.$http.put(`${this.approval_sever}runtime/process-instances/${this.moduleData.rootProcessInstanceId}`, params).then(res => {
+
+        this.$LjNotify('success', {
+          title: this.moduleData.suspended ? "激活成功" : "暂缓成功",
+          message: ''
+        });
+
+        this.moduleData.suspended = !this.moduleData.suspended
+        this.$emit('changeData')
+      })
     },
     handleRewrite () { // 修改
       this.show_form_visible = true
+    },
+    handleReject () { // 拒绝
+      // this.reject_visible = true
+      this.AggreeAndReject('拒绝')
+    },
+    handleCloseReject (isSure) {
+      if (isSure) {
+
+      }
+      this.reject_mark = null
+      this.reject_visible = false;
+    },
+    handleAggree () { // 同意
+      this.AggreeAndReject('同意')
+    },
+    AggreeAndReject (tit) {
+      console.log(this.moduleData)
+      let outcome = JSON.parse(this.moduleData.outcome);
+      let outcomeOptions = outcome.outcomeOptions
+      let isReject = null;
+      for (let item of outcomeOptions) {
+        if (item.title = tit) {
+          isReject = item.action
+        }
+      }
+      let params = {
+        "action": "complete",
+        "variables": [
+          {
+            "name": outcome.variableName,
+            "value": isReject
+          }
+        ]
+      }
+
+      this.$http.post(`${this.approval_sever}runtime/tasks/${this.moduleData.id}`, params).then(res => {
+        console.log(res)
+      })
     },
   }
 }
@@ -521,6 +592,11 @@ export default {
       justify-content: flex-end;
     }
 
+    // 拒绝
+    .urgedDeal {
+      background: #fff;
+      padding: 10px 0;
+    }
     // 评论
     .comments_box {
       position: absolute;
@@ -810,6 +886,13 @@ export default {
       .el-textarea__inner {
         border: none;
         height: 100px;
+      }
+    }
+    // 拒绝
+    .urgedDeal {
+      .el-textarea__inner {
+        border: none;
+        height: 170px;
       }
     }
   }
