@@ -753,6 +753,9 @@
   background: #dfdfe0;
   color: #686874; }
 #theme_name.theme1 .el-table__body .el-table__row .cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   white-space: nowrap;
   text-overflow: hidden;
   overflow: hidden; }

@@ -21,7 +21,7 @@
       <!--表格中部-->
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
 
-        <el-table height="780px" :data="contractList" @row-dblclick="handleGetDetail">
+        <el-table height="780px" :data="contractList" @row-dblclick="handleGetDetail" header-row-class-name="tableHeader">
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
           <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
@@ -48,7 +48,7 @@
               <div>
                 <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
                 <div class="control_container flex" :class="{'show_control_container': show_control === scope.row.contract_id}">
-                  <span v-for="tmp in choose_list" :key="tmp.id" :class="{'choose': current_choose_control === tmp.id }"
+                  <span v-for="tmp in choose_list" :key="tmp.id"
                     @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
                 </div>
                 <div class="writingMode point_btn" @click="handleShowControl(scope.row)">···</div>
@@ -874,14 +874,14 @@ export default {
         },
         {
           keyType: 'dateRange',
-          title: '合同起始时间',
+          title: '合同开始时间周期',
           placeholder: '请选择日期',
           keyName: 'date2',
           dataType: [],
         },
         {
           keyType: 'dateRange',
-          title: '合同起始时间',
+          title: '合同结束时间周期',
           placeholder: '请选择日期',
           keyName: 'date3',
           dataType: [],
@@ -940,7 +940,8 @@ export default {
   #contractManagement {
     > div {
       .control_container {
-        .choose {
+        span:hover {
+          color: $colorE33;
           @include bgImage("../../../assets/image/components/theme1/xzgj.png");
         }
       }

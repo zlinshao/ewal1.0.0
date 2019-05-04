@@ -32,8 +32,8 @@
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" plain size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
-            <el-button type="warning" plain size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>
+            <el-button id='active-primary' size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
+            <el-button id='active-danger' plain size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -21,7 +21,7 @@
       <!--表格中部-->
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
 
-        <el-table :data="contractList" @expand-change="handleExpandRow" @row-dblclick="handleGetDetail" :height="this.mainListHeight(30) + 'px'">
+        <el-table header-row-class-name="tableHeader" :data="contractList" @expand-change="handleExpandRow" @row-dblclick="handleGetDetail" :height="this.mainListHeight(30) + 'px'">
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
           <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
@@ -48,7 +48,7 @@
               <div>
                 <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
                 <div class="control_container flex" :class="{'show_control_container': show_control === scope.row.contract_id}">
-                  <span v-for="tmp in choose_list" :key="tmp.id" :class="{'choose': current_choose_control === tmp.id }"
+                  <span v-for="tmp in choose_list" :key="tmp.id"
                     @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
                 </div>
                 <div class="writingMode point_btn" @click="handleShowControl(scope.row)">···</div>
@@ -59,7 +59,7 @@
             <template slot-scope="scope">
               <div class="expand-container">
                 <div class="expand-top">
-                  <el-table :data="expand_data" @row-click="handleClickExpandRow">
+                  <el-table header-row-class-name="tableHeader" :data="expand_data" @row-click="handleClickExpandRow">
                     <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
                     <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
                     <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
@@ -89,20 +89,31 @@
                     item.val }}</span>
                 </div>
                 <div class="expand-bottom">
-                  <el-table :data="customer_list" v-show="current_house_type === 1">
+                  <el-table header-row-class-name="tableHeader" :data="customer_list" v-show="current_house_type === 1">
                     <el-table-column label="客户姓名" prop="name" align="center"></el-table-column>
                     <el-table-column label="性别" prop="sex" align="center"></el-table-column>
                     <el-table-column label="录入时间" prop="created_at" align="center"></el-table-column>
                     <el-table-column label="证件号码" prop="idcard" align="center"></el-table-column>
                     <el-table-column label="手机号码" prop="phone" align="center"></el-table-column>
                   </el-table>
-                  <el-table :data="checkout_list" v-show="current_house_type === 2">
+                  <el-table header-row-class-name="tableHeader" :data="checkout_list" v-show="current_house_type === 2">
                     <el-table-column label="退租时间" prop="end_at" align="center"></el-table-column>
                     <el-table-column label="退房时间" prop="check_time" align="center"></el-table-column>
                     <el-table-column label="退款金额" prop="should_be_returned_fees" align="center"></el-table-column>
                     <el-table-column label="退房备注" prop="checkout_goods_remark" align="center"></el-table-column>
                   </el-table>
-                  <el-table :data="revisit_list" v-show="current_house_type === 4">
+                  <el-table header-row-class-name="tableHeader" :data="remeber_list" v-show="current_house_type === 3">
+                    <el-table-column label="创建时间" prop="" align="center"></el-table-column>
+                    <el-table-column label="合同编号" prop="" align="center"></el-table-column>
+                    <el-table-column label="房屋地址" prop="" align="center"></el-table-column>
+                    <el-table-column label="资料补齐时间" prop="" align="center"></el-table-column>
+                    <el-table-column label="备忘内容" prop="" align="center"></el-table-column>
+                    <el-table-column label="发送人" prop="" align="center"></el-table-column>
+                    <el-table-column label="开单人" prop="" align="center"></el-table-column>
+                    <el-table-column label="开单人部门" prop="" align="center"></el-table-column>
+                    <el-table-column label="负责人" prop="" align="center"></el-table-column>
+                  </el-table>
+                  <el-table header-row-class-name="tableHeader" :data="revisit_list" v-show="current_house_type === 4">
                     <el-table-column label="创建时间" prop="cus_name" align="center"></el-table-column>
                     <el-table-column label="回访人" prop="cus_name" align="center"></el-table-column>
                     <el-table-column label="合同编号" prop="cus_name" align="center"></el-table-column>
@@ -112,7 +123,7 @@
                     <el-table-column label="开单人" prop="cus_name" align="center"></el-table-column>
                     <el-table-column label="部门" prop="start_at" align="center"></el-table-column>
                   </el-table>
-                  <el-table :data="work_list" v-show="current_house_type === 5">
+                  <el-table header-row-class-name="tableHeader" :data="work_list" v-show="current_house_type === 5">
                     <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
                     <el-table-column label="房屋地址" prop="address" align="center"></el-table-column>
                     <el-table-column label="工单类型" prop="types" align="center"></el-table-column>
@@ -135,7 +146,7 @@
                       </template>
                     </el-table-column>
                   </el-table>
-                  <el-table :data="fix_clear_list" v-show="current_house_type === 6">
+                  <el-table header-row-class-name="tableHeader" :data="fix_clear_list" v-show="current_house_type === 6">
                     <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
                     <el-table-column label="客户姓名" prop="customer_name" align="center"></el-table-column>
                     <el-table-column label="回复电话" prop="customer_mobile" align="center"></el-table-column>
@@ -150,7 +161,7 @@
                       </template>
                     </el-table-column>
                   </el-table>
-                  <el-table :data="work_list" v-show="current_house_type === 7">
+                  <el-table header-row-class-name="tableHeader" :data="work_list" v-show="current_house_type === 7">
                     <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
                     <el-table-column label="创建人" prop="creator" align="center"></el-table-column>
                     <el-table-column label="房屋地址" prop="address" align="center"></el-table-column>
@@ -831,7 +842,7 @@ export default {
         collect_or_rent: 1,
         contract_id: ''
       },
-
+      remeber_list: [],
     }
   },
   mounted () {
@@ -843,6 +854,13 @@ export default {
     handleGetLeaseNote () {
       this.$http.get(this.market_server + 'v1.0/market/leaseNote', this.leaseNote_params).then(res => {
         console.log(res);
+        if (res.code === 200) {
+          this.remeber_list = res.data.data;
+          this.list_count = res.data.count;
+        } else {
+          this.remeber_list = [];
+          this.list_count = 0;
+        }
       })
     },
 
@@ -1247,14 +1265,14 @@ export default {
           },
           {
             keyType: 'dateRange',
-            title: '合同起始时间',
+            title: '合同开始时间周期',
             placeholder: '请选择日期',
             keyName: 'date2',
             dataType: [],
           },
           {
             keyType: 'dateRange',
-            title: '合同起始时间',
+            title: '合同结束时间周期',
             placeholder: '请选择日期',
             keyName: 'date3',
             dataType: [],
@@ -1325,7 +1343,8 @@ export default {
         }
       }
       .control_container {
-        .choose {
+        span:hover {
+          color: $colorE33;
           @include bgImage("../../../assets/image/components/theme1/xzgj.png");
         }
       }

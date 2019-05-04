@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='transfer_dialog'>
     <LjDialog :visible="visible" :size="{width: 480 + 'px',height: 340 + 'px'}" @close="handleCloseTranfer(false)">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -109,4 +109,11 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/scss/common.scss";
+#transfer_dialog {
+  .dialog_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 </style>

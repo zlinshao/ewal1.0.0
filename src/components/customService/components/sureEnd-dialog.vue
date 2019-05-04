@@ -44,6 +44,11 @@ export default {
 
 #theme_name {
   #end_dialog {
+    .dialog_footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .dialog_main {
       @include flex("items-column");
       h3 {
