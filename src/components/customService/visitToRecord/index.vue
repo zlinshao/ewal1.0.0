@@ -144,7 +144,7 @@
             </el-col>
             <el-col :span='12' class='detail_col el-border'>
               <h5>合同信息</h5>
-              <el-row :gutter="10" class='detail_col_box'>
+              <el-row :gutter="6" class='detail_col_box'>
                 <el-col :span='12'>
                   <div>
                     <span class='tit'>签约人</span>
