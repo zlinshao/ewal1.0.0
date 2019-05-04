@@ -90,6 +90,11 @@ export default {
 @import "../../../assets/scss/common.scss";
 #theme_name {
   #invalid_dailog {
+    .dialog_footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .dialog_main {
       overflow: hidden;
     }

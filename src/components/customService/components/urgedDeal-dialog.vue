@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='urgend'>
     <LjDialog :visible="visible" :size="{width: 480 + 'px',height: 340 + 'px'}" @close="handleCloseUrgedDeal">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -87,4 +87,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../../assets/scss/customService/components/record_dialog.scss";
+#urgend {
+  .dialog_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 </style>

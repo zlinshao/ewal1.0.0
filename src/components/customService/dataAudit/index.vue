@@ -13,8 +13,8 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-button type="warning" plain @click='changeTag_Status(1)' :class="[tag_status==1?'active-warning':'']">收房</el-button>
-        <el-button type="primary" plain @click='changeTag_Status(2)' :class="[tag_status==2?'active-primary':'']">租房</el-button>
+        <el-button id='active-warning' @click='changeTag_Status(1)' :class="[tag_status == 1?'el-button-active':'']">收房</el-button>
+        <el-button id='active-primary' plain @click='changeTag_Status(2)' :class="[tag_status==2?'el-button-active':'']">租房</el-button>
         <div></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
@@ -77,7 +77,7 @@
           <h3>合同详情</h3>
           <div class="header_right">
             <span>{{contractDetail.contract_number}}</span>
-            <el-button type='danger' size='mini' @click='handleRewrite' style='margin-left:10px'>作废重签</el-button>
+            <el-button id='active-danger' class='el-button-active' size='mini' @click='handleRewrite' style='margin-left:10px'>作废重签</el-button>
           </div>
         </div>
         <div class="dialog_main contract_detail" v-if='this.contractDetail'>
@@ -405,7 +405,7 @@
                     <i class='icon'></i>
                     <span>发送</span>
                   </p>
-                  <el-button type="primary" plain @click='handleGetRecord'>不齐记录</el-button>
+                  <el-button id='active-primary' @click='handleGetRecord'>不齐记录</el-button>
                 </div>
               </div>
             </div>
@@ -413,8 +413,8 @@
         </div>
 
         <div class="dialog_footer">
-          <el-button type="success" size="small" @click="handleContract(true)" v-if='chooseTab == 1 || chooseTab == 2'>通过</el-button>
-          <el-button type="warning" size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>
+          <el-button id='active-success' class='el-button-active' size="small" @click="handleContract(true)" v-if='chooseTab == 1 || chooseTab == 2'>通过</el-button>
+          <el-button id='active-danger' class='el-button-active' size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -838,6 +838,18 @@ export default {
 //   overflow-x: scroll;
 //   @include scroll;
 // }
+#dataAudit {
+  .header_right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .dialog_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 </style>
 
 

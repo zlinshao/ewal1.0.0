@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='followRecord'>
     <LjDialog :visible="visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseAddNewRecord">
       <div class="dialog_container followRecord">
         <div class="dialog_header">
@@ -302,4 +302,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import "../../../assets/scss/common.scss";
+#followRecord {
+  .dialog_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+</style>
 

@@ -40,6 +40,11 @@ export default {
 
 #theme_name {
   #delete_dailog {
+    .dialog_footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .dialog_main {
       @include flex("items-column");
       .img_box {
