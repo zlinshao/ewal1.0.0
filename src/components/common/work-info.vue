@@ -60,7 +60,6 @@
           },
           attendData: {
             handler(val) {
-              console.log(val);
               this.attend_data = val;
               this.init_attend_chart();
             },

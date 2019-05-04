@@ -1,5 +1,5 @@
 <template>
-  <div id="marketCentre">
+  <div id="marketCentre" ref="marketCentre" :style="mainHeight">
     <div class="container">
       <market-menu-list :show-market="show_market" :show-shadow="false" @close="handleCloseMenu" :title="top_title"></market-menu-list>
     </div>
@@ -29,21 +29,43 @@
           {value: 300, name: '特殊'},
           {value: 200, name: '紧急'},
         ],
-        attend_data: []
+        attend_data: [],
+        mainHeight: {
+          height: 0
+        }
       }
     },
     mounted() {
       this.show_market = true;
       this.work_info[0].val = '7 h';
       this.event_data[0].value = 700;
-      this.attend_data = [8,3,1];
+      // this.attend_data = [8,3,1];
       this.top_title = '营销中心';
-    },
-    activated() {
+
+      var top = this.$refs['marketCentre'].offsetTop;
+      this.mainHeight.height = window.innerHeight - top + 'px';
+
+      this.handleGetWorkInfo();
     },
     watch: {},
     computed: {},
     methods: {
+      handleGetWorkInfo() {
+        var uid = 289;
+        this.$http.get(globalConfig.market_server + 'v1.0/csd/home/dashboard',{
+          uid,
+          // date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
+          date: '2019-03'
+        }).then(res => {
+          if (res.code === 200) {
+            var arr = [];
+            arr[0] = res.data && res.data.attendance.late_day;
+            arr[1] = res.data && res.data.attendance.rest_day;
+            arr[2] = new Date(new Date().getFullYear(),new Date().getMonth() + 1,0).getDate() - res.data.attendance.attendance_day;
+            this.attend_data = arr;
+          }
+        })
+      },
       handleChangeDate(id) {
 
       },
@@ -64,7 +86,7 @@
 
   #theme_name.theme1 {
     #marketCentre {
-
+      background-color: white;
     }
   }
 
