@@ -39,14 +39,276 @@
             </template>
           </el-table-column>
           <el-table-column :min-width="item.width" :label="item.val" align="center" v-else-if="item.isBtn">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" @click.stop="handleLookInfo(scope.row,item.key)">查看</el-button>
+            <template slot-scope="scope"><el-button type="text" v-if="scope.row.staff && scope.row.staff[item.key.split('.')[1]]" size="small" @click.stop="handleLookInfo(scope.row,item.key)">查看</el-button>
+              <el-button type="text" v-else-if="! scope.row.staff[item.key.split('.')[1]] && item.isGenerate" size="small" @click.stop="generateContract(scope.row,item.key)">生成</el-button>
+              <span v-else>/</span>
             </template>
           </el-table-column>
           <el-table-column :min-width="item.width" :label="item.val" :prop="item.key" align="center" v-else-if="item.key === 'name'" fixed="left" style="background-color: white"></el-table-column>
           <el-table-column :min-width="item.width" :label="item.val" :prop="item.key" align="center" v-else></el-table-column>
         </div>
       </el-table>
+      <!--劳务合同-->
+      <div class="labour_contract" :class="{'hide_labour_contract': labour_contract_visible}">
+        <h1>南京市劳务合同书</h1>
+        <h4>（2015修订版）</h4>
+        <el-form size="small" style="text-align: left">
+          <el-form-item class="item_margin">
+            <div class="flex" style="margin-top: 50px">
+              <div style="width: 150px">甲方（单位全称）</div>
+              <el-input v-model="labour_form.company_name"></el-input>
+            </div>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 80px">单位类型</div>
+                  <el-input value="有限责任公司"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 280px">法定代表人（或负责人）</div>
+                  <el-input v-model="labour_form.leader_name"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">登记注册地</div>
+                  <el-input v-model="labour_form.register_place"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 50px">邮编</div>
+                  <el-input v-model="labour_form.postal_code"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">实际经营地</div>
+                  <el-input v-model="labour_form.real_place"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 50px">邮编</div>
+                  <el-input v-model="labour_form.postal_code"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">联系部门</div>
+                  <el-input value="人力资源部"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 80px">联系电话</div>
+                  <el-input v-model="labour_form.telephone"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin" style="margin-top: 50px">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 180px">乙方（职工）姓名</div>
+                  <el-input v-model="labour_form.name"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">性别</div>
+                  <el-input v-model="labour_form.gender"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">出生年月</div>
+                  <el-input v-model="labour_form.birthday"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">工作地点</div>
+                  <el-input v-model="labour_form.work_space"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <div class="flex">
+              <div style="width: 250px">在本单位工作起始时间</div>
+              <el-input v-model="labour_form.begin_date"></el-input>
+            </div>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">合同履行地</div>
+                  <el-input v-model="labour_form.work_address"></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">岗位</div>
+                  <el-input v-model="labour_form.position"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item class="item_margin">
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <div class="flex">
+                  <div style="width: 150px">合同编号前缀</div>
+                  <el-input v-model="labour_form.number_prefix"></el-input>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item>
+        </el-form>
+        <div class="flex-center">
+          <el-button size="small" type="danger" @click="ok_send_contract = true">发送</el-button>
+          <el-button size="small" type="info" @click="labour_contract_visible = true">取消</el-button>
+        </div>
+      </div>
+
+      <!--确定发送劳务合同-->
+      <lj-dialog
+              :visible="ok_send_contract"
+              :size="{width: 400 + 'px',height: 250 + 'px'}"
+              @close="ok_send_contract = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>确定</h3>
+          </div>
+          <div class="dialog_main">
+            <div class="unUse-txt">确定发送该劳务合同吗？</div>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleConfirmContract">确定</el-button>
+            <el-button type="info" size="small" @click="ok_send_contract = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+      <!--在职证明-->
+      <lj-dialog
+              :visible="ok_send_employ_proof"
+              :size="{width: 600 + 'px',height: 450 + 'px'}"
+              @close="ok_send_employ_proof = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>在职证明</h3>
+          </div>
+          <div class="dialog_main">
+            <el-form size="small" style="text-align: left">
+              <el-form-item class="item_margin">
+                <div class="flex">
+                  <div style="width: 70px">姓名</div>
+                  <el-input v-model="employ_proof_form.name"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex">
+                  <div style="width: 70px">身份证号</div>
+                  <el-input v-model="employ_proof_form.ID_number"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex">
+                  <div style="width: 70px">入职日期</div>
+                  <el-input v-model="employ_proof_form.start_date"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex">
+                  <div style="width: 70px">职位</div>
+                  <el-input v-model="employ_proof_form.position"></el-input>
+                </div>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleConfirEmemployProof">确定</el-button>
+            <el-button type="info" size="small" @click="ok_send_employ_proof = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
+
+
+      <!--收入证明-->
+      <lj-dialog
+              :visible="ok_send_income_proof"
+              :size="{width: 600 + 'px',height: 450 + 'px'}"
+              @close="ok_send_income_proof = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>收入证明</h3>
+          </div>
+          <div class="dialog_main">
+            <el-form size="small" style="text-align: left">
+              <el-form-item class="item_margin">
+                <div class="flex">
+                  <div style="width: 70px">姓名</div>
+                  <el-input v-model="income_proof_form.name"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex">
+                  <div style="width: 70px">身份证号</div>
+                  <el-input v-model="income_proof_form.ID_number"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex">
+                  <div style="width: 70px">职位</div>
+                  <el-input v-model="income_proof_form.position"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex">
+                  <div style="width: 70px">月收入</div>
+                  <el-input v-model="income_proof_form.salary_month"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex">
+                  <div style="width: 70px">年收入</div>
+                  <el-input v-model="income_proof_form.salary_year"></el-input>
+                </div>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleConfirIncomeProof">确定</el-button>
+            <el-button type="info" size="small" @click="ok_send_income_proof = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
           <i class="el-icon-d-arrow-right"></i>
@@ -70,11 +332,11 @@
 
 <script>
   import StaffFiles from '../components/staffFiles.vue'
-
+  import LjDialog from '../../../common/lj-dialog';
   export default {
     name: "index",
     props: ['searchVal','searchParams','exportInfo','exportData'],
-    components: {StaffFiles},
+    components: {StaffFiles,LjDialog},
     data() {
       return {
         checkList: [],
@@ -110,13 +372,15 @@
           { key: 'staff.account_name',val: '户主',width: "120px"},
           { key: 'staff.account_bank',val: '开户行',width: "120px"},
           { key: 'staff.contract_number',val: '劳务合同',isBtn: true},
-          { key: 'staff.leave_proof_number',val: '上家单位离职证明',isBtn: true},
-          { key: 'staff.commitment_number',val: '入职承诺书',isBtn: true},
-          { key: 'staff.employ_proof_number',val: '在职证明',isBtn: true},
-          { key: 'staff.income_proof_number',val: '收入证明',isBtn: true},
-          { key: 'staff.notice_number',val: '入职须知',isBtn: true},
-          { key: 'staff.secret_number',val: '保密协议编号',isBtn: true},
-          { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书',isBtn: true},
+          { key: 'staff.ca',val: 'ca认证',isBtn: true,isGenerate:true},
+          { key: 'staff.contract_number',val: '劳务合同',isBtn: true,isGenerate:true},
+          { key: 'staff.leaveproof_image_url',val: '上家单位离职证明',isBtn: true},
+          { key: 'staff.commitment_number',val: '入职承诺书',isBtn: true,isGenerate:true},
+          { key: 'staff.employ_proof_number',val: '在职证明',isBtn: true,isGenerate:true},
+          { key: 'staff.income_proof_number',val: '收入证明',isBtn: true,isGenerate:true},
+          { key: 'staff.notice_number',val: '入职须知',isBtn: true,isGenerate:true},
+          { key: 'staff.secret_number',val: '保密协议编号',isBtn: true,isGenerate:true},
+          { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书',isBtn: true,isGenerate:true},
         ],
         export_params: {
           field: [],
@@ -128,6 +392,49 @@
           limit: 30,
           org_id: '',
           position_id: '',
+        },
+        //劳务合同
+        labour_contract_visible: true,
+        labour_form: {
+            company_name: '',
+            birthday: '',
+            contact_address: '',
+            phone: '',
+            register_place: '', //注册地
+            real_place: '', //经营地
+            telephone: '',//公司电话
+            name: '',
+            gender: '',
+            begin_date: '',
+            position: '',
+            ID_number: '',
+            work_address: '',
+            work_space: '',
+            number_prefix: '',
+            postal_code: '',
+            leader_name: '',
+        },
+        ok_send_contract: false,
+        ok_send_employ_proof: false,
+        employ_proof_form: {
+            name: '',
+            position:'',
+            start_date:'',
+            ID_number:'',
+            pdf_scene:'',
+            type: '',
+            user_id: ''
+        },
+        ok_send_income_proof: false,
+        income_proof_form: {
+            name: '',
+            position:'',
+            ID_number:'',
+            pdf_scene:'',
+            type: '',
+            user_id: '',
+            salary_month: '',
+            salary_year: ''
         },
         filesVisible: false,
 
@@ -188,17 +495,242 @@
           this.export_params.field.push(item.key);
         });
       },
+        getLabourInfo(id) {
+            this.$http.get(`staff/e_contract/get_contract_info/${id}`).then(res => {
+                console.log(res);
+                if (res.code === '20010') {
+                    this.labour_form = res.data;
+                    // setTimeout(() => {
+                    //     this.handleCancelEdit();
+                    // },1000);
+                    setTimeout(() => {
+                        this.labour_contract_visible = false;
+                    },2000)
+                } else {
+                    this.$LjNotify('warning',{
+                        title: res.msg
+                    });
+                    return false;
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        handleConfirmContract() {
+            this.labour_form.send = 1;
+            this.labour_form.type = 1;
+            this.$http.post('staff/e_contract/view_contract',this.labour_form).then(res => {
+                if (res.code === '20000') {
+                    this.$LjNotify('success',{
+                        title: '成功',
+                        message: res.msg
+                    });
+                    setTimeout(() => {
+                        this.labour_contract_visible = true;
+                    },1000)
+                }else {
+                    this.$LjNotify('warning',{
+                        title: '失败',
+                        message: res.msg
+                    });
+                    return false;
+                }
+                setTimeout(() => {
+                    this.ok_send_contract = false;
+                },1000)
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        handleConfirEmemployProof(){
+            this.$http.post('staff/e_contract/view_contract',this.employ_proof_form).then(res => {
+                if (res.code === '20000') {
+                    this.$LjNotify('success',{
+                        title: '成功',
+                        message: res.msg
+                    });
+                    this.getStaffList();
+                }else {
+                    this.$LjNotify('warning',{
+                        title: '失败',
+                        message: res.msg
+                    });
+                    return false;
+                }
+                setTimeout(() => {
+                    this.ok_send_employ_proof = false;
+                },1000)
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        handleConfirIncomeProof(){
+            this.$http.post('staff/e_contract/view_contract',this.income_proof_form).then(res => {
+                if (res.code === '20000') {
+                    this.$LjNotify('success',{
+                        title: '成功',
+                        message: res.msg
+                    });
+                    this.getStaffList();
+                }else {
+                    this.$LjNotify('warning',{
+                        title: '失败',
+                        message: res.msg
+                    });
+                    return false;
+                }
+                setTimeout(() => {
+                    this.ok_send_income_proof = false;
+                },1000)
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        generateContract(row,key){
+            console.log(key);
+            switch (key) {
+                case 'staff.contract_number':
+                    this.getLabourInfo(row.id);
+                    break;
+                case 'staff.ca':
+                    this.staffCertific(row.id);
+                    break;
+                case 'staff.commitment_number':
+                    let params={user_id:row.id,pdf_scene:6,type:1,send:1};
+                    this.commitmentGenerate(params);
+                    break;
+                case 'staff.employ_proof_number':
+                    this.ok_send_employ_proof=true;
+                    this.getIncomeInfo(row.id,11);
+                    break;
+                case 'staff.income_proof_number':
+                    this.ok_send_income_proof=true;
+                    this.getIncomeInfo(row.id,10);
+                    break;
+                case 'staff.notice_number':
+                    let param={user_id:row.id,pdf_scene:7,type:1,send:1};
+                    this.commitmentGenerate(param);
+                    break;
+                case 'staff.secret_number':
+                    this.commitmentGenerate({user_id:row.id,pdf_scene:5,type:1,send:1});
+                    break;
+                case 'staff.insurance_prohibit_number':
+                    this.commitmentGenerate({user_id:row.id,pdf_scene:8,type:1,send:1});
+                    break;
+                default:
+                    return;
+            }
+        },
+        getIncomeInfo(id,scene){
+            this.$http.get('staff/e_contract/get_income_info/'+id+'?pdf_scene='+scene).then(res => {
+                console.log(res);
+                if (Number(res.code) %10 ===0){
+                    switch (scene) {
+                        case 11:
+                            this.employ_proof_form=res.data;
+                            break;
+                        case 10:
+                            this.income_proof_form=res.data;
+                            break;
+                    }
+                } else{
+                    this.$LjNotify('warning',{
+                        title: '失败',
+                        message: ''
+                    });
+                }
+            });
+        },
+        commitmentGenerate(params){
+            this.$http.post('staff/e_contract/view_contract',params).then(res => {
+                if (res.code === '20000') {
+                    this.$LjNotify('success',{
+                        title: '成功',
+                        message: res.msg
+                    });
+                    this.getStaffList();
+                }else {
+                    this.$LjNotify('warning',{
+                        title: '失败',
+                        message: res.msg
+                    });
+                    return false;
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        staffCertific(id){
+            this.$http.get('staff/e_contract/ca/'+id).then(res => {
+                if (Number(res.code) % 10 === 0) {
+                    this.$LjNotify('success',{
+                        title: '成功',
+                        message: res.msg
+                    });
+                }else {
+                    this.$LjNotify('warning',{
+                        title: '失败',
+                        message: res.msg
+                    });
+                    return false;
+                }
+            });
+        },
       //列表按钮
       handleLookInfo(row,key) {
         console.log(row,key);
         if (!row.staff || !row.staff[key.split('.')[1]]) {
-          this.$LjNotify('warning',{
-            title: '提示',
-            message: '暂无该信息'
-          });
-          return false;
+            this.$LjNotify('warning', {
+                title: '提示',
+                message: '暂无该信息'
+            });
+            return false;
         }
-        window.open(globalConfig.server + `staff/e_contract/show/${row.staff[key.split('.')[1]]}`);
+          let picture=false,pdf=false,text=false,msg='';
+          switch (key) {
+              case 'staff.contract_number':
+                  pdf=true;
+                  break;
+              case 'staff.ca':
+                  text=true;
+                  msg=row.staff[key.split('.')[1]];
+                  break;
+              case 'staff.leaveproof_image_url':
+                  picture=true;
+                  msg=row.staff[key.split('.')[1]]
+                  break;
+              case 'staff.commitment_number':
+                  pdf=true;
+                  break;
+              case 'staff.employ_proof_number':
+                  pdf=true;
+                  break;
+              case 'staff.income_proof_number':
+                  pdf=true;
+                  break;
+              case 'staff.notice_number':
+                  pdf=true;
+                  break;
+              case 'staff.secret_number':
+                  pdf=true;
+                  break;
+              case 'staff.insurance_prohibit_number':
+                  pdf=true;
+                  break;
+              default:
+                  return;
+          }
+          if (pdf){
+              window.open(globalConfig.server + `staff/e_contract/show/${row.staff[key.split('.')[1]]}`);
+          }else if(picture){
+              window.open(msg)
+          }else if (text){
+              this.$LjNotify('success',{
+                  title: '',
+                  message: msg
+              });
+          }
+
       },
       exportStaffList() {
         this.$http.get('staff/user/record',this.export_params,'arraybuffer').then(res => {
@@ -273,7 +805,25 @@
 
   #theme_name.theme1 {
     #staffRoster {
-
+      .labour_contract {
+        width: 800px;
+        height: 1100px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 30px;
+        text-align: center;
+        color: black;
+        .item_margin {
+          margin-bottom: 55px;
+        }
+        @include childrenImg('hetongshu_di.png','theme1');
+      }
+      .hide_labour_contract {
+        top: -1920px;
+        right: -1920px;
+      }
     }
   }
 
