@@ -1,4 +1,4 @@
-@import "../common.scss";
+@import '../common.scss';
 
 #theme_name {
   #menuList {
@@ -18,7 +18,7 @@
       .menu {
         width: 100%;
         @include transform(translateX(-3000px));
-        @include transition(all .24s);
+        @include transition(all 0.24s);
         .childrenMenu {
           cursor: pointer;
           width: 60%;
@@ -28,7 +28,7 @@
           }
           span {
             font-family: 'jingDianXingShu';
-            font-size: 36px;
+            font-size: 32px;
           }
         }
       }
@@ -41,7 +41,7 @@
       z-index: 12;
       background-color: $colorFFF;
       border-color: transparent;
-      @include transition(all .3s);
+      @include transition(all 0.3s);
     }
     .backdrop.hover {
       left: 0;
@@ -52,7 +52,7 @@
       }
       @for $i from 1 to 9 {
         .menu-#{$i} {
-          @include delay((10 - $i ) / 10);
+          @include delay((10 - $i) / 10);
         }
       }
     }
@@ -77,7 +77,7 @@
       .menu {
         .childrenMenu {
           &:hover {
-            color: rgba(104,104,116,1);
+            color: rgba(104, 104, 116, 1);
           }
         }
         span {
@@ -90,18 +90,15 @@
 
 #theme_name.theme2 {
   #menuList {
-
   }
 }
 
 #theme_name.theme3 {
   #menuList {
-
   }
 }
 
 #theme_name.theme4 {
   #menuList {
-
   }
 }

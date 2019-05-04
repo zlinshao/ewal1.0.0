@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='transfer_dialog'>
     <LjDialog :visible="visible" :size="{width: 480 + 'px',height: 340 + 'px'}" @close="handleCloseTranfer(false)">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -16,8 +16,8 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleCloseTranfer(true)">确定</el-button>
-          <el-button type="info" size="small" @click="handleCloseTranfer(false)">取消</el-button>
+          <el-button id='active-danger' class='el-button-active' size="small" @click="handleCloseTranfer(true)">确定</el-button>
+          <el-button id='active-info' size="small" @click="handleCloseTranfer(false)">取消</el-button>
         </div>
       </div>
     </LjDialog>
@@ -109,4 +109,11 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/scss/common.scss";
+#transfer_dialog {
+  .dialog_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 </style>

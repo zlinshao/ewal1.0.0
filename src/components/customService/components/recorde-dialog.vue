@@ -40,7 +40,7 @@
             </div>
           </li>
         </ul>
-        <p v-else>暂无记录</p>
+        <p v-else class='nowords'>暂无记录</p>
       </div>
     </div>
   </lj-dialog>
@@ -108,7 +108,11 @@ export default {
   // 回访记录
   #red-log {
     margin: 0 auto;
-    overflow-y: scroll;
+    overflow: hidden;
+    #dialog_main {
+      overflow-y: scroll;
+      @include scroll;
+    }
     ul {
       padding: 0 30px 50px;
       li + li {
@@ -168,6 +172,10 @@ export default {
           }
         }
       }
+    }
+    .nowords {
+      font-size: 14px;
+      line-height: 80px;
     }
   }
 }

@@ -5,7 +5,7 @@
         <p class="flex-center" @click="moduleList">
           <b>...</b>
         </p>
-        <h1>工单</h1>
+        <h1>工单管理</h1>
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column" :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
@@ -32,8 +32,8 @@
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" plain size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
-            <el-button type="warning" plain size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>
+            <el-button id='active-primary' size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
+            <el-button id='active-danger' plain size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>
           </template>
         </el-table-column>
       </el-table>

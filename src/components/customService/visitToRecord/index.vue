@@ -13,9 +13,9 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-button :type="item.type" plain @click="changeAccessTab(item.id)" :class='[accessTab ==item.id ? "active-warning":""]'
+        <el-button :id="'active-'+item.type" plain @click="changeAccessTab(item.id)" :class='[accessTab ==item.id ? "el-button-active":""]'
           v-for='item in method_btns' :key='item.id'>{{item.title}}</el-button>
-        <div class="icons search" @click="highSearch"></div>
+        <div class="icons search" @click="highSearch" style='margin-left:46px;'></div>
       </div>
     </div>
 
@@ -26,7 +26,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="success" plain size="mini" @click.stop="handleAddRecord(scope.row)">新增回访记录</el-button>
+            <el-button id='active-success' size="mini" @click.stop="handleAddRecord(scope.row)">新增回访记录</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -247,8 +247,8 @@
         </div>
 
         <div class='dialog_footer'>
-          <el-button type="danger" size="small" @click='addRecord'>新增</el-button>
-          <el-button type="info" @click='handleCloseAdd'>取消</el-button>
+          <el-button id='active-danger' class='el-button-active' size="small" @click='addRecord'>新增</el-button>
+          <el-button id='active-info' size="small" @click='handleCloseAdd'>取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -644,4 +644,11 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/scss/customService/visitToRecord/index.scss";
+#visitToRecord {
+  .dialog_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 </style>

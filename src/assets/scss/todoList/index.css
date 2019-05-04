@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -261,7 +261,7 @@
         top: 95px;
         left: 250px; }
         #todo_list .pendant-container .pendant .item-list .item-detail {
-          width: 50px;
+          width: 60px;
           height: 80px;
           position: relative;
           cursor: pointer; }
@@ -269,7 +269,7 @@
             font-family: jingDianXingShu;
             position: absolute;
             top: -4px;
-            left: 19px;
+            left: 24px;
             display: inline-block;
             width: 14px;
             height: 14px;
@@ -294,9 +294,9 @@
             writing-mode: tb-rl;
             position: absolute;
             top: 30px;
-            left: 13px; }
+            left: 18px; }
             #todo_list .pendant-container .pendant .item-list .item-detail i.multi-font {
-              left: 3px; }
+              left: 8px; }
           #todo_list .pendant-container .pendant .item-list .item-detail.checked span {
             color: #cf2e33; }
           #todo_list .pendant-container .pendant .item-list .item-detail.checked i {

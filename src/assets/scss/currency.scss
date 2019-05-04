@@ -380,7 +380,8 @@
     height: 80px;
   }
   .btn_add {
-    @include btn_square(50%);
+    //@include btn_square(50%);
+    @include btn_square(2px);
   }
   .all-choose {
     @include commonImg('quanxuan.png', 'theme1');
@@ -583,6 +584,7 @@
       }
     }
   }
+
   // radio check
   .highChoose {
     background-color: #ffeaea;

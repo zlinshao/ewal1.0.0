@@ -140,7 +140,7 @@ export const workOrderSearch = {
       value: [
         {
           id: 3,
-          title: '特级'
+          title: '特急'
         },
         {
           id: 2,
@@ -411,7 +411,7 @@ export const maintenanceSearch = {
       value: [
         {
           id: 3,
-          title: '特级'
+          title: '特急'
         },
         {
           id: 2,

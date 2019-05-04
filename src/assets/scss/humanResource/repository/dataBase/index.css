@@ -194,6 +194,12 @@
     color: #ffffff;
     font-size: 30px;
     padding-bottom: 6px; }
+#theme_name.theme1 #dataBase .search {
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  bottom: 801px;
+  right: 40px; }
 #theme_name.theme1 #dataBase .main-nav {
   margin-left: 50px;
   padding: 15px 0;
@@ -391,7 +397,26 @@
     #theme_name.theme1 #dataBase .receiveDialog .dialogBody .basicDetail > div {
       width: 33%;
       height: 49px;
-      margin: 29px 0px 30px 0px; }
+      margin: 29px 0px 30px 0px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center; }
+      #theme_name.theme1 #dataBase .receiveDialog .dialogBody .basicDetail > div .title > h3 {
+        height: 35px;
+        display: flex;
+        justify-content: flex-end;
+        font-family: MicrosoftYaHei;
+        font-size: 8px;
+        color: #d2d2d2; }
+      #theme_name.theme1 #dataBase .receiveDialog .dialogBody .basicDetail > div .value {
+        margin-left: 10px; }
+        #theme_name.theme1 #dataBase .receiveDialog .dialogBody .basicDetail > div .value > h3 {
+          height: 35px;
+          display: flex;
+          justify-content: flex-start;
+          font-family: MicrosoftYaHei;
+          font-size: 8px;
+          color: #686874; }
   #theme_name.theme1 #dataBase .receiveDialog .dialogBody .receivedTitle {
     width: 100%;
     height: 19px; }
@@ -522,7 +547,48 @@
   #theme_name.theme1 #dataBase .receiveModify .dialogBody .basicDetail {
     width: 1503px;
     height: 112px;
-    margin: 21px 64px 32px 0px; }
+    margin: 21px 64px 32px 0px;
+    display: flex;
+    justify-content: center; }
+    #theme_name.theme1 #dataBase .receiveModify .dialogBody .basicDetail > div {
+      width: 33%;
+      height: 112px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center; }
+      #theme_name.theme1 #dataBase .receiveModify .dialogBody .basicDetail > div .title {
+        height: 112px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-top: 5px;
+        padding-bottom: 6px; }
+        #theme_name.theme1 #dataBase .receiveModify .dialogBody .basicDetail > div .title > h3 {
+          height: 40px;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          font-family: MicrosoftYaHei;
+          font-size: 14px;
+          color: #d2d2d2; }
+      #theme_name.theme1 #dataBase .receiveModify .dialogBody .basicDetail > div .value {
+        height: 112px;
+        margin-left: 18px;
+        padding: 5px 0px 6px 0px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; }
+        #theme_name.theme1 #dataBase .receiveModify .dialogBody .basicDetail > div .value > h3 {
+          width: 350px;
+          height: 40px;
+          margin-top: 21px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          background: #f0f0f0;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: black; }
   #theme_name.theme1 #dataBase .receiveModify .dialogBody .operateInfo {
     width: 100%;
     height: 24px; }
@@ -630,18 +696,111 @@
     width: 100%;
     height: 19px; }
     #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicTitle p {
-      width: 60px;
+      width: 78px;
       height: 21px;
-      font-size: 14px;
+      font-size: 18px;
       font-family: MicrosoftYaHei;
       color: #686874;
-      line-height: 19px; }
+      line-height: 24px; }
   #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicDetail {
-    height: 173px;
-    margin: 21px 80px 24px 102px; }
-  #theme_name.theme1 #dataBase .receiveMission .dialogBody .operateDetail {
+    width: 1503px;
     height: 112px;
-    margin: 20px 0 37px 0; }
+    margin: 21px 64px 32px 0px;
+    display: flex;
+    justify-content: center; }
+    #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicDetail > div {
+      width: 33%;
+      height: 112px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center; }
+      #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicDetail > div .title {
+        height: 112px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-top: 5px;
+        padding-bottom: 6px; }
+        #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicDetail > div .title > h3 {
+          height: 40px;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          font-family: MicrosoftYaHei;
+          font-size: 14px;
+          color: #d2d2d2; }
+      #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicDetail > div .value {
+        height: 112px;
+        margin-left: 18px;
+        padding: 5px 0px 6px 0px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; }
+        #theme_name.theme1 #dataBase .receiveMission .dialogBody .basicDetail > div .value > h3 {
+          width: 350px;
+          height: 40px;
+          margin-top: 21px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          background: #f0f0f0;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: black; }
+  #theme_name.theme1 #dataBase .receiveMission .dialogBody .version {
+    height: 61px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 34px; }
+    #theme_name.theme1 #dataBase .receiveMission .dialogBody .version h3 {
+      width: 60px;
+      height: 100%;
+      display: flex;
+      justify-content: flex-end;
+      font-family: MicrosoftYaHei;
+      font-size: 14px;
+      color: #d2d2d2; }
+    #theme_name.theme1 #dataBase .receiveMission .dialogBody .version > div {
+      height: 100%;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .receiveMission .dialogBody .version > div > div {
+        margin-right: 48px; }
+  #theme_name.theme1 #dataBase .receiveMission .dialogBody .operateDetail {
+    width: 1503px;
+    margin: 20px 50px 37px 5px; }
+    #theme_name.theme1 #dataBase .receiveMission .dialogBody .operateDetail .addOperate {
+      height: 40px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between; }
+      #theme_name.theme1 #dataBase .receiveMission .dialogBody .operateDetail .addOperate > div {
+        width: 33%;
+        height: 40px;
+        display: flex;
+        justify-content: flex-start;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 51px; }
+        #theme_name.theme1 #dataBase .receiveMission .dialogBody .operateDetail .addOperate > div .el-input {
+          width: 350px;
+          margin-left: 18px; }
+        #theme_name.theme1 #dataBase .receiveMission .dialogBody .operateDetail .addOperate > div .addIcon {
+          width: 20px;
+          height: 20px;
+          margin: 15px 0 0 10px; }
+  #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherTitle p {
+      width: 38px;
+      height: 21px;
+      font-size: 18px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 24px; }
   #theme_name.theme1 #dataBase .receiveMission .dialogBody .otherDetail {
     width: 1503px;
     height: 204px;
@@ -701,18 +860,230 @@
     width: 100%;
     height: 19px; }
     #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicTitle p {
-      width: 60px;
+      width: 78px;
       height: 21px;
-      font-size: 14px;
+      font-size: 18px;
       font-family: MicrosoftYaHei;
       color: #686874;
       line-height: 19px; }
   #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetail {
-    height: 173px;
-    margin: 21px 80px 24px 102px; }
-  #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail {
+    width: 1503px;
     height: 112px;
-    margin: 20px 0 37px 0; }
+    margin: 21px 64px 32px 0px;
+    display: flex;
+    justify-content: center; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetail > div {
+      width: 33%;
+      height: 112px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetail > div .title {
+        height: 112px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-top: 5px;
+        padding-bottom: 6px; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetail > div .title > h3 {
+          height: 40px;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          font-family: MicrosoftYaHei;
+          font-size: 14px;
+          color: #d2d2d2; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetail > div .value {
+        height: 112px;
+        margin-left: 18px;
+        padding: 5px 0px 6px 0px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetail > div .value > h3 {
+          width: 350px;
+          height: 40px;
+          margin-top: 21px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          background: #f0f0f0;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: black; }
+  #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent {
+    width: 1503px;
+    height: 112px;
+    margin: 21px 64px 32px 0px;
+    display: flex;
+    justify-content: center; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent > div {
+      width: 33%;
+      height: 112px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent > div .title {
+        height: 112px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-top: 5px;
+        padding-bottom: 6px; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent > div .title > h3 {
+          height: 40px;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          font-family: MicrosoftYaHei;
+          font-size: 14px;
+          color: #d2d2d2; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent > div .value {
+        height: 112px;
+        margin-left: 18px;
+        padding: 5px 0px 6px 0px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent > div .value > h3 {
+          width: 350px;
+          height: 40px;
+          margin-top: 21px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          background: #f0f0f0;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: black; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent > div .valueR {
+        height: 112px;
+        width: 350px;
+        margin-left: 18px;
+        padding-top: 5px;
+        flex-direction: column;
+        align-items: center; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent > div .valueR .el-date-editor {
+          margin-top: 20px; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent > div .valueS {
+        width: 350px;
+        height: 112px;
+        margin-left: 18px;
+        padding-top: 5px;
+        flex-direction: column;
+        align-items: center; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .basicDetailContent > div .valueS #userChoose {
+          width: 350px !important;
+          margin-top: 20px;
+          margin-right: 30px; }
+  #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail {
+    width: 1503px;
+    margin: 20px 64px 0 0;
+    padding: 46px 51px 0px 30px; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail .right_title {
+      height: 35px;
+      display: flex;
+      align-items: center; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail .right_title .words {
+        width: 64px;
+        height: 35px;
+        font-size: 16px;
+        font-family: jingdianxingshu;
+        color: #cf2e33;
+        line-height: 35px; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail .right_title .arrow {
+        width: 34px;
+        height: 5px;
+        margin-left: 23px; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail .body_detail {
+      margin-bottom: 69px;
+      display: flex;
+      flex-wrap: wrap; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail .body_detail > div {
+        width: 25%;
+        height: 19px;
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail .body_detail > div .selector {
+          width: 18px;
+          height: 18px;
+          border-radius: 9px;
+          background: #cf2e33; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .operateDetail .body_detail > div .content {
+          margin-left: 20px; }
+  #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail {
+    padding: 26px 0px 0 40px; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .right_title {
+      height: 35px;
+      display: flex;
+      align-items: center; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .right_title .words {
+        width: 96px;
+        height: 35px;
+        font-size: 16px;
+        font-family: jingdianxingshu;
+        color: #cf2e33;
+        line-height: 35px; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .right_title .arrow {
+        width: 34px;
+        height: 5px;
+        margin-left: 23px; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .receiveHose {
+      height: 30px;
+      margin-bottom: 19px;
+      display: flex;
+      justify-content: space-between; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .receiveHose .contractNumber {
+        width: 134px;
+        height: 19px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .receiveHose .address {
+        display: flex;
+        justify-content: flex-start;
+        margin-right: 500px; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .receiveHose .address .title {
+          width: 30px;
+          height: 19px;
+          margin-right: 20px;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: #b0b0b0;
+          line-height: 19px; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .receiveHose .address .detail {
+          width: 197px;
+          height: 19px;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: #686874;
+          line-height: 19px; }
+      #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .receiveHose .content {
+        display: flex;
+        justify-content: flex-start; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .receiveHose .content .selector {
+          width: 18px;
+          height: 18px;
+          border-radius: 9px;
+          background: #cf2e33;
+          margin-right: 20px; }
+        #theme_name.theme1 #dataBase .cancelMission .dialogBody .operatorDetail .receiveHose .content .seletion {
+          width: 49px;
+          height: 19px;
+          margin-right: 40px; }
+  #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherTitle p {
+      width: 38px;
+      height: 21px;
+      font-size: 18px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 24px; }
   #theme_name.theme1 #dataBase .cancelMission .dialogBody .otherDetail {
     width: 1503px;
     height: 204px;
@@ -751,5 +1122,388 @@
         line-height: 19px; }
 #theme_name.theme1 #dataBase .cancelMission .dialog_footer {
   padding-left: 1223px; }
+#theme_name.theme1 #dataBase .handinDialog .dialogHeader {
+  width: 100%;
+  height: 31px; }
+  #theme_name.theme1 #dataBase .handinDialog .dialogHeader p {
+    width: 151px;
+    height: 31px;
+    margin-left: 60px;
+    font-size: 24px;
+    font-family: MicrosoftYaHei;
+    color: #686874;
+    line-height: 31px;
+    letter-spacing: 1px; }
+#theme_name.theme1 #dataBase .handinDialog .dialogBody {
+  width: 1577px;
+  height: 660px;
+  margin: 24px 0 71px 60px; }
+  #theme_name.theme1 #dataBase .handinDialog .dialogBody .basicTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .handinDialog .dialogBody .basicTitle p {
+      width: 60px;
+      height: 19px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .handinDialog .dialogBody .basicDetail {
+    width: 1503px;
+    height: 108px;
+    margin: 8px 0px 0px 20px;
+    display: flex;
+    justify-content: center; }
+    #theme_name.theme1 #dataBase .handinDialog .dialogBody .basicDetail > div {
+      width: 33%;
+      height: 49px;
+      margin: 29px 0px 30px 0px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .basicDetail > div .title > h3 {
+        height: 35px;
+        display: flex;
+        justify-content: flex-end;
+        font-family: MicrosoftYaHei;
+        font-size: 8px;
+        color: #d2d2d2; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .basicDetail > div .value {
+        margin-left: 10px; }
+        #theme_name.theme1 #dataBase .handinDialog .dialogBody .basicDetail > div .value > h3 {
+          height: 35px;
+          display: flex;
+          justify-content: flex-start;
+          font-family: MicrosoftYaHei;
+          font-size: 8px;
+          color: #686874; }
+  #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedTitle p {
+      width: 105px;
+      height: 19px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail {
+    padding: 26px 39px 0 40px; }
+    #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail > div {
+      height: 30px;
+      margin-bottom: 19px;
+      display: flex;
+      justify-content: space-between; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail > div .contractNumber {
+        width: 134px;
+        height: 19px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail > div .address {
+        display: flex;
+        justify-content: flex-start;
+        margin-right: 200px; }
+        #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail > div .address .title {
+          width: 30px;
+          height: 19px;
+          margin-right: 20px;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: #b0b0b0;
+          line-height: 19px; }
+        #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail > div .address .detail {
+          width: 197px;
+          height: 19px;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: #686874;
+          line-height: 19px; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail > div .content {
+        display: flex;
+        justify-content: flex-start; }
+        #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail > div .content .selector {
+          width: 18px;
+          height: 18px;
+          border-radius: 9px;
+          background: #cf2e33;
+          margin-right: 20px; }
+        #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail > div .content .seletion {
+          width: 49px;
+          height: 19px;
+          margin-right: 40px; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .receivedDetail > div button {
+        width: 96px;
+        height: 30px;
+        margin-right: 100px;
+        background: #f5faff;
+        border-radius: 4px;
+        border: 1px solid #0c66ff;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #0c66ff;
+        line-height: 19px;
+        letter-spacing: 2px; }
+  #theme_name.theme1 #dataBase .handinDialog .dialogBody .rentTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .handinDialog .dialogBody .rentTitle p {
+      width: 105px;
+      height: 19px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .handinDialog .dialogBody .otherTitle {
+    width: 100%;
+    height: 19px; }
+    #theme_name.theme1 #dataBase .handinDialog .dialogBody .otherTitle > p {
+      width: 30px;
+      height: 19px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 19px; }
+  #theme_name.theme1 #dataBase .handinDialog .dialogBody .otherDetail {
+    width: 1503px;
+    height: 204px;
+    margin-top: 8px;
+    padding: 30px 0px 0px 40px; }
+    #theme_name.theme1 #dataBase .handinDialog .dialogBody .otherDetail .otherDetailTop {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .otherDetail .otherDetailTop p {
+        margin-right: 19px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .otherDetail .otherDetailTop img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px; }
+    #theme_name.theme1 #dataBase .handinDialog .dialogBody .otherDetail .otherDetailBottom {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .otherDetail .otherDetailBottom .bottomTitle {
+        margin-right: 24px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .handinDialog .dialogBody .otherDetail .otherDetailBottom .bottomDetail {
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        line-height: 19px; }
+#theme_name.theme1 #dataBase .handinDialog .dialog_footer {
+  padding-left: 1223px; }
+#theme_name.theme1 #dataBase .handinModify .dialogHeader {
+  width: 100%;
+  height: 31px; }
+  #theme_name.theme1 #dataBase .handinModify .dialogHeader p {
+    width: 101px;
+    height: 31px;
+    margin-left: 60px;
+    font-size: 24px;
+    font-family: MicrosoftYaHei;
+    color: #686874;
+    line-height: 31px;
+    letter-spacing: 1px; }
+#theme_name.theme1 #dataBase .handinModify .dialogBody {
+  width: 1597px;
+  height: 719px;
+  margin-top: 23px;
+  padding: 0px 101px 0px 60px; }
+  #theme_name.theme1 #dataBase .handinModify .dialogBody .basicTitle {
+    width: 100%;
+    height: 24px; }
+    #theme_name.theme1 #dataBase .handinModify .dialogBody .basicTitle p {
+      width: 77px;
+      height: 24px;
+      font-size: 18px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 24px;
+      letter-spacing: 1px; }
+  #theme_name.theme1 #dataBase .handinModify .dialogBody .basicDetail {
+    width: 1503px;
+    height: 112px;
+    margin: 21px 64px 32px 0px;
+    display: flex;
+    justify-content: center; }
+    #theme_name.theme1 #dataBase .handinModify .dialogBody .basicDetail > div {
+      width: 33%;
+      height: 112px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .basicDetail > div .title {
+        height: 112px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-top: 5px;
+        padding-bottom: 6px; }
+        #theme_name.theme1 #dataBase .handinModify .dialogBody .basicDetail > div .title > h3 {
+          height: 40px;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          font-family: MicrosoftYaHei;
+          font-size: 14px;
+          color: #d2d2d2; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .basicDetail > div .value {
+        height: 112px;
+        margin-left: 18px;
+        padding: 5px 0px 6px 0px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; }
+        #theme_name.theme1 #dataBase .handinModify .dialogBody .basicDetail > div .value > h3 {
+          width: 350px;
+          height: 40px;
+          margin-top: 21px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          background: #f0f0f0;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: black; }
+  #theme_name.theme1 #dataBase .handinModify .dialogBody .operateInfo {
+    width: 100%;
+    height: 24px; }
+    #theme_name.theme1 #dataBase .handinModify .dialogBody .operateInfo p {
+      width: 173px;
+      height: 24px;
+      font-size: 18px;
+      font-family: MicrosoftYaHei;
+      color: #686874;
+      line-height: 24px;
+      letter-spacing: 1px; }
+  #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail {
+    padding: 26px 0px 0 40px; }
+    #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .right_title {
+      height: 35px;
+      display: flex;
+      align-items: center; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .right_title .words {
+        width: 96px;
+        height: 35px;
+        font-size: 16px;
+        font-family: jingdianxingshu;
+        color: #cf2e33;
+        line-height: 35px; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .right_title .arrow {
+        width: 34px;
+        height: 5px;
+        margin-left: 23px; }
+    #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .receiveHose {
+      height: 30px;
+      margin-bottom: 19px;
+      display: flex;
+      justify-content: space-between; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .receiveHose .contractNumber {
+        width: 134px;
+        height: 19px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .receiveHose .address {
+        display: flex;
+        justify-content: flex-start;
+        margin-right: 500px; }
+        #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .receiveHose .address .title {
+          width: 30px;
+          height: 19px;
+          margin-right: 20px;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: #b0b0b0;
+          line-height: 19px; }
+        #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .receiveHose .address .detail {
+          width: 197px;
+          height: 19px;
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: #686874;
+          line-height: 19px; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .receiveHose .content {
+        display: flex;
+        justify-content: flex-start; }
+        #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .receiveHose .content .selector {
+          width: 18px;
+          height: 18px;
+          border-radius: 9px;
+          background: #cf2e33;
+          margin-right: 20px; }
+        #theme_name.theme1 #dataBase .handinModify .dialogBody .operateDetail .receiveHose .content .seletion {
+          width: 49px;
+          height: 19px;
+          margin-right: 40px; }
+  #theme_name.theme1 #dataBase .handinModify .dialogBody .otherDetail {
+    width: 1503px;
+    height: 204px;
+    margin-top: 8px;
+    padding: 30px 0px 0px 40px; }
+    #theme_name.theme1 #dataBase .handinModify .dialogBody .otherDetail .otherDetailTop {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .otherDetail .otherDetailTop p {
+        margin-right: 19px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .otherDetail .otherDetailTop img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px; }
+    #theme_name.theme1 #dataBase .handinModify .dialogBody .otherDetail .otherDetailBottom {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: flex-start; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .otherDetail .otherDetailBottom .bottomTitle {
+        margin-right: 24px;
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #b0b0b0;
+        line-height: 19px; }
+      #theme_name.theme1 #dataBase .handinModify .dialogBody .otherDetail .otherDetailBottom .bottomDetail {
+        font-size: 14px;
+        font-family: MicrosoftYaHei;
+        color: #686874;
+        line-height: 19px; }
+#theme_name.theme1 #dataBase .handinModify .dialog_footer {
+  padding-left: 1223px; }
+#theme_name.theme1 #dataBase .numberManageTotal .dialog_container .dialog_header {
+  padding-left: 60px; }
+#theme_name.theme1 #dataBase .numberManageTotal .dialog_container .dialog_main {
+  padding-left: 60px; }
+  #theme_name.theme1 #dataBase .numberManageTotal .dialog_container .dialog_main .listTopCss .listTopLeft {
+    font-size: 14px;
+    font-family: MicrosoftYaHei;
+    color: black;
+    line-height: 51px; }
+    #theme_name.theme1 #dataBase .numberManageTotal .dialog_container .dialog_main .listTopCss .listTopLeft div {
+      width: 30px;
+      height: 51px;
+      margin-right: 18px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #b0b0b0;
+      line-height: 51px; }
+#theme_name.theme1 #dataBase .numberManageTotal .dialog_container .dialog_footer {
+  padding-left: 1200px; }
 
 /*# sourceMappingURL=index.css.map */

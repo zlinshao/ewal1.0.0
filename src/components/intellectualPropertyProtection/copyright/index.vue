@@ -3,6 +3,9 @@
     <div>
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
+          <p class="flex-center" @click="routerLink('/intellectualPropertyProtection');">
+            <b>...</b>
+          </p>
           <h2>知识产权保护</h2>
           <h2 class="items-center">
             <span v-for="(item,index) in intellectualPropertyProtection.data" @click="changeTabs(item)" class="items-column"
@@ -22,16 +25,17 @@
             <div>
               <div @click="showPatent(index)" class="patentDetail">
                 <h1>{{item.departmentHeader}}</h1>
-                <h1>{{item.departmentBody}}</h1>
                 <h1>{{item.departmentFooter}}</h1>
                 ...............................
                 <h3>{{item.name}}</h3>
               </div>
               <span class="handleTrigger flex-center">
-                <span class="handlePointer">...</span>
-                <span @click="editPatent(index)" class="handlePatent">编辑 </span>
-                <span></span>
-                <span @click="removePatent(index)" class="handlePatent"> 删除</span>
+                <div class="handlePointer">...</div>
+                <div class="editPatant">
+                  <span @click="editPatent(index)" class="handlePatent">编辑 </span>
+                  <span></span>
+                  <span @click="removePatent(index)" class="handlePatent"> 删除</span>
+                </div>
               </span>
             </div>
           </div>
@@ -56,6 +60,9 @@
     <!-- 添加专利 -->
     <lj-dialog :visible="add_visible" :size="{width: 540 + 'px',height: 560 + 'px'}" @close="add_visible = false">
       <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>添加著作权</h3>
+        </div>
         <div class="dialog_main flex-center borderNone">
           <el-form label-width="120px" class="depart_visible">
             <el-form-item label="所属部门">
@@ -65,14 +72,16 @@
             </el-form-item>
             <el-form-item label="专利名称">
               <div class="items-center iconInput">
-                <el-input placeholder="请输入" v-model="patentAddDetail.name"></el-input>
+                <el-input placeholder="请输入" v-model="patentAddDetail.name" class="patentInput"></el-input>
               </div>
             </el-form-item>
             <el-form-item label="可见范围">
               <org-choose title="请选择可见范围" v-model="patentAddDetail.permission"></org-choose>
             </el-form-item>
             <el-form-item label="添加文件">
-              <lj-upload :max-size="5" v-model="patentAddDetail.file_id"></lj-upload>
+              <div class="patentUpload">
+                <lj-upload :max-size="5" v-model="patentAddDetail.file_id"></lj-upload>
+              </div>
             </el-form-item>
           </el-form>
         </div>
@@ -86,6 +95,9 @@
     <!-- 编辑专利 -->
     <lj-dialog :visible="edit_visible" :size="{width: 540 + 'px',height: 560 + 'px'}" @close="edit_visible = false">
       <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>编辑著作权</h3>
+        </div>
         <div class="dialog_main flex-center borderNone">
           <el-form label-width="120px" class="depart_visible">
             <el-form-item label="所属部门">
@@ -93,14 +105,16 @@
             </el-form-item>
             <el-form-item label="专利名称">
               <div class="items-center iconInput">
-                <el-input placeholder="请输入" v-model="patentEditDetail.name"></el-input>
+                <el-input placeholder="请输入" v-model="patentEditDetail.name" class="patentInput"></el-input>
               </div>
             </el-form-item>
             <el-form-item label="可见范围">
               <org-choose title="请选择可见范围" v-model="patentEditDetail.permission"></org-choose>
             </el-form-item>
             <el-form-item label="编辑文件">
-              <lj-upload :max-size="5" v-model="patentEditDetail.file_id"></lj-upload>
+              <div class="patentUpload">
+                <lj-upload :max-size="5" v-model="patentEditDetail.file_id"></lj-upload>
+              </div>
             </el-form-item>
           </el-form>
         </div>
@@ -188,17 +202,21 @@ export default {
       this.$http.get(`${this.url}/api/knowledge/classify_document`, params).then(res => {
         if (res.status === 200) {
           this.patentList = [];
-          this.total = this.res.total
+          this.total = res.data.total
           for (var i = 0; i < res.data.data.length; i++) {
             let obj = {
               id: res.data.data[i].id,
               name: res.data.data[i].name,
               org_id: res.data.data[i].org_id.id,
-              departmentHeader: res.data.data[i].org_id.name.slice(0, 8),
-              departmentBody: res.data.data[i].org_id.name.slice(8, 16),
-              departmentFooter: res.data.data[i].org_id.name.slice(16, 24),
               file_id: res.data.data[i].file_id[0].id,
               fileUrl: res.data.data[i].file_id[0].uri
+            }
+            if(res.data.data[i].org_id.name.length > 12){
+              obj.departmentHeader = res.data.data[i].org_id.name.slice(0, 6)
+              obj.departmentFooter = res.data.data[i].org_id.name.slice(6, 11)+"..."
+            }else{
+              obj.departmentHeader = res.data.data[i].org_id.name.slice(0, 6)
+              obj.departmentFooter = res.data.data[i].org_id.name.slice(6, 12)
             }
             this.patentList.push(obj);
           }
@@ -372,6 +390,14 @@ export default {
     width: 100%;
     height: 821px;
     padding: 0px 0px 0px 0px !important;
+  }
+}
+.patentUpload{
+  margin-left: 10px;
+}
+.patentInput{
+  .el-input__inner{
+    color:rgba(0,0,0,1);
   }
 }
 </style>
