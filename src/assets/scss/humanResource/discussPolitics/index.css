@@ -508,7 +508,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center; }
         #theme_name #discussPolitics .meeting-detail-container-outer .meeting-detail-container .meeting-detail-vertical-toolbar .meeting-detail-toolbar-item {
           user-select: none;
@@ -519,6 +519,8 @@
           display: -webkit-flex;
           align-items: center;
           justify-content: center; }
+          #theme_name #discussPolitics .meeting-detail-container-outer .meeting-detail-container .meeting-detail-vertical-toolbar .meeting-detail-toolbar-item:nth-child(1) {
+            margin-bottom: 150px; }
           #theme_name #discussPolitics .meeting-detail-container-outer .meeting-detail-container .meeting-detail-vertical-toolbar .meeting-detail-toolbar-item span {
             margin-bottom: 15px;
             font-family: MicrosoftYaHei-Bold;
