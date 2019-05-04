@@ -1,7 +1,6 @@
 @import 'flex.scss';
 @import 'common.scss';
 
-//select重置
 .appTheme1 {
   .el-select-dropdown__item:hover,
   .el-select-dropdown__item.hover {
@@ -303,17 +302,22 @@ div.el-popover {
     }
   }
   //所有input框 选中状态下border为e33颜色 不选中border不显示
-  #repository,#nq,#discussPolitics,#militaryOrganization,#todo_list,#personal_center,#intellectualPropertyProtection {
+  #repository,
+  #nq,
+  #discussPolitics,
+  #militaryOrganization,
+  #todo_list,
+  #personal_center,
+  #intellectualPropertyProtection {
     .el-input__inner {
-      transition:none;
+      transition: none;
       border: none;
-      color:#000000;
+      color: #000000;
       &:focus {
         border: 1px solid $colorE33;
       }
     }
   }
-
 
   //input前缀
   .el-input-group__append,
@@ -469,6 +473,5 @@ div.el-popover {
   &::-webkit-scrollbar-thumb {
     @include radius(10px);
     background: #747474;
-
   }
 }
