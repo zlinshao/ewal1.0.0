@@ -125,10 +125,10 @@ export default {
           tit: '全部',
           value: 1
         },
-        {
-          tit: '我发起的',
-          value: 5
-        },
+        // {
+        //   tit: '我发起的',
+        //   value: 5
+        // },
         {
           tit: '我审批的',
           value: 2
@@ -147,15 +147,13 @@ export default {
         data1: [],
         data2: [],
         data3: [],
-        data4: [],
-        data5: []
+        data4: []
       },
       total: {
         total1: 0,
         total2: 0,
         total3: 0,
-        total4: 0,
-        total5: 0
+        total4: 0
       },
       params: {
         param1: {
@@ -183,14 +181,6 @@ export default {
           department: ''
         },
         param4: {
-          page: 1,
-          search: '',
-          start_time: [],
-          finish_time: [],
-          type: null,
-          department: ''
-        },
-        param5: {
           page: 1,
           search: '',
           start_time: [],

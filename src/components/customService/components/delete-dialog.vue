@@ -7,8 +7,8 @@
         <p class='notice'>确定要删除这条工单吗?</p>
       </div>
       <div class="dialog_footer">
-        <el-button type="danger" size="small" @click="handleCloseAddOrder">删除</el-button>
-        <el-button type="info" size="small" @click="handleCloseDelete">取消</el-button>
+        <el-button id='active-danger' class='el-button-active' size="small" @click="handleCloseAddOrder">删除</el-button>
+        <el-button id='active-info' size="small" @click="handleCloseDelete">取消</el-button>
       </div>
     </div>
   </LjDialog>

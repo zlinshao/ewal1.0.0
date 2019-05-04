@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div id='addOrder_dialog'>
     <LjDialog :visible="visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseOrder">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>新建工单</h3>
         </div>
-        <div class="dialog_main" id='addOrder_dialog'>
+        <div class="dialog_main">
           <div class="back_info scroll_bar">
             <el-row :gutter="10">
               <el-col :span='moduleOrder == 78? 6 : createOrder_span'>
@@ -376,8 +376,8 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleCloseAddOrder">新增</el-button>
-          <el-button type="info" size="small" @click="handleCloseOrder">取消</el-button>
+          <el-button id='active-danger' class='el-button-active' size="small" @click="handleCloseAddOrder">新增</el-button>
+          <el-button id='active-info' size="small" @click="handleCloseOrder">取消</el-button>
         </div>
       </div>
     </LjDialog>
@@ -1245,7 +1245,8 @@ export default {
   $url: "../../../assets/image/customService/workOrder/" + $n + "/" + $m;
   @include bgImage($url);
 }
-
+#theme_name {
+}
 #theme_name {
   .el-row {
     margin-right: 0 !important;
@@ -1254,6 +1255,11 @@ export default {
     white-space: nowrap;
   }
   #addOrder_dialog {
+    .dialog_footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .el-col {
       height: 40px;
       margin-bottom: 30px;
@@ -1305,9 +1311,12 @@ export default {
       .el-box {
         width: 67px;
         height: 67px;
-        font-size: 18px;
-        padding: 10px 12px;
+        padding: 15px 12px;
         margin-bottom: 48px;
+        p {
+          font-size: 18px;
+          font-family: "jingDianXingShu";
+        }
       }
     }
     .el-col-content {
@@ -1424,11 +1433,12 @@ export default {
         @include flex("space-column");
         @include flex("items-center");
         .nothing_img {
-          width: 50px;
-          height: 140px;
+          width: 90px;
+          height: 198px;
           margin-bottom: 30px;
         }
         .nothing_words {
+          font-family: "jingdianxingshu";
           font-size: 14px;
         }
       }
