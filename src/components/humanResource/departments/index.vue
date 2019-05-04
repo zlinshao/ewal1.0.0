@@ -133,6 +133,7 @@
               :data="system_list"
               height="370px"
               @row-click="handleClickSystem"
+              highlight-current-row
             >
               <el-table-column label="ID" prop="id" align="center"></el-table-column>
               <el-table-column label="系统标识" prop="sign" align="center"></el-table-column>
@@ -171,6 +172,7 @@
                 :data="module_list"
                 @row-click="handleClickModule"
                 height="370px"
+                highlight-current-row
               >
                 <el-table-column label="ID" prop="id" align="center"></el-table-column>
                 <el-table-column label="模块标识" prop="sign" align="center"></el-table-column>
@@ -206,7 +208,7 @@
           <div>
             <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">权限</p>
             <div style="background-color: white;padding: 20px">
-              <el-table :data="power_list" height="370px" @row-click="handleClickPower">
+              <el-table :data="power_list" height="370px" @row-click="handleClickPower" highlight-current-row>
                 <el-table-column label="ID" prop="id" align="center"></el-table-column>
                 <el-table-column label="权限标示" prop="sign" align="center"></el-table-column>
                 <el-table-column label="权限名称" prop="name" align="center"></el-table-column>
@@ -241,7 +243,7 @@
           <div>
             <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">字段</p>
             <div style="background-color: white;padding: 20px">
-              <el-table :data="field_list" height="370px">
+              <el-table :data="field_list" height="370px" highlight-current-row>
                 <el-table-column label="项目名称" prop="app_name" align="center"></el-table-column>
                 <el-table-column label="控制器全称" prop="controller" align="center"></el-table-column>
                 <el-table-column label="方法名称" prop="method" align="center"></el-table-column>
@@ -1284,6 +1286,7 @@
         this.exportInfo += this.chooseTab;
       },
       handleOpenEditDepart(item) {
+        console.log(item);
         this.edit_depart = item;
         this.departForm.name = item.name;
         this.departForm.leader = item.leader && item.leader.name || '';

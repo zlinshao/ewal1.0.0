@@ -8,8 +8,8 @@
         </el-checkbox>
       </div>
       <div class="dialog_footer">
-        <el-button type="danger" size="small" @click="handleCloseSure(true)">确定</el-button>
-        <el-button type="info" size="small" @click="handleCloseSure(false)">取消</el-button>
+        <el-button id='active-danger' class='el-button-active' size="small" @click="handleCloseSure(true)">确定</el-button>
+        <el-button id='active-info' size="small" @click="handleCloseSure(false)">取消</el-button>
       </div>
     </div>
   </LjDialog>

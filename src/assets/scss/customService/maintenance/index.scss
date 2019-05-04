@@ -217,6 +217,7 @@
       .detail_box {
         height: 500px;
         padding-bottom: 50px;
+        padding: 0 10px;
         .content + .content {
           position: relative;
           &:before {
@@ -243,7 +244,7 @@
           }
           .detail_dialog_center {
             height: 100%;
-            margin: 0 80px;
+            margin: 0 60px;
             .circle {
               width: 15px;
               height: 15px;

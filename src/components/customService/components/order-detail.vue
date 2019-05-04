@@ -72,7 +72,7 @@
                 <div class="content flex" v-for='follow in follow_data' :key='follow.next_follow_time' v-if='follow_data'>
                   <div class='detail_dialog_left'>
                     <p>{{follow.create_name}}</p>
-                    <p>{{follow.next_follow_time}}</p>
+                    <p style="white-space:nowrap;">{{follow.next_follow_time}}</p>
                   </div>
                   <div class="detail_dialog_center">
                     <div class="circle"></div>
@@ -88,9 +88,9 @@
         </div>
       </div>
       <div class="dialog_footer">
-        <el-button type="info" size="small" @click="handleTransfer">转交</el-button>
-        <el-button type="info" size="small" @click="handleNotice">通知</el-button>
-        <el-button type="danger" size="small" @click="handleEnd" v-if='moduleData.chosenTag!=338'>结束</el-button>
+        <el-button id='active-info' size="small" @click="handleTransfer">转交</el-button>
+        <el-button id='active-info' size="small" @click="handleNotice">通知</el-button>
+        <el-button id='active-danger' class='el-button-active' size="small" @click="handleEnd" v-if='moduleData.chosenTag!=338'>结束</el-button>
       </div>
     </div>
   </LjDialog>

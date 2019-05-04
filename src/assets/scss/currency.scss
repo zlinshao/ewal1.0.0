@@ -499,6 +499,88 @@
 }
 
 #theme_name.theme1 {
+  #active-danger,
+  #active-primary,
+  #active-warning,
+  #active-success {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #active-danger.el-button {
+    background: #fff8f8;
+    border: 1px solid #cf2e33;
+    color: #cf2e33;
+    &:hover {
+      background: #cf2e33;
+      color: #fff8f8;
+    }
+  }
+  #active-danger.el-button-active {
+    border: 1px solid #cf2e33;
+    background: #cf2e33;
+    color: #fff8f8;
+  }
+
+  #active-primary.el-button {
+    background: #f5faff;
+    border: 1px solid #0c66ff;
+    color: #0c66ff;
+    &:hover {
+      background: #0c66ff;
+      color: #f5faff;
+    }
+  }
+  #active-primary.el-button-active {
+    background: #0c66ff;
+    border: 1px solid #0c66ff;
+    color: #f5faff;
+  }
+
+  #active-warning.el-button {
+    background: #fdf6ec;
+    border: 1px solid #e6a23c;
+    color: #e6a23c;
+    &:hover {
+      background: #e6a23c;
+      color: #fdf6ec;
+    }
+  }
+  #active-warning.el-button-active {
+    background: #e6a23c;
+    color: #fdf6ec;
+    border: 1px solid #e6a23c;
+  }
+
+  #active-success.el-button {
+    background: #f0f9eb;
+    border: 1px solid #67c23a;
+    color: #67c23a;
+    &:hover {
+      background: #67c23a;
+      color: #f0f9eb;
+    }
+  }
+  #active-success.el-button-active {
+    background: #67c23a;
+    border: 1px solid #67c23a;
+    color: #f0f9eb;
+  }
+
+  #active-info.el-button {
+    background: #dfdfe0;
+    color: #686874;
+  }
+
+  .el-table__body {
+    .el-table__row {
+      .cell {
+        white-space: nowrap;
+        text-overflow: hidden;
+        overflow: hidden;
+      }
+    }
+  }
   // radio check
   .highChoose {
     background-color: #ffeaea;

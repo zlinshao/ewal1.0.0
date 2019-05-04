@@ -5,9 +5,6 @@
         <div class="items-center listTopLeft">
           <h2>知识产权保护</h2>
         </div>
-        <div class="items-center listTopRight">
-          <div class="icons add"><b>+</b></div>
-        </div>
       </div>
       <div id='patentMenu'>
         <MenuList :list="intellectualPropertyProtection" :module="true"></MenuList>
@@ -19,7 +16,6 @@
 
 <script>
   import MenuList from '../common/menuList.vue';
-  // import {intellectualPropertyProtection} from '../../assets/js/allModuleList.js';
   export default {
     name: "index",
     components: {MenuList},

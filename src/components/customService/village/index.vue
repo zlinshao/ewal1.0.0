@@ -64,11 +64,12 @@
                     </span>
                   </span>
                   <span v-else>-</span>
+                  <el-button style="float: right;min-width: 80px" type="warning" plain size="mini" @click="handleEditVillage(village)">编辑</el-button>
                 </p>
               </div>
               <div class="village-footer">
                 <div class="flex-center">
-                  <el-button type="info" size="small" @click="handleEditVillage(village)">编辑</el-button>
+
                   <!--<el-button type="primary" size="small" plain @click.stop="handleOpenMergeVillage(village)">合并</el-button>-->
                 </div>
                 <div class="flex-center">
@@ -943,7 +944,11 @@
                     .number {
                       @include villageImg('zhanbi-hui.png','theme1');
                     }
-                    &:hover {
+                  }
+                }
+                &:hover {
+                  .village-body {
+                    p {
                       .type {
                         @include villageImg('fenleih.png','theme1');
                       }
