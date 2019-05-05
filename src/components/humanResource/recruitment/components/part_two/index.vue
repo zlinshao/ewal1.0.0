@@ -369,7 +369,7 @@
         })
       },
       getPapers() {
-        this.$http.get(globalConfig.organ_server + 'train/exam?type=1').then(res => {
+        this.$http.get('train/exam?type=1').then(res => {
           if (res.code === '20000') {
             this.paper = res.data.data;
           } else {
