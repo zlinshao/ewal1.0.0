@@ -123,8 +123,35 @@
             </el-form-item>
 
             <div v-for="(item,index) in publish_notice_form.sanction_info" :key="index">
+              <!--不带表单验证-->
+              <el-form-item
+                            label="类型">
+                <dropdown-list :json-arr="DROPDOWN_CONSTANT.NOTICEQUESTIONNAIRE.PUBLISHNOTICE.TYPE"
+                               title="请选择类型"
+                               v-model="publish_notice_form.sanction_info[index].sanction_type"></dropdown-list>
+                <span v-if="index==0" class="btn_add" style="position: absolute;right: 13px;top: 3px;"
+                      @click="handleSanctionInfo(index)"
+                >+</span>
+                <span v-if="index>=1" class="btn_add"
+                      @click="handleSanctionInfo(index)"
+                      style="position: absolute;right: 13px;top: 3px;background-color: #D2D2D2;"
+                >-</span>
+              </el-form-item>
 
-              <el-form-item required
+              <el-form-item
+                            label="奖罚金额">
+                <el-input v-model="publish_notice_form.sanction_info[index].money" placeholder="请输入奖惩金额"
+                          style="width: 320px">
+                </el-input>
+              </el-form-item>
+
+              <el-form-item
+                            label="责任人">
+                <user-choose num="1" title="请选择责任人"
+                             v-model="publish_notice_form.sanction_info[index].user_id"></user-choose>
+              </el-form-item>
+              <!--带表单验证-->
+              <!--<el-form-item required
                             :prop="'sanction_info.'+index+'.sanction_type'"
                             :rules="{required: true, message: '请选择类型', trigger: 'blur'}"
                             label="类型">
@@ -153,7 +180,7 @@
                             label="责任人">
                 <user-choose num="1" title="必选"
                              v-model="publish_notice_form.sanction_info[index].user_id"></user-choose>
-              </el-form-item>
+              </el-form-item>-->
             </div>
 
 
