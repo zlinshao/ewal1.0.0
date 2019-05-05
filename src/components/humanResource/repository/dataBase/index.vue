@@ -58,21 +58,61 @@
         <!-- 汇总 -->
         <div class="contractNumberTop" v-if="contractNumberChoosed === 0">
           <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" :data="contractCollectList" height="400px">
-            <el-table-column label="姓名" align="center"  prop="name">
+            <el-table-column label="姓名" align="center" prop="simple_staff.real_name">
               <template slot-scope="scope">
-                <div @click="contractCollect_visible =true">{{scope.row.name}}</div>
+                <div @click="showCollectDetail(scope.row)">{{scope.row.simple_staff.real_name}}</div>
               </template>
             </el-table-column>
-            <el-table-column label="剩余合同数(收)" align="center"></el-table-column>
-            <el-table-column label="剩余合同数(租)" align="center"></el-table-column>
-            <el-table-column label="已领取合同数(收)" align="center"></el-table-column>
-            <el-table-column label="已领取合同数(租)" align="center"></el-table-column>
-            <el-table-column label="已作废合同数(收)" align="center"></el-table-column>
-            <el-table-column label="已作废合同数(租)" align="center"></el-table-column>
-            <el-table-column label="已上缴合同数(收)" align="center"></el-table-column>
-            <el-table-column label="已上缴合同数(租)" align="center"></el-table-column>
-            <el-table-column label="已丢失合同数(收)" align="center"></el-table-column>
-            <el-table-column label="已丢失合同数(租)" align="center"></el-table-column>
+            <el-table-column label="剩余合同数(收)" align="center" prop="collect_count">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.collect_count}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="剩余合同数(租)" align="center" prop="rent_count">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.rent_count}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="已领取合同数(收)" align="center" prop="collect_apply">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.collect_apply}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="已领取合同数(租)" align="center" prop="rent_apply">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.rent_apply}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="已作废合同数(收)" align="center" prop="collect_invalidate">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.collect_invalidate}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="已作废合同数(租)" align="center" prop="rent_invalidate">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.rent_invalidate}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="已上缴合同数(收)" align="center" prop="collect_handin">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.collect_handin}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="已上缴合同数(租)" align="center" prop="rent_handin">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.rent_handin}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="已丢失合同数(收)" align="center" prop="collect_loss">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.collect_loss}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="已丢失合同数(租)" align="center" prop="rent_loss">
+              <template slot-scope="scope">
+                <div @click="showCollectDetail(scope.row)">{{scope.row.rent_loss}}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button @click="distribute(scope.row)">分配</el-button>
@@ -84,30 +124,46 @@
           </div>
         </div>
         <div class="contractNumberBottom" v-if="contractNumberChoosed === 0">
-          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%">
-            <el-table-column label="城市" align="center"></el-table-column>
-            <el-table-column label="合同总数(收)" align="center"></el-table-column>
+          <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" :data="bottomTable">
+            <el-table-column label="城市" align="center" prop="city_name"></el-table-column>
+            <el-table-column label="合同总数(收)" align="center" prop="collect_sum"></el-table-column>
             <el-table-column label="电子" align="center"></el-table-column>
             <el-table-column label="纸质" align="center"></el-table-column>
-            <el-table-column label="合同总数(租)" align="center"></el-table-column>
+            <el-table-column label="合同总数(租)" align="center" prop="rent_sum"></el-table-column>
             <el-table-column label="电子" align="center"></el-table-column>
             <el-table-column label="纸质" align="center"></el-table-column>
-            <el-table-column label="剩余合同数(收)" align="center"></el-table-column>
-            <el-table-column label="剩余缴合同数(租)" align="center"></el-table-column>
+            <el-table-column label="剩余合同数(收)" align="center" prop="collect_remain"></el-table-column>
+            <el-table-column label="剩余缴合同数(租)" align="center" prop="rent_remain"></el-table-column>
           </el-table>
         </div>
         <!-- 领取 -->
         <div v-if="contractNumberChoosed === 1">
           <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractReceiveList">
-            <el-table-column label="领取时间" align="center"></el-table-column>
-            <el-table-column label="部门" align="center"></el-table-column>
-            <el-table-column label="姓名" align="center" prop="name">
-              <template slot-scope="scope">
-                <div @click="contractReceive_visible = true">{{scope.row.name}}</div>
+            <el-table-column label="领取时间" align="center" prop="report_time">
+                <template slot-scope="scope">
+                <div @click="showReceiveDetail(scope.row)">{{scope.row.report_time}}</div>
               </template>
             </el-table-column>
-            <el-table-column label="领取合同数(收)" align="center"></el-table-column>
-            <el-table-column label="领取合同数(租)" align="center"></el-table-column>
+            <el-table-column label="部门" align="center" prop="department_name">
+              <template slot-scope="scope">
+                <div @click="showReceiveDetail(scope.row)">{{scope.row.department_name}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="姓名" align="center" prop="staff_name">
+              <template slot-scope="scope">
+                <div @click="showReceiveDetail(scope.row)">{{scope.row.staff_name}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="领取合同数(收)" align="center" prop="collect_contracts_count">
+              <template slot-scope="scope">
+                <div @click="showReceiveDetail(scope.row)">{{scope.row.collect_contracts_count}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="领取合同数(租)" align="center" prop="rent_contracts_count">
+              <template slot-scope="scope">
+                <div @click="showReceiveDetail(scope.row)">{{scope.row.rent_contracts_count}}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button size="mini" @click="modifyReceive(scope.row)">修改</el-button>
@@ -122,15 +178,31 @@
         <!-- 作废 -->
         <div v-if="contractNumberChoosed === 2">
           <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractCancelList">
-            <el-table-column label="作废时间" align="center"></el-table-column>
-            <el-table-column label="部门" align="center"></el-table-column>
-            <el-table-column label="姓名" align="center" prop="name">
+            <el-table-column label="作废时间" align="center" prop="report_time">
               <template slot-scope="scope">
-                <div @click="contractCancel_visible = true">{{scope.row.name}}</div>
+                <div @click="showCancelDetail(scope.row)">{{scope.row.report_time}}</div>
               </template>
             </el-table-column>
-            <el-table-column label="作废合同数(收)" align="center"></el-table-column>
-            <el-table-column label="作废合同数(租)" align="center"></el-table-column>
+            <el-table-column label="部门" align="center" prop="department_name">
+              <template slot-scope="scope">
+                <div @click="showCancelDetail(scope.row)">{{scope.row.department_name}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="姓名" align="center" prop="staff_name">
+              <template slot-scope="scope">
+                <div @click="showCancelDetail(scope.row)">{{scope.row.staff_name}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="作废合同数(收)" align="center" prop="collect_contracts_count">
+              <template slot-scope="scope">
+                <div @click="showCancelDetail(scope.row)">{{scope.row.collect_contracts_count}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="作废合同数(租)" align="center" prop="rent_contracts_count">
+              <template slot-scope="scope">
+                <div @click="showCancelDetail(scope.row)">{{scope.row.rent_contracts_count}}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button size="mini" @click="modifyCancel(scope.row)">修改</el-button>
@@ -144,15 +216,31 @@
         <!-- 上缴 -->
         <div v-if="contractNumberChoosed === 3">
           <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractHandinList">
-            <el-table-column label="上缴时间" align="center"></el-table-column>
-            <el-table-column label="部门" align="center"></el-table-column>
-            <el-table-column label="姓名" align="center" prop="name">
+            <el-table-column label="上缴时间" align="center" prop="report_time">
               <template slot-scope="scope">
-                <div @click="contractHandin_visible = true">{{scope.row.name}}</div>
+                <div @click="showHandintDetail(scope.row)">{{scope.row.report_time}}</div>
               </template>
             </el-table-column>
-            <el-table-column label="上缴合同数(收)" align="center"></el-table-column>
-            <el-table-column label="上缴合同数(租)" align="center"></el-table-column>
+            <el-table-column label="部门" align="center" prop="department_name">
+              <template slot-scope="scope">
+                <div @click="showHandintDetail(scope.row)">{{scope.row.department_name}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="姓名" align="center" prop="staff_name">
+              <template slot-scope="scope">
+                <div @click="showHandintDetail(scope.row)">{{scope.row.staff_name}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="上缴合同数(收)" align="center" prop="collect_contracts_count">
+              <template slot-scope="scope">
+                <div @click="showHandintDetail(scope.row)">{{scope.row.collect_contracts_count}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="上缴合同数(租)" align="center" prop="rent_contracts_count">
+              <template slot-scope="scope">
+                <div @click="showHandintDetail(scope.row)">{{scope.row.rent_contracts_count}}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button size="mini" @click="modifyHandin(scope.row)">修改</el-button>
@@ -166,15 +254,31 @@
         <!-- 丢失 -->
         <div v-if="contractNumberChoosed === 4">
           <el-table highlight-current-row header-row-class-name="tableHeader" style="width: 100%" height="660px" :data="contractLoseList">
-            <el-table-column label="丢失时间" align="center"></el-table-column>
-            <el-table-column label="部门" align="center"></el-table-column>
-            <el-table-column label="姓名" align="center" prop="name">
+            <el-table-column label="丢失时间" align="center" prop="report_time">
               <template slot-scope="scope">
-                <div @click="contractLose_visible = true">{{scope.row.name}}</div>
+                <div @click="showLoseDetail(scope.row)">{{scope.row.report_time}}</div>
               </template>
             </el-table-column>
-            <el-table-column label="丢失合同数(收)" align="center"></el-table-column>
-            <el-table-column label="丢失合同数(租)" align="center"></el-table-column>
+            <el-table-column label="部门" align="center" prop="department_name">
+              <template slot-scope="scope">
+                <div @click="showLoseDetail(scope.row)">{{scope.row.department_name}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="姓名" align="center" prop="staff_name">
+              <template slot-scope="scope">
+                <div @click="showLoseDetail(scope.row)">{{scope.row.staff_name}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="丢失合同数(收)" align="center" prop="collect_contracts_count">
+              <template slot-scope="scope">
+                <div @click="showLoseDetail(scope.row)">{{scope.row.collect_contracts_count}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="丢失合同数(租)" align="center" prop="rent_contracts_count">
+              <template slot-scope="scope">
+                <div @click="showLoseDetail(scope.row)">{{scope.row.rent_contracts_count}}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <el-button size="mini" @click="modifyLose(scope.row)">修改</el-button>
@@ -288,11 +392,28 @@
               <div class="words">合同信息</div>
               <div class="arrow"></div>
             </div>
-            <el-table highlight-current-row header-row-class-name="tableHeader" v-if="contractGatherChoosed == 1">
-              <el-table-column type="expand"></el-table-column>
-              <el-table-column label="历史领取日期" align="center"></el-table-column>
-              <el-table-column label="剩余未缴收房合同(LJSF)" align="center"></el-table-column>
-              <el-table-column label="剩余未缴租房合同(LJZF)" align="center"></el-table-column>
+            <el-table highlight-current-row header-row-class-name="tableHeader" v-if="contractGatherChoosed == 1" :data="collectFenlei">
+              <el-table-column type="expand">
+                <template slot-scope="scope">
+                </template>
+              </el-table-column>
+              <el-table-column label="历史领取日期" align="center" prop="report_time"></el-table-column>
+              <el-table-column label="剩余未缴收房合同(LJSF)" align="center">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.collect.concat(scope.row.collect_allocated).length>0">
+                    {{scope.row.collect.concat(scope.row.collect_allocated).length}}份
+                  </span>
+                  <span v-else="">/</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="剩余未缴租房合同(LJZF)" align="center">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.rent.concat(scope.row.rent_allocated).length>0">
+                    {{scope.row.rent.concat(scope.row.rent_allocated).length}}份
+                  </span>
+                  <span v-else="">/</span>
+                </template>
+              </el-table-column>
             </el-table>
             <div class="right_body" v-if="contractGatherChoosed == 2">
               <div class="right_body_header">
@@ -300,17 +421,15 @@
                 <h3 :class="remainingUnpaidChoosed == 2? 'remainingUnpaidChoosed': ''" @click="remainingUnpaidChooseS()" style="margin-left:60px;" >剩余未缴租房合同(LJZF)</h3>
               </div>
               <div class="right_body_main">
-                <div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div>
-                <div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div>
-                <div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div>
-                <div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div><div>JDAFJKDAFDSA</div>
+                <div v-if="remainingUnpaidChoosed == 1" v-for="(item,index) in totalCollectArray" :key="index">{{item}}</div>
+                <div v-if="remainingUnpaidChoosed == 2" v-for="(item,index) in totalRentArray" :key="index">{{item}}</div>
               </div>
             </div>
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small">确定</el-button>
-          <el-button type="info" size="small">取消</el-button>
+          <el-button type="danger" size="small" @click="contractCollect_visible = false">确定</el-button>
+          <el-button type="info" size="small" @click="contractCollect_visible = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -320,7 +439,7 @@
         <div class="dialog_header">
           <h3>分配</h3>
         </div>
-        <div class="dialog_body">
+        <div class="dialog_body scroll_bar">
           <div class="body_header">
             <el-form label-width="120px" :inline="true">
               <el-form-item label="姓名">
@@ -339,21 +458,9 @@
               <div class="arrow"></div>
             </div>
             <div class="body_detail">
-              <div>
+              <div v-for="(item,index) in distributeReceiveList" :key="index">
                 <div class="selector"></div>
-                <div class="content">FDSJKLFDSA</div>
-              </div>
-              <div>
-                <div class="selector"></div>
-                <div class="content">FDSJKLFDSA</div>
-              </div>
-              <div>
-                <div class="selector"></div>
-                <div class="content">FDSJKLFDSA</div>
-              </div>
-              <div>
-                <div class="selector"></div>
-                <div class="content">FDSJKLFDSA</div>
+                <div class="content">{{item}}</div>
               </div>
             </div>
             <div class="right_title" style="margin-top: 69px;">
@@ -361,9 +468,9 @@
               <div class="arrow"></div>
             </div>
             <div class="body_detail">
-              <div>
+              <div v-for="(item,index) in distributeRentList" :key="index">
                 <div class="selector"></div>
-                <div class="content">FDSJKLFDSA</div>
+                <div class="content">{{item}}</div>
               </div>
             </div>
           </div>
@@ -390,28 +497,28 @@
               <h3>领取日期</h3>
             </div>
             <div class="value">
-              <h3>权志龙</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{receiveBasiclInfo[0]?receiveBasiclInfo[0].simple_staff.real_name: ''}}</h3>
+              <h3>{{receiveBasiclInfo[0]?receiveBasiclInfo[0].report_time: ''}}</h3>
             </div>
           </div>
           <div>
             <div class="title">
-              <h3>领用人</h3>
-              <h3>领取日期</h3>
+              <h3>部门</h3>
+              <h3>操作时间</h3>
             </div>
             <div class="value">
-              <h3>权志龙</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{receiveBasiclInfo[0]?receiveBasiclInfo[0].department: ''}}</h3>
+              <h3>{{receiveBasiclInfo[0]?receiveBasiclInfo[0].report_time: ''}}</h3>
             </div>
           </div>
           <div>
             <div class="title">
-              <h3>领用人</h3>
-              <h3>领取日期</h3>
+              <h3>城市</h3>
+              <h3>操作人</h3>
             </div>
             <div class="value">
-              <h3>权志龙</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{receiveBasiclInfo[0]?receiveBasiclInfo[0].city_name: ''}}</h3>
+              <h3>{{receiveBasiclInfo[0]?receiveBasiclInfo[0].operator.real_name: ''}}</h3>
             </div>
           </div>
         </div>
@@ -419,13 +526,13 @@
           <p>已领取收房合同</p>
         </div>
         <div class="receivedDetail">
-          <p>GFDASFDAFDSA</p>
+          <p v-for="item in receiveBasiclInfo[0]?receiveBasiclInfo[0].collects: []" :key="item">{{item}}</p>
         </div>
         <div class="rentTitle">
-          <p>已领取租房合同</p>
+          <p>已领取租房合同</p> 
         </div>
         <div class="rentDetail">
-          <p>FDASDFGAFDFD</p>
+          <p v-for="item in receiveBasiclInfo[0]?receiveBasiclInfo[0].rents: []" :key="item">{{item}}</p>
         </div>
         <div class="otherTitle">
           <p>其他</p>
@@ -433,11 +540,11 @@
         <div class="otherDetail">
           <div class="otherDetailTop">
             <p>截图</p>
-            <img src="" alt="sss">
+            <img :src="item.uri" v-for="item in receiveBasiclInfo[0]?receiveBasiclInfo[0].screenshot: []" :key="item">
           </div>
           <div class="otherDetailBottom">
             <p class="bottomTitle">备注</p>
-            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+            <p class="bottomDetail" v-for="item in receiveBasiclInfo[0]?receiveBasiclInfo[0].remarks: []" :key="item">{{item.content}}</p>
           </div>
         </div>
       </div>
@@ -458,11 +565,10 @@
               <h3>领用人</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini">
-                </el-option>
+              <el-select placeholder="请选择" v-model="misssionType" disabled>
+                
               </el-select>
-              <h3>权志龙</h3>
+              <h3>{{modifyName}}</h3>
             </div>
           </div>
           <div>
@@ -471,11 +577,11 @@
               <h3>所属部门</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini">
+              <el-select placeholder="请选择" v-model="selectedCity" disabled>
+                <el-option size="mini" v-for="(item,index) in cityList" :key="index" :label="item.dictionary_name" :value="item.variable.city_code">
                 </el-option>
               </el-select>
-              <h3>南京一区</h3>
+              <h3>{{modifyDepartment}}</h3>
             </div>
           </div>
           <div>
@@ -486,7 +592,9 @@
               <el-date-picker
                 type="datetime"
                 placeholder="选择日期时间"
-                align="right">
+                align="right"
+                v-model="timePicker"
+                disabled>
             </el-date-picker>
             </div>
           </div>
@@ -500,21 +608,9 @@
             <div class="arrow"></div>
           </div>
           <div class="body_detail">
-            <div>
+            <div v-for="item in operateReceive" :key="item">
               <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
+              <div class="content">{{item}}</div>
             </div>
           </div>
           <div class="right_title">
@@ -522,21 +618,9 @@
             <div class="arrow"></div>
           </div>
           <div class="body_detail">
-            <div>
+            <div v-for="item in operateRent" :key="item">
               <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
-            </div>
-            <div>
-              <div class="selector"></div>
-              <div class="content">FDSJKLFDSA</div>
+              <div class="content">{{item}}</div>
             </div>
           </div>
         </div>
@@ -546,11 +630,11 @@
         <div class="otherDetail">
           <div class="otherDetailTop">
             <p>截图</p>
-            <img src="" alt="sss">
+            <lj-upload></lj-upload>
           </div>
           <div class="otherDetailBottom">
             <p class="bottomTitle">备注</p>
-            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+            <el-input type="textarea"  :rows="2" v-model="modifyRemark"></el-input>
           </div>
         </div>
       </div>
@@ -666,28 +750,28 @@
               <h3>领取日期</h3>
             </div>
             <div class="value">
-              <h3>权志龙</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{cancelBasiclInfo[0]?cancelBasiclInfo[0].simple_staff.real_name: ''}}</h3>
+              <h3>{{cancelBasiclInfo[0]?cancelBasiclInfo[0].report_time: ''}}</h3>
             </div>
           </div>
           <div>
             <div class="title">
-              <h3>领用人</h3>
-              <h3>领取日期</h3>
+              <h3>部门</h3>
+              <h3>操作时间</h3>
             </div>
             <div class="value">
-              <h3>权志龙</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{cancelBasiclInfo[0]?cancelBasiclInfo[0].department: ''}}</h3>
+              <h3>{{cancelBasiclInfo[0]?cancelBasiclInfo[0].report_time: ''}}</h3>
             </div>
           </div>
           <div>
             <div class="title">
-              <h3>领用人</h3>
-              <h3>领取日期</h3>
+              <h3>城市</h3>
+              <h3>操作人</h3>
             </div>
             <div class="value">
-              <h3>权志龙</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{cancelBasiclInfo[0]?cancelBasiclInfo[0].city_name: ''}}</h3>
+              <h3>{{cancelBasiclInfo[0]?cancelBasiclInfo[0].operator.real_name: ''}}</h3>
             </div>
           </div>
         </div>
@@ -695,13 +779,13 @@
           <p>已作废收房合同</p>
         </div>
         <div class="receivedDetail">
-          <p>GFDASFDAFDSA</p>
+          <p v-for="item in cancelBasiclInfo[0]?cancelBasiclInfo[0].collects: []" :key="item">{{item}}</p>
         </div>
         <div class="rentTitle">
           <p>已作废租房合同</p>
         </div>
         <div class="rentDetail">
-          <p>FDASDFGAFDFD</p>
+          <p v-for="item in cancelBasiclInfo[0]?cancelBasiclInfo[0].rents: []" :key="item">{{item}}</p>
         </div>
         <div class="otherTitle">
           <p>其他</p>
@@ -709,11 +793,11 @@
         <div class="otherDetail">
           <div class="otherDetailTop">
             <p>截图</p>
-            <img src="" alt="sss">
+            <img :src="item.uri" v-for="item in cancelBasiclInfo[0]?cancelBasiclInfo[0].screenshot: []" :key="item">
           </div>
           <div class="otherDetailBottom">
             <p class="bottomTitle">备注</p>
-            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+            <p class="bottomDetail" v-for="item in cancelBasiclInfo[0]?cancelBasiclInfo[0].remarks: []" :key="item">{{item.content}}</p>
           </div>
         </div>
       </div>
@@ -734,11 +818,9 @@
               <h3>领用人</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini">
-                </el-option>
+              <el-select placeholder="请选择" v-model="misssionType" disabled>
               </el-select>
-              <h3>权志龙</h3>
+              <h3>{{modifyName}}</h3>
             </div>
           </div>
           <div>
@@ -747,11 +829,9 @@
               <h3>所属部门</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini">
-                </el-option>
+              <el-select placeholder="请选择" v-model="selectedCity" disabled>
               </el-select>
-              <h3>南京一区</h3>
+              <h3>{{modifyDepartment}}</h3>
             </div>
           </div>
           <div>
@@ -762,7 +842,9 @@
               <el-date-picker
                 type="datetime"
                 placeholder="选择日期时间"
-                align="right">
+                align="right"
+                v-model="timePicker"
+                disabled>
             </el-date-picker>
             </div>
           </div>
@@ -968,8 +1050,8 @@
               <h3>上缴时间</h3>
             </div>
             <div class="value">
-              <h3>权志龙</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].simple_staff.real_name:''}}</h3>
+              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].report_time:''}}</h3>
             </div>
           </div>
           <div>
@@ -978,8 +1060,8 @@
               <h3>操作时间</h3>
             </div>
             <div class="value">
-              <h3>南京一区</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].department:''}}</h3>
+              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].report_time:''}}</h3>
             </div>
           </div>
           <div>
@@ -988,8 +1070,8 @@
               <h3>操作人</h3>
             </div>
             <div class="value">
-              <h3>南京</h3>
-              <h3>权志龙</h3>
+              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].city_name:''}}</h3>
+              <h3>{{handinBasiclInfo[0]?handinBasiclInfo[0].operator.real_name:''}}</h3>
             </div>
           </div>
         </div>
@@ -1105,11 +1187,11 @@
         <div class="otherDetail">
           <div class="otherDetailTop">
             <p>截图</p>
-            <img src="" alt="sss">
+            <img :src="item.uri" v-for="item in handinBasiclInfo[0]?handinBasiclInfo[0].screenshot:[]" :key="item">
           </div>
           <div class="otherDetailBottom">
             <p class="bottomTitle">备注</p>
-            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+            <p class="bottomDetail" v-for="item in handinBasiclInfo[0]?handinBasiclInfo[0].remarks:[]" :key="item">{{item}}</p>
           </div>
         </div>
       </div>
@@ -1138,11 +1220,9 @@
               <h3>领用人</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini">
-                </el-option>
+              <el-select placeholder="请选择" v-model="misssionType" disabled>
               </el-select>
-              <h3>权志龙</h3>
+              <h3>{{modifyName}}</h3>
             </div>
           </div>
           <div>
@@ -1151,11 +1231,9 @@
               <h3>所属部门</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini">
-                </el-option>
+              <el-select placeholder="请选择" v-model="selectedCity" disabled>
               </el-select>
-              <h3>南京一区</h3>
+              <h3>{{modifyDepartment}}</h3>
             </div>
           </div>
           <div>
@@ -1166,7 +1244,9 @@
               <el-date-picker
                 type="datetime"
                 placeholder="选择日期时间"
-                align="right">
+                align="right"
+                v-model="timePicker"
+                disabled>
             </el-date-picker>
             </div>
           </div>
@@ -1455,8 +1535,8 @@
               <h3>丢失时间</h3>
             </div>
             <div class="value">
-              <h3>权志龙</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{loseSimplereal_name}}</h3>
+              <h3>{{loseBasiclInfo[0]?loseBasiclInfo[0].report_time: ''}}</h3>
             </div>
           </div>
           <div>
@@ -1465,8 +1545,8 @@
               <h3>操作时间</h3>
             </div>
             <div class="value">
-              <h3>南京一区</h3>
-              <h3>2019-04-04 12:20:20</h3>
+              <h3>{{loseBasiclInfo[0]?loseBasiclInfo[0].department: ''}}</h3>
+              <h3>{{loseBasiclInfo[0]?loseBasiclInfo[0].report_time: ''}}</h3>
             </div>
           </div>
           <div>
@@ -1475,8 +1555,8 @@
               <h3>操作人</h3>
             </div>
             <div class="value">
-              <h3>南京</h3>
-              <h3>权志龙</h3>
+              <h3>{{loseBasiclInfo[0]?loseBasiclInfo[0].city_name: ''}}</h3>
+              <h3>{{loseSimpleopetator_name}}</h3>
             </div>
           </div>
         </div>
@@ -1484,13 +1564,13 @@
           <p>已丢失收房合同</p>
         </div>
         <div class="receivedDetail">
-          <p>GFDASFDAFDSA</p>
+          <p v-for="item in loseBasiclInfo[0]?loseBasiclInfo[0].collects: []" :key="item">{{item}}</p>
         </div>
         <div class="rentTitle">
           <p>已丢失租房合同</p>
         </div>
         <div class="rentDetail">
-          <p>FDASDFGAFDFD</p>
+          <p v-for="item in loseBasiclInfo[0]?loseBasiclInfo[0].rents: []" :key="item">{{item}}</p>
         </div>
         <div class="otherTitle">
           <p>其他</p>
@@ -1498,11 +1578,11 @@
         <div class="otherDetail">
           <div class="otherDetailTop">
             <p>截图</p>
-            <img src="" alt="sss">
+            <img :src="item.uri" v-for="item in loseBasiclInfo[0]?loseBasiclInfo[0].screenshot: []" :key="item">
           </div>
           <div class="otherDetailBottom">
             <p class="bottomTitle">备注</p>
-            <p class="bottomDetail">这里是备注文字这里是备注文字这里是备注文字</p>
+            <p class="bottomDetail" v-for="item in loseBasiclInfo[0]?loseBasiclInfo[0].remarks: []" :key="item">{{item.content}}</p>
           </div>
         </div>
       </div>
@@ -1523,11 +1603,9 @@
               <h3>领用人</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini">
-                </el-option>
+              <el-select placeholder="请选择" v-model="misssionType" disabled>
               </el-select>
-              <h3>权志龙</h3>
+              <h3>{{modifyName}}</h3>
             </div>
           </div>
           <div>
@@ -1536,11 +1614,9 @@
               <h3>所属部门</h3>
             </div>
             <div class="value">
-              <el-select placeholder="请选择">
-                <el-option size="mini">
-                </el-option>
+              <el-select placeholder="请选择" v-model="selectedCity" disabled>
               </el-select>
-              <h3>南京一区</h3>
+              <h3>{{modifyDepartment}}</h3>
             </div>
           </div>
           <div>
@@ -1551,7 +1627,9 @@
               <el-date-picker
                 type="datetime"
                 placeholder="选择日期时间"
-                align="right">
+                align="right"
+                v-model="timePicker"
+                disabled>
             </el-date-picker>
             </div>
           </div>
@@ -1909,6 +1987,16 @@ export default {
   data() {
     return {
       url: globalConfig.humanResource_server,
+      params: {
+          page: 1,
+          limit: 10,
+          search: '',
+          proof: '',
+          department_id: '',
+          start: '',
+          end: '',
+          staff_id: '',
+      },
       activeIndex: 0,
       active: [
         {id: 0, val: '片区异动交接单'},
@@ -1929,6 +2017,7 @@ export default {
       ],
       total: 0,
       currentPage: 1,
+      cityList: [],
       addContract_visiable: false,//添加合同
       contractCollect_visible: false,//汇总
       distribute_visible: false,//分配
@@ -1949,6 +2038,26 @@ export default {
       numberManageAddF_visible: false,//合同编号管理新增1
       numberManageModify_visible: false,//合同编号管理修改
       numberManageAddS_visible: false,//合同编号管理新增2
+      collectFenlei:[],//汇总详情分类详情table
+      totalCollectArray:[], //汇总详情全部列表1
+      totalRentArray: [],//汇总详情全部列表2
+      receiveBasiclInfo: [],//领取详情基本信息
+      cancelBasiclInfo: [],//作废详情基本信息
+      distributeReceiveList:[],//分配收房合同列表
+      distributeRentList:[],//分配租房合同列表
+      handinBasiclInfo: [],//上缴详情基本信息
+      loseBasiclInfo: [],//丢失详情基本信息
+      loseSimplereal_name: '',//丢失详情丢失人
+      loseSimpleopetator_name: '',//丢失详情操作人
+      selectedCity: '',//选择器绑定的城市code
+      misssionType: '',//选择器绑定的任务类型
+      timePicker: "",//时间选择器绑定的时间1
+      modifyName: '',//修改时显示的人名
+      modifyDepartment:'',//修改时部门
+      operateReceive: [],//操作详情收房
+      operateRent: [],//操作详情租房
+      modifyRemark: '',
+      receiveModifyParam: {},
       contractNumberEditChoosed: 0,
       contractNumberChoosed: 0,
       areaChangeOrder: [],
@@ -1970,31 +2079,12 @@ export default {
       approvalDetail:[],
       process_id: 0,
       approvalTitle: '',
-      contractCollectList: [
-        {
-          name: "张三",
-        }
-      ],//合同汇总
-      contractReceiveList: [
-        {
-          name: "张三",
-        }
-      ],//合同编号领取
-      contractCancelList: [
-        {
-          name: "张三",
-        }
-      ],//合同编号作废
-      contractHandinList: [
-        {
-          name: "张三",
-        }
-      ],//合同编号上缴
-      contractLoseList: [
-        {
-          name: "张三",
-        }
-      ],//合同编号丢失
+      contractCollectList: [],//合同汇总
+      bottomTable: [],//底部列表
+      contractReceiveList: [],//合同编号领取
+      contractCancelList: [],//合同编号作废
+      contractHandinList: [],//合同编号上缴
+      contractLoseList: [],//合同编号丢失
       //汇总弹框选项
       contractGatherChoosed: 1,
       remainingUnpaidChoosed:1,
@@ -2003,8 +2093,10 @@ export default {
   mounted () {
     this.getAreaChangeOrder();
     this.getApprovalDetail();
+    this.getCityList();
   },
   methods: {
+    //左边菜单切换
     changeTab: function (index) {
       this.activeIndex = index
       if (index === 0) {
@@ -2014,15 +2106,51 @@ export default {
         this.getContractList()
       }
       else  if(index === 2){
-        this.getContractList()
+        this.getContractCollectList()
+        this.getBottomTable()
       }
       else{
         this.getContractList()
       }
     },
-    //获取异动交接单
+    //合同编号菜单切换
+    chooseContartType: function(index) {
+      this.contractNumberChoosed = index
+      switch(index){
+        case 0:
+          this.getContractCollectList()
+          this.getBottomTable()
+           break;
+        case 1:
+          this.getContractReceiveList()
+           break;
+        case 2:
+          this.getContractCancelList()
+           break;
+        case 3:
+          this.getContractHandinList()
+           break;
+        case 4:
+          this.getContractLoseList()
+           break;
+      }
+    },
+    //合同编号管理菜单切换
+    chooseContartEditType: function(index) {
+      this.contractNumberEditChoosed = index
+    },
+    //获取城市列表
+    getCityList: function (){
+      this.$http.get(`${this.url}contract/dict?city=1`).then((res) => {
+          if (res.code === '20000') {
+            for(let i = 0;i < res.data.city.length;i++ ){
+              this.cityList.push(res.data.city[i])
+            }
+          }
+      })
+    },
+    //获取片区异动交接单
     getAreaChangeOrder: function () {
-
     },
     //获取合同列表
     getContractList: function () {
@@ -2054,34 +2182,6 @@ export default {
         }
       })
     },
-    //添加按钮
-    add: function() {
-      if(this.activeIndex == 1) {
-        this.addContract_visiable = true
-      }
-      else if(this.activeIndex == 2){
-        if(this.contractNumberChoosed == 1){
-          this.receiveMission_visible = true
-        }
-        else if(this.contractNumberChoosed == 2){
-          this.cancelMission_visible = true
-        }
-        else if(this.contractNumberChoosed == 3){
-          this.handinMission_visible = true
-        }
-        else if(this.contractNumberChoosed == 4){
-          this.loseMission_visible = true
-        }
-      }
-      else if(this.activeIndex ==3){
-        if(this.contractNumberEditChoosed == 1){
-          this.numberManageAddS_visible = true
-        }
-      }
-    },
-    search: function() {
-      console.log(1)
-    },
     //获取添加合同参数
     getApprovalDetail: function () {
       this.$http.get(`${this.url}eam/storage/process`).then(res => {
@@ -2109,7 +2209,6 @@ export default {
         }
       })
     },
-    
     //添加合同
     addContract: function (chooseTab) {
       for (let i = 0; i < this.approvalDetail.length; i++) {
@@ -2165,13 +2264,161 @@ export default {
         })
       }
     },
-    chooseContartType: function(index) {
-      this.contractNumberChoosed = index
+    //获取合同编号汇总
+    getContractCollectList: function () {
+      this.contractCollectList =[]
+      this.$http.get(`${this.url}contract/mission`, this.params).then((res) => {
+          if (res.code === '20000') {
+            for(let i = 0;i < res.data.data.length;i++ ){
+              this.contractCollectList.push(res.data.data[i])
+            }
+          }
+      })
     },
-    chooseContartEditType: function(index) {
-      this.contractNumberEditChoosed = index
+    //获取底部列表
+    getBottomTable: function() {
+      this.bottomTable =[]
+      this.$http.get(`${this.url}contract/reserve`).then((res) => {
+        if (res.code === '20000') {
+          for(let i = 0;i < res.data.data.length;i++ ){
+            let obj = res.data.data[i]
+            for(let j =0; j< this.cityList.length; j++){
+              if(obj.city_code == this.cityList[j].variable.city_code) {
+                obj.city_name = this.cityList[j].dictionary_name
+              }
+            }
+            this.bottomTable.push(obj)
+          }
+        }
+      })
     },
+    //获取合同编号领取
+    getContractReceiveList: function() {
+      this.contractReceiveList =[]
+      this.$http.get(`${this.url}contract/apply`,this.params).then((res) => {
+        if (res.code === '20000') {
+          for(let i = 0;i < res.data.data.length;i++ ){
+            this.contractReceiveList.push(res.data.data[i])
+          }
+        }
+      })
+    },
+    //获取合同编号作废
+    getContractCancelList: function() {
+      this.contractCancelList =[]
+      this.$http.get(`${this.url}contract/invalidate`,this.params).then((res) => {
+        if (res.code === '20000') {
+          for(let i = 0;i < res.data.data.length;i++ ){
+            this.contractCancelList.push(res.data.data[i])
+          }
+        }
+      })
+    },
+    //获取合同编号上缴
+    getContractHandinList: function() {
+      this.contractHandinList =[]
+      this.$http.get(`${this.url}contract/handin`,this.params).then((res) => {
+        if (res.code === '20000') {
+          for(let i = 0;i < res.data.data.length;i++ ){
+            this.contractHandinList.push(res.data.data[i])
+          }
+        }
+      })
+    },
+    //获取合同编号丢失
+    getContractLoseList: function() {
+      this.contractLoseList =[]
+      this.$http.get(`${this.url}contract/loss`,this.params).then((res) => {
+        if (res.code === '20000') {
+          for(let i = 0;i < res.data.data.length;i++ ){
+            this.contractLoseList.push(res.data.data[i])
+          }
+        }
+      })
+    },
+    //汇总详情
+    showCollectDetail: function(row) {
+      this.contractCollect_visible = true
+      this.$http.get(`${this.url}contract/mission/${row.staff_id}`).then((res) => {
+        if (res.code === '20000') {
+          this.collectFenlei = res.data.data;
+          this.collectFenlei.forEach((item)=>{
+              this.totalCollectArray = this.totalCollectArray.concat(item.collect,item.collect_allocated);
+              this.totalRentArray = this.totalRentArray.concat(item.rent,item.rent_allocated);
+            })
+        }
+      })
+    },
+    //领取详情
+    showReceiveDetail: function(row) {
+      this.$http.get(`${this.url}contract/apply/${row.id}`).then((res) => {
+        if (res.code === '20000') {
+          this.receiveBasiclInfo.push(res.data.full)
+          for(let j =0; j< this.cityList.length; j++){
+            if(this.receiveBasiclInfo[0].city_code == this.cityList[j].variable.city_code) {
+              this.receiveBasiclInfo[0].city_name = this.cityList[j].dictionary_name
+            }
+          }
+          this.receiveBasiclInfo[0].department = res.data.department.name
+        }
+      })
+      this.contractReceive_visible = true
+    },
+    //作废详情
+    showCancelDetail: function(row) {
+      this.$http.get(`${this.url}contract/invalidate/${row.id}`).then((res) => {
+        if (res.code === '20010') {
+          this.cancelBasiclInfo.push(res.data.full)
+          for(let j =0; j< this.cityList.length; j++){
+            if(this.cancelBasiclInfo[0].city_code == this.cityList[j].variable.city_code) {
+              this.cancelBasiclInfo[0].city_name = this.cityList[j].dictionary_name
+            }
+          }
+          this.cancelBasiclInfo[0].department = res.data.department.name
+        }
+      })
+      this.contractCancel_visible = true
+    },
+    //上缴详情
+    showHandintDetail: function(row) {
+      this.contractHandin_visible = true
+      this.$http.get(`${this.url}contract/handin/${row.id}`).then((res) => {
+        if (res.code === '20010') {
+          this.handinBasiclInfo.push(res.data.full)
+          for(let j =0; j< this.cityList.length; j++){
+            if(this.handinBasiclInfo[0].city_code == this.cityList[j].variable.city_code) {
+              this.handinBasiclInfo[0].city_name = this.cityList[j].dictionary_name
+            }
+          }
+          this.handinBasiclInfo[0].department = res.data.department.name
+        }
+      })
+    },
+    //丢失详情
+    showLoseDetail: function(row) {
+      this.contractLose_visible = true
+      this.$http.get(`${this.url}contract/loss/${row.id}`).then((res) => {
+        if (res.code === '20010') {
+          this.loseBasiclInfo.push(res.data.full)
+          for(let j =0; j< this.cityList.length; j++){
+            if(this.loseBasiclInfo[0].city_code == this.cityList[j].variable.city_code) {
+              this.loseBasiclInfo[0].city_name = this.cityList[j].dictionary_name
+            }
+          }
+          this.loseSimplereal_name = res.data.full.simple_staff.real_name
+          this.loseSimpleopetator_name = res.data.full.operator?res.data.full.operator.real_name:''
+          this.loseBasiclInfo[0].department = res.data.department.name
+        }
+      })
+    },
+    //汇总分配
     distribute: function(row) {
+      this.$http.get(`${this.url}contract/staff/${row.staff_id}`).then((res) => {
+        if (res.code === '20000') {
+          this.distributeReceiveList = Object.assign({},this.distributeReceiveList,res.data.collect);
+          this.distributeRentList = Object.assign({},this.distributeRentList,res.data.rent);
+        }
+      })
       this.distribute_visible = true
     },
     contractGatherF: function() {
@@ -2188,16 +2435,118 @@ export default {
     },
     modifyReceive: function(row) {
       this.receiveModify_visible = true
+      this.misssionType = "领取"
+      this.modifyName = row.staff_name
+      this.timePicker = row.report_time
+      this.modifyDepartment = row.department_name
+      this.$http.get(`${this.url}contract/apply/${row.id}`).then((res) => {
+        console.log(res)
+        if (res.code === '20000') {
+          this.operateReceive = res.data.full.collects
+          this.operateRent =  res.data.full.rents
+          this.modifyRemark = res.data.remarks
+          for(let j =0; j< this.cityList.length; j++){
+            if(res.data.city_code == this.cityList[j].variable.city_code) {
+              this.selectedCity = this.cityList[j].dictionary_name
+            }
+          }
+        }
+      })
     },
     modifyCancel: function(row) {
+      this.receiveModify_visible = true
+      this.misssionType = "作废"
+      this.modifyName = row.staff_name
+      this.timePicker = row.report_time
+      this.modifyDepartment = row.department_name
+      this.$http.get(`${this.url}contract/invalidate/${row.id}`).then((res) => {
+        if (res.code === '20010') {
+          for(let j =0; j< this.cityList.length; j++){
+            if(res.data.full.city_code == this.cityList[j].variable.city_code) {
+              this.selectedCity = this.cityList[j].dictionary_name
+            }
+          }
+          this.cancelBasiclInfo[0].department = res.data.department.name
+        }
+      })
       this.cancelModify_visible = true
+
     },
     modifyHandin: function(row) {
+      this.receiveModify_visible = true
+      this.misssionType = "上缴"
+      this.modifyName = row.staff_name
+      this.timePicker = row.report_time
+      this.modifyDepartment = row.department_name
+      this.$http.get(`${this.url}contract/handin/${row.id}`).then((res) => {
+        if (res.code === '20010') {
+          for(let j =0; j< this.cityList.length; j++){
+            if(res.data.full.city_code == this.cityList[j].variable.city_code) {
+              this.selectedCity = this.cityList[j].dictionary_name
+            }
+          }
+          this.cancelBasiclInfo[0].department = res.data.department.name
+        }
+      })
       this.haninModify_visible = true
     },
     modifyLose: function(row) {
+      this.receiveModify_visible = true
+      this.misssionType = "丢失"
+      this.modifyName = row.staff_name
+      this.timePicker = row.report_time
+      this.modifyDepartment = row.department_name
+      this.$http.get(`${this.url}contract/loss/${row.id}`).then((res) => {
+        if (res.code === '20010') {
+          for(let j =0; j< this.cityList.length; j++){
+            if(res.data.full.city_code == this.cityList[j].variable.city_code) {
+              this.selectedCity = this.cityList[j].dictionary_name
+            }
+          }
+          this.cancelBasiclInfo[0].department = res.data.department.name
+        }
+      })
       this.loseModify_visible = true
-    }
+    },
+    receiveAdd: function() {
+
+    },
+    cancelAdd: function() {
+
+    },
+    handinAdd: function() {
+
+    },
+    loseAdd: function() {
+
+    },
+    //添加按钮
+    add: function() {
+      if(this.activeIndex == 1) {
+        this.addContract_visiable = true
+      }
+      else if(this.activeIndex == 2){
+        if(this.contractNumberChoosed == 1){
+          this.receiveMission_visible = true
+        }
+        else if(this.contractNumberChoosed == 2){
+          this.cancelMission_visible = true
+        }
+        else if(this.contractNumberChoosed == 3){
+          this.handinMission_visible = true
+        }
+        else if(this.contractNumberChoosed == 4){
+          this.loseMission_visible = true
+        }
+      }
+      else if(this.activeIndex ==3){
+        if(this.contractNumberEditChoosed == 1){
+          this.numberManageAddS_visible = true
+        }
+      }
+    },
+    search: function() {
+    },
   }
 }
 </script>
