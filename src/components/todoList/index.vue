@@ -22,7 +22,7 @@
       </div>
       <div class="todo-list-container">
         <!--渲染todo_list数据-->
-        <div :class="{'todo-list-container-top':listIndex==0,'todo-list-container-bottom':listIndex==1}"
+        <!--<div :class="{'todo-list-container-top':listIndex==0,'todo-list-container-bottom':listIndex==1}"
              v-for="(listItem,listIndex) in todo_list_container_arr">
           <div v-for="(item,index) in todo_list_container_arr[listIndex]"
                @click="container_checked = (index);todoListVisibleTrigger(item)"
@@ -33,6 +33,17 @@
               <i :class="'todo-list-item-content-icon-'+key"></i>
               {{value}}
             </div>
+          </div>
+        </div>-->
+
+        <div v-for="(item,index) in todo_list_container"
+             @click="container_checked = (index);todoListVisibleTrigger(item)"
+             class="todo-list-item">
+          <div :title="item.name" class="todo-list-item-title">{{item.name}}</div>
+          <div v-for="(value,key) in item" v-if="!(key=='id'||key=='name'||key=='onClick')"
+               class="todo-list-item-content">
+            <i :class="'todo-list-item-content-icon-'+key"></i>
+            {{value}}
           </div>
         </div>
 
@@ -104,15 +115,18 @@
       todo_list_container: {
         handler(val, oldVal) {
           //console.log(val, oldVal);
-          if (val && val.length >= 0 && val.length <= 5) {
-            this.todo_list_container_arr[0] = val.slice(0, val.length);
-          } else if (val.length <= 10) {
-            this.todo_list_container_arr[0] = val.slice(0, 5);
-            this.todo_list_container_arr[1] = val.slice(5, val.length);
-          } else {
-            this.todo_list_container_arr[0] = val.slice(0, 5);
-            this.todo_list_container_arr[1] = val.slice(5);
-          }
+          this.$nextTick(() => {
+            if (val && val.length >= 0 && val.length <= 5) {
+              this.todo_list_container_arr[0] = val.slice(0, val.length);
+            } else if (val.length <= 10) {
+              this.todo_list_container_arr[0] = val.slice(0, 5);
+              this.todo_list_container_arr[1] = val.slice(5, val.length);
+            } else {
+              this.todo_list_container_arr[0] = val.slice(0, 5);
+              this.todo_list_container_arr[1] = val.slice(5);
+            }
+          });
+
         },
         immediate: true
       },
@@ -245,7 +259,7 @@
           if (res.constructor == Array) {//返回正确
             this.todo_list_toolbar = res;
             let allCount = _(res).map('count').sum();
-            this.$store.dispatch('change_todo_list_badge_count',allCount);
+            this.$store.dispatch('change_todo_list_badge_count', allCount);
             this.todo_list_toolbar.unshift(
               {
                 id: 1,
@@ -254,11 +268,11 @@
                 count: allCount,
               });
             return true;
-          }else {
+          } else {
             return false;
           }
-        }).then(res=> {
-          if(res) {
+        }).then(res => {
+          if (res) {
             this.getCurrentList();
           }
         });
@@ -273,21 +287,57 @@
 
 
       //获取待办下方列表数据
-      getCurrentList(item={}, index=0) {
+      getCurrentList(item = {}, index = 0) {
         this.todo_list_container = [];
+        if (Object.keys(item).length > 0) {
+          this.params.page = 1;
+        }
         let params = {
           ...this.params,
-          processDefinitionKey:item.key||'',
+          processDefinitionKey: item.key || '',
         };
 
-        this.$http.get(`${this.url}runtime/tasks`,params).then(res=> {
-            for(let item of res.data) {
-              let obj = {
-                name:item.name
-              };
-              this.todo_list_container.push(obj);
+        this.$http.get(`${this.url}runtime/tasks`, params).then(res => {
+          for (let item of res.data) {
+            let obj = {
+              name: item.name
+            };
+            let itemKey = item.processDefinitionId.split(':')[0];//类型
+            switch (itemKey) {
+              /*交接*/
+              case 'HandoverOrder':
+                obj.time = '';
+                break;
+              /*补齐资料*/
+              case 'Market-CompleteData':
+                break;
+              /*跟进任务*/
+              case 'FA-FollowUpTask':
+                break;
+                /*合同签署*/
+              case 'MC-CollectContractSigning':
+                break;
+              /*报备审批*/
+              case 'MG-BulletinApproval':
+                break;
+                /*完整版*/
+              case 'MarketCollect':
+                break;
+                /*报备*/
+              case 'MC-Bulletin':
+                break;
+                /*带看*/
+              case 'Market-CollectTakeLook':
+                break;
+                /*补齐物品*/
+              case 'Market-CompleteAsset':
+                break;
+              default:
+                break;
             }
-            this.counts = res.total;
+            this.todo_list_container.push(obj);
+          }
+          this.counts = res.total;
         });
 
 
