@@ -134,65 +134,35 @@
       </div>
     </lj-dialog>
     <!-- 办公室记录 -->
-    <lj-dialog :visible="officeRecord_visiable" :size="{width: 1041 + 'px',height: 900 + 'px'}" @close="officeRecord_visiable = false">
+    <lj-dialog :visible="officeRecord_visiable" :size="{width: 1041 + 'px',height: 900 + 'px'}" @close="officeRecord_visiable = false" class="officeRecore">
       <div class="dialog_container">
-        <div class="listTopCss items-bet">
-          <div class="items-center listTopLeft">
-            办公室记录
-          </div>
-          <div class="items-right listTopRight">
-            审批编号: 00001
-            申请人: 张三
-            申请时间: 2019-04-01
-          </div>
+        <div class="dialog_header">
+          <h3>办公室记录</h3>
+          <h4>审批编号: 00001申请人: 张三 申请时间: 2019-04-01</h4>
         </div>
-        <div style="display:flex; justify-content:center;height:  160px">
-                  <div width="500px" height="160px">
-                    <el-form>
-                      <el-form-item label="房屋地址">
-                        房屋地址1
-                      </el-form-item>
-                      <el-form-item label="小区地址">
-                        小区地址1
-                      </el-form-item>
-                      <el-form-item label="房型">
-                        一室一厅一卫
-                      </el-form-item>
-                    </el-form>
-                  </div>
-                  <div width="500px" height="160px">
-                    <el-form>
-                      <el-form-item label="办公室类型">
-                        正式
-                      </el-form-item>
-                      <el-form-item label="片区经理">
-                        子虚
-                      </el-form-item>
-                      <el-form-item label="部门">
-                        南京一区一组
-                      </el-form-item>
-                    </el-form>
-                  </div>
+        <div class="basicInfo">
+          <div></div>
+          <div></div>
         </div>
         <div style="width: 869px;height: 490px;margin: 0px 86px 0px 86px;">
-                    <el-timeline>
-                      <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
-                        <h3>开始时间：由为您办理了</h3>
-                        <h3>备注：新办公室</h3>
-                      </el-timeline-item>
-                      <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
-                        <h3>更新时间：由为您办理了</h3>
-                        <h3>备注：新办公室</h3>
-                      </el-timeline-item>
-                      <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
-                        <h3>更新时间：由为您办理了</h3>
-                        <h3>备注：新办公室</h3>
-                      </el-timeline-item>
-                      <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
-                        <h3>结束时间：由为您办理了</h3>
-                        <h3>备注：新办公室</h3>
-                      </el-timeline-item>
-                    </el-timeline>
+          <el-timeline>
+            <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
+              <h3>开始时间：由为您办理了</h3>
+              <h3>备注：新办公室</h3>
+            </el-timeline-item>
+            <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
+              <h3>更新时间：由为您办理了</h3>
+              <h3>备注：新办公室</h3>
+            </el-timeline-item>
+            <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
+              <h3>更新时间：由为您办理了</h3>
+              <h3>备注：新办公室</h3>
+            </el-timeline-item>
+            <el-timeline-item color="#CF2E33" timestamp="2019-04-01" placement="top">
+              <h3>结束时间：由为您办理了</h3>
+              <h3>备注：新办公室</h3>
+            </el-timeline-item>
+          </el-timeline>
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small">确定</el-button>

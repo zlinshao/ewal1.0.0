@@ -14,7 +14,7 @@
       </div>
       <div class="items-center listTopRight">
         <el-button id='active-warning' @click='changeTag_Status(1)' :class="[tag_status == 1?'el-button-active':'']">收房</el-button>
-        <el-button id='active-primary' plain @click='changeTag_Status(2)' :class="[tag_status==2?'el-button-active':'']">租房</el-button>
+        <el-button id='active-primary' @click='changeTag_Status(2)' :class="[tag_status==2?'el-button-active':'']">租房</el-button>
         <div></div>
         <div class="icons search" @click="highSearch"></div>
       </div>

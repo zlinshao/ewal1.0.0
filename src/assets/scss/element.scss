@@ -301,6 +301,24 @@ div.el-popover {
       }
     }
   }
+<<<<<<< HEAD
+  //所有input框 选中状态下border为e33颜色 不选中border不显示 input框内容颜色改为纯黑色
+  #repository,
+  #nq,
+  #discussPolitics,
+  #militaryOrganization,
+  #todo_list,
+  #personal_center,
+  #intellectualPropertyProtection {
+    .el-input__inner {
+      transition: none;
+      border: none;
+      color: #000000;
+      &:focus {
+        border: 1px solid $colorE33;
+      }
+    }
+=======
 
 #repository, #nq, #discussPolitics, #militaryOrganization, #todo_list, #personal_center, #intellectualPropertyProtection {
   .el-input__inner {
@@ -310,6 +328,7 @@ div.el-popover {
     &:focus {
       border: 1px solid $colorE33;
 
+>>>>>>> 6369273390453653781e17cdd60bae0bb231cfdc
   }
 }
 
@@ -435,6 +454,7 @@ div.el-popover {
   }
 
   #theme_name.theme2 {
+
   }
 
   #theme_name.theme3 {
