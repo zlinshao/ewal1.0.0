@@ -1520,6 +1520,7 @@
           for (var key in this.interview_info_detail) {
             this.interview_info_detail[key] = item.staff && item.staff[key] || '';
           }
+          this.interview_info_detail.salary = item.staff && item.staff.salary;
           this.interview_info_detail.recommenders = item.staff && item.staff.recommenders || {name: ''};
           this.interview_info_detail.name = item.name;
           this.interview_info_detail.position = item.position[0].name;

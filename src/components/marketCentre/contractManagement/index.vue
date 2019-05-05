@@ -147,6 +147,7 @@
             <span>
               {{ contractDetail.contract_number }}
             </span>
+            {{ currentRow.type }}
             <el-button type="danger" size="mini" @click="handleRewrite" style="margin-left: 10px">作废重签</el-button>
           </div>
         </div>
@@ -272,7 +273,7 @@
               </el-row>
             </el-form>
 
-            <div class="type">{{ currentRow.type }}</div>
+<!--            <div class="type">{{ currentRow.type }}</div>-->
           </div>
 
           <p style="text-align: left">{{ chooseTab === 1 ? '收款账户' : '汇款账户'}}</p>
