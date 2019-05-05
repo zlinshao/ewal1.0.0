@@ -12,8 +12,9 @@
               <span v-if='item == "photo"'>(重新报备)</span>
             </p>
             <div v-if='moduleData.album' class='imgBox'>
-              <img :src="img.uri" alt="" v-for='img in moduleData.album[item]' :key='img.id' data-magnify=""
-                data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'>
+              <Ljupload size='40' v-model='moduleData.album[item]' disabled=true download=false></Ljupload>
+              <!-- <img :src="img.uri" alt="" v-for='img in moduleData.album[item]' :key='img.id' data-magnify=""
+                data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'> -->
             </div>
           </el-checkbox>
         </el-checkbox-group>
@@ -27,10 +28,12 @@
 </template>
 <script>
 import LjDialog from '../../common/lj-dialog.vue';
+import Ljupload from '../../common/lightweightComponents/lj-upload'
 export default {
   props: ['visible', 'moduleData'],
   components: {
-    LjDialog
+    LjDialog,
+    Ljupload
   },
   data () {
     return {

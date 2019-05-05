@@ -13,8 +13,8 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-button type="warning" plain @click='changeTab(1)' :class="[chooseTab==1?'active-warning':'']">收房</el-button>
-        <el-button type="primary" plain @click='changeTab(2)' :class="[chooseTab==2?'active-primary':'']">租房</el-button>
+        <el-button id='active-warning' @click='changeTab(1)' :class="[chooseTab==1?'el-button-active':'']">收房</el-button>
+        <el-button id='active-primary' @click='changeTab(2)' :class="[chooseTab==2?'el-button-active':'']">租房</el-button>
         <div></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
@@ -101,17 +101,18 @@
         <el-table-column label="操作" align="center" v-if='tabType ==2' width='300'>
           <template slot-scope="scope" align='left'>
             <div style='display:flex;justify-content:flex-start;align-items:center;'>
-              <el-button type="warning" plain size="mini" @click.stop="readHousuingTag(scope.row)">查看标记</el-button>
-              <el-button type="primary" plain size="mini" @click.stop="addHousuingTag(scope.row,2)">修改标记</el-button>
-              <el-button type="success" plain size="mini" @click.stop="postHelp(scope.row)" v-if='scope.row.is_send == 0'>发送代办</el-button>
+              <el-button id='active-warning' size="mini" @click.stop="readHousuingTag(scope.row)">查看标记</el-button>
+              <el-button id='active-primary' size="mini" @click.stop="addHousuingTag(scope.row,2)">修改标记</el-button>
+              <el-button id='active-success' size="mini" @click.stop="postHelp(scope.row)" v-if='scope.row.is_send == 0'>发送代办</el-button>
+              <el-button id='active-success' size="mini" @click.stop="urgedDealWith(scope.row)" v-if='scope.row.is_send == 1'>催办</el-button>
             </div>
           </template>
         </el-table-column>
 
         <el-table-column label="操作" align="center" v-if='tabType == 4' width='300'>
           <template slot-scope="scope" align='left'>
-            <el-button type="success" plain size="mini" @click.stop="addHousuingTag(scope.row,1)">添加标记</el-button>
-            <el-button type="success" plain size="mini" @click.stop="urgedDealWith(scope.row)">催办</el-button>
+            <el-button id='active-success' size="mini" @click.stop="addHousuingTag(scope.row,1)">添加标记</el-button>
+            <el-button id='active-success' size="mini" @click.stop="urgedDealWith(scope.row)">催办</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -431,8 +432,9 @@
                 style='min-height:80px;'>
                 <div class='mian_tit'>{{polishing_data[chooseTab-1][item]}}</div>
                 <div style="width: 90%;text-align: left">
-                  <img v-for="tmp in contractDetail.album[item]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
-                    :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+                  <Ljupload size='40' v-model='contractDetail.album[item]' disabled=true download=false></Ljupload>
+                  <!-- <img v-for="tmp in contractDetail.album[item]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
+                    :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri"> -->
                 </div>
               </div>
             </div>
@@ -457,7 +459,7 @@
     </lj-dialog>
 
     <!-- 添加 修改标记 -->
-    <lj-dialog :visible="mark_visible" :size="{width: 450 + 'px',height: 500 + 'px'}" @close="handleCancelMark">
+    <lj-dialog :visible="mark_visible" :size="{width: 690 + 'px',height: 558 + 'px'}" @close="handleCancelMark">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{tagType == 1 ? "添加标记":"修改标记"}}</h3>
@@ -485,18 +487,18 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleSubmitMark">确定</el-button>
-          <el-button type="info" size="small" @click="handleCancelMark">取消</el-button>
+          <el-button id='active-danger' class='el-button-active' size="small" @click="handleSubmitMark">确定</el-button>
+          <el-button id='active-info' class='el-button-active' size="small" @click="handleCancelMark">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
     <!-- 查看标记 -->
-    <LjDialog :visible="backInfo_visible" :size="{width: 600 + 'px',height: 500 + 'px'}" @close="handleCloseLookBackInfo">
+    <LjDialog :visible="backInfo_visible" :size="{width: 994 + 'px',height: 690 + 'px'}" @close="handleCloseLookBackInfo">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>标记记录</h3>
-          <div class="header_right" @click='backInfo_addHousuingTag'>
+          <div class="header_tit" @click='backInfo_addHousuingTag'>
             修改标记
           </div>
         </div>
@@ -518,13 +520,13 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleCloseLookBackInfo">确定</el-button>
+          <el-button id='active-danger' size="small" class='el-button-active' @click="handleCloseLookBackInfo">确定</el-button>
         </div>
       </div>
     </LjDialog>
 
     <!-- 催办 -->
-    <LjDialog :visible="urgedDeal_visible" :size="{width: 480 + 'px',height: 310 + 'px'}" @close="handleCloseUrgedDeal">
+    <LjDialog :visible="urgedDeal_visible" :size="{width: 670 + 'px',height: 370 + 'px'}" @close="handleCloseUrgedDeal">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>建立催办</h3>
@@ -537,8 +539,8 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button type="danger" size="small" @click="handleUrgedDeal">确定</el-button>
-          <el-button type="info" size="small" @click="handleCloseUrgedDeal">取消</el-button>
+          <el-button id='active-danger' class='el-button-active' size="small" @click="handleUrgedDeal">确定</el-button>
+          <el-button id='active-info' class='el-button-active' size="small" @click="handleCloseUrgedDeal">取消</el-button>
         </div>
       </div>
     </LjDialog>
@@ -747,7 +749,7 @@ export default {
     //合同详情
     tableClickRow (row) {
       this.currentRow = row
-      this.contract_detail_visible = true
+
       // 合同详情
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
         if (res.code === 200) {
@@ -767,6 +769,7 @@ export default {
           }
 
           this.contractDetail = data
+          this.contract_detail_visible = true
         }
       })
     },
@@ -905,7 +908,7 @@ export default {
       this.currentMethod = 'seeRecord'
       this.addHousuingTag(this.currentRow, 2)
       // this.backInfo = '';
-      this.backInfo_visible = false;
+      // this.backInfo_visible = false;
     },
     // 发送代办
     postHelp (row) {
@@ -991,6 +994,13 @@ export default {
 <style lang="scss">
 @import "../../../assets/scss/customService/housingDue/index.scss";
 
+#HousingDue {
+  .dialog_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 .opactiy {
   opacity: 0;
 }

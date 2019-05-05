@@ -9,6 +9,7 @@
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column" :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
+            <b v-if='item.id == 337'>23</b>
           </span>
         </h2>
       </div>
