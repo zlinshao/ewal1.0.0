@@ -87,7 +87,7 @@
       <!--员工资料-->
       <lj-dialog
         :visible="interviewee_info_visible"
-        :size="{width: 1000 + 'px',height: 750 + 'px'}"
+        :size="{width: 1200 + 'px',height: 820 + 'px'}"
         @close="handleCloseLookInfo"
       >
         <div class="dialog_container">
@@ -364,11 +364,11 @@
             <!--入职成功-->
             <div class="success_work" :class="{'success_work_animation': work_success}"></div>
           </div>
-          <div class="dialog_footer" v-if="!work_success">
+          <div class="dialog_footer" v-if="!work_success" style="text-align: right">
             <el-button size="small" type="danger" @click="ok_interviewee_visible = true">入职</el-button>
             <el-button size="small" type="info" @click="handleCloseLookInfo">取消</el-button>
           </div>
-          <div class="dialog_footer" v-if="work_success">
+          <div class="dialog_footer" v-if="work_success" style="text-align: right">
             <el-button size="small" type="danger" disabled>已入职</el-button>
           </div>
         </div>
@@ -833,6 +833,7 @@
       searchData: {
         handler(val) {
           this.params = Object.assign(this.params,{},val);
+          this.getTableList();
         },
         deep: true
       },

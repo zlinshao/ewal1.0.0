@@ -762,13 +762,13 @@
             title: '员工名册',
           },
           {
+            id: 5,
+            title: '权限管理'
+          },
+          {
             id: 4,
             title: '离职管理',
           },
-          {
-            id: 5,
-            title: '权限管理'
-          }
         ],//tab切换
 
         organModule: false,//组织架构
