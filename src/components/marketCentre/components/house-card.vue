@@ -29,7 +29,7 @@
                   </div>
                 </div>
                 <div class="control flex-center" @click.stop="" v-if="show_control === item.id ">
-                  <span v-for="tmp in tip_btn" :key="tmp.id" @click.stop="handleOpenModule(tmp,item)" :class="{'tip_btn': is_tip === tmp.id }">{{ tmp.val }}</span>
+                  <span v-for="tmp in tip_btn" :key="tmp.id" @click.stop="handleOpenModule(tmp,item)">{{ tmp.val }}</span>
                   <div class="arrows"></div>
                 </div>
               </div>
@@ -590,12 +590,12 @@
             }
           }
           .control {
-            background-color: $color874;
+            background-color: $colorE33;
             @include radius(5px);
             .arrows {
-              background-color: $color874;
+              background-color: $colorE33;
             }
-            .tip_btn {
+            span:hover {
               @include marketCentreImg('xzgj.png','theme1');
               background-size: contain;
               padding: 4px 20px;
