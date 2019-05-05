@@ -146,53 +146,55 @@
 
   .todo-list-container {
     //height: calc(100% - 300px);
-    @include flex('flex-center');
+    //@include flex('flex-center');
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     //padding-bottom: 50px;
     margin: 0 50px;
+    padding: 0 100px;
     flex-wrap: wrap;
     //background-color: red;
-    .todo-list-container-top {
-      margin-bottom: 20px;
-    }
-    .todo-list-container-top, .todo-list-container-bottom {
-      @include flex('flex-center');
 
-      .todo-list-item {
+    .todo-list-item {
+      position: relative;
+      width: 16%;
+      height: 250px;
+      cursor: pointer;
+      //background-color: red;
+      margin-right: 30px;
+      margin-bottom: 30px;
+      > div {
+        width: 100%;
+
+      }
+
+      .todo-list-item-title {
+        padding: 0 20px;
+        text-align: center;
+        margin-top: 40px;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .todo-list-item-content {
         position: relative;
-        width: 250px;
-        height: 250px;
-        cursor: pointer;
-        //background-color: red;
-        margin-right: 30px;
-        //margin-bottom: 30px;
-        > div {
-          width: 100%;
+        text-align: left;
+        margin-left: 90px;
+        margin-top: 16px;
+        width: 120px;
+        font-size: 12px;
 
-        }
-
-        .todo-list-item-title {
-          text-align: center;
-          margin-top: 40px;
-          font-size: 16px;
-        }
-
-        .todo-list-item-content {
-          position: relative;
-          text-align: left;
-          margin-left: 90px;
-          margin-top: 16px;
-          width: 120px;
-          font-size: 12px;
-
-          i {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            display: inline-block;
-            //background-color: red;
-            left: -30px;
-            top: 2px;
-          }
+        i {
+          position: absolute;
+          width: 14px;
+          height: 14px;
+          display: inline-block;
+          //background-color: red;
+          left: -30px;
+          top: 2px;
         }
       }
     }
