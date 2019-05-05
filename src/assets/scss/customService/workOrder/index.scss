@@ -120,6 +120,9 @@
           }
         }
       }
+      .detail_box2 {
+        height: 500px;
+      }
       .dialog_footer {
         @include flex('justify-end');
       }

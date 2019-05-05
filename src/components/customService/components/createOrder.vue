@@ -65,12 +65,42 @@
                 </div>
               </el-col>
 
-              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type == 1'>
-                <p class='el-col-p'><i class='icon handler'></i><span>报销人</span></p>
-                <div class='input_box'>
-                  <el-input @focus="handlerOrgan('reimburse_user')" readonly v-model="createOrder.reimburse_user.name"></el-input>
-                </div>
-              </el-col>
+              <template v-if='createOrder.type == 1'>
+                <el-col :span="moduleOrder == 78? 6 : createOrder_span">
+                  <p class='el-col-p'><i class='icon bank'></i><span>开户行</span></p>
+                  <div class='input_box'>
+                    <el-input v-model="createOrder.account_bank"></el-input>
+                  </div>
+                </el-col>
+
+                <el-col :span="moduleOrder == 78? 6 : createOrder_span">
+                  <p class='el-col-p'><i class='icon bank'></i><span>支行</span></p>
+                  <div class='input_box'>
+                    <el-input v-model="createOrder.branch_bank"></el-input>
+                  </div>
+                </el-col>
+
+                <el-col :span="moduleOrder == 78? 6 : createOrder_span">
+                  <p class='el-col-p'><i class='icon bankcard'></i><span>卡号</span></p>
+                  <div class='input_box'>
+                    <el-input v-model="createOrder.bank_num"></el-input>
+                  </div>
+                </el-col>
+
+                <el-col :span="moduleOrder == 78? 6 : createOrder_span">
+                  <p class='el-col-p'><i class='icon handler'></i><span>开户名</span></p>
+                  <div class='input_box'>
+                    <el-input v-model="createOrder.account_name"></el-input>
+                  </div>
+                </el-col>
+
+                <el-col :span="moduleOrder == 78? 6 : createOrder_span">
+                  <p class='el-col-p'><i class='icon handler'></i><span>报销人</span></p>
+                  <div class='input_box'>
+                    <el-input v-model="createOrder.reimbursement" disabled></el-input>
+                  </div>
+                </el-col>
+              </template>
 
               <!-- 维修保洁中的创建工单 -->
               <el-col :span="6" v-if='moduleOrder == 78 || createOrder.type == 7 || createOrder.type == 8'>
@@ -110,7 +140,7 @@
               <el-col :span="moduleOrder == 78? 6 : createOrder_span">
                 <p class='el-col-p'><i class='icon phone'></i><span>回复电话</span></p>
                 <div class='input_box'>
-                  <el-input placeholder="请填写" v-model.tel='createOrder.replay_phone'></el-input>
+                  <el-input placeholder="请填写" v-model.tel='createOrder.replay_phone' disabled></el-input>
                 </div>
               </el-col>
 
@@ -141,41 +171,55 @@
                 </div>
               </el-col>
 
-              <el-col :span='12' v-for='(item,index) in createOrder.reimburse' :key='"feiyong" + index' v-if='createOrder.type == 1'>
-                <el-row :gutter="8" class='feiyong'>
-                  <el-col :span="12">
-                    <p class='el-col-p'><i class='icon comtype'></i><span>报销类型</span></p>
-                    <div class='input_box'>
-                      <el-select v-model="item.type" placeholder="请选择" @change="chosenComplaintsType">
-                        <el-option v-for="(exp,idex) in expenseType" :key="exp.value" :label="exp.label" :value="exp.value"
-                          :disabled="expenseTypeDisable.indexOf(exp.value) > -1">
-                        </el-option>
-                      </el-select>
-                    </div>
-                  </el-col>
-                  <el-col :span="12">
-                    <p class='el-col-p'><i class='icon commoney'></i><span>报销金额</span></p>
-                    <div class='input_box'>
-                      <el-input v-model="item.money" placeholder="请输入"></el-input>
-                      <i class='icons icon_add' v-if='index== 0' @click='addComplaintsType'></i>
-                      <i class='icons icon_del' v-else @click="delComplaintsType(index)"></i>
-                    </div>
-                  </el-col>
-                </el-row>
+              <el-col :span='moduleOrder == 78? 6 : createOrder_span' v-if='createOrder.type != 1'>
+                <p class='el-col-p el-col-p1'><i class='icon upload'></i>上传图片</p>
+                <Ljupload size='40' v-model='createOrder.album'></Ljupload>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="10" width='100%' v-for='(item,index) in createOrder.reimburse' :key='"feiyong" + index'
+              v-if='createOrder.type == 1'>
+              <el-col :span="6">
+                <p class='el-col-p'><i class='icon comtype'></i><span>报销类型</span></p>
+                <div class='input_box'>
+                  <el-select v-model="item.type" placeholder="请选择" @change="chosenComplaintsType">
+                    <el-option v-for="(exp,idex) in expenseType" :key="exp.value" :label="exp.label" :value="exp.value"
+                      :disabled="expenseTypeDisable.indexOf(exp.value) > -1">
+                    </el-option>
+                  </el-select>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <p class='el-col-p'><i class='icon commoney'></i><span>报销金额</span></p>
+                <div class='input_box'>
+                  <el-input v-model="item.money" placeholder="请输入"></el-input>
+                </div>
               </el-col>
 
-              <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type == 1'>
+              <el-col :span='6'>
+                <p class='el-col-p el-col-p1'><i class='icon upload'></i>上传图片</p>
+                <Ljupload size='40' v-model='item.album'></Ljupload>
+              </el-col>
+
+              <el-col :span='6'>
+                <p class='el-col-p'><i class='icon content'></i>备注</p>
+                <div class='input_box'>
+                  <el-input placeholder="请填写" v-model="item.content" class='el_input_set'></el-input>
+                  <i class='icons icon_add' v-if='index== 0' @click='addComplaintsType'></i>
+                  <i class='icons icon_del' v-else @click="delComplaintsType(index)"></i>
+                </div>
+              </el-col>
+
+            </el-row>
+
+            <el-row v-if='createOrder.type == 1'>
+              <el-col :span="6">
                 <p class='el-col-p'><i class='icon endTime'></i><span>截止时间</span></p>
                 <div class='input_box'>
                   <el-date-picker v-model="createOrder.next_follow_time" value-format="yyyy-MM-dd" align="right" type="date"
                     placeholder="选择跟进时间">
                   </el-date-picker>
                 </div>
-              </el-col>
-
-              <el-col :span='moduleOrder == 78? 6 : createOrder_span'>
-                <p class='el-col-p el-col-p1'><i class='icon upload'></i>上传图片</p>
-                <Ljupload size='40' v-model='createOrder.album'></Ljupload>
               </el-col>
             </el-row>
 
@@ -455,14 +499,17 @@ export default {
           id: null,
           name: null
         },
-        reimburse_user: { //报销人
-          id: null,
-          name: null
-        },
+        reimbursement: null, // 报销人
+        account_bank: null,//  '开户行'
+        branch_bank: null,  //'支行',
+        account_name: null,// '开户名',
+        bank_num: null, // '银行卡号',
         reimburse: [ //报销明细
           {
             type: null,
-            money: null
+            money: null,
+            album: [],
+            content: ''
           }
         ]
       },
@@ -791,7 +838,9 @@ export default {
     addComplaintsType () {
       this.createOrder.reimburse.push({
         type: '',
-        money: ''
+        money: '',
+        album: [],
+        content: ''
       })
     },
     // 删除报销
@@ -830,7 +879,6 @@ export default {
         if (res.code === 200) {
           this.customer_info.data = res.data.data
           this.customer_info.count = res.data.count
-          console.log(this.customer_info)
         }
       })
 
@@ -850,6 +898,9 @@ export default {
         if (res.code === 200) {
           this.customer_info.contract_Detail = res.data
           this.show_Contract_Detail = true
+
+          this.createOrder.reimbursement = res.data.customer_info[0].name
+          this.createOrder.replay_phone = res.data.customer_info[0].phone
         }
       })
 
@@ -971,14 +1022,17 @@ export default {
           id: null,
           name: null
         },
-        reimburse_user: { //报销人
-          id: null,
-          name: null
-        },
+        reimbursement: null, // 报销人
+        account_bank: null,//  '开户行'
+        branch_bank: null,  //'支行',
+        account_name: null,// '开户名',
+        bank_num: null, // '银行卡号',
         reimburse: [ //报销明细
           {
             type: null,
-            money: null
+            money: null,
+            album: [],
+            content: ''
           }
         ]
       }
@@ -995,13 +1049,14 @@ export default {
         return '工单类型未选择'
       }
 
+      if (!this.createOrder.operate_user.name) {
+        return '处理人未选择'
+      }
+
+
       if (this.moduleOrder == 78 || this.createOrder.type == 7 || this.createOrder.type == 8) {
         if (!this.createOrder.send_order_type) {
           return '派单未选择'
-        }
-      } else {
-        if (!this.createOrder.operate_org.name) {
-          return '部门未选择'
         }
       }
 
@@ -1019,8 +1074,20 @@ export default {
       }
 
       if (this.createOrder.type == 1) {
-        if (!this.createOrder.reimburse_user.name) {
-          return '报销人未选择'
+        if (!this.createOrder.account_bank) {
+          return '开户行未填写'
+        }
+
+        if (!this.createOrder.bank_num) {
+          return '卡号未填写'
+        }
+
+        if (!this.createOrder.account_name) {
+          return '开户名未填写'
+        }
+
+        if (!this.createOrder.reimbursement) {
+          return '报销人未填写'
         }
 
         let arr = this.createOrder.reimburse
@@ -1031,9 +1098,6 @@ export default {
         }
       }
 
-      if (!this.createOrder.operate_user.name) {
-        return '处理人未选择'
-      }
 
 
       if (!this.createOrder.replay_phone) {
@@ -1055,7 +1119,7 @@ export default {
         return '工单内容未填写'
       }
 
-      if (this.createOrder.album.length == 0) {
+      if (this.createOrder.type != 1 && this.createOrder.album.length == 0) {
         return '图片未上传'
       }
       return warning
@@ -1136,9 +1200,6 @@ export default {
       let order = {
         house_id: this.chosenCustomer.house_id,
         house_name: this.chosenCustomer.house_name,
-        contract_id: this.chosenCustomer.contract_id,
-        contract_num: this.chosenCustomer.contract_num,
-        contract_type: this.chosenCustomer.contract_type,
         type: this.createOrder.type,
         album: this.createOrder.album,
         content: this.createOrder.content,
@@ -1147,50 +1208,72 @@ export default {
         operate_org_id: this.createOrder.operate_org.id,
         replay_phone: this.createOrder.replay_phone,
         emergency: this.createOrder.emergency,
-        complained_user_name: this.createOrder.complained_user.name,
+        contract_id: this.chosenCustomer.contract_id,
+        contract_num: this.chosenCustomer.contract_num,
+        contract_type: this.chosenCustomer.contract_type,
         complained_user_id: this.createOrder.complained_user.id,
+        complained_user_name: this.createOrder.complained_user.name,
         complain_type: this.createOrder.complain_type,
         type_of_complaint: this.createOrder.complain_channel,
         next_follow_time: this.createOrder.next_follow_time,
+        reimbursement: this.createOrder.reimbursement,
+        account_bank: this.createOrder.account_bank,
+        branch_bank: this.createOrder.branch_bank,
+        account_name: this.createOrder.account_name,
+        bank_num: this.createOrder.bank_num,
       }
 
       this.createOrder.reimburse.forEach(item => {
         if (item.type) {
-          let money_type = null, type_name = null, type = null;
+          let money_type = null, type_name = null, type = null, album_type = null, con_type = null;
           switch (item.type) {
             case 1:
               type = '水费'
               type_name = 'reimburse_water'
               money_type = 'reimburse_water_money'
+              album_type = 'reimburse_water_album'
+              con_type = 'reimburse_water_content'
               break;
             case 2:
               type = '电费'
               type_name = 'reimburse_electricity'
               money_type = 'reimburse_electricity_money'
+              album_type = 'reimburse_electricity_album'
+              con_type = 'reimburse_electricity_content'
               break;
             case 3:
               type = '燃气费'
               type_name = 'reimburse_gas'
               money_type = 'reimburse_gas_money'
+              album_type = 'reimburse_gas_album'
+              con_type = 'reimburse_gas_content'
               break;
             case 4:
               type = '物业费'
               type_name = 'reimburse_property'
               money_type = 'reimburse_property_money'
+              album_type = 'reimburse_property_album'
+              con_type = 'reimburse_property_content'
               break;
             case 5:
               type = '维修费'
               type_name = 'reimburse_service'
               money_type = 'reimburse_service_money'
+              album_type = 'reimburse_service_album'
+              con_type = 'reimburse_service_content'
               break;
             default:
               type = '其他'
               type_name = 'reimburse_other'
               money_type = 'reimburse_other_money'
+              album_type = 'reimburse_other_album'
+              con_type = 'reimburse_other_content'
               break;
           }
           order[type_name] = type
           order[money_type] = item.money
+          order[album_type] = item.album
+          order[con_type] = item.content
         }
       })
 
@@ -1284,11 +1367,14 @@ export default {
         width: 65%;
         @include flex("items-center");
         position: relative;
+        .el_input_set {
+          width: 150px;
+        }
         .icons {
           width: 16px;
           height: 16px;
           position: absolute;
-          right: 10px;
+          right: 0px;
           bottom: 10px;
         }
         input {
@@ -1577,10 +1663,22 @@ export default {
         .tsqd {
           @include confirmImg("tousuqudao.png", "theme1");
         }
+        .bank {
+          @include confirmImg("kaihuhang_hui.png", "theme1");
+        }
+        .bankcard {
+          @include confirmImg("kahao_hui.png", "theme1");
+        }
       }
       &:hover {
         input {
           border-color: #cf2e33;
+        }
+        .bankcard {
+          @include confirmImg("kahao.png", "theme1");
+        }
+        .bank {
+          @include confirmImg("kaihuhang.png", "theme1");
         }
         .tsqd {
           @include confirmImg("tousuqudao_copy.png", "theme1");

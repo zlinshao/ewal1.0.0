@@ -18,7 +18,7 @@
         <div class='header_right'>
           <p class='ele_p gua' @click='change_revice_type'>
             <i :class='["icons",isRevice ? "revice_icons":"gua_icons"]'></i>
-            {{isRevice ? "接收":"挂起"}}
+            {{isRevice ? "挂起":"接收"}}
           </p>
           <div class="margin">
             <p :class='["ele_p",revice_type.length >0?"revice_span":""]' @click.stop='setRecive_type'>
@@ -349,7 +349,7 @@ export default {
           },
           {
             keyType: 'radio',
-            title: '工单类型',
+            title: '审批类型',
             keyName: 'type',
             dataType: '',
             value: revice_type

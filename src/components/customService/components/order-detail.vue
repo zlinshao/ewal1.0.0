@@ -9,7 +9,7 @@
           <el-row :gutter="20">
             <el-col :span='14'>
               <p class='detail_tit'>工单详情</p>
-              <el-form label-width='80px'>
+              <el-form label-width='80px' class='detail_box2 scroll_bar'>
                 <el-form-item label='创建时间'>
                   <el-input v-model="detail_form.create_time" type="text" disabled> </el-input>
                 </el-form-item>
@@ -31,7 +31,9 @@
                 <template v-if='detail_form.type == 1'>
                   <el-form-item v-for='item in Object.keys(reimburse_type)' :key='item' :label='reimburse_type[item]'
                     v-if='detail_form[item] && detail_form[item]!="0.00"'>
-                    <el-input v-model="detail_form[item]" type="text" disabled> </el-input>
+                    <Ljupload size='40' v-model='detail_form[item]' v-if='item.indexOf("_album") > 0 && detail_form[item]'
+                      disabled=true></Ljupload>
+                    <el-input v-model="detail_form[item]" type="text" disabled v-else> </el-input>
                   </el-form-item>
                 </template>
 
@@ -55,12 +57,13 @@
                   <el-input v-model="detail_form[item]" type="text" disabled> </el-input>
                 </el-form-item>
 
-                <el-form-item label='照片' style='width:100%;'>
+                <el-form-item label='照片' style='width:100%;' v-if='detail_form.type != 699'>
                   <div style="width: 90%;text-align: left">
                     <img v-for="tmp in detail_form.imagic" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri"
                       :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
                   </div>
                 </el-form-item>
+
               </el-form>
             </el-col>
             <el-col :span='10'>
@@ -98,28 +101,41 @@
 
 <script>
 import LjDialog from '../../common/lj-dialog.vue';
+import Ljupload from '../../common/lightweightComponents/lj-upload'
 export default {
   props: ['visible', 'moduleData', 'change'], // id
   components: {
-    LjDialog
+    LjDialog,
+    Ljupload
   },
   data () {
     return {
       reimburse_type: {
-        reimburse_water: '报销类型',
-        reimburse_water_money: '报销金额',
         reimburse_water: '报销类型', // 水费
         reimburse_water_money: '报销金额',
+        reimburse_water_album: '报销图片',
+        reimburse_water_content: '报销备注',
         reimburse_electricity: '报销类型', //   电费
         reimburse_electricity_money: '报销金额',
+        reimburse_electricity_album: '报销图片',
+        reimburse_electricity_content: '报销备注',
         reimburse_gas: '报销类型', //  燃气费
         reimburse_gas_money: '报销金额',
+        reimburse_gas_album: '报销图片',
+        reimburse_gas_content: '报销备注',
         reimburse_property: '报销类型', //  物业费
         reimburse_property_money: '报销金额',
+        reimburse_property_album: '报销图片',
+        reimburse_property_content: '报销备注',
         reimburse_service: '报销类型', //  维修费
         reimburse_service_money: '报销金额',
+        reimburse_service_album: '报销图片',
+        reimburse_service_content: '报销备注',
         reimburse_other: '报销类型', //  其他
         reimburse_other_money: '报销金额',
+        reimburse_other_album: '报销图片',
+        reimburse_other_content: '报销备注',
+        reimbursement: '报销人'
       },
       complaint_type: {
         type_of_complaint: '投诉类型',
@@ -129,8 +145,6 @@ export default {
       default_type: {
         replay_phone: '回复电话',
         emergency_name: '紧急程度',
-        // operate_user_name: '处理人',
-        // operate_org_name: '部门',
         finish_time: '截止时间',
         content: '工单内容'
       },

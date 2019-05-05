@@ -9,7 +9,7 @@
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column" :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
-            <b v-if='item.id == 337'>23</b>
+            <b v-if='item.id == 337 && isDoing_count > 0'>{{isDoing_count}}</b>
           </span>
         </h2>
       </div>
@@ -184,12 +184,21 @@ export default {
       },
       currentMethod: null, // 记录当前操作
       transfer_visible: false,  // 转交
+      isDoing_count: 0,
     }
   },
   mounted () {
+    this.getDoingCount()
     this.getDataList();
   },
   methods: {
+    getDoingCount () {
+      this.$http.get(this.market_server + `v1.0/csd/work_order/readFollowNum`).then(res => {
+        if (res.code == 200) {
+          this.isDoing_count = res.data.join(',')
+        }
+      })
+    },
     getDataList () {
       this.showLoading(true);
       let params = {
@@ -306,6 +315,9 @@ export default {
         currentRow: this.currentRow
       }
       this.detail_visible = true;
+      if (this.chooseTab == 337) {
+        this.getDoingCount()
+      }
     },
     // 关闭详情
     handleCloseDetail (params) {

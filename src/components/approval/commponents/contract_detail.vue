@@ -1,7 +1,7 @@
 <template>
   <div id='contract_detail_approval'>
     <LjDialog :visible="visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleClose">
-      <div class='dialog_container' v-if='visible && formData'>
+      <div class='dialog_container' v-if='visible && formData' @click.stop='comment_show_visible=false'>
         <div class='dialog_header'>
           <h3>{{formData.house_address}}</h3>
         </div>
@@ -11,17 +11,27 @@
 
               <el-row :gutter='10' v-if='titleTips[slither_index] == "相关信息"' class='message_box'>
                 <el-col :span='8'>
-                  <el-form-item v-for='i in 5' :key='i' label=" " class='message_form'>
-                    <span>同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元同类型房源市场均价2500-3000元</span>
+                  <el-form-item label=" " class='message_form'>
+                    <span>该小区曾违约{{relateions.break_a_contract_count || 0}}套房</span>
+                  </el-form-item>
+                  <el-form-item label=" " class='message_form'>
+                    <span>该小区已有房源{{relateions.lord_house_count}}套,未出租{{relateions.not_rent_count}}套,出租率{{relateions.rent_divide}}%,本户型房价{{relateions.house_type_price}}</span>
+                  </el-form-item>
+                  <el-form-item label=" " class='message_form'>
+                    <span>该业务员通过率{{relateions.pass_divide}}%</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span='7' :offset="3" class='message_con'>
                   <p>其中:</p>
-                  <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
+                  <div>1.公司退房{{relateions.company_break_contract_count}}套</div>
+                  <div>2.客户退房{{relateions.customer_break_contract_count}}套</div>
+                  <div v-if='relateions.noReason'>3.不明退房{{relateions.noReason}}套</div>
                 </el-col>
                 <el-col :span='3' class='message_price'>
                   <p>收房价:</p>
-                  <div v-for='i in 3' :key='i'>{{i+1}}.公司</div>
+                  <div v-for='(type,index) in relateions.community_house_type_price' :key='index'>
+                    {{type.room}}室{{type.decoration}}均价{{type.average}}元
+                  </div>
                 </el-col>
               </el-row>
 
@@ -30,7 +40,7 @@
                   <template v-if="Array.isArray(formData[slither])">
 
                     <template v-if='slither == "house_video"'>
-                      <ljupload size='40' v-model="formData[slither]" disabled=true></ljupload>
+                      <Ljupload size='40' v-model="formData[slither]" disabled=true download=false></Ljupload>
                     </template>
 
                     <template v-else>
@@ -62,7 +72,7 @@
           </el-form>
 
           <div class='float-btns'>
-            <div class="float_box float_box_active" @click='changeBtns_type'>
+            <div class="float_box float_box_active" @click.stop='changeBtns_type'>
               <div class='float_box_img float_box_con'></div>
               <p>评论信息</p>
             </div>
@@ -225,6 +235,8 @@ export default {
       reject_visible: false, // 拒绝弹框
       reject_mark: null, // 拒绝理由
       approval_sever: globalConfig.approval_sever,
+      market_server: globalConfig.market_server,
+      relateions: {},
       taskType: ['rtl_detail_request_url', 'ctl_detail_request_url'],
     }
   },
@@ -247,11 +259,28 @@ export default {
   methods: {
     getDetailForm (params) {
       let url = params.bm_detail_request_url
-      console.log(url)
       this.$http.get(url).then(res => {
         if (res.code === 200) {
           this.formData = res.data.content
           this.handleDetail(res.data.content)
+          this.getRelated()
+        }
+      })
+    },
+
+    getRelated () {
+      let params = {
+        community_id: this.formData.community.id,	//小区id
+        staff_id: this.formData.staff_id,	//签约人
+        room: this.formData.house_type[0],	//户型【室】
+        is_collect: this.formData.type,	//1：收房，2：租房
+      }
+      this.$http.get(this.market_server + `V1.0/market/helper/related`, params).then(res => {
+        if (res.code === 200) {
+          this.relateions = res.data
+          this.relateions.house_type_price = (res.data.house_type_price[0] || 0) + '-' + (res.data.house_type_price[1] || 0)
+          this.relateions.noReason = this.relateions.break_a_contract_count - (this.relateions.customer_break_contract_count || 0) -
+            (this.relateions.company_break_contract_count || 0)
         }
       })
     },
@@ -379,6 +408,7 @@ export default {
     },
 
     handleClose () {
+      this.comment_show_visible = false
       this.$emit('close', close)
     },
     changeBtns_type (val) {
@@ -629,6 +659,8 @@ export default {
       z-index: 12;
       display: flex;
       flex-direction: column;
+      box-shadow: 0px 5px 5px 0px rgba(229, 229, 229, 1);
+      border-radius: 4px;
       @include transform(scale(0));
       @include transOrigin(50%);
       @include transition(all 0.4s linear);
