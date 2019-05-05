@@ -727,7 +727,7 @@
                 </el-col>
                 <el-col :span="12">
                   <div class="item-content">
-                    <span class="icon-delete-red" @click="deleteMeetingRoomOrType(item,1)"></span>
+                    <span class="icon20 icon-delete-red" @click="deleteMeetingRoomOrType(item,1)"></span>
                   </div>
                 </el-col>
               </el-row>
@@ -775,7 +775,7 @@
                 </el-col>
                 <el-col :span="12">
                   <div class="item-content">
-                    <span class="icon-delete-red" @click="deleteMeetingRoomOrType(item,2)"></span>
+                    <span class="icon20 icon-delete-red" @click="deleteMeetingRoomOrType(item,2)"></span>
                   </div>
                 </el-col>
               </el-row>
@@ -1871,6 +1871,10 @@ export default {
     .el-input__inner {
       border: 1px solid #D2D2D2 !important;
     }
+  }
+  .el-badge__content.is-fixed {
+    top: -3px;
+    right: 8px;
   }
 }
 </style>

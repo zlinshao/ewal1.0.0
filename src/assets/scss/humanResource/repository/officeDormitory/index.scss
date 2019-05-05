@@ -96,6 +96,25 @@
 		.dormitory-container{
 
 		}
+		.officeRecore{
+			.dialog_container{
+				.dialog_header{
+					display: flex;
+					justify-content: flex-start;
+					h3{
+						margin-left: 45px;
+						margin-right: 276px;
+					}
+				}
+				.basicInfo{
+					display: flex;
+					>div{
+						width: 50%;
+						height: 120px;
+					}
+				}
+			}
+		}
   }
 }
 

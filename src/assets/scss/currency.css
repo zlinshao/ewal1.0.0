@@ -323,13 +323,25 @@
       margin-left: 40px;
       cursor: pointer;
       padding-top: 6px;
-      font-size: 18px; }
+      font-size: 18px;
+      position: relative; }
       #theme_name .listTopCss .listTopLeft h2 span i {
         width: 16px;
         height: 3px;
         margin-top: 6px;
         border-radius: 30px 30px 0 0;
         background-color: transparent; }
+      #theme_name .listTopCss .listTopLeft h2 span b {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        padding: 2px;
+        border-radius: 50%;
+        background: #cf2e33;
+        color: #fff;
+        text-align: center;
+        line-height: 10px;
+        font-size: 10px; }
   #theme_name .listTopCss .listTopRight > div,
   #theme_name .listTopCss .listTopRight > span {
     margin-right: 40px; }
