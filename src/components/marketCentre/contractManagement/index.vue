@@ -939,6 +939,9 @@ export default {
 
 #theme_name.theme1 {
   #contractManagement {
+    .el-form-item__label {
+      color: $color2F2 !important;
+    }
     > div {
       .control_container {
         span:hover {

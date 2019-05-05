@@ -361,7 +361,11 @@
 
         highVisible: false,
         show_market: false,
-        searchData: {},
+        searchData: {
+          status: 'customerManagement',
+          keywords: 'search',
+          data: []
+        },
 
         market_server: globalConfig.market_server,
         selects: [
@@ -432,7 +436,12 @@
       handleCloseMenu() {
         this.show_market = false;
       },
-      handleCloseHigh() {
+      handleCloseHigh(val) {
+        if (val !== 'close') {
+          this.params = Object.assign({},this.params,val);
+          console.log(this.params);
+          this.getCustomerList();
+        }
         this.highVisible = false;
       },
       //打开详情
@@ -515,7 +524,9 @@
         })
       },
       //高级
-      handleOpenHigh() {},
+      handleOpenHigh() {
+        this.highVisible = true;
+      },
       //tab切换
       changeTabs(id) {
         this.chooseTab = id;

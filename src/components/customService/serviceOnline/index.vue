@@ -7,7 +7,7 @@
           <p class="flex-center" @click="handleOpenMenu">
             <b>...</b>
           </p>
-          <h1>客服接线</h1>
+          <h1>接线记录</h1>
         </div>
         <div class="items-center listTopRight">
           <div class="icons search" @click="highSearch"></div>
@@ -181,7 +181,7 @@
               dataType: []
             },
             {
-              keyType: 'radio',
+              keyType: 'check',
               title: '类型',
               keyName: 'advisory_type',
               dataType: [],
