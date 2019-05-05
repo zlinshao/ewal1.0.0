@@ -474,73 +474,181 @@ div.el-popover {
   border-color: #cf2e33; }
 #theme_name .el-select .el-input.is-focus .el-input__inner {
   border-color: #cf2e33; }
-#theme_name #repository .el-input__inner, #theme_name #nq .el-input__inner, #theme_name #discussPolitics .el-input__inner, #theme_name #militaryOrganization .el-input__inner, #theme_name #todo_list .el-input__inner, #theme_name #personal_center .el-input__inner, #theme_name #intellectualPropertyProtection .el-input__inner {
+#theme_name #repository .el-input__inner,
+#theme_name #nq .el-input__inner,
+#theme_name #discussPolitics .el-input__inner,
+#theme_name #militaryOrganization .el-input__inner,
+#theme_name #todo_list .el-input__inner,
+#theme_name #personal_center .el-input__inner,
+#theme_name #intellectualPropertyProtection .el-input__inner {
   transition: none;
   border: none;
   color: #000000; }
-  #theme_name #repository .el-input__inner:focus, #theme_name #nq .el-input__inner:focus, #theme_name #discussPolitics .el-input__inner:focus, #theme_name #militaryOrganization .el-input__inner:focus, #theme_name #todo_list .el-input__inner:focus, #theme_name #personal_center .el-input__inner:focus, #theme_name #intellectualPropertyProtection .el-input__inner:focus {
+  #theme_name #repository .el-input__inner:focus,
+  #theme_name #nq .el-input__inner:focus,
+  #theme_name #discussPolitics .el-input__inner:focus,
+  #theme_name #militaryOrganization .el-input__inner:focus,
+  #theme_name #todo_list .el-input__inner:focus,
+  #theme_name #personal_center .el-input__inner:focus,
+  #theme_name #intellectualPropertyProtection .el-input__inner:focus {
     border: 1px solid #cf2e33; }
 #theme_name #repository .el-input-group__append,
-#theme_name #repository .el-input-group__prepend, #theme_name #nq .el-input-group__append,
-#theme_name #nq .el-input-group__prepend, #theme_name #discussPolitics .el-input-group__append,
-#theme_name #discussPolitics .el-input-group__prepend, #theme_name #militaryOrganization .el-input-group__append,
-#theme_name #militaryOrganization .el-input-group__prepend, #theme_name #todo_list .el-input-group__append,
-#theme_name #todo_list .el-input-group__prepend, #theme_name #personal_center .el-input-group__append,
-#theme_name #personal_center .el-input-group__prepend, #theme_name #intellectualPropertyProtection .el-input-group__append,
+#theme_name #repository .el-input-group__prepend,
+#theme_name #nq .el-input-group__append,
+#theme_name #nq .el-input-group__prepend,
+#theme_name #discussPolitics .el-input-group__append,
+#theme_name #discussPolitics .el-input-group__prepend,
+#theme_name #militaryOrganization .el-input-group__append,
+#theme_name #militaryOrganization .el-input-group__prepend,
+#theme_name #todo_list .el-input-group__append,
+#theme_name #todo_list .el-input-group__prepend,
+#theme_name #personal_center .el-input-group__append,
+#theme_name #personal_center .el-input-group__prepend,
+#theme_name #intellectualPropertyProtection .el-input-group__append,
 #theme_name #intellectualPropertyProtection .el-input-group__prepend {
   background-color: white !important;
   border: none !important;
   color: #686874 !important; }
-#theme_name #repository .el-form-item--mini .el-form-item__error, #theme_name #nq .el-form-item--mini .el-form-item__error, #theme_name #discussPolitics .el-form-item--mini .el-form-item__error, #theme_name #militaryOrganization .el-form-item--mini .el-form-item__error, #theme_name #todo_list .el-form-item--mini .el-form-item__error, #theme_name #personal_center .el-form-item--mini .el-form-item__error, #theme_name #intellectualPropertyProtection .el-form-item--mini .el-form-item__error {
+#theme_name #repository .el-form-item--mini .el-form-item__error,
+#theme_name #nq .el-form-item--mini .el-form-item__error,
+#theme_name #discussPolitics .el-form-item--mini .el-form-item__error,
+#theme_name #militaryOrganization .el-form-item--mini .el-form-item__error,
+#theme_name #todo_list .el-form-item--mini .el-form-item__error,
+#theme_name #personal_center .el-form-item--mini .el-form-item__error,
+#theme_name #intellectualPropertyProtection .el-form-item--mini .el-form-item__error {
   width: 100%;
   padding-left: 50%;
   text-align: left; }
-#theme_name #repository .page .el-pagination .el-input__inner, #theme_name #nq .page .el-pagination .el-input__inner, #theme_name #discussPolitics .page .el-pagination .el-input__inner, #theme_name #militaryOrganization .page .el-pagination .el-input__inner, #theme_name #todo_list .page .el-pagination .el-input__inner, #theme_name #personal_center .page .el-pagination .el-input__inner, #theme_name #intellectualPropertyProtection .page .el-pagination .el-input__inner {
+#theme_name #repository .page .el-pagination .el-input__inner,
+#theme_name #nq .page .el-pagination .el-input__inner,
+#theme_name #discussPolitics .page .el-pagination .el-input__inner,
+#theme_name #militaryOrganization .page .el-pagination .el-input__inner,
+#theme_name #todo_list .page .el-pagination .el-input__inner,
+#theme_name #personal_center .page .el-pagination .el-input__inner,
+#theme_name #intellectualPropertyProtection .page .el-pagination .el-input__inner {
   background-color: transparent; }
-#theme_name #repository .page .el-pagination .el-input__inner:focus, #theme_name #nq .page .el-pagination .el-input__inner:focus, #theme_name #discussPolitics .page .el-pagination .el-input__inner:focus, #theme_name #militaryOrganization .page .el-pagination .el-input__inner:focus, #theme_name #todo_list .page .el-pagination .el-input__inner:focus, #theme_name #personal_center .page .el-pagination .el-input__inner:focus, #theme_name #intellectualPropertyProtection .page .el-pagination .el-input__inner:focus {
+#theme_name #repository .page .el-pagination .el-input__inner:focus,
+#theme_name #nq .page .el-pagination .el-input__inner:focus,
+#theme_name #discussPolitics .page .el-pagination .el-input__inner:focus,
+#theme_name #militaryOrganization .page .el-pagination .el-input__inner:focus,
+#theme_name #todo_list .page .el-pagination .el-input__inner:focus,
+#theme_name #personal_center .page .el-pagination .el-input__inner:focus,
+#theme_name #intellectualPropertyProtection .page .el-pagination .el-input__inner:focus {
   border-color: #cf2e33; }
-#theme_name #repository .page .el-pagination .el-pager li, #theme_name #nq .page .el-pagination .el-pager li, #theme_name #discussPolitics .page .el-pagination .el-pager li, #theme_name #militaryOrganization .page .el-pagination .el-pager li, #theme_name #todo_list .page .el-pagination .el-pager li, #theme_name #personal_center .page .el-pagination .el-pager li, #theme_name #intellectualPropertyProtection .page .el-pagination .el-pager li {
+#theme_name #repository .page .el-pagination .el-pager li,
+#theme_name #nq .page .el-pagination .el-pager li,
+#theme_name #discussPolitics .page .el-pagination .el-pager li,
+#theme_name #militaryOrganization .page .el-pagination .el-pager li,
+#theme_name #todo_list .page .el-pagination .el-pager li,
+#theme_name #personal_center .page .el-pagination .el-pager li,
+#theme_name #intellectualPropertyProtection .page .el-pagination .el-pager li {
   background-color: transparent; }
-  #theme_name #repository .page .el-pagination .el-pager li:hover, #theme_name #nq .page .el-pagination .el-pager li:hover, #theme_name #discussPolitics .page .el-pagination .el-pager li:hover, #theme_name #militaryOrganization .page .el-pagination .el-pager li:hover, #theme_name #todo_list .page .el-pagination .el-pager li:hover, #theme_name #personal_center .page .el-pagination .el-pager li:hover, #theme_name #intellectualPropertyProtection .page .el-pagination .el-pager li:hover {
+  #theme_name #repository .page .el-pagination .el-pager li:hover,
+  #theme_name #nq .page .el-pagination .el-pager li:hover,
+  #theme_name #discussPolitics .page .el-pagination .el-pager li:hover,
+  #theme_name #militaryOrganization .page .el-pagination .el-pager li:hover,
+  #theme_name #todo_list .page .el-pagination .el-pager li:hover,
+  #theme_name #personal_center .page .el-pagination .el-pager li:hover,
+  #theme_name #intellectualPropertyProtection .page .el-pagination .el-pager li:hover {
     color: #cf2e33; }
-#theme_name #repository .page .el-pagination .el-pager li.active, #theme_name #nq .page .el-pagination .el-pager li.active, #theme_name #discussPolitics .page .el-pagination .el-pager li.active, #theme_name #militaryOrganization .page .el-pagination .el-pager li.active, #theme_name #todo_list .page .el-pagination .el-pager li.active, #theme_name #personal_center .page .el-pagination .el-pager li.active, #theme_name #intellectualPropertyProtection .page .el-pagination .el-pager li.active {
+#theme_name #repository .page .el-pagination .el-pager li.active,
+#theme_name #nq .page .el-pagination .el-pager li.active,
+#theme_name #discussPolitics .page .el-pagination .el-pager li.active,
+#theme_name #militaryOrganization .page .el-pagination .el-pager li.active,
+#theme_name #todo_list .page .el-pagination .el-pager li.active,
+#theme_name #personal_center .page .el-pagination .el-pager li.active,
+#theme_name #intellectualPropertyProtection .page .el-pagination .el-pager li.active {
   color: #cf2e33; }
-#theme_name #repository .page .el-pagination button:hover, #theme_name #nq .page .el-pagination button:hover, #theme_name #discussPolitics .page .el-pagination button:hover, #theme_name #militaryOrganization .page .el-pagination button:hover, #theme_name #todo_list .page .el-pagination button:hover, #theme_name #personal_center .page .el-pagination button:hover, #theme_name #intellectualPropertyProtection .page .el-pagination button:hover {
+#theme_name #repository .page .el-pagination button:hover,
+#theme_name #nq .page .el-pagination button:hover,
+#theme_name #discussPolitics .page .el-pagination button:hover,
+#theme_name #militaryOrganization .page .el-pagination button:hover,
+#theme_name #todo_list .page .el-pagination button:hover,
+#theme_name #personal_center .page .el-pagination button:hover,
+#theme_name #intellectualPropertyProtection .page .el-pagination button:hover {
   color: #cf2e33; }
-#theme_name #repository .page .el-pagination button:disabled, #theme_name #nq .page .el-pagination button:disabled, #theme_name #discussPolitics .page .el-pagination button:disabled, #theme_name #militaryOrganization .page .el-pagination button:disabled, #theme_name #todo_list .page .el-pagination button:disabled, #theme_name #personal_center .page .el-pagination button:disabled, #theme_name #intellectualPropertyProtection .page .el-pagination button:disabled {
+#theme_name #repository .page .el-pagination button:disabled,
+#theme_name #nq .page .el-pagination button:disabled,
+#theme_name #discussPolitics .page .el-pagination button:disabled,
+#theme_name #militaryOrganization .page .el-pagination button:disabled,
+#theme_name #todo_list .page .el-pagination button:disabled,
+#theme_name #personal_center .page .el-pagination button:disabled,
+#theme_name #intellectualPropertyProtection .page .el-pagination button:disabled {
   background-color: transparent; }
 #theme_name #repository .page .el-pagination .btn-next,
-#theme_name #repository .page .el-pagination .btn-prev, #theme_name #nq .page .el-pagination .btn-next,
-#theme_name #nq .page .el-pagination .btn-prev, #theme_name #discussPolitics .page .el-pagination .btn-next,
-#theme_name #discussPolitics .page .el-pagination .btn-prev, #theme_name #militaryOrganization .page .el-pagination .btn-next,
-#theme_name #militaryOrganization .page .el-pagination .btn-prev, #theme_name #todo_list .page .el-pagination .btn-next,
-#theme_name #todo_list .page .el-pagination .btn-prev, #theme_name #personal_center .page .el-pagination .btn-next,
-#theme_name #personal_center .page .el-pagination .btn-prev, #theme_name #intellectualPropertyProtection .page .el-pagination .btn-next,
+#theme_name #repository .page .el-pagination .btn-prev,
+#theme_name #nq .page .el-pagination .btn-next,
+#theme_name #nq .page .el-pagination .btn-prev,
+#theme_name #discussPolitics .page .el-pagination .btn-next,
+#theme_name #discussPolitics .page .el-pagination .btn-prev,
+#theme_name #militaryOrganization .page .el-pagination .btn-next,
+#theme_name #militaryOrganization .page .el-pagination .btn-prev,
+#theme_name #todo_list .page .el-pagination .btn-next,
+#theme_name #todo_list .page .el-pagination .btn-prev,
+#theme_name #personal_center .page .el-pagination .btn-next,
+#theme_name #personal_center .page .el-pagination .btn-prev,
+#theme_name #intellectualPropertyProtection .page .el-pagination .btn-next,
 #theme_name #intellectualPropertyProtection .page .el-pagination .btn-prev {
   background-color: transparent; }
-#theme_name #repository #recruitment .el-button--success, #theme_name #nq #recruitment .el-button--success, #theme_name #discussPolitics #recruitment .el-button--success, #theme_name #militaryOrganization #recruitment .el-button--success, #theme_name #todo_list #recruitment .el-button--success, #theme_name #personal_center #recruitment .el-button--success, #theme_name #intellectualPropertyProtection #recruitment .el-button--success {
+#theme_name #repository #recruitment .el-button--success,
+#theme_name #nq #recruitment .el-button--success,
+#theme_name #discussPolitics #recruitment .el-button--success,
+#theme_name #militaryOrganization #recruitment .el-button--success,
+#theme_name #todo_list #recruitment .el-button--success,
+#theme_name #personal_center #recruitment .el-button--success,
+#theme_name #intellectualPropertyProtection #recruitment .el-button--success {
   color: #0eb17d;
   background: #cff8ea;
   font-weight: bold; }
-#theme_name #repository #recruitment .el-button--warning, #theme_name #nq #recruitment .el-button--warning, #theme_name #discussPolitics #recruitment .el-button--warning, #theme_name #militaryOrganization #recruitment .el-button--warning, #theme_name #todo_list #recruitment .el-button--warning, #theme_name #personal_center #recruitment .el-button--warning, #theme_name #intellectualPropertyProtection #recruitment .el-button--warning {
+#theme_name #repository #recruitment .el-button--warning,
+#theme_name #nq #recruitment .el-button--warning,
+#theme_name #discussPolitics #recruitment .el-button--warning,
+#theme_name #militaryOrganization #recruitment .el-button--warning,
+#theme_name #todo_list #recruitment .el-button--warning,
+#theme_name #personal_center #recruitment .el-button--warning,
+#theme_name #intellectualPropertyProtection #recruitment .el-button--warning {
   color: #ffb522;
   background: #fff7e4; }
-#theme_name #repository #recruitment .el-button--danger.el-button--mini, #theme_name #nq #recruitment .el-button--danger.el-button--mini, #theme_name #discussPolitics #recruitment .el-button--danger.el-button--mini, #theme_name #militaryOrganization #recruitment .el-button--danger.el-button--mini, #theme_name #todo_list #recruitment .el-button--danger.el-button--mini, #theme_name #personal_center #recruitment .el-button--danger.el-button--mini, #theme_name #intellectualPropertyProtection #recruitment .el-button--danger.el-button--mini {
+#theme_name #repository #recruitment .el-button--danger.el-button--mini,
+#theme_name #nq #recruitment .el-button--danger.el-button--mini,
+#theme_name #discussPolitics #recruitment .el-button--danger.el-button--mini,
+#theme_name #militaryOrganization #recruitment .el-button--danger.el-button--mini,
+#theme_name #todo_list #recruitment .el-button--danger.el-button--mini,
+#theme_name #personal_center #recruitment .el-button--danger.el-button--mini,
+#theme_name #intellectualPropertyProtection #recruitment .el-button--danger.el-button--mini {
   background: #ffe9ea;
   color: #d84d51; }
-#theme_name #repository #part_two .el-button--success.is-plain, #theme_name #nq #part_two .el-button--success.is-plain, #theme_name #discussPolitics #part_two .el-button--success.is-plain, #theme_name #militaryOrganization #part_two .el-button--success.is-plain, #theme_name #todo_list #part_two .el-button--success.is-plain, #theme_name #personal_center #part_two .el-button--success.is-plain, #theme_name #intellectualPropertyProtection #part_two .el-button--success.is-plain {
+#theme_name #repository #part_two .el-button--success.is-plain,
+#theme_name #nq #part_two .el-button--success.is-plain,
+#theme_name #discussPolitics #part_two .el-button--success.is-plain,
+#theme_name #militaryOrganization #part_two .el-button--success.is-plain,
+#theme_name #todo_list #part_two .el-button--success.is-plain,
+#theme_name #personal_center #part_two .el-button--success.is-plain,
+#theme_name #intellectualPropertyProtection #part_two .el-button--success.is-plain {
   border: 1px solid #0eb17d; }
-#theme_name #repository #part_two .el-button--danger.el-button--mini.is-plain, #theme_name #nq #part_two .el-button--danger.el-button--mini.is-plain, #theme_name #discussPolitics #part_two .el-button--danger.el-button--mini.is-plain, #theme_name #militaryOrganization #part_two .el-button--danger.el-button--mini.is-plain, #theme_name #todo_list #part_two .el-button--danger.el-button--mini.is-plain, #theme_name #personal_center #part_two .el-button--danger.el-button--mini.is-plain, #theme_name #intellectualPropertyProtection #part_two .el-button--danger.el-button--mini.is-plain {
+#theme_name #repository #part_two .el-button--danger.el-button--mini.is-plain,
+#theme_name #nq #part_two .el-button--danger.el-button--mini.is-plain,
+#theme_name #discussPolitics #part_two .el-button--danger.el-button--mini.is-plain,
+#theme_name #militaryOrganization #part_two .el-button--danger.el-button--mini.is-plain,
+#theme_name #todo_list #part_two .el-button--danger.el-button--mini.is-plain,
+#theme_name #personal_center #part_two .el-button--danger.el-button--mini.is-plain,
+#theme_name #intellectualPropertyProtection #part_two .el-button--danger.el-button--mini.is-plain {
   background: #ffe9ea;
   color: #d84d51;
   border: 1px solid #d84d51; }
 #theme_name #repository #part_four .offer_container .el-input__inner,
-#theme_name #repository #part_four .labour_contract .el-input__inner, #theme_name #nq #part_four .offer_container .el-input__inner,
-#theme_name #nq #part_four .labour_contract .el-input__inner, #theme_name #discussPolitics #part_four .offer_container .el-input__inner,
-#theme_name #discussPolitics #part_four .labour_contract .el-input__inner, #theme_name #militaryOrganization #part_four .offer_container .el-input__inner,
-#theme_name #militaryOrganization #part_four .labour_contract .el-input__inner, #theme_name #todo_list #part_four .offer_container .el-input__inner,
-#theme_name #todo_list #part_four .labour_contract .el-input__inner, #theme_name #personal_center #part_four .offer_container .el-input__inner,
-#theme_name #personal_center #part_four .labour_contract .el-input__inner, #theme_name #intellectualPropertyProtection #part_four .offer_container .el-input__inner,
+#theme_name #repository #part_four .labour_contract .el-input__inner,
+#theme_name #nq #part_four .offer_container .el-input__inner,
+#theme_name #nq #part_four .labour_contract .el-input__inner,
+#theme_name #discussPolitics #part_four .offer_container .el-input__inner,
+#theme_name #discussPolitics #part_four .labour_contract .el-input__inner,
+#theme_name #militaryOrganization #part_four .offer_container .el-input__inner,
+#theme_name #militaryOrganization #part_four .labour_contract .el-input__inner,
+#theme_name #todo_list #part_four .offer_container .el-input__inner,
+#theme_name #todo_list #part_four .labour_contract .el-input__inner,
+#theme_name #personal_center #part_four .offer_container .el-input__inner,
+#theme_name #personal_center #part_four .labour_contract .el-input__inner,
+#theme_name #intellectualPropertyProtection #part_four .offer_container .el-input__inner,
 #theme_name #intellectualPropertyProtection #part_four .labour_contract .el-input__inner {
   border: none;
   border-radius: 0;
@@ -551,10 +659,22 @@ div.el-popover {
   text-align: center;
   color: black;
   font-weight: bold; }
-#theme_name #repository #part_four .labour_contract .el-input__inner, #theme_name #nq #part_four .labour_contract .el-input__inner, #theme_name #discussPolitics #part_four .labour_contract .el-input__inner, #theme_name #militaryOrganization #part_four .labour_contract .el-input__inner, #theme_name #todo_list #part_four .labour_contract .el-input__inner, #theme_name #personal_center #part_four .labour_contract .el-input__inner, #theme_name #intellectualPropertyProtection #part_four .labour_contract .el-input__inner {
+#theme_name #repository #part_four .labour_contract .el-input__inner,
+#theme_name #nq #part_four .labour_contract .el-input__inner,
+#theme_name #discussPolitics #part_four .labour_contract .el-input__inner,
+#theme_name #militaryOrganization #part_four .labour_contract .el-input__inner,
+#theme_name #todo_list #part_four .labour_contract .el-input__inner,
+#theme_name #personal_center #part_four .labour_contract .el-input__inner,
+#theme_name #intellectualPropertyProtection #part_four .labour_contract .el-input__inner {
   text-align: left;
   padding-left: 20px; }
-#theme_name #repository #part_four .labour_contract .el-form-item__label, #theme_name #nq #part_four .labour_contract .el-form-item__label, #theme_name #discussPolitics #part_four .labour_contract .el-form-item__label, #theme_name #militaryOrganization #part_four .labour_contract .el-form-item__label, #theme_name #todo_list #part_four .labour_contract .el-form-item__label, #theme_name #personal_center #part_four .labour_contract .el-form-item__label, #theme_name #intellectualPropertyProtection #part_four .labour_contract .el-form-item__label {
+#theme_name #repository #part_four .labour_contract .el-form-item__label,
+#theme_name #nq #part_four .labour_contract .el-form-item__label,
+#theme_name #discussPolitics #part_four .labour_contract .el-form-item__label,
+#theme_name #militaryOrganization #part_four .labour_contract .el-form-item__label,
+#theme_name #todo_list #part_four .labour_contract .el-form-item__label,
+#theme_name #personal_center #part_four .labour_contract .el-form-item__label,
+#theme_name #intellectualPropertyProtection #part_four .labour_contract .el-form-item__label {
   color: black;
   text-align: left; }
 #theme_name #theme_name.theme1 .el-table tbody tr.current-row td {

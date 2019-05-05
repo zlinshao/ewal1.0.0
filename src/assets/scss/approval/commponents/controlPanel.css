@@ -260,7 +260,7 @@
       width: 340px;
       box-sizing: border-box;
       padding: 0 25px 20px;
-      border-width: 1px;
+      border: 1px solid #fff;
       border-radius: 10px;
       margin-bottom: 30px;
       margin-left: 30px; }
@@ -391,6 +391,11 @@
   #theme_name.theme1 #panel_box #panel .panel_list .panel_cell .icons_setting {
     background: url("../../../assets/image/approval/theme1/shezhi.png") no-repeat scroll center;
     background-size: 100% 100%; }
+  #theme_name.theme1 #panel_box #panel .panel_list .panel_cell:hover {
+    border-color: #cf2e33; }
+    #theme_name.theme1 #panel_box #panel .panel_list .panel_cell:hover .icons_per {
+      background: url("../../../assets/image/approval/theme1/ren_hong.png") no-repeat scroll center;
+      background-size: 100% 100%; }
 #theme_name.theme1 #panel_box #panel .panel_list .panel_cell_active {
   border-color: #cf2e33; }
   #theme_name.theme1 #panel_box #panel .panel_list .panel_cell_active .icons_per {

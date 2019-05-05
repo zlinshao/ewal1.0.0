@@ -7,9 +7,10 @@
           <div class="horizontal"></div>
           <div class="todo-list-title" @click="demo">待办事项</div>
           <div class="item-list">
-            <div @click="getCurrentList(item,index)" class="item-detail" :class="{'checked':checked==(index+1)}" v-for="(item,index) in todo_list_toolbar">
-              <span v-if="item.tipCount">{{item.tipCount}}</span>
-              <i :class="{'multi-font':item.content.length>3}">{{item.content}}</i>
+            <div @click="getCurrentList(item,index)" class="item-detail" :class="{'checked':checked==(index+1)}"
+                 v-for="(item,index) in todo_list_toolbar">
+              <span v-if="item.count">{{item.count}}</span>
+              <i :class="{'multi-font':item.name.length>3}">{{item.name}}</i>
             </div>
           </div>
           <div class="search-bar">
@@ -21,11 +22,14 @@
       </div>
       <div class="todo-list-container">
         <!--渲染todo_list数据-->
-        <div :class="{'todo-list-container-top':listIndex==0,'todo-list-container-bottom':listIndex==1}" v-for="(listItem,listIndex) in todo_list_container_arr">
-          <div v-for="(item,index) in todo_list_container_arr[listIndex]" @click="container_checked = (item.id);todoListVisibleTrigger(item)"
-            class="todo-list-item">
-            <div class="todo-list-item-title">{{item.title}}</div>
-            <div v-for="(value,key) in item" v-if="!(key=='id'||key=='title'||key=='onClick')" class="todo-list-item-content">
+        <div :class="{'todo-list-container-top':listIndex==0,'todo-list-container-bottom':listIndex==1}"
+             v-for="(listItem,listIndex) in todo_list_container_arr">
+          <div v-for="(item,index) in todo_list_container_arr[listIndex]"
+               @click="container_checked = (index);todoListVisibleTrigger(item)"
+               class="todo-list-item">
+            <div class="todo-list-item-title">{{item.name}}</div>
+            <div v-for="(value,key) in item" v-if="!(key=='id'||key=='name'||key=='onClick')"
+                 class="todo-list-item-content">
               <i :class="'todo-list-item-content-icon-'+key"></i>
               {{value}}
             </div>
@@ -35,8 +39,9 @@
       </div>
       <footer class="flex-center common-page">
         <div class="page">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="params.page"
-            :page-size="params.limit" :total="counts" layout="total,jumper,prev,pager,next">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                         :current-page="params.page"
+                         :page-size="params.size" :total="counts" layout="total,jumper,prev,pager,next">
           </el-pagination>
         </div>
       </footer>
@@ -58,107 +63,252 @@
 </template>
 
 <script>
-import interviewDialog from './components/humanResource/interviewDialog';
-import repositoryDialog from './components/humanResource/repositoryDialog';
-import attenceDialog from './components/humanResource/attenceDialog';
-import finespaymentDialog from './components/humanResource/finespaymentDialog';
+  import _ from 'lodash';
 
-//市场客服
-import SeeHouse from './components/marketCentre/see-house.vue';
 
-export default {
-  name: "todoList",
-  components: {
-    interviewDialog,
-    repositoryDialog,
-    attenceDialog,
-    finespaymentDialog,
-    SeeHouse
-  },
-  computed: {
-    currentTodoModule () {
-      return this.$store.state.todo.currentModule
+  import interviewDialog from './components/humanResource/interviewDialog';
+  import repositoryDialog from './components/humanResource/repositoryDialog';
+  import attenceDialog from './components/humanResource/attenceDialog';
+  import finespaymentDialog from './components/humanResource/finespaymentDialog';
+
+  //市场客服
+  import SeeHouse from './components/marketCentre/see-house.vue';
+
+  export default {
+    name: "todoList",
+    components: {
+      interviewDialog,
+      repositoryDialog,
+      attenceDialog,
+      finespaymentDialog,
+      SeeHouse
     },
-    todo_list_visible () {
-      return this.$store.state.todo.todo_list_visible;
-    },
-    todo_list_toolbar () {
-      return this.$store.state.todo.todo_list_toolbar;
-    },
-    todo_list_container () {
-      return this.$store.state.todo.todo_list_container;
-    },
-    todo_list_current_selection () {
-      return this.$store.state.todo.todo_list_current_selection;
-    },
-  },
-  watch: {
-    todo_list_container: {
-      handler (val, oldVal) {
-        //console.log(val, oldVal);
-        if(val&&val.length>=0&&val.length<=5) {
-          this.todo_list_container_arr[0] = val.slice(0, val.length);
-        }else if(val.length<=10) {
-          this.todo_list_container_arr[0] = val.slice(0, 5);
-          this.todo_list_container_arr[1] = val.slice(5,val.length);
-        } else {
-          this.todo_list_container_arr[0] = val.slice(0, 5);
-          this.todo_list_container_arr[1] = val.slice(5);
-        }
+    computed: {
+      currentTodoModule() {
+        return this.$store.state.todo.currentModule
       },
-      immediate: true
-    },
-  },
-  data () {
-    return {
-      counts: 1000,
-      params: {
-        search: '',
-        page: 1,
-        limit: 30,
+      todo_list_visible() {
+        return this.$store.state.todo.todo_list_visible;
       },
-      checked: 1,//选择哪个toolbar
-      container_checked: -1,//选择哪个列表数据容器,
-      todo_list_container_arr: [],
-    }
-  },
-  mounted() {
-    this.$http.get('http://47.101.204.100:8080/runtime/tasks?taskAssignee=61').then(res => {
-      console.log(res);
-    })
-  },
-  methods: {
-    handleCreateTodo () {
-      //  收租房带看
-      this.$store.dispatch('switch_see_house',true);
+      /*todo_list_toolbar () {
+        return this.$store.state.todo.todo_list_toolbar;
+      },*/
+      /*todo_list_container() {
+        return this.$store.state.todo.todo_list_container;
+      },*/
+      todo_list_current_selection() {
+        return this.$store.state.todo.todo_list_current_selection;
+      },
     },
-    demo () {
-      console.log(this.todo_list_current_selection);
-      debugger
+    watch: {
+      todo_list_container: {
+        handler(val, oldVal) {
+          //console.log(val, oldVal);
+          if (val && val.length >= 0 && val.length <= 5) {
+            this.todo_list_container_arr[0] = val.slice(0, val.length);
+          } else if (val.length <= 10) {
+            this.todo_list_container_arr[0] = val.slice(0, 5);
+            this.todo_list_container_arr[1] = val.slice(5, val.length);
+          } else {
+            this.todo_list_container_arr[0] = val.slice(0, 5);
+            this.todo_list_container_arr[1] = val.slice(5);
+          }
+        },
+        immediate: true
+      },
     },
+    data() {
+      return {
+        url: globalConfig.approval_sever,//待办接口
+        counts: 0,
+        params: {
+          title: '',
+          page: 1,
+          size: 10,//每页条数
+        },
+        checked: 1,//选择哪个toolbar
+        container_checked: -1,//选择哪个列表数据容器,
+        todo_list_container_arr: [],
+
+        todo_list_toolbar: [
+          {
+            id: 1,
+            key: '',
+            name: '全部',
+            count: 0,
+          },
+        ],
+        /*todo_list_container: [
+          {
+            id: 1,
+            name: '维修工单',
+            tip: '距离考试20分钟',
+            money: '扣款200元',
+            project: '研发中心会议',
+            onClick: 'humanResource_interview' //click事件控制lj-dialog显示隐藏
+          },
+          {
+            id: 2,
+            name: '资料补齐',
+            user: '张无忌',
+            date: '2019-03-22',
+            location: '艺术家工厂',
+            onClick: 'humanResource_interview_evaluate' //click事件控制lj-dialog显示隐藏
+          },
+          {
+            id: 3,
+            name: '资料补齐',
+            user: '张无忌',
+            money: '扣款200元',
+            project: '研发中心会议',
+            onClick: 'humanResource_attence'
+          },
+          {
+            id: 4,
+            name: '资料补齐',
+            user: '张无忌',
+            date: '2019-03-22',
+            project: '研发中心会议',
+            onClick: 'humanResource_finespayment'
+          },
+          {
+            id: 5,
+            name: '资料补齐',
+            date: '2019-03-22',
+            tip: '距离考试20分钟',
+            money: '扣款200元'
+          },
+          {
+            id: 6,
+            name: '资料补齐',
+            user: '张无忌',
+            date: '2019-03-22',
+            location: '艺术家工厂'
+          },
+          {
+            id: 7,
+            name: '资料补齐',
+            user: '张无忌',
+            money: '扣款200元',
+            project: '研发中心会议'
+          },
+          {
+            id: 8,
+            name: '资料补齐',
+            tip: '距离考试20分钟',
+            money: '扣款200元',
+            project: '研发中心会议'
+          },
+          {
+            id: 9,
+            name: '文职入职考试',
+            tip: '距离考试20分钟',
+            money: '扣款200元',
+            project: '研发中心会议'
+          },
+          {
+            id: 10,
+            name: '领取通知',
+            date: '2019-03-22',
+            user: '张无忌',
+            location: '财务部领取',
+            project: '借用审批编号10086',
+            onClick: 'humanResource_repository' //click事件控制lj-dialog显示隐藏
+          }
+        ],*/
+
+        todo_list_container: [],
+      }
+    },
+    mounted() {
+      this.getTodoListToolBar();
+      /*this.$http.get(' ').then(res => {
+        console.log(res);
+      })*/
+    },
+    methods: {
+      handleCreateTodo() {
+        //  收租房带看
+        this.$store.dispatch('switch_see_house', true);
+      },
+      demo() {
+        console.log(this.todo_list_current_selection);
+        debugger
+      },
+
+      //获取待办toolbar数据
+      getTodoListToolBar() {
+        let params = {
+          //assignee:3,//用户id
+        };
+        this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
+          if (res.constructor == Array) {//返回正确
+            this.todo_list_toolbar = res;
+            let allCount = _(res).map('count').sum();
+            this.$store.dispatch('change_todo_list_badge_count',allCount);
+            this.todo_list_toolbar.unshift(
+              {
+                id: 1,
+                key: '',
+                name: '全部',
+                count: allCount,
+              });
+            return true;
+          }else {
+            return false;
+          }
+        }).then(res=> {
+          if(res) {
+            this.getCurrentList();
+          }
+        });
+      },
+
+      /*//获取待办下方列表数据
+      getTodoList() {
+        let params = {
+          ...this.params,
+        };
+      },*/
 
 
+      //获取待办下方列表数据
+      getCurrentList(item={}, index=0) {
+        this.todo_list_container = [];
+        let params = {
+          ...this.params,
+          processDefinitionKey:item.key||'',
+        };
 
-    //获取当前选择框下的数据
-    getCurrentList (item, index) {
-      this.checked = (index + 1);
+        this.$http.get(`${this.url}runtime/tasks`,params).then(res=> {
+            for(let item of res.data) {
+              let obj = {
+                name:item.name
+              };
+              this.todo_list_container.push(obj);
+            }
+            this.counts = res.total;
+        });
 
-      console.log(item);
-      //debugger
-    },
 
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange (val) {
-      this.params.page = val;
-      console.log(`当前页: ${val}`);
-    },
-    trigger (val) {
-      console.log(val);
+        this.checked = (index + 1);
+
+        //console.log(item);
+        //debugger
+      },
+
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        this.params.page = val;
+        this.getCurrentList();
+      },
+      trigger(val) {
+        console.log(val);
+      }
     }
   }
-}
 </script>
 <!--<style lang="scss">
   #todo_list {
@@ -170,102 +320,102 @@ export default {
   }
 </style>-->
 <style scoped lang="scss">
-@import "../../assets/scss/todoList/index.scss";
+  @import "../../assets/scss/todoList/index.scss";
 
-@mixin todoListImg($m, $n) {
-  $url: "../../assets/image/todoList/" + $n + "/" + $m;
-  @include bgImage($url);
-}
-
-#todo_list {
-  .pendant {
-    .item-list {
-      .item-detail {
-        @include todoListImg("dbw.png", "theme1");
-
-        &.checked {
-          @include todoListImg("dbx.png", "theme1");
-        }
-      }
-    }
-
-    .search-bar {
-      .search-bar-item {
-        &.icons-category {
-          @include todoListImg("gx.png", "theme1");
-        }
-
-        &.icons-add {
-          @include todoListImg("tj.png", "theme1");
-        }
-
-        &.icons-search {
-          @include todoListImg("ss.png", "theme1");
-        }
-      }
-    }
+  @mixin todoListImg($m, $n) {
+    $url: "../../assets/image/todoList/" + $n + "/" + $m;
+    @include bgImage($url);
   }
 
-  .todo-list-container {
-    .todo-list-item {
-      @include todoListImg("bjw.png", "theme1");
+  #todo_list {
+    .pendant {
+      .item-list {
+        .item-detail {
+          @include todoListImg("dbw.png", "theme1");
 
-      &:hover {
-        @include todoListImg("xzbj.png", "theme1");
+          &.checked {
+            @include todoListImg("dbx.png", "theme1");
+          }
+        }
+      }
+
+      .search-bar {
+        .search-bar-item {
+          &.icons-category {
+            @include todoListImg("gx.png", "theme1");
+          }
+
+          &.icons-add {
+            @include todoListImg("tj.png", "theme1");
+          }
+
+          &.icons-search {
+            @include todoListImg("ss.png", "theme1");
+          }
+        }
+      }
+    }
+
+    .todo-list-container {
+      .todo-list-item {
+        @include todoListImg("bjw.png", "theme1");
+
+        &:hover {
+          @include todoListImg("xzbj.png", "theme1");
+
+          .todo-list-item-content {
+            .todo-list-item-content-icon-date {
+              @include todoListImg("sjx.png", "theme1");
+            }
+
+            .todo-list-item-content-icon-user {
+              @include todoListImg("ryx.png", "theme1");
+            }
+
+            .todo-list-item-content-icon-location {
+              @include todoListImg("dzx.png", "theme1");
+            }
+
+            .todo-list-item-content-icon-tip {
+              @include todoListImg("txx.png", "theme1");
+            }
+
+            .todo-list-item-content-icon-money {
+              @include todoListImg("jqx.png", "theme1");
+            }
+
+            .todo-list-item-content-icon-project {
+              @include todoListImg("xmx.png", "theme1");
+            }
+          }
+        }
 
         .todo-list-item-content {
           .todo-list-item-content-icon-date {
-            @include todoListImg("sjx.png", "theme1");
+            @include todoListImg("sjw.png", "theme1");
           }
 
           .todo-list-item-content-icon-user {
-            @include todoListImg("ryx.png", "theme1");
+            @include todoListImg("ryw.png", "theme1");
           }
 
           .todo-list-item-content-icon-location {
-            @include todoListImg("dzx.png", "theme1");
+            @include todoListImg("dzw.png", "theme1");
           }
 
           .todo-list-item-content-icon-tip {
-            @include todoListImg("txx.png", "theme1");
+            @include todoListImg("txw.png", "theme1");
           }
 
           .todo-list-item-content-icon-money {
-            @include todoListImg("jqx.png", "theme1");
+            @include todoListImg("jqw.png", "theme1");
           }
 
           .todo-list-item-content-icon-project {
-            @include todoListImg("xmx.png", "theme1");
+            @include todoListImg("xmw.png", "theme1");
           }
-        }
-      }
-
-      .todo-list-item-content {
-        .todo-list-item-content-icon-date {
-          @include todoListImg("sjw.png", "theme1");
-        }
-
-        .todo-list-item-content-icon-user {
-          @include todoListImg("ryw.png", "theme1");
-        }
-
-        .todo-list-item-content-icon-location {
-          @include todoListImg("dzw.png", "theme1");
-        }
-
-        .todo-list-item-content-icon-tip {
-          @include todoListImg("txw.png", "theme1");
-        }
-
-        .todo-list-item-content-icon-money {
-          @include todoListImg("jqw.png", "theme1");
-        }
-
-        .todo-list-item-content-icon-project {
-          @include todoListImg("xmw.png", "theme1");
         }
       }
     }
   }
-}
 </style>

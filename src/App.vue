@@ -14,7 +14,10 @@
       </div>
       <div class="items-center">
         <div class="items-center funTop ">
-          <span @click="todoListHandler">待办</span>
+          <span @click="todoListHandler">
+            <el-badge v-if="todo_list_badge_count>0" :value="todo_list_badge_count">待办</el-badge>
+            <span v-else>待办</span>
+          </span>
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
             <!-- <ul>
@@ -39,7 +42,8 @@
           <span>冯宝宝</span>
           <!--@click="routerLink('login')"-->
           <p @click="routerLink('/personalCenter')">
-            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+            <img
+              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
           </p>
           <!--&lt;!&ndash;<span class="icon3024 icon-personal-center"   @click="routerLink('/messageCenter')"></span>&ndash;&gt;-->
           <!--<span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span>-->
@@ -50,8 +54,9 @@
     </header>
     <div id="moduleList" :class="{'moduleList':moduleList}" style="z-index: 1000">
       <div class="justify-around">
-        <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules" @click="routerLink(item.url);moduleList = false"
-          :key='index'>
+        <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules"
+             @click="routerLink(item.url);moduleList = false"
+             :key='index'>
           <p></p>
           <div class="justify-center">
             <h1 class="writingMode items-center">
@@ -66,7 +71,7 @@
     </div>
     <div id="theme_name" :class="'theme' + theme_name">
       <keep-alive>
-        <router-view />
+        <router-view/>
       </keep-alive>
     </div>
     <div class="flex-center changeLoad" v-if="changeLoad">
@@ -106,180 +111,200 @@
 </template>
 
 <script>
-import TodoList from './components/todoList/index';
-import Approval from './components/approval/index';
+  import TodoList from './components/todoList/index';
+  import Approval from './components/approval/index';
 
-export default {
-  name: 'App',
-  components: {
-    TodoList,
-    Approval
-  },
-  data () {
-    return {
-      theme_name: '1',
-      moduleList: false,
-      changeLoad: false,
-      modules: [
-        {
-          url: '/president',
-          title: '总裁办',
-          English: 'Presidents',
+  export default {
+    name: 'App',
+    components: {
+      TodoList,
+      Approval
+    },
+    data() {
+      return {
+        theme_name: '1',
+        moduleList: false,
+        changeLoad: false,
+        modules: [
+          {
+            url: '/president',
+            title: '总裁办',
+            English: 'Presidents',
+          },
+          {
+            url: '/finance',
+            title: '财务中心',
+            English: 'Finacial Center',
+          },
+          {
+            url: '/humanResource',
+            title: '人力资源中心',
+            English: 'Personal Adminstration',
+          },
+          {
+            url: '/mediaCenter',
+            title: '新媒体运营中心',
+            English: 'Social Media Center',
+          },
+          {
+            url: '/marketCentre',
+            title: '营销中心',
+            English: 'Marketing Center',
+          },
+          {
+            url: '/customService',
+            title: '运维中心',
+            English: 'Customer Service',
+          },
+          {
+            url: '/leJiaCollege',
+            title: '乐伽大学',
+            English: 'Lejia College',
+          },
+          {
+            url: '/riskManagement',
+            title: '风险控制',
+            English: 'Risk Management',
+          },
+          {
+            url: '/intellectualPropertyProtection',
+            title: '知识产权保护',
+            English: 'Intellectual Property Protection',
+          },
+        ],
+        messageTable: [],
+        market_server: globalConfig.market_server,
+      }
+    },
+    watch: {
+      $route: {
+        handler(val, oldVal) {
+          this.moduleList = false;
+          this.showLoading(false);
+          this.$store.dispatch('route_animation');
         },
-        {
-          url: '/finance',
-          title: '财务中心',
-          English: 'Finacial Center',
-        },
-        {
-          url: '/humanResource',
-          title: '人力资源中心',
-          English: 'Personal Adminstration',
-        },
-        {
-          url: '/mediaCenter',
-          title: '新媒体运营中心',
-          English: 'Social Media Center',
-        },
-        {
-          url: '/marketCentre',
-          title: '营销中心',
-          English: 'Marketing Center',
-        },
-        {
-          url: '/customService',
-          title: '运维中心',
-          English: 'Customer Service',
-        },
-        {
-          url: '/leJiaCollege',
-          title: '乐伽大学',
-          English: 'Lejia College',
-        },
-        {
-          url: '/riskManagement',
-          title: '风险控制',
-          English: 'Risk Management',
-        },
-        {
-          url: '/intellectualPropertyProtection',
-          title: '知识产权保护',
-          English: 'Intellectual Property Protection',
-        },
-      ],
-      messageTable: [],
-      market_server: globalConfig.market_server,
-    }
-  },
-  watch: {
-    $route: {
-      handler (val, oldVal) {
-        this.moduleList = false;
-        this.showLoading(false);
-        this.$store.dispatch('route_animation');
+        deep: true// 深度观察监听
+      }
+    },
+    computed: {
+      routeAnimation() {
+        return this.$store.state.app.routeAnimation;
       },
-      deep: true// 深度观察监听
-    }
-  },
-  computed: {
-    routeAnimation () {
-      return this.$store.state.app.routeAnimation;
+      all_loading() {
+        return this.$store.state.app.loading;
+      },
+      global_notify() {
+        return this.$store.state.app.globalNotify;
+      },
+      global_message() {
+        return this.$store.state.app.globalMessage;
+      },
+      showMessage_visible() {
+        return this.$store.state.approval.approval_message_visible
+      },
+      todo_list_badge_count() {
+        return this.$store.state.todo.todo_list_badge_count;
+      },
     },
-    all_loading () {
-      return this.$store.state.app.loading;
+    created() {
+      this.getPerson()
     },
-    global_notify () {
-      return this.$store.state.app.globalNotify;
-    },
-    global_message () {
-      return this.$store.state.app.globalMessage;
-    },
-    showMessage_visible () {
-      return this.$store.state.approval.approval_message_visible
-    }
-  },
-  created () {
-    this.getPerson()
-  },
-  methods: {
-    getPerson () {
-      this.$http.get(`${this.market_server}v1.0/market/dictionary/parent_son`).then(res => {
-        if (res.success) {
-          let params = res.data
-          dicties.decorate = params[404] // 装修
-          dicties.property_type = params[410] // 房屋类型
-          dicties.card_type = params[409] //证件类型
-        }
-      })
-    },
-    todoListHandler () {
-      //this.routerLink('/todoList');
-      this.$store.dispatch('change_todo_list_visible');
-    },
+    methods: {
+      getPerson() {
+        this.$http.get(`${this.market_server}v1.0/market/dictionary/parent_son`).then(res => {
+          if (res.success) {
+            let params = res.data
+            dicties.decorate = params[404] // 装修
+            dicties.property_type = params[410] // 房屋类型
+            dicties.card_type = params[409] //证件类型
+          }
+        })
+      },
+      todoListHandler() {
+        //this.routerLink('/todoList');
+        this.$store.dispatch('change_todo_list_visible');
+      },
 
-    openMessage () {
-      this.$store.dispatch('change_message_visible');
-      // this.$LjMessage('warning', {
-      //   title: '警告',
-      //   msg: '审批失败！'
-      // });
+      openMessage() {
+        this.$store.dispatch('change_message_visible');
+        // this.$LjMessage('warning', {
+        //   title: '警告',
+        //   msg: '审批失败！'
+        // });
+      },
+      openNotify() {
+        this.$LjNotify('success', {
+          title: '成功',
+          message: '请求成功了~',
+          subMessage: '这是一个子标题',
+        });
+      },
+      //关闭提示
+      handleCloseNotify() {
+        this.$store.dispatch('close_notify', false);
+      },
+      changeLoading() {
+        this.$store.dispatch('theme_name', this.theme_name);
+        this.changeLoad = true;
+        let that = this;
+        setTimeout(function () {
+          that.changeLoad = false;
+        }, 2000);
+      },
+      showModules() {
+        this.moduleList = !this.moduleList;
+      }
     },
-    openNotify () {
-      this.$LjNotify('success', {
-        title: '成功',
-        message: '请求成功了~',
-        subMessage: '这是一个子标题',
-      });
-    },
-    //关闭提示
-    handleCloseNotify () {
-      this.$store.dispatch('close_notify', false);
-    },
-    changeLoading () {
-      this.$store.dispatch('theme_name', this.theme_name);
-      this.changeLoad = true;
-      let that = this;
-      setTimeout(function () {
-        that.changeLoad = false;
-      }, 2000);
-    },
-    showModules () {
-      this.moduleList = !this.moduleList;
-    }
-  },
-}
+  }
 </script>
 
+<style lang="scss">
+  #app {
+    .funTop {
+      .el-badge__content.is-fixed {
+        top: -2px;
+        right: 5px;
+        background-color: #CF2E33;
+      }
+    }
+  }
+</style>
+
 <style lang="scss" scoped>
-@import "./assets/scss/app/index.scss";
+  @import "./assets/scss/app/index.scss";
 
-@mixin notifyImg($m, $n) {
-  $url: "./assets/image/common/" + $n + "/" + $m;
-  @include bgImage($url);
-}
-
-#app {
-  .global_notify {
-    @include notifyImg("bg.png", "theme1/notify");
-  }
-  .notify_icon__success {
-    @include notifyImg("success.png", "theme1/notify");
-  }
-  .notify_icon__error {
-    @include notifyImg("error.png", "theme1/notify");
-  }
-  .notify_icon__info {
-    @include notifyImg("info.png", "theme1/notify");
-  }
-  .notify_icon__warning {
-    @include notifyImg("warning.png", "theme1/notify");
-  }
-  .global_message {
-    @include notifyImg("message_bg.png", "theme1/notify");
+  @mixin notifyImg($m, $n) {
+    $url: "./assets/image/common/" + $n + "/" + $m;
+    @include bgImage($url);
   }
 
-  .icon-personal-center {
-    @include notifyImg("personal_center.png", "theme1");
+  #app {
+    .global_notify {
+      @include notifyImg("bg.png", "theme1/notify");
+    }
+
+    .notify_icon__success {
+      @include notifyImg("success.png", "theme1/notify");
+    }
+
+    .notify_icon__error {
+      @include notifyImg("error.png", "theme1/notify");
+    }
+
+    .notify_icon__info {
+      @include notifyImg("info.png", "theme1/notify");
+    }
+
+    .notify_icon__warning {
+      @include notifyImg("warning.png", "theme1/notify");
+    }
+
+    .global_message {
+      @include notifyImg("message_bg.png", "theme1/notify");
+    }
+
+    .icon-personal-center {
+      @include notifyImg("personal_center.png", "theme1");
+    }
   }
-}
 </style>

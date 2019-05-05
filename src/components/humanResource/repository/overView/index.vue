@@ -1501,8 +1501,10 @@
 
       getRepositoryList() {
         this.currentTable = 'repository';
+        this.showLoading(true);
         this.$http.get(this.url + 'eam/eam', this.tableSettingData[this.currentTable].params).then(res => {
           this.tableSettingData[this.currentTable].tableData = [];
+          this.showLoading(false);
           if (res.code == '20000') {
             for (let item of res.data.data) {
               let obj = {
