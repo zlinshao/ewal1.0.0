@@ -371,7 +371,6 @@
           { key: 'staff.bank_num',val: '银行卡号',width: "180px"},
           { key: 'staff.account_name',val: '户主',width: "120px"},
           { key: 'staff.account_bank',val: '开户行',width: "120px"},
-          { key: 'staff.contract_number',val: '劳务合同',isBtn: true},
           { key: 'staff.ca',val: 'ca认证',isBtn: true,isGenerate:true},
           { key: 'staff.contract_number',val: '劳务合同',isBtn: true,isGenerate:true},
           { key: 'staff.leaveproof_image_url',val: '上家单位离职证明',isBtn: true},
