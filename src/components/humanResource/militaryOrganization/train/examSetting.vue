@@ -253,7 +253,7 @@
                                    v-model.number="new_exam_form.question_category[index].category"></dropdown-list>
                   </el-col>
                   <el-col :span="8">
-                    <el-input style="width: 140px" v-model="new_exam_form.question_category[index].number"
+                    <el-input style="width: 125px" v-model="new_exam_form.question_category[index].number"
                               placeholder="请输入题数"></el-input>
                   </el-col>
                 </el-row>
