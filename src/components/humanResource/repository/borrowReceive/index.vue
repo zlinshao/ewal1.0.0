@@ -760,6 +760,7 @@
 
       //获取借用领用详情list
       getBorrowReceiveList(outerParams = {}) {
+        this.showLoading(true);
         this.currentTable = 'borrowReceive';
         let params = {
           ...outerParams,
@@ -767,6 +768,7 @@
         };
         this.$http.get(this.url + 'eam/process', params).then(res => {
           this.tableSettingData[this.currentTable].tableData = [];
+          this.showLoading(false);
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let obj = {

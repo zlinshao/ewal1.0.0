@@ -650,6 +650,7 @@
 
 
       getAttenceList() {
+        this.showLoading(true);
         this.tableSettingData.attence.tableData = [];
         let params = {
           is_on_job: this.tableSettingData.attence.isLeave ? 1 : 0,
@@ -659,6 +660,7 @@
           //org_id: 106,
         };
         this.$http.get(`${this.url}attendance/attendance`, params).then(res => {
+          this.showLoading(false);
           //debugger
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
@@ -857,12 +859,14 @@
 
       //获取考勤确认表
       getAttenceConfirmList() {
+        this.showLoading(true);
         this.tableSettingData['confirm'].tableData = [];
         let params = {
           date:this.myUtils.formatDate(this.yearValue,'yyyy'),
         };
 
         this.$http.get(`${this.url}attendance/attendance/get_confirm`,params).then(res=> {
+          this.showLoading(false);
           if(res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let obj = {

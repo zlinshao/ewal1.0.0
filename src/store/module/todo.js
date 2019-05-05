@@ -1,6 +1,7 @@
 const todo = {
   state: {
     todo_list_visible: false, //待办事项显示/隐藏
+    todo_list_badge_count:0,//待办 标记个数
     // todo_list_toolbar: {
     //   customerService: [
     //     {
@@ -36,12 +37,12 @@ const todo = {
     //   ]
     // },
     todo_list_toolbar: [
-      /*{
+      {
         id: 1,
         content: '全部',
         tipCount: '13',
-      },*/
-      {
+      },
+      /*{
         id: 2,
         content: '面试',
         tipCount: ''
@@ -80,12 +81,12 @@ const todo = {
         id: 9,
         content: '其他',
         tipCount: ''
-      }
+      }*/
     ],
     todo_list_container: [
       {
         id: 1,
-        title: '维修工单',
+        name: '维修工单',
         tip: '距离考试20分钟',
         money: '扣款200元',
         project: '研发中心会议',
@@ -93,7 +94,7 @@ const todo = {
       },
       {
         id: 2,
-        title: '资料补齐',
+        name: '资料补齐',
         user: '张无忌',
         date: '2019-03-22',
         location: '艺术家工厂',
@@ -101,7 +102,7 @@ const todo = {
       },
       {
         id: 3,
-        title: '资料补齐',
+        name: '资料补齐',
         user: '张无忌',
         money: '扣款200元',
         project: '研发中心会议',
@@ -109,7 +110,7 @@ const todo = {
       },
       {
         id: 4,
-        title: '资料补齐',
+        name: '资料补齐',
         user: '张无忌',
         date: '2019-03-22',
         project: '研发中心会议',
@@ -117,42 +118,42 @@ const todo = {
       },
       {
         id: 5,
-        title: '资料补齐',
+        name: '资料补齐',
         date: '2019-03-22',
         tip: '距离考试20分钟',
         money: '扣款200元'
       },
       {
         id: 6,
-        title: '资料补齐',
+        name: '资料补齐',
         user: '张无忌',
         date: '2019-03-22',
         location: '艺术家工厂'
       },
       {
         id: 7,
-        title: '资料补齐',
+        name: '资料补齐',
         user: '张无忌',
         money: '扣款200元',
         project: '研发中心会议'
       },
       {
         id: 8,
-        title: '资料补齐',
+        name: '资料补齐',
         tip: '距离考试20分钟',
         money: '扣款200元',
         project: '研发中心会议'
       },
       {
         id: 9,
-        title: '文职入职考试',
+        name: '文职入职考试',
         tip: '距离考试20分钟',
         money: '扣款200元',
         project: '研发中心会议'
       },
       {
         id: 10,
-        title: '领取通知',
+        name: '领取通知',
         date: '2019-03-22',
         user: '张无忌',
         location: '财务部领取',
@@ -188,6 +189,9 @@ const todo = {
     CHANGE_TODO_LIST_VISIBLE(state) {
       state.todo_list_visible = !state.todo_list_visible
     },
+    CHANGE_TODO_LIST_BADGE_COUNT(state,count) {
+      state.todo_list_badge_count = count;
+    },
 
     //保存待办事项当前选择项
     SAVE_TODO_LIST_CURRENT_SELECTION(state, status) {
@@ -221,6 +225,10 @@ const todo = {
     //改变待办事项显示隐藏
     change_todo_list_visible({ commit }, status) {
       commit('CHANGE_TODO_LIST_VISIBLE', status)
+    },
+
+    change_todo_list_badge_count({ commit }, status) {
+      commit('CHANGE_TODO_LIST_BADGE_COUNT', status)
     },
 
     //保存待办事项当前选择项
