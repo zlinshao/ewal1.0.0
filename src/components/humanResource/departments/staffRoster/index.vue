@@ -49,148 +49,150 @@
         </div>
       </el-table>
       <!--劳务合同-->
-      <div class="labour_contract" :class="{'hide_labour_contract': labour_contract_visible}">
-        <h1>南京市劳务合同书</h1>
-        <h4>（2015修订版）</h4>
-        <el-form size="small" style="text-align: left">
-          <el-form-item class="item_margin">
-            <div class="flex" style="margin-top: 50px">
-              <div style="width: 150px">甲方（单位全称）</div>
-              <el-input v-model="labour_form.company_name"></el-input>
-            </div>
-          </el-form-item>
-          <el-form-item class="item_margin">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 80px">单位类型</div>
-                  <el-input value="有限责任公司"></el-input>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 280px">法定代表人（或负责人）</div>
-                  <el-input v-model="labour_form.leader_name"></el-input>
-                </div>
-              </el-col>
-            </el-row>
-          </el-form-item>
-          <el-form-item class="item_margin">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 150px">登记注册地</div>
-                  <el-input v-model="labour_form.register_place"></el-input>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 50px">邮编</div>
-                  <el-input v-model="labour_form.postal_code"></el-input>
-                </div>
-              </el-col>
-            </el-row>
-          </el-form-item>
-          <el-form-item class="item_margin">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 150px">实际经营地</div>
-                  <el-input v-model="labour_form.real_place"></el-input>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 50px">邮编</div>
-                  <el-input v-model="labour_form.postal_code"></el-input>
-                </div>
-              </el-col>
-            </el-row>
-          </el-form-item>
-          <el-form-item class="item_margin">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 150px">联系部门</div>
-                  <el-input value="人力资源部"></el-input>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 80px">联系电话</div>
-                  <el-input v-model="labour_form.telephone"></el-input>
-                </div>
-              </el-col>
-            </el-row>
-          </el-form-item>
-          <el-form-item class="item_margin" style="margin-top: 50px">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 180px">乙方（职工）姓名</div>
-                  <el-input v-model="labour_form.name"></el-input>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 150px">性别</div>
-                  <el-input v-model="labour_form.gender"></el-input>
-                </div>
-              </el-col>
-            </el-row>
-          </el-form-item>
-          <el-form-item class="item_margin">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 150px">出生年月</div>
-                  <el-input v-model="labour_form.birthday"></el-input>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 150px">工作地点</div>
-                  <el-input v-model="labour_form.work_space"></el-input>
-                </div>
-              </el-col>
-            </el-row>
-          </el-form-item>
-          <el-form-item class="item_margin">
-            <div class="flex">
-              <div style="width: 250px">在本单位工作起始时间</div>
-              <el-input v-model="labour_form.begin_date"></el-input>
-            </div>
-          </el-form-item>
-          <el-form-item class="item_margin">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 150px">合同履行地</div>
-                  <el-input v-model="labour_form.work_address"></el-input>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 150px">岗位</div>
-                  <el-input v-model="labour_form.position"></el-input>
-                </div>
-              </el-col>
-            </el-row>
-          </el-form-item>
-          <el-form-item class="item_margin">
-            <el-row :gutter="20">
-              <el-col :span="12">
-                <div class="flex">
-                  <div style="width: 150px">合同编号前缀</div>
-                  <el-input v-model="labour_form.number_prefix"></el-input>
-                </div>
-              </el-col>
-            </el-row>
-          </el-form-item>
-        </el-form>
-        <div class="flex-center">
-          <el-button size="small" type="danger" @click="ok_send_contract = true">发送</el-button>
-          <el-button size="small" type="info" @click="labour_contract_visible = true">取消</el-button>
+      <div class="labour_contract scroll_bar" :class="{'hide_labour_contract': labour_contract_visible}">
+        <div>
+          <h1>南京市劳务合同书</h1>
+          <h4>（2015修订版）</h4>
+          <el-form size="small" style="text-align: left">
+            <el-form-item class="item_margin">
+              <div class="flex" style="margin-top: 50px">
+                <div style="width: 150px">甲方（单位全称）</div>
+                <el-input v-model="labour_form.company_name"></el-input>
+              </div>
+            </el-form-item>
+            <el-form-item class="item_margin">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 80px">单位类型</div>
+                    <el-input value="有限责任公司"></el-input>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 280px">法定代表人（或负责人）</div>
+                    <el-input v-model="labour_form.leader_name"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item class="item_margin">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 150px">登记注册地</div>
+                    <el-input v-model="labour_form.register_place"></el-input>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 50px">邮编</div>
+                    <el-input v-model="labour_form.postal_code"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item class="item_margin">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 150px">实际经营地</div>
+                    <el-input v-model="labour_form.real_place"></el-input>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 50px">邮编</div>
+                    <el-input v-model="labour_form.postal_code"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item class="item_margin">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 150px">联系部门</div>
+                    <el-input value="人力资源部"></el-input>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 80px">联系电话</div>
+                    <el-input v-model="labour_form.telephone"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item class="item_margin" style="margin-top: 50px">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 180px">乙方（职工）姓名</div>
+                    <el-input v-model="labour_form.name"></el-input>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 150px">性别</div>
+                    <el-input v-model="labour_form.gender"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item class="item_margin">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 150px">出生年月</div>
+                    <el-input v-model="labour_form.birthday"></el-input>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 150px">工作地点</div>
+                    <el-input v-model="labour_form.work_space"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item class="item_margin">
+              <div class="flex">
+                <div style="width: 250px">在本单位工作起始时间</div>
+                <el-input v-model="labour_form.begin_date"></el-input>
+              </div>
+            </el-form-item>
+            <el-form-item class="item_margin">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 150px">合同履行地</div>
+                    <el-input v-model="labour_form.work_address"></el-input>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 150px">岗位</div>
+                    <el-input v-model="labour_form.position"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item class="item_margin">
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <div class="flex">
+                    <div style="width: 150px">合同编号前缀</div>
+                    <el-input v-model="labour_form.number_prefix"></el-input>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form-item>
+          </el-form>
+          <div class="flex-center">
+            <el-button size="small" type="danger" @click="ok_send_contract = true">发送</el-button>
+            <el-button size="small" type="info" @click="labour_contract_visible = true">取消</el-button>
+          </div>
         </div>
       </div>
 
@@ -446,6 +448,7 @@
     mounted() {
       this.getStaffList();
       this.handleSetData();
+      this.labour_contract_visible = false;
     },
     activated() {
     },
@@ -805,19 +808,24 @@
   #theme_name.theme1 {
     #staffRoster {
       .labour_contract {
-        width: 800px;
-        height: 1100px;
+        width: 38%;
+        height: 100%;
         position: absolute;
         top: 0;
         left: 50%;
         transform: translateX(-50%);
         padding: 30px;
         text-align: center;
-        color: black;
+        border: 5px solid #444444;
+        border-radius: 8px;
+        background-color: white;
         .item_margin {
           margin-bottom: 55px;
         }
-        @include childrenImg('hetongshu_di.png','theme1');
+        > div {
+          padding: 20px;
+          height: 1200px;
+        }
       }
       .hide_labour_contract {
         top: -1920px;
