@@ -301,7 +301,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>南京新人训</h3>
+          <h3>{{new_exam_form.name}}</h3>
           <div v-if="new_exam_form.status!='已结束'" class="header_right">
             距离开考还有
             <count-down :datetime="new_exam_form.start_time"></count-down>
@@ -328,10 +328,10 @@
               <div>单选{{new_exam_form.single}} 简答{{new_exam_form.judge}} 判断{{new_exam_form.short}}</div>
             </el-form-item>
             <el-form-item label="参加人员">
-              <user-list :mini="true" :ids="new_exam_form.enrolls"></user-list>
+              <user-list :mini="true" :ids="new_exam_form.join_persons"></user-list>
             </el-form-item>
             <el-form-item label="未参加人员">
-              <user-list :mini="true" color="#cf2e33" :ids="new_exam_form.enrolls"></user-list>
+              <user-list :mini="true" color="#cf2e33" :ids="new_exam_form.no_enroll"></user-list>
             </el-form-item>
             <el-form-item label="开考时间">
               <div>{{new_exam_form.start_time}}</div>
@@ -348,7 +348,7 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button v-if="new_exam_form.status=='已结束'" type="danger" size="small" @click="handleExamDetailConfirm">得分
+          <el-button v-if="new_exam_form.status=='已结束'" type="danger" size="small" @click="handleViewScore">得分
           </el-button>
           <el-button v-if="new_exam_form.status!='已结束'" type="danger" size="small" @click="handleExamDetailConfirm">确定
           </el-button>
@@ -362,11 +362,11 @@
     <!--考试得分-->
     <lj-dialog
       :visible.sync="exam_score_visible"
-      :size="{width: 600 + 'px',height: 650 + 'px'}"
+      :size="{width: 400 + 'px',height: 650 + 'px'}"
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>文职入职测试</h3>
+          <h3>{{new_exam_form.name}}</h3>
           <div class="header_right">已结束</div>
         </div>
         <div class="dialog_main">
@@ -375,10 +375,8 @@
             :data="exam_score_list"
             height="400px"
           >
-            <el-table-column label="考试姓名" prop="name" align="center"></el-table-column>
-            <el-table-column label="单选题" prop="radio" align="center"></el-table-column>
-            <el-table-column label="判断题" prop="decide" align="center"></el-table-column>
-            <el-table-column label="简答题" prop="choose" align="center"></el-table-column>
+            <el-table-column label="考生姓名" prop="user_name" align="center"></el-table-column>
+            <el-table-column label="总得分" prop="score" align="center"></el-table-column>
           </el-table>
         </div>
         <div class="dialog_footer">
@@ -555,15 +553,7 @@
 
         //考试得分
         exam_score_visible: false,
-        exam_score_list: [
-          {id: 1, name: '冯宝宝', radio: 20, decide: 15, choose: 30},
-          {id: 2, name: '冯宝宝', radio: 20, decide: 15, choose: 30},
-          {id: 3, name: '冯宝宝', radio: 20, decide: 15, choose: 30},
-          {id: 4, name: '冯宝宝', radio: 20, decide: 15, choose: 30},
-          {id: 5, name: '冯宝宝', radio: 20, decide: 15, choose: 30},
-          {id: 6, name: '冯宝宝', radio: 20, decide: 15, choose: 30},
-          {id: 7, name: '冯宝宝', radio: 20, decide: 15, choose: 30},
-        ],
+        exam_score_list: [],
 
         //考试详情
         exam_detail_dialog_visible: false,
@@ -884,6 +874,7 @@
             this.new_exam_form.judge = _.find(this.new_exam_form.question_category, {category: 2})?.number || 0;
             this.new_exam_form.short = _.find(this.new_exam_form.question_category, {category: 3})?.number || 0;
             this.new_exam_form.status = row.status;
+            this.new_exam_form.join_persons = _.map(this.new_exam_form.take_enroll,'user_id');//参加人员id数组
           }
         });
 
@@ -914,6 +905,13 @@
             });
           }
         });
+      },
+
+
+      //处理查看得分
+      handleViewScore() {
+        this.exam_score_visible = true;
+        this.exam_score_list = this.new_exam_form.take_enroll;
       },
 
       //处理考试详细确定按钮

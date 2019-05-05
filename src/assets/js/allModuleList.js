@@ -16,7 +16,7 @@ export const humanResource = {
     },
     {
       url: 'militaryOrganization',
-      title: '培训考试'
+      title: '培训考核'
     },
     {
       url: 'repository',

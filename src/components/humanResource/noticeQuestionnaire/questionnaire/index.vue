@@ -275,6 +275,7 @@ export default {
 
     //获取问卷列表
     getQuestionnaireList (outerParams) {
+      this.showLoading(true);
       //this.tableData = [];
       let params = {
         ...outerParams,
@@ -285,6 +286,7 @@ export default {
         params.name
       }
       this.$http.get(`${this.url}questionnaire`, params).then(res => {
+        this.showLoading(false);
         if (res.code.endsWith('0')) {
           this.tableData = res.data.data;
           this.counts = res.data.count;

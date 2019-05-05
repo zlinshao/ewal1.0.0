@@ -584,6 +584,7 @@
 
       //获取公告列表
       getNoticeList(outerParams) {
+        this.showLoading(true);
         let params = {
           ...outerParams,
           all: 1,
@@ -594,6 +595,7 @@
           //delete params.search;
         }*/
         this.$http.get(`${this.url}announcement/announcement`, params).then(res => {
+          this.showLoading(false);
           this.tableData = [];
           if (res.code.endsWith('0')) {
             this.tableData = res.data.data;

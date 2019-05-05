@@ -58,7 +58,7 @@ const todo = {
       },
       {
         id: 5,
-        content: '培训考试',
+        content: '培训考核',
         tipCount: ''
       },
       {
