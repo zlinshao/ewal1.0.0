@@ -448,7 +448,6 @@
     mounted() {
       this.getStaffList();
       this.handleSetData();
-      this.labour_contract_visible = false;
     },
     activated() {
     },
