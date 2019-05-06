@@ -29,14 +29,11 @@
                 ...............................
                 <h3>{{item.name}}</h3>
               </div>
-              <span class="handleTrigger flex-center">
-                <div class="handlePointer">...</div>
-                <div class="editPatant">
-                  <span @click="editPatent(index)" class="handlePatent">编辑 </span>
-                  <span></span>
-                  <span @click="removePatent(index)" class="handlePatent"> 删除</span>
-                </div>
-              </span>
+              <a class="handleTrigger flex-center">
+                <a class="handlePointer">...</a>
+                <b @click="editPatent(index)" class="handlePatent">编辑 </b>
+                <b @click="removePatent(index)" class="handlePatent"> 删除</b>
+              </a>
             </div>
           </div>
         </div>
@@ -211,7 +208,7 @@ export default {
               file_id: res.data.data[i].file_id[0].id,
               fileUrl: res.data.data[i].file_id[0].uri
             }
-            if(res.data.data[i].org_id.name.length > 12){
+            if(res.data.data[i].org_id.name?res.data.data[i].org_id.name.length:'' > 12){
               obj.departmentHeader = res.data.data[i].org_id.name.slice(0, 6)
               obj.departmentFooter = res.data.data[i].org_id.name.slice(6, 11)+"..."
             }else{
@@ -229,6 +226,7 @@ export default {
           }
         }
       })
+      
     },
     showPatent: function (index) {
       this.show_visible = true;

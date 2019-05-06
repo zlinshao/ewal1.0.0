@@ -29,14 +29,11 @@
                 ...............................
                 <h3>{{item.name}}</h3>
               </div>
-              <span class="handleTrigger flex-center">
-                <div class="handlePointer">...</div>
-                <div class="editPatant">
-                  <span @click="editPatent(index)" class="handlePatent">编辑 </span>
-                  <span></span>
-                  <span @click="removePatent(index)" class="handlePatent"> 删除</span>
-                </div>
-              </span>
+              <a class="handleTrigger flex-center">
+                <a class="handlePointer">...</a>
+                <b @click="editPatent(index)" class="handlePatent">编辑 </b>
+                <b @click="removePatent(index)" class="handlePatent"> 删除</b>
+              </a>
             </div>
           </div>
         </div>

@@ -85,13 +85,13 @@
 
 @font-face {
   font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf"); }
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf"); }
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF"); }
 @font-face {
   font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf"); }
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf"); }
 .writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl; }
@@ -130,7 +130,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -190,8 +190,8 @@
     height: 100%;
     width: 100%;
     padding-top: 15px;
-    /*宸﹁竟瀹瑰櫒*/
-    /*鍙宠竟瀹瑰櫒*/ }
+    /*左边容器*/
+    /*右边容器*/ }
     #theme_name #personal_center .personal-center-container .container-left {
       width: 18%;
       background-color: #ffffff;
@@ -335,5 +335,3 @@
       flex: 1;
       height: 100%;
       padding: 0 15px 15px 15px; }
-
-/*# sourceMappingURL=index.css.map */

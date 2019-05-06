@@ -1,12 +1,13 @@
 <template>
-    <div id="test_paper_answer">
-      <answer-test-paper :visible="test_paper_visible"></answer-test-paper>
-    </div>
+  <div id="test_paper_answer">
+    <answer-test-paper :visible="test_paper_visible" :params="paper_params" :exam-list="examList"></answer-test-paper>
+  </div>
 </template>
 
 <script>
   import _ from 'lodash';
   import AnswerTestPaper from '../../../common/lightweightComponents/AnswerTestPaper';
+
   export default {
     name: "testPaperAnswer",
     components: {
@@ -14,13 +15,24 @@
     },
     data() {
       return {
-        test_paper_visible:false,
+        test_paper_visible: false,
+        examList: [],
+        paper_params: {
+          title: '入职考试',
+        }
       }
     },
     watch: {
       answer_test_paper_visible: {
-        handler(val,oldVal) {
+        handler(val, oldVal) {
           this.test_paper_visible = val;
+        },
+      },
+      test_paper_visible: {
+        handler(val, oldVal) {
+          if (val) {
+            console.log(this.todo_list_current_selection);
+          }
         },
       },
     },
@@ -32,9 +44,7 @@
         return this.$store.state.todo.todo_list_current_selection;
       },
     },
-    methods: {
-
-    },
+    methods: {},
   }
 </script>
 

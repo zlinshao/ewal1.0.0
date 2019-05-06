@@ -1,3 +1,286 @@
+<<<<<<< HEAD
+.flex {
+  display: flex;
+  display: -webkit-flex; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #999999;
+    border-radius: 4px; }
+
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#theme_name .icon-edit {
+  width: 26px;
+  height: 26px;
+  display: inline-block;
+  cursor: pointer; }
+#theme_name #answer_test_paper {
+  width: 100%;
+  height: calc(100%);
+  background-color: #f9f9f9;
+  position: fixed;
+  top: -100%;
+  transition: all ease 1s; }
+  #theme_name #answer_test_paper.active {
+    top: 0; }
+  #theme_name #answer_test_paper .answer-paper {
+    width: 100%;
+    height: 100%; }
+    #theme_name #answer_test_paper .answer-paper .library-header {
+      height: 10%;
+      border-bottom: 1px solid #c0c0c0; }
+      #theme_name #answer_test_paper .answer-paper .library-header > div {
+        width: 50%;
+        text-align: center; }
+      #theme_name #answer_test_paper .answer-paper .library-header .left {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 10%; }
+        #theme_name #answer_test_paper .answer-paper .library-header .left > h3 {
+          font-weight: 500; }
+        #theme_name #answer_test_paper .answer-paper .library-header .left > div > span {
+          margin-left: 30px; }
+      #theme_name #answer_test_paper .answer-paper .library-header .right {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 10%; }
+    #theme_name #answer_test_paper .answer-paper .library-main {
+      padding: 0 200px;
+      height: 90%;
+      position: relative;
+      display: flex;
+      flex-direction: column; }
+      #theme_name #answer_test_paper .answer-paper .library-main .control {
+        padding: 15px 0;
+        text-align: right;
+        flex-direction: row-reverse; }
+      #theme_name #answer_test_paper .answer-paper .library-main .exam-list {
+        flex: 1;
+        color: #686874;
+        width: 100%; }
+        #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-single {
+          width: 100%; }
+          #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-single .single-title {
+            font-size: 16px;
+            font-family: PingFangSC-Regular !important;
+            padding: 0 0 5px 0; }
+          #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-single .single-container {
+            padding: 5px 10px; }
+            #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-single .single-container .exam-single-item .single-item-choice {
+              word-break: break-all;
+              word-wrap: break-word;
+              padding: 10px 15px; }
+        #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-judge {
+          width: 100%;
+          padding-top: 30px; }
+          #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-judge .judge-title {
+            font-size: 16px;
+            font-family: PingFangSC-Regular !important;
+            padding: 0 0 5px 0; }
+          #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-judge .judge-container {
+            padding: 5px 10px; }
+            #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-judge .judge-container .exam-judge-item {
+              display: flex;
+              align-items: center; }
+              #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-judge .judge-container .exam-judge-item .judge-item-choice {
+                padding: 10px 15px; }
+        #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-short {
+          width: 100%;
+          padding-top: 30px; }
+          #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-short .short-title {
+            font-size: 16px;
+            font-family: PingFangSC-Regular !important;
+            padding: 0 0 5px 0; }
+          #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-short .short-container {
+            padding: 5px 10px; }
+            #theme_name #answer_test_paper .answer-paper .library-main .exam-list .exam-short .short-container .exam-short-item .short-item-choice {
+              padding: 10px 15px; }
+      #theme_name #answer_test_paper .answer-paper .library-main .library-footer {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center; }
+        #theme_name #answer_test_paper .answer-paper .library-main .library-footer > div {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end; }
+          #theme_name #answer_test_paper .answer-paper .library-main .library-footer > div > button {
+            margin-right: 30px; }
+=======
 /*
 Error: Invalid GBK character "\xE7"
         on line 27 of AnswerTestPaper.scss
@@ -44,3 +327,4 @@ body:before {
   white-space: pre;
   font-family: monospace;
   content: "Error: Invalid GBK character \"\xE7\"\A         on line 27 of AnswerTestPaper.scss\A \A 22: \A 23:     &.active {\A 24:       top: 0;\A 25:     }\A 26: \A 27:     .answer-paper {//答题\A 28:       width: 100%;\A 29:       height: 100%;\A 30: \A 31:       .library-header {\A 32:         height: 10%;"; }
+>>>>>>> 6f9cb6289db4994daeaa160057c5fc5fdf11fb3e
