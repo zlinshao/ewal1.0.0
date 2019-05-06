@@ -240,7 +240,6 @@
           height: 45%;
           width: 33%;
           background-color: #ffffff;
-          border-radius: 10px;
           overflow: hidden;
           display: flex;
           flex-direction: column; }
@@ -347,7 +346,5 @@
                     margin-left: 2px;
                     font-size: 14px;
                     color: #686874; }
-        #theme_name #my_response .response-container .response-table .response-table-list .response-table-item:not(:nth-child(5n + 5)) {
-          margin-right: 3.75%; }
       #theme_name #my_response .response-container .response-table .response-table-pagination {
         height: 15%; }

@@ -256,3 +256,8 @@
       flex: 0 0 35%;
       padding-left: 30px;
       padding-top: 20px; }
+      #theme_name #work_log .work-log-container .work-log-container-right .readedIcon {
+        height: 14px;
+        width: 14px;
+        margin-top: 14px;
+        margin-right: 10px; }

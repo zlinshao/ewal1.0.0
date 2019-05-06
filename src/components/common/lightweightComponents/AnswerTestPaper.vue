@@ -92,6 +92,7 @@ export default {
           title: '入职考试',
           initial_page: 1,
           edit_btn_visible: true,
+          examList:[],
         }
       }
     },
@@ -101,7 +102,7 @@ export default {
     type: {// 1为考试 2为问卷调查     当type为1时  有答案和分值输入框
       default: 1,
     },
-    examList: {//外界传过来的题目列表
+    examData: {//外界传过来的题目列表
       type: Array,
       default () {
         return [];
@@ -128,8 +129,37 @@ export default {
       },
       immediate: true,
     },
+    examData: {
+      handler(val,oldVal) {
+        if(val) {
+          //this.examList = val.question_set;
 
-    examList: {
+
+          //考试题目遍历
+          _.forEach(val.question_set, (value, key) => {
+            _.forEach(value, (subValue) => {
+              subValue.category = parseInt(key);
+            });
+          });
+          let questionSet = _.flattenDeep(_.values(val.question_set));
+          _.forEach(questionSet, (item, index) => {
+            this.exam_total_score += item.score || 0;
+            switch (item.category) {
+              case 1:
+                this.exam_category_list.single.exam_list.push(item);
+                break;
+              case 2:
+                this.exam_category_list.judge.exam_list.push(item);
+                break;
+              case 3:
+                this.exam_category_list.short.exam_list.push(item);
+            }
+          });
+        }
+      },
+    },
+
+    /*examList: {
       handler (val, oldVal) {
         if (val && val.length > 0) {
           val.forEach((item, index) => {
@@ -145,7 +175,7 @@ export default {
         this.renderData();
       },
       immediate: true,
-    },
+    },*/
 
   },
   computed: {

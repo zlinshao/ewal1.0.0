@@ -24,10 +24,11 @@
         <!--渲染todo_list数据-->
 
         <div v-for="(item,index) in todo_list_container"
-             @click="container_checked = (index);todoListVisibleTrigger(item)"
+             @click="todoListVisibleTrigger(item)"
              class="todo-list-item">
           <div :title="item.name" class="todo-list-item-title">{{item.name}}</div>
-          <div v-for="(value,key) in item" v-if="(key=='user'||key=='date'||key=='tip'||key=='money'||key=='project'||key=='location')&&value"
+          <div v-for="(value,key) in item"
+               v-if="(key=='user'||key=='date'||key=='tip'||key=='money'||key=='project'||key=='location')&&value"
                class="todo-list-item-content">
             <i :class="'todo-list-item-content-icon-'+key"></i>
             {{value}}
@@ -131,8 +132,8 @@
           size: 10,//每页条数
         },
         checked: 1,//选择哪个toolbar
-        container_checked: -1,//选择哪个列表数据容器,
-        //todo_list_container_arr: [],
+        categoryKey: '',
+        categoryChecked: 0,
         noSearch: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
@@ -268,23 +269,15 @@
         });
       },
 
-      /*//获取待办下方列表数据
-      getTodoList() {
-        let params = {
-          ...this.params,
-        };
-      },*/
-
-
       //获取待办下方列表数据
-      getCurrentList(item = {}, index = 0) {
+      getCurrentList(item = {}, index = 0, categoryKey, categoryChecked) {
         this.todo_list_container = [];
         if (Object.keys(item).length > 0) {
           this.params.page = 1;
         }
         let params = {
           ...this.params,
-          processDefinitionKey: item.key || '',
+          processDefinitionKey: item.key || categoryKey || '',
           processDefinitionKeyNotIn: this.noSearch
         };
 
@@ -294,6 +287,7 @@
               ...item
             };
             let itemKey = item.processDefinitionId.split(':')[0];//类型
+            this.categoryKey = itemKey;
             switch (itemKey) {
               /*交接*/
               case 'HandoverOrder':
@@ -326,9 +320,9 @@
               /*考试*/
               case 'HR-Exam':
                 let variables = item.variables;
-                let name = _.find(variables,{name:'title'})?.value||'-';
+                let name = _.find(variables, {name: 'title'})?.value || '-';
                 let user = item.description;
-                let date = _.find(variables,{name:'start_time'})?.value||'-';
+                let date = _.find(variables, {name: 'start_time'})?.value || '-';
 
                 obj.onClick = 'humanResource_answer_test_paper';
                 obj.name = name;
@@ -344,7 +338,8 @@
         });
 
 
-        this.checked = (index + 1);
+        this.checked = categoryChecked || (index + 1);
+        this.categoryChecked = this.checked;
 
         //console.log(item);
         //debugger
@@ -355,7 +350,7 @@
       },
       handleCurrentChange(val) {
         this.params.page = val;
-        this.getCurrentList();
+        this.getCurrentList({}, 0, this.categoryKey);
       },
       trigger(val) {
         console.log(val);
