@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -265,7 +265,7 @@
       position: absolute;
       top: 81px;
       left: 100%;
-      z-index: 10;
+      z-index: 32;
       transition: all ease 1s; }
       #theme_name #departments .departList .depart-detail .depart_nav {
         width: 100%;
