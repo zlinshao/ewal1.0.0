@@ -372,187 +372,188 @@ div.el-popover {
       transition: none;
       border: none;
       color: #000000;
+
       &:focus {
         border: 1px solid $colorE33;
       }
     }
+  }
 
+  //input前缀
+  .el-input-group__append,
+  .el-input-group__prepend {
+    background-color: white !important;
+    border: none !important;
+    color: $color874 !important;
+  }
 
-    //input前缀
-    .el-input-group__append,
-    .el-input-group__prepend {
-      background-color: white !important;
-      border: none !important;
-      color: $color874 !important;
+  .el-form-item--mini .el-form-item__error {
+    width: 100%;
+    padding-left: 50%;
+    text-align: left;
+  }
+
+  //分页=================
+  .page {
+    @mixin noBgColor {
+      background-color: transparent;
     }
+    $pageColor: $colorE33;
 
-    .el-form-item--mini .el-form-item__error {
-      width: 100%;
-      padding-left: 50%;
-      text-align: left;
-    }
-
-    //分页=================
-    .page {
-      @mixin noBgColor {
-        background-color: transparent;
+    .el-pagination {
+      .el-input__inner {
+        @include noBgColor;
       }
-      $pageColor: $colorE33;
 
-      .el-pagination {
-        .el-input__inner {
+      .el-input__inner:focus {
+        border-color: $pageColor;
+      }
+
+      .el-pager {
+        li {
           @include noBgColor;
-        }
 
-        .el-input__inner:focus {
-          border-color: $pageColor;
-        }
-
-        .el-pager {
-          li {
-            @include noBgColor;
-
-            &:hover {
-              color: $pageColor;
-            }
-          }
-
-          li.active {
+          &:hover {
             color: $pageColor;
           }
         }
 
-        button:hover {
+        li.active {
           color: $pageColor;
         }
+      }
 
-        button:disabled {
-          @include noBgColor;
-        }
+      button:hover {
+        color: $pageColor;
+      }
 
-        .btn-next,
-        .btn-prev {
-          @include noBgColor;
-        }
+      button:disabled {
+        @include noBgColor;
+      }
+
+      .btn-next,
+      .btn-prev {
+        @include noBgColor;
       }
     }
+  }
 
-    #recruitment {
-      .el-button--success {
-        color: #0eb17d;
-        background: #cff8ea;
+  #recruitment {
+    .el-button--success {
+      color: #0eb17d;
+      background: #cff8ea;
+      font-weight: bold;
+    }
+
+    .el-button--warning {
+      color: #ffb522;
+      background: #fff7e4;
+    }
+
+    .el-button--danger.el-button--mini {
+      background: #ffe9ea;
+      color: #d84d51;
+    }
+  }
+
+  #part_two {
+    .el-button--success.is-plain {
+      border: 1px solid #0eb17d;
+    }
+
+    .el-button--danger.el-button--mini.is-plain {
+      background: #ffe9ea;
+      color: #d84d51;
+      border: 1px solid #d84d51;
+    }
+  }
+
+  #part_four {
+    .offer_container,
+    .labour_contract {
+      .el-input__inner {
+        border: none;
+        border-radius: 0;
+        border-bottom: 1px solid #999;
+        padding: 0;
+        position: relative;
+        top: -10px;
+        text-align: center;
+        color: black;
         font-weight: bold;
       }
-
-      .el-button--warning {
-        color: #ffb522;
-        background: #fff7e4;
-      }
-
-      .el-button--danger.el-button--mini {
-        background: #ffe9ea;
-        color: #d84d51;
-      }
     }
 
-    #part_two {
-      .el-button--success.is-plain {
-        border: 1px solid #0eb17d;
+    .labour_contract {
+      .el-input__inner {
+        text-align: left;
+        padding-left: 20px;
       }
 
-      .el-button--danger.el-button--mini.is-plain {
-        background: #ffe9ea;
-        color: #d84d51;
-        border: 1px solid #d84d51;
+      .el-form-item__label {
+        color: black;
+        text-align: left;
       }
-    }
-
-    #part_four {
-      .offer_container,
-      .labour_contract {
-        .el-input__inner {
-          border: none;
-          border-radius: 0;
-          border-bottom: 1px solid #999;
-          padding: 0;
-          position: relative;
-          top: -10px;
-          text-align: center;
-          color: black;
-          font-weight: bold;
-        }
-      }
-
-      .labour_contract {
-        .el-input__inner {
-          text-align: left;
-          padding-left: 20px;
-        }
-
-        .el-form-item__label {
-          color: black;
-          text-align: left;
-        }
-      }
-    }
-  }
-
-  #theme_name.theme1 {
-    .el-table {
-      tbody {
-        tr.current-row {
-          td {
-            color: $colorE33;
-          }
-        }
-
-        tr:hover {
-          td {
-            color: rgba(207, 46, 51, 0.5);
-          }
-        }
-      }
-
-      .tableChooseRow {
-        color: $color2D2;
-      }
-    }
-  }
-
-  #theme_name.theme2 {
-
-  }
-
-  #theme_name.theme3 {
-  }
-
-  #theme_name.theme4 {
-  }
-
-  //表格scroll重置
-  .el-table__body-wrapper.is-scroll-right,
-  .el-table__body-wrapper.is-scroll-left,
-  .el-table__body-wrapper.is-scroll-middle,
-  .el-table__body-wrapper.is-scrolling-none,
-  .el-table--scrollable-x .el-table__body-wrapper {
-    &::-webkit-scrollbar {
-      width: 4px;
-      height: 5px;
-      @include radius(10px);
-    }
-
-    &::-webkit-scrollbar-button {
-      height: 0;
-      background-color: #eee;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #e4e7ed;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      @include radius(10px);
-      background: #747474;
     }
   }
 }
+
+#theme_name.theme1 {
+  .el-table {
+    tbody {
+      tr.current-row {
+        td {
+          color: $colorE33;
+        }
+      }
+
+      tr:hover {
+        td {
+          color: rgba(207, 46, 51, 0.5);
+        }
+      }
+    }
+
+    .tableChooseRow {
+      color: $color2D2;
+    }
+  }
+}
+
+#theme_name.theme2 {
+
+}
+
+#theme_name.theme3 {
+}
+
+#theme_name.theme4 {
+}
+
+//表格scroll重置
+.el-table__body-wrapper.is-scroll-right,
+.el-table__body-wrapper.is-scroll-left,
+.el-table__body-wrapper.is-scroll-middle,
+.el-table__body-wrapper.is-scrolling-none,
+.el-table--scrollable-x .el-table__body-wrapper {
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+    @include radius(10px);
+  }
+
+  &::-webkit-scrollbar-button {
+    height: 0;
+    background-color: #eee;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #e4e7ed;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @include radius(10px);
+    background: #747474;
+  }
+}
+

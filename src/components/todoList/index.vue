@@ -112,9 +112,8 @@
       },
     },
     watch: {
-      todo_list_container: {
+      /*todo_list_container: {
         handler(val, oldVal) {
-          //console.log(val, oldVal);
           this.$nextTick(() => {
             if (val && val.length >= 0 && val.length <= 5) {
               this.todo_list_container_arr[0] = val.slice(0, val.length);
@@ -129,7 +128,7 @@
 
         },
         immediate: true
-      },
+      },*/
     },
     data() {
       return {
@@ -142,7 +141,8 @@
         },
         checked: 1,//选择哪个toolbar
         container_checked: -1,//选择哪个列表数据容器,
-        todo_list_container_arr: [],
+        //todo_list_container_arr: [],
+        noSearch:'MarketCollect,MC-Bulletin',//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
           {
@@ -152,7 +152,7 @@
             count: 0,
           },
         ],
-        todo_list_container: [
+        /*todo_list_container: [
           {
             id: 1,
             name: '维修工单',
@@ -229,16 +229,13 @@
             project: '借用审批编号10086',
             onClick: 'humanResource_repository' //click事件控制lj-dialog显示隐藏
           }
-        ],
+        ],*/
 
-       /* todo_list_container: [],*/
+        todo_list_container: [],
       }
     },
     mounted() {
-      //this.getTodoListToolBar();
-      /*this.$http.get(' ').then(res => {
-        console.log(res);
-      })*/
+      this.getTodoListToolBar();
     },
     methods: {
       handleCreateTodo() {
@@ -253,6 +250,7 @@
       //获取待办toolbar数据
       getTodoListToolBar() {
         let params = {
+          procDefKeyNotIn:this.noSearch,
           //assignee:3,//用户id
         };
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
@@ -295,6 +293,7 @@
         let params = {
           ...this.params,
           processDefinitionKey: item.key || '',
+          processDefinitionKeyNotIn:this.noSearch
         };
 
         this.$http.get(`${this.url}runtime/tasks`, params).then(res => {
