@@ -108,7 +108,7 @@ export const LeaveJobSearch = {
       placeholder: '请选择日期',
       keyName: 'dismiss_time',
       dataType: []
-    },
+    }
   ]
 }
 
@@ -185,6 +185,14 @@ export const workOrderSearch = {
         {
           id: 6,
           title: '退租'
+        },
+        {
+          id: 7,
+          title: '维修'
+        },
+        {
+          id: 8,
+          title: '保洁'
         },
         {
           id: 9,

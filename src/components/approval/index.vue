@@ -1,6 +1,6 @@
 <template>
   <div id="theme_name" class='theme1'>
-    <div id='approval' :class="{'approval':message_visible}" @click.stop='isRevice_visible = false'>
+    <div id='approval' :class="{'approval':message_visible}">
       <!-- <div class="header_btns">
         <p :class='{"activeTag":chosenTag == item.value}' v-for='item in shenHe_type' :key='item.value'>
           <i :class='["icons",item.icons]'></i>
@@ -21,12 +21,14 @@
             {{isRevice ? "挂起":"接收"}}
           </p>
           <div class="margin">
-            <p :class='["ele_p",revice_type.length >0?"revice_span":""]' @click.stop='setRecive_type'>
-              {{ revice_check.length == 0 ? "接收类型" : revice_check.join('-') }}</p>
+            <p :class='["ele_p",revice_check_name.length >0?"revice_span":""]' @click.stop='setRecive_type'>
+              {{ revice_check_name.length == 0 ? "接收类型" : revice_check_name.join('-') }}</p>
 
-            <div class='revice_box' v-if='isRevice_visible' @mouseleave.stop="isRevice_visible =false">
+            <div class='revice_box' v-if='isRevice_visible'>
               <el-checkbox-group v-model="revice_check">
-                <el-checkbox v-for='type in revice_type' :key='type.title' :label="type.title" :value='type.id' />
+                <el-checkbox v-for='type in Object.keys(revice_type)' :key='type' :label="type">
+                  {{revice_type[type]}}
+                </el-checkbox>
               </el-checkbox-group>
               <div class="dialog_footer">
                 <el-button type="danger" size="small" @click='handleChangeRevice'>确定</el-button>
@@ -192,6 +194,7 @@ export default {
       isRevice: false, //是否接收
       isRevice_visible: false,  // 接收类型设置 显示隐藏
       revice_check: [], // 接收类型 选择
+      revice_check_name: [],
       controlPanel_visible: false, // 控制面板 显示隐藏
       showSearch: false, // 高级搜索 显示隐藏
       searchHigh: {}, // 高级搜索 参数
@@ -228,6 +231,11 @@ export default {
       if (val) {
         this.getApprovalsList(1)
       }
+      this.isRevice_visible = false
+      this.showSearch = false
+      this.controlPanel_visible = false
+      this.contract_detail_visible = false
+      this.develop_visible = false
     }
   },
   methods: {
@@ -272,7 +280,8 @@ export default {
       this.showLoading(true);
       this.$http.get(`${this.approval_sever}${url}`, params).then(res => {
         this.showLoading(false);
-        this.tableData['data' + val] = this.setFormateApproval(res.data)
+
+        this.tableData['data' + val] = res.size > 0 ? this.setFormateApproval(res.data) : []
         this.total['total' + val] = res.total
       })
     },
@@ -380,26 +389,11 @@ export default {
     // 接收 挂起
     change_revice_type () {
       this.isRevice = !this.isRevice
-      // this.$http.get(`${this.approval_sever}${url}`, params).then(res => {
-      //   let warn = this.isRevice ? "接收" : "挂起",
-      //     type = 'success'
-      //   if (res.code === 200) {
-      //     warn += '设置成功'
-      //     // 重新刷新数据
-      //     this.handleCurrentChange(1)
-      //   } else {
-      //     warn += '设置失败'
-      //     type = 'warning'
-      //   }
-      //   this.$LjNotify(type, {
-      //     title: '提示',
-      //     message: warn
-      //   });
-      // })
+      this.handleCheckType()
     },
     setRecive_type () {
       if (this.isRevice) {
-        this.isRevice_visible = true
+        this.isRevice_visible = !this.isRevice_visible
       } else {
         this.$LjNotify('warning', {
           title: '提示',
@@ -407,9 +401,23 @@ export default {
         });
       }
     },
+    handleCheckType () {
+      let params = {
+        "receiveTypeList": this.revice_check,
+        "suspend": !this.isRevice
+      }
+      this.$http.post(`${this.approval_sever}monitor/process-instances`, params).then(res => {
+        console.log(res)
+      })
+    },
     // 选择 接收类型
     handleChangeRevice () {
       this.isRevice_visible = false
+      this.revice_check_name = []
+      this.revice_check.forEach(ele => {
+        this.revice_check_name.push(this.revice_type[ele])
+      });
+      this.handleCheckType()
     },
     // 取消 接收类型
     handleCancleRevice () {

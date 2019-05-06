@@ -161,7 +161,7 @@ export default {
         work_order_id: '',
         default_Person: ''
       },
-      createOrder_visible: false, //创建新工单
+      createOrder_visible: false, //创建新工单 
       sureEnding_visible: false, // 确定结束
       sureEnd_info: {
         payer: '',
@@ -193,7 +193,7 @@ export default {
   },
   methods: {
     getDoingCount () {
-      this.$http.get(this.market_server + `v1.0/csd/work_order/readFollowNum`).then(res => {
+      this.$http.get(this.market_server + `v1.0/csd/work_order/readFollowNum?type=${this.searchParams.type || 0}`).then(res => {
         if (res.code == 200) {
           this.isDoing_count = res.data.join(',')
         }
@@ -244,6 +244,7 @@ export default {
         this.currentPage = 1;
         this.searchParams = val
         this.getDataList()
+        this.getDoingCount()
       }
     },
     // 切换 待处理 跟进中 已完成

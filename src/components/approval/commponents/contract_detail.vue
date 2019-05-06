@@ -105,24 +105,25 @@
       <!-- 评论 -->
       <div :class='["comments_box",comment_show_visible?"comments_box_active":""]'>
         <div class='comments_list'>
-          <div class='comment_cell'>
+          <div class='comment_cell' v-for='item in record_list' :key='item.id'>
             <div class='comment_cell_header'>
-              <span class='span1'>撒旦飞洒地方</span>
-              <span class='span2'>2019-01-22 10:00:00</span>
+              <span class='span1'>{{item.title}}</span>
+              <span class='span2'>{{item.time}}</span>
             </div>
-            <div class='comment_cell_words'>sdfasfasfdsdfasfdd</div>
+            <div class='comment_cell_words'>{{item.content.message}}</div>
+            <Ljupload size='30' v-model="item.content.attachments" disabled=true :download='false'></Ljupload>
             <div class='comment_border'></div>
           </div>
         </div>
         <div class='comments_footer'>
-          <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="comment_info.content">
+          <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="comment_info.message">
           </el-input>
           <!-- 上传图片 -->
+          <p class='postTit'>发送图片</p>
           <div class='img_box'>
-            <p class='postTit'>发送图片</p>
-            <Ljupload size='30' v-model='comment_info.album'></Ljupload>
+            <Ljupload size='30' v-model='comment_info.attachments'></Ljupload>
           </div>
-          <div class='post'>
+          <div class='post' @click='postComment'>
             <i class='post_icons'></i>
             发送
           </div>
@@ -232,8 +233,8 @@ export default {
       titleTips: null,
       comment_show_visible: false,
       comment_info: {
-        content: '',
-        album: []
+        message: null,
+        attachments: []
       },
       record_show_visible: false,
       show_form_visible: false,
@@ -244,6 +245,7 @@ export default {
       market_server: globalConfig.market_server,
       bulletin_type: '',
       relateions: {},
+      record_list: [],
       taskType: ['rtl_detail_request_url', 'ctl_detail_request_url'],
     }
   },
@@ -251,8 +253,7 @@ export default {
     moduleData: {
       handler (val) {
         if (val) {
-          this.defineForm = this.defineForms[1]
-          this.titleTips = defineTitleTips[1]
+
           // val.bm_detail_request_url = 'http://test.market.api.ewal.lejias.cn/v1.0/market/process/edit/283';
 
           this.getDetailForm(val)
@@ -272,6 +273,9 @@ export default {
         if (res.code === 200) {
           this.formData = res.data.content
           this.bulletin_type = res.data.bulletin_type
+
+          this.defineForm = this.bulletin_type == 'bulletin_collect_basic' ? this.defineForms[1] : this.defineForms[2]
+          this.titleTips = this.bulletin_type == 'bulletin_collect_basic' ? defineTitleTips[1] : defineTitleTips[2]
           this.handleDetail(res.data.content)
           this.getRelated()
         }
@@ -439,13 +443,40 @@ export default {
       this.comment_show_visible = false
       this.$emit('close', close)
     },
-    changeBtns_type (val) {
+    changeBtns_type (val) { // 查看评论信息
       this.comment_show_visible = !this.comment_show_visible
       if (this.comment_show_visible) {
-        this.$http.get(`${this.approval_sever}runtime/tasks/${this.formData.task_id}/comments`).then(res => {
-          console.log(res)
+        this.$http.get(`${this.approval_sever}history/process-instances/1a5c950a-6f2c-11e9-b97c-76de95b6db95/comments`).then(res => {
+          this.record_list = res
         })
       }
+    },
+    postComment () {
+      console.log(this.comment_info)
+      if (!this.comment_info.message) {
+        this.$LjNotify('warning', {
+          title: '评论内容不得为空',
+          message: ''
+        });
+        return
+      }
+
+      let params = {
+        author: 69,
+        content: this.comment_info,
+        saveProcessInstanceId: true
+      }
+
+      console.log(params)
+      this.$http.post(`${this.approval_sever}history/process-instances/1a5c950a-6f2c-11e9-b97c-76de95b6db95/comments`, params).then(res => {
+        console.log(res)
+        this.comment_info = {
+          message: null,
+          attachments: []
+        }
+
+        console.log(this.comment_info)
+      })
     },
 
     handleRecord () {
@@ -706,6 +737,7 @@ export default {
       }
       .comments_list {
         flex: 1;
+        padding-bottom: 20px;
         @include scroll;
         overflow-x: hidden;
         .comment_cell {
@@ -733,16 +765,19 @@ export default {
         }
       }
       .comments_footer {
-        height: 160px;
+        height: 180px;
+        .postTit {
+          font-size: 14px;
+          color: #b0b0b0;
+          text-align: left;
+          padding-left: 8px;
+        }
         .img_box {
           height: 50px;
+          padding-left: 8px;
           @include scroll;
-          .postTit {
-            font-size: 14px;
-            color: #b0b0b0;
-            text-align: left;
-            padding-left: 8px;
-          }
+          overflow: hidden;
+          overflow-y: scroll;
         }
 
         .post {
@@ -751,7 +786,7 @@ export default {
           align-items: center;
           font-size: 14px;
           padding-right: 10px;
-          margin-top: 10px;
+          margin-top: 6px;
           .post_icons {
             display: inline-block;
             width: 14px;
@@ -972,7 +1007,7 @@ export default {
     .comments_box {
       .el-textarea__inner {
         border: none;
-        height: 100px;
+        height: 60px;
       }
     }
     // 拒绝
