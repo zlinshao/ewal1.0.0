@@ -11,9 +11,9 @@
     </div>
     <div class="currentMonthAssessmentContainer changeChoose">
       <div class="containerTop">
-        <button @click="sendKpi()">KPI确认</button>
-        <div></div>
+        <div class="selector"></div>
         <h2 @click="selectAll()">全选</h2>
+        <div @click="sendKpi()" class="kpiconfirm">KPI确认</div>
       </div>
       <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiList" height="650px" ref="multipleTable"
         @selection-change="handleSelectionChange">
@@ -30,16 +30,16 @@
         </el-table-column>
         <el-table-column label="发送状态" align="center" prop='sendStatus'>
           <template slot-scope="scope">
-            <el-button plain type="primary" size="small" v-if="scope.row.sendStatus=== 0">未发送</el-button>
-            <el-button plain type="danger" size="small" v-if="scope.row.sendStatus=== 2">发送失败</el-button>
-            <el-button plain type="success" size="small" v-if="scope.row.sendStatus=== 1">已发送</el-button>
+            <div v-if="scope.row.sendStatus=== 0" class="notSend">未发送</div>
+            <div size="small" v-if="scope.row.sendStatus=== 2" class="sendFail">发送失败</div>
+            <div v-if="scope.row.sendStatus=== 1" class="hasSend">已发送</div>
           </template>
         </el-table-column>
         <el-table-column label="确认状态" align="center" prop='confirmStatus'>
           <template slot-scope="scope">
-            <el-button plain size="small" background="rgba(10,31,68,1)" v-if="scope.row.confirmStatus=== 0">未确认</el-button>
-            <el-button plain type="success" size="small" v-if="scope.row.confirmStatus=== 2">有异议</el-button>
-            <el-button plain type="danger" size="small" v-if="scope.row.confirmStatus=== 1">已确认</el-button>
+            <div v-if="scope.row.confirmStatus=== 0" class="notConfirm">未确认</div>
+            <div v-if="scope.row.confirmStatus=== 2" class="sendFail">有异议</div>
+            <div v-if="scope.row.confirmStatus=== 1" class="hasSend">已确认</div>
           </template>
         </el-table-column>
       </el-table>
@@ -413,6 +413,63 @@ export default {
 .is_appeal {
   color: red;
 }
+.notSend{
+  width:96px;
+  height:30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius:4px;
+  background:rgba(245,250,255,1);
+  border:1px solid rgba(12,102,255,1);
+  font-size:14px;
+  font-family:MicrosoftYaHei;
+  color:rgba(12,102,255,1);
+  line-height:19px;
+  letter-spacing:2px;
+}
+.sendFail{
+  width:96px;
+  height:30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius:4px;
+  border:1px solid rgba(240,61,61,1);
+  font-size:14px;
+  font-family:MicrosoftYaHei;
+  color:rgba(240,61,61,1);
+  line-height:19px;
+}
+.hasSend{
+  width:96px;
+  height:30px;
+  border-radius:4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:rgba(234,252,247,1);
+  border:1px solid rgba(11,176,123,1);
+  font-size:14px;
+  font-family:MicrosoftYaHei;
+  color:rgba(11,176,123,1);
+  line-height:19px;
+  letter-spacing:2px;
+}
+.notConfirm{
+  width:96px;
+  height:30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius:4px;
+  border:1px solid rgba(225,228,232,1);
+  font-size:14px;
+  font-family:MicrosoftYaHei;
+  color:rgba(104,104,116,1);
+  line-height:19px;
+  letter-spacing:2px;
+}
 </style>
 
 
@@ -429,6 +486,13 @@ export default {
     .listTopRight {
       .daochu {
         @include currentMonthAssessmentImg("daochu.png", "theme1");
+      }
+    }
+    .currentMonthAssessmentContainer{
+      .containerTop{
+        .kpiconfirm{
+          @include currentMonthAssessmentImg("bykh.png", "theme1");
+        }
       }
     }
   }

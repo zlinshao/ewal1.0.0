@@ -4,6 +4,11 @@
   #kpi {
     background-color: white;
     height: 100%;
+      .bar{
+        width:1920px;
+        height:10px;
+        background:rgba(246,246,246,1);
+      }
       .kpiTable{
         display: flex;
         flex-direction: row;
