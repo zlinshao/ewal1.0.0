@@ -12,7 +12,7 @@
               <span v-if='item == "photo"'>(重新报备)</span>
             </p>
             <div v-if='moduleData.album' class='imgBox'>
-              <Ljupload size='40' v-model='moduleData.album[item]' disabled=true download=false></Ljupload>
+              <Ljupload size='40' v-model='moduleData.album[item]' disabled=true :download='false'></Ljupload>
               <!-- <img :src="img.uri" alt="" v-for='img in moduleData.album[item]' :key='img.id' data-magnify=""
                 data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'> -->
             </div>

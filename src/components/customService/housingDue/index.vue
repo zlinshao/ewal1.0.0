@@ -432,7 +432,7 @@
                 style='min-height:80px;'>
                 <div class='mian_tit'>{{polishing_data[chooseTab-1][item]}}</div>
                 <div style="width: 90%;text-align: left">
-                  <Ljupload size='40' v-model='contractDetail.album[item]' disabled=true download=false></Ljupload>
+                  <Ljupload size='40' v-model='contractDetail.album[item]' disabled=true :download='false'></Ljupload>
                   <!-- <img v-for="tmp in contractDetail.album[item]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
                     :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri"> -->
                 </div>
