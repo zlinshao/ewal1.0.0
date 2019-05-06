@@ -152,7 +152,7 @@
             count: 0,
           },
         ],
-        /*todo_list_container: [
+        todo_list_container: [
           {
             id: 1,
             name: '维修工单',
@@ -229,13 +229,13 @@
             project: '借用审批编号10086',
             onClick: 'humanResource_repository' //click事件控制lj-dialog显示隐藏
           }
-        ],*/
+        ],
 
-        todo_list_container: [],
+       /* todo_list_container: [],*/
       }
     },
     mounted() {
-      this.getTodoListToolBar();
+      //this.getTodoListToolBar();
       /*this.$http.get(' ').then(res => {
         console.log(res);
       })*/
