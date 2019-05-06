@@ -48,6 +48,7 @@
                   <p>{{item.complete_work}}</p>
                   <p>备注：{{item.ps}}</p>
                   <div class="readAvatar">
+                    <div class="readedIcon" width="14px;" height="14px;"></div>
                     <h6>全部已读</h6>
                     <img :src="items" v-for="(items, index) in item.read_avatar" :key="index" height="40px" width="40px" border-radius="20px"/>
                   </div>
@@ -383,6 +384,12 @@
         }
       }
     }
+    .el-collapse{
+      border: none;
+    }
+    .el-collapse-item__header{
+      border: none;
+    }
   }
 
 </style>
@@ -410,6 +417,9 @@
           }
         }
         .work-log-container-right {
+          .readedIcon{
+            @include personalCenterImg('yidu.png', 'theme1');
+          }
         }
       }
     }

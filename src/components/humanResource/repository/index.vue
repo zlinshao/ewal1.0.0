@@ -27,7 +27,7 @@
         <div class="bg-container flex-center" @click="chooseTab=1"><span>库存管理</span></div>
         <div class="bg-container flex-center" @click="chooseTab=2"><span>领用借用</span></div>
         <div class="bg-container flex-center" @click="chooseTab=3"><span>资料库</span></div>
-        <div class="bg-container flex-center" @click="chooseTab=4"><span>办公住宿</span></div>
+        <!-- <div class="bg-container flex-center" @click="chooseTab=4"><span>办公住宿</span></div> -->
       </div>
       <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
                  @change="handleChangeDate"></work-info>
@@ -118,10 +118,10 @@
             id: 3,
             title: '资料库',
           },
-          {
-            id: 4,
-            title: "办公室/宿舍管理"
-          }
+          // {
+          //   id: 4,
+          //   title: "办公室/宿舍管理"
+          // }
         ],//tab切换
 
         organModule: false,//组织架构

@@ -29,14 +29,11 @@
                 ...............................
                 <h3>{{item.name}}</h3>
               </div>
-              <span class="handleTrigger flex-center">
-                <div class="handlePointer">...</div>
-                <div class="editPatant">
-                  <span @click="editPatent(index)" class="handlePatent">编辑 </span>
-                  <span></span>
-                  <span @click="removePatent(index)" class="handlePatent"> 删除</span>
-                </div>
-              </span>
+              <a class="handleTrigger flex-center">
+                <a class="handlePointer">...</a>
+                <b @click="editPatent(index)" class="handlePatent">编辑 </b>
+                <b @click="removePatent(index)" class="handlePatent"> 删除</b>
+              </a>
             </div>
           </div>
         </div>
@@ -45,11 +42,15 @@
       <div v-if="showNoneData" class="noneDataShow">
         <div></div>
       </div>
-      <div class="page flex-center common-page" v-if="showAllData">
-        <el-pagination :current-page="currentPage" :page-size="6" :total="total" layout="total,jumper,prev,pager,next">
-        </el-pagination>
-      </div>
-
+      <footer class="flex-center bottomPage" v-if="showAllData">
+        <div class="develop flex-center">
+          <i class="el-icon-d-arrow-right"></i>
+        </div>
+        <div class="page" >
+          <el-pagination :current-page="currentPage" :page-size="6" :total="total" layout="total,jumper,prev,pager,next">
+          </el-pagination>
+        </div>
+      </footer>
     </div>
 
     <!-- 展示专利 -->
@@ -218,6 +219,8 @@ export default {
               obj.departmentHeader = res.data.data[i].org_id.name.slice(0, 6)
               obj.departmentFooter = res.data.data[i].org_id.name.slice(6, 12)
             }
+            obj.show = true
+            obj.shows = false
             this.patentList.push(obj);
           }
           if (this.patentList.length > 0) {
@@ -374,6 +377,14 @@ export default {
     changeTabs: function (item) {
       this.routerLink(item.url);
     },
+    pointerEnter(item){
+      item.show = false
+      item.shows= true
+    },
+    pointerLeave(item){
+      item.show = true
+      item.shows= false
+    }
   }
 }
 </script>

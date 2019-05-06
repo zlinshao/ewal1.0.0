@@ -1,5 +1,6 @@
 <template>
   <div id="kpi">
+    <div class="bar"></div>
     <div class="kpiTable">
       <div class="table">
         <el-table :data="weekData" v-if="choosedPeriod===0" highlight-current-row header-row-class-name="tableHeader">

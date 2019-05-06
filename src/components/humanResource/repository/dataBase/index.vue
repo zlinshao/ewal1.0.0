@@ -2001,8 +2001,8 @@ export default {
       active: [
         {id: 0, val: '片区异动交接单'},
         {id: 1, val: '采购合同'},
-        {id: 2, val: '合同编号'},
-        {id: 3, val: '合同编号管理'},
+        // {id: 2, val: '合同编号'},
+        // {id: 3, val: '合同编号管理'},
       ],
       contractNumberChoose: [
         {id: 0, val: '汇总'},
@@ -2093,7 +2093,7 @@ export default {
   mounted () {
     this.getAreaChangeOrder();
     this.getApprovalDetail();
-    this.getCityList();
+    // this.getCityList();
   },
   methods: {
     //左边菜单切换
