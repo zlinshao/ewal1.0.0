@@ -125,8 +125,7 @@ export default {
 
     paper_visible: {
       handler (val, oldVal) {
-        this.$store.dispatch('change_humanResource_answer_test_paper_visible');
-        //this.$emit('update:visible', this.paper_visible);
+        this.$emit('update:visible', this.paper_visible);
       },
       immediate: true,
     },
