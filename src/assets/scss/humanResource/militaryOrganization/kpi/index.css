@@ -181,6 +181,10 @@
 #theme_name #kpi {
   background-color: white;
   height: 100%; }
+  #theme_name #kpi .bar {
+    width: 1920px;
+    height: 10px;
+    background: #f6f6f6; }
   #theme_name #kpi .kpiTable {
     display: flex;
     flex-direction: row;

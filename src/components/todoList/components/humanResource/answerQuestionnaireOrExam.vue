@@ -1,6 +1,6 @@
 <template>
   <div id="test_paper_answer">
-    <answer-test-paper :visible="test_paper_visible" :params="paper_params" :exam-list="examList"></answer-test-paper>
+    <answer-test-paper :visible="test_paper_visible" :params="paper_params" :exam-data="exam_data"></answer-test-paper>
   </div>
 </template>
 
@@ -16,7 +16,7 @@
     data() {
       return {
         test_paper_visible: false,
-        examList: [],
+        exam_data: [],
         paper_params: {
           title: '入职考试',
         }
@@ -25,14 +25,44 @@
     watch: {
       answer_test_paper_visible: {
         handler(val, oldVal) {
-          this.test_paper_visible = val;
+          if (val) {//先请求接口 请求完成后打开页面
+            console.log(this.todo_list_current_selection);
+            let item = this.todo_list_current_selection;
+            this.paper_params.title = item.name;
+
+            let url = _.find(item.variables,{name:'detail_request_url'})?.value||null;
+            if(!url) return;
+            this.$http.get(url).then(res=> {
+              if(res.code.endsWith('0')) {
+                if(res.data && res.data.question_set) {
+                  this.exam_data.exam_id = res.data.id;//考试id  传到TestPaperExam组件中 用来提交考试
+                  this.exam_data.question_set = res.data.question_set;
+                }
+
+                this.test_paper_visible = val;
+
+              }else {
+                this.$LjMessage('warning',{
+                  title: '警告',
+                  msg:res.msg,
+                });
+                this.$store.dispatch('change_humanResource_answer_test_paper_visible');
+                return;
+              }
+
+            });
+
+
+
+
+
+          }
+
         },
       },
       test_paper_visible: {
         handler(val, oldVal) {
-          if (val) {
-            console.log(this.todo_list_current_selection);
-          }
+
         },
       },
     },

@@ -28,19 +28,19 @@
         <div class="content flex-center">
           <div class="contain flex-center">
             <div>
-              <p><a>15</a>/套</p>
+              <p><a>{{lord_count}}</a>/套</p>
               <p>收房数</p>
             </div>
             <div>
-              <p><a>357</a>/套</p>
+              <p><a>{{rent_count}}</a>/套</p>
               <p>租房数</p>
             </div>
             <div>
-              <p><a>357.472.84792429</a></p>
+              <p><a>{{real_achievement_all}}</a></p>
               <p>实际业绩</p>
             </div>
             <div>
-              <p><a>90.4234</a></p>
+              <p><a>{{overflow_all}}</a></p>
               <p>溢出业绩</p>
             </div>
           </div>
@@ -53,14 +53,15 @@
           :height="this.mainListHeight(130) + 'px'"
         >
           <el-table-column label="业绩月份" prop="generate_date" align="center"></el-table-column>
-          <el-table-column label="姓名" prop="b" align="center"></el-table-column>
-          <el-table-column label="收房套数" prop="c" align="center"></el-table-column>
-          <el-table-column label="租房套数" prop="d" align="center"></el-table-column>
+          <el-table-column label="租房人" prop="rent_staff_name" align="center"></el-table-column>
+          <el-table-column label="房屋地址" prop="rent_house_name" align="center"></el-table-column>
+          <el-table-column label="收房月单价" prop="lord_month_price" align="center"></el-table-column>
+          <el-table-column label="租房月单价" prop="rent_month_price" align="center"></el-table-column>
           <el-table-column label="实际业绩" prop="real_achievement_all" align="center"></el-table-column>
           <el-table-column label="溢出业绩" prop="overflow_all" align="center"></el-table-column>
-          <el-table-column label="开单人" prop="g" align="center"></el-table-column>
-          <el-table-column label="负责人" prop="h" align="center"></el-table-column>
-          <el-table-column label="所属部门" prop="i" align="center"></el-table-column>
+          <el-table-column label="实际到手" prop="real_money_all" align="center"></el-table-column>
+          <el-table-column label="负责人" prop="rent_leader_name" align="center"></el-table-column>
+          <el-table-column label="所属部门" prop="rent_org_name" align="center"></el-table-column>
         </el-table>
       </div>
 
@@ -70,7 +71,7 @@
         </div>
         <div class="page">
           <el-pagination
-            :total="1000"
+            :total="performance_count"
             layout="total,jumper,prev,pager,next"
             :current-page="params.page"
             :page-size="params.limit"
@@ -114,7 +115,7 @@
         chooseTab: 1,
         params: {
           page: 1,
-          limit: 30,
+          limit: 5,
           search: '',
           start_date: '',
           end_date: '',
@@ -122,6 +123,10 @@
           rent_staff_id: '',
           lord_ord_id: '',
         },
+        real_achievement_all:'',
+        overflow_all:'',
+        rent_count:'',
+        lord_count:'',
         performance_list: [],
         performance_count: 0,
       }
@@ -145,6 +150,10 @@
           if (res.code === "50000") {
             this.performance_list = res.data.data;
             this.performance_count = res.data.count;
+            this.real_achievement_all=res.data.real_achievement_all;
+            this.overflow_all=res.data.overflow_all;
+            this.rent_count=res.data.rent_count;
+            this.lord_count=res.data.lord_count;
           } else {
             this.performance_list = [];
             this.performance_count = 0;
@@ -156,6 +165,7 @@
       },
       handleChangePage(page) {
         this.params.page = page;
+        this.handleGetPerformanceList();
       },
     },
   }
