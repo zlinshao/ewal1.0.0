@@ -2,7 +2,7 @@
     <div id="button_upload">
       <label @click="triggerFile">
         <!--<el-button size="small" type="primary" plain @click="triggerFile">导入报表</el-button>-->
-        <el-input size="small"  readonly style="width: 220px"><i
+        <el-input size="small" v-model="name"  readonly style="width: 220px"><i
           class="el-icon-folder el-input__icon"
           slot="suffix">
         </i></el-input>
@@ -23,6 +23,7 @@
     },
     data() {
       return {
+        name: '',
         url:globalConfig.humanResource_server,
         token: '',//上传凭证
         ids: [],
@@ -132,6 +133,7 @@
               data.raw_name = res.key;
               data.type = fileType;
               data.size = fileSize;
+              that.name = data.name;
               that.$http.uploadServer(data).then(res => {
                 if (res.code === "110100") {
                   that.ids.push(Number(res.data.id));

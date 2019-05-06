@@ -11,9 +11,9 @@
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
 
-            <!--<el-table-column-->
-                    <!--type="selection" width="40">-->
-            <!--</el-table-column>-->
+            <el-table-column
+                    type="selection" width="40">
+            </el-table-column>
             <el-table-column label="标记" align="center" width="90">
                 <template slot-scope="scope">
                     <div class="statusBar flex-center" v-if="renterStatus[scope.$index]['suppress_dup']===1">

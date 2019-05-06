@@ -14,6 +14,9 @@
         </h2>
       </div>
       <div class="items-center listTopRight" v-show="!action_visible">
+        <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
+          <div class="icons allInsert" @click="openBatchEntry"></div>
+        </el-tooltip>
         <el-tooltip content="新增应收款项" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="openAdd"><b>+</b></div>
         </el-tooltip>
@@ -512,7 +515,7 @@
     <!--登记收款-->
     <lj-dialog
       :visible="register_visible"
-      :size="{width: 500 + 'px',height: 580 + 'px'}"
+      :size="{width: 500 + 'px',height: 700 + 'px'}"
       @close="register_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
@@ -525,7 +528,7 @@
                          style="position: absolute; top: -12px;"></lj-upload>
             </el-form-item>
             <el-form-item label="房屋地址">
-              <el-input v-model="register_from.address"></el-input>
+              <el-input v-model="register_from.address" readonly></el-input>
             </el-form-item>
             <el-form-item label="付款方式">
               <el-select placeholder="请选择" v-model="register_from.pay_type" @change="getAccount">
@@ -669,6 +672,100 @@
       </div>
     </lj-dialog>
 
+    <!--批量入账-->
+    <lj-dialog :visible="batchEntry_visible" :size="{width: 900 + 'px',height: 560 + 'px'}"
+               @close="batchEntry_visible = false;current_row = ''">
+      <div class="dialog_container">
+        <div class="dialog_header justify-bet">
+          <h3>批量入账</h3>
+          <h3 class="batchEntry-icon">
+            <i class="" @click="out_account_visible = true"></i>
+            <i class="" @click="import_account_visible = true"></i>
+          </h3>
+        </div>
+        <div class="dialog_main changeChoose">
+          <el-table
+            :data="batchEntryData"
+            :row-class-name="tableChooseRow"
+            @cell-click="tableClickRow"
+            header-row-class-name="tableHeader"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column align="center" label="操作时间" prop="create_time"></el-table-column>
+            <el-table-column align="center" label="入账账户" prop="account_snapshot[0].name"></el-table-column>
+            <el-table-column align="center" label="初始金额" prop="account_snapshot[0].value"></el-table-column>
+            <el-table-column align="center" label="入账金额" prop="amount"></el-table-column>
+            <el-table-column align="center" label="当前金额" prop="amount"></el-table-column>
+            <el-table-column align="center" label="操作人" prop="staff.name"></el-table-column>
+          </el-table>
+        </div>
+        <div class="dialog_footer">
+          <div class="page">
+            <el-pagination
+              :total="batchEntryCount"
+              layout="total,jumper,prev,pager,next"
+              :current-page="batchEntryParams.page"
+              :page-size="batchEntryParams.limit"
+              @current-change="handleBatchEntryChangePage"
+            ></el-pagination>
+          </div>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <lj-dialog :visible="out_account_visible" @close="cancelOutAccount" :size="{width: 450 + 'px',height: 500 + 'px'}">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>导出转账单</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form size="small" label-width="80px" class="borderNone">
+            <el-form-item label="账户类型">
+              <el-select placeholder="请选择" v-model="out_form.account_type" @change="getAccount">
+                <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
+                           :key="index"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="账户">
+              <el-select placeholder="请选择" v-model="out_form.account"
+                         :disabled="is_disabled" multiple>
+                <el-option v-for="(item,index) in accountLists" :label="item.name"
+                           :value="item.id"
+                           :key="index"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="科目">
+              <el-input v-model="out_form.subject_name" @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true" placeholder="请选择"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间">
+              <el-date-picker v-model="out_form.start_date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="结束时间">
+              <el-date-picker v-model="out_form.end_date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="mini" type="danger" @click="outAccountCtrl">导出</el-button>
+          <el-button size="mini" type="info" @click="cancelOutAccount">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+    <!--批量入账导入-->
+    <lj-dialog :visible="import_account_visible" @close="cancelImportAccount" :size="{width: 500 + 'px',height: 250 + 'px'}">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>导入转账结果</h3>
+        </div>
+        <div class="dialog_main">
+          <Upload @success="handleSuccessFile"></Upload>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="mini" type="danger" @click="importOk">确定</el-button>
+          <el-button size="mini" type="info" @click="cancelImportAccount">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -684,10 +781,11 @@
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
 
   import Customer from '../../common/customer.vue';
+  import Upload from '../payment/components/ButtonUpload'
 
 
   export default {
-    name: "",
+    name: "index",
     components: {
       SearchHigh,
       LjDialog,
@@ -698,10 +796,30 @@
       StaffOrgan,
       HouseFilter,
       Customer,
-
+      Upload
     },
     data() {
       return {
+        out_form: {
+          account: [],
+          account_name: '',
+          start_date: '',
+          end_date: '',
+          subject_id: '',
+          subject_name: '',
+          account_type: '',
+          is_url: 1
+        },
+        batchEntryParams: {
+          page: 1,
+          limit: 15
+        },
+        batchEntry_visible: false,
+        out_account_visible: false,
+        import_account_visible: false,
+        batchEntryData: [],
+        batchEntryCount: 0,
+
         receivable_sum: '',
         received_sum: '',
         balance_sum: '',
@@ -950,7 +1068,7 @@
         ],
         chooseTabI: '',
         collect_img: '',
-
+        is_disabled: true,
       }
     },
     mounted() {
@@ -970,6 +1088,88 @@
     },
     computed: {},
     methods: {
+      getAccount() {//获取账户字典
+        this.accountLists = [];
+        this.out_form.account = [];
+        this.out_form.account_name = '';
+        this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
+          if (res.code === 200) {
+            this.accountLists = res.data.data;
+            this.is_disabled = false;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      importOk() {
+        this.$http.post(globalConfig.temporary_server + 'batch_receivable/import',{doc_id: this.import_file}).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.cancelImportAccount();
+          } else {
+            this.$LjNotify('success',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      outAccountCtrl() {
+        console.log(this.out_form);
+        this.$http.get(globalConfig.temporary_server + 'batch_receivable/export',this.out_form).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            window.location.href = res.data.url;
+            this.cancelOutAccount();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleSuccessFile(file,name) {
+        console.log(file,name);
+        if (file && file.length > 0) {
+          this.import_file = file[0];
+        }
+
+      },
+      cancelOutAccount() { //取消批量导出
+        this.$resetForm(this.out_form);
+        this.out_account_visible = false;
+        this.accountLists = [];
+      },
+      cancelImportAccount() {//取消批量导入
+        this.import_file = '';
+        this.import_account_visible = false;
+      },
+      handleBatchEntryChangePage(page) {//批量入账分页
+        this.batchEntryParams.page = page;
+        this.getBatchEntryData();
+      },
+      openBatchEntry() {
+        this.batchEntry_visible = true;
+        this.getBatchEntryData();
+      },
+      getBatchEntryData() {
+        this.$http.get(globalConfig.temporary_server + "batch_receivable", this.batchEntryParams).then(res => {
+          if (res.code === 200) {
+            this.batchEntryData = res.data.data;
+            this.batchEntryCount = res.data.count;
+          } else {
+            this.batchEntryData = [];
+            this.batchEntryCount = 0;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
       openAdd() {
         this.add_visible = true;
         for (let item of Object.keys(this.addForm)) {
@@ -1045,6 +1245,7 @@
         if (val.length > 0) {
           this.action_visible = true;
           this.current_row = val[0];//当前选择赋值
+          this.register_from.address = val[0].customer && val[0].customer.address;
         } else {
           this.action_visible = false;
         }
@@ -1359,16 +1560,6 @@
           console.log(err);
         })
       },
-      getAccount() {
-        this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
-          if (res.code === 200) {
-            this.accountLists = res.data.data;
-          }
-        }).catch(err => {
-          console.log(err);
-        })
-      },
-
       handleOkReceive() {//应收入账
         let paramsForm = {
           account_id: this.receive_form.account_id,
@@ -1551,6 +1742,10 @@
           this.formData.subject_val = val.title;
 
         }
+        if (this.which_subject === 'out_account') {
+          this.out_form.subject_id = val.id;
+          this.out_form.subject_name = val.title;
+        }
       },
     },
   }
@@ -1566,6 +1761,28 @@
 
   #theme_name {
     #gathering {
+      .batchEntry-icon {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        i {
+          font-style: normal;
+          display: block;
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+        }
+        i:first-child {
+          margin-right: 20px;
+          @include financeImg('output.png', 'theme1')
+        }
+        i:last-child {
+          @include financeImg('input.png', 'theme1')
+        }
+      }
+      .allInsert {
+        @include financeImg('allInsert.png', 'theme1')
+      }
       > div {
         .listTopRight {
           .home_icon {

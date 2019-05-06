@@ -430,10 +430,10 @@
               <el-input v-model="out_form.subject_name" @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true" placeholder="请选择"></el-input>
             </el-form-item>
             <el-form-item label="开始时间">
-              <el-date-picker v-model="out_form.start_date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择"></el-date-picker>
+              <el-date-picker v-model="out_form.start_date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间">
-              <el-date-picker v-model="out_form.end_date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择"></el-date-picker>
+              <el-date-picker v-model="out_form.end_date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
             </el-form-item>
           </el-form>
         </div>
@@ -453,7 +453,7 @@
           <Upload @success="handleSuccessFile"></Upload>
         </div>
         <div class="dialog_footer">
-          <el-button size="mini" type="danger">确定</el-button>
+          <el-button size="mini" type="danger" @click="importOk">确定</el-button>
           <el-button size="mini" type="info" @click="cancelImportAccount">取消</el-button>
         </div>
       </div>
@@ -491,7 +491,8 @@
           end_date: '',
           subject_id: '',
           subject_name: '',
-          account_type: ''
+          account_type: '',
+          is_url: 1
         },
         paySearchList,
         action_visible: false,//操作栏作态
@@ -705,8 +706,9 @@
           limit: 12,
           page: 1,
 
-        }
+        },
 
+        import_file: '',
       }
     },
     mounted() {
@@ -720,16 +722,44 @@
     },
     computed: {},
     methods: {
+      importOk() {
+        this.$http.post(globalConfig.temporary_server + 'batch_payable/import',{doc_id: this.import_file}).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.cancelImportAccount();
+          } else {
+            this.$LjNotify('success',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
       outAccountCtrl() {
         console.log(this.out_form);
         this.$http.get(globalConfig.temporary_server + 'batch_payable/export',this.out_form).then(res => {
           console.log(res);
-          this.cancelOutAccount();
-          this.$exportData(res);
+          if (res.code === 200) {
+            window.location.href = res.data.url;
+            this.cancelOutAccount();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
         })
       },
-      handleSuccessFile(file) {
-        console.log(file);
+      handleSuccessFile(file,name) {
+        console.log(file,name);
+        if (file && file.length > 0) {
+          this.import_file = file[0];
+        }
+
       },
       cancelOutAccount() { //取消批量导出
         this.$resetForm(this.out_form);
@@ -738,6 +768,7 @@
         this.accountLists = [];
       },
       cancelImportAccount() {//取消批量导入
+        this.import_file = '';
         this.import_account_visible = false;
       },
       selectionChange(val) {//首页表单多选
@@ -753,7 +784,6 @@
       openBatchEntry() {
         this.batchEntry_visible = true;
         this.getBatchEntryData();
-
       },
       getBatchEntryData() {
         this.$http.get(globalConfig.temporary_server + "batch_payable", this.batchEntryParams).then(res => {
