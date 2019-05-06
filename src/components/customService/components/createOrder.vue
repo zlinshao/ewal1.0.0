@@ -140,7 +140,7 @@
               <el-col :span="moduleOrder == 78? 6 : createOrder_span">
                 <p class='el-col-p'><i class='icon phone'></i><span>回复电话</span></p>
                 <div class='input_box'>
-                  <el-input placeholder="请填写" v-model.tel='createOrder.replay_phone' disabled></el-input>
+                  <el-input placeholder="请填写" v-model.tel='createOrder.replay_phone'></el-input>
                 </div>
               </el-col>
 

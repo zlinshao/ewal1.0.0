@@ -59,8 +59,8 @@
 
                 <el-form-item label='照片' style='width:100%;' v-if='detail_form.type != 699'>
                   <div style="width: 90%;text-align: left">
-                    <img v-for="tmp in detail_form.imagic" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri"
-                      :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+                    <Ljupload size='40' v-model='detail_form.album.image_pic' v-if='detail_form.album && detail_form.album.image_pic'
+                      disabled=true :download='false'></Ljupload>
                   </div>
                 </el-form-item>
 

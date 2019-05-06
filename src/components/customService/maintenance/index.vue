@@ -9,6 +9,7 @@
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column" :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
+            <b v-if='item.id == 337 && isDoing_count > 0'>{{isDoing_count}}</b>
           </span>
         </h2>
       </div>
@@ -191,13 +192,22 @@ export default {
         chooseTab: null,
         type: null
       },
+      isDoing_count: 0,
       market_server: globalConfig.market_server,
     }
   },
   mounted () {
+    this.getDoingCount()
     this.getDateList();
   },
   methods: {
+    getDoingCount () {
+      this.$http.get(this.market_server + `v1.0/csd/work_order/readFollowNum?type=${this.tag_status}`).then(res => {
+        if (res.code == 200) {
+          this.isDoing_count = res.data.join(',')
+        }
+      })
+    },
     addRecordFun (par) {
       let params = this.followRecord,
         pay_method = [];
@@ -306,6 +316,7 @@ export default {
       if (this.tag_status != id) {
         this.tag_status = id
         this.getDateList()
+        this.getDoingCount()
       }
     },
     // add 工单
@@ -377,6 +388,7 @@ export default {
         currentRow: this.currentRow
       }
       this.detail_visible = true;
+      this.getDoingCount()
     },
     handleChangeDetail () {
       this.detail_Record_change = false
@@ -439,6 +451,7 @@ export default {
         this.currentPage = 1
         this.params = val
         this.getDateList()
+        this.getDoingCount()
       }
     },
     // 客服入口

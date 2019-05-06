@@ -102,9 +102,70 @@ export const defineForm = {
         card_id: '证件号'
       }
     ]
+  },
+  2: {
+    0: [
+      {
+        bulletin_name: '报备类型',
+        department_name: '部门'
+      },
+      {
+        status: '状态',
+        org_name: '处理人'
+      }
+    ],
+    1: [
+      {
+        sign_date: '签约时间',
+        begin_date: '合同开始时间',
+        end_date: '合同结束时间',
+        month: '签约时长',
+        vacancy: '空置期天数',
+        is_agency: '是否渠道',
+        agency_price: '渠道费',
+        month_unit_price: '月单价',
+        pay_way: '付款方式'
+      },
+      {
+        pay_first_date: '第一次付款时间',
+        pay_second_date: '第二次付款时间',
+        holding_documents_type: '合同类型',
+        remark_terms: '备注条款'
+      },
+      {
+        contract_number: '合同编号'
+      }
+    ],
+    2: [],
+    3: [
+      {
+        account_name: '开户名'
+      },
+      {
+        bank: '开户行'
+      },
+      {
+        relationship: '与房东关系'
+      },
+      {
+        account: '卡号'
+      },
+      {
+        subbranch: '支行'
+      }
+    ],
+    4: [
+      {
+        customer_name: '客户姓名',
+        contact_phone: '手机号码',
+        card_type: '证件类型',
+        card_id: '证件号'
+      }
+    ]
   }
 }
 
 export const defineTitleTips = {
-  1: ['', '房屋信息', '合同信息', '相关信息', '付款信息', '客户信息']
+  1: ['', '房屋信息', '合同信息', '相关信息', '付款信息', '客户信息'],
+  2: ['', '合同信息', '相关信息', '付款信息', '客户信息']
 }
