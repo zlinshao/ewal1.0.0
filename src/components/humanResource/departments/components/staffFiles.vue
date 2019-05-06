@@ -597,7 +597,6 @@
       },
       detailInfo: {
         handler(val) {
-          console.log(val);
           this.currentStaffInfo = val;
           for (var key in this.staffDetail) {
             this.staffDetail[key] = key in val ? val[key] : val.staff && key in val.staff ? val.staff[key] : '';
@@ -630,8 +629,6 @@
           if (this.staffDetail.birthday) {
             this.staffDetail.age = Math.ceil((new Date() - new Date(this.staffDetail.birthday)) / 1000 / 60 / 60 / 24 / 365) || '';
           }
-
-          console.log(this.staffDetail);
         },
         deep: true
       }
@@ -648,7 +645,6 @@
           ddd = ccc + '% 0';
           bbb.push(ddd);
         }
-        console.log(bbb);
         return bbb;
       }
     },
@@ -660,7 +656,6 @@
         this.$emit('close');
       },
       handleOpenGrow(item) {
-        console.log(item);
         this.$http.get(`staff/user/${item.user_id}/growth_record`).then(res => {
           console.log(res);
           if (res.code === '20000') {
@@ -755,7 +750,6 @@
           page: 1,
           limit: 999
         }).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.dates = res.data.data;
           } else {
