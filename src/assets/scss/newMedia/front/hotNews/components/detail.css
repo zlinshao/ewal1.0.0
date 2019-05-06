@@ -1,45 +1,440 @@
-/*
-Error: Invalid GBK character "\xE9"
-        on line 35 of detail.scss
+.flex {
+  display: flex;
+  display: -webkit-flex; }
 
-30: 
-31:         .detail-left-list {
-32:           padding-left: 100px;
-33:           width: 550px;
-34:           border-right: 1px solid #D6D6D6;
-35:           //隐藏滚动条
-36:           .element,
-37:           .outer-container {
-38:             width: 400px;
-39:             height: 770px;
-40:           }
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
 
-Backtrace:
-detail.scss:35
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each_with_index'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `find_encoding_error'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:814:in `check_sass_encoding'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:444:in `check_encoding!'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:400:in `_to_tree'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:307:in `render_with_sourcemap'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `each'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin.rb:82:in `update_stylesheets'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:51:in `process_result'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:50:in `parse'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:18:in `parse!'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/bin/scss:13:in `<top (required)>'
-D:/Ruby24-x64/bin/scss:23:in `load'
-D:/Ruby24-x64/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE9\"\A         on line 35 of detail.scss\A \A 30: \A 31:         .detail-left-list {\A 32:           padding-left: 100px;\A 33:           width: 550px;\A 34:           border-right: 1px solid #D6D6D6;\A 35:           //隐藏滚动条\A 36:           .element,\A 37:           .outer-container {\A 38:             width: 400px;\A 39:             height: 770px;\A 40:           }"; }
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #999999;
+    border-radius: 4px; }
+
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#theme_name #hotNewsDetail .listTopCss h1 {
+  padding-left: 100px; }
+#theme_name #hotNewsDetail .mainList {
+  width: 100%; }
+  #theme_name #hotNewsDetail .mainList .news-title .detail-title {
+    width: 100%;
+    height: 80px;
+    font-family: jingDianXingShu;
+    font-size: 26px;
+    padding-left: 100px;
+    line-height: 80px; }
+  #theme_name #hotNewsDetail .mainList .news-title-menu {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row; }
+    #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list {
+      padding-left: 100px;
+      width: 550px;
+      border-right: 1px solid #D6D6D6; }
+      #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element,
+      #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .outer-container {
+        width: 400px;
+        height: 770px; }
+      #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .outer-container {
+        position: relative;
+        overflow: hidden; }
+      #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .inner-container {
+        position: absolute;
+        left: 0;
+        overflow-x: hidden;
+        overflow-y: scroll; }
+      #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .inner-container::-webkit-scrollbar {
+        display: none; }
+      #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box {
+        width: 400px;
+        background: #FFFFFF;
+        margin-bottom: 10px; }
+        #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-top {
+          padding: 10px; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-top h3 {
+            font-size: 18px;
+            text-align: justify;
+            margin-bottom: 10px; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-top .top-icons {
+            padding-left: 10px;
+            padding-right: 10px; }
+            #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-top .top-icons span {
+              display: block;
+              margin-right: 10px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              color: #999999;
+              font-size: 14px; }
+            #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-top .top-icons i {
+              display: block;
+              width: 20px;
+              height: 20px;
+              margin-right: 4px; }
+        #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-bottom {
+          padding: 20px 10px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          border-top: 1px solid #dedede; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-bottom .bottom-left img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-bottom .bottom-right p:nth-child(1) {
+            margin-bottom: 8px;
+            color: #686874; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-bottom .bottom-right p:nth-child(2) {
+            color: #999999; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .detail-left-list .element .detail-box .detail-box-bottom .bottom-right .mar-right {
+            margin-right: 50px; }
+    #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right {
+      width: 1200px;
+      height: 100%;
+      margin-left: 100px; }
+      #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info {
+        width: 1200px;
+        height: 600px;
+        padding-right: 100px; }
+        #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle {
+          padding: 20px;
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          height: 600px; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .detail-content-right {
+            margin-left: 150px; }
+            #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .detail-content-right .right-info-icons .icon-list {
+              width: 50px;
+              height: 50px;
+              position: relative;
+              margin-top: 10px; }
+              #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .detail-content-right .right-info-icons .icon-list .icon-bg {
+                display: block;
+                width: 34px;
+                height: 34px;
+                cursor: pointer;
+                border: 1px dashed #999999; }
+              #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .detail-content-right .right-info-icons .icon-list .person-number {
+                position: absolute;
+                left: 84%;
+                top: 2%;
+                transform: translate(-50%, -70%);
+                display: block;
+                padding: 2px 6px;
+                border-radius: 10px;
+                font-size: 12px;
+                background: #CF2E33;
+                color: #FFFFFF; }
+            #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .detail-content-right .right-info-icons .share-navbar .share-navbar-box {
+              width: 180px;
+              height: 40px;
+              position: absolute;
+              border-radius: 5px;
+              background: #FFFFFF;
+              left: -200px; }
+              #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .detail-content-right .right-info-icons .share-navbar .share-navbar-box i {
+                display: block;
+                width: 26px;
+                height: 26px;
+                cursor: pointer; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info > h1 {
+            font-size: 30px;
+            color: #686874; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info .detail-box-bottom {
+            width: 400px;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center; }
+            #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info .detail-box-bottom .bottom-left img {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%; }
+            #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info .detail-box-bottom .bottom-right p:nth-child(1) {
+              margin-bottom: 8px;
+              color: #686874; }
+            #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info .detail-box-bottom .bottom-right p:nth-child(2) {
+              color: #999999; }
+            #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info .detail-box-bottom .bottom-right .mar-right {
+              margin-right: 50px; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info .middle-img {
+            width: 888px; }
+            #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info .middle-img img {
+              width: 437px;
+              height: 220px; }
+          #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info .content, #theme_name #hotNewsDetail .mainList .news-title-menu .star_info_right .main_info .detail-content-middle .middle-info .desc {
+            width: 888px;
+            text-align: justify;
+            font-size: 18px;
+            color: #686874;
+            line-height: 27px;
+            margin-top: 10px;
+            margin-bottom: 10px; }
+#theme_name .dialog_header > h3 span {
+  font-size: 14px;
+  margin-left: 10px; }
+  #theme_name .dialog_header > h3 span i {
+    color: #CF2E33; }
+#theme_name .dialog_header .write_comment {
+  display: block;
+  width: 40px;
+  height: 40px; }
+#theme_name .dialog_header p span {
+  color: #CF2E33;
+  font-size: 14px;
+  margin-left: 10px; }
+#theme_name .dialog_main .comment-lists {
+  width: 800px;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 60px; }
+  #theme_name .dialog_main .comment-lists .comment-left {
+    width: 50px;
+    height: 50px; }
+#theme_name .dialog_main .comment-right {
+  width: 730px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; }
+  #theme_name .dialog_main .comment-right > h3 {
+    text-align: left;
+    font-size: 18px;
+    color: #202020;
+    margin-bottom: 10px; }
+  #theme_name .dialog_main .comment-right .desc {
+    text-align: left;
+    margin-bottom: 10px;
+    line-height: 26px; }
+  #theme_name .dialog_main .comment-right .bottom-operate {
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; }
+    #theme_name .dialog_main .comment-right .bottom-operate .check-info {
+      flex: 1;
+      cursor: pointer; }
+    #theme_name .dialog_main .comment-right .bottom-operate .operate-btn {
+      flex: 1;
+      text-align: right;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end; }
+      #theme_name .dialog_main .comment-right .bottom-operate .operate-btn .btn-icon {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 30px;
+        cursor: pointer; }
+        #theme_name .dialog_main .comment-right .bottom-operate .operate-btn .btn-icon i {
+          display: inline-block;
+          width: 24px;
+          height: 22px;
+          margin-right: 4px; }
+#theme_name .dialog_main .is_show_comment {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-top: 50px; }
+  #theme_name .dialog_main .is_show_comment .comment_left img {
+    width: 50px;
+    height: 50px; }
+  #theme_name .dialog_main .is_show_comment .comment_right {
+    margin-left: 20px; }
+    #theme_name .dialog_main .is_show_comment .comment_right > h3 {
+      text-align: left; }
+    #theme_name .dialog_main .is_show_comment .comment_right .bottom_operate .operate_btn {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end; }
+      #theme_name .dialog_main .is_show_comment .comment_right .bottom_operate .operate_btn .btn_icon {
+        margin-left: 30px;
+        display: flex;
+        flex-direction: row;
+        align-items: center; }
+        #theme_name .dialog_main .is_show_comment .comment_right .bottom_operate .operate_btn .btn_icon i {
+          display: inline-block;
+          width: 24px;
+          height: 22px;
+          margin-right: 4px; }
+#theme_name .dialog_main .form_item_container {
+  align-items: flex-start; }
+  #theme_name .dialog_main .form_item_container .item_content {
+    width: 100%; }

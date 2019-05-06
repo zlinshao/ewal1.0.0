@@ -12,7 +12,7 @@
       </div>
       <div class="library-main scroll_bar">
         <div class="control flex">
-          <i v-if="params.edit_btn_visible" @click="paper_type=1" class="icon-edit"></i>
+          <!--<i v-if="params.edit_btn_visible" @click="paper_type=1" class="icon-edit"></i>-->
         </div>
         <!--题型-->
         <div class="exam-list scroll_bar">
@@ -159,7 +159,7 @@ export default {
 
       paper_visible: false,
 
-      paper_type: 1,//1编辑试卷/问卷 2预览试卷/问卷 3查看问卷统计结果
+      //paper_type: 1,//1编辑试卷/问卷 2预览试卷/问卷 3查看问卷统计结果
 
       exam_type: 1,//1单选 2判断 3简答题
       exam_form_item_choose: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
@@ -211,7 +211,7 @@ export default {
 
     //提交题库
     handleSubmitExam () {
-      if (this.type == 1&&this.paper_type==1) {
+      if (this.type == 1) {
         for (let item of this.exam_form_list) {
           if (isNaN(item.score)) {
             this.$LjMessage('warning', {
@@ -240,7 +240,6 @@ export default {
           }
         }
       }
-
       this.$emit('success', this.exam_form_list);
       this.paper_visible = false;
       this.$store.dispatch('change_humanResource_answer_test_paper_visible');
@@ -251,6 +250,7 @@ export default {
       this.paper_visible = false;
       this.exam_form_list = [];
       this.$emit('cancel');
+      this.$store.dispatch('change_humanResource_answer_test_paper_visible');
     },
   },
 }

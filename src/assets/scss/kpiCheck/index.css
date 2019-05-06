@@ -84,13 +84,13 @@
 
 @font-face {
   font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf"); }
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf"); }
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF"); }
 @font-face {
   font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf"); }
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf"); }
 .writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl; }
@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -182,31 +182,32 @@
   width: 100%;
   height: 100%;
   background-color: #ffffff; }
-  #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft {
-    margin-left: 25px; }
-    #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft > img {
-      width: 50px;
-      height: 50px; }
-    #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft > div {
-      margin-left: 20px; }
-      #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft > div .personName {
-        font-size: 20px;
-        font-family: MicrosoftYaHei;
-        color: #686874;
-        letter-spacing: 1px; }
-      #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft > div .timeInfo {
-        font-size: 14px;
-        font-family: MicrosoftYaHei;
-        color: #686874;
-        letter-spacing: 1px; }
+  #theme_name.theme1 #kpiCheck .listTopCss {
+    height: 50px; }
+    #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft {
+      margin-left: 25px; }
+      #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft > img {
+        width: 50px;
+        height: 50px; }
+      #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft > div {
+        margin-left: 20px; }
+        #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft > div .personName {
+          font-size: 20px;
+          font-family: MicrosoftYaHei;
+          color: #686874;
+          letter-spacing: 1px; }
+        #theme_name.theme1 #kpiCheck .listTopCss .listTopLeft > div .timeInfo {
+          font-size: 14px;
+          font-family: MicrosoftYaHei;
+          color: #686874;
+          letter-spacing: 1px; }
   #theme_name.theme1 #kpiCheck .kpiCheckContainer {
     margin: 0 55px 0 57px; }
     #theme_name.theme1 #kpiCheck .kpiCheckContainer .assessmentDetail {
       margin-left: 50px; }
       #theme_name.theme1 #kpiCheck .kpiCheckContainer .assessmentDetail .page {
         display: flex;
-        justify-content: center;
-        margin-top: 400px; }
+        justify-content: center; }
       #theme_name.theme1 #kpiCheck .kpiCheckContainer .assessmentDetail .footButton {
         margin-left: 1600px;
         width: 120px;
@@ -235,5 +236,3 @@
       #theme_name.theme1 #kpiCheck .dialog_container .dialog_main .listTopCss .listTopLeft .info span {
         margin-left: 15px;
         color: red; }
-
-/*# sourceMappingURL=index.css.map */

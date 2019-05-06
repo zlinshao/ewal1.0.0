@@ -84,13 +84,13 @@
 
 @font-face {
   font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf"); }
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf"); }
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF"); }
 @font-face {
   font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf"); }
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf"); }
 .writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl; }
@@ -129,7 +129,7 @@
   .scroll_bar::-webkit-scrollbar-track {
     background: #e4e7ed; }
   .scroll_bar::-webkit-scrollbar-thumb {
-    background: #747474;
+    background: #999999;
     border-radius: 4px; }
 
 .action-bar {
@@ -194,12 +194,41 @@
     margin-bottom: 0; }
     #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__label {
       font-size: 14px;
+      line-height: 30px;
       white-space: nowrap; }
     #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content {
       font-size: 14px;
-      text-align: left; }
+      text-align: left;
+      width: 230px;
+      height: 36px;
+      line-height: 30px;
+      overflow-x: scroll;
+      overflow: auto; }
+      #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        border-radius: 10px; }
+      #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content::-webkit-scrollbar-button {
+        height: 10px;
+        background-color: #e4e7ed;
+        border-radius: 10px; }
+      #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content::-webkit-scrollbar-track {
+        background: #e4e7ed; }
+      #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content::-webkit-scrollbar-thumb {
+        background: #999999;
+        border-radius: 4px; }
       #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content span {
         white-space: nowrap; }
+      #theme_name #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content i {
+        font-style: normal; }
+  #theme_name #dataAudit .dialog_main .common_info .person_tit {
+    width: 100px;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 30px;
+    height: 30px; }
+  #theme_name #dataAudit .dialog_main .common_info .el-col-7 .el-form-item__content {
+    width: 190px; }
   #theme_name #dataAudit .dialog_main .common_info .person_tit .el-form-item__label {
     text-align: left;
     white-space: nowrap; }
@@ -259,7 +288,7 @@
     #theme_name #dataAudit .dialog_main .data_info .flex-center2 .el-textarea__inner::-webkit-scrollbar-track {
       background: #e4e7ed; }
     #theme_name #dataAudit .dialog_main .data_info .flex-center2 .el-textarea__inner::-webkit-scrollbar-thumb {
-      background: #747474;
+      background: #999999;
       border-radius: 4px; }
   #theme_name #dataAudit .dialog_main .data_info .flex-center2 .buttons {
     width: 180px;
@@ -347,13 +376,15 @@
 #theme_name.theme1 #dataAudit .table_icon {
   background: url("../../../assets/image/customService/dataAudit/theme1/biao.png") no-repeat scroll center;
   background-size: 100% 100%; }
-#theme_name.theme1 #dataAudit .dialog_main .main_tit {
-  color: #686874; }
 #theme_name.theme1 #dataAudit .dialog_main .common_info {
   background-color: #fff; }
   #theme_name.theme1 #dataAudit .dialog_main .common_info .el-form-item .el-form-item__label {
     color: #b0b0b0; }
   #theme_name.theme1 #dataAudit .dialog_main .common_info .el-form-item .el-form-item__content {
+    color: #686874; }
+  #theme_name.theme1 #dataAudit .dialog_main .common_info .person_tit {
+    color: #b0b0b0; }
+  #theme_name.theme1 #dataAudit .dialog_main .common_info .main_tit {
     color: #686874; }
   #theme_name.theme1 #dataAudit .dialog_main .common_info .collection_info_warning {
     color: #cf2e33; }
@@ -371,5 +402,5 @@
   #theme_name.theme1 #dataAudit .dataRecord_dialog_main .circle {
     background: url("../../../assets/image/customService/dataAudit/theme1/biaoji.png") no-repeat scroll center;
     background-size: 100% 100%; }
-
-/*# sourceMappingURL=index.css.map */
+#theme_name.theme1 #dataAudit .el-textarea.is-disabled .el-textarea__inner {
+  background: transparent; }
