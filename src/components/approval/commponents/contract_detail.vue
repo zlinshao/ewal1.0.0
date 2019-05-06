@@ -11,7 +11,7 @@
 
               <el-row :gutter='10' v-if='titleTips[slither_index] == "相关信息"' class='message_box'>
                 <el-col :span='8'>
-                  <el-form-item label=" " class='message_form'>
+                  <el-form-item label=" " class='message_form' v-if="bulletin_type == 'bulletin_collect_basic'">
                     <span>该小区曾违约{{relateions.break_a_contract_count || 0}}套房</span>
                   </el-form-item>
                   <el-form-item label=" " class='message_form'>
@@ -20,17 +20,23 @@
                   <el-form-item label=" " class='message_form'>
                     <span>该业务员通过率{{relateions.pass_divide}}%</span>
                   </el-form-item>
+                  <el-form-item label=" " v-if="bulletin_type == 'bulletin_rent_basic'&& relateions.diff_price >0 ">
+                    <span>该报备价格已超出房源最低价{{relateions.diff_price}}元,请谨慎审核!</span>
+                  </el-form-item>
                 </el-col>
                 <el-col :span='7' :offset="3" class='message_con'>
-                  <p>其中:</p>
-                  <div>1.公司退房{{relateions.company_break_contract_count}}套</div>
-                  <div>2.客户退房{{relateions.customer_break_contract_count}}套</div>
-                  <div v-if='relateions.noReason'>3.不明退房{{relateions.noReason}}套</div>
+                  <template v-if="bulletin_type == 'bulletin_collect_basic'">
+                    <p>其中:</p>
+                    <div>1.公司退房{{relateions.company_break_contract_count}}套</div>
+                    <div>2.客户退房{{relateions.customer_break_contract_count}}套</div>
+                    <div v-if='relateions.noReason'>3.不明退房{{relateions.noReason}}套</div>
+                  </template>
+                  <div style='min-width:200px;' v-else></div>
                 </el-col>
-                <el-col :span='3' class='message_price'>
+                <el-col :span='4' class='message_price' :offset="bulletin_type == 'bulletin_rent_basic'?10:0">
                   <p>收房价:</p>
                   <div v-for='(type,index) in relateions.community_house_type_price' :key='index'>
-                    {{type.room}}室{{type.decoration}}均价{{type.average}}元
+                    {{type.room || 0}}室{{type.decoration}}均价{{parseFloat(type.average).toFixed(2)}}元
                   </div>
                 </el-col>
               </el-row>
@@ -40,7 +46,7 @@
                   <template v-if="Array.isArray(formData[slither])">
 
                     <template v-if='slither == "house_video"'>
-                      <Ljupload size='40' v-model="formData[slither]" disabled=true download=false></Ljupload>
+                      <Ljupload size='40' v-model="formData[slither]" disabled=true :download='false'></Ljupload>
                     </template>
 
                     <template v-else>
@@ -236,6 +242,7 @@ export default {
       reject_mark: null, // 拒绝理由
       approval_sever: globalConfig.approval_sever,
       market_server: globalConfig.market_server,
+      bulletin_type: '',
       relateions: {},
       taskType: ['rtl_detail_request_url', 'ctl_detail_request_url'],
     }
@@ -246,6 +253,8 @@ export default {
         if (val) {
           this.defineForm = this.defineForms[1]
           this.titleTips = defineTitleTips[1]
+          // val.bm_detail_request_url = 'http://test.market.api.ewal.lejias.cn/v1.0/market/process/edit/283';
+
           this.getDetailForm(val)
           if (this.status_type == 4 && val.status == '未读') {
             this.AggreeAndReject('已读')
@@ -262,6 +271,7 @@ export default {
       this.$http.get(url).then(res => {
         if (res.code === 200) {
           this.formData = res.data.content
+          this.bulletin_type = res.data.bulletin_type
           this.handleDetail(res.data.content)
           this.getRelated()
         }
@@ -269,12 +279,26 @@ export default {
     },
 
     getRelated () {
-      let params = {
-        community_id: this.formData.community.id,	//小区id
-        staff_id: this.formData.staff_id,	//签约人
-        room: this.formData.house_type[0],	//户型【室】
-        is_collect: this.formData.type,	//1：收房，2：租房
+
+      let params = {}
+      if (this.bulletin_type == 'bulletin_collect_basic') {// 收房
+        params = {
+          community_id: this.formData.community.id,	//小区id
+          staff_id: this.formData.staff_id,	//签约人
+          room: this.formData.house_type[0],	//户型【室】
+          is_collect: 1
+        }
       }
+      if (this.bulletin_type == 'bulletin_rent_basic') {  // 租房
+        params = {
+          staff_id: this.formData.staff_id,	//签约人
+          contract_id: this.formData.contract_id,
+          begin_date: this.formData.begin_date,
+          price: this.formData.period_price_way_arr[0].month_unit_price,
+          is_collect: 2
+        }
+      }
+
       this.$http.get(this.market_server + `V1.0/market/helper/related`, params).then(res => {
         if (res.code === 200) {
           this.relateions = res.data
@@ -347,8 +371,13 @@ export default {
             break;
           case 'remark_terms'://备注条款
             let terms = [];
-            for (let name of res[item]) {
-              terms.push(name + '、' + dicties[item][name]);
+            if (typeof res[item] == 'string') {
+              terms.push(res[item])
+            } else {
+              for (let name of res[item]) {
+                terms.push(name + '、' + dicties[item][name]);
+              }
+
             }
             this.formData[item] = terms;
             break;
@@ -385,7 +414,6 @@ export default {
           }
         }
       }
-      console.log(this.formData)
     },
     changeHandle (res, item, val, all, data) {
       let formatData = data;
@@ -413,6 +441,11 @@ export default {
     },
     changeBtns_type (val) {
       this.comment_show_visible = !this.comment_show_visible
+      if (this.comment_show_visible) {
+        this.$http.get(`${this.approval_sever}runtime/tasks/${this.formData.task_id}/comments`).then(res => {
+          console.log(res)
+        })
+      }
     },
 
     handleRecord () {
@@ -927,8 +960,10 @@ export default {
           .message_price {
             text-align: left;
             div {
+              white-space: nowrap;
+              font-size: 14px;
               font-weight: 700;
-              color: #333;
+              color: #686874;
             }
           }
         }

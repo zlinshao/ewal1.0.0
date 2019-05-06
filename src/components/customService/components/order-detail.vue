@@ -32,7 +32,7 @@
                   <el-form-item v-for='item in Object.keys(reimburse_type)' :key='item' :label='reimburse_type[item]'
                     v-if='detail_form[item] && detail_form[item]!="0.00"'>
                     <Ljupload size='40' v-model='detail_form[item]' v-if='item.indexOf("_album") > 0 && detail_form[item]'
-                      disabled=true></Ljupload>
+                      disabled=true :download='false'></Ljupload>
                     <el-input v-model="detail_form[item]" type="text" disabled v-else> </el-input>
                   </el-form-item>
                 </template>
@@ -113,27 +113,27 @@ export default {
       reimburse_type: {
         reimburse_water: '报销类型', // 水费
         reimburse_water_money: '报销金额',
-        reimburse_water_album: '报销图片',
+        water_album: '报销图片',
         reimburse_water_content: '报销备注',
         reimburse_electricity: '报销类型', //   电费
         reimburse_electricity_money: '报销金额',
-        reimburse_electricity_album: '报销图片',
+        electricity_album: '报销图片',
         reimburse_electricity_content: '报销备注',
         reimburse_gas: '报销类型', //  燃气费
         reimburse_gas_money: '报销金额',
-        reimburse_gas_album: '报销图片',
+        gas_album: '报销图片',
         reimburse_gas_content: '报销备注',
         reimburse_property: '报销类型', //  物业费
         reimburse_property_money: '报销金额',
-        reimburse_property_album: '报销图片',
+        property_album: '报销图片',
         reimburse_property_content: '报销备注',
         reimburse_service: '报销类型', //  维修费
         reimburse_service_money: '报销金额',
-        reimburse_service_album: '报销图片',
+        service_album: '报销图片',
         reimburse_service_content: '报销备注',
         reimburse_other: '报销类型', //  其他
         reimburse_other_money: '报销金额',
-        reimburse_other_album: '报销图片',
+        other_album: '报销图片',
         reimburse_other_content: '报销备注',
         reimbursement: '报销人'
       },
