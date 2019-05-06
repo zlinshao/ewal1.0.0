@@ -22,25 +22,12 @@
       </div>
       <div class="todo-list-container">
         <!--渲染todo_list数据-->
-        <!--<div :class="{'todo-list-container-top':listIndex==0,'todo-list-container-bottom':listIndex==1}"
-             v-for="(listItem,listIndex) in todo_list_container_arr">
-          <div v-for="(item,index) in todo_list_container_arr[listIndex]"
-               @click="container_checked = (index);todoListVisibleTrigger(item)"
-               class="todo-list-item">
-            <div class="todo-list-item-title">{{item.name}}</div>
-            <div v-for="(value,key) in item" v-if="!(key=='id'||key=='name'||key=='onClick')"
-                 class="todo-list-item-content">
-              <i :class="'todo-list-item-content-icon-'+key"></i>
-              {{value}}
-            </div>
-          </div>
-        </div>-->
 
         <div v-for="(item,index) in todo_list_container"
              @click="container_checked = (index);todoListVisibleTrigger(item)"
              class="todo-list-item">
           <div :title="item.name" class="todo-list-item-title">{{item.name}}</div>
-          <div v-for="(value,key) in item" v-if="!(key=='id'||key=='name'||key=='onClick')"
+          <div v-for="(value,key) in item" v-if="(key=='user'||key=='date'||key=='tip'||key=='money'||key=='project'||key=='location')&&value"
                class="todo-list-item-content">
             <i :class="'todo-list-item-content-icon-'+key"></i>
             {{value}}
@@ -304,7 +291,7 @@
         this.$http.get(`${this.url}runtime/tasks`, params).then(res => {
           for (let item of res.data) {
             let obj = {
-              name: item.name
+              ...item
             };
             let itemKey = item.processDefinitionId.split(':')[0];//类型
             switch (itemKey) {
@@ -339,11 +326,14 @@
               /*考试*/
               case 'HR-Exam':
                 let variables = item.variables;
-                let name = _.find(variables,{name:'title'})?.value;
-                //let date = _.find(variables,);
+                let name = _.find(variables,{name:'title'})?.value||'-';
+                let user = item.description;
+                let date = _.find(variables,{name:'start_time'})?.value||'-';
 
                 obj.onClick = 'humanResource_answer_test_paper';
                 obj.name = name;
+                obj.user = user;
+                obj.date = date;
                 break;
               default:
                 break;

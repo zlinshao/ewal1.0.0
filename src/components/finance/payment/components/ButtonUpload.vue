@@ -1,8 +1,8 @@
 <template>
     <div id="button_upload">
-      <label>
+      <label @click="triggerFile">
         <!--<el-button size="small" type="primary" plain @click="triggerFile">导入报表</el-button>-->
-        <el-input size="small" @focus="triggerFile" readonly style="width: 220px"><i
+        <el-input size="small"  readonly style="width: 220px"><i
           class="el-icon-folder el-input__icon"
           slot="suffix">
         </i></el-input>
