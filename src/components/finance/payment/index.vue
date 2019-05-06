@@ -9,9 +9,15 @@
       </div>
       <div class="items-center listTopRight">
         <!--<div class="icons upLoad"></div>-->
-        <div class="icons allInsert" @click="openBatchEntry"></div>
-        <div class="icons add" @click="openAdd"><b>+</b></div>
+        <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
+          <div class="icons allInsert" @click="openBatchEntry"></div>
+        </el-tooltip>
+        <el-tooltip content="新增应付款项" placement="bottom" :visible-arrow="false">
+          <div class="icons add" @click="openAdd"><b>+</b></div>
+        </el-tooltip>
+        <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
         <div class="icons search" @click="highSearch"></div>
+        </el-tooltip>
       </div>
     </div>
     <div class="action-bar changeChoose">
@@ -29,9 +35,9 @@
                 </span>
       </div>
       <div class="action-bar-right">
-        <span>应收金额（元） <i class="edit">234525</i></span>
-        <span>实收金额（元） <i class="check">54554</i></span>
-        <span>剩余款项（元） <i class="delete">324324</i></span>
+        <span>应付金额（元） <i class="edit">{{ payableSum }}</i></span>
+        <span>实付金额（元） <i class="check">{{ paidSum }}</i></span>
+        <span>剩余款项（元） <i class="delete">{{ balanceSum }}</i></span>
       </div>
     </div>
     <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
@@ -238,7 +244,7 @@
       </div>
     </lj-dialog>
     <!--新增应付款项-->
-    <lj-dialog :visible="add_visible" :size="{width: 500 + 'px',height: 700 + 'px'}" @close="add_visible = false">
+    <lj-dialog :visible="add_visible" :size="{width: 600 + 'px',height: 700 + 'px'}" @close="add_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>新增</h3>
@@ -472,6 +478,10 @@
     components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists, Customer,Upload},
     data() {
       return {
+        payableSum: '',
+        paidSum: '',
+        balanceSum: '',
+
         import_account_visible: false,
         out_account_visible: false,
         out_form: {
@@ -714,12 +724,15 @@
         console.log(this.out_form);
         this.$http.get(globalConfig.temporary_server + 'batch_payable/export',this.out_form).then(res => {
           console.log(res);
+          this.cancelOutAccount();
+          this.$exportData(res);
         })
       },
       handleSuccessFile(file) {
         console.log(file);
       },
       cancelOutAccount() { //取消批量导出
+        this.$resetForm(this.out_form);
         this.out_account_visible = false;
         this.is_disabled = true;
         this.accountLists = [];
@@ -1007,9 +1020,15 @@
               }
             );
             this.count = res.data.count;
+            this.balanceSum = res.data.balanceSum;
+            this.paidSum = res.data.paidSum;
+            this.balanceSum = res.data.balanceSum;
           } else {
             this.tableLists = [];
             this.count = 0;
+            this.balanceSum = 0;
+            this.paidSum = 0;
+            this.balanceSum = 0;
           }
         }).catch(err => {
           console.log(err);

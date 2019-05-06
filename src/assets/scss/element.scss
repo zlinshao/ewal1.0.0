@@ -500,6 +500,13 @@ div.el-popover {
 
 #theme_name.theme1 {
   .el-table {
+    thead {
+      tr th {
+        .el-checkbox__input {
+          display: none;
+        }
+      }
+    }
     tbody {
       tr.current-row {
         td {

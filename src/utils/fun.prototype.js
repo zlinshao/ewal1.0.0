@@ -138,5 +138,15 @@ export default {
         }
       }
     }
+
+    Vue.prototype.$exportData = function (data) {
+      let url = window.URL.createObjectURL(new Blob([data]));
+      let link = document.createElement('a');
+      link.style.display = 'a';
+      link.href = url;
+      link.setAttribute('download', 'excel.xls');
+      document.body.appendChild(link);
+      link.click();
+    };
   }
 }

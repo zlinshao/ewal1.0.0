@@ -19,7 +19,9 @@
                     <span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>
                 </p>
                 <!--<div class="icons btn_output"></div>-->
+              <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
                 <div class="icons search" @click="highSearch(chooseTab)"></div>
+              </el-tooltip>
             </div>
         </div>
         <div class="action-bar changeChoose" v-show="action_visible">

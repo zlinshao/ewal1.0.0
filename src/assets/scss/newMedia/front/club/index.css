@@ -1,319 +1,45 @@
-.flex {
-  display: flex;
-  display: -webkit-flex; }
+/*
+Error: Invalid GBK character "\xE4"
+        on line 116 of index.scss
 
-.bet-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-direction: column;
-  justify-content: space-between; }
+111:         }
+112: 
+113:       }
+114: 
+115:     };
+116:     //俱乐部详情
+117:     .club-detail{
+118:       p{
+119:         text-align: left;
+120:         padding: 20px;
+121:         width: 100%;
 
-.bet-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-direction: column;
-  justify-content: space-between; }
-
-.space-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: center; }
-
-.items-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  align-items: center; }
-
-.flex-center {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: center; }
-
-.items-bet {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: space-between; }
-
-.items-center {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center; }
-
-.items-start {
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-start; }
-
-.items-end {
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-end; }
-
-.justify-center {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: center; }
-
-.justify-around {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: space-around; }
-
-.justify-bet {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: space-between; }
-
-.justify-start {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: flex-start; }
-
-.justify-end {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: flex-end; }
-
-@font-face {
-  font-family: 'jingDianXingShu';
-  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf"); }
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF"); }
-@font-face {
-  font-family: 'jianyue';
-  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf"); }
-.writingMode {
-  writing-mode: vertical-rl;
-  writing-mode: tb-rl; }
-
-.line-clamp1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1; }
-
-.line-clamp2 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; }
-
-.line-clamp3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; }
-
-.scroll_bar {
-  overflow: auto; }
-  .scroll_bar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-button {
-    height: 10px;
-    background-color: #e4e7ed;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-track {
-    background: #e4e7ed; }
-  .scroll_bar::-webkit-scrollbar-thumb {
-    background: #999999;
-    border-radius: 4px; }
-
-.action-bar {
-  width: 100%;
-  padding: 0 40px;
-  height: 46px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid #f2f2f2; }
-  .action-bar div {
-    display: flex;
-    flex-direction: row;
-    align-items: center; }
-  .action-bar .check-count {
-    margin-left: 30px;
-    margin-right: 50px; }
-    .action-bar .check-count i {
-      font-style: normal;
-      color: #ff4545; }
-  .action-bar .action-bar-name {
-    display: inline-block;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around; }
-    .action-bar .action-bar-name span {
-      display: inline-block;
-      text-align: center;
-      border-left: 1px solid #9b9b9b;
-      font-size: 18px;
-      padding: 0 10px;
-      cursor: pointer; }
-    .action-bar .action-bar-name span:first-child {
-      border-left: 0; }
-  .action-bar .delete {
-    color: #ff4545; }
-  .action-bar .edit {
-    color: #0c66ff; }
-  .action-bar .check {
-    color: #0bb07b; }
-
-.colorE33 {
-  color: #cf2e33; }
-
-.color874 {
-  color: #686874; }
-
-#theme_name #club {
-  width: 100%; }
-  #theme_name #club .mainList {
-    width: 100%;
-    padding-top: 30px;
-    padding-left: 175px;
-    padding-right: 175px; }
-    #theme_name #club .mainList .club-lists {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap; }
-      #theme_name #club .mainList .club-lists .club-lists-info {
-        width: 50%;
-        padding: 20px 30px; }
-        #theme_name #club .mainList .club-lists .club-lists-info .club-box {
-          width: 100%;
-          background: #FFFFFF;
-          position: relative;
-          border-radius: 8px;
-          cursor: pointer; }
-          #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-top {
-            width: 100%; }
-            #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-top img {
-              width: 100%;
-              border-top-left-radius: 8px;
-              border-top-right-radius: 8px; }
-          #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-middle {
-            width: 100%;
-            padding-left: 30px;
-            padding-top: 20px;
-            padding-bottom: 20px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between; }
-            #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-middle div:first-child p:first-child {
-              font-family: jingDianXingShu;
-              font-size: 28px;
-              color: #686874; }
-            #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-middle div:first-child p:last-child {
-              margin-top: 10px; }
-              #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-middle div:first-child p:last-child span {
-                font-size: 14px;
-                color: #999999; }
-            #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-middle div:last-child span {
-              padding: 6px 20px;
-              font-family: jingDianXingShu;
-              font-size: 26px; }
-          #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-bottom {
-            width: 100%;
-            padding: 10px 30px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            border-top: 1px solid #F0F0F0; }
-            #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-bottom span {
-              color: #999999;
-              font-size: 14px;
-              display: flex;
-              flex-direction: row;
-              align-items: center; }
-              #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-bottom span i {
-                font-style: normal;
-                display: inline-block;
-                width: 20px;
-                height: 20px;
-                margin-right: 6px; }
-            #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-box-bottom span:last-child i:first-child {
-              width: 100px;
-              height: 30px;
-              text-align: center;
-              line-height: 30px; }
-          #theme_name #club .mainList .club-lists .club-lists-info .club-box .club-modal {
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: black;
-            opacity: .5; }
-  #theme_name #club .club-detail p {
-    text-align: left;
-    padding: 20px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    border-top: 1px solid #F2F2F2; }
-    #theme_name #club .club-detail p sapn {
-      display: inline-block;
-      text-align: justify; }
-    #theme_name #club .club-detail p span:first-child {
-      width: 20%;
-      height: 100%; }
-    #theme_name #club .club-detail p span:last-child {
-      width: 80%;
-      height: 100%;
-      text-align: justify; }
-  #theme_name #club .club-detail p:first-child {
-    border-top: 0; }
-  #theme_name #club .dengLong {
-    width: 60px;
-    height: 140px;
-    position: absolute;
-    top: 0;
-    right: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #FFFFFF; }
-    #theme_name #club .dengLong p:first-child {
-      font-size: 18px;
-      font-family: jingDianXingShu; }
-  #theme_name #club .all-birthday > div {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    background: #FFFFFF; }
-    #theme_name #club .all-birthday > div .all-birthday-list {
-      width: calc(100% / 4);
-      padding: 20px;
-      text-align: left; }
-      #theme_name #club .all-birthday > div .all-birthday-list .all-birthday-info {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        cursor: pointer; }
-        #theme_name #club .all-birthday > div .all-birthday-list .all-birthday-info p {
-          font-size: 14px; }
-        #theme_name #club .all-birthday > div .all-birthday-list .all-birthday-info img {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          margin-right: 20px;
-          box-shadow: #DFDFDF 0px 0px 5px 5px; }
+Backtrace:
+index.scss:116
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each_with_index'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `find_encoding_error'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:814:in `check_sass_encoding'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:444:in `check_encoding!'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:400:in `_to_tree'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:307:in `render_with_sourcemap'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `each'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin.rb:82:in `update_stylesheets'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:51:in `process_result'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:50:in `parse'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:18:in `parse!'
+D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/bin/scss:13:in `<top (required)>'
+D:/Ruby24-x64/bin/scss:23:in `load'
+D:/Ruby24-x64/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid GBK character \"\xE4\"\A         on line 116 of index.scss\A \A 111:         }\A 112: \A 113:       }\A 114: \A 115:     };\A 116:     //俱乐部详情\A 117:     .club-detail{\A 118:       p{\A 119:         text-align: left;\A 120:         padding: 20px;\A 121:         width: 100%;"; }

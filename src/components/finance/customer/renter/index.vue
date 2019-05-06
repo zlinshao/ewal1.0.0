@@ -14,16 +14,24 @@
             <!--<el-table-column-->
                     <!--type="selection" width="40">-->
             <!--</el-table-column>-->
-            <el-table-column label="前缀" align="center" width="90">
+            <el-table-column label="标记" align="center" width="90">
                 <template slot-scope="scope">
                     <div class="statusBar flex-center" v-if="renterStatus[scope.$index]['suppress_dup']===1">
                         /
                     </div>
                     <div class="statusBar flex-center" v-if="renterStatus[scope.$index]['suppress_dup']===0">
-                        <span style="background-color: #14e731;" v-if="renterStatus[scope.$index]['is_contact']===0"></span>
+                      <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
                         <span style="background-color: #e6a23c;" v-if="renterStatus[scope.$index]['is_name']===1"></span>
+                      </el-tooltip>
+                      <el-tooltip content="客户姓名" placement="bottom" :visible-arrow="false">
+                        <span style="background-color: #14e731;" v-if="renterStatus[scope.$index]['is_contact']===0"></span>
+                      </el-tooltip>
+                      <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
                         <span style="background-color: #f56c6c;" v-if="renterStatus[scope.$index]['is_address']===2"></span>
+                      </el-tooltip>
+                      <el-tooltip content="忽略重复" placement="bottom" :visible-arrow="false">
                         <span v-if="freeze[scope.$index]===1" style="background-color: #409eff;"></span>
+                      </el-tooltip>
                     </div>
                 </template>
             </el-table-column>

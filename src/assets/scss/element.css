@@ -552,6 +552,8 @@ div.el-popover {
   color: black;
   text-align: left; }
 
+#theme_name.theme1 .el-table thead tr th .el-checkbox__input {
+  display: none; }
 #theme_name.theme1 .el-table tbody tr.current-row td {
   color: #cf2e33; }
 #theme_name.theme1 .el-table tbody tr:hover td {
@@ -591,3 +593,5 @@ div.el-popover {
   -moz-border-radius: 10px;
   border-radius: 10px;
   background: #747474; }
+
+/*# sourceMappingURL=element.css.map */
