@@ -1,7 +1,7 @@
 <!--回答 问卷或者考试-->
 <template>
   <div ref="answerTestPaper" id="answer_test_paper" :class="{active:paper_visible}">
-    <div class="preview-paper">
+    <div class="answer-paper">
       <div class="library-header flex">
         <div class="left">
           <h3>{{params.title}}</h3>
@@ -92,7 +92,6 @@ export default {
           title: '入职考试',
           initial_page: 1,
           edit_btn_visible: true,
-          is_edit_paper: false,
         }
       }
     },
@@ -130,7 +129,6 @@ export default {
       immediate: true,
     },
 
-
     examList: {
       handler (val, oldVal) {
         if (val && val.length > 0) {
@@ -162,8 +160,6 @@ export default {
       paper_visible: false,
 
       paper_type: 1,//1编辑试卷/问卷 2预览试卷/问卷 3查看问卷统计结果
-
-
 
       exam_type: 1,//1单选 2判断 3简答题
       exam_form_item_choose: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
@@ -245,85 +241,16 @@ export default {
         }
       }
 
-      this.$emit('success', this.exam_form_list, this.params.is_edit_paper);
+      this.$emit('success', this.exam_form_list);
       this.paper_visible = false;
-      this.params.is_edit_paper = false;
+      this.$store.dispatch('change_humanResource_answer_test_paper_visible');
     },
 
     //取消按钮
     handleCancelExam () {
       this.paper_visible = false;
       this.exam_form_list = [];
-      this.params.is_edit_paper = false;
       this.$emit('cancel');
-    },
-    //添加题库form
-    handleAddExamForm () {
-      if (this.exam_type == 1) {
-        this.exam_form_list.push({
-          category: 1,//1单选 2判断 3简答题
-          stem: '',
-          choice: {
-            A: '',
-            B: '',
-            C: '',
-            D: '',
-          },
-          score: '',
-          answer: '',
-          user_answer: '',
-        })
-      } else if (this.exam_type == 2) {
-        this.exam_form_list.push({
-          category: 2,
-          stem: '',
-          choice: {
-            A: '',
-            B: '',
-          },
-          score: '',
-          answer: '',
-          user_answer: '',
-        })
-      } else if (this.exam_type == 3) {
-        this.exam_form_list.push({
-          category: 3,
-          stem: '',
-          choice: [],
-          score: '',
-          answer: ['', ''],
-          user_answer: '',
-        })
-      }
-
-    },
-    //删除题库form
-    handlePopExamForm () {
-      if (this.exam_form_list.length < 1) {
-        return false;
-      }
-      let item = this.exam_form_list[this.exam_form_list.length - 1];
-      if (item.id) {
-        this.$LjConfirm({
-          icon: 'delete',
-        }).then(() => {
-          this.$http.delete(`${this.url}train/exam_question/${item.id}`).then(res => {
-            this.$LjMessageEasy(res);
-            this.exam_form_list.pop();
-          });
-        });
-      } else {
-        this.exam_form_list.pop();
-      }
-    },
-
-    //查看统计结果确认事件
-    statisticsResultConfirm () {
-      this.paper_visible = false;
-      let _this = this;
-      setTimeout(() => {
-        _this.paper_type = 1;
-      }, 1000);
     },
   },
 }
@@ -340,7 +267,7 @@ export default {
     display: inline-block;
   }
 
-  .preview-paper {
+  .answer-paper {
     .exam-single {
       .el-radio-group {
         width: 100%;

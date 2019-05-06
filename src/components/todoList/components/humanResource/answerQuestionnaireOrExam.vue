@@ -1,6 +1,6 @@
 <template>
     <div id="test_paper_answer">
-      <answer-test-paper :visible="answer_test_paper_visible"></answer-test-paper>
+      <answer-test-paper :visible="test_paper_visible"></answer-test-paper>
     </div>
 </template>
 
@@ -14,7 +14,15 @@
     },
     data() {
       return {
+        test_paper_visible:false,
       }
+    },
+    watch: {
+      answer_test_paper_visible: {
+        handler(val,oldVal) {
+          this.test_paper_visible = val;
+        },
+      },
     },
     computed: {
       answer_test_paper_visible() {
