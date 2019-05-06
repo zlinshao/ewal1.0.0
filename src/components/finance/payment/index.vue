@@ -8,7 +8,7 @@
         <h1>付款</h1>
       </div>
       <div class="items-center listTopRight">
-        <div class="icons upLoad"></div>
+        <!--<div class="icons upLoad"></div>-->
         <div class="icons allInsert" @click="openBatchEntry"></div>
         <div class="icons add" @click="openAdd"><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
@@ -399,18 +399,40 @@
 
     <!--批量入账导出-->
 
-    <lj-dialog :visible="out_account_visible" @close="cancelOutAccount" :size="{width: 500 + 'px',height: 500 + 'px'}">
+    <lj-dialog :visible="out_account_visible" @close="cancelOutAccount" :size="{width: 450 + 'px',height: 500 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>导出转账单</h3>
         </div>
         <div class="dialog_main">
-          <el-form size="small" label-width="80px">
-
+          <el-form size="small" label-width="80px" class="borderNone">
+            <el-form-item label="账户类型">
+              <el-select placeholder="请选择" v-model="out_form.account_type" @change="getAccount">
+                <el-option v-for="(item,index) in cate" :label="item.title" :value="item.value"
+                           :key="index"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="账户">
+              <el-select placeholder="请选择" v-model="out_form.account"
+                         :disabled="is_disabled" multiple>
+                <el-option v-for="(item,index) in accountLists" :label="item.name"
+                           :value="item.id"
+                           :key="index"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="科目">
+              <el-input v-model="out_form.subject_name" @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true" placeholder="请选择"></el-input>
+            </el-form-item>
+            <el-form-item label="开始时间">
+              <el-date-picker v-model="out_form.start_date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="结束时间">
+              <el-date-picker v-model="out_form.end_date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择"></el-date-picker>
+            </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="mini" type="danger">导出</el-button>
+          <el-button size="mini" type="danger" @click="outAccountCtrl">导出</el-button>
           <el-button size="mini" type="info" @click="cancelOutAccount">取消</el-button>
         </div>
       </div>
@@ -430,6 +452,8 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!--<LjSubject :visible="subject_visible"></LjSubject>-->
   </div>
 </template>
 
@@ -450,7 +474,15 @@
       return {
         import_account_visible: false,
         out_account_visible: false,
-
+        out_form: {
+          account: [],
+          account_name: '',
+          start_date: '',
+          end_date: '',
+          subject_id: '',
+          subject_name: '',
+          account_type: ''
+        },
         paySearchList,
         action_visible: false,//操作栏作态
         action_status: {//操作条状态
@@ -678,11 +710,19 @@
     },
     computed: {},
     methods: {
+      outAccountCtrl() {
+        console.log(this.out_form);
+        this.$http.get(globalConfig.temporary_server + 'batch_payable/export',this.out_form).then(res => {
+          console.log(res);
+        })
+      },
       handleSuccessFile(file) {
         console.log(file);
       },
       cancelOutAccount() { //取消批量导出
         this.out_account_visible = false;
+        this.is_disabled = true;
+        this.accountLists = [];
       },
       cancelImportAccount() {//取消批量导入
         this.import_account_visible = false;
@@ -780,7 +820,6 @@
       },
 
       handleConfirmSubject(val) { //科目确定
-        console.log(this.which_subject);
         if (this.which_subject === 'move_subject') {
           this.move_subject.parent_id = val.id;
           this.move_subject.title = val.title;
@@ -794,6 +833,11 @@
 
           this.ruleForm.subject_id = val.id;
           this.ruleForm.subject_name = val.title;
+        }
+        console.log(val);
+        if (this.which_subject === 'out_account') {
+          this.out_form.subject_id = val.id;
+          this.out_form.subject_name = val.title;
         }
       },
 
@@ -827,6 +871,9 @@
       },
 
       getAccount() {//获取账户字典
+        this.accountLists = [];
+        this.out_form.account = [];
+        this.out_form.account_name = '';
         this.$http.get(globalConfig.temporary_server + "account", this.params).then(res => {
           if (res.code === 200) {
             this.accountLists = res.data.data;

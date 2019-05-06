@@ -866,7 +866,7 @@
                     // "receTag": "催缴备注"
                 },
                 btn_group: [
-                    {val: '跟进列表', key: 'record', type: 'success',class:'edit'},
+                    // {val: '跟进列表', key: 'record', type: 'success',class:'edit'},
                     {val: '催缴备注', key: 'mark', type: 'danger',class:'edit'},
                     {val: '登记收款', key: 'register', type: 'warning',class:'edit'},
                     {val: '应收入账', key: 'should_receive', type: 'success',class:'edit'},

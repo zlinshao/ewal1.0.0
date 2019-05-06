@@ -18,14 +18,14 @@
                 <p class="status-icon" v-for="item in statusBar"   v-if="chooseTab===1||chooseTab===2">
                     <span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>
                 </p>
-                <div class="icons btn_output"></div>
+                <!--<div class="icons btn_output"></div>-->
                 <div class="icons search" @click="highSearch(chooseTab)"></div>
             </div>
         </div>
         <div class="action-bar changeChoose" v-show="action_visible">
             <div class="action-bar-left" >
                 <!--<el-checkbox>全选</el-checkbox>-->
-                <span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>
+                <!--<span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
 
                 <span class="action-bar-name">
                     <span class="edit" @click="action_status.details_visible=true;action_status.is_check=true">查看</span>
