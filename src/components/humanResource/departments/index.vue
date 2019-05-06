@@ -750,10 +750,6 @@
         chooseTab: 2,//tab切换
         selects: [
           {
-            id: 1,
-            title: '组织结构图',
-          },
-          {
             id: 2,
             title: '部门管理',
           },
@@ -768,6 +764,10 @@
           {
             id: 4,
             title: '离职管理',
+          },
+          {
+            id: 1,
+            title: '组织结构图',
           },
         ],//tab切换
 

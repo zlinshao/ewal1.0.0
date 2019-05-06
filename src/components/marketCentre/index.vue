@@ -19,10 +19,10 @@
         top_title: '',
         show_market: false,
         work_info: [
-          {work: '平均在线时长', val: '8 h'},
+          // {work: '平均在线时长', val: '8 h'},
           {work: '平均处理用时', val: '30 min'},
           {work: '当日处理事件数', val: '16 件'},
-          {work: '本周处理事件数', val: '35 件'},
+          // {work: '本周处理事件数', val: '35 件'},
         ],
         event_data: [
           {value: 500, name: '一般'},
@@ -32,6 +32,13 @@
         attend_data: [],
         mainHeight: {
           height: 0
+        },
+
+        //统计参数
+        params: {
+          uid: 289,
+          date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
+          diff: 1
         }
       }
     },
@@ -39,7 +46,6 @@
       this.show_market = true;
       this.work_info[0].val = '7 h';
       this.event_data[0].value = 700;
-      // this.attend_data = [8,3,1];
       this.top_title = '营销中心';
 
       var top = this.$refs['marketCentre'].offsetTop;
@@ -51,12 +57,8 @@
     computed: {},
     methods: {
       handleGetWorkInfo() {
-        var uid = 289;
-        this.$http.get(globalConfig.market_server + 'v1.0/csd/home/dashboard',{
-          uid,
-          // date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
-          date: '2019-03'
-        }).then(res => {
+        this.$http.get(globalConfig.market_server + 'v1.0/csd/home/dashboard',this.params).then(res => {
+          console.log(res);
           if (res.code === 200) {
             var arr = [];
             arr[0] = res.data && res.data.attendance.late_day;
@@ -75,7 +77,19 @@
         })
       },
       handleChangeDate(id) {
-
+        console.log(id);
+        switch (id) {
+          case 1:
+            this.params.diff = 1;
+            break;
+          case 2:
+            this.params.diff = 7;
+            break;
+          case 3:
+            this.params.diff = 30;
+            break;
+        }
+        this.handleGetWorkInfo();
       },
       handleCloseMenu() {
         this.show_market = false;

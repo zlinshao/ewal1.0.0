@@ -170,9 +170,9 @@
         }).then(res => {
           if (res.code === '20000') {
             this.market_next_depart = res.data.data;
-            for (let key in res.data.data) {
-              this.handleGetMarketChild(res.data.data[key].id,key);
-            }
+            // for (let key in res.data.data) {
+            //   this.handleGetMarketChild(res.data.data[key].id,key);
+            // }
           } else {
             this.market_next_depart = [];
           }

@@ -185,17 +185,17 @@
   #theme_name #staffFiles .dialog_container .staffFiles .filesTop {
     display: flex;
     display: -webkit-flex;
-    min-height: 60px;
-    margin-bottom: 20px;
+    min-height: 45px;
     text-align: right;
     justify-content: flex-end;
-    margin-top: 60px; }
+    position: relative;
+    top: 30px; }
     #theme_name #staffFiles .dialog_container .staffFiles .filesTop h4.name {
       font-weight: bold;
       margin-bottom: 6px; }
     #theme_name #staffFiles .dialog_container .staffFiles .filesTop p {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       margin-left: 15px;
       position: relative;
       top: 10px; }

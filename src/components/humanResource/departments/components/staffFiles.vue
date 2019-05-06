@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="flex filesMain">
-            <el-tabs v-model="activeName" @tab-click="handleClickTab" style="width: 100%">
+            <el-tabs v-model="activeName" @tab-click="handleClickTab" style="width: 100%;min-height: 600px">
               <el-tab-pane label="基本信息" name="first">
                 <el-form label-width="120px" class="borderNone" size="small" :disabled="reviseInfo">
                   <el-row :gutter="10">
@@ -159,10 +159,11 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="婚育状况">
-                        <div class="flex changeChoose" style="margin-top: 10px">
-                          <el-radio :label="0" v-model="staffDetail.marital_status">未婚</el-radio>
-                          <el-radio :label="1" v-model="staffDetail.marital_status">已婚</el-radio>
-                        </div>
+                        <el-select v-model="staffDetail.marital_fertility_status">
+                          <el-option :value="1" label="未婚"></el-option>
+                          <el-option :value="2" label="已婚未育"></el-option>
+                          <el-option :value="3" label="已婚已育"></el-option>
+                        </el-select>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -408,7 +409,7 @@
                 <div class="items-center mainRight scroll_bar">
                   <div class="grow" :style="{'backgroundPosition': num[index]}"  v-for="(item,index) in dates">
                     <div :class="[(index%2 === 0) ? 'tops' :  'bottoms']">
-                      <p @click="handleOpenGrow(dates,index)"><i></i>【{{item.created_at}} {{item.zh}}】<i></i></p>
+                      <p @click="handleOpenGrow(item)"><i></i>【{{item.created_at}} {{item.zh}}】<i></i></p>
                       <span><i></i></span>
                     </div>
                   </div>
@@ -433,14 +434,14 @@
     <!--员工轨迹详情-->
     <lj-dialog
       :visible="grow_visible"
-      :size="{width: 800 + 'px',height: 750 + 'px'}"
+      :size="{width: 600 + 'px',height: 750 + 'px'}"
       @close="grow_visible = false"
     >
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>详情</h3>
         </div>
-        <div class="dialog_main">
+        <div class="dialog_main" v-if="current_grow.length > 0">
           <div class="staff-line flex" v-for="(item,idx) in current_grow" :key="idx">
             <div class="left-line">
               <i></i>
@@ -448,9 +449,12 @@
             </div>
             <div class="right-content">
               <p>{{ item.created_at }}</p>
-              <p>{{ item.zh }}</p>
+              <p>{{ item.record_zh }}</p>
             </div>
           </div>
+        </div>
+        <div style="text-align: center" v-else>
+          暂无数据
         </div>
       </div>
     </lj-dialog>
@@ -542,7 +546,7 @@
           recommenders: {
             name: ''
           },
-          marital_status: '',
+          marital_fertility_status: '',
           level: '',
           home_addr: '',
           salary: '',
@@ -583,7 +587,7 @@
         this.files_visible = val;
         this.files_size = {
           width: '1600px',
-          height: '830px',
+          height: '855px',
         };
       },
       files_visible(val) {
@@ -655,9 +659,16 @@
         this.activeName = 'first';
         this.$emit('close');
       },
-      handleOpenGrow(dates,idx) {
-        this.step_active = idx + 1;
-        this.current_grow = dates;
+      handleOpenGrow(item) {
+        console.log(item);
+        this.$http.get(`staff/user/${item.user_id}/growth_record`).then(res => {
+          console.log(res);
+          if (res.code === '20000') {
+            this.current_grow = res.data.data;
+          } else {
+            this.current_grow = [];
+          }
+        });
         this.grow_visible = true;
       },
       //删除item
@@ -707,7 +718,7 @@
               title: '成功',
               message: res.msg
             });
-            this.reviseInfo = false;
+            this.reviseInfo = !this.reviseInfo;
             this.files_visible = false;
             this.activeName = 'first';
           } else {
