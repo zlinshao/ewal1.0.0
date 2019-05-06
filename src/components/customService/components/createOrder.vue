@@ -282,11 +282,11 @@
                             || '--'}}</span>
                           <span class="content_tit" v-else>{{customer_info.contract_Detail[item]|| '--'}}</span>
                         </div>
-                        <div>
+                        <div class='contract_img_box'>
                           <span class='tit'>合同照片</span>
                           <p class='content_tit'>
-                            <img :src="img.uri" alt="" v-for='img in customer_info.contract_Detail.album.photo' :key='img.id'
-                              data-magnify="" data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'>
+                            <Ljupload size='40' :value="customer_info.contract_Detail.album_temp.photo" disabled=true
+                              :download='false'></Ljupload>
                           </p>
                         </div>
                       </el-col>
@@ -308,15 +308,14 @@
                           <span class='tit'>回访状态</span>
                           <span class="content_tit">{{customer_info.contract_Detail.is_connect ?'已回访':'未回访'}}</span>
                         </div>
-                        <div>
+                        <div class='contract_img_box'>
                           <span class='tit'>其他附件</span>
                           <div class='content_tit content_album'>
-                            <div v-for='(item,key) in customer_info.contract_Detail.album' class='imgs_box' v-if='key !="photo"'>
+                            <div v-for='(item,key) in customer_info.contract_Detail.album_temp' class='imgs_box' v-if='key !="photo"'>
                               <p>{{dataAblum[key]}}</p>
-                              <div v-if='item'>
-                                <img :src="img.uri" alt="" v-for='img in item' :key='img.id' data-magnify=""
-                                  data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'>
-                              </div>
+
+                              <Ljupload size='40' :value="item" disabled=true :download='false' v-if='item'></Ljupload>
+
                             </div>
                           </div>
                         </div>
@@ -896,11 +895,14 @@ export default {
       this.createOrder.chooseTab = val.contract_type
       this.$http.get(this.market_server + `v1.0/market/contract/${val.contract_type}/${val.contract_id}`).then(res => {
         if (res.code === 200) {
+          res.data.album_temp = JSON.parse(res.data.album_temp)
           this.customer_info.contract_Detail = res.data
           this.show_Contract_Detail = true
 
-          this.createOrder.reimbursement = res.data.customer_info[0].name
-          this.createOrder.replay_phone = res.data.customer_info[0].phone
+          if (res.data.customer_info) {
+            this.createOrder.reimbursement = res.data.customer_info[0].name
+            this.createOrder.replay_phone = res.data.customer_info[0].phone
+          }
         }
       })
 
@@ -1176,7 +1178,6 @@ export default {
           house_id: params.house_id
         }
         this.$http.post(`${this.market_server}v1.0/market/task/HouseRepair`, order).then(res => {
-          console.log(res.message)
         })
       }
       if (params.type == 8) { //保洁
@@ -1191,7 +1192,6 @@ export default {
           house_id: params.house_id
         }
         this.$http.post(`${this.market_server}v1.0/market/task/HouseCleaning`, order).then(res => {
-          console.log(res.message)
         })
       }
 
@@ -1596,6 +1596,11 @@ export default {
                 flex-wrap: wrap;
               }
             }
+          }
+        }
+        .contract_img_box {
+          div {
+            margin-bottom: 0px;
           }
         }
       }

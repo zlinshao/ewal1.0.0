@@ -146,7 +146,7 @@
         checked: 1,//选择哪个toolbar
         container_checked: -1,//选择哪个列表数据容器,
         //todo_list_container_arr: [],
-        noSearch:'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
+        noSearch: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
           {
@@ -195,7 +195,7 @@
             date: '2019-03-22',
             tip: '距离考试20分钟',
             money: '扣款200元',
-            onClick:'humanResource_answer_test_paper',
+            onClick: 'humanResource_answer_test_paper',
           },
           {
             id: 6,
@@ -255,7 +255,7 @@
       //获取待办toolbar数据
       getTodoListToolBar() {
         let params = {
-          procDefKeyNotIn:this.noSearch,
+          procDefKeyNotIn: this.noSearch,
           //assignee:3,//用户id
         };
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
@@ -298,7 +298,7 @@
         let params = {
           ...this.params,
           processDefinitionKey: item.key || '',
-          processDefinitionKeyNotIn:this.noSearch
+          processDefinitionKeyNotIn: this.noSearch
         };
 
         this.$http.get(`${this.url}runtime/tasks`, params).then(res => {
@@ -318,23 +318,32 @@
               /*跟进任务*/
               case 'FA-FollowUpTask':
                 break;
-                /*合同签署*/
+              /*合同签署*/
               case 'MC-CollectContractSigning':
                 break;
               /*报备审批*/
               case 'MG-BulletinApproval':
                 break;
-                /*完整版*/
+              /*完整版*/
               case 'MarketCollect':
                 break;
-                /*报备*/
+              /*报备*/
               case 'MC-Bulletin':
                 break;
-                /*带看*/
+              /*带看*/
               case 'Market-CollectTakeLook':
                 break;
-                /*补齐物品*/
+              /*补齐物品*/
               case 'Market-CompleteAsset':
+                break;
+              /*考试*/
+              case 'HR-Exam':
+                let variables = item.variables;
+                let name = _.find(variables,{name:'title'})?.value;
+                //let date = _.find(variables,);
+
+                obj.onClick = 'humanResource_answer_test_paper';
+                obj.name = name;
                 break;
               default:
                 break;

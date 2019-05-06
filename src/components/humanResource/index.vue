@@ -5,16 +5,26 @@
     </div>
     <div class="bottom_info flex-center" ref="bottom_info" :style="mainHeight">
       <div>
-        <p>本周我的任务完成率</p>
+        <p>{{ mark_choose === 1 ? '当日': mark_choose === 2 ? '本周' : '本月'}}我的任务完成率</p>
         <div id="work_down_charts" style="width: 400px;height: 300px;"></div>
       </div>
       <div>
         <p>连续2个月业绩低于10万名单</p>
-        <!--<div class="staff_list flex">-->
-          <!--<div class="staff_list_item" v-for="item in 10">-->
-            <!---->
-          <!--</div>-->
-        <!--</div>-->
+        <div class="staff_list flex">
+          <div class="staff_list_item" v-for="item in achv_list">
+            <div>
+              <img :src="item.avatar" alt="" v-if="item.avatar">
+              <img src="../../assets/image/no_avatar.png" alt="" v-else>
+            </div>
+            {{ item.name }}
+            <div>
+              {{ item.achievement2 && item.achievement2.date.split('-')[1]}}月:<a>{{(item.achievement2.value / 10000).toFixed(1) }}</a>万
+            </div>
+            <div>
+              {{ item.achievement1 && item.achievement1.date.split('-')[1]}}月:<a>{{(item.achievement1.value / 10000).toFixed(1) }}</a>万
+            </div>
+          </div>
+        </div>
       </div>
       <div>
         <span>本月入职员工数：{{ staff_info.enroll }}人</span>
@@ -62,7 +72,8 @@
           dismiss: '',
           enroll: '',
           forward: ''
-        }
+        },
+        achv_list: [],
       }
     },
     mounted() {
@@ -73,8 +84,7 @@
 
       this.init_work_down_chart();
       this.handleGetStaffInfo();
-    },
-    activated() {
+      this.handleGetAchList();
     },
     watch: {},
     computed: {},
@@ -82,12 +92,42 @@
       clickMark(tmp) {
         switch (tmp.id) {
           case 1:
+            this.staff_time.end_time = '';
+            this.staff_time.start_time = '';
             break;
           case 2:
+            var date = new Date().getDay();
+            this.staff_time.start_time = new Date(new Date().setDate(new Date().getDate() - (date - 1))).toLocaleDateString().split('/').join('-');
+            this.staff_time.end_time = new Date(new Date().setDate(new Date().getDate() + (7 - date))).toLocaleDateString().split('/').join('-');
             break;
           case 3:
+            var fullYear = new Date().getFullYear();
+            var month = new Date().getMonth() + 1;
+            var endOfMonth = new Date(fullYear,month,0).getDate();
+            this.staff_time.start_time = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-01`;
+            this.staff_time.end_time = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${endOfMonth}`;
             break;
         }
+        this.mark_choose = tmp.id;
+        this.handleGetStaffInfo();
+      },
+      handleGetAchList() {
+        this.$http.get('http://47.101.210.105:8082/achievement').then(res => {
+          if (res.code === 200) {
+            if (res.data.length >0) {
+              this.achv_list = res.data.splice(0,10);
+            } else {
+              this.achv_list = [];
+            }
+          }  else {
+            this.achv_list = [];
+            this.$LjNotify('warning',{
+              title: '警告',
+              message: '获取业绩列表失败！'
+            });
+            return false;
+          }
+        })
       },
       handleGetStaffInfo() {
         this.$http.get('staff/user/statistical',this.staff_time).then(res => {
