@@ -68,6 +68,9 @@
 
       <!--收租房带看-->
       <SeeHouse></SeeHouse>
+
+      <!--问卷/考试答题-->
+      <answer-questionnaire-or-exam></answer-questionnaire-or-exam>
     </div>
   </div>
 
@@ -76,7 +79,7 @@
 <script>
   import _ from 'lodash';
 
-
+  import AnswerQuestionnaireOrExam from './components/humanResource/answerQuestionnaireOrExam';
   import interviewDialog from './components/humanResource/interviewDialog';
   import repositoryDialog from './components/humanResource/repositoryDialog';
   import attenceDialog from './components/humanResource/attenceDialog';
@@ -92,7 +95,8 @@
       repositoryDialog,
       attenceDialog,
       finespaymentDialog,
-      SeeHouse
+      SeeHouse,
+      AnswerQuestionnaireOrExam
     },
     computed: {
       currentTodoModule() {
@@ -142,7 +146,7 @@
         checked: 1,//选择哪个toolbar
         container_checked: -1,//选择哪个列表数据容器,
         //todo_list_container_arr: [],
-        noSearch:'MarketCollect,MC-Bulletin',//pc端不需要的category及列表 筛选
+        noSearch:'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
           {
@@ -152,7 +156,7 @@
             count: 0,
           },
         ],
-        /*todo_list_container: [
+        todo_list_container: [
           {
             id: 1,
             name: '维修工单',
@@ -190,7 +194,8 @@
             name: '资料补齐',
             date: '2019-03-22',
             tip: '距离考试20分钟',
-            money: '扣款200元'
+            money: '扣款200元',
+            onClick:'humanResource_answer_test_paper',
           },
           {
             id: 6,
@@ -229,9 +234,9 @@
             project: '借用审批编号10086',
             onClick: 'humanResource_repository' //click事件控制lj-dialog显示隐藏
           }
-        ],*/
+        ],
 
-        todo_list_container: [],
+        /*todo_list_container: [],*/
       }
     },
     mounted() {
@@ -271,7 +276,7 @@
           }
         }).then(res => {
           if (res) {
-            this.getCurrentList();
+            //this.getCurrentList();
           }
         });
       },

@@ -34,9 +34,9 @@
             <div class='cell_list' v-if='current_status_type == 1'>
               <span class='cell_tit'>接收类型</span>
               <div class='cell_content cell_type'>
-                <span class='cell_blue'>{{item.type.join(',')}}</span>
+                <span class='cell_blue'>{{item.typeName.join(',')}}</span>
                 <ul v-if='item.type.length > 1'>
-                  <li v-for='(item,idx) in item.type' :key='idx'>{{item}}</li>
+                  <li v-for='(item,idx) in item.typeName' :key='idx'>{{item}}</li>
                 </ul>
               </div>
             </div>
@@ -76,7 +76,9 @@
         </div>
         <div class='dialog_main check_type_dialog'>
           <el-checkbox-group v-model="currentInfo.type" :disabled='currentInfo.suspend'>
-            <el-checkbox v-for='type in revice_type' :key='type.title' :label="type.title" :value='type.id' />
+            <el-checkbox v-for='type in Object.keys(revice_type)' :key='type' :label="type">
+              {{revice_type[type]}}
+            </el-checkbox>
           </el-checkbox-group>
         </div>
         <div class='dialog_footer'>
@@ -114,30 +116,30 @@ export default {
         id: 69,
         shening: 32,
         preTime: 8,
-        type: ['收房'],
-        typeId: [1, 2, 3, 4],
+        type: [],
+        typeName: [],
         suspend: true
       },
       {
         id: 70,
         shening: '32条',
         preTime: '8min',
-        type: ['收房', '收房', '收房', '收房'],
-        typeId: [1, 2, 3, 4],
+        type: [],
+        typeName: [],
         suspend: false
       },
       {
         id: 71,
         shening: '32条',
         preTime: '8min',
-        type: ['收房', '收房', '收房', '收房'],
-        typeId: [1, 2, 3, 4],
+        type: [],
+        typeName: [],
         suspend: false
       }],
       active_panel: -1,
       current_page: 1,
       tableCount: 0,
-      cellType: ['收房', '收房', '收房', '收房'],
+      cellType: [],
       panel_info_visible: false,
       panel_info: {
         current_type: 1
@@ -180,20 +182,19 @@ export default {
       this.show_set_visible = true
     },
     handleCheckType (par) {
-
       if (par) {  //同意
         let params = {
           "receiveTypeList": this.currentInfo.type,
           "suspend": this.currentInfo.suspend
         }
         this.$http.post(`${this.approval_sever}monitor/process-instances/${this.currentInfo.id}`, params).then(res => {
-          console.log(res)
-
-
           // 改变当前这个值
+          this.currentInfo.typeName = [];
+          this.currentInfo.type.forEach(ele => {
+            this.currentInfo.typeName.push(this.revice_type[ele])
+          });
+
           this.panelList.splice(this.currentIndex, 1, this.currentInfo)
-          console.log(this.currentInfo)
-          console.log(this.panelList)
           this.show_set_visible = false
           this.currentInfo = {}
         })

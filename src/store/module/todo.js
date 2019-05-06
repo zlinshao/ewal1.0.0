@@ -174,6 +174,7 @@ const todo = {
     humanResource_repository_visible: false, //内务库房页面显示隐藏
     humanResource_attence_visible: false, //考勤界面显示隐藏
     humanResource_finespayment_visible: false, //罚款缴纳显示隐藏
+    humanResource_answer_test_paper_visible:false,//问卷/考试页面显示隐藏
 
     // 客服 待办模块
     customerService_createdTodo_visible: false, //客服创建待办
@@ -218,6 +219,10 @@ const todo = {
     //罚款缴纳待办
     CHANGE_HUMANRESOURCE_FINESPAYMENT_VISIBLE(state) {
       state.humanResource_finespayment_visible = !state.humanResource_finespayment_visible
+    },
+    //问卷/考试页面显示隐藏
+    CHANGE_HUMANRESOURCE_ANSWER_TEST_PAPER_VISIBLE(state) {
+      state.humanResource_answer_test_paper_visible = !state.humanResource_answer_test_paper_visible
     }
   },
   // 执行函数
@@ -256,6 +261,10 @@ const todo = {
     //改变罚款缴纳显示隐藏
     change_humanResource_finespayment_visible({ commit }, status) {
       commit('CHANGE_HUMANRESOURCE_FINESPAYMENT_VISIBLE', status)
+    },
+    //改变调查问卷/考试页面显示隐藏
+    change_humanResource_answer_test_paper_visible({commit}, status) {
+      commit('CHANGE_HUMANRESOURCE_ANSWER_TEST_PAPER_VISIBLE',status);
     }
   }
 }

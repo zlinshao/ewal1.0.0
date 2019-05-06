@@ -1,54 +1,16 @@
-export const revice_type = [
-  {
-    title: '取消预定',
-    id: 1
-  },
-  {
-    title: '家居补齐',
-    id: 2
-  },
-  {
-    title: '收房报备',
-    id: 3
-  },
-  {
-    title: '租房报备',
-    id: 4
-  },
-  {
-    title: '续收报备',
-    id: 5
-  },
-  {
-    title: '续租报备',
-    id: 6
-  },
-  {
-    title: '转租报备',
-    id: 7
-  },
-  {
-    title: '调房报备',
-    id: 8
-  },
-  {
-    title: '退租报备',
-    id: 9
-  },
-  {
-    title: '拓展新盘',
-    id: 10
-  },
-  {
-    id: 13,
-    title: '未收先租'
-  },
-  {
-    title: '收房补充协议',
-    id: 11
-  },
-  {
-    title: '租房补充协议',
-    id: 12
-  }
-]
+export const revice_type = {
+  bulletin_lose_rent: '取消预定', //租房炸弹
+  2: '家居补齐',
+  bulletin_collect_basic: '收房报备',
+  bulletin_rent_basic: '租房报备',
+  bulletin_rent_continued: '续收报备',
+  bulletin_rent_continued: '续租报备',
+  bulletin_rent_trans: '转租报备',
+  bulletin_change: '调房报备',
+  bulletin_checkout_collect: '房东退租',
+  bulletin_checkout_rent: '租客退租',
+  10: '拓展新盘',
+  bulletin_rent_RWC: '未收先租',
+  bulletin_special_collect: '收房补充协议',
+  bulletin_special_rent: '租房补充协议'
+}

@@ -248,9 +248,9 @@
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{train_detail_form.name}}</h3>
-          <div class="header_right">
+          <!--<div class="header_right">
             <el-button size="mini" type="primary" plain>查看考试情况</el-button>
-          </div>
+          </div>-->
         </div>
         <div class="dialog_main train-detail-form">
           <el-form size="mini" label-width="100px" class="train_detail">
