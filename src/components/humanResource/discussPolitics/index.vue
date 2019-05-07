@@ -9,6 +9,7 @@
         <div class="date-value-container">
           <el-date-picker v-model="dateValue" :clearable="false" type="month" placeholder="选择月">
           </el-date-picker>
+          <span class="icon-jiantou"></span>
         </div>
       </div>
     </div>
@@ -50,9 +51,18 @@
           </div>
         </div>
         <div class="container-right scroll_bar">
-          <div class="calendar-week">
+          <!--<div class="calendar-week">
             <div class="ui-container">
               <div v-for="(item,index) in weekList" class="calendar-week-item">
+                <div class="calendar-week-item-container">
+                  <span :class="{weekday:index>4}" class="week-item-date">{{item}}</span>
+                </div>
+              </div>
+            </div>
+          </div>-->
+          <div class="calendar-week-en">
+            <div class="ui-container">
+              <div v-for="(item,index) in weekListEn" class="calendar-week-item">
                 <div class="calendar-week-item-container">
                   <span :class="{weekday:index>4}" class="week-item-date">{{item}}</span>
                 </div>
@@ -377,7 +387,9 @@
           <h3>{{meeting_detail_form.meetingType}} {{meeting_detail_form.meetingTime}}</h3>
 
           <div class="header_right" style="height: 30px">
-            <i title="编辑" v-if="meeting_detail_form.status!=2 && !meeting_summary_editable" class="icon30 icon-edit"
+            <i title="编辑" v-show="meeting_detail_choose_id==1" v-if="meeting_detail_form.status!=1 && meeting_detail_form.showEditBtn" class="icon30 icon-edit"
+               @click="showEditMeetingDialog"></i>
+            <i title="编辑" v-show="meeting_detail_choose_id==2" v-if="!meeting_summary_editable" class="icon30 icon-edit"
                @click="showEditMeetingDialog"></i>
           </div>
         </div>
@@ -965,6 +977,7 @@
 
         dateValue: new Date(),
         weekList: ['一', '二', '三', '四', '五', '六', '日'],
+        weekListEn: [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'],
         monthList: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
         daysList: [],
         monthContent: '',
@@ -1199,6 +1212,7 @@
           if (valid) {//成功
             let id = this.add_meeting_form.id;
             delete this.add_meeting_form['id'];
+            this.add_meeting_form.status = 0;
             debugger
             this.$http.put(`${this.url}/meeting/meeting/${id}`, this.add_meeting_form).then(res => {
               this.$LjMessageEasy(res, () => {
@@ -1548,6 +1562,7 @@
               meetingTime: `${utils.formatDate(item.start_time, 'hh:mm')}-${utils.formatDate(item.end_time, 'hh:mm')}`,//会议时间
               status: item.status,//状态
               remark: item.remark || '',//备注
+              showEditBtn:(new Date(item.end_time).getTime()>new Date().getTime()),
 
 
               start_time: value.start_time,
@@ -1876,6 +1891,7 @@
 
 <style lang="scss">
   #discussPolitics {
+
     .calendar-day {
       .ui-container {
         .calendar-day-item-container {
@@ -1981,6 +1997,12 @@
 
         &.checked {
           @include discussPoliticsImg("xjtk.png", "theme1");
+        }
+      }
+
+      .date-value-container {
+        .icon-jiantou {
+          @include discussPoliticsImg('jiantou.png','theme1');
         }
       }
     }

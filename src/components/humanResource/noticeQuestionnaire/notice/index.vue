@@ -634,9 +634,30 @@
         this.$refs['publishNoticeForm'].validate(valid => {
           if (valid) {
             let newForm = this.publish_notice_form;
-            newForm.sanction_info = _.forEach(newForm.sanction_info, (o) => {
-              o.user_id = parseInt(o.user_id.join());
+            let isReturn =false;
+            newForm.sanction_info = _.forEach(newForm.sanction_info, (o,index) => {
+              if(index!=0) {
+                if(o.user_id&&o.user_id.length>0 &&o.sanction_type&&o.money) {
+                  o.user_id = parseInt(o.user_id.join());
+                }else {
+                  isReturn = true;
+                }
+              }else {
+                if((!o.user_id||!o.user_id?.length>0) &&!o.sanction_type&&!o.money) {
+
+                }else {
+                  isReturn = true;
+                }
+              }
+
             });
+            if(isReturn) {//没填全 return
+              this.$LjMessage('warning',{
+                title:'警告',
+                msg:'奖惩信息有遗漏',
+              });
+              return;
+            }
             let params = {
               ...newForm
             };

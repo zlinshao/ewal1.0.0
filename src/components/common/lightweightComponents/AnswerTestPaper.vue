@@ -135,39 +135,6 @@ export default {
       },
       immediate: true,
     },
-    /*examData: {
-      handler(val,oldVal) {
-        if(val) {
-          //this.examList = val.question_set;
-
-
-          //考试题目遍历
-          _.forEach(val.question_set, (value, key) => {
-            _.forEach(value, (subValue) => {
-              subValue.category = parseInt(key);
-            });
-          });
-          debugger
-          let questionSet = _.flattenDeep(_.values(val.question_set));
-          _.forEach(questionSet, (item, index) => {
-            this.exam_total_score += item.score || 0;
-            switch (item.category) {
-              case 1:
-                this.exam_category_list.single.exam_list.push(item);
-                break;
-              case 2:
-                this.exam_category_list.judge.exam_list.push(item);
-                break;
-              case 3:
-                this.exam_category_list.short.exam_list.push(item);
-            }
-          });
-          console.log(this.exam_category_list);
-        }
-      },
-      deep: true,
-      immediate:true,
-    },*/
 
     examList: {
       handler (val, oldVal) {
@@ -179,11 +146,6 @@ export default {
             });
           });
           val = _.flattenDeep(_.values(val));
-          /*val.forEach((item, index) => {
-            if (item.category != 3) {
-              item.answer = item.answer.join();
-            }
-          });*/
           val = _.sortBy(val, ['category']);
           this.exam_form_list = val;
         } else {
@@ -301,7 +263,12 @@ export default {
         }
       }
       newArr = _.map(newArr, (o) => {
-        o.answer = o.user_answer;
+        if(o.category!==3) {
+          o.answer = [o.user_answer];
+        }else {
+          o.answer = o.user_answer;
+        }
+
         delete o.stem;
         delete o.user_answer;
         delete o.choice;
@@ -324,28 +291,22 @@ export default {
       };
       this.$http.put(`${this.url}train/exam/set/${exam_id}`,params).then(res=> {
         debugger
+        let that = this;
         if(res.code.endsWith('0')) {
           this.$LjMessage('success',{
             title:'答题成功',
             msg:`本次得分:${res.data.score}`,
           });
+          setTimeout(function() {
+            that.paper_visible = false;
+          },2000);
         }
       });
-      /*this.$httpTj.submitExam(exam_id, params).then(res => {
-        debugger
-        console.log(res);
-        if (res.code.endsWith('0')) {
-          this.paper_dialog_params.score = res.data.score;
-
-          this.paper_dialog_visible = true;
-          //this.action_sheet_visible = false;
-        }
-      });*/
 
 
 
       this.$emit('success', this.exam_form_list);
-      this.paper_visible = false;
+
       this.$store.dispatch('change_humanResource_answer_test_paper_visible');
     },
 
