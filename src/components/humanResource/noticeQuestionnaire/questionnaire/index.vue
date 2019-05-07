@@ -195,6 +195,10 @@ export default {
   computed: {},
   mounted () {
     this.getQuestionnaireList();
+    let that = this;
+    this.$bus.$on('questionnaireSearchVal', function (val) {
+      that.getQuestionnaireList(val);
+    });
   },
   methods: {
     //显示调查对象对话框

@@ -506,7 +506,20 @@ export default new Router({
     {
       path: '/noticeQuestionnaire',
       name: '公告问卷',
-      component: NoticeQuestionnaire
+      component: NoticeQuestionnaire,
+      //redirect: '/noticeQuestionnaire/notice',
+      children: [
+        {
+          path: '/noticeQuestionnaire/notice',
+          name: '人资公告',
+          component: () => import('@/components/humanResource/noticeQuestionnaire/notice/index.vue') //公告
+        },
+        {
+          path: '/noticeQuestionnaire/questionnaire',
+          name: '人资问卷',
+          component: () => import('@/components/humanResource/noticeQuestionnaire/questionnaire/index.vue') //问卷
+        },
+      ]
     },
     {
       path: '/repository',

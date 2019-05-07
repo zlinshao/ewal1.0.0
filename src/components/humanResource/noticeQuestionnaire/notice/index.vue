@@ -2,7 +2,7 @@
   <div id="notice">
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
-<!--        <div class="icons-font" @click="showPublishNoticeDialog"><b>发公告</b></div>-->
+        <!--        <div class="icons-font" @click="showPublishNoticeDialog"><b>发公告</b></div>-->
         <div class="icons add" @click="showPublishNoticeDialog"><b>+</b></div>
         <!--<div class="icons add" @click="publish_notice_dialog_visible = true"><b>+</b></div>-->
       </div>
@@ -125,7 +125,7 @@
             <div v-for="(item,index) in publish_notice_form.sanction_info" :key="index">
               <!--不带表单验证-->
               <el-form-item
-                            label="类型">
+                label="类型">
                 <dropdown-list :json-arr="DROPDOWN_CONSTANT.NOTICEQUESTIONNAIRE.PUBLISHNOTICE.TYPE"
                                title="请选择类型"
                                v-model="publish_notice_form.sanction_info[index].sanction_type"></dropdown-list>
@@ -139,14 +139,14 @@
               </el-form-item>
 
               <el-form-item
-                            label="奖罚金额">
+                label="奖罚金额">
                 <el-input v-model="publish_notice_form.sanction_info[index].money" placeholder="请输入奖惩金额"
                           style="width: 320px">
                 </el-input>
               </el-form-item>
 
               <el-form-item
-                            label="责任人">
+                label="责任人">
                 <user-choose num="1" title="请选择责任人"
                              v-model="publish_notice_form.sanction_info[index].user_id"></user-choose>
               </el-form-item>
@@ -403,7 +403,7 @@
 
   export default {
     name: "index",
-    props: ['searchVal'],
+    //props: ['searchVal'],
     components: {
       LjDialog,
       UserChoose,
@@ -452,6 +452,7 @@
           },
         },
 
+        searchVal: null,
 
         url: globalConfig.humanResource_server,
         DROPDOWN_CONSTANT,
@@ -525,30 +526,24 @@
         },
         //公告详情中的table奖惩数据
         notice_detail_table_data: [],
-
-        // work_info: [
-        //   {work: '平均在线时长', val: '8 h'},
-        //   {work: '平均处理用时', val: '30 min'},
-        //   {work: '当日处理事件数', val: '16 件'},
-        //   {work: '本周处理事件数', val: '35 件'},
-        // ],
-        // event_data: [
-        //   {value: 500, name: '一般'},
-        //   {value: 300, name: '特殊'},
-        //   {value: 200, name: '紧急'},
-        // ],
-        // attend_data: []
       }
     },
     mounted() {
       this.getNoticeList();
+      let that = this;
+      this.$bus.$on('noticeSearchVal', function (val) {
+        that.getNoticeList(val);
+      });
     },
     activated() {
     },
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          this.getNoticeList(val);
+          if(val) {
+            this.getNoticeList(val);
+          }
+
           //this.params = val;
         },
         deep: true
@@ -634,27 +629,27 @@
         this.$refs['publishNoticeForm'].validate(valid => {
           if (valid) {
             let newForm = this.publish_notice_form;
-            let isReturn =false;
-            newForm.sanction_info = _.forEach(newForm.sanction_info, (o,index) => {
-              if(index!=0) {
-                if(o.user_id&&o.user_id.length>0 &&o.sanction_type&&o.money) {
+            let isReturn = false;
+            newForm.sanction_info = _.forEach(newForm.sanction_info, (o, index) => {
+              if (index != 0) {
+                if (o.user_id && o.user_id.length > 0 && o.sanction_type && o.money) {
                   o.user_id = parseInt(o.user_id.join());
-                }else {
+                } else {
                   isReturn = true;
                 }
-              }else {
-                if((!o.user_id||!o.user_id?.length>0) &&!o.sanction_type&&!o.money) {
+              } else {
+                if ((!o.user_id || !o.user_id?.length > 0) && !o.sanction_type && !o.money) {
 
-                }else {
+                } else {
                   isReturn = true;
                 }
               }
 
             });
-            if(isReturn) {//没填全 return
-              this.$LjMessage('warning',{
-                title:'警告',
-                msg:'奖惩信息有遗漏',
+            if (isReturn) {//没填全 return
+              this.$LjMessage('warning', {
+                title: '警告',
+                msg: '奖惩信息有遗漏',
               });
               return;
             }
@@ -689,7 +684,7 @@
         this.$http.get(`${this.url}announcement/announcement/${id}`).then(res => {
           if (res.code.endsWith('0')) {
             let mData = res.data;
-            _.forEach(mData.sanction_info,(o)=> {
+            _.forEach(mData.sanction_info, (o) => {
               o.user_id = [o.user_id];
             });
             /*mData.sanction_info = _.forEach(mData.sanction_info,(o)=> {
@@ -805,10 +800,10 @@
               for (let subItem of item.sanction_info) {
                 let obj = {
                   name: subItem.user_info?.name,
-                  type:subItem.sanction_type==1?'奖赏':'处罚',
-                  money:subItem.money||'-',
-                  pay_type:subItem.pay_type||'-',
-                  pay_status:subItem.pay_status==2?'已缴纳':'未缴纳',
+                  type: subItem.sanction_type == 1 ? '奖赏' : '处罚',
+                  money: subItem.money || '-',
+                  pay_type: subItem.pay_type || '-',
+                  pay_status: subItem.pay_status == 2 ? '已缴纳' : '未缴纳',
                 };
                 this.notice_detail_table_data.push(obj);
               }
@@ -882,6 +877,7 @@
     #notice {
       .read-icon {
         @include nqImg('button_bg_gray.png', 'theme1');
+
         &.checked {
           @include nqImg('button_bg_red.png', 'theme1');
         }
@@ -902,6 +898,7 @@
         bottom: 100px;
         //background-color: $color2F2;
         z-index: 6;
+
         .develop {
           position: absolute;
           top: -30px;
