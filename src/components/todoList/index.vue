@@ -103,23 +103,6 @@
       },
     },
     watch: {
-      /*todo_list_container: {
-        handler(val, oldVal) {
-          this.$nextTick(() => {
-            if (val && val.length >= 0 && val.length <= 5) {
-              this.todo_list_container_arr[0] = val.slice(0, val.length);
-            } else if (val.length <= 10) {
-              this.todo_list_container_arr[0] = val.slice(0, 5);
-              this.todo_list_container_arr[1] = val.slice(5, val.length);
-            } else {
-              this.todo_list_container_arr[0] = val.slice(0, 5);
-              this.todo_list_container_arr[1] = val.slice(5);
-            }
-          });
-
-        },
-        immediate: true
-      },*/
     },
     data() {
       return {
