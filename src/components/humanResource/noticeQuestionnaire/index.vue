@@ -7,7 +7,7 @@
           <b>...</b>
         </p>
         <h1>公告问卷</h1>
-        <h2 class="items-center" v-if="chooseTab">
+        <h2 class="items-center" v-if="$route.path!=='/noticeQuestionnaire'">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
             {{item.title}}<i></i>
@@ -18,7 +18,7 @@
         <!--<div class="icons-font" @click="publish(chooseTab)" v-if="chooseTab === 1|| chooseTab===2"><b>发榜</b></div>-->
         <!--<div class="icons-font" @click="exchange(chooseTab)" v-if="chooseTab === 1"><b>发公告</b></div>
         <div class="icons-font" @click="exchange(chooseTab)" v-if="chooseTab === 2"><b>调查问卷</b></div>-->
-        <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
+        <div class="icons search" @click="highSearch(chooseTab)" v-if="$route.path!=='/noticeQuestionnaire'"></div>
       </div>
     </div>
 
@@ -103,9 +103,7 @@
 
       }
     },
-    mounted() {
-
-    },
+    mounted() {},
     activated() {
     },
     watch: {
@@ -118,6 +116,17 @@
           }
         },
         immediate:true,
+      },
+      '$route.path': {
+        handler(val,oldVal) {
+          if(val=='/noticeQuestionnaire/notice') {
+            this.chooseTab = 1;
+          }else if(val=='/noticeQuestionnaire/questionnaire') {
+            this.chooseTab = 2;
+          }
+        },
+        deep:true,
+        immediate:true
       },
     },
     computed: {},

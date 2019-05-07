@@ -180,11 +180,11 @@
 
 .main-container {
   width: 100%;
-  height: calc(100% - 131px);
+  height: calc(100% - 220px);
   background-color: #f9f9f9;
   position: absolute;
   left: 0;
-  top: 131px;
+  top: 220px;
   transition: all ease 1s; }
   .main-container .guidance {
     position: absolute;
