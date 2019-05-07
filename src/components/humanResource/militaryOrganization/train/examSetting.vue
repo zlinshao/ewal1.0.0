@@ -276,10 +276,10 @@
               </el-date-picker>
 
             </el-form-item>
-            <el-form-item prop="duration" required label="试卷时长">
+            <el-form-item prop="duration" required label="试卷时长(分)">
               <el-input v-model="new_exam_form.duration" placeholder="请输入分钟"></el-input>
             </el-form-item>
-            <el-form-item prop="late_tolerance" required label="开考后">
+            <el-form-item prop="late_tolerance" required label="开考后(分)">
               <el-input v-model="new_exam_form.late_tolerance" placeholder="请输入分钟 设置时间后,不能登录考试系统"></el-input>
             </el-form-item>
           </el-form>
@@ -453,10 +453,10 @@
               {required: true, message: '请选择开考时间', trigger: 'blur'},
             ],
             duration: [
-              {required: true, message: '请选择试卷时长', trigger: 'blur'},
+              {required: true, message: '请输入试卷时长', trigger: 'blur'},
             ],
             late_tolerance: [
-              {required: true, message: '请选择最迟进场时间', trigger: 'blur'},
+              {required: true, message: '请输入最迟进场时间', trigger: 'blur'},
             ],
           },
         },

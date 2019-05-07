@@ -252,15 +252,16 @@
         font-size: 24px; }
       #todo_list .pendant-container .pendant .item-list {
         display: flex;
-        display: -webkit-flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
         position: absolute;
         width: 70%;
         height: 50px;
         top: 95px;
         left: 250px; }
         #todo_list .pendant-container .pendant .item-list .item-detail {
+          margin-right: 50px;
           width: 60px;
           height: 80px;
           position: relative;

@@ -72,7 +72,6 @@
   import repositoryDialog from './components/humanResource/repositoryDialog';
   import attenceDialog from './components/humanResource/attenceDialog';
   import finespaymentDialog from './components/humanResource/finespaymentDialog';
-
   //市场客服
   import SeeHouse from './components/marketCentre/see-house.vue';
 
@@ -104,23 +103,6 @@
       },
     },
     watch: {
-      /*todo_list_container: {
-        handler(val, oldVal) {
-          this.$nextTick(() => {
-            if (val && val.length >= 0 && val.length <= 5) {
-              this.todo_list_container_arr[0] = val.slice(0, val.length);
-            } else if (val.length <= 10) {
-              this.todo_list_container_arr[0] = val.slice(0, 5);
-              this.todo_list_container_arr[1] = val.slice(5, val.length);
-            } else {
-              this.todo_list_container_arr[0] = val.slice(0, 5);
-              this.todo_list_container_arr[1] = val.slice(5);
-            }
-          });
-
-        },
-        immediate: true
-      },*/
     },
     data() {
       return {
@@ -130,6 +112,7 @@
           title: '',
           page: 1,
           size: 10,//每页条数
+          assignee:289,
         },
         checked: 1,//选择哪个toolbar
         categoryKey: '',
@@ -243,8 +226,9 @@
       //获取待办toolbar数据
       getTodoListToolBar() {
         let params = {
+          ...this.params,
           procDefKeyNotIn: this.noSearch,
-          //assignee:3,//用户id
+          //assignee:289,//用户id
         };
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
           if (res.constructor == Array) {//返回正确
@@ -277,6 +261,7 @@
         }
         let params = {
           ...this.params,
+          //assignee:289,
           processDefinitionKey: item.key || categoryKey || '',
           processDefinitionKeyNotIn: this.noSearch
         };

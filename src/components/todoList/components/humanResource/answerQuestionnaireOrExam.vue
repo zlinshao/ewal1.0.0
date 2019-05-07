@@ -1,6 +1,6 @@
 <template>
   <div id="test_paper_answer">
-    <answer-test-paper :visible="test_paper_visible" :params="paper_params" :exam-data="exam_data"></answer-test-paper>
+    <answer-test-paper :visible="test_paper_visible" :params="paper_params" :exam-id="examId" :exam-list="examList"></answer-test-paper>
   </div>
 </template>
 
@@ -16,7 +16,9 @@
     data() {
       return {
         test_paper_visible: false,
-        exam_data: [],
+        exam_data: {},
+        examList:[],
+        examId:0,
         paper_params: {
           title: '入职考试',
         }
@@ -26,17 +28,20 @@
       answer_test_paper_visible: {
         handler(val, oldVal) {
           if (val) {//先请求接口 请求完成后打开页面
-            console.log(this.todo_list_current_selection);
+            //console.log(this.todo_list_current_selection);
             let item = this.todo_list_current_selection;
             this.paper_params.title = item.name;
 
             let url = _.find(item.variables,{name:'detail_request_url'})?.value||null;
             if(!url) return;
             this.$http.get(url).then(res=> {
+              debugger
               if(res.code.endsWith('0')) {
                 if(res.data && res.data.question_set) {
-                  this.exam_data.exam_id = res.data.id;//考试id  传到TestPaperExam组件中 用来提交考试
-                  this.exam_data.question_set = res.data.question_set;
+                  this.examId = res.data.id;//考试id  传到AnswerTestPaper组件中 用来提交考试
+                  this.examList = res.data.question_set;
+                  /*this.exam_data.exam_id = res.data.id;//考试id  传到TestPaperExam组件中 用来提交考试
+                  this.exam_data.question_set = res.data.question_set;*/
                 }
 
                 this.test_paper_visible = val;

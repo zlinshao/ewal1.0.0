@@ -102,9 +102,15 @@ export default {
     type: {// 1为考试 2为问卷调查     当type为1时  有答案和分值输入框
       default: 1,
     },
-    examData: {//外界传过来的题目列表
-      type: Array,
+    /*examData: {//外界传过来的题目列表
       default () {
+        return {};
+      }
+    },*/
+    examId:{
+    },
+    examList:{
+      default() {
         return [];
       }
     },
@@ -129,7 +135,7 @@ export default {
       },
       immediate: true,
     },
-    examData: {
+    /*examData: {
       handler(val,oldVal) {
         if(val) {
           //this.examList = val.question_set;
@@ -141,6 +147,7 @@ export default {
               subValue.category = parseInt(key);
             });
           });
+          debugger
           let questionSet = _.flattenDeep(_.values(val.question_set));
           _.forEach(questionSet, (item, index) => {
             this.exam_total_score += item.score || 0;
@@ -155,18 +162,28 @@ export default {
                 this.exam_category_list.short.exam_list.push(item);
             }
           });
+          console.log(this.exam_category_list);
         }
       },
-    },
+      deep: true,
+      immediate:true,
+    },*/
 
-    /*examList: {
+    examList: {
       handler (val, oldVal) {
-        if (val && val.length > 0) {
-          val.forEach((item, index) => {
+        debugger
+        if (val && Object.keys(val).length>0) {
+          _.forEach(val, (value, key) => {
+            _.forEach(value, (subValue) => {
+              subValue.category = parseInt(key);
+            });
+          });
+          val = _.flattenDeep(_.values(val));
+          /*val.forEach((item, index) => {
             if (item.category != 3) {
               item.answer = item.answer.join();
             }
-          });
+          });*/
           val = _.sortBy(val, ['category']);
           this.exam_form_list = val;
         } else {
@@ -174,8 +191,7 @@ export default {
         }
         this.renderData();
       },
-      immediate: true,
-    },*/
+    },
 
   },
   computed: {
@@ -212,6 +228,7 @@ export default {
   methods: {
     //渲染考试/问卷
     renderData () {
+      debugger
       this.exam_total_score = 0;
       this.exam_category_list = {
         single: {
@@ -239,9 +256,9 @@ export default {
       });
     },
 
-    //提交题库
+    //提交试卷=》
     handleSubmitExam () {
-      if (this.type == 1) {
+      /*if (this.type == 1) {
         for (let item of this.exam_form_list) {
           if (isNaN(item.score)) {
             this.$LjMessage('warning', {
@@ -269,7 +286,64 @@ export default {
             }
           }
         }
+      }*/
+
+      let exam_id = this.examId;
+      let newArr = _.flatten([this.exam_category_list.single.exam_list, this.exam_category_list.judge.exam_list, this.exam_category_list.short.exam_list]);
+      //判断是否有漏答题目
+      for (let mItem of newArr) {
+        if (!mItem.user_answer) {
+          this.$LjMessage('warning',{
+            title:'警告',
+            msg:'有漏答题目,请检查',
+          });
+          return;
+        }
       }
+      newArr = _.map(newArr, (o) => {
+        o.answer = o.user_answer;
+        delete o.stem;
+        delete o.user_answer;
+        delete o.choice;
+        delete o.score;
+        delete o.choice_count;
+        return o;
+      });
+
+      let answer = {
+        1: [],
+        2: [],
+        3: [],
+      };
+      _.map(newArr, (o) => {
+        answer[o.category].push(o);
+      });
+
+      let params = {
+        answer
+      };
+      this.$http.put(`${this.url}train/exam/set/${exam_id}`,params).then(res=> {
+        debugger
+        if(res.code.endsWith('0')) {
+          this.$LjMessage('success',{
+            title:'答题成功',
+            msg:`本次得分:${res.data.score}`,
+          });
+        }
+      });
+      /*this.$httpTj.submitExam(exam_id, params).then(res => {
+        debugger
+        console.log(res);
+        if (res.code.endsWith('0')) {
+          this.paper_dialog_params.score = res.data.score;
+
+          this.paper_dialog_visible = true;
+          //this.action_sheet_visible = false;
+        }
+      });*/
+
+
+
       this.$emit('success', this.exam_form_list);
       this.paper_visible = false;
       this.$store.dispatch('change_humanResource_answer_test_paper_visible');
@@ -287,7 +361,7 @@ export default {
 </script>
 
 <style lang="scss">
-#test_paper {
+#answer_test_paper {
   /*.train-radio-style {
       .el-radio {
         display: inline-block;
@@ -325,7 +399,7 @@ export default {
 }
 
 #theme_name.theme1 {
-  #test_paper {
+  #answer_test_paper {
     .icon-edit {
       @include commonImg("bianji.png", "theme1");
     }
@@ -333,17 +407,17 @@ export default {
 }
 
 #theme_name.theme2 {
-  #test_paper {
+  #answer_test_paper {
   }
 }
 
 #theme_name.theme3 {
-  #test_paper {
+  #answer_test_paper {
   }
 }
 
 #theme_name.theme4 {
-  #test_paper {
+  #answer_test_paper {
   }
 }
 </style>
