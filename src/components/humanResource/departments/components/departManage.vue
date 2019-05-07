@@ -108,14 +108,23 @@
                   </el-col>
                 </el-row>
                 <el-row>
+                  <!--<el-col :span="8">-->
+                    <!--<el-form-item label="婚姻状况">-->
+                      <!--<div class="changeChoose" style="margin-top: 8px">-->
+                        <!--<el-radio-group v-model="interview_info_detail.marital_status" placeholder="请选择">-->
+                          <!--<el-radio label="0">已婚</el-radio>-->
+                          <!--<el-radio label="1">未婚</el-radio>-->
+                        <!--</el-radio-group>-->
+                      <!--</div>-->
+                    <!--</el-form-item>-->
+                  <!--</el-col>-->
                   <el-col :span="8">
-                    <el-form-item label="婚姻状况">
-                      <div class="changeChoose" style="margin-top: 8px">
-                        <el-radio-group v-model="interview_info_detail.marital_status" placeholder="请选择">
-                          <el-radio label="0">已婚</el-radio>
-                          <el-radio label="1">未婚</el-radio>
-                        </el-radio-group>
-                      </div>
+                    <el-form-item label="婚育情况">
+                      <el-select v-model="interview_info_detail.marital_fertility_status" placeholder="请输入">
+                        <el-option :value="1" label="未婚"></el-option>
+                        <el-option :value="2" label="已婚未育"></el-option>
+                        <el-option :value="3" label="已婚已育"></el-option>
+                      </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -182,7 +191,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="入职途径">
-                      <el-select v-model="interview_info_detail.platform">
+                      <el-select v-model="interview_info_detail.entry_way.entry_type">
                         <el-option :value="1" label="智联招聘"></el-option>
                         <el-option :value="2" label="前程无忧"></el-option>
                         <el-option :value="3" label="58同城"></el-option>
@@ -215,14 +224,6 @@
                   <el-col :span="8">
                     <el-form-item label="籍贯">
                       <el-input v-model="interview_info_detail.origin_addr" placeholder="请输入"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="生育情况">
-                      <el-select v-model="interview_info_detail.fertility_status" placeholder="请输入">
-                        <el-option :value="0" label="已育"></el-option>
-                        <el-option :value="1" label="未育"></el-option>
-                      </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
@@ -759,7 +760,7 @@
           id_num: '',
           birthday: '',
           marital_status: '',
-          fertility_status: '',
+          marital_fertility_status: '',
           home_addr: '',
           origin_addr: '',
           position_level: '',
@@ -776,6 +777,10 @@
           recommender: '',
           recommenders: {
             name: ''
+          },
+          entry_way: {
+            entry_type: '',
+            entry_mess: ''
           },
           political_status: '',
           education: '',
@@ -1405,61 +1410,8 @@
       },
       handleCancelAddStaff() {
         this.is_edit = false;
-        this.interview_info_detail = {
-          graduation_time: '',
-          name: '',
-          gender: '',
-          phone: '',
-          id_num: '',
-          birthday: '',
-          marital_status: '',
-          fertility_status: '',
-          home_addr: '',
-          origin_addr: '',
-          position_level: '',
-          org_id: [],
-          depart: '',
-          position: '',
-          position_id: [],
-          bank_num: '',
-          account_bank: '',
-          branch_bank: '',
-          account_name: '',
-          enroll: '',
-          real_salary: '',
-          recommender: '',
-          recommenders: {
-            name: ''
-          },
-          political_status: '',
-          education: '',
-          level: '',
-          platform: '',
-          society_number: '',
-          emergency_call: '',
-          branch_bank_code: '',
-          school: '',
-          major: '',
-          education_history: [
-            {
-              start_end_time: '',
-              school: '',
-              major: '',
-              eduction: '',
-              learn_type: '',
-            }
-          ],
-          work_history: [
-            {
-              work_place: '',
-              start_end_time: '',
-              position: '',
-              salary: '',
-              witness: '',
-              witness_phone: ''
-            }
-          ]
-        };
+        this.$resetForm(this.interview_info_detail);
+        console.log(this.interview_info_detail);
         this.add_newStaff_visible = false;
       },
       //获取职位列表
@@ -1514,11 +1466,20 @@
       // 权限/禁用/修改/离职
       operateModule(val,item,type) {
         if (val === 'revise') {
+          console.log(item);
           this.currentStaff = item;
           this.is_edit = true;
           this.add_newStaff_visible = true;
           for (var key in this.interview_info_detail) {
             this.interview_info_detail[key] = item.staff && item.staff[key] || '';
+          }
+          if (item.staff && item.staff.entry_way) {
+            this.interview_info_detail.entry_way = Object.assign({},this.interview_info_detail.entry_way,item.staff.entry_way);
+          } else {
+            this.interview_info_detail.entry_way = {
+              entry_type: '',
+              entry_mess: ''
+            };
           }
           this.interview_info_detail.salary = item.staff && item.staff.salary;
           this.interview_info_detail.recommenders = item.staff && item.staff.recommenders || {name: ''};

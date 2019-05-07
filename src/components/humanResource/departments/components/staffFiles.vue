@@ -603,10 +603,14 @@
           }
           this.staffDetail.work_status = val.is_on_job ? '离职' : '在职';
           this.staffDetail.dismiss_reason = val.staff && val.staff.dismiss_reason || { dismiss_type: ''};
-          this.staffDetail.entry_way = val.staff && val.staff.entry_way || {
-            entry_type: '',
-            entry_mess: ''
-          };
+          if (val.staff && val.staff.entry_way) {
+            this.staffDetail.entry_way = Object.assign({},this.staffDetail.entry_way,val.staff.entry_way);
+          } else {
+            this.staffDetail.entry_way = {
+              entry_type: '',
+              entry_mess: ''
+            };
+          }
           this.staffDetail.recommenders = val.staff && val.staff.recommenders || {name: ''};
           this.staffDetail.work_history = val.staff && val.staff.work_history || [];
           this.staffDetail.education_history = val.staff && val.staff.education_history || [];

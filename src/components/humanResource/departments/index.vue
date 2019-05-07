@@ -60,7 +60,7 @@
       </footer>
 
       <!--部门详情-->
-      <div class="depart-detail" :class="{'show-depart-detail': show_depart_detail}" @mouseleave="show_depart_detail = false">
+      <div class="depart-detail" :class="{'show-depart-detail': show_depart_detail}">
         <div class="depart_nav">
           <span @click="handleGetCurrentDepart(tmp,idx)" v-for="(tmp,idx) in nav_depart">{{ tmp.name }} <a v-if="idx !== nav_depart.length - 1">/</a></span>
         </div>
