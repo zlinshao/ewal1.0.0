@@ -4,23 +4,20 @@
       <div class="star_info">
         <div class="star_info_left">
           <div class="star_info_title writingMode flex-center"><span>乐伽之星</span></div>
-          <div class="star_info_avatar"><img src="../../../../../assets/image/newMedia/theme1/staff.png" alt=""></div>
-          <div class="star_info_name writingMode flex-center"><span>李妮</span></div>
-          <div class="star_info_department writingMode flex-center"><span>南京二区一组</span></div>
+          <div class="star_info_avatar"><img :src="starInfo.user_id?starInfo.user_id.avatar:''"></div>
+          <div class="star_info_name writingMode flex-center"><span>{{starInfo.user_id?starInfo.user_id.name:''}}</span></div>
+          <div class="star_info_department writingMode flex-center"><span>{{starInfo.user_id?starInfo.user_id.org[0].name:''}}</span></div>
         </div>
 
         <div class="star_info_right flex-center">
           <div class="main_info scroll_bar">
             <h5 class="edit_icon justify-end" @click.stop="edit()"><span></span>编辑</h5>
             <h3>{{starInfo.title}}</h3>
-            <p>
-              is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价</p>
+            <p>{{starInfo.content}}</p>
             <div class="justify-bet">
-              <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
-              <img src="../../../../../assets/image/newMedia/theme1/active.png" alt="">
+              <!-- <img src="../../../../../assets/image/newMedia/theme1/active.png">
+              <img src="../../../../../assets/image/newMedia/theme1/active.png"> -->
             </div>
-            <p>
-              is德国his的is德国hisis德国his的is德国his的韩国is德国his的韩国帅is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价帅哥is德国is的is德国his的韩国is德国his的韩国帅is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价韩国is德国his的韩国帅is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价的韩国is德国his的韩国帅is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价帅哥is德国is的is德国his的韩国is德国his的韩国帅is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价韩国is德国his的韩国帅is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价is德国his的韩国帅哥is德国is的结果is的金佛电视剧肥婆多少佛批发价</p>
           </div>
         </div>
       </div>
@@ -41,7 +38,7 @@
 
             <el-form-item label="文章内容">
               <div class="item_content">
-                <lj-editor :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
+                <lj-editor :editorContent="form.content"></lj-editor>
               </div>
             </el-form-item>
           </el-form>
@@ -70,8 +67,8 @@ export default {
     return {
       visible: false,
       form: {
-        name: '赵丽颖',
-        content: '国际上的飞机上的就发生的纠纷双方品搜东方'
+        name: '',
+        content: ''
       },
       starInfo: {},
       defaultMsg: '',
@@ -82,20 +79,6 @@ export default {
       add_visible: false,
     }
   },
-  watch: {
-    add_status: {
-      handler (val) {
-        this.add_visible = val;
-      }, deep: true
-
-    },
-    choose_type: {
-      handler (val) {
-        this.chooseTab = val;
-      }, deep: true
-    }
-  },
-
   mounted () {
     this.getLeJiaStarInfo();
   },
@@ -105,16 +88,17 @@ export default {
     },
     cancelAddStatus () {//取消
       this.add_visible = false;
-      this.$emit('cancelAdd', this.add_visible)
     },
     //获取乐伽之星
     getLeJiaStarInfo () {
       this.$http.get(globalConfig.newMedia_sever + '/api/humanity/star').then(res => {
         if (res.status === 200) {
-          console.log(res.data);
           this.starInfo = res.data;
         }
       })
+    },
+    postReceivable_tag(){
+      this.add_visible = false
     }
   },
 }

@@ -15,7 +15,7 @@
 
       <div class="items-center listTopRight">
         <div class="icons home_icon"></div>
-        <div class="icons add" @click="add"><b>+</b></div>
+        <div class="icons add" @click="add" v-if="chooseTab !==1"><b>+</b></div>
       </div>
     </div>
     <keep-alive>

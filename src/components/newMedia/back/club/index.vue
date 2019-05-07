@@ -14,7 +14,7 @@
 
     <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}" ref='viewBox'>
       <div class="list">
-        <div class="list-info flex-center" v-for="(item,index) in dataLists">
+        <div class="list-info flex-center" v-for="(item,index) in dataLists" :key="index">
           <div class="list-box" @click="detail(item)">
             <div class="list-modal" v-if="item.status ===2"></div>
             <div class="list-top">
@@ -307,6 +307,9 @@ export default {
       this.showData = itemInfo;
       let arr = [item.start_time, item.over_time];
       this.showData.actionTime = arr;
+      this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + item.id).then(res => {
+        this.getDataLists()
+      })
     },
 
     handleOkOver () {//提前结束
@@ -353,6 +356,7 @@ export default {
 
       console.log(this.showData);
       this.$http.post(globalConfig.newMedia_sever + '/api/club/event', paramsForm).then(res => {
+        console.log(res)
         this.add_visible = false;
         this.callbackSuccess(res);
       })
@@ -375,11 +379,10 @@ export default {
 
           this.dataLists = res.data.data.sort(
             function (a, b) {
-              return a.id - b.id
+              return Date.parse(b.created_at) - Date.parse(a.created_at) 
             }
           );
           this.count = res.data.total;
-          console.log(this.dataLists);
 
           for (let item of res.data.data) {
             // this.endTimes.push({over_time:item.over_time});
