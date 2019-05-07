@@ -72,24 +72,25 @@
         <div class="dialog_main borderNone">
           <el-form ref="addTrainFormRef" :model="new_train_form" :rules="rules.addTrain" style="text-align: left"
                    size="small" label-width="100px">
-            <el-form-item required prop="meeting_type" label="培训类型">
-              <dropdown-list :cache="false" title="必选" ref="dropdown1" :url="`${this.url}meeting/category`"
+            <el-form-item required prop="type_id" label="培训类型">
+              <dropdown-list :cache="false" title="必选" ref="dropdown1" :url="`${this.url}/api/train/type`"
                              code="3"
-                             v-model="new_train_form.meeting_type"></dropdown-list>
+                             v-model="new_train_form.type_id"></dropdown-list>
               <!--              <span class="btn_add" @click="train_type_dialog_visible = true">+</span>-->
             </el-form-item>
             <el-form-item required prop="name" label="培训名称">
               <el-input v-model="new_train_form.name" placeholder="必填" style="width: 320px"></el-input>
             </el-form-item>
-            <el-form-item required prop="room_id" label="培训地点">
-              <dropdown-list title="必选" ref="dropdown2" :url="`${this.url}meeting/category`" code="1"
-                             v-model="new_train_form.room_id"></dropdown-list>
+            <el-form-item required prop="address" label="培训地点">
+              <!-- <dropdown-list title="必选" ref="dropdown2" :url="`${this.url}/api/train/type`" code="1"
+                             v-model="new_train_form.room_id"></dropdown-list> -->
               <!--              <span class="btn_add">+</span>-->
+              <el-input v-model="new_train_form.address" placeholder="必填" style="width: 320px"></el-input>
             </el-form-item>
             <el-form-item required prop="train_time" label="培训时间">
               <el-date-picker
                 format="yyyy-MM-dd HH:mm"
-                style="width: 320px"
+                style="width: 320px"  
                 v-model="new_train_form.train_time"
                 type="datetimerange"
                 range-separator="至"
@@ -97,32 +98,32 @@
                 end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
-            <el-form-item required prop="presenter_id" label="讲师">
-              <user-choose num="1" title="必选" v-model="new_train_form.presenter_id"></user-choose>
+            <el-form-item required prop="teacher_id" label="讲师">
+              <user-choose num="1" title="必选" v-model="new_train_form.teacher_id"></user-choose>
               <!--              <el-select v-model="new_train_form.train_lecturer" style="width: 320px"></el-select>-->
             </el-form-item>
-            <el-form-item required prop="participants" label="参会人员">
-              <user-choose title="必选" v-model="new_train_form.participants"></user-choose>
+            <el-form-item required prop="enter_user_ids" label="参会人员">
+              <user-choose title="必选" v-model="new_train_form.enter_user_ids"></user-choose>
               <!--              <el-input v-model="new_train_form.train_people" placeholder="请选择参会人员" style="width: 320px"></el-input>-->
             </el-form-item>
             <el-form-item label="培训提醒">
               <div class="form-item-content">
                 会议开始前
                 <el-input-number size="mini" :min="0" :max="23" style="width: 90px"
-                                 v-model="new_train_form.remind_data.hour"></el-input-number>
+                                 v-model="new_train_form.remind_time.hour"></el-input-number>
                 小时
                 <el-input-number size="mini" :min="0" :max="59" style="width: 90px"
-                                 v-model="new_train_form.remind_data.minute"></el-input-number>
+                                 v-model="new_train_form.remind_time.minute"></el-input-number>
                 分钟提醒
               </div>
             </el-form-item>
             <el-form-item label="上传课件">
               <lj-upload style="position: absolute;top: -12px;" size="40" :max-size="5"
-                         v-model="new_train_form.attachment"></lj-upload>
+                         v-model="new_train_form.file_id"></lj-upload>
             </el-form-item>
-            <el-form-item prop="exam_id" required label="添加试卷">
-              <el-select v-model="new_train_form.exam_id">
-                <el-option label="试卷1" value="208"></el-option>
+            <el-form-item prop="examination_paper_id" required label="添加试卷">
+              <el-select v-model="new_train_form.examination_paper_id">
+                <el-option label="试卷1" :value="6"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
@@ -292,11 +293,11 @@
 
 <script>
   import _ from 'lodash';
-  import UserChoose from '../../../common/lightweightComponents/UserChoose';
-  import LjUpload from '../../../common/lightweightComponents/lj-upload';
-  import LjDialog from '../../../common/lj-dialog.vue';
-  import DropdownList from '../../../common/lightweightComponents/dropdown-list';
-  import UserList from '../../../common/lightweightComponents/UserList';
+  import UserChoose from '../../common/lightweightComponents/UserChoose';
+  import LjUpload from '../../common/lightweightComponents/lj-upload';
+  import LjDialog from '../../common/lj-dialog.vue';
+  import DropdownList from './dropdown-list';
+  import UserList from '../../common/lightweightComponents/UserList';
 
   export default {
     name: "courseTrain",
@@ -315,7 +316,7 @@
               {required: true, message: '请输入培训名称', trigger: 'blur'},
               {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
             ],
-            room_id: [
+            address: [
               {required: true, message: '请选择培训地点', trigger: 'blur'},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
@@ -325,19 +326,19 @@
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
 
-            meeting_type: [
+            type_id: [
               {required: true, message: '请选择培训类型', trigger: 'blur'},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
-            presenter_id: [
+            teacher_id: [
               {required: true, message: '请选择讲师', trigger: 'blur'},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
-            participants: [
+            enter_user_ids: [
               {required: true, message: '请选择参会人员', trigger: 'blur'},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
-            exam_id: [
+            examination_paper_id: [
               {required: true, message: '请选择试卷', trigger: 'blur'},
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
@@ -351,7 +352,7 @@
           },
         },
 
-        url: globalConfig.humanResource_server,
+        url: globalConfig.leJiaCollege_server,
 
 
         tableSettingData: {
@@ -415,21 +416,22 @@
         new_train_form: {
 
           name: '',//名称
+          address: '',
           room_id: '',//地点id
-          meeting_type: '',//培训类型id
+          type_id: '',//培训类型id
           train_time: '',//培训时间
           start_time: '',//开始时间
-          end_time: '',//结束时间
-          presenter_id: [],//主持人id数组
+          over_time: '',//结束时间
+          teacher_id: [],//主持人id数组
           //counts:'',//应到人数
           //meetingTips:{},//会议提醒
-          remind_data: {
+          remind_time: {
             minute: 0,
             hour: 1,
           },
-          participants: [],//参会人员数组
-          attachment: [],//附件id数组
-          exam_id: '',//试卷id
+          enter_user_ids: [],//参会人员数组
+          file_id: [],//附件id数组
+          examination_paper_id: '',//试卷id
         },
 
         //培训详情表单
@@ -536,18 +538,17 @@
       submitAddTrain() {
         this.$refs['addTrainFormRef'].validate((valid) => {
           if (valid) {
-
             let params = {
               ...this.new_train_form,
               start_time: this.myUtils.formatDate(this.new_train_form.train_time[0], 'yyyy-MM-dd hh:mm:ss'),
-              end_time: this.myUtils.formatDate(this.new_train_form.train_time[1], 'yyyy-MM-dd hh:mm:ss'),
+              over_time: this.myUtils.formatDate(this.new_train_form.train_time[1], 'yyyy-MM-dd hh:mm:ss'),
+              teacher_id: this.new_train_form.teacher_id[0]
             };
-            debugger
-            this.$http.post(`${this.url}meeting/meeting`, params).then(res => {
-              this.$LjMessageEasy(res, () => {
+            this.$http.post(`${this.url}/api/train/index`, params).then(res => {
+              if(res.status ==200){
                 this.new_train_dialog_visible = false;
                 this.getTrainList();
-              });
+              }
             });
           }
         });
@@ -568,14 +569,13 @@
         this.$refs['addTrainTypeFormRef'].validate((valid) => {
           if (valid) {
             let params = {
-              type: 3,
               ...this.add_train_type_form
             };
-            this.$http.post(`${this.url}meeting/category`, params).then(res => {
-              this.$LjMessageEasy(res, () => {
+            this.$http.post(`${this.url}/api/train/type`, params).then(res => {
+              if(res.status == 200){
                 this.train_type_dialog_visible = false;
                 this.getTrainTypeList();
-              });
+              }
             });
           }
         });
@@ -586,13 +586,14 @@
         this.$refs['addTrainTypeFormRef'].validate((valid) => {
           if (valid) {
             let params = {
-              ...this.add_train_type_form
+              id: this.add_train_type_form.id,
+              name: this.add_train_type_form.name
             };
-            this.$http.put(`${this.url}meeting/category/${params.id}`, params).then(res => {
-              this.$LjMessageEasy(res, () => {
+            this.$http.put(`${this.url}/api/train/type/${params.id}`, params).then(res => {
+              if(res.status = 200){
                 this.train_type_dialog_visible = false;
                 this.getTrainTypeList();
-              });
+              }
             });
           }
         });
@@ -603,21 +604,22 @@
         this.$LjConfirm({
           icon: 'delete',
         }).then(() => {
-          this.$http.delete(`${this.url}meeting/category/${row.id}`).then(res => {
-            this.$LjMessageEasy(res, () => {
+          this.$http.delete(`${this.url}/api/train/type/${row.id}`,{id:row.id}).then(res => {
+            if(res.status == 200){
               this.getTrainTypeList();
-            });
+            }
           });
         });
       },
 
       //获取培训类型列表
       getTrainTypeList() {
-        let params = {
-          type: 3
-        };
-        this.$http.get(`${this.url}meeting/category`, params).then(res => {
-          if (res.code.endsWith('0')) {
+        // let params = {
+        //   type: 3
+        // };
+        this.$http.get(`${this.url}/api/train/type`).then(res => {
+          
+          if (res.status ==200) {
             this.train_type_list = res.data.data;
             this.left_guide_all_list = res.data.data;
           }
@@ -627,21 +629,21 @@
       //获取培训列表
       async getTrainList() {//meetingType为会议类型
         let params = {
-          type: 3
+          type_id: this.left_guide_choose
         };
-        if(this.left_guide_choose) {
-          params.meeting_type = this.left_guide_choose;
-        }
-        await this.$http.get(`${this.url}meeting/meeting`, params).then(res => {
+        // if(this.left_guide_choose) {
+        //   params.meeting_type = this.left_guide_choose;
+        // }
+        await this.$http.get(`${this.url}/api/train/index`, params).then(res => {
           this.tableSettingData['jobTrain'].tableData = [];
-          if (res.code.endsWith('0')) {
+          if (res.status ==200) {
             for (let item of res.data.data) {
               let obj = {
                 id: item.id,
                 name: item.name || '-',//培训名称
                 //time: `${this.myUtils.formatDate(item.start_time||'','yyyy-MM-dd hh:mm')}`,
-                time: `${this.myUtils.formatDate(item.start_time || '', 'yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.end_time, 'hh:mm')}`,
-                lecturer: _.map(item.presenter || [], 'user.name').join(','),//主持人
+                time: `${this.myUtils.formatDate(item.start_time || '', 'yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.over_time, 'hh:mm')}`,
+                lecturer: item.teacher_id.name,//主持人
               };
               this.tableSettingData['jobTrain'].tableData.push(obj);
             }
@@ -654,20 +656,23 @@
       showTrainDetail(id) {
         this.isTrain = id;
         this.train_detail_dialog_visible = true;
-        this.$http.get(`${this.url}meeting/meeting/${id}`).then(res => {
-          if (res.code.endsWith('0')) {
+        let params = {
+          id : id
+        }
+        this.$http.get(`${this.url}/api/train/index/${id}`,params).then(res => {
+          console.log(res)
+          if (res.status== 200) {
             let item = res.data;
             this.train_detail_form = {
               train_type_name: item.type?.name || '-',//培训类型名称
               name: item.name || '-',//培训名称
-              train_location: item.room?.name || '-',//培训地点
-              time: `${this.myUtils.formatDate(item.start_time || '', 'yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.end_time, 'hh:mm')}`,//培训时间
-              presenter: _.map(item.presenter || [], 'user.name').join(','),//讲师
-              participants: _.map(item.participant || [], 'user.id'),//应到人员数组
-              remind_data: item.remind_data,
-              attachment: item.attachment || [],//附件id数组
+              train_location: item.address,//培训地点
+              time: `${this.myUtils.formatDate(item.start_time || '', 'yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.over_time, 'hh:mm')}`,//培训时间
+              presenter: item.teacher_id.name,
+              participants: _.map(item.user || [], 'id'),//应到人员数组
+              remind_data: item.remind_time,
+              attachment: item.file_id || [],//附件id数组
             };
-            console.log(this.train_detail_form)
           }
         });
       },
@@ -743,15 +748,14 @@
 
 
 <style scoped lang="scss">
-  @import "../../../../assets/scss/humanResource/militaryOrganization/train/courseTrain.scss";
+  @import "../../../assets/scss/leJiaCollege/train/courseTrain.scss";
 
   @mixin militaryImg($m,$n) {
-    $url: '../../../../assets/image/humanResource/militaryOrganization/' + $n + '/' + $m;
+    $url: '../../../assets/image/humanResource/militaryOrganization/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
   #theme_name {
-    .militaryOrganization {
       .train {
 
         .main-container {
@@ -830,7 +834,6 @@
         }
 
       }
-    }
   }
 
 </style>

@@ -6,7 +6,6 @@
       :height="this.mainListHeight() + 'px'"
       highlight-current-row
       header-row-class-name="tableHeader"
-      :row-class-name="tableRowClassName"
       @cell-click="tableClickRow"
       style="width: 100%">
       <!--<el-table-column-->
@@ -18,27 +17,28 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="标记" align="center" width="90">
+      <el-table-column label="标记" align="center" width="100">
         <template slot-scope="scope">
-          <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===1">
-            <span v-if="freeze[scope.$index]===1"></span>
-            忽略重复
-          </div>
-          <div class="statusBar flex-center" v-if="LordStatus[scope.$index]['suppress_dup']===0">
-            <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
-              <span v-if="LordStatus[scope.$index]['is_contact']===2"></span>
-            </el-tooltip>
-            <el-tooltip content="姓名" placement="bottom" :visible-arrow="false">
-              <span v-if="LordStatus[scope.$index]['is_name']===2"></span>
-            </el-tooltip>
-            <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
-              <span v-if="LordStatus[scope.$index]['is_address']===2"></span>
-            </el-tooltip>
+          <div class="statusBar">
+            <div class="flex-center" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].suppress_dup === 0">
+              <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
+                <span class="phone" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_contact !== 1"></span>
+              </el-tooltip>
+              <el-tooltip content="姓名" placement="bottom" :visible-arrow="false">
+                <span class="name" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_name !== 1"></span>
+              </el-tooltip>
+              <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
+                <span class="address" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_address !== 1"></span>
+              </el-tooltip>
+            </div>
+            <div v-else class="flex-center">
+              <span class="ignore"></span><a>忽略重复</a>
+            </div>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="create_time" label="生成时间" align="center"></el-table-column>
-      <el-table-column prop="address" label="房屋地址" align="center"></el-table-column>
+      <el-table-column prop="create_time" label="生成时间" align="center" min-width="120"></el-table-column>
+      <el-table-column prop="address" label="房屋地址" align="center" min-width="120"></el-table-column>
       <el-table-column prop="customer_name" label="客户姓名" align="center"></el-table-column>
       <el-table-column prop="contact" label="客户手机号" align="center"></el-table-column>
       <el-table-column prop="months" label="收房月数" align="center"></el-table-column>
@@ -129,24 +129,8 @@
         action_status: '',//操作状态
         chooseRowIds: [],//列表ids
 
-        LordStatus: [
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0}
+        LordStatus: [],//前缀状态
 
-        ],//前缀状态
         delete_visible: false,//删除
         edit_visible: false,//编辑
         details_visible: false,//详情
@@ -156,7 +140,6 @@
         lordCount: 0,
         lordIds: [],
         ra_ids: [],
-        freeze: [],//待处理
         lordDetailData: this.row,
         statusLists: [],
         chooseType: '',
@@ -218,38 +201,25 @@
         this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
           if (res.code === 200) {
             this.showLoading(false);
-            this.lordLists = res.data.data.sort(
-              function (a, b) {
-                return a.id - b.id
-              }
-            );
+            this.lordLists = res.data.data.sort((a,b) => {
+              return a.id - b.id;
+            });
             this.lordCount = res.data.count;
-            this.freeze = [];
             for (let item of this.lordLists) {
-              this.freeze.push(item.freeze);
+              this.lordIds.push(item.id);
             }
-
+            //前缀状态
+            this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.lordIds}).then(res => {
+              if (res.code === 200) {
+                this.LordStatus = res.data.data.sort((a,b) => {
+                  return a.id - b.id;
+                });
+              }
+            });
           } else {
             this.lordLists = [];
             this.lordCount = 0;
           }
-        }).then(() => {
-          for (let item of this.lordLists) {
-            this.lordIds.push(item.id);
-          }
-          //前缀状态
-          this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.lordIds}).then(res => {
-            if (res.code === 200) {
-              let statusData = res.data.data;
-              this.LordStatus = statusData.sort(
-                function (a, b) {
-                  return a.id - b.id
-                }
-              );
-            }
-          })
-        }).catch(err => {
-          console.log(err);
         })
       },
       //取消
@@ -273,7 +243,6 @@
           this.params.startRange = val.date1[0];
           this.params.endRange = val.date1[1];
         }
-        console.log(val);
         this.getLordList();
       },
       // 当前点击
@@ -288,10 +257,6 @@
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
-      },
-      // 行状态
-      tableRowClassName({row, rowIndex}) {
-        return row.freeze === 1 ? 'success-row' : '';
       },
       //生成待处理项
       handleProcessLord(row) {
@@ -312,11 +277,10 @@
       //取消重复标记
       handleRemark(row) {
         this.ra_ids = [];
-        console.log(row);
         this.ra_ids.push(row.id);
         this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {
           ids: this.ra_ids,
-          operate: 2
+          operate : 1
         }).then(res => {
           this.callbackSuccess(res);
         })
@@ -358,28 +322,27 @@
           border-radius: 50%;
           margin-left: 4px;
         }
-        span:first-child {
+        a {
+          font-size: 12px;
+          margin-left: 3px;
+        }
+        span.ignore {
           @include financeImg('yanjing.png', 'theme1');
 
         }
-        span:nth-child(2) {
+        span.phone {
           @include financeImg('dianhua.png', 'theme1');
 
         }
-        span:nth-child(3) {
+        span.name {
           @include financeImg('kehu.png', 'theme1');
 
         }
-        span:last-child {
+        span.address {
           @include financeImg('dizhi.png', 'theme1');
         }
 
       }
-
-      .el-table .success-row {
-        background: #DFDFDF;
-      }
-
       #theme_name .form_item_container {
         padding: 0 0;
       }

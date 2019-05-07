@@ -35,6 +35,7 @@
     import postPlanningLists from '../postPlanning/index.vue';
     import practicalProblems from '../practicalProblems/index.vue';
     import videoLearning from '../videoLearning/index.vue';
+    import train from '../train/index.vue';
     import {leJiaCollegeMenu} from '../../../assets/js/allModuleList.js';
     import LjDialog from '../../common/lj-dialog.vue';
     export default {
@@ -47,6 +48,7 @@
             faculty,
             LjDialog,
             postPlanningLists,
+            train
         },
         data() {
             return {

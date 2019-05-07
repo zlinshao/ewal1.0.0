@@ -271,8 +271,6 @@
         this.chooseTab = id;
         this.current_row = '';
         this.action_visible = false;
-        console.log(this.current_row);
-
       },
       //取消重复标记
       cancelRemark(tab, val) {
