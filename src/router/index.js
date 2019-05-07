@@ -103,7 +103,7 @@ const BackClub = () => import('@/components/newMedia/back/club/index.vue')
 
 //乐伽大学
 const LeJiaCollege = () => import('@/components/leJiaCollege/index.vue')
-const ExamArrangement = () => import('@/components/leJiaCollege/components/common.vue') //考试安排
+const Train = () => import('@/components/leJiaCollege/components/common.vue') //考试安排
 const Faculty = () => import('@/components/leJiaCollege/components/common.vue') //师资力量
 const IndustryDynamic = () => import('@/components/leJiaCollege/components/common.vue') //行业动态
 const JobTraining = () => import('@/components/leJiaCollege/components/common.vue') //工作培训
@@ -199,9 +199,9 @@ export default new Router({
       component: PostPlanning
     },
     {
-      path: '/examArrangement',
+      path: '/train',
       name: '考试安排',
-      component: ExamArrangement
+      component: Train
     },
     {
       path: '/practicalProblems',

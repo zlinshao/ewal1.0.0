@@ -91,7 +91,7 @@
       </div>
       <div class="top_right_img" style="width:60px;height:140px;position: absolute;top:0;right:90px;">
         <span>已报名</span>
-        <span>{{showData.click}}</span>
+        <span>{{showData.event_user?showData.event_user.length: 0}}</span>
       </div>
     </lj-dialog>
 
@@ -307,6 +307,7 @@ export default {
       this.showData = itemInfo;
       let arr = [item.start_time, item.over_time];
       this.showData.actionTime = arr;
+      console.log(item)
       this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + item.id).then(res => {
         this.getDataLists()
       })
@@ -353,7 +354,7 @@ export default {
         content: this.showData.content,
         cover: this.showData.file_info[0]
       };
-
+      
       console.log(this.showData);
       this.$http.post(globalConfig.newMedia_sever + '/api/club/event', paramsForm).then(res => {
         console.log(res)
@@ -374,6 +375,7 @@ export default {
     getDataLists () {//获取列表
       this.showLoading(true);
       this.$http.get(globalConfig.newMedia_sever + '/api/club/event', this.params).then(res => {
+        console.log(res)
         this.showLoading(false);
         if (res.status === 200) {
 
@@ -383,7 +385,7 @@ export default {
             }
           );
           this.count = res.data.total;
-
+            console.log(this.dataLists)
           for (let item of res.data.data) {
             // this.endTimes.push({over_time:item.over_time});
             var yourtime = item.over_time.replace("-", "/");
