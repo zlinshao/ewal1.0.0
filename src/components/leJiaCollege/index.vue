@@ -52,6 +52,12 @@
                         letter:'Practical problems',
                         type:5
                     },
+                    {
+                        url: 'train',
+                        title: '培训考试',
+                        letter:'Train',
+                        type:6
+                    },
                 ],
                 showFinMenuList: false,
                 add_visible:false,//新增

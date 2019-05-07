@@ -238,7 +238,8 @@ export const leJiaCollegeMenu = {
     { id: 2, title: '岗位规划', url: 'postPlanning' },
     { id: 3, title: '师资力量', url: 'faculty' },
     { id: 4, title: '行业动态', url: 'industryDynamic' },
-    { id: 5, title: '实践问题', url: 'practicalProblems' }
+    { id: 5, title: '实践问题', url: 'practicalProblems' },
+    { id: 6, title: '培训考试', url: 'train' }
   ]
 }
 
