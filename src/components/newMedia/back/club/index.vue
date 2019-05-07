@@ -307,6 +307,9 @@ export default {
       this.showData = itemInfo;
       let arr = [item.start_time, item.over_time];
       this.showData.actionTime = arr;
+      this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + item.id).then(res => {
+        this.getDataLists()
+      })
     },
 
     handleOkOver () {//提前结束
