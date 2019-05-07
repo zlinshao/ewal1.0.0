@@ -185,7 +185,7 @@
                     </el-col>
                     <el-col :span="8">
                       <el-form-item label="入职时间">
-                        <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.registion_date" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                        <el-date-picker placeholder="请选择" type="date" v-model="interview_info_detail.registion_date" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -1157,7 +1157,7 @@
         .success_work {
           position: absolute;
           right: 80px;
-          bottom: 60px;
+          bottom: 100px;
           width: 200px;
           height: 100px;
           @include part_four_img('tongguo.png','theme1');

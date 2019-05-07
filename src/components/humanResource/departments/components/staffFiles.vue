@@ -23,7 +23,7 @@
           <div class="flex filesMain">
             <el-tabs v-model="activeName" @tab-click="handleClickTab" style="width: 100%;min-height: 600px">
               <el-tab-pane label="基本信息" name="first">
-                <el-form label-width="120px" class="borderNone" size="small" :disabled="reviseInfo">
+                <el-form label-width="140px" class="borderNone" size="small" :disabled="reviseInfo">
                   <el-row :gutter="10">
                     <el-col :span="6">
                       <el-form-item label="姓名">

@@ -45,9 +45,18 @@
           uid: 289,
           diff: 1
         },
-        work_data: [],
-        revisit_data: [],
-        tag_data: []
+        work_data: [
+          {name: '已完成',value: 100},
+          {name: '未完成',value: 100},
+        ],
+        revisit_data: [
+          {name: '已回访',value: 100},
+          {name: '未回访',value: 100},
+        ],
+        tag_data: [
+          {name: '已标记',value: 100},
+          {name: '未标记',value: 100},
+        ]
       }
     },
     mounted() {
