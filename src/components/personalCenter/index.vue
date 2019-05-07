@@ -12,8 +12,11 @@
               张三
               <div class="personal-info-badge"><span>P2</span></div>
             </div>
-            <div class="personal-info-status" title="工作状态工作状态工作状态">
-              工作状态工作状态
+            <div v-show="workType==1" class="personal-info-status" @click="triggerEditWorkStatus" :title="workStatus">
+              {{workStatus}}
+            </div>
+            <div v-show="workType==2" class="personal-info-status" :title="workStatus">
+              <el-input ref="workStatusRef" size="small" @blur="triggerBlurWorkStatus" v-model="workStatusEditContent" style="width: 160px"></el-input>
             </div>
           </div>
           <div class="personal-group-button">
@@ -96,13 +99,76 @@
             router: 'myKPI',
           },
         ],
+
+        workStatus:'',//工作状态文本
+        workStatusEditContent:'',
+        workType:1,//1为查看 2为编辑  点击1时为编辑状态 blur后提交接口 变为查看状态
       }
     },
     mounted() {
       //this.$router.push('/personalCenter/myAttendance');
+      this.getWorkStatus();
+    },
+    methods: {
+      triggerEditWorkStatus() {
+        this.workType = 2;
+        this.workStatusEditContent=this.workStatus;
+        this.$nextTick(()=> {
+          this.$refs['workStatusRef'].focus();
+          if(this.workStatus=='请输入工作状态') {
+            this.workStatusEditContent = '';
+          }
+        });
+      },
+
+      triggerBlurWorkStatus() {
+        this.workType=1;
+        if(this.workStatusEditContent==this.workStatus) {return;}
+        let params = {
+          user_id:289,
+          work_status:this.workStatusEditContent,
+        };
+        this.$http.post(`${this.url}staff/user/saveWorkStatus`,params).then(res=> {
+          this.$LjMessageEasy(res,()=> {
+            this.workStatus = this.workStatusEditContent;
+            if(!this.workStatus) {
+              this.workStatus = '请输入工作状态';
+            }
+          });
+        });
+      },
+
+
+      //获取工作状态
+      getWorkStatus() {
+        let params = {
+          user_id:289,
+        };
+        this.$http.get(`${this.url}staff/user/getWorkStatus`,params).then(res=> {
+          if(res.code.endsWith('0')) {
+            this.workStatus = res.data.work_status;
+            if(!this.workStatus) {
+              this.workStatus = '请输入工作状态';
+            }
+          }
+        });
+      },
     },
   }
 </script>
+
+
+<style lang="scss">
+  #personal_center {
+    .personal-info-status {
+      input {
+        font-size: 16px;
+        padding: 0;
+      }
+    }
+  }
+
+</style>
 
 <style scoped lang="scss">
   @import '../../assets/scss/personalCenter/index.scss';

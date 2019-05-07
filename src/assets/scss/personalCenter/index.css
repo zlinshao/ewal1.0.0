@@ -254,13 +254,14 @@
                 top: -2px; }
           #theme_name #personal_center .personal-center-container .container-left .container-left-up .personal-info .personal-info-status {
             font-size: 16px;
-            line-height: 21px;
+            line-height: 35px;
             width: 160px;
-            height: 21px;
+            height: 35px;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
-            color: #686874; }
+            color: #686874;
+            cursor: pointer; }
         #theme_name #personal_center .personal-center-container .container-left .container-left-up .personal-group-button {
           flex: 1;
           width: 100%;

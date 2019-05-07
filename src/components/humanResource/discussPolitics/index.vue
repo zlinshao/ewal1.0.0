@@ -1218,6 +1218,7 @@
               this.$LjMessageEasy(res, () => {
                 this.add_meeting_dialog_visible = false;
                 this.meeting_detail_dialog_visible = false;
+                this.initDaysList(this.dateValue);
               });
             });
           }
