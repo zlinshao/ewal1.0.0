@@ -262,6 +262,11 @@
 .color874 {
   color: #686874; }
 
+#theme_name .table_choose {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1px solid #999999; }
 #theme_name h5.operate {
   position: absolute;
   top: -60px;
@@ -787,3 +792,5 @@
   background-color: #cf2e33; }
 #theme_name.theme1 .listTopCss .listTopRight .searchTerm > b {
   padding-right: 15px; }
+
+/*# sourceMappingURL=currency.css.map */

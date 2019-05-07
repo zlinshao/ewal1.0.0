@@ -23,7 +23,7 @@
     <div class="action-bar changeChoose">
       <div class="action-bar-left" v-show="action_visible">
         <!--<el-checkbox>全选</el-checkbox>-->
-        <span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+        <!--<span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
 
         <span class="action-bar-name">
                     <span v-for="(item,index) in btnData"
@@ -51,7 +51,11 @@
         <el-table-column
           type="selection" width="40">
         </el-table-column>
-
+        <el-table-column>
+          <template slot-scope="scope">
+            <div class="table_choose"></div>
+          </template>
+        </el-table-column>
         <el-table-column
           show-overflow-tooltip
           v-for="item in Object.keys(paymentLabels)"
@@ -1050,7 +1054,7 @@
               }
             );
             this.count = res.data.count;
-            this.balanceSum = res.data.balanceSum;
+            this.payableSum = res.data.payableSum;
             this.paidSum = res.data.paidSum;
             this.balanceSum = res.data.balanceSum;
           } else {

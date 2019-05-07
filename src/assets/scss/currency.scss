@@ -26,6 +26,12 @@
   @include radius($m);
 }
 #theme_name {
+  .table_choose {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid #999999;
+  }
   h5.operate {
     position: absolute;
     top: -60px;

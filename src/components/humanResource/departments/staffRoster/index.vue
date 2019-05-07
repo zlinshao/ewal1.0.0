@@ -18,7 +18,7 @@
                 {{ item.info[scope.row[item.key]] ? item.info[scope.row[item.key]] : '/' }}
               </span>
               <span v-else>
-                {{ scope.row.staff && scope.row.staff[item.key.split('.')[1]] && item.info[scope.row.staff[item.key.split('.')[1]]] || '/' }}
+                {{ scope.row.staff && item.info[scope.row.staff[item.key.split('.')[1]]] ? item.info[scope.row.staff[item.key.split('.')[1]]] : '/' }}
               </span>
             </template>
           </el-table-column>
