@@ -15,9 +15,9 @@
       </div>
 
       <div class="items-center listTopRight">
-        <p class="status-icon" v-for="item in statusBar" v-if="chooseTab===1||chooseTab===2">
-          <span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>
-        </p>
+        <!--<p class="status-icon" v-for="item in statusBar" v-if="chooseTab===1||chooseTab===2">-->
+          <!--<span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>-->
+        <!--</p>-->
         <!--<div class="icons btn_output"></div>-->
         <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
           <div class="icons search" @click="highSearch(chooseTab)"></div>

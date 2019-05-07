@@ -22,13 +22,13 @@
           <div class="statusBar">
             <div class="flex-center" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].suppress_dup === 0">
               <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
-                <span class="phone" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_contact !== 1"></span>
+                <span class="phone" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_contact === 1"></span>
               </el-tooltip>
               <el-tooltip content="姓名" placement="bottom" :visible-arrow="false">
-                <span class="name" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_name !== 1"></span>
+                <span class="name" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_name === 1"></span>
               </el-tooltip>
               <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
-                <span class="address" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_address !== 1"></span>
+                <span class="address" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_address === 1"></span>
               </el-tooltip>
             </div>
             <div v-else class="flex-center">
@@ -199,8 +199,8 @@
       getLordList() {
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
+          this.showLoading(false);
           if (res.code === 200) {
-            this.showLoading(false);
             this.lordLists = res.data.data.sort((a,b) => {
               return a.id - b.id;
             });

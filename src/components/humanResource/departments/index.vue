@@ -71,11 +71,11 @@
               <span class="writingMode">
                 {{ current_depart && current_depart.name }}
               </span>
-              <a class="control flex-center">
-                <a class="pointer">...</a>
-                <b @click.stop="handleOpenEditDepart(current_depart)">编辑</b>
-                <b @click.stop="handleDelDepart(current_depart)">删除</b>
-              </a>
+              <!--<a class="control flex-center">-->
+                <!--<a class="pointer">...</a>-->
+                <!--<b @click.stop="handleOpenEditDepart(current_depart)">编辑</b>-->
+                <!--<b @click.stop="handleDelDepart(current_depart)">删除</b>-->
+              <!--</a>-->
             </p>
           </div>
           <div class="depart-right">
@@ -89,7 +89,18 @@
                 <!--鼠标移入判断是否有下级部门不合理-->
                 <div class="next_btn"><i class="el-icon-arrow-right" style="visibility: hidden"></i></div>
                 <div class="list flex scroll_bar" v-if="next_depart.length > 0">
-                  <div class="writingMode" style="text-align: left;padding-top: 15px" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>
+                  <div v-for="depart in next_depart" @mouseleave="is_active_depart = ''" @mouseover="show_depart_ctl(depart)">
+                    <div
+                      class="writingMode depart_item"
+                      style="text-align: left;padding-top: 15px"
+                      @click="handleInnerNextDepart(depart)">
+                      {{ depart.name }}
+                    </div>
+                    <div class="depart_ctl flex-center" v-show="depart.id === is_active_depart">
+                      <span @click="handleOpenEditDepart(depart,'child')">编辑</span>
+                      <span @click="handleDelDepart(depart,'child')">删除</span>
+                    </div>
+                  </div>
                   <!--不合理-->
                   <!--<div @mouseover="handleConfirmNext(depart)" class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>-->
                 </div>
@@ -826,6 +837,10 @@
         current_module: '',
         current_power: '',
         current_promisstion: '',
+
+        is_active_depart: '',
+
+        is_child: false,
       }
     },
     mounted() {
@@ -839,6 +854,9 @@
       },
     },
     methods: {
+      show_depart_ctl(depart) {
+        this.is_active_depart = depart.id;
+      },
       handleChangePermissionPage(page) {
         this.permission_params.page = page;
         let id = this.current_power && this.current_power.id;
@@ -910,6 +928,7 @@
               this.next_depart = [];
             }
           }
+          this.is_child = false;
         })
       },
       //子部门点击获取子部门
@@ -1287,8 +1306,13 @@
       handleExportInfo() {
         this.exportInfo += this.chooseTab;
       },
-      handleOpenEditDepart(item) {
-        this.current_depart.name = item.name;
+      handleOpenEditDepart(item,child) {
+        console.log(item);
+        if (child) {
+          this.is_child = true;
+        } else {
+          this.current_depart.name = item.name;
+        }
         this.edit_depart = item;
         this.departForm.name = item.name;
         this.departForm.leader = item.leader && item.leader.name || '';
@@ -1311,8 +1335,12 @@
               message: res.msg
             });
             this.del_depart_visible = false;
-            this.show_depart_detail = false;
-            this.getDepartList();
+            // this.show_depart_detail = false; //隐藏当前部门点开
+            if (this.is_child) {
+              this.getNextDepart(this.current_depart);
+            } else {
+              this.getDepartList();
+            }
           } else {
             this.$LjNotify('warning',{
               title: '失败',
@@ -1322,7 +1350,10 @@
         })
       },
       //删除部门
-      handleDelDepart(item) {
+      handleDelDepart(item,child) {
+        if (child) {
+          this.is_child = true;
+        }
         this.del_depart = item;
         this.del_depart_visible = true;
       },
@@ -1356,8 +1387,11 @@
                 title: '成功',
                 message: res.msg
               });
-              this.current_depart.name = this.departForm.name;
-              this.getDepartList();
+              if (this.is_child) {
+                this.getNextDepart(this.current_depart);
+              } else {
+                this.getDepartList();
+              }
               this.handleCancelAddDepart();
             } else {
               this.$LjNotify('warning',{

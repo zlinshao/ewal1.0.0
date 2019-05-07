@@ -369,17 +369,28 @@
                 padding: 30px 0;
                 min-height: 155px; }
                 #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div {
-                  width: 50px;
-                  height: 155px;
-                  line-height: 50px;
-                  text-align: center;
-                  margin: 0 20px;
-                  border: 1px solid #686874;
-                  background-color: white;
-                  cursor: pointer; }
-                  #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div:hover {
-                    color: #cf2e33;
-                    border: 1px solid #cf2e33; }
+                  min-height: 175px; }
+                  #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div div.depart_item {
+                    width: 50px;
+                    height: 155px;
+                    line-height: 50px;
+                    text-align: center;
+                    margin: 0 20px;
+                    border: 1px solid #686874;
+                    background-color: white;
+                    cursor: pointer; }
+                    #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div div.depart_item:hover {
+                      color: #cf2e33;
+                      border: 1px solid #cf2e33; }
+                  #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div div.depart_ctl {
+                    width: 100%;
+                    font-size: 14px; }
+                    #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div div.depart_ctl span {
+                      cursor: pointer; }
+                      #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div div.depart_ctl span:hover {
+                        color: #cf2e33; }
+                      #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div div.depart_ctl span:not(:first-child) {
+                        margin-left: 3px; }
             #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .staff_list {
               height: 60%; }
     #theme_name #departments .departList .show-depart-detail {
@@ -394,3 +405,5 @@
     justify-content: space-between;
     flex-direction: column;
     justify-content: space-between; }
+
+/*# sourceMappingURL=index.css.map */
