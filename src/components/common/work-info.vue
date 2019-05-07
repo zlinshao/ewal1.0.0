@@ -5,16 +5,14 @@
           <li v-for="tmp in date_change_list" :key="tmp.id" @click="handleChangeDate(tmp.id)" :class="{'mark_li': isActive === tmp.id}">{{ tmp.val }}</li>
         </ul>
         <div class="day_info flex-center">
-          <div class="event_info">
-            <p>事件程度比重：</p>
-            <div id="events_charts" style="width: 400px;height: 300px;"></div>
+          <div>
+            <slot name="left"></slot>
           </div>
-          <div class="attend_info">
-            <p>考勤：</p>
-            <div id="attend_charts" style="width: 400px;height: 300px;"></div>
+          <div>
+            <slot name="center"></slot>
           </div>
-          <div class="work_info">
-            <p v-for="todo in work_info">{{ todo.work }} : {{ todo.val }}</p>
+          <div>
+            <slot name="right"></slot>
           </div>
         </div>
       </div>
@@ -24,7 +22,6 @@
 <script>
     export default {
         name: "work-info",
-        props: ['workInfo','eventData','attendData'],
         data() {
             return {
               date_change_list: [
@@ -33,40 +30,13 @@
                 {id: 3,val: '本月'},
               ],
               isActive: 1,
-              work_info: [],
-              event_data: [],
-              attend_data: [],
             }
         },
         mounted() {
-          this.init_event_chart();
-          this.init_attend_chart();
+          // this.init_event_chart();
+          // this.init_attend_chart();
         },
-        activated() {
-        },
-        watch: {
-          workInfo: {
-            handler(val) {
-              this.work_info = val;
-            },
-            deep: true
-          },
-          eventData: {
-            handler(val) {
-              this.event_data = val;
-              this.init_event_chart();
-            },
-            deep: true
-          },
-          attendData: {
-            handler(val) {
-              this.attend_data = val;
-              this.init_attend_chart();
-            },
-            deep: true
-          }
-        },
-        computed: {},
+        watch: {},
         methods: {
           init_event_chart() {
           var event_chart = this.$echarts.init(document.getElementById('events_charts'));

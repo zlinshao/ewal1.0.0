@@ -28,24 +28,12 @@
     .day_info {
       & > div {
         width: 25%;
-        //height: 300px;
+        min-height: 350px;
         padding-left: 30px;
+        margin: 0 10px;
       }
       & > div > p {
         font-size: 16px;
-      }
-      .event_info {
-        //border: 1px solid #00FDFF;
-      }
-      .attend_info {
-        //border: 1px solid #008A7B;
-      }
-      .work_info {
-        //border: 1px solid #9CCC65;
-        height: 321px;
-        & > p:not(:last-child) {
-          margin-bottom: 65px;
-        }
       }
     }
   }
