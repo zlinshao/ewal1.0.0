@@ -39,7 +39,25 @@
     .listTopCss {
       .listTopLeft {
         .date-value-container {
+          position: relative;
           width: 140px;
+          .icon-jiantou {
+            display: inline-block;
+            width: 6px;
+            height: 10px;
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            transform:rotate(-90deg);
+            transition:all .5s;
+          }
+
+          /*&:focus {
+            .icon-jiantou {
+              transform: rotate(90deg);
+            }
+
+          }*/
         }
       }
     }
@@ -214,8 +232,52 @@
             }
           }
 
+          .calendar-week-en {
+            //margin-top: 20px;
+            padding: 0 0;
+            height: 70px;
+            line-height: 70px;
+            //border-top: 1px solid #E4E4E4;
+
+            //border-bottom: 1px solid #E4E4E4;
+            .ui-container {
+              height: 100%;
+              @include flex('');
+
+              .calendar-week-item {
+                display: inline-block;
+                height: 100%;
+                width: 14%;
+                border-right: 1px solid #E4E4E4;
+
+                .calendar-week-item-container {
+                  @include flex('flex-center');
+                  position: relative;
+                  width: 100%;
+                  height: 100%;
+
+                  .week-item-date {
+                    font-size:18px;
+                    font-family:MicrosoftYaHei-Bold;
+                    font-weight:bold;
+                    color:rgba(104,104,116,1);
+                    //line-height:24px;
+
+                    position: absolute;
+                    bottom: 0;
+                    cursor: default;
+
+                    &.weekday {
+                      color: $colorE33;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
           .calendar-day {
-            margin-top: 20px;
+            //margin-top: 20px;
             height: 550px;
 
             //margin-bottom: 40px;

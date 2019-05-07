@@ -78,13 +78,14 @@
             .personal-info-status {
               //@include flex('flex-center');
               font-size: 16px;
-              line-height: 21px;
+              line-height: 35px;
               width: 160px;
-              height: 21px;
+              height: 35px;
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden;
               color: $color874;
+              cursor: pointer;
             }
           }
           .personal-group-button {
