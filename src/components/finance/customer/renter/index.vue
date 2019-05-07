@@ -6,7 +6,6 @@
       :height="this.mainListHeight() + 'px'"
       highlight-current-row
       header-row-class-name="tableHeader"
-      :row-class-name="tableChooseRow"
       @cell-click="tableClickRow"
       style="width: 100%">
 
@@ -20,22 +19,21 @@
       </el-table-column>
       <el-table-column label="标记" align="center" width="90">
         <template slot-scope="scope">
-          <div class="statusBar flex-center" v-if="renterStatus[scope.$index]['suppress_dup']===1">
-            /
-          </div>
-          <div class="statusBar flex-center" v-if="renterStatus[scope.$index]['suppress_dup']===0">
-            <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
-              <span style="background-color: #e6a23c;" v-if="renterStatus[scope.$index]['is_name']===1"></span>
-            </el-tooltip>
-            <el-tooltip content="客户姓名" placement="bottom" :visible-arrow="false">
-              <span style="background-color: #14e731;" v-if="renterStatus[scope.$index]['is_contact']===0"></span>
-            </el-tooltip>
-            <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
-              <span style="background-color: #f56c6c;" v-if="renterStatus[scope.$index]['is_address']===2"></span>
-            </el-tooltip>
-            <el-tooltip content="忽略重复" placement="bottom" :visible-arrow="false">
-              <span v-if="freeze[scope.$index]===1" style="background-color: #409eff;"></span>
-            </el-tooltip>
+          <div class="statusBar">
+            <div class="flex-center" v-if="renterStatus[scope.$index] && renterStatus[scope.$index].suppress_dup === 0">
+              <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
+                <span class="phone" v-if="renterStatus[scope.$index] && renterStatus[scope.$index].is_contact !== 1"></span>
+              </el-tooltip>
+              <el-tooltip content="姓名" placement="bottom" :visible-arrow="false">
+                <span class="name" v-if="renterStatus[scope.$index] && renterStatus[scope.$index].is_name !== 1"></span>
+              </el-tooltip>
+              <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
+                <span class="address" v-if="renterStatus[scope.$index] && renterStatus[scope.$index].is_address !== 1"></span>
+              </el-tooltip>
+            </div>
+            <div v-else class="flex-center">
+              <span class="ignore"></span><a>忽略重复</a>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -134,7 +132,6 @@
           bottom_type: '',
           suggest_type: ''
         },
-        freeze: [],//待处理
         chooseRowIds: [],
         renterLabel: {//列表字段
           "create_time": "生成时间",
@@ -155,21 +152,7 @@
         renterLists: [],
         renterCount: 0,
         renterIds: [],
-        renterStatus: [
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
-          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0}
-        ],
+        renterStatus: [],
         renterDetailList: {},
         ra_ids: [],
         multipleSelection: [],//多选
@@ -246,11 +229,6 @@
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
       },
-      // 点击过
-      tableChooseRow({row, rowIndex}) {
-        return row.freeze === 1 ? 'success-row' : '';
-      },
-
       callbackSuccess(res) {
         if (res.code === 200) {
           this.$LjNotify('success', {
@@ -278,32 +256,26 @@
                 return a.id - b.id
               }
             );
-            console.log(this.renterLists);
-            this.renterCount = res.data.count;
-            this.freeze = [];
             for (let item of this.renterLists) {
-
-              this.freeze.push(item.freeze);
-
+              this.renterIds.push(item.id)
             }
+            this.$http.get(globalConfig.temporary_server + 'customer_renter_repeat', {id: this.renterIds}).then(res => {
+              console.log(res);
+              if (res.code === 200) {
+                this.renterStatus = res.data.data.sort(
+                  function (a, b) {
+                    return a.id - b.id
+                  }
+                );
+              }
+            });
+            this.renterCount = res.data.count;
           } else {
             this.renterLists = [];
             this.renterCount = 0;
           }
         }).then(() => {
-          for (let item of this.renterLists) {
-            this.renterIds.push(item.id)
-          }
-          this.$http.get(globalConfig.temporary_server + 'customer_renter_repeat', {id: this.renterIds}).then(res => {
-            if (res.code === 200) {
-              this.renterStatus = res.data.data.sort(
-                function (a, b) {
-                  return a.id - b.id
-                }
-              );
-              console.log(this.renterStatus);
-            }
-          })
+
         }).catch(err => {
           console.log(err);
         })
@@ -357,6 +329,10 @@
 
 <style lang="scss">
   @import "../../../../assets/scss/finance/customer/index.scss";
+  @mixin financeImg($m, $n) {
+    $url: '../../../../assets/image/finance/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
 
   #theme_name.theme1 {
     #customer {
@@ -367,6 +343,25 @@
           height: 15px;
           border-radius: 50%;
           margin-left: 4px;
+        }
+        a {
+           font-size: 12px;
+           margin-left: 3px;
+         }
+        span.ignore {
+          @include financeImg('yanjing.png', 'theme1');
+
+        }
+        span.phone {
+          @include financeImg('dianhua.png', 'theme1');
+
+        }
+        span.name {
+          @include financeImg('kehu.png', 'theme1');
+
+        }
+        span.address {
+          @include financeImg('dizhi.png', 'theme1');
         }
       }
       .el-table .success-row {
