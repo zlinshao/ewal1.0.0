@@ -38,7 +38,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        show-overflow-tooltip
         v-for="item in Object.keys(renterLabel)"
         :label="renterLabel[item]" :key="item"
         :prop="item"
@@ -280,7 +279,6 @@
           console.log(err);
         })
       },
-
       //生成待处理项
       handleProcessRenter(row) {
         this.$http.post(globalConfig.temporary_server + 'customer_renter/pending/' + row.id, {}).then(res => {
