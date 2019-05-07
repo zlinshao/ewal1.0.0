@@ -17,11 +17,15 @@
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
         <el-table
           :data="online_list"
-          @row-click="handleClickRow"
+          @row-dblclick="handleClickRow"
           :height="this.mainListHeight(30) + 'px'"
         >
           <el-table-column label="接听时间" prop="call_log.start_time" align="center"></el-table-column>
-          <el-table-column label="合同编号" prop="b" align="center"></el-table-column>
+          <el-table-column label="合同编号" prop="" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.customer && scope.row.customer.custom_fields && scope.row.customer.custom_fields.TextField_18119 || '/'}}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="地址" prop="customer.name" align="center"></el-table-column>
           <el-table-column label="来电类型" align="center">
             <template slot-scope="scope">
@@ -52,7 +56,7 @@
     <LjDialog :visible="online_detail_visible" :size="{width: 700 + 'px',height: 550 + 'px'}" @close="online_detail_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>乔虹苑12-102</h3>
+          <h3>{{ online_detail.address }}</h3>
         </div>
         <div class="dialog_main">
           <el-form label-width="80px" class="borderNone">
@@ -109,12 +113,13 @@
         //接线详情
         online_detail_visible: false,
         online_detail: {
-          contract_number: 'LJSF0129321',
-          call_during: '00:22:00',
-          call_time: '2019-01-01 18:00:00',
-          call_type: '房屋查询',
-          call_reason: '询问租金情况，已解决...',
-          call_man: '小马哥'
+          contract_number: '',
+          call_during: '',
+          call_time: '',
+          call_type: '',
+          call_reason: '',
+          call_man: '',
+          address: ''
         },
         customService,
         menu_visible: false, //菜单栏
@@ -143,7 +148,6 @@
       getServiceOnlineList() {
         this.showLoading(true);
         this.$http.get(this.server + 'v1.0/csd/udesk/calllog',this.params).then(res => {
-          console.log(res.data);
           if (res.code === 200) {
             this.online_list = res.data.data;
             this.online_count = res.data.total;
@@ -154,7 +158,20 @@
           this.showLoading(false);
         })
       },
-      handleClickRow() {
+      handleClickRow(row) {
+        this.online_detail.address = row.customer && row.customer.name;
+        this.online_detail.call_during = row.call_log && row.call_log.duration + 's' || '无';
+        this.online_detail.call_time = row.call_log && row.call_log.start_time || '无';
+        this.online_detail.call_type = row.note && row.note.content || '无';
+        if (row.custom_fields && row.custom_fields.length > 0) {
+          for (var i=0;i<row.custom_fields.length;i++) {
+            this.online_detail.call_reason += row.custom_fields[i];
+          }
+        } else {
+          this.online_detail.call_reason = '无';
+        }
+        this.online_detail.call_man = row.customer && row.customer.owner_name || '无';
+        this.online_detail.contract_number = row.customer && row.customer.custom_fields && row.customer.custom_fields.TextField_18119 || '无';
         this.online_detail_visible = true;
       },
       //分页
