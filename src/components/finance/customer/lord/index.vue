@@ -119,7 +119,7 @@
           startRange: '',
           endRange: '',
           page: 1,
-          limit: 12,
+          limit: 15,
           department_ids: '',
           export: '',
         },
@@ -127,6 +127,9 @@
         chooseRowIds: [],//列表ids
 
         LordStatus: [
+          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
           {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
           {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
           {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},

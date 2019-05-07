@@ -3,8 +3,8 @@
     <div>
       <p>南京乐伽商业管理有限公司</p>
       <div class="organ-tree scroll_bar">
-        <div class="strt-wrap flex-center" id="strtWrap" ref="strtWrap" @mousedown="handleDragOrgan">
-        <!--<div class="strt-wrap flex-center" id="strtWrap" ref="strtWrap">-->
+        <div class="strt-wrap flex-center" id="strtWrap" ref="strtWrap">
+        <!--<div class="strt-wrap flex-center" id="strtWrap" ref="strtWrap" @mousedown="handleDragOrgan">-->
           <div class="strt-block" v-show="top_position.length > 0">
             <div class="strt-part">
               <span class="strt-name">总裁办</span>
