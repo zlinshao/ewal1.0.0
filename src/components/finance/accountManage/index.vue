@@ -39,10 +39,14 @@
         highlight-current-row
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
-        @selection-change="handleSelectionChange"
         header-row-class-name="tableHeader"
         style="width: 100%">
-        <el-table-column type="selection" width="40"></el-table-column>
+        <!--<el-table-column type="selection" width="40"></el-table-column>-->
+        <el-table-column width="40">
+          <template slot-scope="scope">
+            <span class="table_choose" :class="{'is_table_choose': scope.row.id === is_table_choose }"></span>
+          </template>
+        </el-table-column>
         <el-table-column
           v-for="item in Object.keys(showData)" :key="item"
           align="center"
@@ -262,6 +266,8 @@
     components: {SearchHigh, FinMenuList, LjDialog},
     data() {
       return {
+        is_table_choose: '',
+
         choose: '',
         accountSearchList,
         //查看记录
@@ -369,18 +375,6 @@
     },
     computed: {},
     methods: {
-      // 多选
-      handleSelectionChange(val) {
-        val = val.splice(0,1);
-        this.multipleSelection = [0];
-        this.current_row = val[0];
-        if (val.length > 0) {
-          this.action_visible = true;
-        } else {
-          this.action_visible = false;
-        }
-        console.log(val);
-      },
       handleCloseInfo() {
         this.info_params.operation = '';
         this.info_params.account_id = '';
@@ -551,6 +545,17 @@
       },
       // 当前点击
       tableClickRow(row) {
+        if (this.is_table_choose === row.id) {
+          this.is_table_choose = '';
+          this.multipleSelection = '';
+          this.current_row = '';
+          this.action_visible = false;
+        } else {
+          this.is_table_choose = row.id;
+          this.multipleSelection = row;
+          this.current_row = row;
+          this.action_visible = true;
+        }
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);

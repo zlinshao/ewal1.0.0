@@ -55,10 +55,14 @@
         :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
-        @selection-change="tableDataSelectionChange"
         style="width: 100%">
-        <el-table-column
-          type="selection" width="40">
+        <!--<el-table-column-->
+          <!--type="selection" width="40">-->
+        <!--</el-table-column>-->
+        <el-table-column width="40">
+          <template slot-scope="scope">
+            <span class="table_choose" :class="{'is_table_choose': scope.row.id === is_table_choose }"></span>
+          </template>
         </el-table-column>
         <el-table-column
           show-overflow-tooltip
@@ -800,6 +804,8 @@
     },
     data() {
       return {
+        is_table_choose: '',
+
         out_form: {
           account: [],
           account_name: '',
@@ -1240,17 +1246,6 @@
       openCustomer() {
         this.customerModule = true;
       },
-      tableDataSelectionChange(val) {//首页多选
-        this.multipleSelection = val;
-        if (val.length > 0) {
-          this.action_visible = true;
-          this.current_row = val[0];//当前选择赋值
-          this.register_from.address = val[0].customer && val[0].customer.address;
-        } else {
-          this.action_visible = false;
-        }
-
-      },
       receiptSelectionChange(val) {//电子收据
         this.multipleSelection = val;
         let ids = [];
@@ -1368,6 +1363,19 @@
       },
       // 当前点击
       tableClickRow(row) {
+        this.multipleSelection = [];
+        if (this.is_table_choose === row.id) {
+          this.is_table_choose = '';
+          this.action_visible = true;
+          this.action_visible = false;
+          this.current_row = '';
+        } else {
+          this.is_table_choose = row.id;
+          this.multipleSelection.push(row);
+          this.current_row = row;
+          this.action_visible = true;
+          this.register_from.address = row.customer && row.customer.address;
+        }
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
@@ -1640,7 +1648,7 @@
         })
       },
       handleClickBtn(key, row) {//表单操作栏
-
+        console.log(row);
         if (key === 'should_receive') {//应收入账
           this.receive_visible = true;
           this.receive_form = row;

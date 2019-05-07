@@ -8,11 +8,14 @@
       header-row-class-name="tableHeader"
       :row-class-name="tableRowClassName"
       @cell-click="tableClickRow"
-      @selection-change="handleSelectionChange"
       style="width: 100%">
-
-      <el-table-column
-        type="selection" width="40">
+      <!--<el-table-column-->
+        <!--type="selection" width="40">-->
+      <!--</el-table-column>-->
+      <el-table-column width="40">
+        <template slot-scope="scope">
+          <span class="table_choose" :class="{'is_table_choose': scope.row.id === is_table_choose }"></span>
+        </template>
       </el-table-column>
 
       <el-table-column label="标记" align="center" width="90">
@@ -34,19 +37,17 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="create_time" label="生成时间" show-overflow-tooltip align="center"></el-table-column>
-      <el-table-column prop="address" label="房屋地址" show-overflow-tooltip align="center"></el-table-column>
-      <el-table-column prop="customer_name" label="客户姓名" show-overflow-tooltip align="center"></el-table-column>
-      <el-table-column prop="contact" label="客户手机号" show-overflow-tooltip align="center"></el-table-column>
-      <el-table-column prop="months" label="收房月数" show-overflow-tooltip align="center"></el-table-column>
-      <el-table-column prop="deal_date" label="待签约日期" show-overflow-tooltip align="center"></el-table-column>
-      <el-table-column prop="first_pay_date" label="第一次打房租日期" show-overflow-tooltip align="center"
-                       width="150"></el-table-column>
-      <el-table-column prop="account_type" label="客户汇款方式" show-overflow-tooltip align="center"></el-table-column>
-      <el-table-column label="付款方式/月单价" prop="prices" align="center" show-overflow-tooltip
-                       width="150"></el-table-column>
-      <el-table-column label="账号" prop="account_num" align="center" show-overflow-tooltip></el-table-column>
-      <el-table-column label="签约人" prop="operator.name" align="center" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="create_time" label="生成时间" align="center"></el-table-column>
+      <el-table-column prop="address" label="房屋地址" align="center"></el-table-column>
+      <el-table-column prop="customer_name" label="客户姓名" align="center"></el-table-column>
+      <el-table-column prop="contact" label="客户手机号" align="center"></el-table-column>
+      <el-table-column prop="months" label="收房月数" align="center"></el-table-column>
+      <el-table-column prop="deal_date" label="待签约日期" align="center"></el-table-column>
+      <el-table-column prop="first_pay_date" label="第一次打房租日期"align="center"></el-table-column>
+      <el-table-column prop="account_type" label="客户汇款方式" align="center" show-overflow-tooltip></el-table-column>
+      <el-table-column label="付款方式/月单价" prop="prices" align="center" show-overflow-tooltip min-width="230"></el-table-column>
+      <el-table-column label="账号" prop="account_num" align="center" min-width="150"></el-table-column>
+      <el-table-column label="签约人" prop="operator.name" align="center"></el-table-column>
 
       <el-table-column label="状态" prop="" align="center" width="80">
         <template slot-scope="scope">
@@ -114,6 +115,8 @@
     props: ['searchParams', 'status', 'current_row_info'],
     data() {
       return {
+        is_table_choose: '',
+
         params: {//查询参数
           search: '',
           startRange: '',
@@ -153,7 +156,6 @@
         lordCount: 0,
         lordIds: [],
         ra_ids: [],
-        multipleSelection: [],//多选
         freeze: [],//待处理
         lordDetailData: this.row,
         statusLists: [],
@@ -168,9 +170,6 @@
     },
     beforeDestroy() {
       this.$bus.off('getParams', this.handleParams);
-    },
-    activated() {
-
     },
     watch: {
       current_row_info: {
@@ -277,9 +276,15 @@
         console.log(val);
         this.getLordList();
       },
-
       // 当前点击
       tableClickRow(row) {
+        if (this.is_table_choose === row.id) {
+          this.is_table_choose = '';
+          this.$emit('getMultipleSelection', 0);
+        } else {
+          this.is_table_choose = row.id;
+          this.$emit('getMultipleSelection', row);
+        }
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
@@ -287,11 +292,6 @@
       // 行状态
       tableRowClassName({row, rowIndex}) {
         return row.freeze === 1 ? 'success-row' : '';
-      },
-      // 多选
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-        this.$emit('getMultipleSelection', val)
       },
       //生成待处理项
       handleProcessLord(row) {

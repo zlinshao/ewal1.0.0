@@ -8,11 +8,15 @@
       header-row-class-name="tableHeader"
       :row-class-name="tableChooseRow"
       @cell-click="tableClickRow"
-      @selection-change="handleSelectionChange"
       style="width: 100%">
 
-      <el-table-column
-        type="selection" width="40">
+      <!--<el-table-column-->
+        <!--type="selection" width="40">-->
+      <!--</el-table-column>-->
+      <el-table-column width="40">
+        <template slot-scope="scope">
+          <span class="table_choose" :class="{'is_table_choose': scope.row.id === is_table_choose }"></span>
+        </template>
       </el-table-column>
       <el-table-column label="标记" align="center" width="90">
         <template slot-scope="scope">
@@ -109,6 +113,8 @@
     props: ['searchParams', 'status', 'current_row_info'],
     data() {
       return {
+        is_table_choose: '',
+
         params: {//查询参数
           search: '',
           startRange: '',
@@ -161,6 +167,7 @@
           {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
           {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
           {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
+          {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0},
           {is_address: 2, is_contact: 1, is_name: 1, suppress_dup: 0}
         ],
         renterDetailList: {},
@@ -180,7 +187,6 @@
       current_row_info: {
         handler(val) {
           this.current_row = val;
-          console.log(val);
           this.renterDetailList = val;
         },
         deep: true
@@ -222,11 +228,6 @@
         this.action_status.details_visible = val;
         this.getRenterList();
       },
-      // 多选
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-        this.$emit('getMultipleSelection', val)
-      },
       //分页
       handleChangePage(page) {
         this.params.page = page;
@@ -234,6 +235,13 @@
       },
       // 当前点击
       tableClickRow(row) {
+        if (this.is_table_choose === row.id) {
+          this.is_table_choose = '';
+          this.$emit('getMultipleSelection', 0);
+        } else {
+          this.is_table_choose = row.id;
+          this.$emit('getMultipleSelection', row);
+        }
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);

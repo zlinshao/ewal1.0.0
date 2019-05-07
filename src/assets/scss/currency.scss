@@ -27,10 +27,17 @@
 }
 #theme_name {
   .table_choose {
-    width: 15px;
-    height: 15px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     border: 1px solid #999999;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .is_table_choose {
+    background-color: $colorE33;
+    border-color: $colorE33;
   }
   h5.operate {
     position: absolute;
