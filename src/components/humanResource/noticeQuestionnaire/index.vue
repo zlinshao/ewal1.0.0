@@ -22,25 +22,26 @@
       </div>
     </div>
 
-    <div class="main-container nq-container" v-if="!chooseTab">
+    <div class="main-container nq-container" v-if="$route.path=='/noticeQuestionnaire'">
       <div class="content flex-center" >
         <div class="left flex-center" @click="chooseTab=1"><span>公告</span></div>
         <div class="right flex-center" @click="chooseTab=2"><span class="gray">问卷调查</span></div>
       </div>
     </div>
     <!--组件-->
-    <div class="up" v-if="chooseTab==1">
-      <Notice :searchVal="searchFruit1"></Notice>
+<!--    <div v-if="chooseTab==1">-->
+<!--      <Notice :searchVal="searchFruit1"></Notice>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash;组件&ndash;&gt;-->
+<!--    <div v-if="chooseTab==2">-->
+<!--      <Questionnaire :searchVal="searchFruit2"></Questionnaire>-->
+<!--    </div>-->
+    <div>
+      <router-view></router-view>
     </div>
 
-    <!--组件-->
-    <div class="down" v-if="chooseTab==2">
-      <Questionnaire :searchVal="searchFruit2"></Questionnaire>
-    </div>
 
-
-    <!--<work-info v-show="chooseTab" :work-info="work_info" :event-data-list="event_data_list"
-               @change="handleChangeDate"></work-info>-->
 
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -100,67 +101,25 @@
         searchFruit1: {},//搜索结果1
         searchFruit2: {},//搜索结果2
 
-        //乐伽dialog
-        reward_order_visible: false,
-        exchange_rules_visible: false,
-
-        //侧滑栏数据
-        show_market: false,
-        work_info: [
-          {work: '穿铠甲', val: '10'},
-          {work: '攻下小城池', val: '6'},
-          {work: '攻下大城池', val: '3'},
-          {work: '攻下国家', val: '3'},
-        ],
-
-        event_data_list: [
-          {
-            title:'事件占有率:',
-            value:[
-              {value: 500, name: '一般'},
-              {value: 300, name: '特殊'},
-              {value: 200, name: '紧急'}
-            ]
-          },
-          {
-            title:'十佳萌新:',
-            value:[
-              {value: 500, name: '一般'},
-              {value: 300, name: '特殊'},
-              {value: 200, name: '紧急'}
-            ]
-          },
-          {
-            title:'十佳老司机:',
-            value:[
-              {value: 500, name: '一般'},
-              {value: 300, name: '特殊'},
-              {value: 200, name: '紧急'}
-            ]
-          },
-          {
-            title:'ABC:',
-            value:[
-              {value: 500, name: '一般'},
-              {value: 300, name: '特殊'},
-              {value: 200, name: '紧急'}
-            ]
-          }
-        ],
-        event_data: [
-          {value: 500, name: '一般'},
-          {value: 300, name: '特殊'},
-          {value: 200, name: '紧急'}
-        ],
       }
     },
     mounted() {
-      this.show_market = true;
-      //this.work_info[0].val = '7';
+
     },
     activated() {
     },
-    watch: {},
+    watch: {
+      chooseTab: {
+        handler(val,oldVal) {
+          if(val==1) {
+            this.routerLink('/noticeQuestionnaire/notice');
+          }else if(val==2) {
+            this.routerLink('/noticeQuestionnaire/questionnaire');
+          }
+        },
+        immediate:true,
+      },
+    },
     computed: {},
     methods: {
       // 高级搜索
@@ -183,19 +142,14 @@
           switch (this.chooseTab) {
             case 1:
               this.searchFruit1 = JSON.parse(JSON.stringify(val));
+              this.$bus.$emit('noticeSearchVal',this.searchFruit1);
               break;
             case 2:
               this.searchFruit2 = JSON.parse(JSON.stringify(val));
+              this.$bus.$emit('questionnaireSearchVal',this.searchFruit2);
               break;
           }
         }
-      },
-
-      handleChangeDate(id) {
-
-      },
-      handleCloseMenu() {
-        this.show_market = false;
       },
 
       // tab切换

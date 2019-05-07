@@ -21,7 +21,10 @@
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
           </div>
-          <span @click="openNotify">更多</span>
+          <span style="position: relative" @click="more_visible = !more_visible">
+            更多
+            <app-index-more :visible="more_visible"></app-index-more>
+          </span>
         </div>
         <div>
           <select v-model="theme_name" @change="changeLoading">
@@ -104,17 +107,20 @@
 <script>
 import TodoList from './components/todoList/index';
 import Approval from './components/approval/index';
+import AppIndexMore from './components/index/components/AppIndexMore';
 
 export default {
   name: 'App',
   components: {
     TodoList,
-    Approval
+    Approval,
+    AppIndexMore,
   },
   data () {
     return {
       theme_name: '1',
       moduleList: false,
+      more_visible:false,
       changeLoad: false,
       modules: [
         {
