@@ -504,7 +504,7 @@
               <el-button
                 v-for="(index,item) in categoryList"
                 :key="item" style="margin-bottom: 10px"
-                @click="getCategory(index.value)"
+                @click="new_mark.category = index.value"
               >{{index.title}}
               </el-button>
             </el-form-item>
@@ -1081,17 +1081,6 @@
       this.chooseTabI = this.compareParams.status;
       this.getReceiveList();
     },
-    activated() {
-    },
-    watch: {
-      new_mark: {
-        handler(val) {
-          console.log(val)
-        },
-        deep: true
-      },
-
-    },
     computed: {},
     methods: {
       getAccount() {//获取账户字典
@@ -1109,7 +1098,6 @@
       },
       importOk() {
         this.$http.post(globalConfig.temporary_server + 'batch_receivable/import',{doc_id: this.import_file}).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.$LjNotify('success',{
               title: '成功',
@@ -1125,9 +1113,7 @@
         })
       },
       outAccountCtrl() {
-        console.log(this.out_form);
         this.$http.get(globalConfig.temporary_server + 'batch_receivable/export',this.out_form).then(res => {
-          console.log(res);
           if (res.code === 200) {
             window.location.href = res.data.url;
             this.cancelOutAccount();
@@ -1140,7 +1126,6 @@
         })
       },
       handleSuccessFile(file,name) {
-        console.log(file,name);
         if (file && file.length > 0) {
           this.import_file = file[0];
         }
@@ -1192,7 +1177,6 @@
 
       hiddenCustomer(val) {//获取客户
         this.customerModule = false;
-        console.log(val);
         this.addForm.customer_name = val.name;
         this.addForm.customer_identity = val.identity;
         this.addForm.customer_id = val.id;
@@ -1212,7 +1196,6 @@
       },
       getCompareDataLists() {//获取收款记录
         this.$http.get(globalConfig.temporary_server + 'registration', this.compareParams).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.compareData = res.data.data;
             this.compareCount = res.data.count;
@@ -1254,11 +1237,8 @@
           ids.push(item.id)
         }
         this.running_ids = ids;
-        console.log(this.running_ids)
-
       },
       handleReceiptOk() {//确认生成电子数据
-        console.log(this.running_ids);
         let paramsForm = {
           "ra_ids": this.running_ids,
           "fund_id": this.current_row.id,//款项id
@@ -1266,7 +1246,6 @@
           "remark": ''
         };
         this.$http.post(globalConfig.temporary_server + 'receipt', paramsForm).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.$LjNotify('success', {
               title: '成功',
@@ -1291,7 +1270,6 @@
       //员工
       hiddenStaff(ids, names, arr) {
         this.staffModule = false;
-        // console.log(ids, names, arr);
         if (ids !== 'close') {
           this.new_record.flow_staff_name = names;
           this.new_record.flow_staff_id = ids[0];
@@ -1417,13 +1395,10 @@
       handleSelectionChange(val) {
         this.ra_ids = [];
         this.multipleSelection = val;
-        console.log(val);
         for (let item in val) {
           this.ra_ids.push(val[item].id);
         }
-        console.log(this.ra_ids);
       },
-
       handleProcess(row) {//回滚表单
         this.running_account_record = [];
         for (let item in row.running_account_record) {
@@ -1467,7 +1442,6 @@
 
       getReceivable_follow() {//加载跟进列表
         this.$http.get(globalConfig.temporary_server + 'receivable_follow',).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.record_data = res.data.data;
             this.record_data_count = res.data.count;
@@ -1485,10 +1459,8 @@
       },
 
       getReceiptDataLists() {//通过款项获取银流水
-        // this.showLoading(true);
         let ids = [];
         ids.push(this.current_row.id);
-        console.log(ids);
         let paramsForm = {
           fund_id: ids,
           cate: 1
@@ -1498,7 +1470,6 @@
           if (res.code === 200) {
             this.receiptData = res.data.data;
             this.count = res.data.count;
-            console.log(this.receiptData)
           } else {
             this.tableData = [];
             this.count = 0;
@@ -1531,11 +1502,9 @@
 
       getReceivable_tag(id) {//加载催缴备注列表
         this.$http.get(globalConfig.temporary_server + 'receivable_tag', {fund_id: id}).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.mark_data = res.data.data;
             this.mark_data_count = res.data.count;
-            console.log(res)
           }
         }).catch(err => {
           console.log(err);
@@ -1547,7 +1516,6 @@
       },
       postReceivable_tag() {//新增催缴备注
         this.$http.post(globalConfig.temporary_server + 'account_receivable/urge_tag/' + this.current_row.id, this.new_mark).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.$LjNotify('success', {
               title: '成功',
@@ -1648,13 +1616,11 @@
         })
       },
       handleClickBtn(key, row) {//表单操作栏
-        console.log(row);
         if (key === 'should_receive') {//应收入账
           this.receive_visible = true;
           this.receive_form = row;
           this.receive_form.customer_name = row.customer.customer_name;
           this.receive_form.staff_name = row.staff.name;
-          console.log(row)
         }
         if (key === 'record') {
           this.record_visible = true;
@@ -1694,7 +1660,6 @@
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
           let startTag = '';
           let endTag = '';
           let startRange = '';
@@ -1725,7 +1690,6 @@
           for (let item of Object.keys(this.params)) {
             this.params[item] = paramsData[item];
           }
-          console.log(this.params);
           this.getReceiveList();
         }
 
