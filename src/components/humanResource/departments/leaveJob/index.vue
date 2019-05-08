@@ -162,7 +162,7 @@
       handleConfirmSend() {
         const row = this.confirm_row;
         const where = this.confirm_type;
-        var type = where === 'sms' ? ['dimission_sms'] : ['dimission_group'];
+        var type = where === 'sms' ? ['dimission_sms'] : ['dimission'];
         if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
           return false;
         } else {

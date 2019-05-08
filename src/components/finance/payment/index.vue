@@ -35,9 +35,9 @@
                 </span>
       </div>
       <div class="action-bar-right">
-        <span>应付金额（元） <i class="edit">{{ payableSum }}</i></span>
-        <span>实付金额（元） <i class="check">{{ paidSum }}</i></span>
-        <span>剩余款项（元） <i class="delete">{{ balanceSum }}</i></span>
+        <span style="margin-right: 20px">应付金额（元） <i class="edit">{{ payableSum }}</i></span>
+        <span style="margin-right: 20px">实付金额（元） <i class="check">{{ paidSum }}</i></span>
+        <span style="margin-right: 20px">剩余款项（元） <i class="delete">{{ balanceSum }}</i></span>
       </div>
     </div>
     <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
@@ -47,13 +47,14 @@
         highlight-current-row
         header-row-class-name="tableHeader"
         @selection-change="selectionChange"
+        @cell-click="tableClickRow"
         style="width: 100%">
-        <el-table-column
-          type="selection" width="40">
-        </el-table-column>
-        <el-table-column>
+        <!--<el-table-column-->
+          <!--type="selection" width="40">-->
+        <!--</el-table-column>-->
+        <el-table-column width="40">
           <template slot-scope="scope">
-            <div class="table_choose"></div>
+            <span class="table_choose" :class="{'is_table_choose': scope.row.id === is_table_choose }"></span>
           </template>
         </el-table-column>
         <el-table-column
@@ -340,7 +341,6 @@
           <el-table
             :data="running_account_record"
             :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow"
             header-row-class-name="tableHeader"
             @selection-change="handleSelectionChange"
           >
@@ -381,7 +381,6 @@
           <el-table
             :data="batchEntryData"
             :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow"
             header-row-class-name="tableHeader"
             @selection-change="handleSelectionChange"
           >
@@ -482,6 +481,8 @@
     components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists, Customer,Upload},
     data() {
       return {
+        is_table_choose: '',
+
         payableSum: '',
         paidSum: '',
         balanceSum: '',
@@ -818,7 +819,20 @@
         this.ruleForm.customer_identity = val.identity;
         this.ruleForm.customer_id = val.id;
       },
-      tableClickRow(row) {// 当前点击
+      // 当前点击
+      tableClickRow(row) {
+        this.multipleSelection = [];
+        if (this.is_table_choose === row.id) {
+          this.is_table_choose = '';
+          this.action_visible = true;
+          this.action_visible = false;
+          this.current_row = '';
+        } else {
+          this.is_table_choose = row.id;
+          this.multipleSelection.push(row);
+          this.current_row = row;
+          this.action_visible = true;
+        }
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);

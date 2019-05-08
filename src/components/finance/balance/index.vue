@@ -25,8 +25,8 @@
         <el-table-column label="创建时间" prop="create_time" align="center"></el-table-column>
         <el-table-column label="交接单编号" :prop="this.params.settle_type===''?'reimburse_id':'handover_id'" align="center"></el-table-column>
         <el-table-column label="地址" prop="address" align="center"></el-table-column>
-        <el-table-column label="结算费用组成" prop="fee_merge" align="center"></el-table-column>
-        <el-table-column label="账户信息" align="center">
+        <el-table-column label="结算费用组成" prop="fee_merge" align="center" min-width="150"></el-table-column>
+        <el-table-column label="账户信息" align="center" min-width="150">
           <template slot-scope="scope">
             <span>{{scope.row.account_bank}} {{scope.row.account_num}}</span>
           </template>
@@ -97,7 +97,7 @@
 
               </div>
               <div v-if="selectTab===1" class="tab8">
-                <el-table size="small" max-height="340" style="width:100%" :data="balanceDataDetail"
+                <el-table height="410" style="width:100%" :data="balanceDataDetail"
                   highlight-current-row header-row-class-name="tableHeader" @selection-change="handleSelectionChange">
 
                   <el-table-column label="项目" prop="fee_name" align="center"></el-table-column>
