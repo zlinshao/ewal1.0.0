@@ -21,7 +21,7 @@
       <!--表格中部-->
       <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
 
-        <el-table height="780px" :data="contractList" @row-dblclick="handleGetDetail" header-row-class-name="tableHeader">
+        <el-table :height="this.mainListHeight(30) + 'px'" :data="contractList" @row-dblclick="handleGetDetail" header-row-class-name="tableHeader">
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
           <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
