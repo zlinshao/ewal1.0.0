@@ -72,7 +72,6 @@
             <el-button size="mini" type="danger" @click="handleSubmitExam">提交</el-button>
             <el-button size="mini" type="info" @click="handleCancelExam">取消</el-button>
           </div>
-
         </div>
       </div>
     </div>
@@ -299,7 +298,7 @@ export default {
           });
           setTimeout(function() {
             that.paper_visible = false;
-          },2000);
+          },300);
         }
       });
 

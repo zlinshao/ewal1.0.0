@@ -102,8 +102,7 @@
         return this.$store.state.todo.todo_list_current_selection;
       },
     },
-    watch: {
-    },
+    watch: {},
     data() {
       return {
         url: globalConfig.approval_sever,//待办接口
@@ -112,7 +111,7 @@
           title: '',
           page: 1,
           size: 10,//每页条数
-          assignee:289,
+          assignee: 289,
         },
         checked: 1,//选择哪个toolbar
         categoryKey: '',
@@ -248,14 +247,13 @@
           }
         }).then(res => {
           if (res) {
-            //this.getCurrentList();
+            this.getCurrentList();
           }
         });
       },
 
       //获取待办下方列表数据
-      getCurrentList(item = {}, index = 0, categoryKey, categoryChecked) {
-        this.todo_list_container = [];
+      async getCurrentList(item = {}, index = 0, categoryKey, categoryChecked) {
         if (Object.keys(item).length > 0) {
           this.params.page = 1;
         }
@@ -266,13 +264,18 @@
           processDefinitionKeyNotIn: this.noSearch
         };
 
-        this.$http.get(`${this.url}runtime/tasks`, params).then(res => {
+        this.checked = categoryChecked || (index + 1);
+        this.categoryChecked = this.checked;
+        this.todo_list_container = [];
+        await this.$http.get(`${this.url}runtime/tasks`, params).then(res => {
+          this.todo_list_container = [];
           for (let item of res.data) {
             let obj = {
               ...item
             };
             let itemKey = item.processDefinitionId.split(':')[0];//类型
             this.categoryKey = itemKey;
+            let variables = item.variables;
             switch (itemKey) {
               /*交接*/
               case 'HandoverOrder':
@@ -302,17 +305,21 @@
               /*补齐物品*/
               case 'Market-CompleteAsset':
                 break;
+              /*罚款缴纳*/
+              case 'HR-FinesPay':
+                obj.onClick = 'humanResource_finespayment';
+                break;
+              /*考勤*/
+              case 'HR-Attendance':
+                obj.name = _.find(variables, {name: 'title'})?.value || '-';
+                obj.onClick = 'humanResource_attence'
+                break;
               /*考试*/
               case 'HR-Exam':
-                let variables = item.variables;
-                let name = _.find(variables, {name: 'title'})?.value || '-';
-                let user = item.description;
-                let date = _.find(variables, {name: 'start_time'})?.value || '-';
-
                 obj.onClick = 'humanResource_answer_test_paper';
-                obj.name = name;
-                obj.user = user;
-                obj.date = date;
+                obj.name = _.find(variables, {name: 'title'})?.value || '-';
+                obj.user = item.description;
+                obj.date = _.find(variables, {name: 'start_time'})?.value || '-';
                 break;
               default:
                 break;
@@ -323,9 +330,6 @@
         });
 
 
-        this.checked = categoryChecked || (index + 1);
-        this.categoryChecked = this.checked;
-
         //console.log(item);
         //debugger
       },
@@ -335,7 +339,7 @@
       },
       handleCurrentChange(val) {
         this.params.page = val;
-        this.getCurrentList({}, 0, this.categoryKey);
+        this.getCurrentList({}, 0, this.categoryKey, this.categoryChecked);
       },
       trigger(val) {
         console.log(val);

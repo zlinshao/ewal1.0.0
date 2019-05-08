@@ -482,7 +482,6 @@
     methods: {
       handleIconClick(direction = 'up') {
         if (direction == 'up') {
-          debugger
           if(this.left_guide_index==0) {
             return;
           }
@@ -546,7 +545,6 @@
               start_time: this.myUtils.formatDate(this.new_train_form.train_time[0], 'yyyy-MM-dd hh:mm:ss'),
               end_time: this.myUtils.formatDate(this.new_train_form.train_time[1], 'yyyy-MM-dd hh:mm:ss'),
             };
-            debugger
             this.$http.post(`${this.url}meeting/meeting`, params).then(res => {
               this.$LjMessageEasy(res, () => {
                 this.new_train_dialog_visible = false;
