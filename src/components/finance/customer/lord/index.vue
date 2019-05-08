@@ -6,6 +6,7 @@
       :height="this.mainListHeight() + 'px'"
       highlight-current-row
       header-row-class-name="tableHeader"
+      :cell-class-name="tableCell"
       @cell-click="tableClickRow"
       style="width: 100%">
       <!--<el-table-column-->
@@ -168,6 +169,12 @@
 
     computed: {},
     methods: {
+      tableCell({row}) {
+        console.log(row);
+        if (row.freeze === 1) {
+          return 'light_cell';
+        }
+      },
       //回调
       callbackSuccess(res) {
         if (res.code === 200) {
@@ -310,7 +317,6 @@
 
   #theme_name.theme1 {
     #customer {
-
       .statusBar {
         span {
           display: block;
@@ -343,7 +349,9 @@
       #theme_name .form_item_container {
         padding: 0 0;
       }
-
+      .light_cell {
+        background-color: #D6D6D6 !important;
+      }
     }
   }
 </style>

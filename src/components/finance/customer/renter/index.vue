@@ -6,6 +6,7 @@
       :height="this.mainListHeight() + 'px'"
       highlight-current-row
       header-row-class-name="tableHeader"
+      :cell-class-name="tableCell"
       @cell-click="tableClickRow"
       style="width: 100%">
 
@@ -190,6 +191,12 @@
     },
     computed: {},
     methods: {
+      tableCell({row}) {
+        console.log(row);
+        if (row.freeze === 1) {
+          return 'light_cell';
+        }
+      },
       getCancelStatus(val) {
         this.action_status.details_visible = val;
       },
@@ -371,6 +378,9 @@
         padding: 0 0;
       }
 
+    }
+    .light_cell {
+      background-color: #D6D6D6 !important;
     }
   }
 </style>
