@@ -97,7 +97,7 @@
           <div class="dialog_main a_color borderNone">
             <el-tabs v-model="activeName">
               <el-tab-pane label="基本信息" name="first">
-                <el-form label-width="140px" size="small" style="width: 100%">
+                <el-form label-width="150px" size="small" style="width: 100%">
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="姓名">
