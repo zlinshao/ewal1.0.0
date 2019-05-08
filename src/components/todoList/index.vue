@@ -305,12 +305,14 @@
               /*补齐物品*/
               case 'Market-CompleteAsset':
                 break;
-                /*罚款缴纳*/
+              /*罚款缴纳*/
               case 'HR-FinesPay':
+                obj.onClick = 'humanResource_finespayment';
                 break;
               /*考勤*/
               case 'HR-Attendance':
                 obj.name = _.find(variables, {name: 'title'})?.value || '-';
+                obj.onClick = 'humanResource_attence'
                 break;
               /*考试*/
               case 'HR-Exam':
@@ -337,7 +339,7 @@
       },
       handleCurrentChange(val) {
         this.params.page = val;
-        this.getCurrentList({}, 0, this.categoryKey,this.categoryChecked);
+        this.getCurrentList({}, 0, this.categoryKey, this.categoryChecked);
       },
       trigger(val) {
         console.log(val);
