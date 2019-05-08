@@ -315,7 +315,7 @@
               /*考勤*/
               case 'HR-Attendance':
                 obj.name = _.find(variables, {name: 'title'})?.value || '-';
-                obj.onClick = 'humanResource_attence'
+                obj.onClick = 'humanResource_attence';
                 break;
               /*考试*/
               case 'HR-Exam':
