@@ -64,6 +64,9 @@
       var top = this.$refs['customService'].offsetTop;
       this.mainHeight.height = window.innerHeight - top + 'px';
       this.handleGetInfo();
+      this.init_work_chart();
+      this.init_tag_chart();
+      this.init_revisit_chart();
     },
     watch: {},
     computed: {},

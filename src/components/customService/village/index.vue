@@ -131,7 +131,7 @@
       <NewVillage :module="new_village_visible" :edit-info="edit_info" @close="handleCloseControlVillage"></NewVillage>
 
       <!--选择部门-->
-      <DepartOrgan :module="depart_visible" @close="handleGetDepart"></DepartOrgan>
+      <DepartOrgan :module="depart_visible" :organ-data="depart_data" @close="handleGetDepart"></DepartOrgan>
 
       <!--分配小区-->
       <lj-dialog
@@ -286,6 +286,9 @@
     components: { SearchHigh ,NewVillage ,DepartOrgan,LjDialog ,HouseFilter,MenuList,VillageContainer,LjUpload},
     data() {
       return {
+        depart_data: {
+          num: 0
+        },
         //合并小区
         merge_visible: false,
         merge_form: {
@@ -536,7 +539,6 @@
       },
       //点击获取房型图
       handleClickRow(row) {
-        console.log(row);
         this.outer_house_pic = row.pic_address || [];
       },
       //查看外网房源
@@ -589,7 +591,6 @@
       handleGetDetail(village) {
         this.$http.get(this.http_server + `v1.0/market/community/${village.id}`).then(res => {
           if (res.code === 200) {
-            console.log(res.data);
             this.current_village_detail = res.data;
             this.village_detail_visible = true;
             for (var key in this.village_detail_form) {
@@ -621,11 +622,11 @@
       //打开部门
       handleOpenDepart(type) {
         this.user_type = type;
+        this.depart_data.num = 1;
         this.depart_visible = true;
       },
       handleConfirmCommunity() {
         this.$http.post(this.http_server + 'v1.0/market/community/org',this.allot_village_params).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.$LjNotify('success',{
               title: '成功',
@@ -659,7 +660,7 @@
               this.getVillageList();
               break;
             case 'allot':
-              this.allot_village_params.org_id = id;
+              this.allot_village_params.org_id[0] = id[0];
               this.allot_village_params.depart_name = name;
               break;
           }
@@ -800,7 +801,6 @@
           area: this.village_params.area,
         };
         this.$http.get(this.http_server + '/v1.0/city/address',params).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.region_list = res.data;
           } else {
