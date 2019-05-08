@@ -48,12 +48,7 @@
       <el-table-column label="付款方式/月单价" prop="prices" align="center" show-overflow-tooltip min-width="230"></el-table-column>
       <el-table-column label="账号" prop="account_num" align="center" min-width="150"></el-table-column>
       <el-table-column label="签约人" prop="operator.name" align="center"></el-table-column>
-
-      <el-table-column label="状态" prop="" align="center" width="80">
-        <template slot-scope="scope">
-          <span>{{ scope.row.status === 1 ? '待处理' : '正常'}}</span>
-        </template>
-      </el-table-column>
+      <el-table-column label="状态" prop="status" align="center" width="80"></el-table-column>
     </el-table>
     <!--分页-->
     <footer class="flex-center bottomPage">

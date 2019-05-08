@@ -31,7 +31,9 @@
             <div class="house_photo">
               <div class="big_img">
                 <div class="sijiao"></div>
-                <img v-if="house_detail.house_detail && house_detail.house_detail.cover" :src="house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器" :data-src="house_detail.house_detail && house_detail.house_detail.cover">
+                <img v-if="house_detail.house_detail && house_detail.house_detail.cover"
+                     :src="house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器"
+                     :data-src="house_detail.house_detail && house_detail.house_detail.cover">
                 <img v-else src="./swipe6.jpg" data-magnify="" data-caption="图片查看器" data-src="./swipe6.jgp">
               </div>
               <div class="small_img">
@@ -122,7 +124,8 @@
                 <el-table-column label="状态" prop="status_name" align="center"></el-table-column>
                 <el-table-column label="跟进人" prop="follow_user" align="center"></el-table-column>
               </el-table>
-              <el-table :data="contract_list" height="250" v-show="current_house_type === 6 || current_house_type === 7">
+              <el-table :data="contract_list" height="250"
+                        v-show="current_house_type === 6 || current_house_type === 7">
                 <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
                 <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
                 <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
@@ -179,7 +182,8 @@
             <el-table-column label="带看人" align="center">
               <template slot-scope="scope">
                 <div v-if="scope.row.take_user">
-                  <span v-for="(item,idx) in scope.row.take_user">{{ item }}<a v-if="idx !== scope.row.take_user.length - 1">,</a></span>
+                  <span v-for="(item,idx) in scope.row.take_user">{{ item }}<a
+                    v-if="idx !== scope.row.take_user.length - 1">,</a></span>
                 </div>
                 <div v-else>暂无</div>
               </template>
@@ -187,7 +191,8 @@
             <el-table-column label="带看图片" align="center">
               <template slot-scope="scope">
                 <div class="flex" v-if="scope.row.album_photo && scope.row.album_photo.length > 0">
-                  <img :src="item.uri" data-magnify="" data-caption="图片查看器" :data-src="item.uri" style="width: 60px;height: 60px;margin-right: 5px" alt="" v-for="item in scope.row.album_photo">
+                  <img :src="item.uri" data-magnify="" data-caption="图片查看器" :data-src="item.uri"
+                       style="width: 60px;height: 60px;margin-right: 5px" alt="" v-for="item in scope.row.album_photo">
                 </div>
                 <div v-else>暂无</div>
               </template>
@@ -263,7 +268,8 @@
           </div>
           <div class="dialog_main">
             <div class="flex" v-if="pic_row && pic_row.album_photo && pic_row.album_photo.length > 0">
-              <img :src="item.uri" :data-src="item.uri" :key="item.id" data-magnify="" data-caption="图片查看器" style="width: 70px;height: 70px;margin: 0 5px" alt="" v-for="item in pic_row.album_photo">
+              <img :src="item.uri" :data-src="item.uri" :key="item.id" data-magnify="" data-caption="图片查看器"
+                   style="width: 70px;height: 70px;margin: 0 5px" alt="" v-for="item in pic_row.album_photo">
             </div>
           </div>
           <div class="dialog_footer">
@@ -282,7 +288,7 @@
   import OverviewInfo from '../components/overview-info.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import HouseFilter from '../components/house-filter.vue';
-  import { houseManagementSearch } from '../../../assets/js/allSearchData.js';
+  import {houseManagementSearch} from '../../../assets/js/allSearchData.js';
 
   export default {
     name: "index",
@@ -511,7 +517,7 @@
       },
       handleLookInfo() {
         console.log(this.current_house);
-        this.$http.get(this.market_server + 'v1.0/market/task/houseTask',{
+        this.$http.get(this.market_server + 'v1.0/market/task/houseTask', {
           house_id: 4,
           ...this.look_params
         }).then(res => {
@@ -520,7 +526,7 @@
             this.look_data = res.data.data;
             this.all_count = res.data.all_count;
             this.current_count = res.data.current_count;
-          }else {
+          } else {
             this.look_data = [];
             this.all_count = 0;
             this.current_count = 0;
@@ -546,8 +552,8 @@
           }
         })
       },
-      getContractList(house_id,contract_type) {
-        this.$http.get(this.market_server + 'v1.0/market/contract',{
+      getContractList(house_id, contract_type) {
+        this.$http.get(this.market_server + 'v1.0/market/contract', {
           ...this.table_params,
           contract_type,
           house_id
@@ -561,8 +567,8 @@
           }
         })
       },
-      getSettingPrice(id,url) {
-        this.$http.get(this.market_server + url,{
+      getSettingPrice(id, url) {
+        this.$http.get(this.market_server + url, {
           id,
           ...this.table_params
         }).then(res => {
@@ -576,21 +582,21 @@
         })
       },
       //家具补齐
-      handlePolishFurniture(id){
-          this.$http.get(this.market_server + 'v1.0/market/task/getTask',{
-            house_id: 4,
-            task_type: 10,
-            ...this.table_params
-          }).then(res => {
-            console.log(res);
-            if (res.code === 200) {
-              this.furniture_list = res.data.data;
-              this.table_params.count = res.data.count;
-            }else {
-              this.furniture_list = [];
-              this.table_params.count = 0;
-            }
-          })
+      handlePolishFurniture(id) {
+        this.$http.get(this.market_server + 'v1.0/market/task/getTask', {
+          house_id: 4,
+          task_type: 10,
+          ...this.table_params
+        }).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.furniture_list = res.data.data;
+            this.table_params.count = res.data.count;
+          } else {
+            this.furniture_list = [];
+            this.table_params.count = 0;
+          }
+        })
       },
       //切换列表信息
       handleCheckModule(item) {
@@ -604,18 +610,18 @@
             this.getDetailTableList(url);
             break;
           case 6:
-            this.getContractList(this.current_house.id,1);
+            this.getContractList(this.current_house.id, 1);
             break;
           case 7:
-            this.getContractList(this.current_house.id,2);
+            this.getContractList(this.current_house.id, 2);
             break;
           case 2:
             url = 'v1.0/market/house/getHouseChPrice';
-            this.getSettingPrice(this.current_house.id,url);
+            this.getSettingPrice(this.current_house.id, url);
             break;
           case 3:
             url = 'v1.0/market/house/getFollowRecord';
-            this.getSettingPrice(this.current_house.id,url);
+            this.getSettingPrice(this.current_house.id, url);
             break;
           case 4:
             this.handlePolishFurniture(this.current_house.id);
@@ -658,7 +664,7 @@
       },
       //确定选择房源
       handleGetHouseResource(house, type) {
-        if (house !=='close') {
+        if (house !== 'close') {
           if (house) {
             if (this.currentSelType === 'bottom') {
               this.set_price_form.bottom_name = '';
@@ -721,7 +727,8 @@
       },
       handleOpenCardDetail(item) {
         this.current_house = item;
-          this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
+        this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
+          console.log(res);
           if (res.code === 200) {
             this.house_detail = res.data;
             console.log(this.house_detail);
