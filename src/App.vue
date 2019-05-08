@@ -21,9 +21,9 @@
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
           </div>
-          <span style="position: relative" @click="more_visible = !more_visible">
+          <span style="position: relative" @mouseenter="more_visible = true">
             更多
-            <app-index-more :visible="more_visible"></app-index-more>
+            <app-index-more :visible.sync="more_visible"></app-index-more>
           </span>
         </div>
         <div>

@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100px;height: 161px" v-if="visible" id="app_index_more">
+  <div style="width: 100px;height: 161px" @mouseleave="app_more_visible = false" v-if="app_more_visible" id="app_index_more">
     <el-card>
       <div class="module-list">
         <div class="module-item"><span @click="routerLink('/discussPolitics')">新建会议</span></div>
@@ -13,12 +13,23 @@
 <script>
   export default {
     name: "AppIndexMore",
+    data() {
+      return {
+        app_more_visible:false,
+      }
+    },
     props: {
       visible: false,
     },
     watch: {
       visible(val) {
-        this.$emit('update:visible', val);
+        this.app_more_visible = val;
+      },
+      app_more_visible: {
+        handler(val,oldVal) {
+          this.$emit('update:visible', val);
+        },
+        //immediate: true
       },
     },
   }
