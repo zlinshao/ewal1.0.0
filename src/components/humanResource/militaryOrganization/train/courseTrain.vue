@@ -482,6 +482,7 @@
     methods: {
       handleIconClick(direction = 'up') {
         if (direction == 'up') {
+          debugger
           if(this.left_guide_index==0) {
             return;
           }
@@ -492,6 +493,9 @@
           } else {
             //处理换数据
             this.left_guide_index--;
+            if(this.left_guide_index%2==1) {
+              this.left_guide_index--;
+            }
             this.left_guide = this.left_guide_all_list.slice(this.left_guide_index, this.left_guide_index + 2);
             this.left_guide_choose = this.left_guide[0].id;
           }
