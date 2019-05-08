@@ -118,7 +118,7 @@
         immediate:true,
       },
       '$route.path': {
-        handler(val,oldVal) {
+        handler(val) {
           if(val=='/noticeQuestionnaire/notice') {
             this.chooseTab = 1;
           }else if(val=='/noticeQuestionnaire/questionnaire') {
