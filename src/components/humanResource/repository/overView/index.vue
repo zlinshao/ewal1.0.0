@@ -318,18 +318,9 @@
                            width="196" num="1" title="必填"></user-choose>
               <org-choose v-if="in_repository_form.department==='org'" v-model="in_repository_form.location" width="196"
                           num="1" title="必填"></org-choose>
-              <!--<el-select @change="handleInRepositorySelectionChange" v-model="in_repository_form.department" placeholder="存储类型" style="width: 120px">
-                <el-option :value="'user'" label="人员"></el-option>
-                <el-option :value="'org'" label="部门"></el-option>
-              </el-select>
-              <el-input style="width: 200px" v-model="in_repository_form.location" @focus="in_repository_form.department=='user'?staffModule=true:departModule=true"
-                         :placeholder="in_repository_placeholder"></el-input>-->
             </el-form-item>
             <el-form-item prop="purchasePerson" required label="采购人">
               <user-choose v-model="in_repository_form.purchasePerson" num="1" title="必填"></user-choose>
-              <!--<el-select v-model="in_repository_form.purchasePerson" placeholder="请输入采购人" style="width: 320px">
-                <el-option :value="1" label="采购人1"></el-option>
-              </el-select>-->
             </el-form-item>
 
             <el-form-item prop="purchase_time" required label="采购时间">
@@ -351,8 +342,6 @@
             <el-form-item prop="resource" required label="采购源">
               <dropdown-list ref="categoryDropdown5" :url="`${this.url}eam/category`" title="必填" code="5"
                              v-model="in_repository_form.resource"></dropdown-list>
-              <!--<el-input v-model="in_repository_form.resource" placeholder="请选择采购源" style="width: 320px">
-              </el-input>-->
               <span class="btn_add" @click="addCategory(5)">+</span>
             </el-form-item>
 
@@ -360,9 +349,6 @@
               <el-input v-model="in_repository_form.remark" placeholder="请输入备注" style="width: 320px">
               </el-input>
             </el-form-item>
-
-            <!--<el-form-item label="上传课件"></el-form-item>-->
-            <!--<el-form-item label="添加试卷"></el-form-item>-->
           </el-form>
         </div>
         <div class="dialog_footer">

@@ -35,7 +35,6 @@
             let url = _.find(item.variables,{name:'detail_request_url'})?.value||null;
             if(!url) return;
             this.$http.get(url).then(res=> {
-              debugger
               if(res.code.endsWith('0')) {
                 if(res.data && res.data.question_set) {
                   this.examId = res.data.id;//考试id  传到AnswerTestPaper组件中 用来提交考试
