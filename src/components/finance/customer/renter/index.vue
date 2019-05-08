@@ -255,6 +255,7 @@
                 return a.id - b.id
               }
             );
+            this.renterIds = [];
             for (let item of this.renterLists) {
               this.renterIds.push(item.id)
             }

@@ -205,6 +205,8 @@
               return a.id - b.id;
             });
             this.lordCount = res.data.count;
+            this.lordIds = [];
+
             for (let item of this.lordLists) {
               this.lordIds.push(item.id);
             }
