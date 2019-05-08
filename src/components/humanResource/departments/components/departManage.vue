@@ -1066,7 +1066,6 @@
         this.edit_post_visible = false;
       },
       handleEditPost(item) {
-        console.log(item);
         this.is_edit_post = true;
         this.edit_post_form.id = item.id;
         this.edit_post_form.name = item.name;
@@ -1076,7 +1075,6 @@
       },
       handleConfirmDelPost() {
         this.$http.delete(`organization/position/${this.del_post.id}`).then(res => {
-          console.log(res);
           if (res.code === '20040') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1133,7 +1131,6 @@
         this.staff_visible = false;
       },
       handleConfirmSendMsg() {
-        console.log(this.checkLists);
         var type = [];
         if (this.checkLists.includes(1)) {
           type.push('dimission');
@@ -1145,7 +1142,6 @@
           type.push('leave_proof_send');
         }
         this.$http.get(`staff/user/${this.currentStaff.id}/sendinfo`,{type}).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1161,7 +1157,6 @@
         })
       },
       handleChangePowerType(type) {
-        console.log(type);
         this.set_power.permission_type = type;
         this.self_power_params.type = type;
       },
@@ -1520,7 +1515,6 @@
       handleCancelAddStaff() {
         this.is_edit = false;
         this.$resetForm(this.interview_info_detail);
-        console.log(this.interview_info_detail);
         this.add_newStaff_visible = false;
       },
       //获取职位列表
@@ -1575,7 +1569,6 @@
       // 权限/禁用/修改/离职
       operateModule(val,item,type) {
         if (val === 'revise') {
-          console.log(item);
           this.currentStaff = item;
           this.is_edit = true;
           this.add_newStaff_visible = true;
@@ -1609,8 +1602,6 @@
           }
           this.interview_info_detail.phone = item.phone;
           this.interview_info_detail.gender = item.gender;
-
-          console.log(this.interview_info_detail);
         }
         if (val === 'disabled') {
           this.currentStaff = item;
@@ -1703,7 +1694,6 @@
       // 岗位管理
       // 当前点击
       tableClickRow(row) {
-        console.log(row);
         this.positionStaffList = row.users;
         let ids = this.chooseRowIds;
         ids.push(row.id);
