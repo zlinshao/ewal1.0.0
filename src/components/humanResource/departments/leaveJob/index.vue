@@ -23,7 +23,11 @@
         <el-table-column label="离职操作时间" prop="staff.is_on_job" align="center"></el-table-column>
         <el-table-column label="禁用操作时间" prop="staff.is_enable" align="center"></el-table-column>
         <el-table-column label="联系方式" prop="phone" align="center"></el-table-column>
-        <el-table-column label="离职类型" prop="staff.dismiss_reason.dismiss_type" align="center"></el-table-column>
+        <el-table-column label="离职类型" prop="staff.dismiss_reason.dismiss_type" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.staff && scope.row.staff.dismiss_reason && scope.row.staff.dismiss_reason.dismiss_type === 1 ? '主动离职' : scope.row.staff.dismiss_reason.dismiss_type === 2 ? '旷工离职' : scope.row.staff.dismiss_reason.dismiss_type === 3 ? '劝退' :'开除' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" align="center" min-width="200px"></el-table-column>
         <el-table-column label="离职交接单" align="center">
           <template slot-scope="scope">
@@ -222,7 +226,6 @@
       },
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {
-          console.log(res);
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })
