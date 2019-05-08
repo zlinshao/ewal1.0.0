@@ -504,6 +504,9 @@
                       <el-button type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
                     </template>
                   </el-table-column>
+                  <el-table-column label="操作" align="center">
+                    <el-button type="danger" size="mini">删除</el-button>
+                  </el-table-column>
                 </el-table>
               </div>
             </div>
@@ -568,11 +571,11 @@
                 <el-option v-for="item in position_level" :key="item.id" :value="item.id" :label="item.val"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="岗位标识" required>
-              <el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>
-            </el-form-item>
+            <!--<el-form-item label="岗位标识" required>-->
+              <!--<el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>-->
+            <!--</el-form-item>-->
             <el-form-item label="顶级岗位" required>
-              <div class="changeChoose flex-center" style="margin-top: 12px">
+              <div class="changeChoose flex-center" style="margin-top: 12px;text-align: left">
                 <el-radio v-model="add_position_form.is_top" :label="0">否</el-radio>
                 <el-radio v-model="add_position_form.is_top" :label="1">是</el-radio>
               </div>
@@ -1673,7 +1676,7 @@
             break;
           case 'positionManagement'://新增 职位
             this.position_size = {
-              width: 800 + 'px',
+              width: 1200 + 'px',
               height: 700 + 'px'
             };
             break;

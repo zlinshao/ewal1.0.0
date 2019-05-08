@@ -37,7 +37,7 @@
                 @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
               {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
           </span>
-          <span class="delete" style="color: #CF2E33" @click="action_status.delete_visible=true">删除</span>
+          <!--<span class="delete" style="color: #CF2E33" @click="action_status.delete_visible=true">删除</span>-->
         </span>
       </div>
 

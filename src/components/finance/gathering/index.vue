@@ -31,7 +31,7 @@
     <div class="action-bar changeChoose">
       <div class="action-bar-left" v-show="action_visible">
         <!--<el-checkbox>全选</el-checkbox>-->
-        <span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>
+        <!--<span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">
                     <span v-for="(item,index) in btn_group"
                           :key="index"
@@ -57,7 +57,7 @@
         header-row-class-name="tableHeader"
         style="width: 100%">
         <!--<el-table-column-->
-          <!--type="selection" width="40">-->
+        <!--type="selection" width="40">-->
         <!--</el-table-column>-->
         <el-table-column width="40">
           <template slot-scope="scope">
@@ -739,10 +739,13 @@
               </el-select>
             </el-form-item>
             <el-form-item label="科目">
-              <el-input v-model="out_form.subject_name" @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true" placeholder="请选择"></el-input>
+              <el-input v-model="out_form.subject_name"
+                        @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true"
+                        placeholder="请选择"></el-input>
             </el-form-item>
             <el-form-item label="开始时间">
-              <el-date-picker v-model="out_form.start_date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
+              <el-date-picker v-model="out_form.start_date" value-format="yyyy-MM-dd"
+                              placeholder="请选择"></el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间">
               <el-date-picker v-model="out_form.end_date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
@@ -756,7 +759,8 @@
       </div>
     </lj-dialog>
     <!--批量入账导入-->
-    <lj-dialog :visible="import_account_visible" @close="cancelImportAccount" :size="{width: 500 + 'px',height: 250 + 'px'}">
+    <lj-dialog :visible="import_account_visible" @close="cancelImportAccount"
+               :size="{width: 500 + 'px',height: 250 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>导入转账结果</h3>
@@ -1097,15 +1101,15 @@
         })
       },
       importOk() {
-        this.$http.post(globalConfig.temporary_server + 'batch_receivable/import',{doc_id: this.import_file}).then(res => {
+        this.$http.post(globalConfig.temporary_server + 'batch_receivable/import', {doc_id: this.import_file}).then(res => {
           if (res.code === 200) {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '成功',
               message: res.msg
             });
             this.cancelImportAccount();
           } else {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '失败',
               message: res.msg
             })
@@ -1113,19 +1117,19 @@
         })
       },
       outAccountCtrl() {
-        this.$http.get(globalConfig.temporary_server + 'batch_receivable/export',this.out_form).then(res => {
+        this.$http.get(globalConfig.temporary_server + 'batch_receivable/export', this.out_form).then(res => {
           if (res.code === 200) {
             window.location.href = res.data.url;
             this.cancelOutAccount();
           } else {
-            this.$LjNotify('warning',{
+            this.$LjNotify('warning', {
               title: '失败',
               message: res.msg
             })
           }
         })
       },
-      handleSuccessFile(file,name) {
+      handleSuccessFile(file, name) {
         if (file && file.length > 0) {
           this.import_file = file[0];
         }
@@ -1278,6 +1282,8 @@
 
       changeTabs(id) {
         this.chooseTab = id;
+        this.is_table_choose = '';
+        this.action_visible = false;
         switch (id) {
           case 1:
             this.params.is_deposit = '';//定金
@@ -1471,7 +1477,7 @@
             this.receiptData = res.data.data;
             this.count = res.data.count;
           } else {
-            this.tableData = [];
+            this.receiptData = [];
             this.count = 0;
           }
         })
@@ -1639,7 +1645,6 @@
         if (key === 'receipt') {//开收据
           this.receipt_visible = true;
           this.getReceiptDataLists();
-
         }
         if (key === 'register') {//登记收款
           this.register_size = 'mini';
