@@ -40,7 +40,7 @@
                 if(res.data && res.data.question_set) {
                   this.examId = res.data.id;//考试id  传到AnswerTestPaper组件中 用来提交考试
                   this.examList = res.data.question_set;
-                  /*this.exam_data.exam_id = res.data.id;//考试id  传到TestPaperExam组件中 用来提交考试
+                  /*this.exam_data.exam_iannouncementd = res.data.id;//考试id  传到TestPaperExam组件中 用来提交考试
                   this.exam_data.question_set = res.data.question_set;*/
                 }
 
