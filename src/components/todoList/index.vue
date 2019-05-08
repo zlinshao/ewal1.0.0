@@ -247,7 +247,7 @@
           }
         }).then(res => {
           if (res) {
-            //this.getCurrentList();
+            this.getCurrentList();
           }
         });
       },

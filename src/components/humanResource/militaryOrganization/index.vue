@@ -54,8 +54,8 @@
             </div>
           </div>
         </div>
-        <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
-          @change="handleChangeDate"></work-info>
+        <!--<work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
+          @change="handleChangeDate"></work-info>-->
       </div>
 
       <!--考勤模块-->
