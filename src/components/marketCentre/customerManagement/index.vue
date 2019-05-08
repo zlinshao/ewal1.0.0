@@ -444,14 +444,10 @@
           },
           //打开详情
           handleOpenDetail(row) {
-            if (this.params.is_black === 1) {
-              return false;
-            }
             this.customer_type = row.customer_type;
             if (row.customer_type === '房东') {
               console.log(row.customer_type);
-              // this.$http.get(this.market_server + `v1.0/market/customer/lord/${row.id}`).then(res => {
-              this.$http.get(this.market_server + `v1.0/market/customer/lord/1659`).then(res => {
+              this.$http.get(this.market_server + `v1.0/market/customer/lord/${row.id}`).then(res => {
                 console.log(res,'房东');
                 if (res.code === 200) {
                   this.current_detail = res.data;
@@ -463,8 +459,7 @@
             }
             if (row.customer_type === '租客') {
               console.log(row.customer_type);
-              this.$http.get(this.market_server + `v1.0/market/customer/renter/1310`).then(res => {
-              // this.$http.get(this.market_server + `v1.0/market/customer/renter/${row.id}`).then(res => {
+              this.$http.get(this.market_server + `v1.0/market/customer/renter/${row.id}`).then(res => {
                 console.log(res,'租客');
                 if (res.code === 200) {
                   this.current_detail = res.data;
