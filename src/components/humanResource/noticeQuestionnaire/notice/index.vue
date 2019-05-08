@@ -140,7 +140,7 @@
 
               <el-form-item
                 label="奖罚金额">
-                <el-input v-model="publish_notice_form.sanction_info[index].money" placeholder="请输入奖惩金额"
+                <el-input v-model.number="publish_notice_form.sanction_info[index].money" placeholder="请输入奖惩金额"
                           style="width: 320px">
                 </el-input>
               </el-form-item>
@@ -481,7 +481,7 @@
             {
               user_id: [],
               sanction_type: null,
-              money: '',
+              money: null,
               pay_type: null,
               pay_status: 1
             }
@@ -615,7 +615,7 @@
             {
               user_id: [],
               sanction_type: null,
-              money: '',
+              money: null,
               pay_type: null,
               pay_status: 1
             }
@@ -631,18 +631,28 @@
             let newForm = this.publish_notice_form;
             let isReturn = false;
             newForm.sanction_info = _.forEach(newForm.sanction_info, (o, index) => {
+              if(o.user_id.constructor===Array) {
+                o.user_id = o.user_id.join();
+              }
               if (index != 0) {
-                if (o.user_id && o.user_id.length > 0 && o.sanction_type && o.money) {
+                if (o.user_id && o.sanction_type && o.money) {
                   o.user_id = parseInt(o.user_id.join());
                 } else {
                   isReturn = true;
                 }
               } else {
-                if ((!o.user_id || !o.user_id?.length > 0) && !o.sanction_type && !o.money) {
-
-                } else {
+                debugger
+                if (!o.user_id && !o.sanction_type && !o.money) {
+                  delete newForm.sanction_info;
+                } else if(o.user_id && o.sanction_type && o.money){
+                }else {
                   isReturn = true;
                 }
+               /*if((o.user_id==null||o.user_id?.length==0)&&o.money==null&&o.sanction_type==null) {
+                 delete newForm.sanction_info;
+               } else if(o.user_id) {
+
+               }*/
               }
 
             });
@@ -652,6 +662,11 @@
                 msg: '奖惩信息有遗漏',
               });
               return;
+            }
+            if(newForm.sanction_info&&newForm.sanction_info.length==1) {
+              if(!newForm.sanction_info[0].user_id||!newForm.sanction_info[0].money) {
+                delete newForm.sanction_info;
+              }
             }
             let params = {
               ...newForm
