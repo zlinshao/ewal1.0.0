@@ -257,6 +257,9 @@
         if (Object.keys(item).length > 0) {
           this.params.page = 1;
         }
+        if(categoryChecked==1) {
+          categoryKey = '';
+        }
         let params = {
           ...this.params,
           //assignee:289,
