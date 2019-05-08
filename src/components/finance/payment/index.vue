@@ -728,7 +728,6 @@
     methods: {
       importOk() {
         this.$http.post(globalConfig.temporary_server + 'batch_payable/import',{doc_id: this.import_file}).then(res => {
-          console.log(res);
           if (res.code === 200) {
             this.$LjNotify('success',{
               title: '成功',
@@ -744,9 +743,7 @@
         })
       },
       outAccountCtrl() {
-        console.log(this.out_form);
         this.$http.get(globalConfig.temporary_server + 'batch_payable/export',this.out_form).then(res => {
-          console.log(res);
           if (res.code === 200) {
             window.location.href = res.data.url;
             this.cancelOutAccount();
@@ -759,7 +756,6 @@
         })
       },
       handleSuccessFile(file,name) {
-        console.log(file,name);
         if (file && file.length > 0) {
           this.import_file = file[0];
         }
@@ -834,7 +830,7 @@
         this.params.page = page;
         this.getPaymentList();
       },
-      callbackSuccess(res) {//请求回调
+      callbackSuccess(res,callback) {//请求回调
         if (res.code === 200) {
           this.$LjNotify('success', {
             title: '成功',
@@ -842,6 +838,7 @@
             subMessage: '',
           });
           this.getPaymentList();
+          callback();
         } else {
           this.$LjNotify('error', {
             title: '失败',
@@ -881,7 +878,6 @@
           this.ruleForm.subject_id = val.id;
           this.ruleForm.subject_name = val.title;
         }
-        console.log(val);
         if (this.which_subject === 'out_account') {
           this.out_form.subject_id = val.id;
           this.out_form.subject_name = val.title;
@@ -952,11 +948,9 @@
       handleSelectionChange(val) {// 回滚多选
         this.ra_ids = [];
         this.multipleSelection = val;
-        console.log(val);
         for (let item in val) {
           this.ra_ids.push(val[item].id);
         }
-        console.log(this.ra_ids);
       },
 
       handleOkRecall() {//确认回滚
@@ -982,16 +976,15 @@
         })
       },
       handleOkAdd() {//新增
-        console.log(this.ruleForm);
         this.$http.post(globalConfig.temporary_server + 'account_payable', this.ruleForm).then(res => {
-          this.callbackSuccess(res);
-          this.add_visible = false;
+          this.callbackSuccess(res,() => {
+            this.add_visible = false;
+          });
         }).catch(err => {
           console.log(err);
         })
       },
       handleOkDel(row) {//删除
-        console.log(row.id);
         this.$http.delete(globalConfig.temporary_server + 'account_payable/delete/' + row.id).then(res => {
           this.callbackSuccess(res);
           this.delete_visible = false;
@@ -1013,14 +1006,12 @@
           this.recall_visible = true;
           this.running_account_record = [];
           this.recall_visible = true;
-          console.log(row.running_account_record);
           for (let item in row.running_account_record) {
             this.running_account_record.push({
               id: item,
               desc: this.current_row.running_account_record[item]
             });
           }
-          console.log(this.running_account_record);
         }
         if (key === "pay_visible") {
           this.pay_visible = true;
@@ -1073,10 +1064,8 @@
         this.searchData = this.paySearchList;
       },
       hiddenModule(val) {// 确认搜索
-        console.log(val)
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
           for (let item of Object.keys(this.params)) {
             this.params[item] = val[item];
           }
