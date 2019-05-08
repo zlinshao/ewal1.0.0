@@ -1505,6 +1505,9 @@
           if (res.code === 200) {
             this.mark_data = res.data.data;
             this.mark_data_count = res.data.count;
+          } else {
+            this.mark_data = [];
+            this.mark_data_count = 0;
           }
         }).catch(err => {
           console.log(err);
