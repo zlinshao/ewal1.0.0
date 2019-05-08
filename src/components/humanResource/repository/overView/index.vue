@@ -325,11 +325,20 @@
               <el-input style="width: 200px" v-model="in_repository_form.location" @focus="in_repository_form.department=='user'?staffModule=true:departModule=true"
                          :placeholder="in_repository_placeholder"></el-input>-->
             </el-form-item>
-            <el-form-item prop="purchasePerson" label="采购人">
+            <el-form-item prop="purchasePerson" required label="采购人">
               <user-choose v-model="in_repository_form.purchasePerson" num="1" title="必填"></user-choose>
               <!--<el-select v-model="in_repository_form.purchasePerson" placeholder="请输入采购人" style="width: 320px">
                 <el-option :value="1" label="采购人1"></el-option>
               </el-select>-->
+            </el-form-item>
+
+            <el-form-item prop="purchase_time" required label="采购时间">
+              <el-date-picker
+                style="width: 320px"
+                v-model="in_repository_form.purchase_time"
+                type="datetime"
+                placeholder="必选">
+              </el-date-picker>
             </el-form-item>
             <el-form-item prop="price" label="单价">
               <el-input v-model.number="in_repository_form.price" placeholder="必填" style="width: 320px">
@@ -778,22 +787,25 @@
               //{min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
             ],
             counts: [
-              {type: 'number', required: true, message: '请输入数量且只能为数字', trigger: 'blur'},
+              {type: 'number', required: true, message: '请输入数量且只能为数字', trigger: ['change','blur']},
             ],
             location: [
-              {required: true, message: '不能为空', trigger: 'change'},
+              {required: true, message: '不能为空', trigger: ['change','blur']},
             ],
             purchasePerson: [
-              {required: true, message: '不能为空', trigger: 'change'},
+              {required: true, message: '不能为空', trigger: ['change','blur']},
+            ],
+            purchase_time: [
+              {required: true, message: '不能为空', trigger: ['change','blur']},
             ],
             price: [
-              {type: 'number', required: true, message: '请输入价格且只能为数字', trigger: 'blur'},
+              {type: 'number', required: true, message: '请输入价格且只能为数字', trigger: ['change','blur']},
             ],
             totalPrice: [
-              {type: 'number', required: true, message: '请输入价格且只能为数字', trigger: 'blur'},
+              {type: 'number', required: true, message: '请输入价格且只能为数字', trigger: ['change','blur']},
             ],
             resource: [
-              {type: 'number', required: true, message: '请输入价格采购源', trigger: 'blur'},
+              {type: 'number', required: true, message: '请输入价格采购源', trigger: ['change','blur']},
             ],
           },
           addGoods: {
@@ -1041,6 +1053,7 @@
           department: 'user',//部门
           location: '',
           purchasePerson: '',
+          purchase_time:'',//采购时间
           price: '',//单价
           totalPrice: '',//总价
           resource: '',//采购源
@@ -1148,6 +1161,7 @@
               total_price: this.in_repository_form.totalPrice,
               source_id: this.in_repository_form.resource,
               purchaser_id: this.in_repository_form.purchasePerson.join(),
+              purchase_time: this.in_repository_form.purchase_time,
               location_type: this.in_repository_form.department,
               location_id: this.in_repository_form.location,
               remark: this.in_repository_form.remark,
@@ -1160,6 +1174,18 @@
                   message: '添加成功',
                 });
                 this.in_repository = false;
+                this.in_repository_form={//入库form表单
+                  goods: '',
+                    counts: '',//数量
+                    department: 'user',//部门
+                    location: '',
+                    purchasePerson: '',
+                    purchase_time:'',//采购时间
+                    price: '',//单价
+                    totalPrice: '',//总价
+                    resource: '',//采购源
+                    remark: '',//备注
+                };
                 this.getRepositoryList();
               }
               else {
