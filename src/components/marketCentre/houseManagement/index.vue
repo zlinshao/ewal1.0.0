@@ -31,6 +31,9 @@
             <div class="house_photo">
               <div class="big_img">
                 <div class="sijiao"></div>
+                <div class="history_pic" @click="history_pic_visible = true">
+                  <a></a>
+                </div>
                 <img v-if="house_detail.house_detail && house_detail.house_detail.cover"
                      :src="house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器"
                      :data-src="house_detail.house_detail && house_detail.house_detail.cover">
@@ -277,6 +280,35 @@
           </div>
         </div>
       </lj-dialog>
+
+      <!--历史相册-->
+      <lj-dialog
+        :visible="history_pic_visible"
+        :size="{width: 800 + 'px',height: 600 + 'px'}"
+        @close="history_pic_visible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>历史相册</h3>
+          </div>
+          <div class="dialog_main" v-if="house_detail.house_album_data && house_detail.house_album_data.length > 0">
+            <div v-for="item in house_detail.house_album_data">
+              <p class="flex">
+                <a :style="pic_style">{{ item.created_at }}</a>
+                <a :style="pic_style">上传人：{{ item.user_name }}</a>
+                <a :style="pic_style">部门：{{ item.department_name }}</a>
+                <a>岗位：{{ item.position_name }}</a>
+              </p>
+              <div class="flex" v-if="item.album_photo && item.album_photo.length > 0">
+                <img v-for="tmp in item.album_photo" alt="" :key="tmp.id" data-magnify="" data-caption="图片查看器"
+                     :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;border-radius: 5px;margin: 15px 15px 15px 0" v-if="tmp.uri">
+              </div>
+              <div v-else>暂无图片</div>
+            </div>
+          </div>
+          <div class="dialog_main" v-else>暂无数据</div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
@@ -295,6 +327,10 @@
     components: {MarketMenuList, searchHigh, HouseCard, OverviewInfo, LjDialog, HouseFilter},
     data() {
       return {
+        history_pic_visible: false,
+        pic_style: {
+          marginRight: 15 + 'px'
+        },
         houseManagementSearch,
         //房屋详情
         house_detail: '',
@@ -727,7 +763,8 @@
       },
       handleOpenCardDetail(item) {
         this.current_house = item;
-        this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
+        // this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
+        this.$http.get(this.market_server + `/v1.0/market/house/detail/46065`).then(res => {
           console.log(res);
           if (res.code === 200) {
             this.house_detail = res.data;
@@ -815,6 +852,11 @@
             }
             .house_photo {
               .big_img {
+                .history_pic {
+                  a {
+                    @include houseManagementImg('history_pic.png','theme1');
+                  }
+                }
                 .sijiao {
                   @include houseManagementImg('sijiao.png', 'theme1');
                 }

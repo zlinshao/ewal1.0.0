@@ -217,11 +217,28 @@
     #theme_name #houseManagement > div .house_info .base_info .house_photo > div {
       width: 100%; }
     #theme_name #houseManagement > div .house_info .base_info .house_photo .big_img {
-      position: relative; }
+      position: relative;
+      overflow: hidden; }
       #theme_name #houseManagement > div .house_info .base_info .house_photo .big_img > img {
         width: 100%;
         min-width: 520px;
         max-height: 230px; }
+      #theme_name #houseManagement > div .house_info .base_info .house_photo .big_img .history_pic {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        left: 50%;
+        top: -20px;
+        text-align: center;
+        background-color: #cf2e33;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        cursor: pointer; }
+        #theme_name #houseManagement > div .house_info .base_info .house_photo .big_img .history_pic a {
+          display: inline-block;
+          width: 25px;
+          height: 20px;
+          margin-top: 25px; }
       #theme_name #houseManagement > div .house_info .base_info .house_photo .big_img .sijiao {
         width: 101%;
         height: 101%;
@@ -359,3 +376,5 @@
     background-color: #dfdfdf; }
   #theme_name.theme1 #houseManagement .header span.title {
     font-family: 'jingDianXingShu'; }
+
+/*# sourceMappingURL=index.css.map */
