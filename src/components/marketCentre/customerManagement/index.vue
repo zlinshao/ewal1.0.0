@@ -38,8 +38,8 @@
             <el-table-column prop="sign_org" label="所属部门" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button type="warning" size="mini" plain @click="handleGoMoveOutBlack(scope.row)" v-if="params.is_black !== 0">移出黑名单</el-button>
-                <el-button type="danger" size="mini" @click="handleGoMoveBlack(scope.row)" v-else>移至黑名单</el-button>
+                <el-button type="warning" id="active-warning" size="mini" plain @click="handleGoMoveOutBlack(scope.row)" v-if="params.is_black !== 0">移出黑名单</el-button>
+                <el-button type="danger" id="active-danger" size="mini" @click="handleGoMoveBlack(scope.row)" v-else>移至黑名单</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -358,7 +358,12 @@
 
               highVisible: false,
               show_market: false,
-              searchData: {},
+              searchData: {
+                status: 'customerManagement',
+                keywords: 'search',
+                placeholder: '地址/合同编号/手机号/客户姓名',
+                data: []
+              },
 
               market_server: globalConfig.market_server,
               selects: [
@@ -375,7 +380,8 @@
                 address: '',
                 contract_number: '',
                 phone: '',
-                is_black: 0
+                is_black: 0,
+                search: ''
               },
               customerList: [],
               customerCount: 0,
@@ -429,7 +435,11 @@
           handleCloseMenu() {
             this.show_market = false;
           },
-          handleCloseHigh() {
+          handleCloseHigh(val) {
+            if (val !== 'close') {
+              this.params.search = val.search;
+              this.getCustomerList();
+            }
             this.highVisible = false;
           },
           //打开详情
@@ -512,10 +522,13 @@
             })
           },
           //高级
-          handleOpenHigh() {},
+          handleOpenHigh() {
+            this.highVisible = true;
+          },
           //tab切换
           changeTabs(id) {
             this.chooseTab = id;
+            this.params.search = '';
             if (id === 4) {
               this.params.is_black = 1;
             } else {
