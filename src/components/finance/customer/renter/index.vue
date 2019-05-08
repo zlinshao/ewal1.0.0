@@ -192,7 +192,6 @@
     computed: {},
     methods: {
       tableCell({row}) {
-        console.log(row);
         if (row.freeze === 1) {
           return 'light_cell';
         }
