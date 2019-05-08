@@ -13,22 +13,22 @@
           <div class="finespayment_dialog_form">
             <div class="finespayment_dialog_form_row">
               <label class="finespayment_dialog_form_label">任务时间</label>
-              <span>2019-02-23</span>
+              <span>{{pay_form.date}}</span>
             </div>
             <div class="finespayment_dialog_form_row">
               <label class="finespayment_dialog_form_label">惩罚事件</label>
-              <span>攻城时未穿工作服，丢失大城池</span>
+              <span>{{pay_form.tip}}</span>
             </div>
             <div class="finespayment_dialog_form_row">
               <label class="finespayment_dialog_form_label">罚款金额</label>
-              <span>罚款500元</span>
+              <span>罚款{{pay_form.money}}</span>
             </div>
             <div class="finespayment_dialog_form_row">
               <label class="finespayment_dialog_form_label">缴纳方式</label>
               <span class="finespayment_dialog_form_checkbox">
-                <el-select value="现金缴纳">
-                  <el-option value='1' label="现金缴纳"></el-option>
-                </el-select>
+                <dropdown-list v-model="pay_form.pay_type"
+                               width="110" size="mini" :clearable="false"
+                               :json-arr="DROPDOWN_CONSTANT.PAYMENT_WAY"></dropdown-list>
               </span>
             </div>
           </div>
@@ -43,23 +43,47 @@
 </template>
 
 <script>
+  import {DROPDOWN_CONSTANT} from "../../../../assets/js/allConstantData";
+  import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import ljDialog from '../../../common/lj-dialog';
 
   export default {
     name: "finespaymentDialog",
     components: {
       ljDialog,
+      DropdownList,
     },
     computed: {
       humanResource_finespayment_visible() {
         return this.$store.state.todo.humanResource_finespayment_visible;
-      }
+      },
+      todo_list_current_selection() {
+        return this.$store.state.todo.todo_list_current_selection;
+      },
     },
     watch: {
-     
+      humanResource_finespayment_visible: {
+        handler(val, oldVal) {
+          if (val) {
+            debugger
+            this.pay_form = {
+              ...this.todo_list_current_selection,
+              pay_type:1
+            }
+          }
+        }
+      },
     },
     data() {
       return {
+        DROPDOWN_CONSTANT,
+        pay_form: {
+          tip: '',
+          date: '',
+          money: 0,
+          pay_type: 1,
+        },
+
       }
     },
     methods: {
