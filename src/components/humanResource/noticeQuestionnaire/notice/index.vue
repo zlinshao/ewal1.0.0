@@ -624,6 +624,8 @@
         };
       },
 
+
+
       //发布公告
       publishNotice() {
         this.$refs['publishNoticeForm'].validate(valid => {
@@ -641,7 +643,6 @@
                   isReturn = true;
                 }
               } else {
-                debugger
                 if (!o.user_id && !o.sanction_type && !o.money) {
                   delete newForm.sanction_info;
                 } else if(o.user_id && o.sanction_type && o.money){
@@ -702,6 +703,17 @@
             _.forEach(mData.sanction_info, (o) => {
               o.user_id = [o.user_id];
             });
+            if(!mData.sanction_info || mData.sanction_info.length==0) {
+              mData.sanction_info =  [
+                {
+                  user_id: [],
+                  sanction_type: null,
+                  money: '',
+                  pay_type: null,
+                  pay_status: 1
+                }
+              ];
+            }
             /*mData.sanction_info = _.forEach(mData.sanction_info,(o)=> {
               o.user_id = [parseInt(o.user_id)];
             });*/
@@ -720,6 +732,51 @@
                 o.user_id = parseInt(o.user_id.join());
               }
             });*/
+            _.forEach(newForm.sanction_info,(o)=> {
+              if(o.user_id.constructor===Array) {
+                o.user_id = o.user_id.join();
+              }
+            });
+
+            let isReturn = false;
+            newForm.sanction_info = _.forEach(newForm.sanction_info, (o, index) => {
+              if(o.user_id.constructor===Array) {
+                o.user_id = o.user_id.join();
+              }
+              if (index != 0) {
+                if (o.user_id && o.sanction_type && o.money) {
+                  o.user_id = parseInt(o.user_id.join());
+                } else {
+                  isReturn = true;
+                }
+              } else {
+                if (!o.user_id && !o.sanction_type && !o.money) {
+                  delete newForm.sanction_info;
+                } else if(o.user_id && o.sanction_type && o.money){
+                }else {
+                  isReturn = true;
+                }
+                /*if((o.user_id==null||o.user_id?.length==0)&&o.money==null&&o.sanction_type==null) {
+                  delete newForm.sanction_info;
+                } else if(o.user_id) {
+
+                }*/
+              }
+
+            });
+            if (isReturn) {//没填全 return
+              this.$LjMessage('warning', {
+                title: '警告',
+                msg: '奖惩信息有遗漏',
+              });
+              return;
+            }
+            if(newForm.sanction_info&&newForm.sanction_info.length==1) {
+              if(!newForm.sanction_info[0].user_id||!newForm.sanction_info[0].money) {
+                delete newForm.sanction_info;
+              }
+            }
+
             let params = {
               ...newForm
             };
