@@ -244,6 +244,17 @@
       padding: 10px 0;
       background-color: #ffffff;
       border: 1px solid #686874; }
+    #theme_name #departManage .departPosition .orgManage > div div.ctl, #theme_name #departManage .positionContent .orgManage > div div.ctl {
+      width: 100px;
+      height: 20px;
+      text-align: center;
+      position: relative;
+      right: 25px;
+      margin-top: 10px; }
+      #theme_name #departManage .departPosition .orgManage > div div.ctl span, #theme_name #departManage .positionContent .orgManage > div div.ctl span {
+        font-size: 14px; }
+        #theme_name #departManage .departPosition .orgManage > div div.ctl span:hover, #theme_name #departManage .positionContent .orgManage > div div.ctl span:hover {
+          color: #cf2e33; }
   #theme_name #departManage .depart_visible {
     width: 88%;
     height: 100%;
@@ -307,3 +318,5 @@
   #theme_name #departManage .footerBtn.right {
     justify-content: flex-end;
     padding-right: 60px; }
+
+/*# sourceMappingURL=departManage.css.map */

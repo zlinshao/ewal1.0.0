@@ -80,6 +80,20 @@
             background-color: $colorFFF;
             border: 1px solid $color874;
           }
+          div.ctl {
+            width: 100px;
+            height: 20px;
+            text-align: center;
+            position: relative;
+            right: 25px;
+            margin-top: 10px;
+            span {
+              font-size: 14px;
+              &:hover {
+                color: $colorE33;
+              }
+            }
+          }
         }
       }
     }

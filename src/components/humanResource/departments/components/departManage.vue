@@ -30,12 +30,16 @@
         </div>
         <div class="staffManage items-center" v-else><span>暂无员工信息</span></div>
       </div>
-      <div class="scroll_bar" v-if="tabsManage === 'position'">
+      <div class="scroll_bar" v-if="tabsManage === 'position'" @mouseleave="is_active_ctl = ''">
         <div class="orgManage" v-if="dutyList.length > 0">
-          <div v-for="item in dutyList">
+          <div v-for="item in dutyList" @mouseover="handleToggleCtl(item)">
             <p @click="operateModule('positionManagement',item)">
               <span class="writingMode">{{ item.name }}</span>
             </p>
+            <div class="ctl" v-show="is_active_ctl === item.id">
+              <span @click="handleEditPost(item)">编辑</span>
+              <span @click="handleDelPost(item)">删除</span>
+            </div>
           </div>
         </div>
         <div v-else class="orgManage items-center"><span>暂无职位信息</span></div>
@@ -108,16 +112,6 @@
                   </el-col>
                 </el-row>
                 <el-row>
-                  <!--<el-col :span="8">-->
-                    <!--<el-form-item label="婚姻状况">-->
-                      <!--<div class="changeChoose" style="margin-top: 8px">-->
-                        <!--<el-radio-group v-model="interview_info_detail.marital_status" placeholder="请选择">-->
-                          <!--<el-radio label="0">已婚</el-radio>-->
-                          <!--<el-radio label="1">未婚</el-radio>-->
-                        <!--</el-radio-group>-->
-                      <!--</div>-->
-                    <!--</el-form-item>-->
-                  <!--</el-col>-->
                   <el-col :span="8">
                     <el-form-item label="婚育情况">
                       <el-select v-model="interview_info_detail.marital_fertility_status" placeholder="请输入">
@@ -697,6 +691,49 @@
 
     <!--选部门-->
     <DepartOrgan :module="departOrgan_visible" @close="handleGetDepart"></DepartOrgan>
+
+    <!--确定删除岗位-->
+    <lj-dialog :visible="del_post_visible" :size="{width: 400 + 'px',height: 250 + 'px'}" @close="del_post_visible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确定</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定删除该岗位吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" @click="handleConfirmDelPost">确定</el-button>
+          <el-button type="info" @click="del_post_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--修改岗位-->
+    <lj-dialog
+      :visible="edit_post_visible"
+      :size="{width: 500 + 'px',height: 400 + 'px'}"
+      @close="handleCancelEditPost"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>修改职位</h3>
+        </div>
+        <div class="dialog_main">
+          <el-form label-width="80px" class="borderNone">
+            <el-form-item label="职位名称">
+              <el-input v-model="edit_post_form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="所属部门">
+              <el-input v-model="edit_post_form.org_name" readonly @focus="departOrgan_visible = true"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" @click="handleConfirmEdit">确定</el-button>
+          <el-button type="info" @click="handleCancelEditPost">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -943,6 +980,18 @@
           permission_field_id: '',
         },
         current_field: '', //点击查看当前权限
+
+        is_active_ctl: '',
+        del_post: '',
+        del_post_visible: false,
+        edit_post_visible: false,
+        edit_post_form: {
+          id: '',
+          name: '',
+          org_id: [],
+          org_name: '',
+        },
+        is_edit_post: false,
       }
     },
     mounted() {
@@ -994,9 +1043,64 @@
       }
     },
     methods: {
+      handleConfirmEdit() {
+        this.$http.put(`organization/duty/${this.edit_post_form.id}`,this.edit_post_form).then(res => {
+          if (res.code === '20030') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.handleCancelEditPost();
+            this.getDutyList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleCancelEditPost() {
+        this.$resetForm(this.edit_post_form);
+        this.is_edit_post = false;
+        this.edit_post_visible = false;
+      },
+      handleEditPost(item) {
+        console.log(item);
+        this.is_edit_post = true;
+        this.edit_post_form.id = item.id;
+        this.edit_post_form.name = item.name;
+        this.edit_post_form.org_id[0] = item.org && item.org.id;
+        this.edit_post_form.org_name = item.org && item.org.name;
+        this.edit_post_visible = true;
+      },
+      handleConfirmDelPost() {
+        this.$http.delete(`organization/position/${this.del_post.id}`).then(res => {
+          console.log(res);
+          if (res.code === '20040') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.del_post_visible = false;
+            this.getDutyList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            });
+          }
+        })
+      },
+      handleDelPost(item) {
+        this.del_post = item;
+        this.del_post_visible = true;
+      },
+      handleToggleCtl(item) {
+        this.is_active_ctl = item.id;
+      },
       //身份验证
       handleGetStaffInfo() {
-        console.log(this.interview_info_detail.id_num);
         this.$http.post('staff/user/check',{
           id_num: this.interview_info_detail.id_num
         }).then(res => {
@@ -1011,8 +1115,13 @@
       },
       handleGetDepart(id,name) {
         if (id !== 'close') {
-          this.interview_info_detail.depart = name;
-          this.interview_info_detail.org_id = id;
+          if (this.is_edit_post) {
+            this.edit_post_form.org_name = name;
+            this.edit_post_form.org_id = id;
+          } else {
+            this.interview_info_detail.depart = name;
+            this.interview_info_detail.org_id = id;
+          }
         }
         this.departOrgan_visible = false;
       },
