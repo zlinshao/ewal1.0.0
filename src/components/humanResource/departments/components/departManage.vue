@@ -578,7 +578,7 @@
               <el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="顶级岗位">
-              <div class="changeChoose flex-center" style="margin-top: 12px;text-align: left">
+              <div class="changeChoose flex" style="margin-top: 12px">
                 <el-radio v-model="add_position_form.is_top" :label="0">否</el-radio>
                 <el-radio v-model="add_position_form.is_top" :label="1">是</el-radio>
               </div>
