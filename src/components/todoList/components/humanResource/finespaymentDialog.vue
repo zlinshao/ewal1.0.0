@@ -2,6 +2,7 @@
   <div id="finespayment_dialog" style="position: absolute">
     <lj-dialog
       :visible="humanResource_finespayment_visible"
+      @close="finespaymentHandler"
       :size="{width: 656 + 'px',height: 432 + 'px'}"
     >
       <div id="finespayment" class="dialog_container">
@@ -33,8 +34,8 @@
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger">确定</el-button>
-          <el-button size="small" type="info">取消</el-button>
+          <el-button size="small" type="danger" @click="finespaymentHandler">确定</el-button>
+          <el-button size="small" type="info" @click="finespaymentHandler">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -62,6 +63,9 @@
       }
     },
     methods: {
+      finespaymentHandler() {
+        this.$store.dispatch('change_humanResource_finespayment_visible');
+      },
     }
   }
 </script>

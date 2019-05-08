@@ -3,6 +3,7 @@
     
     <lj-dialog
       :visible="humanResource_attence_visible"
+      @close="attenceHandler"
       :size="{width: 1422 + 'px',height: 700 + 'px'}"
     >
       <div class="dialog_container">
@@ -179,7 +180,10 @@
       },
       submitAttence: function() {
         this.submit_attence_visible = true
-      }
+      },
+      attenceHandler() {
+        this.$store.dispatch('change_humanResource_attence_visible');
+      },
     }
   }
 </script>
