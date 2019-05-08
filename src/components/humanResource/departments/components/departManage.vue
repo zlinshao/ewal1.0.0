@@ -505,7 +505,10 @@
                     </template>
                   </el-table-column>
                   <el-table-column label="操作" align="center">
-                    <el-button type="danger" size="mini">删除</el-button>
+                    <template slot-scope="scope">
+                      <el-button id="active-success" type="danger" size="mini" @click="handleEditPosition(scope.row)">编辑</el-button>
+                      <el-button id="active-danger" type="danger" size="mini" @click="handleDelPosition(scope.row)">删除</el-button>
+                    </template>
                   </el-table-column>
                 </el-table>
               </div>
@@ -556,34 +559,34 @@
     <lj-dialog :visible="addPostVisible" :size="{width: 550 + 'px',height:750 + 'px'}" @close="handleCancelAdd">
       <div class="dialog_container">
         <div class="items-bet dialog_header">
-          <h3>新建岗位</h3>
+          <h3>{{ is_edit_position ? '编辑岗位' : '新建岗位' }}</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
           <el-form :model="add_position_form" ref="postForm" label-width="120px" class="depart_visible">
-            <el-form-item label="岗位名称" required>
+            <el-form-item label="岗位名称">
               <el-input v-model="add_position_form.name" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="岗位描述" required>
+            <el-form-item label="岗位描述">
               <el-input v-model="add_position_form.description" type="textarea" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item label="岗位职级" required>
+            <el-form-item label="岗位职级">
               <el-select v-model="add_position_form.level">
                 <el-option v-for="item in position_level" :key="item.id" :value="item.id" :label="item.val"></el-option>
               </el-select>
             </el-form-item>
-            <!--<el-form-item label="岗位标识" required>-->
-              <!--<el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>-->
-            <!--</el-form-item>-->
-            <el-form-item label="顶级岗位" required>
+            <el-form-item label="岗位标识" v-if="!is_edit_position">
+              <el-input v-model="add_position_form.sign" placeholder="请输入"></el-input>
+            </el-form-item>
+            <el-form-item label="顶级岗位">
               <div class="changeChoose flex-center" style="margin-top: 12px;text-align: left">
                 <el-radio v-model="add_position_form.is_top" :label="0">否</el-radio>
                 <el-radio v-model="add_position_form.is_top" :label="1">是</el-radio>
               </div>
             </el-form-item>
-            <el-form-item label="岗位排序" required>
+            <el-form-item label="岗位排序">
               <el-input v-model="add_position_form.order" type="number" placeholder="值越小，越靠前"></el-input>
             </el-form-item>
-            <el-form-item label="所属部门" required>
+            <el-form-item label="所属部门">
               <div class="items-center iconInput">
                 <el-input v-model="add_position_form.depart" readonly></el-input>
                 <p class="icons organization"></p>
@@ -695,14 +698,14 @@
     <!--选部门-->
     <DepartOrgan :module="departOrgan_visible" @close="handleGetDepart"></DepartOrgan>
 
-    <!--确定删除岗位-->
+    <!--确定删除职位-->
     <lj-dialog :visible="del_post_visible" :size="{width: 400 + 'px',height: 250 + 'px'}" @close="del_post_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>确定</h3>
         </div>
         <div class="dialog_main">
-          <div class="unUse-txt">确定删除该岗位吗？</div>
+          <div class="unUse-txt">确定删除该职位吗？</div>
         </div>
         <div class="dialog_footer">
           <el-button type="danger" @click="handleConfirmDelPost">确定</el-button>
@@ -734,6 +737,22 @@
         <div class="dialog_footer">
           <el-button type="danger" @click="handleConfirmEdit">确定</el-button>
           <el-button type="info" @click="handleCancelEditPost">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--确定删除岗位-->
+    <lj-dialog :visible="is_del_position" :size="{width: 400 + 'px',height: 250 + 'px'}" @close="is_del_position = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确定</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定删除该岗位吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" @click="handleConfirmDelPosition">确定</el-button>
+          <el-button type="info" @click="is_del_position = false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -937,8 +956,11 @@
           description: '',
           sign: '',
           is_top: '',
-          order: ''
+          order: '',
+          level: '',
+          id: ''
         },
+        is_edit_position: false,
 
         //禁用
         disable_visible: false,
@@ -995,11 +1017,10 @@
           org_name: '',
         },
         is_edit_post: false,
+
+        is_del_position: false,
+        is_del_position_row: '',
       }
-    },
-    mounted() {
-    },
-    activated() {
     },
     watch: {
       checkInfo: {
@@ -1046,6 +1067,42 @@
       }
     },
     methods: {
+      handleEditPosition(row) {
+        this.is_edit_position = true;
+        this.add_position_form.id = row.id;
+        this.add_position_form.level = row.level;
+        this.add_position_form.name = row.name;
+        this.add_position_form.order = row.order;
+        this.add_position_form.is_top = row.is_top;
+        this.add_position_form.sign = row.sign;
+        this.add_position_form.description = row.description;
+        this.add_position_form.depart = this.departInfo.name || '';
+        this.add_position_form.org_id.push(this.departInfo.id);
+        this.add_position_form.duty_id.push(this.currentDutyInfo.id);
+        this.add_position_form.duty_name = this.currentDutyInfo.name || '';
+        this.addPostVisible = true;
+      },
+      handleConfirmDelPosition() {
+        this.$http.delete(`organization/position/${this.is_del_position_row.id}`).then(res => {
+          if (res.code === '20040') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.is_del_position = false;
+            this.getPositionList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            });
+          }
+        })
+      },
+      handleDelPosition(row) {
+        this.is_del_position_row = row;
+        this.is_del_position = true;
+      },
       handleConfirmEdit() {
         this.$http.put(`organization/duty/${this.edit_post_form.id}`,this.edit_post_form).then(res => {
           if (res.code === '20030') {
@@ -1484,21 +1541,29 @@
         this.interview_info_detail.work_history.pop()
       },
       handleCancelAdd() {
-        this.add_position_form = {
-          name: '',
-          duty_id: [],
-          duty_name: '',
-          depart: '',
-          org_id: [],
-          description: '',
-          sign: '',
-          level: '',
-          is_top: '',
-          order: ''
-        };
+        this.$resetForm(this.add_position_form);
+        this.is_edit_position = false;
         this.addPostVisible = false;
       },
       handleSubmitAddPosition() {
+        if (this.is_edit_position) {
+          this.$http.put(`organization/position/${this.add_position_form.id}`,this.add_position_form).then(res => {
+            if (res.code === '20030') {
+              this.$LjNotify('success',{
+                title: '成功',
+                message: res.msg
+              });
+              this.handleCancelAdd();
+              this.getPositionList();
+            } else {
+              this.$LjNotify('warning',{
+                title: '失败',
+                message: res.msg
+              })
+            }
+          });
+          return false;
+        }
         this.$http.post('organization/position',this.add_position_form).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
