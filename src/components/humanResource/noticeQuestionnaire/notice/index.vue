@@ -638,7 +638,8 @@
               }
               if (index != 0) {
                 if (o.user_id && o.sanction_type && o.money) {
-                  o.user_id = parseInt(o.user_id.join());
+                  debugger
+                  //o.user_id = parseInt(o.user_id.join());
                 } else {
                   isReturn = true;
                 }

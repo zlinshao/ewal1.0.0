@@ -311,11 +311,14 @@
               /*罚款缴纳*/
               case 'HR-FinesPay':
                 obj.onClick = 'humanResource_finespayment';
+                obj.tip = _.find(variables,{name:'title'})?.value||'-';
+                obj.date = this.myUtils.formatDate(_.find(variables,{name:'send_at'})?.value,'yyyy-MM-dd');
+                obj.money = (_.find(variables,{name:'money'})?.value||0)+'元';
                 break;
               /*考勤*/
               case 'HR-Attendance':
                 obj.name = _.find(variables, {name: 'title'})?.value || '-';
-                obj.onClick = 'humanResource_attence'
+                obj.onClick = 'humanResource_attence';
                 break;
               /*考试*/
               case 'HR-Exam':

@@ -31,6 +31,7 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
   },
   //缴纳状态
   PAYMENT_STATUS: [{id:1,name:'未缴纳'},{id:2,name:'已缴纳'}],
+  PAYMENT_WAY:[{id:1,name:'工资扣款'},{id:2,name:'电子支付'}],
   //调查状态
   INSPECT_STATUS:[{id:0,name:'未开始'},{id:1,name:'已开始'},{id:2,name:'已结束'}],
 };

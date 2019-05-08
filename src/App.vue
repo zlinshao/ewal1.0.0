@@ -260,7 +260,6 @@ export default {
         that.changeLoad = false;
       }, 2000);
     },
-
   },
 }
 </script>

@@ -4,7 +4,7 @@
       :size="size"
       :disabled="disabled"
       :popper-class="'appTheme' + themeName"
-      :value="dropdown_code" @input="handleInputEvent" clearable :placeholder="title"
+      :value="dropdown_code" @input="handleInputEvent" :clearable="clearable" :placeholder="title"
       @change="changeSelection">
       <el-option v-for="item in dropdown_list"
                  :key="item.value"
@@ -30,6 +30,10 @@
       arr: [Object, Array],
       jsonArr: [Object, Array],
       disabled: [Boolean],
+      clearable:{
+        required:[Boolean],
+        default:true,
+      },
       size: {//medium / small / mini
         type: [String],
         default: '',
