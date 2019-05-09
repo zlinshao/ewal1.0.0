@@ -52,7 +52,7 @@
         <div class="dialog_main borderNone">
           <el-form v-model="form" label-width="80px">
             <el-form-item label="姓名">
-              <el-input v-model="form.name"></el-input>
+              <user-choose width='700' v-model="form.name"></user-choose>
             </el-form-item>
               
             <el-form-item label="文章内容">
@@ -93,11 +93,13 @@
 <script>
 import LjDialog from '../../../../common/lj-dialog.vue';
 import LjEditor from '../../../../common/lj-editor.vue';
+import UserChoose from '../../../../common/lightweightComponents/UserChoose';
 export default {
   name: "leJiaStars",
   components: {
     LjDialog,
-    LjEditor
+    LjEditor,
+    UserChoose
   },
   props: ['add_status', 'choose_type'],
   data () {
