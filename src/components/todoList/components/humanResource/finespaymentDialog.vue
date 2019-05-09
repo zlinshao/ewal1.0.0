@@ -139,9 +139,7 @@
               this.finespaymentHandler();
             });
           });
-
         });
-
       },
     }
   }
