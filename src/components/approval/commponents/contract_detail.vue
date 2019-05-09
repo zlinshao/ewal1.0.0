@@ -149,7 +149,7 @@
               <div class='record_cell_mess'>
                 <p class='record_person'>
                   {{item.userId}}
-                  <span class='agree' v-if='item.name=="审批"'>已{{item.result}}</span>
+                  <span class='agree' v-if='item.name=="审批"'>{{item.result ? ('已' + item.result) : ''}}</span>
                   <span class='agree transfer' v-if='item.name == "转交"'>已转交</span>
                   <span v-if='item.name =="评论"'>做了评论</span>
                   <span v-else-if='item.name =="报备"'>修改了报备</span>
