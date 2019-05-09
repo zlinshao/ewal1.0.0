@@ -186,6 +186,12 @@
       <StaffOrgan :module="staff_visible" @close="handleGetStaff"></StaffOrgan>
 
       <PositionOrgan :module="position_visible" @close="handleGetPosition"></PositionOrgan>
+
+      <div class="panel-btn"><i class="el-icon-arrow-left"></i></div>
+      <!--面板数据-->
+      <div class="panel-info">
+
+      </div>
     </div>
   </div>
 </template>
@@ -322,8 +328,6 @@
       }
     },
     mounted() {
-    },
-    activated() {
     },
     watch: {},
     computed: {},

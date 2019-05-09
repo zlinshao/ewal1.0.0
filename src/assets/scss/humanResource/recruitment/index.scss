@@ -74,6 +74,28 @@
       .hide_nav_container {
         right: -1920px;
       }
+      .panel-btn {
+        width: 30px;
+        height: 80px;
+        background-color: $colorE33;
+        color: white;
+        text-align: center;
+        line-height: 80px;
+        position: absolute;
+        right: 0;
+        bottom: 150px;
+        border-radius: 5px 0 0 5px;
+        cursor: pointer;
+      }
+      .panel-info {
+        opacity: 0;
+        width: 100%;
+        min-height: 400px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background-color: white;
+      }
     }
   }
 }
