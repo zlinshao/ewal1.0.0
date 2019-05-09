@@ -36,13 +36,13 @@
         </el-table-column>
         <el-table-column label="离职短信" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1">已发送</span>
+            <span v-if="scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.dimission_sms === 1">已发送</span>
             <el-button type="text" @click="handleControlMsg(scope.row,'sms')" style="color: #D33E43" v-else>发送</el-button>
           </template>
         </el-table-column>
         <el-table-column label="离职群消息" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.forward_group === 1">已发送</span>
+            <span v-if="scope.row.staff && scope.row.staff.send_info && scope.row.staff.send_info.dimission_group === 1">已发送</span>
             <el-button type="text" @click="handleControlMsg(scope.row,'announcement')" style="color: #D33E43" v-else>发送</el-button>
           </template>
         </el-table-column>

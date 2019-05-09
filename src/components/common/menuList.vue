@@ -140,6 +140,20 @@ export default {
       }
     }
   }
+  #menuList.riskManagement {
+    .list {
+      .menu {
+        .childrenMenu {
+          @include menuImg("fxkz_0.png", "theme1");
+          background-size: 191px 314px;
+          &:hover {
+            @include menuImg("fxkz_1.png", "theme1");
+            background-size: 191px 314px;
+          }
+        }
+      }
+    }
+  }
 }
 
 #theme_name.theme2 {

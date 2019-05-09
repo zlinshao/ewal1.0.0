@@ -3,7 +3,7 @@
     <div>
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
-          <p class="flex-center" @click="showFinMenuList = true">
+          <p class="flex-center" @click='moduleList'>
             <b>...</b>
           </p>
           <h1>{{this.$route.query.pre_name}}</h1>
@@ -28,18 +28,22 @@
         </div>
       </div>
     </div>
+
+    <MenuList :visible='navVisible' @close='handleClose' />
   </div>
 </template>
 
 <script>
 import { riskManagement } from '../../../assets/js/allModuleList.js';
+import MenuList from '../common/menu'
 
 export default {
   name: "index",
+  components: { MenuList },
   data () {
     return {
       riskManagement,
-      showFinMenuList: false,
+      navVisible: false,
       chooseTab: 1,
       params: {//查询参数
         search: '',
@@ -61,8 +65,6 @@ export default {
   watch: {
     $route: {
       handler: function (val, oldVal) {
-        console.log(val);
-        console.log(oldVal);
         this.chooseTab = this.$route.query.pre_index;//切换tab
         this.selects = this.$route.query.pre_data;
         this.parent_id = this.$route.query.pre_id;
@@ -75,6 +77,13 @@ export default {
     },
   },
   methods: {
+    moduleList () {
+      this.navVisible = !this.navVisible;
+      this.$store.dispatch('route_animation');
+    },
+    handleClose () {
+      this.navVisible = false
+    },
     changeTabs (id, pre_id) {
       this.chooseTab = id;
       this.parent_id = pre_id;
@@ -82,9 +91,7 @@ export default {
     },
     getDataList () {
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: this.parent_id }).then(res => {
-        console.log(res);
         if (res.status === 200) {
-          console.log(res.data.data);
           this.gradeChildrenData = res.data.data;
         }
       })
