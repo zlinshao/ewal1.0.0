@@ -12,7 +12,7 @@
       <div class="mainList" :style="{'height': this.mainListHeight() + 'px'}">
         <div class="menu-list">
           <div v-for="(item,index) in childrenRiskData" @click="routerLink('riskManagementMenu',{pre_id:item.id,pre_name:item.name,pre_data:childrenRiskData,pre_index:index+1})"
-            class="flex-center">
+            class="flex-center childrenMenu">
             <span class="writingMode">{{item.name}}</span>
           </div>
         </div>
@@ -72,6 +72,9 @@ export default {
       .mainList {
         @include riskManagementImg("di_2.png", "theme1");
         .menu-list {
+          .flex-center {
+            flex-direction: column;
+          }
           div {
             @include riskManagementImg("hgfx_0.png", "theme1");
             &:hover {

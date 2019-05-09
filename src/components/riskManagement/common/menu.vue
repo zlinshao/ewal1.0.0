@@ -9,7 +9,6 @@
         </div>
       </div>
     </div>
-    <div class="title">风险控制</div>
   </div>
 
 </template>
@@ -118,6 +117,9 @@ export default {
   #menuList.riskManagement {
     .list {
       .menu {
+        .flex-center {
+          flex-direction: column;
+        }
         .childrenMenu {
           @include menuImg("fxkz_0.png", "theme1");
           background-size: 191px 314px;
