@@ -52,7 +52,7 @@
               staff:1,
             };
             this.$http.get(`${this.url}staff/user`,params).then(res=> {
-              this.inputContent = _.map(res.data.data,'name').join(',');
+              this.inputContent = _.map(res.data?.data,'name').join(',');
             });
           }
         },

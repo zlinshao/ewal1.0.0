@@ -320,6 +320,10 @@
                 /*人资招聘*/
               case 'HR-Recruitment':
                 obj.onClick = 'humanResource_interview';
+                //obj.name = '面试任务';
+                obj.project = _.find(variables,{name:'position_name'})?.value||'-';
+                obj.date = _.find(variables,{name:'interview_time'})?.value||'-';
+                obj.user = _.find(variables,{name:'interview_name'})?.value||'-';
                 break;
               /*罚款缴纳*/
               case 'HR-FinesPay':

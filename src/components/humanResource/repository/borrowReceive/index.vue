@@ -735,7 +735,7 @@
           user_id = user_id[0];
         }
         let params = {user_id: user_id};
-        this.$http.get(`${this.url}/eam/process/${id}/todo`, params).then(res => {
+        this.$http.get(`${this.url}eam/process/${id}/todo`, params).then(res => {
           if (res.code.endsWith('0')) {
             this.$LjNotify('success', {
               title: '成功',
@@ -755,6 +755,9 @@
       setPerson(row) {
         this.is_notify_visible = true;
         this.is_notify_form.user_id = row.user_id;
+        if(this.is_notify_form.user_id.constructor!=Array) {
+          this.is_notify_form.user_id = [this.is_notify_form.user_id];
+        }
         this.is_notify_form.id = row.id;//流程id
       },
 
