@@ -282,18 +282,21 @@ html, body {
   html div.el-tooltip__popper,
   html div.is-dark, body div.el-tooltip__popper,
   body div.is-dark {
+    padding: 5px;
     background-color: #cf2e33 !important;
     color: white; }
 
-.control-btn span {
-  padding: 5px 20px;
-  cursor: pointer;
-  color: white;
-  margin: 0 8px; }
-  .control-btn span:hover {
-    color: #cf2e33;
-    background: url("../image/components/theme1/xzgj.png") no-repeat scroll center;
-    background-size: 100% 100%; }
+.control-btn {
+  text-align: center; }
+  .control-btn span {
+    padding: 5px 20px;
+    cursor: pointer;
+    color: white;
+    margin: 0 8px; }
+    .control-btn span:hover {
+      color: #cf2e33;
+      background: url("../image/components/theme1/xzgj.png") no-repeat scroll center;
+      background-size: 100% 100%; }
 
 ol, ul {
   list-style: none; }
@@ -346,3 +349,5 @@ textarea:disabled, input:disabled {
 img {
   width: 100%;
   height: 100%; }
+
+/*# sourceMappingURL=rest.css.map */

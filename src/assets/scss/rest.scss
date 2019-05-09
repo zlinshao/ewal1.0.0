@@ -22,11 +22,13 @@ html, body {
   }
   div.el-tooltip__popper,
   div.is-dark {
+    padding: 5px;
     background-color: $colorE33 !important;
     color: white;
   }
 }
 .control-btn {
+  text-align: center;
   span {
     padding: 5px 20px;
     cursor: pointer;

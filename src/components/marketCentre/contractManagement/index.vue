@@ -47,11 +47,13 @@
               <!--<el-button type="warning" plain size="mini" @click="handleLookBackInfo(scope.row)">查看回访记录</el-button>-->
               <div>
                 <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
-                <div class="control_container flex" :class="{'show_control_container': show_control === scope.row.contract_id}">
-                  <span v-for="tmp in choose_list" :key="tmp.id"
-                    @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
-                </div>
-                <div class="writingMode point_btn" @click="handleShowControl(scope.row)">···</div>
+                <el-tooltip placement="bottom-end" :visible-arrow="false">
+                  <div class="flex control-btn" slot="content">
+                    <span v-for="tmp in choose_list" :key="tmp.id"
+                          @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
+                  </div>
+                  <span class="point_btn writingMode">···</span>
+                </el-tooltip>
               </div>
             </template>
           </el-table-column>
