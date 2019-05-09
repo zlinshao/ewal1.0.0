@@ -29,8 +29,8 @@
         <div class="bg-container flex-center" @click="chooseTab=3"><span>资料库</span></div>
         <!-- <div class="bg-container flex-center" @click="chooseTab=4"><span>办公住宿</span></div> -->
       </div>
-      <work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
-                 @change="handleChangeDate"></work-info>
+      <!--<work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
+                 @change="handleChangeDate"></work-info>-->
     </div>
     <!--库房总览-->
     <div v-if="chooseTab==1">
