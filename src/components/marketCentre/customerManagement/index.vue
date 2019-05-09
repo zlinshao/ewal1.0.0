@@ -358,12 +358,7 @@
 
               highVisible: false,
               show_market: false,
-              searchData: {
-                status: 'customerManagement',
-                keywords: 'search',
-                placeholder: '地址/合同编号/手机号/客户姓名',
-                data: []
-              },
+              searchData: {},
 
               market_server: globalConfig.market_server,
               selects: [
@@ -375,7 +370,7 @@
               chooseTab: 3,
               params: {
                 page: 1,
-                limit: 20,
+                limit: 30,
                 search: ''
               },
               customerList: [],
@@ -518,6 +513,12 @@
           //高级
           handleOpenHigh() {
             this.highVisible = true;
+            this.searchData = {
+              status: 'customerManagement',
+              keywords: 'search',
+              placeholder: '地址/合同编号/手机号/客户姓名',
+              data: []
+            }
           },
           //tab切换
           changeTabs(id) {

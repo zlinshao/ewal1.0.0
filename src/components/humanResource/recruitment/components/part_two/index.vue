@@ -539,7 +539,6 @@
       getIntervieweeList() {
         this.showLoading(true);
         this.$http.get('recruitment/interviewer_process/reservationList',this.params).then(res => {
-          console.log(res);
           if (res.code === "20000") {
             this.tableList = res.data.data;
             this.tableCount = res.data.count;
