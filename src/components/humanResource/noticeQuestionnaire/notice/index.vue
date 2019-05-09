@@ -781,6 +781,9 @@
                 delete newForm.sanction_info;
               }
             }
+            if(!newForm.sanction_info) {
+              newForm.sanction_info = [];
+            }
 
             let params = {
               ...newForm

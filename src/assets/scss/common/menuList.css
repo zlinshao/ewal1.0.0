@@ -204,6 +204,7 @@
       -o-transition: all 0.24s;
       transition: all 0.24s; }
       #theme_name #menuList .list .menu .childrenMenu {
+        flex: 1;
         cursor: pointer;
         width: 60%;
         height: 100%; }
