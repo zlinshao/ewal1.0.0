@@ -42,9 +42,9 @@
                 </span>
       </div>
       <div class="action-bar-right">
-        <span>应收金额（元） <i class="edit">{{ receivable_sum }}</i></span>
-        <span>实收金额（元） <i class="check">{{ received_sum }}</i></span>
-        <span>剩余款项（元） <i class="delete">{{ balance_sum }}</i></span>
+        <span style="margin-right: 15px">应收金额（元） <i class="edit">{{ receivable_sum }}</i></span>
+        <span style="margin-right: 15px">实收金额（元） <i class="check">{{ received_sum }}</i></span>
+        <span style="margin-right: 15px">剩余款项（元） <i class="delete">{{ balance_sum }}</i></span>
       </div>
     </div>
     <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
@@ -453,7 +453,6 @@
               :data="receiptData"
               highlight-current-row
               :row-class-name="tableChooseRow"
-              @cell-click="tableClickRow"
               header-row-class-name="tableHeader"
               @selection-change="receiptSelectionChange"
             >
