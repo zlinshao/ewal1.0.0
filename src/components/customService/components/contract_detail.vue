@@ -7,7 +7,8 @@
           <div class="header_right">
             <span>{{contractDetail.contract_number}}</span>
             <span style='margin-left:20px;margin-right:60px;'>{{moduleData.type}}</span>
-            <el-button id='active-danger' class='el-button-active' size='mini' @click='handleRewrite' style='margin-left:10px'>作废重签</el-button>
+            <el-button id='active-danger' class='el-button-active' size='mini' @click='handleRewrite' style='margin-left:10px'
+              v-if='showFooter'>作废重签</el-button>
           </div>
         </div>
         <div class="dialog_main contract_detail">
@@ -103,7 +104,7 @@
                 <el-col :span="8">
                   <el-form-item label="价格">
                     <p v-if="contractDetail.month_price && contractDetail.month_price.length > 0">
-                      <span v-for="(item,key) in contractDetail.month_price" :key="key"> {{ item.price }}元 {{
+                      <span v-for="(item,index) in contractDetail.month_price" :key="index"> {{ item.price }}元 {{
                         item.period }}个月</span>
                     </p>
                   </el-form-item>
@@ -202,7 +203,7 @@
           <p class='main_tit' v-if="chooseTab === 2">签约人信息</p>
           <div class="common_info">
             <el-form label-width="120px" v-if=' contractDetail.customer_info'>
-              <el-row :gutter="10" v-for='item in  contractDetail.customer_info' :key='item.id'>
+              <el-row :gutter="10" v-for='(item,index) in  contractDetail.customer_info' :key='index'>
                 <el-col :span="1">
                   <span class='person_tit'>签约人</span>
                   <!-- <el-form-item label="签约人" class='person_tit'></el-form-item> -->
@@ -371,8 +372,7 @@
           <h3>资料不齐记录</h3>
         </div>
         <div class="dialog_main dataRecord_dialog_main" v-if='dataRecord_visible'>
-          <div v-for='(remark,index) in contractDetail.checkout_remark' class='dataRecord_cell' :key='remark.create_uid + "-" + index'
-            v-if='dataRecord_visible && contractDetail.checkout_remark'>
+          <div v-for='(remark,index) in contractDetail.checkout_remark' class='dataRecord_cell' :key='index' v-if='dataRecord_visible && contractDetail.checkout_remark'>
             <div class='detail_dialog_left'>
               <p>{{remark.create.name}}</p>
               <p>2019.1.16</p>
@@ -666,6 +666,16 @@ export default {
 
 #theme_name {
   #contract_detail {
+    .header_right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .dialog_footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .dialog_main {
       .main_tit {
         text-align: left;
