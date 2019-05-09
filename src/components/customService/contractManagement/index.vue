@@ -1108,14 +1108,6 @@ export default {
           break;
       }
     },
-    handleShowControl (row) {
-      this.current_choose_control = '';
-      if (row.contract_id === this.show_control) {
-        this.show_control = '';
-      } else {
-        this.show_control = row.contract_id;
-      }
-    },
     handleSubmitRewrite () {
       this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
         note: this.rewrite_note

@@ -274,8 +274,6 @@
                 </el-col>
               </el-row>
             </el-form>
-
-<!--            <div class="type">{{ currentRow.type }}</div>-->
           </div>
 
           <p style="text-align: left">{{ chooseTab === 1 ? '收款账户' : '汇款账户'}}</p>
@@ -669,7 +667,6 @@ export default {
       this.mark_form.tag_status = item.id;
     },
     handleCloseLookBackInfo () {
-      this.currentRow = '';
       this.backInfo = '';
       this.backInfo_visible = false;
     },
@@ -716,14 +713,6 @@ export default {
         case 3:
           this.add_mark_visible = true;
           break;
-      }
-    },
-    handleShowControl (row) {
-      this.current_choose_control = '';
-      if (row.contract_id === this.show_control) {
-        this.show_control = '';
-      } else {
-        this.show_control = row.contract_id;
       }
     },
     handleSubmitRewrite () {
@@ -805,6 +794,7 @@ export default {
       return this.polishing_data[this.chooseTab - 1][idx];
     },
     handleOpenPolishing (row) {
+      this.currentRow = row;
       if (row.needComplete && row.needComplete.length > 0) {
         var obj = {};
         var param = {};
