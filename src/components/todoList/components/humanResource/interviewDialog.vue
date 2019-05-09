@@ -42,7 +42,8 @@
             <div class="interview_dialog_form_row" v-if="interview_form.radio==2">
               <label class="interview_dialog_form_label">转交面试官</label>
               <span class="interview_dialog_form_checkbox">
-                <el-input v-model="interview_form.interviewer" placeholder="请选择面试官"></el-input>
+                <user-choose :num="1" size="mini" width="140" title="请选择面试官" v-model="interview_form.interviewer"></user-choose>
+<!--                <el-input v-model="interview_form.interviewer" placeholder="请选择面试官"></el-input>-->
               </span>
 
             </div>
@@ -128,12 +129,15 @@
 </template>
 
 <script>
+  import _ from 'lodash';
+  import UserChoose from '../../../common/lightweightComponents/UserChoose';
   import ljDialog from '../../../common/lj-dialog';
 
   export default {
     name: "index",
     components: {
-      ljDialog
+      UserChoose,
+      ljDialog,
     },
     computed: {
       interview_visible() {

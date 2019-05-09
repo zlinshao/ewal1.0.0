@@ -294,6 +294,12 @@ export default {
             title:'答题成功',
             msg:`本次得分:${res.data.score}`,
           });
+          let params = {
+            id:this.$todo_list_current_selection.id,
+          };
+          this.$http.post(`${this.url}train/exam/task`,params).then(res=> {
+            this.$store.dispatch('change_refresh_todo_list');
+          });
           setTimeout(function() {
             that.paper_visible = false;
           },300);

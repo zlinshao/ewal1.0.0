@@ -317,6 +317,10 @@
               /*补齐物品*/
               case 'Market-CompleteAsset':
                 break;
+                /*人资招聘*/
+              case 'HR-Recruitment':
+                obj.onClick = 'humanResource_interview';
+                break;
               /*罚款缴纳*/
               case 'HR-FinesPay':
                 obj.onClick = 'humanResource_finespayment';
