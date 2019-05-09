@@ -1,4 +1,4 @@
-@import "../../common.scss";
+@import '../../common.scss';
 
 #theme_name {
   #riskDetails {
@@ -18,7 +18,7 @@
           .right-info {
             width: 100%;
             height: 100%;
-            background: #F8F8F8;
+            background: #f8f8f8;
             position: relative;
 
             > div {
@@ -43,11 +43,10 @@
                     margin-top: 6px;
                     margin-bottom: 6px;
                   }
-                  .word_icon{
+                  .word_icon {
                     display: block;
                     width: 80px;
                     height: 80px;
-
                   }
 
                   p:first-child {
@@ -57,7 +56,7 @@
                     position: relative;
 
                     &:hover {
-                      border: 1px solid #CF2E33;
+                      border: 1px solid #cf2e33;
                     }
 
                     span {
@@ -67,7 +66,7 @@
                       display: inline-block;
                       height: 30px;
                       line-height: 30px;
-                      background: #CF2E33;
+                      background: #cf2e33;
                       border-radius: 5px;
 
                       i {
@@ -80,23 +79,208 @@
                         color: #ffffff;
 
                         &:hover {
-                          color: #CF2E33;
+                          color: #cf2e33;
                         }
                       }
                     }
                   }
 
                   p:nth-child(2) {
-                    color: #7B7B7B;
+                    color: #7b7b7b;
                   }
 
                   p:last-child {
-                    color: #BDBDBD;
+                    color: #bdbdbd;
                   }
                 }
               }
             }
 
+            .bg-img {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 360px;
+              height: 360px;
+              display: block;
+              z-index: 11;
+              text-align: center !important;
+              line-height: 360px;
+              font-size: 32px;
+              color: #dfdfdf;
+            }
+          }
+
+          .add-icons {
+            position: absolute;
+            top: 30px;
+            right: 130px;
+            width: 30px;
+            height: 30px;
+
+            background: #cf2e33;
+            color: #ffffff;
+            font-size: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+
+            span {
+              display: block;
+              line-height: 26px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #InternalRegulations {
+    > div {
+      .mainList {
+        background: #ffffff;
+        .InternalRegulations-info {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          position: relative;
+
+          .left-info {
+            width: 24%;
+            height: 700px;
+            //padding-top: 30px ;
+            padding-left: 50px;
+            margin-right: 20px;
+            background: #f8f8f8;
+            div {
+              width: 100%;
+              height: 640px;
+              p {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-top: 30px;
+                cursor: pointer;
+                span {
+                  display: block;
+                  font-style: normal;
+                  font-size: 16px;
+                  font-family: jingDianXingShu;
+                  i {
+                    display: block;
+                    font-style: normal;
+                    font-family: jingDianXingShu;
+                    font-size: 28px;
+                  }
+                }
+                span:first-child {
+                  width: 40px;
+                  height: 40px;
+                  border: 1px solid #cf2e33;
+                  transform: rotate(45deg);
+                  margin-right: 36px;
+                  i {
+                    width: 40px;
+                    height: 40px;
+                    text-align: center;
+                    line-height: 40px;
+                    transform: rotate(-45deg);
+                  }
+                }
+
+                i:first-child {
+                  //background:#CF2E33 ;
+                  //clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+                }
+
+                &:hover {
+                  span:first-child {
+                    i {
+                      color: #ffffff;
+                    }
+                    background: #cf2e33;
+                  }
+                  span:last-child {
+                    i {
+                      color: #cf2e33;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .right-info {
+            width: 100%;
+            height: 700px;
+            background: #f8f8f8;
+            position: relative;
+            > div {
+              z-index: 110;
+              height: 540px;
+              width: 90%;
+              display: flex;
+              flex-direction: row;
+              flex-wrap: wrap;
+              align-items: flex-start;
+              padding-top: 30px;
+              padding-left: 50px;
+              padding-right: 50px;
+              .right-info-list {
+                width: 25%;
+                padding: 30px;
+                padding-top: 0;
+                .right-info-box {
+                  p {
+                    margin-top: 6px;
+                    margin-bottom: 6px;
+                  }
+                  .word_icon {
+                    display: block;
+                    width: 80px;
+                    height: 80px;
+                  }
+                  p:first-child {
+                    width: 192px;
+                    height: 192px;
+                    background: #ffffff;
+                    position: relative;
+                    &:hover {
+                      border: 1px solid #cf2e33;
+                    }
+                    span {
+                      position: absolute;
+                      top: -30px;
+                      right: 0px;
+                      display: inline-block;
+                      height: 30px;
+                      line-height: 30px;
+                      background: #cf2e33;
+                      border-radius: 5px;
+                      i {
+                        font-size: 14px;
+                        font-style: normal;
+                        display: inline-block;
+                        height: 20px;
+                        padding: 0 20px;
+                        line-height: 20px;
+                        color: #ffffff;
+                        &:hover {
+                          color: #cf2e33;
+                        }
+                      }
+                    }
+                  }
+                  p:nth-child(2) {
+                    color: #7b7b7b;
+                  }
+                  p:last-child {
+                    color: #bdbdbd;
+                  }
+                }
+              }
+            }
             .bg-img {
               position: absolute;
               top: 50%;
@@ -115,13 +299,12 @@
             width: 30px;
             height: 30px;
 
-            background: #CF2E33;
+            background: #cf2e33;
             color: #ffffff;
             font-size: 30px;
             border-radius: 6px;
             cursor: pointer;
             text-align: center;
-
             span {
               display: block;
               line-height: 26px;
@@ -130,192 +313,5 @@
         }
       }
     }
-
   }
-
-  #InternalRegulations{
-    >div{
-      .mainList{
-        background: #ffffff;
-        .InternalRegulations-info{
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          position: relative;
-
-          .left-info{
-            width: 24%;
-            height: 700px;
-            //padding-top: 30px ;
-            padding-left: 50px;
-            margin-right: 20px;
-            background: #F8F8F8;
-            div{
-              width: 100%;
-              height: 640px;
-              p{
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                margin-top: 30px;
-                cursor: pointer;
-                span{
-                  display: block;
-                  font-style: normal;
-                  font-size: 16px;
-                  font-family: jingDianXingShu;
-                  i{
-                    display: block;
-                    font-style: normal;
-                    font-family: jingDianXingShu;
-                    font-size: 28px;
-                  }
-
-                }
-                span:first-child{
-                  width: 40px;
-                  height: 40px;
-                  border:1px solid #CF2E33;
-                  transform: rotate(45deg);
-                  margin-right: 36px;
-                  i{
-                    width: 40px;
-                    height: 40px;
-                    text-align: center;
-                    line-height: 40px;
-                    transform: rotate(-45deg);
-                  }
-                }
-
-                i:first-child{
-
-                  //background:#CF2E33 ;
-                  //clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-                }
-
-                &:hover{
-                  span:first-child{
-                    i{
-                      color:#FFFFFF;
-                    }
-                    background: #CF2E33;
-                  }
-                  span:last-child{
-                    i{
-                      color:#CF2E33;
-
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .right-info{
-            width: 100%;
-            height: 700px;
-            background: #F8F8F8;
-            position: relative;
-            >div{
-              z-index: 110;
-              height: 540px;
-              width: 90%;
-              display: flex;
-              flex-direction: row;
-              flex-wrap: wrap;
-              align-items: flex-start;
-              padding-top: 30px ;
-              padding-left: 50px;
-              padding-right: 50px;
-              .right-info-list{
-                width: 25%;
-                padding: 30px;
-                padding-top: 0;
-                .right-info-box{
-                  p{
-                    margin-top: 6px;
-                    margin-bottom: 6px;
-                  }
-                  .word_icon{
-                    display: block;
-                    width: 80px;
-                    height: 80px;
-
-                  }
-                  p:first-child{
-                    width: 192px;
-                    height: 192px;
-                    background: #ffffff;
-                    position: relative;
-                    &:hover{
-                      border:1px solid #CF2E33;
-                    }
-                    span{
-                      position: absolute;
-                      top:-30px;
-                      right: 0px;
-                      display: inline-block;
-                      height: 30px;
-                      line-height: 30px;
-                      background: #CF2E33;
-                      border-radius: 5px;
-                      i{
-                        font-size: 14px;
-                        font-style: normal;
-                        display: inline-block;
-                        height: 20px;
-                        padding: 0 20px;
-                        line-height: 20px;
-                        color:#ffffff;
-                        &:hover{
-                          color: #CF2E33;
-                        }
-                      }
-                    }
-                  }
-                  p:nth-child(2){
-                    color:#7B7B7B;
-                  }
-                  p:last-child{
-                    color:#BDBDBD;
-                  }
-                }
-              }
-            }
-            .bg-img{
-              position: absolute;
-              top: 50%;
-              left:50%;
-              transform: translate(-50%,-50%);
-              width: 360px;
-              height: 360px;
-              z-index: 11;
-            }
-          }
-
-          .add-icons{
-            position: absolute;
-            top:30px;
-            right:130px;
-            width: 30px;
-            height: 30px;
-
-            background:#CF2E33 ;
-            color: #ffffff;
-            font-size: 30px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            span{
-              display:block;
-              line-height: 26px;
-            }
-          }
-        }
-      }
-    }
-
-  }
-
-
 }

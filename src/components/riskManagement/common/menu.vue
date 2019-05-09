@@ -5,7 +5,7 @@
     <div class="justify-around list" :class="{'menuList':routeAnimation,'backdrop': backdrop,'hover':dialogVisible}">
       <div v-for="(item,index) in menuParams.data" class="flex-center menu" :class="['menu-' + (index + 1)]">
         <div class="flex-center childrenMenu" @click="moduleRouter(item)">
-          <span class="writingMode">{{item.title}}</span>
+          <span class="writingMode">{{item.name}}</span>
         </div>
       </div>
     </div>
@@ -26,20 +26,7 @@ export default {
       dialogVisible: false,
       menuParams: {
         type: 'riskManagement',
-        data: [
-          {
-            title: '集团核心指标',
-            url: 'groupCoreIndicators'
-          },
-          {
-            title: '企业综合预警',
-            url: 'comprehensiveEarlyWarning'
-          },
-          {
-            title: '重大战略监测',
-            url: 'majorStrategicMonitoring'
-          }
-        ]
+        data: []
       },
       top_title: ''
     }
@@ -67,8 +54,8 @@ export default {
   },
   methods: {
     moduleRouter (item) {
-      // this.routerLink(url);
-      this.$router.push({ to: item.url, query: { pre_name: item.title, pre_id: item.id } })
+      // this.routerLink(item.url, { pre_name: item.title, pre_id: item.id });
+      this.$router.push({ path: item.url, query: { pre_name: item.name, pre_id: item.id } })
       this.dialogVisible = false;
     },
     // 出自己以外的元素关闭
@@ -83,17 +70,17 @@ export default {
     getMenu () {
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: 0 }).then(res => {
         if (res.status === 200) {
-          let data = []
-          res.data.data.forEach(el => {
-            data.push({
-              title: el.name,
-              url: el.url,
-              id: el.id
-            })
-          });
+          // let data = []
+          // res.data.data.forEach(el => {
+          //   data.push({
+          //     title: el.name,
+          //     url: el.url,
+          //     id: el.id
+          //   })
+          // });
           this.menuParams = {
             type: 'riskManagement',
-            data
+            data: res.data.data
           }
         }
       })

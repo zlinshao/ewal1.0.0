@@ -79,8 +79,8 @@
           </el-pagination>
         </div>
       </footer>
-
-      <SearchHigh :module="highVisible" :show-data="searchData" @close="handleCloseHigh"></SearchHigh>
+      <!--<SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>-->
+      <SearchHigh :module="highVisible" :showData="searchData" @close="handleCloseHigh"></SearchHigh>
       <MarketMenuList :show-market="show_market" :show-shadow="show_market" @close="show_market = false"></MarketMenuList>
     </div>
   </div>
@@ -89,18 +89,15 @@
 <script>
   import SearchHigh from '../../common/searchHigh.vue';
   import MarketMenuList from '../components/market-menu-list.vue';
+  import {performanceSearch} from '../../../assets/js/allSearchData.js';
   export default {
     name: "index",
     components: { SearchHigh ,MarketMenuList},
     data() {
       return {
         highVisible: false,
-        searchData: {
-          status: 'performance',
-          placeholder: '请输入',
-          data: []
-        },
-
+        searchData: {},
+        performanceSearch,
         show_market: false,
         selects: [
           {
@@ -117,11 +114,10 @@
           page: 1,
           limit: 5,
           search: '',
-          start_date: '',
-          end_date: '',
+          rent_bulletindate:[],
           achv_type: '',
-          rent_staff_id: '',
-          lord_ord_id: '',
+          rent_staff_id: [],
+          rent_org_id: [],
           export:0
         },
         real_achievement_all:'',
@@ -140,9 +136,13 @@
     methods: {
       openHigh() {
         this.highVisible = true;
+        this.searchData = this.performanceSearch;
       },
       handleCloseHigh(val) {
-        console.log(val);
+        if (val!=='close'){
+            this.params=val;
+            this.handleGetPerformanceList();
+        }
         this.highVisible = false;
       },
       handleExport(){

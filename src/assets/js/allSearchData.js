@@ -1287,3 +1287,57 @@ export const kpiSearch = {
     }
   ]
 }
+
+// 业绩工资
+export const performanceSearch = {
+    status: 'performanceSearch',
+    keywords: 'search',
+    limit:5,
+    data: [
+        {
+            keyType: 'radio',
+            title: '出租类型',
+            keyName: 'achv_type',
+            dataType: '',
+            value: [
+                {
+                    id: 1,
+                    title: '新收新租'
+                },
+                {
+                    id: 2,
+                    title: '二次出租'
+                }
+            ]
+        },
+        {
+            keyType: 'depart',
+            title: '租房片区',
+            placeholder: '请选择片区',
+            keyName: 'rent_org_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'staff',
+            title: '租房人',
+            placeholder: '请选择员工',
+            keyName: 'rent_staff_id',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },
+        {
+            keyType: 'dateRange',
+            title: '报备时间',
+            placeholder: '请选择日期',
+            keyName: 'rent_bulletindate',
+            dataType: []
+        }
+    ]
+}
+
