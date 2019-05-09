@@ -204,6 +204,7 @@
       -o-transition: all 0.24s;
       transition: all 0.24s; }
       #theme_name #menuList .list .menu .childrenMenu {
+        flex: 1;
         cursor: pointer;
         width: 60%;
         height: 100%; }
@@ -265,3 +266,5 @@
     color: #686874; }
   #theme_name.theme1 #menuList.intellectualPropertyProtection .list .menu span {
     letter-spacing: 20px; }
+
+/*# sourceMappingURL=menuList.css.map */

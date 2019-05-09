@@ -757,7 +757,8 @@ export default {
     },
     handleConfirmPolishing () {
       var form = new FormData();
-      form.append('complete_content', this.polishing_params);
+      form.append('complete_content', JSON.stringify(this.polishing_params));
+      console.log(this.polishing_params);
       form.append('property_number', this.property_number);
       form.append('mound_number', this.mound_number);
       this.$http.post(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, form).then(res => {
