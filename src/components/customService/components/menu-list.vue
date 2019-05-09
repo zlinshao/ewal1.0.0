@@ -99,6 +99,7 @@ export default {
 .menu_container {
   .menu_list {
     .menu_contain {
+      flex: 1;
       transform: translateX(-1920px) scale(1.5);
       transition: all ease 0.3s;
       span {
