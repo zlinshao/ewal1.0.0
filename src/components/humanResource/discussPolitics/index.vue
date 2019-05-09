@@ -460,6 +460,8 @@
                   <div class="form-item-title">参加人员</div>
                 </el-col>
                 <el-col :span="20">
+
+
                   <div class="form-item-content">
                     <name-shower type="user" :ids="meeting_detail_form.participant"></name-shower>
                   </div>
