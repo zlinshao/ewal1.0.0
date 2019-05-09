@@ -38,7 +38,7 @@
             <el-table-column prop="sign_org" label="所属部门" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button type="warning" id="active-warning" size="mini" plain @click="handleGoMoveOutBlack(scope.row)" v-if="params.is_black !== 0">移出黑名单</el-button>
+                <el-button type="warning" id="active-warning" size="mini" plain @click="handleGoMoveOutBlack(scope.row)" v-if="chooseTab === 4">移出黑名单</el-button>
                 <el-button type="danger" id="active-danger" size="mini" @click="handleGoMoveBlack(scope.row)" v-else>移至黑名单</el-button>
               </template>
             </el-table-column>
