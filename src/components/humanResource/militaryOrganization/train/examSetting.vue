@@ -18,7 +18,7 @@
           <div @click="getQuestionDetail(item)" v-for="item in tableSettingData.question.tableData.slice(0,12)"
                :key="item.id">
             <div class="question-paper-name">
-              <span :title="item.name" class="writingMode">{{ item.name }}</span>
+              <span :title="item.name" class="writingMode">{{ item.name.slice(0,8) }}</span>
             </div>
             <div class="question-paper-category-name">
               <span class="writingMode">{{ item.category_name }}</span>
@@ -29,8 +29,8 @@
           <div class="exam-paper-container" v-for="item in tableSettingData.exam.tableData.slice(0,8)" :key="item.id"
                @click="getExamDetail(item)">
             <div class="exam_span">
-              <span class="writingMode">{{ item.time }}</span>
-              <span class="writingMode">{{ item.name }}</span>
+              <span :title="item.time" class="writingMode">{{ item.time }}</span>
+              <span :title="item.name" class="writingMode">{{ item.name.slice(0,8) }}</span>
             </div>
             <div class="exam-paper-status">
               <span :style="{color:item.status=='未开始'?'rgba(0,0,0,1)':'rgba(0,0,0,.5)'}" class="writingMode">{{ item.status }}</span>

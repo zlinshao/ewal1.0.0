@@ -825,7 +825,6 @@
           },
         },
 
-
         DROPDOWN_CONSTANT,
         url: globalConfig.humanResource_server,
 

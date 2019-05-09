@@ -610,26 +610,18 @@ export const borrowReceiveSearch = {
         },
         {
           id: 2,
-          title: '部分领取'
-        },
-        {
-          id: 3,
           title: '已领取'
         },
         {
-          id: 4,
+          id: 3,
           title: '放弃领取'
         },
         {
-          id: 5,
+          id: 4,
           title: '待归还'
         },
         {
-          id: 6,
-          title: '部分已归还'
-        },
-        {
-          id: 7,
+          id: 5,
           title: '已归还'
         }
       ]
