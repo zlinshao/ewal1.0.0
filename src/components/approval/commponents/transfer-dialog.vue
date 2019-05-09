@@ -73,7 +73,7 @@ export default {
           remark: this.transfer.note
         }
 
-        this.$http.post(`${this.market_server}runtime/tasks/${this.moduleData.id}`, option).then(res => {
+        this.$http.post(`${this.approval_sever}runtime/tasks/${this.moduleData.id}`, option).then(res => {
           this.$LjNotify('success', {
             title: '提示',
             message: res.message

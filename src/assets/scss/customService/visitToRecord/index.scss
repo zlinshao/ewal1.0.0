@@ -186,7 +186,8 @@
                   @include flex('space-column');
                   margin-bottom: 5px;
                   div {
-                    flex-wrap: wrap;
+                    margin-bottom: 0px;
+                    // flex-wrap: wrap;
                   }
                 }
               }

@@ -169,8 +169,9 @@
                   <div>
                     <span class='tit'>合同照片</span>
                     <p class='content' v-if='recordDetail.album'>
-                      <img :src="img.uri" alt="" v-for='img in recordDetail.album.photo' :key='img.id' data-magnify=""
-                        data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'>
+                      <Ljupload size='40' :value="recordDetail.album_temp.photo" disabled=true :download='false'></Ljupload>
+                      <!-- <img :src="img.uri" alt="" v-for='img in recordDetail.album.photo' :key='img.id' data-magnify=""
+                        data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'> -->
                     </p>
                   </div>
                 </el-col>
@@ -201,12 +202,13 @@
                   <div>
                     <span class='tit'>其他附件</span>
                     <div class='content content_album'>
-                      <div v-for='(item,key) in recordDetail.album' class='imgs_box' v-if='key !="photo"'>
+                      <div v-for='(item,key) in recordDetail.album_temp' class='imgs_box' v-if='key !="photo"'>
                         <p>{{dataAblum[key]}}</p>
-                        <div v-if='item'>
-                          <img :src="img.uri" alt="" v-for='img in item' :key='img.id' data-magnify="" data-caption="图片查看器"
-                            :data-src="img.uri" v-if='img.uri'>
-                        </div>
+                        <Ljupload size='40' :value="recordDetail.album_temp[key]" disabled=true :download='false'></Ljupload>
+                        <!-- <div v-if='item'> -->
+                        <!-- <img :src="img.uri" alt="" v-for='img in item' :key='img.id' data-magnify="" data-caption="图片查看器"
+                            :data-src="img.uri" v-if='img.uri'> -->
+                        <!-- </div> -->
                       </div>
                     </div>
                   </div>
@@ -267,13 +269,14 @@ import MenuList from '../../common/menuList.vue';
 import RecordeDialog from '../components/recorde-dialog';
 import { visitToRecordSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
-
+import Ljupload from '../../common/lightweightComponents/lj-upload'
 export default {
   name: "index",
   components: {
     SearchHigh,
     LjDialog,
     MenuList,
+    Ljupload,
     RecordeDialog
   },
   data () {
@@ -526,6 +529,7 @@ export default {
       this.recordOption.contract_number = row.contract_number
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
+          res.data.album_temp = JSON.parse(res.data.album_temp)
           this.recordDetail = res.data
           this.add_visible = true
         }
