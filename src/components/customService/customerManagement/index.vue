@@ -361,11 +361,7 @@
 
         highVisible: false,
         show_market: false,
-        searchData: {
-          status: 'customerManagement',
-          keywords: 'search',
-          data: []
-        },
+        searchData: {},
 
         market_server: globalConfig.market_server,
         selects: [
@@ -529,6 +525,12 @@
       //高级
       handleOpenHigh() {
         this.highVisible = true;
+        this.searchData = {
+          status: 'customerManagement',
+          keywords: 'search',
+          placeholder: '地址/合同编号/手机号/客户姓名',
+          data: []
+        }
       },
       //tab切换
       changeTabs(id) {

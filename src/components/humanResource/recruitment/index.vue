@@ -1,21 +1,6 @@
 <template>
   <div id="recruitment">
     <div>
-      <!--<div class="nav_container" :class="{'hide_nav_container': is_hide_nav_container}">-->
-        <!--<div class="nav_info flex-center">-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-          <!--<div></div>-->
-        <!--</div>-->
-        <!--<div class="show_btn" @click="is_hide_nav_container = false" :class="{'btn_hide': !is_hide_nav_container}"><</div>-->
-        <!--<div class="hide_btn" @click="is_hide_nav_container = true" :class="{'btn_hide': is_hide_nav_container}"> > </div>-->
-        <!--<div class="time_type">-->
-          <!--<div @click="handleCheckTimeType(item.id)" :class="{'current_choose_time': current_time === item.id}" v-for="item in time_type" :key="item.id">{{ item.val }}</div>-->
-        <!--</div>-->
-      <!--</div>-->
-
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
           <p class="flex-center" @click="visibleStatus = true">
@@ -187,10 +172,25 @@
 
       <PositionOrgan :module="position_visible" @close="handleGetPosition"></PositionOrgan>
 
-      <div class="panel-btn"><i class="el-icon-arrow-left"></i></div>
       <!--面板数据-->
-      <div class="panel-info">
-
+      <div class="panel-info flex-center">
+        <nav class="panel-btn"><i class="el-icon-arrow-left"></i></nav>
+        <ul class="date_change">
+          <li v-for="tmp in date_change_list" :key="tmp.id" @click="handleChangeDate(tmp.id)" :class="{'mark_li': isActive === tmp.id}">{{ tmp.val }}</li>
+        </ul>
+        <div>
+          <div id="chart1"></div>
+        </div>
+        <div>
+          <div id="chart2"></div>
+        </div>
+        <div>
+          <div id="chart3"></div>
+        </div>
+        <div>
+          <div id="chart4"></div>
+        </div>
+        <div></div>
       </div>
     </div>
   </div>
@@ -217,6 +217,14 @@
     components: { Upload,SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog,DepartOrgan,StaffOrgan,PositionOrgan},
     data() {
       return {
+        panel_visible: false,
+        date_change_list: [
+          {id: 1,val: '当日'},
+          {id: 2,val: '本周'},
+          {id: 3,val: '本月'},
+        ],
+        isActive: 1,
+
         //编辑面试官
         edit_offer_visible: false,
         edit_offer: {
@@ -328,10 +336,19 @@
       }
     },
     mounted() {
+      this.handleHttp('各部门面试通过率');
     },
     watch: {},
     computed: {},
     methods: {
+      handleHttp(way) {
+        this.$http.post('http://47.101.210.105:8083/interview_detail',{way}).then(res => {
+          console.log(res);
+        })
+      },
+      handleChangeDate(id) {
+        this.isActive = id;
+      },
       handleCancelEdit() {
         this.edit_offer = {
           interviewer_first_id: '',
