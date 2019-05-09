@@ -1,18 +1,9 @@
 <template>
-  <div id="riskManagement">
-    <div>
-      <div class="listTopCss items-bet">
-        <div class="items-center listTopLeft">
-          <h1>风险控制</h1>
-        </div>
-      </div>
-      <div class="mainList" :style="{'height': this.mainListHeight() + 'px'}">
-        <div class="menu-list">
-          <div v-for="(item,index) in riskData" @click="routerLink(item.url,{pre_id:item.id,pre_name:item.name,pre_data:riskData},item.name)"
-            class="flex-center">
-            <span class="writingMode">{{item.name}}</span>
-          </div>
-        </div>
+  <div id="risk-menu-list" class="menu_container mainList" :class="{'show_container' : visible}">
+    <div class="menu_list flex-center">
+      <div class="menu_contain" v-for="(item,index) in riskData" :key="index">
+        <span class="writingMode" :key="index" @click="routerLink(item.url,{pre_id:item.id,pre_name:item.name,pre_data:riskData},item.name)">{{
+          item.name }}</span>
       </div>
     </div>
   </div>
@@ -20,15 +11,12 @@
 
 <script>
 export default {
-  name: "index",
+  name: "menulist",
+  props: ['visible'],
   data () {
     return {
-      params: {//查询参数
-        search: '',
-        offset: 1,
-        limit: 3,
-      },
       riskData: [],
+      navVisible: false
     }
   },
   mounted () {
@@ -39,6 +27,7 @@ export default {
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: 0 }).then(res => {
         if (res.status === 200) {
           this.riskData = res.data.data;
+          console.log(this.riskData)
         }
       })
     }
@@ -47,14 +36,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../../assets/scss/riskManagement/index.scss";
+@import "../../../assets/scss/customService/components/menu_list.scss";
 
 @mixin riskManagementImg($m, $n) {
-  $url: "../../assets/image/riskManagement/" + $n + "/" + $m;
+  $url: "../../../assets/image/riskManagement/" + $n + "/" + $m;
   @include bgImage($url);
 }
 #theme_name.theme1 {
-  #riskManagement {
+  #risk-menu-list {
     > div {
       .mainList {
         @include riskManagementImg("di_1.png", "theme1");
