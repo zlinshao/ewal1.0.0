@@ -20,6 +20,7 @@
         @include transform(translateX(-3000px));
         @include transition(all 0.24s);
         .childrenMenu {
+          flex: 1;
           cursor: pointer;
           width: 60%;
           height: 100%;
