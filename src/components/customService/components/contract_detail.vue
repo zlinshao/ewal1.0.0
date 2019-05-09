@@ -4,7 +4,11 @@
       <div class="dialog_container" v-if='visible && contractDetail'>
         <div class="dialog_header">
           <h3>合同详情</h3>
-          <div class="header_right" style='line-height:30px;'>{{contractDetail.contract_number}}{{moduleData.type}}</div>
+          <div class="header_right">
+            <span>{{contractDetail.contract_number}}</span>
+            <span style='margin-left:20px;margin-right:60px;'>{{moduleData.type}}</span>
+            <el-button id='active-danger' class='el-button-active' size='mini' @click='handleRewrite' style='margin-left:10px'>作废重签</el-button>
+          </div>
         </div>
         <div class="dialog_main contract_detail">
           <!---房屋信息-->
@@ -359,6 +363,35 @@
 
     <!--资料不全 开单人选择-->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
+
+    <!--资料不齐记录-->
+    <lj-dialog :visible="dataRecord_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseRecord">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>资料不齐记录</h3>
+        </div>
+        <div class="dialog_main dataRecord_dialog_main" v-if='dataRecord_visible'>
+          <div v-for='(remark,index) in contractDetail.checkout_remark' class='dataRecord_cell' :key='remark.create_uid + "-" + index'
+            v-if='dataRecord_visible && contractDetail.checkout_remark'>
+            <div class='detail_dialog_left'>
+              <p>{{remark.create.name}}</p>
+              <p>2019.1.16</p>
+            </div>
+            <div class="detail_dialog_center">
+              <div class='circle'></div>
+            </div>
+            <div class='detail_dialog_right'>
+              <p>{{remark.remark}}</p>
+              <p>发送对象:{{remark.receive && remark.receive.name || '--'}}</p>
+            </div>
+          </div>
+          <div v-else>暂无记录</div>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!-- 作废重签 -->
+    <InvalidDialog :visible='rewrite_visible' :moduleData='rewrite_info' @close='handleCancelRewrite' />
   </div>
 </template>
 
@@ -367,11 +400,19 @@
 import LjDialog from '../../common/lj-dialog.vue';
 import StaffOrgan from '../../common/staffOrgan.vue';
 import Ljupload from '../../common/lightweightComponents/lj-upload'
+import InvalidDialog from '../components/invalid-dialog'
 export default {
-  props: ['visible', 'moduleData', 'chooseTab', 'showData', 'showFooter', 'showRelated', 'disabled'],
+  props: ['visible',
+    'moduleData',
+    'chooseTab',  // 合同类型
+    'showData',  // 不齐记录 
+    'showFooter',  // 底部操作
+    'showRelated', // 显示合同相关信息
+    'disabled'], // 是否可选
   components: {
     LjDialog,
     StaffOrgan,
+    InvalidDialog,
     Ljupload
   },
   data () {
@@ -407,7 +448,15 @@ export default {
           gas_photo: '气表照片'
         }
       ],
+      // 合同作废重签
+      rewrite_visible: false,
       rewrite_data: [],
+      rewrite_note: '',
+      rewrite_info: {
+        contract_id: null,
+        contract_type: null,
+        album: []
+      },
       staffModule: false,//显示人员选择
       organData: {
         num: ''
@@ -419,6 +468,10 @@ export default {
         send_id: [],
         content: ''
       },
+      complete: {
+        task_id: '',
+        key_name: ''
+      }, // 发送不齐信息
       payArr: ['水费', '电费', '燃气费', '物业费', '网络费', '其他'],
       market_server: globalConfig.market_server,
     }
@@ -464,13 +517,15 @@ export default {
           data.album_temp = JSON.parse(data.album_temp)
           this.contractDetail = data
           if (this.showFooter) {
-            this.setProcess_id(res)
+            this.$emit('setCookie')
+            this.getProcess_id(res.data.process_instance_id)
           }
         }
       })
     },
     setProcess_id (res) {
-      this.getProcess_id(res.data.process_instance_id)
+
+
       this.$emit('setCookie')
     },
     getProcess_id (PROCESS_ID) {
@@ -479,6 +534,7 @@ export default {
           let data = res.data;
           this.complete.task_id = data.taskId
           this.complete.key_name = data.buttons.variableName || 'kf_approved'
+
         }
       })
     },
@@ -526,10 +582,10 @@ export default {
         return
       }
       let current = {
-        contract_type: this.tag_status,
-        contract_id: this.currentRow.contract_id,
-        house_name: this.currentRow.house_name,
-        contract_number: this.currentRow.contract_number,
+        contract_type: this.chooseTab,
+        contract_id: this.moduleData.contract_id,
+        house_name: this.moduleData.house_name,
+        contract_number: this.moduleData.contract_number,
         remark: this.dataRecord.content,
         receive_ids: this.dataRecord.receive_ids || this.contractDetail.sign_user_id || contractDetail.org_leader
       }
@@ -559,7 +615,7 @@ export default {
     handleContract (isTrue) {
       let params = {
         process_id: this.contractDetail.process_instance_id,
-        contract_type: this.tag_status,
+        contract_type: this.chooseTab,
         task_id: this.complete.task_id,
         data: {}
       }
@@ -574,6 +630,27 @@ export default {
           this.handleCloseDetail()
         }
       })
+    },
+    //资料不齐
+    handleGetRecord () {
+      this.dataRecord_visible = true;
+    },
+    handleCloseRecord () {
+      this.dataRecord_visible = false;
+    },
+    // 合同作废
+    handleRewrite () {
+      // this.contract_detail_visible = false
+      this.rewrite_info = {
+        contract_id: this.contractDetail.id,
+        contract_type: this.contractDetail.type,
+        album: this.contractDetail.album
+      }
+      this.rewrite_visible = true
+    },
+    // 取消合同作废
+    handleCancelRewrite () {
+      this.rewrite_visible = false
     },
   }
 }

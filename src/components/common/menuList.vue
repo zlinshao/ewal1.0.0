@@ -3,7 +3,7 @@
     <div :class="{'dialogVisible': backdrop && dialogVisible}" @click="dialogVisible = false"></div>
     <div class="justify-around list" :class="{'menuList':routeAnimation,'backdrop': backdrop,'hover':dialogVisible}">
       <div v-for="(item,index) in list.data" class="flex-center menu" :class="['menu-' + (index + 1)]">
-        <div class="childrenMenu flex-center" @click="moduleRouter(item.url)">
+        <div class="flex-center childrenMenu" @click="moduleRouter(item.url)">
           <span class="writingMode">{{item.title}}</span>
         </div>
       </div>

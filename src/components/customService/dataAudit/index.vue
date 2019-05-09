@@ -71,17 +71,18 @@
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
     <!--合同详情-->
-    <lj-dialog :visible="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
+    <!-- <lj-dialog :visible="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container" v-if='contract_detail_visible && contractDetail'>
         <div class="dialog_header">
           <h3>合同详情</h3>
           <div class="header_right">
             <span>{{contractDetail.contract_number}}</span>
+            <span style='margin-left:20px;margin-right:60px;'>{{currentRow.type}}</span>
             <el-button id='active-danger' class='el-button-active' size='mini' @click='handleRewrite' style='margin-left:10px'>作废重签</el-button>
           </div>
         </div>
         <div class="dialog_main contract_detail" v-if='this.contractDetail'>
-          <!---房屋信息-->
+
           <p class='main_tit noMarginTop'>房屋信息</p>
           <div class="common_info">
             <el-form label-width="120px">
@@ -125,7 +126,6 @@
             </el-form>
           </div>
 
-          <!--合同信息-->
           <p class='main_tit'>合同信息</p>
           <div class="common_info">
             <el-form label-width="120px">
@@ -375,8 +375,7 @@
                   <div class='el_check_box'>
                     <div class='main_tit'> {{tit}}</div>
                     <div style="width: 90%;text-align: left">
-                      <img v-for="tmp in contractDetail.album[key]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
-                        :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+                      <Ljupload size='40' :value="contractDetail.album_temp[key]" disabled=true :download='false'></Ljupload>
                     </div>
                   </div>
                 </template>
@@ -417,13 +416,15 @@
           <el-button id='active-danger' class='el-button-active' size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>
         </div>
       </div>
-    </lj-dialog>
-
+    </lj-dialog> -->
+    <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :chooseTab='tag_status' :showFooter='true'
+      :showRelated='false' :disabled='contract_disable' :showData='contract_showData' @close="handleCloseDetail"
+      @setCookie='cookieChange' />
     <!--资料不全 开单人选择-->
-    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
+    <!-- <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan> -->
 
     <!--资料不齐记录-->
-    <lj-dialog :visible="dataRecord_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseRecord">
+    <!-- <lj-dialog :visible="dataRecord_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseRecord">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>资料不齐记录</h3>
@@ -446,10 +447,10 @@
           <div v-else>暂无记录</div>
         </div>
       </div>
-    </lj-dialog>
+    </lj-dialog> -->
 
     <!-- 作废重签 -->
-    <InvalidDialog :visible='rewrite_visible' :moduleData='rewrite_info' @close='handleCancelRewrite' />
+    <!-- <InvalidDialog :visible='rewrite_visible' :moduleData='rewrite_info' @close='handleCancelRewrite' /> -->
 
     <!--menu-->
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -464,6 +465,8 @@ import LjDialog from '../../common/lj-dialog.vue';
 import InvalidDialog from '../components/invalid-dialog';
 import { dataAuditSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
+import Ljupload from '../../common/lightweightComponents/lj-upload';
+import contractDetail from '../components/contract_detail';
 
 export default {
   name: 'index',
@@ -472,6 +475,8 @@ export default {
     StaffOrgan,
     MenuList,
     LjDialog,
+    Ljupload,
+    contractDetail,
     InvalidDialog
   },
   data () {
@@ -508,89 +513,98 @@ export default {
       //合同详情
       contract_detail_visible: false,
       contractDetail: null,
-
+      // contract_disable: true,
       staffModule: false,//显示人员选择
       organData: {
         num: ''
       },
 
       //附件
-      polishing_data: [
-        {
-          identity_photo: '证件照片',
-          bank_photo: '银行卡照片',
-          photo: '合同照片',
-          water_photo: '水表照片',
-          electricity_photo: '电表照片',
-          gas_photo: '气表照片',
-          checkin_photo: '交接单照片',
-          auth_photo: '委托书照片',
-          deposit_photo: '押金照片',
-          promise: '承诺书照片',
-          property_photo: '房产证照片',
-          water_card_photo: '水卡照片',
-          electricity_card_photo: '电卡照片',
-          gas_card_photo: '气卡照片',
-        },
-        {
-          checkin_photo: '交接单照片',
-          certificate_photo: '截图凭证',
-          deposit_photo: '押金收条',
-          identity_photo: '证件照片',
-          photo: '合同照片',
-          bank_photo: '银行卡照片',
-          water_photo: '水表照片',
-          electricity_photo: '电表照片',
-          gas_photo: '气表照片'
-        }
-      ],
+      // polishing_data: [
+      //   {
+      //     identity_photo: '证件照片',
+      //     bank_photo: '银行卡照片',
+      //     photo: '合同照片',
+      //     water_photo: '水表照片',
+      //     electricity_photo: '电表照片',
+      //     gas_photo: '气表照片',
+      //     checkin_photo: '交接单照片',
+      //     auth_photo: '委托书照片',
+      //     deposit_photo: '押金照片',
+      //     promise: '承诺书照片',
+      //     property_photo: '房产证照片',
+      //     water_card_photo: '水卡照片',
+      //     electricity_card_photo: '电卡照片',
+      //     gas_card_photo: '气卡照片',
+      //   },
+      //   {
+      //     checkin_photo: '交接单照片',
+      //     certificate_photo: '截图凭证',
+      //     deposit_photo: '押金收条',
+      //     identity_photo: '证件照片',
+      //     photo: '合同照片',
+      //     bank_photo: '银行卡照片',
+      //     water_photo: '水表照片',
+      //     electricity_photo: '电表照片',
+      //     gas_photo: '气表照片'
+      //   }
+      // ],
       //资料不齐记录
-      dataRecord_visible: false,
-      dataRecord: {
-        send_name: '',
-        send_id: [],
-        content: ''
-      },
-      rewrite_data: [],
+      // dataRecord_visible: false,
+      // dataRecord: {
+      //   send_name: '',
+      //   send_id: [],
+      //   content: ''
+      // },
+      // rewrite_data: [],
       // 合同作废重签
-      rewrite_visible: false,
-      rewrite_note: '',
-      rewrite_info: {
-        contract_id: null,
-        contract_type: null,
-        album: []
-      },
+      // rewrite_visible: false,
+      // rewrite_note: '',
+      // rewrite_info: {
+      //   contract_id: null,
+      //   contract_type: null,
+      //   album: []
+      // },
       // params {
       //   limit: 10,
       //   page: 1,
       // },
-      payArr: ['水费', '电费', '燃气费', '物业费', '网络费', '其他'],
+      // payArr: ['水费', '电费', '燃气费', '物业费', '网络费', '其他'],
       currentPage: 1,
       cookieArr: {},
       market_server: globalConfig.market_server,
-      complete: {
-        task_id: '',
-        key_name: ''
-      }
+      // complete: {
+      //   task_id: '',
+      //   key_name: ''
+      // },
+      currentRow: null
     }
   },
   created () {
     this.getDateList()
     this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
   },
-  watch: {
-    rewrite_data (newVal) {
-      this.dataRecord.content = ''
-      let data = this.polishing_data[this.tag_status - 1]
-      newVal.forEach((item, index) => {
-        if (index != 0) {
-          this.dataRecord.content += ','
-        }
-        this.dataRecord.content += data[item]
-      })
-      this.dataRecord.content += '缺失;'
+  computed: {
+    contract_disable () {
+      return this.chooseTab == 3
+    },
+    contract_showData () {
+      return this.chooseTab != 3
     }
   },
+  // watch: {
+  //   rewrite_data (newVal) {
+  //     this.dataRecord.content = ''
+  //     let data = this.polishing_data[this.tag_status - 1]
+  //     newVal.forEach((item, index) => {
+  //       if (index != 0) {
+  //         this.dataRecord.content += ','
+  //       }
+  //       this.dataRecord.content += data[item]
+  //     })
+  //     this.dataRecord.content += '缺失;'
+  //   }
+  // },
   methods: {
     // 客服入口
     moduleList () {
@@ -605,6 +619,12 @@ export default {
         if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
       }
       return "";
+    },
+    cookieChange () {
+      this.$set(this.cookieArr, this.currentRow.contract_id, new Date().getTime())
+      this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
+      this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
+
     },
     setCookie (cname, cvalue, exdays) {
       var d = new Date();
@@ -690,144 +710,144 @@ export default {
     },
     //双击 合同详情
     handleGetDetail (row) {
-      this.showLoading(true);
+      // this.showLoading(true);
       this.currentRow = row
+      this.contract_detail_visible = true;
+      // this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_status}/${row.contract_id}`).then(res => {
+      //   if (res.code === 200) {
+      //     this.showLoading(false);
+      //     let data = res.data;
+      //     if (data.house_extension) {
+      //       if (data.house_extension.community && data.house_extension.community != 'null') {
+      //         data.house_extension.community = JSON.parse(data.house_extension.community)
+      //       } else {
+      //         data.house_extension.community = null
+      //       }
 
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.tag_status}/${row.contract_id}`).then(res => {
-        if (res.code === 200) {
-          this.showLoading(false);
-          let data = res.data;
-          if (data.house_extension) {
-            if (data.house_extension.community && data.house_extension.community != 'null') {
-              data.house_extension.community = JSON.parse(data.house_extension.community)
-            } else {
-              data.house_extension.community = null
-            }
+      //       if (data.house_extension.cards && data.house_extension.cards != 'null') {
+      //         data.house_extension.cards = JSON.parse(data.house_extension.cards)
+      //       } else {
+      //         data.house_extension.cards = null
+      //       }
+      //     }
+      //     this.contractDetail = data
+      //     this.contract_detail_visible = true;
 
-            if (data.house_extension.cards && data.house_extension.cards != 'null') {
-              data.house_extension.cards = JSON.parse(data.house_extension.cards)
-            } else {
-              data.house_extension.cards = null
-            }
-          }
-          this.contractDetail = data
-          this.contract_detail_visible = true;
-
-          this.getProcess_id(res.data.process_instance_id)
-          this.$set(this.cookieArr, row.contract_id, new Date().getTime())
-          this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
-          this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
-        }
-      })
+      //     this.getProcess_id(res.data.process_instance_id)
+      //     this.$set(this.cookieArr, row.contract_id, new Date().getTime())
+      //     this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
+      //     this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
+      //   }
+      // })
     },
-    getProcess_id (PROCESS_ID) {
-      this.$http.get(this.market_server + `v1.0/market/contract/kf-check-button?process_id=${PROCESS_ID}`).then(res => {
-        if (res.code === 200) {
-          let data = res.data;
-          this.complete.task_id = data.taskId
-          this.complete.key_name = data.buttons.variableName || 'kf_approved'
-        }
-      })
-    },
+    // getProcess_id (PROCESS_ID) {
+    //   this.$http.get(this.market_server + `v1.0/market/contract/kf-check-button?process_id=${PROCESS_ID}`).then(res => {
+    //     if (res.code === 200) {
+    //       let data = res.data;
+    //       this.complete.task_id = data.taskId
+    //       this.complete.key_name = data.buttons.variableName || 'kf_approved'
+    //     }
+    //   })
+    // },
     // 关闭详情
     handleCloseDetail () {
       this.contract_detail_visible = false
-      this.contractDetail = null
+      // this.contractDetail = null
       this.currentRow = null
     },
     // 合同通过 驳回
-    handleContract (isTrue) {
-      let params = {
-        process_id: this.contractDetail.process_instance_id,
-        contract_type: this.tag_status,
-        task_id: this.complete.task_id,
-        data: {}
-      }
-      params.data[this.complete.key_name] = isTrue
-      this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
-        this.$LjNotify('success', {
-          title: '提示',
-          message: res.message
-        });
+    // handleContract (isTrue) {
+    //   let params = {
+    //     process_id: this.contractDetail.process_instance_id,
+    //     contract_type: this.tag_status,
+    //     task_id: this.complete.task_id,
+    //     data: {}
+    //   }
+    //   params.data[this.complete.key_name] = isTrue
+    //   this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
+    //     this.$LjNotify('success', {
+    //       title: '提示',
+    //       message: res.message
+    //     });
 
-        if (res.code === 200) {
-          this.handleCloseDetail()
-        }
-      })
-    },
+    //     if (res.code === 200) {
+    //       this.handleCloseDetail()
+    //     }
+    //   })
+    // },
     //footer
     handleCurrentChange (val) {
       this.currentPage = val
       this.getDateList()
     },
     //选择人员
-    organSearch () {
-      this.staffModule = true
-    },
+    // organSearch () {
+    //   this.staffModule = true
+    // },
     // 关闭 选择人员
-    hiddenOrgan (ids, names, arr) {
-      this.staffModule = false;
-      if (ids !== 'close') {
-        this.dataRecord.send_name = names
-        this.dataRecord.send_id = arr
-      }
-    },
+    // hiddenOrgan (ids, names, arr) {
+    //   this.staffModule = false;
+    //   if (ids !== 'close') {
+    //     this.dataRecord.send_name = names
+    //     this.dataRecord.send_id = arr
+    //   }
+    // },
     // 发送不齐记录
-    handlePostRecord () {
-      if (!this.dataRecord.content) {
-        this.$LjNotify('warning', {
-          title: '提示',
-          message: '不齐内容未选择'
-        });
-        return
-      }
-      let current = {
-        contract_type: this.tag_status,
-        contract_id: this.currentRow.contract_id,
-        house_name: this.currentRow.house_name,
-        contract_number: this.currentRow.contract_number,
-        remark: this.dataRecord.content,
-        receive_ids: this.dataRecord.receive_ids || this.contractDetail.sign_user_id || contractDetail.org_leader
-      }
+    // handlePostRecord () {
+    //   if (!this.dataRecord.content) {
+    //     this.$LjNotify('warning', {
+    //       title: '提示',
+    //       message: '不齐内容未选择'
+    //     });
+    //     return
+    //   }
+    //   let current = {
+    //     contract_type: this.tag_status,
+    //     contract_id: this.currentRow.contract_id,
+    //     house_name: this.currentRow.house_name,
+    //     contract_number: this.currentRow.contract_number,
+    //     remark: this.dataRecord.content,
+    //     receive_ids: this.dataRecord.receive_ids || this.contractDetail.sign_user_id || contractDetail.org_leader
+    //   }
 
-      this.$http.post(this.market_server + `v1.0/market/contract/send-complete-data`, current).then(res => {
+    //   this.$http.post(this.market_server + `v1.0/market/contract/send-complete-data`, current).then(res => {
 
-        let warning = null
-        if (res.code == 200) {
-          warning = '发送成功'
-          this.rewrite_data = []
-        } else {
-          warning = '发送失败'
-        }
-        this.$LjNotify('success', {
-          title: '提示',
-          message: warning
-        });
+    //     let warning = null
+    //     if (res.code == 200) {
+    //       warning = '发送成功'
+    //       this.rewrite_data = []
+    //     } else {
+    //       warning = '发送失败'
+    //     }
+    //     this.$LjNotify('success', {
+    //       title: '提示',
+    //       message: warning
+    //     });
 
-      })
+    //   })
 
-    },
+    // },
     //资料不齐
-    handleGetRecord () {
-      this.dataRecord_visible = true;
-    },
-    handleCloseRecord () {
-      this.dataRecord_visible = false;
-    },
+    // handleGetRecord () {
+    //   this.dataRecord_visible = true;
+    // },
+    // handleCloseRecord () {
+    //   this.dataRecord_visible = false;
+    // },
     // 合同作废
-    handleRewrite () {
-      // this.contract_detail_visible = false
-      this.rewrite_info = {
-        contract_id: this.contractDetail.id,
-        contract_type: this.contractDetail.type,
-        album: this.contractDetail.album
-      }
-      this.rewrite_visible = true
-    },
-    // 取消合同作废
-    handleCancelRewrite () {
-      this.rewrite_visible = false
-    },
+    // handleRewrite () {
+    //   // this.contract_detail_visible = false
+    //   this.rewrite_info = {
+    //     contract_id: this.contractDetail.id,
+    //     contract_type: this.contractDetail.type,
+    //     album: this.contractDetail.album
+    //   }
+    //   this.rewrite_visible = true
+    // },
+    // // 取消合同作废
+    // handleCancelRewrite () {
+    //   this.rewrite_visible = false
+    // },
   }
 }
 </script>
