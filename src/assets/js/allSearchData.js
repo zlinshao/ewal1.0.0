@@ -555,7 +555,9 @@ export const questionnaireSearch = {
 
 //库房总览
 export const overViewSearch = {
-  status: 'overViewSearch'
+  status: 'overViewSearch',
+  placeholder: '请输入物品名称',
+  keywords: 'search',
 }
 
 //借用领用

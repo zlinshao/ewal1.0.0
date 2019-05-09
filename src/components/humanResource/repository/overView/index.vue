@@ -846,7 +846,7 @@
             params: {
               search: '',
               page: 1,
-              limit: 5,
+              limit: 9,
             },
             tableData: [],
             chooseRowIds: [],
@@ -1119,8 +1119,7 @@
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          // debugger
-          //this.params = val;
+          this.tableSettingData.repository.params.search = val.search;
           this.getRepositoryList();
         },
         deep: true
@@ -1370,7 +1369,6 @@
               this.add_category_form_tip.label = '采购源';
               break;
           }
-          //debugger
           this.add_category_visible = true;
           this.add_category_form = row;
         }
@@ -1378,7 +1376,6 @@
 
       //编辑分类
       editCategory() {
-        debugger
         this.$http.put(`${this.url}eam/category/${this.add_category_form.id}`,this.add_category_form).then(res=> {
           if(res.code.endsWith('0')) {
             this.$LjNotify('success',{
@@ -1405,7 +1402,6 @@
       //编辑物品
       editGoods() {
         this.$http.put(`${this.url}eam/category/${this.add_goods_form.id}`, this.add_goods_form).then(res => {
-          debugger
           if (res.code.endsWith('0')) {
             this.$LjNotify('success', {
               title: '成功',
@@ -1590,7 +1586,6 @@
 
       //获取报废表格详情
       getUselessList(item) {
-        debugger
         this.currentTable = 'useless';
         this.tableSettingData[this.currentTable].table_dialog_visible = true;
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
