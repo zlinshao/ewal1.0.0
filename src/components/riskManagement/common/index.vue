@@ -16,7 +16,7 @@
       </div>
       <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}">
         <div>
-          <div class="marketRisk-list">
+          <div class="marketRisk-list" v-if='gradeChildrenData.length > 0'>
             <div class="marketRisk-list-info flex-center" v-for="(item,index) in gradeChildrenData">
               <!-- <div class="marketRisk-box flex-center" @click="routerLink('riskManagementDetail',{pre_name:item.name,pre_id:item.id,pre_data:gradeChildrenData})"> -->
               <div class="marketRisk-box flex-center" @click="jumpNewWindow(item)">
@@ -24,6 +24,7 @@
               </div>
             </div>
           </div>
+          <p class='nothing_mess' v-else style='width:100%;text-align:center;font-size:14px;color:#999;line-height:100px;'>暂无数据</p>
         </div>
       </div>
     </div>

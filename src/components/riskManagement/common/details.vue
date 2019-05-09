@@ -11,21 +11,24 @@
           <div class="InternalRegulations-info">
             <div class="right-info flex-center">
               <div class="scroll_bar">
-                <div v-for="(item,index) in classify_document" class="right-info-list flex-center">
-                  <div class="right-info-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
-                    <p class="flex-center">
-                      <span v-show="seen&&index===current">
-                        <i @click.stop="openEdit(item)">编辑</i>
-                        <i @click.stop="openDel(item)">删除</i>
-                      </span>
-                      <a class="word_icon" @click="openFile(item.file_id[0].uri)">
-                      </a>
+                <template v-if='classify_document.length >0'>
+                  <div v-for="(item,index) in classify_document" class="right-info-list flex-center">
+                    <div class="right-info-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
+                      <p class="flex-center">
+                        <span v-show="seen&&index===current">
+                          <i @click.stop="openEdit(item)">编辑</i>
+                          <i @click.stop="openDel(item)">删除</i>
+                        </span>
+                        <a class="word_icon" @click="openFile(item.file_id[0].uri)">
+                        </a>
 
-                    </p>
-                    <p><span>{{item.name}}</span></p>
-                    <p><span>{{item.created_at}}</span></p>
+                      </p>
+                      <p><span>{{item.name}}</span></p>
+                      <p><span>{{item.created_at}}</span></p>
+                    </div>
                   </div>
-                </div>
+                </template>
+                <p class='nothing_mess' v-else style='width:100%;text-align:center;font-size:14px;color:#999;'>暂无数据</p>
               </div>
               <div class="bg-img"></div>
             </div>
@@ -54,20 +57,23 @@
             </div>
             <div class="right-info flex-center">
               <div class="scroll_bar">
-                <div v-for="(item,index) in classify_document" class="right-info-list flex-center">
-                  <div class="right-info-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
-                    <p class="flex-center">
-                      <span v-show="seen&&index===current">
-                        <i @click.stop="openEdit(item)">编辑</i>
-                        <i @click.stop="openDel(item)">删除</i>
-                      </span>
-                      <a class="word_icon" @click="openFile(item.file_id[0].uri)"></a>
+                <template v-if='classify_document.length >0'>
+                  <div v-for="(item,index) in classify_document" class="right-info-list flex-center">
+                    <div class="right-info-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
+                      <p class="flex-center">
+                        <span v-show="seen&&index===current">
+                          <i @click.stop="openEdit(item)">编辑</i>
+                          <i @click.stop="openDel(item)">删除</i>
+                        </span>
+                        <a class="word_icon" @click="openFile(item.file_id[0].uri)"></a>
 
-                    </p>
-                    <p><span>{{item.name}}</span></p>
-                    <p><span>{{item.created_at}}</span></p>
+                      </p>
+                      <p><span>{{item.name}}</span></p>
+                      <p><span>{{item.created_at}}</span></p>
+                    </div>
                   </div>
-                </div>
+                </template>
+                <p class='nothing_mess' v-else style='width:100%;text-align:center;font-size:14px;color:#999;'>暂无数据</p>
               </div>
               <div class="bg-img"></div>
             </div>
@@ -113,7 +119,7 @@
           <h3>删除</h3>
         </div>
         <div class="dialog_main">
-          <div class="unUse-txt">确定删除该讲师吗？</div>
+          <div class="unUse-txt">确定删除该文件吗？</div>
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="delOk">确定</el-button>
