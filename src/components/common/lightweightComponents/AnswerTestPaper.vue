@@ -137,7 +137,6 @@ export default {
 
     examList: {
       handler (val, oldVal) {
-        debugger
         if (val && Object.keys(val).length>0) {
           _.forEach(val, (value, key) => {
             _.forEach(value, (subValue) => {
@@ -189,7 +188,6 @@ export default {
   methods: {
     //渲染考试/问卷
     renderData () {
-      debugger
       this.exam_total_score = 0;
       this.exam_category_list = {
         single: {

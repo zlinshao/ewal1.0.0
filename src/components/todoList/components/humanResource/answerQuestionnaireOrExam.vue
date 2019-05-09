@@ -15,6 +15,7 @@
     },
     data() {
       return {
+        url:globalConfig.humanResource_server,
         test_paper_visible: false,
         exam_data: {},
         examList:[],
@@ -30,6 +31,7 @@
           if (val) {//先请求接口 请求完成后打开页面
             //console.log(this.todo_list_current_selection);
             let item = this.todo_list_current_selection;
+            let task_id = this.todo_list_current_selection.id;
             this.paper_params.title = item.name;
 
             let url = _.find(item.variables,{name:'detail_request_url'})?.value||null;
@@ -51,6 +53,11 @@
                   msg:res.msg,
                 });
                 this.$store.dispatch('change_humanResource_answer_test_paper_visible');
+                debugger
+                this.$http.put(`${this.url}train/exam/task/${task_id}`).then(res=> {
+                  debugger
+                  this.$store.dispatch('change_refresh_todo_list');
+                });
                 return;
               }
 
