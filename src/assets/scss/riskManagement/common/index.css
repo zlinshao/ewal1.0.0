@@ -191,7 +191,7 @@
     #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info {
       width: 100%;
       height: 100%;
-      background: #F8F8F8;
+      background: #f8f8f8;
       position: relative; }
       #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div {
         z-index: 110;
@@ -221,7 +221,7 @@
             background: #ffffff;
             position: relative; }
             #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child:hover {
-              border: 1px solid #CF2E33; }
+              border: 1px solid #cf2e33; }
             #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span {
               position: absolute;
               top: -30px;
@@ -229,7 +229,7 @@
               display: inline-block;
               height: 30px;
               line-height: 30px;
-              background: #CF2E33;
+              background: #cf2e33;
               border-radius: 5px; }
               #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span i {
                 font-size: 14px;
@@ -240,11 +240,11 @@
                 line-height: 20px;
                 color: #ffffff; }
                 #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span i:hover {
-                  color: #CF2E33; }
+                  color: #cf2e33; }
           #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:nth-child(2) {
-            color: #7B7B7B; }
+            color: #7b7b7b; }
           #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:last-child {
-            color: #BDBDBD; }
+            color: #bdbdbd; }
       #theme_name #riskDetails > div .mainList .InternalRegulations-info .right-info .bg-img {
         position: absolute;
         top: 50%;
@@ -252,14 +252,19 @@
         transform: translate(-50%, -50%);
         width: 360px;
         height: 360px;
-        z-index: 11; }
+        display: block;
+        z-index: 11;
+        text-align: center !important;
+        line-height: 360px;
+        font-size: 32px;
+        color: #dfdfdf; }
     #theme_name #riskDetails > div .mainList .InternalRegulations-info .add-icons {
       position: absolute;
       top: 30px;
       right: 130px;
       width: 30px;
       height: 30px;
-      background: #CF2E33;
+      background: #cf2e33;
       color: #ffffff;
       font-size: 30px;
       border-radius: 6px;
@@ -281,7 +286,7 @@
       height: 700px;
       padding-left: 50px;
       margin-right: 20px;
-      background: #F8F8F8; }
+      background: #f8f8f8; }
       #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .left-info div {
         width: 100%;
         height: 640px; }
@@ -304,7 +309,7 @@
           #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .left-info div p span:first-child {
             width: 40px;
             height: 40px;
-            border: 1px solid #CF2E33;
+            border: 1px solid #cf2e33;
             transform: rotate(45deg);
             margin-right: 36px; }
             #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .left-info div p span:first-child i {
@@ -314,15 +319,15 @@
               line-height: 40px;
               transform: rotate(-45deg); }
           #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .left-info div p:hover span:first-child {
-            background: #CF2E33; }
+            background: #cf2e33; }
             #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .left-info div p:hover span:first-child i {
-              color: #FFFFFF; }
+              color: #ffffff; }
           #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .left-info div p:hover span:last-child i {
-            color: #CF2E33; }
+            color: #cf2e33; }
     #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .right-info {
       width: 100%;
       height: 700px;
-      background: #F8F8F8;
+      background: #f8f8f8;
       position: relative; }
       #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .right-info > div {
         z-index: 110;
@@ -352,7 +357,7 @@
             background: #ffffff;
             position: relative; }
             #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child:hover {
-              border: 1px solid #CF2E33; }
+              border: 1px solid #cf2e33; }
             #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span {
               position: absolute;
               top: -30px;
@@ -360,7 +365,7 @@
               display: inline-block;
               height: 30px;
               line-height: 30px;
-              background: #CF2E33;
+              background: #cf2e33;
               border-radius: 5px; }
               #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span i {
                 font-size: 14px;
@@ -371,11 +376,11 @@
                 line-height: 20px;
                 color: #ffffff; }
                 #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:first-child span i:hover {
-                  color: #CF2E33; }
+                  color: #cf2e33; }
           #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:nth-child(2) {
-            color: #7B7B7B; }
+            color: #7b7b7b; }
           #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .right-info > div .right-info-list .right-info-box p:last-child {
-            color: #BDBDBD; }
+            color: #bdbdbd; }
       #theme_name #InternalRegulations > div .mainList .InternalRegulations-info .right-info .bg-img {
         position: absolute;
         top: 50%;
@@ -390,7 +395,7 @@
       right: 130px;
       width: 30px;
       height: 30px;
-      background: #CF2E33;
+      background: #cf2e33;
       color: #ffffff;
       font-size: 30px;
       border-radius: 6px;

@@ -191,6 +191,9 @@
     width: 190px;
     padding-right: 30px; }
   #interview_dialog_list #lj_dialog #interview_form .dialog_main .interview_dialog_form .interview_dialog_form_row > span, #interview_dialog_list #lj_dialog #interview_form_result .dialog_main .interview_dialog_form .interview_dialog_form_row > span {
+    display: inline-block;
+    width: 260px;
+    text-align: left;
     font-size: 14px;
     padding: 0 50px;
     color: #000000; }

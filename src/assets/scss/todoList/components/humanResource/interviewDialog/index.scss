@@ -25,6 +25,9 @@
               padding-right: 30px;
             }
             > span {
+              display: inline-block;
+              width: 260px;
+              text-align: left;
               font-size: 14px;
               padding: 0 50px;
               color: $color000;

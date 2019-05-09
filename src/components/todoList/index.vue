@@ -324,6 +324,7 @@
                 obj.project = _.find(variables,{name:'position_name'})?.value||'-';
                 obj.date = _.find(variables,{name:'interview_time'})?.value||'-';
                 obj.user = _.find(variables,{name:'interview_name'})?.value||'-';
+                obj.platform = _.find(variables,{name:'platform'})?.value||'-';
                 break;
               /*罚款缴纳*/
               case 'HR-FinesPay':
