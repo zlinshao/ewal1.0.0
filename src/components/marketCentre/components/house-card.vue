@@ -7,8 +7,8 @@
               <div class="card" :class="['card_trans-' + item.id]" @dblclick.stop="handleOpenCard(item)">
                 <div class="photo">
                   <div class="picture">
-                    <!--<img class="picture" :src="item.url" alt="...">-->
-                    <img class="picture" src="./swipe1.jpg" alt="...">
+                    <img class="picture" :src="item.album_photo[0].uri" alt="..." v-if="item.album_photo && item.album_photo.length > 0">
+                    <img class="picture" v-else src="./swipe1.jpg" alt="...">
                   </div>
                   <div class="bg">
                     <div class="btn" @click.stop="handleOpenControl(item.id)">...</div>
