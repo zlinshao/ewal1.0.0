@@ -544,7 +544,7 @@
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          if(val) {
+          if (val) {
             this.getNoticeList(val);
           }
 
@@ -629,7 +629,6 @@
       },
 
 
-
       //发布公告
       publishNotice() {
         this.$refs['publishNoticeForm'].validate(valid => {
@@ -637,7 +636,7 @@
             let newForm = this.publish_notice_form;
             let isReturn = false;
             newForm.sanction_info = _.forEach(newForm.sanction_info, (o, index) => {
-              if(o.user_id.constructor===Array) {
+              if (o.user_id.constructor === Array) {
                 o.user_id = o.user_id.join();
               }
               if (index != 0) {
@@ -650,15 +649,15 @@
               } else {
                 if (!o.user_id && !o.sanction_type && !o.money) {
                   delete newForm.sanction_info;
-                } else if(o.user_id && o.sanction_type && o.money){
-                }else {
+                } else if (o.user_id && o.sanction_type && o.money) {
+                } else {
                   isReturn = true;
                 }
-               /*if((o.user_id==null||o.user_id?.length==0)&&o.money==null&&o.sanction_type==null) {
-                 delete newForm.sanction_info;
-               } else if(o.user_id) {
+                /*if((o.user_id==null||o.user_id?.length==0)&&o.money==null&&o.sanction_type==null) {
+                  delete newForm.sanction_info;
+                } else if(o.user_id) {
 
-               }*/
+                }*/
               }
 
             });
@@ -669,8 +668,8 @@
               });
               return;
             }
-            if(newForm.sanction_info&&newForm.sanction_info.length==1) {
-              if(!newForm.sanction_info[0].user_id||!newForm.sanction_info[0].money) {
+            if (newForm.sanction_info && newForm.sanction_info.length == 1) {
+              if (!newForm.sanction_info[0].user_id || !newForm.sanction_info[0].money) {
                 delete newForm.sanction_info;
               }
             }
@@ -708,8 +707,8 @@
             _.forEach(mData.sanction_info, (o) => {
               o.user_id = [o.user_id];
             });
-            if(!mData.sanction_info || mData.sanction_info.length==0) {
-              mData.sanction_info =  [
+            if (!mData.sanction_info || mData.sanction_info.length == 0) {
+              mData.sanction_info = [
                 {
                   user_id: [],
                   sanction_type: null,
@@ -737,15 +736,15 @@
                 o.user_id = parseInt(o.user_id.join());
               }
             });*/
-            _.forEach(newForm.sanction_info,(o)=> {
-              if(o.user_id.constructor===Array) {
+            _.forEach(newForm.sanction_info, (o) => {
+              if (o.user_id.constructor === Array) {
                 o.user_id = o.user_id.join();
               }
             });
 
             let isReturn = false;
             newForm.sanction_info = _.forEach(newForm.sanction_info, (o, index) => {
-              if(o.user_id.constructor===Array) {
+              if (o.user_id.constructor === Array) {
                 o.user_id = o.user_id.join();
               }
               if (index != 0) {
@@ -757,8 +756,8 @@
               } else {
                 if (!o.user_id && !o.sanction_type && !o.money) {
                   delete newForm.sanction_info;
-                } else if(o.user_id && o.sanction_type && o.money){
-                }else {
+                } else if (o.user_id && o.sanction_type && o.money) {
+                } else {
                   isReturn = true;
                 }
                 /*if((o.user_id==null||o.user_id?.length==0)&&o.money==null&&o.sanction_type==null) {
@@ -776,12 +775,12 @@
               });
               return;
             }
-            if(newForm.sanction_info&&newForm.sanction_info.length==1) {
-              if(!newForm.sanction_info[0].user_id||!newForm.sanction_info[0].money) {
+            if (newForm.sanction_info && newForm.sanction_info.length == 1) {
+              if (!newForm.sanction_info[0].user_id || !newForm.sanction_info[0].money) {
                 delete newForm.sanction_info;
               }
             }
-            if(!newForm.sanction_info) {
+            if (!newForm.sanction_info) {
               newForm.sanction_info = [];
             }
 
@@ -864,6 +863,17 @@
       getNoticeSingleForm(row) {
         this.notice_detail_dialog_visible = true;
         this.notice_detail_table_data = [];
+        this.notice_detail_form = {
+          type_id: '',//公告类型
+          title: '',//标题
+          send_at: '',//发布时间
+          content: '',//正文
+          attachment: [],
+          send_scope: {
+            org_id: [],
+            user_id: [],
+          },
+        };
         let id = row.id;
         this.$http.get(`${this.url}announcement/announcement/${id}`).then(res => {
           if (res.code.endsWith('0')) {
