@@ -67,6 +67,7 @@ export default {
     Vue.prototype.todoListVisibleTrigger = function (val) {
       if (val && val.onClick) {
         this.$store.dispatch('save_todo_list_current_selection',val);
+        Vue.prototype.$todo_list_current_selection = val;
         this.$store.dispatch('change_' + val.onClick + '_visible');
       }
     }

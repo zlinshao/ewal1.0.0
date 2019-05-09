@@ -1,6 +1,7 @@
 const todo = {
   state: {
     todo_list_visible: false, //待办事项显示/隐藏
+    refresh_todo_list:false,//刷新todolist
     todo_list_badge_count:0,//待办 标记个数
     // todo_list_toolbar: {
     //   customerService: [
@@ -190,6 +191,10 @@ const todo = {
     CHANGE_TODO_LIST_VISIBLE(state) {
       state.todo_list_visible = !state.todo_list_visible
     },
+    //刷新todolist
+    CHANGE_REFRESH_TODO_LIST(state) {
+      state.refresh_todo_list = !state.refresh_todo_list
+    },
     CHANGE_TODO_LIST_BADGE_COUNT(state,count) {
       state.todo_list_badge_count = count;
     },
@@ -230,6 +235,9 @@ const todo = {
     //改变待办事项显示隐藏
     change_todo_list_visible({ commit }, status) {
       commit('CHANGE_TODO_LIST_VISIBLE', status)
+    },
+    change_refresh_todo_list({commit},status) {
+      commit('CHANGE_REFRESH_TODO_LIST');
     },
 
     change_todo_list_badge_count({ commit }, status) {

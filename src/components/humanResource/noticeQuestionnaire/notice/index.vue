@@ -370,6 +370,10 @@
                   align="center"
                   prop="pay_type"
                   label="缴纳方式">
+                  <template slot-scope="scope">
+                    <div v-if="scope.row.pay_type==1">工资扣款</div>
+                    <div v-else>电子支付</div>
+                  </template>
                 </el-table-column>
                 <el-table-column
                   key="pay_status"
@@ -776,6 +780,9 @@
               if(!newForm.sanction_info[0].user_id||!newForm.sanction_info[0].money) {
                 delete newForm.sanction_info;
               }
+            }
+            if(!newForm.sanction_info) {
+              newForm.sanction_info = [];
             }
 
             let params = {

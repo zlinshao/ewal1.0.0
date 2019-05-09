@@ -92,6 +92,9 @@
       todo_list_visible() {
         return this.$store.state.todo.todo_list_visible;
       },
+      refresh_todo_list() {
+        return this.$store.state.todo.refresh_todo_list;
+      },
       /*todo_list_toolbar () {
         return this.$store.state.todo.todo_list_toolbar;
       },*/
@@ -102,7 +105,13 @@
         return this.$store.state.todo.todo_list_current_selection;
       },
     },
-    watch: {},
+    watch: {
+      refresh_todo_list: {
+        handler(val,oldVal) {
+          this.getTodoListToolBar();
+        },
+      },
+    },
     data() {
       return {
         url: globalConfig.approval_sever,//待办接口
@@ -126,7 +135,7 @@
             count: 0,
           },
         ],
-        todo_list_container: [
+        /*todo_list_container: [
           {
             id: 1,
             name: '维修工单',
@@ -204,9 +213,9 @@
             project: '借用审批编号10086',
             onClick: 'humanResource_repository' //click事件控制lj-dialog显示隐藏
           }
-        ],
+        ],*/
 
-        /*todo_list_container: [],*/
+        todo_list_container: [],
       }
     },
     mounted() {

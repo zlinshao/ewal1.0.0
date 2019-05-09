@@ -31,7 +31,6 @@
       jsonArr: [Object, Array],
       disabled: [Boolean],
       clearable:{
-        required:[Boolean],
         default:true,
       },
       size: {//medium / small / mini
