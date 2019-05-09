@@ -138,28 +138,33 @@
           <h3>审核记录</h3>
         </div>
         <div class='dialog_main record_dialog'>
-          <div class='record_cell' v-for='i in 6' :key='i'>
+          <div class='record_cell' v-for='(item,index) in approval_list' :key='index'>
             <div class='record_cell_left'>
               <div class='record_status'>
-                <div class='circle circle1' v-if='i== 4'></div>
-                <div class='circle circle2' v-else-if='i== 5'></div>
+                <div class='circle circle1' v-if='item.name =="评论"'></div>
+                <div class='circle circle2' v-else-if='item.name =="报备"'></div>
                 <img v-else></img>
               </div>
 
               <div class='record_cell_mess'>
                 <p class='record_person'>
-                  菜刀
-                  <span class='agree' v-if='i == 2'>已同意</span>
-                  <span class='agree transfer' v-if='i == 3'>已转交</span>
-                  <span v-if='i == 4'>做了评论</span>
-                  <span v-if='i == 5'>修改了报备</span>
+                  {{item.userId}}
+                  <span class='agree' v-if='item.name=="审批"'>已{{item.result}}</span>
+                  <span class='agree transfer' v-if='item.name == "转交"'>已转交</span>
+                  <span v-if='item.name =="评论"'>做了评论</span>
+                  <span v-else-if='item.name =="报备"'>修改了报备</span>
                 </p>
-                <p class='record_message'>了哈哈哈</p>
+                <!-- 评论 -->
+                <template v-if='item.name =="评论"'>
+                  <p class='record_message'>{{JSON.parse(item.result).message}}</p>
+                  <Ljupload size='40' :value='JSON.parse(item.result).attachments' :download="false" disabled="false"></Ljupload>
+                </template>
+
               </div>
             </div>
             <div class='record_time'>
-              <p class='record_uptime'>03.07 18:23:00</p>
-              <p class='fre_time'>耗时20min</p>
+              <p class='record_uptime'>{{item.time}}</p>
+              <p class='fre_time' v-if='item.name=="审批"'>耗时{{item.duration | formDataMin}}min</p>
             </div>
           </div>
         </div>
@@ -245,7 +250,8 @@ export default {
       market_server: globalConfig.market_server,
       bulletin_type: '',
       relateions: {},
-      record_list: [],
+      record_list: [], // 评论信息
+      approval_list: [], //审核记录
       taskType: ['rtl_detail_request_url', 'ctl_detail_request_url'],
     }
   },
@@ -265,7 +271,11 @@ export default {
       deeper: true
     }
   },
-
+  filters: {
+    formDataMin (time) {
+      return parseInt(time / 1000 / 60)
+    }
+  },
   methods: {
     getDetailForm (params) {
       let url = params.bm_detail_request_url
@@ -446,7 +456,7 @@ export default {
     changeBtns_type (val) { // 查看评论信息
       this.comment_show_visible = !this.comment_show_visible
       if (this.comment_show_visible) {
-        this.$http.get(`${this.approval_sever}history/process-instances/1a5c950a-6f2c-11e9-b97c-76de95b6db95/comments`).then(res => {
+        this.$http.get(`${this.approval_sever}history/process-instances/${this.moduleData.id}/comments`).then(res => {
           this.record_list = res
         })
       }
@@ -467,19 +477,25 @@ export default {
         saveProcessInstanceId: true
       }
 
-      console.log(params)
-      this.$http.post(`${this.approval_sever}history/process-instances/1a5c950a-6f2c-11e9-b97c-76de95b6db95/comments`, params).then(res => {
+
+      this.$http.post(`${this.approval_sever}history/process-instances/${this.moduleData.id}/comments`, params).then(res => {
         console.log(res)
         this.comment_info = {
           message: null,
           attachments: []
         }
-
-        console.log(this.comment_info)
       })
     },
 
     handleRecord () {
+      this.$http.get(`${this.approval_sever}history/process-instances/${this.moduleData.id}/log`).then(res => {
+        console.log(res)
+        this.approval_list = res
+      }).catch(e => {
+        this.approval_list = []
+      })
+
+
       this.record_show_visible = true
     },
     handleCloseRecord () {
@@ -660,6 +676,7 @@ export default {
             margin-left: 20px;
             .record_person {
               font-size: 12px;
+              text-align: left;
               .agree {
                 display: inline-block;
                 width: 50px;
@@ -672,6 +689,7 @@ export default {
               }
             }
             .record_message {
+              text-align: left;
               margin-top: 10px;
               font-size: 12px;
               font-family: "jingdianxingshu";
@@ -679,8 +697,9 @@ export default {
           }
         }
         .record_time {
-          width: 100px;
+          width: 140px;
           .record_uptime {
+            white-space: nowrap;
             font-size: 12px;
           }
           .fre_time {

@@ -21,28 +21,29 @@
                 <i class='icons icons_per'></i>
                 <span>{{item.name}}</span>
               </div>
-              <i class='icons icons_deng'></i>
+              <i class='icons icons_deng' v-if='item.status == "超时"'></i>
             </div>
             <div class='cell_list'>
               <span class='cell_tit'>审核中</span>
-              <span class='cell_content cell_yellow'>{{item.count}}条</span>
+              <span class='cell_content cell_yellow'>{{item.count || 0}}条</span>
             </div>
             <div class='cell_list'>
               <span class='cell_tit'>平均审核时长</span>
-              <span class='cell_content cell_blue'>{{item.sumDuration}}min</span>
+              <span class='cell_content cell_blue'>{{item.durationAvg || 0}}min</span>
             </div>
             <div class='cell_list' v-if='current_status_type == 1'>
               <span class='cell_tit'>接收类型</span>
               <div class='cell_content cell_type'>
+
                 <span class='cell_blue'>{{item.typeName.join(',')}}</span>
-                <ul v-if='item.type.length > 1'>
+                <ul v-if='item.typeName.length > 1'>
                   <li v-for='(item,idx) in item.typeName' :key='idx'>{{item}}</li>
                 </ul>
               </div>
             </div>
             <div class='cell_list' v-if='current_status_type == 2'>
               <span class='cell_tit'>组长</span>
-              <span class='cell_content cell_blue'>{{item.assginee}}min</span>
+              <span class='cell_content cell_blue'>{{item.assginee || 0}}min</span>
             </div>
             <div class='cell_setting' v-if='current_status_type == 1'>
               <i class='icons_setting' @click='handleSetting(item,index)'></i>
@@ -117,7 +118,7 @@ export default {
         shening: 32,
         preTime: 8,
         type: [],
-        typeName: [],
+        typeName: ['收房'],
         suspend: true
       },
       {
@@ -125,7 +126,7 @@ export default {
         shening: '32条',
         preTime: '8min',
         type: [],
-        typeName: [],
+        typeName: ['收房'],
         suspend: false
       },
       {
@@ -155,14 +156,21 @@ export default {
       approval_sever: globalConfig.approval_sever
     }
   },
-  mounted () {
-    this.getApproval()
+
+  watch: {
+    visible (val) {
+      if (val) {
+        this.getApproval()
+      }
+    }
   },
   methods: {
     getApproval () {
       let key = this.current_status_type == 1 ? 'gkzx_approval' : 'pqjl_approval'
       this.$http.get(`${this.approval_sever}runtime/taskDashboard?taskDefinitionKey=${key}`).then(res => {
-        this.panelList = res
+        this.panelList = res || []
+      }).catch(err => {
+        this.panelList = []
       })
     },
     change_status_type (value) {
