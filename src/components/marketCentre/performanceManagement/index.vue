@@ -16,7 +16,7 @@
           </h2>
         </div>
         <div class="items-center listTopRight">
-          <el-button id="active-success" type="success" size="mini" style="width: 80px;margin-right: 20px" plain>导出</el-button>
+          <el-button id="active-success" type="success" size="mini" style="width: 80px;margin-right: 20px" plain @click="handleExport">导出</el-button>
           <div class="icons search" @click="openHigh"></div>
         </div>
       </div>
@@ -122,6 +122,7 @@
           achv_type: '',
           rent_staff_id: '',
           lord_ord_id: '',
+          export:0
         },
         real_achievement_all:'',
         overflow_all:'',
@@ -143,6 +144,14 @@
       handleCloseHigh(val) {
         console.log(val);
         this.highVisible = false;
+      },
+      handleExport(){
+        this.params.export=1;
+        this.$http.get('achv/achv/index',this.params,'arraybuffer').then((res) => {
+            if (!res) return;
+            this.$exportData(res);
+        });
+        this.params.export=0;
       },
       handleGetPerformanceList() {
         this.$http.get('achv/achv/index', this.params).then(res => {
