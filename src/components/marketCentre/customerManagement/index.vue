@@ -430,7 +430,7 @@
           },
           handleCloseHigh(val) {
             if (val !== 'close') {
-              console.log(val);
+              val.search = val.search.trim();
               this.params = Object.assign({},this.params,val);
               this.getCustomerList();
             }
