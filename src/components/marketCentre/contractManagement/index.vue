@@ -115,13 +115,13 @@
     </LjDialog>
 
     <!--资料补齐-->
-    <lj-dialog :visible="data_polishing_visible" :size="{width: 550 + 'px',height: 600 + 'px'}" @close="handleCancelPolishing">
+    <lj-dialog :visible="data_polishing_visible" :size="{width: 550 + 'px',height: 700 + 'px'}" @close="handleCancelPolishing">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>补齐资料</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form label-width="80px" class="showPadding">
+          <el-form label-width="100px" class="showPadding">
             <el-form-item label="房产证号">
               <el-input v-model="property_number" placeholder="请输入"></el-input>
             </el-form-item>
@@ -756,6 +756,29 @@ export default {
       })
     },
     handleConfirmPolishing () {
+      if (!this.property_number) {
+        this.$LjNotify('warning',{
+          title: '警告',
+          message: '请输入房产证号'
+        });
+        return false;
+      }
+      if (!this.mound_number) {
+        this.$LjNotify('warning',{
+          title: '警告',
+          message: '请输入丘号'
+        });
+        return false;
+      }
+      for (var key in this.polishing_params) {
+        if (!this.polishing_params[key] || this.polishing_params[key].length < 1) {
+          this.$LjNotify('warning',{
+            title: '警告',
+            message: '请完善上传文件'
+          });
+          return false;
+        }
+      }
       var form = new FormData();
       form.append('complete_content', JSON.stringify(this.polishing_params));
       console.log(this.polishing_params);
