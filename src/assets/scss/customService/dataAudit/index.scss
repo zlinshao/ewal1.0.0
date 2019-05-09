@@ -202,6 +202,7 @@
       @include flex('justify-start');
       @include flex('items-center');
       .main_tit {
+        min-width: 80px;
         margin: 0 10px 0 0;
       }
     }

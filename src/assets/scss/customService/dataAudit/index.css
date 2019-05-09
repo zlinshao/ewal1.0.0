@@ -365,6 +365,7 @@
   display: -webkit-flex;
   align-items: center; }
   #theme_name #dataAudit .el_check_box .main_tit {
+    min-width: 80px;
     margin: 0 10px 0 0; }
 
 #theme_name.theme1 #dataAudit .active-warning {

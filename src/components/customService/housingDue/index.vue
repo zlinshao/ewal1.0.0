@@ -134,329 +134,8 @@
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
     <!--合同详情-->
-    <lj-dialog :visible="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
-      <div class="dialog_container" v-if='contract_detail_visible'>
-        <div class="dialog_header">
-          <h3>合同详情</h3>
-          <div class="header_right" style='line-height:30px;'>{{contractDetail.contract_number}}</div>
-        </div>
-        <div class="dialog_main contract_detail">
-          <!---房屋信息-->
-          <p class='main_tit noMarginTop'>房屋信息</p>
-          <div class="common_info">
-            <el-form label-width="120px">
-              <el-row :gutter="10">
-                <el-col :span="8" v-if='chooseTab == 1'>
-                  <el-form-item label="物业地址">
-                    <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{contractDetail.house_extension.community.name
-                      || '--'}}</span>
-                    <span v-else>--</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="产权地址">
-                    <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{contractDetail.house_extension.community.detailed_address
-                      || '--'}}</span>
-                    <span v-else>--</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="水卡卡号">
-                    <span v-if='contractDetail.house_extension &&contractDetail.house_extension.cards'>{{contractDetail.house_extension.cards.water_card_number
-                      || '--' }}</span>
-                    <span v-else>--</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="电卡卡号">
-                    <span v-if='contractDetail.house_extension &&contractDetail.house_extension.cards'>{{contractDetail.house_extension.cards.electricity_card_number
-                      || '--'}}</span>
-                    <span v-else>--</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="燃气卡号">
-                    <span v-if='contractDetail.house_extension &&contractDetail.house_extension.cards'>{{contractDetail.house_extension.cards.gas_card_number
-                      || '--'}}</span>
-                    <span v-else>--</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-
-          <!--合同信息-->
-          <p class='main_tit'>合同信息</p>
-          <div class="common_info">
-            <el-form label-width="128px">
-              <el-row :gutter="8">
-                <el-col :span="8">
-                  <el-form-item label="合同类型">
-                    <span>{{ contractDetail.is_e_contract==1?"电子合同":"纸质合同"}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="签约时长">
-                    <span v-if='contractDetail.sign_month'>{{ contractDetail.sign_month.moth_to_year || '/'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="签约时间">
-                    <span>{{ contractDetail.sign_at || '--' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8" v-if='chooseTab == 1'>
-                  <el-form-item label="空置期">
-                    <span>{{ contractDetail.ready_days || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="合同开始时间">
-                    <span>{{ contractDetail.start_at || '--' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="合同结束时间">
-                    <span>{{ contractDetail.end_at || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="押金">
-                    <span>{{ contractDetail.deposit_payed || '--' + '元'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="违约金">
-                    <span>{{ contractDetail.mortgage_price || '--' + '元'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="价格">
-                    <p v-if="contractDetail.month_price && contractDetail.month_price.length > 0">
-                      <span v-for="(item,key) in contractDetail.month_price" :key="key"> {{ item.price }}元 {{
-                        item.period }}个月</span>
-                    </p>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="付款方式">
-                    <span>{{ contractDetail.pay_way || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8" v-if="contractDetail.first_pay_at && chooseTab === 1 ">
-                  <el-form-item label="第一次打房租日期">
-                    <span>{{ contractDetail.first_pay_at || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8" v-if="contractDetail.second_pay_at && chooseTab === 1">
-                  <el-form-item label="第二次打房租日期">
-                    <span>{{ contractDetail.second_pay_at || '--' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
-                  <el-form-item label="房东承担费用">
-                    <span v-for='pay in contractDetail.houserPay'>{{payArr[pay-1] || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="租客承担费用" v-if='chooseTab == 2'>
-                    <span v-for='pay in contractDetail.non_landlord_fee'>{{payArr[pay-1] + '/'|| '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
-                  <el-form-item label="可否装修">
-                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.can_decorate== 1?'是':'否' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
-                  <el-form-item label="可否添加物品">
-                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.can_add_goods == 1?'是':'否' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="是否渠道">
-                    <span>{{contractDetail.is_agency && contractDetail.is_agency === 1 ? '是' : '否'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="渠道名称">
-                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_name || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="渠道费">
-                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_price_now
-                      ?contractDetail.agency_info.agency_price_now + '元':'--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8" v-if="contractDetail.is_agency && contractDetail.is_agency === 1">
-                  <el-form-item label="渠道人">
-                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_user_name || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8" v-if="contractDetail.is_agency && contractDetail.is_agency === 1">
-                  <el-form-item label="渠道电话">
-                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_phone || '--' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="资料补齐时间">
-                    <span>{{ contractDetail.dataTime || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="备注">
-                    <span>{{ contractDetail.remark || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="备注条款">
-                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.remark_terms || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="开单人">
-                    <span>{{ contractDetail.sign_user || '--' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="部门">
-                    <span>{{ contractDetail.sign_org || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-
-          <p class='main_tit' v-if="chooseTab === 1">签约人及产权人信息</p>
-          <p class='main_tit' v-if="chooseTab === 2">签约人信息</p>
-          <div class="common_info">
-            <el-form label-width="120px" v-if=' contractDetail.customer_info'>
-              <el-row :gutter="10" v-for='item in  contractDetail.customer_info' :key='item.id'>
-                <el-col :span="1">
-                  <span class='person_tit'>签约人</span>
-                  <!-- <el-form-item label="签约人" class='person_tit'></el-form-item> -->
-                </el-col>
-                <el-col :span="7">
-                  <el-form-item label="姓名">
-                    <span>{{item.name}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="联系方式">
-                    <span>{{item.phone }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="身份证号">
-                    <span>{{item.idcard}}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="10" v-if="chooseTab === 1">
-                <el-col :span="1">
-                  <span class='person_tit'>产权人</span>
-                  <!-- <el-form-item label="产权人" class='person_tit'></el-form-item> -->
-                </el-col>
-                <el-col :span="7">
-                  <el-form-item label="姓名">
-                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="联系方式">
-                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="身份证号">
-                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.proerty_owner || '--'}}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-            <el-form label-width="120px" v-else>
-              <el-row :gutter="10">
-                <el-col :span="1">
-                  <span class='person_tit'>{{chooseTab === 1?'产权人':'签约人'}}</span>
-                </el-col>
-                <el-col :span="7" style='font-size:14px;'>
-                  <span>暂无资料</span>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-
-          <p class='main_tit' v-if="chooseTab === 1">收款账号</p>
-          <div class="common_info" v-if="chooseTab === 1">
-            <el-form label-width="120px">
-              <el-row :gutter="10">
-                <el-col :span="8">
-                  <el-form-item label="收款人">
-                    <span>{{contractDetail.pay_account_info && contractDetail.pay_account_info.name
-                      ?contractDetail.pay_account_info.name : '--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="与房东关系">
-                    <span>{{ contractDetail.pay_account_info && contractDetail.pay_account_info.relationship
-                      ?contractDetail.pay_account_info.relationship :'--' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="账号">
-                    <span>{{ contractDetail.pay_account_info && contractDetail.pay_account_info.account
-                      ?contractDetail.pay_account_info.account:'--' }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="开户行">
-                    <span>{{ contractDetail.pay_account_info && contractDetail.pay_account_info.bank ?
-                      contractDetail.pay_account_info.bank :'--'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="支行">
-                    <span>{{contractDetail.pay_account_info && contractDetail.pay_account_info.subbranch ?
-                      contractDetail.pay_account_info.subbranch :'--'}}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-
-          <p class='main_tit'>附件信息</p>
-          <div class="common_info">
-            <div v-if="contractDetail.album">
-              <div class='flex-center' v-for='(item,index) in Object.keys(polishing_data[chooseTab-1])' :key='index'
-                style='min-height:80px;'>
-                <div class='mian_tit'>{{polishing_data[chooseTab-1][item]}}</div>
-                <div style="width: 90%;text-align: left">
-                  <Ljupload size='40' v-model='contractDetail.album[item]' disabled=true :download='false'></Ljupload>
-                  <!-- <img v-for="tmp in contractDetail.album[item]" :key="tmp.id" data-magnify="" data-caption="图片查看器"
-                    :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri"> -->
-                </div>
-              </div>
-            </div>
-            <div class="common_info mian_tit" v-else>暂无资料</div>
-          </div>
-
-          <p class='main_tit'>相关合同</p>
-          <div class="common_info" v-if="contractDetail.related_contract && contractDetail.related_contract.length > 0">
-            <el-form label-width="120px">
-              <el-row :gutter="10">
-                <el-col :span="8" v-for="(item,index) in contractDetail.related_contract" :key="index">
-                  <el-form-item :label="contractLabel(item)">
-                    <span>{{ item.contract_number +'-' + (item.is_invalid == 0 ? "合同正常" : "合同作废")}}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-          <div class="common_info mian_tit" v-else>暂无资料</div>
-        </div>
-      </div>
-    </lj-dialog>
+    <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :chooseTab='chooseTab' :showFooter='false'
+      :disabled='true' :showData='false' :showRelated='true' @close="handleCloseDetail" />
 
     <!-- 添加 修改标记 -->
     <lj-dialog :visible="mark_visible" :size="{width: 690 + 'px',height: 558 + 'px'}" @close="handleCancelMark">
@@ -554,6 +233,7 @@ import { housingDueSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
 import LjDialog from '../../common/lj-dialog.vue';
 import Ljupload from '../../common/lightweightComponents/lj-upload'
+import contractDetail from '../components/contract_detail'
 
 export default {
   name: 'index',
@@ -561,7 +241,8 @@ export default {
     SearchHigh,
     MenuList,
     LjDialog,
-    Ljupload
+    Ljupload,
+    contractDetail
   },
   data () {
     return {
@@ -596,7 +277,6 @@ export default {
       tableDateCount: 0,
       //合同详情
       contract_detail_visible: false,
-      contractDetail: {},
       // getList 参数
       params: {
         is_mark: 2,
@@ -611,37 +291,6 @@ export default {
         end_at_min: '',
         end_at_max: '',
       },
-
-      //附件
-      polishing_data: [
-        {
-          identity_photo: '证件照片',
-          bank_photo: '银行卡照片',
-          photo: '合同照片',
-          water_photo: '水表照片',
-          electricity_photo: '电表照片',
-          gas_photo: '气表照片',
-          checkin_photo: '交接单照片',
-          auth_photo: '委托书照片',
-          deposit_photo: '押金照片',
-          promise: '承诺书照片',
-          property_photo: '房产证照片',
-          water_card_photo: '水卡照片',
-          electricity_card_photo: '电卡照片',
-          gas_card_photo: '气卡照片',
-        },
-        {
-          checkin_photo: '交接单照片',
-          certificate_photo: '截图凭证',
-          deposit_photo: '押金收条',
-          identity_photo: '证件照片',
-          photo: '合同照片',
-          bank_photo: '银行卡照片',
-          water_photo: '水表照片',
-          electricity_photo: '电表照片',
-          gas_photo: '气表照片'
-        }
-      ],
       // 添加 1 修改 2标记
       tagType: 1,
       // 添加标记
@@ -674,10 +323,6 @@ export default {
     this.formateParams()
   },
   methods: {
-    //相关合同label
-    contractLabel (item) {
-      return item.type === 1 ? `新收合同(${item.is_invalid === 0 ? '正常' : '作废'})` : `续收合同(${item.is_invalid === 0 ? '正常' : '作废'})`;
-    },
     // 客服入口
     moduleList () {
       this.visibleStatus = !this.visibleStatus;
@@ -744,40 +389,16 @@ export default {
         this.params.end_at_max = val.date1[1] || ''
         this.getDateList()
       }
-
     },
     //合同详情
     tableClickRow (row) {
       this.currentRow = row
-
-      // 合同详情
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
-        if (res.code === 200) {
-          let data = res.data
-          if (data.house_extension) {
-            if (data.house_extension.community && data.house_extension.community != 'null') {
-              data.house_extension.community = JSON.parse(data.house_extension.community)
-            } else {
-              data.house_extension.community = null
-            }
-
-            if (data.house_extension.cards && data.house_extension.cards != 'null') {
-              data.house_extension.cards = JSON.parse(data.house_extension.cards)
-            } else {
-              data.house_extension.cards = null
-            }
-          }
-
-          this.contractDetail = data
-          this.contract_detail_visible = true
-        }
-      })
+      this.contract_detail_visible = true
     },
     // 关闭合同详情
     handleCloseDetail () {
       this.contract_detail_visible = false
       this.currentRow = null
-      this.contractDetail = {}
     },
 
     // 添加标记

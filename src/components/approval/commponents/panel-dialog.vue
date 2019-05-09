@@ -20,8 +20,8 @@
 
             <el-table-column align="center" label="状态">
               <template slot-scope="scope">
-                <span :class='["status","status" + scope.row.status]'>
-                  {{scope.row.status == 1 ?"正常":"超时"}}
+                <span :class='["status","status" + (scope.row.status == "正常"?2:1)]'>
+                  {{scope.row.status}}
                 </span>
               </template>
             </el-table-column>
@@ -41,7 +41,7 @@
       </div>
     </LjDialog>
 
-    <TransferDialog :visible='transfer_visible' :moduleData='handleCloseTransfer' @close='handleCloseTransfer' />
+    <TransferDialog :visible='transfer_visible' :moduleData='transfer_info' @close='handleCloseTransfer' />
   </div>
 </template>
 
@@ -59,24 +59,12 @@ export default {
     return {
       current_type: null, //组员 片区
       tableShow: {
-        type: '审核类型',
-        time: '提交时间',
-        wait_time: '等待时长',
+        name: '审核类型',
+        createTime: '提交时间',
+        duration: '等待时间',
+        status: '状态',
       },
-      tableData: [
-        {
-          type: '审核类型',
-          time: '提交时间',
-          wait_time: '等待时长',
-          status: 1
-        },
-        {
-          type: '审核类型',
-          time: '提交时间',
-          wait_time: '等待时长',
-          status: 2
-        }
-      ],
+      tableData: [],
       tableCount: 0,
       current_page: 1,
       transfer_visible: false,
@@ -89,7 +77,9 @@ export default {
   watch: {
     moduleData: {
       handler (val) {
-        this.current_type = this.moduleData.current_type
+        this.current_type = val.current_type
+        this.tableData = val.info.summaries
+        console.log(val)
       },
       deeper: true
     }
@@ -101,7 +91,10 @@ export default {
     handleCurrentChange (val) {
       this.current_page = val
     },
-    handleTansfer () {
+    handleTansfer (row) {
+      this.transfer_info = {
+        id: row.taskId
+      }
       this.transfer_visible = true
     },
     handleCloseTransfer () {
