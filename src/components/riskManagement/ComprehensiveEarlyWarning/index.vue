@@ -20,13 +20,15 @@
         </div>
       </div>
     </div>
-    <MenuList :module='navVisible' :list='childrenRiskData' @close="navVisible = false" :backdrop="true" />
+
+    <MenuList :visible='navVisible' @close='handleClose' />
   </div>
 </template>
 
 <script>
 import { riskManagement } from '../../../assets/js/allModuleList.js';
-import MenuList from '../../common/menuList'
+import MenuList from '../common/menu'
+
 export default {
   name: "index",
   components: {
@@ -45,15 +47,15 @@ export default {
   methods: {
     // 入口
     moduleList () {
-      console.log(111)
       this.navVisible = !this.navVisible;
       this.$store.dispatch('route_animation');
     },
+    handleClose () {
+      this.navVisible = false
+    },
     getDataList () {//二级目录
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: this.$route.query.pre_id }).then(res => {
-        console.log(res);
         if (res.status === 200) {
-          console.log(res.data.data);
           this.childrenRiskData = res.data.data;
         }
       })

@@ -176,8 +176,6 @@ export default {
     "$route": 'getRoute',
   },
   // beforeRouteLeave(to, from, next) {
-  //     console.log(to);
-  //     console.log(from);
   //     if(from.path ==='/riskManagementDetail'){
   //         next({name : '三级列表页' , params : {'id':'跳页成功，还可以传递参数'}})
   //     }
@@ -193,8 +191,6 @@ export default {
       this.getTabList();
     }
     this.pre_data = this.$route.query.pre_data;
-    console.log(this.pre_data);
-
   },
   methods: {
     getPath () {
@@ -208,9 +204,7 @@ export default {
     getTabList () {//一级目录
       this.fileData = [];
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: 60 }).then(res => {
-        console.log(res);
         if (res.status === 200) {
-          console.log(res.data.data);
           this.fileData = res.data.data;
         }
       })
@@ -244,7 +238,6 @@ export default {
     },
     getDataLists () {//文件列表
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify_document", { classify_id: this.pre_id }).then(res => {
-        console.log(res);
         if (res.status === 200) {
           this.classify_document = res.data.data;
         }
@@ -303,9 +296,7 @@ export default {
         name: this.form.name,//文件名
       };
       if (this.current_item) {
-        console.log(paramsForm);
         this.$http.put(globalConfig.risk_sever + "/api/risk/classify_document/" + this.current_item.id, paramsForm).then(res => {
-          console.log(res);
           if (res.status === 200) {
             this.$LjNotify('success', {
               title: '成功',
@@ -332,7 +323,6 @@ export default {
         })
       } else if (this.current_item === '') {
         this.$http.post(globalConfig.risk_sever + "/api/risk/classify_document", paramsForm).then(res => {
-          console.log(res);
           if (res.status === 200) {
             this.$LjNotify('success', {
               title: '成功',
@@ -361,7 +351,6 @@ export default {
     },
     delOk () {//删除
       this.$http.delete(globalConfig.risk_sever + "/api/risk/classify_document/" + this.current_item.id).then(res => {
-        console.log(res);
         if (res.status === 200) {
           this.$LjNotify('success', {
             title: '成功',
