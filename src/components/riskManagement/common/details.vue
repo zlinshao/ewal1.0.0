@@ -28,9 +28,9 @@
                     </div>
                   </div>
                 </template>
-                <p class='nothing_mess' v-else style='width:100%;text-align:center;font-size:14px;color:#999;'>暂无数据</p>
+                <!-- <p class='nothing_mess' v-else style='width:100%;text-align:center;font-size:14px;color:#999;'>暂无数据</p> -->
               </div>
-              <div class="bg-img"></div>
+              <div class="bg-img">{{classify_document.length ==0?'暂无数据':''}}</div>
             </div>
             <div class="add-icons" @click="openAdd"><span>+</span></div>
           </div>
@@ -73,9 +73,10 @@
                     </div>
                   </div>
                 </template>
-                <p class='nothing_mess' v-else style='width:100%;text-align:center;font-size:14px;color:#999;'>暂无数据</p>
+                <!-- <p class='nothing_mess' v-else style='width:100%;text-align:center;font-size:14px;color:#999;'>暂无数据</p> -->
               </div>
-              <div class="bg-img"></div>
+              <div class="bg-img" style='width:100%;text-align:center;font-size:14px;color:#999;'>{{classify_document.length==
+                0?'暂无数据':''}}</div>
             </div>
             <div class="add-icons" @click="openAdd"><span>+</span></div>
           </div>
