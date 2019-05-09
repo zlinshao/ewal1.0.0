@@ -400,6 +400,9 @@
       }
     },
     mounted() {
+      this.params = Object.assign({},this.params,{
+        type: this.chooseTab
+      });
       this.getCustomerList();
     },
     watch: {},
@@ -530,12 +533,14 @@
       //tab切换
       changeTabs(id) {
         this.chooseTab = id;
+        this.params.search = '';
+        var obj = {};
         if (id === 4) {
-          this.params.is_black = 1;
+          obj.is_black = 1;
         } else {
-          this.params.is_black = 0;
-          this.params.type = id;
+          obj.type = id;
         }
+        this.params = Object.assign({},this.params,obj);
         this.getCustomerList();
       },
       //分页
