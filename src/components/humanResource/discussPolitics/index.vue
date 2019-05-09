@@ -500,7 +500,7 @@
                 </el-col>
                 <el-col :span="20">
                   <div class="form-item-content">
-                    <lj-upload size="40" disabled="disabled" :data="meeting_detail_form.attachment"></lj-upload>
+                    <lj-upload style="position: absolute;top: -14px;" size="40" disabled="disabled" :data="meeting_detail_form.attachment"></lj-upload>
                   </div>
                 </el-col>
               </el-row>
@@ -511,10 +511,10 @@
             <el-form ref="meetingSummaryFormRef" :disabled="!meeting_summary_editable" :rules="rules.meetingSummary"
                      :model="meeting_summary_form" style="text-align: left" size="small" label-width="140px">
 
-              <el-form-item label="会议附件">
+              <!--<el-form-item label="会议附件">
                 <lj-upload :disabled="true" v-model="meeting_summary_form.meeting_file_id" size="40"
                            style="position: absolute; top: -12px;"></lj-upload>
-              </el-form-item>
+              </el-form-item>-->
 
               <el-form-item required prop="record" label="会议记录人">
                 <user-choose width="700" size="mini" v-model="meeting_summary_form.record"></user-choose>

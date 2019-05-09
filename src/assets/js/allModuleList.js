@@ -3,27 +3,27 @@ export const humanResource = {
   type: 'humanResource',
   data: [
     {
-      url: 'departments',
+      url: '/departments',
       title: '人资规划'
     },
     {
-      url: 'recruitment',
+      url: '/recruitment',
       title: '招聘管理'
     },
     {
-      url: 'noticeQuestionnaire',
+      url: '/noticeQuestionnaire',
       title: '公告问卷'
     },
     {
-      url: 'militaryOrganization',
+      url: '/militaryOrganization',
       title: '培训考核'
     },
     {
-      url: 'repository',
+      url: '/repository',
       title: '资产管理'
     },
     {
-      url: 'discussPolitics',
+      url: '/discussPolitics',
       title: '会议管理'
     }
   ]
