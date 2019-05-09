@@ -150,8 +150,8 @@
         this.$http.get('achv/achv/index',this.params,'arraybuffer').then((res) => {
             if (!res) return;
             this.$exportData(res);
+            this.params.export=0;
         });
-        this.params.export=0;
       },
       handleGetPerformanceList() {
         this.$http.get('achv/achv/index', this.params).then(res => {
