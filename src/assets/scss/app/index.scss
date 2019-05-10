@@ -146,6 +146,12 @@
         width: 30px;
         height: 24px;
       }
+      .icon_mess {
+        @include appImg('xx_hs.png');
+        &:hover {
+          @include appImg('xx_h.png');
+        }
+      }
     }
   }
 

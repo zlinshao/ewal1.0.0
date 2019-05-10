@@ -11,11 +11,20 @@
               <el-col :span='moduleOrder == 78? 6 : createOrder_span'>
                 <p class='el-col-p'><i class='icon house_name'></i>房屋地址</p>
                 <div class='input_box'>
-                  <div class='el-input' @mousedown="clearSearch">
+                  <!-- <div class='el-input' @mousedown="clearSearch">
                     <input type="text" class="el-input__inner" v-model='createOrder.house_name' v-if='createOrder.house_name'
                       disabled>
                     <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='customer_search'
                       v-on:keyup.enter='addOrder_search' @input='input_Search' v-else>
+                      
+                  </div> -->
+
+                  <div class='el-input'>
+                    <!-- <input type="text" class="el-input__inner" v-model='createOrder.house_name' v-if='createOrder.house_name'
+                      disabled> -->
+                    <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='customer_search'
+                      v-on:keyup.enter='addOrder_search' @input='input_Search'>
+
                   </div>
                 </div>
               </el-col>
@@ -621,17 +630,17 @@ export default {
         },
         {
           title: '合同编号',
-          value: 'contract_id'
+          value: 'contract_number'
         },
         {
           title: '姓名',
-          value: 'name'
+          value: 'customer_name'
         }, {
           title: '性质',
-          value: 'customer_type'
+          value: 'contract_type'
         }, {
           title: '电话',
-          value: 'phone'
+          value: 'customer_phone'
         }
       ],
       history_info: { //历史工单
@@ -856,9 +865,10 @@ export default {
     },
     clearSearch () {
       this.current_customer = null
-      if (this.createOrder.house_name) {
-        this.customer_search = this.createOrder.house_name
-      }
+      // this.customer_search = ''
+      // if (this.createOrder.house_name) {
+      //   this.customer_search = this.createOrder.house_name
+      // }
       this.createOrder.house_name = ''
       this.customer_info.page = 1
       this.customer_info.count = 0
@@ -884,16 +894,18 @@ export default {
       this.addOrderChosen = 1
     },
     input_Search () {
+      this.clearSearch()
       clearTimeout(this.timer)
       this.timer = null
       this.timer = setTimeout(this.addOrder_search, 1000);
     },
     // 选择当前客户
     changeCustmInfo (val) {
+      this.customer_search = val.house_name
       this.createOrder.house_id = val.house_id
       this.createOrder.house_name = val.house_name
-      this.createOrder.chooseTab = val.contract_type
-      this.$http.get(this.market_server + `v1.0/market/contract/${val.contract_type}/${val.contract_id}`).then(res => {
+      this.createOrder.chooseTab = val.type
+      this.$http.get(this.market_server + `v1.0/market/contract/${val.type}/${val.contract_id}`).then(res => {
         if (res.code === 200) {
           res.data.album_temp = JSON.parse(res.data.album_temp)
           this.customer_info.contract_Detail = res.data
