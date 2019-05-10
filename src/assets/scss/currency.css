@@ -816,3 +816,22 @@
   background-color: #cf2e33; }
 #theme_name.theme1 .listTopCss .listTopRight .searchTerm > b {
   padding-right: 15px; }
+
+#theme_name.theme2 .listTopCss {
+  background-color: transparent; }
+  #theme_name.theme2 .listTopCss .listTopLeft p {
+    background-color: #090448; }
+  #theme_name.theme2 .listTopCss .listTopLeft b {
+    color: #ff5252; }
+  #theme_name.theme2 .listTopCss .listTopLeft h2 {
+    border-left: 1px solid #dfdfdf; }
+    #theme_name.theme2 .listTopCss .listTopLeft h2 span {
+      color: #d2d2d2; }
+    #theme_name.theme2 .listTopCss .listTopLeft h2 .chooseTab {
+      color: #00ffff; }
+      #theme_name.theme2 .listTopCss .listTopLeft h2 .chooseTab i {
+        background-color: #00ffff; }
+#theme_name.theme2 .mainListTable {
+  background-color: transparent; }
+
+/*# sourceMappingURL=currency.css.map */

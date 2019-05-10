@@ -42,6 +42,41 @@
 #app {
   color: $color874;
   height: 100%;
+  .change_theme {
+    width: 35px;
+    height: 30px;
+    background-color: rebeccapurple;
+    margin-left: 20px;
+    cursor: pointer;
+  }
+  .change_theme_content {
+    width: 200px;
+    background-color: white;
+    position: absolute;
+    top: 85px;
+    right: 5px;
+    box-shadow: 0 0 3px 3px $color2D2;
+    border-radius: 5px;
+    padding: 20px;
+    > div {
+      width: 100%;
+      min-height: 100px;
+      border-radius: 5px;
+      &:not(:first-child) {
+        margin-top: 10px;
+      }
+    }
+    a.btn {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      background-color: white;
+      transform: rotate(-45deg);
+      position: absolute;
+      top: -7.5px;
+      left: 60%;
+    }
+  }
   header {
     height: 80px;
     position: fixed;

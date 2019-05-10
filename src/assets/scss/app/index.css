@@ -186,6 +186,36 @@
 #app {
   color: #686874;
   height: 100%; }
+  #app .change_theme {
+    width: 35px;
+    height: 30px;
+    background-color: rebeccapurple;
+    margin-left: 20px;
+    cursor: pointer; }
+  #app .change_theme_content {
+    width: 200px;
+    background-color: white;
+    position: absolute;
+    top: 85px;
+    right: 5px;
+    box-shadow: 0 0 3px 3px #d2d2d2;
+    border-radius: 5px;
+    padding: 20px; }
+    #app .change_theme_content > div {
+      width: 100%;
+      min-height: 100px;
+      border-radius: 5px; }
+      #app .change_theme_content > div:not(:first-child) {
+        margin-top: 10px; }
+    #app .change_theme_content a.btn {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      background-color: white;
+      transform: rotate(-45deg);
+      position: absolute;
+      top: -7.5px;
+      left: 60%; }
   #app header {
     height: 80px;
     position: fixed;
@@ -641,3 +671,5 @@
       #app.app4 #moduleList > div .list:hover div b {
         background: url("./assets/image/module/theme4/topimage.png") no-repeat scroll center;
         background-size: 100% 100%; }
+
+/*# sourceMappingURL=index.css.map */
