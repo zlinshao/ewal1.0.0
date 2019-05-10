@@ -113,6 +113,7 @@ export default {
     return {
       visible: false,
       form: {
+        userid: [],
         name: '',
         content: '',
         title:'',
@@ -171,13 +172,40 @@ export default {
         content: this.form.content,
         cover: this.form.file_info[0]
       }
-      console.log(param)
-      this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star',param).then(res => {
-        if (res.status === 200) {
-        }
-      })
-      this.add_visible = false
-      this.$emit('cancelAdd', this.add_visible)
+      if(param.star_id == undefined|| this.form.userid.length>0){
+        console.log(this.form.userid.length>0)
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '人员不能为空且只能选一个',
+          });
+      }
+      else if(param.title == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '标题不能为空',
+          });
+      }
+      else if(param.cover == undefined|| this.form.file_info.length>0){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '封面图不能为空且只能选一个',
+          });
+      }
+      else if(param.content == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '内容不能为空',
+          });
+      }
+      else{
+        this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star',param).then(res => {
+          if (res.status === 200) {
+            this.add_visible = false
+            this.$emit('cancelAdd', this.add_visible)
+            this.getLeJiaStarList();
+          }
+        })
+      }
     },
     //获取乐加之星列表
     getLeJiaStarList(){
