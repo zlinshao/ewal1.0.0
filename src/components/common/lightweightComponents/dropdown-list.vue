@@ -57,8 +57,13 @@
     watch: {
       value: {
         handler(val, oldVal) {
+          //debugger
           if (val === '') {
             this.dropdown_code = '';
+            return;
+          }
+          if(val===0||val==='0') {
+            this.dropdown_code = 0;
             return;
           }
           this.dropdown_code = Number(this.value)||'';

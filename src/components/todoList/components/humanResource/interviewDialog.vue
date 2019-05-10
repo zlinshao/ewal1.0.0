@@ -10,7 +10,8 @@
         <div class="dialog_header">
           <h3>面试任务接收</h3>
           <div class="header_right">
-            <el-button type="primary" size="mini" plain>查看简历</el-button>
+<!--            <a target="_blank" :href="interview_form.resume"><el-button type="primary" size="mini" plain>查看简历</el-button></a>-->
+            <el-button type="primary" size="mini" plain @click="showResume">查看简历</el-button>
           </div>
         </div>
 
@@ -34,7 +35,7 @@
             </div>
             <div class="interview_dialog_form_row">
               <label class="interview_dialog_form_label">面试官</label>
-              <span>{{interview_form.interviewer}}</span>
+              <span>{{interview_form.current_interviewer}}</span>
             </div>
             <div class="interview_dialog_form_row">
               <label class="interview_dialog_form_label">是否接受此次面试任务</label>
@@ -51,7 +52,7 @@
                                    width="180" size="mini" :clearable="false"
                                    :json-arr="DROPDOWN_CONSTANT.INTERVIEW_RESULT"></dropdown-list></span>
             </div>
-            <div class="interview_dialog_form_row" v-if="interview_form.result==2 && interview_form.radio==1">
+            <div class="interview_dialog_form_row" v-if="interview_form.result==0 && interview_form.radio==1">
               <label class="interview_dialog_form_label">未通过原因</label>
               <span><el-input type="textarea" placeholder="请输入未通过原因" :row="1" autosize size="mini" style="width: 180px;"
                               v-model="interview_form.reason"></el-input></span>
@@ -66,7 +67,7 @@
         </div>
 
         <div class="dialog_footer">
-          <el-button size="small" type="danger">确定</el-button>
+          <el-button size="small" type="danger" @click="confirm">确定</el-button>
           <el-button size="small" type="info" @click="interviewHandler">取消</el-button>
         </div>
       </div>
@@ -172,6 +173,9 @@
             this.interview_form.platform = this.$todo_list_current_selection.platform;
             this.interview_form.date = this.$todo_list_current_selection.date;
             this.interview_form.interviewer = '张三';
+
+
+            this.interview_form.resume = _.find(this.$todo_list_current_selection.variables,{name:'resume_url'})?.value;
           }
         },
 
@@ -179,6 +183,7 @@
     },
     data() {
       return {
+        url:globalConfig.humanResource_server,
         DROPDOWN_CONSTANT,
         //interview_visible: false,
         interview_form: {
@@ -186,14 +191,16 @@
           user:'',//应聘者
           platform:'',//来源
           date:'',//预约面试时间
-          interviewer:'张三',//面试官
+          current_interviewer:'张三',//面试官
 
 
 
-          radio: 1,//是否接受此次面试任务
+          radio: 1,//是否接受此次面试任务 不接收转移面试官
           interviewer: '',//面试官
-          result: 1,//面试结果 1通过 2未通过
+          result: 1,//面试结果
           reason: '',//未通过原因
+
+          resume:'',//简历url
         },
         interview_evaluate_form: {
           position: 'web前端工程师',//岗位
@@ -212,6 +219,43 @@
       },
       interviewEvaluateHandler() {
         this.$store.dispatch('change_humanResource_interview_evaluate_visible');
+      },
+      confirm() {
+        debugger
+        let type = this.interview_form.radio;//radio为1 当前用户提交面试结果 radio为2 转移面试官
+        let process_id = _.find(this.$todo_list_current_selection.variables,{name:'interview_process_id'})?.value;//面试流程id
+        if(type==2) {//转移面试官
+          let interviewer_id = this.interview_form.interviewer[0];//转交面试官id
+          let params = {
+            interviewer_id
+          };
+          this.$http.put(`${this.url}recruitment/interviewers/transfer/${process_id}`,params).then(res=> {
+            debugger
+          });
+        }else if(type==1) {//本人提交面试结果
+          let params = {
+            interview_result:this.interview_form.result,//面试结果
+            interview_comment:this.interview_form.reason,//面试评价
+            task_id:this.$todo_list_current_selection.id,
+          };
+          console.log(params);
+          this.$http.put(`${this.url}recruitment/interviewers/add_result/${process_id}`,params).then(res=> {
+            debugger
+          });
+        }
+      },
+
+      //显示简历
+      showResume() {
+        if(!this.interview_form.resume) {
+          this.$LjMessage('warning',{
+            title:'警告',
+            msg:'面试人未上传简历',
+          });
+          return;
+        }
+
+        window.open(this.interview_form.resume,'_blank');
       },
     }
   }

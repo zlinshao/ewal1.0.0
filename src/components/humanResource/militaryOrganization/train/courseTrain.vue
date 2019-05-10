@@ -153,7 +153,7 @@
               height="400px"
             >
               <el-table-column prop="name" label="培训名称" align="center"></el-table-column>
-              <el-table-column label="操作" align="center">
+              <el-table-column  width="130px" label="操作" align="center">
                 <template slot-scope="scope">
                   <span class="edit_btn" @click="editTrainType(scope.row)">编辑</span>
                   <span class="delete_btn" @click="deleteTrainType(scope.row)">删除</span>
