@@ -138,7 +138,7 @@
           }
           b {
             position: absolute;
-            top:-7px;
+            top: -7px;
             right: -14px;
             width: 18px;
             height: 18px;
@@ -670,6 +670,32 @@
 }
 
 #theme_name.theme2 {
+  .listTopCss {
+    background-color: transparent;
+    .listTopLeft {
+      p {
+        background-color: #090448;
+      }
+      b {
+        color: #ff5252;
+      }
+      h2 {
+        border-left: 1px solid #dfdfdf;
+        span {
+          color: #d2d2d2;
+        }
+        .chooseTab {
+          color: #00ffff;
+          i {
+            background-color: #00ffff;
+          }
+        }
+      }
+    }
+  }
+  .mainListTable {
+    background-color: transparent;
+  }
 }
 
 #theme_name.theme3 {

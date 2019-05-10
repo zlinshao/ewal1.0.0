@@ -2,7 +2,6 @@
 
 #theme_name {
   #menuList {
-    background-color: $colorFFF;
     position: relative;
     .title {
       position: absolute;
@@ -64,6 +63,9 @@
 }
 
 #theme_name.theme1 {
+  #menuList {
+    background-color: $colorFFF;
+  }
   #menuList.customService {
     .list {
       padding: 30px 180px;
@@ -94,6 +96,17 @@
 
 #theme_name.theme2 {
   #menuList {
+    background-color: transparent;
+    .list {
+      .menu {
+        .childrenMenu {
+          color: #fff;
+          &:hover {
+            color: #00ffff;
+          }
+        }
+      }
+    }
   }
 }
 

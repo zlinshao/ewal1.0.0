@@ -159,6 +159,20 @@ export default {
 #theme_name.theme2 {
   #menuList {
   }
+  #menuList.customService {
+    .list {
+      .menu {
+        .childrenMenu {
+          @include menuImg("kf_biank2.png", "theme2");
+          background-size: 80px 240px;
+          &:hover {
+            @include menuImg("kf_biank1.png", "theme2");
+            background-size: 80px 240px;
+          }
+        }
+      }
+    }
+  }
 }
 
 #theme_name.theme3 {

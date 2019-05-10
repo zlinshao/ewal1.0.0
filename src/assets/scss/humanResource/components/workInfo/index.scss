@@ -1,4 +1,9 @@
-@import "../../../common";
+@import '../../../common';
+
+@mixin menuImg($m, $n) {
+  $url: '../../../assets/image/workInfo/' + $n + '/' + $m;
+  @include bgImage($url);
+}
 
 #workInfo {
   position: fixed;
@@ -34,23 +39,15 @@
       position: absolute;
       top: 30px;
       right: 0;
-
       li {
         width: 90px;
         height: 40px;
-        color: #999999;
-        background-color: $colorFDF;
         text-align: center;
         line-height: 40px;
         border-radius: 3px 0 0 3px;
         margin-bottom: 10px;
         font-size: 18px;
         cursor: pointer;
-      }
-
-      .mark_li {
-        background-color: $colorE33;
-        color: white;
       }
     }
 
@@ -81,6 +78,38 @@
 
         & > p:not(:last-child) {
           margin-bottom: 65px;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme1 {
+  #workInfo {
+    .info_container {
+      .date_change {
+        li {
+          color: #999999;
+          background-color: $colorFDF;
+        }
+        .mark_li {
+          background-color: $colorE33;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+#theme_name.theme2 {
+  #workInfo {
+    .info_container {
+      .date_change {
+        li {
+          @include menuImg('kf_bz.png', 'theme2');
+        }
+        .mark_li {
+          @include menuImg('kf_dr.png', 'theme2');
         }
       }
     }
