@@ -5,7 +5,7 @@
         <div class="messageCenter-menu-card">
           <div class="messageCenter-card-info flex-center" v-for="key in Object.keys(select_type)" :key="key">
             <div @click="selectTab(selects[key].key)" :class="chooseTab===selects[key].key ? selects[key].active:selects[key].class">
-              <h1><span>10</span></h1>
+              <h1><span>{{select_type[key].count}}</span></h1>
               <p><span>{{selects[key].title}}</span></p>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default {
   methods: {
     getTopList () {
       this.$http.get(this.message_sever + 'ewal/message/message-type-list').then(res => {
-        if (res.code === 10020) {
+        if (res.code == 10020) {
           this.select_type = res.data
         }
       })
