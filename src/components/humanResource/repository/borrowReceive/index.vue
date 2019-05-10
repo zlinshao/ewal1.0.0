@@ -711,7 +711,6 @@
     watch: {
       searchVal: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
-          debugger
           //this.getBorrowReceiveList(val);
           this.getBorrowReceiveList(val);
           //this.params = val;
@@ -857,7 +856,7 @@
                 name: item.goods?.name || '',//物品名称
                 status: item.status || 0,//领还状态
                 category_id: item.category_id || 0,//物品id
-                receive_time: utils.formatDate(item.receive_time) || '-',//领取日期
+                receive_time: utils.formatDate(item.receive_time=='0000-00-00'?'':item.receive_time) || '-',//领取日期
                 goods_number: item.goods_number || '-',//物品编号
                 goods_status: item.goods_status || 0,//物品状态
                 picture: picture,//图片
@@ -887,6 +886,7 @@
 
       //保存照片
       savePictureList() {
+        debugger
         let ids = this.tableSettingData.borrowReceive.currentSelection.id;
         let form = this.tableSettingData.goods.form.photo.formData;
         let params = {
@@ -993,29 +993,46 @@
         }
         if (control.batchSetReturnDate) {
           if (!control.batchReturnDate) {
-            this.$LjNotify('error', {
-              title: '失败',
-              message: '请设置归还日期',
+            this.$LjMessage('warning', {
+              title: '警告',
+              msg: '请设置归还日期',
             });
             return;
           }
           let returnDateMultiRows = control.multipleSelection;
-          if (returnDateMultiRows) {
+          if (returnDateMultiRows && returnDateMultiRows.length>0) {
+
             for (let returnDateItem of returnDateMultiRows) {
               returnDateItem['return_date'] = utils.formatDate(control.batchReturnDate);
+              if(returnDateItem.receive_user_id.constructor==Array) {
+                returnDateItem.receive_user_id = returnDateItem.receive_user_id[0];
+              }
               let params = {goods: [returnDateItem]};
-              this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-                if (res.code.endsWith('0')) {
-                  this.$LjNotify('success', {
+              this.$http.put(`${this.url}eam/process/${ids}`, params).then(res => {
+                /*if (res.code.endsWith('0')) {
+                  this.$LjMessage('success', {
                     title: '成功',
-                    message: '修改成功'
+                    msg: res.msg
                   });
                   control.showSaveCancel = false;
                   control.batchSetReturnDate = false;
                   control.is_show_selection = false;
-                }
+                }else {
+
+                }*/
+                this.$LjMessageEasy(res,()=> {
+                  control.showSaveCancel = false;
+                  control.batchSetReturnDate = false;
+                  control.is_show_selection = false;
+                });
               });
             }
+          }else {
+            this.$LjMessage('warning', {
+              title: '警告',
+              msg: '请至少选择一项',
+            });
+            return;
           }
         }
 
