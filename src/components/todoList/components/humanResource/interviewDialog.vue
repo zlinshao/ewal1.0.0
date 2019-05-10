@@ -34,10 +34,6 @@
               <span>{{interview_form.date}}</span>
             </div>
             <div class="interview_dialog_form_row">
-              <label class="interview_dialog_form_label">面试官</label>
-              <span>{{interview_form.current_interviewer}}</span>
-            </div>
-            <div class="interview_dialog_form_row">
               <label class="interview_dialog_form_label">是否接受此次面试任务</label>
               <span class="interview_dialog_form_checkbox">
                 <el-radio-group v-model="interview_form.radio">
