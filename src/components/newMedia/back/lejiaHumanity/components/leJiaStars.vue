@@ -185,7 +185,6 @@ export default {
         id: this.selectItem.id
       }
       this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star/open/'+`${param.id}`,param).then(res => {
-        console.log(res)
           if(res.status == 200){
             this.$LjNotify('success', {
             title: '发布成功',

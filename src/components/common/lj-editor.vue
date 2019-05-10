@@ -51,6 +51,11 @@ export default {
   },
   created () { },
   mounted () { },
+  watch:{
+    content(){
+      this.$emit('changeContent',this.content)
+    }
+  },
   methods: {
     handleImageAdded (file, Editor, cursorLocation, resetUploader) {
       let formData = new FormData();
