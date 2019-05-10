@@ -82,15 +82,29 @@
   display: -webkit-flex;
   justify-content: flex-end; }
 
-@font-face {
+/*@font-face {
   font-family: 'jingDianXingShu';
-  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf"); }
+  src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
+}
+
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF"); }
+  src: url('http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF');
+}
+
 @font-face {
   font-family: 'jianyue';
-  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf"); }
+  src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
+}*/
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
 .writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl; }
@@ -181,10 +195,29 @@
 #workInfo .info_container {
   padding-top: 20px;
   position: relative; }
-  #workInfo .info_container .day_info > div {
+  #workInfo .info_container .info_container .date_change li {
+    line-height: 32px;
+    font-size: 18px; }
+  #workInfo .info_container .info_container .day_info > div {
     width: 25%;
     min-height: 350px;
     padding-left: 30px;
     margin: 0 10px; }
-  #workInfo .info_container .day_info > div > p {
+  #workInfo .info_container .info_container .day_info > div > p {
     font-size: 16px; }
+
+#theme_name.theme1 #workInfo .info_container .date_change li {
+  color: #999999;
+  background-color: #dfdfdf; }
+#theme_name.theme1 #workInfo .info_container .date_change .mark_li {
+  background-color: #cf2e33;
+  color: white; }
+
+#theme_name.theme2 #workInfo .info_container .date_change li {
+  color: #00ffff;
+  background: url("../../assets/image/workInfo/theme2/kf_bz.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme2 #workInfo .info_container .date_change .mark_li {
+  color: #ff0089;
+  background: url("../../assets/image/workInfo/theme2/kf_dr.png") no-repeat scroll center;
+  background-size: 100% 100%; }

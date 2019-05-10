@@ -6,7 +6,7 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
     },//添加物品
     GOODS_DETAIL: {
       GOODS_STATUS:[{id:0,name:'无'}, {id:1,name:'待维修'}, {id:2,name:'维修中'}, {id:3,name:'已维修'}, {id:4,name:'报废'}],//物品状态
-      RECEIVE_RETURN_STATUS:[{id:0,name:'待通知'}, {id:1,name:'待领取'}, {id:2,name:'已领取'}, {id:3,name:'放弃领取'}, {id:4,name:'待归还'}, {id:5,name:'已归还'}],//领还状态
+      RECEIVE_RETURN_STATUS:[{id:0,name:'待通知'}, {id:1,name:'待领取'}, {id:3,name:'已领取'}, {id:4,name:'放弃领取'}, {id:5,name:'待归还'}, {id:7,name:'已归还'}],//领还状态
       RESPONSIBLE:[{id:1,name:'个人'},{id:2,name:'部门'},{id:3,name:'公司'}],//任责类型
       PAYMENT: [{id:1,name:'工资扣款'},{id:2,name:'付现'}],//付款方式
     },//物品详情
@@ -34,7 +34,7 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
   PAYMENT_WAY:[{id:1,name:'工资扣款'},{id:2,name:'电子支付'}],
   //调查状态
   INSPECT_STATUS:[{id:0,name:'未开始'},{id:1,name:'已开始'},{id:2,name:'已结束'}],
-  INTERVIEW_RESULT:[{id:1,name:'通过'},{id:2,name:'未通过'}],
+  INTERVIEW_RESULT:[{id:0,name:'未通过'},{id:1,name:'已通过'},{id:2,name:'二轮'},{id:3,name:'通过待定'}],
 };
 
 const GLOBAL_CONSTANT = {

@@ -26,14 +26,6 @@
             <app-index-more :visible.sync="more_visible"></app-index-more>
           </span>
         </div>
-        <div>
-          <select v-model="theme_name" @change="changeLoading">
-            <option value="1">简约中国风</option>
-            <option value="2">科技风</option>
-            <option value="3">孟菲斯风</option>
-            <option value="4">文艺森系</option>
-          </select>
-        </div>
         <div class="items-center personal">
           <span>冯宝宝</span>
           <!--@click="routerLink('login')"-->
@@ -44,6 +36,13 @@
           <!-- <span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span> -->
           <span class="icon3024 icon_mess" @click="routerLink('/messageCenter')"></span>
           <!-- <span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span> -->
+        </div>
+        <div class="change_theme" @mouseover="theme_visible = true"></div>
+        <div class="change_theme_content" v-show="theme_visible" @mouseleave="theme_visible = false">
+          <a class="btn"></a>
+          <div v-for="item in theme_list" :class="['theme-bg-' + item.key,item.color]" @click="handleChangeTheme(item)">
+            {{ item.val }}
+          </div>
         </div>
       </div>
     </header>
@@ -118,6 +117,15 @@ export default {
   },
   data () {
     return {
+      theme_list: [
+        {key: '1',val: '极简中国风',color: 'color-1'},
+        {key: '3',val: '活泼孟菲斯',color: 'color-2'},
+        {key: '4',val: '文艺森系风',color: 'color-3'},
+        {key: '2',val: '炫酷科技风',color: 'color-4'},
+        {key: '5',val: '特色中国风',color: 'color-1'},
+      ],
+      theme_visible: false,
+
       theme_name: '1',
       moduleList: false,
       more_visible: false,
@@ -252,8 +260,9 @@ export default {
     handleCloseNotify () {
       this.$store.dispatch('close_notify', false);
     },
-    changeLoading () {
-      this.$store.dispatch('theme_name', this.theme_name);
+    handleChangeTheme(item) {
+      this.theme_name = item.key;
+      this.$store.dispatch('theme_name',item.key);
       this.changeLoad = true;
       let that = this;
       setTimeout(function () {
@@ -285,6 +294,36 @@ export default {
 }
 
 #app {
+  .change_theme {
+    @include notifyImg('hd.png','theme1');
+    &:hover {
+      @include notifyImg('hd2.png','theme1');
+    }
+  }
+  .change_theme_content {
+    > div {
+      text-align: center;
+      line-height: 100px;
+      cursor: pointer;
+    }
+    .color-1 {
+      color: $colorE33;
+    }
+    .color-2 {
+      color: #F2AE4A;
+    }
+    .color-3 {
+      color: #20998C;
+    }
+    .color-4 {
+      color: #009BAB;
+    }
+    @for $i from 1 to 6 {
+      .theme-bg-#{$i} {
+        @include notifyImg('theme' + $i + '.png','theme1');
+      }
+    }
+  }
   .global_notify {
     @include notifyImg("bg.png", "theme1/notify");
   }

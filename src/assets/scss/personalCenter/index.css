@@ -83,15 +83,29 @@
   display: -webkit-flex;
   justify-content: flex-end; }
 
-@font-face {
+/*@font-face {
   font-family: 'jingDianXingShu';
-  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf"); }
+  src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
+}
+
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF"); }
+  src: url('http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF');
+}
+
 @font-face {
   font-family: 'jianyue';
-  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf"); }
+  src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
+}*/
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
 .writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl; }
