@@ -34,7 +34,7 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
   PAYMENT_WAY:[{id:1,name:'工资扣款'},{id:2,name:'电子支付'}],
   //调查状态
   INSPECT_STATUS:[{id:0,name:'未开始'},{id:1,name:'已开始'},{id:2,name:'已结束'}],
-  INTERVIEW_RESULT:[{id:1,name:'通过'},{id:2,name:'未通过'}],
+  INTERVIEW_RESULT:[{id:0,name:'未通过'},{id:1,name:'已通过'},{id:2,name:'二轮'},{id:3,name:'通过待定'}],
 };
 
 const GLOBAL_CONSTANT = {

@@ -845,6 +845,13 @@
           console.log(res);
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
+              let picture = item.picture;
+              if(!picture) {
+                picture = {
+                  repair_pic: [],
+                  scrap_pic: [],
+                };
+              }
               let obj = {
                 id: item.id,//物品id
                 name: item.goods?.name || '',//物品名称
@@ -853,7 +860,7 @@
                 receive_time: utils.formatDate(item.receive_time) || '-',//领取日期
                 goods_number: item.goods_number || '-',//物品编号
                 goods_status: item.goods_status || 0,//物品状态
-                picture: item.picture,//图片
+                picture: picture,//图片
                 repair_price: item.repair_price || 0,//维修费用
                 scrap_price: item.scrap_price || 0,//报废费用
                 username: item.user?.name || '-',//领取人name

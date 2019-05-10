@@ -354,7 +354,7 @@ export default {
         content: this.showData.content,
         cover: this.showData.file_info[0]
       };
-      
+      paramsForm.content= paramsForm.content.slice(3,paramsForm.content.length-4)
       console.log(this.showData);
       this.$http.post(globalConfig.newMedia_sever + '/api/club/event', paramsForm).then(res => {
         console.log(res)

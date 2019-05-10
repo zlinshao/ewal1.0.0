@@ -210,7 +210,6 @@ export default {
             })
           }
           this.todayBirthday = list;
-          console.log(this.todayBirthday)
         }
       })
     },

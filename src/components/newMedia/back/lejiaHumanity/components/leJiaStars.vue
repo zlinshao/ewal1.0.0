@@ -6,7 +6,7 @@
           <div class="starTop">
             <div class="frame">
               <img :src="item.user_id.avatar">
-              <div :class="item.is_open == 1?'issue': 'issued'" @click="issueStar(item)">发布</div>
+              <div class="issue" @click="issueStar(item)">{{item.is_open ==1? '发布中':'发布'}}</div>
             </div>
           </div>
           <div class="starBottom">
@@ -175,7 +175,7 @@ export default {
       this.getLeJiaStarList()
     },
     issueStar(item){
-      if(item.is_open == 1){
+      if(item.is_open !== 1){
         this.issue_visible = true
         this.selectItem = item
       }
