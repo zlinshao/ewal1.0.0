@@ -21,28 +21,30 @@
           .frame{
             width: 286px;
             height:357px;
+            &:hover{
+              .issue{
+                width:60px;
+                height:24px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background:rgba(207,46,51,1);
+                border-radius:4px;
+                font-size:10px;
+                font-family:MicrosoftYaHei;
+                color:rgba(255,255,255,1);
+                line-height:14px;
+                position: relative;
+                top:-62px;
+                right: -108px;
+              }
+            }
             >img{
               width: 216px;
               height: 310px;
               margin: 23.5px 35px;
             }
             .issue{
-              width:60px;
-              height:24px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              background:rgba(207,46,51,1);
-              border-radius:4px;
-              font-size:10px;
-              font-family:MicrosoftYaHei;
-              color:rgba(255,255,255,1);
-              line-height:14px;
-              position: relative;
-              top:-62px;
-              right: -108px;
-            }
-            .issued{
               width:60px;
               height:24px;
               display: flex;
