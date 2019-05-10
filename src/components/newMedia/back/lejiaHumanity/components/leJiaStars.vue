@@ -57,6 +57,9 @@
             <el-form-item label="标题">
               <el-input width='700' v-model="form.title"></el-input>
             </el-form-item>
+            <el-form-item label="封面图">
+              <lj-upload size="50" v-model="form.file_info"></lj-upload>
+            </el-form-item>
             <el-form-item label="文章内容">
               <div class="item_content">
                 <lj-editor :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
@@ -95,22 +98,26 @@
 <script>
 import LjDialog from '../../../../common/lj-dialog.vue';
 import LjEditor from '../../../../common/lj-editor.vue';
+import LjUpload from '../../../../common/lightweightComponents/lj-upload.vue';
 import UserChoose from '../../../../common/lightweightComponents/UserChoose';
 export default {
   name: "leJiaStars",
   components: {
     LjDialog,
     LjEditor,
-    UserChoose
+    UserChoose,
+    LjUpload
   },
   props: ['add_status', 'choose_type'],
   data () {
     return {
       visible: false,
       form: {
+        userid: [],
         name: '',
         content: '',
-        title:''
+        title:'',
+        file_info:[]
       },
       params: {
         offset: 1,
@@ -160,16 +167,45 @@ export default {
 
     postReceivable_tag(){
       let param = {
-        user_id: this.form.userid[0],
+        star_id: this.form.userid[0],
         title: this.form.title,
-        content: this.form.content
+        content: this.form.content,
+        cover: this.form.file_info[0]
       }
-      this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star',param).then(res => {
-        if (res.status === 200) {
-        }
-      })
-      this.add_visible = false
-      this.$emit('cancelAdd', this.add_visible)
+      if(param.star_id == undefined|| this.form.userid.length>0){
+        console.log(this.form.userid.length>0)
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '人员不能为空且只能选一个',
+          });
+      }
+      else if(param.title == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '标题不能为空',
+          });
+      }
+      else if(param.cover == undefined|| this.form.file_info.length>0){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '封面图不能为空且只能选一个',
+          });
+      }
+      else if(param.content == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '内容不能为空',
+          });
+      }
+      else{
+        this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star',param).then(res => {
+          if (res.status === 200) {
+            this.add_visible = false
+            this.$emit('cancelAdd', this.add_visible)
+            this.getLeJiaStarList();
+          }
+        })
+      }
     },
     //获取乐加之星列表
     getLeJiaStarList(){

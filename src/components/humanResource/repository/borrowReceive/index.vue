@@ -835,13 +835,13 @@
       },
 
       //获取物品详情list
-      getGoodsDetailList() {
+      async getGoodsDetailList() {
         let ids = this.tableSettingData.borrowReceive.currentSelection.id;
         this.chooseDetailTabs = 2;
         this.currentTable = 'goods';
         this.tableSettingData[this.currentTable].tableData = [];//清空上次数据
-        this.$http.get(`${this.url}eam/process/${ids}/goods`, this.tableSettingData[this.currentTable].params).then(res => {
-          console.log(res);
+        await this.$http.get(`${this.url}eam/process/${ids}/goods`, this.tableSettingData[this.currentTable].params).then(res => {
+          this.tableSettingData[this.currentTable].tableData = [];//清空上次数据
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let picture = item.picture;
@@ -892,7 +892,7 @@
         let params = {
           goods: [form]
         }
-        this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
+        this.$http.put(`${this.url}eam/process/${ids}`, params).then(res => {
           if (res.code.endsWith('0')) {
             this.$LjNotify('success', {
               title: '成功',
@@ -935,27 +935,22 @@
         let control = this.tableSettingData.goods;
         if (control.modifyAll) {//批量修改
           let postArr = this.tableSettingData.goods.tableData;//要修改的数据
+          let params = {goods:[]};
           for (let item of postArr) {
-            delete item['receive_time'];
+            //delete item['receive_time'];
+            delete item['goods_number'];
             item['receive_user_id'] = item['receive_user_id'].constructor === Array ? item['receive_user_id'][0] : item['receive_user_id'];
             item['return_date'] = utils.formatDate(item['return_date']);
-            // item['return_date'] =item['return_date']?utils.formatDate(item['return_date']):item['return_date'];
-            let params = {goods: [item]};
-            this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
-              /*if (res.code.endsWith('0')) {
-                this.$LjNotify('success', {
-                  title: '成功',
-                  message: res.msg
-                });
-                control.showSaveCancel = false;
-                control.modifyAll = false;
-              }*/
-              this.$LjMessageEasy(res, () => {
-                control.showSaveCancel = false;
-                control.modifyAll = false;
-              });
-            });
+            //let params = {goods: [item]};
+            params.goods.push(item);
           }
+          this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
+            this.$LjMessageEasy(res, () => {
+              control.showSaveCancel = false;
+              control.modifyAll = false;
+              this.getGoodsDetailList();
+            });
+          });
         }
         if (control.batchSetUser) {
           if (!control.batchUser || control.batchUser.length == 0) {
@@ -975,9 +970,11 @@
           }
           if (multiRows && multiRows.length > 0) {
             for (let myItem of multiRows) {
+              delete myItem['receive_time'];
+              delete myItem['goods_number'];
               myItem['receive_user_id'] = control.batchUser[0];
               let params = {goods: [myItem]};
-              this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
+              this.$http.put(`${this.url}eam/process/${ids}`, params).then(res => {
                 if (res.code.endsWith('0')) {
                   this.$LjNotify('success', {
                     title: '成功',
@@ -1001,32 +998,35 @@
           }
           let returnDateMultiRows = control.multipleSelection;
           if (returnDateMultiRows && returnDateMultiRows.length>0) {
-
+            let params = {goods:[]};
             for (let returnDateItem of returnDateMultiRows) {
+              //delete returnDateItem['receive_time'];
+              delete returnDateItem['goods_number'];
               returnDateItem['return_date'] = utils.formatDate(control.batchReturnDate);
               if(returnDateItem.receive_user_id.constructor==Array) {
                 returnDateItem.receive_user_id = returnDateItem.receive_user_id[0];
               }
-              let params = {goods: [returnDateItem]};
-              this.$http.put(`${this.url}eam/process/${ids}`, params).then(res => {
-                /*if (res.code.endsWith('0')) {
-                  this.$LjMessage('success', {
-                    title: '成功',
-                    msg: res.msg
-                  });
-                  control.showSaveCancel = false;
-                  control.batchSetReturnDate = false;
-                  control.is_show_selection = false;
-                }else {
-
-                }*/
-                this.$LjMessageEasy(res,()=> {
-                  control.showSaveCancel = false;
-                  control.batchSetReturnDate = false;
-                  control.is_show_selection = false;
-                });
-              });
+              //let params = {goods: [returnDateItem]};
+              params.goods.push(returnDateItem);
             }
+            this.$http.put(`${this.url}eam/process/${ids}`, params).then(res => {
+              /*if (res.code.endsWith('0')) {
+                this.$LjMessage('success', {
+                  title: '成功',
+                  msg: res.msg
+                });
+                control.showSaveCancel = false;
+                control.batchSetReturnDate = false;
+                control.is_show_selection = false;
+              }else {
+
+              }*/
+              this.$LjMessageEasy(res,()=> {
+                control.showSaveCancel = false;
+                control.batchSetReturnDate = false;
+                control.is_show_selection = false;
+              });
+            });
           }else {
             this.$LjMessage('warning', {
               title: '警告',
@@ -1046,7 +1046,7 @@
         control.is_show_selection = true;
 
         //this.is_show_selection = true;
-        //this.batch_set_receive_person_visible = true
+        //this.batch_set_receive_person_visible = true;
       },
 
       //批量设置归还日期

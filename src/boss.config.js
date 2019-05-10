@@ -15,5 +15,7 @@ globalConfig = {
   intellectualPropertyProtection: 'http://test.knowledge.api.ewal.lejias.cn/',
   kpi: 'http://test.kpi.api.ewal.lejias.cn/',
   favorite: 'http://test.new_media.api.ewal.lejias.cn/',
-  approval_sever: 'http://47.101.204.100:8080/'
+  approval_sever: 'http://47.101.204.100:8080/',
+  message_sever: 'http://test.mcs.lejias.cn/'
+  // mcs.lejias.cn
 }
