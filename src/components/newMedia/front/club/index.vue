@@ -72,7 +72,7 @@
 
             <div class="dengLong" @click="getReportedUsers" style="cursor:pointer;">
                 <p>已报名</p>
-                <p>{{showData.click}}</p>
+                <p>{{showData.event_user?showData.event_user.length: 0}}</p>
             </div>
         </lj-dialog>
 
@@ -166,7 +166,11 @@
             getDataLists(){//列表
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event',this.params).then(res => {
                     if(res.status===200){
-                        this.clubData = res.data.data;
+                        this.clubData = res.data.data.sort(
+                                function (a, b) {
+                                return Date.parse(b.created_at) - Date.parse(a.created_at) 
+                                }
+                            );
                         this.count = res.data.total;
                     }
                 })
@@ -178,6 +182,9 @@
             openReport(item){//报名弹窗
                 this.look_visible = true;
                 this.showData=item
+                this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + item.id).then(res => {
+                    this.getDataLists()
+                })
             },
             confirmReport(id){//报名
                 this.$http.get(globalConfig.newMedia_sever+'/api/club/event/create',{event_id:id}).then(res => {

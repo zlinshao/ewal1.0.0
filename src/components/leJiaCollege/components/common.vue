@@ -22,7 +22,7 @@
         </div>
         <div class="mainList">
             <keep-alive>
-                <div :is="tabView" :tabId = 'tabId' :getTab="tab" :switchTab="selectTab"></div>
+                <component :is="tabView" :tabId = 'tabId' :getTab="tab" :switchTab="selectTab"></component>
             </keep-alive>
         </div>
     </div>
@@ -94,7 +94,6 @@
                 this.tabId = this.$route.query.id;
                 this.tab = this.$route.query.tab;
                 this.selectTab = this.$route.query.switchTabs;
-                console.log(this.selectTab);
             }
         },
         methods:{

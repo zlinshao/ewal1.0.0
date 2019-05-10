@@ -133,7 +133,7 @@
                     name:'',//讲师名称
                     desc:'',//讲师简介
                     comment:'',//点评概要
-                    file_info:'',//文件参数
+                    file_info: [],//文件参数
                     user_id:'',//用户id
                 },
 
@@ -244,16 +244,15 @@
                 for(let item of Object.keys(this.form)){
                     this.form[item]=row[item];
                 }
-                let arr=[];
-                arr.push(row.cover);
-                console.log(row);
-                this.form.file_info = arr;
+                this.form.file_info = []
+                for(let i =0;i< row.cover.length;i++){
+                    this.form.file_info.push(row.cover[i].id)
+                }
                 this.form.name = row.user_id.name;
                 this.form.user_id = row.user_id.id;
             },
             //提交
             submit(type){
-                console.log(this.form.file_info);
                 let paramsForm={
                     user_id:this.form.user_id,
                     cover:this.form.file_info[0],

@@ -5,13 +5,13 @@
                 <span
                         v-for="item in selects"
                         class="flex-center"
-                        @click="routerLink(item.url,{type:4,url:'postPlanningLists',id:item.id,tab:1})"
+                        @click="routerLink(item.url,{type:2,url:'postPlanningLists',id:item.id,tab:1})"
                 >
                     <i class="writingMode">{{item.title}}</i>
                 </span>
             </div>
             <div class="right-tab">
-                <div v-for="item in tabs" @click="routerLink(item.url,{type:4,url:'postPlanningLists',id:item.id,tab:2,switchTabs:item.tab})">
+                <div v-for="item in tabs" @click="routerLink(item.url,{type:2,url:'postPlanningLists',id:item.id,tab:2,switchTabs:item.tab})">
                     <span>
                         <i class="writingMode">{{item.title}}</i>
                     </span>

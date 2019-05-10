@@ -91,6 +91,7 @@ const Notice = () => import('@/components/newMedia/front/hotNews/components/comm
 const NewsDetail = () => import('@/components/newMedia/front/hotNews/components/detail.vue')
 //优秀员工详情
 const StaffDetail = () => import('@/components/newMedia/components/staffDetail.vue')
+//乐加之星详情
 
 //新媒体后台
 const MediaCenter = () => import('@/components/newMedia/index.vue')
