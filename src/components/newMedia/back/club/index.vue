@@ -222,8 +222,7 @@ export default {
     //     this.showData.content = val
     // },
     getContentChange (val) {
-      console.log(val);
-      this.showData.content = val;
+      this.showData.content = val.slice(3,val.length-4);
     },
 
     catchData (val) {
@@ -307,7 +306,6 @@ export default {
       this.showData = itemInfo;
       let arr = [item.start_time, item.over_time];
       this.showData.actionTime = arr;
-      console.log(item)
       this.$http.get(globalConfig.newMedia_sever + '/api/club/event/' + item.id).then(res => {
         this.getDataLists()
       })
@@ -354,13 +352,58 @@ export default {
         content: this.showData.content,
         cover: this.showData.file_info[0]
       };
-      paramsForm.content= paramsForm.content.slice(3,paramsForm.content.length-4)
-      console.log(this.showData);
-      this.$http.post(globalConfig.newMedia_sever + '/api/club/event', paramsForm).then(res => {
-        console.log(res)
-        this.add_visible = false;
-        this.callbackSuccess(res);
-      })
+      console.log(paramsForm)
+      if(paramsForm.name == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定活动名称',
+          });
+      }
+      else if(paramsForm.start_time == undefined){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定活动开始时间',
+          });
+      }
+      else if(paramsForm.over_time == undefined){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定活动结束时间',
+          });
+      }
+      else if(paramsForm.address == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定活动地点',
+          });
+      }
+      else if(paramsForm.cover == undefined){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定活动海报',
+          });
+      }
+      else if(paramsForm.content == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定活动内容',
+          });
+      }
+      else{
+        this.$http.post(globalConfig.newMedia_sever + '/api/club/event', paramsForm).then(res => {
+          if(res.status == 200){
+            this.add_visible = false;
+            this.callbackSuccess(res);
+            this.showData={
+                              name: '',
+                              address: '',
+                              actionTime: [],
+                              content: '',
+                              file_info: [],
+                            }
+          }
+        })
+      }
     },
 
     preview () {//预览
