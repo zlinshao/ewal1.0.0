@@ -1,46 +1,475 @@
-/*
-Error: Invalid GBK character "\xE8"
-        on line 283 of backup.scss
+.flex {
+  display: flex;
+  display: -webkit-flex; }
 
-278:         width: 90%;
-279:         margin: 0 auto;
-280:         text-align: left;
-281:       }
-282: 
-283:       //  自己录入题库
-284:       .library_info {
-285:         width: 100%;
-286:         height: 100%;
-287:         position: absolute;
-288:         left: 0;
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
 
-Backtrace:
-backup.scss:283
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1090:in `rescue in block in find_encoding_error'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1087:in `block in find_encoding_error'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `each_with_index'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:1086:in `find_encoding_error'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:820:in `rescue in check_sass_encoding'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/util.rb:816:in `check_sass_encoding'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:444:in `check_encoding!'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:400:in `_to_tree'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/engine.rb:307:in `render_with_sourcemap'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `each'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/plugin.rb:82:in `update_stylesheets'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/sass_scss.rb:51:in `process_result'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:50:in `parse'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/lib/sass/exec/base.rb:18:in `parse!'
-D:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.7.3/bin/scss:13:in `<top (required)>'
-D:/Ruby24-x64/bin/scss:23:in `load'
-D:/Ruby24-x64/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE8\"\A         on line 283 of backup.scss\A \A 278:         width: 90%;\A 279:         margin: 0 auto;\A 280:         text-align: left;\A 281:       }\A 282: \A 283:       //  自己录入题库\A 284:       .library_info {\A 285:         width: 100%;\A 286:         height: 100%;\A 287:         position: absolute;\A 288:         left: 0;"; }
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center; }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center; }
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start; }
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end; }
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center; }
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around; }
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between; }
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start; }
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end; }
+
+/*@font-face {
+  font-family: 'jingDianXingShu';
+  src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
+}
+
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url('http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF');
+}
+
+@font-face {
+  font-family: 'jianyue';
+  src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
+}*/
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf"); }
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf"); }
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl; }
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; }
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; }
+
+.scroll_bar {
+  overflow: auto; }
+  .scroll_bar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-button {
+    height: 10px;
+    background-color: #e4e7ed;
+    border-radius: 10px; }
+  .scroll_bar::-webkit-scrollbar-track {
+    background: #e4e7ed; }
+  .scroll_bar::-webkit-scrollbar-thumb {
+    background: #999999;
+    border-radius: 4px; }
+
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2; }
+  .action-bar div {
+    display: flex;
+    flex-direction: row;
+    align-items: center; }
+  .action-bar .check-count {
+    margin-left: 30px;
+    margin-right: 50px; }
+    .action-bar .check-count i {
+      font-style: normal;
+      color: #ff4545; }
+  .action-bar .action-bar-name {
+    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; }
+    .action-bar .action-bar-name span {
+      display: inline-block;
+      text-align: center;
+      border-left: 1px solid #9b9b9b;
+      font-size: 18px;
+      padding: 0 10px;
+      cursor: pointer; }
+    .action-bar .action-bar-name span:first-child {
+      border-left: 0; }
+  .action-bar .delete {
+    color: #ff4545; }
+  .action-bar .edit {
+    color: #0c66ff; }
+  .action-bar .check {
+    color: #0bb07b; }
+
+.colorE33 {
+  color: #cf2e33; }
+
+.color874 {
+  color: #686874; }
+
+#theme_name .militaryOrganization {
+  height: 100%; }
+  #theme_name .militaryOrganization > div {
+    height: 100%;
+    position: relative;
+    overflow: hidden; }
+    #theme_name .militaryOrganization > div .main-nav {
+      padding: 15px 0; }
+      #theme_name .militaryOrganization > div .main-nav > span {
+        padding: 5px 30px;
+        margin: 0 10px;
+        cursor: pointer;
+        font-size: 14px; }
+    #theme_name .militaryOrganization > div .main-container {
+      width: 100%;
+      height: calc(100% - 131px);
+      background-color: #f9f9f9;
+      position: absolute;
+      left: 0;
+      top: 131px;
+      transition: all ease 1s; }
+      #theme_name .militaryOrganization > div .main-container .guidance {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%); }
+        #theme_name .militaryOrganization > div .main-container .guidance > div {
+          width: 100px;
+          height: 200px; }
+        #theme_name .militaryOrganization > div .main-container .guidance .subject {
+          position: relative; }
+          #theme_name .militaryOrganization > div .main-container .guidance .subject .title {
+            width: 50px;
+            height: 120px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #c0c0c0; }
+            #theme_name .militaryOrganization > div .main-container .guidance .subject .title > span {
+              display: inline-block;
+              height: 90%;
+              padding: 8px;
+              font-size: 22px;
+              line-height: 1;
+              border: 1px solid #c0c0c0;
+              color: #686874;
+              font-family: 'jingDianXingShu';
+              background-color: white; }
+          #theme_name .militaryOrganization > div .main-container .guidance .subject .line {
+            width: 50px;
+            height: 2px;
+            background-color: #c0c0c0;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%); }
+      #theme_name .militaryOrganization > div .main-container .content {
+        width: 60%;
+        height: 500px;
+        margin: 0 auto;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%); }
+        #theme_name .militaryOrganization > div .main-container .content > div {
+          height: 100%; }
+        #theme_name .militaryOrganization > div .main-container .content .left-guide {
+          width: 40%;
+          padding: 100px 50px;
+          justify-content: space-between;
+          flex-direction: column; }
+          #theme_name .militaryOrganization > div .main-container .content .left-guide > div {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            cursor: pointer; }
+            #theme_name .militaryOrganization > div .main-container .content .left-guide > div span {
+              display: inline-block;
+              width: 70%;
+              height: 55%;
+              font-size: 28px;
+              line-height: 1;
+              font-family: 'jingDianXingShu'; }
+        #theme_name .militaryOrganization > div .main-container .content .right-content {
+          width: 60%;
+          height: 100%;
+          justify-content: flex-start; }
+          #theme_name .militaryOrganization > div .main-container .content .right-content .list {
+            width: 100px;
+            height: 95%;
+            border-right: 1px solid #dfdfdf;
+            margin-right: 2px;
+            text-align: center;
+            cursor: pointer;
+            padding: 0 15px; }
+            #theme_name .militaryOrganization > div .main-container .content .right-content .list > div {
+              height: 50%; }
+            #theme_name .militaryOrganization > div .main-container .content .right-content .list .content-top > span {
+              display: inline-block;
+              width: 30px;
+              height: 30px;
+              font-family: 'jingDianXingShu';
+              position: relative;
+              line-height: 30px;
+              margin-top: 5px; }
+              #theme_name .militaryOrganization > div .main-container .content .right-content .list .content-top > span:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: -1;
+                border: 2px solid #cf2e33;
+                transform: rotateZ(45deg); }
+            #theme_name .militaryOrganization > div .main-container .content .right-content .list .content-top > div {
+              margin-top: 20px;
+              padding-top: 30px; }
+              #theme_name .militaryOrganization > div .main-container .content .right-content .list .content-top > div > span:first-child {
+                font-size: 12px;
+                vertical-align: top;
+                padding-top: 5px; }
+              #theme_name .militaryOrganization > div .main-container .content .right-content .list .content-top > div > span:last-child {
+                font-family: 'jingDianXingShu';
+                font-size: 22px;
+                vertical-align: top; }
+            #theme_name .militaryOrganization > div .main-container .content .right-content .list .content-bottom > span {
+              margin-top: 80px;
+              font-family: 'jingDianXingShu';
+              font-size: 22px; }
+    #theme_name .militaryOrganization > div .subject-train {
+      transform: translateX(-100%);
+      z-index: 1; }
+    #theme_name .militaryOrganization > div .exam-container {
+      transform: translateX(100%); }
+      #theme_name .militaryOrganization > div .exam-container .content .guidance {
+        width: 200px;
+        position: absolute;
+        left: -100px;
+        top: 60%; }
+      #theme_name .militaryOrganization > div .exam-container .content .contain {
+        width: 80%;
+        height: 90%;
+        margin: 0 auto;
+        text-align: center;
+        transition: all ease 1s; }
+        #theme_name .militaryOrganization > div .exam-container .content .contain .exam-paper {
+          width: 80%; }
+          #theme_name .militaryOrganization > div .exam-container .content .contain .exam-paper > div {
+            width: 80px;
+            height: 100%;
+            font-family: 'jingDianXingShu';
+            display: flex;
+            display: -webkit-flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column; }
+            #theme_name .militaryOrganization > div .exam-container .content .contain .exam-paper > div > div {
+              font-size: 26px;
+              font-family: 'jingDianXingShu';
+              cursor: pointer; }
+              #theme_name .militaryOrganization > div .exam-container .content .contain .exam-paper > div > div:first-child {
+                margin-bottom: 80px; }
+            #theme_name .militaryOrganization > div .exam-container .content .contain .exam-paper > div:hover {
+              color: #cf2e33; }
+          #theme_name .militaryOrganization > div .exam-container .content .contain .exam-paper .exam_span {
+            vertical-align: top; }
+            #theme_name .militaryOrganization > div .exam-container .content .contain .exam-paper .exam_span > span {
+              font-family: 'jingDianXingShu'; }
+              #theme_name .militaryOrganization > div .exam-container .content .contain .exam-paper .exam_span > span:first-child {
+                font-size: 12px; }
+              #theme_name .militaryOrganization > div .exam-container .content .contain .exam-paper .exam_span > span:last-child {
+                font-size: 26px; }
+        #theme_name .militaryOrganization > div .exam-container .content .contain .exam-control {
+          width: 20%;
+          flex-direction: column; }
+          #theme_name .militaryOrganization > div .exam-container .content .contain .exam-control > div {
+            width: 40px;
+            height: 120px;
+            text-align: center;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            display: -webkit-flex;
+            align-items: center;
+            justify-content: center; }
+            #theme_name .militaryOrganization > div .exam-container .content .contain .exam-control > div:first-child {
+              margin-bottom: 100px; }
+            #theme_name .militaryOrganization > div .exam-container .content .contain .exam-control > div > span {
+              display: inline-block;
+              min-height: 70px;
+              text-align-last: justify; }
+    #theme_name .militaryOrganization > div .exam-setting {
+      transform: translateX(0);
+      z-index: 2; }
+    #theme_name .militaryOrganization > div .train_management .icons {
+      width: 28px;
+      height: 28px;
+      background-color: #cf2e33;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      margin-left: 75%;
+      cursor: pointer; }
+    #theme_name .militaryOrganization > div .train_management .add {
+      display: flex;
+      display: -webkit-flex;
+      align-items: center;
+      justify-content: center; }
+      #theme_name .militaryOrganization > div .train_management .add b {
+        color: #ffffff;
+        font-size: 30px;
+        padding-bottom: 6px; }
+    #theme_name .militaryOrganization > div .train_management .edit_btn, #theme_name .militaryOrganization > div .train_management .delete_btn {
+      cursor: pointer; }
+    #theme_name .militaryOrganization > div .train_management .edit_btn {
+      color: #cf2e33; }
+    #theme_name .militaryOrganization > div .train_management .dialog_main {
+      position: relative; }
+    #theme_name .militaryOrganization > div .train_management .new_train {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 97.5%;
+      height: 50px;
+      line-height: 50px;
+      justify-content: space-around;
+      background-color: #f9f9f9;
+      border-bottom: 1px solid #dfdfdf;
+      border-top: 1px solid #dfdfdf; }
+      #theme_name .militaryOrganization > div .train_management .new_train > span {
+        cursor: pointer; }
+    #theme_name .militaryOrganization > div .train_detail {
+      width: 90%;
+      margin: 0 auto;
+      text-align: left; }
+    #theme_name .militaryOrganization > div .library_info {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 100;
+      transition: all ease 1s;
+      transform-origin: center center;
+      background-color: #f2f2f2; }
+      #theme_name .militaryOrganization > div .library_info .library_header {
+        height: 80px;
+        border-bottom: 1px solid #c0c0c0; }
+        #theme_name .militaryOrganization > div .library_info .library_header > div {
+          width: 50%;
+          text-align: center; }
+        #theme_name .militaryOrganization > div .library_info .library_header .left > h3 {
+          font-weight: 500; }
+        #theme_name .militaryOrganization > div .library_info .library_header .left > div > span {
+          margin-left: 30px; }
+      #theme_name .militaryOrganization > div .library_info .library_main {
+        padding: 0 200px;
+        height: 90%;
+        position: relative; }
+        #theme_name .militaryOrganization > div .library_info .library_main .control {
+          padding: 15px 0;
+          text-align: right;
+          flex-direction: row-reverse; }
+        #theme_name .militaryOrganization > div .library_info .library_main .exam_type {
+          margin-bottom: 30px; }
+        #theme_name .militaryOrganization > div .library_info .library_main .paper_main {
+          height: 600px;
+          padding: 30px; }
+          #theme_name .militaryOrganization > div .library_info .library_main .paper_main .del_btn {
+            margin-left: 15px;
+            color: #cf2e33; }
+          #theme_name .militaryOrganization > div .library_info .library_main .paper_main .form_item_border {
+            padding: 20px 0;
+            border-bottom: 1px solid #c0c0c0; }
+          #theme_name .militaryOrganization > div .library_info .library_main .paper_main .hide_label {
+            opacity: 0; }
+        #theme_name .militaryOrganization > div .library_info .library_main .library_footer {
+          width: 100%;
+          text-align: right; }
+    #theme_name .militaryOrganization > div .library_info_hide {
+      left: -100%;
+      top: -100%; }
