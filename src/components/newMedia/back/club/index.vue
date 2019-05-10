@@ -28,7 +28,7 @@
                   <span>{{item.created_at}}</span>
                 </div>
                 <div class="list-middle-right" :class="item.status ===2 ? 'end':'process'">
-                  <span>{{item.status===2? '已结束':item.status===1?'进行中':item.status===0?'':'未开始'}}</span>
+                  <span>{{item.status===2? '已结束':item.status===1?'进行中':item.status===0?'未开始':''}}</span>
                 </div>
               </div>
             </div>
@@ -352,7 +352,6 @@ export default {
         content: this.showData.content,
         cover: this.showData.file_info[0]
       };
-      console.log(paramsForm)
       if(paramsForm.name == ''){
         this.$LjNotify('error', {
             title: '失败',

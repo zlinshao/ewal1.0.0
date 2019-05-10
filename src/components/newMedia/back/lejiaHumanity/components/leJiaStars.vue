@@ -52,12 +52,14 @@
         <div class="dialog_main borderNone">
           <el-form v-model="form" label-width="80px">
             <el-form-item label="姓名">
-              <user-choose width='700' v-model="form.name"></user-choose>
+              <user-choose width='700' v-model="form.userid"></user-choose>
             </el-form-item>
-              
+            <el-form-item label="标题">
+              <el-input width='700' v-model="form.title"></el-input>
+            </el-form-item>
             <el-form-item label="文章内容">
               <div class="item_content">
-                <lj-editor :editorContent="form.content"></lj-editor>
+                <lj-editor :editorContent="form.content" @changeContent="getContentChange"></lj-editor>
               </div>
             </el-form-item>
           </el-form>
@@ -107,7 +109,8 @@ export default {
       visible: false,
       form: {
         name: '',
-        content: ''
+        content: '',
+        title:''
       },
       params: {
         offset: 1,
@@ -154,7 +157,17 @@ export default {
     //   })
     // },
     //发布
+
     postReceivable_tag(){
+      let param = {
+        user_id: this.form.userid[0],
+        title: this.form.title,
+        content: this.form.content
+      }
+      this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star',param).then(res => {
+        if (res.status === 200) {
+        }
+      })
       this.add_visible = false
       this.$emit('cancelAdd', this.add_visible)
     },
@@ -182,7 +195,7 @@ export default {
     },
     issueConfirm(){
       let param = {
-        id: this.selectItem.id
+        id: this.selectItem.id,
       }
       this.$http.post(globalConfig.newMedia_sever + '/api/humanity/star/open/'+`${param.id}`,param).then(res => {
           if(res.status == 200){
@@ -194,7 +207,10 @@ export default {
           this.getLeJiaStarList()
         }
       })
-    }
+    },
+    getContentChange (val) {
+      this.form.content = val.slice(3,val.length-4);
+    },
   },
 }
 </script>
