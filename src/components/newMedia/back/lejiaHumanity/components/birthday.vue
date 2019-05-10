@@ -195,6 +195,7 @@ export default {
       })
     },
     getDataLists () {//获取列表
+    this.todayBirthday= []
       this.$http.get(globalConfig.newMedia_sever + '/api/humanity/birthday', this.params).then(res => {
         if (res.status === 200) {
           let birthdayData = res.data.data;
