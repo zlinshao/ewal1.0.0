@@ -415,6 +415,7 @@
         this.$http.post('recruitment/interviewees',this.add_interviewer_form).then(res => {
           this.handleSuccessCallback(res,'20010');
           if (res.code === '20010') {
+            this.send_msg_offer=false;
             this.handleCloseAddInterviewer();
           }
         }).catch(err => {
