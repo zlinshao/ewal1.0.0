@@ -179,7 +179,6 @@
   color: #686874; }
 
 #theme_name #menuList {
-  background-color: #ffffff;
   position: relative; }
   #theme_name #menuList .title {
     position: absolute;
@@ -258,6 +257,8 @@
     transition-delay: 0.2s;
     -webkit-transition-delay: 0.2s; }
 
+#theme_name.theme1 #menuList {
+  background-color: #ffffff; }
 #theme_name.theme1 #menuList.customService .list {
   padding: 30px 180px; }
   #theme_name.theme1 #menuList.customService .list .menu span {
@@ -269,3 +270,10 @@
     color: #686874; }
   #theme_name.theme1 #menuList.intellectualPropertyProtection .list .menu span {
     letter-spacing: 20px; }
+
+#theme_name.theme2 #menuList {
+  background-color: transparent; }
+  #theme_name.theme2 #menuList .list .menu .childrenMenu {
+    color: #fff; }
+    #theme_name.theme2 #menuList .list .menu .childrenMenu:hover {
+      color: #00ffff; }

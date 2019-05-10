@@ -205,17 +205,12 @@
       #workInfo .info_container .date_change li {
         width: 90px;
         height: 40px;
-        color: #999999;
-        background-color: #dfdfdf;
         text-align: center;
         line-height: 40px;
         border-radius: 3px 0 0 3px;
         margin-bottom: 10px;
         font-size: 18px;
         cursor: pointer; }
-      #workInfo .info_container .date_change .mark_li {
-        background-color: #cf2e33;
-        color: white; }
     #workInfo .info_container .day_info > div {
       width: 25%;
       padding-left: 30px; }
@@ -231,3 +226,17 @@
       height: 321px; }
       #workInfo .info_container .day_info .work_info > p:not(:last-child) {
         margin-bottom: 65px; }
+
+#theme_name.theme1 #workInfo .info_container .date_change li {
+  color: #999999;
+  background-color: #dfdfdf; }
+#theme_name.theme1 #workInfo .info_container .date_change .mark_li {
+  background-color: #cf2e33;
+  color: white; }
+
+#theme_name.theme2 #workInfo .info_container .date_change li {
+  background: url("../../../assets/image/workInfo/theme2/kf_bz.png") no-repeat scroll center;
+  background-size: 100% 100%; }
+#theme_name.theme2 #workInfo .info_container .date_change .mark_li {
+  background: url("../../../assets/image/workInfo/theme2/kf_dr.png") no-repeat scroll center;
+  background-size: 100% 100%; }

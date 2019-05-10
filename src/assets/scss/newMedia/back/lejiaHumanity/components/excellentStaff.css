@@ -203,23 +203,24 @@
       margin: 0 auto;
       display: flex;
       flex-direction: row;
-      flex-wrap: wrap;
-      align-items: flex-start; }
+      flex-wrap: wrap; }
       #theme_name #excellentStaff .staff_info .staff_list_info .staff_box {
         width: 25%;
-        padding: 30px;
-        text-align: center; }
-        #theme_name #excellentStaff .staff_info .staff_list_info .staff_box .staff_box_info > p {
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; }
+        #theme_name #excellentStaff .staff_info .staff_list_info .staff_box > p {
           width: 314px;
           text-align: center; }
-          #theme_name #excellentStaff .staff_info .staff_list_info .staff_box .staff_box_info > p span {
+          #theme_name #excellentStaff .staff_info .staff_list_info .staff_box > p span {
             margin-right: 10px; }
-        #theme_name #excellentStaff .staff_info .staff_list_info .staff_box .staff_box_info > div {
+        #theme_name #excellentStaff .staff_info .staff_list_info .staff_box > div {
           width: 314px;
           height: 377px;
           cursor: pointer;
           position: relative; }
-          #theme_name #excellentStaff .staff_info .staff_list_info .staff_box .staff_box_info > div .img-modal {
+          #theme_name #excellentStaff .staff_info .staff_list_info .staff_box > div .img-modal {
             width: 216px;
             height: 309px;
             background: rgba(0, 0, 0, 0.6);
@@ -231,8 +232,11 @@
             flex-direction: column;
             justify-content: space-around;
             align-items: center; }
-            #theme_name #excellentStaff .staff_info .staff_list_info .staff_box .staff_box_info > div .img-modal span {
+            #theme_name #excellentStaff .staff_info .staff_list_info .staff_box > div .img-modal span {
               display: block;
               width: 76px;
               height: 76px;
               border-radius: 50%; }
+          #theme_name #excellentStaff .staff_info .staff_list_info .staff_box > div img {
+            width: 216px;
+            height: 309px; }

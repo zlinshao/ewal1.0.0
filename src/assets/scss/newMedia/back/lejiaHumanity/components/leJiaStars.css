@@ -199,11 +199,7 @@
         #theme_name #leJiaStars .star_list .star .starTop .frame {
           width: 286px;
           height: 357px; }
-          #theme_name #leJiaStars .star_list .star .starTop .frame > img {
-            width: 216px;
-            height: 310px;
-            margin: 23.5px 35px; }
-          #theme_name #leJiaStars .star_list .star .starTop .frame .issue {
+          #theme_name #leJiaStars .star_list .star .starTop .frame:hover .issue {
             width: 60px;
             height: 24px;
             display: flex;
@@ -218,7 +214,11 @@
             position: relative;
             top: -62px;
             right: -108px; }
-          #theme_name #leJiaStars .star_list .star .starTop .frame .issued {
+          #theme_name #leJiaStars .star_list .star .starTop .frame > img {
+            width: 216px;
+            height: 310px;
+            margin: 23.5px 35px; }
+          #theme_name #leJiaStars .star_list .star .starTop .frame .issue {
             width: 60px;
             height: 24px;
             display: flex;

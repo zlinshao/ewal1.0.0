@@ -230,7 +230,10 @@
             interviewer_id
           };
           this.$http.put(`${this.url}recruitment/interviewers/transfer/${process_id}`,params).then(res=> {
-            debugger
+            if(res.code.endsWith('0')) {
+              this.$store.dispatch('change_refresh_todo_list');
+              this.interviewHandler();
+            }
           });
         }else if(type==1) {//本人提交面试结果
           let params = {
@@ -240,7 +243,10 @@
           };
           console.log(params);
           this.$http.put(`${this.url}recruitment/interviewers/add_result/${process_id}`,params).then(res=> {
-            debugger
+            if(res.code.endsWith('0')) {
+              this.$store.dispatch('change_refresh_todo_list');
+              this.interviewHandler();
+            }
           });
         }
       },
