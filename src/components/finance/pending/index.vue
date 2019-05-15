@@ -10,7 +10,9 @@
                 </h2>
             </div>
             <div class="items-center listTopRight">
-                <div class="icons search" @click="highSearch"></div>
+                <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
+                    <div class="icons search" @click="highSearch"></div>
+                </el-tooltip>
             </div>
         </div>
         <div class="action-bar changeChoose" v-show="action_visible">

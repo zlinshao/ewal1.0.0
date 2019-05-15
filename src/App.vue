@@ -48,7 +48,7 @@
     </header>
     <div id="moduleList" :class="{'moduleList':moduleList}" style="z-index: 1000">
       <div class="justify-around">
-        <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules" @click="routerLink(item.url);moduleList = false"
+        <div class="list items-column" :class="'list-' + (index + 1)" v-for="(item,index) in modules" @click="toPath(item.url);moduleList = false"
           :key='index'>
           <p></p>
           <div class="justify-center">
@@ -124,9 +124,10 @@ export default {
         {key: '2',val: '炫酷科技风',color: 'color-4'},
         {key: '5',val: '特色中国风',color: 'color-1'},
       ],
+      url: '',
       theme_visible: false,
-
       theme_name: '1',
+      themeKey: '1',
       moduleList: false,
       more_visible: false,
       changeLoad: false,
@@ -215,6 +216,16 @@ export default {
     this.getPerson()
   },
   methods: {
+    // 路由跳转
+    toPath(url) {
+      this.url = url
+      if (url === '/president') {
+        this.theme_name = '2'
+      } else {
+        this.theme_name = this.themeKey
+      }
+      this.$router.push({path: url})
+    },
     getPerson () {
       this.$http.get(`${this.market_server}v1.0/market/dictionary/parent_son`).then(res => {
         if (res.success) {
@@ -261,7 +272,11 @@ export default {
       this.$store.dispatch('close_notify', false);
     },
     handleChangeTheme(item) {
+      this.themeKey = item.key;
       this.theme_name = item.key;
+      if (this.url === '/president') {
+        this.theme_name = '2'
+      }
       this.$store.dispatch('theme_name',item.key);
       this.changeLoad = true;
       let that = this;

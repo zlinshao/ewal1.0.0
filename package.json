@@ -21,6 +21,7 @@
     "npm": "^6.9.0",
     "qiniu-js": "^2.5.4",
     "vue": "^2.6.7",
+    "vue-clock2": "^1.1.5",
     "vue-router": "^3.0.1",
     "vue-video-player": "^5.0.2",
     "vue2-editor": "^2.6.6",
@@ -87,7 +88,7 @@
     "vue-template-compiler": "^2.6.7",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.11.5",
+    "webpack-dev-server": "^2.9.7",
     "webpack-merge": "^4.1.0"
   },
   "engines": {

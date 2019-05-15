@@ -32,6 +32,7 @@ import 'video.js/dist/video-js.css'
 import './assets/js/approval/dictionary.js'
 import './assets/js/approval/approval.js'
 
+Vue.prototype.$echarts = echarts
 Vue.use(Boss)
 Vue.use(Vuex)
 Vue.use(fun)
