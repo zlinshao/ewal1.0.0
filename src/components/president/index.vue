@@ -11,20 +11,12 @@
         <p>{{this.time}}</p>
       </section>
     </section>
-    <section class="tab">
-      <!-- <section class="tabPage">
-        <span>市场</span> 
-      </section>
-      <section class="tabPage">
-        <span>人事</span></section>
-      <section class="tabPage">
-        <span>财务</span></section>
-      <section class="tabPage">
-        <span>网络</span></section> -->
-        <section class="tabPage" v-for="(item, index) in tabPages" :key="index" @click="toPath(item)">
-          <span >{{item.name}}</span>
+        <section class="tab">
+          <section class="tabPage" v-for="(item, index) in tabPages" :key="index" @click="toPath(item)">
+            <img :src= item.imgUrl alt="">
+            <span >{{item.name}}</span>
+          </section>
         </section>
-    </section>
     <div class="main">
       <div class="start">
         <div class="ranking" >
@@ -183,10 +175,10 @@ export default {
   data() {
     return {
       tabPages: [
-        {name: '市场', url: 'markting'},
-        {name: '人事', url: 'humanbing'},
-        {name: '财务', url: 'fincene'},
-        {name: '网络', url: 'network'}
+        {name: '市场', url: 'markting',imgUrl:require('../../assets/image/president/shichang_0.png')},
+        {name: '人事', url: 'humanbing',imgUrl:require('../../assets/image/president/renshi_1.png')},
+        {name: '财务', url: 'fincene',imgUrl:require('../../assets/image/president/caiwu_0.png')},
+        {name: '网络', url: 'network',imgUrl:require('../../assets/image/president/wangluo_0.png')}
       ],
       url: '../../assets/image/president/renshi_0.png',
       time: "",
@@ -200,6 +192,12 @@ export default {
     this.drawLine();
   },
   activated() {},
+  // beforeRouteLeave (to, from, next) {
+  //   console.log(to, from, next)
+  //   // if (to.fullPath === '/markting') {
+  //   //   this.$store.dispatch('change_path', '/markting')
+  //   // }
+  // },
   watch: {},
   computed: {},
   methods: {
@@ -500,52 +498,65 @@ export default {
   justify-content: flex-start;
   position: absolute;
   // top: px;
-  right: 53px;
-  top: 58px;
+  right: 116px;
+  top: 90px;
   section {
-    width: 100px;
-    height: 150px;
+    border-radius: 100%;
+    width: 75px;
+    height: 75px;
+    // background: red;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
   section:nth-of-type(1) {
-    background-image: url('../../assets/image/president/shichang_0.png'), url('../../assets/image/president/shape_4.png');
-    background-repeat: no-repeat;
-    background-size: 70px 70px;
-    background-position-y: 40px;
+    position: relative;
+    width: 75px;
+    height: 75px;
     span {
-      position: relative;
-      top: 63px;
-      left: 18px;
+      position: absolute;
+      z-index:2;
+      top: 24px;
+      left: 20px;
     }
   }
   section:nth-of-type(2) {
-    background: url('../../assets/image/president/renshi_1.png') no-repeat;
-    background-repeat: no-repeat;
-    background-size: 80px 80px;
+    position: relative;
+    top: -45px;
+    left: 18px;
+    width: 90px;
+    height: 90px;
     span {
-      position: relative;
-      top: 28px;
-      left: 19px;
+      position: absolute;
+      z-index:2;
+      top: 32px;
+      left: 26px;
     }
   }
   section:nth-of-type(3) {
-    background: url('../../assets/image/president/caiwu_0.png') no-repeat;
-    background-repeat: no-repeat;
-    background-size: 70px 70px;
-    background-position-y: 40px;
+    position: relative;
+    left: 27px;
+    width: 75px;
+    height: 75px;
     span {
-      position: relative;
-      top: 63px;
-      left: 18px;
+      position: absolute;
+      z-index:2;
+      top: 24px;
+      left: 20px;
     }
   }
   section:nth-of-type(4) {
-    background: url('../../assets/image/president/wangluo_0.png') no-repeat;
-    background-repeat: no-repeat;
-    background-size: 70px 70px;
+    position: relative;
+    width: 75px;
+    height: 75px;
+    top: -38px;
+    left: 36px;
     span {
-      position: relative;
-      top: 27px;
-      left: 18px;
+      position: absolute;
+      z-index:2;
+      top: 24px;
+      left: 20px;
     }
   }
 }
