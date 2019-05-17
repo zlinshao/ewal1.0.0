@@ -39,16 +39,21 @@
                     <div>
                         <li>
                             <span>.</span>
-                            <img src="../../assets/image/president/renshi_00.png" alt="">
-                            
+                            <router-link :to="{path: 'humanbing'}">
+                                <img src="../../assets/image/president/renshi_00.png" alt="" >
+                            </router-link>
                         </li>
                         <li>
                             <span>.</span>
-                            <img src="../../assets/image/president/caiwu_00.png" alt="">
+                            <router-link :to="{path: 'fincene'}">
+                                <img src="../../assets/image/president/caiwu_00.png" alt="">
+                            </router-link>
                         </li>
                         <li>
                             <span>.</span>
-                            <img src="../../assets/image/president/wangluo_00.png" alt="">
+                            <router-link :to="{path: 'network'}">
+                                <img src="../../assets/image/president/wangluo_00.png" alt="">
+                            </router-link>
                         </li>
                     </div>
                 </ul>
