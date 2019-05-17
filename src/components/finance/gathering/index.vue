@@ -53,17 +53,17 @@
         :height="this.mainListHeight(30) + 'px'"
         highlight-current-row
         :row-class-name="tableChooseRow"
-        @cell-click="tableClickRow"
+        @selection-change="handleSelectionChange($event,'index')"
         header-row-class-name="tableHeader"
         style="width: 100%">
-        <!--<el-table-column-->
-        <!--type="selection" width="40">-->
-        <!--</el-table-column>-->
-        <el-table-column width="40">
+        <el-table-column
+          type="selection" width="40">
+        </el-table-column>
+        <!--<el-table-column width="40">
           <template slot-scope="scope">
             <span class="table_choose" :class="{'is_table_choose': scope.row.id === is_table_choose }"></span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column
           show-overflow-tooltip
           v-for="item in Object.keys(showData)" :key="item"
@@ -467,6 +467,12 @@
                   <span>{{scope.row.is_receipt===1?'已开':'未开'}}</span>
                 </template>
               </el-table-column>
+              <el-table-column label="收据" align="center">
+                <template slot-scope="scope">
+                  <div v-if="scope.row.is_receipt==1" @click="showReceiptDetail(scope.row)" class="receipt-img"></div>
+                  <div v-else>-</div>
+                </template>
+              </el-table-column>
             </el-table>
           </div>
         </div>
@@ -481,6 +487,76 @@
         <div class="dialog_footer">
           <el-button size="mini" type="danger" @click="handleReceiptOk">确定</el-button>
           <el-button size="mini" @click="receipt_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+    <!--收据详情-->
+    <lj-dialog :visible.sync="receipt_detail_dialog_visible"
+               :size="{width: 1550 + 'px',height: 900 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header" style="padding-top: 30px">
+          <h3>电子收据</h3>
+        </div>
+        <div class="dialog_main borderNone edit-name-container">
+          <iframe :src="receipt_detail_dialog_data.view_uri"></iframe>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="warning" @click="editUserName">修改姓名</el-button>
+          <el-button size="small" type="danger" @click="beforeSend">发送</el-button>
+          <el-button size="small" @click="receipt_detail_dialog_visible=false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--修改姓名-->
+    <lj-dialog :visible.sync="edit_username_dialog_visible"
+               :size="{width: 450 + 'px',height: 320 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>修改姓名</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form ref="editUserNameFormRef" :rules="rules.editUserName" :model="edit_username_form"
+                   style="text-align: left"
+                   size="small" label-width="100px">
+            <el-form-item required prop="name" label="客户姓名">
+              <el-input v-model="edit_username_form.name" placeholder="必填" style="width: 200px">
+              </el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleEditUserNameConfirm">确定</el-button>
+          <el-button size="small" @click="edit_username_dialog_visible=false;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--修改手机号-->
+    <lj-dialog :visible.sync="edit_phone_dialog_visible"
+               :size="{width: 450 + 'px',height: 320 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>提示</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form ref="editPhoneFormRef" :rules="rules.editPhone" :model="edit_phone_form"
+                   style="text-align: left"
+                   size="small" label-width="100px">
+            <el-form-item required prop="phone" label="手机号">
+              <el-input v-model="edit_phone_form.phone" placeholder="请输入手机号" style="width: 200px">
+              </el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleEditUserNameConfirm">确定</el-button>
+          <el-button size="small" @click="edit_username_dialog_visible=false;">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -777,6 +853,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import SearchHigh from '../../common/searchHigh.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue';
@@ -805,8 +882,64 @@
       Customer,
       Upload
     },
+    watch: {
+      multipleSelectionIndex: {
+        handler(val, oldVal) {
+          if (val && val.constructor == Array) {
+            if (val.length == 1) {
+              this.current_row = val[0];
+              this.action_visible = true;
+              this.register_from.address = val[0].customer && val[0].customer.address;
+              this.user_info_form = {
+                name:val[0].customer?.customer_name||'',
+                phone:val[0].customer?.contact||'',
+              };
+              this.btn_group = [
+                {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit'},
+                {val: '登记收款', key: 'register', type: 'warning', class: 'edit'},
+                {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
+                {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
+                {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
+                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
+
+            } else if (val.length == 0) {
+              this.action_visible = false;
+            } else {
+              this.current_row = '';
+
+              this.btn_group = [
+                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
+                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
+            }
+          }
+        },
+        immediate: true,
+      },
+    },
     data() {
       return {
+        rules: {
+          editUserName: {
+            name: [
+              {required: true, message: '请输入用户姓名', trigger: ['blur', 'change']},
+            ],
+          },
+
+          editPhone: {
+            name: [
+              {required: true, message: '请输入手机号', trigger: ['blur', 'change']},
+            ],
+          },
+
+
+          amount_payable: [
+            {required: true, message: '请输入活动名称', trigger: 'blur'},
+            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+          ],
+        },
+
+        url:globalConfig.temporary_server,
+
         is_table_choose: '',
 
         out_form: {
@@ -879,6 +1012,22 @@
         current_row: '',
         showFinMenuList: false,
         receipt_visible: false,//开收据
+        receipt_detail_dialog_visible:false,//开收据详情dialog显示隐藏
+        receipt_detail_dialog_data:{},//开收据详情dialog数据
+        edit_username_dialog_visible:false,//修改姓名dialog显示隐藏
+        edit_phone_dialog_visible:false,//修改手机号dialog显示隐藏
+        edit_username_form: {
+          name:'',
+        },//修改姓名form表单
+        edit_phone_form: {
+          phone:'',
+        },//修改手机号form表单
+        user_info_form: {//包含客户姓名和联系电话的表单 分 2个接口提交
+          id:'',//电子收据id
+          assembly_id:'',//流水id
+          name:'',
+          phone:'',
+        },
         delete_visible: false,//删除
         add_visible: false,//新增
         recall_visible: false,//回滚
@@ -928,12 +1077,7 @@
           customer_name: '',
           subject_name: '',//科目名
         },
-        rules: {
-          amount_payable: [
-            {required: true, message: '请输入活动名称', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
-          ],
-        },
+
         types: [
           {title: "业主", value: 1},
           {title: "租客", value: 2}
@@ -1054,7 +1198,8 @@
           {title: "微信", value: 3,},
           {title: "银行卡(数据来自房管中心)", value: 4,},
         ],
-        multipleSelection: [],//多选
+        multipleSelection: [],//多选 表单多选
+        multipleSelectionIndex: [],//多选 主页
         receiptData: [],//电子收据
         running_ids: [],//流水ids
         compareParams: {
@@ -1237,7 +1382,7 @@
         let ids = [];
         this.running_ids = [];
         for (let item of this.multipleSelection) {
-          ids.push(item.id)
+          ids.push(item.id);
         }
         this.running_ids = ids;
       },
@@ -1344,7 +1489,26 @@
           }
         })
       },
-      // 当前点击
+
+      /*tableClickRow(row) {
+        this.multipleSelection = [];
+        if (this.is_table_choose === row.id) {
+          this.is_table_choose = '';
+          this.action_visible = true;
+          this.action_visible = false;
+          this.current_row = '';
+        } else {
+          this.is_table_choose = row.id;
+          this.multipleSelection.push(row);
+          this.current_row = row;
+          this.action_visible = true;
+          this.register_from.address = row.customer && row.customer.address;
+        }
+        let ids = this.chooseRowIds;
+        ids.push(row.id);
+        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+      },*/
+
       tableClickRow(row) {
         this.multipleSelection = [];
         if (this.is_table_choose === row.id) {
@@ -1363,6 +1527,25 @@
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
       },
+      /*tableClickRowIndex(row) { //财务 收款页面 列表多选
+        this.multipleSelection = [];
+        if (this.is_table_choose === row.id) {
+          //this.is_table_choose = '';
+          this.action_visible = true;
+          this.action_visible = false;
+          this.current_row = '';
+        } else {
+          //this.is_table_choose = row.id;
+          this.multipleSelection.push(row);
+          this.current_row = row;
+          this.action_visible = true;
+          this.register_from.address = row.customer && row.customer.address;
+        }
+        let ids = this.chooseRowIds;
+        ids.push(row.id);
+        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+      },*/
+
       // 点击过
       tableChooseRow({row, rowIndex}) {
         return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
@@ -1370,7 +1553,10 @@
 
       //删除
       handleOkDel() {
-        this.$http.delete(globalConfig.temporary_server + 'account_receivable/delete/' + this.current_row.id).then(res => {
+        //this.$http.delete(globalConfig.temporary_server + 'account_receivable/delete/' + this.current_row.id).then(res => {
+        this.$http.delete(globalConfig.temporary_server + 'account_receivable/delete/', {
+            params: {ids: _.map(this.multipleSelectionIndex, 'id')},}
+        ).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {
               title: '成功',
@@ -1397,7 +1583,12 @@
         this.delete_visible = true;
       },
       // 多选
-      handleSelectionChange(val) {
+      handleSelectionChange(val, type) {
+        if (type == 'index') {//列表 主页面
+          this.multipleSelectionIndex = val;
+          return;
+        }
+        //表单页面
         this.ra_ids = [];
         this.multipleSelection = val;
         for (let item in val) {
@@ -1463,23 +1654,28 @@
         this.getReceivable_follow();
       },
 
-      getReceiptDataLists() {//通过款项获取银流水
+      async getReceiptDataLists(isReturn) {//通过款项获取银流水
         let ids = [];
         ids.push(this.current_row.id);
         let paramsForm = {
           fund_id: ids,
           cate: 1
         };
-        this.$http.put(globalConfig.temporary_server + 'fund_flow_record/fund_flow', paramsForm).then(res => {
-          this.showLoading(false);
-          if (res.code === 200) {
-            this.receiptData = res.data.data;
-            this.count = res.data.count;
-          } else {
-            this.receiptData = [];
-            this.count = 0;
-          }
-        })
+        if(!isReturn) {
+          await this.$http.put(globalConfig.temporary_server + 'fund_flow_record/fund_flow', paramsForm).then(res => {
+            this.showLoading(false);
+            if (res.code === 200) {
+              this.receiptData = res.data.data;
+              this.count = res.data.count;
+            } else {
+              this.receiptData = [];
+              this.count = 0;
+            }
+          })
+        }else {
+          return await this.$http.put(globalConfig.temporary_server + 'fund_flow_record/fund_flow', paramsForm);
+        }
+
       },
 
       //新增跟进
@@ -1656,6 +1852,10 @@
         if (key === 'handleDelete') {
           this.delete_visible = true;
         }
+
+        if (key === 'sendMessage') {
+          alert('发送短信');
+        }
       },
 
       // 高级搜索
@@ -1726,6 +1926,53 @@
           this.out_form.subject_name = val.title;
         }
       },
+
+
+
+
+      //发送短信之前 首先打开编辑手机号码表单
+      beforeSend() {
+        this.edit_phone_dialog_visible = true;
+        this.edit_phone_form.phone = this.user_info_form.phone;
+      },
+
+      //提交修改用户名
+      handleEditUserNameConfirm() {
+        this.$refs['editUserNameFormRef'].validate((valid)=> {
+          if(valid) {
+            let params = {
+              name: this.edit_username_form.name
+            };
+            let id = this.user_info_form.id;
+            this.$http.put(`${this.url}receipt/name/${id}`,params).then(res=> {
+              this.$LjMessageEasy(res,async ()=> {
+                this.edit_username_dialog_visible = false;
+                let result = await this.getReceiptDataLists(true);
+                debugger
+                this.receipt_detail_dialog_data = _.find(result.data.data,{id:this.user_info_form.assembly_id})?.receipts[0];
+              });
+            });
+          }
+        });
+
+
+
+      },
+      //展示修改用户名对话框
+      editUserName() {
+        this.edit_username_dialog_visible = true;
+        this.edit_username_form.name = this.user_info_form.name;
+
+      },
+
+      //显示收据详情
+      showReceiptDetail(row) {
+        console.log(row);
+        this.receipt_detail_dialog_visible = true;
+        this.receipt_detail_dialog_data = row?.receipts[0];
+        this.user_info_form.id = row?.receipts[0].id;//电子收据id
+        this.user_info_form.assembly_id = row?.id;//流水id
+      },
     },
   }
 </script>
@@ -1744,6 +1991,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+
         i {
           font-style: normal;
           display: block;
@@ -1751,17 +1999,21 @@
           height: 20px;
           cursor: pointer;
         }
+
         i:first-child {
           margin-right: 20px;
           @include financeImg('output.png', 'theme1')
         }
+
         i:last-child {
           @include financeImg('input.png', 'theme1')
         }
       }
+
       .allInsert {
         @include financeImg('allInsert.png', 'theme1')
       }
+
       > div {
         .listTopRight {
           .home_icon {
@@ -1769,7 +2021,23 @@
           }
         }
       }
+
+
+      .dialog_container {
+        iframe {
+          width: 1500px;
+          height: 650px;
+        }
+        .receipt-img {
+          @include financeImg('tp.png', 'theme1');
+        }
+        .href-img {
+          @include financeImg('lianjie_2.png','theme1');
+        }
+      }
+
     }
+
     .bank-compare {
 
       .bank-left {
@@ -1780,15 +2048,18 @@
             @include financeImg('yiyuedu.png', 'theme1');
           }
         }
+
         .activeI {
           @include financeImg('weiyuedu.png', 'theme1');
           color: #FFFFFF;
         }
       }
+
       .bank-right {
         width: 50%;
         height: 600px;
       }
+
       .active {
         background: #ff4545;
         color: #FFFFFF;

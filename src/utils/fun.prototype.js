@@ -106,7 +106,7 @@ export default {
     }
 
     Vue.prototype.$LjMessageEasy = function(res,callback) {
-      if (res.code.endsWith('0')) {
+      if (res.code.toString().endsWith('0')) {
         this.$LjMessage('success', {
           title: '成功',
           msg: res.msg,
