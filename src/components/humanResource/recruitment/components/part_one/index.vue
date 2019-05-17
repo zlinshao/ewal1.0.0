@@ -44,7 +44,13 @@
             </template>
           </el-table-column>
           <el-table-column label="岗位职责" prop="content" align="center"></el-table-column>
-          <el-table-column label="招聘状态" prop="publish_status" align="center"></el-table-column>
+          <el-table-column label="需求发布状态" prop="publish_status" align="center"></el-table-column>
+          <el-table-column label="招聘状态" prop="status" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.status==1">已结束招聘</span>
+              <span v-else>正在招聘中</span>
+            </template>
+          </el-table-column>
         </el-table>
         <footer class="flex-center bottomPage">
           <div class="develop flex-center">
