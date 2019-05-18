@@ -89,7 +89,7 @@ export default {
 
     //统一管理接口处理结果
     Vue.prototype.$LjNotifyEasy = function(res,callback) {
-      if (res.code.endsWith('0')) {
+      if (res.code.toString().endsWith('0')) {
         this.$LjNotify('success', {
           title: '成功',
           message: res.msg,

@@ -456,9 +456,9 @@
               header-row-class-name="tableHeader"
               @selection-change="receiptSelectionChange"
             >
-              <el-table-column
+              <!--<el-table-column
                 type="selection" width="40">
-              </el-table-column>
+              </el-table-column>-->
               <el-table-column label="实收金额" prop="amount_received" align="center"></el-table-column>
               <el-table-column label="时间" prop="operate_time" align="center"></el-table-column>
               <el-table-column label="账户" prop="account.name" align="center"></el-table-column>
@@ -536,7 +536,7 @@
       </div>
     </lj-dialog>
 
-    <!--修改手机号-->
+    <!--修改手机号页面..不修改则直接发送-->
     <lj-dialog :visible.sync="edit_phone_dialog_visible"
                :size="{width: 450 + 'px',height: 320 + 'px'}"
     >
@@ -555,8 +555,48 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="handleEditUserNameConfirm">确定</el-button>
+          <el-button size="small" type="danger" @click="handleSendMessage">确定</el-button>
           <el-button size="small" @click="edit_username_dialog_visible=false;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--发送短信之前dialog-->
+    <lj-dialog :visible.sync="pre_send_message_dialog_visible"
+               :size="{width: 450 + 'px',height: 320 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>发送短信</h3>
+        </div>
+        <div class="dialog_main borderNone pre-send-message">
+          <div class="send-type-list">
+            <div @click="send_type_choose = item.id;send_message_template_dialog_visible = true;" :class="{checked:send_type_choose==item.id}" v-for="item in send_type_list" class="send-item">
+              {{item.name}}
+            </div>
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleMultiSendMessage">确定</el-button>
+          <el-button size="small" @click="pre_send_message_dialog_visible=false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--短信模板展示dialog-->
+    <lj-dialog :visible.sync="send_message_template_dialog_visible"
+               :size="{width: 550 + 'px',height: 420 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>{{send_type_list[send_type_choose-1].name}}</h3>
+        </div>
+        <div class="dialog_main borderNone template-message">
+          {{send_type_list[send_type_choose-1].template}}
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="send_message_template_dialog_visible=false">确定</el-button>
+          <el-button size="small" @click="send_message_template_dialog_visible=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -891,8 +931,8 @@
               this.action_visible = true;
               this.register_from.address = val[0].customer && val[0].customer.address;
               this.user_info_form = {
-                name:val[0].customer?.customer_name||'',
-                phone:val[0].customer?.contact||'',
+                name: val[0].customer?.customer_name || '',
+                phone: val[0].customer?.contact || '',
               };
               this.btn_group = [
                 {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit'},
@@ -900,6 +940,7 @@
                 {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
                 {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
                 {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
+                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
                 {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
 
             } else if (val.length == 0) {
@@ -938,7 +979,7 @@
           ],
         },
 
-        url:globalConfig.temporary_server,
+        url: globalConfig.temporary_server,
 
         is_table_choose: '',
 
@@ -1012,22 +1053,41 @@
         current_row: '',
         showFinMenuList: false,
         receipt_visible: false,//开收据
-        receipt_detail_dialog_visible:false,//开收据详情dialog显示隐藏
-        receipt_detail_dialog_data:{},//开收据详情dialog数据
-        edit_username_dialog_visible:false,//修改姓名dialog显示隐藏
-        edit_phone_dialog_visible:false,//修改手机号dialog显示隐藏
+        receipt_detail_dialog_visible: false,//开收据详情dialog显示隐藏
+        receipt_detail_dialog_data: {},//开收据详情dialog数据
+        edit_username_dialog_visible: false,//修改姓名dialog显示隐藏
+        edit_phone_dialog_visible: false,//修改手机号dialog显示隐藏
         edit_username_form: {
-          name:'',
+          name: '',
         },//修改姓名form表单
         edit_phone_form: {
-          phone:'',
+          phone: '',
         },//修改手机号form表单
         user_info_form: {//包含客户姓名和联系电话的表单 分 2个接口提交
-          id:'',//电子收据id
-          assembly_id:'',//流水id
-          name:'',
-          phone:'',
+          id: '',//电子收据id
+          assembly_id: '',//流水id
+          name: '',
+          phone: '',
         },
+        pre_send_message_dialog_visible: false,//发送短信之前的dialog显示隐藏
+
+        send_type_choose:1,
+        send_type_list:[
+          {
+            id:1,name:'催缴短信',
+            template:'【乐伽公寓】尊敬的@先生/女士：您租住的@小区，下一期房租需要缴纳，请@前及时缴纳，打款账户为收据上方的汇款账号。请您合理安排好缴款时间，及时缴款！如已缴纳，请忽略此条短信！乐伽客户服务热线4008926606。',
+          },
+          {
+            id:2,name:'到期短信',
+            template:'【乐伽公寓】尊敬的***先生/女士：您租住的****小区，房租于***日到期，如续签/退租，请致电乐伽客户服务热线400-892-6606，谢谢。',
+          },
+          {
+            id:3,name:'预期短信',
+            template:'【乐伽公寓】尊敬的***先生/女士：您租住的****小区，需要在XXX前缴纳下一期房租，您已经逾期XX天，请今天及时缴纳，如不缴纳，我们将按照合同处理，收回房屋！请您合理安排好缴款时间，及时缴款！如已缴纳，请忽略此条短信，感谢您的配合！如需咨询（如有疑问），请致电乐伽客户服务热线400-892-6606，谢谢。',
+          },
+        ],
+        send_message_template_dialog_visible:false,//短信模板展示
+
         delete_visible: false,//删除
         add_visible: false,//新增
         recall_visible: false,//回滚
@@ -1160,6 +1220,7 @@
           {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
           {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
           {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
+          {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
           {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},
 
         ],
@@ -1555,7 +1616,8 @@
       handleOkDel() {
         //this.$http.delete(globalConfig.temporary_server + 'account_receivable/delete/' + this.current_row.id).then(res => {
         this.$http.delete(globalConfig.temporary_server + 'account_receivable/delete/', {
-            params: {ids: _.map(this.multipleSelectionIndex, 'id')},}
+            params: {ids: _.map(this.multipleSelectionIndex, 'id')},
+          }
         ).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {
@@ -1661,7 +1723,7 @@
           fund_id: ids,
           cate: 1
         };
-        if(!isReturn) {
+        if (!isReturn) {
           await this.$http.put(globalConfig.temporary_server + 'fund_flow_record/fund_flow', paramsForm).then(res => {
             this.showLoading(false);
             if (res.code === 200) {
@@ -1672,7 +1734,7 @@
               this.count = 0;
             }
           })
-        }else {
+        } else {
           return await this.$http.put(globalConfig.temporary_server + 'fund_flow_record/fund_flow', paramsForm);
         }
 
@@ -1854,7 +1916,8 @@
         }
 
         if (key === 'sendMessage') {
-          alert('发送短信');
+          //alert('发送短信');
+          this.pre_send_message_dialog_visible = true;
         }
       },
 
@@ -1928,7 +1991,21 @@
       },
 
 
+      /*批量发送短信*/
+      handleMultiSendMessage() {
+        console.log(this.multipleSelectionIndex);
+        debugger
+        let params = {
+          ids:_.map(this.multipleSelectionIndex,'id'),
+          type:this.send_type_choose,
+        };
 
+        this.$http.put(`${this.url}account_receivable/notify`,params).then(res=> {
+          this.$LjMessageEasy(res,()=> {
+            this.pre_send_message_dialog_visible = false;
+          });
+        });
+      },
 
       //发送短信之前 首先打开编辑手机号码表单
       beforeSend() {
@@ -1936,25 +2013,39 @@
         this.edit_phone_form.phone = this.user_info_form.phone;
       },
 
+      //发送给客户
+      handleSendMessage() {
+        let params = {
+          receipt_id: this.user_info_form.id,
+          phone: this.user_info_form.phone,
+        };
+        debugger
+        this.$http.post(`${this.url}sms/receipt`, params).then(res => {
+          this.$LjMessageEasy(res, () => {
+            this.edit_phone_dialog_visible = false;
+            //this.receipt_detail_dialog_visible = false;
+          });
+        });
+      },
+
       //提交修改用户名
       handleEditUserNameConfirm() {
-        this.$refs['editUserNameFormRef'].validate((valid)=> {
-          if(valid) {
+        this.$refs['editUserNameFormRef'].validate((valid) => {
+          if (valid) {
             let params = {
               name: this.edit_username_form.name
             };
             let id = this.user_info_form.id;
-            this.$http.put(`${this.url}receipt/name/${id}`,params).then(res=> {
-              this.$LjMessageEasy(res,async ()=> {
+            this.$http.put(`${this.url}receipt/name/${id}`, params).then(res => {
+              this.$LjMessageEasy(res, async () => {
                 this.edit_username_dialog_visible = false;
                 let result = await this.getReceiptDataLists(true);
                 debugger
-                this.receipt_detail_dialog_data = _.find(result.data.data,{id:this.user_info_form.assembly_id})?.receipts[0];
+                this.receipt_detail_dialog_data = _.find(result.data.data, {id: this.user_info_form.assembly_id})?.receipts[0];
               });
             });
           }
         });
-
 
 
       },
@@ -2028,11 +2119,13 @@
           width: 1500px;
           height: 650px;
         }
+
         .receipt-img {
           @include financeImg('tp.png', 'theme1');
         }
+
         .href-img {
-          @include financeImg('lianjie_2.png','theme1');
+          @include financeImg('lianjie_2.png', 'theme1');
         }
       }
 
