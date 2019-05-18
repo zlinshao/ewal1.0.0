@@ -655,6 +655,24 @@
       </div>
     </lj-dialog>
 
+    <!--修改补齐时间dialog-->
+    <lj-dialog :visible.sync="edit_time_dialog_visible"
+               :size="{width: 450 + 'px',height: 320 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>修改补齐时间</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          修改补齐时间
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="edit_time_dialog_visible =false">确定</el-button>
+          <el-button size="small" @click="edit_time_dialog_visible=false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
     <!--登记收款-->
     <lj-dialog
       :visible="register_visible"
@@ -965,6 +983,7 @@
                 {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
                 {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
                 {val: '生成违约金', key: 'generate', type: 'success', class: 'edit'},
+                {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit'},
                 {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
                 {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
 
@@ -1114,6 +1133,8 @@
         send_message_template_dialog_visible:false,//短信模板展示
         generate_dialog_visible: false,//生成违约金页面
 
+        edit_time_dialog_visible: false,//修改补齐时间dialog页面
+
         delete_visible: false,//删除
         add_visible: false,//新增
         recall_visible: false,//回滚
@@ -1248,6 +1269,7 @@
           {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
           {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
           {val: '生成违约金', key: 'generate', type: 'success', class: 'edit'},
+          {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit'},
           {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
           {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},
 
@@ -1942,10 +1964,12 @@
         if(key==='generate') {//生成违约金
           this.generate_dialog_visible = true;
         }
+        if(key==='editTime') {//修改补齐时间
+          this.edit_time_dialog_visible = true;
+        }
         if (key === 'handleDelete') {//删除
           this.delete_visible = true;
         }
-
         if (key === 'sendMessage') {//发送短信
           this.pre_send_message_dialog_visible = true;
         }
