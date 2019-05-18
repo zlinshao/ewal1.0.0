@@ -637,19 +637,31 @@
       </div>
     </lj-dialog>
 
-    <!--生成违约金dialog-->
+    <!--生成违约金日期dialog-->
     <lj-dialog :visible.sync="generate_dialog_visible"
-               :size="{width: 450 + 'px',height: 320 + 'px'}"
+               :size="{width: 400 + 'px',height: 320 + 'px'}"
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>生成违约金</h3>
+          <h3>生成违约金日期</h3>
         </div>
-        <div class="dialog_main borderNone">
-          生成违约金
+        <div class="dialog_main borderNone" style="align-items: center;display: flex">
+          <el-form ref="multiFieldFormExitDateRef" :rules="rules.multiField" :model="multi_field_form"
+                   style="text-align: left"
+                   size="small" label-width="100px">
+            <el-form-item required prop="exit_date" label="违约金日期">
+              <!--<el-input v-model="multi_field_form.exit_date" style="width: 200px">
+              </el-input>-->
+              <el-date-picker
+              v-model="multi_field_form.exit_date"
+              type="datetime"
+              placeholder="请选择违约金日期"
+              ></el-date-picker>
+            </el-form-item>
+          </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="generate_dialog_visible =false">确定</el-button>
+          <el-button size="small" type="danger" @click="generateExitDate">确定</el-button>
           <el-button size="small" @click="generate_dialog_visible=false">取消</el-button>
         </div>
       </div>
@@ -663,11 +675,21 @@
         <div class="dialog_header">
           <h3>修改补齐时间</h3>
         </div>
-        <div class="dialog_main borderNone">
-          修改补齐时间
+        <div class="dialog_main borderNone" style="display: flex;align-items: center">
+          <el-form ref="multiFieldFormEditDateRef" :rules="rules.multiField" :model="multi_field_form"
+                   style="text-align: left"
+                   size="small" label-width="100px">
+            <el-form-item required prop="exit_date" label="补齐时间">
+              <el-date-picker
+                v-model="multi_field_form.complete_date"
+                type="datetime"
+                placeholder="请选择补齐时间"
+              ></el-date-picker>
+            </el-form-item>
+          </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="edit_time_dialog_visible =false">确定</el-button>
+          <el-button size="small" type="danger" @click="editCompleteTime">确定</el-button>
           <el-button size="small" @click="edit_time_dialog_visible=false">取消</el-button>
         </div>
       </div>
@@ -972,7 +994,8 @@
               this.current_row = val[0];
               this.action_visible = true;
               this.register_from.address = val[0].customer && val[0].customer.address;
-              this.user_info_form = {
+              this.multi_field_form = {
+                assembly_id:val[0].id,
                 name: val[0].customer?.customer_name || '',
                 phone: val[0].customer?.contact || '',
               };
@@ -982,7 +1005,7 @@
                 {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
                 {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
                 {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
-                {val: '生成违约金', key: 'generate', type: 'success', class: 'edit'},
+                {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit'},
                 {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit'},
                 {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
                 {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
@@ -1013,6 +1036,12 @@
           editPhone: {
             name: [
               {required: true, message: '请输入手机号', trigger: ['blur', 'change']},
+            ],
+          },
+
+          multiField: {
+            exit_date:[
+              {required:true,message:'请选择违约金日期',trigger:['change','blur']}
             ],
           },
 
@@ -1107,11 +1136,13 @@
         edit_phone_form: {
           phone: '',
         },//修改手机号form表单
-        user_info_form: {//包含客户姓名和联系电话的表单 分 2个接口提交
+        multi_field_form: {//包含客户姓名和联系电话及违约金日期,补齐时间的表单 分多个接口提交
           id: '',//电子收据id
           assembly_id: '',//流水id
           name: '',
           phone: '',
+          exit_date:null,//违约金日期
+          complete_date:null,//补齐时间
         },
         pre_send_message_dialog_visible: false,//发送短信之前的dialog显示隐藏
 
@@ -1131,7 +1162,7 @@
           },
         ],
         send_message_template_dialog_visible:false,//短信模板展示
-        generate_dialog_visible: false,//生成违约金页面
+        generate_dialog_visible: false,//生成违约金日期页面
 
         edit_time_dialog_visible: false,//修改补齐时间dialog页面
 
@@ -1268,7 +1299,7 @@
           {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
           {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
           {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
-          {val: '生成违约金', key: 'generate', type: 'success', class: 'edit'},
+          {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit'},
           {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit'},
           {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
           {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},
@@ -1621,6 +1652,7 @@
       },*/
 
       tableClickRow(row) {
+        debugger
         this.multipleSelection = [];
         if (this.is_table_choose === row.id) {
           this.is_table_choose = '';
@@ -1961,7 +1993,7 @@
           this.recall_visible = true;
           this.handleProcess(row);
         }
-        if(key==='generate') {//生成违约金
+        if(key==='generate') {//生成违约金日期
           this.generate_dialog_visible = true;
         }
         if(key==='editTime') {//修改补齐时间
@@ -2062,14 +2094,14 @@
       //发送短信之前 首先打开编辑手机号码表单
       beforeSend() {
         this.edit_phone_dialog_visible = true;
-        this.edit_phone_form.phone = this.user_info_form.phone;
+        this.edit_phone_form.phone = this.multi_field_form.phone;
       },
 
       //发送给客户
       handleSendMessage() {
         let params = {
-          receipt_id: this.user_info_form.id,
-          phone: this.user_info_form.phone,
+          receipt_id: this.multi_field_form.id,
+          phone: this.multi_field_form.phone,
         };
         debugger
         this.$http.post(`${this.url}sms/receipt`, params).then(res => {
@@ -2087,13 +2119,13 @@
             let params = {
               name: this.edit_username_form.name
             };
-            let id = this.user_info_form.id;
+            let id = this.multi_field_form.id;
             this.$http.put(`${this.url}receipt/name/${id}`, params).then(res => {
               this.$LjMessageEasy(res, async () => {
                 this.edit_username_dialog_visible = false;
                 let result = await this.getReceiptDataLists(true);
                 debugger
-                this.receipt_detail_dialog_data = _.find(result.data.data, {id: this.user_info_form.assembly_id})?.receipts[0];
+                this.receipt_detail_dialog_data = _.find(result.data.data, {id: this.multi_field_form.assembly_id})?.receipts[0];
               });
             });
           }
@@ -2104,7 +2136,7 @@
       //展示修改用户名对话框
       editUserName() {
         this.edit_username_dialog_visible = true;
-        this.edit_username_form.name = this.user_info_form.name;
+        this.edit_username_form.name = this.multi_field_form.name;
 
       },
 
@@ -2113,15 +2145,47 @@
         console.log(row);
         this.receipt_detail_dialog_visible = true;
         this.receipt_detail_dialog_data = row?.receipts[0];
-        this.user_info_form.id = row?.receipts[0].id;//电子收据id
-        this.user_info_form.assembly_id = row?.id;//流水id
+        this.multi_field_form.id = row?.receipts[0].id;//电子收据id
+        this.multi_field_form.assembly_id = row?.id;//流水id
       },
 
 
-      demo(item) {
-        debugger
-        this.new_mark.category = item.value;
+      /*生成违约金日期*/
+      generateExitDate() {
+        this.$refs['multiFieldFormExitDateRef'].validate((valid)=> {
+          if(valid) {
+            let id = this.multi_field_form.assembly_id;//应收款项id
+            let params = {
+              exit_date:this.multi_field_form.exit_date,
+            };
+
+            this.$http.post(`${this.url}account_receivable/liquidate/${id}`,params).then(res=> {
+              debugger
+              this.$LjMessageEasy(res,()=> {
+                this.generate_dialog_visible = false;
+              });
+            });
+          }
+        });
       },
+      /*修改补齐时间*/
+      editCompleteTime() {
+        this.$refs['multiFieldFormEditTimeRef'].validate((valid)=> {
+          if(valid) {
+            let id = this.multi_field_form.assembly_id;//应收款项id
+            let params = {
+              exit_date:this.multi_field_form.complete_date,
+            };
+
+            this.$http.put(`${this.url}account_receivable/liquidate/${id}`,params).then(res=> {
+              debugger
+              this.$LjMessageEasy(res,()=> {
+                this.generate_dialog_visible = false;
+              });
+            });
+          }
+        });
+      }
     },
   }
 </script>
