@@ -1,5 +1,6 @@
 <!--房东-->
 <template>
+
   <div class="mainListTable changeChoose">
     <!--列表-->
     <el-table
@@ -24,13 +25,13 @@
           <div class="statusBar">
             <div class="flex-center" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].suppress_dup === 0">
               <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
-                <span class="phone" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_contact === 1"></span>
+                <span class="phone" v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_contact === 1"></span>
               </el-tooltip>
               <el-tooltip content="姓名" placement="bottom" :visible-arrow="false">
-                <span class="name" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_name === 1"></span>
+                <span class="name" v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_name === 1"></span>
               </el-tooltip>
               <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
-                <span class="address" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_address === 1"></span>
+                <span class="address" v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_address === 1"></span>
               </el-tooltip>
             </div>
             <div v-else class="flex-center">
@@ -40,7 +41,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="create_time" label="生成时间" align="center" min-width="120"></el-table-column>
-      <el-table-column prop="address" label="房屋地址" align="center" min-width="120"></el-table-column>
+      <el-table-column prop="address" label="房屋地址" align="center" min-width="120">
+        <template slot-scope="scope">
+          <div class="house-address-contain-money">
+            {{scope.row.address}}<span v-if="scope.row.has_running==1" class="lord-money"></span>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="customer_name" label="客户姓名" align="center"></el-table-column>
       <el-table-column prop="contact" label="客户手机号" align="center"></el-table-column>
       <el-table-column prop="months" label="收房月数" align="center"></el-table-column>
@@ -214,6 +221,7 @@
             }
             //前缀状态
             this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.lordIds}).then(res => {
+              debugger
               if (res.code === 200) {
                 this.LordStatus = res.data.data.sort((a,b) => {
                   return a.id - b.id;
@@ -353,6 +361,10 @@
       }
       .light_cell {
         background-color: #D6D6D6 !important;
+      }
+
+      .lord-money {
+        @include financeImg('jinrongqianbi.png','theme1');
       }
     }
   }
