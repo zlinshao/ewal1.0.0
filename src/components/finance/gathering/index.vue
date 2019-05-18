@@ -1993,8 +1993,6 @@
 
       /*批量发送短信*/
       handleMultiSendMessage() {
-        console.log(this.multipleSelectionIndex);
-        debugger
         let params = {
           ids:_.map(this.multipleSelectionIndex,'id'),
           type:this.send_type_choose,

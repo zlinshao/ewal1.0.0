@@ -87,7 +87,7 @@
             this.dropdownListWidth = val;
           }
         },
-        immediate: true//第一次绑定也执行
+        immediate: true
       },
       num: {
         handler(val, oldVal) {
@@ -95,7 +95,7 @@
             this.organData.num = parseInt(val);
           }
         },
-        immediate: true//第一次绑定也执行
+        immediate: true
       }
     },
     methods: {

@@ -1,11 +1,11 @@
 <template>
   <div class="demo-container" style="width: 800px">
 
-    <div @click="more_visible = !more_visible">测试</div>
-  <app-index-more :visible.sync="more_visible"></app-index-more>
+    <!--div @click="more_visible = !more_visible">测试</div>
+  <app-index-more :visible.sync="more_visible"></app-index-more>-->
 
-    <!--<el-button @click="demo">测试</el-button>
-    <user-choose v-model="user_list"></user-choose>-->
+    <el-button @click="demo">测试</el-button>
+    <user-choose v-model="user_list"></user-choose>
 <!--    <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>
     <search-high></search-high>-->
