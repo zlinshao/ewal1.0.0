@@ -100,7 +100,7 @@
         cursor: pointer;
       }
 
-      .edit-name-container,.template-message {
+      .edit-name-container, .template-message {
         @include flex('flex-center');
       }
 
@@ -113,6 +113,7 @@
           display: flex;
           justify-content: space-around;
           align-items: center;
+
           .send-item {
             width: 20%;
             height: 100%;
@@ -126,6 +127,30 @@
               background-color: #FFEAEA;
               color: $colorE33;
             }
+          }
+        }
+      }
+
+      .remark-type {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        width: 460px;
+
+        .remark-type-item {
+          padding: 0 20px;
+          color: #686874;
+          background-color: $colorFFF;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 10px 5px;
+          cursor: pointer;
+
+          &.checked {
+            color: #CF2E33;
+            background-color: #FFEAEA;
           }
         }
       }

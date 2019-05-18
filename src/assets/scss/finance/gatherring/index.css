@@ -341,5 +341,26 @@
   background-color: #FFEAEA;
   color: #cf2e33;
 }
+#theme_name #gathering .dialog_container .remark-type {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 460px;
+}
+#theme_name #gathering .dialog_container .remark-type .remark-type-item {
+  padding: 0 20px;
+  color: #686874;
+  background-color: #ffffff;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 5px;
+  cursor: pointer;
+}
+#theme_name #gathering .dialog_container .remark-type .remark-type-item.checked {
+  color: #CF2E33;
+  background-color: #FFEAEA;
+}
 
 /*# sourceMappingURL=index.css.map */

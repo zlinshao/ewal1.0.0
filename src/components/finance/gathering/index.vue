@@ -73,10 +73,10 @@
         </el-table-column>
         <el-table-column label="状态" prop="" align="center" width="100">
           <template slot-scope="scope">
-            <span v-if="scope.row.status === 1" style="color: #FFCE90">待入账</span>
-            <span v-if="scope.row.status === 2" style="color: #FF9463">待结算</span>
-            <span v-if="scope.row.status === 3" style="color: #458AFF">已结清</span>
-            <span v-if="scope.row.status === 4" style="color: #D64B4F;">已超额</span>
+            <span v-if="scope.row.status === 1" style="color: #FFAB40">待入账</span>
+            <span v-if="scope.row.status === 2" style="color: #FF7131">待结算</span>
+            <span v-if="scope.row.status === 3" style="color: #0C66FE">已结清</span>
+            <span v-if="scope.row.status === 4" style="color: #CF2E33">已超额</span>
           </template>
         </el-table-column>
 
@@ -419,7 +419,7 @@
               :data="mark_data"
             >
               <el-table-column label="备注时间" prop="create_time" align="center"></el-table-column>
-              <el-table-column label="备注内容" prop="content" align="center"></el-table-column>
+              <el-table-column label="备注内容" show-overflow-tooltip prop="content" align="left" width="200"></el-table-column>
               <el-table-column label="备注人" prop="staff_name" align="center"></el-table-column>
               <el-table-column label="备注类型" prop="category" align="center"></el-table-column>
             </el-table>
@@ -438,6 +438,42 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!--新增催缴备注-->
+    <lj-dialog
+      :visible="new_mark_visible"
+      :size="{width: 600 + 'px' ,height: 520 + 'px'}"
+      @close="new_mark_visible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增备注</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form :mode="new_mark" label-width="80px">
+            <el-form-item label="备注内容">
+              <el-input type="textarea" v-model="new_mark.content" :rows="4"></el-input>
+            </el-form-item>
+            <el-form-item label="备注类型">
+              <div class="remark-type">
+                <div class="remark-type-item"
+                     :class="{checked: category_choose==item.value}"
+                v-for="(item,index) in categoryList"
+                :key="index" style="margin-bottom: 10px"
+                @click="new_mark.category = item.value;category_choose = item.value"
+              >{{item.title}}
+              </div>
+              </div>
+
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="postReceivable_tag()">确定</el-button>
+          <el-button size="small" @click="new_mark_visible=false;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
     <!--开收据列表-->
     <lj-dialog
       :visible="receipt_visible"
@@ -601,36 +637,24 @@
       </div>
     </lj-dialog>
 
-    <!--新增催缴备注-->
-    <lj-dialog
-      :visible="new_mark_visible"
-      :size="{width: 500 + 'px' ,height: 520 + 'px'}"
-      @close="new_mark_visible = false">
+    <!--生成违约金dialog-->
+    <lj-dialog :visible.sync="generate_dialog_visible"
+               :size="{width: 450 + 'px',height: 320 + 'px'}"
+    >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>新增备注</h3>
+          <h3>生成违约金</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form :mode="new_mark" label-width="80px">
-            <el-form-item label="备注内容">
-              <el-input type="textarea" v-model="new_mark.content" :rows="4"></el-input>
-            </el-form-item>
-            <el-form-item label="备注类型">
-              <el-button
-                v-for="(index,item) in categoryList"
-                :key="item" style="margin-bottom: 10px"
-                @click="new_mark.category = index.value"
-              >{{index.title}}
-              </el-button>
-            </el-form-item>
-          </el-form>
+          生成违约金
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="postReceivable_tag()">确定</el-button>
-          <el-button size="small" @click="new_mark_visible=false;">取消</el-button>
+          <el-button size="small" type="danger" @click="generate_dialog_visible =false">确定</el-button>
+          <el-button size="small" @click="generate_dialog_visible=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
+
     <!--登记收款-->
     <lj-dialog
       :visible="register_visible"
@@ -940,6 +964,7 @@
                 {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
                 {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
                 {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
+                {val: '生成违约金', key: 'generate', type: 'success', class: 'edit'},
                 {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
                 {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
 
@@ -1087,6 +1112,7 @@
           },
         ],
         send_message_template_dialog_visible:false,//短信模板展示
+        generate_dialog_visible: false,//生成违约金页面
 
         delete_visible: false,//删除
         add_visible: false,//新增
@@ -1155,18 +1181,19 @@
         },
         new_mark: {
           content: '',
-          category: '',
+          category: 1,
         },
+        category_choose:1,
         categoryList: [
-          // {title: "违约", value: 1},
-          // {title: "延期", value: 2},
+          {title: "违约", value: 1},
+          {title: "延期", value: 2},
           {title: "贴条", value: 3},
           {title: "换锁", value: 4},
-          // {title: "维修", value: 5},
-          // {title: "资金", value: 6},
-          // {title: "炸单", value: 7},
-          // {title: "调房", value: 8},
-          // {title: "特殊情况", value: 9},
+          {title: "维修", value: 5},
+          {title: "资金", value: 6},
+          {title: "炸单", value: 7},
+          {title: "调房", value: 8},
+          {title: "特殊情况", value: 9},
         ],
         date_deviation: [//时间误差
           {title: "天", value: 5},
@@ -1220,6 +1247,7 @@
           {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
           {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
           {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
+          {val: '生成违约金', key: 'generate', type: 'success', class: 'edit'},
           {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
           {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},
 
@@ -1911,12 +1939,14 @@
           this.recall_visible = true;
           this.handleProcess(row);
         }
-        if (key === 'handleDelete') {
+        if(key==='generate') {//生成违约金
+          this.generate_dialog_visible = true;
+        }
+        if (key === 'handleDelete') {//删除
           this.delete_visible = true;
         }
 
-        if (key === 'sendMessage') {
-          //alert('发送短信');
+        if (key === 'sendMessage') {//发送短信
           this.pre_send_message_dialog_visible = true;
         }
       },
@@ -2061,6 +2091,12 @@
         this.receipt_detail_dialog_data = row?.receipts[0];
         this.user_info_form.id = row?.receipts[0].id;//电子收据id
         this.user_info_form.assembly_id = row?.id;//流水id
+      },
+
+
+      demo(item) {
+        debugger
+        this.new_mark.category = item.value;
       },
     },
   }

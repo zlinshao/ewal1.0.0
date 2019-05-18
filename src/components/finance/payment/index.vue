@@ -69,7 +69,10 @@
 
         <el-table-column label="状态" prop="" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.status === 1?'待入账':scope.row.status === 2?'待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
+            <span v-if="scope.row.status === 1" style="color: #FFAB40">待入账</span>
+            <span v-if="scope.row.status === 2" style="color: #FF7131">待结算</span>
+            <span v-if="scope.row.status === 3" style="color: #0C66FE">已结清</span>
+            <span v-if="scope.row.status === 4" style="color: #CF2E33">已超额</span>
           </template>
         </el-table-column>
 
