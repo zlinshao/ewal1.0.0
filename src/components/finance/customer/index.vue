@@ -24,8 +24,8 @@
         </el-tooltip>
       </div>
     </div>
-    <div class="action-bar changeChoose" v-show="action_visible">
-      <div class="action-bar-left">
+    <div class="action-bar changeChoose">
+      <div class="action-bar-left" v-show="action_visible">
         <!--<el-checkbox>全选</el-checkbox>-->
         <!--<span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">

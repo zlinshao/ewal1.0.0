@@ -247,7 +247,7 @@
 #theme_name #customer .house-address-contain-money {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 #theme_name #customer .house-address-contain-money .lord-money {
   margin-left: 3px;

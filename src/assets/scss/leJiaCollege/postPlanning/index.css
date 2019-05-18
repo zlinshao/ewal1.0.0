@@ -1,45 +1,439 @@
-/*
-Error: Invalid GBK character "\xE6"
-        on line 34 of index.scss
+.flex {
+  display: flex;
+  display: -webkit-flex;
+}
 
-29:           &:hover{
-30:             background: #CF2E33;
-31:           }
-32:         }
-33:       }
-34:       .train_btn{//新人训
-35:         position: absolute;
-36:         top:0;
-37:         left: 100px;
-38:         display: flex;
-39:         flex-direction: row;
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-Backtrace:
-index.scss:34
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1043:in `rescue in block in find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1040:in `block in find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each_with_index'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:767:in `check_sass_encoding'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:444:in `check_encoding!'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:400:in `_to_tree'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:307:in `render_with_sourcemap'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `each'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin.rb:82:in `update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:340:in `watch_or_update'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:51:in `process_result'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:52:in `parse'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:19:in `parse!'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/bin/scss:13:in `<top (required)>'
-C:/App/Ruby24-x64/bin/scss:23:in `load'
-C:/App/Ruby24-x64/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE6\"\A         on line 34 of index.scss\A \A 29:           &:hover{\A 30:             background: #CF2E33;\A 31:           }\A 32:         }\A 33:       }\A 34:       .train_btn{//新人训\A 35:         position: absolute;\A 36:         top:0;\A 37:         left: 100px;\A 38:         display: flex;\A 39:         flex-direction: row;"; }
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+}
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start;
+}
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end;
+}
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+}
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around;
+}
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+}
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start;
+}
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end;
+}
+
+/*@font-face {
+  font-family: 'jingDianXingShu';
+  src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
+}
+
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url('http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF');
+}
+
+@font-face {
+  font-family: 'jianyue';
+  src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
+}*/
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("/static/font/JDJXINSHU.otf");
+}
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF");
+}
+@font-face {
+  font-family: 'jianyue';
+  src: url("/static/font/BaiZhouRenZhe.otf");
+}
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl;
+}
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.scroll_bar {
+  overflow: auto;
+}
+.scroll_bar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-button {
+  height: 10px;
+  background-color: #e4e7ed;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-track {
+  background: #e4e7ed;
+}
+.scroll_bar::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 4px;
+}
+
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2;
+}
+.action-bar div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.action-bar .check-count {
+  margin-left: 30px;
+  margin-right: 50px;
+}
+.action-bar .check-count i {
+  font-style: normal;
+  color: #ff4545;
+}
+.action-bar .action-bar-name {
+  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.action-bar .action-bar-name span {
+  display: inline-block;
+  text-align: center;
+  border-left: 1px solid #9b9b9b;
+  font-size: 18px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.action-bar .action-bar-name span:first-child {
+  border-left: 0;
+}
+.action-bar .delete {
+  color: #ff4545;
+}
+.action-bar .edit {
+  color: #0c66ff;
+}
+.action-bar .check {
+  color: #0bb07b;
+}
+
+.colorE33 {
+  color: #cf2e33;
+}
+
+.color874 {
+  color: #686874;
+}
+
+#theme_name #postPlanning .mainList {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding-left: 340px;
+  padding-top: 50px;
+  padding-bottom: 120px;
+}
+#theme_name #postPlanning .mainList .edit_btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  position: absolute;
+  top: 20px;
+  right: 100px;
+}
+#theme_name #postPlanning .mainList .edit_btn span {
+  display: block;
+  padding: 5px 20px;
+  background: #DFDFDF;
+  color: #FFFFFF;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#theme_name #postPlanning .mainList .edit_btn span:hover {
+  background: #CF2E33;
+}
+#theme_name #postPlanning .mainList .train_btn {
+  position: absolute;
+  top: 0;
+  left: 100px;
+  display: flex;
+  flex-direction: row;
+}
+#theme_name #postPlanning .mainList .train_btn span {
+  display: inline-block;
+  width: 40px;
+  height: 180px;
+  margin-right: 30px;
+  position: relative;
+  cursor: pointer;
+}
+#theme_name #postPlanning .mainList .train_btn span:hover {
+  color: #FFFFFF;
+}
+#theme_name #postPlanning .mainList .train_btn span i {
+  font-style: normal;
+  letter-spacing: 2px;
+}
+#theme_name #postPlanning .mainList .train_btn span:first-child i {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translate(-50%, -20%);
+}
+#theme_name #postPlanning .mainList .train_btn span:last-child i {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  transform: translate(-50%, 0);
+}
+#theme_name #postPlanning .mainList .main-right .right-list {
+  height: auto;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+#theme_name #postPlanning .mainList .main-right .right-list span {
+  display: block;
+  width: 180px;
+  height: 40px;
+  margin-top: 24px;
+  font-family: jingDianXingShu;
+  font-size: 18px;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+}
+#theme_name #postPlanning .mainList .main-right .right-list span:hover {
+  color: #FFFFFF;
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -o-transform: scale(1.5);
+}
+#theme_name #postPlanning .mainList .tab {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 1200px;
+  height: 100%;
+  justify-content: space-between;
+}
+#theme_name #postPlanning .mainList .tab .slogan {
+  margin: 0 auto;
+  width: 100px;
+  height: 200px;
+  position: relative;
+}
+#theme_name #postPlanning .mainList .tab .slogan span {
+  display: block;
+}
+#theme_name #postPlanning .mainList .tab .slogan span i {
+  font-style: normal;
+  font-family: jingDianXingShu;
+  font-size: 28px;
+}
+#theme_name #postPlanning .mainList .tab .slogan span:first-child {
+  position: absolute;
+  left: 0;
+  top: 70%;
+  transform: translate(0, 0);
+}
+#theme_name #postPlanning .mainList .tab .slogan span:last-child {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  transform: translate(-50%, 0);
+}
+#theme_name #postPlanning .mainList .main-left {
+  width: 40%;
+  height: 100%;
+}
+#theme_name #postPlanning .mainList .main-left .left-top, #theme_name #postPlanning .mainList .main-left .left-bottom {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: row;
+}
+#theme_name #postPlanning .mainList .main-left .left-top div:nth-child(1), #theme_name #postPlanning .mainList .main-left .left-bottom div:nth-child(1) {
+  width: 20%;
+}
+#theme_name #postPlanning .mainList .main-left .left-top div:nth-child(1) span, #theme_name #postPlanning .mainList .main-left .left-bottom div:nth-child(1) span {
+  width: 50px;
+  height: 80%;
+  font-family: jingDianXingShu;
+  color: #FFFFFF;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+#theme_name #postPlanning .mainList .main-left .left-top div:nth-child(2), #theme_name #postPlanning .mainList .main-left .left-bottom div:nth-child(2) {
+  width: 80%;
+  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+}
+#theme_name #postPlanning .mainList .main-left .left-top div:nth-child(2) span, #theme_name #postPlanning .mainList .main-left .left-bottom div:nth-child(2) span {
+  font-family: jingDianXingShu;
+  font-size: 18px;
+  margin-top: 20px;
+}
+#theme_name #postPlanning .mainList .main-middle {
+  width: 60%;
+  height: 100%;
+}
+#theme_name #postPlanning .mainList .main-middle > div {
+  width: 70%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#theme_name #postPlanning .mainList .main-middle > div .spacial-tab {
+  width: 200px;
+  height: 40px;
+  color: #FFFFFF !important;
+  line-height: 40px;
+}
+#theme_name #postPlanning .mainList .main-middle > div span {
+  font-family: jingDianXingShu;
+  font-size: 18px;
+  text-align: center;
+  line-height: 30px;
+  margin-bottom: 30px;
+}
+#theme_name #postPlanning .mainList .main-middle > div span:nth-child(1) {
+  color: #CF2E33;
+}
+#theme_name #postPlanning .mainList-train {
+  width: 100%;
+  padding: 0;
+  position: relative;
+}
+#theme_name #postPlanning .mainList-train .train-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#theme_name #postPlanning .mainList-train .train-box span {
+  width: 300px;
+  height: 60px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+#theme_name #postPlanning .mainList-train .train-box span i {
+  font-family: jingDianXingShu;
+  font-size: 24px;
+  font-style: normal;
+}
+
+/*# sourceMappingURL=index.css.map */

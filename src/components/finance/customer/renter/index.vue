@@ -40,12 +40,13 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         v-for="item in Object.keys(renterLabel)"
         :label="renterLabel[item]" :key="item"
         :prop="item"
-        align="center">
+        :align="item=='address'?'left':'center'">
       </el-table-column>
-      <el-table-column label="付款方式/月单价" prop="prices" align="center" width="180" show-overflow-tooltip>
+      <el-table-column  show-overflow-tooltip label="付款方式/月单价" prop="prices" align="left" width="180" show-overflow-tooltip>
       </el-table-column>
       <el-table-column label="状态" prop="" align="center">
         <template slot-scope="scope">

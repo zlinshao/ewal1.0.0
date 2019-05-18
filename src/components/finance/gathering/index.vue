@@ -67,7 +67,7 @@
         <el-table-column
           show-overflow-tooltip
           v-for="item in Object.keys(showData)" :key="item"
-          align="center"
+          :align="(item=='customer.address'||item=='description.description')?'left':'center'"
           :prop="item"
           :label="showData[item]">
         </el-table-column>

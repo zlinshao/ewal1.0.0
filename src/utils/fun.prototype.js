@@ -122,6 +122,15 @@ export default {
       }
     }
 
+    /*截取字符串方法*/
+    Vue.prototype.substringPlugin = function(content,limit = 10) {
+      if(content.constructor !== String) return;
+      if(content.length<=limit) {
+        return content;
+      }
+      return `${content.substring(0,limit)}...`;
+    },
+
     Vue.prototype.$resetForm = function (form) {
       //重置表单
       if (!form) {

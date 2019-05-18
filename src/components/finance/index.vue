@@ -38,6 +38,7 @@
   }
 </script>
 
+
 <style lang="scss" scoped>
   @import "../../assets/scss/finance/index.scss";
 

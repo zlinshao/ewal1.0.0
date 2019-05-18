@@ -62,7 +62,8 @@
           v-for="item in Object.keys(paymentLabels)"
           :label="paymentLabels[item]" :key="item"
           :prop="item"
-          align="center"
+          :width="(item=='description.description'||item=='remark')?180:null"
+          :align="(item=='description.description'||item=='remark')?'left':'center'"
         >
         </el-table-column>
 
