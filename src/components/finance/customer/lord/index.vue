@@ -1,3 +1,4 @@
+<!--房东-->
 <template>
   <div class="mainListTable changeChoose">
     <!--列表-->
@@ -242,6 +243,8 @@
         } else {
           this.params.search = ''
         }
+        this.params.page = val.page;
+        this.params.limit = val.limit;
         if (val.date1) {
           this.params.startRange = val.date1[0];
           this.params.endRange = val.date1[1];
