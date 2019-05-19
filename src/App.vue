@@ -21,10 +21,11 @@
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
           </div>
-          <span style="position: relative" @mouseenter="more_visible = true">
+          <app-index-more></app-index-more>
+          <!--<span style="position: relative" @mouseenter="more_visible = true">
             更多
-            <app-index-more :visible.sync="more_visible"></app-index-more>
-          </span>
+
+          </span>-->
         </div>
         <div class="items-center personal">
           <span>冯宝宝</span>
