@@ -13,9 +13,9 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <el-tooltip content="新增" placement="bottom" :visible-arrow="false">
+        <!--<el-tooltip content="新增" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="new_subject_visible = true"><b>+</b></div>
-        </el-tooltip>
+        </el-tooltip>-->
         <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
           <div class="icons search" @click="highSearch"></div>
         </el-tooltip>

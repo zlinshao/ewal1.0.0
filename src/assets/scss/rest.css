@@ -353,6 +353,7 @@ html .amap-sug-result, body .amap-sug-result {
 html div.el-tooltip__popper,
 html div.is-dark, body div.el-tooltip__popper,
 body div.is-dark {
+  max-width: 500px;
   padding: 5px;
   background-color: #cf2e33 !important;
   color: white;

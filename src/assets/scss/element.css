@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .flex {
   display: flex;
   display: -webkit-flex;
@@ -698,11 +699,27 @@ div.el-popover {
   text-align: left;
 }
 
-#theme_name.theme1 .el-table thead tr th .el-checkbox__input {
-  display: none;
+#theme_name.theme1 .el-table {
+  /* thead {
+     tr th {
+       .el-checkbox__input {
+         display: none;
+       }
+     }
+   }*/
+  /*所有th头部居中*/
+}
+#theme_name.theme1 .el-table thead tr th .cell {
+  display: flex;
+  justify-content: center;
 }
 #theme_name.theme1 .el-table tbody tr.current-row td {
   color: #cf2e33;
+}
+#theme_name.theme1 .el-table tbody .el-table-column--selection .cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #theme_name.theme1 .el-table tbody tr:hover td {
   color: rgba(207, 46, 51, 0.5);

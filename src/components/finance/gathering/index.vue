@@ -505,7 +505,7 @@
               </el-table-column>
               <el-table-column label="收据" align="center">
                 <template slot-scope="scope">
-                  <div v-if="scope.row.is_receipt==1" @click="showReceiptDetail(scope.row)" class="receipt-img"></div>
+                  <div v-if="scope.row.is_receipt==1" @click="showReceiptDetail(scope.row)" style="margin: 0 auto" class="receipt-img"></div>
                   <div v-else>-</div>
                 </template>
               </el-table-column>
@@ -989,6 +989,7 @@
     watch: {
       multipleSelectionIndex: {
         handler(val, oldVal) {
+          debugger
           if (val && val.constructor == Array) {
             if (val.length == 1) {
               this.current_row = val[0];
@@ -1014,7 +1015,7 @@
               this.action_visible = false;
             } else {
               this.current_row = '';
-
+              this.action_visible = true;
               this.btn_group = [
                 {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
                 {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
@@ -1728,6 +1729,7 @@
       },
       // 多选
       handleSelectionChange(val, type) {
+        debugger
         if (type == 'index') {//列表 主页面
           this.multipleSelectionIndex = val;
           return;
