@@ -1,3 +1,4 @@
+<!--预约面试-->
 <template>
   <div id="part_two">
     <div>
@@ -134,11 +135,11 @@
           </div>
           <div class="dialog_main borderNone">
             <el-form :model="add_msg_form" label-width="80px" size="small">
-              <el-form-item label="岗位">
-                <el-input v-model="add_msg_form.position" clearable placeholder="请选择" @focus="position_visible = true"></el-input>
-              </el-form-item>
               <el-form-item label="部门">
                 <el-input v-model="add_msg_form.org_name" clearable placeholder="请选择" @focus="depart_visible = true"></el-input>
+              </el-form-item>
+              <el-form-item label="岗位">
+                <el-input v-model="add_msg_form.position" clearable placeholder="请选择" @focus="position_visible = true"></el-input>
               </el-form-item>
               <el-form-item label="面试官">
                 <el-input v-model="add_msg_form.offer1" @focus="staff_visible = true;is_staff = 'first'"  readonly placeholder="请选择" style="margin-bottom: 20px"></el-input>
@@ -540,6 +541,7 @@
       getIntervieweeList() {
         this.showLoading(true);
         this.$http.get('recruitment/interviewer_process/reservationList',this.params).then(res => {
+          this.showLoading(false);
           if (res.code === "20000") {
             this.tableList = res.data.data;
             this.tableCount = res.data.count;
@@ -547,11 +549,6 @@
             this.tableList = [];
             this.tableCount = 0;
           }
-          setTimeout(() => {
-            this.showLoading(false);
-          },1000)
-        }).catch(err => {
-          console.log(err);
         });
       },
       //关闭添加面试官

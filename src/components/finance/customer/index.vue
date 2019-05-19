@@ -321,7 +321,6 @@
       },
       // 确认搜索
       hiddenModule(val) {
-        debugger
         this.showSearch = false;
         if (val !== 'close') {
           console.log(val);
