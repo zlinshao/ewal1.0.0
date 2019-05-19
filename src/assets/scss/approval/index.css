@@ -326,6 +326,7 @@
   text-align: center;
   line-height: 80px;
   font-size: 10px;
+  cursor: pointer;
 }
 #theme_name #approval .header .header_methods .methods_box + .methods_box {
   margin-left: 40px;

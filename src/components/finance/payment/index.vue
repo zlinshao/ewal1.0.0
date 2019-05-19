@@ -904,12 +904,14 @@
 
       handleOkSubject(row, val) { //修改科目
         this.$http.put(globalConfig.temporary_server + "account_payable/subject/" + row.id, {subject_id: val}).then(res => {
-          this.callbackSuccess(res);
+          /*this.callbackSuccess(res);
           this.show_subject = false;
-          this.current_row = '';
-        }).catch(err => {
-          console.log(err);
-        })
+          this.current_row = '';*/
+          this.$LjMessageEasy(res,()=> {
+            this.show_subject = false;
+            this.current_row = '';
+          });
+        });
       },
 
       handleOkCompleteData(row, val) {//修改补齐时间

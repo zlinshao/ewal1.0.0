@@ -158,5 +158,19 @@ export default {
       document.body.appendChild(link);
       link.click();
     };
+
+    /*验证权限*/
+    Vue.prototype.validatePermission =async function(user_id,sign,type = 'auth') {
+      let params = {
+        type,
+        sign,
+        user_id
+      };
+      let result = await this.$http.get(`${globalConfig.humanResource_server}permission/check`,params);
+      if(result.code.endsWith('0')) {
+        return result.data;
+      }
+      return false;
+    }
   }
 }
