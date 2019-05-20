@@ -683,7 +683,7 @@
               <el-date-picker
                 v-model="multi_field_form.complete_date"
                 type="datetime"
-                placeholder="请选择补齐时间"
+                placeholder="必填"
               ></el-date-picker>
             </el-form-item>
           </el-form>
@@ -698,7 +698,7 @@
 
     <!--新增滞纳金dialog-->
     <lj-dialog :visible.sync="new_overdue_fine_dialog_visible"
-               :size="{width: 450 + 'px',height: 320 + 'px'}"
+               :size="{width: 450 + 'px',height: 550 + 'px'}"
     >
       <div class="dialog_container">
         <div class="dialog_header">
@@ -708,11 +708,24 @@
           <el-form ref="newOverdueFineFormRef" :rules="rules.newOverdueFine" :model="new_overdue_fine_form"
                    style="text-align: left"
                    size="small" label-width="100px">
-            <el-form-item required prop="id" label="测试">
-              <el-input
-                v-model="new_overdue_fine_form.id"
-                placeholder="测试"
-              ></el-input>
+            <el-form-item required prop="pay_date" label="收款时间">
+              <el-date-picker
+                v-model="new_overdue_fine_form.pay_date"
+                type="datetime"
+                placeholder="必填"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="客户姓名">
+              <el-input disabled v-model="new_overdue_fine_form.customer_name"></el-input>
+            </el-form-item>
+            <el-form-item label="详情">
+              <el-input type="textarea" autosize disabled v-model="new_overdue_fine_form.details"></el-input>
+            </el-form-item>
+            <el-form-item label="收入科目">
+              <el-input disabled v-model="new_overdue_fine_form.subject_title"></el-input>
+            </el-form-item>
+            <el-form-item required prop="amount" label="应收金额">
+              <el-input v-model="new_overdue_fine_form.amount"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -1079,8 +1092,11 @@
           },
 
           newOverdueFine: {
-            id:[
-              {required:true,message:'请选择id',trigger:['change','blur']}
+            pay_date:[
+              {required:true,message:'请选择收款时间',trigger:['change','blur']}
+            ],
+            amount:[
+              {required:true,message:'请输入应收金额',trigger:['change','blur']}
             ],
           },
 
@@ -1206,7 +1222,13 @@
         edit_time_dialog_visible: false,//修改补齐时间dialog页面
         new_overdue_fine_dialog_visible:false,//新增滞纳金dialog页面
         new_overdue_fine_form:{//新增滞纳金form
-          id:'1',
+          subject_id:'',//科目id
+          forfeit_day: 15,//滞纳天数
+          pay_date: "2020-01-11 00:00:00",//收款时间
+          customer_name: "",//客户姓名
+          details: "应于2019-05-27 00:00:00缴纳房租, 自2019-05-27 00:00:00起, 滞纳6天, 日租金54.83, 总滞纳金657.96",
+          subject_title: "滞纳金",//滞纳金
+          amount: 657.96//应收金额
         },
 
         delete_visible: false,//删除
@@ -2145,7 +2167,6 @@
           receipt_id: this.multi_field_form.id,
           phone: this.multi_field_form.phone,
         };
-        debugger
         this.$http.post(`${this.url}sms/receipt`, params).then(res => {
           this.$LjMessageEasy(res, () => {
             this.edit_phone_dialog_visible = false;
@@ -2166,7 +2187,6 @@
               this.$LjMessageEasy(res, async () => {
                 this.edit_username_dialog_visible = false;
                 let result = await this.getReceiptDataLists(true);
-                debugger
                 this.receipt_detail_dialog_data = _.find(result.data.data, {id: this.multi_field_form.assembly_id})?.receipts[0];
               });
             });
@@ -2202,7 +2222,6 @@
             };
 
             this.$http.post(`${this.url}account_receivable/liquidate/${id}`,params).then(res=> {
-              debugger
               this.$LjMessageEasy(res,()=> {
                 this.generate_dialog_visible = false;
               });
@@ -2214,15 +2233,17 @@
       editCompleteTime() {
         this.$refs['multiFieldFormEditTimeRef'].validate((valid)=> {
           if(valid) {
-            debugger
             let id = this.multi_field_form.assembly_id;//应收款项id
             let params = {
               complete_date:this.myUtils.formatDate(this.multi_field_form.complete_date,'yyyy-MM-dd hh:mm:ss'),
             };
 
             this.$http.put(`${this.url}account_receivable/complete_date/${id}`,params).then(res=> {
-              debugger
               if(res.code==201) {//201生成滞纳金
+                this.new_overdue_fine_form = res.data;
+                if(res.data.details&&res.data.details.constructor===Array&&res.data.details.length>0) {
+                  this.new_overdue_fine_form.details = res.data.details[0];
+                }
                 this.$LjNotify('success',{
                   title:'成功',
                   message:res.msg,
@@ -2231,10 +2252,12 @@
                     this.new_overdue_fine_dialog_visible = true;
                 }).catch(()=> {
                   this.edit_time_dialog_visible = false;
+                  this.getReceiveList();
                 });
               }else if(res.code==200){
                 this.$LjMessageEasy(res,()=> {
                   this.edit_time_dialog_visible = false;
+                  this.getReceiveList();
                 });
               }else {
 
@@ -2248,7 +2271,27 @@
       handleNewOverdueFine() {
         this.$refs['newOverdueFineFormRef'].validate((valid)=> {
           if(valid) {
-            alert('ddd');
+            //alert('ddd');
+            let id = this.multi_field_form.assembly_id;//应收款项id
+            let params = {
+              forfeit_day: this.new_overdue_fine_form.forfeit_day,
+              pay_date: this.new_overdue_fine_form.pay_date,
+              amount: this.new_overdue_fine_form.amount,
+            };
+            if(isNaN(params.amount)) {
+              this.$LjMessage('warning',{
+                title:'警告',
+                msg:'金额请输入数字',
+              });
+              return;
+            }
+            this.$http.post(`${this.url}account_receivable/forfeit/${id}`,params).then(res=> {
+              this.$LjMessageEasy(res,()=> {
+                this.new_overdue_fine_dialog_visible = false;
+                this.edit_time_dialog_visible = false;
+                this.getReceiveList();
+              });
+            });
           }
         });
       },
