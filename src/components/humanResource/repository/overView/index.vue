@@ -19,7 +19,6 @@
           label="物品名称">
         </el-table-column>
 
-
         <el-table-column
           key="totalCounts"
           align="center"
@@ -41,9 +40,6 @@
           label="领/借数量">
           <template slot-scope="scope">
             <a @click="getBorrowReceiveList(scope.row)">{{scope.row.borrowReceiveCounts}}</a>
-            <!--<div slot="reference" class="name-wrapper">-->
-            <!--<el-tag size="medium">{{ scope.row.borrowCounts }}</el-tag>-->
-            <!--</div>-->
           </template>
         </el-table-column>
 
@@ -54,9 +50,6 @@
           label="维修数量">
           <template slot-scope="scope">
             <a @click="getRepairList(scope.row)">{{scope.row.repairCounts}}</a>
-            <!--<div slot="reference" class="name-wrapper">-->
-            <!--<el-tag size="medium">{{ scope.row.repairCounts }}</el-tag>-->
-            <!--</div>-->
           </template>
         </el-table-column>
 
@@ -67,9 +60,6 @@
           label="报废数量">
           <template slot-scope="scope">
             <a @click="getUselessList(scope.row)">{{scope.row.uselessCounts}}</a>
-            <!--<div slot="reference" class="name-wrapper">-->
-            <!--<el-tag size="medium">{{ scope.row.uselessCounts }}</el-tag>-->
-            <!--</div>-->
           </template>
         </el-table-column>
 
@@ -81,20 +71,8 @@
           <template slot-scope="scope">
             <span v-if="scope.row.status>=1">{{scope.row.status>=10?'正常':'预警'}}</span>
             <span class="font-red" v-if="scope.row.status<1">预警</span>
-            <!--            <a @click="getUselessList(scope.row)">{{scope.row.uselessCounts}}</a>-->
-            <!--<div slot="reference" class="name-wrapper">-->
-            <!--<el-tag size="medium">{{ scope.row.uselessCounts }}</el-tag>-->
-            <!--</div>-->
           </template>
         </el-table-column>
-
-        <!--<el-table-column-->
-        <!--align="center"-->
-        <!--label="操作">-->
-        <!--<template slot-scope="scope">-->
-
-        <!--</template>-->
-        <!--</el-table-column>-->
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -133,7 +111,7 @@
             highlight-current-row
             :height="this.mainListHeight(250) + 'px'"
             :row-class-name="tableChooseRow"
-            @cell-click="tableClickRow($event,'borrorReceive')"
+            @cell-click="tableClickRow($event,'borrowReceive')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
             style="width: 100%">
@@ -167,7 +145,6 @@
         </div>
       </div>
     </lj-dialog>
-
 
     <!--维修表格详情-->
     <lj-dialog
@@ -655,7 +632,9 @@
               prop="qrCode"
               label="二维码">
               <template slot-scope="scope">
-                <div @click="getQrCodeList(scope.row.id)" class="qr-code"></div>
+                <div class="flex-center">
+                  <div @click="getQrCodeList(scope.row.id)" class="qr-code"></div>
+                </div>
               </template>
             </el-table-column>
             <el-table-column
@@ -717,8 +696,9 @@
               prop="qrCode"
               label="二维码">
               <template slot-scope="scope">
-                <div @click="showQrCode(scope.row)" class="qr-code" style="margin-left: 170px">
-                  <!--                  <img :src="scope.row.qrCode" alt="">-->
+                <div class="flex-center">
+                  <div @click="showQrCode(scope.row)" class="qr-code" >
+                  </div>
                 </div>
               </template>
             </el-table-column>
@@ -761,7 +741,7 @@
       LjDialog,
       LjDialogImg,
       DropdownList,
-      OrgChoose
+      OrgChoose,
     },
     data() {
       return {
@@ -913,7 +893,6 @@
               create_username: '创建人名称',
               remark: '备注',
             },
-
           },
 
 
@@ -1521,7 +1500,7 @@
                 totalCounts: parseInt(item?.number) || '-',//总数量
                 stockCounts: parseInt(item?.now_number),//库存数量
                 borrowReceiveCounts: `${parseInt(item?.receive_number)}/${parseInt(item?.borrow_number)}`,
-                repairCounts: parseInt(item?.repair_number),
+                repairCounts: parseInt(item?.in_repair_number),
                 uselessCounts: parseInt(item?.scrap_number),
                 //status: parseInt(item?.number) - parseInt(item?.goods?.warning_number) > 10 ? '正常' : '预警',
                 //status: parseInt(item?.number) > 10 ? '正常' : '预警',
@@ -1539,7 +1518,14 @@
         this.tableSettingData.borrowReceive.table_dialog_visible = true;
         this.currentTable = 'borrowReceive';
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
-        this.$http.get(this.url + `eam/eam/${item.category_id}/records`, this.tableSettingData[this.currentTable].params).then(res => {
+        this.tableSettingData[this.currentTable].currentSelection = item;
+
+        let params = {
+          ...this.tableSettingData[this.currentTable].params,
+          status: 3,
+        };
+
+        this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
           this.tableSettingData[this.currentTable].tableData = [];
           if (res.code == '20000') {
             for (let item of res.data.data) {
@@ -1565,7 +1551,8 @@
         this.tableSettingData.repair.table_dialog_visible = true;
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].tableData = [];
-        let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 3}};
+        this.tableSettingData[this.currentTable].currentSelection = item;
+        let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 2}};
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
           if (res.code == '20000') {
             for (let item of res.data.data) {
@@ -1589,6 +1576,7 @@
         this.tableSettingData[this.currentTable].table_dialog_visible = true;
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].tableData = [];
+        this.tableSettingData[this.currentTable].currentSelection = item;
         let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 4}};
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
 
@@ -1720,6 +1708,15 @@
         switch (this.currentTable) {
           case 'repository':
             this.getRepositoryList();
+            break;
+          case 'borrowReceive':
+            this.getBorrowReceiveList(this.tableSettingData[this.currentTable].currentSelection);
+            break;
+          case 'repair':
+            this.getRepairList(this.tableSettingData[this.currentTable].currentSelection);
+            break;
+          case 'useless':
+            this.getUselessList(this.tableSettingData[this.currentTable].currentSelection);
             break;
           case 'goods':
             this.getGoodsList();

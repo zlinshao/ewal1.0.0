@@ -1,3 +1,4 @@
+<!--租客-->
 <template>
   <div class="mainListTable changeChoose">
     <!--列表-->
@@ -39,12 +40,13 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         v-for="item in Object.keys(renterLabel)"
         :label="renterLabel[item]" :key="item"
         :prop="item"
-        align="center">
+        :align="item=='address'?'left':'center'">
       </el-table-column>
-      <el-table-column label="付款方式/月单价" prop="prices" align="center" width="180" show-overflow-tooltip>
+      <el-table-column  show-overflow-tooltip label="付款方式/月单价" prop="prices" align="left" width="180" show-overflow-tooltip>
       </el-table-column>
       <el-table-column label="状态" prop="" align="center">
         <template slot-scope="scope">
@@ -201,11 +203,14 @@
       },
       // 搜索参数
       handleParamsRenter(val) {
+        debugger
         if (val.search) {
           this.params.search = val.search;
         } else {
           this.params.search = ''
         }
+        this.params.page = val.page;
+        this.params.limit = val.limit;
         if (val.date1) {
           this.params.startRange = val.date1[0];
           this.params.endRange = val.date1[1];
@@ -254,8 +259,8 @@
       getRenterList() {
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'customer_renter', this.params).then(res => {
+          this.showLoading(false);
           if (res.code === 200) {
-            this.showLoading(false);
             this.renterLists = res.data.data.sort(
               function (a, b) {
                 return a.id - b.id

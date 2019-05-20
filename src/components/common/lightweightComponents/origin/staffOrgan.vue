@@ -8,8 +8,12 @@
         <div class="items-bet dialog_header">
           <h3>选择人员</h3>
           <div class="items-center borderNone">
-            <el-input type="text" clearable size="small" v-model="search" placeholder="请输入需要搜索的人员"></el-input>
-            <span class="search" style="margin-left: 10px" @click="handleSearchStaff"></span>
+            <el-autocomplete
+              :fetch-suggestions="queryUser"
+              @select="handleSelect"
+              type="text" clearable @keydown.enter="handleSearchStaff" size="small" v-model="search"
+              placeholder="请输入需要搜索的人员"></el-autocomplete>
+            <!--<span class="search" style="margin-left: 10px" @click="handleSearchStaff"></span>-->
           </div>
         </div>
         <div class="justify-bet dialog_main">
@@ -96,8 +100,8 @@
     //props: ['module', 'organData'],
     props: {
       module: {},
-      organData:{},
-      initial:{
+      organData: {},
+      initial: {
         default() {
           return [];
         }
@@ -122,6 +126,8 @@
         staffList: [],//左侧人员
         checkedStaff: [],//左侧选中人员ID
         chooseStaff: [],//右侧 选中人员列表
+        userInfoList: [],//远程搜索人员数组
+        restaurants: [],
       }
     },
     mounted() {
@@ -131,26 +137,25 @@
     },
     watch: {
       initial: {
-        handler(val,oldVal) {
-          if(val&&!oldVal) {
+        handler(val, oldVal) {
+          if (val && !oldVal) {
             let params = {
-              limit:1000,
-              user_id:val,
-              staff:1,
+              limit: 1000,
+              user_id: val,
+              staff: 1,
             };
-            this.$http.get(`${this.url}staff/user`,params).then(res=> {
-              if(res.code.endsWith('0')) {
+            this.$http.get(`${this.url}staff/user`, params).then(res => {
+              if (res.code.endsWith('0')) {
                 let result = res.data.data;
-                _.forEach(this.initial,(o)=> {
-                  let curUser = _.find(result,{id:o});
-                  if(curUser) {
+                _.forEach(this.initial, (o) => {
+                  let curUser = _.find(result, {id: o});
+                  if (curUser) {
                     this.chooseStaff.push(curUser);
                   }
                 });
-                this.chooseStaff = _.uniqBy(this.chooseStaff,'id');
+                this.chooseStaff = _.uniqBy(this.chooseStaff, 'id');
               }
             });
-
 
 
             /*_.forEach(this.initial,(o)=> {
@@ -163,14 +168,14 @@
             });*/
           }
         },
-        immediate:true,
+        immediate: true,
       },
 
       module(val) {
         this.lj_visible = val;
       },
       search(val) {
-        this.searchStaff('', val);
+        //this.searchStaff('', val);
       },
       organData: {
         handler(val, oldVal) {
@@ -179,34 +184,34 @@
         deep: true,
         immediate: true
       },
-      chooseStaff:{
-        handler(val,oldVal) {
-          if(val&&val.length>0) {
-            this.checkedStaff = _.map(val,'id');
+      chooseStaff: {
+        handler(val, oldVal) {
+          if (val && val.length > 0) {
+            this.checkedStaff = _.map(val, 'id');
           }
         },
-        immediate:true,
+        immediate: true,
       },
     },
     computed: {},
     methods: {
       handleSearchStaff() {
-        this.searchStaff('',this.search);
+        this.searchStaff('', this.search);
       },
       handleCloseLjDialog() {
         this.$emit('close', 'close');
       },
 
       // 右侧删除已选
-      removeStaff(index,item) {
+      removeStaff(index, item) {
         /*this.checkedStaff.splice(index, 1);
         this.chooseStaff.splice(index, 1);*/
         //debugger
-        this.checkedStaff = _.remove(this.checkedStaff,(o)=> {
-          return o!=item.id
+        this.checkedStaff = _.remove(this.checkedStaff, (o) => {
+          return o != item.id
         });
-        this.chooseStaff = _.remove(this.chooseStaff,(o)=> {
-          return o.id!==item.id;
+        this.chooseStaff = _.remove(this.chooseStaff, (o) => {
+          return o.id !== item.id;
         });
         /*this.checkedStaff = _.pull(this.checkedStaff,item.id);
         this.chooseStaff = _.pullAllBy(this.chooseStaff,{id:item.id},'id');*/
@@ -258,6 +263,13 @@
           }
         })
       },
+
+      async searchStaffReturn(org, val = '') {
+       return await this.$http.get(this.url + 'staff/user', {
+          org_id: org,
+          search: val,
+        });
+      },
       // 选人
       checkStaff(item) {
         let staff = this.checkedStaff;
@@ -289,6 +301,29 @@
         str = names.join(',');
         this.$emit('close', ids, str, this.chooseStaff);
       },
+
+      //远程搜索用户信息
+      async queryUser(queryString, callback) {
+        let returnData = await this.searchStaffReturn('',queryString);
+        let results = [];
+        if(returnData.code.endsWith('0')) {
+          results = returnData.data.data;
+        }
+
+        results.forEach((item,index)=> {
+          let positionName = '';
+          if(item.position&&item.position.constructor===Array&&item.position.length==1) {
+            positionName = item.position[0].name;
+          }
+          item.value = `${item.name}(${positionName||'暂无职位信息'})`;
+        });
+        callback(results);
+      },
+      handleSelect(item) {
+        this.checkStaff(item);
+      }
+
+
     },
   }
 </script>

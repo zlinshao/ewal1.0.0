@@ -62,13 +62,17 @@
           v-for="item in Object.keys(paymentLabels)"
           :label="paymentLabels[item]" :key="item"
           :prop="item"
-          align="center"
+          :width="(item=='description.description'||item=='remark')?180:null"
+          :align="(item=='description.description'||item=='remark')?'left':'center'"
         >
         </el-table-column>
 
         <el-table-column label="状态" prop="" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.status === 1?'待入账':scope.row.status === 2?'待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
+            <span v-if="scope.row.status === 1" style="color: #FFAB40">待入账</span>
+            <span v-if="scope.row.status === 2" style="color: #FF7131">待结算</span>
+            <span v-if="scope.row.status === 3" style="color: #0C66FE">已结清</span>
+            <span v-if="scope.row.status === 4" style="color: #CF2E33">已超额</span>
           </template>
         </el-table-column>
 
@@ -900,12 +904,14 @@
 
       handleOkSubject(row, val) { //修改科目
         this.$http.put(globalConfig.temporary_server + "account_payable/subject/" + row.id, {subject_id: val}).then(res => {
-          this.callbackSuccess(res);
+          /*this.callbackSuccess(res);
           this.show_subject = false;
-          this.current_row = '';
-        }).catch(err => {
-          console.log(err);
-        })
+          this.current_row = '';*/
+          this.$LjMessageEasy(res,()=> {
+            this.show_subject = false;
+            this.current_row = '';
+          });
+        });
       },
 
       handleOkCompleteData(row, val) {//修改补齐时间

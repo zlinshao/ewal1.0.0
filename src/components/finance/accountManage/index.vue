@@ -9,15 +9,15 @@
       </div>
       <div class="items-center listTopRight">
         <el-tooltip content="新增账户" placement="bottom" :visible-arrow="false">
-          <div class="icons add" @click="add_account_visible = true"><b>+</b></div>
+          <div class="icons add" @click="add_account_visible = true;account_dialog_type=1;current_row = null;is_table_choose=null;action_visible=false"><b>+</b></div>
         </el-tooltip>
         <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
           <div class="icons search" @click="highSearch"></div>
         </el-tooltip>
       </div>
     </div>
-    <div class="action-bar changeChoose" v-show="action_visible">
-      <div class="action-bar-left">
+    <div class="action-bar changeChoose">
+      <div class="action-bar-left" v-show="action_visible">
         <!--<el-checkbox>全选</el-checkbox>-->
         <!--<span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">
@@ -133,7 +133,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>{{ current_row ? '更新账户' : '新增账户'}}</h3>
+          <h3>{{ account_dialog_type==2 ? '更新账户' : '新增账户'}}</h3>
         </div>
         <div class="dialog_main borderNone">
           <el-form :model="add_account" :rules="add_account_rules" ref="addAccount" label-width="80px">
@@ -207,7 +207,7 @@
 
     <!--充值-->
     <lj-dialog
-      :visible="account_recharge_visible"
+      :visible.sync="account_recharge_visible"
       :size="{width: 400 + 'px',height: 300 + 'px'}"
     >
       <div class="dialog_container">
@@ -308,7 +308,7 @@
           bank: '',
           account_num: '',
           amount_base: '',
-          scope: '',
+          scope: 3,
           remark: ''
         },
         add_account_rules: {
@@ -351,8 +351,9 @@
         account_count: 0,
         current_row: '',
 
-        //充值
+        //充值dialog
         account_recharge_visible: false,
+        account_dialog_type:1,//1为新增 2为编辑(更新)
         recharge: {
           amount: ''
         },
@@ -419,13 +420,17 @@
           console.log(err);
         })
       },
-      handleOkRecharge() {
+      handleOkRecharge() {//确认充值
         this.recharge.amount = parseFloat(this.recharge.amount).toFixed(2);
         this.$http.put(globalConfig.temporary_server + `account/recharge/${this.current_row.id}`, this.recharge).then(res => {
-          this.callbackSuccess(res);
+          this.$LjMessageEasy(res,()=> {
+            this.account_recharge_visible = false;
+            this.getAccountList();
+          });
+          /*this.callbackSuccess(res);
           this.current_row = '';
           this.recharge.amount = '';
-          this.account_recharge_visible = false;
+          this.account_recharge_visible = false;*/
         }).catch(err => {
           console.log(err);
         })
@@ -449,6 +454,7 @@
       },
       //更新弹出
       handleOpenUpdateAccount(row) {
+        this.account_dialog_type = 2;
         this.current_row = row;
         for (var key in this.add_account) {
           this.add_account[key] = row[key];
@@ -490,6 +496,7 @@
         this.$http.put(globalConfig.temporary_server + `account/${this.current_row.id}`, this.add_account).then(res => {
           this.callbackSuccess(res,() => {
             this.handleCancelAdd();
+            this.current_row = null;
           });
         }).catch(err => {
           console.log(err);
@@ -500,7 +507,9 @@
         for (var key in this.add_account) {
           this.add_account[key] = '';
         }
-        this.current_row = '';
+        if(this.account_dialog_type==1) {
+          this.current_row = '';
+        }
         this.add_account_visible = false;
       },
       callbackSuccess(res,callback) {

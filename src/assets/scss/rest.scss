@@ -22,6 +22,7 @@ html, body {
   }
   div.el-tooltip__popper,
   div.is-dark {
+    max-width: 500px;
     padding: 5px;
     background-color: $colorE33 !important;
     color: white;

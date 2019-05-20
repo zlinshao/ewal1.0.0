@@ -6,7 +6,6 @@
           :data="soldiersData"
           :height="this.mainListHeight(30) + 'px'"
           highlight-current-row
-          :row-class-name="tableChooseRow"
           @cell-click="tableClickRow"
           @row-dblclick="tableDblClick"
           header-row-class-name="tableHeader"

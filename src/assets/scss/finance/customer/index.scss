@@ -2,31 +2,42 @@
 
 #theme_name {
   #customer {
-
-  }
-}
-
-#theme_name.theme1 {
-  #customer {
-      >div{
-        .status-icon{
-          margin-right: 30px;
-          i{
-            display:inline-block;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            margin-right: 8px;
-          }
+    >div{
+      .status-icon{
+        margin-right: 30px;
+        i{
+          display:inline-block;
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          margin-right: 8px;
         }
       }
+    }
     .action-bar-right{
       span{
         margin-left:30px ;
       }
     }
 
+    .house-address-contain-money {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .lord-money {
+        margin-left: 3px;
+        display: inline-block;
+        height: 11px;
+        width: 6px;
+      }
+    }
+
+
   }
+}
+
+#theme_name.theme1 {
+
 }
 
 #theme_name.theme2 {

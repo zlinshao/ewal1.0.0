@@ -89,7 +89,7 @@ export default {
 
     //统一管理接口处理结果
     Vue.prototype.$LjNotifyEasy = function(res,callback) {
-      if (res.code.endsWith('0')) {
+      if (res.code.toString().endsWith('0')) {
         this.$LjNotify('success', {
           title: '成功',
           message: res.msg,
@@ -122,6 +122,15 @@ export default {
       }
     }
 
+    /*截取字符串方法*/
+    Vue.prototype.substringPlugin = function(content,limit = 10) {
+      if(content.constructor !== String) return;
+      if(content.length<=limit) {
+        return content;
+      }
+      return `${content.substring(0,limit)}...`;
+    },
+
     Vue.prototype.$resetForm = function (form) {
       //重置表单
       if (!form) {
@@ -149,5 +158,20 @@ export default {
       document.body.appendChild(link);
       link.click();
     };
+
+    /*验证权限*/
+    Vue.prototype.validatePermission =async function(sign,type = 'auth') {
+      let params = {
+        type,
+        sign,
+        user_id:'289',
+      };
+      let result = await this.$http.get(`${globalConfig.humanResource_server}organization/permission/check`,params);
+      debugger
+      if(result.code.endsWith('0')) {
+        return result.data;
+      }
+      return false;
+    }
   }
 }

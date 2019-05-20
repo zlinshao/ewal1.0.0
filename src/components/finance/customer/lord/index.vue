@@ -1,4 +1,6 @@
+<!--房东-->
 <template>
+
   <div class="mainListTable changeChoose">
     <!--列表-->
     <el-table
@@ -10,7 +12,7 @@
       @cell-click="tableClickRow"
       style="width: 100%">
       <!--<el-table-column-->
-        <!--type="selection" width="40">-->
+      <!--type="selection" width="40">-->
       <!--</el-table-column>-->
       <el-table-column width="40">
         <template slot-scope="scope">
@@ -23,13 +25,15 @@
           <div class="statusBar">
             <div class="flex-center" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].suppress_dup === 0">
               <el-tooltip content="手机号" placement="bottom" :visible-arrow="false">
-                <span class="phone" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_contact === 1"></span>
+                <span class="phone"
+                      v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_contact === 1"></span>
               </el-tooltip>
               <el-tooltip content="姓名" placement="bottom" :visible-arrow="false">
-                <span class="name" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_name === 1"></span>
+                <span class="name" v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_name === 1"></span>
               </el-tooltip>
               <el-tooltip content="地址" placement="bottom" :visible-arrow="false">
-                <span class="address" v-if="LordStatus[scope.$index] && LordStatus[scope.$index].is_address === 1"></span>
+                <span class="address"
+                      v-show="LordStatus[scope.$index] && LordStatus[scope.$index].is_address === 1"></span>
               </el-tooltip>
             </div>
             <div v-else class="flex-center">
@@ -39,14 +43,31 @@
         </template>
       </el-table-column>
       <el-table-column prop="create_time" label="生成时间" align="center" min-width="120"></el-table-column>
-      <el-table-column prop="address" label="房屋地址" align="center" min-width="120"></el-table-column>
+      <el-table-column prop="address" label="房屋地址" align="left" min-width="150">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.address" placement="bottom-start" :visible-arrow="false">
+            <div class="house-address-contain-money">
+<!--              {{substringPlugin(scope.row.address,14)}}-->
+              {{scope.row.address}}
+              <span v-if="scope.row.has_running==1" class="lord-money"></span>
+            </div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column prop="customer_name" label="客户姓名" align="center"></el-table-column>
       <el-table-column prop="contact" label="客户手机号" align="center"></el-table-column>
       <el-table-column prop="months" label="收房月数" align="center"></el-table-column>
       <el-table-column prop="deal_date" label="待签约日期" align="center"></el-table-column>
-      <el-table-column prop="first_pay_date" label="第一次打房租日期"align="center"></el-table-column>
+      <el-table-column prop="first_pay_date" label="第一次打房租日期" align="center"></el-table-column>
       <el-table-column prop="account_type" label="客户汇款方式" align="center" show-overflow-tooltip></el-table-column>
-      <el-table-column label="付款方式/月单价" prop="prices" align="center" show-overflow-tooltip min-width="230"></el-table-column>
+      <el-table-column label="付款方式/月单价" prop="prices" align="left" min-width="200">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.prices" placement="bottom-start" :visible-arrow="false">
+            <!--<div>{{substringPlugin(scope.row.prices,18)}}</div>-->
+            <div>{{scope.row.prices}}</div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column label="账号" prop="account_num" align="center" min-width="150"></el-table-column>
       <el-table-column label="签约人" prop="operator.name" align="center"></el-table-column>
       <el-table-column label="状态" prop="status" align="center" width="80"></el-table-column>
@@ -169,6 +190,10 @@
 
     computed: {},
     methods: {
+      _substring(content,limit) {
+        return this.$substring(content,limit);
+      },
+
       tableCell({row}) {
         if (row.freeze === 1) {
           return 'light_cell';
@@ -202,7 +227,7 @@
         this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
           this.showLoading(false);
           if (res.code === 200) {
-            this.lordLists = res.data.data.sort((a,b) => {
+            this.lordLists = res.data.data.sort((a, b) => {
               return a.id - b.id;
             });
             this.lordCount = res.data.count;
@@ -214,7 +239,7 @@
             //前缀状态
             this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.lordIds}).then(res => {
               if (res.code === 200) {
-                this.LordStatus = res.data.data.sort((a,b) => {
+                this.LordStatus = res.data.data.sort((a, b) => {
                   return a.id - b.id;
                 });
               }
@@ -242,6 +267,8 @@
         } else {
           this.params.search = ''
         }
+        this.params.page = val.page;
+        this.params.limit = val.limit;
         if (val.date1) {
           this.params.startRange = val.date1[0];
           this.params.endRange = val.date1[1];
@@ -283,7 +310,7 @@
         this.ra_ids.push(row.id);
         this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {
           ids: this.ra_ids,
-          operate : 1
+          operate: 1
         }).then(res => {
           this.callbackSuccess(res);
         })
@@ -299,13 +326,13 @@
           console.log(err);
         })
       },
-
-
     },
   }
 </script>
 
-<style lang="scss">
+
+
+<style lang="scss" scoped>
 
   @import "../../../../assets/scss/finance/customer/index.scss";
 
@@ -324,32 +351,43 @@
           border-radius: 50%;
           margin-left: 4px;
         }
+
         a {
           font-size: 12px;
           margin-left: 3px;
         }
+
         span.ignore {
           @include financeImg('yanjing.png', 'theme1');
 
         }
+
         span.phone {
           @include financeImg('dianhua.png', 'theme1');
 
         }
+
         span.name {
           @include financeImg('kehu.png', 'theme1');
 
         }
+
         span.address {
           @include financeImg('dizhi.png', 'theme1');
         }
 
       }
+
       #theme_name .form_item_container {
         padding: 0 0;
       }
+
       .light_cell {
         background-color: #D6D6D6 !important;
+      }
+
+      .lord-money {
+        @include financeImg('jinrongqianbi.png', 'theme1');
       }
     }
   }

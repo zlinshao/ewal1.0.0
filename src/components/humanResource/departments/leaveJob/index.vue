@@ -5,7 +5,6 @@
         :data="tableData"
         highlight-current-row
         :height="this.mainListHeight(30) + 'px'"
-        :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         :default-sort="{prop: 'staff.enroll',order: 'descending'}"
