@@ -708,10 +708,9 @@
           <el-form ref="newOverdueFineFormRef" :rules="rules.newOverdueFine" :model="new_overdue_fine_form"
                    style="text-align: left"
                    size="small" label-width="100px">
-            <el-form-item required prop="complete_date" label="测试">
+            <el-form-item required prop="id" label="测试">
               <el-input
                 v-model="new_overdue_fine_form.id"
-                type="datetime"
                 placeholder="测试"
               ></el-input>
             </el-form-item>
