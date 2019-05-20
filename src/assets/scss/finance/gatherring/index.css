@@ -210,6 +210,12 @@
   right: 20px;
   top: 0;
   cursor: pointer; }
+#theme_name #gathering .action-bar {
+  justify-content: flex-end;
+  position: relative; }
+  #theme_name #gathering .action-bar .action-bar-left {
+    position: absolute;
+    left: 40px; }
 #theme_name #gathering .bank-compare {
   width: 100%;
   display: flex;
@@ -242,3 +248,21 @@
   #theme_name #gathering .bank-compare .active {
     background: #ff4545;
     color: #FFFFFF; }
+#theme_name #gathering .dialog_container .receipt-img {
+  width: 35px;
+  height: 35px;
+  cursor: pointer; }
+#theme_name #gathering .dialog_container .edit-name-container {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center; }
+  #theme_name #gathering .dialog_container .edit-name-container .href-container {
+    display: flex;
+    flex-direction: column;
+    width: 120px; }
+    #theme_name #gathering .dialog_container .edit-name-container .href-container .href-img {
+      width: 50px;
+      height: 50px; }
+
+/*# sourceMappingURL=index.css.map */

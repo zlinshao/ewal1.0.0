@@ -405,7 +405,7 @@ export default {
   props: ['visible',
     'moduleData',
     'chooseTab',  // 合同类型
-    'showData',  // 不齐记录 
+    'showData',  // 不齐记录
     'showFooter',  // 底部操作
     'showRelated', // 显示合同相关信息
     'disabled'], // 是否可选
