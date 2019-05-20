@@ -632,7 +632,9 @@
               prop="qrCode"
               label="二维码">
               <template slot-scope="scope">
-                <div @click="getQrCodeList(scope.row.id)" class="qr-code"></div>
+                <div class="flex-center">
+                  <div @click="getQrCodeList(scope.row.id)" class="qr-code"></div>
+                </div>
               </template>
             </el-table-column>
             <el-table-column
@@ -694,8 +696,9 @@
               prop="qrCode"
               label="二维码">
               <template slot-scope="scope">
-                <div @click="showQrCode(scope.row)" class="qr-code" style="margin-left: 170px">
-                  <!--                  <img :src="scope.row.qrCode" alt="">-->
+                <div class="flex-center">
+                  <div @click="showQrCode(scope.row)" class="qr-code" >
+                  </div>
                 </div>
               </template>
             </el-table-column>
@@ -1497,7 +1500,7 @@
                 totalCounts: parseInt(item?.number) || '-',//总数量
                 stockCounts: parseInt(item?.now_number),//库存数量
                 borrowReceiveCounts: `${parseInt(item?.receive_number)}/${parseInt(item?.borrow_number)}`,
-                repairCounts: parseInt(item?.repair_number),
+                repairCounts: parseInt(item?.in_repair_number),
                 uselessCounts: parseInt(item?.scrap_number),
                 //status: parseInt(item?.number) - parseInt(item?.goods?.warning_number) > 10 ? '正常' : '预警',
                 //status: parseInt(item?.number) > 10 ? '正常' : '预警',
@@ -1549,7 +1552,7 @@
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].tableData = [];
         this.tableSettingData[this.currentTable].currentSelection = item;
-        let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 3}};
+        let params = {...this.tableSettingData[this.currentTable].params, ...{goods_status: 2}};
         this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
           if (res.code == '20000') {
             for (let item of res.data.data) {

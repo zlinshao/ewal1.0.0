@@ -676,10 +676,10 @@
           <h3>修改补齐时间</h3>
         </div>
         <div class="dialog_main borderNone" style="display: flex;align-items: center">
-          <el-form ref="multiFieldFormEditDateRef" :rules="rules.multiField" :model="multi_field_form"
+          <el-form ref="multiFieldFormEditTimeRef" :rules="rules.multiField" :model="multi_field_form"
                    style="text-align: left"
                    size="small" label-width="100px">
-            <el-form-item required prop="exit_date" label="补齐时间">
+            <el-form-item required prop="complete_date" label="补齐时间">
               <el-date-picker
                 v-model="multi_field_form.complete_date"
                 type="datetime"
@@ -694,6 +694,37 @@
         </div>
       </div>
     </lj-dialog>
+
+
+    <!--新增滞纳金dialog-->
+    <lj-dialog :visible.sync="new_overdue_fine_dialog_visible"
+               :size="{width: 450 + 'px',height: 320 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增滞纳金</h3>
+        </div>
+        <div class="dialog_main borderNone" style="display: flex;align-items: center">
+          <el-form ref="newOverdueFineFormRef" :rules="rules.newOverdueFine" :model="new_overdue_fine_form"
+                   style="text-align: left"
+                   size="small" label-width="100px">
+            <el-form-item required prop="complete_date" label="测试">
+              <el-input
+                v-model="new_overdue_fine_form.id"
+                type="datetime"
+                placeholder="测试"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleNewOverdueFine">确定</el-button>
+          <el-button size="small" @click="new_overdue_fine_dialog_visible=false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
 
     <!--登记收款-->
     <lj-dialog
@@ -1043,6 +1074,15 @@
             exit_date:[
               {required:true,message:'请选择违约金日期',trigger:['change','blur']}
             ],
+            complete_date:[
+              {required:true,message:'请选择补齐时间',trigger:['change','blur']}
+            ],
+          },
+
+          newOverdueFine: {
+            id:[
+              {required:true,message:'请选择id',trigger:['change','blur']}
+            ],
           },
 
 
@@ -1165,6 +1205,10 @@
         generate_dialog_visible: false,//生成违约金日期页面
 
         edit_time_dialog_visible: false,//修改补齐时间dialog页面
+        new_overdue_fine_dialog_visible:false,//新增滞纳金dialog页面
+        new_overdue_fine_form:{//新增滞纳金form
+          id:'1',
+        },
 
         delete_visible: false,//删除
         add_visible: false,//新增
@@ -2155,10 +2199,11 @@
           if(valid) {
             let id = this.multi_field_form.assembly_id;//应收款项id
             let params = {
-              exit_date:this.multi_field_form.exit_date,
+              exit_date:this.myUtils.formatDate(this.multi_field_form.exit_date,'yyyy-MM-dd hh:mm:ss'),
             };
 
             this.$http.post(`${this.url}account_receivable/liquidate/${id}`,params).then(res=> {
+              debugger
               this.$LjMessageEasy(res,()=> {
                 this.generate_dialog_visible = false;
               });
@@ -2170,19 +2215,44 @@
       editCompleteTime() {
         this.$refs['multiFieldFormEditTimeRef'].validate((valid)=> {
           if(valid) {
+            debugger
             let id = this.multi_field_form.assembly_id;//应收款项id
             let params = {
-              exit_date:this.multi_field_form.complete_date,
+              complete_date:this.myUtils.formatDate(this.multi_field_form.complete_date,'yyyy-MM-dd hh:mm:ss'),
             };
 
-            this.$http.put(`${this.url}account_receivable/liquidate/${id}`,params).then(res=> {
-              this.$LjMessageEasy(res,()=> {
-                this.generate_dialog_visible = false;
-              });
+            this.$http.put(`${this.url}account_receivable/complete_date/${id}`,params).then(res=> {
+              debugger
+              if(res.code==201) {//201生成滞纳金
+                this.$LjNotify('success',{
+                  title:'成功',
+                  message:res.msg,
+                })
+                this.$LjConfirm({title:'警告',content:'是否生成滞纳金？'}).then(()=> {
+                    this.new_overdue_fine_dialog_visible = true;
+                }).catch(()=> {
+                  this.edit_time_dialog_visible = false;
+                });
+              }else if(res.code==200){
+                this.$LjMessageEasy(res,()=> {
+                  this.edit_time_dialog_visible = false;
+                });
+              }else {
+
+              }
             });
           }
         });
-      }
+      },
+
+      /*提交新增滞纳金*/
+      handleNewOverdueFine() {
+        this.$refs['newOverdueFineFormRef'].validate((valid)=> {
+          if(valid) {
+            alert('ddd');
+          }
+        });
+      },
     },
   }
 </script>

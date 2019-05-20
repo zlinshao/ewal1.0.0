@@ -301,7 +301,7 @@
             <!--:prop="item"-->
             <!--:label="goodsDetailShowData[item]">-->
             <!--</el-table-column>-->
-            <el-table-column v-show="tableSettingData.goods.is_show_selection"
+            <el-table-column v-if="tableSettingData.goods.is_show_selection"
                              type="selection"
                              width="55">
             </el-table-column>
