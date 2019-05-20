@@ -22,7 +22,7 @@
         <div class="ranking" >
           <section class="top">
             <span>业绩排名</span>
-            <span id="more">更多></span>
+            <span id="more" @click="showMore">更多></span>
           </section>
           <!-- <section style="clear: both"></section> -->
           <div  class="box" style="display:flex">
@@ -66,7 +66,7 @@
         <div class="ranking">
           <section>
             <div style="height: 40%;width: 100%;position:relative">
-              <p style="color:#33C8FF;line-height:1rem;position:absolute;bottom:0px;left:28px">今日收房量&nbsp;<span style="font-size: 4px">(套)</span></p>
+              <p style="color:#33C8FF;line-height:1rem;position:absolute;bottom:0px;left:28px">今日租房量&nbsp;<span style="font-size: 4px">(套)</span></p>
             </div>
             <div style="height: 60%;width: 100%;font-size: 25px;padding-left:30px">
               <h1>11100</h1>
@@ -97,6 +97,7 @@
             </div>
           </section>
         </div>
+        <div class="more" v-if="flag"></div>
       </div>
       <div class="middle">
         <div id="topSale">
@@ -154,7 +155,36 @@
             </div>
           </div>
           <div style="width:100%;height:30%" id="lossRate"></div>
-          <div style="width:100%;height:30%">
+          <div style="width:100%;height:30%;display:flex">
+            <div style="width:100%;height:95%;">
+              <ul style="width:100%;height:100%;" class="progress">
+                <li>
+                  <div>超置空房源</div>
+                    <el-progress :text-inside="true" :stroke-width="18" :percentage="50" status="exception"></el-progress>
+                </li>
+                <li>
+                  <div>公司违约</div>
+                    <el-progress :text-inside="true" :stroke-width="18" :percentage="50" status="exception"></el-progress>
+                </li>
+                <li>
+                  <div>公司任责费用</div>
+                    <el-progress :text-inside="true" :stroke-width="18" :percentage="50" status="exception"></el-progress>
+                </li>
+              </ul>
+            </div>
+            <div style="width:100%;height:95%;margin-left:15px;">
+              <ul style="width:100%;height:100%;" class="progress">
+                <li>
+                  <div>收租差价</div>
+                    <el-progress :text-inside="true" :stroke-width="18" :percentage="50" status="exception"></el-progress>
+                </li>
+                <li>
+                  <div>中介费</div>
+                    <el-progress :text-inside="true" :stroke-width="18" :percentage="50" status="exception"></el-progress>
+                </li>
+              </ul>
+            </div>
+            <div style="width:48%;height:95%;"></div>
             <!-- <div style="width:30%;height:30%">
               <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
               <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
@@ -174,6 +204,8 @@ export default {
   name: "index",
   data() {
     return {
+      allUrl: globalConfig.president_sever,
+      flag: false,
       tabPages: [
         {name: '市场', url: 'markting',imgUrl:require('../../assets/image/president/shichang_0.png')},
         {name: '人事', url: 'humanbing',imgUrl:require('../../assets/image/president/renshi_1.png')},
@@ -189,9 +221,11 @@ export default {
   },
   mounted() {
     this.getLangDate()
-    this.drawLine();
   },
-  activated() {},
+  activated() {
+    this.drawLine();
+    this.getData();
+  },
   // beforeRouteLeave (to, from, next) {
   //   console.log(to, from, next)
   //   // if (to.fullPath === '/markting') {
@@ -201,6 +235,13 @@ export default {
   watch: {},
   computed: {},
   methods: {
+    showMore() {
+      this.flag = true;
+    },
+    getData() {
+      this.$http.post(this.allUrl+'detail_by_time').then(res => {
+      })
+    },
     toPath(item) {
       console.log(item)
       this.$router.push({ 
@@ -215,15 +256,15 @@ export default {
         let myChart4 = this.$echarts.init(document.getElementById('lossRate'))
         // 绘制图表
         myChart.setOption({
-        // tooltip : {
-        //     trigger: 'axis'
-        // },
+        tooltip : {
+            trigger: 'axis'
+        },
         calculable : true,
         xAxis : [
             {
                 type : 'category',
                 boundaryGap : false,
-                // data : ['周一','周二','周三','周四','周五','周六','周日']
+                data : ['周一','周二','周三','周四','周五','周六','周日']
             }
         ],
         yAxis : [
@@ -241,7 +282,7 @@ export default {
         ],
         series : [
             {
-                name:'预购',
+                name:'收房量',
                 type:'line',
                 smooth:true,
                 itemStyle: {normal: {areaStyle: {type: 'default'}}},
@@ -504,6 +545,7 @@ export default {
     border-radius: 100%;
     width: 75px;
     height: 75px;
+    cursor: pointer;
     // background: red;
     img {
       width: 100%;
@@ -596,7 +638,7 @@ export default {
   height: 17%;
   margin-top: 3px;
 }
-.start>div:last-of-type{
+.start>div:nth-of-type(4){
   width: 100%;
   height: 42%;
   margin-top: 3px;
@@ -607,6 +649,16 @@ export default {
   padding-top: 3%;
   margin-left: 45px;
   width: 24%;
+  position: relative;
+}
+.more {
+  position: absolute;
+  width: 258px;
+  height: 397px;
+  top: 60px;
+  right: -270px;
+  background: #060738;
+  opacity:0.5
 }
 // .middle {
 //   width: 46%;
@@ -648,7 +700,7 @@ export default {
   background: url('../../assets/image/border/k_1.png') no-repeat ;
   background-size: 100% 100%
 }
-.start>div:last-of-type {
+.start>div:nth-of-type(4) {
   background: url('../../assets/image/border/k_2.png') no-repeat ;
   background-size: 100% 100%
 }
@@ -762,4 +814,22 @@ export default {
   height: 60%;
   width: 100%
 }
+.progress
+  li {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    div:nth-child(1) {
+      width: 40%;
+      height: 100%;
+      font-size: 5px;
+      text-align: right;
+      margin-right: 6px;
+    }
+    div:nth-child(2) {
+      width: 58%;
+      height: 100%;
+      margin-left: 6px;
+    }
+  }
 </style>

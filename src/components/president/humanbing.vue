@@ -75,7 +75,11 @@
                 </ul>
             </div>
             <div class="bottom">
-                <div id="chooseArea"></div>
+                <div id="chooseArea">
+                    <div  v-for="(item, index) in citys" :key="index" :class="selected + index">
+                        <span>{{item.name}}</span> 
+                    </div>
+                </div>
                 <div id="entry">
                     <section  class="pie">
                         <div>
@@ -180,6 +184,8 @@ export default {
   data() {
     return {
       value6: '',
+      selected: 'city',
+      citys: [{name: '乐伽'}, {name: '西安'}, {name: '重庆'}, {name: '合肥'}, {name: '上海'}, {name: '成都'}, {name: '苏州'}, {name: '营销'}, {name: '研发'}, {name: '运维'}, {name: '事业部'}, {name: '财务'}, {name: '人资'}, {name: '励诚'}, {name: '励勤'}, {name: '励朴'}],
       tabPages: [
         {name: '市场', url: 'markting',imgUrl:require('../../assets/image/president/shichang_0.png')},
         {name: '人事', url: 'humanbing',imgUrl:require('../../assets/image/president/renshi_1.png')},
@@ -439,7 +445,7 @@ export default {
     width: 100%;
     height: 8%;
     display: flex;
-    margin: 64px 0px 0px 0px;
+    margin: 36px 0px 0px 0px;
 }
 .top>img{
     width: 30px;
@@ -510,6 +516,127 @@ export default {
 #chooseArea {
     width: 56%;
     height: 100%;
+    position: relative;
+    .city0 {
+        position: absolute;
+        left: 280px;
+        top: 25px;
+        width:150px;
+        height:150px;
+        background-image: url("../../assets/image/president/pic_0.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border-radius: 100%;
+        span {
+            position: absolute;
+            left: 44px;
+            top: 51px;
+            font-size: 30px;
+            color: #ffffff;
+        }
+    }
+    .city1 {
+        position: absolute;
+        left: 45px;
+        top: 145px;
+        width:100px;
+        height:100px;
+        background-image: url("../../assets/image/president/pic_1.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border-radius: 100%;
+        span {
+            position: absolute;
+            left: 33px;
+            top: 39px;
+            color: #ffffff;
+        }
+    }
+    .city2 {
+        position: absolute;
+        left: 190px;
+        top: 228px;
+        width:100px;
+        height:100px;
+        background-image: url("../../assets/image/president/pic_1.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border-radius: 100%;
+        span {
+            position: absolute;
+            left: 33px;
+            top: 39px;
+            color: #ffffff;
+        }
+    }
+    .city3 {
+        position: absolute;
+        left: 390px;
+        top: 228px;
+        width:100px;
+        height:100px;
+        background-image: url("../../assets/image/president/pic_1.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border-radius: 100%;
+        span {
+            position: absolute;
+            left: 33px;
+            top: 39px;
+            color: #ffffff;
+        }
+    }
+    .city4 {
+        position: absolute;
+        left: 550px;
+        top: 145px;
+        width:100px;
+        height:100px;
+        background-image: url("../../assets/image/president/pic_1.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border-radius: 100%;
+        span {
+            position: absolute;
+            left: 33px;
+            top: 39px;
+            color: #ffffff;
+        }
+    }
+    .city5 {
+        position: absolute;
+        left: 280px;
+        top: 360px;
+        width:100px;
+        height:100px;
+        background-image: url("../../assets/image/president/pic_1.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border-radius: 100%;
+        span {
+            position: absolute;
+            left: 33px;
+            top: 39px;
+            color: #ffffff;
+        }
+    }
+    .city6 {
+        position: absolute;
+        left: 500px;
+        top: 330px;
+        width:100px;
+        height:100px;
+        background-image: url("../../assets/image/president/pic_1.png");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border-radius: 100%;
+        span {
+            position: absolute;
+            left: 33px;
+            top: 39px;
+            color: #ffffff;
+        }
+    }
 }
 .pie {
     width:100%;
