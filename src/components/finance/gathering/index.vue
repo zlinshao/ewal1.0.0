@@ -2271,7 +2271,6 @@
       handleNewOverdueFine() {
         this.$refs['newOverdueFineFormRef'].validate((valid)=> {
           if(valid) {
-            //alert('ddd');
             let id = this.multi_field_form.assembly_id;//应收款项id
             let params = {
               forfeit_day: this.new_overdue_fine_form.forfeit_day,

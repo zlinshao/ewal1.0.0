@@ -7,7 +7,7 @@
       :value="dropdown_code" @input="handleInputEvent" clearable :placeholder="title"
       @change="changeSelection">
       <el-option v-for="item in dropdown_list"
-                 :key="item.value"
+                 :key="item.guid_id"
                  :label="item.name"
                  :value="item.id">
       </el-option>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import storage from '../../../utils/storage';
 
   export default {
@@ -113,6 +114,12 @@
       request(queryParams) {
         this.$http.get(this.url, queryParams).then((res) => {
           if (res.status == 200) {
+            res.data.data = _(res.data.data).filter((o)=> {return o.user_id}).forEach((o)=> {
+              o.guid_id = o.id;
+              o.id = o.user_id.id;
+              o.name = o.user_id.name;
+
+            });
             this.dropdown_list = res.data.data;
             if(this.cache) {
               let keys = this.url + JSON.stringify(queryParams);
