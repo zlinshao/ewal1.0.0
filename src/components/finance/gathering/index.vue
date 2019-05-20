@@ -989,7 +989,6 @@
     watch: {
       multipleSelectionIndex: {
         handler(val, oldVal) {
-          debugger
           if (val && val.constructor == Array) {
             if (val.length == 1) {
               this.current_row = val[0];
@@ -1653,7 +1652,6 @@
       },*/
 
       tableClickRow(row) {
-        debugger
         this.multipleSelection = [];
         if (this.is_table_choose === row.id) {
           this.is_table_choose = '';
@@ -1729,7 +1727,6 @@
       },
       // 多选
       handleSelectionChange(val, type) {
-        debugger
         if (type == 'index') {//列表 主页面
           this.multipleSelectionIndex = val;
           return;
@@ -2162,7 +2159,6 @@
             };
 
             this.$http.post(`${this.url}account_receivable/liquidate/${id}`,params).then(res=> {
-              debugger
               this.$LjMessageEasy(res,()=> {
                 this.generate_dialog_visible = false;
               });
@@ -2180,7 +2176,6 @@
             };
 
             this.$http.put(`${this.url}account_receivable/liquidate/${id}`,params).then(res=> {
-              debugger
               this.$LjMessageEasy(res,()=> {
                 this.generate_dialog_visible = false;
               });

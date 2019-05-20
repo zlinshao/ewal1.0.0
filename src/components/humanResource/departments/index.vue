@@ -1450,6 +1450,7 @@
       },
       // 部门管理列表
       getDepartList() {
+        if(!this.validatePermission('Organization-Index')) {return};
         this.$http.get('organization/organization',this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;

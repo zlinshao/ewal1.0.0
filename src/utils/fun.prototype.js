@@ -160,13 +160,14 @@ export default {
     };
 
     /*验证权限*/
-    Vue.prototype.validatePermission =async function(user_id,sign,type = 'auth') {
+    Vue.prototype.validatePermission =async function(sign,type = 'auth') {
       let params = {
         type,
         sign,
-        user_id
+        user_id:'289',
       };
-      let result = await this.$http.get(`${globalConfig.humanResource_server}permission/check`,params);
+      let result = await this.$http.get(`${globalConfig.humanResource_server}organization/permission/check`,params);
+      debugger
       if(result.code.endsWith('0')) {
         return result.data;
       }

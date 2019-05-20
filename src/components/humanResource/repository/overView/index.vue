@@ -1516,7 +1516,13 @@
         this.currentTable = 'borrowReceive';
         this.tableSettingData[this.currentTable].table_dialog_title = item.name;
         this.tableSettingData[this.currentTable].currentSelection = item;
-        this.$http.get(this.url + `eam/eam/${item.category_id}/records`, this.tableSettingData[this.currentTable].params).then(res => {
+
+        let params = {
+          ...this.tableSettingData[this.currentTable].params,
+          status: 3,
+        };
+
+        this.$http.get(this.url + `eam/eam/${item.category_id}/records`, params).then(res => {
           this.tableSettingData[this.currentTable].tableData = [];
           if (res.code == '20000') {
             for (let item of res.data.data) {
