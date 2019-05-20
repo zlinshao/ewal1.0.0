@@ -26,11 +26,105 @@
                     <span>南京</span>
                     <img src="../../assets/image/president/didian.png" alt="">
                 </div>
-                <div class="area"></div>
+                <div class="area">
+                    <ul>
+                        <section>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_0.png" alt="">
+                                    <span>南京</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_1.png" alt="">
+                                </div>
+                            </li>
+                        </section>
+                        <section>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_0.png" alt="">
+                                    <span>西安</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_1.png" alt="">
+                                </div>
+                            </li>
+                        </section>
+                        <section>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_0.png" alt="">
+                                    <span>苏州</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_1.png" alt="">
+                                </div>
+                            </li>
+                        </section>
+                        <section>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_0.png" alt="">
+                                    <span>重庆</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_1.png" alt="">
+                                </div>
+                            </li>
+                        </section>
+                        <section>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_0.png" alt="">
+                                    <span>上海</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_1.png" alt="">
+                                </div>
+                            </li>
+                        </section>
+                        <section>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_0.png" alt="">
+                                    <span>成都</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_1.png" alt="">
+                                </div>
+                            </li>
+                        </section>
+                        <section>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_0.png" alt="">
+                                    <span>合肥</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="../../assets/image/president/chengshi_1.png" alt="">
+                                </div>
+                            </li>
+                        </section>
+                    </ul>
+                </div>
             </section>
         </div>
         <div class="right">
-            <div class="top" style="margin:50px 0 0 50px">
+            <div class="top">
                 <img src="../../assets/image/president/back.png" alt="" @click="back">
                 <ul class="tableBar">
                     <li>
@@ -86,8 +180,18 @@
                             <div id="statistics1"></div>
                         </section>
                     </section>
-                    <section class="rentingPrice1"></section>
-                    <section class="rentingPrice2"></section>
+                    <section class="rentingPrice1">
+                        <div>
+                            <p>平均收房价<span>(元)</span></p>
+                            <p>3000</p>
+                        </div>
+                    </section>
+                    <section class="rentingPrice2">
+                        <div>
+                            <p>平均租房价<span>(元)</span></p>
+                            <p>3000</p>
+                        </div>
+                    </section>
                 </div>
                 <div class="statistics">
                     <section class="rent">
@@ -104,12 +208,28 @@
                     <section class="rent">
                         <section id="entryRate"></section>
                     </section>
-                    <section class="total1"></section>
-                    <section class="total2"></section>
+                    <section class="total1">
+                        <div>
+                            <p>实际业绩总额<span>(元)</span></p>
+                            <p>3000</p>
+                        </div>
+                    </section>
+                    <section class="total2">
+                        <div>
+                            <p>平均差价<span>(元)</span></p>
+                            <p>3000</p>
+                        </div>
+                    </section>
                 </div>
                 <div class="statistics">
-                    <section class="empty"></section>
-                    <section class="empty"></section>
+                    <section class="empty">
+                        <p>空置房源&nbsp;&nbsp;<span>(套)</span></p>
+                        <div></div>
+                    </section>
+                    <section class="empty">
+                        <p>低质量房源&nbsp;&nbsp;<span>(套)</span></p>
+                        <div></div>
+                    </section>
                 </div>
             </div>
         </div>
@@ -420,7 +540,7 @@ export default {
     width: 100%;
     height: 8%;
     display: flex;
-    margin: 64px 0px 0px 50px;
+    margin: 36px 0px 0px 0px;
 }
 .top>img{
     width: 30px;
@@ -569,6 +689,12 @@ export default {
 .empty {
     width: 48%;
     height: 100%;
+    p {
+        padding: 10px 0 0 24px;
+    }
+    span {
+        font-size: 7px;
+    }
 }
 .statistics:nth-of-type(2) {
     width: 100%;
@@ -589,15 +715,71 @@ export default {
 }
 .rentingPrice1 {
     background: linear-gradient(to right,#FD6F58,#FE5785);
+    div {
+        width: 90%;
+        height: 90%;
+        margin: 10px auto;
+        span {
+            font-size: 7px;
+        }
+        p {
+            color: #ffffff;
+        }
+        p:nth-child(2) {
+            font-size: 35px;
+        }
+    }
 }
 .rentingPrice2 {
     background: linear-gradient(to right,#FF9E1D,#FFDE80);
+    div {
+        width: 90%;
+        height: 90%;
+        margin: 10px auto;
+        span {
+            font-size: 7px;
+        }
+        p {
+            color: #ffffff;
+        }
+        p:nth-child(2) {
+            font-size: 35px;
+        }
+    }
 }
 .total1 {
     background: linear-gradient(to right,#8FBD5B,#119A8B);
+    div {
+        width: 85%;
+        height: 90%;
+        margin: 40px auto;
+        span {
+            font-size: 7px;
+        }
+        p {
+            color: #ffffff;
+        }
+        p:nth-child(2) {
+            font-size: 35px;
+        }
+    }
 }
 .total2 {
     background: linear-gradient(to right,#76FFF6,#298AC1);
+    div {
+        width: 85%;
+        height: 90%;
+        margin: 40px auto;
+        span {
+            font-size: 7px;
+        }
+        p {
+            color: #ffffff;
+        }
+        p:nth-child(2) {
+            font-size: 35px;
+        }
+    }
 }
 .total {
   height: 100%;
@@ -605,5 +787,180 @@ export default {
   border-radius: 3px;
   display: inline-block;
   margin-left: 12px;
+}
+.area {
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    height: 95%;
+    ul {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        // section {
+        //     width: 100%;
+        //     height: 100%;
+        // }
+        section:nth-child(1) {
+            
+            div {
+                position: absolute;
+                top: 30px;
+                left: 160px;
+                width: 140px;
+                height: 140px;
+                transition: all 1s linear;
+                span {
+                    position: absolute;
+                    top:55px;
+                    left: 57px;
+                }
+            }
+            div:hover {
+                transform: scale(1.1)
+            }
+        }
+        section:nth-child(2) {
+            div {
+                position: absolute;
+                top: 150px;
+                left: 30px;
+                width: 100px;
+                height: 100px;
+                transition: all 1s linear;
+                span {
+                    position: absolute;
+                    top:37px;
+                    left: 35px;
+                }
+            }
+            div:hover {
+                transform: scale(1.1)
+            }
+        }
+        section:nth-child(3) {
+            div {
+                position: absolute;
+                top: 130px;
+                left: 330px;
+                width: 100px;
+                height: 100px;
+                transition: all 1s linear;
+                span {
+                    position: absolute;
+                    top:37px;
+                    left: 35px;
+                }
+            }
+            div:hover {
+                transform: scale(1.1)
+            }
+        }
+        section:nth-child(4) {
+            div {
+                position: absolute;
+                top: 230px;
+                left: 186px;
+                width: 100px;
+                height: 100px;
+                transition: all 1s linear;
+                span {
+                    position: absolute;
+                    top:37px;
+                    left: 35px;
+                }
+            }
+            div:hover {
+                transform: scale(1.1)
+            }
+        }
+        section:nth-child(5) {
+            div {
+                position: absolute;
+                top: 300px;
+                left: 65px;
+                width: 100px;
+                height: 100px;
+                transition: all 1s linear;
+                span {
+                    position: absolute;
+                    top:37px;
+                    left: 35px;
+                }
+            }
+            div:hover {
+                transform: scale(1.1)
+            }
+        }
+        section:nth-child(6) {
+            div {
+                position: absolute;
+                top: 320px;
+                left: 280px;
+                width: 100px;
+                height: 100px;
+                transition: all 1s linear;
+                span {
+                    position: absolute;
+                    top:37px;
+                    left: 35px;
+                }
+            }
+            div:hover {
+                transform: scale(1.1)
+            }
+        }
+        section:nth-child(7) {
+            div {
+                position: absolute;
+                top: 430px;
+                left: 186px;
+                width: 100px;
+                height: 100px;
+                transition: all 1s linear;
+                span {
+                    position: absolute;
+                    top:37px;
+                    left: 35px;
+                }
+            }
+            div:hover {
+                transform: scale(1.1)
+            }
+        }
+    }
+    
+    li {
+        position: absolute;
+        img {
+            transform-style: preserve-3d;
+        }
+    }
+    li:nth-child(1) {
+        img {
+            animation: z 5s linear 0s infinite;
+        }
+    }
+    li:nth-child(2) {
+        img {
+            animation: y 5s linear 0s infinite;
+        }
+    }
+    // div {
+    //     position: absolute;
+    //     top: 30px;
+    //     left: 160px;
+    //     width: 140px;
+    //     height: 140px;
+    //     transition: all 1s linear;
+    // }
+}
+@-webkit-keyframes z {
+	from { -webkit-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scaleX(1) scaleY(1) scaleZ(1); -moz-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scaleX(1) scaleY(1) scaleZ(1); -ms-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scaleX(1) scaleY(1) scaleZ(1); transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scaleX(1) scaleY(1) scaleZ(1); }
+	to { -webkit-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(360deg) scaleX(1) scaleY(1) scaleZ(1); -moz-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(360deg) scaleX(1) scaleY(1) scaleZ(1); -ms-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(360deg) scaleX(1) scaleY(1) scaleZ(1); transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(360deg) scaleX(1) scaleY(1) scaleZ(1); }
+}
+@-webkit-keyframes y {
+	from { -webkit-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scaleX(1) scaleY(1) scaleZ(1); -moz-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scaleX(1) scaleY(1) scaleZ(1); -ms-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scaleX(1) scaleY(1) scaleZ(1); transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scaleX(1) scaleY(1) scaleZ(1); }
+	to { -webkit-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(-360deg) scaleX(1) scaleY(1) scaleZ(1); -moz-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(-360deg) scaleX(1) scaleY(1) scaleZ(1); -ms-transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(-360deg) scaleX(1) scaleY(1) scaleZ(1); transform: translateX(0) translateY(0) translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(-360deg) scaleX(1) scaleY(1) scaleZ(1); }
 }
 </style>

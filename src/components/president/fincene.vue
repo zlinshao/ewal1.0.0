@@ -107,7 +107,14 @@
                 </ul>
             </div>
             <div class="bottom">
-                <div id="chooseArea"></div>
+                <div id="chooseArea">
+                    <div class="branch" v-for="(item, index) in citys" :key="index">
+                        <span>{{item.name}}</span>   
+                    </div>
+                    <div class="center">
+                        <span>总公司</span>
+                    </div>
+                </div>
                 <div id="entry">
                     <section  class="pieOne">
                         <div id="cunstomPie"></div>
@@ -179,6 +186,7 @@ export default {
   data() {
     return {
       value6: '',
+      citys: [{name: '成都'}, {name: '西安'}, {name: '重庆'}, {name: '合肥'}, {name: '上海'}, {name: '杭州'}, {name: '南京'}, {name: '苏州'}, ],
       tabBar: [
         {name: '房租', color: '#F64C7E'},
         {name: '定金', color: '#FFCC4D'},
@@ -376,7 +384,7 @@ export default {
     width: 100%;
     height: 8%;
     display: flex;
-    margin: 64px 0px 0px 0px;
+    margin: 36px 0px 0px 0px;
 }
 .top>img{
     width: 30px;
@@ -445,6 +453,168 @@ export default {
 #chooseArea {
     width: 56%;
     height: 100%;
+    position: relative;
+    .center {
+        width:165px;
+        height:165px;
+        background: url("../../assets/image/president/chengshi_11.png") no-repeat;
+        background-size: 100% 100%;
+        border-radius: 100%;
+        position: absolute;
+        top: 225px;
+        left: 250px;
+        span {
+            position: relative;
+            color: #20296A;
+            top: 60px;
+            left: 40px;
+            font-size: 30px;
+        }
+    }
+    .branch {
+        transition: all 0.5s linear;
+        position: absolute;
+        left: 282px;
+        top: 258px;
+        width:100px;
+        height:100px;
+        background: url("../../assets/image/president/chengshi_00.png") no-repeat;
+        background-size: 100% 100%;
+        border-radius: 100%;
+        span {
+            position: relative;
+            color: #20296A;
+            top: 39px;
+            left: 34px;
+        }
+    }
+    .branch:hover {
+        transform: scale(1.2)
+    }
+    .branch:nth-of-type(1) {
+        animation-name:myfirst;
+        animation-duration:0.5s;
+        animation-timing-function:linear;
+        animation-delay:0s;
+        animation-iteration-count:1;
+        animation-direction:normal;
+        animation-play-state:running;
+        animation-fill-mode:forwards
+    }
+    .branch:nth-of-type(2) {
+        animation-name:myfirst1;
+        animation-duration:0.5s;
+        animation-timing-function:linear;
+        animation-delay:0s;
+        animation-iteration-count:1;
+        animation-direction:normal;
+        animation-play-state:running;
+        animation-fill-mode:forwards
+    }
+    .branch:nth-of-type(3) {
+        animation-name:myfirst2;
+        animation-duration:0.5s;
+        animation-timing-function:linear;
+        animation-delay:0s;
+        animation-iteration-count:1;
+        animation-direction:normal;
+        animation-play-state:running;
+        animation-fill-mode:forwards
+    }
+    .branch:nth-of-type(4) {
+        animation-name:myfirst3;
+        animation-duration:0.5s;
+        animation-timing-function:linear;
+        animation-delay:0s;
+        animation-iteration-count:1;
+        animation-direction:normal;
+        animation-play-state:running;
+        animation-fill-mode:forwards
+    }
+    .branch:nth-of-type(5) {
+        animation-name:myfirst4;
+        animation-duration:0.5s;
+        animation-timing-function:linear;
+        animation-delay:0s;
+        animation-iteration-count:1;
+        animation-direction:normal;
+        animation-play-state:running;
+        animation-fill-mode:forwards
+    }
+    .branch:nth-of-type(6) {
+        animation-name:myfirst5;
+        animation-duration:0.5s;
+        animation-timing-function:linear;
+        animation-delay:0s;
+        animation-iteration-count:1;
+        animation-direction:normal;
+        animation-play-state:running;
+        animation-fill-mode:forwards
+    }
+    .branch:nth-of-type(7) {
+        animation-name:myfirst6;
+        animation-duration:0.5s;
+        animation-timing-function:linear;
+        animation-delay:0s;
+        animation-iteration-count:1;
+        animation-direction:normal;
+        animation-play-state:running;
+        animation-fill-mode:forwards
+    }
+    .branch:nth-of-type(8) {
+        animation-name:myfirst7;
+        animation-duration:0.5s;
+        animation-timing-function:linear;
+        animation-delay:0s;
+        animation-iteration-count:1;
+        animation-direction:normal;
+        animation-play-state:running;
+        animation-fill-mode:forwards
+    }
+}
+@keyframes myfirst
+{
+	0%   { left:280px; top:200px;}
+	100%  { left:280px; top:50px;}
+
+
+}
+@keyframes myfirst1
+{
+	0%   {left:250px; top:200px;}
+	100%  {left:120px; top:120px;}
+
+
+}
+@keyframes myfirst2
+{
+	0%   {left:250px; top:200px;}
+	100%  {left:50px; top:270px;}
+}
+@keyframes myfirst3
+{
+	0%   {left:250px; top:200px;}
+	100%  {left:120px; top:400px;}
+}
+@keyframes myfirst4
+{
+	0%   {left:280px; top:200px;}
+	100%  {left:280px; top:500px;}
+}
+@keyframes myfirst5
+{
+	0%   {left:250px; top:200px;}
+	100%  {left:450px; top:400px;}
+}
+@keyframes myfirst6
+{
+	0%   {left:250px; top:200px;}
+	100%  {left:500px; top:270;}
+}
+@keyframes myfirst7
+{
+	0%   {left:250px; top:200px;}
+	100%  {left:450px; top:126px;}
 }
 .pieOne {
     width:100%;
