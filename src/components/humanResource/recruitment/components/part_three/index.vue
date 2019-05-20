@@ -10,7 +10,6 @@
             <el-table
               :data="tableList"
               highlight-current-row
-              :row-class-name="tableChooseRow"
               @cell-click="tableClickRow"
               @row-dblclick="tableDblClick"
               header-row-class-name="tableHeader"

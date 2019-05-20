@@ -7,7 +7,6 @@
           :data="tableList"
           :height="this.mainListHeight(30) + 'px'"
           highlight-current-row
-          :row-class-name="tableChooseRow"
           @cell-click="tableClickRow"
           header-row-class-name="tableHeader"
           style="width: 100%"

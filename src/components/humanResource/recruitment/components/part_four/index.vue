@@ -6,7 +6,6 @@
           <el-table
             :data="tableList"
             highlight-current-row
-            :row-class-name="tableChooseRow"
             @cell-click="tableClickRow"
             header-row-class-name="tableHeader"
             style="width: 100%"
