@@ -17,7 +17,7 @@
         <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
         <div class="buttons button1" style="font-weight: bold" @click="showSetForm" v-if="chooseTab === 3">设置报表</div>
         <div class="buttons button2" style="font-weight: bold" v-if="chooseTab === 3" @click="handleExportInfo">导出报表</div>
-        <el-tooltip content="新增部门" placement="bottom" :visible-arrow="false">
+        <el-tooltip v-show="VALIDATE_PERMISSION.Organization_Add" content="新增部门" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
         <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2 && chooseTab !== 1"></div>
@@ -616,6 +616,12 @@
     },
     data() {
       return {
+        /*权限管理*/
+        /*VALIDATE_PERMISSION:{
+          'Organization_Add':false,
+        },*/
+
+
         post_visible: false,
 
         //新部门管理
@@ -846,6 +852,7 @@
     mounted() {
       this.getDepartList();
       this.getPowerList();
+      this.getValidatePermission();
     },
     watch: {},
     computed: {
@@ -893,7 +900,11 @@
         this.check_info = tmp;
       },
       //部门列表打开部门详情
-      handleOpenDepartDetail(item) {
+      async handleOpenDepartDetail(item) {
+        if(! await this.validatePermission('Organization-Read')) {
+          this.$LjMessage('warning',{title:'警告',msg:'无权限'});
+          return;
+        };
         this.departForm.parent = item.name;
         this.departForm.parent_id = [];
         this.departForm.parent_id.push(item.id);
@@ -1449,8 +1460,8 @@
         this.$store.dispatch('route_animation');
       },
       // 部门管理列表
-      getDepartList() {
-        if(!this.validatePermission('Organization-Index')) {return};
+     async getDepartList() {
+        if(! await this.validatePermission('Organization-Index')) {return};
         this.$http.get('organization/organization',this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;
@@ -1543,7 +1554,14 @@
           this.departForm.leader_id = val;
           this.departForm.leader = name;
         }
-      }
+      },
+
+
+
+      /*获取权限*/
+      async getValidatePermission() {
+        this.VALIDATE_PERMISSION.Organization_Add = await this.validatePermission('Organization-Add');
+      },
     },
   }
 </script>

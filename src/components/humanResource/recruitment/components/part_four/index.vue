@@ -1,3 +1,4 @@
+<!--预约入职-->
 <template>
   <div id="part_four" class="scroll_bar">
     <div class="flex-center">
@@ -31,6 +32,16 @@
               </template>
             </el-table-column>
           </el-table>
+        </div>
+        <div class="page bottom_page">
+          <el-pagination
+            :total="count"
+            layout="total,prev,pager,next"
+            :current-page="params.page"
+            :page-size="params.limit"
+            @current-change="handleChangePage"
+            style="text-align: center"
+          ></el-pagination>
         </div>
       </div>
 
@@ -702,8 +713,9 @@
         entry_feedback: ['未反馈', '同意入职', '拒绝入职'],
         params: {
           page: 1,
-          limit: 12
+          limit: 6
         },
+        count:0,
 
         // 编辑入职结果
         edit_result_visible: false,
@@ -1118,12 +1130,18 @@
         this.$http.get('recruitment/interviewer_process/interviewedList',this.params).then(res => {
           if (res.code === '20000') {
             this.tableList = res.data.data;
+            this.count = res.data.count;
           } else {
             this.tableList = [];
           }
         }).catch(err => {
           console.log(err);
         })
+      },
+
+      handleChangePage(page) {
+        this.params.page = page;
+        this.getTableList();
       },
       // 当前点击
       tableClickRow(row) {
@@ -1182,6 +1200,12 @@
         height: 53px;
         margin-top: 10px;
         @include part_four_img('logo.png', 'theme1');
+      }
+      .bottom_page {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
   }

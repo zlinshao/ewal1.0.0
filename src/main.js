@@ -11,6 +11,16 @@ import myUtils from './utils/myUtils'
 import fun from './utils/fun.prototype'
 import router from './router'
 import Axios from './utils/httpService'
+
+/*Axios.post('signToken', {
+  "NickName": "xxxx",
+  "Password": "xxxx",
+  "RequestSign": "B858C5EEE7FD4D37C635FB55841ACA59"
+}).then(res => {
+  axios.defaults.headers.common['Authorization'] = res.headers.authorization
+})*/
+
+
 import echarts from 'echarts'
 import 'echarts/theme/macarons.js'
 import './assets/scss/rest.css'

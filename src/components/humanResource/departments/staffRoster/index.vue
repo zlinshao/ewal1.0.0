@@ -341,6 +341,9 @@
     components: {StaffFiles,LjDialog},
     data() {
       return {
+        url:globalConfig.humanResource_server,
+
+
         checkList: [],
         chooseRowIds: [],
         tableData: [],
@@ -500,7 +503,7 @@
         });
       },
         getLabourInfo(id) {
-            this.$http.get(`staff/e_contract/get_contract_info/${id}`).then(res => {
+            this.$http.get(`${this.url}staff/e_contract/get_contract_info/${id}`).then(res => {
                 console.log(res);
                 if (res.code === '20010') {
                     this.labour_form = res.data;
@@ -523,7 +526,7 @@
         handleConfirmContract() {
             this.labour_form.send = 1;
             this.labour_form.type = 1;
-            this.$http.post('staff/e_contract/view_contract',this.labour_form).then(res => {
+            this.$http.post(`${this.url}staff/e_contract/view_contract`,this.labour_form).then(res => {
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -547,7 +550,7 @@
             })
         },
         handleConfirEmemployProof(){
-            this.$http.post('staff/e_contract/view_contract',this.employ_proof_form).then(res => {
+            this.$http.post(`${this.url}staff/e_contract/view_contract`,this.employ_proof_form).then(res => {
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -569,7 +572,7 @@
             })
         },
         handleConfirIncomeProof(){
-            this.$http.post('staff/e_contract/view_contract',this.income_proof_form).then(res => {
+            this.$http.post(`${this.url}staff/e_contract/view_contract`,this.income_proof_form).then(res => {
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -626,7 +629,7 @@
             }
         },
         getIncomeInfo(id,scene){
-            this.$http.get('staff/e_contract/get_income_info/'+id+'?pdf_scene='+scene).then(res => {
+            this.$http.get(`${this.url}staff/e_contract/get_income_info/`+id+'?pdf_scene='+scene).then(res => {
                 console.log(res);
                 if (Number(res.code) %10 ===0){
                     switch (scene) {
@@ -646,7 +649,7 @@
             });
         },
         commitmentGenerate(params){
-            this.$http.post('staff/e_contract/view_contract',params).then(res => {
+            this.$http.post(`${this.url}staff/e_contract/view_contract`,params).then(res => {
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -665,7 +668,7 @@
             })
         },
         staffCertific(id){
-            this.$http.get('staff/e_contract/ca/'+id).then(res => {
+            this.$http.get(`${this.url}staff/e_contract/ca/`+id).then(res => {
                 if (Number(res.code) % 10 === 0) {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -725,7 +728,7 @@
                   return;
           }
           if (pdf){
-              window.open(globalConfig.server + `staff/e_contract/show/${row.staff[key.split('.')[1]]}`);
+              window.open(this.url + `staff/e_contract/show/${row.staff[key.split('.')[1]]}`);
           }else if(picture){
               window.open(msg)
           }else if (text){
@@ -737,7 +740,7 @@
 
       },
       exportStaffList() {
-        this.$http.get('staff/user/record',this.export_params,'arraybuffer').then(res => {
+        this.$http.get(this.url+'staff/user/record',this.export_params,'arraybuffer').then(res => {
           if (!res) {
             return;
           }
@@ -754,7 +757,7 @@
         });
       },
       getStaffList() {
-        this.$http.get('staff/user', this.params).then(res => {
+        this.$http.get(this.url+'staff/user', this.params).then(res => {
           if(res.code.endsWith('0')) {
             res.data.data.forEach((item,index)=> {
               if(!item.is_on_job&&!item.is_enable) {
@@ -770,8 +773,12 @@
         })
       },
       //获取当前员工详情
-      getStaffDetail(id) {
-        this.$http.get(`staff/user/${id}`).then(res => {
+      async getStaffDetail(id) {
+        if(! await this.validatePermission('User-Read')) {
+          this.$LjMessage('warning',{title:'警告',msg:'无权限'});
+          return;
+        };
+        this.$http.get(`${this.url}staff/user/${id}`).then(res => {
           if (res.code === '20020') {
             this.staff_detail_info = res.data;
             this.filesVisible = true;
@@ -787,9 +794,9 @@
       },
       // 当前点击
       tableClickRow(row) {
-        let ids = this.chooseRowIds;
-        ids.push(row.id);
-        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+        //let ids = this.chooseRowIds;
+        //ids.push(row.id);
+        //this.chooseRowIds = this.myUtils.arrayWeight(ids);
 
         this.getStaffDetail(row.id);
       },

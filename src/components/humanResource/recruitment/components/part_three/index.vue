@@ -309,7 +309,7 @@
       return {
         params: {
           page: 1,
-          limit: 7
+          limit: 6
         },
         tableList: [],
         tableCount: 0,
