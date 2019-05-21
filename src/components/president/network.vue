@@ -25,12 +25,12 @@
                 </div>
             </section>
             <div id="area">
-                <div style="width:80%;height:52%">
-                    <div style="width:95%;height:100%;margin:0 auto">
+                <div style="width:80%;height:38%">
+                    <div style="width:90%;height:95%;margin:10px auto;position:relative;top:10px;">
                         <p style="display:flex;justify-content:space-between"><span style="display:inline-block">基本信息</span>
                          <span style="width:20px;height:20px;display:inline-block;"><img src="../../assets/image/president/pic_11.png" alt=""></span></p>
                          <section style="width:100%;margin:0 auto;height:89%;display:flex">
-                             <ul style="width:46%;height:100%" class="info">
+                             <ul style="width:100%;height:100%" class="info">
                                  <li>
                                      <span>ID</span>
                                      <span>111</span>
@@ -79,12 +79,12 @@
                          </section>
                     </div>
                 </div>
-                <div style="width:80%;height:20%;margin-top:10px;">
+                <div style="width:80%;height:26%;margin-top:10px;">
                     <div style="width:95%;height:30%;margin:0 auto">
                         <p style="display:flex;justify-content:space-between"><span style="display:inline-block">配置信息</span>
                          <span style="width:20px;height:20px;display:inline-block;"><img src="../../assets/image/president/pic_22.png" alt=""></span></p>
                          <section style="width:100%;margin:0 auto;height:89%;display:flex">
-                             <ul style="width:46%;height:100%" class="info">
+                             <ul style="width:100%;height:100%" class="info">
                                  <li>
                                      <span>ID</span>
                                      <span>111</span>
@@ -117,12 +117,12 @@
                          </section>
                     </div>
                 </div>
-                <div style="width:100%;height:26%;margin-top:10px;">
+                <div style="width:80%;height:38%;margin-top:10px;">
                     <div style="width:95%;height:100%;margin:0 auto">
                         <p style="display:flex;justify-content:space-between"><span style="display:inline-block">付费信息</span>
                          <span style="width:20px;height:20px;display:inline-block;"><img src="../../assets/image/president/pic_33.png" alt=""></span></p>
                          <section style="width:100%;margin:0 auto;height:89%;display:flex">
-                             <ul style="width:46%;height:100%" class="info">
+                             <ul style="width:100%;height:100%" class="info">
                                  <li>
                                      <span>CPU</span>
                                      <span>111</span>
@@ -151,8 +151,6 @@
                                      <span>私有IP</span>
                                      <span>11</span>
                                  </li>
-                             </ul>
-                             <ul style="width:46%;height:100%;margin-left:15px" class="info">
                                  <li>
                                      <span>带宽计费方式</span>
                                      <span>11</span>
@@ -173,12 +171,12 @@
                          </section>
                     </div>
                 </div>
-                <div style="width:100%;height:20%;margin-top:10px;">
+                <div style="width:80%;height:26%;margin-top:10px;">
                     <div style="width:95%;height:100%;margin:0 auto">
                         <p style="display:flex;justify-content:space-between"><span style="display:inline-block">配置信息</span>
                          <span style="width:20px;height:20px;display:inline-block;"><img src="../../assets/image/president/pic_22.png" alt=""></span></p>
                          <section style="width:100%;margin:0 auto;height:89%;display:flex">
-                             <ul style="width:46%;height:100%" class="info">
+                             <ul style="width:100%;height:100%" class="info">
                                  <li>
                                      <span>ID</span>
                                      <span>111</span>
@@ -199,8 +197,6 @@
                                      <span>自动续费(续费周期)</span>
                                      <span>11</span>
                                  </li>
-                             </ul>
-                             <ul style="width:46%;height:100%;margin-left:15px" class="info">
                                  <li>
                                      <span>创建时间</span>
                                      <span>11</span>
@@ -252,9 +248,13 @@
                 </ul>
             </div>
             <div class="bottom">
-                <div style="width:100%;height:20%;display:flex">
+                <div style="width:100%;height:30%;display:flex">
                     <div id="chooseArea">
                         <img src="../../assets/image/president/yunxing.png" alt="">
+                        <section>
+                            <div></div>
+                            <div></div>
+                        </section>
                     </div>
                     <div id="entry">
                         <section>
@@ -524,9 +524,11 @@ export default {
 }
 .top {
     width: 100%;
-    height: 8%;
+    height: 14%;
     display: flex;
-    margin: 36px 0px 0px 0px;
+    position: relative;
+    left: -72px;
+    margin: 55px 0px 0px 0px;
 }
 .top>img{
     width: 30px;
@@ -583,18 +585,22 @@ export default {
     margin-left: 25px;
     img {
         // width: 178px;
-        margin-left: 20px;
+        margin-left: 15px;
         vertical-align:middle
     }
 }
 .bottom {
-    margin: 15px 0px 0px 70px;
+    margin: 15px 0px 0px 0px;
     width: 95%;
     height: 85%;
 }
 #chooseArea {
-    width: 60%;
+    width: 64%;
     height: 100%;
+    section {
+        width: 85%;
+        margin: 10px auto;
+    }
     position: relative;
     background: url('../../assets/image/border/k_16.png') no-repeat;
     background-size: 100% 100%; 
@@ -700,7 +706,7 @@ export default {
 #area {
     margin-left: 39px;
     width: 100%;
-    // height: 80%;
+    height: 100%;
 }
 #area>div {
     width: 90%;
@@ -711,8 +717,8 @@ export default {
     background-size: 100% 100%
 }
 #entry {
-    width: 36%;
-    margin-left: 18px;
+    width: 33%;
+    margin-left: 38px;
     height: 100%;
     color: #ffffff;
     >section:nth-child(1) {
@@ -720,7 +726,7 @@ export default {
         height: 48%;
         display: flex;
         >div:nth-child(1) {
-            width: 48%;
+            width: 40%;
             height: 100%;
             border-radius: 3px;
             background: linear-gradient(to right,#FD6F58,#FE5785);
@@ -737,7 +743,7 @@ export default {
             }
         }
         >div:nth-child(2) {
-            width: 48%;
+            width: 40%;
             height: 100%;
             margin-left: 15px;
             border-radius: 3px;
@@ -761,7 +767,7 @@ export default {
         margin-top: 7px;
         display: flex;
         >div:nth-child(1) {
-            width: 48%;
+            width: 40%;
             height: 100%;
             border-radius: 3px;
             background: linear-gradient(to right,#8FBD5B,#119A8B);
@@ -772,7 +778,7 @@ export default {
             }
         }
         >div:nth-child(2) {
-            width: 48%;
+            width: 40%;
             height: 100%;
             margin-left: 15px;
             border-radius: 3px;
@@ -856,21 +862,32 @@ export default {
 .info>li{
     display: flex;
     justify-content: space-between;
+    span {
+        display: inline-block;
+    }
     >span:nth-child(1) {
         color: #33C8FF;
+        width: 30%;
+        margin-right: 60px;
     }
+    >span:nth-child(2) {
+        width: 70%
+    }
+    
 }
 .inner {
-    margin-top: 10px;
+    margin-top: 35px;
 }
 .inner>div:nth-of-type(1){
-    width: 97%;
-    height: 5%;
+    width: 95%;
+    height: 8%;
     display: flex;
     justify-content: space-between;
     >div:nth-child(1) {
         width: 6%;
         height: 100%;
+        position: relative;
+        top: 25px;
     }
     >div:nth-child(2) {
         width: 68%;
@@ -885,9 +902,13 @@ export default {
         }
         >div:nth-child(1){
             width: 25%;
+            position: relative;
+            top: 9px;
         }
         >div:nth-child(2){
             width: 25%;
+            position: relative;
+            top: 9px;
         }
         >div:nth-child(3){
             width: 50%;
@@ -895,20 +916,20 @@ export default {
     }
 }
 .inner>div:nth-of-type(2){
-    width: 97%;
-    height: 31%;
-    margin-top: 12px;background: url('../../assets/image/border/k_17.png') no-repeat ;
+    width: 95%;
+    height: 46%;
+    margin-top: 8px;background: url('../../assets/image/border/k_17.png') no-repeat ;
     background-size: 100% 100%
 }
 .inner>div:nth-of-type(3){
-    width: 97%;
-    height: 31%;
+    width: 95%;
+    height: 47%;
     margin-top: 12px;background: url('../../assets/image/border/k_17.png') no-repeat ;
     background-size: 100% 100%
 }
 .inner>div:nth-of-type(4){
-    width: 97%;
-    height: 31%;
+    width: 95%;
+    height: 47%;
     margin-top: 12px;background: url('../../assets/image/border/k_17.png') no-repeat ;
     background-size: 100% 100%
 }
