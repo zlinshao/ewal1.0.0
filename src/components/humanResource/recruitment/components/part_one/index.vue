@@ -6,6 +6,7 @@
           :data="soldiersData"
           :height="this.mainListHeight(30) + 'px'"
           highlight-current-row
+          :row-class-name="tableChooseRow"
           @cell-click="tableClickRow"
           @row-dblclick="tableDblClick"
           header-row-class-name="tableHeader"
@@ -169,6 +170,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import LjDialog from '../../../../common/lj-dialog.vue';
   import postOrgan from '../../../../common/postOrgan.vue';
   import departOrgan from '../../../../common/departOrgan.vue';
@@ -405,7 +407,10 @@
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {
-        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+
+        // let ids = _.map(this.soldiersData,'id');
+         let ids = _(this.soldiersData).filter({status: 1}).map('id');
+        return ids.includes(row.id) ? 'tableChooseRow' : '';
       },
       //分页
       handleChangePage(page) {
