@@ -774,7 +774,7 @@
       },
       //获取当前员工详情
       async getStaffDetail(id) {
-        if(! await this.validatePermission('User-Read')) {
+        if(!this.VALIDATE_PERMISSION['User-Read']) {
           this.$LjMessage('warning',{title:'警告',msg:'无权限'});
           return;
         };

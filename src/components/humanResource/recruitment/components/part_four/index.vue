@@ -954,7 +954,6 @@
           return;
         }
 
-
         this.$http.put(`recruitment/interviewer_process/send_offer/${this.currentInfo.interviewee_id}`,this.offer_info_form).then(res => {
           if (res.code === "20000") {
             this.$LjNotify('success',{

@@ -11,6 +11,8 @@ import myUtils from './utils/myUtils'
 import fun from './utils/fun.prototype'
 import router from './router'
 import Axios from './utils/httpService'
+import _ from 'lodash';
+
 
 /*Axios.post('signToken', {
   "NickName": "xxxx",
@@ -57,6 +59,28 @@ Vue.prototype.$http = Axios
 Vue.prototype.$LjConfirm = Confirm.install
 
 Vue.prototype.$video = Video
+
+/*加载权限*/
+router.beforeResolve(async(to, from, next) => {
+  async function getPermission() {
+    let params = {
+      user_id:'self',
+      //system_id:22,
+      type:'all',
+    };
+    let result = await Axios.get(`${globalConfig.humanResource_server}organization/permission/all`,params);
+    if(result.code.endsWith('0')) {
+      let resultData = result.data;
+      _(result.data).forEach((o,index)=> {
+        Vue.prototype.VALIDATE_PERMISSION[o] = true;
+      });
+      //console.log(this.VALIDATE_PERMISSION);
+    }
+  }
+  await getPermission();
+  setInterval(getPermission,1000*30);
+  next();
+});
 
 /* eslint-disable no-new */
 new Vue({

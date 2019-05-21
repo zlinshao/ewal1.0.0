@@ -105,6 +105,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
 import TodoList from './components/todoList/index';
 import Approval from './components/approval/index';
 import AppIndexMore from './components/index/components/AppIndexMore';
