@@ -240,6 +240,7 @@
   position: relative;
 }
 #theme_name #part_four > div .container {
+  position: relative;
   width: 60%;
   height: 70%;
 }
