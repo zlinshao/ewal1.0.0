@@ -666,7 +666,7 @@ export const borrowReceiveSearch = {
   ]
 }
 
-//招兵买马
+//招聘管理
 export const recruitmentSearchList = {
   1: {
     status: 'recruitmentSearchList',
@@ -753,7 +753,7 @@ export const recruitmentSearchList = {
     status: 'recruitmentSearchList',
     keywords: 'search',
     data: [
-      {
+      /*{
         keyType: 'depart',
         title: '部门',
         placeholder: '请选择部门',
@@ -763,7 +763,7 @@ export const recruitmentSearchList = {
           num: '',
           arr: []
         }
-      },
+      },*/
       {
         keyType: 'position',
         title: '岗位',

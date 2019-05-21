@@ -459,7 +459,7 @@
           </p>
           <p>
             <span class="kong"></span> 月工资(转正薪资)：税前RMB
-            <el-input v-model="offer_info_form.real_salary" style="width: 100px"></el-input>
+            <el-input v-model.number="offer_info_form.real_salary" style="width: 100px"></el-input>
             元
           </p>
           <p>
@@ -479,11 +479,11 @@
           </p>
           <p>
             <span class="kong"></span> 请您和原单位终止雇佣关系后于
-            <el-input style="width: 80px" v-model="baoDao.year"></el-input>
+            <el-input-number :max="3000" :min="2000" style="width: 80px" v-model="baoDao.year"></el-input-number>
             年
-            <el-input v-model="baoDao.month" style="width: 80px"></el-input>
+            <el-input-number :max="12" :min="1" v-model="baoDao.month" style="width: 80px"></el-input-number>
             月
-            <el-input v-model="baoDao.day" style="width: 80px"></el-input>
+            <el-input-number :max="31" :min="1" v-model="baoDao.day" style="width: 80px"></el-input-number>
             日上午10:00前上传证件资料并携带身份证至我公司人事部报道，报道地址：南京建邺区艺术家工场19层
           </p>
           <p>
@@ -497,13 +497,13 @@
           </p>
           <p>
             <span class="kong"></span> (2)此通知在
-            <el-input v-model="huiFu.year" style="width: 80px"></el-input>
+            <el-input-number :max="3000" :min="2000" v-model="huiFu.year" style="width: 80px"></el-input-number>
             年
-            <el-input v-model="huiFu.month" style="width: 80px"></el-input>
+            <el-input-number :max="12" :min="1" v-model.number="huiFu.month" style="width: 80px"></el-input-number>
             月
-            <el-input v-model="huiFu.day" style="width: 80px"></el-input>
+            <el-input-number :max="31" :min="1" v-model="huiFu.day" style="width: 80px"></el-input-number>
             日
-            <el-input v-model="huiFu.time" style="width: 80px"></el-input>
+            <el-input-number  :max="23" :min="0" v-model="huiFu.time" style="width: 80px"></el-input-number>
             点前回复邮件有效，否则将视为自动放弃该职位。
           </p>
           <div class="footer flex">
@@ -755,7 +755,7 @@
           time: ''
         },
         offer_info_form: {
-          try_out_salary_percent: '税前工资80',
+          try_out_salary_percent: '80',
           real_salary: '',
           registion_date: '',
           effect_date: '',
@@ -926,12 +926,12 @@
           time: ''
         };
         this.offer_info_form = {
-          try_out_salary_percent: '',
-          real_salary: '',
+          try_out_salary_percent: '80',
+          real_salary: '',//税前工资
           registion_date: '',
           effect_date: '',
-          contract_length: '',
-          try_out_length: '',
+          contract_length: '3',
+          try_out_length: '3',
           leader_id: '',
         };
         this.write_offer_visible = false;
@@ -948,20 +948,26 @@
         this.modules = false;
       },
       handleOkSendOffer() {
+        /*验证offer_info_form*/
+
+
+
         this.$http.put(`recruitment/interviewer_process/send_offer/${this.currentInfo.interviewee_id}`,this.offer_info_form).then(res => {
           if (res.code === "20000") {
             this.$LjNotify('success',{
               title: '成功',
               message: res.msg
-            })
+            });
+            this.handleCancelSel();
+            this.handleCloseOffer();
+            this.getTableList();
           } else {
             this.$LjNotify('warning',{
               title: '失败',
               message: res.msg
             })
           }
-          this.handleCancelSel();
-          this.handleCloseOffer();
+
         }).catch(err => {
           console.log(err);
         })
@@ -994,6 +1000,7 @@
         })
       },
       handleOkInterviewee() {
+        debugger
         this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,this.interview_info_detail).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
@@ -1156,6 +1163,15 @@
     },
   }
 </script>
+
+
+<style lang="scss">
+  #part_four {
+    span.el-input-number__decrease,span.el-input-number__increase {
+      display: none;
+    }
+  }
+</style>
 
 <style lang="scss" scoped>
   @import "../../../../../assets/scss/humanResource/recruitment/components/part_four.scss";
