@@ -167,7 +167,6 @@ export default {
         user_id:'289',
       };
       let result = await this.$http.get(`${globalConfig.humanResource_server}organization/permission/check`,params);
-      debugger
       if(result.code.endsWith('0')) {
         return result.data;
       }

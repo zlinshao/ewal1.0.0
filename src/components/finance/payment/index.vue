@@ -560,6 +560,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import SearchHigh from '../../common/searchHigh.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue';
@@ -1224,7 +1225,7 @@
       },
 
 
-      //打开应收款项备注列表
+      //打开应付款项备注列表
       openRemarksList(row) {
         this.multi_field_form.assembly_id = row.id;
         this.tableSettingData.remarks.current_address = row.customer.address;
@@ -1234,7 +1235,7 @@
 
       //添加新的备注
       addNewRemark(row) {
-        let id = this.multi_field_form.assembly_id;//应收款项id
+        let id = this.multi_field_form.assembly_id;//应付款项id
         let params = {
           content: this.new_mark.content,
         };
@@ -1246,7 +1247,7 @@
         });
       },
 
-      //获取应收款项备注列表
+      //获取应付款项备注列表
       getRemarkList() {
         this.tableSettingData.remarks.tableData = [];
         let id = this.multi_field_form.assembly_id;//应收款项id
@@ -1271,12 +1272,6 @@
           }
         });
       },
-
-
-
-
-
-
 
       highSearch() {// 高级搜索
         this.showSearch = true;

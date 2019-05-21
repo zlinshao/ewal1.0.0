@@ -348,15 +348,18 @@
         table_column: [
           { key: 'staff.internship_number',val: '实习协议',isBtn: true},
           { key: 'name',val: '姓名'},
+          { key: 'org',val: '部门',isArray: true,showKey: 'name',width: "120px",position:'left'},
           { key: 'position',val: '岗位',isArray: true,showKey: 'name',width: "120px",position:'left'},
-          { key: 'gender',val: '性别',info:{0: '女',1: '男'}},
+          { key: 'phone',val: '联系方式',width: "150px"},
+          { key: 'on_job_status',val: '在职状态',width: "150px",info: {1: '在职', 2: '离职'}},
+          // { key: 'gender',val: '性别',info:{0: '女',1: '男'}},
           // { key: 'staff.origin_addr',val: '籍贯',width: "180px",position:'left'},
           // { key: 'staff.political_status',val: '政治面貌',info: {1: '群众',2: '团员',3: '党员',4: '其他'}},
           // { key: 'staff.birthday',val: '出生年月',width: "150px"},
           { key: 'staff.enroll',val: '入职时间',width: "150px"},
           // { key: 'staff.city',val: '城市'},
           // { key: 'staff.origin_addr',val: '家庭住址',width: "180px",position:'left'},
-          { key: 'phone',val: '联系方式',width: "150px"},
+
           // { key: 'staff.id_num',val: '身份证',width: "180px"},
           // { key: 'staff.emergency_call',val: '紧急联系人',width: "150px"},
           // { key: 'staff.household_register',val: '户口性质',info: {0: '农村',1: '城市'}},
@@ -366,7 +369,7 @@
           // { key: 'staff.school',val: '毕业院校'},
           // { key: 'staff.graduation_time',val: '毕业时间',width: "150px"},
           // { key: 'staff.major',val: '专业'},
-          { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
+          // { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
           { key: 'staff.dismiss_time',val: '离职时间',width: "150px"},
           // { key: 'staff.dismiss_reason.dismiss_type',val: '离职类型',info: {1: '主动离职',2: '旷工离职',3: '劝退',4: '开除',5: '其他'}},
           // { key: 'staff.dismiss_reason.dismiss_mess',val: '离职原因'},
@@ -752,8 +755,18 @@
       },
       getStaffList() {
         this.$http.get('staff/user', this.params).then(res => {
-          this.tableData = res.data.data;
-          this.counts = res.data.count;
+          if(res.code.endsWith('0')) {
+            res.data.data.forEach((item,index)=> {
+              if(!item.is_on_job&&!item.is_enable) {
+                item.on_job_status = 1;
+              }else {
+                item.on_job_status = 2;
+              }
+            });
+            this.tableData = res.data.data;
+            this.counts = res.data.count;
+          }
+
         })
       },
       //获取当前员工详情
