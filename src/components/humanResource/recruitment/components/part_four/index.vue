@@ -949,7 +949,10 @@
       },
       handleOkSendOffer() {
         /*验证offer_info_form*/
-
+        if(isNaN(this.offer_info_form.real_salary)||!this.offer_info_form.real_salary) {
+          this.$LjMessage('warning',{title:'警告',msg:'税前薪资请填入数字'});
+          return;
+        }
 
 
         this.$http.put(`recruitment/interviewer_process/send_offer/${this.currentInfo.interviewee_id}`,this.offer_info_form).then(res => {
