@@ -1,20 +1,45 @@
 @import "../../common.scss";
+
 #theme_name {
   #payment {
-      .batchEntry-icon{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        i{
-          font-style: normal;
-          display: block;
-          width: 20px;
-          height: 20px;
-          cursor: pointer;
-        }
-        i:first-child{
-          margin-right: 20px;
-        }
+    .batchEntry-icon {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      i {
+        font-style: normal;
+        display: block;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
       }
+
+      i:first-child {
+        margin-right: 20px;
+      }
+    }
+
+    .address {
+      font-size: 18px;
+    }
+
+    .record {
+      padding: 20px;
+    }
+
+    .add_mark {
+      width: 30px;
+      height: 30px;
+      @include radius(5px);
+      background-color: $colorE33;
+      font-size: 20px;
+      text-align: center;
+      color: white;
+      position: absolute;
+      right: 20px;
+      top: 0;
+      cursor: pointer;
+    }
   }
 }

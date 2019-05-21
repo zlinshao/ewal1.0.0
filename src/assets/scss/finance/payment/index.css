@@ -246,5 +246,26 @@
 #theme_name #payment .batchEntry-icon i:first-child {
   margin-right: 20px;
 }
+#theme_name #payment .address {
+  font-size: 18px;
+}
+#theme_name #payment .record {
+  padding: 20px;
+}
+#theme_name #payment .add_mark {
+  width: 30px;
+  height: 30px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #cf2e33;
+  font-size: 20px;
+  text-align: center;
+  color: white;
+  position: absolute;
+  right: 20px;
+  top: 0;
+  cursor: pointer;
+}
 
 /*# sourceMappingURL=index.css.map */
