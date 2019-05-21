@@ -164,7 +164,7 @@ export default {
       let params = {
         type,
         sign,
-        user_id:'3334',
+        user_id:'289',
       };
       let result = await this.$http.get(`${globalConfig.humanResource_server}organization/permission/check`,params);
       if(result.code.endsWith('0')) {

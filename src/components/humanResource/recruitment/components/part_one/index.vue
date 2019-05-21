@@ -130,7 +130,7 @@
             <el-button size="small" type="info" @click="handleCancelAddMb">取消</el-button>
           </div>
           <div class="dialog_footer" v-if="is_control === 'look'">
-            <el-button size="small" type="danger" @click="stop_need_visible = true" v-if="dblCurrentRow.status === 0">结束招聘该岗位</el-button>
+            <el-button si ze="small" type="danger" @click="stop_need_visible = true" v-if="dblCurrentRow.status === 0">结束招聘该岗位</el-button>
             <el-button size="small" type="info" v-if="dblCurrentRow.status === 1">已结束招聘该岗位</el-button>
           </div>
           <div class="dialog_footer" v-if="is_control === 'edit'">
@@ -304,7 +304,7 @@
           } else {
             this.$LjNotify('warning',{
               title: '失败',
-              message: res.msg
+              message: res.msg,
             });
           }
           this.handleCancelAddMb();
@@ -407,7 +407,6 @@
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {
-
         // let ids = _.map(this.soldiersData,'id');
          let ids = _(this.soldiersData).filter({status: 1}).map('id');
         return ids.includes(row.id) ? 'tableChooseRow' : '';
