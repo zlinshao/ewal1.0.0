@@ -1229,7 +1229,7 @@
           })
         } else {
           this.$http.delete(`organization/permission/${this.confirm_row.id}`).then(res => {
-            if (res.code === '20040') {
+            if (res.code.endsWith('0')) {
               this.$LjNotify('success', {
                 title: '成功',
                 message: res.msg
@@ -1253,7 +1253,7 @@
       getPowerBottomList(id) {
         this.bottom_params.system_id = id;
         this.$http.get('organization/permission', this.bottom_params).then(res => {
-          if (res.code === '20000') {
+          if (res.code.endsWith('0')) {
             this.power_list = res.data.data;
             this.power_count = res.data.count;
             this.getFieldList(res.data.data[0].id);
@@ -1280,7 +1280,7 @@
       getModuleList(id) {
         this.module_params.parent_id = id;
         this.$http.get('organization/system', this.module_params).then(res => {
-          if (res.code === '20000') {
+          if (res.code.endsWith('0')) {
             this.module_list = res.data.data;
             this.module_count = res.data.count;
             this.getPowerBottomList(res.data.data[0].id);

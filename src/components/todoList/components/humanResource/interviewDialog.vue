@@ -217,7 +217,6 @@
         this.$store.dispatch('change_humanResource_interview_evaluate_visible');
       },
       confirm() {
-        debugger
         let type = this.interview_form.radio;//radio为1 当前用户提交面试结果 radio为2 转移面试官
         let process_id = _.find(this.$todo_list_current_selection.variables,{name:'interview_process_id'})?.value;//面试流程id
         if(type==2) {//转移面试官
@@ -233,6 +232,8 @@
             if(res.code.endsWith('0')) {
               this.$store.dispatch('change_refresh_todo_list');
               this.interviewHandler();
+            }else {
+              this.$LjMessage('error',{title:'失败',msg:res.msg});
             }
           });
         }else if(type==1) {//本人提交面试结果

@@ -102,7 +102,7 @@ router.beforeResolve(async (to, from, next) => {
     "Delivery-Receipt-Read": true,
     "Delivery-Recept-Read": true,//查看离职交接单
     "Dimission-Certificate-Read": true,//查看离职证明
-    "Dimission-Certificate-Send": false,//发送离职证明
+    "Dimission-Certificate-Send": true,//发送离职证明
     "Dimission-Index": true,
     "Dimission-Message-Send": true,//发送离职短信
     "Dimission-News-Send": true,//发送离职群消息
@@ -113,9 +113,9 @@ router.beforeResolve(async (to, from, next) => {
     "Dorm-Manage-Lodging": true,
     "Dorm-Manage-Select": true,
     "Dorm-Manage-Update": true,
-    "Duty-Delete": false,//删除岗位
+    "Duty-Delete": true,//删除岗位
     "Duty-Save": true,//添加岗位
-    "Duty-Update": false,//编辑岗位
+    "Duty-Update": true,//编辑岗位
     "EAM-Category-Delete": true,
     "EAM-Category-Save": true,
     "EAM-Category-Update": true,
@@ -173,7 +173,7 @@ router.beforeResolve(async (to, from, next) => {
     "Office-Manage-Edit": true,
     "Office-Manage-Select": true,
     "Office-Manage-Update": true,
-    "Operation-Record-Index": false,//查看成长轨迹详情
+    "Operation-Record-Index": true,//查看成长轨迹详情
     "Organization-Add": true,//新增部门
     "Organization-Delete": true,//删除部门
     "Organization-Index": true,//查看部门列表
@@ -185,7 +185,7 @@ router.beforeResolve(async (to, from, next) => {
     "Permission-Read": true,
     "Permission-Save": true,//新增权限
     "Permission-Set": true,
-    "Permission-Update": false,//编辑权限
+    "Permission-Update": true,//编辑权限
     "Position-Delete": true,//删除职位
     "Position-Save": true,//新增职位
     "Position-Update": true,//编辑职位
