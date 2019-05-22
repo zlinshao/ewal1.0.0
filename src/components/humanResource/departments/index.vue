@@ -1264,6 +1264,7 @@
         })
       },
       handleClickModule(row) {
+        this.bottom_params.page = 1;
         this.current_module = row;
         this.field_list = [];
         this.power_list = [];

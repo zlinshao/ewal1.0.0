@@ -79,7 +79,7 @@
           <div class="dialog_header">
             <h3>{{is_control === 'add' ? '添加人员需求' : is_control === 'look' ? '查看人员信息' : '编辑人员需求'}}</h3>
             <div class="header_right" v-if="is_control === 'look'">
-              <div class="btn_edit" @click="is_control = 'edit'"></div>
+              <div v-if="dblCurrentRow.status!=1" class="btn_edit" @click="is_control = 'edit'"></div>
             </div>
           </div>
           <div class="dialog_main borderNone">
