@@ -417,12 +417,10 @@
               <div class="flex" style="margin-bottom: 20px">
                 <el-radio v-model="send_choose" :label="1">同时抄送密件给</el-radio>
                 <div class="items-center iconInput">
-                  <el-input v-model="send_man" size="mini" style="width: 100px" @focus="handleOpenStaff('first')"
-                            clearable></el-input>
-                  <p class="icons user"></p>
+                  <user-choose title="发送人" width="100" v-model="offer_info_form.leader_id"></user-choose>
                 </div>
               </div>
-              <el-radio v-model="send_choose" :label="2" @change="send_man = '';send_id = ''">直接发送</el-radio>
+              <el-radio v-model="send_choose" :label="2">直接发送</el-radio>
             </div>
           </div>
           <div class="dialog_footer">
@@ -700,11 +698,12 @@
   import StaffOrgan from '../../../../common/staffOrgan.vue';
   import DepartOrgan from '../../../../common/departOrgan.vue';
   import PostOrgan from '../../../../common/postOrgan.vue';
+  import UserChoose from "../../../../common/lightweightComponents/UserChoose";
 
   export default {
     name: "index",
     props:['searchData'],
-    components: {LjDialog, StaffOrgan,DepartOrgan,PostOrgan},
+    components: {UserChoose, LjDialog, StaffOrgan,DepartOrgan,PostOrgan},
     data() {
       return {
         //表格信息
@@ -738,7 +737,6 @@
         ok_send_offer: false,
         currentInfo: '',
         send_choose: 2,
-        send_man: '',
         modules: false,
 
         //录入offer信息
@@ -761,7 +759,7 @@
           effect_date: '',
           contract_length: '3',
           try_out_length: '3',
-          leader_id: '',
+          leader_id: [],
         },
 
         //员工资料
@@ -901,9 +899,8 @@
         this.depart_visible = false;
       },
       handleCancelSel() {
-        this.send_man = '';
         this.send_choose = 2;
-        this.offer_info_form.leader_id = '';
+        this.offer_info_form.leader_id = [];
         this.ok_send_offer = false;
       },
       handleOpenSel() {
@@ -932,14 +929,13 @@
           effect_date: '',
           contract_length: '3',
           try_out_length: '3',
-          leader_id: '',
+          leader_id: [],
         };
         this.write_offer_visible = false;
       },
       handleGetStaffInfo(id, name) {
         if (this.staff_type === 'first') {
           this.offer_info_form.leader_id = id;
-          this.send_man = name;
         } else {
           this.interview_info_detail.recommender = id;
           this.interview_info_detail.recommender_name = name;
@@ -953,6 +949,11 @@
           this.$LjMessage('warning',{title:'警告',msg:'税前薪资请填入数字'});
           return;
         }
+        if(this.send_choose==1&&this.offer_info_form.leader_id.length==0) {
+          this.$LjMessage('warning',{title:'警告',msg:'请选择发送人'});
+          return;
+        }
+
 
         this.$http.put(`recruitment/interviewer_process/send_offer/${this.currentInfo.interviewee_id}`,this.offer_info_form).then(res => {
           if (res.code === "20000") {
