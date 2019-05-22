@@ -202,7 +202,7 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="薪资">
-                        <el-input v-model="interview_info_detail.real_salary" placeholder="请输入"></el-input>
+                        <el-input v-model.trim="interview_info_detail.real_salary" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -457,7 +457,7 @@
           </p>
           <p>
             <span class="kong"></span> 月工资(转正薪资)：税前RMB
-            <el-input v-model.number="offer_info_form.real_salary" style="width: 100px"></el-input>
+            <el-input v-model.number.trim="offer_info_form.real_salary" style="width: 100px"></el-input>
             元
           </p>
           <p>
@@ -910,6 +910,7 @@
         this.offer_info_form.effect_date = `${huiFu.year}-${huiFu.month}-${huiFu.day} ${huiFu.time}`;
         this.ok_send_offer = true;
       },
+      //关掉offer
       handleCloseOffer() {
         this.baoDao = {
           year: '',
@@ -976,9 +977,31 @@
         })
       },
       handleSendOffer(row) {
+        this.formatTime();
         this.currentInfo = row;
         this.write_offer_visible = true;
       },
+
+      formatTime() {
+        let date = new Date();
+        date.setDate(date.getDate() + 7);
+        let year = this.myUtils.formatDate(date,'yyyy');
+        let month = this.myUtils.formatDate(date,'MM');
+        let day = this.myUtils.formatDate(date,'dd');
+        let time = this.myUtils.formatDate(date,'hh');
+        this.baoDao = {
+          year,
+          month,
+          day,
+        };
+        this.huiFu = {
+          year,
+          month,
+          day,
+          time
+        };
+      },
+
       getLabourInfo(id) {
         this.$http.get(`recruitment/interviewer_process/get_contract_info/${id}`).then(res => {
           console.log(res);
@@ -1003,7 +1026,6 @@
         })
       },
       handleOkInterviewee() {
-        debugger
         this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,this.interview_info_detail).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
