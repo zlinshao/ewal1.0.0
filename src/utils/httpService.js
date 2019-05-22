@@ -126,6 +126,7 @@ class Axios {
 
   // 组织架构部门
   static getOrganization(org) {
+    //debugger
     return new Promise((resolve, reject) => {
       this.get(url + 'organization/organization', {
         parent_id: org,

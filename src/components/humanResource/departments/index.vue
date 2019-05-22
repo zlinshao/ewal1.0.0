@@ -308,8 +308,9 @@
             </el-form-item>
             <el-form-item label="上级部门">
               <div class="items-center iconInput">
-                <el-input v-model="departForm.parent" readonly @focus="chooseDepart = true"></el-input>
-                <p class="icons organization"></p>
+                <org-choose v-model="departForm.parent_id"></org-choose>
+                <!--<el-input v-model="departForm.parent" readonly @focus="chooseDepart = true"></el-input>
+                <p class="icons organization"></p>-->
               </div>
             </el-form-item>
             <el-form-item label="部门负责人">
@@ -607,10 +608,13 @@
   import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
   import PostOrgan from '../../common/postOrgan.vue';
+  import OrgChoose from '../../common/lightweightComponents/OrgChoose';
+  import UserChoose from "../../common/lightweightComponents/UserChoose";
 
   export default {
     name: "index",
     components: {
+      UserChoose,
       SetForms,
       DepartManage,
       StaffRoster,
@@ -622,7 +626,8 @@
       StaffOrgan,
       Organization,
       DepartOrgan,
-      PostOrgan
+      PostOrgan,
+      OrgChoose,
     },
     data() {
       return {
@@ -825,24 +830,6 @@
           is_on_job: '',
           is_enable: '',
         },
-        options: [
-          {
-            value: '选项1',
-            label: '黄金糕'
-          }, {
-            value: '选项2',
-            label: '双皮奶'
-          }, {
-            value: '选项3',
-            label: '蚵仔煎'
-          }, {
-            value: '选项4',
-            label: '龙须面'
-          }, {
-            value: '选项5',
-            label: '北京烤鸭'
-          }
-        ],//部门人员
         value: '',
 
         //导出报表

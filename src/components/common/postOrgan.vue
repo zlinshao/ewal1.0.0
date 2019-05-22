@@ -119,7 +119,8 @@
       }
     },
     mounted() {
-      this.getList();
+      //debugger
+      //this.getList();
     },
     activated() {
     },
@@ -132,12 +133,20 @@
           this.configure.num = val ? (val.num ? val.num : '') : '';
         },
         deep: true
+      },
+      lj_visible: {
+        handler(val, oldVal) {
+          if(val) {
+            this.getList();
+          }
+        }
       }
     },
     computed: {},
     methods: {
       // 部门
       getList(org = 1) {
+        debugger
         this.departList = [];
         this.dutyList = [];
         this.positionList = [];
@@ -191,12 +200,14 @@
       },
       // 下级事件
       clickDepart(val) {
+        debugger
         this.getList(val.id).then(_ => {
           this.crumbs.push(val);
         });
       },
       // 面包屑
       crumbsList(val) {
+        debugger
         let crumbs = this.crumbs;
         crumbs.forEach((res, index) => {
           if (res.id === val) {
