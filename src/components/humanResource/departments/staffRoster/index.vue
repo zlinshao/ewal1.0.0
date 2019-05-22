@@ -1,3 +1,4 @@
+<!--员工名册-->
 <template>
   <div id="staffRoster">
     <div class="mainListTable"  :style="{'height': this.mainListHeight() + 'px'}">
@@ -757,7 +758,9 @@
         });
       },
       getStaffList() {
+        this.showLoading(true);
         this.$http.get(this.url+'staff/user', this.params).then(res => {
+          this.showLoading(false)
           if(res.code.endsWith('0')) {
             res.data.data.forEach((item,index)=> {
               if(!item.is_on_job&&!item.is_enable) {
@@ -774,7 +777,7 @@
       },
       //获取当前员工详情
       async getStaffDetail(id) {
-        if(!this.VALIDATE_PERMISSION['User-Read']) {
+        if(!this.VALIDATE_PERMISSION['Employee-File-Select']) {
           this.$LjMessage('warning',{title:'警告',msg:'无权限'});
           return;
         };

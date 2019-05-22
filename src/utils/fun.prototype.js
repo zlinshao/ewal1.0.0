@@ -175,8 +175,8 @@ export default {
     /*全局权限变量*/
     Vue.prototype.VALIDATE_PERMISSION = {};
 
-    Vue.prototype.$LjMessageNoPermission = function() {
-      this.$LjMessage('warning',{title:'警告',msg:'无权限'});
+    Vue.prototype.$LjMessageNoPermission = function(msg='无权限') {
+      this.$LjMessage('warning',{title:'警告',msg:msg});
     };
   }
 }

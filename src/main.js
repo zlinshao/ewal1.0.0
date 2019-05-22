@@ -100,12 +100,12 @@ router.beforeResolve(async (to, from, next) => {
     "Con-Num-Select": true,
     "Con-Num-Setting": true,
     "Delivery-Receipt-Read": true,
-    "Delivery-Recept-Read": true,
-    "Dimission-Certificate-Read": true,
-    "Dimission-Certificate-Send": true,
+    "Delivery-Recept-Read": true,//查看离职交接单
+    "Dimission-Certificate-Read": true,//查看离职证明
+    "Dimission-Certificate-Send": false,//发送离职证明
     "Dimission-Index": true,
-    "Dimission-Message-Send": true,
-    "Dimission-News-Send": true,
+    "Dimission-Message-Send": true,//发送离职短信
+    "Dimission-News-Send": true,//发送离职群消息
     "Dorm-Manage-Add": true,
     "Dorm-Manage-Delete": true,
     "Dorm-Manage-Edit": true,
@@ -120,8 +120,8 @@ router.beforeResolve(async (to, from, next) => {
     "EAM-Category-Save": true,
     "EAM-Category-Update": true,
     "Employee-File-Add": true,
-    "Employee-File-Select": true,
-    "Employee-File-Update": true,
+    "Employee-File-Select": true,//查看员工档案
+    "Employee-File-Update": true,//修改员工档案
     "Employee-Self-Update": true,
     "Exam-Bank-Delete": true,
     "Exam-Bank-Index": true,
@@ -173,19 +173,19 @@ router.beforeResolve(async (to, from, next) => {
     "Office-Manage-Edit": true,
     "Office-Manage-Select": true,
     "Office-Manage-Update": true,
-    "Operation-Record-Index": true,
+    "Operation-Record-Index": false,//查看成长轨迹详情
     "Organization-Add": true,//新增部门
     "Organization-Delete": true,//删除部门
     "Organization-Index": true,//查看部门列表
     "Organization-Read": true,//查看部门详情
-    "Organization-Structure": true,
+    "Organization-Structure": true,//查看组织结构图
     "Organization-Update": true,//编辑部门
     "Permission-Delete": true,
-    "Permission-Index": true,
+    "Permission-Index": true,//查看权限
     "Permission-Read": true,
-    "Permission-Save": true,
+    "Permission-Save": true,//新增权限
     "Permission-Set": true,
-    "Permission-Update": true,
+    "Permission-Update": false,//编辑权限
     "Position-Delete": true,//删除职位
     "Position-Save": true,//新增职位
     "Position-Update": true,//编辑职位
@@ -216,10 +216,10 @@ router.beforeResolve(async (to, from, next) => {
     "Storage-Read-Qrcode": true,
     "Storage-Save": true,
     "Storage-Update": true,
-    "System-Delete": true,
-    "System-Index": true,
-    "System-Save": true,
-    "System-Update": true,
+    "System-Delete": true,//权限 删除系统模块
+    "System-Index": true,//权限-查看系统模块列表
+    "System-Save": true,//权限-新增系统模块
+    "System-Update": true,////权限 编辑系统模块
     "Training-Delete": true,
     "Training-Index": true,
     "Training-Read": true,

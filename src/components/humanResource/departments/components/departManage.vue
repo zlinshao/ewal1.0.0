@@ -423,14 +423,14 @@
           <div v-if="module_list.length > 0">
             <div class="flex powerMain scroll_bar changeChoose" v-for="item in module_list" v-if="item.id === powerChildName">
               <div v-if="power_list">
-                <el-checkbox v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
+                <el-checkbox :disabled="!VALIDATE_PERMISSION['Permission-Update']" v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
               </div>
               <div v-else>暂无权限</div>
               <div v-for="(item,key) in power_list">
-                <el-checkbox-group v-model="checkList" @change="handleCheck">
+                <el-checkbox-group :disabled="!VALIDATE_PERMISSION['Permission-Update']" v-model="checkList" @change="handleCheck">
                   <el-row v-for="(tmp,idx) in power_list[key]" :key="idx">
                     <el-col :span="6">
-                      <el-button type="text" size="large" @click="handleSearchField(tmp)" icon="el-icon-view" style="color: #CF2E33;font-size: 18px"></el-button>
+                      <el-button type="text" size="large" @click="handleSearchField(tmp)" style="color: #CF2E33;font-size: 18px"></el-button>
                     </el-col>
                     <el-col :span="18">
                       <el-checkbox :label="tmp.id" :key="tmp.id" style="margin-top: 13px">
@@ -503,7 +503,7 @@
                   <el-table-column label="部门" prop="duty.org.name" align="center"></el-table-column>
                   <el-table-column label="权限" align="center">
                     <template slot-scope="scope">
-                      <el-button type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
+                      <el-button v-show="VALIDATE_PERMISSION['Permission-Index']" type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
                     </template>
                   </el-table-column>
                   <el-table-column label="操作" align="center" width="180">

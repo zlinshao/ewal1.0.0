@@ -144,7 +144,7 @@
           <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">系统</p>
           <div style="padding: 20px;background-color: white">
             <div style="text-align: right">
-              <div class="btn_square_add" @click="add_system_visible = true"><b>+</b></div>
+              <div class="btn_square_add" v-show="VALIDATE_PERMISSION['System-Save']" @click="add_system_visible = true"><b>+</b></div>
             </div>
             <el-table
               :data="system_list"
@@ -164,9 +164,9 @@
                       <!--<el-button type="success" size="mini" plain @click="handleOpenAddModule(scope.row)">新增模块</el-button>-->
                       <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('system',scope.row)">编辑</el-button>-->
                       <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
-                      <span @click="handleOpenAddModule(scope.row)">新增模块</span>
-                      <span @click="handleOpenEdit('system',scope.row)">编辑</span>
-                      <span @click="handleDelControl('system',scope.row)">删除</span>
+                      <span v-if="VALIDATE_PERMISSION['Permission-Save']" @click="handleOpenAddModule(scope.row)">新增模块</span>
+                      <span v-if="VALIDATE_PERMISSION['System-Update']" @click="handleOpenEdit('system',scope.row)">编辑</span>
+                      <span v-if="VALIDATE_PERMISSION['System-Delete']" @click="handleDelControl('system',scope.row)">删除</span>
                     </div>
                     <span class="table_control writingMode">···</span>
                   </el-tooltip>
@@ -203,9 +203,9 @@
                     <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
                     <el-tooltip placement="left" :visible-arrow="false">
                       <div class="flex control-btn" slot="content">
-                        <span @click="handleOpenAddPower(scope.row)">新增权限</span>
-                        <span @click="handleOpenEdit('module',scope.row)">编辑</span>
-                        <span @click="handleDelControl('system',scope.row)">删除</span>
+                        <span v-if="VALIDATE_PERMISSION['Permission-Save']" @click="handleOpenAddPower(scope.row)">新增权限</span>
+                        <span v-if="VALIDATE_PERMISSION['System-Update']" @click="handleOpenEdit('module',scope.row)">编辑</span>
+                        <span v-if="VALIDATE_PERMISSION['System-Delete']" @click="handleDelControl('system',scope.row)">删除</span>
                       </div>
                       <span class="table_control writingMode">···</span>
                     </el-tooltip>
@@ -238,9 +238,9 @@
                     <!--<el-button type="danger" size="mini" plain @click="handleDelControl('power',scope.row)">删除</el-button>-->
                     <el-tooltip placement="left" :visible-arrow="false">
                       <div class="flex control-btn" slot="content">
-                        <span @click="handleOpenAddField(scope.row)">添加字段权限</span>
-                        <span @click="handleOpenEdit('power',scope.row)">编辑</span>
-                        <span @click="handleDelControl('power',scope.row)">删除</span>
+                        <span v-if="VALIDATE_PERMISSION['Permission-Save']" @click="handleOpenAddField(scope.row)">添加字段权限</span>
+                        <span v-if="VALIDATE_PERMISSION['System-Update']" @click="handleOpenEdit('power',scope.row)">编辑</span>
+                        <span v-if="VALIDATE_PERMISSION['System-Delete']" @click="handleDelControl('power',scope.row)">删除</span>
                       </div>
                       <span class="table_control writingMode">···</span>
                     </el-tooltip>
@@ -847,7 +847,7 @@
     },
     mounted() {
       this.getDepartList();
-      this.getPowerList();
+      //this.getPowerList();
     },
     watch: {},
     computed: {
@@ -1290,7 +1290,7 @@
           }
         })
       },
-      //权限管理
+      //权限管理->加载系统模块
       getPowerList() {
         this.power_params.parent_id = '';
         this.module_list = [];
@@ -1299,6 +1299,10 @@
         this.power_count = 0;
         this.field_list = [];
         this.field_count = 0;
+        if(!this.VALIDATE_PERMISSION['System-Index']) {
+          this.$LjMessageNoPermission('无权限查看系统列表');
+          return;
+        }
         this.$http.get('organization/system', this.power_params).then(res => {
           if (res.code === '20000') {
             this.system_list = res.data.data;

@@ -157,7 +157,7 @@
       handleConfirmSend() {
         const row = this.confirm_row;
         const where = this.confirm_type;
-        var type = where === 'sms' ? ['dimission_sms'] : ['dimission'];
+        let type = where === 'sms' ? ['dimission_sms'] : ['dimission'];
         if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
           return false;
         } else {
@@ -180,10 +180,20 @@
           })
         }
       },
+      /*查看或发送离职证明*/
       handleLeaveProof(row) {
+        //查看离职证明
         if (row.staff && row.staff.leave_proof_number) {
+          if(!this.VALIDATE_PERMISSION['Dimission-Certificate-Read']) {
+            this.$LjMessageNoPermission();
+            return;
+          }
           window.open(globalConfig.server + `staff/e_contract/show/${row.staff.leave_proof_number}`);
-        } else {
+        } else {//发送离职证明
+          if(!this.VALIDATE_PERMISSION['Dimission-Certificate-Send']) {
+            this.$LjMessageNoPermission();
+            return;
+          }
           this.$http.get(`staff/user/${row.id}/sendinfo`,{
             type: ['leave_proof_send']
           }).then(res => {
@@ -202,8 +212,19 @@
           })
         }
       },
-      //离职短信
+      //打开离职短信或离职群消息
       handleControlMsg(row,where) {
+        if(where =='sms') {//离职短信权限验证
+          if(!this.VALIDATE_PERMISSION['Dimission-Message-Send']) {
+            this.$LjMessageNoPermission();
+            return;
+          }
+        }else if(where =='announcement') {//离职群消息权限验证
+          if(!this.VALIDATE_PERMISSION['Dimission-News-Send']) {
+            this.$LjMessageNoPermission();
+            return;
+          }
+        }
         if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
           this.$LjMessage('success',{
             title: '提示',
@@ -220,11 +241,19 @@
         this.look_info = [];
         this.look_info_visible = false;
       },
+      /*查看离职交接单*/
       handleLookResignation(row) {
+        if(!this.VALIDATE_PERMISSION['Delivery-Recept-Read']) {
+          this.$LjMessageNoPermission();
+          return;
+        }
         console.log(row);
       },
+      /*获取离职列表*/
       getStaffList() {
+        this.showLoading(true);
         this.$http.get('staff/user', this.params).then(res => {
+          this.showLoading(false);
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })
