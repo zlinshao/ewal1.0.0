@@ -18,7 +18,7 @@
         <div class="buttons button1" style="font-weight: bold" @click="showSetForm" v-if="chooseTab === 3">设置报表</div>
         <div class="buttons button2" style="font-weight: bold" v-if="chooseTab === 3" @click="handleExportInfo">导出报表
         </div>
-        <el-tooltip v-show="VALIDATE_PERMISSION.Organization_Add" content="新增部门" placement="bottom"
+        <el-tooltip v-show="VALIDATE_PERMISSION['Organization-Add']" content="新增部门" placement="bottom"
                     :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
@@ -40,8 +40,8 @@
           </span>
           <a class="control flex-center">
             <a class="pointer">...</a>
-            <b @click.stop="handleOpenEditDepart(item)">编辑</b>
-            <b @click.stop="handleDelDepart(item)">删除</b>
+            <b v-show="VALIDATE_PERMISSION['Organization-Update']" @click.stop="handleOpenEditDepart(item)">编辑</b>
+            <b v-show="VALIDATE_PERMISSION['Organization-Delete']" @click.stop="handleDelDepart(item)">删除</b>
           </a>
         </p>
       </div>
@@ -102,8 +102,8 @@
                       {{ depart.name }}
                     </div>
                     <div class="depart_ctl flex-center" v-show="depart.id === is_active_depart">
-                      <span @click="handleOpenEditDepart(depart,'child')">编辑</span>
-                      <span @click="handleDelDepart(depart,'child')">删除</span>
+                      <span v-show="VALIDATE_PERMISSION['Organization-Update']" @click="handleOpenEditDepart(depart,'child')">编辑</span>
+                      <span v-show="VALIDATE_PERMISSION['Organization-Delete']" @click="handleDelDepart(depart,'child')">删除</span>
                     </div>
                   </div>
                   <!--不合理-->
@@ -1471,13 +1471,10 @@
       },
       // 部门管理列表
       async getDepartList() {
-        debugger
-        let s = this.VALIDATE_PERMISSION['Organization-Index'];
-        debugger
         if (!this.VALIDATE_PERMISSION['Organization-Index']) {
+          this.$LjMessageNoPermission();
           return;
         }
-        ;
         this.$http.get('organization/organization', this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;

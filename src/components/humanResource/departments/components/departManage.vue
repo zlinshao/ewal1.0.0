@@ -4,7 +4,9 @@
     <div class="dialog_main space-column departPosition">
       <div class="items-bet mainTop">
         <div></div>
-        <el-button type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>
+<!--        <el-button type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>-->
+        <el-button v-show="VALIDATE_PERMISSION['User-Add']" v-if="tabsManage=='staff'" type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">新增员工</el-button>
+        <el-button v-show="VALIDATE_PERMISSION['Position-Save']" v-else type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">新建职位</el-button>
       </div>
       <div class="scroll_bar" v-if="tabsManage === 'staff'" @click="checkOverflow()">
         <div id="scroll-body" class="staffManage" v-if="staffList.length > 0">
@@ -20,7 +22,7 @@
               </div>
             </div>
             <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-              <span v-for="label in operateList" @click="operateModule(label.type,item,'user')">
+              <span v-show="label.show" v-for="label in operateUserList" @click="operateModule(label.type,item,'user')">
                 {{ label.label = label.type === 'disabled' ? item.is_enable ? '启用' : '禁用' : label.label }}
               </span>
               <b v-if="!operatePos"></b>
@@ -37,8 +39,8 @@
               <span class="writingMode">{{ item.name }}</span>
             </p>
             <div class="ctl" v-show="is_active_ctl === item.id">
-              <span @click="handleEditPost(item)">编辑</span>
-              <span @click="handleDelPost(item)">删除</span>
+              <span v-show="VALIDATE_PERMISSION['Position-Update']" @click="handleEditPost(item)">编辑</span>
+              <span v-show="VALIDATE_PERMISSION['Position-Delete']" @click="handleDelPost(item)">删除</span>
             </div>
           </div>
         </div>
@@ -902,15 +904,38 @@
           {
             type: 'power',
             label: '权限',
+            show:true,
           }, {
             type: 'disabled',
             label: '禁用',
+            show:true,
           }, {
             type: 'revise',
             label: '修改',
+            show:this.VALIDATE_PERMISSION['Organization-Index'],
           }, {
             type: 'leave',
             label: '离职',
+            show:true,
+          }
+        ],//人员编辑项
+        operateUserList: [
+          {
+            type: 'power',
+            label: '权限',
+            show:true,
+          }, {
+            type: 'disabled',
+            label: '禁用',
+            show:this.VALIDATE_PERMISSION['User-Enable'],
+          }, {
+            type: 'revise',
+            label: '修改',
+            show:this.VALIDATE_PERMISSION['Organization-Index'],
+          }, {
+            type: 'leave',
+            label: '离职',
+            show:true,
           }
         ],//人员编辑项
         // 权限管理
