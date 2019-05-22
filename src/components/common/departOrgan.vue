@@ -90,7 +90,7 @@
         deep: true,
         immediate: true
       },
-      lj_visible: {
+      depart_visible: {
         handler(val, oldVal) {
           if(val) {
             this.getList();

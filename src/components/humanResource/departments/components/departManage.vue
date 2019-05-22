@@ -478,7 +478,7 @@
             <div class="items-bet">
               <span class="hover">岗位</span>
             </div>
-            <h2 class="add" @click="operateModule('post')">
+            <h2 v-show="VALIDATE_PERMISSION['Duty-Save']" class="add" @click="operateModule('post')">
               <b>+</b>
             </h2>
           </div>
@@ -506,10 +506,12 @@
                       <el-button type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
                     </template>
                   </el-table-column>
-                  <el-table-column label="操作" align="center">
+                  <el-table-column label="操作" align="center" width="180">
                     <template slot-scope="scope">
-                      <el-button id="active-success" type="danger" size="mini" @click="handleEditPosition(scope.row)">编辑</el-button>
-                      <el-button id="active-danger" type="danger" size="mini" @click="handleDelPosition(scope.row)">删除</el-button>
+                      <div class="flex-center">
+                        <el-button v-show="VALIDATE_PERMISSION['Duty-Update']"  id="active-success" type="danger" size="mini" @click="handleEditPosition(scope.row)">编辑</el-button>
+                        <el-button v-show="VALIDATE_PERMISSION['Duty-Delete']" id="active-danger" type="danger" size="mini" @click="handleDelPosition(scope.row)">删除</el-button>
+                      </div>
                     </template>
                   </el-table-column>
                 </el-table>

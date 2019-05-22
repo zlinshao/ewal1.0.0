@@ -113,9 +113,9 @@ router.beforeResolve(async (to, from, next) => {
     "Dorm-Manage-Lodging": true,
     "Dorm-Manage-Select": true,
     "Dorm-Manage-Update": true,
-    "Duty-Delete": true,//删除岗位
+    "Duty-Delete": false,//删除岗位
     "Duty-Save": true,//添加岗位
-    "Duty-Update": true,//编辑岗位
+    "Duty-Update": false,//编辑岗位
     "EAM-Category-Delete": true,
     "EAM-Category-Save": true,
     "EAM-Category-Update": true,
