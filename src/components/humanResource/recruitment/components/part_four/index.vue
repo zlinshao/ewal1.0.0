@@ -737,7 +737,7 @@
         //确定发送offer
         ok_send_offer: false,
         currentInfo: '',
-        send_choose: [],
+        send_choose: 2,
         send_man: '',
         modules: false,
 
@@ -902,7 +902,7 @@
       },
       handleCancelSel() {
         this.send_man = '';
-        this.send_choose = '';
+        this.send_choose = 2;
         this.offer_info_form.leader_id = '';
         this.ok_send_offer = false;
       },
