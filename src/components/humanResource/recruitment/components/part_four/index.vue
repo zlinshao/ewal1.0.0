@@ -27,8 +27,10 @@
             </el-table-column>
             <el-table-column label="入职通知" align="center">
               <template slot-scope="scope">
-                <el-button  v-if="!scope.row.offer_status" size="mini" type="primary" plain @click="handleSendOffer(scope.row)">发送offer</el-button>
-                <span v-else>offer已发送</span>
+                <el-button  size="mini" type="primary" plain @click="handleSendOffer(scope.row)">
+                  <span v-if="!scope.row.offer_status">发送offer</span>
+                  <span v-else>重新发送</span>
+                </el-button>
               </template>
             </el-table-column>
           </el-table>

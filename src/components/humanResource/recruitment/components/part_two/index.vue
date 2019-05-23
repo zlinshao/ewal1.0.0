@@ -6,6 +6,7 @@
         <el-table
           :data="tableList"
           :height="this.mainListHeight(30) + 'px'"
+          :row-class-name="tableChooseRow"
           highlight-current-row
           @cell-click="tableClickRow"
           header-row-class-name="tableHeader"
@@ -27,12 +28,14 @@
           </el-table-column>
           <el-table-column label="取消面试" prop="" align="center">
             <template slot-scope="scope">
-              <el-button size="mini" type="danger" plain @click="handleOpenCancel(scope.row)">取消面试</el-button>
+              <span v-if="scope.row.interviewee_status===4">面试已取消</span>
+              <el-button v-else size="mini" type="danger" plain @click="handleOpenCancel(scope.row)">取消面试</el-button>
             </template>
           </el-table-column>
           <el-table-column label="修改" prop="" align="center">
             <template slot-scope="scope">
-              <span class="btn_edit" @click="handleOpenEdit(scope.row)"></span>
+              <span v-if="scope.row.interviewee_status===4" class="btn_edit"></span>
+              <span v-else class="btn_edit" @click="handleOpenEdit(scope.row)"></span>
             </template>
           </el-table-column>
         </el-table>
@@ -583,7 +586,9 @@
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {
-        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+        // return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+          let ids = _(this.tableList).filter({interviewee_status: 4}).map('id');
+          return ids.includes(row.id) ? 'tableChooseRow' : '';
       },
     },
   }
