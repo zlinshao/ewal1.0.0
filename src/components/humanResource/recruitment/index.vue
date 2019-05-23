@@ -173,7 +173,7 @@
       <PositionOrgan :module="position_visible" @close="handleGetPosition"></PositionOrgan>
 
       <!--面板数据-->
-      <div class="panel-info flex-center">
+      <!--<div class="panel-info flex-center">
         <nav class="panel-btn"><i class="el-icon-arrow-left"></i></nav>
         <ul class="date_change">
           <li v-for="tmp in date_change_list" :key="tmp.id" @click="handleChangeDate(tmp.id)" :class="{'mark_li': isActive === tmp.id}">{{ tmp.val }}</li>
@@ -191,7 +191,7 @@
           <div id="chart4"></div>
         </div>
         <div></div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
