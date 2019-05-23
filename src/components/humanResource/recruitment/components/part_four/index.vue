@@ -479,7 +479,7 @@
           </p>
           <p>
             <span class="kong"></span> 请您和原单位终止雇佣关系后于
-            <el-input-number :max="3000" :min="2000" style="width: 80px" v-model="baoDao.year"></el-input-number>
+            <el-input-number :max="3000" :min="2000" style="width: 80px" v-model.number="baoDao.year"></el-input-number>
             年
             <el-input-number :max="12" :min="1" v-model="baoDao.month" style="width: 80px"></el-input-number>
             月
@@ -847,6 +847,45 @@
           this.getTableList();
         },
         deep: true
+      },
+      baoDao: {
+        handler(val) {
+          this.$nextTick(()=> {
+            if (!val.year) {
+              this.baoDao.year = 2019;
+            }
+            if (!val.month) {
+              this.baoDao.month = 1;
+            }
+            if (!val.day) {
+              this.baoDao.day = 1;
+            }
+          });
+
+        },
+        deep: true,
+        immediate: true
+      },
+      huiFu: {
+        handler(val) {
+          this.$nextTick(()=> {
+            if (!val.year) {
+              this.huiFu.year = 2019;
+            }
+            if (!val.month) {
+              this.huiFu.month = 1;
+            }
+            if (!val.day) {
+              this.huiFu.day = 1;
+            }
+            if (!val.time) {
+              this.huiFu.time = 1;
+            }
+          });
+
+        },
+        deep: true,
+        immediate: true
       },
     },
     computed: {},
