@@ -138,15 +138,22 @@
           <div class="dialog_main borderNone">
             <el-form :model="add_msg_form" label-width="80px" size="small">
               <el-form-item label="部门">
-                <el-input v-model="add_msg_form.org_name" clearable placeholder="请选择" @focus="depart_visible = true"></el-input>
+                <org-choose title="请选择" width="310" num="1" v-model="add_msg_form.org_id"></org-choose>
+                <!--<el-input v-model="add_msg_form.org_name" clearable placeholder="请选择" @focus="depart_visible = true"></el-input>-->
               </el-form-item>
               <el-form-item label="岗位">
-                <el-input v-model="add_msg_form.position" clearable placeholder="请选择" @focus="position_visible = true"></el-input>
+                <post-choose title="请选择" width="310" num="1" v-model="add_msg_form.position_id"></post-choose>
+                <!--<el-input v-model="add_msg_form.position" clearable placeholder="请选择" @focus="position_visible = true"></el-input>-->
               </el-form-item>
               <el-form-item label="面试官">
-                <el-input v-model="add_msg_form.offer1" @focus="staff_visible = true;is_staff = 'first'"  readonly placeholder="请选择" style="margin-bottom: 20px"></el-input>
+                <user-choose title="请选择" width="310" num="1" v-model="add_msg_form.interviewer_first_id"></user-choose>
+                <user-choose title="请选择" style="margin-top: 10px" width="310" num="1" v-model="add_msg_form.interviewer_second_id"></user-choose>
+                <user-choose title="请选择" style="margin-top: 10px" width="310" num="1" v-model="add_msg_form.interviewer_third_id"></user-choose>
+
+
+<!--                <el-input v-model="add_msg_form.offer1" @focus="staff_visible = true;is_staff = 'first'"  readonly placeholder="请选择" style="margin-bottom: 20px"></el-input>
                 <el-input v-model="add_msg_form.offer2" @focus="staff_visible = true;is_staff = 'second'" readonly placeholder="请选择" style="margin-bottom: 20px"></el-input>
-                <el-input v-model="add_msg_form.offer3" @focus="staff_visible = true;is_staff = 'third'" readonly placeholder="请选择"></el-input>
+                <el-input v-model="add_msg_form.offer3" @focus="staff_visible = true;is_staff = 'third'" readonly placeholder="请选择"></el-input>-->
               </el-form-item>
               <el-form-item label="添加试卷">
                 <el-select v-model="add_msg_form.paper_id" clearable>
@@ -221,14 +228,14 @@
         </div>
       </lj-dialog>
 
-      <!--岗位-->
+<!--      &lt;!&ndash;岗位&ndash;&gt;
       <postOrgan :module="position_visible" :organ-data="position_data" @close="handleSelPosition"></postOrgan>
 
-      <!--部门-->
+      &lt;!&ndash;部门&ndash;&gt;
       <departOrgan :module="depart_visible" :organ-data="depart_data" @close="handleGetDepart"></departOrgan>
 
-      <!--选人-->
-      <staffOrgan :module="staff_visible" :organ-data="staff_data" @close="handleGetStaff"></staffOrgan>
+      &lt;!&ndash;选人&ndash;&gt;
+      <staffOrgan :module="staff_visible" :organ-data="staff_data" @close="handleGetStaff"></staffOrgan>-->
     </div>
   </div>
 </template>
@@ -239,14 +246,17 @@
   import postOrgan from '../../../../common/postOrgan.vue';
   import departOrgan from '../../../../common/departOrgan.vue';
   import staffOrgan from '../../../../common/staffOrgan.vue';
+  import UserChoose from '../../../../common/lightweightComponents/UserChoose';
+  import OrgChoose from '../../../../common/lightweightComponents/OrgChoose';
+  import PostChoose from '../../../../common/lightweightComponents/PostChoose';
 
   export default {
     name: "index",
-    components: { LjDialog ,Upload,postOrgan,departOrgan,staffOrgan},
+    components: { LjDialog ,Upload,postOrgan,departOrgan,staffOrgan,UserChoose, OrgChoose, PostChoose},
     props: [ 'addInterviewerVisible' ,'addOfferVisible','searchData'],
     data() {
       return {
-        //岗位选择
+        /*//岗位选择
         position_visible: false,
         position_data: {},
 
@@ -256,7 +266,7 @@
 
         //选人
         staff_visible: false,
-        staff_data: {},
+        staff_data: {},*/
 
         tableList: [],
         tableCount:0 ,
@@ -435,7 +445,7 @@
           console.log(err);
         })
       },
-      handleGetStaff(id,name) {
+     /* handleGetStaff(id,name) {
         if (id !== 'close') {
           if (this.is_staff === 'first') {
             this.add_msg_form.interviewer_first_id = id;
@@ -451,7 +461,7 @@
           }
         }
         this.staff_visible = false;
-      },
+      },*/
       handleGetDepart(id,name) {
         if (id !== 'close') {
           this.add_msg_form.org_name = name;
