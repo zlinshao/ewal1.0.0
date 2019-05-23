@@ -2,7 +2,7 @@
   <div id="postChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
       <el-input @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
-      <p class="icons organization"></p>
+      <p v-if="showIcon" class="icons organization"></p>
     </div>
 
     <PostOrgan :initial="value" :module="departModule" :organ-data="organData" @close="hiddenOrgan"></PostOrgan>
@@ -15,7 +15,18 @@
 
   export default {
     name: "postChoose",
-    props: ['value', 'width', 'num', 'title'],
+    //props: ['value', 'width', 'num', 'title','showIcon'],
+    props:{
+      value:{},
+      width:{},
+      num:{},
+      title:{},
+      showIcon: {
+        default() {
+          return true;
+        }
+      }
+    },
     components: {
       PostOrgan
     },
@@ -38,7 +49,12 @@
               duty_id:val
             };
             this.$http.get(`${this.url}organization/position`,params).then(res=> {
-              this.inputContent = _.map(res.data.data,'name').join(',');
+              if(res.code.endsWith('0')) {
+                this.inputContent = _.map(res.data.data,'name').join(',');
+              }else {
+                console.log(res);
+              }
+
             });
           }
         },

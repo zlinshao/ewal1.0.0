@@ -87,11 +87,11 @@
             <el-form ref="newUserFormRef" :disabled="is_control === 'look'" :model="control_mb_form" :rules="control_mb_form_rules"
                      label-width="80px" style="width: 90%;margin: 0 auto" size="small">
               <el-form-item label="部门" prop="org_id" required>
-                <org-choose width="360" title="请选择" v-model="control_mb_form.org_id"></org-choose>
+                <org-choose width="360" title="请选择" :show-icon="false" v-model="control_mb_form.org_id"></org-choose>
                 <!--<el-input v-model="control_mb_form.depart" placeholder="请选择" readonly @focus="depart_visible = true"></el-input>-->
               </el-form-item>
-              <el-form-item label="岗位" prop="position" required>
-                <post-choose width="360" title="请选择" v-model="control_mb_form.position_id"></post-choose>
+              <el-form-item label="岗位" prop="position_id" required>
+                <post-choose width="360" title="请选择" :show-icon="false" v-model="control_mb_form.position_id"></post-choose>
                 <!--<el-input v-model="control_mb_form.position" placeholder="请选择" readonly @focus="position_visible = true"></el-input>-->
               </el-form-item>
               <el-form-item label="所需人数" prop="number">
@@ -103,7 +103,7 @@
               <el-form-item label="年龄范围" prop="year">
                 <el-input-number :controls="false" :min="16" :max="100" v-model.number="control_mb_form.year.min"
                                  style="width: 49%" placeholder="请输入年龄最小值"></el-input-number>
-                <el-input-number :controls="false" :min="16" :max="100" v-model.number="control_mb_form.year.max"
+                <el-input-number :controls="false" :min="18" :max="100" v-model.number="control_mb_form.year.max"
                                  style="width: 49%" placeholder="请输入年龄最大值"></el-input-number>
               </el-form-item>
               <el-form-item label="性别" prop="gender" required>
@@ -112,9 +112,13 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="薪资范围" prop="salary">
-                <el-input-number :controls="false" :min="1" :max="1000000" v-model.number="control_mb_form.salary.min"
+                <!--<el-input v-model="control_mb_form.salary.min"
+                                 style="width: 49%" placeholder="请输入薪资最小值(必填)"></el-input>
+                <el-input  v-model="control_mb_form.salary.max"
+                                 style="width: 49%" placeholder="请输入薪资最大值(必填)"></el-input>-->
+                <el-input-number :controls="false" :min="1000" :max="1000000" v-model.number="control_mb_form.salary.min"
                                  style="width: 49%" placeholder="请输入薪资最小值(必填)"></el-input-number>
-                <el-input-number :controls="false" :min="1" :max="1000000" v-model.number="control_mb_form.salary.max"
+                <el-input-number :controls="false" :min="1000" :max="1000000" v-model.number="control_mb_form.salary.max"
                                  style="width: 49%" placeholder="请输入薪资最大值(必填)"></el-input-number>
               </el-form-item>
               <el-form-item label="工作经验" prop="experience" required>
@@ -130,10 +134,10 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="岗位职责" prop="content">
-                <el-input v-model="control_mb_form.content" type="textarea" :autosize="{ minRows: 2, maxRows: 14}" placeholder="选填(300字以内)"></el-input>
+                <el-input v-model="control_mb_form.content" type="textarea" :autosize="{ minRows: 2, maxRows: 14}" placeholder="必填(300字以内)"></el-input>
               </el-form-item>
               <el-form-item label="招聘状态" prop="publish_status">
-                <el-input v-model="control_mb_form.publish_status" type="textarea" :autosize="{ minRows: 2, maxRows: 14}" placeholder="选填(300字以内)"></el-input>
+                <el-input v-model="control_mb_form.publish_status" type="textarea" :autosize="{ minRows: 2, maxRows: 14}" placeholder="必填(300字以内)"></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -174,11 +178,11 @@
         </div>
       </lj-dialog>
 
-      <!--岗位-->
-      <postOrgan :module="position_visible" @close="handleSelPosition"></postOrgan>
+<!--      &lt;!&ndash;岗位&ndash;&gt;-->
+<!--      <postOrgan :module="position_visible" @close="handleSelPosition"></postOrgan>-->
 
-      <!--部门-->
-      <departOrgan :module="depart_visible" @close="handleSelDepart"></departOrgan>
+<!--      &lt;!&ndash;部门&ndash;&gt;-->
+<!--      <departOrgan :module="depart_visible" @close="handleSelDepart"></departOrgan>-->
     </div>
   </div>
 </template>
@@ -199,10 +203,10 @@
       return {
         control_mb_form_rules: {
           org_id: [
-            {required: true, message: '请选择部门', trigger: 'blur'},
+            {required: true, message: '请选择部门', trigger: ['blur','change']},
           ],
           position_id: [
-            {required: true, message: '请选择岗位', trigger: 'blur'},
+            {required: true, message: '请选择岗位', trigger: ['blur','change']},
             // {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
           ],
           gender: [
@@ -214,6 +218,10 @@
           education: [
             {required:true, message: '请选择学历',trigger:['blur','change']},
           ],
+          /*salary: [
+            {required:true, message: '请输入薪资范围',trigger:['blur','change']},
+            {min: 1, max: 7, message: '长度在 1 到 7 个字符', trigger: ['blur','change']}
+          ],*/
           content: [
             {message: '请输入岗位职责',trigger:['blur','change']},
             {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
@@ -226,10 +234,10 @@
         },
 
 
-        //部门
-        depart_visible: false,
-        //岗位
-        position_visible: false,
+        // //部门
+        // depart_visible: false,
+        // //岗位
+        // position_visible: false,
 
         //需求列表
         soldiersData: [],
@@ -294,7 +302,7 @@
     },
     computed: {},
     methods: {
-      handleSelPosition(id, name) {
+      /*handleSelPosition(id, name) {
         if (id !== 'close') {
           this.control_mb_form.position = name;
           this.control_mb_form.position_id = id;
@@ -308,7 +316,7 @@
           this.control_mb_form.org_id = id;
         }
         this.depart_visible = false;
-      },
+      },*/
       //停止招聘
       handleStopNeed() {
         this.$http.get(`recruitment/staff_needs/stop/${this.dblCurrentRow.id}`).then(res => {
@@ -331,51 +339,64 @@
           console.log(err);
         })
       },
+
+      validateNumberBetween() {
+        /*let personNeedMin = this.control_mb_form.number.min;
+        let personNeedMax = this.control_mb_form.number.max;
+        let yearMin = this.control_mb_form.year.min;
+        let yearMax = this.control_mb_form.year.max;
+        let salaryMin = this.control_mb_form.salary.min;
+        let salaryMax = this.control_mb_form.salary.max;
+        compare(this.control_mb_form.number);
+        compare(this.control_mb_form.year);
+        compare(this.control_mb_form.salary);*/
+        if(compare(this.control_mb_form.number,this,'number')&&compare(this.control_mb_form.year,this,'year')) {
+          return true;
+        }
+        return false;
+        function compare({min,max},_this,type) {
+          /*switch (type) {
+            case 'number':
+              if(min>=1&&min)
+              break;
+            case 'year':
+              break;
+          }*/
+
+          if(min>max) {
+            _this.$LjMessage('warning',{title:'警告',msg:'最小值比最大值大'});
+            return false;
+          }
+          return true;
+        }
+
+      },
+
       //更新添加人员需求
       handleUpdateSoldiers() {
+        if(!this.validateNumberBetween()) return;
         this.$refs['newUserFormRef'].validate(valid=> {
           if(valid) {
             this.$http.put(`recruitment/staff_needs/${this.dblCurrentRow.id}`, this.control_mb_form).then(res => {
-              if (res.code === '20030') {
-                this.$LjNotify('success', {
-                  title: '成功',
-                  message: res.msg
-                });
+              this.$LjMessageEasy(res,()=> {
                 this.getSoldiersList();
-              } else {
-                this.$LjNotify('warning', {
-                  title: '失败',
-                  message: res.msg,
-                });
-              }
+              });
               this.handleCancelAddMb();
-            }).catch(err => {
-              console.log(err);
-            })
+            });
           }
         });
       },
       //确定添加人员需求
       handleAddSoldiers() {
+        if(!this.validateNumberBetween()) return;
         this.$refs['newUserFormRef'].validate(valid=> {
           if(valid) {
             this.$http.post('recruitment/staff_needs', this.control_mb_form).then(res => {
-              if (res.code === '20010') {
-                this.$LjNotify('success', {
-                  title: '成功',
-                  message: res.msg
-                });
+              this.$LjMessageEasy(res,()=> {
                 this.getSoldiersList();
                 this.handleCancelAddMb();
-              } else {
-                this.$LjNotify('warning', {
-                  title: '失败',
-                  message: res.msg
-                });
-              }
-            }).catch(err => {
-              console.log(err);
-            })
+              });
+            });
           }
         })
 
