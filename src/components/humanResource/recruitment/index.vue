@@ -105,15 +105,15 @@
               :data="office_data"
               :default-sort = "{prop: 'org.name', order: 'descending'}"
             >
-              <el-table-column label="岗位" prop="position.name" align="center"></el-table-column>
-              <el-table-column label="部门" prop="org.name" align="center" sortable></el-table-column>
-              <el-table-column label="面试官" align="center" min-width="120px">
+              <el-table-column show-overflow-tooltip label="岗位" prop="position.name" align="center"></el-table-column>
+              <el-table-column show-overflow-tooltip label="部门" prop="org.name" align="center" sortable></el-table-column>
+              <el-table-column show-overflow-tooltip label="面试官" align="center" min-width="120px">
                 <template slot-scope="scope">
                   <span v-for="(item,idx) in scope.row.interviewer">{{ item.real_name }}<a v-if="idx !== scope.row.interviewer.length - 1">/</a></span>
                 </template>
               </el-table-column>
-              <el-table-column label="创建人" prop="creator.real_name" align="center"></el-table-column>
-              <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+              <el-table-column show-overflow-tooltip label="创建人" prop="creator.real_name" align="center"></el-table-column>
+              <el-table-column show-overflow-tooltip label="创建时间" prop="created_at" align="center"></el-table-column>
               <el-table-column label="编辑">
                 <template slot-scope="scope">
                   <el-button type="text" @click="handleEditOffer(scope.row)">编辑</el-button>
