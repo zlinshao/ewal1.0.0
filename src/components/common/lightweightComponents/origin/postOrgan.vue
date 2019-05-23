@@ -131,7 +131,8 @@
         handler(val, oldVal) {
           this.configure.num = val ? (val.num ? val.num : '') : '';
         },
-        deep: true
+        deep: true,
+        immediate:true,
       },
       lj_visible: {
         handler(val, oldVal) {

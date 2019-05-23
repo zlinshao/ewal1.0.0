@@ -87,11 +87,11 @@
             <el-form ref="newUserFormRef" :disabled="is_control === 'look'" :model="control_mb_form" :rules="control_mb_form_rules"
                      label-width="80px" style="width: 90%;margin: 0 auto" size="small">
               <el-form-item label="部门" prop="org_id" required>
-                <org-choose width="360" title="请选择" :show-icon="false" v-model="control_mb_form.org_id"></org-choose>
+                <org-choose width="360" num="1" title="请选择" :show-icon="false" v-model="control_mb_form.org_id"></org-choose>
                 <!--<el-input v-model="control_mb_form.depart" placeholder="请选择" readonly @focus="depart_visible = true"></el-input>-->
               </el-form-item>
               <el-form-item label="岗位" prop="position_id" required>
-                <post-choose width="360" title="请选择" :show-icon="false" v-model="control_mb_form.position_id"></post-choose>
+                <post-choose width="360" num="1" title="请选择" :show-icon="false" v-model="control_mb_form.position_id"></post-choose>
                 <!--<el-input v-model="control_mb_form.position" placeholder="请选择" readonly @focus="position_visible = true"></el-input>-->
               </el-form-item>
               <el-form-item label="所需人数" prop="number">
@@ -101,7 +101,7 @@
                                  style="width: 49%" placeholder="请输入至多需求人数"></el-input-number>
               </el-form-item>
               <el-form-item label="年龄范围" prop="year">
-                <el-input-number :controls="false" :min="16" :max="100" v-model.number="control_mb_form.year.min"
+                <el-input-number :controls="false" :min="18" :max="100" v-model.number="control_mb_form.year.min"
                                  style="width: 49%" placeholder="请输入年龄最小值"></el-input-number>
                 <el-input-number :controls="false" :min="18" :max="100" v-model.number="control_mb_form.year.max"
                                  style="width: 49%" placeholder="请输入年龄最大值"></el-input-number>
@@ -201,6 +201,9 @@
     components: {LjDialog, postOrgan, departOrgan, OrgChoose, PostChoose},
     data() {
       return {
+        url:globalConfig.humanResource_server,
+
+
         control_mb_form_rules: {
           org_id: [
             {required: true, message: '请选择部门', trigger: ['blur','change']},
@@ -341,12 +344,7 @@
       },
 
       validateNumberBetween() {
-        /*let personNeedMin = this.control_mb_form.number.min;
-        let personNeedMax = this.control_mb_form.number.max;
-        let yearMin = this.control_mb_form.year.min;
-        let yearMax = this.control_mb_form.year.max;
-        let salaryMin = this.control_mb_form.salary.min;
-        let salaryMax = this.control_mb_form.salary.max;
+        /*
         compare(this.control_mb_form.number);
         compare(this.control_mb_form.year);
         compare(this.control_mb_form.salary);*/
@@ -404,7 +402,7 @@
       //获取人员需求列表
       getSoldiersList() {
         this.showLoading(true);
-        this.$http.get('recruitment/staff_needs', this.params).then(res => {
+        this.$http.get(this.url+'recruitment/staff_needs', this.params).then(res => {
           if (res.code === '20000') {
             this.soldiersData = res.data.data;
             this.soldiersCount = res.data.count;
@@ -421,6 +419,7 @@
       },
       //表格某一行双击
       tableDblClick(row) {
+        debugger
         this.dblCurrentRow = row;
         this.control_mb_form.content = row.content;
         this.control_mb_form.salary = row.salary;
@@ -430,10 +429,10 @@
         this.control_mb_form.gender = row.gender;
         this.control_mb_form.experience = row.experience;
         this.control_mb_form.publish_status = row.publish_status;
-        this.control_mb_form.org_id = row.org_id;
+        this.control_mb_form.org_id = [row.org_id];
         this.control_mb_form.depart = row.org.name;
         this.control_mb_form.position = row.position.name;
-        this.control_mb_form.position_id = row.position_id;
+        this.control_mb_form.position_id = [row.position_id];
         this.is_control = 'look';
         this.control_info_visible = true;
       },

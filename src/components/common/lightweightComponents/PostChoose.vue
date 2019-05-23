@@ -46,7 +46,7 @@
         handler(val, oldVal) {
           if (val && val.length > 0) {
             let params = {
-              duty_id:val
+              id:val
             };
             this.$http.get(`${this.url}organization/position`,params).then(res=> {
               if(res.code.endsWith('0')) {
