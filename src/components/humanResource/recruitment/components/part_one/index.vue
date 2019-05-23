@@ -86,10 +86,9 @@
           <div class="dialog_main borderNone">
             <el-form ref="newUserFormRef" :disabled="is_control === 'look'" :model="control_mb_form" :rules="control_mb_form_rules"
                      label-width="80px" style="width: 90%;margin: 0 auto" size="small">
-              <el-form-item label="部门" prop="org_id" required>
-                <org-choose width="360" num="1" title="请选择" :show-icon="false" v-model="control_mb_form.org_id"></org-choose>
-                <!--<el-input v-model="control_mb_form.depart" placeholder="请选择" readonly @focus="depart_visible = true"></el-input>-->
-              </el-form-item>
+              <!--<el-form-item label="部门" prop="org_id" required>-->
+                <!--<org-choose width="360" num="1" title="请选择" :show-icon="false" v-model="control_mb_form.org_id"></org-choose>-->
+              <!--</el-form-item>-->
               <el-form-item label="岗位" prop="position_id" required>
                 <post-choose width="360" num="1" title="请选择" :show-icon="false" v-model="control_mb_form.position_id"></post-choose>
                 <!--<el-input v-model="control_mb_form.position" placeholder="请选择" readonly @focus="position_visible = true"></el-input>-->
@@ -205,9 +204,9 @@
 
 
         control_mb_form_rules: {
-          org_id: [
-            {required: true, message: '请选择部门', trigger: ['blur','change']},
-          ],
+          // org_id: [
+          //   {required: true, message: '请选择部门', trigger: ['blur','change']},
+          // ],
           position_id: [
             {required: true, message: '请选择岗位', trigger: ['blur','change']},
             // {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
@@ -260,7 +259,7 @@
         control_info_visible: false,
         control_mb_form: {
           depart: '',
-          org_id: [],
+          // org_id: [],
           position: '',
           position_id: '',
           number: {
@@ -428,8 +427,8 @@
         this.control_mb_form.gender = row.gender;
         this.control_mb_form.experience = row.experience;
         this.control_mb_form.publish_status = row.publish_status;
-        this.control_mb_form.org_id = [row.org_id];
-        this.control_mb_form.depart = row.org.name;
+        // this.control_mb_form.org_id = [row.org_id];
+        // this.control_mb_form.depart = row.org.name;
         this.control_mb_form.position = row.position.name;
         this.control_mb_form.position_id = [row.position_id];
         this.is_control = 'look';
@@ -443,7 +442,7 @@
           depart: '',
           position: '',
 
-          org_id: '',
+          // org_id: '',
           position_id: '',
           number: {
             min: '',
