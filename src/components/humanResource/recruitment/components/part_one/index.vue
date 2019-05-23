@@ -319,9 +319,7 @@
           }
           this.stop_need_visible = false;
           this.handleCancelAddMb();
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
 
       validateNumberBetween() {
@@ -336,7 +334,6 @@
           }
           return true;
         }
-
       },
 
       //更新添加人员需求

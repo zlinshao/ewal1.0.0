@@ -51,6 +51,14 @@
             <el-button type="text" @click="handleLeaveProof(scope.row)" style="color: #D33E43" v-else>发送</el-button>
           </template>
         </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <div class="second-e打开ntry">
+              <el-button type="text" @click="openSecondEntryDialog(scope.row)">复职</el-button>
+            </div>
+
+          </template>
+        </el-table-column>
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -105,18 +113,53 @@
           </div>
         </div>
       </lj-dialog>
+
+
+      <!--二次入职dialog-->
+      <lj-dialog
+        :visible.sync="second_entry_dialog_visible"
+        :size="{width: 500 + 'px',height: 300 + 'px'}"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>复职</h3>
+          </div>
+          <div class="dialog_main flex-center">
+            <div style="margin-right: 30px">入职等级</div>
+            <dropdown-list v-model="second_entry_position_level"
+                           width="140" size="mini" :clearable="false"
+                           :json-arr="DROPDOWN_CONSTANT.POSITION_LEVEL"></dropdown-list>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="confirmSecondEntry(false)">复职</el-button>
+            <el-button type="danger" size="small" @click="confirmSecondEntry(true)">复职并发送消息通知</el-button>
+            <el-button type="info" size="small" @click="second_entry_dialog_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
 
 <script>
+  /*
+  * <dropdown-list v-model="pay_form.pay_type"
+                               :disabled="type!='payment'"
+                               width="110" size="mini" :clearable="false"
+                               :json-arr="DROPDOWN_CONSTANT.PAYMENT_WAY"></dropdown-list>
+  * */
+  import _ from 'lodash';
+  import DropdownList from '../../../common/lightweightComponents/dropdown-list';
+  import {DROPDOWN_CONSTANT} from '@/assets/js/allConstantData';
   import LjDialog from '../../../common/lj-dialog.vue';
   export default {
     name: "index",
-    components: { LjDialog },
+    components: { LjDialog, DropdownList},
     props: ['searchVal'],
     data() {
       return {
+        DROPDOWN_CONSTANT,
+        url:globalConfig.humanResource_server,
         confirm_visible: false,
         confirm_type: '',
         confirm_row: '',
@@ -136,6 +179,13 @@
 
         look_info: [],
         look_info_visible: false,
+
+        currentSelection:null,
+
+        /*二次入职dialog显示隐藏*/
+        second_entry_dialog_visible:false,
+        /*二次入职职级*/
+        second_entry_position_level:1,
       }
     },
     mounted() {
@@ -275,10 +325,48 @@
         this.params.page = val;
         this.getStaffList();
         console.log(`当前页: ${val}`);
-      }
+      },
+      /*打开二次入职*/
+      openSecondEntryDialog(row) {
+        this.currentSelection = _.cloneDeep(row);
+        this.second_entry_dialog_visible  = true;
+        console.log(row);
+      },
+      /*确定入职 isSendMessage为true时发送复职消息*/
+      confirmSecondEntry(isSendMessage = false) {
+        this.$LjConfirm({content:`确定复职${this.currentSelection.name}吗？`}).then(()=> {
+          let id = this.currentSelection.id;
+          let params = {
+            type:"second_entry",
+            enroll:this.myUtils.formatDate(new Date()),
+            position_level:this.second_entry_position_level
+          };
+          debugger
+          if(isSendMessage) {
+            params.message="second_entry";
+          }
+          this.$http.put(`${this.url}staff/user/${id}`,params).then(res=> {
+            this.$LjMessageEasy(res,()=> {
+              this.getStaffList();
+            });
+          });
+        });
+
+
+
+      },
     },
   }
 </script>
+<style lang="scss">
+  #leaveJob {
+    .second-entry {
+      .el-button {
+        color: #0BB07B;
+      }
+    }
+  }
+</style>
 
 <style lang="scss" scoped>
   @import "../../../../assets/scss/humanResource/leaveJob/index.scss";
