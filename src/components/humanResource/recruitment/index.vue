@@ -306,7 +306,7 @@
           {id: 3, title: '已约面试'},
           {id: 4, title: '预约入职'}
         ], //模块列表
-        chooseTab: 2, //当前选中模块
+        chooseTab: 1, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索
