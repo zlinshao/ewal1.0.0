@@ -19,8 +19,9 @@
               <template slot-scope="scope">
                 <el-button v-if="scope.row.entry_feedback===0" size="mini" type="warning" plain @click="handleOpenEdit(scope.row)">未反馈
                 </el-button>
-                <el-button v-if="scope.row.entry_feedback===1" size="mini" type="warning" plain @click="handleEntryEdit(scope.row)">入职
+                <el-button v-if="scope.row.entry_feedback===1 && scope.row.offer_status===1" size="mini" type="warning" plain @click="handleEntryEdit(scope.row)">入职
                 </el-button>
+                <span v-if="scope.row.entry_feedback===1&& !scope.row.offer_status">入职</span>
                 <span v-if="scope.row.entry_feedback===2">拒绝入职</span>
                 <span v-if="scope.row.entry_feedback===3">已经入职</span>
               </template>
