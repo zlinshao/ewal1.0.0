@@ -245,7 +245,6 @@
         control_mb_form: {
           depart: '',
           org_id: [],
-          position: '',
           position_id: [],
           number: {
             min: null,
@@ -345,7 +344,9 @@
         if(!this.validateNumberBetween()) return;
         this.$refs['newUserFormRef'].validate(valid=> {
           if(valid) {
-            this.$http.put(`recruitment/staff_needs/${this.dblCurrentRow.id}`, this.control_mb_form).then(res => {
+            this.control_mb_form.org_id = this.control_mb_form.org_id[0];
+            this.control_mb_form.position_id = this.control_mb_form.position_id[0];
+              this.$http.put(`recruitment/staff_needs/${this.dblCurrentRow.id}`, this.control_mb_form).then(res => {
               this.$LjMessageEasy(res,()=> {
                 this.getSoldiersList();
               });
@@ -359,6 +360,8 @@
         if(!this.validateNumberBetween()) return;
         this.$refs['newUserFormRef'].validate(valid=> {
           if(valid) {
+            this.control_mb_form.org_id = this.control_mb_form.org_id[0];
+            this.control_mb_form.position_id = this.control_mb_form.position_id[0];
             this.$http.post('recruitment/staff_needs', this.control_mb_form).then(res => {
               this.$LjMessageEasy(res,()=> {
                 this.getSoldiersList();
