@@ -86,13 +86,13 @@
           <div class="dialog_main borderNone">
             <el-form ref="newUserFormRef" :disabled="is_control === 'look'" :model="control_mb_form" :rules="control_mb_form_rules"
                      label-width="80px" style="width: 90%;margin: 0 auto" size="small">
-              <el-form-item label="部门" prop="org_id" required>
-                <org-choose width="360" num="1" title="请选择" :show-icon="false" v-model="control_mb_form.org_id"></org-choose>
-                <!--<el-input v-model="control_mb_form.depart" placeholder="请选择" readonly @focus="depart_visible = true"></el-input>-->
-              </el-form-item>
               <el-form-item label="岗位" prop="position_id" required>
                 <post-choose width="360" num="1" title="请选择" :show-icon="false" v-model="control_mb_form.position_id"></post-choose>
                 <!--<el-input v-model="control_mb_form.position" placeholder="请选择" readonly @focus="position_visible = true"></el-input>-->
+              </el-form-item>
+              <el-form-item label="部门" prop="org_id" required>
+                <org-choose width="360" num="1" :disabled="true" title="自动获取" :show-icon="false" v-model="control_mb_form.org_id"></org-choose>
+                <!--<el-input v-model="control_mb_form.depart" placeholder="请选择" readonly @focus="depart_visible = true"></el-input>-->
               </el-form-item>
               <el-form-item label="所需人数" prop="number">
                 <el-input-number :controls="false" :min="1" :max="10" v-model.number="control_mb_form.number.min"
@@ -178,11 +178,6 @@
         </div>
       </lj-dialog>
 
-<!--      &lt;!&ndash;岗位&ndash;&gt;-->
-<!--      <postOrgan :module="position_visible" @close="handleSelPosition"></postOrgan>-->
-
-<!--      &lt;!&ndash;部门&ndash;&gt;-->
-<!--      <departOrgan :module="depart_visible" @close="handleSelDepart"></departOrgan>-->
     </div>
   </div>
 </template>
@@ -221,10 +216,6 @@
           education: [
             {required:true, message: '请选择学历',trigger:['blur','change']},
           ],
-          /*salary: [
-            {required:true, message: '请输入薪资范围',trigger:['blur','change']},
-            {min: 1, max: 7, message: '长度在 1 到 7 个字符', trigger: ['blur','change']}
-          ],*/
           content: [
             {message: '请输入岗位职责',trigger:['blur','change']},
             {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
@@ -236,11 +227,6 @@
 
         },
 
-
-        // //部门
-        // depart_visible: false,
-        // //岗位
-        // position_visible: false,
 
         //需求列表
         soldiersData: [],
@@ -262,7 +248,7 @@
           depart: '',
           org_id: [],
           position: '',
-          position_id: '',
+          position_id: [],
           number: {
             min: null,
             max: null
@@ -301,25 +287,23 @@
           this.getSoldiersList();
         },
         deep: true
-      }
+      },
+      'control_mb_form.position_id': {//自动获取部门
+        handler(val,oldVal) {
+          if(val.constructor===Array&&val.length==1) {//选取岗位了
+            let id = val[0];
+            this.$http.get(`${this.url}organization/position/${id}`).then(res=> {
+              if(res.code.endsWith('0')) {
+                this.control_mb_form.org_id = [res.data.duty?.org_id];
+              }
+            });
+          }
+        },
+        immediate:true
+      },
     },
     computed: {},
     methods: {
-      /*handleSelPosition(id, name) {
-        if (id !== 'close') {
-          this.control_mb_form.position = name;
-          this.control_mb_form.position_id = id;
-        }
-        this.position_visible = false;
-      },
-      handleSelDepart(id, name) {
-        if (id !== 'close') {
-          console.log(id, name);
-          this.control_mb_form.depart = name;
-          this.control_mb_form.org_id = id;
-        }
-        this.depart_visible = false;
-      },*/
       //停止招聘
       handleStopNeed() {
         this.$http.get(`recruitment/staff_needs/stop/${this.dblCurrentRow.id}`).then(res => {
@@ -344,23 +328,11 @@
       },
 
       validateNumberBetween() {
-        /*
-        compare(this.control_mb_form.number);
-        compare(this.control_mb_form.year);
-        compare(this.control_mb_form.salary);*/
         if(compare(this.control_mb_form.number,this,'所需人数')&&compare(this.control_mb_form.year,this,'年龄范围')&&compare(this.control_mb_form.salary,this,'薪资范围')) {
           return true;
         }
         return false;
         function compare({min,max},_this,tip) {
-          /*switch (type) {
-            case 'number':
-              if(min>=1&&min)
-              break;
-            case 'year':
-              break;
-          }*/
-
           if(min>max) {
             _this.$LjMessage('warning',{title:'警告',msg:`${tip}最小值比最大值大`});
             return false;
@@ -443,8 +415,8 @@
           depart: '',
           position: '',
 
-          org_id: '',
-          position_id: '',
+          org_id: [],
+          position_id: [],
           number: {
             min: '',
             max: ''
