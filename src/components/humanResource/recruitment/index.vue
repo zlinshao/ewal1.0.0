@@ -146,13 +146,16 @@
                 <el-input v-model="edit_offer.position_name" disabled @focus="position_visible = true"></el-input>
               </el-form-item>
               <el-form-item label="面试官一">
-                <el-input v-model="edit_offer.interviewer_first" readonly @focus="handleOpenStaff('first')"></el-input>
+                <user-choose num="1" title="请选择" v-model="edit_offer.interviewer_first_id"></user-choose>
+<!--                <el-input v-model="edit_offer.interviewer_first" readonly @focus="handleOpenStaff('first')"></el-input>-->
               </el-form-item>
               <el-form-item label="面试官二">
-                <el-input v-model="edit_offer.interviewer_second" readonly  @focus="handleOpenStaff('second')"></el-input>
+                <user-choose num="1" title="请选择" v-model="edit_offer.interviewer_second_id"></user-choose>
+<!--                <el-input v-model="edit_offer.interviewer_second" readonly  @focus="handleOpenStaff('second')"></el-input>-->
               </el-form-item>
               <el-form-item label="面试官三">
-                <el-input v-model="edit_offer.interviewer_third" readonly  @focus="handleOpenStaff('third')"></el-input>
+                <user-choose num="1" title="请选择" v-model="edit_offer.interviewer_third_id"></user-choose>
+<!--                <el-input v-model="edit_offer.interviewer_third" readonly  @focus="handleOpenStaff('third')"></el-input>-->
               </el-form-item>
               <el-form-item label="试卷">
                 <Upload :file="upload_form" @success="handleSuccessUpload"></Upload>
@@ -212,9 +215,14 @@
   import PositionOrgan from '../../common/postOrgan.vue';
   import Upload from '../../common/upload.vue';
 
+  import UserChoose from '../../common/lightweightComponents/UserChoose';
+  import OrgChoose from '../../common/lightweightComponents/OrgChoose';
+  import PostChoose from '../../common/lightweightComponents/PostChoose';
+
+
   export default {
     name: "index",
-    components: { Upload,SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog,DepartOrgan,StaffOrgan,PositionOrgan},
+    components: { Upload,SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog,DepartOrgan,StaffOrgan,PositionOrgan,UserChoose,OrgChoose,PostChoose},
     data() {
       return {
         panel_visible: false,
@@ -427,10 +435,11 @@
         })
       },
       handleEditOffer(row) {
+        debugger
         this.currentRow = row;
-        this.edit_offer.interviewer_first_id = row.interviewer_first_id;
-        this.edit_offer.interviewer_second_id = row.interviewer_second_id;
-        this.edit_offer.interviewer_third_id = row.interviewer_third_id;
+        this.edit_offer.interviewer_first_id = [row.interviewer_first_id];
+        this.edit_offer.interviewer_second_id = [row.interviewer_second_id];
+        this.edit_offer.interviewer_third_id = [row.interviewer_third_id];
         this.edit_offer.interviewer_first = row.interviewer[0] ? row.interviewer[0].real_name : '';
         this.edit_offer.interviewer_second = row.interviewer[1] ? row.interviewer[1].real_name : '';
         this.edit_offer.interviewer_third = row.interviewer[2] ? row.interviewer[2].real_name : '';
