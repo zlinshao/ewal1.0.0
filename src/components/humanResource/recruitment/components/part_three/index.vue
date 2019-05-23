@@ -1,3 +1,4 @@
+<!--已约面试-->
 <template>
   <div id="part_three">
     <div>
@@ -299,6 +300,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import LjDialog from '../../../../common/lj-dialog.vue';
 
   export default {
@@ -415,10 +417,19 @@
       },
       //确定修改面试结果
       handleSubmitChangeInterview() {
-        this.$http.put(`recruitment/interviewers/edit_result/${this.currentRow.id}`,{
+        let params = {
           interview_result: this.interview_form.interview_result,
           change_result: this.interview_form.change_result
-        }).then(res => {
+        };
+        let result = this.interview_form.result;
+
+        //if(this.interview_res[params.interview_result]==result) {
+        if(_.find(this.interview_res,{key:params.interview_result}).val==result) {
+          this.$LjMessage('warning',{title:'警告',msg:'不可修改为原值'});
+          return;
+        }
+
+        this.$http.put(`recruitment/interviewers/edit_result/${this.currentRow.id}`,params).then(res => {
           if (res.code === '20030') {
             this.$LjNotify('success',{
               title: '成功',
@@ -463,6 +474,7 @@
         this.interview_res_visible = false;
       },
       tableDblClick(row) {
+        debugger
         this.currentRow = row;
         this.interview_form.position = row.position.name;
         this.interview_form.name = row.name;
