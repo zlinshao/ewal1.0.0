@@ -348,11 +348,11 @@
         compare(this.control_mb_form.number);
         compare(this.control_mb_form.year);
         compare(this.control_mb_form.salary);*/
-        if(compare(this.control_mb_form.number,this,'number')&&compare(this.control_mb_form.year,this,'year')) {
+        if(compare(this.control_mb_form.number,this,'所需人数')&&compare(this.control_mb_form.year,this,'年龄范围')&&compare(this.control_mb_form.salary,this,'薪资范围')) {
           return true;
         }
         return false;
-        function compare({min,max},_this,type) {
+        function compare({min,max},_this,tip) {
           /*switch (type) {
             case 'number':
               if(min>=1&&min)
@@ -362,7 +362,7 @@
           }*/
 
           if(min>max) {
-            _this.$LjMessage('warning',{title:'警告',msg:'最小值比最大值大'});
+            _this.$LjMessage('warning',{title:'警告',msg:`${tip}最小值比最大值大`});
             return false;
           }
           return true;
@@ -419,7 +419,6 @@
       },
       //表格某一行双击
       tableDblClick(row) {
-        debugger
         this.dblCurrentRow = row;
         this.control_mb_form.content = row.content;
         this.control_mb_form.salary = row.salary;

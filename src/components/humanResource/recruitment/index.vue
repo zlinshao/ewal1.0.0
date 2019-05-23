@@ -429,7 +429,6 @@
         })
       },
       handleEditOffer(row) {
-        debugger
         this.currentRow = row;
         this.edit_offer.interviewer_first_id = [row.interviewer_first_id];
         this.edit_offer.interviewer_second_id = [row.interviewer_second_id];
