@@ -2,7 +2,7 @@
   <div id="postChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
       <el-input @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
-      <p v-if="showIcon" class="icons organization"></p>
+      <p v-if="showIcon" class="icons position"></p>
     </div>
 
     <PostOrgan :initial="value" :module="departModule" :organ-data="organData" @close="hiddenOrgan"></PostOrgan>
@@ -100,7 +100,7 @@
   }
 
 
-  .organization {
-    @include commonImg('zuzhijiagou.png', 'theme1');
+  .position {
+    @include commonImg('zhiwei.png', 'theme1');
   }
 </style>

@@ -10,7 +10,7 @@
     .input-container {
       @include flex('flex-center');
       position: relative;
-      .icons.organization {
+      .icons.position {
         position: absolute;
         right: 10px;
       }
