@@ -241,6 +241,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import LjDialog from '../../../../common/lj-dialog.vue';
   import Upload from '../../../../common/upload.vue';
   import postOrgan from '../../../../common/postOrgan.vue';
@@ -315,9 +316,9 @@
           position: '',
           position_id: [],
 
-          interviewer_first_id: '',
-          interviewer_second_id: '',
-          interviewer_third_id: '',
+          interviewer_first_id: [],
+          interviewer_second_id: [],
+          interviewer_third_id: [],
 
           offer1: '',
           offer2: '',
@@ -436,14 +437,18 @@
         })
       },
       handleAddOffer() {
+        let interviewers  = _.filter([...this.add_msg_form.interviewer_first_id,...this.add_msg_form.interviewer_second_id,...this.add_msg_form.interviewer_third_id],(o)=> {return o});
+        if(_.uniq(interviewers).length!=interviewers.length) {
+          this.$LjMessage('warning',{title:'警告',msg:'不可选择相同的面试官'});
+          return;
+        }
+
         this.$http.post('recruitment/interviewers',this.add_msg_form).then(res => {
           this.handleSuccessCallback(res,'20010');
           if (res.code === '20010') {
             this.handleCloseAddMsg();
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
      /* handleGetStaff(id,name) {
         if (id !== 'close') {

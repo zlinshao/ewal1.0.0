@@ -158,7 +158,7 @@
 <!--                <el-input v-model="edit_offer.interviewer_third" readonly  @focus="handleOpenStaff('third')"></el-input>-->
               </el-form-item>
               <el-form-item label="试卷">
-                <Upload :file="upload_form" @success="handleSuccessUpload"></Upload>
+                <lj-upload size="40" style="position: absolute;top: -13px;" v-model="edit_offer.paper_id"></lj-upload>
               </el-form-item>
             </el-form>
           </div>
@@ -200,6 +200,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import SearchHigh from '../../common/searchHigh.vue';
   import PartOne from './components/part_one/index.vue'; //募兵行列
   import PartTwo from './components/part_two/index.vue'; //分取科士
@@ -213,16 +214,16 @@
   import DepartOrgan from '../../common/departOrgan.vue';
   import StaffOrgan from '../../common/staffOrgan.vue';
   import PositionOrgan from '../../common/postOrgan.vue';
-  import Upload from '../../common/upload.vue';
 
   import UserChoose from '../../common/lightweightComponents/UserChoose';
   import OrgChoose from '../../common/lightweightComponents/OrgChoose';
   import PostChoose from '../../common/lightweightComponents/PostChoose';
+  import LjUpload from '../../common/lightweightComponents/lj-upload';
 
 
   export default {
     name: "index",
-    components: { Upload,SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog,DepartOrgan,StaffOrgan,PositionOrgan,UserChoose,OrgChoose,PostChoose},
+    components: {SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog,DepartOrgan,StaffOrgan,PositionOrgan,UserChoose,OrgChoose,PostChoose,LjUpload},
     data() {
       return {
         panel_visible: false,
@@ -255,14 +256,7 @@
         position_visible: false,
         interview_type: '',
 
-        upload_form: {
-          keyName: 'paper_id',
-          setFile: [],
-          size: {
-            width: '50px',
-            height: '50px'
-          }
-        },
+
 
         //查看面试官
         office_visible: false,
@@ -374,11 +368,6 @@
         };
         this.edit_offer_visible = false;
       },
-      handleSuccessUpload(file) {
-        if (file !== 'close') {
-          console.log(file);
-        }
-      },
       handleGetDepart(id,name){
         if (id !== 'close') {
           this.edit_offer.depart = name;
@@ -417,6 +406,11 @@
         this.staff_visible = true;
       },
       handleSubmitEditOffer() {
+        let interviewers  = _.filter([...this.edit_offer.interviewer_first_id,...this.edit_offer.interviewer_second_id,...this.edit_offer.interviewer_third_id],(o)=> {return o});
+        if(_.uniq(interviewers).length!=interviewers.length) {
+          this.$LjMessage('warning',{title:'警告',msg:'不可选择相同的面试官'});
+          return;
+        }
         this.$http.put(`recruitment/interviewers/${this.currentRow.id}`,this.edit_offer).then(res => {
           console.log(res);
           if (res.code === '20030') {
