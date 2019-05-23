@@ -137,23 +137,16 @@
           </div>
           <div class="dialog_main borderNone">
             <el-form :model="add_msg_form" label-width="80px" size="small">
-              <el-form-item label="部门">
-                <org-choose title="请选择" width="310" num="1" v-model="add_msg_form.org_id"></org-choose>
-                <!--<el-input v-model="add_msg_form.org_name" clearable placeholder="请选择" @focus="depart_visible = true"></el-input>-->
-              </el-form-item>
               <el-form-item label="岗位">
                 <post-choose title="请选择" width="310" num="1" v-model="add_msg_form.position_id"></post-choose>
-                <!--<el-input v-model="add_msg_form.position" clearable placeholder="请选择" @focus="position_visible = true"></el-input>-->
+              </el-form-item>
+              <el-form-item label="部门">
+                <org-choose title="自动获取" width="310" :disabled="true" num="1" v-model="add_msg_form.org_id"></org-choose>
               </el-form-item>
               <el-form-item label="面试官">
                 <user-choose title="请选择" width="310" num="1" v-model="add_msg_form.interviewer_first_id"></user-choose>
                 <user-choose title="请选择" style="margin-top: 10px" width="310" num="1" v-model="add_msg_form.interviewer_second_id"></user-choose>
                 <user-choose title="请选择" style="margin-top: 10px" width="310" num="1" v-model="add_msg_form.interviewer_third_id"></user-choose>
-
-
-<!--                <el-input v-model="add_msg_form.offer1" @focus="staff_visible = true;is_staff = 'first'"  readonly placeholder="请选择" style="margin-bottom: 20px"></el-input>
-                <el-input v-model="add_msg_form.offer2" @focus="staff_visible = true;is_staff = 'second'" readonly placeholder="请选择" style="margin-bottom: 20px"></el-input>
-                <el-input v-model="add_msg_form.offer3" @focus="staff_visible = true;is_staff = 'third'" readonly placeholder="请选择"></el-input>-->
               </el-form-item>
               <el-form-item label="添加试卷">
                 <el-select v-model="add_msg_form.paper_id" clearable>
@@ -227,15 +220,6 @@
           </div>
         </div>
       </lj-dialog>
-
-<!--      &lt;!&ndash;岗位&ndash;&gt;
-      <postOrgan :module="position_visible" :organ-data="position_data" @close="handleSelPosition"></postOrgan>
-
-      &lt;!&ndash;部门&ndash;&gt;
-      <departOrgan :module="depart_visible" :organ-data="depart_data" @close="handleGetDepart"></departOrgan>
-
-      &lt;!&ndash;选人&ndash;&gt;
-      <staffOrgan :module="staff_visible" :organ-data="staff_data" @close="handleGetStaff"></staffOrgan>-->
     </div>
   </div>
 </template>
@@ -244,30 +228,17 @@
   import _ from 'lodash';
   import LjDialog from '../../../../common/lj-dialog.vue';
   import Upload from '../../../../common/upload.vue';
-  import postOrgan from '../../../../common/postOrgan.vue';
-  import departOrgan from '../../../../common/departOrgan.vue';
-  import staffOrgan from '../../../../common/staffOrgan.vue';
   import UserChoose from '../../../../common/lightweightComponents/UserChoose';
   import OrgChoose from '../../../../common/lightweightComponents/OrgChoose';
   import PostChoose from '../../../../common/lightweightComponents/PostChoose';
 
   export default {
     name: "index",
-    components: { LjDialog ,Upload,postOrgan,departOrgan,staffOrgan,UserChoose, OrgChoose, PostChoose},
+    components: { LjDialog ,Upload,UserChoose, OrgChoose, PostChoose},
     props: [ 'addInterviewerVisible' ,'addOfferVisible','searchData'],
     data() {
       return {
-        /*//岗位选择
-        position_visible: false,
-        position_data: {},
-
-        //部门选择
-        depart_visible: false,
-        depart_data: {},
-
-        //选人
-        staff_visible: false,
-        staff_data: {},*/
+        url:globalConfig.humanResource_server,
 
         tableList: [],
         tableCount:0 ,
@@ -367,7 +338,20 @@
           this.getIntervieweeList();
         },
         deep: true
-      }
+      },
+      'add_msg_form.position_id': {//自动获取部门
+        handler(val,oldVal) {
+          if(val.constructor===Array&&val.length==1) {//选取岗位了
+            let id = val[0];
+            this.$http.get(`${this.url}organization/position/${id}`).then(res=> {
+              if(res.code.endsWith('0')) {
+                this.add_msg_form.org_id = [res.data.duty?.org_id];
+              }
+            });
+          }
+        },
+        immediate:true
+      },
     },
     computed: {},
     methods: {
