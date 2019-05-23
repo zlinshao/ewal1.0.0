@@ -244,7 +244,7 @@
         control_info_visible: false,
         control_mb_form: {
           depart: '',
-          // org_id: [],
+          org_id: [],
           position: '',
           position_id: [],
           number: {
