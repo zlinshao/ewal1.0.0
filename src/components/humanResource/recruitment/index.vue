@@ -106,7 +106,7 @@
               :default-sort = "{prop: 'org.name', order: 'descending'}"
             >
               <el-table-column show-overflow-tooltip label="岗位" prop="position.name" align="center"></el-table-column>
-              <el-table-column show-overflow-tooltip label="部门" prop="org.name" align="center" sortable></el-table-column>
+              <el-table-column show-overflow-tooltip label="部门" prop="org.name" align="center"></el-table-column>
               <el-table-column show-overflow-tooltip label="面试官" align="center" min-width="120px">
                 <template slot-scope="scope">
                   <span v-for="(item,idx) in scope.row.interviewer">{{ item.real_name }}<a v-if="idx !== scope.row.interviewer.length - 1">/</a></span>
