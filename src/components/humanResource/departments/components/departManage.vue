@@ -823,7 +823,7 @@
         add_newStaff_visible: false,
         activeName: 'first',
         interview_info_detail: {
-          graduation_time: '',
+          //graduation_time: '',
           name: '',
           gender: '',
           phone: '',
