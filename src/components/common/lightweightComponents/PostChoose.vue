@@ -1,7 +1,7 @@
 <template>
   <div id="postChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
-      <el-input :size="size" @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <el-input :size="size" :disabled="disabled" @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p v-if="showIcon" class="icons position"></p>
     </div>
 
@@ -21,6 +21,7 @@
       width:{},
       num:{},
       title:{},
+      disabled: {},
       size: {
         default() {
           return null;

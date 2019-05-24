@@ -42,7 +42,8 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="职级">
-                        <el-select v-model="staffDetail.position_level">
+                        <dropdown-list title="请选择" width="217" :json-arr="DROPDOWN_CONSTANT.POSITION_LEVEL" v-model="staffDetail.position_level"></dropdown-list>
+                        <!--<el-select v-model="staffDetail.position_level">
                         <el-option :value="1" label="P1"></el-option>
                         <el-option :value="2" label="P2"></el-option>
                         <el-option :value="3" label="P3"></el-option>
@@ -50,7 +51,7 @@
                         <el-option :value="5" label="P5"></el-option>
                         <el-option :value="6" label="P6"></el-option>
                         <el-option :value="7" label="P7"></el-option>
-                        </el-select>
+                        </el-select>-->
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -715,6 +716,14 @@
         }
       },
       handleSubmitUpdate() {
+        if(this.staffDetail.enroll&&this.staffDetail.forward_time) {
+          let enroll = new Date(this.staffDetail.enroll).getTime();
+          let forward = new Date(this.staffDetail.forward_time).getTime();
+          if(enroll>forward) {
+            this.$LjMessage('warning',{title:'警告',msg:'转正时间不可比入职时间早'});
+            return;
+          }
+        }
         this.$http.put(`staff/user/${this.currentStaffInfo.id}`, {
           type: 'update',
           ...this.staffDetail

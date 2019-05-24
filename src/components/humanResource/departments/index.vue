@@ -306,20 +306,17 @@
               <el-input v-model="departForm.name" placeholder="必填"></el-input>
             </el-form-item>
             <el-form-item label="上级部门">
-              <div class="items-center iconInput">
+              <div class="items-center">
                 <org-choose v-model="departForm.parent_id"></org-choose>
-                <!--<el-input v-model="departForm.parent" readonly @focus="chooseDepart = true"></el-input>
-                <p class="icons organization"></p>-->
               </div>
             </el-form-item>
             <el-form-item label="部门负责人">
-              <div class="items-center iconInput">
-                <el-input v-model="departForm.leader" placeholder="必填" readonly @focus="organModule = true"></el-input>
-                <p class="icons user"></p>
+              <div class="items-center">
+                <user-choose v-model="departForm.leader_id" title="请选择部门负责人" num="1"></user-choose>
               </div>
             </el-form-item>
             <el-form-item label="部门负责岗位">
-              <el-input v-model="departForm.position" placeholder="选填" @focus="post_visible = true" readonly></el-input>
+              <post-choose v-model="departForm.position_id" title="请选择部门负责岗位" width="276" num="1"></post-choose>
             </el-form-item>
           </el-form>
         </div>
@@ -340,11 +337,6 @@
     <!--高级搜索-->
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
-    <!--组织架构选人-->
-    <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
-
-    <!--部门选择-->
-    <DepartOrgan :module="chooseDepart" @close="handleGetDepart"></DepartOrgan>
 
     <!--确定删除部门-->
     <lj-dialog :visible="del_depart_visible" :size="{width: 400 + 'px',height: 250 + 'px'}">
@@ -413,7 +405,7 @@
               <el-input type="textarea" v-model="edit_module_form.description"></el-input>
             </el-form-item>
             <el-form-item label="权限类型" v-show="edit_type === 'power'">
-              <el-select v-model="edit_module_form.type" @change="handlechange">
+              <el-select v-model="edit_module_form.type" @change="handleChange">
                 <el-option value="index" label="index"></el-option>
                 <el-option value="read" label="read"></el-option>
                 <el-option value="add" label="add"></el-option>
@@ -587,8 +579,6 @@
       </div>
     </lj-dialog>
 
-    <!--岗位-->
-    <PostOrgan :module="post_visible" @close="handleGetPost"></PostOrgan>
   </div>
 </template>
 
@@ -601,20 +591,14 @@
   import LeaveJob from './leaveJob/index.vue';//离职管理
   import SearchHigh from '../../common/searchHigh.vue';
   import ljDialog from '../../common/lj-dialog.vue';
-  import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
-  import DepartOrgan from '../../common/departOrgan.vue'
   import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
-  import PostOrgan from '../../common/postOrgan.vue';
-  import OrgChoose from '../../common/lightweightComponents/OrgChoose';
-  import UserChoose from "../../common/lightweightComponents/UserChoose";
 
   export default {
     name: "index",
     components: {
-      UserChoose,
       SetForms,
       DepartManage,
       StaffRoster,
@@ -623,21 +607,10 @@
       ljDialog,
       SearchHigh,
       Upload,
-      StaffOrgan,
       Organization,
-      DepartOrgan,
-      PostOrgan,
-      OrgChoose,
     },
     data() {
       return {
-        /*权限管理*/
-        /*VALIDATE_PERMISSION:{
-          'Organization_Add':false,
-        },*/
-
-
-        post_visible: false,
 
         //新部门管理
         show_depart_detail: false,
@@ -773,7 +746,6 @@
           limit: 7,
           parent_id: 1
         },
-        chooseDepart: false,
 
         staffBookSearch,
         LeaveJobSearch,
@@ -803,7 +775,6 @@
           },
         ],//tab切换
 
-        organModule: false,//组织架构
 
         setFormData: {},
         SetFormVisible: false,//设置表单
@@ -812,12 +783,9 @@
         lj_size: {},//新增部门
         departForm: {
           name: '',
-          leader: '',
           leader_id: [],
           parent_id: [1],
-          parent: '南京乐伽商业管理有限公司',
-          position: '',
-          position_id: ''
+          position_id: []
         },//新增部门
         visibleStatus: false,//弹出部门
 
@@ -879,15 +847,8 @@
         this.power_params.page = page;
         this.getPowerList();
       },
-      handlechange(val) {
+      handleChange(val) {
         this.edit_module_form.type = val;
-      },
-      handleGetPost(id, name) {
-        if (id !== 'close') {
-          this.departForm.position = name;
-          this.departForm.position_id = id[0];
-        }
-        this.post_visible = false;
       },
       //新部门管理
       //切换人员管理/职位管理
@@ -1435,13 +1396,6 @@
           }
         })
       },
-      handleGetDepart(id, name) {
-        this.chooseDepart = false;
-        if (id !== 'close') {
-          this.departForm.parent_id = id;
-          this.departForm.parent = name;
-        }
-      },
       handleChangePage(page) {
         this.params.page = page;
         this.getDepartList();
@@ -1563,14 +1517,6 @@
         this.visibleStatus = !this.visibleStatus;
         this.$store.dispatch('route_animation');
       },
-      hiddenOrgan(val, name) {
-        this.organModule = false;
-        if (val !== 'close') {
-          this.departForm.leader_id = val;
-          this.departForm.leader = name;
-        }
-      },
-
     },
   }
 </script>
