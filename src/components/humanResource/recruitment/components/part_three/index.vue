@@ -47,7 +47,7 @@
           <div class="dialog_header">
             <h3>{{ is_edit ? '修改面试结果' : '查看面试结果'}}</h3>
             <div class="header_right">
-              <div class="look_btn" @click="handleLookDetailInfo"><span class="btn_look"></span>查看简历及答案</div>
+              <div class="look_btn" @click="handleLookDetailInfo"><span class="btn_look"></span>查看入职登记信息</div>
             </div>
           </div>
           <div class="dialog_main borderNone">

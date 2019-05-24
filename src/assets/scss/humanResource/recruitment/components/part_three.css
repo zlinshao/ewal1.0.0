@@ -264,7 +264,7 @@
   left: 0;
   background-color: #f2f2f2;
   transition: all ease 1s;
-  z-index: 211;
+  z-index: 10086;
 }
 #theme_name #part_three > div .paper_resume .btn_group {
   position: absolute;

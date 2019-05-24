@@ -593,6 +593,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import DepartManage from './components/departManage.vue';
   import Organization from './organization/index.vue';
   import SetForms from './components/setForms.vue';//设置表单
@@ -899,8 +900,7 @@
         if (!this.VALIDATE_PERMISSION['Organization-Read']) {
           this.$LjMessage('warning', {title: '警告', msg: '无权限'});
           return;
-        }
-        ;
+        };
         this.departForm.parent = item.name;
         this.departForm.parent_id = [];
         this.departForm.parent_id.push(item.id);
@@ -1515,6 +1515,10 @@
       },
       showSetForm() {
         this.SetFormVisible = true;
+        let education = {};
+        _.forEach(this.DROPDOWN_CONSTANT.EDUCATION_BACKGROUND,(o)=> {
+          education[o.id] = o.name;
+        });
         this.setFormData = [
           {key: 'staff.internship_number', val: '实习协议', isBtn: true},
           {key: 'name', val: '姓名'},
@@ -1531,7 +1535,8 @@
           {key: 'staff.household_register', val: '户口性质', info: {0: '农村', 1: '城市'}},
           {key: 'staff.national', val: '民族'},
           {key: 'staff.marital_fertility_status', val: '婚育情况', info: {1: '未婚', 2: '已婚未育', 3: '已婚已育'}},
-          {key: 'staff.education', val: '学历', info: {1: '高中及以下', 2: '大专', 3: '本科', 4: '本科及以上', 5: '其他'}},
+          // {key: 'staff.education', val: '学历', info: {1: '高中及以下', 2: '大专', 3: '本科', 4: '本科及以上', 5: '其他'}},
+          {key: 'staff.education', val: '学历', info: education},
           {key: 'staff.school', val: '毕业院校'},
           {key: 'staff.graduation_time', val: '毕业时间'},
           {key: 'staff.major', val: '专业'},
