@@ -60,7 +60,7 @@
       <el-table-column prop="deal_date" label="待签约日期" align="center"></el-table-column>
       <el-table-column prop="first_pay_date" label="第一次打房租日期" align="center"></el-table-column>
       <el-table-column prop="account_type" label="客户汇款方式" align="center" show-overflow-tooltip></el-table-column>
-      <el-table-column label="付款方式/月单价" prop="prices" align="left" min-width="200">
+      <el-table-column label="付款方式/月单价" prop="prices" align="center" min-width="200">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.prices" placement="bottom-start" :visible-arrow="false">
             <!--<div>{{substringPlugin(scope.row.prices,18)}}</div>-->

@@ -122,7 +122,7 @@
                         <div class="changeChoose" style="margin-top: 8px">
                           <el-radio-group v-model="interview_info_detail.gender">
                             <el-radio :label="1">男</el-radio>
-                            <el-radio :label="2">女</el-radio>
+                            <el-radio :label="0">女</el-radio>
                           </el-radio-group>
                         </div>
                       </el-form-item>

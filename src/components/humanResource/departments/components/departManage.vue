@@ -71,8 +71,8 @@
                     <el-form-item label="性别">
                       <div class="changeChoose" style="margin-top: 8px">
                         <el-radio-group v-model="interview_info_detail.gender">
-                          <el-radio :label="0">男</el-radio>
-                          <el-radio :label="1">女</el-radio>
+                          <el-radio :label="1">男</el-radio>
+                          <el-radio :label="0">女</el-radio>
                         </el-radio-group>
                       </div>
                     </el-form-item>
@@ -237,7 +237,7 @@
                   <el-col :span="8">
                     <el-form-item label="学历">
 
-                      <dropdown-list :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND" width="260" v-model="interview_info_detail.education" title="请选择"></dropdown-list>
+                      <dropdown-list :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND" width="253" v-model="interview_info_detail.education" title="请选择"></dropdown-list>
 
                       <!--<el-select v-model="interview_info_detail.education" placeholder="请输入">
                         <el-option :value="0" label="高中及以上"></el-option>
@@ -279,7 +279,7 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="学历">
-                        <dropdown-list v-model="item.eduction" title="请选择" :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND"></dropdown-list>
+                        <dropdown-list v-model="item.eduction" title="请选择" width="253" :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND"></dropdown-list>
                         <!--<el-select v-model="item.education" placeholder="请选择">
                           <el-option :value="1" label="高中及以上"></el-option>
                           <el-option :value="2" label="大专及以上"></el-option>

@@ -158,7 +158,8 @@
 <!--                <el-input v-model="edit_offer.interviewer_third" readonly  @focus="handleOpenStaff('third')"></el-input>-->
               </el-form-item>
               <el-form-item label="试卷">
-                <lj-upload size="40" style="position: absolute;top: -13px;" v-model="edit_offer.paper_id"></lj-upload>
+                <dropdown-list v-model="edit_offer.paper_id" :url="`${this.url}train/exam`" :params="{type:1}"></dropdown-list>
+                <!--<lj-upload size="40" style="position: absolute;top: -13px;" v-model="edit_offer.paper_id"></lj-upload>-->
               </el-form-item>
             </el-form>
           </div>
@@ -226,6 +227,7 @@
     components: {SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog,DepartOrgan,StaffOrgan,PositionOrgan,UserChoose,OrgChoose,PostChoose,LjUpload},
     data() {
       return {
+        url:globalConfig.humanResource_server,
         panel_visible: false,
         date_change_list: [
           {id: 1,val: '当日'},

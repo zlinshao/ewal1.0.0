@@ -305,7 +305,7 @@
                       <el-col :span="8">
                         <el-form-item label="学历">
 
-                          <dropdown-list v-model="item.eduction" title="请选择" :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND"></dropdown-list>
+                          <dropdown-list v-model="item.eduction" title="请选择" width="260" :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND"></dropdown-list>
 
                           <!--<el-select v-model="item.education" placeholder="请选择">
                             <el-option :value="1" label="高中及以上"></el-option>
