@@ -34,6 +34,8 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
   PAYMENT_WAY:[{id:1,name:'工资扣款'},{id:2,name:'电子支付'}],
   /*入职等级*/
   ENTRY_LEVEL: [{id:0,name:'实习'},{id:1,name:'正式'}],
+  /*学历*/
+  EDUCATION_BACKGROUND: [{id:1,name:'小学'},{id:2,name:'初中'},{id:3,name:'高中'},{id:4,name:'中专'},{id:5,name:'大专'},{id:6,name:'本科'},{id:7,name:'硕士'},{id:8,name:'博士'},{id:9,name:'不限'}],
   /*职级*/
   POSITION_LEVEL: [{id:1,name:'P1'},{id:2,name:'P2'},{id:3,name:'P3'},{id:4,name:'P4'},{id:5,name:'P5'},{id:6,name:'P6'},{id:7,name:'P7'}],
   //调查状态

@@ -133,7 +133,10 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="职级">
-                      <el-select v-model="interview_info_detail.position_level">
+
+                      <dropdown-list :json-arr="DROPDOWN_CONSTANT.POSITION_LEVEL" width="260" v-model="interview_info_detail.position_level" title="请选择"></dropdown-list>
+
+                      <!--<el-select v-model="interview_info_detail.position_level">
                         <el-option :value="1" label="P1"></el-option>
                         <el-option :value="2" label="P2"></el-option>
                         <el-option :value="3" label="P3"></el-option>
@@ -141,7 +144,7 @@
                         <el-option :value="5" label="P5"></el-option>
                         <el-option :value="6" label="P6"></el-option>
                         <el-option :value="7" label="P7"></el-option>
-                      </el-select>
+                      </el-select>-->
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -233,12 +236,15 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="学历">
-                      <el-select v-model="interview_info_detail.education" placeholder="请输入">
+
+                      <dropdown-list :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND" width="260" v-model="interview_info_detail.education" title="请选择"></dropdown-list>
+
+                      <!--<el-select v-model="interview_info_detail.education" placeholder="请输入">
                         <el-option :value="0" label="高中及以上"></el-option>
                         <el-option :value="1" label="大专及以上"></el-option>
                         <el-option :value="2" label="本科及以上"></el-option>
                         <el-option :value="3" label="不限"></el-option>
-                      </el-select>
+                      </el-select>-->
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -273,12 +279,13 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="学历">
-                        <el-select v-model="item.education" placeholder="请选择">
+                        <dropdown-list v-model="item.eduction" title="请选择" :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND"></dropdown-list>
+                        <!--<el-select v-model="item.education" placeholder="请选择">
                           <el-option :value="1" label="高中及以上"></el-option>
                           <el-option :value="2" label="大专及以上"></el-option>
                           <el-option :value="3" label="本科及以上"></el-option>
                           <el-option :value="4" label="不限"></el-option>
-                        </el-select>
+                        </el-select>-->
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">

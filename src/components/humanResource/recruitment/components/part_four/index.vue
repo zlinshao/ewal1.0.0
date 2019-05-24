@@ -1064,9 +1064,7 @@
             });
             return false;
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       handleOkInterviewee() {
         this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,this.interview_info_detail).then(res => {

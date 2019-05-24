@@ -19,7 +19,7 @@
   import storage from '../../../utils/storage';
 
   export default {
-    name: "dropdown-list",
+    name: "dropdownList",
     props: {
       value: [Number, String],
       width: [Number, String],//宽度

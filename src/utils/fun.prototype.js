@@ -1,14 +1,19 @@
 import UserChoose from '../components/common/lightweightComponents/UserChoose';
 import OrgChoose from '../components/common/lightweightComponents/OrgChoose';
 import PostChoose from '../components/common/lightweightComponents/PostChoose';
+import LjDialog from '../components/common/lj-dialog';
+import DropdownList from '../components/common/lightweightComponents/dropdown-list';
+import {DROPDOWN_CONSTANT,GLOBAL_CONSTANT} from '@/assets/js/allConstantData';
 export default {
   install(Vue, options) {
     /*全局组件注册*/
     Vue.component(UserChoose.name, UserChoose);//选人
     Vue.component(OrgChoose.name, OrgChoose);//选部门
     Vue.component(PostChoose.name, PostChoose);//选岗位
-
-
+    Vue.component(LjDialog.name, LjDialog);//对话框
+    Vue.component(DropdownList.name, DropdownList);//下拉组件
+    Vue.prototype.DROPDOWN_CONSTANT = DROPDOWN_CONSTANT;
+    Vue.prototype.GLOBAL_CONSTANT = GLOBAL_CONSTANT;
 
 
     // 路由跳转

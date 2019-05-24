@@ -76,7 +76,7 @@
         </div>
       </footer>
 
-      <LjDialog
+      <lj-dialog
         :visible="look_info_visible"
         :size="{width: 700 + 'px',height: 400 + 'px'}"
         @close="handleCloseLookInfo"
@@ -92,7 +92,7 @@
             <el-button type="danger" size="small" @click="handleCloseLookInfo">确定</el-button>
           </div>
         </div>
-      </LjDialog>
+      </lj-dialog>
 
       <!--确定发送-->
       <lj-dialog
@@ -156,12 +156,8 @@
 
 <script>
   import _ from 'lodash';
-  import DropdownList from '../../../common/lightweightComponents/dropdown-list';
-  import {DROPDOWN_CONSTANT} from '@/assets/js/allConstantData';
-  import LjDialog from '../../../common/lj-dialog.vue';
   export default {
     name: "index",
-    components: { LjDialog, DropdownList},
     props: ['searchVal'],
     data() {
       return {
@@ -173,7 +169,6 @@
         },
 
 
-        DROPDOWN_CONSTANT,
         url:globalConfig.humanResource_server,
         confirm_visible: false,
         confirm_type: '',
@@ -368,7 +363,6 @@
           this.$LjMessageNoPermission();
           return;
         }
-
 
         this.currentSelection = _.cloneDeep(row);
         this.second_entry_form.position_id = [row.position[0]?.id||null];

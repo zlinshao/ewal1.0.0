@@ -459,16 +459,12 @@
               message: '获取面试官列表失败'
             })
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       handleCheckTimeType(id) {
         this.current_time = id;
       },
       handleOpenSearch() {
-        let result = recruitmentSearchList[this.chooseTab];
-        debugger
         this.searchData = recruitmentSearchList[this.chooseTab];
         this.showSearch = true;
       },
@@ -488,9 +484,7 @@
             });
             return false;
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       handleSearchInterview() {
         this.$http.get('recruitment/interviewer_process/intervieweeListForFront').then(res => {
@@ -503,9 +497,7 @@
             this.interview_count = 0;
           }
           this.today_interview_visible = true;
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       // tab切换
       changeTabs(id) {
@@ -514,7 +506,6 @@
       },
       //关闭搜索
       hiddenModule(val,item,search) {
-        debugger
         if (val !== 'close') {
           for (let key in this.allSearch[this.chooseTab - 1]) {
             this.allSearch[this.chooseTab - 1][key] = val[key];

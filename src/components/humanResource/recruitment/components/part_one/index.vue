@@ -231,7 +231,7 @@
         soldiersCount: 0,
         gender: ['限男', '限女', '男优先', '女优先', '不限'],
         experience: ['1年', '1-3年', '3-5年', '5-10年', '10年以上', '不限'],
-        education: ['高中及以上', '大专及以上', '本科及以上', '不限'],
+        education: _.map(this.DROPDOWN_CONSTANT.EDUCATION_BACKGROUND,'name'),
         params: {
           page: 1,
           limit: 12
