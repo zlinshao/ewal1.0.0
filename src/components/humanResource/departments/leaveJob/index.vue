@@ -364,11 +364,16 @@
       },
       /*打开二次入职*/
       openSecondEntryDialog(row) {
+        if(!this.VALIDATE_PERMISSION['User-Second_Entry']) {
+          this.$LjMessageNoPermission();
+          return;
+        }
+
+
         this.currentSelection = _.cloneDeep(row);
         this.second_entry_form.position_id = [row.position[0]?.id||null];
         this.second_entry_form.phone = row.phone;
         this.second_entry_dialog_visible  = true;
-        console.log(row);
       },
       /*确定入职 isSendMessage为true时发送复职消息*/
       confirmSecondEntry(isSendMessage = false) {

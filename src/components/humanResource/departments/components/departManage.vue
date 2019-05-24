@@ -1161,7 +1161,7 @@
         this.edit_post_visible = true;
       },
       handleConfirmDelPost() {
-        this.$http.delete(`organization/position/${this.del_post.id}`).then(res => {
+        this.$http.delete(`organization/duty/${this.del_post.id}`).then(res => {
           if (res.code === '20040') {
             this.$LjNotify('success',{
               title: '成功',

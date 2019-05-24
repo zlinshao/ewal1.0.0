@@ -1339,6 +1339,8 @@
         };
         this.depart_visible = true;
       },
+
+      /*确定删除部门*/
       handleSubmitDel() {
         this.$http.delete(`organization/organization/${this.del_depart.id}`).then(res => {
           if (res.code === '20040') {
@@ -1461,7 +1463,7 @@
         this.$store.dispatch('route_animation');
       },
       // 部门管理列表
-      async getDepartList() {
+      getDepartList() {
         if (!this.VALIDATE_PERMISSION['Organization-Index']) {
           this.$LjMessageNoPermission();
           return;
