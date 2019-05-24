@@ -55,7 +55,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="在职状态">
-                        <el-input v-model="staffDetail.work_status"></el-input>
+                        <el-input readonly v-model="staffDetail.work_status"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
