@@ -605,6 +605,7 @@ div.el-popover {
 #theme_name #nq .el-input__inner,
 #theme_name #discussPolitics .el-input__inner,
 #theme_name #militaryOrganization .el-input__inner,
+#theme_name #departments .el-input__inner,
 #theme_name #todo_list .el-input__inner,
 #theme_name #personal_center .el-input__inner,
 #theme_name #intellectualPropertyProtection .el-input__inner {
@@ -616,6 +617,7 @@ div.el-popover {
 #theme_name #nq .el-input__inner:focus,
 #theme_name #discussPolitics .el-input__inner:focus,
 #theme_name #militaryOrganization .el-input__inner:focus,
+#theme_name #departments .el-input__inner:focus,
 #theme_name #todo_list .el-input__inner:focus,
 #theme_name #personal_center .el-input__inner:focus,
 #theme_name #intellectualPropertyProtection .el-input__inner:focus {

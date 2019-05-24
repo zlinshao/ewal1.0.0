@@ -443,9 +443,7 @@
               message: res.msg
             })
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       //面试结果列表
       getInterviewResList() {
@@ -458,9 +456,7 @@
             this.tableList = [];
             this.tableCount = 0;
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       handleCheck(id) {
         this.is_sel = id;
@@ -474,7 +470,6 @@
         this.interview_res_visible = false;
       },
       tableDblClick(row) {
-        debugger
         this.currentRow = row;
         this.interview_form.position = row.position.name;
         this.interview_form.name = row.name;

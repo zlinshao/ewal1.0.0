@@ -118,17 +118,30 @@
       <!--二次入职dialog-->
       <lj-dialog
         :visible.sync="second_entry_dialog_visible"
-        :size="{width: 500 + 'px',height: 300 + 'px'}"
+        :size="{width: 450 + 'px',height: 500 + 'px'}"
       >
         <div class="dialog_container">
           <div class="dialog_header">
             <h3>复职</h3>
           </div>
           <div class="dialog_main flex-center">
-            <div style="margin-right: 30px">入职等级</div>
-            <dropdown-list v-model="second_entry_position_level"
-                           width="140" size="mini" :clearable="false"
-                           :json-arr="DROPDOWN_CONSTANT.POSITION_LEVEL"></dropdown-list>
+            <el-form ref="secondEntryFormRef" :model="second_entry_form" :rules="rules.second_entry" label-width="80px">
+              <el-form-item label="岗位" prop="position_id" required>
+                <post-choose size="mini" title="必选" width="220" num="1" v-model="second_entry_form.position_id"></post-choose>
+              </el-form-item>
+              <el-form-item label="部门">
+                <org-choose size="mini" title="自动获取" :disabled="true" width="220" v-model="second_entry_form.org_id"></org-choose>
+              </el-form-item>
+              <el-form-item label="入职等级">
+                <dropdown-list v-model="second_entry_form.position_level"
+                               width="220" size="mini" :clearable="false"
+                               :json-arr="DROPDOWN_CONSTANT.POSITION_LEVEL"></dropdown-list>
+              </el-form-item>
+              <el-form-item label="手机号码" prop="phone" required>
+                <el-input size="mini" placeholder="必填" width="220" v-model="second_entry_form.phone"></el-input>
+              </el-form-item>
+            </el-form>
+
           </div>
           <div class="dialog_footer">
             <el-button type="danger" size="small" @click="confirmSecondEntry(false)">复职</el-button>
@@ -142,12 +155,6 @@
 </template>
 
 <script>
-  /*
-  * <dropdown-list v-model="pay_form.pay_type"
-                               :disabled="type!='payment'"
-                               width="110" size="mini" :clearable="false"
-                               :json-arr="DROPDOWN_CONSTANT.PAYMENT_WAY"></dropdown-list>
-  * */
   import _ from 'lodash';
   import DropdownList from '../../../common/lightweightComponents/dropdown-list';
   import {DROPDOWN_CONSTANT} from '@/assets/js/allConstantData';
@@ -158,6 +165,14 @@
     props: ['searchVal'],
     data() {
       return {
+        rules: {
+          second_entry: {
+            position_id: [{required: true, message: '请选择岗位', trigger: 'blur'}],
+            phone: [{required: true, message: '请输入手机号', trigger: 'blur'},{min:11,max:11,message:'请输入11位手机号码',trigger:'blur'}],
+          },
+        },
+
+
         DROPDOWN_CONSTANT,
         url:globalConfig.humanResource_server,
         confirm_visible: false,
@@ -185,7 +200,14 @@
         /*二次入职dialog显示隐藏*/
         second_entry_dialog_visible:false,
         /*二次入职职级*/
-        second_entry_position_level:1,
+        //second_entry_position_level:1,
+        /*二次入职表单*/
+        second_entry_form:{
+          org_id:[],
+          position_id:[],
+          phone:null,
+          position_level: 1,
+        },
       }
     },
     mounted() {
@@ -200,6 +222,20 @@
           this.getStaffList();
         },
         deep: true
+      },
+      'second_entry_form.position_id': {//自动获取部门
+        handler(val,oldVal) {
+          if(val.constructor===Array&&val.length==1) {//选取岗位了
+            let id = val[0];
+            this.$http.get(`${this.url}organization/position/${id}`).then(res=> {
+              if(res.code.endsWith('0')) {
+                this.second_entry_form.org_id = [res.data.duty?.org_id];
+                console.log(this.second_entry_form.org_id);
+              }
+            });
+          }
+        },
+        immediate:true,
       },
     },
     computed: {},
@@ -329,31 +365,35 @@
       /*打开二次入职*/
       openSecondEntryDialog(row) {
         this.currentSelection = _.cloneDeep(row);
+        this.second_entry_form.position_id = [row.position[0]?.id||null];
+        this.second_entry_form.phone = row.phone;
         this.second_entry_dialog_visible  = true;
         console.log(row);
       },
       /*确定入职 isSendMessage为true时发送复职消息*/
       confirmSecondEntry(isSendMessage = false) {
-        this.$LjConfirm({content:`确定复职${this.currentSelection.name}吗？`}).then(()=> {
-          let id = this.currentSelection.id;
-          let params = {
-            type:"second_entry",
-            enroll:this.myUtils.formatDate(new Date()),
-            position_level:this.second_entry_position_level
-          };
-          debugger
-          if(isSendMessage) {
-            params.message="second_entry";
-          }
-          this.$http.put(`${this.url}staff/user/${id}`,params).then(res=> {
-            this.$LjMessageEasy(res,()=> {
-              this.getStaffList();
+
+        this.$refs['secondEntryFormRef'].validate(valid=> {
+          if(valid) {
+            this.$LjConfirm({content:`确定复职${this.currentSelection.name}吗？`}).then(()=> {
+              let id = this.currentSelection.id;
+              let params = {
+                type:"second_entry",
+                enroll:this.myUtils.formatDate(new Date()),
+                ...this.second_entry_form
+                //position_level:this.second_entry_form.position_level
+              };
+              if(isSendMessage) {
+                params.message="second_entry";
+              }
+              this.$http.put(`${this.url}staff/user/${id}`,params).then(res=> {
+                this.$LjMessageEasy(res,()=> {
+                  this.getStaffList();
+                });
+              });
             });
-          });
+          }
         });
-
-
-
       },
     },
   }

@@ -1,5 +1,16 @@
+import UserChoose from '../components/common/lightweightComponents/UserChoose';
+import OrgChoose from '../components/common/lightweightComponents/OrgChoose';
+import PostChoose from '../components/common/lightweightComponents/PostChoose';
 export default {
   install(Vue, options) {
+    /*全局组件注册*/
+    Vue.component(UserChoose.name, UserChoose);//选人
+    Vue.component(OrgChoose.name, OrgChoose);//选部门
+    Vue.component(PostChoose.name, PostChoose);//选岗位
+
+
+
+
     // 路由跳转
     Vue.prototype.routerLink = function (url, data,url_name) {
       if (data) {
