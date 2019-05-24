@@ -285,12 +285,14 @@
           {
             search: '',
             org_id: [],
-            position_id: []
+            position_id: [],
+            platform:'',
           },
           {
             search: '',
             org_id: [],
-            position_id: []
+            position_id: [],
+            platform:'',
           },
           {
             search: '',

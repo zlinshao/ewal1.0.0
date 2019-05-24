@@ -6,7 +6,7 @@ import DropdownList from '../components/common/lightweightComponents/dropdown-li
 import {DROPDOWN_CONSTANT,GLOBAL_CONSTANT} from '@/assets/js/allConstantData';
 export default {
   install(Vue, options) {
-    /*全局组件注册*/
+    /*全局组件及全局常量注册*/
     Vue.component(UserChoose.name, UserChoose);//选人
     Vue.component(OrgChoose.name, OrgChoose);//选部门
     Vue.component(PostChoose.name, PostChoose);//选岗位

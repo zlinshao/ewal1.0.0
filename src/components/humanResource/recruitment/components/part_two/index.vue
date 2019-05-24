@@ -58,7 +58,7 @@
 
       <!--添加面试人-->
       <lj-dialog
-        :visible="add_interviewer_visible"
+        :visible.sync="add_interviewer_visible"
         :size="{width: 450 + 'px',height: 550 + 'px'}"
         @close="handleCloseAddInterviewer"
       >
@@ -550,7 +550,7 @@
       },
       //关闭添加面试官
       handleCloseAddMsg() {
-        for (var key in this.add_msg_form) {
+        for (let key in this.add_msg_form) {
           this.add_msg_form[key] = '';
         }
         this.add_msg_visible = false;
@@ -560,12 +560,12 @@
       },
       //关闭添加面试人
       handleCloseAddInterviewer() {
-        for (var key in this.add_interviewer_form) {
+        for (let key in this.add_interviewer_form) {
           this.add_interviewer_form[key] = '';
         }
         this.add_interviewer_form.position_id = [];
         this.add_interviewer_form.position = '';
-        this.add_interviewer_visible = false;
+        this.interview_list.interviewer = [];
         this.$emit('closeMs');
       },
       //分页

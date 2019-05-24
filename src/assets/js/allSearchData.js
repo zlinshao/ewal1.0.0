@@ -700,7 +700,7 @@ export const recruitmentSearchList = {
     status: 'recruitmentSearchList',
     keywords: 'search',
     data: [
-      {
+      /*{
         keyType: 'depart',
         title: '部门',
         placeholder: '请选择部门',
@@ -710,7 +710,8 @@ export const recruitmentSearchList = {
           num: '',
           arr: []
         }
-      },
+      },*/
+
       {
         keyType: 'position',
         title: '岗位',
@@ -720,14 +721,33 @@ export const recruitmentSearchList = {
         value: {
           num: ''
         }
-      }
+      },
+      {
+        keyType: 'radio',
+        title: '来源',
+        keyName: 'platform',
+        dataType: [],
+        value: [
+          { id: 0, title: '智联招聘' },
+          { id: 1, title: '前程无忧' },
+          { id: 2, title: '58同城' },
+          { id: 3, title: 'BOSS直聘' },
+          { id: 4, title: '猎聘网' },
+          { id: 5, title: '首席信才' },
+          { id: 6, title: '德胜人才' },
+          { id: 7, title: '校园招聘会' },
+          { id: 8, title: '社会招聘会' },
+          { id: 9, title: '推荐' },
+          { id: 10, title: '其他' },
+        ]
+      },
     ]
   },
   3: {
     status: 'recruitmentSearchList',
     keywords: 'search',
     data: [
-      {
+      /*{
         keyType: 'depart',
         title: '部门',
         placeholder: '请选择部门',
@@ -737,7 +757,8 @@ export const recruitmentSearchList = {
           num: '',
           arr: []
         }
-      },
+      },*/
+
       {
         keyType: 'position',
         title: '岗位',
@@ -747,7 +768,26 @@ export const recruitmentSearchList = {
         value: {
           num: ''
         }
-      }
+      },
+      {
+        keyType: 'radio',
+        title: '来源',
+        keyName: 'platform',
+        dataType: [],
+        value: [
+          { id: 0, title: '智联招聘' },
+          { id: 1, title: '前程无忧' },
+          { id: 2, title: '58同城' },
+          { id: 3, title: 'BOSS直聘' },
+          { id: 4, title: '猎聘网' },
+          { id: 5, title: '首席信才' },
+          { id: 6, title: '德胜人才' },
+          { id: 7, title: '校园招聘会' },
+          { id: 8, title: '社会招聘会' },
+          { id: 9, title: '推荐' },
+          { id: 10, title: '其他' },
+        ]
+      },
     ]
   },
   4: {//预约入职
