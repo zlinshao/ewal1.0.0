@@ -119,7 +119,6 @@
       }
     },
     mounted() {
-      //debugger
       //this.getList();
     },
     activated() {
@@ -199,14 +198,12 @@
       },
       // 下级事件
       clickDepart(val) {
-        debugger
         this.getList(val.id).then(_ => {
           this.crumbs.push(val);
         });
       },
       // 面包屑
       crumbsList(val) {
-        debugger
         let crumbs = this.crumbs;
         crumbs.forEach((res, index) => {
           if (res.id === val) {

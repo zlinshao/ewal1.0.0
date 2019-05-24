@@ -558,6 +558,7 @@ export const overViewSearch = {
   status: 'overViewSearch',
   placeholder: '请输入物品名称',
   keywords: 'search',
+  data:[],
 }
 
 //借用领用
