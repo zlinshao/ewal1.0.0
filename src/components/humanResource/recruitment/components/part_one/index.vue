@@ -89,7 +89,7 @@
               <el-form-item label="岗位" prop="position_id" required>
                 <post-choose width="360" num="1" title="请选择" :show-icon="false" v-model="control_mb_form.position_id"></post-choose>
               </el-form-item>
-              <el-form-item label="部门" prop="org_id" required>
+              <el-form-item label="部门">
                 <org-choose width="360" num="1" :disabled="true" title="自动获取" :show-icon="false" v-model="control_mb_form.org_id"></org-choose>
               </el-form-item>
               <el-form-item label="所需人数" prop="number">
