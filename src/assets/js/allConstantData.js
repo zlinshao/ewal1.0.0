@@ -33,7 +33,7 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
   PAYMENT_STATUS: [{id:1,name:'未缴纳'},{id:2,name:'已缴纳'}],
   PAYMENT_WAY:[{id:1,name:'工资扣款'},{id:2,name:'电子支付'}],
   /*入职等级*/
-  ENTRY_LEVEL: [{id:1,name:'实习'},{id:2,name:'正式'}],
+  ENTRY_LEVEL: [{id:0,name:'实习'},{id:1,name:'正式'}],
   /*职级*/
   POSITION_LEVEL: [{id:1,name:'P1'},{id:2,name:'P2'},{id:3,name:'P3'},{id:4,name:'P4'},{id:5,name:'P5'},{id:6,name:'P6'},{id:7,name:'P7'}],
   //调查状态

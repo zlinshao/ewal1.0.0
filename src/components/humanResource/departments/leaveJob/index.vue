@@ -53,7 +53,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <div class="second-e打开ntry">
+            <div class="second-entry">
               <el-button type="text" @click="openSecondEntryDialog(scope.row)">复职</el-button>
             </div>
 
@@ -133,9 +133,9 @@
                 <org-choose size="mini" title="自动获取" :disabled="true" width="220" v-model="second_entry_form.org_id"></org-choose>
               </el-form-item>
               <el-form-item label="入职等级">
-                <dropdown-list v-model="second_entry_form.ENTRY_LEVEL"
+                <dropdown-list v-model="second_entry_form.level"
                                width="220" size="mini" :clearable="false"
-                               :json-arr="DROPDOWN_CONSTANT.POSITION_LEVEL"></dropdown-list>
+                               :json-arr="DROPDOWN_CONSTANT.ENTRY_LEVEL"></dropdown-list>
               </el-form-item>
               <el-form-item label="手机号码" prop="phone" required>
                 <el-input size="mini" placeholder="必填" width="220" v-model="second_entry_form.phone"></el-input>
@@ -206,7 +206,7 @@
           org_id:[],
           position_id:[],
           phone:null,
-          position_level: 1,
+          level: 1,
         },
       }
     },

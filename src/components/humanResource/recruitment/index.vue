@@ -295,7 +295,8 @@
           {
             search: '',
             org_id: [],
-            position_id: []
+            position_id: [],
+            platform:'',
           }
         ],
         humanResource,
@@ -513,8 +514,9 @@
       },
       //关闭搜索
       hiddenModule(val,item,search) {
+        debugger
         if (val !== 'close') {
-          for (var key in this.allSearch[this.chooseTab - 1]) {
+          for (let key in this.allSearch[this.chooseTab - 1]) {
             this.allSearch[this.chooseTab - 1][key] = val[key];
           }
         }
