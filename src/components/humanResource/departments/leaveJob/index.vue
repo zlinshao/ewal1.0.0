@@ -17,7 +17,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="入职时间" prop="staff.enroll" align="center" sortable></el-table-column>
+        <el-table-column label="入职时间" prop="staff.enroll" align="center"></el-table-column>
         <el-table-column label="离职时间" prop="staff.dismiss_time" align="center"></el-table-column>
         <el-table-column label="离职操作时间" prop="is_on_job" align="center" min-width="120px"></el-table-column>
         <el-table-column label="禁用操作时间" prop="is_enable" align="center" min-width="120px"></el-table-column>
