@@ -466,6 +466,8 @@
         this.current_time = id;
       },
       handleOpenSearch() {
+        let result = recruitmentSearchList[this.chooseTab];
+        debugger
         this.searchData = recruitmentSearchList[this.chooseTab];
         this.showSearch = true;
       },

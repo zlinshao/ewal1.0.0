@@ -133,7 +133,7 @@
                 <org-choose size="mini" title="自动获取" :disabled="true" width="220" v-model="second_entry_form.org_id"></org-choose>
               </el-form-item>
               <el-form-item label="入职等级">
-                <dropdown-list v-model="second_entry_form.position_level"
+                <dropdown-list v-model="second_entry_form.ENTRY_LEVEL"
                                width="220" size="mini" :clearable="false"
                                :json-arr="DROPDOWN_CONSTANT.POSITION_LEVEL"></dropdown-list>
               </el-form-item>

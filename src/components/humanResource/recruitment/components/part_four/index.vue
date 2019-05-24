@@ -844,6 +844,7 @@
     watch: {
       searchData: {
         handler(val) {
+          debugger
           this.params = Object.assign(this.params,{},val);
           this.getTableList();
         },
