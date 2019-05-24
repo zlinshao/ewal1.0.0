@@ -381,9 +381,9 @@
         this.$http.get(`recruitment/interviewees/get_resume_url/${row.interviewee_id}`).then(res => {
           if (res.code === '20020') {
             if (res.data.url) {
-              if (res.data.url.endsWith('.pdf')) {
+              if (res.data.url.endsWith('.pdf') ||res.data.url.endsWith('.jpg')||res.data.url.endsWith('.png')||res.data.url.endsWith('.gif')) {
                 window.open(res.data.url);
-              } else {
+              } else if (res.data.url.endsWith('.doc') ||res.data.url.endsWith('.xls')) {
                 window.open(`https://view.officeapps.live.com/op/view.aspx?src=${res.data.url}`);
               }
             } else {
