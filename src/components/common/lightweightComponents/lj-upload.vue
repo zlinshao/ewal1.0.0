@@ -45,11 +45,15 @@
 
       value: {
         handler(val, oldVal) {
-          debugger
-          if (val && !oldVal && this.count == 0) {
+          if(val && val.length>0 && this.count==0) {
             this.count++;
             this.getPhotoInfoList(val);
           }
+          /*if (val && !oldVal && this.count == 0) {
+            debugger
+            this.count++;
+            this.getPhotoInfoList(val);
+          }*/
         },
         immediate: true
       },
@@ -73,8 +77,8 @@
             width: '60px',
             height: '60px'
           },
-          count: 0,
-        }
+        },
+        count: 0,
       }
     },
     mounted() {

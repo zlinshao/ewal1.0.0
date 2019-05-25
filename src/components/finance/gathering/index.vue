@@ -505,9 +505,9 @@
               header-row-class-name="tableHeader"
               @selection-change="receiptSelectionChange"
             >
-              <!--<el-table-column
+              <el-table-column
                 type="selection" width="40">
-              </el-table-column>-->
+              </el-table-column>
               <el-table-column label="实收金额" prop="amount_received" align="center"></el-table-column>
               <el-table-column label="时间" prop="operate_time" align="center"></el-table-column>
               <el-table-column label="账户" prop="account.name" align="center"></el-table-column>

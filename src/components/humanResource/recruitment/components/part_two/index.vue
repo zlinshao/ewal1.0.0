@@ -92,7 +92,6 @@
               </el-form-item>
               <el-form-item label="上传简历">
                 <lj-upload size="40" :limit="['doc','pdf','png','jpg','jpeg']" style="position: absolute;top: -13px;" v-model="add_interviewer_form.resume_id"></lj-upload>
-<!--                <Upload :file="upload_form" @success="handleGetFile"></Upload>-->
               </el-form-item>
             </el-form>
           </div>
