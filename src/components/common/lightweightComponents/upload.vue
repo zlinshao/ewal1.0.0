@@ -260,8 +260,9 @@
           let fileName = file.name;
           let fileSize = file.size;
           let ext = file.name.split('.')[file.name.split('.').length-1];
+          let li = this.limit;
           if(this.limit.constructor===Array&&this.limit.length>0) {
-            if(!_.includes(this.limit),ext) {
+            if(!_.includes(this.limit,ext)) {
               this.$LjMessage('warning',{
                 title:'警告',
                 msg:`仅支持上传${this.limit.join(',')}的类型`,
