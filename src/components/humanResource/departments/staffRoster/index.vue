@@ -374,7 +374,7 @@
           // { key: 'staff.graduation_time',val: '毕业时间',width: "150px"},
           // { key: 'staff.major',val: '专业'},
           // { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
-          { key: 'staff.dismiss_time',val: '离职时间',width: "150px"},
+          // { key: 'staff.dismiss_time',val: '离职时间',width: "150px"},
           // { key: 'staff.dismiss_reason.dismiss_type',val: '离职类型',info: {1: '主动离职',2: '旷工离职',3: '劝退',4: '开除',5: '其他'}},
           // { key: 'staff.dismiss_reason.dismiss_mess',val: '离职原因'},
           // { key: 'staff.bank_num',val: '银行卡号',width: "180px",position:'left'},
@@ -397,7 +397,7 @@
         params: {
           search: '',
           page: 1,
-          limit: 30,
+          limit: 12,
           org_id: '',
           position_id: '',
         },

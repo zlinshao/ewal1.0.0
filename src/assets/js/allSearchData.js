@@ -59,6 +59,26 @@ export const staffBookSearch = {
     }
   ]
 }
+// 离职管理
+export const OrgSearch = {
+    status: 'OrgSearch',
+    keywords: 'search',
+    limit: 7,
+    page:1,
+    data: [
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org_id',
+            dataType: [],
+            value: {
+                num: '',
+                arr: []
+            }
+        }
+    ]
+}
 
 // 离职管理
 export const LeaveJobSearch = {
