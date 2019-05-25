@@ -263,7 +263,7 @@ export const workOrderSearch = {
 // 回访记录
 export const visitToRecordSearch = {
   status: 'visitToRecord',
-  placeholder: '地址/合同编号/工单编号/内容',
+  placeholder: '地址/合同编号/内容',
   keywords: 'search',
   data: [
     {
