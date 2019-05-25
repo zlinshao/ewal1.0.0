@@ -3,7 +3,7 @@
   <div id="lj_upload">
     <div class="upload-container">
       <span v-if="title" class="upload-title">{{title}}</span>
-      <upload :max-size="maxSize" :download="download" show :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
+      <upload :max-size="maxSize" :download="download" show :limit="limit" :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
     </div>
   </div>
 </template>
@@ -12,13 +12,14 @@
   import Upload from './upload';
 
   export default {
-    name: "lj-upload",
+    name: "ljUpload",
     //props: ['title', 'value', 'size', 'data', 'disabled'],
     props: {
       title:{},
       value:{},
       size:{},
       data:{},
+      limit: {},
       disabled:{
         default:false,
       },

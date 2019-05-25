@@ -147,19 +147,15 @@
               </el-form-item>
               <el-form-item label="面试官一">
                 <user-choose num="1" title="请选择" v-model="edit_offer.interviewer_first_id"></user-choose>
-<!--                <el-input v-model="edit_offer.interviewer_first" readonly @focus="handleOpenStaff('first')"></el-input>-->
               </el-form-item>
               <el-form-item label="面试官二">
                 <user-choose num="1" title="请选择" v-model="edit_offer.interviewer_second_id"></user-choose>
-<!--                <el-input v-model="edit_offer.interviewer_second" readonly  @focus="handleOpenStaff('second')"></el-input>-->
               </el-form-item>
               <el-form-item label="面试官三">
                 <user-choose num="1" title="请选择" v-model="edit_offer.interviewer_third_id"></user-choose>
-<!--                <el-input v-model="edit_offer.interviewer_third" readonly  @focus="handleOpenStaff('third')"></el-input>-->
               </el-form-item>
               <el-form-item label="试卷">
                 <dropdown-list v-model="edit_offer.paper_id" :url="`${this.url}train/exam`" :params="{type:1}"></dropdown-list>
-                <!--<lj-upload size="40" style="position: absolute;top: -13px;" v-model="edit_offer.paper_id"></lj-upload>-->
               </el-form-item>
             </el-form>
           </div>
@@ -170,11 +166,6 @@
         </div>
       </lj-dialog>
 
-      <DepartOrgan :module="depart_visible" @close="handleGetDepart"></DepartOrgan>
-
-      <StaffOrgan :module="staff_visible" @close="handleGetStaff"></StaffOrgan>
-
-      <PositionOrgan :module="position_visible" @close="handleGetPosition"></PositionOrgan>
 
       <!--面板数据-->
       <!--<div class="panel-info flex-center">
@@ -212,19 +203,11 @@
   import { humanResource } from '../../../assets/js/allModuleList.js';
   import { recruitmentSearchList } from '../../../assets/js/allSearchData.js';
 
-  import DepartOrgan from '../../common/departOrgan.vue';
-  import StaffOrgan from '../../common/staffOrgan.vue';
-  import PositionOrgan from '../../common/postOrgan.vue';
-
-  import UserChoose from '../../common/lightweightComponents/UserChoose';
-  import OrgChoose from '../../common/lightweightComponents/OrgChoose';
-  import PostChoose from '../../common/lightweightComponents/PostChoose';
-  import LjUpload from '../../common/lightweightComponents/lj-upload';
 
 
   export default {
     name: "index",
-    components: {SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog,DepartOrgan,StaffOrgan,PositionOrgan,UserChoose,OrgChoose,PostChoose,LjUpload},
+    components: {SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog},
     data() {
       return {
         url:globalConfig.humanResource_server,
@@ -253,9 +236,6 @@
           position_name: '',
         },
         currentRow: '',
-        depart_visible: false,
-        staff_visible: false,
-        position_visible: false,
         interview_type: '',
 
 
@@ -361,54 +341,12 @@
           interviewer_first_id: '',
           interviewer_second_id: '',
           interviewer_third_id: '',
-          interviewer_first: '',
-          interviewer_second: '',
-          interviewer_third: '',
           org_id: '',
           paper_id: '',
           position_id: '',
           user_id: '',
-          depart: '',
-          position_name: '',
         };
         this.edit_offer_visible = false;
-      },
-      handleGetDepart(id,name){
-        if (id !== 'close') {
-          this.edit_offer.depart = name;
-          this.edit_offer.org_id = id;
-        }
-        this.depart_visible = false;
-      } ,
-      handleGetStaff(id,name) {
-        if (id !== 'close') {
-          switch (this.interview_type) {
-            case 'first':
-              this.edit_offer.interviewer_first = name;
-              this.edit_offer.interviewer_first_id = id;
-              break;
-            case 'second':
-              this.edit_offer.interviewer_second = name;
-              this.edit_offer.interviewer_second_id = id;
-              break;
-            case 'third':
-              this.edit_offer.interviewer_third = name;
-              this.edit_offer.interviewer_third_id = id;
-              break;
-          }
-        }
-        this.staff_visible = false;
-      },
-      handleGetPosition(id,name) {
-        if (id !== 'close') {
-          this.edit_offer.position_name = name;
-          this.edit_offer.position_id = id;
-        }
-        this.position_visible = false;
-      },
-      handleOpenStaff(type) {
-        this.interview_type = type;
-        this.staff_visible = true;
       },
       handleSubmitEditOffer() {
         let interviewers  = _.filter([...this.edit_offer.interviewer_first_id,...this.edit_offer.interviewer_second_id,...this.edit_offer.interviewer_third_id],(o)=> {return o});

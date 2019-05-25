@@ -113,6 +113,12 @@
       file: {},
       disabled:{},
       download:{},
+      limit: {
+        type:Array,
+        default() {
+          return [];
+        }
+      },
       maxSize: {
         type:[Number],
       },
@@ -132,6 +138,7 @@
         isVideo: '',//是否视频
         progress: [],
         uploadCss: this.file.size || {width: '100px', height: '100px'},
+        //limit: ['doc','txt','png'],
       }
     },
     mounted() {
@@ -252,6 +259,17 @@
           let fileType = '';
           let fileName = file.name;
           let fileSize = file.size;
+          let ext = file.name.split('.')[file.name.split('.').length-1];
+          if(this.limit.constructor===Array&&this.limit.length>0) {
+            if(!_.includes(this.limit),ext) {
+              this.$LjMessage('warning',{
+                title:'警告',
+                msg:`仅支持上传${this.limit.join(',')}的类型`,
+              });
+              document.getElementById(that.file.keyName).value = null;
+              return;
+            }
+          }
           if(this.maxSize) {
             if(this.maxSize*1024*1024<=file.size) {
               this.$LjMessage('warning',{

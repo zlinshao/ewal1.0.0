@@ -390,7 +390,7 @@
       <!--入职确定-->
       <lj-dialog
         :visible="ok_interviewee_visible"
-        :size="{width: 400 + 'px',height: 250 + 'px'}"
+        :size="{width: 450 + 'px',height: 250 + 'px'}"
         @close="ok_interviewee_visible = false"
       >
         <div class="dialog_container">
@@ -401,7 +401,8 @@
             <div class="unUse-txt">确定入职该员工吗？</div>
           </div>
           <div class="dialog_footer">
-            <el-button type="danger" size="small" @click="handleOkInterviewee">确定</el-button>
+            <el-button type="danger" size="small" @click="handleOkInterviewee(false)">确定</el-button>
+            <el-button type="danger" size="small" @click="handleOkInterviewee(true)">确定并发送入职消息</el-button>
             <el-button type="info" size="small" @click="ok_interviewee_visible = false">取消</el-button>
           </div>
         </div>
@@ -844,7 +845,6 @@
     watch: {
       searchData: {
         handler(val) {
-          debugger
           this.params = Object.assign(this.params,{},val);
           this.getTableList();
         },
@@ -1066,8 +1066,12 @@
           }
         });
       },
-      handleOkInterviewee() {
-        this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,this.interview_info_detail).then(res => {
+      handleOkInterviewee(isSendMessage) {
+        let params = {
+          ...this.interview_info_detail
+        };
+        params.send_info = isSendMessage?1:0;
+        this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,params).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',

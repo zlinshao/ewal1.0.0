@@ -5,7 +5,8 @@
   <app-index-more :visible.sync="more_visible"></app-index-more>-->
 
     <el-button @click="demo">测试</el-button>
-    <post-choose v-model="post_list"></post-choose>
+    <lj-upload v-model="list" :limit="['png']"></lj-upload>
+<!--    <post-choose v-model="post_list"></post-choose>-->
 <!--    <user-choose v-model="user_list"></user-choose>-->
 <!--    <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>
@@ -95,7 +96,7 @@
             },
           }
         ],
-        list: [4225067],
+        list: [],
         //user_list: [211, 289, 3604, 3623, 3590, 3589],
         user_list: [3604, 3335, 3338, 3337, 3339, 3336, 3334, 3343, 3388, 3630],
         org_list: [411,418, 419],
