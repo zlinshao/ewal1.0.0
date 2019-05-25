@@ -402,7 +402,6 @@ export default {
     addOrEditHousingTag (row, type) {
       this.tagType = type
       this.currentRow = row
-      this.mark_visible = true;
 
       if(type==2) {//修改标记
         let tag_id = row.tag_id;
@@ -410,9 +409,11 @@ export default {
         this.$http.get(`${this.market_server}v1.0/market/contract/tagdetail/${tag_id}`).then(res=> {
           if(res.code.toString().endsWith('0')) {
             this.mark_form = res.data;
+            this.mark_visible = true;
           }
         });
       }
+
 
     },
     // close 添加标记
