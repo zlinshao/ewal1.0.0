@@ -45,6 +45,7 @@
 
       value: {
         handler(val, oldVal) {
+          debugger
           if (val && !oldVal && this.count == 0) {
             this.count++;
             this.getPhotoInfoList(val);

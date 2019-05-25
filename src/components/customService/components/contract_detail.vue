@@ -493,7 +493,6 @@ export default {
   },
   methods: {
     getDetailContract () {
-      debugger
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.moduleData.contract_id}`).then(res => {
         if (res.code === 200) {
           let data = res.data
