@@ -21,7 +21,7 @@
                     :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
-        <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2 && chooseTab !== 1"></div>
+        <div class="icons search" @click="highSearch(chooseTab)" v-show=" chooseTab !== 1"></div>
       </div>
     </div>
 
@@ -593,7 +593,7 @@
   import ljDialog from '../../common/lj-dialog.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
-  import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
+  import {OrgSearch,staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
   export default {
@@ -746,7 +746,7 @@
           limit: 7,
           parent_id: 1
         },
-
+        OrgSearch,
         staffBookSearch,
         LeaveJobSearch,
         humanResource,
@@ -1445,6 +1445,9 @@
       highSearch(val) {
         this.showSearch = true;
         switch (val) {
+          case 2:
+            this.searchData = this.OrgSearch;
+            break;
           case 3:
             this.searchData = this.staffBookSearch;
             break;
@@ -1458,6 +1461,11 @@
         this.showSearch = false;
         if (val !== 'close') {
           switch (this.chooseTab) {
+              case 2:
+                  this.params=val;
+                  this.params.parent_id=1;
+                  this.getDepartList();
+                  break;
             case 3:
               this.searchFruit3 = val;
               break;
