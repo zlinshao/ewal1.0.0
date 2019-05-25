@@ -893,7 +893,13 @@
         },
         staffList: [],
         dutyList: [],
-
+        dutyParams: {
+            search: '',
+            page: 1,
+            limit: 999,
+            org_id: '',
+            position_id: ''
+        },
         addStaffVisible: '',
         positionForm: {
           name: '',
@@ -1077,6 +1083,7 @@
           this.interview_info_detail.org_id = [];
           this.interview_info_detail.org_id.push(val.id);
           this.staffParams.org_id = val.id;
+          this.dutyParams.org_id = val.id;
           this.getStaffList();
           // this.getDutyList();
         },
@@ -1621,7 +1628,7 @@
       },
       //获取职位列表
       getDutyList() {
-        this.$http.get('organization/duty',this.staffParams).then(res => {
+        this.$http.get('organization/duty',this.dutyParams).then(res => {
           if (res.code === '20000') {
             this.dutyList = res.data.data;
           } else {
