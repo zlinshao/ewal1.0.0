@@ -505,9 +505,9 @@
               header-row-class-name="tableHeader"
               @selection-change="receiptSelectionChange"
             >
-              <el-table-column
+              <!--<el-table-column
                 type="selection" width="40">
-              </el-table-column>
+              </el-table-column>-->
               <el-table-column label="实收金额" prop="amount_received" align="center"></el-table-column>
               <el-table-column label="时间" prop="operate_time" align="center"></el-table-column>
               <el-table-column label="账户" prop="account.name" align="center"></el-table-column>
@@ -1286,7 +1286,7 @@
             template: '【乐伽公寓】尊敬的***先生/女士：您租住的****小区，房租于***日到期，如续签/退租，请致电乐伽客户服务热线400-892-6606，谢谢。',
           },
           {
-            id: 3, name: '预期短信',
+            id: 3, name: '逾期短信',
             template: '【乐伽公寓】尊敬的***先生/女士：您租住的****小区，需要在XXX前缴纳下一期房租，您已经逾期XX天，请今天及时缴纳，如不缴纳，我们将按照合同处理，收回房屋！请您合理安排好缴款时间，及时缴款！如已缴纳，请忽略此条短信，感谢您的配合！如需咨询（如有疑问），请致电乐伽客户服务热线400-892-6606，谢谢。',
           },
         ],
