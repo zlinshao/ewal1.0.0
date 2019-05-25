@@ -397,9 +397,7 @@
 
 
 <script>
-import LjDialog from '../../common/lj-dialog.vue';
 import StaffOrgan from '../../common/staffOrgan.vue';
-import Ljupload from '../../common/lightweightComponents/lj-upload'
 import InvalidDialog from '../components/invalid-dialog'
 export default {
   props: ['visible',
@@ -410,10 +408,8 @@ export default {
     'showRelated', // 显示合同相关信息
     'disabled'], // 是否可选
   components: {
-    LjDialog,
     StaffOrgan,
     InvalidDialog,
-    Ljupload
   },
   data () {
     return {
@@ -497,6 +493,7 @@ export default {
   },
   methods: {
     getDetailContract () {
+      debugger
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.moduleData.contract_id}`).then(res => {
         if (res.code === 200) {
           let data = res.data
