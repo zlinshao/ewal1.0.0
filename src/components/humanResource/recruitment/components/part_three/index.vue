@@ -16,11 +16,7 @@
               header-row-class-name="tableHeader"
             >
               <el-table-column label="姓名" prop="name" align="center"></el-table-column>
-              <el-table-column label="来源" prop="come" align="center">
-                <template slot-scope="scope">
-                  <span>{{ platform[scope.row.platform - 1] }}</span>
-                </template>
-              </el-table-column>
+              <el-table-column label="来源" prop="platform" align="center"> </el-table-column>
               <el-table-column label="状态" prop="result" align="center"></el-table-column>
             </el-table>
           </div>

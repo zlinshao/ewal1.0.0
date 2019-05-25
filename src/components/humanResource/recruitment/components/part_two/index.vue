@@ -14,11 +14,7 @@
         >
           <el-table-column label="岗位名称" prop="position.name" align="center"></el-table-column>
           <el-table-column label="姓名" prop="name" align="center"></el-table-column>
-          <el-table-column label="来源" prop="come" align="center">
-            <template slot-scope="scope">
-              <span>{{ platform[scope.row.platform - 1] }}</span>
-            </template>
-          </el-table-column>
+          <el-table-column label="来源" prop="platform" align="center"></el-table-column>
           <el-table-column label="预约面试时间" prop="interview_time" align="center"></el-table-column>
           <el-table-column label="已通知面试官" prop="interviewer.name" align="center"></el-table-column>
           <el-table-column label="简历" prop="" align="center">
