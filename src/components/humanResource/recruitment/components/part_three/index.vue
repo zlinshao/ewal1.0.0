@@ -469,7 +469,7 @@
         this.currentRow = row;
         this.interview_form.position = row.position.name;
         this.interview_form.name = row.name;
-        this.interview_form.come = this.platform[row.platform - 1];
+        this.interview_form.come = row.platform;
         this.interview_form.interview_time = row.interview_time;
         this.interview_form.result = row.result;
         this.interview_form.comment = row.interview_comment;
