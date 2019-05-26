@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import store from './store'
 import myUtils from './utils/myUtils'
 import fun from './utils/fun.prototype'
+import storage from './utils/storage';
 import router from './router'
 import Axios from './utils/httpService'
 import _ from 'lodash';
@@ -52,6 +53,7 @@ Vue.use(fun)
 Vue.use(ElementUI)
 Vue.prototype.$echarts = echarts
 Vue.prototype.myUtils = myUtils
+Vue.prototype.$storage = storage;
 
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios

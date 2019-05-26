@@ -56,18 +56,8 @@
     },
     mounted() {
       debugger
-      let code = this.$route.query?.code;
-      if(code) {
-        //code = '2c2f9c9935acbf596b96e8794181e83e0cf5b6ea9901d58235c0c8e9dc6fcc54d338ad5e525ed1ed';
-        let params = {code};
-        this.$http.get(`${this.url}api/auth/fromCode`,params).then(res=> {
-          debugger
-          if(res.token_type=="Bearer"&&!res.access_token) {
-            const token = res.access_token;
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          }
-        });
-      }
+      console.log(Date.now());
+      this.validateScanLogin();
     },
     activated() {
       let that = this;
@@ -85,12 +75,36 @@
     },
     computed: {},
     methods: {
+      /*扫码登录*/
       scanLogin() {
         this.$http.get(`${this.url}api/sns/dingtalk/qrCode?client_name=ewal_web`).then(res=> {
           if(res.success==true) {
             window.location.href = res.url;
           }
         });
+      },
+
+      /*验证扫码登录*/
+      validateScanLogin() {
+        let code = this.$route.query?.code;
+        let message = this.$route.query?.message;
+        if(code) {
+          //code = '2c2f9c9935acbf596b96e8794181e83e0cf5b6ea9901d58235c0c8e9dc6fcc54d338ad5e525ed1ed';
+          let params = {code};
+          this.$http.get(`${this.url}api/auth/fromCode`,params).then(res=> {
+            debugger
+            if(res.token_type=="Bearer"&&!res.access_token) {
+              const token = res.access_token;
+              this.$storage.set('Authorization',token);
+
+              //axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            }
+          });
+        }
+        if(message) {
+          this.$LjMessage('warning',{title:'警告',msg:message});
+          return;
+        }
       },
     },
   }
