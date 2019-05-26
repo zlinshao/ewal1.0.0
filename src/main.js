@@ -11,70 +11,65 @@ import myUtils from './utils/myUtils'
 import fun from './utils/fun.prototype'
 import storage from './utils/storage';
 import router from './router'
+import axios from 'axios';
 import Axios from './utils/httpService'
+import getPermission from './utils/permission';
 import _ from 'lodash';
 
+axios.defaults.headers.common['Authorization'] = storage.get('Authorization');//设置请求头Authorization
 
-/*Axios.post('signToken', {
-  "NickName": "xxxx",
-  "Password": "xxxx",
-  "RequestSign": "B858C5EEE7FD4D37C635FB55841ACA59"
-}).then(res => {
-  axios.defaults.headers.common['Authorization'] = res.headers.authorization
-})*/
+import echarts from 'echarts';
+import 'echarts/theme/macarons.js';
+import './assets/scss/rest.css';
+import './assets/scss/element.css';
+import './assets/scss/currency.css';
+import './assets/scss/partical.css';
+import './assets/magnify/jquery.magnify.css';
+import './assets/magnify/jquery.magnify.js';
+import Confirm from '@/components/common/lightweightComponents/confirm/index.js';
 
+import '../static/UE/ueditor.config.js';
+import '../static/UE/ueditor.all.min.js';
+import '../static/UE/lang/zh-cn/zh-cn.js';
+import '../static/UE/ueditor.parse.min.js';
 
-import echarts from 'echarts'
-import 'echarts/theme/macarons.js'
-import './assets/scss/rest.css'
-import './assets/scss/element.css'
-import './assets/scss/currency.css'
-import './assets/scss/partical.css'
-import './assets/magnify/jquery.magnify.css'
-import './assets/magnify/jquery.magnify.js'
-import Confirm from '@/components/common/lightweightComponents/confirm/index.js'
+import Video from 'video.js';
+import 'video.js/dist/video-js.css';
 
-import '../static/UE/ueditor.config.js'
-import '../static/UE/ueditor.all.min.js'
-import '../static/UE/lang/zh-cn/zh-cn.js'
-import '../static/UE/ueditor.parse.min.js'
-
-import Video from 'video.js'
-import 'video.js/dist/video-js.css'
-
-import './assets/js/approval/dictionary.js'
-import './assets/js/approval/approval.js'
+import './assets/js/approval/dictionary.js';
+import './assets/js/approval/approval.js';
 
 
-Vue.prototype.$echarts = echarts
-Vue.use(Boss)
-Vue.use(Vuex)
-Vue.use(fun)
-Vue.use(ElementUI)
-Vue.prototype.$echarts = echarts
-Vue.prototype.myUtils = myUtils
+Vue.prototype.$echarts = echarts;
+Vue.use(Boss);
+Vue.use(Vuex);
+Vue.use(fun);
+Vue.use(ElementUI);
+Vue.prototype.$echarts = echarts;
+Vue.prototype.myUtils = myUtils;
 Vue.prototype.$storage = storage;
 
-Vue.config.productionTip = false
-Vue.prototype.$http = Axios
+Vue.config.productionTip = false;
+Vue.prototype.$http = Axios;
 
-Vue.prototype.$LjConfirm = Confirm.install
+Vue.prototype.$LjConfirm = Confirm.install;
 
-Vue.prototype.$video = Video
+Vue.prototype.$video = Video;
 
 /*加载权限*/
-router.beforeResolve(async (to, from, next) => {
+/*router.beforeResolve(async (to, from, next) => {
   async function getPermission() {
+
     let params = {
       user_id: 'self',
       type: 'all',
     };
 
-    /*let params = {
+    /!*let params = {
       user_id:'289',
       system_id:22,
       type:'all',
-    };*/
+    };*!/
     let result = await Axios.get(`${globalConfig.humanResource_server}organization/permission/all`, params);
     if (result.code.endsWith('0')) {
       Vue.prototype.VALIDATE_PERMISSION = {};
@@ -85,8 +80,8 @@ router.beforeResolve(async (to, from, next) => {
     }
   }
 
-  //await getPermission();
-  //setInterval(getPermission,1000*30);
+  await getPermission();
+  setInterval(getPermission, 1000 * 30);
   Vue.prototype.VALIDATE_PERMISSION = {
     "Assessment-Export": true,
     "Assessment-Management-Index": true,
@@ -235,8 +230,18 @@ router.beforeResolve(async (to, from, next) => {
     "User-Read": true,//查看员工详情
     "User-Second_Entry": true,//二次入职员工
     "User-Update": true,//修改员工
-  }
+  };
   next();
+});*/
+
+getPermission();//进入系统后首先同步获取权限 然后再每隔30秒异步获取权限
+
+router.beforeEach((to, from, next) => {
+  if (!storage.get('Authorization') && to.path != '/login') {
+    next({path: '/login'})
+  } else {
+    next();
+  }
 });
 
 /* eslint-disable no-new */
