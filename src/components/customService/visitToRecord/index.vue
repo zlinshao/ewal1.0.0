@@ -202,9 +202,9 @@
                   <div>
                     <span class='tit'>其他附件</span>
                     <div class='content content_album'>
-                      <div v-for='(item,key) in recordDetail.album_temp' class='imgs_box' v-if='key !="photo"'>
+                      <div v-for='(item,key) in recordDetail.album_temp' :key="key" class='imgs_box' v-if='key !="photo"'>
                         <p>{{dataAblum[key]}}</p>
-                        <Ljupload size='40' :value="recordDetail.album_temp[key]" disabled=true :download='false'></Ljupload>
+                        <lj-upload size='40' :value="recordDetail.album_temp[key]" disabled=true :download='false'></lj-upload>
                         <!-- <div v-if='item'> -->
                         <!-- <img :src="img.uri" alt="" v-for='img in item' :key='img.id' data-magnify="" data-caption="图片查看器"
                             :data-src="img.uri" v-if='img.uri'> -->

@@ -54,8 +54,10 @@
         ]
       }
     },
+    async created() {
+      await this.validateScanLogin();
+    },
     mounted() {
-      this.validateScanLogin();
     },
     activated() {
       let that = this;
@@ -87,7 +89,7 @@
       },
 
       /*验证扫码登录*/
-      validateScanLogin() {
+      async validateScanLogin() {
         let code = this.$route.query?.code;
         let message = this.$route.query?.message;
         if(code) {
