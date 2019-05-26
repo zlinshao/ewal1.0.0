@@ -1,6 +1,6 @@
 <template>
   <div id='contract_detail'>
-    <lj-dialog :visible="visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
+    <lj-dialog :visible="visible" :size="{width: 1250 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container" v-if='visible && contractDetail'>
         <div class="dialog_header">
           <h3>合同详情</h3>

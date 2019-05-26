@@ -20,7 +20,7 @@
             </p>
           </div>
         </div>
-        <div class="p3 flex-center" @click="routerLink('/')">
+        <div class="p3 flex-center" @click="login">
           <span class="writingMode">登&nbsp;&nbsp;录</span>
         </div>
       </div>
@@ -54,20 +54,10 @@
         ]
       }
     },
+    async created() {
+      await this.validateScanLogin();
+    },
     mounted() {
-      debugger
-      let code = this.$route.query?.code;
-      if(code) {
-        //code = '2c2f9c9935acbf596b96e8794181e83e0cf5b6ea9901d58235c0c8e9dc6fcc54d338ad5e525ed1ed';
-        let params = {code};
-        this.$http.get(`${this.url}api/auth/fromCode`,params).then(res=> {
-          debugger
-          if(res.token_type=="Bearer"&&!res.access_token) {
-            const token = res.access_token;
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          }
-        });
-      }
     },
     activated() {
       let that = this;
@@ -85,12 +75,64 @@
     },
     computed: {},
     methods: {
+      login() {
+        this.routerLink('/');
+      },
+
+      /*扫码登录*/
       scanLogin() {
         this.$http.get(`${this.url}api/sns/dingtalk/qrCode?client_name=ewal_web`).then(res=> {
           if(res.success==true) {
             window.location.href = res.url;
           }
         });
+      },
+
+      /*验证扫码登录*/
+      async validateScanLogin() {
+        let code = this.$route.query?.code;
+        let message = this.$route.query?.message;
+        if(code) {
+          let params = {code};
+          this.$http.get(`${this.url}api/auth/fromCode`,params).then(res=> {
+            if(res.token_type=="Bearer"&&res.access_token) {
+              const token = res.access_token;
+              this.$storage.set('Authorization',`Bearer ${token}`,res.expires_in);
+              axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+              return true;
+            }
+            return false;
+          }).then(res=> {//获取用户信息
+            if(res) {
+              this.$http.get(`${this.url}api/auth/user`).then(async res2 => {
+                if(res2.success==true) {
+                  this.$storage.set('user_info',{id:res2.data.id,name:res2.data.name,avatar:res2.data.detail?.avatar});
+                  //globalConfig.user_info = res2.data;
+                  let that = this
+                  async function getPermission() {
+                    let params = {
+                      user_id: 'self',
+                      type: 'all',
+                    };
+                    let result = await that.$http.get(`${globalConfig.humanResource_server}organization/permission/all`, params);
+                    if (result.code.endsWith('0')) {
+                      this.VALIDATE_PERMISSION = {};
+                      _(result.data).forEach((o, index) => {
+                        this.VALIDATE_PERMISSION[o] = true;
+                      });
+                    }
+                  }
+                  await getPermission();
+                  this.routerLink('/');
+                }
+              });
+            }
+          });
+        }
+        if(message) {
+          this.$LjMessage('warning',{title:'警告',msg:message});
+          return;
+        }
       },
     },
   }

@@ -447,6 +447,7 @@
       },
       //打开详情
       handleOpenDetail(row) {
+        debugger
         if (this.params.is_black === 1) {
           return false;
         }
@@ -454,7 +455,7 @@
         if (row.customer_type === '房东') {
           console.log(row.customer_type);
           // this.$http.get(this.market_server + `v1.0/market/customer/lord/${row.id}`).then(res => {
-          this.$http.get(this.market_server + `v1.0/market/customer/lord/1659`).then(res => {
+          this.$http.get(this.market_server + `v1.0/market/customer/lord/${row.id}`).then(res => {
             console.log(res,'房东');
             if (res.code === 200) {
               this.current_detail = res.data;
@@ -542,6 +543,7 @@
         if (id === 4) {
           obj.is_black = 1;
         } else {
+          obj.is_black = 0;
           obj.type = id;
         }
         this.params = Object.assign({},this.params,obj);
