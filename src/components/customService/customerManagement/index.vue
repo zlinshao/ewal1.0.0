@@ -447,7 +447,6 @@
       },
       //打开详情
       handleOpenDetail(row) {
-        debugger
         if (this.params.is_black === 1) {
           return false;
         }

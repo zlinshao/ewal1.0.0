@@ -84,11 +84,8 @@
 import SearchHigh from '../../common/searchHigh.vue'
 import StaffOrgan from '../../common/staffOrgan.vue'
 import MenuList from '../../common/menuList.vue';
-import LjDialog from '../../common/lj-dialog.vue';
-import InvalidDialog from '../components/invalid-dialog';
 import { dataAuditSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
-import Ljupload from '../../common/lightweightComponents/lj-upload';
 import contractDetail from '../components/contract_detail';
 
 export default {
@@ -97,10 +94,7 @@ export default {
     SearchHigh,
     StaffOrgan,
     MenuList,
-    LjDialog,
-    Ljupload,
     contractDetail,
-    InvalidDialog
   },
   data () {
     return {
