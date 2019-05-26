@@ -65,7 +65,6 @@ router.beforeResolve(async (to, from, next) => {
   async function getPermission() {
     let params = {
       user_id: 'self',
-      //system_id:22,
       type: 'all',
     };
 

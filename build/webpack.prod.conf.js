@@ -44,7 +44,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       parallel: true
     }),
     /*build后移除console和debugger*/
-    new UglifyJsPlugin({
+    /*new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
           warnings: false,
@@ -55,7 +55,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       sourceMap: false,
       parallel: true,
-    }),
+    }),*/
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),

@@ -22,10 +22,6 @@
             <span @click.stop='openMessage'>审批</span>
           </div>
           <app-index-more></app-index-more>
-          <!--<span style="position: relative" @mouseenter="more_visible = true">
-            更多
-
-          </span>-->
         </div>
         <div class="items-center personal">
           <span>冯宝宝</span>

@@ -14,6 +14,7 @@
               <b v-show="index === 2">1234</b>
             </div>
             <p class="forgetPassword">忘记密码？</p>
+            <p style="cursor: pointer" @click="scanLogin">钉钉扫码</p>
             <p class="loginBtn" @click="routerLink('/')">
               <span class="writingMode">登&nbsp;&nbsp;录</span>
             </p>
@@ -30,10 +31,12 @@
 </template>
 
 <script>
+  import axios from 'axios';
   export default {
     name: "login",
     data() {
       return {
+        url:globalConfig.shield_server,
         loginRotate: false,
         formData: [
           {
@@ -52,6 +55,19 @@
       }
     },
     mounted() {
+      debugger
+      let code = this.$route.query?.code;
+      if(code) {
+        //code = '2c2f9c9935acbf596b96e8794181e83e0cf5b6ea9901d58235c0c8e9dc6fcc54d338ad5e525ed1ed';
+        let params = {code};
+        this.$http.get(`${this.url}api/auth/fromCode`,params).then(res=> {
+          debugger
+          if(res.token_type=="Bearer"&&!res.access_token) {
+            const token = res.access_token;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          }
+        });
+      }
     },
     activated() {
       let that = this;
@@ -61,14 +77,22 @@
     },
     watch: {
       $route: {
-        handler(val, oldVal) {
+        handler(to, from) {
           this.loginRotate = false;
         },
-        deep: true// 深度观察监听
+        deep: true
       }
     },
     computed: {},
-    methods: {},
+    methods: {
+      scanLogin() {
+        this.$http.get(`${this.url}api/sns/dingtalk/qrCode?client_name=ewal_web`).then(res=> {
+          if(res.success==true) {
+            window.location.href = res.url;
+          }
+        });
+      },
+    },
   }
 </script>
 
