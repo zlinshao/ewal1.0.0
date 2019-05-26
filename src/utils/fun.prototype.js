@@ -178,7 +178,7 @@ export default {
     };
 
     /*验证权限*/
-    Vue.prototype.validatePermission =async function(sign,type = 'auth') {
+    /*Vue.prototype.validatePermission =async function(sign,type = 'auth') {
       let params = {
         type,
         sign,
@@ -189,9 +189,17 @@ export default {
         return result.data;
       }
       return false;
-    }
+    }*/
     /*全局权限变量*/
     Vue.prototype.VALIDATE_PERMISSION = {};
+
+    Vue.prototype.validatePermission = function(validName) {
+      if(!this.VALIDATE_PERMISSION[validName]) {
+        this.$LjMessageNoPermission();
+        return false;
+      }
+      return true;
+    }
 
     Vue.prototype.$LjMessageNoPermission = function(msg='无权限') {
       this.$LjMessage('warning',{title:'警告',msg:msg});

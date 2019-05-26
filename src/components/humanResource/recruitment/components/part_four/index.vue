@@ -1015,9 +1015,7 @@
             })
           }
 
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       handleSendOffer(row) {
         this.formatTime();
@@ -1163,6 +1161,7 @@
       //   }
       // },
       handleOpenEdit(row) {
+        if(!this.validatePermission('Preparing-Entry-Edit')) return;
         this.currentRow = row;
         this.edit_result_form.position = row.position.name;
         this.edit_result_form.name = row.name;
@@ -1171,6 +1170,7 @@
         this.edit_result_visible = true;
       },
       handleEntryEdit(row) {
+        if(!this.validatePermission('Preparing-Entry-Edit')) return;
         this.currentRow = row;
         this.$http.get(`recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
           if (res.code === '20030') {
@@ -1204,6 +1204,7 @@
       },
       //获取表格数据
       getTableList() {
+        if(!this.validatePermission('Preparing-Entry-Select')) return;
         this.$http.get('recruitment/interviewer_process/interviewedList',this.params).then(res => {
           if (res.code === '20000') {
             this.tableList = res.data.data;

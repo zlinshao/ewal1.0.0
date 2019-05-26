@@ -139,7 +139,7 @@ router.beforeResolve(async (to, from, next) => {
     "Exam-Schedule-Save": true,
     "Exam-Schedule-Update": true,
     "Examination-Reconfirmation-Sent": true,
-    "Finished-Audition-Edit": true,
+    "Finished-Audition-Edit": true,//修改面试结果
     "Finished-Audition-Select": true,
     "Goods-Records": true,
     "Handin-Record-Add": true,
@@ -149,7 +149,7 @@ router.beforeResolve(async (to, from, next) => {
     "Inventory-Index": true,
     "Inventory-Read": true,
     "Invited-Audition-Edit": true,
-    "Invited-Audition-Select": true,
+    "Invited-Audition-Select": true,//查看已约面试
     "Loan-Record-Index": true,
     "Loan-Record-Read": true,
     "Loan-Record-Update": true,
@@ -189,10 +189,10 @@ router.beforeResolve(async (to, from, next) => {
     "Position-Delete": true,//删除职位
     "Position-Save": true,//新增职位
     "Position-Update": true,//编辑职位
-    "Preparing-Audition-Edit": true,
-    "Preparing-Audition-Select": true,
-    "Preparing-Entry-Edit": true,
-    "Preparing-Entry-Select": true,
+    "Preparing-Audition-Edit": true,//编辑预约面试
+    "Preparing-Audition-Select": true,//查看预约面试列表
+    "Preparing-Entry-Edit": true,//编辑待入职
+    "Preparing-Entry-Select": true,//查看待入职
     "Procurement-Contract-Delete": true,
     "Procurement-Contract-Index": true,
     "Procurement-Contract-Read": true,
@@ -204,9 +204,9 @@ router.beforeResolve(async (to, from, next) => {
     "Rece-Record-Add": true,
     "Rece-Record-Delete": true,
     "Rece-Record-Update": true,
-    "Recruit-Position-Edit": true,
-    "Recruit-Position-Finish": true,
-    "Recruit-Position-Select": true,
+    "Recruit-Position-Edit": true,//编辑人员需求
+    "Recruit-Position-Finish": true,//结束招聘岗位
+    "Recruit-Position-Select": true,//获取人员需求列表
     "Roster-Export": true,
     "Roster-Set": true,
     "Storage-Delete": true,

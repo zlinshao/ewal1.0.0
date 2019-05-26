@@ -80,7 +80,7 @@
           <div class="dialog_header">
             <h3>{{is_control === 'add' ? '添加人员需求' : is_control === 'look' ? '查看人员信息' : '编辑人员需求'}}</h3>
             <div class="header_right" v-if="is_control === 'look'">
-              <div v-if="dblCurrentRow.status!=1" class="btn_edit" @click="is_control = 'edit'"></div>
+              <div v-if="dblCurrentRow.status!=1 && VALIDATE_PERMISSION['Recruit-Position-Edit']" class="btn_edit" @click="is_control = 'edit'"></div>
             </div>
           </div>
           <div class="dialog_main borderNone">
@@ -144,7 +144,7 @@
             <el-button size="small" type="info" @click="handleCancelAddMb">取消</el-button>
           </div>
           <div class="dialog_footer" v-if="is_control === 'look'">
-            <el-button si ze="small" type="danger" @click="stop_need_visible = true" v-if="dblCurrentRow.status === 0">
+            <el-button si ze="small" type="danger" @click="stop_need_visible = true" v-if="dblCurrentRow.status === 0 && VALIDATE_PERMISSION['Recruit-Position-Finish']">
               结束招聘该岗位
             </el-button>
             <el-button size="small" type="info" v-if="dblCurrentRow.status === 1">已结束招聘该岗位</el-button>
@@ -371,6 +371,10 @@
       },
       //获取人员需求列表
       getSoldiersList() {
+        if(!this.validatePermission('Recruit-Position-Select')) {
+          return;
+        }
+
         this.showLoading(true);
         this.$http.get(this.url+'recruitment/staff_needs', this.params).then(res => {
           if (res.code === '20000') {

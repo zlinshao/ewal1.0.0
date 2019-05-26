@@ -513,6 +513,7 @@
         })
       },
       handleOpenEdit(row) {
+        if(!this.validatePermission('Preparing-Audition-Edit')) return;
         this.currentRow = row;
         this.add_interviewer_form.name = row.name;
         this.add_interviewer_form.position = row.position.name;
@@ -533,6 +534,7 @@
       },
       //获取面试人列表
       getIntervieweeList() {
+        if(!this.validatePermission('Preparing-Audition-Select')) return;
         this.showLoading(true);
         this.$http.get('recruitment/interviewer_process/reservationList',this.params).then(res => {
           this.showLoading(false);
