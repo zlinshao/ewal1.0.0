@@ -90,7 +90,7 @@
               <div class="depart_list flex">
                 <!--<div class="next_btn" :class="{'show_next_btn': is_next}"><i class="el-icon-arrow-right"></i></div>-->
                 <!--鼠标移入判断是否有下级部门不合理-->
-                <div class="next_btn"><i class="el-icon-arrow-right" style="visibility: hidden"></i></div>
+                <div class="next_btn"><i @click="handleIconClick('left')"  v-show="this.left_arrow_display" class="el-icon-arrow-left"></i></div>
                 <div class="list flex scroll_bar" v-if="next_depart.length > 0">
                   <div v-for="depart in next_depart" @mouseleave="is_active_depart = ''"
                        @mouseover="show_depart_ctl(depart)">
@@ -105,12 +105,11 @@
                       <span v-show="VALIDATE_PERMISSION['Organization-Delete']" @click="handleDelDepart(depart,'child')">删除</span>
                     </div>
                   </div>
-                  <!--不合理-->
-                  <!--<div @mouseover="handleConfirmNext(depart)" class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>-->
                 </div>
                 <div v-else class="items-center">
                   <span>暂无下级部门</span>
                 </div>
+                <div class="next_btn"><i @click="handleIconClick('right')" v-show="this.right_arrow_display" class="el-icon-arrow-right"></i></div>
               </div>
 
               <!--人员列表-->
@@ -623,6 +622,7 @@
           name: ''
         }, //当前部门
         next_depart: [],
+        next_depart_pool: [],
         next_depart_params: {
           page: 1,
           limit: 999,
@@ -812,6 +812,9 @@
         is_active_depart: '',
 
         is_child: false,
+        start:0,
+        left_arrow_display:false,
+        right_arrow_display:false
       }
     },
     mounted() {
@@ -882,12 +885,28 @@
         this.departForm.parent_id = [1];
         this.departForm.parent = '南京乐伽商业管理有限公司';
       },
+      handleIconClick(direction){
+          let temp=this.next_depart_pool;
+          direction==='right' ? this.start++ : this.start--;
+          let end=this.start+9;
+          this.next_depart=temp.slice(this.start,end);
+          this.right_arrow_display= end>temp.length-1 ? false : true;
+          this.left_arrow_display=  this.start  ? true :false;
+      },
+
       // 部门管理 搜索下级部门
       getNextDepart(val, next) {
         this.next_depart_params.parent_id = val.id;
         this.$http.get('organization/organization', this.next_depart_params).then(res => {
           if (res.code === '20000') {
-            this.next_depart = res.data.data;
+            this.next_depart_pool = res.data.data;
+            if (this.next_depart_pool.length>9){
+                this.right_arrow_display=true;
+            }else{
+                this.right_arrow_display=false;
+            }
+            this.left_arrow_display=false;
+            this.next_depart=this.next_depart_pool.slice(0,9);
             if (next) {
               this.nav_depart.push(val);
             }
