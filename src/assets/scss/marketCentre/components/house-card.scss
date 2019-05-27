@@ -7,7 +7,7 @@
     min-width: 1200px;
     .content {
       margin: 0 auto;
-      padding: 0 200px;
+      padding: 0 150px;
       position: relative;
       > div.cards {
         flex-wrap: wrap;
@@ -28,7 +28,7 @@
             }
           }
           .card {
-            min-width: 240px;
+            min-width: 280px;
             height: 350px;
             box-sizing: border-box;
             cursor: pointer;
@@ -100,9 +100,13 @@
               height: 50%;
               text-align: center;
               .address {
+                display: inline-block;
                 font-size: 18px;
                 position: relative;
                 top: 10px;
+                height: 40px;
+                line-height: 40px;
+                font-family: 'jingDianXingShu';
               }
               .text {
                 text-align: left;
@@ -127,8 +131,8 @@
                   width: 50%;
                   text-align: center;
                 }
-                .notice_type {
-                  font-size: 18px;
+                .notice-type {
+                  font-size: 16px;
                   font-weight: bold;
                 }
                 .notice {
@@ -137,7 +141,7 @@
               }
             }
             .control {
-              width: 150%;
+              width: 300px;
               position: absolute;
               top: -45px;
               left: 15%;
@@ -147,8 +151,8 @@
               user-select: none;
               padding: 4px 5px;
               > span {
-                width: 80px;
-                padding: 4px 10px;
+                width: 50px;
+                padding: 4px 5px;
                 position: relative;
                 z-index: 1;
                 flex-grow: 1;

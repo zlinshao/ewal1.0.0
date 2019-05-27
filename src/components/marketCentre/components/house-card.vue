@@ -24,7 +24,7 @@
                     <p><b class="price_icon"></b>建议{{ item.suggest_price }}/月 {{ item.month }}月付</p>
                   </div>
                   <div class="notice_info flex-center">
-                    <span class="notice_type">{{ item.house_status_name }}</span>
+                    <span class="notice-type">{{ item.house_status_name }}</span>
                     <span :class="['announcement-' + item.warning_status ]" class="notice"></span>
                   </div>
                 </div>
@@ -81,7 +81,7 @@
                 </div>
               </el-form-item>
               <el-form-item label="上传照片">
-                <Upload :file="uploadFile" @success="handleSuccessUpload"></Upload>
+                <lj-upload size="50" v-model="upload_form.album"></lj-upload>
               </el-form-item>
             </el-form>
           </div>
@@ -104,7 +104,7 @@
           <div class="dialog_main">
             <el-form class="showPadding">
               <el-form-item label="上传照片">
-                <Upload :file="upload_file" @success="handleSuccessUpload"></Upload>
+                <lj-upload size="50" v-model="upload_form.album_file"></lj-upload>
               </el-form-item>
             </el-form>
           </div>
@@ -291,24 +291,8 @@
                 {id: 3,value: '橙色预警'},
                 {id: 4,value: '红色预警'},
               ],
-              uploadFile: {
-                keyName: 'album',
-                setFile: [],
-                size: {
-                  width: '50px',
-                  height: '50px'
-                }
-              },
               //上传
               upload_visible: false,
-              upload_file: {
-                keyName: 'album_file',
-                setFile: [],
-                size: {
-                  width: '50px',
-                  height: '50px'
-                }
-              },
               //标价
               setPriceVisible: false,
               setPriceForm: {
@@ -372,7 +356,7 @@
           },
           //取消行政检查
           handleCancelAddCheck() {
-            for (var key in this.check_form) {
+            for (let key in this.check_form) {
               this.check_form[key] = '';
             }
             this.check_form.album_file = [];
@@ -399,7 +383,7 @@
               album_file: this.upload_form.album_file
             }).then(res => {
               this.handleSuccess(res);
-              this.handleCancelMark();
+              this.handleCancelUpload();
               this.$emit('change',1);
             })
           },
@@ -419,7 +403,7 @@
             })
           },
           handleCancelMark() {
-            for (var key in this.mark_form) {
+            for (let key in this.mark_form) {
               this.mark_form[key] = '';
             }
             this.$emit('change',1);
@@ -440,7 +424,7 @@
           },
           handleCancelSetPrice() {
             this.currentHouse = '';
-            for (var key in this.setPriceForm) {
+            for (let key in this.setPriceForm) {
               this.setPriceForm[key] = '';
             }
             this.setPriceVisible = false;
@@ -462,6 +446,7 @@
           },
           //上传回调
           handleSuccessUpload(item) {
+            debugger
             if (item !== 'close') {
               this.upload_form[item[0]] = item[1];
             }
@@ -474,6 +459,7 @@
             this.follow_form.warning_status = item.id;
           },
           handleFollowInfo() {
+            //提交更进记录
             this.$http.post(this.market_server + 'v1.0/market/house/followrecord',{
               id: this.currentHouse.id,
               album: this.upload_form.album,
@@ -486,7 +472,7 @@
           handleCancelFollowInfo() {
             this.upload_form.album = [];
             this.currentHouse = '';
-            for (var key in this.follow_form) {
+            for (let key in this.follow_form) {
               this.follow_form[key] = '';
             }
             this.follow_up_visible = false;
@@ -532,7 +518,13 @@
       .content {
         height: 100%;
         padding-top: 50px;
+        .house-item {
+          &:hover {
+            @include marketCentreImg('xuanzhong.png','theme1');
+          }
+        }
         .card {
+
           .photo {
             .bg {
               @include marketCentreImg('bk.png','theme1');
@@ -555,9 +547,6 @@
             }
           }
           .info {
-            .address {
-              font-family: 'jingDianXingShu';
-            }
             .text {
               > p {
                 b{

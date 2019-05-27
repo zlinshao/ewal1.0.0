@@ -1,9 +1,8 @@
 <template>
-  <!--<div :class="{'disabled':disabled}" id="lj_upload">-->
   <div id="lj_upload">
     <div class="upload-container">
       <span v-if="title" class="upload-title">{{title}}</span>
-      <upload :max-size="maxSize" :download="download" show :limit="limit" :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
+      <upload :max-size="maxSize" :download="download" :view-file="viewFile" show :limit="limit" :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
     </div>
   </div>
 </template>
@@ -29,6 +28,12 @@
       maxSize:{
         type: Number,
       },
+      viewFile:{
+        type:Array,
+        default() {
+          return [];
+        }
+      },
     },
     components: {
       Upload
@@ -50,7 +55,6 @@
             this.getPhotoInfoList(val);
           }
           /*if (val && !oldVal && this.count == 0) {
-            debugger
             this.count++;
             this.getPhotoInfoList(val);
           }*/
@@ -59,9 +63,16 @@
       },
       size: {
         handler(val, oldVal) {
+          /*let s = val.constructor;
+          let t = typeof val;*/
           if (val) {
-            this.photoData.size.width = val + 'px';
-            this.photoData.size.height = val + 'px';
+            if(val.constructor===Object) {
+              this.photoData.size.width = parseInt(val.width)+'px';
+              this.photoData.size.height = parseInt(val.height)+'px';
+            }else {
+              this.photoData.size.width = val + 'px';
+              this.photoData.size.height = val + 'px';
+            }
           }
         },
         immediate: true

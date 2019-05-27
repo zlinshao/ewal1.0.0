@@ -213,6 +213,10 @@
         this.dialog_visible = val;
         if (val) {
           this.getHouseList();
+        }else {
+          this.house_resource = [];
+          this.office_resource = [];
+          this.house_count = 0;
         }
       },
       onlyChoose(val) {

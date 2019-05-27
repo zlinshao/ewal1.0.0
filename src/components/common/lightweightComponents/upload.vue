@@ -1,6 +1,6 @@
 <template>
   <div id="upLoad">
-    <transition-group name="list" tag="p" class="items-center">
+    <transition-group name="list" tag="p" class="items-center" style="flex-wrap: nowrap">
       <div v-for="(item,index) in showFile" :key="JSON.stringify(item)" class="showFile" :style="uploadCss">
         <!--图片-->
         <img :src="item.uri" v-if="item.info.mime.includes('image') && editable">
@@ -122,6 +122,9 @@
       maxSize: {
         type:[Number],
       },
+      viewFile: {
+        type: Array,
+      },
     },
     components: {
       LjDialog,
@@ -148,6 +151,7 @@
     watch: {
       file: {
         handler(val, oldVal) {
+          if(!this.disabled) return;
           if (val.setFile.length > 0) {
             this.showFile = [];
             for (let item of val.setFile) {
@@ -160,11 +164,20 @@
             this.showFile = [];
             this.progress = [];
           }
-          this.$emit('success', [this.file.keyName, this.ids, true]);
+
+          this.$emit('success', [this.file.keyName, _.uniq(this.ids), true]);
         },
         deep: true,
         immediate: true,
-      }
+      },
+      viewFile: {
+        handler(val,oldVal) {
+          if(val.constructor===Array&&val.length>0) {
+            this.showFile = val;
+          }
+        },
+        immediate: true,
+      },
     },
     computed: {
       editable() {
@@ -228,7 +241,7 @@
         this.ids.splice(index, 1);
         this.progress.splice(index, 1);
         let status = this.ids.length === this.showFile.length;
-        this.$emit('success', [this.file.keyName, this.ids, status]);
+        this.$emit('success', [this.file.keyName, _.uniq(this.ids), status]);
       },
       // 获取token
       uploadPic() {
@@ -340,7 +353,8 @@
                 if (res.code === "110100") {
                   that.ids.push(Number(res.data.id));
                   let status = that.ids.length === that.showFile.length;
-                  that.$emit('success', [that.file.keyName, that.ids, status]);
+                  let s = that.ids;
+                  that.$emit('success', [that.file.keyName, _.uniq(that.ids), status]);
                 }
               })
             }

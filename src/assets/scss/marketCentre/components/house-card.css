@@ -238,7 +238,7 @@
 }
 #houseCard > div .content {
   margin: 0 auto;
-  padding: 0 200px;
+  padding: 0 150px;
   position: relative;
 }
 #houseCard > div .content > div.cards {
@@ -258,7 +258,7 @@
   visibility: visible;
 }
 #houseCard > div .content > div.cards .house-item .card {
-  min-width: 240px;
+  min-width: 280px;
   height: 350px;
   box-sizing: border-box;
   cursor: pointer;
@@ -325,9 +325,13 @@
   text-align: center;
 }
 #houseCard > div .content > div.cards .house-item .card .info .address {
+  display: inline-block;
   font-size: 18px;
   position: relative;
   top: 10px;
+  height: 40px;
+  line-height: 40px;
+  font-family: 'jingDianXingShu';
 }
 #houseCard > div .content > div.cards .house-item .card .info .text {
   text-align: left;
@@ -353,15 +357,15 @@
   width: 50%;
   text-align: center;
 }
-#houseCard > div .content > div.cards .house-item .card .info .notice_info .notice_type {
-  font-size: 18px;
+#houseCard > div .content > div.cards .house-item .card .info .notice_info .notice-type {
+  font-size: 16px;
   font-weight: bold;
 }
 #houseCard > div .content > div.cards .house-item .card .info .notice_info .notice {
   height: 20px;
 }
 #houseCard > div .content > div.cards .house-item .card .control {
-  width: 150%;
+  width: 300px;
   position: absolute;
   top: -45px;
   left: 15%;
@@ -372,8 +376,8 @@
   padding: 4px 5px;
 }
 #houseCard > div .content > div.cards .house-item .card .control > span {
-  width: 80px;
-  padding: 4px 10px;
+  width: 50px;
+  padding: 4px 5px;
   position: relative;
   z-index: 1;
   flex-grow: 1;

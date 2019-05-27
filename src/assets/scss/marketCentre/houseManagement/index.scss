@@ -55,7 +55,7 @@
                 min-width: 520px;
                 max-height: 230px;
               }
-              .history_pic {
+              .history-pic {
                 width: 50px;
                 height: 50px;
                 position: absolute;
@@ -81,13 +81,12 @@
                 left: -1px;
               }
             }
-            .small_img {
+            .small-img {
               position: relative;
-              cursor: pointer;
               margin-top: 10px;
               overflow: hidden;
               min-height: 70px;
-              .img_container {
+              .img-container {
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -101,6 +100,7 @@
                 }
               }
               .btn {
+                cursor: pointer;
                 width: 20px;
                 height: 30px;
                 position: absolute;
@@ -111,10 +111,10 @@
                 opacity: 0;
                 transition: all ease .2s;
               }
-              .left_btn {
+              .left-btn {
                 left: 0;
               }
-              .right_btn {
+              .right-btn {
                 right: 0;
               }
               &:hover {
@@ -185,7 +185,7 @@
                 font-size: 14px;
                 font-weight: bold;
               }
-              .deploy_info {
+              .deploy-info {
                 width: 100%;
                 margin-top: 20px;
                 flex-wrap: wrap;
@@ -205,6 +205,7 @@
                     }
                   }
                   > b {
+                    color: $color874;
                     font-size: 14px;
                   }
                 }
@@ -212,25 +213,33 @@
             }
           }
         }
-        .table_info {
+        .table-info {
           > div {
             width: 100%;
           }
-          .info_type {
+          .info-type {
             padding: 10px 0;
-            > span {
+             span {
+              color: $color874;
               width: 100%;
               padding: 8px 30px;
               cursor: pointer;
               font-size: 14px;
+
+               &.current-change {
+                 color: white;
+               }
             }
           }
           .table_list {
             padding:0 20px;
           }
+          .page {
+            margin-top: 20px;
+          }
         }
       }
-      .look_info {
+      .look-info {
         width: 80%;
         height: 100%;
         text-align: left;
@@ -242,6 +251,23 @@
         .page {
           text-align: center;
           margin-top: 20px;
+        }
+
+        > div {
+          > span {
+            width: 100%;
+          }
+        }
+        .all {
+          color: $colorDFF;
+          font-size: 34px;
+        }
+        .current {
+          color: $colorC00;
+          font-size: 34px;
+        }
+        .txt {
+          font-size: 14px;
         }
       }
       .price_min_container,.suggest_price_container {
