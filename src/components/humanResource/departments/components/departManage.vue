@@ -889,7 +889,8 @@
           page: 1,
           limit: 999,
           org_id: '',
-          position_id: ''
+          position_id: '',
+          is_on_job:0
         },
         staffList: [],
         dutyList: [],
