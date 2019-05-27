@@ -374,7 +374,7 @@
         chooseTab: 3,
         params: {
           page: 1,
-          limit: 20,
+          limit: 15,
           type: 1,
           address: '',
           contract_number: '',

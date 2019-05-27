@@ -91,7 +91,7 @@
                 <!--<div class="next_btn" :class="{'show_next_btn': is_next}"><i class="el-icon-arrow-right"></i></div>-->
                 <!--鼠标移入判断是否有下级部门不合理-->
 <!--                <div class="next_btn"><i @click="handleIconClick('left')"  v-show="this.left_arrow_display" class="el-icon-arrow-left"></i></div>-->
-                <div class="arrow-btn"><i @click="handleIconClick('left')"  v-show="this.left_arrow_display"></i></div>
+                <div class="arrow-btn"><i class="arrow-btn-left" @click="handleIconClick('left')"  v-show="this.left_arrow_display"></i></div>
                 <div class="list scroll_bar" v-if="next_depart.length > 0">
                   <div v-for="depart in next_depart" @mouseleave="is_active_depart = ''"
                        @mouseover="show_depart_ctl(depart)">
@@ -1566,11 +1566,19 @@
     #departments {
 
       .arrow-btn {
-        i {
-          @include departmentsImg('arrow-left.png','theme1');
+        i.arrow-btn-left {
+          transform: rotate(180deg);
+          @include departmentsImg('arrow-right.png','theme1');
+          &:hover {
+            @include departmentsImg('arrow-left.png','theme1');
+          }
         }
         i.arrow-btn-right {
-          transform: rotate(180deg);
+          @include departmentsImg('arrow-right.png','theme1');
+          &:hover {
+            //transform: rotate(180deg);
+            @include departmentsImg('arrow-left.png','theme1');
+          }
         }
       }
 
