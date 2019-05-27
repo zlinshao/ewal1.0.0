@@ -3,7 +3,7 @@
       <div :style="{'height' : content_height + 'px'}">
         <div class="content scroll_bar" @scroll="handleScroll" @click="show_control = false">
           <div class="flex cards" v-if="house_info.length > 0">
-            <div v-for="item in house_info" :key="item.id" class="justify-center">
+            <div v-for="item in house_info" :key="item.id" class="justify-center house-item">
               <div class="card" :class="['card_trans-' + item.id]" @dblclick.stop="handleOpenCard(item)">
                 <div class="photo">
                   <div class="picture">
@@ -11,7 +11,7 @@
                     <img class="picture" v-else src="./swipe1.jpg" alt="...">
                   </div>
                   <div class="bg">
-                    <div class="btn" @mouseenter="handleOpenControl(item.id)" @mouseleave="handleCloseControl(item.id)" @click.stop="handleOpenControl(item.id)">...</div>
+                    <div class="btn" @click.stop="handleOpenControl(item.id)">...</div>
                     <div class="house_type">{{ item.decorate }}</div>
                   </div>
                   <span class="mark" :class="{'marked' : item.quality === 1}"></span>
@@ -28,7 +28,7 @@
                     <span :class="['announcement-' + item.warning_status ]" class="notice"></span>
                   </div>
                 </div>
-                <div class="control flex-center" @click.stop="" v-if="show_control === item.id ">
+                <div class="control flex-center">
                   <span v-for="tmp in tip_btn" :key="tmp.id" @click.stop="handleOpenModule(tmp,item)">{{ tmp.val }}</span>
                   <div class="arrows"></div>
                 </div>
@@ -511,12 +511,6 @@
           handleOpenControl(id) {
             this.show_control = id;
             this.is_tip = 0;
-          },
-          handleCloseControl(id) {
-            _.debounce(()=> {
-              this.show_control = 0;
-            },1000);
-            //this.is_tip = 0;
           },
           handleChangePage(page) {
             this.params.page = page;

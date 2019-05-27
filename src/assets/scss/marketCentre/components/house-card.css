@@ -245,10 +245,19 @@
   flex-wrap: wrap;
   min-height: 650px;
 }
-#houseCard > div .content > div.cards > div {
+#houseCard > div .content > div.cards .house-item {
   min-width: 20%;
 }
-#houseCard > div .content > div.cards > div .card {
+#houseCard > div .content > div.cards .house-item .control {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+#houseCard > div .content > div.cards .house-item:hover .control {
+  opacity: 1;
+  visibility: visible;
+}
+#houseCard > div .content > div.cards .house-item .card {
   min-width: 240px;
   height: 350px;
   box-sizing: border-box;
@@ -261,12 +270,12 @@
   animation: zhuan linear 1s;
   transition: all ease 1s;
 }
-#houseCard > div .content > div.cards > div .card .photo {
+#houseCard > div .content > div.cards .house-item .card .photo {
   width: 100%;
   height: 160px;
   position: relative;
 }
-#houseCard > div .content > div.cards > div .card .photo .picture {
+#houseCard > div .content > div.cards .house-item .card .photo .picture {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -274,7 +283,7 @@
   left: 0;
   clip-path: polygon(30px 0, calc(100% - 30px) 0, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0 calc(100% - 30px), 0 30px);
 }
-#houseCard > div .content > div.cards > div .card .photo .bg {
+#houseCard > div .content > div.cards .house-item .card .photo .bg {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -282,7 +291,7 @@
   left: 0;
   overflow: hidden;
 }
-#houseCard > div .content > div.cards > div .card .photo .bg .btn {
+#houseCard > div .content > div.cards .house-item .card .photo .bg .btn {
   width: 50px;
   height: 25px;
   position: absolute;
@@ -293,7 +302,7 @@
   font-size: 34px;
   line-height: 1px;
 }
-#houseCard > div .content > div.cards > div .card .photo .bg .house_type {
+#houseCard > div .content > div.cards .house-item .card .photo .bg .house_type {
   width: 50px;
   height: 20px;
   position: absolute;
@@ -304,32 +313,32 @@
   font-size: 16px;
   color: #999999;
 }
-#houseCard > div .content > div.cards > div .card .photo .mark {
+#houseCard > div .content > div.cards .house-item .card .photo .mark {
   width: 30px;
   height: 30px;
   position: absolute;
   top: -25px;
   right: 10px;
 }
-#houseCard > div .content > div.cards > div .card .info {
+#houseCard > div .content > div.cards .house-item .card .info {
   height: 50%;
   text-align: center;
 }
-#houseCard > div .content > div.cards > div .card .info .address {
+#houseCard > div .content > div.cards .house-item .card .info .address {
   font-size: 18px;
   position: relative;
   top: 10px;
 }
-#houseCard > div .content > div.cards > div .card .info .text {
+#houseCard > div .content > div.cards .house-item .card .info .text {
   text-align: left;
   font-size: 14px;
   padding-left: 30px;
   margin-top: 20px;
 }
-#houseCard > div .content > div.cards > div .card .info .text > p {
+#houseCard > div .content > div.cards .house-item .card .info .text > p {
   margin-top: 10px;
 }
-#houseCard > div .content > div.cards > div .card .info .text > p b {
+#houseCard > div .content > div.cards .house-item .card .info .text > p b {
   display: inline-block;
   width: 15px;
   height: 15px;
@@ -337,21 +346,21 @@
   background-size: contain;
   margin-right: 5px;
 }
-#houseCard > div .content > div.cards > div .card .info .notice_info {
+#houseCard > div .content > div.cards .house-item .card .info .notice_info {
   margin-top: 20px;
 }
-#houseCard > div .content > div.cards > div .card .info .notice_info > span {
+#houseCard > div .content > div.cards .house-item .card .info .notice_info > span {
   width: 50%;
   text-align: center;
 }
-#houseCard > div .content > div.cards > div .card .info .notice_info .notice_type {
+#houseCard > div .content > div.cards .house-item .card .info .notice_info .notice_type {
   font-size: 18px;
   font-weight: bold;
 }
-#houseCard > div .content > div.cards > div .card .info .notice_info .notice {
+#houseCard > div .content > div.cards .house-item .card .info .notice_info .notice {
   height: 20px;
 }
-#houseCard > div .content > div.cards > div .card .control {
+#houseCard > div .content > div.cards .house-item .card .control {
   width: 150%;
   position: absolute;
   top: -45px;
@@ -362,14 +371,14 @@
   user-select: none;
   padding: 4px 5px;
 }
-#houseCard > div .content > div.cards > div .card .control > span {
+#houseCard > div .content > div.cards .house-item .card .control > span {
   width: 80px;
   padding: 4px 10px;
   position: relative;
   z-index: 1;
   flex-grow: 1;
 }
-#houseCard > div .content > div.cards > div .card .control .arrows {
+#houseCard > div .content > div.cards .house-item .card .control .arrows {
   width: 30px;
   height: 20px;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
@@ -377,61 +386,61 @@
   bottom: -10px;
   left: 20%;
 }
-#houseCard > div .content > div.cards > div .card_trans-1 {
+#houseCard > div .content > div.cards .house-item .card_trans-1 {
   animation-delay: 0.25s;
 }
-#houseCard > div .content > div.cards > div .card_trans-2 {
+#houseCard > div .content > div.cards .house-item .card_trans-2 {
   animation-delay: 0.5s;
 }
-#houseCard > div .content > div.cards > div .card_trans-3 {
+#houseCard > div .content > div.cards .house-item .card_trans-3 {
   animation-delay: 0.75s;
 }
-#houseCard > div .content > div.cards > div .card_trans-4 {
+#houseCard > div .content > div.cards .house-item .card_trans-4 {
   animation-delay: 1s;
 }
-#houseCard > div .content > div.cards > div .card_trans-5 {
+#houseCard > div .content > div.cards .house-item .card_trans-5 {
   animation-delay: 1.25s;
 }
-#houseCard > div .content > div.cards > div .card_trans-6 {
+#houseCard > div .content > div.cards .house-item .card_trans-6 {
   animation-delay: 1.5s;
 }
-#houseCard > div .content > div.cards > div .card_trans-7 {
+#houseCard > div .content > div.cards .house-item .card_trans-7 {
   animation-delay: 1.75s;
 }
-#houseCard > div .content > div.cards > div .card_trans-8 {
+#houseCard > div .content > div.cards .house-item .card_trans-8 {
   animation-delay: 2s;
 }
-#houseCard > div .content > div.cards > div .card_trans-9 {
+#houseCard > div .content > div.cards .house-item .card_trans-9 {
   animation-delay: 2.25s;
 }
-#houseCard > div .content > div.cards > div .card_trans-10 {
+#houseCard > div .content > div.cards .house-item .card_trans-10 {
   animation-delay: 2.5s;
 }
-#houseCard > div .content > div.cards > div .card_trans-11 {
+#houseCard > div .content > div.cards .house-item .card_trans-11 {
   animation-delay: 2.75s;
 }
-#houseCard > div .content > div.cards > div .card_trans-12 {
+#houseCard > div .content > div.cards .house-item .card_trans-12 {
   animation-delay: 3s;
 }
-#houseCard > div .content > div.cards > div .card_trans-13 {
+#houseCard > div .content > div.cards .house-item .card_trans-13 {
   animation-delay: 3.25s;
 }
-#houseCard > div .content > div.cards > div .card_trans-14 {
+#houseCard > div .content > div.cards .house-item .card_trans-14 {
   animation-delay: 3.5s;
 }
-#houseCard > div .content > div.cards > div .card_trans-15 {
+#houseCard > div .content > div.cards .house-item .card_trans-15 {
   animation-delay: 3.75s;
 }
-#houseCard > div .content > div.cards > div .card_trans-16 {
+#houseCard > div .content > div.cards .house-item .card_trans-16 {
   animation-delay: 4s;
 }
-#houseCard > div .content > div.cards > div .card_trans-17 {
+#houseCard > div .content > div.cards .house-item .card_trans-17 {
   animation-delay: 4.25s;
 }
-#houseCard > div .content > div.cards > div .card_trans-18 {
+#houseCard > div .content > div.cards .house-item .card_trans-18 {
   animation-delay: 4.5s;
 }
-#houseCard > div .content > div.cards > div .card_trans-19 {
+#houseCard > div .content > div.cards .house-item .card_trans-19 {
   animation-delay: 4.75s;
 }
 #houseCard > div .content > div.none_info {
