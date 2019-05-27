@@ -594,16 +594,30 @@
                 console.log(err);
             })
         },
+        alertWarnings(){
+            this.$LjNotify('warning',{
+                title: '失败',
+                message: '用户未完成ca认证'
+            });
+        },
         generateContract(row,key){
-            console.log(key);
+            console.log(row);
             switch (key) {
                 case 'staff.contract_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     this.getLabourInfo(row.id);
                     break;
                 case 'staff.ca':
                     this.staffCertific(row.id);
                     break;
                 case 'staff.commitment_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     let params={user_id:row.id,pdf_scene:6,type:1,send:1};
                     this.commitmentGenerate(params);
                     break;
@@ -616,13 +630,25 @@
                     this.getIncomeInfo(row.id,10);
                     break;
                 case 'staff.notice_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     let param={user_id:row.id,pdf_scene:7,type:1,send:1};
                     this.commitmentGenerate(param);
                     break;
                 case 'staff.secret_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     this.commitmentGenerate({user_id:row.id,pdf_scene:5,type:1,send:1});
                     break;
                 case 'staff.insurance_prohibit_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     this.commitmentGenerate({user_id:row.id,pdf_scene:8,type:1,send:1});
                     break;
                 default:
