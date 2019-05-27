@@ -1570,13 +1570,14 @@
           transform: rotate(180deg);
           @include departmentsImg('arrow-right.png','theme1');
           &:hover {
+            transform: rotate(0);
             @include departmentsImg('arrow-left.png','theme1');
           }
         }
         i.arrow-btn-right {
           @include departmentsImg('arrow-right.png','theme1');
           &:hover {
-            //transform: rotate(180deg);
+            transform: rotate(180deg);
             @include departmentsImg('arrow-left.png','theme1');
           }
         }
