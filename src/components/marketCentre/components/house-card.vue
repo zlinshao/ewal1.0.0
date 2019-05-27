@@ -11,7 +11,7 @@
                     <img class="picture" v-else src="./swipe1.jpg" alt="...">
                   </div>
                   <div class="bg">
-                    <div class="btn" @click.stop="handleOpenControl(item.id)">...</div>
+                    <div class="btn" @mouseenter="handleOpenControl(item.id)" @mouseleave="handleCloseControl(item.id)" @click.stop="handleOpenControl(item.id)">...</div>
                     <div class="house_type">{{ item.decorate }}</div>
                   </div>
                   <span class="mark" :class="{'marked' : item.quality === 1}"></span>
@@ -511,6 +511,12 @@
           handleOpenControl(id) {
             this.show_control = id;
             this.is_tip = 0;
+          },
+          handleCloseControl(id) {
+            _.debounce(()=> {
+              this.show_control = 0;
+            },1000);
+            //this.is_tip = 0;
           },
           handleChangePage(page) {
             this.params.page = page;

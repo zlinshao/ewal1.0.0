@@ -246,7 +246,7 @@
                   <el-input placeholder="请选择" v-model="set_price_form.suggest_name"
                             @focus="handleOpenChooseHouse('suggest')"></el-input>
                 </el-form-item>
-                <el-form-item label="最低价">
+                <el-form-item label="建议价格">
                   <el-input placeholder="请输入" v-model="set_price_form.suggest_price"></el-input>
                 </el-form-item>
               </el-form>

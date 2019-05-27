@@ -1,7 +1,7 @@
 <template>
   <div id="house-filter">
     <div>
-      <lj-dialog :visible.sync="dialog_visible" :size="{width: 1200 + 'px',height: 830 + 'px'}"  @close="dialog_visible = false">
+      <lj-dialog :visible.sync="dialog_visible" :size="{width: 1200 + 'px',height: 830 + 'px'}" @close="handleCancelChoose">
         <div class="dialog_container">
           <div class="dialog_header">
             <h3>{{ activeName === 'first' ? '请选择房屋地址' : '请选择小区地址'}}</h3>
@@ -299,6 +299,7 @@
         }
         this.dialog_visible = false;
         this.$emit('close','close');
+        this.$emit('update:visible',this.dialog_visible);
       },
       //删除一个
       handleDeleteItem(house,idx) {
