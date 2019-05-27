@@ -1808,9 +1808,9 @@
       // 当前点击
       tableClickRow(row) {
         this.positionStaffList = row.users;
-        let ids = this.chooseRowIds;
-        ids.push(row.id);
-        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+        // let ids = this.chooseRowIds;
+        // ids.push(row.id);
+        // this.chooseRowIds = this.myUtils.arrayWeight(ids);
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {
