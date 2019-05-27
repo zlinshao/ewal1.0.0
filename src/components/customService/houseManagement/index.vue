@@ -29,7 +29,7 @@
             <div class="house_photo">
               <div class="big_img">
                 <div class="sijiao"></div>
-                <div class="history-pic" @click="history_pic_visible = true">
+                <div class="history-pic" @click="getHistoryPicList">
                   <a></a>
                 </div>
                 <img v-if="house_detail.house_detail && house_detail.house_detail.cover" :src="house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器" :data-src="house_detail.house_detail && house_detail.house_detail.cover">
@@ -278,9 +278,8 @@
 
       <!--历史相册-->
       <lj-dialog
-        :visible="history_pic_visible"
+        :visible.sync="history_pic_visible"
         :size="{width: 800 + 'px',height: 600 + 'px'}"
-        @close="history_pic_visible = false"
       >
         <div class="dialog_container">
           <div class="dialog_header">
@@ -290,9 +289,9 @@
             <div v-for="item in house_detail.house_album_data">
               <p class="flex">
                 <a :style="pic_style">{{ item.created_at }}</a>
-                <a :style="pic_style">上传人：{{ item.user_name }}</a>
-                <a :style="pic_style">部门：{{ item.department_name }}</a>
-                <a>岗位：{{ item.position_name }}</a>
+                <a :style="pic_style">上传人：{{ item.user_name||'无' }}</a>
+                <a :style="pic_style">部门：{{ item.department_name||'无' }}</a>
+                <a>岗位：{{ item.position_name||'无' }}</a>
               </p>
               <div class="flex" v-if="item.album_photo && item.album_photo.length > 0">
                 <img v-for="tmp in item.album_photo" alt="" :key="tmp.id" data-magnify="" data-caption="图片查看器"
@@ -763,12 +762,29 @@
           }
         })
       },
+      //获取历史相册列表
+      getHistoryPicList() {
+
+        console.log(this.current_house);
+        let id = this.current_house.id;
+        let params = {id};
+        this.$http.get(`${this.market_server}v1.0/market/house/houseAlbum`,params).then(res=> {
+          if(res.code==200) {
+            this.house_detail.house_album_data = res.data;
+          }
+          this.$nextTick(()=> {
+            this.history_pic_visible = true;
+          });
+        });
+      },
+
+      //打开房屋详情
       handleOpenCardDetail(item) {
         this.current_house = item;
         this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
           if (res.code === 200) {
             this.lj_visible = true;
-            this.img_trams = 0;//历史相册offset归位
+            this.img_trams = 0;//下方相册offset归位
             this.img_trans_count = res.data.album_photo?.length||0;
             this.house_detail = res.data;
             if (this.house_detail.house_goods) {
