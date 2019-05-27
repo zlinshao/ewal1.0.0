@@ -1674,6 +1674,7 @@
           } else {
             this.positionList = [];
           }
+          this.positionStaffList=[];
           this.positionVisible = true;
         })
       },
