@@ -97,32 +97,32 @@
   justify-content: flex-end;
 }
 
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf");
+}
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF");
+}
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf");
+}
 /*@font-face {
   font-family: 'jingDianXingShu';
-  src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
+  src: url('/static/font/JDJXINSHU.otf');
 }
 
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url('http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF');
+  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
 }
 
 @font-face {
   font-family: 'jianyue';
-  src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
+  src: url('/static/font/BaiZhouRenZhe.otf');
 }*/
-@font-face {
-  font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf");
-}
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF");
-}
-@font-face {
-  font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf");
-}
 .writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl;
@@ -288,7 +288,7 @@
   min-width: 520px;
   max-height: 230px;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .big_img .history_pic {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .big_img .history-pic {
   width: 50px;
   height: 50px;
   position: absolute;
@@ -300,7 +300,7 @@
   border-radius: 50%;
   cursor: pointer;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .big_img .history_pic a {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .big_img .history-pic a {
   display: inline-block;
   width: 25px;
   height: 20px;
@@ -313,27 +313,27 @@
   top: -2px;
   left: -1px;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .small_img {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .small-img {
   position: relative;
-  cursor: pointer;
   margin-top: 10px;
   overflow: hidden;
   min-height: 70px;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .img_container {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .small-img .img-container {
   position: absolute;
   top: 0;
   left: 0;
   transition: all ease .5s;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .img_container > img {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .small-img .img-container > img {
   width: 115px;
   max-height: 70px;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .img_container > img:not(:last-child) {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .small-img .img-container > img:not(:last-child) {
   margin-right: 10px;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .btn {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .small-img .btn {
+  cursor: pointer;
   width: 20px;
   height: 30px;
   position: absolute;
@@ -344,13 +344,13 @@
   opacity: 0;
   transition: all ease .2s;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .left_btn {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .small-img .left-btn {
   left: 0;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .small_img .right_btn {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .small-img .right-btn {
   right: 0;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_photo .small_img:hover .btn {
+#theme_name #houseManagement > div .house_info .base_info .house_photo .small-img:hover .btn {
   opacity: 1;
 }
 #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title {
@@ -412,58 +412,80 @@
   font-size: 14px;
   font-weight: bold;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info {
+#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy-info {
   width: 100%;
   margin-top: 20px;
   flex-wrap: wrap;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info .deploy_none {
+#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy-info .deploy_none {
   color: #DFDFE0;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info > span {
+#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy-info > span {
   margin-right: 25px;
   margin-top: 20px;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info > span > span {
+#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy-info > span > span {
   width: 40px;
   height: 40px;
   text-align: center;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info > span > span > i {
+#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy-info > span > span > i {
   width: 40px;
   height: 40px;
 }
-#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy_info > span > b {
+#theme_name #houseManagement > div .house_info .base_info .house_detail .deploy .deploy-info > span > b {
+  color: #686874;
   font-size: 14px;
 }
-#theme_name #houseManagement > div .house_info .table_info > div {
+#theme_name #houseManagement > div .house_info .table-info > div {
   width: 100%;
 }
-#theme_name #houseManagement > div .house_info .table_info .info_type {
+#theme_name #houseManagement > div .house_info .table-info .info-type {
   padding: 10px 0;
 }
-#theme_name #houseManagement > div .house_info .table_info .info_type > span {
+#theme_name #houseManagement > div .house_info .table-info .info-type span {
+  color: #686874;
   width: 100%;
   padding: 8px 30px;
   cursor: pointer;
   font-size: 14px;
 }
-#theme_name #houseManagement > div .house_info .table_info .table_list {
+#theme_name #houseManagement > div .house_info .table-info .info-type span.current-change {
+  color: white;
+}
+#theme_name #houseManagement > div .house_info .table-info .table_list {
   padding: 0 20px;
 }
-#theme_name #houseManagement > div .look_info {
+#theme_name #houseManagement > div .house_info .table-info .page {
+  margin-top: 20px;
+}
+#theme_name #houseManagement > div .look-info {
   width: 80%;
   height: 100%;
   text-align: left;
   margin: 0 auto;
 }
-#theme_name #houseManagement > div .look_info h3 {
+#theme_name #houseManagement > div .look-info h3 {
   font-size: 18px;
   margin: 20px 30px;
 }
-#theme_name #houseManagement > div .look_info .page {
+#theme_name #houseManagement > div .look-info .page {
   text-align: center;
   margin-top: 20px;
+}
+#theme_name #houseManagement > div .look-info > div > span {
+  width: 100%;
+}
+#theme_name #houseManagement > div .look-info .all {
+  color: #00fdff;
+  font-size: 34px;
+}
+#theme_name #houseManagement > div .look-info .current {
+  color: #fb8c00;
+  font-size: 34px;
+}
+#theme_name #houseManagement > div .look-info .txt {
+  font-size: 14px;
 }
 #theme_name #houseManagement > div .price_min_container > div:first-child, #theme_name #houseManagement > div .suggest_price_container > div:first-child {
   width: 120px;

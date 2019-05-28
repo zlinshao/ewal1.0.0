@@ -16,11 +16,12 @@
       <div class="items-center listTopRight">
         <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
         <div class="buttons button1" style="font-weight: bold" @click="showSetForm" v-if="chooseTab === 3">设置报表</div>
-        <div class="buttons button2" style="font-weight: bold" v-if="chooseTab === 3" @click="handleExportInfo">导出报表</div>
-        <el-tooltip v-show="VALIDATE_PERMISSION.Organization_Add" content="新增部门" placement="bottom" :visible-arrow="false">
+<!--        <div class="buttons button2" style="font-weight: bold" v-if="chooseTab === 3" @click="handleExportInfo">导出报表</div>-->
+        <el-tooltip v-show="VALIDATE_PERMISSION['Organization-Add']" content="新增部门" placement="bottom"
+                    :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
-        <div class="icons search" @click="highSearch(chooseTab)" v-show="chooseTab !== 2 && chooseTab !== 1"></div>
+        <div class="icons search" @click="highSearch(chooseTab)" v-show=" chooseTab !== 1"></div>
       </div>
     </div>
 
@@ -38,8 +39,8 @@
           </span>
           <a class="control flex-center">
             <a class="pointer">...</a>
-            <b @click.stop="handleOpenEditDepart(item)">编辑</b>
-            <b @click.stop="handleDelDepart(item)">删除</b>
+            <b v-show="VALIDATE_PERMISSION['Organization-Update']" @click.stop="handleOpenEditDepart(item)">编辑</b>
+            <b v-show="VALIDATE_PERMISSION['Organization-Delete']" @click.stop="handleDelDepart(item)">删除</b>
           </a>
         </p>
       </div>
@@ -62,7 +63,8 @@
       <!--部门详情-->
       <div class="depart-detail" :class="{'show-depart-detail': show_depart_detail}">
         <div class="depart_nav">
-          <span @click="handleGetCurrentDepart(tmp,idx)" v-for="(tmp,idx) in nav_depart">{{ tmp.name }} <a v-if="idx !== nav_depart.length - 1">/</a></span>
+          <span @click="handleGetCurrentDepart(tmp,idx)" v-for="(tmp,idx) in nav_depart">{{ tmp.name }} <a
+            v-if="idx !== nav_depart.length - 1">/</a></span>
         </div>
 
         <div class="depart-detail-main flex-center">
@@ -72,24 +74,27 @@
                 {{ current_depart && current_depart.name }}
               </span>
               <!--<a class="control flex-center">-->
-                <!--<a class="pointer">...</a>-->
-                <!--<b @click.stop="handleOpenEditDepart(current_depart)">编辑</b>-->
-                <!--<b @click.stop="handleDelDepart(current_depart)">删除</b>-->
+              <!--<a class="pointer">...</a>-->
+              <!--<b @click.stop="handleOpenEditDepart(current_depart)">编辑</b>-->
+              <!--<b @click.stop="handleDelDepart(current_depart)">删除</b>-->
               <!--</a>-->
             </p>
           </div>
           <div class="depart-right">
             <div class="depart-btn flex">
-              <span @click="handleCheckStaffPost(tmp)" v-for="tmp in control_btn" :class="{'choose-span': current_btn === tmp.id}">{{ tmp.val }}</span>
+              <span @click="handleCheckStaffPost(tmp)" v-for="tmp in control_btn"
+                    :class="{'choose-span': current_btn === tmp.id}">{{ tmp.val }}</span>
             </div>
             <div class="depart-staff">
               <!--下级部门列表-->
               <div class="depart_list flex">
                 <!--<div class="next_btn" :class="{'show_next_btn': is_next}"><i class="el-icon-arrow-right"></i></div>-->
                 <!--鼠标移入判断是否有下级部门不合理-->
-                <div class="next_btn"><i class="el-icon-arrow-right" style="visibility: hidden"></i></div>
-                <div class="list flex scroll_bar" v-if="next_depart.length > 0">
-                  <div v-for="depart in next_depart" @mouseleave="is_active_depart = ''" @mouseover="show_depart_ctl(depart)">
+<!--                <div class="next_btn"><i @click="handleIconClick('left')"  v-show="this.left_arrow_display" class="el-icon-arrow-left"></i></div>-->
+                <div class="arrow-btn"><i class="arrow-btn-left" @click="handleIconClick('left')"  v-show="this.left_arrow_display"></i></div>
+                <div class="list scroll_bar" v-if="next_depart.length > 0">
+                  <div v-for="depart in next_depart" @mouseleave="is_active_depart = ''"
+                       @mouseover="show_depart_ctl(depart)">
                     <div
                       class="writingMode depart_item"
                       style="text-align: left;padding-top: 15px"
@@ -97,22 +102,22 @@
                       {{ depart.name }}
                     </div>
                     <div class="depart_ctl flex-center" v-show="depart.id === is_active_depart">
-                      <span @click="handleOpenEditDepart(depart,'child')">编辑</span>
-                      <span @click="handleDelDepart(depart,'child')">删除</span>
+                      <span v-show="VALIDATE_PERMISSION['Organization-Update']" @click="handleOpenEditDepart(depart,'child')">编辑</span>
+                      <span v-show="VALIDATE_PERMISSION['Organization-Delete']" @click="handleDelDepart(depart,'child')">删除</span>
                     </div>
                   </div>
-                  <!--不合理-->
-                  <!--<div @mouseover="handleConfirmNext(depart)" class="writingMode" v-for="depart in next_depart" @click="handleInnerNextDepart(depart)">{{ depart.name }}</div>-->
                 </div>
                 <div v-else class="items-center">
                   <span>暂无下级部门</span>
                 </div>
+                <div class="arrow-btn"><i class="arrow-btn-right" @click="handleIconClick('right')" v-show="this.right_arrow_display"></i></div>
               </div>
 
               <!--人员列表-->
               <div class="staff_list">
                 <!--管理部门/员工管理-->
-                <DepartManage :check-info="check_info" :module="departModule" :info="departInfo" @close="departModule = false"></DepartManage>
+                <DepartManage :check-info="check_info" :module="departModule" :info="departInfo"
+                              @close="departModule = false"></DepartManage>
               </div>
             </div>
           </div>
@@ -122,7 +127,8 @@
 
     <!--员工名册-->
     <div v-show="chooseTab === 3">
-      <StaffRoster :searchVal="searchFruit3" :export-data="export_data" :export-info="exportInfo" :search-params="staff_params"></StaffRoster>
+      <StaffRoster :searchVal="searchFruit3" :export-data="export_data" :export-info="exportInfo"
+                   :search-params="staff_params"></StaffRoster>
     </div>
 
     <!--离职管理-->
@@ -138,7 +144,7 @@
           <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">系统</p>
           <div style="padding: 20px;background-color: white">
             <div style="text-align: right">
-              <div class="btn_square_add" @click="add_system_visible = true"><b>+</b></div>
+              <div class="btn_square_add" v-show="VALIDATE_PERMISSION['System-Save']" @click="add_system_visible = true"><b>+</b></div>
             </div>
             <el-table
               :data="system_list"
@@ -158,9 +164,9 @@
                       <!--<el-button type="success" size="mini" plain @click="handleOpenAddModule(scope.row)">新增模块</el-button>-->
                       <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('system',scope.row)">编辑</el-button>-->
                       <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
-                      <span @click="handleOpenAddModule(scope.row)">新增模块</span>
-                      <span @click="handleOpenEdit('system',scope.row)">编辑</span>
-                      <span @click="handleDelControl('system',scope.row)">删除</span>
+                      <span v-if="VALIDATE_PERMISSION['Permission-Save']" @click="handleOpenAddModule(scope.row)">新增模块</span>
+                      <span v-if="VALIDATE_PERMISSION['System-Update']" @click="handleOpenEdit('system',scope.row)">编辑</span>
+                      <span v-if="VALIDATE_PERMISSION['System-Delete']" @click="handleDelControl('system',scope.row)">删除</span>
                     </div>
                     <span class="table_control writingMode">···</span>
                   </el-tooltip>
@@ -197,9 +203,9 @@
                     <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
                     <el-tooltip placement="left" :visible-arrow="false">
                       <div class="flex control-btn" slot="content">
-                        <span @click="handleOpenAddPower(scope.row)">新增权限</span>
-                        <span @click="handleOpenEdit('module',scope.row)">编辑</span>
-                        <span @click="handleDelControl('system',scope.row)">删除</span>
+                        <span v-if="VALIDATE_PERMISSION['Permission-Save']" @click="handleOpenAddPower(scope.row)">新增权限</span>
+                        <span v-if="VALIDATE_PERMISSION['System-Update']" @click="handleOpenEdit('module',scope.row)">编辑</span>
+                        <span v-if="VALIDATE_PERMISSION['System-Delete']" @click="handleDelControl('system',scope.row)">删除</span>
                       </div>
                       <span class="table_control writingMode">···</span>
                     </el-tooltip>
@@ -232,9 +238,9 @@
                     <!--<el-button type="danger" size="mini" plain @click="handleDelControl('power',scope.row)">删除</el-button>-->
                     <el-tooltip placement="left" :visible-arrow="false">
                       <div class="flex control-btn" slot="content">
-                        <span @click="handleOpenAddField(scope.row)">添加字段权限</span>
-                        <span @click="handleOpenEdit('power',scope.row)">编辑</span>
-                        <span @click="handleDelControl('power',scope.row)">删除</span>
+                        <span v-if="VALIDATE_PERMISSION['Permission-Save']" @click="handleOpenAddField(scope.row)">添加字段权限</span>
+                        <span v-if="VALIDATE_PERMISSION['System-Update']" @click="handleOpenEdit('power',scope.row)">编辑</span>
+                        <span v-if="VALIDATE_PERMISSION['System-Delete']" @click="handleDelControl('power',scope.row)">删除</span>
                       </div>
                       <span class="table_control writingMode">···</span>
                     </el-tooltip>
@@ -300,19 +306,17 @@
               <el-input v-model="departForm.name" placeholder="必填"></el-input>
             </el-form-item>
             <el-form-item label="上级部门">
-              <div class="items-center iconInput">
-                <el-input v-model="departForm.parent" readonly @focus="chooseDepart = true"></el-input>
-                <p class="icons organization"></p>
+              <div class="items-center">
+                <org-choose v-model="departForm.parent_id"></org-choose>
               </div>
             </el-form-item>
             <el-form-item label="部门负责人">
-              <div class="items-center iconInput">
-                <el-input v-model="departForm.leader" placeholder="必填" readonly @focus="organModule = true"></el-input>
-                <p class="icons user"></p>
+              <div class="items-center">
+                <user-choose v-model="departForm.leader_id" title="请选择部门负责人" num="1"></user-choose>
               </div>
             </el-form-item>
             <el-form-item label="部门负责岗位">
-              <el-input v-model="departForm.position" placeholder="选填" @focus="post_visible = true" readonly></el-input>
+              <post-choose v-model="departForm.position_id" title="请选择部门负责岗位" width="276" num="1"></post-choose>
             </el-form-item>
           </el-form>
         </div>
@@ -324,7 +328,8 @@
     </lj-dialog>
 
     <!--设置表单-->
-    <SetForms :module="SetFormVisible" :data="setFormData" @close="SetFormVisible = false" @remove="handleRemoveItem" @submit="handleSubmitForm"></SetForms>
+    <SetForms :module="SetFormVisible" :data="setFormData" @close="SetFormVisible = false" @remove="handleRemoveItem"
+              @submit="handleSubmitForm"></SetForms>
 
     <!--模块入口-->
     <MenuList :list="humanResource" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
@@ -332,11 +337,6 @@
     <!--高级搜索-->
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
-    <!--组织架构选人-->
-    <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
-
-    <!--部门选择-->
-    <DepartOrgan :module="chooseDepart" @close="handleGetDepart"></DepartOrgan>
 
     <!--确定删除部门-->
     <lj-dialog :visible="del_depart_visible" :size="{width: 400 + 'px',height: 250 + 'px'}">
@@ -391,19 +391,21 @@
             </el-form-item>
             <el-form-item label="父级模块" v-show="edit_type === 'power'">
               <el-select v-model="edit_module_form.system_id">
-                <el-option v-for="item in edit_current_list" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                <el-option v-for="item in edit_current_list" :key="item.id" :value="item.id"
+                           :label="item.name"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="父级模块" v-show="edit_type === 'module'">
               <el-select v-model="edit_module_form.parent_id" disabled>
-                <el-option v-for="item in edit_current_list" :key="item.id" :value="item.id" :label="item.name"></el-option>
+                <el-option v-for="item in edit_current_list" :key="item.id" :value="item.id"
+                           :label="item.name"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="描述">
               <el-input type="textarea" v-model="edit_module_form.description"></el-input>
             </el-form-item>
             <el-form-item label="权限类型" v-show="edit_type === 'power'">
-              <el-select v-model="edit_module_form.type" @change="handlechange">
+              <el-select v-model="edit_module_form.type" @change="handleChange">
                 <el-option value="index" label="index"></el-option>
                 <el-option value="read" label="read"></el-option>
                 <el-option value="add" label="add"></el-option>
@@ -577,12 +579,11 @@
       </div>
     </lj-dialog>
 
-    <!--岗位-->
-    <PostOrgan :module="post_visible" @close="handleGetPost"></PostOrgan>
   </div>
 </template>
 
 <script>
+  import _ from 'lodash';
   import DepartManage from './components/departManage.vue';
   import Organization from './organization/index.vue';
   import SetForms from './components/setForms.vue';//设置表单
@@ -590,13 +591,10 @@
   import LeaveJob from './leaveJob/index.vue';//离职管理
   import SearchHigh from '../../common/searchHigh.vue';
   import ljDialog from '../../common/lj-dialog.vue';
-  import StaffOrgan from '../../common/staffOrgan.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
-  import DepartOrgan from '../../common/departOrgan.vue'
-  import {staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
+  import {OrgSearch,staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
-  import PostOrgan from '../../common/postOrgan.vue';
 
   export default {
     name: "index",
@@ -609,32 +607,23 @@
       ljDialog,
       SearchHigh,
       Upload,
-      StaffOrgan,
       Organization,
-      DepartOrgan,
-      PostOrgan
     },
     data() {
       return {
-        /*权限管理*/
-        /*VALIDATE_PERMISSION:{
-          'Organization_Add':false,
-        },*/
-
-
-        post_visible: false,
 
         //新部门管理
         show_depart_detail: false,
         control_btn: [
-          {id: 1,val: '人员管理'},
-          {id: 2,val: '职位管理'},
+          {id: 1, val: '人员管理'},
+          {id: 2, val: '职位管理'},
         ],
         current_btn: 1,
         current_depart: {
           name: ''
         }, //当前部门
         next_depart: [],
+        next_depart_pool: [],
         next_depart_params: {
           page: 1,
           limit: 999,
@@ -758,8 +747,7 @@
           limit: 7,
           parent_id: 1
         },
-        chooseDepart: false,
-
+        OrgSearch,
         staffBookSearch,
         LeaveJobSearch,
         humanResource,
@@ -788,7 +776,6 @@
           },
         ],//tab切换
 
-        organModule: false,//组织架构
 
         setFormData: {},
         SetFormVisible: false,//设置表单
@@ -797,12 +784,9 @@
         lj_size: {},//新增部门
         departForm: {
           name: '',
-          leader: '',
           leader_id: [],
           parent_id: [1],
-          parent: '南京乐伽商业管理有限公司',
-          position: '',
-          position_id: ''
+          position_id: []
         },//新增部门
         visibleStatus: false,//弹出部门
 
@@ -815,24 +799,6 @@
           is_on_job: '',
           is_enable: '',
         },
-        options: [
-          {
-            value: '选项1',
-            label: '黄金糕'
-          }, {
-            value: '选项2',
-            label: '双皮奶'
-          }, {
-            value: '选项3',
-            label: '蚵仔煎'
-          }, {
-            value: '选项4',
-            label: '龙须面'
-          }, {
-            value: '选项5',
-            label: '北京烤鸭'
-          }
-        ],//部门人员
         value: '',
 
         //导出报表
@@ -847,12 +813,14 @@
         is_active_depart: '',
 
         is_child: false,
+        start:0,
+        left_arrow_display:false,
+        right_arrow_display:false
       }
     },
     mounted() {
       this.getDepartList();
-      this.getPowerList();
-      this.getValidatePermission();
+      //this.getPowerList();
     },
     watch: {},
     computed: {
@@ -883,15 +851,8 @@
         this.power_params.page = page;
         this.getPowerList();
       },
-      handlechange(val) {
+      handleChange(val) {
         this.edit_module_form.type = val;
-      },
-      handleGetPost(id,name) {
-        if (id !== 'close') {
-          this.departForm.position = name;
-          this.departForm.position_id = id[0];
-        }
-        this.post_visible = false;
       },
       //新部门管理
       //切换人员管理/职位管理
@@ -901,8 +862,8 @@
       },
       //部门列表打开部门详情
       async handleOpenDepartDetail(item) {
-        if(! await this.validatePermission('Organization-Read')) {
-          this.$LjMessage('warning',{title:'警告',msg:'无权限'});
+        if (!this.VALIDATE_PERMISSION['Organization-Read']) {
+          this.$LjMessage('warning', {title: '警告', msg: '无权限'});
           return;
         };
         this.departForm.parent = item.name;
@@ -925,12 +886,28 @@
         this.departForm.parent_id = [1];
         this.departForm.parent = '南京乐伽商业管理有限公司';
       },
+      handleIconClick(direction){
+          let temp=this.next_depart_pool;
+          direction==='right' ? this.start++ : this.start--;
+          let end=this.start+9;
+          this.next_depart=temp.slice(this.start,end);
+          this.right_arrow_display= end>temp.length-1 ? false : true;
+          this.left_arrow_display=  this.start  ? true :false;
+      },
+
       // 部门管理 搜索下级部门
-      getNextDepart(val,next) {
+      getNextDepart(val, next) {
         this.next_depart_params.parent_id = val.id;
-        this.$http.get('organization/organization',this.next_depart_params).then(res => {
+        this.$http.get('organization/organization', this.next_depart_params).then(res => {
           if (res.code === '20000') {
-            this.next_depart = res.data.data;
+            this.next_depart_pool = res.data.data;
+            if (this.next_depart_pool.length>9){
+                this.right_arrow_display=true;
+            }else{
+                this.right_arrow_display=false;
+            }
+            this.left_arrow_display=false;
+            this.next_depart=this.next_depart_pool.slice(0,9);
             if (next) {
               this.nav_depart.push(val);
             }
@@ -945,12 +922,12 @@
       //子部门点击获取子部门
       handleInnerNextDepart(item) {
         this.is_next = true;
-        this.getNextDepart(item,'next');
+        this.getNextDepart(item, 'next');
         this.departInfo = item;
       },
       //判断是否有下级部门
       handleConfirmNext(depart) {
-        this.$http.get('organization/organization',{
+        this.$http.get('organization/organization', {
           page: 1,
           limit: 999,
           parent_id: depart.id
@@ -967,7 +944,7 @@
         })
       },
       //点击导航菜单
-      handleGetCurrentDepart(item,idx) {
+      handleGetCurrentDepart(item, idx) {
         this.departInfo = item;
         this.getNextDepart(item);
         this.nav_depart.splice(idx + 1);
@@ -982,16 +959,16 @@
       },
       //添加系统
       handleSubmitAddSys() {
-        this.$http.post('organization/system',this.system_form).then(res => {
+        this.$http.post('organization/system', this.system_form).then(res => {
           if (res.code === '20010') {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '成功',
               message: res.msg
             });
             this.handleCancelAddSys();
             this.getPowerList();
           } else {
-            this.$LjNotify('warning',{
+            this.$LjNotify('warning', {
               title: '失败',
               message: res.msg
             })
@@ -1001,24 +978,24 @@
       handleSubmitForm() {
         this.export_data = this.setFormData;
       },
-      handleRemoveItem(item,index) {
-        this.setFormData.splice(index,1);
+      handleRemoveItem(item, index) {
+        this.setFormData.splice(index, 1);
       },
-      handleOpenDelField(type,row) {
+      handleOpenDelField(type, row) {
         this.current_field = row;
         this.del_field_visible = true;
       },
       handleSubmitDelField() {
         this.$http.delete(`organization/permission_field/${this.current_field.id}`).then(res => {
           if (res.code === '20040') {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '成功',
               message: res.msg
             });
             this.getFieldList(this.current_power.id);
             this.del_field_visible = false;
           } else {
-            this.$LjNotify('warning',{
+            this.$LjNotify('warning', {
               title: '失败',
               message: res.msg
             })
@@ -1042,16 +1019,16 @@
       },
       handleSubmitOk() {
         if (this.is_edit_field) {
-          this.$http.put(`organization/permission_field/${this.current_field.id}`,this.field_form).then(res => {
+          this.$http.put(`organization/permission_field/${this.current_field.id}`, this.field_form).then(res => {
             if (res.code === '20030') {
-              this.$LjNotify('success',{
+              this.$LjNotify('success', {
                 title: '成功',
                 message: res.msg
               });
               this.handleCancel();
               this.getFieldList(this.current_power.id);
             } else {
-              this.$LjNotify('warning',{
+              this.$LjNotify('warning', {
                 title: '失败',
                 message: res.msg
               })
@@ -1059,16 +1036,16 @@
           });
           return false;
         }
-        this.$http.post('organization/permission_field',this.field_form).then(res => {
+        this.$http.post('organization/permission_field', this.field_form).then(res => {
           if (res.code === '20010') {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '成功',
               message: res.msg
             });
             this.handleCancel();
             this.getFieldList(this.current_power.id);
           } else {
-            this.$LjNotify('warning',{
+            this.$LjNotify('warning', {
               title: '失败',
               message: res.msg
             })
@@ -1086,7 +1063,7 @@
       },
       getFieldList(permission_id) {
         this.permission_params.permission_id = permission_id;
-        this.$http.get('organization/permission_field',this.permission_params).then(res => {
+        this.$http.get('organization/permission_field', this.permission_params).then(res => {
           if (res.code === '20000') {
             this.field_list = res.data.data;
             this.field_count = res.data.count;
@@ -1101,10 +1078,10 @@
         this.new_power_form.system_id = row.id;
         this.new_power_visible = true;
       },
-      handleSubmitAddPower(){
-        this.$http.post('organization/permission',this.new_power_form).then(res => {
+      handleSubmitAddPower() {
+        this.$http.post('organization/permission', this.new_power_form).then(res => {
           if (res.code === '20010') {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '成功',
               message: res.msg
             });
@@ -1112,7 +1089,7 @@
             let id = this.current_module && this.current_module.id || 0;
             this.getPowerBottomList(id);
           } else {
-            this.$LjNotify('warning',{
+            this.$LjNotify('warning', {
               title: '失败',
               message: res.msg
             });
@@ -1126,16 +1103,16 @@
         this.new_power_visible = false;
       },
       handleSubmitAddModule() {
-        this.$http.post('organization/system',this.new_module_form).then(res => {
+        this.$http.post('organization/system', this.new_module_form).then(res => {
           if (res.code === '20010') {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '成功',
               message: res.msg
             });
             this.handleCancelAddModule();
             this.getPowerList();
           } else {
-            this.$LjNotify('warning',{
+            this.$LjNotify('warning', {
               title: '失败',
               message: res.msg
             });
@@ -1154,32 +1131,32 @@
       },
       handleSubmitEdit() {
         if (this.edit_type === 'system' || this.edit_type === 'module') {
-          this.$http.put(`organization/system/${this.edit_row.id}`,this.edit_module_form).then(res => {
+          this.$http.put(`organization/system/${this.edit_row.id}`, this.edit_module_form).then(res => {
             if (res.code === '20030') {
-              this.$LjNotify('success',{
+              this.$LjNotify('success', {
                 title: '成功',
                 message: res.msg
               });
               this.getPowerList();
               this.handleCancelEdit();
             } else {
-              this.$LjNotify('warning',{
+              this.$LjNotify('warning', {
                 title: '失败',
                 message: res.msg
               });
             }
           })
-        }else {
-          this.$http.put(`organization/permission/${this.edit_row.id}`,this.edit_module_form).then(res => {
+        } else {
+          this.$http.put(`organization/permission/${this.edit_row.id}`, this.edit_module_form).then(res => {
             if (res.code === '20030') {
-              this.$LjNotify('success',{
+              this.$LjNotify('success', {
                 title: '成功',
                 message: res.msg
               });
               this.getPowerList();
               this.handleCancelEdit();
             } else {
-              this.$LjNotify('warning',{
+              this.$LjNotify('warning', {
                 title: '失败',
                 message: res.msg
               });
@@ -1197,7 +1174,7 @@
         };
         this.edit_module_visible = false;
       },
-      handleOpenEdit(type,row) {
+      handleOpenEdit(type, row) {
         this.edit_row = row;
         this.edit_type = type;
         if (type === 'module') {
@@ -1218,14 +1195,14 @@
         if (this.confirm_type === 'system') {
           this.$http.delete(`organization/system/${this.confirm_row.id}`).then(res => {
             if (res.code === '20040') {
-              this.$LjNotify('success',{
+              this.$LjNotify('success', {
                 title: '成功',
                 message: res.msg
               });
               this.getPowerList();
               this.confirm_visible = false;
             } else {
-              this.$LjNotify('warning',{
+              this.$LjNotify('warning', {
                 title: '失败',
                 message: res.msg
               })
@@ -1233,15 +1210,15 @@
           })
         } else {
           this.$http.delete(`organization/permission/${this.confirm_row.id}`).then(res => {
-            if (res.code === '20040') {
-              this.$LjNotify('success',{
+            if (res.code.endsWith('0')) {
+              this.$LjNotify('success', {
                 title: '成功',
                 message: res.msg
               });
               this.confirm_visible = false;
               this.getPowerList();
             } else {
-              this.$LjNotify('warning',{
+              this.$LjNotify('warning', {
                 title: '失败',
                 message: res.msg
               })
@@ -1249,15 +1226,15 @@
           })
         }
       },
-      handleDelControl(type,row) {
+      handleDelControl(type, row) {
         this.confirm_row = row;
         this.confirm_type = type;
         this.confirm_visible = true;
       },
       getPowerBottomList(id) {
         this.bottom_params.system_id = id;
-        this.$http.get('organization/permission',this.bottom_params).then(res => {
-          if (res.code === '20000') {
+        this.$http.get('organization/permission', this.bottom_params).then(res => {
+          if (res.code.endsWith('0')) {
             this.power_list = res.data.data;
             this.power_count = res.data.count;
             this.getFieldList(res.data.data[0].id);
@@ -1268,6 +1245,7 @@
         })
       },
       handleClickModule(row) {
+        this.bottom_params.page = 1;
         this.current_module = row;
         this.field_list = [];
         this.power_list = [];
@@ -1282,8 +1260,8 @@
       },
       getModuleList(id) {
         this.module_params.parent_id = id;
-        this.$http.get('organization/system',this.module_params).then(res => {
-          if (res.code === '20000') {
+        this.$http.get('organization/system', this.module_params).then(res => {
+          if (res.code.endsWith('0')) {
             this.module_list = res.data.data;
             this.module_count = res.data.count;
             this.getPowerBottomList(res.data.data[0].id);
@@ -1293,7 +1271,7 @@
           }
         })
       },
-      //权限管理
+      //权限管理->加载系统模块
       getPowerList() {
         this.power_params.parent_id = '';
         this.module_list = [];
@@ -1302,7 +1280,11 @@
         this.power_count = 0;
         this.field_list = [];
         this.field_count = 0;
-        this.$http.get('organization/system',this.power_params).then(res => {
+        if(!this.VALIDATE_PERMISSION['System-Index']) {
+          this.$LjMessageNoPermission('无权限查看系统列表');
+          return;
+        }
+        this.$http.get('organization/system', this.power_params).then(res => {
           if (res.code === '20000') {
             this.system_list = res.data.data;
             this.system_count = res.data.count;
@@ -1317,7 +1299,7 @@
       handleExportInfo() {
         this.exportInfo += this.chooseTab;
       },
-      handleOpenEditDepart(item,child) {
+      handleOpenEditDepart(item, child) {
         console.log(item);
         if (child) {
           this.is_child = true;
@@ -1338,10 +1320,12 @@
         };
         this.depart_visible = true;
       },
+
+      /*确定删除部门*/
       handleSubmitDel() {
         this.$http.delete(`organization/organization/${this.del_depart.id}`).then(res => {
           if (res.code === '20040') {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '成功',
               message: res.msg
             });
@@ -1353,7 +1337,7 @@
               this.getDepartList();
             }
           } else {
-            this.$LjNotify('warning',{
+            this.$LjNotify('warning', {
               title: '失败',
               message: res.msg
             })
@@ -1361,7 +1345,7 @@
         })
       },
       //删除部门
-      handleDelDepart(item,child) {
+      handleDelDepart(item, child) {
         if (child) {
           this.is_child = true;
         }
@@ -1370,31 +1354,31 @@
       },
       //取消添加部门
       handleCancelAddDepart() {
-       this.departForm = {
-         name: '',
-         leader: '',
-         leader_id: [],
-         parent_id: [],
-         parent: ''
-       };
-       if (!this.show_depart_detail) {
-         this.departForm.parent_id = [1];
-         this.departForm.parent = '南京乐伽商业管理有限公司';
-       }
-       if (this.show_depart_detail) {
-         this.departForm.parent_id = [];
-         this.departForm.parent_id.push(this.current_depart.id);
-         this.departForm.parent = this.current_depart.name;
-       }
-       this.is_edit_depart = false;
-       this.depart_visible = false;
+        this.departForm = {
+          name: '',
+          leader: '',
+          leader_id: [],
+          parent_id: [],
+          parent: ''
+        };
+        if (!this.show_depart_detail) {
+          this.departForm.parent_id = [1];
+          this.departForm.parent = '南京乐伽商业管理有限公司';
+        }
+        if (this.show_depart_detail) {
+          this.departForm.parent_id = [];
+          this.departForm.parent_id.push(this.current_depart.id);
+          this.departForm.parent = this.current_depart.name;
+        }
+        this.is_edit_depart = false;
+        this.depart_visible = false;
       },
       //确定添加部门
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
-          this.$http.put(`organization/organization/${this.edit_depart.id}`,this.departForm).then(res => {
+          this.$http.put(`organization/organization/${this.edit_depart.id}`, this.departForm).then(res => {
             if (res.code === '20030') {
-              this.$LjNotify('success',{
+              this.$LjNotify('success', {
                 title: '成功',
                 message: res.msg
               });
@@ -1405,7 +1389,7 @@
               }
               this.handleCancelAddDepart();
             } else {
-              this.$LjNotify('warning',{
+              this.$LjNotify('warning', {
                 title: '失败',
                 message: res.msg
               })
@@ -1413,9 +1397,9 @@
           });
           return false;
         }
-        this.$http.post('organization/organization',this.departForm).then(res => {
+        this.$http.post('organization/organization', this.departForm).then(res => {
           if (res.code === '20010') {
-            this.$LjNotify('success',{
+            this.$LjNotify('success', {
               title: '成功',
               message: res.msg
             });
@@ -1425,19 +1409,12 @@
             }
             this.handleCancelAddDepart();
           } else {
-            this.$LjNotify('warning',{
+            this.$LjNotify('warning', {
               title: '警告',
               message: res.msg
             })
           }
         })
-      },
-      handleGetDepart(id,name) {
-        this.chooseDepart = false;
-        if (id !== 'close') {
-          this.departForm.parent_id = id;
-          this.departForm.parent = name;
-        }
       },
       handleChangePage(page) {
         this.params.page = page;
@@ -1460,9 +1437,12 @@
         this.$store.dispatch('route_animation');
       },
       // 部门管理列表
-     async getDepartList() {
-        if(! await this.validatePermission('Organization-Index')) {return};
-        this.$http.get('organization/organization',this.params).then(res => {
+      getDepartList() {
+        if (!this.VALIDATE_PERMISSION['Organization-Index']) {
+          this.$LjMessageNoPermission();
+          return;
+        }
+        this.$http.get('organization/organization', this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;
             this.departCount = res.data.count;
@@ -1485,6 +1465,9 @@
       highSearch(val) {
         this.showSearch = true;
         switch (val) {
+          case 2:
+            this.searchData = this.OrgSearch;
+            break;
           case 3:
             this.searchData = this.staffBookSearch;
             break;
@@ -1498,6 +1481,11 @@
         this.showSearch = false;
         if (val !== 'close') {
           switch (this.chooseTab) {
+              case 2:
+                  this.params=val;
+                  this.params.parent_id=1;
+                  this.getDepartList();
+                  break;
             case 3:
               this.searchFruit3 = val;
               break;
@@ -1509,58 +1497,53 @@
       },
       showSetForm() {
         this.SetFormVisible = true;
+        let education = {};
+        _.forEach(this.DROPDOWN_CONSTANT.EDUCATION_BACKGROUND,(o)=> {
+          education[o.id] = o.name;
+        });
         this.setFormData = [
-          { key: 'staff.internship_number',val: '实习协议',isBtn: true},
-          { key: 'name',val: '姓名'},
-          { key: 'position',val: '岗位',isArray: true,showKey: 'name'},
-          { key: 'gender',val: '性别',info:{1: '女',0: '男'}},
-          { key: 'staff.origin_addr',val: '籍贯'},
-          { key: 'staff.political_status',val: '政治面貌',info: {1: '群众',2: '团员',3: '党员',4: '其他'}},
-          { key: 'staff.birthday',val: '出生年月'},
-          { key: 'staff.city',val: '城市'},
-          { key: 'staff.origin_addr',val: '家庭住址'},
-          { key: 'phone',val: '联系方式'},
-          { key: 'staff.id_num',val: '身份证'},
-          { key: 'staff.emergency_call',val: '紧急联系人'},
-          { key: 'staff.household_register',val: '户口性质',info: {0: '农村',1: '城市'}},
-          { key: 'staff.national',val: '民族'},
-          { key: 'staff.marital_fertility_status',val: '婚育情况',info: {1: '未婚', 2: '已婚未育',3: '已婚已育'}},
-          { key: 'staff.education',val: '学历',info: {1: '高中及以下',2: '大专',3: '本科', 4: '本科及以上', 5: '其他'}},
-          { key: 'staff.school',val: '毕业院校'},
-          { key: 'staff.graduation_time',val: '毕业时间'},
-          { key: 'staff.major',val: '专业'},
-          { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
-          { key: 'staff.enroll',val: '入职时间'},
-          { key: 'staff.bank_num',val: '银行卡号'},
-          { key: 'staff.account_name',val: '户主'},
-          { key: 'staff.account_bank',val: '开户行'},
-          { key: 'staff.contract_number',val: '劳务合同',isBtn: true},
-          { key: 'staff.leave_proof_number',val: '上家单位离职证明',isBtn: true},
-          { key: 'staff.commitment_number',val: '入职承诺书',isBtn: true},
-          { key: 'staff.employ_proof_number',val: '在职证明',isBtn: true},
-          { key: 'staff.income_proof_number',val: '收入证明',isBtn: true},
-          { key: 'staff.notice_number',val: '入职须知',isBtn: true},
-          { key: 'staff.secret_number',val: '保密协议编号',isBtn: true},
-          { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书',isBtn: true},
+          {key: 'staff.internship_number', val: '实习协议', isBtn: true},
+          {key: 'name', val: '姓名'},
+          {key: 'position', val: '岗位', isArray: true, showKey: 'name'},
+          {key: 'gender', val: '性别', info: {0: '女', 1: '男'}},
+          {key: 'staff.origin_addr', val: '籍贯'},
+          {key: 'staff.political_status', val: '政治面貌', info: {1: '群众', 2: '团员', 3: '党员', 4: '其他'}},
+          {key: 'staff.birthday', val: '出生年月'},
+          {key: 'staff.city', val: '城市'},
+          {key: 'staff.origin_addr', val: '家庭住址'},
+          {key: 'phone', val: '联系方式'},
+          {key: 'staff.id_num', val: '身份证'},
+          {key: 'staff.emergency_call', val: '紧急联系人'},
+          {key: 'staff.household_register', val: '户口性质', info: {0: '农村', 1: '城市'}},
+          {key: 'staff.national', val: '民族'},
+          {key: 'staff.marital_fertility_status', val: '婚育情况', info: {1: '未婚', 2: '已婚未育', 3: '已婚已育'}},
+          // {key: 'staff.education', val: '学历', info: {1: '高中及以下', 2: '大专', 3: '本科', 4: '本科及以上', 5: '其他'}},
+          {key: 'staff.education', val: '学历', info: education},
+          {key: 'staff.school', val: '毕业院校'},
+          {key: 'staff.graduation_time', val: '毕业时间'},
+          {key: 'staff.major', val: '专业'},
+          {
+            key: 'staff.position_level',
+            val: '职级',
+            info: {1: 'P1', 2: ' P2', 3: 'P3', 4: 'P4', 5: 'P5', 6: 'P6', 7: 'P7'}
+          },
+          {key: 'staff.enroll', val: '入职时间'},
+          {key: 'staff.bank_num', val: '银行卡号'},
+          {key: 'staff.account_name', val: '户主'},
+          {key: 'staff.account_bank', val: '开户行'},
+          {key: 'staff.contract_number', val: '劳务合同', isBtn: true},
+          {key: 'staff.leave_proof_number', val: '上家单位离职证明', isBtn: true},
+          {key: 'staff.commitment_number', val: '入职承诺书', isBtn: true},
+          {key: 'staff.employ_proof_number', val: '在职证明', isBtn: true},
+          {key: 'staff.income_proof_number', val: '收入证明', isBtn: true},
+          {key: 'staff.notice_number', val: '入职须知', isBtn: true},
+          {key: 'staff.secret_number', val: '保密协议编号', isBtn: true},
+          {key: 'staff.insurance_prohibit_number', val: '大学生无法缴纳社保知晓书', isBtn: true},
         ];
       },
       moduleList() {
         this.visibleStatus = !this.visibleStatus;
         this.$store.dispatch('route_animation');
-      },
-      hiddenOrgan(val,name) {
-        this.organModule = false;
-        if (val !== 'close') {
-          this.departForm.leader_id = val;
-          this.departForm.leader = name;
-        }
-      },
-
-
-
-      /*获取权限*/
-      async getValidatePermission() {
-        this.VALIDATE_PERMISSION.Organization_Add = await this.validatePermission('Organization-Add');
       },
     },
   }
@@ -1581,6 +1564,26 @@
 
   #theme_name.theme1 {
     #departments {
+
+      .arrow-btn {
+        i.arrow-btn-left {
+          transform: rotate(180deg);
+          @include departmentsImg('arrow-right.png','theme1');
+          &:hover {
+            transform: rotate(0);
+            @include departmentsImg('arrow-left.png','theme1');
+          }
+        }
+        i.arrow-btn-right {
+          @include departmentsImg('arrow-right.png','theme1');
+          &:hover {
+            transform: rotate(180deg);
+            @include departmentsImg('arrow-left.png','theme1');
+          }
+        }
+      }
+
+
       .table_control {
         display: inline-block;
         width: 30px;
@@ -1590,47 +1593,57 @@
         cursor: pointer;
         border-radius: 3px;
         text-align: center;
+
         &:hover {
           background-color: #F4AF40;
           color: white;
         }
       }
+
       .departList {
         .mainList {
           p {
             @include departmentsImg('departmentshui.png', 'theme1');
+
             &:hover {
               @include departmentsImg('departmentshong.png', 'theme1');
             }
           }
         }
+
         .depart-detail {
           background-color: $color9F9;
+
           .depart_nav {
             span {
               color: $colorE33;
+
               a {
                 color: #999999;
                 margin: 0 10px;
               }
             }
           }
+
           .depart-detail-main {
             .depart-left {
               p {
                 @include departmentsImg('departmentshui.png', 'theme1');
+
                 &:hover {
                   @include departmentsImg('departmentshong.png', 'theme1');
                 }
               }
             }
+
             .depart-right {
               .depart-btn {
                 span {
-                  @include departmentsImg('huidikuang.png','theme1');
+                  @include departmentsImg('huidikuang.png', 'theme1');
                 }
+
                 .choose-span {
-                  @include departmentsImg('hongdikuang.png','theme1');
+                  @include departmentsImg('hongdikuang.png', 'theme1');
                   color: white;
                 }
               }
@@ -1638,12 +1651,14 @@
           }
         }
       }
+
       .dialog_container {
         .dialog_main {
           .iconInput {
             .organization {
               @include commonImg('zuzhijiagou.png', 'theme1');
             }
+
             .user {
               @include commonImg('yonghu.png', 'theme1');
             }

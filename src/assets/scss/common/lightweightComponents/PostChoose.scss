@@ -1,0 +1,19 @@
+@import "../../common.scss";
+
+#theme_name {
+  #postChoose {
+    .icons {
+      width: 20px;
+      height: 20px;
+    }
+    display: inline-block;
+    .input-container {
+      @include flex('flex-center');
+      position: relative;
+      .icons.position {
+        position: absolute;
+        right: 10px;
+      }
+    }
+  }
+}

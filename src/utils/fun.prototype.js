@@ -1,5 +1,23 @@
+import UserChoose from '../components/common/lightweightComponents/UserChoose';
+import OrgChoose from '../components/common/lightweightComponents/OrgChoose';
+import PostChoose from '../components/common/lightweightComponents/PostChoose';
+import LjDialog from '../components/common/lj-dialog';
+import LjUpload from '../components/common/lightweightComponents/lj-upload';
+import DropdownList from '../components/common/lightweightComponents/dropdown-list';
+import {DROPDOWN_CONSTANT,GLOBAL_CONSTANT} from '@/assets/js/allConstantData';
 export default {
   install(Vue, options) {
+    /*全局组件及全局常量注册*/
+    Vue.component(UserChoose.name, UserChoose);//选人
+    Vue.component(OrgChoose.name, OrgChoose);//选部门
+    Vue.component(PostChoose.name, PostChoose);//选岗位
+    Vue.component(LjDialog.name, LjDialog);//对话框
+    Vue.component(LjUpload.name, LjUpload);//对话框
+    Vue.component(DropdownList.name, DropdownList);//下拉组件
+    Vue.prototype.DROPDOWN_CONSTANT = DROPDOWN_CONSTANT;
+    Vue.prototype.GLOBAL_CONSTANT = GLOBAL_CONSTANT;
+
+
     // 路由跳转
     Vue.prototype.routerLink = function (url, data,url_name) {
       if (data) {
@@ -160,7 +178,7 @@ export default {
     };
 
     /*验证权限*/
-    Vue.prototype.validatePermission =async function(sign,type = 'auth') {
+    /*Vue.prototype.validatePermission =async function(sign,type = 'auth') {
       let params = {
         type,
         sign,
@@ -171,8 +189,20 @@ export default {
         return result.data;
       }
       return false;
-    }
+    }*/
     /*全局权限变量*/
     Vue.prototype.VALIDATE_PERMISSION = {};
+
+    Vue.prototype.validatePermission = function(validName) {
+      if(!this.VALIDATE_PERMISSION[validName]) {
+        this.$LjMessageNoPermission();
+        return false;
+      }
+      return true;
+    }
+
+    Vue.prototype.$LjMessageNoPermission = function(msg='无权限') {
+      this.$LjMessage('warning',{title:'警告',msg:msg});
+    };
   }
 }

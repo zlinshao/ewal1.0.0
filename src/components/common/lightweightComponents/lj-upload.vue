@@ -1,9 +1,8 @@
 <template>
-  <!--<div :class="{'disabled':disabled}" id="lj_upload">-->
   <div id="lj_upload">
     <div class="upload-container">
       <span v-if="title" class="upload-title">{{title}}</span>
-      <upload :max-size="maxSize" :download="download" show :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
+      <upload :max-size="maxSize" :download="download" :view-file="viewFile" show :limit="limit" :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
     </div>
   </div>
 </template>
@@ -12,13 +11,14 @@
   import Upload from './upload';
 
   export default {
-    name: "lj-upload",
+    name: "ljUpload",
     //props: ['title', 'value', 'size', 'data', 'disabled'],
     props: {
       title:{},
       value:{},
       size:{},
       data:{},
+      limit: {},
       disabled:{
         default:false,
       },
@@ -27,6 +27,12 @@
       },
       maxSize:{
         type: Number,
+      },
+      viewFile:{
+        type:Array,
+        default() {
+          return [];
+        }
       },
     },
     components: {
@@ -44,18 +50,29 @@
 
       value: {
         handler(val, oldVal) {
-          if (val && !oldVal && this.count == 0) {
+          if(val && val.length>0 && this.count==0) {
             this.count++;
             this.getPhotoInfoList(val);
           }
+          /*if (val && !oldVal && this.count == 0) {
+            this.count++;
+            this.getPhotoInfoList(val);
+          }*/
         },
         immediate: true
       },
       size: {
         handler(val, oldVal) {
+          /*let s = val.constructor;
+          let t = typeof val;*/
           if (val) {
-            this.photoData.size.width = val + 'px';
-            this.photoData.size.height = val + 'px';
+            if(val.constructor===Object) {
+              this.photoData.size.width = parseInt(val.width)+'px';
+              this.photoData.size.height = parseInt(val.height)+'px';
+            }else {
+              this.photoData.size.width = val + 'px';
+              this.photoData.size.height = val + 'px';
+            }
           }
         },
         immediate: true
@@ -71,8 +88,8 @@
             width: '60px',
             height: '60px'
           },
-          count: 0,
-        }
+        },
+        count: 0,
       }
     },
     mounted() {

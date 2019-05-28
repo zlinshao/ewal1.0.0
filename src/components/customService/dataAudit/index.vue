@@ -29,7 +29,7 @@
           </template>
         </el-table-column>
         <el-table-column key="合同编号" align="center" prop="contract_number" label="合同编号"></el-table-column>
-        <el-table-column key="地址" align="center" prop="address" label="地址"></el-table-column>
+        <el-table-column key="地址" align="center" prop="house_name" label="地址"></el-table-column>
         <el-table-column key="合同性质" align="center" prop="type" label="合同性质"></el-table-column>
         <el-table-column key="收房价格" align="center" label="收房价格" v-if='tag_status == 1'>>
           <template slot-scope="scope">
@@ -84,11 +84,8 @@
 import SearchHigh from '../../common/searchHigh.vue'
 import StaffOrgan from '../../common/staffOrgan.vue'
 import MenuList from '../../common/menuList.vue';
-import LjDialog from '../../common/lj-dialog.vue';
-import InvalidDialog from '../components/invalid-dialog';
 import { dataAuditSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
-import Ljupload from '../../common/lightweightComponents/lj-upload';
 import contractDetail from '../components/contract_detail';
 
 export default {
@@ -97,10 +94,7 @@ export default {
     SearchHigh,
     StaffOrgan,
     MenuList,
-    LjDialog,
-    Ljupload,
     contractDetail,
-    InvalidDialog
   },
   data () {
     return {

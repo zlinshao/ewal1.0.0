@@ -49,8 +49,11 @@
                 <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
                 <el-tooltip placement="bottom-end" :visible-arrow="false">
                   <div class="flex control-btn" slot="content">
-                    <span v-for="tmp in choose_list" :key="tmp.id"
-                          @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
+                    <span v-for="item in choose_list" :key="item.id"
+                          @click.stop="handleClickSpan(item,scope.row,scope.row.is_tag)">
+                      <div v-if="item.id==3&&scope.row.is_tag==true">已标记</div>
+                      <div v-else>{{item.val}}</div>
+                    </span>
                   </div>
                   <span class="point_btn writingMode">···</span>
                 </el-tooltip>
@@ -324,6 +327,16 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
+                  <el-form-item label="合同开始时间">
+                    <span>{{ contractDetail.start_at || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="合同结束时间">
+                    <span>{{ contractDetail.end_at || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
                   <el-form-item label="违约金">
                     <!--mortgage_price-->
                     <span>{{ contractDetail.mortgage_price || '/'}}</span>
@@ -535,7 +548,7 @@
     <lj-dialog :visible="add_mark_visible" :size="{width: 450 + 'px',height: 500 + 'px'}" @close="handleCancelMark">
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>添加标记</h3>
+          <h3>{{add_or_edit_mark==1?'添加标记':'修改标记'}}</h3>
         </div>
         <div class="dialog_main borderNone">
           <el-form :model="mark_form" label-width="80px">
@@ -694,6 +707,7 @@ export default {
         { id: 2, val: '回访记录' },
         { id: 3, val: '添加标记' },
       ],
+      add_or_edit_mark:1,//添加还是修改标记  1为添加,2为修改
 
       //作废重签
       rewrite_visible: false,
@@ -1026,29 +1040,34 @@ export default {
       this.contract_detail_visible = false;
     },
     handleCancelMark () {
-      for (var key in this.mark_form) {
+      for (let key in this.mark_form) {
         this.mark_form[key] = '';
       }
       this.mark_form.album = [];
       this.add_mark_visible = false;
     },
     handleSubmitMark () {
-      this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
-        console.log(res);
-        if (res.code === 200) {
-          this.$LjNotify('success', {
-            title: '成功',
-            message: res.message
-          });
-          this.handleCancelMark();
-          this.getContractList();
-        } else {
-          this.$LjNotify('warning', {
-            title: '失败',
-            message: res.message
-          })
-        }
-      })
+      if(this.add_or_edit_mark==1) {
+        this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: res.message
+            });
+            this.handleCancelMark();
+            this.getContractList();
+          } else {
+            this.$LjNotify('warning', {
+              title: '失败',
+              message: res.message
+            })
+          }
+        })
+      }else  {
+        this.$http.post(`${this.market_server}v1.0/market/contract/tag`);
+      }
+
     },
     handleGetMarkUpload (file) {
       if (file !== 'close') {
@@ -1063,12 +1082,14 @@ export default {
       this.backInfo = '';
       this.backInfo_visible = false;
     },
-    handleClickSpan (tmp, item) {
-      this.currentRow = item;
-      this.current_choose_control = tmp.id;
-      switch (tmp.id) {
+    handleClickSpan (item, row,isEdit) {//isEdit  是否为修改标记
+      this.add_or_edit_mark=!isEdit?1:2;
+      if(isEdit) return;
+      this.currentRow = row;
+      this.current_choose_control = item.id;
+      switch (item.id) {
         case 1:
-          this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${item.contract_id}`).then(res => {
+          this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
             if (res.code === 200) {
               console.log(res);
               if (res.data.checkout_remark && res.data.checkout_remark.length > 0) {
@@ -1093,8 +1114,8 @@ export default {
           });
           break;
         case 2:
-          if (item.record) {
-            this.backInfo = item.record;
+          if (row.record) {
+            this.backInfo = row.record;
             this.backInfo_visible = true;
           } else {
             this.$LjNotify('warning', {
@@ -1162,7 +1183,7 @@ export default {
         });
         return false;
       }
-      for (var key in this.polishing_params) {
+      for (let key in this.polishing_params) {
         if (!this.polishing_params[key] || this.polishing_params[key].length < 1) {
           this.$LjNotify('warning',{
             title: '警告',
@@ -1171,10 +1192,17 @@ export default {
           return false;
         }
       }
-      var form = new FormData();
-      form.append('complete_content', this.polishing_params);
+      let form = new FormData();
+      form.append('complete_content', JSON.stringify(this.polishing_params));
       form.append('property_number', this.property_number);
       form.append('mound_number', this.mound_number);
+
+      /*let form = {};
+      form['complete_content']=this.polishing_params;
+      form['property_number']= this.property_number;
+      form['mound_number']= this.mound_number;*/
+      debugger
+      let s = this.currentRow.contract_id;
       this.$http.post(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, form).then(res => {
         if (res.code === 200) {
           this.$LjNotify('success', {
@@ -1209,9 +1237,10 @@ export default {
       return this.polishing_data[this.chooseTab - 1][idx];
     },
     handleOpenPolishing (row) {
+      this.currentRow = row;
       if (row.needComplete && row.needComplete.length > 0) {
-        var obj = {};
-        var param = {};
+        let obj = {};
+        let param = {};
         row.needComplete.map(item => {
           obj[item] = '';
           param[item] = {
@@ -1276,7 +1305,7 @@ export default {
                 { id: 1, title: '新租' },
                 { id: 2, title: '转租' },
                 { id: 3, title: '续租' },
-                { id: 4, title: '未收先租' },
+                /*{ id: 4, title: '未收先租' },*/
                 { id: 5, title: '调租' },
               ]
           },
@@ -1302,6 +1331,17 @@ export default {
             dataType: '',
             value: {
               num: '',
+            }
+          },
+          {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org',
+            dataType: [],
+            value: {
+              num: '',
+              arr: []
             }
           }
         ]
@@ -1330,6 +1370,7 @@ export default {
         this.params.end_date_max = val.date3 && val.date3.length > 0 ? val.date3[1] ? val.date2[1] : '' : '';
         this.params.signer = val.signer && val.signer[0] ? val.signer[0] : '';
         this.params.type = val.type && val.type;
+        this.params.org =val.org;
         this.getContractList();
       }
       this.highVisible = false;

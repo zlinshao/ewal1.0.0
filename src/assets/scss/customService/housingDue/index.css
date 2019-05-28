@@ -97,32 +97,32 @@
   justify-content: flex-end;
 }
 
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf");
+}
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF");
+}
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf");
+}
 /*@font-face {
   font-family: 'jingDianXingShu';
-  src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
+  src: url('/static/font/JDJXINSHU.otf');
 }
 
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url('http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF');
+  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
 }
 
 @font-face {
   font-family: 'jianyue';
-  src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
+  src: url('/static/font/BaiZhouRenZhe.otf');
 }*/
-@font-face {
-  font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf");
-}
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF");
-}
-@font-face {
-  font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf");
-}
 .writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl;
@@ -239,46 +239,46 @@
   font-size: 16px;
   color: #cf2e33;
 }
-#theme_name #HousingDue .dialog_main {
+#theme_name #HousingDue .edit-markup {
   overflow: hidden;
   overflow-y: scroll;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_left {
+#theme_name #HousingDue .edit-markup .detail_dialog_left {
   flex: 1;
   font-size: 14px;
   text-align: right;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_left p + p {
+#theme_name #HousingDue .edit-markup .detail_dialog_left p + p {
   margin-top: 10px;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_center {
+#theme_name #HousingDue .edit-markup .detail_dialog_center {
   height: 100%;
   margin: 0 80px;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_center .circle {
+#theme_name #HousingDue .edit-markup .detail_dialog_center .circle {
   width: 15px;
   height: 15px;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_right {
+#theme_name #HousingDue .edit-markup .detail_dialog_right {
   flex: 1;
   text-align: left;
   font-size: 10px;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_right p + p {
+#theme_name #HousingDue .edit-markup .detail_dialog_right p + p {
   margin-top: 10px;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_right .other_fee p {
+#theme_name #HousingDue .edit-markup .detail_dialog_right .other_fee p {
   margin-top: 5px;
   padding-left: 10px;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_right .detail_dialog_rato {
+#theme_name #HousingDue .edit-markup .detail_dialog_right .detail_dialog_rato {
   margin-left: 20px;
   display: inline-block;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_right .detail_dialog_rato .el-rate__icon {
+#theme_name #HousingDue .edit-markup .detail_dialog_right .detail_dialog_rato .el-rate__icon {
   font-size: 12px;
 }
-#theme_name #HousingDue .dialog_main .detail_dialog_right .detail_dialog_note {
+#theme_name #HousingDue .edit-markup .detail_dialog_right .detail_dialog_note {
   margin-top: 0;
 }
 #theme_name #HousingDue .detail_dialog .back_info {

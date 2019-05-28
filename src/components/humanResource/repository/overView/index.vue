@@ -5,7 +5,6 @@
         :data="tableSettingData.repository.tableData"
         highlight-current-row
         :height="this.mainListHeight(30) + 'px'"
-        :row-class-name="tableChooseRow"
         @cell-click="tableClickRow($event,'repository')"
         @row-dblclick="currentTable='inRepository';tableDblClick($event);"
         header-row-class-name="tableHeader"
@@ -110,7 +109,6 @@
             :data="tableSettingData.borrowReceive.tableData"
             highlight-current-row
             :height="this.mainListHeight(250) + 'px'"
-            :row-class-name="tableChooseRow"
             @cell-click="tableClickRow($event,'borrowReceive')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
@@ -165,7 +163,6 @@
             :data="tableSettingData.repair.tableData"
             highlight-current-row
             :height="this.mainListHeight(430) + 'px'"
-            :row-class-name="tableChooseRow"
             @cell-click="tableClickRow($event,'repair')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
@@ -220,7 +217,6 @@
             :data="tableSettingData.useless.tableData"
             highlight-current-row
             :height="this.mainListHeight(430) + 'px'"
-            :row-class-name="tableChooseRow"
             @cell-click="tableClickRow($event,'useless')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
@@ -355,7 +351,6 @@
             highlight-current-row
             @selection-change="handleSelectionChange"
             :height="this.mainListHeight(300) + 'px'"
-            :row-class-name="tableChooseRow"
             @cell-click="tableClickRow($event,'goods')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
@@ -504,7 +499,6 @@
             :data="tableSettingData.editCategory.tableData"
             highlight-current-row
             :height="this.mainListHeight(430) + 'px'"
-            :row-class-name="tableChooseRow"
             @cell-click="tableClickRow($event,'useless')"
             header-row-class-name="tableHeader"
             :row-style="{height:'40px'}"
@@ -615,7 +609,6 @@
             :data="tableSettingData.inRepository.tableData"
             highlight-current-row
             :height="this.mainListHeight(200) + 'px'"
-            :row-class-name="tableChooseRow"
             @cell-click="tableClickRow($event,'inRepository')"
             header-row-class-name="tableHeader"
             :row-style="{height:'62px'}"
@@ -679,7 +672,6 @@
             :data="tableSettingData.qrCode.tableData"
             highlight-current-row
             :height="this.mainListHeight(200) + 'px'"
-            :row-class-name="tableChooseRow"
             @cell-click="tableClickRow($event,'qrCode')"
             header-row-class-name="tableHeader"
             :row-style="{height:'62px'}"

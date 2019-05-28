@@ -27,9 +27,9 @@
         </div>
       </div>
       <div>
-        <span>本月入职员工数：{{ staff_info.enroll }}人</span>
-        <span>本月离职员工数：{{ staff_info.dismiss }}人</span>
-        <span>本月待转正工数：{{ staff_info.forward }}人</span>
+        <span>{{mark_content}}入职员工数：{{ staff_info.enroll }}人</span>
+        <span>{{mark_content}}离职员工数：{{ staff_info.dismiss }}人</span>
+        <span>{{mark_content}}待转正工数：{{ staff_info.forward }}人</span>
       </div>
 
       <ul class="mark_btn">
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import MenuList from '../common/menuList.vue'
   import {humanResource} from '../../assets/js/allModuleList.js';
 
@@ -53,6 +54,7 @@
         mainHeight: {
           height: 0
         },
+        mark_content:'当日',
         mark_list: [
           {id: 1,val: '当日'},
           {id: 2,val: '本周'},
@@ -79,7 +81,7 @@
     mounted() {
       this.title = '人力资源中心';
 
-      var top = this.$refs['bottom_info'].offsetTop;
+      let top = this.$refs['bottom_info'].offsetTop;
       this.mainHeight.height = window.innerHeight - top + 'px';
 
       this.init_work_down_chart();
@@ -96,18 +98,19 @@
             this.staff_time.start_time = '';
             break;
           case 2:
-            var date = new Date().getDay();
+            let date = new Date().getDay();
             this.staff_time.start_time = new Date(new Date().setDate(new Date().getDate() - (date - 1))).toLocaleDateString().split('/').join('-');
             this.staff_time.end_time = new Date(new Date().setDate(new Date().getDate() + (7 - date))).toLocaleDateString().split('/').join('-');
             break;
           case 3:
-            var fullYear = new Date().getFullYear();
-            var month = new Date().getMonth() + 1;
-            var endOfMonth = new Date(fullYear,month,0).getDate();
+            let fullYear = new Date().getFullYear();
+            let month = new Date().getMonth() + 1;
+            let endOfMonth = new Date(fullYear,month,0).getDate();
             this.staff_time.start_time = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-01`;
             this.staff_time.end_time = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${endOfMonth}`;
             break;
         }
+        this.mark_content = _.find(this.mark_list,{id:tmp.id}).val;
         this.mark_choose = tmp.id;
         this.handleGetStaffInfo();
       },
@@ -132,18 +135,18 @@
       handleGetStaffInfo() {
         this.$http.get('staff/user/statistical',this.staff_time).then(res => {
           if (res.code === '20000') {
-            for (var key in this.staff_info) {
+            for (let key in this.staff_info) {
               this.staff_info[key] = res.data[key];
             }
           } else  {
-            for (var key in this.staff_info) {
+            for (let key in this.staff_info) {
               this.staff_info[key] = 0;
             }
           }
         })
       },
       init_work_down_chart() {
-        var event_chart = this.$echarts.init(document.getElementById('work_down_charts'));
+        let event_chart = this.$echarts.init(document.getElementById('work_down_charts'));
         event_chart.setOption({
           color: ['#DFDFDF','#9E9E9E','#B9292D'],
           legend: {

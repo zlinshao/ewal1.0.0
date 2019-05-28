@@ -1,3 +1,4 @@
+<!--已约面试-->
 <template>
   <div id="part_three">
     <div>
@@ -15,11 +16,7 @@
               header-row-class-name="tableHeader"
             >
               <el-table-column label="姓名" prop="name" align="center"></el-table-column>
-              <el-table-column label="来源" prop="come" align="center">
-                <template slot-scope="scope">
-                  <span>{{ platform[scope.row.platform - 1] }}</span>
-                </template>
-              </el-table-column>
+              <el-table-column label="来源" prop="platform" align="center"> </el-table-column>
               <el-table-column label="状态" prop="result" align="center"></el-table-column>
             </el-table>
           </div>
@@ -46,7 +43,7 @@
           <div class="dialog_header">
             <h3>{{ is_edit ? '修改面试结果' : '查看面试结果'}}</h3>
             <div class="header_right">
-              <div class="look_btn" @click="handleLookDetailInfo"><span class="btn_look"></span>查看简历及答案</div>
+              <div class="look_btn" @click="handleLookDetailInfo"><span class="btn_look"></span>查看入职登记信息</div>
             </div>
           </div>
           <div class="dialog_main borderNone">
@@ -87,7 +84,7 @@
             <el-button size="small" type="info" @click="handleCloseInterview">取消</el-button>
           </div>
           <div class="dialog_footer" v-else>
-            <el-button type="danger" size="small" @click="is_edit = true">修改面试结果</el-button>
+            <el-button type="danger" v-if="VALIDATE_PERMISSION['Finished-Audition-Edit']" size="small" @click="is_edit = true">修改面试结果</el-button>
           </div>
         </div>
       </lj-dialog>
@@ -299,6 +296,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import LjDialog from '../../../../common/lj-dialog.vue';
 
   export default {
@@ -415,10 +413,19 @@
       },
       //确定修改面试结果
       handleSubmitChangeInterview() {
-        this.$http.put(`recruitment/interviewers/edit_result/${this.currentRow.id}`,{
+        let params = {
           interview_result: this.interview_form.interview_result,
           change_result: this.interview_form.change_result
-        }).then(res => {
+        };
+        let result = this.interview_form.result;
+
+        //if(this.interview_res[params.interview_result]==result) {
+        if(_.find(this.interview_res,{key:params.interview_result}).val==result) {
+          this.$LjMessage('warning',{title:'警告',msg:'不可修改为原值'});
+          return;
+        }
+
+        this.$http.put(`recruitment/interviewers/edit_result/${this.currentRow.id}`,params).then(res => {
           if (res.code === '20030') {
             this.$LjNotify('success',{
               title: '成功',
@@ -432,14 +439,15 @@
               message: res.msg
             })
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       //面试结果列表
       getInterviewResList() {
+        if(!this.VALIDATE_PERMISSION['Invited-Audition-Select']) {
+          this.$LjMessageNoPermission();
+          return;
+        }
         this.$http.get('recruitment/interviewer_process/resultList',this.params).then(res => {
-          console.log(res);
           if (res.code === '20000') {
             this.tableList = res.data.data;
             this.tableCount = res.data.count;
@@ -447,9 +455,7 @@
             this.tableList = [];
             this.tableCount = 0;
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       handleCheck(id) {
         this.is_sel = id;
@@ -466,7 +472,7 @@
         this.currentRow = row;
         this.interview_form.position = row.position.name;
         this.interview_form.name = row.name;
-        this.interview_form.come = this.platform[row.platform - 1];
+        this.interview_form.come = row.platform;
         this.interview_form.interview_time = row.interview_time;
         this.interview_form.result = row.result;
         this.interview_form.comment = row.interview_comment;

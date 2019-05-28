@@ -42,7 +42,8 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="职级">
-                        <el-select v-model="staffDetail.position_level">
+                        <dropdown-list title="请选择" width="217" :json-arr="DROPDOWN_CONSTANT.POSITION_LEVEL" v-model="staffDetail.position_level"></dropdown-list>
+                        <!--<el-select v-model="staffDetail.position_level">
                         <el-option :value="1" label="P1"></el-option>
                         <el-option :value="2" label="P2"></el-option>
                         <el-option :value="3" label="P3"></el-option>
@@ -50,12 +51,12 @@
                         <el-option :value="5" label="P5"></el-option>
                         <el-option :value="6" label="P6"></el-option>
                         <el-option :value="7" label="P7"></el-option>
-                        </el-select>
+                        </el-select>-->
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="在职状态">
-                        <el-input v-model="staffDetail.work_status"></el-input>
+                        <el-input readonly v-model="staffDetail.work_status"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -304,12 +305,15 @@
                     <el-row>
                       <el-col :span="8">
                         <el-form-item label="学历">
-                          <el-select v-model="item.education" placeholder="请选择">
+
+                          <dropdown-list v-model="item.eduction" title="请选择" width="260" :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND"></dropdown-list>
+
+                          <!--<el-select v-model="item.education" placeholder="请选择">
                             <el-option :value="1" label="高中及以上"></el-option>
                             <el-option :value="2" label="大专及以上"></el-option>
                             <el-option :value="3" label="本科及以上"></el-option>
                             <el-option :value="4" label="不限"></el-option>
-                          </el-select>
+                          </el-select>-->
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
@@ -406,7 +410,7 @@
                 </div>
               </el-tab-pane>
               <el-tab-pane label="成长轨迹" name="fourth">
-                <div class="items-center mainRight scroll_bar">
+                <div  class="items-center mainRight scroll_bar">
                   <div class="grow" :style="{'backgroundPosition': num[index]}"  v-for="(item,index) in dates">
                     <div :class="[(index%2 === 0) ? 'tops' :  'bottoms']">
                       <p @click="handleOpenGrow(item)"><i></i>【{{item.created_at}} {{item.zh}}】<i></i></p>
@@ -420,7 +424,7 @@
         </div>
         <div class="dialog_footer" style="text-align: right">
           <el-button v-if="!reviseInfo" type="danger" size="small" @click="handleSubmitUpdate">确定</el-button>
-          <el-button type="info" size="small" @click="reviseInfo = !reviseInfo">编辑</el-button>
+          <el-button v-if="VALIDATE_PERMISSION['Employee-File-Update']" type="info" size="small" @click="reviseInfo = !reviseInfo">编辑</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -660,6 +664,10 @@
         this.$emit('close');
       },
       handleOpenGrow(item) {
+        if(!this.VALIDATE_PERMISSION['Operation-Record-Index']) {
+          this.$LjMessageNoPermission();
+          return;
+        }
         this.$http.get(`staff/user/${item.user_id}/growth_record`).then(res => {
           console.log(res);
           if (res.code === '20000') {
@@ -708,6 +716,14 @@
         }
       },
       handleSubmitUpdate() {
+        if(this.staffDetail.enroll&&this.staffDetail.forward_time) {
+          let enroll = new Date(this.staffDetail.enroll).getTime();
+          let forward = new Date(this.staffDetail.forward_time).getTime();
+          if(enroll>forward) {
+            this.$LjMessage('warning',{title:'警告',msg:'转正时间不可比入职时间早'});
+            return;
+          }
+        }
         this.$http.put(`staff/user/${this.currentStaffInfo.id}`, {
           type: 'update',
           ...this.staffDetail

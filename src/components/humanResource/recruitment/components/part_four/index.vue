@@ -19,16 +19,19 @@
               <template slot-scope="scope">
                 <el-button v-if="scope.row.entry_feedback===0" size="mini" type="warning" plain @click="handleOpenEdit(scope.row)">未反馈
                 </el-button>
-                <el-button v-if="scope.row.entry_feedback===1" size="mini" type="warning" plain @click="handleEntryEdit(scope.row)">入职
+                <el-button v-if="scope.row.entry_feedback===1 && scope.row.offer_status===1" size="mini" type="warning" plain @click="handleEntryEdit(scope.row)">入职
                 </el-button>
+                <span v-if="scope.row.entry_feedback===1&& !scope.row.offer_status">入职</span>
                 <span v-if="scope.row.entry_feedback===2">拒绝入职</span>
                 <span v-if="scope.row.entry_feedback===3">已经入职</span>
               </template>
             </el-table-column>
             <el-table-column label="入职通知" align="center">
               <template slot-scope="scope">
-                <el-button  v-if="!scope.row.offer_status" size="mini" type="primary" plain @click="handleSendOffer(scope.row)">发送offer</el-button>
-                <span v-else>offer已发送</span>
+                <el-button  size="mini" type="primary" plain @click="handleSendOffer(scope.row)">
+                  <span v-if="!scope.row.offer_status">发送offer</span>
+                  <span v-else>重新发送</span>
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -119,7 +122,7 @@
                         <div class="changeChoose" style="margin-top: 8px">
                           <el-radio-group v-model="interview_info_detail.gender">
                             <el-radio :label="1">男</el-radio>
-                            <el-radio :label="2">女</el-radio>
+                            <el-radio :label="0">女</el-radio>
                           </el-radio-group>
                         </div>
                       </el-form-item>
@@ -202,7 +205,7 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="薪资">
-                        <el-input v-model="interview_info_detail.real_salary" placeholder="请输入"></el-input>
+                        <el-input v-model.trim="interview_info_detail.real_salary" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -387,7 +390,7 @@
       <!--入职确定-->
       <lj-dialog
         :visible="ok_interviewee_visible"
-        :size="{width: 400 + 'px',height: 250 + 'px'}"
+        :size="{width: 450 + 'px',height: 250 + 'px'}"
         @close="ok_interviewee_visible = false"
       >
         <div class="dialog_container">
@@ -398,7 +401,8 @@
             <div class="unUse-txt">确定入职该员工吗？</div>
           </div>
           <div class="dialog_footer">
-            <el-button type="danger" size="small" @click="handleOkInterviewee">确定</el-button>
+            <el-button type="danger" size="small" @click="handleOkInterviewee(false)">确定</el-button>
+            <el-button type="danger" size="small" @click="handleOkInterviewee(true)">确定并发送入职消息</el-button>
             <el-button type="info" size="small" @click="ok_interviewee_visible = false">取消</el-button>
           </div>
         </div>
@@ -417,12 +421,10 @@
               <div class="flex" style="margin-bottom: 20px">
                 <el-radio v-model="send_choose" :label="1">同时抄送密件给</el-radio>
                 <div class="items-center iconInput">
-                  <el-input v-model="send_man" size="mini" style="width: 100px" @focus="handleOpenStaff('first')"
-                            clearable></el-input>
-                  <p class="icons user"></p>
+                  <user-choose title="发送人" width="100" v-model="offer_info_form.leader_id"></user-choose>
                 </div>
               </div>
-              <el-radio v-model="send_choose" :label="2" @change="send_man = '';send_id = ''">直接发送</el-radio>
+              <el-radio v-model="send_choose" :label="2">直接发送</el-radio>
             </div>
           </div>
           <div class="dialog_footer">
@@ -448,18 +450,18 @@
           </p>
           <p>
             二、劳动合同期为
-            <el-input readonly style="width: 50px" v-model="offer_info_form.contract_length"></el-input>
+            <el-input style="width: 50px" v-model="offer_info_form.contract_length"></el-input>
             年，试用期为
-            <el-input readonly style="width: 50px" v-model="offer_info_form.try_out_length"></el-input>
+            <el-input style="width: 50px" v-model="offer_info_form.try_out_length"></el-input>
             个月，试用期工资是
-            <el-input readonly v-model="offer_info_form.try_out_salary_percent" style="width: 100px" type="text"></el-input>%
+            <el-input v-model="offer_info_form.try_out_salary_percent" style="width: 100px" type="text"></el-input>%
           </p>
           <p>
             三、工作报酬
           </p>
           <p>
             <span class="kong"></span> 月工资(转正薪资)：税前RMB
-            <el-input v-model.number="offer_info_form.real_salary" style="width: 100px"></el-input>
+            <el-input v-model.number.trim="offer_info_form.real_salary" style="width: 100px"></el-input>
             元
           </p>
           <p>
@@ -479,7 +481,7 @@
           </p>
           <p>
             <span class="kong"></span> 请您和原单位终止雇佣关系后于
-            <el-input-number :max="3000" :min="2000" style="width: 80px" v-model="baoDao.year"></el-input-number>
+            <el-input-number :max="3000" :min="2000" style="width: 80px" v-model.number="baoDao.year"></el-input-number>
             年
             <el-input-number :max="12" :min="1" v-model="baoDao.month" style="width: 80px"></el-input-number>
             月
@@ -700,11 +702,12 @@
   import StaffOrgan from '../../../../common/staffOrgan.vue';
   import DepartOrgan from '../../../../common/departOrgan.vue';
   import PostOrgan from '../../../../common/postOrgan.vue';
+  import UserChoose from "../../../../common/lightweightComponents/UserChoose";
 
   export default {
     name: "index",
     props:['searchData'],
-    components: {LjDialog, StaffOrgan,DepartOrgan,PostOrgan},
+    components: {UserChoose, LjDialog, StaffOrgan,DepartOrgan,PostOrgan},
     data() {
       return {
         //表格信息
@@ -737,8 +740,7 @@
         //确定发送offer
         ok_send_offer: false,
         currentInfo: '',
-        send_choose: [],
-        send_man: '',
+        send_choose: 2,
         modules: false,
 
         //录入offer信息
@@ -761,7 +763,7 @@
           effect_date: '',
           contract_length: '3',
           try_out_length: '3',
-          leader_id: '',
+          leader_id: [],
         },
 
         //员工资料
@@ -848,6 +850,45 @@
         },
         deep: true
       },
+      baoDao: {
+        handler(val) {
+          this.$nextTick(()=> {
+            if (!val.year) {
+              this.baoDao.year = 2019;
+            }
+            if (!val.month) {
+              this.baoDao.month = 1;
+            }
+            if (!val.day) {
+              this.baoDao.day = 1;
+            }
+          });
+
+        },
+        deep: true,
+        immediate: true
+      },
+      huiFu: {
+        handler(val) {
+          this.$nextTick(()=> {
+            if (!val.year) {
+              this.huiFu.year = 2019;
+            }
+            if (!val.month) {
+              this.huiFu.month = 1;
+            }
+            if (!val.day) {
+              this.huiFu.day = 1;
+            }
+            if (!val.time) {
+              this.huiFu.time = 1;
+            }
+          });
+
+        },
+        deep: true,
+        immediate: true
+      },
     },
     computed: {},
     methods: {
@@ -901,9 +942,8 @@
         this.depart_visible = false;
       },
       handleCancelSel() {
-        this.send_man = '';
-        this.send_choose = '';
-        this.offer_info_form.leader_id = '';
+        this.send_choose = 2;
+        this.offer_info_form.leader_id = [];
         this.ok_send_offer = false;
       },
       handleOpenSel() {
@@ -913,6 +953,7 @@
         this.offer_info_form.effect_date = `${huiFu.year}-${huiFu.month}-${huiFu.day} ${huiFu.time}`;
         this.ok_send_offer = true;
       },
+      //关掉offer
       handleCloseOffer() {
         this.baoDao = {
           year: '',
@@ -932,14 +973,13 @@
           effect_date: '',
           contract_length: '3',
           try_out_length: '3',
-          leader_id: '',
+          leader_id: [],
         };
         this.write_offer_visible = false;
       },
       handleGetStaffInfo(id, name) {
         if (this.staff_type === 'first') {
           this.offer_info_form.leader_id = id;
-          this.send_man = name;
         } else {
           this.interview_info_detail.recommender = id;
           this.interview_info_detail.recommender_name = name;
@@ -951,6 +991,10 @@
         /*验证offer_info_form*/
         if(isNaN(this.offer_info_form.real_salary)||!this.offer_info_form.real_salary) {
           this.$LjMessage('warning',{title:'警告',msg:'税前薪资请填入数字'});
+          return;
+        }
+        if(this.send_choose==1&&this.offer_info_form.leader_id.length==0) {
+          this.$LjMessage('warning',{title:'警告',msg:'请选择发送人'});
           return;
         }
 
@@ -971,14 +1015,34 @@
             })
           }
 
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       handleSendOffer(row) {
+        this.formatTime();
         this.currentInfo = row;
         this.write_offer_visible = true;
       },
+
+      formatTime() {
+        let date = new Date();
+        date.setDate(date.getDate() + 7);
+        let year = this.myUtils.formatDate(date,'yyyy');
+        let month = this.myUtils.formatDate(date,'MM');
+        let day = this.myUtils.formatDate(date,'dd');
+        let time = this.myUtils.formatDate(date,'hh');
+        this.baoDao = {
+          year,
+          month,
+          day,
+        };
+        this.huiFu = {
+          year,
+          month,
+          day,
+          time
+        };
+      },
+
       getLabourInfo(id) {
         this.$http.get(`recruitment/interviewer_process/get_contract_info/${id}`).then(res => {
           console.log(res);
@@ -998,13 +1062,14 @@
             });
             return false;
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
-      handleOkInterviewee() {
-        debugger
-        this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,this.interview_info_detail).then(res => {
+      handleOkInterviewee(isSendMessage) {
+        let params = {
+          ...this.interview_info_detail
+        };
+        params.send_info = isSendMessage?1:0;
+        this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,params).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1096,6 +1161,7 @@
       //   }
       // },
       handleOpenEdit(row) {
+        if(!this.validatePermission('Preparing-Entry-Edit')) return;
         this.currentRow = row;
         this.edit_result_form.position = row.position.name;
         this.edit_result_form.name = row.name;
@@ -1104,6 +1170,7 @@
         this.edit_result_visible = true;
       },
       handleEntryEdit(row) {
+        if(!this.validatePermission('Preparing-Entry-Edit')) return;
         this.currentRow = row;
         this.$http.get(`recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
           if (res.code === '20030') {
@@ -1137,6 +1204,7 @@
       },
       //获取表格数据
       getTableList() {
+        if(!this.validatePermission('Preparing-Entry-Select')) return;
         this.$http.get('recruitment/interviewer_process/interviewedList',this.params).then(res => {
           if (res.code === '20000') {
             this.tableList = res.data.data;

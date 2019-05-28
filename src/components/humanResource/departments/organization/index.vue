@@ -1,6 +1,6 @@
 <template>
   <div id="organization">
-    <div>
+    <div v-if="VALIDATE_PERMISSION['Organization-Structure']">
       <p>南京乐伽商业管理有限公司</p>
       <div class="organ-tree scroll_bar">
         <div class="strt-wrap flex-center" id="strtWrap" ref="strtWrap">

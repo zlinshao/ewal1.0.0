@@ -125,6 +125,7 @@
         checked: 1,//选择哪个toolbar
         categoryKey: '',
         categoryChecked: 0,
+        //,Market-HouseCleaning,Market-HouseRepair,Market-CompleteData,HandoverOrder
         noSearch: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [

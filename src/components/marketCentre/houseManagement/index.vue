@@ -246,7 +246,7 @@
                   <el-input placeholder="请选择" v-model="set_price_form.suggest_name"
                             @focus="handleOpenChooseHouse('suggest')"></el-input>
                 </el-form-item>
-                <el-form-item label="最低价">
+                <el-form-item label="建议价格">
                   <el-input placeholder="请输入" v-model="set_price_form.suggest_price"></el-input>
                 </el-form-item>
               </el-form>
@@ -639,7 +639,7 @@
         this.table_params.limit = 15;
         this.table_params.page = 1;
         this.current_house_type = item.id;
-        var url = '';
+        let url = '';
         switch (item.id) {
           case 1:
             url = `v1.0/market/house/houseVillage/${this.current_house.id}`;
@@ -770,11 +770,11 @@
             this.house_detail = res.data;
             console.log(this.house_detail);
             if (this.house_detail.house_goods) {
-              for (var item of this.deploy_info) {
+              for (let item of this.deploy_info) {
                 item.num = this.house_detail.house_goods[item.key] ? this.house_detail.house_goods[item.key] : 0;
               }
             } else {
-              for (var item of this.deploy_info) {
+              for (let item of this.deploy_info) {
                 item.num = 0;
               }
             }
@@ -790,8 +790,8 @@
         });
       },
       handleTransLeft() {
-        var keys = Object.keys(this.house_detail.album_photo);
-        var offset = (keys.length - 4) * 120 - 80;
+        let keys = Object.keys(this.house_detail.album_photo);
+        let offset = (keys.length - 4) * 120 - 80;
         if (this.$refs['img_contain'].offsetLeft > -offset) {
           this.img_trams -= 10;
         }

@@ -43,6 +43,19 @@ const webpackConfig = merge(baseWebpackConfig, {
       sourceMap: config.build.productionSourceMap,
       parallel: true
     }),
+    /*build后移除console和debugger*/
+    /*new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          warnings: false,
+          drop_debugger: true, //debugger
+          //drop_console: true,// 注释console
+          pure_funcs:['console.log'] // 移除console
+        },
+      },
+      sourceMap: false,
+      parallel: true,
+    }),*/
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),

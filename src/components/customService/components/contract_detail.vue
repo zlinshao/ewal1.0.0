@@ -1,6 +1,6 @@
 <template>
   <div id='contract_detail'>
-    <lj-dialog :visible="visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
+    <lj-dialog :visible="visible" :size="{width: 1250 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container" v-if='visible && contractDetail'>
         <div class="dialog_header">
           <h3>合同详情</h3>
@@ -397,9 +397,7 @@
 
 
 <script>
-import LjDialog from '../../common/lj-dialog.vue';
 import StaffOrgan from '../../common/staffOrgan.vue';
-import Ljupload from '../../common/lightweightComponents/lj-upload'
 import InvalidDialog from '../components/invalid-dialog'
 export default {
   props: ['visible',
@@ -410,10 +408,8 @@ export default {
     'showRelated', // 显示合同相关信息
     'disabled'], // 是否可选
   components: {
-    LjDialog,
     StaffOrgan,
     InvalidDialog,
-    Ljupload
   },
   data () {
     return {

@@ -97,32 +97,32 @@
   justify-content: flex-end;
 }
 
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf");
+}
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF");
+}
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf");
+}
 /*@font-face {
   font-family: 'jingDianXingShu';
-  src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
+  src: url('/static/font/JDJXINSHU.otf');
 }
 
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url('http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF');
+  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
 }
 
 @font-face {
   font-family: 'jianyue';
-  src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
+  src: url('/static/font/BaiZhouRenZhe.otf');
 }*/
-@font-face {
-  font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf");
-}
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF");
-}
-@font-face {
-  font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf");
-}
 .writingMode {
   writing-mode: vertical-rl;
   writing-mode: tb-rl;
@@ -339,7 +339,7 @@
   position: absolute;
   top: 81px;
   left: 100%;
-  z-index: 32;
+  z-index: 9;
   transition: all ease 1s;
 }
 #theme_name #departments .departList .depart-detail .depart_nav {
@@ -449,6 +449,18 @@
   width: 100%;
   padding: 20px 0;
 }
+#theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .arrow-btn {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+#theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .arrow-btn i {
+  width: 18px;
+  height: 50px;
+  cursor: pointer;
+  display: inline-block;
+}
 #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .next_btn {
   width: 40px;
   height: 195px;
@@ -462,8 +474,10 @@
   opacity: 0;
 }
 #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list {
+  display: flex;
+  justify-content: space-around;
   width: 100%;
-  padding: 30px 0;
+  padding: 30px 80px;
   min-height: 155px;
 }
 #theme_name #departments .departList .depart-detail .depart-detail-main .depart-right .depart-staff .depart_list .list > div {

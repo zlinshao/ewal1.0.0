@@ -1,3 +1,4 @@
+<!--员工名册-->
 <template>
   <div id="staffRoster">
     <div class="mainListTable"  :style="{'height': this.mainListHeight() + 'px'}">
@@ -373,7 +374,7 @@
           // { key: 'staff.graduation_time',val: '毕业时间',width: "150px"},
           // { key: 'staff.major',val: '专业'},
           // { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
-          { key: 'staff.dismiss_time',val: '离职时间',width: "150px"},
+          // { key: 'staff.dismiss_time',val: '离职时间',width: "150px"},
           // { key: 'staff.dismiss_reason.dismiss_type',val: '离职类型',info: {1: '主动离职',2: '旷工离职',3: '劝退',4: '开除',5: '其他'}},
           // { key: 'staff.dismiss_reason.dismiss_mess',val: '离职原因'},
           // { key: 'staff.bank_num',val: '银行卡号',width: "180px",position:'left'},
@@ -396,7 +397,7 @@
         params: {
           search: '',
           page: 1,
-          limit: 30,
+          limit: 12,
           org_id: '',
           position_id: '',
         },
@@ -593,16 +594,30 @@
                 console.log(err);
             })
         },
+        alertWarnings(){
+            this.$LjNotify('warning',{
+                title: '失败',
+                message: '用户未完成ca认证'
+            });
+        },
         generateContract(row,key){
-            console.log(key);
+            console.log(row);
             switch (key) {
                 case 'staff.contract_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     this.getLabourInfo(row.id);
                     break;
                 case 'staff.ca':
                     this.staffCertific(row.id);
                     break;
                 case 'staff.commitment_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     let params={user_id:row.id,pdf_scene:6,type:1,send:1};
                     this.commitmentGenerate(params);
                     break;
@@ -615,13 +630,25 @@
                     this.getIncomeInfo(row.id,10);
                     break;
                 case 'staff.notice_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     let param={user_id:row.id,pdf_scene:7,type:1,send:1};
                     this.commitmentGenerate(param);
                     break;
                 case 'staff.secret_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     this.commitmentGenerate({user_id:row.id,pdf_scene:5,type:1,send:1});
                     break;
                 case 'staff.insurance_prohibit_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     this.commitmentGenerate({user_id:row.id,pdf_scene:8,type:1,send:1});
                     break;
                 default:
@@ -757,7 +784,9 @@
         });
       },
       getStaffList() {
+        this.showLoading(true);
         this.$http.get(this.url+'staff/user', this.params).then(res => {
+          this.showLoading(false)
           if(res.code.endsWith('0')) {
             res.data.data.forEach((item,index)=> {
               if(!item.is_on_job&&!item.is_enable) {
@@ -774,7 +803,7 @@
       },
       //获取当前员工详情
       async getStaffDetail(id) {
-        if(! await this.validatePermission('User-Read')) {
+        if(!this.VALIDATE_PERMISSION['Employee-File-Select']) {
           this.$LjMessage('warning',{title:'警告',msg:'无权限'});
           return;
         };

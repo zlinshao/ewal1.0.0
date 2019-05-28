@@ -46,7 +46,7 @@
         :prop="item"
         :align="item=='address'?'left':'center'">
       </el-table-column>
-      <el-table-column  show-overflow-tooltip label="付款方式/月单价" prop="prices" align="left" width="180" show-overflow-tooltip>
+      <el-table-column  show-overflow-tooltip label="付款方式/月单价" prop="prices" align="center" width="180" show-overflow-tooltip>
       </el-table-column>
       <el-table-column label="状态" prop="" align="center">
         <template slot-scope="scope">

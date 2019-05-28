@@ -17,7 +17,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="入职时间" prop="staff.enroll" align="center" sortable></el-table-column>
+        <el-table-column label="入职时间" prop="staff.enroll" align="center"></el-table-column>
         <el-table-column label="离职时间" prop="staff.dismiss_time" align="center"></el-table-column>
         <el-table-column label="离职操作时间" prop="is_on_job" align="center" min-width="120px"></el-table-column>
         <el-table-column label="禁用操作时间" prop="is_enable" align="center" min-width="120px"></el-table-column>
@@ -51,6 +51,14 @@
             <el-button type="text" @click="handleLeaveProof(scope.row)" style="color: #D33E43" v-else>发送</el-button>
           </template>
         </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <div class="second-entry">
+              <el-button type="text" @click="openSecondEntryDialog(scope.row)">复职</el-button>
+            </div>
+
+          </template>
+        </el-table-column>
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -68,7 +76,7 @@
         </div>
       </footer>
 
-      <LjDialog
+      <lj-dialog
         :visible="look_info_visible"
         :size="{width: 700 + 'px',height: 400 + 'px'}"
         @close="handleCloseLookInfo"
@@ -84,7 +92,7 @@
             <el-button type="danger" size="small" @click="handleCloseLookInfo">确定</el-button>
           </div>
         </div>
-      </LjDialog>
+      </lj-dialog>
 
       <!--确定发送-->
       <lj-dialog
@@ -105,18 +113,63 @@
           </div>
         </div>
       </lj-dialog>
+
+
+      <!--二次入职dialog-->
+      <lj-dialog
+        :visible.sync="second_entry_dialog_visible"
+        :size="{width: 450 + 'px',height: 500 + 'px'}"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>复职</h3>
+          </div>
+          <div class="dialog_main flex-center">
+            <el-form ref="secondEntryFormRef" :model="second_entry_form" :rules="rules.second_entry" label-width="80px">
+              <el-form-item label="岗位" prop="position_id" required>
+                <post-choose size="mini" title="必选" width="220" num="1" v-model="second_entry_form.position_id"></post-choose>
+              </el-form-item>
+              <el-form-item label="部门">
+                <org-choose size="mini" title="自动获取" :disabled="true" width="220" v-model="second_entry_form.org_id"></org-choose>
+              </el-form-item>
+              <el-form-item label="入职等级">
+                <dropdown-list v-model="second_entry_form.level"
+                               width="220" size="mini" :clearable="false"
+                               :json-arr="DROPDOWN_CONSTANT.ENTRY_LEVEL"></dropdown-list>
+              </el-form-item>
+              <el-form-item label="手机号码" prop="phone" required>
+                <el-input size="mini" placeholder="必填" width="220" v-model="second_entry_form.phone"></el-input>
+              </el-form-item>
+            </el-form>
+
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="confirmSecondEntry(false)">复职</el-button>
+            <el-button type="danger" size="small" @click="confirmSecondEntry(true)">复职并发送消息通知</el-button>
+            <el-button type="info" size="small" @click="second_entry_dialog_visible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
     </div>
   </div>
 </template>
 
 <script>
-  import LjDialog from '../../../common/lj-dialog.vue';
+  import _ from 'lodash';
   export default {
     name: "index",
-    components: { LjDialog },
     props: ['searchVal'],
     data() {
       return {
+        rules: {
+          second_entry: {
+            position_id: [{required: true, message: '请选择岗位', trigger: 'blur'}],
+            phone: [{required: true, message: '请输入手机号', trigger: 'blur'},{min:11,max:11,message:'请输入11位手机号码',trigger:'blur'}],
+          },
+        },
+
+
+        url:globalConfig.humanResource_server,
         confirm_visible: false,
         confirm_type: '',
         confirm_row: '',
@@ -136,6 +189,20 @@
 
         look_info: [],
         look_info_visible: false,
+
+        currentSelection:null,
+
+        /*二次入职dialog显示隐藏*/
+        second_entry_dialog_visible:false,
+        /*二次入职职级*/
+        //second_entry_position_level:1,
+        /*二次入职表单*/
+        second_entry_form:{
+          org_id:[],
+          position_id:[],
+          phone:null,
+          level: 1,
+        },
       }
     },
     mounted() {
@@ -151,13 +218,27 @@
         },
         deep: true
       },
+      'second_entry_form.position_id': {//自动获取部门
+        handler(val,oldVal) {
+          if(val.constructor===Array&&val.length==1) {//选取岗位了
+            let id = val[0];
+            this.$http.get(`${this.url}organization/position/${id}`).then(res=> {
+              if(res.code.endsWith('0')) {
+                this.second_entry_form.org_id = [res.data.duty?.org_id];
+                console.log(this.second_entry_form.org_id);
+              }
+            });
+          }
+        },
+        immediate:true,
+      },
     },
     computed: {},
     methods: {
       handleConfirmSend() {
         const row = this.confirm_row;
         const where = this.confirm_type;
-        var type = where === 'sms' ? ['dimission_sms'] : ['dimission'];
+        let type = where === 'sms' ? ['dimission_sms'] : ['dimission'];
         if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
           return false;
         } else {
@@ -180,10 +261,20 @@
           })
         }
       },
+      /*查看或发送离职证明*/
       handleLeaveProof(row) {
+        //查看离职证明
         if (row.staff && row.staff.leave_proof_number) {
+          if(!this.VALIDATE_PERMISSION['Dimission-Certificate-Read']) {
+            this.$LjMessageNoPermission();
+            return;
+          }
           window.open(globalConfig.server + `staff/e_contract/show/${row.staff.leave_proof_number}`);
-        } else {
+        } else {//发送离职证明
+          if(!this.VALIDATE_PERMISSION['Dimission-Certificate-Send']) {
+            this.$LjMessageNoPermission();
+            return;
+          }
           this.$http.get(`staff/user/${row.id}/sendinfo`,{
             type: ['leave_proof_send']
           }).then(res => {
@@ -202,8 +293,19 @@
           })
         }
       },
-      //离职短信
+      //打开离职短信或离职群消息
       handleControlMsg(row,where) {
+        if(where =='sms') {//离职短信权限验证
+          if(!this.VALIDATE_PERMISSION['Dimission-Message-Send']) {
+            this.$LjMessageNoPermission();
+            return;
+          }
+        }else if(where =='announcement') {//离职群消息权限验证
+          if(!this.VALIDATE_PERMISSION['Dimission-News-Send']) {
+            this.$LjMessageNoPermission();
+            return;
+          }
+        }
         if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
           this.$LjMessage('success',{
             title: '提示',
@@ -220,11 +322,19 @@
         this.look_info = [];
         this.look_info_visible = false;
       },
+      /*查看离职交接单*/
       handleLookResignation(row) {
+        if(!this.VALIDATE_PERMISSION['Delivery-Recept-Read']) {
+          this.$LjMessageNoPermission();
+          return;
+        }
         console.log(row);
       },
+      /*获取离职列表*/
       getStaffList() {
+        this.showLoading(true);
         this.$http.get('staff/user', this.params).then(res => {
+          this.showLoading(false);
           this.tableData = res.data.data;
           this.counts = res.data.count;
         })
@@ -246,10 +356,56 @@
         this.params.page = val;
         this.getStaffList();
         console.log(`当前页: ${val}`);
-      }
+      },
+      /*打开二次入职*/
+      openSecondEntryDialog(row) {
+        if(!this.VALIDATE_PERMISSION['User-Second_Entry']) {
+          this.$LjMessageNoPermission();
+          return;
+        }
+
+        this.currentSelection = _.cloneDeep(row);
+        this.second_entry_form.position_id = [row.position[0]?.id||null];
+        this.second_entry_form.phone = row.phone;
+        this.second_entry_dialog_visible  = true;
+      },
+      /*确定入职 isSendMessage为true时发送复职消息*/
+      confirmSecondEntry(isSendMessage = false) {
+
+        this.$refs['secondEntryFormRef'].validate(valid=> {
+          if(valid) {
+            this.$LjConfirm({content:`确定复职${this.currentSelection.name}吗？`}).then(()=> {
+              let id = this.currentSelection.id;
+              let params = {
+                type:"second_entry",
+                enroll:this.myUtils.formatDate(new Date()),
+                ...this.second_entry_form
+                //position_level:this.second_entry_form.position_level
+              };
+              if(isSendMessage) {
+                params.message="second_entry";
+              }
+              this.$http.put(`${this.url}staff/user/${id}`,params).then(res=> {
+                this.$LjMessageEasy(res,()=> {
+                  this.getStaffList();
+                });
+              });
+            });
+          }
+        });
+      },
     },
   }
 </script>
+<style lang="scss">
+  #leaveJob {
+    .second-entry {
+      .el-button {
+        color: #0BB07B;
+      }
+    }
+  }
+</style>
 
 <style lang="scss" scoped>
   @import "../../../../assets/scss/humanResource/leaveJob/index.scss";

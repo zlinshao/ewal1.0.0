@@ -65,7 +65,7 @@
       }
     },
     mounted() {
-      this.getList();
+      //this.getList();
     },
     activated() {
     },
@@ -89,6 +89,13 @@
         },
         deep: true,
         immediate: true
+      },
+      depart_visible: {
+        handler(val, oldVal) {
+          if(val) {
+            this.getList();
+          }
+        }
       }
     },
     computed: {},

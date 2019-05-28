@@ -6,6 +6,7 @@
         <el-table
           :data="tableList"
           :height="this.mainListHeight(30) + 'px'"
+          :row-class-name="tableChooseRow"
           highlight-current-row
           @cell-click="tableClickRow"
           header-row-class-name="tableHeader"
@@ -13,11 +14,7 @@
         >
           <el-table-column label="岗位名称" prop="position.name" align="center"></el-table-column>
           <el-table-column label="姓名" prop="name" align="center"></el-table-column>
-          <el-table-column label="来源" prop="come" align="center">
-            <template slot-scope="scope">
-              <span>{{ platform[scope.row.platform - 1] }}</span>
-            </template>
-          </el-table-column>
+          <el-table-column label="来源" prop="platform" align="center"></el-table-column>
           <el-table-column label="预约面试时间" prop="interview_time" align="center"></el-table-column>
           <el-table-column label="已通知面试官" prop="interviewer.name" align="center"></el-table-column>
           <el-table-column label="简历" prop="" align="center">
@@ -27,12 +24,14 @@
           </el-table-column>
           <el-table-column label="取消面试" prop="" align="center">
             <template slot-scope="scope">
-              <el-button size="mini" type="danger" plain @click="handleOpenCancel(scope.row)">取消面试</el-button>
+              <span v-if="scope.row.interviewee_status===4">面试已取消</span>
+              <el-button v-else size="mini" type="danger" plain @click="handleOpenCancel(scope.row)">取消面试</el-button>
             </template>
           </el-table-column>
           <el-table-column label="修改" prop="" align="center">
             <template slot-scope="scope">
-              <span class="btn_edit" @click="handleOpenEdit(scope.row)"></span>
+              <span v-if="scope.row.interviewee_status===4" class="btn_edit"></span>
+              <span v-else class="btn_edit" @click="handleOpenEdit(scope.row)"></span>
             </template>
           </el-table-column>
         </el-table>
@@ -55,7 +54,7 @@
 
       <!--添加面试人-->
       <lj-dialog
-        :visible="add_interviewer_visible"
+        :visible.sync="add_interviewer_visible"
         :size="{width: 450 + 'px',height: 550 + 'px'}"
         @close="handleCloseAddInterviewer"
       >
@@ -92,7 +91,7 @@
                 ></el-date-picker>
               </el-form-item>
               <el-form-item label="上传简历">
-                <Upload :file="upload_form" @success="handleGetFile"></Upload>
+                <lj-upload size="40" :limit="['doc','pdf','png','jpg','jpeg']" style="position: absolute;top: -13px;" v-model="add_interviewer_form.resume_id"></lj-upload>
               </el-form-item>
             </el-form>
           </div>
@@ -134,16 +133,16 @@
           </div>
           <div class="dialog_main borderNone">
             <el-form :model="add_msg_form" label-width="80px" size="small">
-              <el-form-item label="部门">
-                <el-input v-model="add_msg_form.org_name" clearable placeholder="请选择" @focus="depart_visible = true"></el-input>
-              </el-form-item>
               <el-form-item label="岗位">
-                <el-input v-model="add_msg_form.position" clearable placeholder="请选择" @focus="position_visible = true"></el-input>
+                <post-choose title="请选择" width="310" num="1" v-model="add_msg_form.position_id"></post-choose>
+              </el-form-item>
+              <el-form-item label="部门">
+                <org-choose title="自动获取" width="310" :disabled="true" num="1" v-model="add_msg_form.org_id"></org-choose>
               </el-form-item>
               <el-form-item label="面试官">
-                <el-input v-model="add_msg_form.offer1" @focus="staff_visible = true;is_staff = 'first'"  readonly placeholder="请选择" style="margin-bottom: 20px"></el-input>
-                <el-input v-model="add_msg_form.offer2" @focus="staff_visible = true;is_staff = 'second'" readonly placeholder="请选择" style="margin-bottom: 20px"></el-input>
-                <el-input v-model="add_msg_form.offer3" @focus="staff_visible = true;is_staff = 'third'" readonly placeholder="请选择"></el-input>
+                <user-choose title="请选择" width="310" num="1" v-model="add_msg_form.interviewer_first_id"></user-choose>
+                <user-choose title="请选择" style="margin-top: 10px" width="310" num="1" v-model="add_msg_form.interviewer_second_id"></user-choose>
+                <user-choose title="请选择" style="margin-top: 10px" width="310" num="1" v-model="add_msg_form.interviewer_third_id"></user-choose>
               </el-form-item>
               <el-form-item label="添加试卷">
                 <el-select v-model="add_msg_form.paper_id" clearable>
@@ -217,43 +216,25 @@
           </div>
         </div>
       </lj-dialog>
-
-      <!--岗位-->
-      <postOrgan :module="position_visible" :organ-data="position_data" @close="handleSelPosition"></postOrgan>
-
-      <!--部门-->
-      <departOrgan :module="depart_visible" :organ-data="depart_data" @close="handleGetDepart"></departOrgan>
-
-      <!--选人-->
-      <staffOrgan :module="staff_visible" :organ-data="staff_data" @close="handleGetStaff"></staffOrgan>
     </div>
   </div>
 </template>
 
 <script>
+  import _ from 'lodash';
   import LjDialog from '../../../../common/lj-dialog.vue';
   import Upload from '../../../../common/upload.vue';
-  import postOrgan from '../../../../common/postOrgan.vue';
-  import departOrgan from '../../../../common/departOrgan.vue';
-  import staffOrgan from '../../../../common/staffOrgan.vue';
+  import UserChoose from '../../../../common/lightweightComponents/UserChoose';
+  import OrgChoose from '../../../../common/lightweightComponents/OrgChoose';
+  import PostChoose from '../../../../common/lightweightComponents/PostChoose';
 
   export default {
     name: "index",
-    components: { LjDialog ,Upload,postOrgan,departOrgan,staffOrgan},
+    components: { LjDialog ,Upload,UserChoose, OrgChoose, PostChoose},
     props: [ 'addInterviewerVisible' ,'addOfferVisible','searchData'],
     data() {
       return {
-        //岗位选择
-        position_visible: false,
-        position_data: {},
-
-        //部门选择
-        depart_visible: false,
-        depart_data: {},
-
-        //选人
-        staff_visible: false,
-        staff_data: {},
+        url:globalConfig.humanResource_server,
 
         tableList: [],
         tableCount:0 ,
@@ -302,9 +283,9 @@
           position: '',
           position_id: [],
 
-          interviewer_first_id: '',
-          interviewer_second_id: '',
-          interviewer_third_id: '',
+          interviewer_first_id: [],
+          interviewer_second_id: [],
+          interviewer_third_id: [],
 
           offer1: '',
           offer2: '',
@@ -353,7 +334,20 @@
           this.getIntervieweeList();
         },
         deep: true
-      }
+      },
+      'add_msg_form.position_id': {//自动获取部门
+        handler(val,oldVal) {
+          if(val.constructor===Array&&val.length==1) {//选取岗位了
+            let id = val[0];
+            this.$http.get(`${this.url}organization/position/${id}`).then(res=> {
+              if(res.code.endsWith('0')) {
+                this.add_msg_form.org_id = [res.data.duty?.org_id];
+              }
+            });
+          }
+        },
+        immediate:true
+      },
     },
     computed: {},
     methods: {
@@ -383,11 +377,7 @@
         this.$http.get(`recruitment/interviewees/get_resume_url/${row.interviewee_id}`).then(res => {
           if (res.code === '20020') {
             if (res.data.url) {
-              if (res.data.url.endsWith('.pdf')) {
                 window.open(res.data.url);
-              } else {
-                window.open(`https://view.officeapps.live.com/op/view.aspx?src=${res.data.url}`);
-              }
             } else {
               this.$LjNotify('warning',{
                 title: '警告',
@@ -423,16 +413,20 @@
         })
       },
       handleAddOffer() {
+        let interviewers  = _.filter([...this.add_msg_form.interviewer_first_id,...this.add_msg_form.interviewer_second_id,...this.add_msg_form.interviewer_third_id],(o)=> {return o});
+        if(_.uniq(interviewers).length!=interviewers.length) {
+          this.$LjMessage('warning',{title:'警告',msg:'不可选择相同的面试官'});
+          return;
+        }
+
         this.$http.post('recruitment/interviewers',this.add_msg_form).then(res => {
           this.handleSuccessCallback(res,'20010');
           if (res.code === '20010') {
             this.handleCloseAddMsg();
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
-      handleGetStaff(id,name) {
+     /* handleGetStaff(id,name) {
         if (id !== 'close') {
           if (this.is_staff === 'first') {
             this.add_msg_form.interviewer_first_id = id;
@@ -448,7 +442,7 @@
           }
         }
         this.staff_visible = false;
-      },
+      },*/
       handleGetDepart(id,name) {
         if (id !== 'close') {
           this.add_msg_form.org_name = name;
@@ -457,6 +451,7 @@
         this.depart_visible = false;
       },
       handleGetFile(val){
+        debugger
         if (val !== 'close') {
           if (this.is_paper === 'offer') {
             this.add_msg_form.paper_id = val[1];
@@ -518,6 +513,7 @@
         })
       },
       handleOpenEdit(row) {
+        if(!this.validatePermission('Preparing-Audition-Edit')) return;
         this.currentRow = row;
         this.add_interviewer_form.name = row.name;
         this.add_interviewer_form.position = row.position.name;
@@ -538,6 +534,7 @@
       },
       //获取面试人列表
       getIntervieweeList() {
+        if(!this.validatePermission('Preparing-Audition-Select')) return;
         this.showLoading(true);
         this.$http.get('recruitment/interviewer_process/reservationList',this.params).then(res => {
           this.showLoading(false);
@@ -552,7 +549,7 @@
       },
       //关闭添加面试官
       handleCloseAddMsg() {
-        for (var key in this.add_msg_form) {
+        for (let key in this.add_msg_form) {
           this.add_msg_form[key] = '';
         }
         this.add_msg_visible = false;
@@ -562,12 +559,12 @@
       },
       //关闭添加面试人
       handleCloseAddInterviewer() {
-        for (var key in this.add_interviewer_form) {
+        for (let key in this.add_interviewer_form) {
           this.add_interviewer_form[key] = '';
         }
         this.add_interviewer_form.position_id = [];
         this.add_interviewer_form.position = '';
-        this.add_interviewer_visible = false;
+        this.interview_list.interviewer = [];
         this.$emit('closeMs');
       },
       //分页
@@ -583,7 +580,9 @@
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {
-        return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+        // return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
+          let ids = _(this.tableList).filter({interviewee_status: 4}).map('id');
+          return ids.includes(row.id) ? 'tableChooseRow' : '';
       },
     },
   }
