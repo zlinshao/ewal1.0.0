@@ -437,6 +437,7 @@ export default {
           this.total = this.totalSale.split('')
           console.log(this.totalSale)
           // console.log(this.total)
+          this.cityData = []
           for(let i of res.data.reverse().slice(1,4)) {
             this.cityData.push({city: i[0], sale: i[1],num: i[2]})
           }
