@@ -797,6 +797,9 @@
             });
             this.tableData = res.data.data;
             this.counts = res.data.count;
+          }else{
+              this.tableData=[];
+              this.counts=[];
           }
 
         })
