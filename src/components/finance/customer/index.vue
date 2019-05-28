@@ -32,7 +32,7 @@
           <span class="edit" @click="action_status.details_visible=true;action_status.is_check=true">查看</span>
           <span class="edit"
                 @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
-          <span class="edit" @click="cancelOrRecoverRemark(chooseTab,current_row)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'取消重复标记':'恢复重复标记'}}</span>
+          <span class="edit" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
           <span class="edit" style="color: orangered"
                 @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
               {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}

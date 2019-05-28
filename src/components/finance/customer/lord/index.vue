@@ -325,6 +325,7 @@
           ids: this.ra_ids,
           operate: operate
         }).then(res => {
+          this.is_table_choose = null;
           this.callbackSuccess(res);
         })
 

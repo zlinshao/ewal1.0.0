@@ -203,7 +203,6 @@
       },
       // 搜索参数
       handleParamsRenter(val) {
-        debugger
         if (val.search) {
           this.params.search = val.search;
         } else {
@@ -228,7 +227,6 @@
       },
       // 当前点击
       tableClickRow(row) {
-        debugger
         if (this.is_table_choose === row.id) {
           this.is_table_choose = '';
           this.$emit('getMultipleSelection', 0);
@@ -329,6 +327,7 @@
           operate: operate
         }).then(res => {
           this.callbackSuccess(res);
+          this.is_table_choose = null;
           if (res.code === 200) {
 
           }
