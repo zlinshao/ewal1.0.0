@@ -3,6 +3,7 @@ export const staffBookSearch = {
   status: 'staffBookSearch',
   placeholder: '请输入搜索内容',
   keywords: 'search',
+  limit:12,
   data: [
     {
       keyType: 'radio',
