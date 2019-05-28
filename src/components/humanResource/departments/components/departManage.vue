@@ -38,7 +38,7 @@
             <p @click="operateModule('positionManagement',item)">
               <span class="writingMode">{{ item.name }}</span>
             </p>
-            <div class="ctl" v-show="is_active_ctl === item.id">
+            <div class="ctl" style="margin-bottom: 30px;" v-show="is_active_ctl === item.id">
               <span v-show="VALIDATE_PERMISSION['Position-Update']" @click="handleEditPost(item)">编辑</span>
               <span v-show="VALIDATE_PERMISSION['Position-Delete']" @click="handleDelPost(item)">删除</span>
             </div>
