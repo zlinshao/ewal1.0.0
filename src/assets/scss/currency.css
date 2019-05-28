@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .flex {
   display: flex;
   display: -webkit-flex;
@@ -330,6 +331,12 @@
   color: #686874;
 }
 
+#theme_name .hide-text-elli {
+  /*多余文字...*/
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 #theme_name .table_choose {
   display: inline-block;
   width: 20px;

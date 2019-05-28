@@ -366,23 +366,23 @@
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
 
     <!--资料补齐记录-->
-    <lj-dialog :visible="dataRecord_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseRecord">
+    <lj-dialog :visible.sync="dataRecord_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseRecord">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>资料补齐记录</h3>
         </div>
         <div class="dialog_main dataRecord_dialog_main" v-if='dataRecord_visible'>
-          <div v-for='(remark,index) in contractDetail.checkout_remark' class='dataRecord_cell' :key='index' v-if='dataRecord_visible && contractDetail.checkout_remark'>
+          <div v-for='(item,index) in contractDetail.checkout_remark' class='dataRecord_cell' :key='index' v-if='dataRecord_visible && contractDetail.checkout_remark'>
             <div class='detail_dialog_left'>
-              <p>{{remark.create.name}}</p>
-              <p>2019.1.16</p>
+              <p>{{item.create.name||'无'}}</p>
+              <p>{{item.created_at}}</p>
             </div>
             <div class="detail_dialog_center">
               <div class='circle'></div>
             </div>
             <div class='detail_dialog_right'>
-              <p>{{remark.remark}}</p>
-              <p>发送对象:{{remark.receive && remark.receive.name || '--'}}</p>
+              <p :title="item.remark">{{item.remark}}</p>
+              <p>发送对象:{{item.receive && item.receive.name || '--'}}</p>
             </div>
           </div>
           <div v-else>暂无记录</div>
@@ -654,6 +654,8 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/scss/common.scss";
+
+@import "../../../assets/scss/customService/components/contract_detail";
 
 @mixin confirmImg($m, $n) {
   $url: "../../../assets/image/customService/dataAudit/" + $n + "/" + $m;

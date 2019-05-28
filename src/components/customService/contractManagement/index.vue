@@ -580,7 +580,7 @@
     </lj-dialog>
 
     <!--审核详情-->
-    <lj-dialog :visible="check_visible" :size="{width: 600 + 'px',height: 500 + 'px'}" @close="check_visible = false">
+    <lj-dialog :visible="check_visible" :size="{width: 700 + 'px',height: 500 + 'px'}" @close="check_visible = false">
       <div class="dialog_container">
         <div class="dialog_header">审核详情</div>
         <div class="dialog_main">
@@ -588,7 +588,7 @@
             <div>
               <div class="content flex" v-for="(item,key) in check_info">
                 <div>
-                  <a>{{ item.create.name || '/' }}</a><br>
+                  <a>{{ item.create.name || '无' }}</a><br>
                   <span>{{ item.created_at }}</span>
                 </div>
                 <div class="flex-center">
@@ -598,7 +598,8 @@
                   <div class="line" v-if="key !== check_info.length -1"></div>
                 </div>
                 <div>
-                  <a>{{ item.remark }}</a><br>
+                  <p :title="item.remark" style="margin-bottom: 5px">{{ substringPlugin(item.remark,13) }}</p>
+                  <p>发送对象:{{item.receive && item.receive.name || '--'}}</p>
                 </div>
               </div>
             </div>
