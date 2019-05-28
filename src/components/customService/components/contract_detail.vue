@@ -326,7 +326,7 @@
             </el-form>
           </div>
 
-          <p class='main_tit' v-if='showData'>资料不齐记录</p>
+          <p class='main_tit' v-if='showData'>资料补齐记录</p>
           <div class='data_info' v-if='showData'>
             <div class="flex-center">
               <div class="flex_center_tit">发送对象</div>
@@ -337,17 +337,17 @@
             </div>
 
             <div class="flex-center flex-center2">
-              <div class="flex_center_tit">不齐内容</div>
+              <div class="flex_center_tit">补齐内容</div>
               <div class="flex_center_content flex_center_content2">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请选择不齐内容" v-model="dataRecord.content"
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请选择补齐内容" v-model="dataRecord.content"
                   disabled style='background:transparent'>
                 </el-input>
                 <div class='buttons'>
-                  <p class='buttons_left' @click='handlePostRecord'>
+                  <p class='buttons-left' @click='handlePostRecord'>
                     <i class='icon'></i>
                     <span>发送</span>
                   </p>
-                  <el-button id='active-primary' @click='handleGetRecord'>不齐记录</el-button>
+                  <el-button id='active-primary' @click='handleGetRecord'>补齐记录</el-button>
                 </div>
               </div>
             </div>
@@ -365,11 +365,11 @@
     <!--资料不全 开单人选择-->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
 
-    <!--资料不齐记录-->
+    <!--资料补齐记录-->
     <lj-dialog :visible="dataRecord_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseRecord">
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>资料不齐记录</h3>
+          <h3>资料补齐记录</h3>
         </div>
         <div class="dialog_main dataRecord_dialog_main" v-if='dataRecord_visible'>
           <div v-for='(remark,index) in contractDetail.checkout_remark' class='dataRecord_cell' :key='index' v-if='dataRecord_visible && contractDetail.checkout_remark'>
@@ -403,7 +403,7 @@ export default {
   props: ['visible',
     'moduleData',
     'chooseTab',  // 合同类型
-    'showData',  // 不齐记录
+    'showData',  // 补齐记录
     'showFooter',  // 底部操作
     'showRelated', // 显示合同相关信息
     'disabled'], // 是否可选
@@ -457,7 +457,7 @@ export default {
       organData: {
         num: ''
       },
-      //资料不齐记录
+      //资料补齐记录
       dataRecord_visible: false,
       dataRecord: {
         send_name: '',
@@ -467,7 +467,7 @@ export default {
       complete: {
         task_id: '',
         key_name: ''
-      }, // 发送不齐信息
+      }, // 发送补齐信息
       payArr: ['水费', '电费', '燃气费', '物业费', '网络费', '其他'],
       market_server: globalConfig.market_server,
     }
@@ -568,12 +568,12 @@ export default {
         this.dataRecord.send_id = arr
       }
     },
-    // 发送不齐记录
+    // 发送补齐记录
     handlePostRecord () {
       if (!this.dataRecord.content) {
         this.$LjNotify('warning', {
           title: '提示',
-          message: '不齐内容未选择'
+          message: '补齐内容未选择'
         });
         return
       }
@@ -603,7 +603,7 @@ export default {
       })
 
     },
-    //资料不齐
+    //资料补齐
     handleGetRecord () {
       this.dataRecord_visible = true;
     },
@@ -627,7 +627,7 @@ export default {
         }
       })
     },
-    //资料不齐
+    //资料补齐
     handleGetRecord () {
       this.dataRecord_visible = true;
     },
@@ -785,7 +785,7 @@ export default {
             bottom: 30px;
             right: 40px;
             @include flex("justify-bet");
-            .buttons_left {
+            .buttons-left {
               @include flex("items-center");
               .icon {
                 display: inline-block;
@@ -844,7 +844,8 @@ export default {
         }
         .flex-center2 {
           .buttons {
-            .buttons_left {
+            .buttons-left {
+              cursor: pointer;
               .icon {
                 @include confirmImg("fasong.png", "theme1");
               }

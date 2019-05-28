@@ -787,6 +787,7 @@ export default {
       params: {
         page: 1,
         limit: 30,
+        search:'',
         contract_type: 1,
         sign_date_min: '',
         sign_date_max: '',
@@ -1236,6 +1237,7 @@ export default {
     selfLabel (idx) {
       return this.polishing_data[this.chooseTab - 1][idx];
     },
+    /*打开补齐资料对话框*/
     handleOpenPolishing (row) {
       this.currentRow = row;
       if (row.needComplete && row.needComplete.length > 0) {
@@ -1285,6 +1287,7 @@ export default {
       this.searchData = {
         status: 'contractManagement',
         keywords: 'search',
+        placeholder: '地址/合同编号',
         data: [
           {
             keyType: 'dateRange',
@@ -1371,6 +1374,7 @@ export default {
         this.params.signer = val.signer && val.signer[0] ? val.signer[0] : '';
         this.params.type = val.type && val.type;
         this.params.org =val.org;
+        this.params.search = val.search;
         this.getContractList();
       }
       this.highVisible = false;
