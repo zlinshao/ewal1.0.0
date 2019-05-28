@@ -112,7 +112,7 @@
           <div class="number"></div>
           <div class="number"></div> -->
         </div>
-        <div id="earth"></div>
+        <div id="earth" style="width:500px;height:500px"></div>
       </div>
       <div class="end">
         <div id="entry" style="display:flex">
@@ -169,6 +169,7 @@
 
 <script>
 import Clock from "vue-clock2";
+import earthData  from '../../../static//earth/earthData';  //地球的echarts数据
 export default {
   components: { Clock },
   name: "index",
@@ -190,6 +191,7 @@ export default {
   mounted() {
     this.getLangDate()
     this.drawLine();
+    this.drawEarth();
   },
   activated() {},
   // beforeRouteLeave (to, from, next) {
@@ -407,7 +409,60 @@ export default {
         setTimeout(() => {
           this.getLangDate()
         }, 1000)
-    }
+    },
+    // 地球绘制3d效果
+    drawEarth (){
+      let myChartEarth = this.$echarts.init(document.getElementById('earth'));
+
+      function getAirportCoord(idx) {
+        return [earthData.airports[idx][3], earthData.airports[idx][4]];
+      }
+      var routes = earthData.routes.map(function(airline) {
+          return [
+              getAirportCoord(airline[1]),
+              getAirportCoord(airline[2])
+          ];
+      });
+
+      myChartEarth.setOption({
+        // backgroundColor: '#000',
+        globe: {
+            // baseTexture: 'https://echarts.baidu.com/examples/data-gl/asset/world.topo.bathy.200401.jpg',
+            // heightTexture: 'https://echarts.baidu.com/examples/data-gl/asset/bathymetry_bw_composite_4k.jpg',
+            baseTexture: require('../../assets/image/earthImage/world.jpg'),
+            heightTexture: require('../../assets/image/earthImage/bathymetry.jpg'),
+            shading: 'lambert',
+            light: {
+                ambient: {
+                    intensity: 0.4
+                },
+                main: {
+                    intensity: 0.4
+                }
+            },
+            viewControl: {
+                autoRotate: true
+            }
+        },
+        series: {
+            type: 'lines3D',
+            coordinateSystem: 'globe',
+            blendMode: 'lighter',
+            lineStyle: {
+                width: 1,
+                color: 'rgb(50, 50, 150)',
+                opacity: 0.1
+            },
+            data: routes
+        }
+      });
+
+
+    
+
+      
+
+  }
   }
 };
 </script>
