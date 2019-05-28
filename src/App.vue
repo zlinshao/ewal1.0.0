@@ -219,7 +219,7 @@ export default {
     }
   },
   created () {
-    this.theme_name = '2'
+    this.theme_name = '1'
     this.getPerson()
   },
   methods: {

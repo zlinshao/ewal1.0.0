@@ -182,7 +182,7 @@ export default {
         sign_date_max: this.searchParams.dateTime[1] || '',
         type: this.searchParams.type || '',
         signer: this.searchParams.signer || '',
-        org: this.searchParams.handler || '', // 负责人
+        org: this.searchParams.org || '', // 部门
         search: this.searchParams.search || '',
         limit: 10,
         page: this.currentPage

@@ -379,11 +379,11 @@ export const dataAuditSearch = {
       dataType: [],
       value: [
         {
-          id: 22,
+          id: 1,
           title: '新收'
         },
         {
-          id: 23,
+          id: 2,
           title: '续收'
         }
       ]
@@ -398,7 +398,7 @@ export const dataAuditSearch = {
         num: 1
       }
     },
-    {
+    /*{
       keyType: 'staff',
       title: '负责人',
       placeholder: '请选择员工',
@@ -406,6 +406,17 @@ export const dataAuditSearch = {
       dataType: '',
       value: {
         num: 1
+      }
+    },*/
+    {
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'org',
+      dataType: [],
+      value: {
+        num: '',
+        arr: []
       }
     }
   ]
