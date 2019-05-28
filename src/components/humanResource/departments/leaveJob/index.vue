@@ -391,6 +391,7 @@
                 params.message="second_entry";
               }
               this.$http.put(`${this.url}staff/user/${id}`,params).then(res=> {
+                this.second_entry_dialog_visible=false;
                 this.$LjMessageEasy(res,()=> {
                   this.getStaffList();
                 });
