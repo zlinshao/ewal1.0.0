@@ -305,7 +305,7 @@
                   <div class='el_check_box'>
                     <div class='main_tit'> {{tit}}</div>
                     <div style="width: 90%;text-align: left" v-if='contractDetail.album_temp && contractDetail.album_temp[key]'>
-                      <Ljupload size='40' :value="contractDetail.album_temp[key]" disabled=true :download='false'></Ljupload>
+                      <lj-upload size='40' v-model="contractDetail.album_temp[key]" disabled=true :download='false'></lj-upload>
                     </div>
                   </div>
                 </template>

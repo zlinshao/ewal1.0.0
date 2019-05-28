@@ -500,8 +500,7 @@
               <div class="flex-center" v-for="(item,index) in contractDetail.album" style="min-height: 80px">
                 <div style="width: 10%;text-align: right;padding-right: 15px">{{ other_pictures[index] }}</div>
                 <div style="width: 90%;text-align: left">
-                  <img v-for="tmp in item" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri" :src="tmp.uri"
-                    style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+                  <lj-upload v-model="contractDetail.album[index]" :download="false" :disabled="true"></lj-upload>
                 </div>
               </div>
             </div>
@@ -580,7 +579,7 @@
     </lj-dialog>
 
     <!--审核详情-->
-    <lj-dialog :visible="check_visible" :size="{width: 700 + 'px',height: 500 + 'px'}" @close="check_visible = false">
+    <lj-dialog :visible.sync="check_visible" :size="{width: 700 + 'px',height: 500 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">审核详情</div>
         <div class="dialog_main">
@@ -678,7 +677,8 @@ export default {
         checkout_photo: '退租交接单照片',
         checkout_settle_photo: '退租结算照片',
         water_card_photo: '水卡照片',
-        property_photo: '物业照片'
+        property_photo: '物业照片',
+        house_video:'房屋影像',
       },
       //添加标记
       add_mark_visible: false,
@@ -1161,9 +1161,15 @@ export default {
       this.currentRow = row;
       // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
-        console.log(res);
+        //console.log(res);
         if (res.code === 200) {
           this.contractDetail = res.data;
+          //遍历图片生成需要的格式
+          /*if(this.contractDetail.album&&Object.keys(this.contractDetail.album).length>0) {
+            _(this.contractDetail.album).forEach((val,key)=>{
+              album[key] = Object.keys(val);
+            });
+          }*/
           this.contract_detail_visible = true;
         } else {
           this.contractDetail = '';
