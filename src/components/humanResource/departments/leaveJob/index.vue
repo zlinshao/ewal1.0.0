@@ -335,8 +335,13 @@
         this.showLoading(true);
         this.$http.get('staff/user', this.params).then(res => {
           this.showLoading(false);
-          this.tableData = res.data.data;
-          this.counts = res.data.count;
+          if (Number(res.code)%10 ===0){
+            this.tableData = res.data.data;
+            this.counts = res.data.count;
+          } else {
+            this.tableData=[];
+            this.counts=0;
+          }
         })
       },
       // 当前点击
