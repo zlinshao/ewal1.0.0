@@ -457,8 +457,11 @@
         files: [],
       }
     },
-    mounted() {
+    async mounted() {
       this.getVillageList();
+      await this.getCityList();
+      this.address_filter[0].val =this.city_list[0].name;//初始化加载选择南京
+
     },
     watch: {},
     computed: {},
@@ -711,7 +714,7 @@
               this.current_choose = '';
               this.village_params.city = [];
               this.village_params.province = '';
-              this.address_filter[0].val = '选城市';
+              this.getCityListal = '选城市';
               return false;
             }
             //清空area
@@ -801,8 +804,8 @@
         }
       },
       //城市列表
-      getCityList() {
-        this.$http.get(this.http_server + 'v1.0/city/address/city-list').then(res => {
+      async getCityList() {
+        await this.$http.get(this.http_server + 'v1.0/city/address/city-list').then(res => {
           if (res.code === 200) {
             this.city_list = res.data;
           } else {

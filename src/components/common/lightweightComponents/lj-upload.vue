@@ -51,7 +51,7 @@
       value: {
         handler(val, oldVal) {
           //debugger
-          if(val && val.length>0 && this.count==0) {
+          if(val && val.length>0 && this.count==0 && this.disabled) {
             this.count++;
             this.getPhotoInfoList(_.uniq(val));
           }

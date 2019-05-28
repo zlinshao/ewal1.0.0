@@ -1124,7 +1124,6 @@ export default {
             let id  = row.is_tag;//tagid
             this.$http.get(`${this.market_server}v1.0/market/contract/tagdetail/${id}`).then(res=> {
               if(res.code==200) {
-                debugger
                 this.mark_form = res.data;
                 this.add_mark_visible = true;
               }

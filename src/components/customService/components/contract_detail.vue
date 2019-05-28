@@ -642,11 +642,11 @@ export default {
         contract_type: this.contractDetail.type,
         album: this.contractDetail.album
       }
-      this.rewrite_visible = true
+      this.rewrite_visible = true;
     },
     // 取消合同作废
     handleCancelRewrite () {
-      this.rewrite_visible = false
+      this.rewrite_visible = false;
     },
   }
 }
