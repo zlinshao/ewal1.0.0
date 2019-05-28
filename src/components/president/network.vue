@@ -14,12 +14,13 @@
             </section>
             <section class="choose">
                 <div>
-                    <el-select v-model="value" placeholder="请选择">
+                    <el-select v-model="value" placeholder="请选择" clearable @change="change">
                         <el-option
                         v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        :key="item.InstanceId"
+                        :label="item.InstanceId"
+                        :value="item.InstanceId"
+                        >
                         </el-option>
                     </el-select>
                 </div>
@@ -33,47 +34,47 @@
                              <ul style="width:100%;height:100%" class="info">
                                  <li>
                                      <span>ID</span>
-                                     <span>111</span>
+                                     <span>{{ID}}</span>
                                  </li>
                                  <li>
                                      <span>所在可用区</span>
-                                     <span>111</span>
+                                     <span>{{aviableArea}}</span>
                                  </li>
                                  <li>
                                      <span>名称</span>
-                                     <span>11</span>
+                                     <span>{{name}}</span>
                                  </li>
                                  <li>
                                      <span>描述</span>
-                                     <span>11</span>
+                                     <span>{{describe}}</span>
                                  </li>
                                  <li>
                                      <span>地域</span>
-                                     <span>11</span>
+                                     <span>{{area}}</span>
                                  </li>
                                  <li>
                                      <span>实例规格</span>
-                                     <span>11</span>
+                                     <span>{{size}}</span>
                                  </li>
                                  <li>
                                      <span>镜像ID</span>
-                                     <span>11</span>
+                                     <span>{{image}}</span>
                                  </li>
                                  <li>
                                      <span>密钥对名称</span>
-                                     <span>11</span>
+                                     <span>{{key}}</span>
                                  </li>
                                  <li>
                                      <span>RAM角色</span>
-                                     <span>11</span>
+                                     <span>{{joke}}</span>
                                  </li>
                                  <li>
                                      <span>集群ID</span>
-                                     <span>11</span>
+                                     <span>{{group}}</span>
                                  </li>
                                  <li>
                                      <span>标签</span>
-                                     <span>11</span>
+                                     <span>{{title}}</span>
                                  </li>
                              </ul>
                          </section>
@@ -87,31 +88,31 @@
                              <ul style="width:100%;height:100%" class="info">
                                  <li>
                                      <span>ID</span>
-                                     <span>111</span>
+                                     <span>{{ID}}</span>
                                  </li>
                                  <li>
                                      <span>付费方式</span>
-                                     <span>111</span>
+                                     <span>{{pay}}</span>
                                  </li>
                                  <li>
                                      <span>停止模式</span>
-                                     <span>11</span>
+                                     <span>{{stop}}</span>
                                  </li>
                                  <li>
                                      <span>到期时间</span>
-                                     <span>11</span>
+                                     <span>{{expireTime}}</span>
                                  </li>
                                  <li>
                                      <span>自动续费(续费周期)</span>
-                                     <span>11</span>
+                                     <span>{{keepPay}}</span>
                                  </li>
                                  <li>
                                      <span>创建时间</span>
-                                     <span>11</span>
+                                     <span>{{creatTime}}</span>
                                  </li>
                                  <li>
                                      <span>自动释放时间</span>
-                                     <span>11</span>
+                                     <span>{{releaseTime}}</span>
                                  </li>
                              </ul>
                          </section>
@@ -125,53 +126,53 @@
                              <ul style="width:100%;height:100%" class="info">
                                  <li>
                                      <span>CPU</span>
-                                     <span>111</span>
+                                     <span>{{cpu}}</span>
                                  </li>
                                  <li>
                                      <span>内存</span>
-                                     <span>111</span>
+                                     <span>{{ram}}</span>
                                  </li>
                                  <li>
                                      <span>实例类型</span>
-                                     <span>11</span>
+                                     <span>{{type}}</span>
                                  </li>
                                  <li>
                                      <span>操作系统</span>
-                                     <span>11</span>
+                                     <span>{{system}}</span>
                                  </li>
                                  <li>
                                      <span>弹性网卡</span>
-                                     <span>11</span>
+                                     <span>{{NIC}}</span>
                                  </li>
                                  <li>
                                      <span>公网IP</span>
-                                     <span>11</span>
+                                     <span>{{publicIp}}</span>
                                  </li>
                                  <li>
                                      <span>私有IP</span>
-                                     <span>11</span>
+                                     <span>{{privateIp}}</span>
                                  </li>
                                  <li>
                                      <span>带宽计费方式</span>
-                                     <span>11</span>
+                                     <span>{{BillingMode}}</span>
                                  </li>
                                  <li>
                                      <span>当前使用带宽</span>
-                                     <span>11</span>
+                                     <span>{{bandwidth}}</span>
                                  </li>
                                  <li>
                                      <span>专有网络</span>
-                                     <span>11</span>
+                                     <span>{{privateNet}}</span>
                                  </li>
                                  <li>
                                      <span>虚拟交换机</span>
-                                     <span>11</span>
+                                     <span>{{Switch}}</span>
                                  </li>
                              </ul>
                          </section>
                     </div>
                 </div>
-                <div style="width:80%;height:26%;margin-top:10px;">
+                <!-- <div style="width:80%;height:26%;margin-top:10px;">
                     <div style="width:95%;height:100%;margin:0 auto">
                         <p style="display:flex;justify-content:space-between"><span style="display:inline-block">配置信息</span>
                          <span style="width:20px;height:20px;display:inline-block;"><img src="../../assets/image/president/pic_22.png" alt=""></span></p>
@@ -208,7 +209,7 @@
                              </ul>
                          </section>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="right">
@@ -252,8 +253,47 @@
                     <div id="chooseArea">
                         <img src="../../assets/image/president/yunxing.png" alt="">
                         <section>
-                            <div></div>
-                            <div></div>
+                            <div>
+                                <p>
+                                    <img src="../../assets/image/president/pic_4.png" alt="">
+                                    <span>磁盘</span>
+                                    <span>{{risk}}</span>
+                                </p>
+                                <p>
+                                    <img src="../../assets/image/president/pic_5.png" alt="">
+                                    <span>快照</span>
+                                    <span>{{photo}}</span>
+                                </p>
+                                <p>
+                                    <img src="../../assets/image/president/pic_6.png" alt="">
+                                    <span>弹性公网IP</span>
+                                    <span>{{publicIp}}</span>
+                                </p>
+                                <p>
+                                    <img src="../../assets/image/president/pic_7.png" alt="">
+                                    <span>弹性网卡</span>
+                                    <span>{{NIC}}</span>
+                                </p>
+                                <p>
+                                    <img src="" alt="">
+                                    <span></span>
+                                    <span></span>
+                                </p>
+                            </div>
+                            <div>
+                                <p>
+                                    <span>网络类型</span>
+                                    <span>{{netType}}</span>
+                                </p>
+                                <p>
+                                    <span>付费方式</span>
+                                    <span>{{pay}}</span>
+                                </p>
+                                <p>
+                                    <span>到期时间</span>
+                                    <span>{{expireTime}}</span>
+                                </p>
+                            </div>
                         </section>
                     </div>
                     <div id="entry">
@@ -308,9 +348,40 @@
                             </div>
                         </div>
                     </div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+                    <div id="cpu">
+                        <div class="use">
+                            <div>CPU</div>
+                            <div>
+                                <span></span>
+                                <span>cpu使用率(%)</span>
+                            </div>
+                        </div>
+                        <div id="network"></div>
+                    </div>
+                    <div id="cpu">
+                        <div class="use">
+                            <div>网络&nbsp;(外网)</div>
+                            <div>
+                                <span></span>
+                                <span>出网bps</span>
+                                <span></span>
+                                <span>入网bps</span>
+                            </div>
+                        </div>
+                        <div id="cunstomPie"></div>
+                    </div>
+                    <div id="cpu">
+                        <div class="use">
+                            <div>网络&nbsp;(内网)</div>
+                            <div>
+                                <span></span>
+                                <span>出网bps</span>
+                                <span></span>
+                                <span>入网bps</span>
+                            </div>
+                        </div>
+                        <div id="showLeave"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -325,24 +396,52 @@ export default {
   name: "index",
   data() {
     return {
+      risk: '',
+      photo: '',
+      netType: '',
+      publicIp: '',
+      publicNet: '',
+      ID: '',
+      aviableArea: '',
+      name: '',
+      describe: '',
+      area: '',
+      size: '',
+      image: '',
+      key: '',
+      joke: '',
+      group: '',
+      title: '',
+      pay: '',
+      stop: '',
+      expireTime: '',
+      keepPay: '',
+      creatTime: '',
+      releaseTime: '',
+      cpu: '',
+      ram: '',
+      type: '',
+      system: '',
+      NIC: '',
+      publicIp: '',
+      privateIp: '',
+      BillingMode: '',
+      dateTime: '',
+      StartTime: '',
+      EndTime: '',
+      bandwidth: '',
+      privateNet: '',
+      Switch: '',
+      allUrl: globalConfig.network_sever,
       value6: '',
       value: '',
-      options: [{
-            value: '选项1',
-            label: '黄金糕'
-        }, {
-            value: '选项2',
-            label: '双皮奶'
-        }, {
-            value: '选项3',
-            label: '蚵仔煎'
-        }, {
-            value: '选项4',
-            label: '龙须面'
-        }, {
-            value: '选项5',
-            label: '北京烤鸭'
-        }],
+      options: [],
+      cpuArr: [],
+      internetTArr: [],
+      internetRArr: [],
+      intarnetTArr: [],
+      intarnetRArr: [],
+      weekDateData: ['00:00:00', '02:00:00', '04:00:00', '06:00:00', '08:00:00', '10:00:00', '12:00:00', '14:00:00', '16:00:00', '18:00:00', '20:00:00', '22:00:00', '24:00:00'],
       url: '../../assets/image/president/renshi_0.png',
       time: "",
       time1: "",
@@ -351,13 +450,262 @@ export default {
     };
   },
   mounted() {
+    let d = new Date()
+    let month = new Date().getMonth() + 1
+    let date = new Date().getDate()
+    if (month < 10) {
+      month = '0' + month.toString()
+    }
+    if (date < 10) {
+      date = '0' + date.toString()
+    }
+    let dateTime = d.getFullYear() + '-' + month + '-' + date; 
+    this.StartTime = dateTime + ' ' + '00:00:00'
+    this.EndTime = dateTime + ' ' + '23:59:59'
+    console.log(this.StartTime, this.EndTime)
     this.getLangDate()
-    this.drawLine();
+    // this.drawLine();
   },
-  activated() {},
+  activated() {
+    //   this.drawLine();
+      this.getHost()
+  },
   watch: {},
   computed: {},
   methods: {
+    change() {
+        this.getInfo()
+    },
+    getData() {
+        let params = {
+            InstanceId: this.value,
+            StartTime: this.StartTime,
+            EndTime: this.EndTime,
+            Period: 3600,
+        }
+        this.$http.post(this.allUrl + "monitor", params).then(res => {
+            // this.options = res.data.InstanceStatuses.InstanceStatus
+            res.data.MonitorData.InstanceMonitorData.forEach((item) => {
+                this.cpuArr.push(item.CPU)
+                this.internetTArr.push(item.InternetTX)
+                this.internetRArr.push(item.InternetRX)
+                this.intarnetTArr.push(item.IntranetTX)
+                this.intarnetRArr.push(item.IntranetRX)
+            })
+            // this.value = res.data.InstanceStatuses.InstanceStatus[0].InstanceId
+      }).then(() => {
+          this.drawLine()
+      })
+    },
+    //获取主机
+    getHost() {
+        // let params = {
+        //     page: '1',
+        //     limit: 10
+        // }
+        this.$http.post(this.allUrl + "instance-list").then(res => {
+            this.options = res.data.InstanceStatuses.InstanceStatus
+            this.value = res.data.InstanceStatuses.InstanceStatus[0].InstanceId
+      }).then(() => {
+          this.getInfo()
+          this.getData()
+      })
+    },
+    // 画图
+    drawLine(){
+        // let myChart = this.$echarts.init(document.getElementById('statistics'))
+        // let myChart1 = this.$echarts.init(document.getElementById('leaveRate'))
+        let myChart = this.$echarts.init(document.getElementById('network'))
+        let myChart1 = this.$echarts.init(document.getElementById('cunstomPie'))
+        let myChart2 = this.$echarts.init(document.getElementById('showLeave'))
+        // 绘制图表
+        myChart.setOption({
+        tooltip : {
+            trigger: 'axis'
+        },
+        //  legend: {
+        //     data:['入职','离职']
+        // },
+        grid: {
+            top: 10,
+            bottom: 10
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                // data : [820, 932, 901, 934, 1290, 1330, 1320, 1320, 1320, 1320, 1320, 1320]
+                data : this.weekDateData
+            }
+        ],
+        yAxis : [
+            {
+              show: false
+            },
+            {
+              splitLine: {
+                show: false
+              }
+            },
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'CPU使用率',
+                type:'line',
+                smooth:true,
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data:this.cpuArr
+            }
+        ]
+      });
+        myChart1.setOption({
+        tooltip : {
+            trigger: 'axis'
+        },
+        //  legend: {
+        //     data:['入职','离职']
+        // },
+        grid: {
+            top: 10,
+            bottom: 10
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                // data : [820, 932, 901, 934, 1290, 1330, 1320, 1320, 1320, 1320, 1320, 1320]
+                data : this.weekDateData
+            }
+        ],
+        yAxis : [
+            {
+              show: false
+            },
+            {
+              splitLine: {
+                show: false
+              }
+            },
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'外网(出网)',
+                type:'line',
+                smooth:true,
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data:this.internetTArr
+            },
+            {
+                name:'外网(入网)',
+                type:'line',
+                smooth:true,
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data:this.internetRArr
+            }
+        ]
+      });
+        myChart2.setOption({
+        tooltip : {
+            trigger: 'axis'
+        },
+        //  legend: {
+        //     data:['入职','离职']
+        // },
+        grid: {
+            top: 10,
+            bottom: 10
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                // data : [820, 932, 901, 934, 1290, 1330, 1320, 1320, 1320, 1320, 1320, 1320]
+                data : this.weekDateData
+            }
+        ],
+        yAxis : [
+            {
+              show: false
+            },
+            {
+              splitLine: {
+                show: false
+              }
+            },
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                name:'内网(出网)',
+                type:'line',
+                smooth:true,
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data:this.intarnetTArr
+            },
+            {
+                name:'内网(入网)',
+                type:'line',
+                smooth:true,
+                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                data:this.intarnetRArr
+            }
+        ]
+      });
+    },
+    // 获取信息
+    getInfo() {
+        let params = {
+            InstanceId: this.value
+        }
+        this.$http.post(this.allUrl + "instance?InstanceId=i-uf64hh8q8vtixbwq0q7p", params).then(res => {
+            this.ID = res.data.InstanceId
+            this.netType = res.data.InstanceNetworkType
+            this.ID = res.data.InstanceId
+            this.ID = res.data.InstanceId
+            this.aviableArea = res.data.ZoneId
+            this.risk = res.data.TotalDisks
+            this.photo = res.data.TotalSnapshots
+            this.publicIp = res.data.ElasticPublicIp
+            this.publicNet = res.data.NetworkInterfaces.NetworkInterface.NetworkInterfaceId
+            this.name = res.data.InstanceName
+            this.describe = res.data.Description
+            this.area = res.data.Region
+            this.size = res.data.InstanceType
+            this.image = res.data.ImageId
+            this.key = res.data.KeyPairName
+            this.joke = res.data.RamRole
+            this.group = res.data.ClusterId
+            this.title = res.data.InstanceId
+            this.pay = res.data.InstanceChargeType
+            this.stop = res.data.StopModule
+            this.expireTime = res.data.ExpiredTime
+            this.keepPay = res.data.StoppedMode
+            this.creatTime = res.data.CreationTime
+            this.releaseTime = res.data.AutoReleaseTime
+            this.cpu = res.data.Cpu + '核'
+            this.ram = res.data.Memory + 'M'
+            this.type = res.data.IoOptimized
+            this.system = res.data.OSName
+            this.NIC = res.data.NetworkInterfaces.NetworkInterface[0].NetworkInterfaceId
+            this.publicIp = res.data.PublicIpAddress.IpAddress
+            this.privateIp = res.data.NetworkInterfaces.NetworkInterface[0].PrimaryIpAddress
+            this.BillingMode = res.data.InternetChargeType
+            this.bandwidth = res.data.InternetMaxBandwidthOut
+            this.privateNet = res.data.VpcAttributes.VpcId
+            this.Switch = res.data.VpcAttributes.VSwitchId
+      })
+    },
     back() {
         this.$router.push({
             path: '/president'
@@ -368,96 +716,6 @@ export default {
       this.$router.push({ 
         path: item.url
       })
-    },
-    drawLine(){
-        // let myChart = this.$echarts.init(document.getElementById('statistics'))
-        // let myChart1 = this.$echarts.init(document.getElementById('levetRate'))
-        let myChart = this.$echarts.init(document.getElementById('entryRate'))
-        let myChart1 = this.$echarts.init(document.getElementById('cunstomPie'))
-        let myChart2 = this.$echarts.init(document.getElementById('lossRatio'))
-        // let myChart3 = this.$echarts.init(document.getElementById('showLeave'))
-        // 绘制图表
-        myChart.setOption({
-            tooltip : {
-                trigger: 'axis'
-            },
-            grid: {
-                top: 0,
-                // bottom: 0
-            },
-            xAxis: {
-                type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [{
-                data: [820, 932, 901, 934, 1290, 1330, 1320],
-                type: 'line'
-            }]
-        });
-        myChart1.setOption({
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-
-            visualMap: {
-                show: false,
-                min: 80,
-                max: 600,
-                inRange: {
-                    colorLightness: [0, 1]
-                }
-            },
-            series : [
-                {
-                    name:'访问来源',
-                    type:'pie',
-                    radius : '55%',
-                    center: ['50%', '50%'],
-                    data:[
-                        {value:335, name:'直接访问'},
-                        {value:310, name:'邮件营销'},
-                        {value:274, name:'联盟广告'},
-                        {value:235, name:'视频广告'},
-                        {value:400, name:'搜索引擎'}
-                    ].sort(function (a, b) { return a.value - b.value; }),
-                    roseType: 'radius',
-                    label: {
-                        normal: {
-                            textStyle: {
-                                color: 'rgba(255, 255, 255, 0.3)'
-                            }
-                        }
-                    },
-                    labelLine: {
-                        normal: {
-                            lineStyle: {
-                                color: 'rgba(255, 255, 255, 0.3)'
-                            },
-                            smooth: 0.2,
-                            length: 10,
-                            length2: 20
-                        }
-                    },
-                    itemStyle: {
-                        normal: {
-                            color: '#c23531',
-                            shadowBlur: 200,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    },
-
-                    animationType: 'scale',
-                    animationEasing: 'elasticOut',
-                    animationDelay: function (idx) {
-                        return Math.random() * 200;
-                    }
-                }
-            ]
-        });
     },
     getLangDate() {
       function dateFilter(date){ //值小于10时，在前面补0
@@ -598,13 +856,36 @@ export default {
     width: 64%;
     height: 100%;
     section {
-        width: 85%;
+        width: 90%;
+        height: 100%;
+        display: flex;
         margin: 10px auto;
+        div {
+            p {
+                line-height: 45px;
+                img{
+                    width: 25px;
+                    height: 25px;
+                    position: relative;
+                    top: 7px;
+                }
+                >span:nth-child(2) {
+                    position: relative;
+                    left: 43px;
+                }
+                >span:nth-child(3) {
+                    position: relative;
+                    left: 43px;
+                }
+            }
+            width: 48%;
+            height: 100%;
+        }
     }
     position: relative;
     background: url('../../assets/image/border/k_16.png') no-repeat;
     background-size: 100% 100%; 
-    img {
+    >img {
         position: absolute;
         top: -56px;
         right: 35px;
@@ -804,6 +1085,32 @@ export default {
     height: 100px;
   }
 }
+.use {
+    width: 100%;
+    height: 8%;
+    display: flex;
+    justify-content: space-between;
+    >div:nth-child(1) {
+        color: #ffffff;
+        position: relative;
+        left: 107px;
+        font-size: 30px;
+    }
+    div {
+        >span:nth-child(1) {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #298AC1
+        }
+        width: 13%;
+        height: 100%;
+    }
+}
+#network,#cunstomPie,#showLeave {
+    height: 90%;
+    width: 100%
+}
 .choose {
     width: 100%;
     height: 7%;
@@ -871,7 +1178,9 @@ export default {
         margin-right: 60px;
     }
     >span:nth-child(2) {
-        width: 70%
+        width: 70%;
+        overflow: hidden;
+        text-overflow: ellipsis
     }
     
 }
@@ -932,5 +1241,8 @@ export default {
     height: 47%;
     margin-top: 12px;background: url('../../assets/image/border/k_17.png') no-repeat ;
     background-size: 100% 100%
+}
+#main-container .el-input__inner {
+    background-color: #102761;
 }
 </style>

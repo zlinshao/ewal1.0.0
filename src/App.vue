@@ -214,6 +214,7 @@ export default {
     },
   },
   created () {
+    this.theme_name = '2'
     this.getPerson()
   },
   methods: {

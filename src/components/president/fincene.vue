@@ -19,11 +19,11 @@
                     type="daterange"
                     range-separator="至"
                     start-placeholder="开始日期"
-                    end-placeholder="结束日期">
+                    end-placeholder="结束日期" @change="chooseTime">
                     </el-date-picker>
                 </div>
                 <div class="location">
-                    <span>南京</span>
+                    <span>{{chooseCity}}</span>
                     <img src="../../assets/image/president/didian.png" alt="">
                 </div>
             </section>
@@ -31,38 +31,43 @@
                 <div>
                     <section style="width: 90%;height:97%;margin:0 auto;padding-top:12px">
                         <p>今日亏损率</p>
-                        <p style="font-size:42px;color:#ffffff">8%</p>
+                        <p style="font-size:42px;color:#ffffff">{{lossData}}</p>
                         <section id="entryRate"></section>
                         <section id="allData">
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#BA25DC">超置空房源</section>
-                                <section style="width:68%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
+                                <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100"></el-progress>
                                 </section>
+                                <span>{{emptyNum}}</span>
                             </section>
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#8047CC">公司违约</section>
-                                <section style="width:68%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
+                                <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" ></el-progress>
                                 </section>
+                                <span>{{breakPre}}</span>
                             </section>
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#3262EC">公司任责费用</section>
-                                <section style="width:68%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
+                                <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" ></el-progress>
                                 </section>
+                                <span>{{resPay}}</span>
                             </section>
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#FF564F">收租差价</section>
-                                <section style="width:68%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
+                                <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" ></el-progress>
                                 </section>
+                                <span>{{recv_rent_gap}}</span>
                             </section>
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#53C13B">中介费</section>
-                                <section style="width:68%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" status="success"></el-progress>
+                                <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" ></el-progress>
                                 </section>
+                                <span>{{middle}}</span>
                             </section>
                         </section>
                     </section>
@@ -108,11 +113,8 @@
             </div>
             <div class="bottom">
                 <div id="chooseArea">
-                    <div class="branch" v-for="(item, index) in citys" :key="index">
-                        <span>{{item.name}}</span>   
-                    </div>
-                    <div class="center">
-                        <span>总公司</span>
+                    <div class="branch" v-for="(i, index) in citys" :key="index"  @click="change(i, index)">
+                        <span>{{i.name}}</span>   
                     </div>
                 </div>
                 <div id="entry">
@@ -138,7 +140,7 @@
                             <div>
                                 <section style="width:70%;height:100%;margin:10px auto">
                                     <p>盈亏比</p>
-                                    <p style="color:#ffffff;font-size:45px">1.23</p>
+                                    <p style="color:#ffffff;font-size:45px">{{win}}</p>
                                 </section>
                             </div>
                             <div>
@@ -153,7 +155,8 @@
                         <div id="lossRatio"></div>
                     </section>
                     <section  class="pieWeek">
-                        <div>
+                        <img src="../../assets/image/president/wushuju.png" alt="">
+                        <!-- <div>
                             <div>
                                 <section style="width:70%;height:100%;margin:10px auto">
                                     <p>风险系数</p>
@@ -169,7 +172,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div></div>
+                        <div></div> -->
                     </section>
                 </div>
             </div>
@@ -186,7 +189,23 @@ export default {
   data() {
     return {
       value6: '',
-      citys: [{name: '成都'}, {name: '西安'}, {name: '重庆'}, {name: '合肥'}, {name: '上海'}, {name: '杭州'}, {name: '南京'}, {name: '苏州'}, ],
+      win: '',
+      lossData: '',
+      recv_rent_gap: '',
+      middle: '',
+      resPay: '',
+      breakPre: '',
+      emptyNum: '',
+      startTime: '',
+      endTime: '',
+      chooseCity: '乐伽',
+      rentArr: [],
+      weekDate: [],
+      weekDates: [],
+      lossArr: [],
+      pieArr: [],
+      allUrl: globalConfig.president_sever,
+      citys: [{name: '成都'}, {name: '西安'}, {name: '重庆'}, {name: '合肥'}, {name: '上海'}, {name: '杭州'}, {name: '南京'}, {name: '苏州'},{name: '乐伽'}],
       tabBar: [
         {name: '房租', color: '#F64C7E'},
         {name: '定金', color: '#FFCC4D'},
@@ -194,9 +213,7 @@ export default {
         {name: '滞纳金', color: '#56CDFD'}
       ],
       tabBarTwo: [
-        {name: '违约金', color: '#477DDB'},
-        {name: '定金不退', color: '#0757B6'},
-        {name: '罚款', color: '#6545AA'},
+        {name: '违约金', color: '#477DDB'}
       ],
       tabBarThree: [
         {name: '收入金额', color: '#20E054'},
@@ -210,13 +227,87 @@ export default {
     };
   },
   mounted() {
+    let d = new Date()
+    let yes0 = new Date().getTime()
+    let yes1 = new Date().getTime() - 7 * 24 * 3600 * 1000
+    let yes2 = new Date().getTime() - 1 * 24 * 3600 * 1000
+    let yes3 = new Date().getTime() - 2 * 24 * 3600 * 1000
+    let yes4 = new Date().getTime() - 3 * 24 * 3600 * 1000
+    let yes5 = new Date().getTime() - 4 * 24 * 3600 * 1000
+    let yes6 = new Date().getTime() - 5 * 24 * 3600 * 1000
+    let yes7 = new Date().getTime() - 6 * 24 * 3600 * 1000
+    let day1 = new Date(yes1 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+    let day0 = new Date(d + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+    let day7 = new Date(yes2 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+    let day2 = new Date(yes3 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+    let day3 = new Date(yes4 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+    let day4 = new Date(yes5 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+    let day5 = new Date(yes6 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+    let day6 = new Date(yes7 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+    this.weekDates = [day6, day5, day4, day3, day2, day7, day0]
+    let day= new Date().getDay()
+    let month = new Date().getMonth() + 1
+    let date = new Date().getDate()
+    if (month < 10) {
+        month = '0' + month.toString()
+    }
+    if (date < 10) {
+        date = '0' + date.toString()
+    }
+    let dateTime = d.getFullYear() + '-' + month + '-' + date; 
+    console.log(dateTime)
+    this.dateTime = dateTime
+    this.dateTime1 = day1
+    let week = new Array(7)
+    let arr = [day+1,day+2,day+3,day+4,day+5,day+6,day] 
+    week[0] = '周日'
+    week[1] = '周一'
+    week[2] = '周二'
+    week[3] = '周三'
+    week[4] = '周四'
+    week[5] = '周五'
+    week[6] = '周六'
+    week[7] = '周日'
+    week[8] = '周一'
+    week[9] = '周二'
+    week[10] = '周三'
+    week[11] = '周四'
+    week[12] = '周五'
+    week[13] = '周六'
+    for (let i of arr) {
+        this.weekDate.push(week[i])
+    }
+    this.weekDate = this.weekDate.slice(0, 7)
     this.getLangDate()
     this.drawLine();
   },
-  activated() {},
+  activated() {
+      this.getLoss();
+      this.getEmptyHome();
+      this.getRate();
+      this.getMoney(this.chooseCity);
+      this.getWin(this.chooseCity);
+  },
   watch: {},
   computed: {},
   methods: {
+    // 切换城市 
+    change(i, index) {
+        console.log(i, index)
+        this.chooseCity = i.name
+        if (i.name !== '乐伽') {
+            this.chooseCitys = i.name + '市'
+        } else {
+            this.chooseCitys = i.name
+        }
+        let temp = this.citys[this.citys.length - 1];
+        this.citys[this.citys.length - 1] = i;
+        this.citys[index] = temp;
+        this.$forceUpdate()
+        this.getLoss()
+        this.getMoney(this.chooseCitys)
+        this.getWin(this.chooseCitys)
+    },
     back() {
         this.$router.push({
             path: '/president'
@@ -226,6 +317,210 @@ export default {
       console.log(item)
       this.$router.push({ 
         path: item.url
+      })
+    },
+    // 盈亏比
+    getWin(city) {
+        let params = {
+            start: this.startTime,
+            end: this.endTime
+        }
+        console.log(this.weekDates)
+        console.log(city)
+        let a = 0
+        let b = 0
+        let c = 0
+        let d = 0
+        let e = 0
+        let f = 0
+        let g = 0
+        this.$http.post(this.allUrl + "income_and_disburse_for_ceo", params).then(res => {
+        if (res.data[this.weekDates[0]][city].disburse === 0) {
+            a = 0
+        } else {
+            a =  (((res.data[this.weekDates[0]][city].income - res.data[this.weekDates[0]][city].disburse) / res.data[this.weekDates[0]][city].disburse*10000)/100).toFixed(2)
+        }
+        if (res.data[this.weekDates[1]][city].disburse === 0) {
+            b = 0
+        } else {
+            b =  (((res.data[this.weekDates[1]][city].income - res.data[this.weekDates[1]][city].disburse) / res.data[this.weekDates[1]][city].disburse*10000)/100).toFixed(2)
+        }
+        if (res.data[this.weekDates[2]][city].disburse === 0) {
+            c = 0
+        } else {
+            c =  (((res.data[this.weekDates[2]][city].income - res.data[this.weekDates[2]][city].disburse) / res.data[this.weekDates[2]][city].disburse*10000)/100).toFixed(2)
+        }
+        if (res.data[this.weekDates[3]][city].disburse === 0) {
+            d = 0
+        } else {
+            d =  (((res.data[this.weekDates[3]][city].income - res.data[this.weekDates[3]][city].disburse) / res.data[this.weekDates[3]][city].disburse*10000)/100).toFixed(2)
+        }
+        if (res.data[this.weekDates[4]][city].disburse === 0) {
+            e = 0
+        } else {
+            e =  (((res.data[this.weekDates[4]][city].income - res.data[this.weekDates[4]][city].disburse) / res.data[this.weekDates[4]][city].disburse*10000)/100).toFixed(2)
+        }
+        if (res.data[this.weekDates[5]][city].disburse === 0) {
+            f = 0
+        } else {
+            f =  (((res.data[this.weekDates[5]][city].income - res.data[this.weekDates[5]][city].disburse) / res.data[this.weekDates[5]][city].disburse*10000)/100).toFixed(2)
+        }
+        if (res.data[this.weekDates[6]][city].disburse === 0) {
+            g = 0
+        } else {
+            g =  (((res.data[this.weekDates[6]][city].income - res.data[this.weekDates[6]][city].disburse) / res.data[this.weekDates[6]][city].disburse*10000)/100).toFixed(2)
+        }
+        this.win = Math.round(g) + '%'
+        this.winArr = [a,b,c,d,e,f,g]
+        console.log(this.winArr)
+        }).then(() => {
+
+        })
+    },
+    // 学历
+    getMoney(city) {
+        let params = {
+            start: this.startTime,
+            end: this.endTime
+        }
+        console.log(city)
+        this.pieArr = []
+        let arr = ['房租', '定金','尾款', '滞纳金',  '违约金']
+        console.log(this.weekDates)
+        this.fronMoney = 0
+        this.rent = 0
+        this.backMoney = 0
+        this.lateFee = 0
+        this.breachMoney = 0
+      this.$http.post(this.allUrl + "income_and_disburse_detail_for_ceo", params).then(res => {
+        Object.keys(res.data.income).map(key => {
+            this.fronMoney += res.data.income[key][city].定金
+            this.rent += res.data.income[key][city].房租
+            this.backMoney += res.data.income[key][city].尾款
+            this.lateFee += res.data.income[key][city].滞纳金
+            this.breachMoney += res.data.income[key][city].违约金
+        })
+        let arr1 = {定金: this.fronMoney,房租: this.rent,尾款: this.backMoney,滞纳金: this.lateFee,定金: this.fronMoney,违约金: this.breachMoney}
+            this.rentArr = []
+            arr.forEach((item) => {
+                this.rentArr.push({value: arr1[item],name: item})
+            })
+            console.log(this.rentArr)
+        }).then(() => {
+            this.drawLine()
+        })
+        },
+    chooseTime() {
+        console.log(this.value6)
+        let time1 = new Date(this.value6[0]).getTime() 
+        let d = new Date(this.value6[1])
+        let day= new Date(this.value6[1]).getDay()
+        console.log(day)
+        this.weekDate = []
+        let week = new Array(7)
+        let arr = [day+1,day+2,day+3,day+4,day+5,day+6,day] 
+        week[0] = '周日'
+        week[1] = '周一'
+        week[2] = '周二'
+        week[3] = '周三'
+        week[4] = '周四'
+        week[5] = '周五'
+        week[6] = '周六'
+        week[7] = '周日'
+        week[8] = '周一'
+        week[9] = '周二'
+        week[10] = '周三'
+        week[11] = '周四'
+        week[12] = '周五'
+        week[13] = '周六'
+        for (let i of arr) {
+            this.weekDate.push(week[i])
+        }
+        this.weekDate = this.weekDate.slice(0, 7)
+        let yes0 = new Date(this.value6[1]).getTime()
+        let yes1 = new Date(this.value6[1]).getTime() - 1 * 24 * 3600 * 1000
+        let yes2 = new Date(this.value6[1]).getTime() - 2 * 24 * 3600 * 1000
+        let yes3 = new Date(this.value6[1]).getTime() - 3 * 24 * 3600 * 1000
+        let yes4 = new Date(this.value6[1]).getTime() - 4 * 24 * 3600 * 1000
+        let yes5 = new Date(this.value6[1]).getTime() - 5 * 24 * 3600 * 1000
+        let yes6 = new Date(this.value6[1]).getTime() - 6 * 24 * 3600 * 1000
+        let yes7 = new Date(this.value6[1]).getTime() - 7 * 24 * 3600 * 1000
+        let time2 = new Date(this.value6[1]).getTime() 
+        let day0 = new Date(yes0 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+        let day1 = new Date(yes1 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+        let day2 = new Date(yes2 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+        let day3 = new Date(yes3 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+        let day4 = new Date(yes4 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+        let day5 = new Date(yes5 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+        let day6 = new Date(yes6 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+        let day7 = new Date(yes7 + 8 * 3600 * 1000).toJSON().substr(0, 19).replace('T', ' ').substr(0,10)
+        this.weekDates = [day6, day5, day4, day3, day2, day1, day0]
+        console.log(this.weekDate)
+        let days = parseInt((time2 - time1) / (1000 * 60 * 60 * 24))
+        if (days !== 7) {
+            this.$message({
+                type: 'warning',
+                message: '请选择7天的时间范围'
+            })
+        }
+        this.startTime = day6
+        this.endTime = day0
+        console.log(this.startTime, this.dateTime)
+        this.getLoss()
+        this.getMoney(this.chooseCity)
+        this.getWin(this.chooseCity)
+    },
+    // 亏损
+    getLoss() {
+        let params = {
+            start: this.startTime,
+            end: this.endTime,
+            department: this.chooseCity
+        }
+      this.$http.post(this.allUrl + "loss_detail", params).then(res => {
+        let d = new Date()
+        console.log(res)
+        this.lossData = res.data[res.data.length - 1].income_and_disburse
+        res.data.forEach((item) => {
+          this.lossArr.push(item.income_and_disburse)
+        })
+        console.log(this.lossArr)
+        
+      }).then(()=> {
+         this.drawLine()
+      })
+    },
+    // 空房源
+    getEmptyHome () {
+      let params = {
+        level: '1',
+        mode: 'day',
+        start: this.dateTime1,
+        end: this.dateTime
+      }
+      this.$http.post(this.allUrl + "rent_detail", params).then(res => {
+        console.log(res)
+        this.emptyNum =  Math.round(res.data.vacancy_fee)
+        this.recv_rent_gap = Math.round(res.data.recv_rent_gap)
+      })
+    },
+    // 获取违约金..
+    getRate() {
+      let params = {
+        level: '1',
+        mode: 'day',
+        start: this.dateTime1,
+        end: this.dateTime
+      }
+      this.$http.post(this.allUrl + "disburse", params).then(res => {
+        console.log(res)
+        this.breakPre = res.data[this.dateTime].break_pay.amount_paid
+        this.resPay = res.data[this.dateTime].mediation_pay.amount_paid
+        this.middle = res.data[this.dateTime].responsibility_pay.amount_paid
+        let year = new Date().getFullYear() + '年';
+        let obj = res.data[year]
+        // this.emptyHome
+        // console.log(obj.房租.amount_paid)
       })
     },
     drawLine(){
@@ -240,21 +535,28 @@ export default {
             tooltip : {
                 trigger: 'axis'
             },
-            grid: {
-                top: 0,
-                // bottom: 0
-            },
             xAxis: {
-                type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            type: "category",
+            data: this.weekDate
+            },
+            grid: {
+            x: 10,
+            y: 0,
+            x2: 10,
+            y2: 0,
+            borderWidth: 1
             },
             yAxis: {
-                type: 'value'
+            type: "value"
             },
-            series: [{
-                data: [820, 932, 901, 934, 1290, 1330, 1320],
-                type: 'line'
-            }]
+            series: [
+            {
+                name: "今日盈亏",
+                smooth: true,
+                data: this.lossArr,
+                type: "line"
+            }
+            ]
         });
         myChart1.setOption({
             tooltip : {
@@ -272,17 +574,12 @@ export default {
             },
             series : [
                 {
-                    name:'访问来源',
+                    name:'房租占比',
                     type:'pie',
                     radius : '55%',
                     center: ['50%', '50%'],
-                    data:[
-                        {value:335, name:'直接访问'},
-                        {value:310, name:'邮件营销'},
-                        {value:274, name:'联盟广告'},
-                        {value:235, name:'视频广告'},
-                        {value:400, name:'搜索引擎'}
-                    ].sort(function (a, b) { return a.value - b.value; }),
+                    data:this.rentArr
+                    .sort(function (a, b) { return a.value - b.value; }),
                     roseType: 'radius',
                     label: {
                         normal: {
@@ -291,6 +588,7 @@ export default {
                             }
                         }
                     },
+                    // color:['pink'],
                     labelLine: {
                         normal: {
                             lineStyle: {
@@ -316,6 +614,28 @@ export default {
                     }
                 }
             ]
+        });
+        myChart2.setOption({
+            grid: {
+                top: 0,
+                bottom: 20
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: this.weekDate
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: this.winArr,
+                type: 'line',
+                areaStyle: {}
+            }]
         });
     },
     getLangDate() {
@@ -454,7 +774,7 @@ export default {
     width: 56%;
     height: 100%;
     position: relative;
-    .center {
+    .branch:last-child {
         width:165px;
         height:165px;
         background: url("../../assets/image/president/chengshi_11.png") no-repeat;
@@ -467,7 +787,7 @@ export default {
             position: relative;
             color: #20296A;
             top: 60px;
-            left: 40px;
+            left: 50px;
             font-size: 30px;
         }
     }
@@ -691,6 +1011,10 @@ export default {
     width:100%;
     height:31%;
     margin-top: 10px;
+    img {
+        width: 98%;
+        height: 98%;
+    }
     background: url('../../assets/image/border/k_13.png') no-repeat;
     background-size: 100% 100%;
     >div:nth-child(1) {
@@ -773,6 +1097,9 @@ export default {
     width: 100%;
     height: 40%;
     padding-top: 1rem;
+    span{
+        margin-left: 2rem;
+    }
 }
 .pieWeekHalf {
     display: flex;

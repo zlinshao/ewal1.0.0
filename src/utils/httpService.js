@@ -8,7 +8,7 @@ const TOKEN = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImEzNmQzMWQ1ZG
 axios.defaults.timeout = 100000;
 axios.defaults.headers.common['Authorization'] = TOKEN;
 
-axios.defaults.baseURL = globalConfig.server; // 域名
+// axios.defaults.baseURL = globalConfig.server; // 域名
 
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {
