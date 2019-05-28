@@ -51,7 +51,7 @@
                   <div class="flex control-btn" slot="content">
                     <span v-for="item in choose_list" :key="item.id"
                           @click.stop="handleClickSpan(item,scope.row,scope.row.is_tag)">
-                      <div v-if="item.id==3&&scope.row.is_tag==true">已标记</div>
+                      <div v-if="item.id==3&&scope.row.is_tag">修改标记</div>
                       <div v-else>{{item.val}}</div>
                     </span>
                   </div>
@@ -567,7 +567,7 @@
               <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="6"></el-input>
             </el-form-item>
             <el-form-item label="上传图片">
-              <Upload :file="mark_upload" @success="handleGetMarkUpload"></Upload>
+              <lj-upload size="50" style="position: absolute;top: -13px;" v-model="mark_form.album"></lj-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -692,14 +692,6 @@ export default {
         { id: 1, val: '续租' },
         { id: 2, val: '退租' },
       ],
-      mark_upload: {
-        keyName: 'album',
-        setFile: [],
-        size: {
-          width: '50px',
-          height: '50px'
-        }
-      },
 
       show_control: '',
       current_choose_control: '',
@@ -1049,9 +1041,9 @@ export default {
       this.add_mark_visible = false;
     },
     handleSubmitMark () {
-      if(this.add_or_edit_mark==1) {
+      if(this.add_or_edit_mark==1) {//添加标记
         this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
-          console.log(res);
+          //console.log(res);
           if (res.code === 200) {
             this.$LjNotify('success', {
               title: '成功',
@@ -1066,15 +1058,16 @@ export default {
             })
           }
         })
-      }else  {
-        this.$http.post(`${this.market_server}v1.0/market/contract/tag`);
+      }else  {//修改标记
+        let tag_id = this.currentRow.is_tag;
+        this.$http.put(`${this.market_server}v1.0/market/contract/tag/${tag_id}`,this.mark_form).then(res=> {
+          this.$LjMessageEasy(res,()=> {
+            this.handleCancelMark();
+            this.getContractList();
+          });
+        });
       }
 
-    },
-    handleGetMarkUpload (file) {
-      if (file !== 'close') {
-        this.mark_form[file[0]] = file[1];
-      }
     },
     chooseMarkRadio (item) {
       this.mark_form.tag_status = item.id;
@@ -1086,7 +1079,6 @@ export default {
     },
     handleClickSpan (item, row,isEdit) {//isEdit  是否为修改标记
       this.add_or_edit_mark=!isEdit?1:2;
-      if(isEdit) return;
       this.currentRow = row;
       this.current_choose_control = item.id;
       switch (item.id) {
@@ -1127,7 +1119,17 @@ export default {
           }
           break;
         case 3:
-          this.add_mark_visible = true;
+
+          if(isEdit) {//为修改标记
+            let id  = row.is_tag;//tagid
+            this.$http.get(`${this.market_server}v1.0/market/contract/tagdetail/${id}`).then(res=> {
+              if(res.code==200) {
+                debugger
+                this.mark_form = res.data;
+                this.add_mark_visible = true;
+              }
+            });
+          }
           break;
       }
     },

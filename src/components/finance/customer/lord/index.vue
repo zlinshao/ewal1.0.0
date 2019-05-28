@@ -337,9 +337,7 @@
           this.action_status.delete_visible = false;
           this.current_row = '';
 
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
     },
   }

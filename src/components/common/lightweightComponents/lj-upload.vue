@@ -50,9 +50,10 @@
 
       value: {
         handler(val, oldVal) {
+          //debugger
           if(val && val.length>0 && this.count==0) {
             this.count++;
-            this.getPhotoInfoList(val);
+            this.getPhotoInfoList(_.uniq(val));
           }
           /*if (val && !oldVal && this.count == 0) {
             this.count++;
