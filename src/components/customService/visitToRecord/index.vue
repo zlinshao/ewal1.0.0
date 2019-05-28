@@ -61,7 +61,7 @@
                 </el-select>
               </div>
             </el-col>
-            <el-col :span="6" class='origin'>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='origin'>
               <p><i class='icon'></i>来源</p>
               <div class='input_box'>
                 <el-select v-model="recordOption.from" placeholder="请选择">
@@ -70,7 +70,7 @@
                 </el-select>
               </div>
             </el-col>
-            <el-col :span="6" class='freePay'>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='freePay'>
               <p><i class='icon'></i><span>是否收取其他费用</span></p>
               <div class='input_box'>
                 <el-radio v-model="recordFree" label="1">是</el-radio>
@@ -80,7 +80,7 @@
           </el-row>
 
           <el-row :gutter="5" class='add_record_form' v-if='recordFree == 1'>
-            <el-col :span='12' v-for='(feiyong,index) in other_free' :key='"feiyong" + index'>
+            <el-col v-if="recordOption.is_connect==1" :span='12' v-for='(feiyong,index) in other_free' :key='"feiyong" + index'>
               <el-row :gutter="15">
                 <el-col :span="12" class='feiyong'>
                   <p><i class='icon'></i>费用名称</p>
@@ -101,7 +101,7 @@
           </el-row>
 
           <el-row :gutter="20" class='add_record_form'>
-            <el-col :span="6" class='satisfied'>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='satisfied'>
               <p><i class='icon'></i>满意度</p>
               <div class='input_box'>
                 <el-rate v-model="recordOption.star" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
@@ -202,9 +202,9 @@
                   <div>
                     <span class='tit'>其他附件</span>
                     <div class='content content_album'>
-                      <div v-for='(item,key) in recordDetail.album_temp' class='imgs_box' v-if='key !="photo"'>
+                      <div v-for='(item,key) in recordDetail.album_temp' :key="key" class='imgs_box' v-if='key !="photo"'>
                         <p>{{dataAblum[key]}}</p>
-                        <Ljupload size='40' :value="recordDetail.album_temp[key]" disabled=true :download='false'></Ljupload>
+                        <lj-upload size='40' :value="recordDetail.album_temp[key]" disabled=true :download='false'></lj-upload>
                         <!-- <div v-if='item'> -->
                         <!-- <img :src="img.uri" alt="" v-for='img in item' :key='img.id' data-magnify="" data-caption="图片查看器"
                             :data-src="img.uri" v-if='img.uri'> -->
@@ -556,6 +556,7 @@ export default {
             let el = this.other_free[i]
             if (!el.name) return '费用名称未填写'
             if (!el.money) return '费用金额未填写'
+            if(isNaN(el.money)) return "请输入正确的金额";
           }
         }
       }

@@ -1,6 +1,7 @@
 .flex {
   display: flex;
-  display: -webkit-flex; }
+  display: -webkit-flex;
+}
 
 .bet-column {
   display: flex;
@@ -8,7 +9,8 @@
   flex-direction: column;
   justify-content: space-between;
   flex-direction: column;
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 .bet-column {
   display: flex;
@@ -16,135 +18,160 @@
   flex-direction: column;
   justify-content: space-between;
   flex-direction: column;
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 .space-column {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .items-column {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
-  align-items: center; }
+  align-items: center;
+}
 
 .flex-center {
   display: flex;
   display: -webkit-flex;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .items-bet {
   display: flex;
   display: -webkit-flex;
   align-items: center;
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 .items-center {
   display: flex;
   display: -webkit-flex;
-  align-items: center; }
+  align-items: center;
+}
 
 .items-start {
   display: flex;
   display: -webkit-flex;
-  align-items: flex-start; }
+  align-items: flex-start;
+}
 
 .items-end {
   display: flex;
   display: -webkit-flex;
-  align-items: flex-end; }
+  align-items: flex-end;
+}
 
 .justify-center {
   display: flex;
   display: -webkit-flex;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .justify-around {
   display: flex;
   display: -webkit-flex;
-  justify-content: space-around; }
+  justify-content: space-around;
+}
 
 .justify-bet {
   display: flex;
   display: -webkit-flex;
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 .justify-start {
   display: flex;
   display: -webkit-flex;
-  justify-content: flex-start; }
+  justify-content: flex-start;
+}
 
 .justify-end {
   display: flex;
   display: -webkit-flex;
-  justify-content: flex-end; }
+  justify-content: flex-end;
+}
 
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf");
+}
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF");
+}
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf");
+}
 /*@font-face {
   font-family: 'jingDianXingShu';
-  src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
+  src: url('/static/font/JDJXINSHU.otf');
 }
 
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url('http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF');
+  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
 }
 
 @font-face {
   font-family: 'jianyue';
-  src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
+  src: url('/static/font/BaiZhouRenZhe.otf');
 }*/
-@font-face {
-  font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf"); }
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
-@font-face {
-  font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf"); }
 .writingMode {
   writing-mode: vertical-rl;
-  writing-mode: tb-rl; }
+  writing-mode: tb-rl;
+}
 
 .line-clamp1 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1; }
+  -webkit-line-clamp: 1;
+}
 
 .line-clamp2 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; }
+  -webkit-line-clamp: 2;
+}
 
 .line-clamp3 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; }
+  -webkit-line-clamp: 3;
+}
 
 .scroll_bar {
-  overflow: auto; }
-  .scroll_bar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-button {
-    height: 10px;
-    background-color: #e4e7ed;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-track {
-    background: #e4e7ed; }
-  .scroll_bar::-webkit-scrollbar-thumb {
-    background: #999999;
-    border-radius: 4px; }
+  overflow: auto;
+}
+.scroll_bar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-button {
+  height: 10px;
+  background-color: #e4e7ed;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-track {
+  background: #e4e7ed;
+}
+.scroll_bar::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 4px;
+}
 
 .action-bar {
   width: 100%;
@@ -154,184 +181,233 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #f2f2f2; }
-  .action-bar div {
-    display: flex;
-    flex-direction: row;
-    align-items: center; }
-  .action-bar .check-count {
-    margin-left: 30px;
-    margin-right: 50px; }
-    .action-bar .check-count i {
-      font-style: normal;
-      color: #ff4545; }
-  .action-bar .action-bar-name {
-    display: inline-block;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around; }
-    .action-bar .action-bar-name span {
-      display: inline-block;
-      text-align: center;
-      border-left: 1px solid #9b9b9b;
-      font-size: 18px;
-      padding: 0 10px;
-      cursor: pointer; }
-    .action-bar .action-bar-name span:first-child {
-      border-left: 0; }
-  .action-bar .delete {
-    color: #ff4545; }
-  .action-bar .edit {
-    color: #0c66ff; }
-  .action-bar .check {
-    color: #0bb07b; }
+  border-top: 1px solid #f2f2f2;
+}
+.action-bar div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.action-bar .check-count {
+  margin-left: 30px;
+  margin-right: 50px;
+}
+.action-bar .check-count i {
+  font-style: normal;
+  color: #ff4545;
+}
+.action-bar .action-bar-name {
+  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.action-bar .action-bar-name span {
+  display: inline-block;
+  text-align: center;
+  border-left: 1px solid #9b9b9b;
+  font-size: 18px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.action-bar .action-bar-name span:first-child {
+  border-left: 0;
+}
+.action-bar .delete {
+  color: #ff4545;
+}
+.action-bar .edit {
+  color: #0c66ff;
+}
+.action-bar .check {
+  color: #0bb07b;
+}
 
 .colorE33 {
-  color: #cf2e33; }
+  color: #cf2e33;
+}
 
 .color874 {
-  color: #686874; }
+  color: #686874;
+}
 
 #theme_name #staffFiles .dialog_container .staffFiles {
   padding: 0 40px;
   display: flex;
-  display: -webkit-flex; }
-  #theme_name #staffFiles .dialog_container .staffFiles .filesTop {
-    display: flex;
-    display: -webkit-flex;
-    min-height: 45px;
-    text-align: right;
-    justify-content: flex-end;
-    position: relative;
-    top: 30px; }
-    #theme_name #staffFiles .dialog_container .staffFiles .filesTop h4.name {
-      font-weight: bold;
-      margin-bottom: 6px; }
-    #theme_name #staffFiles .dialog_container .staffFiles .filesTop p {
-      width: 50px;
-      height: 50px;
-      margin-left: 15px;
-      position: relative;
-      top: 10px; }
-      #theme_name #staffFiles .dialog_container .staffFiles .filesTop p img {
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%; }
-      #theme_name #staffFiles .dialog_container .staffFiles .filesTop p b, #theme_name #staffFiles .dialog_container .staffFiles .filesTop p i {
-        position: absolute;
-        top: -8px;
-        right: -10px;
-        width: 24px;
-        height: 24px; }
-  #theme_name #staffFiles .dialog_container .staffFiles .filesMain {
-    height: 100%; }
-    #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainLeft p {
-      width: 70px;
-      height: 70px;
-      padding: 13px 16px 16px;
-      cursor: pointer;
-      margin-bottom: 40px;
-      background-color: #cf2e33; }
-    #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainLeft .hover {
-      color: #ffffff; }
-    #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight {
-      width: 100%;
-      min-height: 460px;
-      padding: 40px;
-      margin-left: 30px;
-      position: relative;
-      background-color: #ffffff;
-      overflow: auto; }
-      #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight b {
-        position: absolute;
-        top: 30px;
-        right: 30px;
-        width: 30px;
-        height: 30px;
-        background-color: #cf2e33;
-        cursor: pointer; }
-      #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form {
-        width: 100%; }
-        #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form .info {
-          width: 100%;
-          padding: 0 20px;
-          flex-wrap: wrap; }
-          #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form .info .item_margin {
-            margin-top: 15px; }
-      #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow {
-        min-width: 590px;
-        width: 50%;
-        min-height: 150px;
-        position: relative;
-        background-color: #9CCC65;
-        display: inline-block; }
-        #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow i {
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          -webkit-border-radius: 50%;
-          -moz-border-radius: 50%;
-          border-radius: 50%;
-          background-color: #d8d8d8; }
-        #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div {
-          width: 100%;
-          display: flex;
-          display: -webkit-flex;
-          justify-content: center;
-          position: absolute; }
-          #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div span {
-            position: absolute;
-            left: 49%;
-            height: 100px;
-            border-left: 1px solid #d8d8d8; }
-            #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div span i {
-              position: absolute;
-              left: -4px;
-              background-color: #d8d8d8; }
-          #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div p {
-            white-space: nowrap;
-            cursor: pointer; }
-            #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div p i {
-              background-color: #cf2e33; }
-        #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .tops {
-          top: -120px; }
-          #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .tops span {
-            top: 30px; }
-            #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .tops span i {
-              top: 0; }
-        #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .bottoms {
-          bottom: -120px; }
-          #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .bottoms span {
-            top: -110px; }
-            #theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .bottoms span i {
-              bottom: 0; }
+  display: -webkit-flex;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesTop {
+  display: flex;
+  display: -webkit-flex;
+  min-height: 45px;
+  text-align: right;
+  justify-content: flex-end;
+  position: relative;
+  top: 30px;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesTop h4.name {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesTop p {
+  width: 50px;
+  height: 50px;
+  margin-left: 15px;
+  position: relative;
+  top: 10px;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesTop p img {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesTop p b, #theme_name #staffFiles .dialog_container .staffFiles .filesTop p i {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  width: 24px;
+  height: 24px;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain {
+  height: 100%;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainLeft p {
+  width: 70px;
+  height: 70px;
+  padding: 13px 16px 16px;
+  cursor: pointer;
+  margin-bottom: 40px;
+  background-color: #cf2e33;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainLeft .hover {
+  color: #ffffff;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight {
+  width: 100%;
+  min-height: 460px;
+  padding: 40px;
+  margin-left: 30px;
+  position: relative;
+  background-color: #ffffff;
+  overflow: auto;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight b {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 30px;
+  height: 30px;
+  background-color: #cf2e33;
+  cursor: pointer;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form {
+  width: 100%;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form .info {
+  width: 100%;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .el-form .info .item_margin {
+  margin-top: 15px;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow {
+  min-width: 590px;
+  width: 50%;
+  min-height: 150px;
+  position: relative;
+  background-color: #9CCC65;
+  display: inline-block;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  background-color: #d8d8d8;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div {
+  width: 100%;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  position: absolute;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div span {
+  position: absolute;
+  left: 49%;
+  height: 100px;
+  border-left: 1px solid #d8d8d8;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div span i {
+  position: absolute;
+  left: -4px;
+  background-color: #d8d8d8;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div p {
+  white-space: nowrap;
+  cursor: pointer;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow > div p i {
+  background-color: #cf2e33;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .tops {
+  top: -120px;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .tops span {
+  top: 30px;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .tops span i {
+  top: 0;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .bottoms {
+  bottom: -120px;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .bottoms span {
+  top: -110px;
+}
+#theme_name #staffFiles .dialog_container .staffFiles .filesMain .mainRight .grow .bottoms span i {
+  bottom: 0;
+}
 #theme_name #staffFiles .dialog_container .staff-line {
   width: 100%;
-  cursor: pointer; }
-  #theme_name #staffFiles .dialog_container .staff-line .left-line {
-    width: 10%;
-    text-align: center;
-    height: 100px; }
-    #theme_name #staffFiles .dialog_container .staff-line .left-line i {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      background-color: #999999;
-      border-radius: 50%; }
-    #theme_name #staffFiles .dialog_container .staff-line .left-line div {
-      width: 2px;
-      height: 100px;
-      background-color: #999999;
-      margin: 0 auto;
-      position: relative;
-      top: -5px;
-      z-index: -1; }
-  #theme_name #staffFiles .dialog_container .staff-line .right-content {
-    width: 90%;
-    text-align: left; }
-    #theme_name #staffFiles .dialog_container .staff-line .right-content > p:last-child {
-      margin-top: 10px; }
-  #theme_name #staffFiles .dialog_container .staff-line:hover .right-content {
-    color: #cf2e33; }
-  #theme_name #staffFiles .dialog_container .staff-line:hover .left-line i {
-    background-color: #cf2e33; }
+  cursor: pointer;
+}
+#theme_name #staffFiles .dialog_container .staff-line .left-line {
+  width: 10%;
+  text-align: center;
+  height: 100px;
+}
+#theme_name #staffFiles .dialog_container .staff-line .left-line i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #999999;
+  border-radius: 50%;
+}
+#theme_name #staffFiles .dialog_container .staff-line .left-line div {
+  width: 2px;
+  height: 100px;
+  background-color: #999999;
+  margin: 0 auto;
+  position: relative;
+  top: -5px;
+  z-index: -1;
+}
+#theme_name #staffFiles .dialog_container .staff-line .right-content {
+  width: 90%;
+  text-align: left;
+}
+#theme_name #staffFiles .dialog_container .staff-line .right-content > p:last-child {
+  margin-top: 10px;
+}
+#theme_name #staffFiles .dialog_container .staff-line:hover .right-content {
+  color: #cf2e33;
+}
+#theme_name #staffFiles .dialog_container .staff-line:hover .left-line i {
+  background-color: #cf2e33;
+}
+
+/*# sourceMappingURL=staffFiles.css.map */

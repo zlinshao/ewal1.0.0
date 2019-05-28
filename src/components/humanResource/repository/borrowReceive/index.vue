@@ -329,10 +329,19 @@
             </el-table-column>
 
             <el-table-column
+              width="160px"
               key="receive_time"
               align="center"
               prop="receive_time"
               label="领取日期">
+              <template slot-scope="scope">
+                <div :class="{editable:tableSettingData.goods.modifyAll}">
+                  <el-date-picker format="yyyy-MM-dd" :disabled="!tableSettingData.goods.modifyAll" style="width: 160px"
+                                  v-model="scope.row.receive_time" type="date"></el-date-picker>
+                </div>
+
+
+              </template>
             </el-table-column>
 
             <el-table-column
@@ -341,6 +350,12 @@
               align="center"
               prop="goods_number"
               label="物品编号">
+              <template slot-scope="scope">
+                <div :class="{editable:tableSettingData.goods.modifyAll}">
+                  <el-input :disabled="!tableSettingData.goods.modifyAll" clearable
+                            v-model="scope.row.goods_number"></el-input>
+                </div>
+              </template>
             </el-table-column>
 
             <el-table-column
@@ -856,13 +871,13 @@
                 name: item.goods?.name || '',//物品名称
                 status: item.status || 0,//领还状态
                 category_id: item.category_id || 0,//物品id
-                receive_time: utils.formatDate(item.receive_time=='0000-00-00'?'':item.receive_time) || '-',//领取日期
-                goods_number: item.goods_number || '-',//物品编号
+                receive_time: utils.formatDate(item.receive_time=='0000-00-00'?'':item.receive_time,'yyyy-MM-dd hh:mm:ss') || '',//领取日期
+                goods_number: item.goods_number || '',//物品编号
                 goods_status: item.goods_status || 0,//物品状态
                 picture: picture,//图片
                 repair_price: item.repair_price || 0,//维修费用
                 scrap_price: item.scrap_price || 0,//报废费用
-                username: item.user?.name || '-',//领取人name
+                username: item.user?.name || '',//领取人name
                 receive_user_id: [item.user_id],//领取人id
                 return_date: item.return_date,//归还日期
               };
@@ -937,14 +952,13 @@
           let postArr = this.tableSettingData.goods.tableData;//要修改的数据
           let params = {goods:[]};
           for (let item of postArr) {
-            //delete item['receive_time'];
-            delete item['goods_number'];
+            item.receive_time = this.myUtils.formatDate(item.receive_time,'yyyy-MM-dd hh:mm:ss');
+
             item['receive_user_id'] = item['receive_user_id'].constructor === Array ? item['receive_user_id'][0] : item['receive_user_id'];
-            item['return_date'] = utils.formatDate(item['return_date']);
-            //let params = {goods: [item]};
+            item['return_date'] = utils.formatDate(item['return_date'],'yyyy-MM-dd hh:mm:ss');
             params.goods.push(item);
           }
-          this.$http.put(`${this.url}/eam/process/${ids}`, params).then(res => {
+          this.$http.put(`${this.url}eam/process/${ids}`, params).then(res => {
             this.$LjMessageEasy(res, () => {
               control.showSaveCancel = false;
               control.modifyAll = false;
@@ -969,23 +983,19 @@
             return;
           }
           if (multiRows && multiRows.length > 0) {
+            let params = {goods:[]};
             for (let myItem of multiRows) {
-              delete myItem['receive_time'];
-              delete myItem['goods_number'];
+              delete myItem.return_date;
               myItem['receive_user_id'] = control.batchUser[0];
-              let params = {goods: [myItem]};
-              this.$http.put(`${this.url}eam/process/${ids}`, params).then(res => {
-                if (res.code.endsWith('0')) {
-                  this.$LjNotify('success', {
-                    title: '成功',
-                    message: '修改成功'
-                  });
-                  control.showSaveCancel = false;
-                  control.batchSetUser = false;
-                  control.is_show_selection = false;
-                }
-              });
+              params.goods.push(myItem);
             }
+            this.$http.put(`${this.url}eam/process/${ids}`, params).then(res => {
+              this.$LjMessageEasy(res,()=> {
+                control.showSaveCancel = false;
+                control.batchSetUser = false;
+                control.is_show_selection = false;
+              });
+            });
           }
         }
         if (control.batchSetReturnDate) {
@@ -1000,27 +1010,14 @@
           if (returnDateMultiRows && returnDateMultiRows.length>0) {
             let params = {goods:[]};
             for (let returnDateItem of returnDateMultiRows) {
-              //delete returnDateItem['receive_time'];
-              delete returnDateItem['goods_number'];
-              returnDateItem['return_date'] = utils.formatDate(control.batchReturnDate);
+              //returnDateItem['receive_time'];
+              returnDateItem['return_date'] = utils.formatDate(control.batchReturnDate,'yyyy-MM-dd hh:mm:ss');
               if(returnDateItem.receive_user_id.constructor==Array) {
                 returnDateItem.receive_user_id = returnDateItem.receive_user_id[0];
               }
-              //let params = {goods: [returnDateItem]};
               params.goods.push(returnDateItem);
             }
             this.$http.put(`${this.url}eam/process/${ids}`, params).then(res => {
-              /*if (res.code.endsWith('0')) {
-                this.$LjMessage('success', {
-                  title: '成功',
-                  msg: res.msg
-                });
-                control.showSaveCancel = false;
-                control.batchSetReturnDate = false;
-                control.is_show_selection = false;
-              }else {
-
-              }*/
               this.$LjMessageEasy(res,()=> {
                 control.showSaveCancel = false;
                 control.batchSetReturnDate = false;

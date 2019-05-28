@@ -4,7 +4,9 @@
     <div class="dialog_main space-column departPosition">
       <div class="items-bet mainTop">
         <div></div>
-        <el-button type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>
+<!--        <el-button type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>-->
+        <el-button v-show="VALIDATE_PERMISSION['User-Add']" v-if="tabsManage=='staff'" type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">新增员工</el-button>
+        <el-button v-show="VALIDATE_PERMISSION['Position-Save']" v-else type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">新建职位</el-button>
       </div>
       <div class="scroll_bar" v-if="tabsManage === 'staff'" @click="checkOverflow()">
         <div id="scroll-body" class="staffManage" v-if="staffList.length > 0">
@@ -20,7 +22,7 @@
               </div>
             </div>
             <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
-              <span v-for="label in operateList" @click="operateModule(label.type,item,'user')">
+              <span v-show="label.show" v-for="label in operateUserList" @click="operateModule(label.type,item,'user')">
                 {{ label.label = label.type === 'disabled' ? item.is_enable ? '启用' : '禁用' : label.label }}
               </span>
               <b v-if="!operatePos"></b>
@@ -36,9 +38,9 @@
             <p @click="operateModule('positionManagement',item)">
               <span class="writingMode">{{ item.name }}</span>
             </p>
-            <div class="ctl" v-show="is_active_ctl === item.id">
-              <span @click="handleEditPost(item)">编辑</span>
-              <span @click="handleDelPost(item)">删除</span>
+            <div class="ctl" style="margin-bottom: 30px;" v-show="is_active_ctl === item.id">
+              <span v-show="VALIDATE_PERMISSION['Position-Update']" @click="handleEditPost(item)">编辑</span>
+              <span v-show="VALIDATE_PERMISSION['Position-Delete']" @click="handleDelPost(item)">删除</span>
             </div>
           </div>
         </div>
@@ -69,8 +71,8 @@
                     <el-form-item label="性别">
                       <div class="changeChoose" style="margin-top: 8px">
                         <el-radio-group v-model="interview_info_detail.gender">
-                          <el-radio :label="0">男</el-radio>
-                          <el-radio :label="1">女</el-radio>
+                          <el-radio :label="1">男</el-radio>
+                          <el-radio :label="0">女</el-radio>
                         </el-radio-group>
                       </div>
                     </el-form-item>
@@ -131,7 +133,10 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="职级">
-                      <el-select v-model="interview_info_detail.position_level">
+
+                      <dropdown-list :json-arr="DROPDOWN_CONSTANT.POSITION_LEVEL" width="260" v-model="interview_info_detail.position_level" title="请选择"></dropdown-list>
+
+                      <!--<el-select v-model="interview_info_detail.position_level">
                         <el-option :value="1" label="P1"></el-option>
                         <el-option :value="2" label="P2"></el-option>
                         <el-option :value="3" label="P3"></el-option>
@@ -139,7 +144,7 @@
                         <el-option :value="5" label="P5"></el-option>
                         <el-option :value="6" label="P6"></el-option>
                         <el-option :value="7" label="P7"></el-option>
-                      </el-select>
+                      </el-select>-->
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -231,12 +236,15 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="学历">
-                      <el-select v-model="interview_info_detail.education" placeholder="请输入">
+
+                      <dropdown-list :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND" width="253" v-model="interview_info_detail.education" title="请选择"></dropdown-list>
+
+                      <!--<el-select v-model="interview_info_detail.education" placeholder="请输入">
                         <el-option :value="0" label="高中及以上"></el-option>
                         <el-option :value="1" label="大专及以上"></el-option>
                         <el-option :value="2" label="本科及以上"></el-option>
                         <el-option :value="3" label="不限"></el-option>
-                      </el-select>
+                      </el-select>-->
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -271,12 +279,13 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="学历">
-                        <el-select v-model="item.education" placeholder="请选择">
+                        <dropdown-list v-model="item.eduction" title="请选择" width="253" :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND"></dropdown-list>
+                        <!--<el-select v-model="item.education" placeholder="请选择">
                           <el-option :value="1" label="高中及以上"></el-option>
                           <el-option :value="2" label="大专及以上"></el-option>
                           <el-option :value="3" label="本科及以上"></el-option>
                           <el-option :value="4" label="不限"></el-option>
-                        </el-select>
+                        </el-select>-->
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -421,14 +430,14 @@
           <div v-if="module_list.length > 0">
             <div class="flex powerMain scroll_bar changeChoose" v-for="item in module_list" v-if="item.id === powerChildName">
               <div v-if="power_list">
-                <el-checkbox v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
+                <el-checkbox :disabled="!VALIDATE_PERMISSION['Permission-Update']" v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
               </div>
               <div v-else>暂无权限</div>
               <div v-for="(item,key) in power_list">
-                <el-checkbox-group v-model="checkList" @change="handleCheck">
+                <el-checkbox-group :disabled="!VALIDATE_PERMISSION['Permission-Update']" v-model="checkList" @change="handleCheck">
                   <el-row v-for="(tmp,idx) in power_list[key]" :key="idx">
                     <el-col :span="6">
-                      <el-button type="text" size="large" @click="handleSearchField(tmp)" icon="el-icon-view" style="color: #CF2E33;font-size: 18px"></el-button>
+                      <el-button type="text" size="large" @click="handleSearchField(tmp)" style="color: #CF2E33;font-size: 18px"></el-button>
                     </el-col>
                     <el-col :span="18">
                       <el-checkbox :label="tmp.id" :key="tmp.id" style="margin-top: 13px">
@@ -476,7 +485,7 @@
             <div class="items-bet">
               <span class="hover">岗位</span>
             </div>
-            <h2 class="add" @click="operateModule('post')">
+            <h2 v-show="VALIDATE_PERMISSION['Duty-Save']" class="add" @click="operateModule('post')">
               <b>+</b>
             </h2>
           </div>
@@ -501,13 +510,15 @@
                   <el-table-column label="部门" prop="duty.org.name" align="center"></el-table-column>
                   <el-table-column label="权限" align="center">
                     <template slot-scope="scope">
-                      <el-button type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
+                      <el-button v-show="VALIDATE_PERMISSION['Permission-Index']" type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
                     </template>
                   </el-table-column>
-                  <el-table-column label="操作" align="center">
+                  <el-table-column label="操作" align="center" width="180">
                     <template slot-scope="scope">
-                      <el-button id="active-success" type="danger" size="mini" @click="handleEditPosition(scope.row)">编辑</el-button>
-                      <el-button id="active-danger" type="danger" size="mini" @click="handleDelPosition(scope.row)">删除</el-button>
+                      <div class="flex-center">
+                        <el-button v-show="VALIDATE_PERMISSION['Duty-Update']"  id="active-success" type="danger" size="mini" @click="handleEditPosition(scope.row)">编辑</el-button>
+                        <el-button v-show="VALIDATE_PERMISSION['Duty-Delete']" id="active-danger" type="danger" size="mini" @click="handleDelPosition(scope.row)">删除</el-button>
+                      </div>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -613,11 +624,11 @@
           <h3>离职</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
-          <el-form :model="outForm" ref="postForm" label-width="120px" class="depart_visible">
-            <el-form-item label="离职日期" required>
+          <el-form :model="outForm" ref="leaveForm" :rules="rules"  label-width="120px" class="depart_visible">
+            <el-form-item label="离职日期" prop="dismiss_time" required>
               <el-date-picker type="date" value-format="yyyy-MM-dd"  v-model="outForm.dismiss_time"></el-date-picker>
             </el-form-item>
-            <el-form-item label="离职原因" required>
+            <el-form-item label="离职原因" prop="dismiss_reason.dismiss_type" required>
               <el-select v-model="outForm.dismiss_reason.dismiss_type">
                 <el-option :value="1" label="主动离职"></el-option>
                 <el-option :value="2" label="旷工离职"></el-option>
@@ -771,6 +782,14 @@
     components: {ljDialog,PositionOrgan,StaffOrgan,DepartOrgan},
     data() {
       return {
+        rules: {
+          dismiss_time: [
+              {required:true,message:'请选择离职日期',trigger:['change','blur']}
+          ],
+          'dismiss_reason.dismiss_type': [
+              {required:true,message:'请选择离职原因',trigger:'change'}
+          ],
+        },
         staff_visible: false,
         departOrgan_visible: false,
 
@@ -812,7 +831,7 @@
         add_newStaff_visible: false,
         activeName: 'first',
         interview_info_detail: {
-          graduation_time: '',
+          //graduation_time: '',
           name: '',
           gender: '',
           phone: '',
@@ -878,11 +897,18 @@
           page: 1,
           limit: 999,
           org_id: '',
-          position_id: ''
+          position_id: '',
+          is_on_job:0
         },
         staffList: [],
         dutyList: [],
-
+        dutyParams: {
+            search: '',
+            page: 1,
+            limit: 999,
+            org_id: '',
+            position_id: ''
+        },
         addStaffVisible: '',
         positionForm: {
           name: '',
@@ -902,15 +928,38 @@
           {
             type: 'power',
             label: '权限',
+            show:true,
           }, {
             type: 'disabled',
             label: '禁用',
+            show:true,
           }, {
             type: 'revise',
             label: '修改',
+            show:this.VALIDATE_PERMISSION['Organization-Index'],
           }, {
             type: 'leave',
             label: '离职',
+            show:true,
+          }
+        ],//人员编辑项
+        operateUserList: [
+          {
+            type: 'power',
+            label: '权限',
+            show:true,
+          }, {
+            type: 'disabled',
+            label: '禁用',
+            show:this.VALIDATE_PERMISSION['User-Enable'],
+          }, {
+            type: 'revise',
+            label: '修改',
+            show:this.VALIDATE_PERMISSION['Organization-Index'],
+          }, {
+            type: 'leave',
+            label: '离职',
+            show:true,
           }
         ],//人员编辑项
         // 权限管理
@@ -1043,6 +1092,7 @@
           this.interview_info_detail.org_id = [];
           this.interview_info_detail.org_id.push(val.id);
           this.staffParams.org_id = val.id;
+          this.dutyParams.org_id = val.id;
           this.getStaffList();
           // this.getDutyList();
         },
@@ -1134,7 +1184,7 @@
         this.edit_post_visible = true;
       },
       handleConfirmDelPost() {
-        this.$http.delete(`organization/position/${this.del_post.id}`).then(res => {
+        this.$http.delete(`organization/duty/${this.del_post.id}`).then(res => {
           if (res.code === '20040') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1412,24 +1462,29 @@
         this.leaveVisible = false;
       },
       handleSubmitOut() {
-        this.$http.put(`staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
-          if (res.code === '20030') {
-            this.$LjNotify('success',{
-              title: '成功',
-              message: res.msg
-            });
-            this.handleCancelOut();
-            this.getStaffList();
-            if (this.checkLists.length > 0) {
-              this.confirm_send_visible = true;
-            }
-          } else {
-            this.$LjNotify('warning',{
-              title: '失败',
-              message: res.msg
+        this.$refs['leaveForm'].validate(valid=>{
+          if (valid){
+            this.$http.put(`staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
+              if (res.code === '20030') {
+                this.$LjNotify('success',{
+                  title: '成功',
+                  message: res.msg
+                });
+                this.handleCancelOut();
+                this.getStaffList();
+                if (this.checkLists.length > 0) {
+                  this.confirm_send_visible = true;
+                }
+              } else {
+                this.$LjNotify('warning',{
+                  title: '失败',
+                  message: res.msg
+                })
+              }
             })
           }
-        })
+        });
+
       },
       handleOkDisable() {
         this.$http.put(`staff/user/${this.currentStaff.id}`,{
@@ -1587,7 +1642,7 @@
       },
       //获取职位列表
       getDutyList() {
-        this.$http.get('organization/duty',this.staffParams).then(res => {
+        this.$http.get('organization/duty',this.dutyParams).then(res => {
           if (res.code === '20000') {
             this.dutyList = res.data.data;
           } else {
@@ -1596,7 +1651,9 @@
         })
       },
       //获取员工列表
-      getStaffList() {
+      async getStaffList() {
+        //if(! await this.validatePermission('User-Index')) {return};
+        if(! this.VALIDATE_PERMISSION['User-Index']) {return};
         this.$http.get('staff/user',this.staffParams).then(res => {
           if (res.code === '20000') {
             this.staffList = res.data.data;
@@ -1631,6 +1688,7 @@
           } else {
             this.positionList = [];
           }
+          this.positionStaffList=[];
           this.positionVisible = true;
         })
       },
@@ -1763,9 +1821,9 @@
       // 当前点击
       tableClickRow(row) {
         this.positionStaffList = row.users;
-        let ids = this.chooseRowIds;
-        ids.push(row.id);
-        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+        // let ids = this.chooseRowIds;
+        // ids.push(row.id);
+        // this.chooseRowIds = this.myUtils.arrayWeight(ids);
       },
       // 点击过
       tableChooseRow({row, rowIndex}) {

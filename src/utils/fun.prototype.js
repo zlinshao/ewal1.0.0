@@ -1,5 +1,23 @@
+import UserChoose from '../components/common/lightweightComponents/UserChoose';
+import OrgChoose from '../components/common/lightweightComponents/OrgChoose';
+import PostChoose from '../components/common/lightweightComponents/PostChoose';
+import LjDialog from '../components/common/lj-dialog';
+import LjUpload from '../components/common/lightweightComponents/lj-upload';
+import DropdownList from '../components/common/lightweightComponents/dropdown-list';
+import {DROPDOWN_CONSTANT,GLOBAL_CONSTANT} from '@/assets/js/allConstantData';
 export default {
   install(Vue, options) {
+    /*全局组件及全局常量注册*/
+    Vue.component(UserChoose.name, UserChoose);//选人
+    Vue.component(OrgChoose.name, OrgChoose);//选部门
+    Vue.component(PostChoose.name, PostChoose);//选岗位
+    Vue.component(LjDialog.name, LjDialog);//对话框
+    Vue.component(LjUpload.name, LjUpload);//对话框
+    Vue.component(DropdownList.name, DropdownList);//下拉组件
+    Vue.prototype.DROPDOWN_CONSTANT = DROPDOWN_CONSTANT;
+    Vue.prototype.GLOBAL_CONSTANT = GLOBAL_CONSTANT;
+
+
     // 路由跳转
     Vue.prototype.routerLink = function (url, data,url_name) {
       if (data) {
@@ -89,10 +107,10 @@ export default {
 
     //统一管理接口处理结果
     Vue.prototype.$LjNotifyEasy = function(res,callback) {
-      if (res.code.endsWith('0')) {
+      if (res.code.toString().endsWith('0')) {
         this.$LjNotify('success', {
           title: '成功',
-          message: res.msg,
+          message: res.msg||res.message,
         });
         if(callback) {
           callback();
@@ -100,7 +118,7 @@ export default {
       } else {
         this.$LjNotify('error', {
           title: '失败',
-          message: res.msg,
+          message: res.msg||res.message,
         });
       }
     }
@@ -109,7 +127,7 @@ export default {
       if (res.code.toString().endsWith('0')) {
         this.$LjMessage('success', {
           title: '成功',
-          msg: res.msg,
+          msg: res.msg||res.message,
         });
         if(callback) {
           callback();
@@ -117,10 +135,19 @@ export default {
       } else {
         this.$LjMessage('error', {
           title: '失败',
-          msg: res.msg,
+          msg: res.msg||res.message,
         });
       }
     }
+
+    /*截取字符串方法*/
+    Vue.prototype.substringPlugin = function(content,limit = 10) {
+      if(content.constructor !== String) return;
+      if(content.length<=limit) {
+        return content;
+      }
+      return `${content.substring(0,limit)}...`;
+    },
 
     Vue.prototype.$resetForm = function (form) {
       //重置表单
@@ -148,6 +175,34 @@ export default {
       link.setAttribute('download', 'excel.xls');
       document.body.appendChild(link);
       link.click();
+    };
+
+    /*验证权限*/
+    /*Vue.prototype.validatePermission =async function(sign,type = 'auth') {
+      let params = {
+        type,
+        sign,
+        user_id:'289',
+      };
+      let result = await this.$http.get(`${globalConfig.humanResource_server}organization/permission/check`,params);
+      if(result.code.endsWith('0')) {
+        return result.data;
+      }
+      return false;
+    }*/
+    /*全局权限变量*/
+    Vue.prototype.VALIDATE_PERMISSION = {};
+
+    Vue.prototype.validatePermission = function(validName) {
+      if(!this.VALIDATE_PERMISSION[validName]) {
+        this.$LjMessageNoPermission();
+        return false;
+      }
+      return true;
+    }
+
+    Vue.prototype.$LjMessageNoPermission = function(msg='无权限') {
+      this.$LjMessage('warning',{title:'警告',msg:msg});
     };
   }
 }

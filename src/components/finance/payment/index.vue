@@ -62,13 +62,28 @@
           v-for="item in Object.keys(paymentLabels)"
           :label="paymentLabels[item]" :key="item"
           :prop="item"
-          align="center"
+          :width="(item=='description.description'||item=='remark')?180:null"
+          :align="(item=='description.description'||item=='remark')?'left':'center'"
         >
+        </el-table-column>
+        <el-table-column
+          key="remarks"
+          show-overflow-tooltip
+          align="center"
+          prop="remarks"
+          label="备注"
+        >
+          <template slot-scope="scope">
+            <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
+          </template>
         </el-table-column>
 
         <el-table-column label="状态" prop="" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.status === 1?'待入账':scope.row.status === 2?'待结清':scope.row.status === 3?'已结清':scope.row.status===4?'已超额':''}}</span>
+            <span v-if="scope.row.status === 1" style="color: #FFAB40">待入账</span>
+            <span v-if="scope.row.status === 2" style="color: #FF7131">待结算</span>
+            <span v-if="scope.row.status === 3" style="color: #0C66FE">已结清</span>
+            <span v-if="scope.row.status === 4" style="color: #CF2E33">已超额</span>
           </template>
         </el-table-column>
 
@@ -248,6 +263,84 @@
         </div>
       </div>
     </lj-dialog>
+
+
+
+
+    <!--应收款项备注列表dialog-->
+    <lj-dialog :visible.sync="remarks_dialog_visible"
+               :size="'small'"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header flex">
+          <h3>备注</h3>
+          <span class="add_mark" @click="new_remark_dialog_visible = true;new_mark={}">+</span>
+        </div>
+        <div class="dialog_main">
+          <div class="address">{{tableSettingData.remarks.current_address}}</div>
+          <div class="record">
+            <el-table
+              :data="tableSettingData.remarks.tableData"
+            >
+              <el-table-column label="备注时间" prop="create_time" align="center"></el-table-column>
+              <el-table-column label="备注内容" show-overflow-tooltip prop="content" align="center"
+                               width="200"></el-table-column>
+              <el-table-column label="备注人" prop="staff_name" align="center"></el-table-column>
+            </el-table>
+          </div>
+        </div>
+        <!--<div class="dialog_footer">
+          <div class="page">
+            <el-pagination
+              :total="tableSettingData.remarks.count"
+              layout="total,jumper,prev,pager,next"
+              :current-page="tableSettingData.remarks.params.page"
+              :page-size="tableSettingData.remarks.params.limit"
+              @current-change="handleChangePage_markData"
+            ></el-pagination>
+          </div>
+        </div>-->
+      </div>
+    </lj-dialog>
+
+
+    <!--新增备注-->
+    <lj-dialog
+      :visible.sync="new_remark_dialog_visible"
+      :size="{width: 600 + 'px' ,height: 420 + 'px'}">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增备注</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <div class="address" style="margin-bottom: 40px">{{tableSettingData.remarks.current_address}}</div>
+          <el-form :mode="new_mark" label-width="80px">
+            <el-form-item label="备注内容">
+              <el-input type="textarea" v-model="new_mark.content" :rows="4"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="addNewRemark">确定</el-button>
+          <el-button size="small" @click="new_remark_dialog_visible=false;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!--新增应付款项-->
     <lj-dialog :visible="add_visible" :size="{width: 600 + 'px',height: 700 + 'px'}" @close="add_visible = false">
       <div class="dialog_container">
@@ -467,6 +560,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import SearchHigh from '../../common/searchHigh.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue';
@@ -481,6 +575,10 @@
     components: {SearchHigh, LjDialog, FinMenuList, LjSubject, CustomerLists, Customer,Upload},
     data() {
       return {
+
+        url: globalConfig.temporary_server,
+
+
         is_table_choose: '',
 
         payableSum: '',
@@ -549,6 +647,27 @@
         show_subject: false,//科目
         customer_visible: false,//客户列表
         is_disabled: true,
+
+
+
+        remarks_dialog_visible: false,//应付款项备注列表dialog
+        new_remark_dialog_visible: false,//新增备注
+        new_mark: {
+          content: '',
+          //category: 1,
+        },
+        multi_field_form: {
+          id: '',//电子收据id
+          assembly_id: '',//流水id
+        },
+        tableSettingData: {
+          remarks: {//付款列表备注
+            params: {},
+            count: 0,
+            tableData: [],
+            current_address: '',
+          },
+        },
 
         running_account_record: [],//回滚数据
         ra_ids: [],
@@ -900,12 +1019,14 @@
 
       handleOkSubject(row, val) { //修改科目
         this.$http.put(globalConfig.temporary_server + "account_payable/subject/" + row.id, {subject_id: val}).then(res => {
-          this.callbackSuccess(res);
+          /*this.callbackSuccess(res);
           this.show_subject = false;
-          this.current_row = '';
-        }).catch(err => {
-          console.log(err);
-        })
+          this.current_row = '';*/
+          this.$LjMessageEasy(res,()=> {
+            this.show_subject = false;
+            this.current_row = '';
+          });
+        });
       },
 
       handleOkCompleteData(row, val) {//修改补齐时间
@@ -1050,14 +1171,43 @@
       },
       getPaymentList() {//加载应付款项列表
         this.showLoading(true);
-        this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(res => {
+        this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(async res => {
+          this.showLoading(false);
           if (res.code === 200) {
-            this.showLoading(false);
-            this.tableLists = res.data.data.sort(
+            res.data.data = res.data.data.sort(
               function (a, b) {
                 return a.id - b.id
               }
             );
+
+            let resultData = res.data.data;
+            let fund_id = _.map(resultData, 'id');
+            let params = {
+              fund_id,
+              fund_type: 'payable'
+            };
+            let tags = await this.$http.post(`${this.url}account_should_tag/tags`, params);
+            let tagsResult = [];
+            if (tags.code == 200) {
+              tagsResult = tags.data.data;
+
+            }else {
+              _.forEach(resultData,(o)=> {
+                o.remarks = '暂无备注';
+              });
+            }
+            _.forEach(tagsResult, (o) => {
+              let id = Number(o.id);
+              if(o.data.count==0) {
+                _.find(resultData,{id:id}).remarks = '暂无备注';
+              }else {
+                _.find(resultData,{id:id}).remarks = _.map(o.data.data,'content').join(',');
+              }
+            });
+
+
+
+            this.tableLists = resultData;
             this.count = res.data.count;
             this.payableSum = res.data.payableSum;
             this.paidSum = res.data.paidSum;
@@ -1073,6 +1223,56 @@
           console.log(err);
         })
       },
+
+
+      //打开应付款项备注列表
+      openRemarksList(row) {
+        this.multi_field_form.assembly_id = row.id;
+        this.tableSettingData.remarks.current_address = row.customer.address;
+        this.getRemarkList();
+        this.remarks_dialog_visible = true;
+      },
+
+      //添加新的备注
+      addNewRemark(row) {
+        let id = this.multi_field_form.assembly_id;//应付款项id
+        let params = {
+          content: this.new_mark.content,
+        };
+        this.$http.post(`${this.url}account_payable/tag/${id}`, params).then(res => {
+          this.$LjMessageEasy(res, () => {
+            this.getRemarkList();
+            this.getPaymentList();
+          });
+        });
+      },
+
+      //获取应付款项备注列表
+      getRemarkList() {
+        this.tableSettingData.remarks.tableData = [];
+        let id = this.multi_field_form.assembly_id;//应收款项id
+        let fund_id = [id];
+        let params = {
+          fund_id,
+          fund_type: 'payable',
+        };
+        this.new_remark_dialog_visible = false;
+        this.$http.post(`${this.url}account_should_tag/tags`, params).then(res => {
+          if(res.code==200) {
+            let list = res.data.data[0]?.data?.data||[];
+            for (let item of list) {
+              let obj = {
+                id:item.id,
+                create_time: item.create_time,
+                content:item.content,
+                staff_name:item.operator.name,
+              };
+              this.tableSettingData.remarks.tableData.push(obj);
+            }
+          }
+        });
+      },
+
       highSearch() {// 高级搜索
         this.showSearch = true;
         this.searchData = this.paySearchList;

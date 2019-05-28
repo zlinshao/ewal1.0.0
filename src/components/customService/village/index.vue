@@ -21,7 +21,7 @@
           <el-button size="small" style="width: 80px" type="success" plain @click="handleAllotVillage">分配</el-button>
           <el-button size="small" style="width: 80px" type="primary" plain @click="handleMergeVillage">合并</el-button>
           <div class="sort-control flex-center">
-            <span @click="handleChangeSort(tmp)" v-for="tmp in sort_list" :key="tmp.id + 1" :class="{'current-choose': current_sort === tmp.id }">{{ tmp.val }}</span>
+            <span @click="handleChangeSort(item)" v-for="item in sort_list" :key="item.id + 1" :class="{'current-choose': current_sort === item.id }">{{ item.val }}</span>
           </div>
           <div class="icons all-choose" @click="handleChooseAll"></div>
           <div class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
@@ -121,6 +121,7 @@
         </div>
         <div class="filter-footer flex-center">
           <el-button type="danger" size="small" @click="handleConfirmFilter">确定</el-button>
+          <el-button type="info" size="small" @click="clearFilter">重置</el-button>
           <el-button type="info" size="small" @click="show_filter_search = false">取消</el-button>
         </div>
       </div>
@@ -456,8 +457,11 @@
         files: [],
       }
     },
-    mounted() {
+    async mounted() {
       this.getVillageList();
+      await this.getCityList();
+      this.address_filter[0].val =this.city_list[0].name;//初始化加载选择南京
+
     },
     watch: {},
     computed: {},
@@ -668,6 +672,35 @@
         this.user_type = '';
         this.depart_visible = false;
       },
+
+      clearFilter() {
+        this.village_params= {
+          province: '',
+            city: [],
+            area: '',
+            region: '',
+            is_share: '',
+            allocation: '',
+            address: '',
+            py_all: '',
+            org_id: [],
+            name: '',
+            py_first: '',
+            house_type: '',
+            rental_ratio_order: '',
+            page: 1,
+            limit: 20
+        };
+        this.address_filter = [
+          {key: 'city', val: '选城市'},
+          {key: 'area', val: '选区域'},
+          {key: 'type', val: '选类型'},
+          {key: 'depart', val: '选部门'}
+        ];
+        this.getVillageList();
+        this.show_filter_search = false;
+      },
+
       //确定筛选
       handleConfirmFilter() {
         this.getVillageList();
@@ -681,7 +714,7 @@
               this.current_choose = '';
               this.village_params.city = [];
               this.village_params.province = '';
-              this.address_filter[0].val = '选城市';
+              this.getCityListal = '选城市';
               return false;
             }
             //清空area
@@ -771,8 +804,8 @@
         }
       },
       //城市列表
-      getCityList() {
-        this.$http.get(this.http_server + 'v1.0/city/address/city-list').then(res => {
+      async getCityList() {
+        await this.$http.get(this.http_server + 'v1.0/city/address/city-list').then(res => {
           if (res.code === 200) {
             this.city_list = res.data;
           } else {
@@ -874,7 +907,7 @@
             message: '请筛选小区到区域级别'
           });
           return false;
-        }
+      }
       },
       //获取小区列表
       getVillageList() {

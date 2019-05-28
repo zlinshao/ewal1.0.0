@@ -1,46 +1,555 @@
-/*
-Error: Invalid GBK character "\xE7"
-        on line 26 of TestPaper.scss
+.flex {
+  display: flex;
+  display: -webkit-flex;
+}
 
-21:     transition: all ease 1s;
-22: 
-23:     &.active {
-24:       top: 80px;
-25:     }
-26:     .edit-paper {//编辑试卷
-27:       width: 100%;
-28:       height: 100%;
-29: 
-30:       .library-header {
-31:         height: 10%;
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-Backtrace:
-TestPaper.scss:26
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1043:in `rescue in block in find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1040:in `block in find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each_with_index'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:773:in `rescue in check_sass_encoding'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:769:in `check_sass_encoding'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:444:in `check_encoding!'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:400:in `_to_tree'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:307:in `render_with_sourcemap'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `each'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin.rb:82:in `update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:340:in `watch_or_update'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:51:in `process_result'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:52:in `parse'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:19:in `parse!'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/bin/scss:13:in `<top (required)>'
-C:/App/Ruby24-x64/bin/scss:23:in `load'
-C:/App/Ruby24-x64/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE7\"\A         on line 26 of TestPaper.scss\A \A 21:     transition: all ease 1s;\A 22: \A 23:     &.active {\A 24:       top: 80px;\A 25:     }\A 26:     .edit-paper {//编辑试卷\A 27:       width: 100%;\A 28:       height: 100%;\A 29: \A 30:       .library-header {\A 31:         height: 10%;"; }
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+}
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start;
+}
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end;
+}
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+}
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around;
+}
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+}
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start;
+}
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end;
+}
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf");
+}
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF");
+}
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf");
+}
+/*@font-face {
+  font-family: 'jingDianXingShu';
+  src: url('/static/font/JDJXINSHU.otf');
+}
+
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
+}
+
+@font-face {
+  font-family: 'jianyue';
+  src: url('/static/font/BaiZhouRenZhe.otf');
+}*/
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl;
+}
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.scroll_bar {
+  overflow: auto;
+}
+.scroll_bar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-button {
+  height: 10px;
+  background-color: #e4e7ed;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-track {
+  background: #e4e7ed;
+}
+.scroll_bar::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 4px;
+}
+
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2;
+}
+.action-bar div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.action-bar .check-count {
+  margin-left: 30px;
+  margin-right: 50px;
+}
+.action-bar .check-count i {
+  font-style: normal;
+  color: #ff4545;
+}
+.action-bar .action-bar-name {
+  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.action-bar .action-bar-name span {
+  display: inline-block;
+  text-align: center;
+  border-left: 1px solid #9b9b9b;
+  font-size: 18px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.action-bar .action-bar-name span:first-child {
+  border-left: 0;
+}
+.action-bar .delete {
+  color: #ff4545;
+}
+.action-bar .edit {
+  color: #0c66ff;
+}
+.action-bar .check {
+  color: #0bb07b;
+}
+
+.colorE33 {
+  color: #cf2e33;
+}
+
+.color874 {
+  color: #686874;
+}
+
+#theme_name .icon-edit {
+  width: 26px;
+  height: 26px;
+  display: inline-block;
+  cursor: pointer;
+}
+#theme_name #test_paper {
+  width: 100%;
+  height: calc(100% - 80px);
+  background-color: #f9f9f9;
+  position: fixed;
+  top: -100%;
+  transition: all ease 1s;
+}
+#theme_name #test_paper.active {
+  top: 80px;
+}
+#theme_name #test_paper .edit-paper {
+  width: 100%;
+  height: 100%;
+}
+#theme_name #test_paper .edit-paper .library-header {
+  height: 10%;
+  border-bottom: 1px solid #c0c0c0;
+}
+#theme_name #test_paper .edit-paper .library-header > div {
+  width: 50%;
+  text-align: center;
+}
+#theme_name #test_paper .edit-paper .library-header .left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10%;
+}
+#theme_name #test_paper .edit-paper .library-header .left > h3 {
+  font-weight: 500;
+}
+#theme_name #test_paper .edit-paper .library-header .left .left-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+#theme_name #test_paper .edit-paper .library-header .left .left-content > span {
+  margin-left: 30px;
+}
+#theme_name #test_paper .edit-paper .library-main {
+  padding: 0 200px;
+  height: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+#theme_name #test_paper .edit-paper .library-main .control {
+  padding: 15px 0;
+  text-align: right;
+  flex-direction: row-reverse;
+}
+#theme_name #test_paper .edit-paper .library-main .exam-type {
+  padding: 30px 30px 0 30px;
+}
+#theme_name #test_paper .edit-paper .library-main .paper-main {
+  height: 80%;
+  padding: 30px;
+}
+#theme_name #test_paper .edit-paper .library-main .paper-main .del_btn {
+  margin-left: 15px;
+  color: #cf2e33;
+}
+#theme_name #test_paper .edit-paper .library-main .paper-main .form_item_border {
+  padding: 20px 0;
+  border-bottom: 1px solid #c0c0c0;
+}
+#theme_name #test_paper .edit-paper .library-main .paper-main .hide_label {
+  opacity: 0;
+}
+#theme_name #test_paper .edit-paper .library-main .exam-type .left-tip, #theme_name #test_paper .edit-paper .library-main .paper-main .left-tip {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+#theme_name #test_paper .edit-paper .library-main .library-footer {
+  width: 100%;
+  height: 80px;
+}
+#theme_name #test_paper .edit-paper .library-main .library-footer > div {
+  display: flex;
+  justify-content: flex-end;
+}
+#theme_name #test_paper .edit-paper .library-main .library-footer > div > button {
+  margin-right: 30px;
+}
+#theme_name #test_paper .preview-paper {
+  width: 100%;
+  height: 100%;
+}
+#theme_name #test_paper .preview-paper .library-header {
+  height: 10%;
+  border-bottom: 1px solid #c0c0c0;
+}
+#theme_name #test_paper .preview-paper .library-header > div {
+  width: 50%;
+  text-align: center;
+}
+#theme_name #test_paper .preview-paper .library-header .left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10%;
+}
+#theme_name #test_paper .preview-paper .library-header .left > h3 {
+  font-weight: 500;
+}
+#theme_name #test_paper .preview-paper .library-header .left > div > span {
+  margin-left: 30px;
+}
+#theme_name #test_paper .preview-paper .library-header .right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10%;
+}
+#theme_name #test_paper .preview-paper .library-main {
+  padding: 0 200px;
+  height: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+#theme_name #test_paper .preview-paper .library-main .control {
+  padding: 15px 0;
+  text-align: right;
+  flex-direction: row-reverse;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list {
+  flex: 1;
+  color: #686874;
+  width: 100%;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-single {
+  width: 100%;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-single .single-title {
+  font-size: 16px;
+  font-family: PingFangSC-Regular !important;
+  padding: 0 0 5px 0;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-single .single-container {
+  padding: 5px 10px;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-single .single-container .exam-single-item .single-item-choice {
+  word-break: break-all;
+  word-wrap: break-word;
+  padding: 10px 15px;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-judge {
+  width: 100%;
+  padding-top: 30px;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-judge .judge-title {
+  font-size: 16px;
+  font-family: PingFangSC-Regular !important;
+  padding: 0 0 5px 0;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-judge .judge-container {
+  padding: 5px 10px;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-judge .judge-container .exam-judge-item {
+  display: flex;
+  align-items: center;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-judge .judge-container .exam-judge-item .judge-item-choice {
+  padding: 10px 15px;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-short {
+  width: 100%;
+  padding-top: 30px;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-short .short-title {
+  font-size: 16px;
+  font-family: PingFangSC-Regular !important;
+  padding: 0 0 5px 0;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-short .short-container {
+  padding: 5px 10px;
+}
+#theme_name #test_paper .preview-paper .library-main .exam-list .exam-short .short-container .exam-short-item .short-item-choice {
+  padding: 10px 15px;
+}
+#theme_name #test_paper .preview-paper .library-main .library-footer {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+#theme_name #test_paper .preview-paper .library-main .library-footer > div {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+#theme_name #test_paper .preview-paper .library-main .library-footer > div > button {
+  margin-right: 30px;
+}
+#theme_name #test_paper .statistical-paper {
+  width: 100%;
+  height: 100%;
+}
+#theme_name #test_paper .statistical-paper .library-header {
+  height: 10%;
+  border-bottom: 1px solid #c0c0c0;
+}
+#theme_name #test_paper .statistical-paper .library-header > div {
+  width: 50%;
+  text-align: center;
+}
+#theme_name #test_paper .statistical-paper .library-header .left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10%;
+}
+#theme_name #test_paper .statistical-paper .library-header .left > h3 {
+  font-weight: 500;
+}
+#theme_name #test_paper .statistical-paper .library-header .left > div > span {
+  margin-left: 30px;
+}
+#theme_name #test_paper .statistical-paper .library-main {
+  padding: 0 200px;
+  height: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+#theme_name #test_paper .statistical-paper .library-main .control {
+  padding: 15px 0;
+  text-align: right;
+  flex-direction: row-reverse;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list {
+  flex: 1;
+  color: #686874;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-single .single-title {
+  font-size: 16px;
+  font-family: PingFangSC-Regular !important;
+  padding: 0 0 5px 0;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-single .single-container {
+  padding: 5px 10px;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-single .single-container .exam-single-item .single-item-choice {
+  padding: 10px 15px;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-single .single-container .exam-single-item .single-item-choice .single-item-stem-process {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-single .single-container .exam-single-item .single-item-choice .single-item-stem-process .single-item-stem-process-container {
+  padding-top: 10px;
+  width: 70%;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-single .single-container .exam-single-item .single-item-choice .single-item-stem-process .single-item-stem-process-tip {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 15px;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-judge {
+  padding-top: 30px;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-judge .judge-title {
+  font-size: 16px;
+  font-family: PingFangSC-Regular !important;
+  padding: 0 0 5px 0;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-judge .judge-container {
+  padding: 5px 10px;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-judge .judge-container .exam-judge-item {
+  display: flex;
+  align-items: center;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-judge .judge-container .exam-judge-item .judge-item-choice {
+  padding: 10px 15px;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-short {
+  padding-top: 30px;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-short .short-title {
+  font-size: 16px;
+  font-family: PingFangSC-Regular !important;
+  padding: 0 0 5px 0;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-short .short-container {
+  padding: 5px 10px;
+}
+#theme_name #test_paper .statistical-paper .library-main .exam-list .exam-short .short-container .exam-short-item .short-item-choice {
+  padding: 10px 15px;
+}
+#theme_name #test_paper .statistical-paper .library-main .library-footer {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+#theme_name #test_paper .statistical-paper .library-main .library-footer > div {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+#theme_name #test_paper .statistical-paper .library-main .library-footer > div > button {
+  margin-right: 30px;
+}
+
+/*# sourceMappingURL=TestPaper.css.map */

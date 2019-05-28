@@ -119,7 +119,7 @@
       }
     },
     mounted() {
-      this.getList();
+      //this.getList();
     },
     activated() {
     },
@@ -132,6 +132,13 @@
           this.configure.num = val ? (val.num ? val.num : '') : '';
         },
         deep: true
+      },
+      lj_visible: {
+        handler(val, oldVal) {
+          if(val) {
+            this.getList();
+          }
+        }
       }
     },
     computed: {},

@@ -76,15 +76,11 @@
               <dropdown-list :cache="false" title="必选" ref="dropdown1" :url="`${this.url}/api/train/type`"
                              code="3"
                              v-model="new_train_form.type_id"></dropdown-list>
-              <!--              <span class="btn_add" @click="train_type_dialog_visible = true">+</span>-->
             </el-form-item>
             <el-form-item required prop="name" label="培训名称">
               <el-input v-model="new_train_form.name" placeholder="必填" style="width: 320px"></el-input>
             </el-form-item>
             <el-form-item required prop="address" label="培训地点">
-              <!-- <dropdown-list title="必选" ref="dropdown2" :url="`${this.url}/api/train/type`" code="1"
-                             v-model="new_train_form.room_id"></dropdown-list> -->
-              <!--              <span class="btn_add">+</span>-->
               <el-input v-model="new_train_form.address" placeholder="必填" style="width: 320px"></el-input>
             </el-form-item>
             <el-form-item required prop="train_time" label="培训时间">
@@ -99,12 +95,12 @@
               </el-date-picker>
             </el-form-item>
             <el-form-item required prop="teacher_id" label="讲师">
-              <user-choose num="1" title="必选" v-model="new_train_form.teacher_id"></user-choose>
-              <!--              <el-select v-model="new_train_form.train_lecturer" style="width: 320px"></el-select>-->
+              <!--<user-choose num="1" title="必选" v-model="new_train_form.teacher_id"></user-choose>-->
+              <dropdown-list-teacher :cache="false" title="必选" :url="`${this.url}/api/teachers/lecturer`"
+                             v-model="new_train_form.teacher_id"></dropdown-list-teacher>
             </el-form-item>
             <el-form-item required prop="enter_user_ids" label="参会人员">
               <user-choose title="必选" v-model="new_train_form.enter_user_ids"></user-choose>
-              <!--              <el-input v-model="new_train_form.train_people" placeholder="请选择参会人员" style="width: 320px"></el-input>-->
             </el-form-item>
             <el-form-item label="培训提醒">
               <div class="form-item-content">
@@ -297,6 +293,7 @@
   import LjUpload from '../../common/lightweightComponents/lj-upload';
   import LjDialog from '../../common/lj-dialog.vue';
   import DropdownList from './dropdown-list';
+  import DropdownListTeacher from './dropdown-list-teacher';
   import UserList from '../../common/lightweightComponents/UserList';
 
   export default {
@@ -304,6 +301,7 @@
     components: {
       LjDialog,
       DropdownList,
+      DropdownListTeacher,
       UserChoose,
       LjUpload,
       UserList,
@@ -422,7 +420,7 @@
           train_time: '',//培训时间
           start_time: '',//开始时间
           over_time: '',//结束时间
-          teacher_id: [],//主持人id数组
+          teacher_id: null,//主持人id
           //counts:'',//应到人数
           //meetingTips:{},//会议提醒
           remind_time: {
@@ -542,7 +540,7 @@
               ...this.new_train_form,
               start_time: this.myUtils.formatDate(this.new_train_form.train_time[0], 'yyyy-MM-dd hh:mm:ss'),
               over_time: this.myUtils.formatDate(this.new_train_form.train_time[1], 'yyyy-MM-dd hh:mm:ss'),
-              teacher_id: this.new_train_form.teacher_id[0]
+              //teacher_id: this.new_train_form.teacher_id[0]
             };
             this.$http.post(`${this.url}/api/train/index`, params).then(res => {
               if(res.status ==200){

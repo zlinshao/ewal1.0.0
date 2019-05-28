@@ -105,15 +105,15 @@
               :data="office_data"
               :default-sort = "{prop: 'org.name', order: 'descending'}"
             >
-              <el-table-column label="岗位" prop="position.name" align="center"></el-table-column>
-              <el-table-column label="部门" prop="org.name" align="center" sortable></el-table-column>
-              <el-table-column label="面试官" align="center" min-width="120px">
+              <el-table-column show-overflow-tooltip label="岗位" prop="position.name" align="center"></el-table-column>
+              <el-table-column show-overflow-tooltip label="部门" prop="org.name" align="center"></el-table-column>
+              <el-table-column show-overflow-tooltip label="面试官" align="center" min-width="120px">
                 <template slot-scope="scope">
                   <span v-for="(item,idx) in scope.row.interviewer">{{ item.real_name }}<a v-if="idx !== scope.row.interviewer.length - 1">/</a></span>
                 </template>
               </el-table-column>
-              <el-table-column label="创建人" prop="creator.real_name" align="center"></el-table-column>
-              <el-table-column label="创建时间" prop="created_at" align="center"></el-table-column>
+              <el-table-column show-overflow-tooltip label="创建人" prop="creator.real_name" align="center"></el-table-column>
+              <el-table-column show-overflow-tooltip label="创建时间" prop="created_at" align="center"></el-table-column>
               <el-table-column label="编辑">
                 <template slot-scope="scope">
                   <el-button type="text" @click="handleEditOffer(scope.row)">编辑</el-button>
@@ -146,16 +146,16 @@
                 <el-input v-model="edit_offer.position_name" disabled @focus="position_visible = true"></el-input>
               </el-form-item>
               <el-form-item label="面试官一">
-                <el-input v-model="edit_offer.interviewer_first" readonly @focus="handleOpenStaff('first')"></el-input>
+                <user-choose num="1" title="请选择" v-model="edit_offer.interviewer_first_id"></user-choose>
               </el-form-item>
               <el-form-item label="面试官二">
-                <el-input v-model="edit_offer.interviewer_second" readonly  @focus="handleOpenStaff('second')"></el-input>
+                <user-choose num="1" title="请选择" v-model="edit_offer.interviewer_second_id"></user-choose>
               </el-form-item>
               <el-form-item label="面试官三">
-                <el-input v-model="edit_offer.interviewer_third" readonly  @focus="handleOpenStaff('third')"></el-input>
+                <user-choose num="1" title="请选择" v-model="edit_offer.interviewer_third_id"></user-choose>
               </el-form-item>
               <el-form-item label="试卷">
-                <Upload :file="upload_form" @success="handleSuccessUpload"></Upload>
+                <dropdown-list v-model="edit_offer.paper_id" :url="`${this.url}train/exam`" :params="{type:1}"></dropdown-list>
               </el-form-item>
             </el-form>
           </div>
@@ -166,14 +166,9 @@
         </div>
       </lj-dialog>
 
-      <DepartOrgan :module="depart_visible" @close="handleGetDepart"></DepartOrgan>
-
-      <StaffOrgan :module="staff_visible" @close="handleGetStaff"></StaffOrgan>
-
-      <PositionOrgan :module="position_visible" @close="handleGetPosition"></PositionOrgan>
 
       <!--面板数据-->
-      <div class="panel-info flex-center">
+      <!--<div class="panel-info flex-center">
         <nav class="panel-btn"><i class="el-icon-arrow-left"></i></nav>
         <ul class="date_change">
           <li v-for="tmp in date_change_list" :key="tmp.id" @click="handleChangeDate(tmp.id)" :class="{'mark_li': isActive === tmp.id}">{{ tmp.val }}</li>
@@ -191,12 +186,13 @@
           <div id="chart4"></div>
         </div>
         <div></div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
 
 <script>
+  import _ from 'lodash';
   import SearchHigh from '../../common/searchHigh.vue';
   import PartOne from './components/part_one/index.vue'; //募兵行列
   import PartTwo from './components/part_two/index.vue'; //分取科士
@@ -207,16 +203,14 @@
   import { humanResource } from '../../../assets/js/allModuleList.js';
   import { recruitmentSearchList } from '../../../assets/js/allSearchData.js';
 
-  import DepartOrgan from '../../common/departOrgan.vue';
-  import StaffOrgan from '../../common/staffOrgan.vue';
-  import PositionOrgan from '../../common/postOrgan.vue';
-  import Upload from '../../common/upload.vue';
+
 
   export default {
     name: "index",
-    components: { Upload,SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog,DepartOrgan,StaffOrgan,PositionOrgan},
+    components: {SearchHigh,PartOne,PartTwo,PartThree,PartFour ,MenuList,LjDialog},
     data() {
       return {
+        url:globalConfig.humanResource_server,
         panel_visible: false,
         date_change_list: [
           {id: 1,val: '当日'},
@@ -242,19 +236,9 @@
           position_name: '',
         },
         currentRow: '',
-        depart_visible: false,
-        staff_visible: false,
-        position_visible: false,
         interview_type: '',
 
-        upload_form: {
-          keyName: 'paper_id',
-          setFile: [],
-          size: {
-            width: '50px',
-            height: '50px'
-          }
-        },
+
 
         //查看面试官
         office_visible: false,
@@ -283,17 +267,20 @@
           {
             search: '',
             org_id: [],
-            position_id: []
+            position_id: [],
+            platform:'',
           },
           {
             search: '',
             org_id: [],
-            position_id: []
+            position_id: [],
+            platform:'',
           },
           {
             search: '',
             org_id: [],
-            position_id: []
+            position_id: [],
+            platform:'',
           }
         ],
         humanResource,
@@ -306,7 +293,7 @@
           {id: 3, title: '已约面试'},
           {id: 4, title: '预约入职'}
         ], //模块列表
-        chooseTab: 2, //当前选中模块
+        chooseTab: 1, //当前选中模块
         is_hide_nav_container: true,
 
         //搜索
@@ -354,61 +341,19 @@
           interviewer_first_id: '',
           interviewer_second_id: '',
           interviewer_third_id: '',
-          interviewer_first: '',
-          interviewer_second: '',
-          interviewer_third: '',
           org_id: '',
           paper_id: '',
           position_id: '',
           user_id: '',
-          depart: '',
-          position_name: '',
         };
         this.edit_offer_visible = false;
       },
-      handleSuccessUpload(file) {
-        if (file !== 'close') {
-          console.log(file);
-        }
-      },
-      handleGetDepart(id,name){
-        if (id !== 'close') {
-          this.edit_offer.depart = name;
-          this.edit_offer.org_id = id;
-        }
-        this.depart_visible = false;
-      } ,
-      handleGetStaff(id,name) {
-        if (id !== 'close') {
-          switch (this.interview_type) {
-            case 'first':
-              this.edit_offer.interviewer_first = name;
-              this.edit_offer.interviewer_first_id = id;
-              break;
-            case 'second':
-              this.edit_offer.interviewer_second = name;
-              this.edit_offer.interviewer_second_id = id;
-              break;
-            case 'third':
-              this.edit_offer.interviewer_third = name;
-              this.edit_offer.interviewer_third_id = id;
-              break;
-          }
-        }
-        this.staff_visible = false;
-      },
-      handleGetPosition(id,name) {
-        if (id !== 'close') {
-          this.edit_offer.position_name = name;
-          this.edit_offer.position_id = id;
-        }
-        this.position_visible = false;
-      },
-      handleOpenStaff(type) {
-        this.interview_type = type;
-        this.staff_visible = true;
-      },
       handleSubmitEditOffer() {
+        let interviewers  = _.filter([...this.edit_offer.interviewer_first_id,...this.edit_offer.interviewer_second_id,...this.edit_offer.interviewer_third_id],(o)=> {return o});
+        if(_.uniq(interviewers).length!=interviewers.length) {
+          this.$LjMessage('warning',{title:'警告',msg:'不可选择相同的面试官'});
+          return;
+        }
         this.$http.put(`recruitment/interviewers/${this.currentRow.id}`,this.edit_offer).then(res => {
           console.log(res);
           if (res.code === '20030') {
@@ -428,9 +373,9 @@
       },
       handleEditOffer(row) {
         this.currentRow = row;
-        this.edit_offer.interviewer_first_id = row.interviewer_first_id;
-        this.edit_offer.interviewer_second_id = row.interviewer_second_id;
-        this.edit_offer.interviewer_third_id = row.interviewer_third_id;
+        this.edit_offer.interviewer_first_id = [row.interviewer_first_id];
+        this.edit_offer.interviewer_second_id = [row.interviewer_second_id];
+        this.edit_offer.interviewer_third_id = [row.interviewer_third_id];
         this.edit_offer.interviewer_first = row.interviewer[0] ? row.interviewer[0].real_name : '';
         this.edit_offer.interviewer_second = row.interviewer[1] ? row.interviewer[1].real_name : '';
         this.edit_offer.interviewer_third = row.interviewer[2] ? row.interviewer[2].real_name : '';
@@ -456,9 +401,7 @@
               message: '获取面试官列表失败'
             })
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       handleCheckTimeType(id) {
         this.current_time = id;
@@ -483,9 +426,7 @@
             });
             return false;
           }
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       handleSearchInterview() {
         this.$http.get('recruitment/interviewer_process/intervieweeListForFront').then(res => {
@@ -498,9 +439,7 @@
             this.interview_count = 0;
           }
           this.today_interview_visible = true;
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
       // tab切换
       changeTabs(id) {
@@ -510,7 +449,7 @@
       //关闭搜索
       hiddenModule(val,item,search) {
         if (val !== 'close') {
-          for (var key in this.allSearch[this.chooseTab - 1]) {
+          for (let key in this.allSearch[this.chooseTab - 1]) {
             this.allSearch[this.chooseTab - 1][key] = val[key];
           }
         }

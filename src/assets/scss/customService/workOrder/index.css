@@ -1,46 +1,532 @@
-/*
-Error: Invalid GBK character "\xE8"
-        on line 33 of index.scss
+.flex {
+  display: flex;
+  display: -webkit-flex;
+}
 
-28:       font-weight: 700;
-29:     }
-30:     .is-center > .cell {
-31:       @include flex('flex-center');
-32:     }
-33:     //详情
-34:     .dialog_detail {
-35:       cursor: pointer;
-36:       .detail_tit {
-37:         @include flex('items-bet');
-38:         font-size: 20px;
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-Backtrace:
-index.scss:33
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1043:in `rescue in block in find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1040:in `block in find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each_with_index'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:773:in `rescue in check_sass_encoding'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:769:in `check_sass_encoding'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:444:in `check_encoding!'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:400:in `_to_tree'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:307:in `render_with_sourcemap'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `each'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin.rb:82:in `update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:340:in `watch_or_update'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:51:in `process_result'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:52:in `parse'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:19:in `parse!'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/bin/scss:13:in `<top (required)>'
-C:/App/Ruby24-x64/bin/scss:23:in `load'
-C:/App/Ruby24-x64/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE8\"\A         on line 33 of index.scss\A \A 28:       font-weight: 700;\A 29:     }\A 30:     .is-center > .cell {\A 31:       @include flex('flex-center');\A 32:     }\A 33:     //详情\A 34:     .dialog_detail {\A 35:       cursor: pointer;\A 36:       .detail_tit {\A 37:         @include flex('items-bet');\A 38:         font-size: 20px;"; }
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+}
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start;
+}
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end;
+}
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+}
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around;
+}
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+}
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start;
+}
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end;
+}
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf");
+}
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF");
+}
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf");
+}
+/*@font-face {
+  font-family: 'jingDianXingShu';
+  src: url('/static/font/JDJXINSHU.otf');
+}
+
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
+}
+
+@font-face {
+  font-family: 'jianyue';
+  src: url('/static/font/BaiZhouRenZhe.otf');
+}*/
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl;
+}
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.scroll_bar {
+  overflow: auto;
+}
+.scroll_bar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-button {
+  height: 10px;
+  background-color: #e4e7ed;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-track {
+  background: #e4e7ed;
+}
+.scroll_bar::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 4px;
+}
+
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2;
+}
+.action-bar div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.action-bar .check-count {
+  margin-left: 30px;
+  margin-right: 50px;
+}
+.action-bar .check-count i {
+  font-style: normal;
+  color: #ff4545;
+}
+.action-bar .action-bar-name {
+  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.action-bar .action-bar-name span {
+  display: inline-block;
+  text-align: center;
+  border-left: 1px solid #9b9b9b;
+  font-size: 18px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.action-bar .action-bar-name span:first-child {
+  border-left: 0;
+}
+.action-bar .delete {
+  color: #ff4545;
+}
+.action-bar .edit {
+  color: #0c66ff;
+}
+.action-bar .check {
+  color: #0bb07b;
+}
+
+.colorE33 {
+  color: #cf2e33;
+}
+
+.color874 {
+  color: #686874;
+}
+
+#theme_name #workOrder {
+  height: 100%;
+}
+#theme_name #workOrder .mainListTable .el-button--warning {
+  background: #cf2e33;
+  color: #fbc4c4;
+}
+#theme_name #workOrder .el-row {
+  margin-right: 0 !important;
+}
+#theme_name #workOrder .el-form-item__label {
+  white-space: nowrap;
+}
+#theme_name #workOrder .emergency {
+  width: 90px;
+  height: 30px;
+  line-height: 30px;
+  font-weight: 700;
+}
+#theme_name #workOrder .is-center > .cell {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+#theme_name #workOrder .dialog_detail {
+  cursor: pointer;
+}
+#theme_name #workOrder .dialog_detail .detail_tit {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+#theme_name #workOrder .dialog_detail .detail_tit b {
+  width: 20px;
+  height: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 20px;
+}
+#theme_name #workOrder .dialog_detail .el-form {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 70px;
+  flex-wrap: wrap;
+}
+#theme_name #workOrder .dialog_detail .el-form .el-form-item {
+  width: 48%;
+}
+#theme_name #workOrder .dialog_detail .el-form .el-form-item .el-form-item__label {
+  font-size: 14px;
+}
+#theme_name #workOrder .dialog_detail .el-form .el-form-item input {
+  border: none;
+}
+#theme_name #workOrder .dialog_detail .detail_box {
+  height: 500px;
+  padding-bottom: 50px;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content + .content {
+  position: relative;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content + .content:before {
+  content: '';
+  width: 1px;
+  height: 70%;
+  background-color: #cf2e33;
+  position: absolute;
+  top: -10%;
+  left: 50%;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content {
+  padding: 50px 10px 0;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_left {
+  flex: 1;
+  font-size: 14px;
+  text-align: right;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_left p + p {
+  margin-top: 10px;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_center {
+  height: 100%;
+  margin: 0 40px;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_center .circle {
+  width: 15px;
+  height: 15px;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_right {
+  flex: 1;
+  text-align: left;
+  font-size: 10px;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_right p + p {
+  margin-top: 10px;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_right .other_fee p {
+  margin-top: 5px;
+  padding-left: 10px;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_right .detail_dialog_rato {
+  margin-left: 20px;
+  display: inline-block;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_right .detail_dialog_rato .el-rate__icon {
+  font-size: 12px;
+}
+#theme_name #workOrder .dialog_detail .detail_box .content .detail_dialog_right .detail_dialog_note {
+  margin-top: 0;
+}
+#theme_name #workOrder .dialog_detail .detail_box2 {
+  height: 500px;
+}
+#theme_name #workOrder .dialog_detail .dialog_footer {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end;
+}
+#theme_name #workOrder .followRecord .el-form-item__content {
+  height: 40px;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+}
+#theme_name #workOrder .followRecord input {
+  border-color: none;
+}
+#theme_name #workOrder .followRecord .record_money {
+  position: relative;
+}
+#theme_name #workOrder .followRecord .record_money .icons {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+#theme_name #workOrder .detail_dialog ul {
+  padding: 0 30px 50px;
+}
+#theme_name #workOrder .detail_dialog ul li + li {
+  position: relative;
+}
+#theme_name #workOrder .detail_dialog ul li + li:before {
+  content: '';
+  width: 1px;
+  height: 70%;
+  background-color: #cf2e33;
+  position: absolute;
+  top: -10%;
+}
+#theme_name #workOrder .detail_dialog ul li {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  font-family: 'Microsoft Yahei';
+  padding-top: 50px;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_left {
+  flex: 1;
+  font-size: 14px;
+  text-align: right;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_left p + p {
+  margin-top: 10px;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_center {
+  height: 100%;
+  margin: 0 80px;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_center .circle {
+  width: 15px;
+  height: 15px;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_right {
+  flex: 1;
+  text-align: left;
+  font-size: 10px;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_right p + p {
+  margin-top: 10px;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_right .other_fee p {
+  margin-top: 5px;
+  padding-left: 10px;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_right .detail_dialog_rato {
+  margin-left: 20px;
+  display: inline-block;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_right .detail_dialog_rato .el-rate__icon {
+  font-size: 12px;
+}
+#theme_name #workOrder .detail_dialog ul li .detail_dialog_right .detail_dialog_note {
+  margin-top: 0;
+}
+
+#theme_name.theme1 #workOrder .icon_add {
+  background: url("../../../assets/image/customService/workOrder/theme1/tianjia.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #workOrder .icon_del {
+  background: url("../../../assets/image/customService/workOrder/theme1/shanchu.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #workOrder .emergency2 {
+  font-size: 14px;
+  color: #ffad0d;
+  background: url("../../../assets/image/customService/workOrder/theme1/jinji.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #workOrder .emergency3 {
+  font-size: 14px;
+  color: #fff;
+  background: url("../../../assets/image/customService/workOrder/theme1/teji.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #workOrder .emergency4 {
+  font-size: 14px;
+  color: #0c66ff;
+  background: url("../../../assets/image/customService/workOrder/theme1/zhongyao.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #workOrder .dialog_detail .detail_tit {
+  color: #686874;
+}
+#theme_name.theme1 #workOrder .dialog_detail .detail_tit b {
+  background: #cf2e33;
+  color: #fff;
+}
+#theme_name.theme1 #workOrder .dialog_detail .el-form .el-form-item .el-form-item__label {
+  color: #686874;
+}
+#theme_name.theme1 #workOrder .dialog_detail .detail_box {
+  background: #fff;
+}
+#theme_name.theme1 #workOrder .dialog_detail .detail_box .circle {
+  background: url("../../../assets/image/customService/workOrder/theme1/biaoji.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #workOrder .followRecord .el-col:hover input {
+  border-color: #cf2e33;
+}
+#theme_name.theme1 #workOrder .followRecord .el-select .el-input.is-focus .el-input__inner {
+  border-color: #cf2e33;
+}
+#theme_name.theme1 #workOrder .detail_dialog {
+  color: #686874;
+}
+#theme_name.theme1 #workOrder .detail_dialog .dialog_main {
+  background: #fff;
+}
+#theme_name.theme1 #workOrder .detail_dialog .circle {
+  background: url("../../../assets/image/customService/workOrder/theme1/biaoji.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #workOrder .detail_contract {
+  background-color: #ffffff;
+}
+#theme_name.theme1 #workOrder .detail_contract .el-col h5 {
+  color: #cf2e33;
+  background: url("../../../assets/image/customService/workOrder/theme1/dianxian.png") no-repeat scroll center;
+  background-size: 100% 100%;
+  background-size: 30px 5px;
+  background-position: 110px 50%;
+}
+#theme_name.theme1 #workOrder .detail_contract .el-col div .tit {
+  color: #d5d5d5;
+}
+#theme_name.theme1 #workOrder .detail_contract .el-col div .content_tit {
+  color: #686874;
+}
+#theme_name.theme1 #workOrder .detail_contract .el-border:after {
+  background: #f2f2f2;
+}
+#theme_name.theme1 #workOrder .detail_contract ul li span {
+  color: #d5d5d5;
+}
+#theme_name.theme1 #workOrder .detail_contract ul li .content_tit {
+  color: #686874;
+}
+
+/*# sourceMappingURL=index.css.map */

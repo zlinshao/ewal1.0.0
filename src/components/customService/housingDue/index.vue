@@ -32,7 +32,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="创建时间" align="center" width='180px'>
+        <el-table-column label="到期时间" align="center" width='180px'>
           <template slot-scope="scope">
             <span>{{scope.row.end_at || '--'}}</span>
           </template>
@@ -94,15 +94,15 @@
 
         <el-table-column label="操作" align="center" v-if='tabType == 1' width='300'>
           <template slot-scope="scope" align='left'>
-            <el-button type="success" plain size="mini" @click.stop="addHousuingTag(scope.row,1)">添加标记</el-button>
+            <el-button type="success" plain size="mini" @click.stop="addOrEditHousingTag(scope.row,1)">添加标记</el-button>
           </template>
         </el-table-column>
 
         <el-table-column label="操作" align="center" v-if='tabType ==2' width='300'>
           <template slot-scope="scope" align='left'>
             <div style='display:flex;justify-content:flex-start;align-items:center;'>
-              <el-button id='active-warning' size="mini" @click.stop="readHousuingTag(scope.row)">查看标记</el-button>
-              <el-button id='active-primary' size="mini" @click.stop="addHousuingTag(scope.row,2)">修改标记</el-button>
+              <el-button id='active-warning' size="mini" @click.stop="readhousingTag(scope.row)">查看标记</el-button>
+              <el-button id='active-primary' size="mini" @click.stop="addOrEditHousingTag(scope.row,2)">修改标记</el-button>
               <el-button id='active-success' size="mini" @click.stop="postHelp(scope.row)" v-if='scope.row.is_send == 0'>发送代办</el-button>
               <el-button id='active-success' size="mini" @click.stop="urgedDealWith(scope.row)" v-if='scope.row.is_send == 1'>催办</el-button>
             </div>
@@ -111,7 +111,7 @@
 
         <el-table-column label="操作" align="center" v-if='tabType == 4' width='300'>
           <template slot-scope="scope" align='left'>
-            <el-button id='active-success' size="mini" @click.stop="addHousuingTag(scope.row,1)">添加标记</el-button>
+            <el-button id='active-success' size="mini" @click.stop="addOrEditHousingTag(scope.row,1)">添加标记</el-button>
             <el-button id='active-success' size="mini" @click.stop="urgedDealWith(scope.row)">催办</el-button>
           </template>
         </el-table-column>
@@ -138,7 +138,7 @@
       :disabled='true' :showData='false' :showRelated='true' @close="handleCloseDetail" />
 
     <!-- 添加 修改标记 -->
-    <lj-dialog :visible="mark_visible" :size="{width: 690 + 'px',height: 558 + 'px'}" @close="handleCancelMark">
+    <lj-dialog :visible.sync="mark_visible" :size="{width: 490 + 'px',height: 500 + 'px'}" @close="handleCancelMark">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{tagType == 1 ? "添加标记":"修改标记"}}</h3>
@@ -161,7 +161,7 @@
               <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="6"></el-input>
             </el-form-item>
             <el-form-item label="上传图片">
-              <Ljupload size='50' v-model='mark_form.album'></Ljupload>
+              <lj-upload size="50" style="position: absolute;top: -13px" v-model='mark_form.album'></lj-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -173,15 +173,15 @@
     </lj-dialog>
 
     <!-- 查看标记 -->
-    <LjDialog :visible="backInfo_visible" :size="{width: 994 + 'px',height: 690 + 'px'}" @close="handleCloseLookBackInfo">
+    <lj-dialog :visible.sync="backInfo_visible" :size="{width: 994 + 'px',height: 690 + 'px'}" @close="handleCloseLookBackInfo">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>标记记录</h3>
-          <div class="header_tit" @click='backInfo_addHousuingTag'>
+          <div class="header_tit" @click='backInfo_addhousingTag'>
             修改标记
           </div>
         </div>
-        <div class="dialog_main detail_dialog">
+        <div class="dialog_main edit-markup detail_dialog">
           <div class="back_info scroll_bar">
             <div class="content flex" v-for="(item,key) in backInfo">
               <div class='detail_dialog_left'>
@@ -202,10 +202,10 @@
           <el-button id='active-danger' size="small" class='el-button-active' @click="handleCloseLookBackInfo">确定</el-button>
         </div>
       </div>
-    </LjDialog>
+    </lj-dialog>
 
     <!-- 催办 -->
-    <LjDialog :visible="urgedDeal_visible" :size="{width: 670 + 'px',height: 370 + 'px'}" @close="handleCloseUrgedDeal">
+    <lj-dialog :visible="urgedDeal_visible" :size="{width: 670 + 'px',height: 370 + 'px'}" @close="handleCloseUrgedDeal">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>建立催办</h3>
@@ -222,7 +222,7 @@
           <el-button id='active-info' class='el-button-active' size="small" @click="handleCloseUrgedDeal">取消</el-button>
         </div>
       </div>
-    </LjDialog>
+    </lj-dialog>
   </div>
 </template>
 
@@ -231,8 +231,6 @@ import SearchHigh from '../../common/searchHigh.vue';
 import MenuList from '../../common/menuList.vue';
 import { housingDueSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
-import LjDialog from '../../common/lj-dialog.vue';
-import Ljupload from '../../common/lightweightComponents/lj-upload'
 import contractDetail from '../components/contract_detail'
 
 export default {
@@ -240,8 +238,6 @@ export default {
   components: {
     SearchHigh,
     MenuList,
-    LjDialog,
-    Ljupload,
     contractDetail
   },
   data () {
@@ -291,16 +287,17 @@ export default {
         end_at_min: '',
         end_at_max: '',
       },
-      // 添加 1 修改 2标记
+      // 添加标记 1 修改标记2
       tagType: 1,
       // 添加标记
       mark_visible: false,
       mark_form: {
-        tag_status: null,
+        tag_status: 1,
         appointment_time: null,
         remark: null,
         album: [],
       },
+
       mark_status: [
         { id: 1, val: '续租' },
         { id: 2, val: '退租' },
@@ -401,11 +398,23 @@ export default {
       this.currentRow = null
     },
 
-    // 添加标记
-    addHousuingTag (row, type) {
+    // 添加标记or编辑标记
+    addOrEditHousingTag (row, type) {
       this.tagType = type
       this.currentRow = row
-      this.mark_visible = true;
+
+      if(type==2) {//修改标记
+        let tag_id = row.tag_id;
+        if(!tag_id) return;
+        this.$http.get(`${this.market_server}v1.0/market/contract/tagdetail/${tag_id}`).then(res=> {
+          if(res.code.toString().endsWith('0')) {
+            this.mark_form = res.data;
+            this.mark_visible = true;
+          }
+        });
+      }
+
+
     },
     // close 添加标记
     handleCancelMark () {
@@ -433,14 +442,6 @@ export default {
       }
       if (!appointment_time) {
         return '预约时间未选择'
-      }
-      if (this.tagType == 1) {
-        if (!remark) {
-          return '备注信息未填写'
-        }
-        if (album.length == 0) {
-          return '图片未上传'
-        }
       }
 
       return null
@@ -499,7 +500,7 @@ export default {
 
     },
     // 查看标记
-    readHousuingTag (row) {
+    readhousingTag (row) {
       this.currentRow = row;
       this.backInfo_visible = true;
       this.getHousingRecord(row.tag_id)
@@ -525,9 +526,9 @@ export default {
       this.currentMethod = ''
     },
     // 查看标记中 修改标记
-    backInfo_addHousuingTag () {
+    backInfo_addhousingTag () {
       this.currentMethod = 'seeRecord'
-      this.addHousuingTag(this.currentRow, 2)
+      this.addOrEditHousingTag(this.currentRow, 2)
       // this.backInfo = '';
       // this.backInfo_visible = false;
     },

@@ -67,16 +67,28 @@
         <el-table-column
           show-overflow-tooltip
           v-for="item in Object.keys(showData)" :key="item"
-          align="center"
+          :align="(item=='customer.address'||item=='description.description')?'left':'center'"
           :prop="item"
           :label="showData[item]">
         </el-table-column>
+        <el-table-column
+          key="remarks"
+          show-overflow-tooltip
+          align="center"
+          prop="remarks"
+          label="备注"
+        >
+          <template slot-scope="scope">
+<!--            <div style="cursor: pointer" @click="openRemarksList(scope.row)">{{scope.row.remarks}}</div>-->
+            <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
+          </template>
+        </el-table-column>
         <el-table-column label="状态" prop="" align="center" width="100">
           <template slot-scope="scope">
-            <span v-if="scope.row.status === 1" style="color: #FFCE90">待入账</span>
-            <span v-if="scope.row.status === 2" style="color: #FF9463">待结算</span>
-            <span v-if="scope.row.status === 3" style="color: #458AFF">已结清</span>
-            <span v-if="scope.row.status === 4" style="color: #D64B4F;">已超额</span>
+            <span v-if="scope.row.status === 1" style="color: #FFAB40">待入账</span>
+            <span v-if="scope.row.status === 2" style="color: #FF7131">待结算</span>
+            <span v-if="scope.row.status === 3" style="color: #0C66FE">已结清</span>
+            <span v-if="scope.row.status === 4" style="color: #CF2E33">已超额</span>
           </template>
         </el-table-column>
 
@@ -410,7 +422,7 @@
       <div class="dialog_container">
         <div class="dialog_header flex">
           <h3>催缴备注列表</h3>
-          <span class="add_mark" @click="new_mark_visible = true;new_mark={}">+</span>
+          <span class="add_mark" @click="new_mark_visible = true;new_mark={category:1}">+</span>
         </div>
         <div class="dialog_main">
           <div class="address">{{current_address}}</div>
@@ -419,7 +431,8 @@
               :data="mark_data"
             >
               <el-table-column label="备注时间" prop="create_time" align="center"></el-table-column>
-              <el-table-column label="备注内容" prop="content" align="center"></el-table-column>
+              <el-table-column label="备注内容" show-overflow-tooltip prop="content" align="left"
+                               width="200"></el-table-column>
               <el-table-column label="备注人" prop="staff_name" align="center"></el-table-column>
               <el-table-column label="备注类型" prop="category" align="center"></el-table-column>
             </el-table>
@@ -438,6 +451,42 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!--新增催缴备注-->
+    <lj-dialog
+      :visible="new_mark_visible"
+      :size="{width: 600 + 'px' ,height: 520 + 'px'}"
+      @close="new_mark_visible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增备注</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <el-form :mode="new_mark" label-width="80px">
+            <el-form-item label="备注内容">
+              <el-input type="textarea" v-model="new_mark.content" :rows="4"></el-input>
+            </el-form-item>
+            <el-form-item label="备注类型">
+              <div class="remark-type">
+                <div class="remark-type-item"
+                     :class="{checked: category_choose==item.value}"
+                     v-for="(item,index) in categoryList"
+                     :key="index" style="margin-bottom: 10px"
+                     @click="new_mark.category = item.value;category_choose = item.value"
+                >{{item.title}}
+                </div>
+              </div>
+
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="postReceivable_tag()">确定</el-button>
+          <el-button size="small" @click="new_mark_visible=false;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
     <!--开收据列表-->
     <lj-dialog
       :visible="receipt_visible"
@@ -469,7 +518,8 @@
               </el-table-column>
               <el-table-column label="收据" align="center">
                 <template slot-scope="scope">
-                  <div v-if="scope.row.is_receipt==1" @click="showReceiptDetail(scope.row)" class="receipt-img"></div>
+                  <div v-if="scope.row.is_receipt==1" @click="showReceiptDetail(scope.row)" style="margin: 0 auto"
+                       class="receipt-img"></div>
                   <div v-else>-</div>
                 </template>
               </el-table-column>
@@ -536,7 +586,7 @@
       </div>
     </lj-dialog>
 
-    <!--修改手机号-->
+    <!--修改手机号页面..不修改则直接发送-->
     <lj-dialog :visible.sync="edit_phone_dialog_visible"
                :size="{width: 450 + 'px',height: 320 + 'px'}"
     >
@@ -555,42 +605,213 @@
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="handleEditUserNameConfirm">确定</el-button>
+          <el-button size="small" type="danger" @click="handleSendMessage">确定</el-button>
           <el-button size="small" @click="edit_username_dialog_visible=false;">取消</el-button>
         </div>
       </div>
     </lj-dialog>
 
-    <!--新增催缴备注-->
+    <!--发送短信之前dialog-->
+    <lj-dialog :visible.sync="pre_send_message_dialog_visible"
+               :size="{width: 450 + 'px',height: 320 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>发送短信</h3>
+        </div>
+        <div class="dialog_main borderNone pre-send-message">
+          <div class="send-type-list">
+            <div @click="send_type_choose = item.id;send_message_template_dialog_visible = true;"
+                 :class="{checked:send_type_choose==item.id}" v-for="item in send_type_list" class="send-item">
+              {{item.name}}
+            </div>
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="handleMultiSendMessage">确定</el-button>
+          <el-button size="small" @click="pre_send_message_dialog_visible=false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--短信模板展示dialog-->
+    <lj-dialog :visible.sync="send_message_template_dialog_visible"
+               :size="{width: 550 + 'px',height: 420 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>{{send_type_list[send_type_choose-1].name}}</h3>
+        </div>
+        <div class="dialog_main borderNone template-message">
+          {{send_type_list[send_type_choose-1].template}}
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="send_message_template_dialog_visible=false">确定</el-button>
+          <el-button size="small" @click="send_message_template_dialog_visible=false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--生成违约金日期dialog-->
+    <lj-dialog :visible.sync="generate_dialog_visible"
+               :size="{width: 400 + 'px',height: 320 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>生成违约金日期</h3>
+        </div>
+        <div class="dialog_main borderNone" style="align-items: center;display: flex">
+          <el-form ref="multiFieldFormExitDateRef" :rules="rules.multiField" :model="multi_field_form"
+                   style="text-align: left"
+                   size="small" label-width="100px">
+            <el-form-item required prop="exit_date" label="违约金日期">
+              <!--<el-input v-model="multi_field_form.exit_date" style="width: 200px">
+              </el-input>-->
+              <el-date-picker
+                v-model="multi_field_form.exit_date"
+                type="datetime"
+                placeholder="请选择违约金日期"
+              ></el-date-picker>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="generateExitDate">确定</el-button>
+          <el-button size="small" @click="generate_dialog_visible=false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--修改补齐时间dialog-->
+    <lj-dialog :visible.sync="edit_time_dialog_visible"
+               :size="{width: 450 + 'px',height: 320 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>修改补齐时间</h3>
+        </div>
+        <div class="dialog_main borderNone" style="display: flex;align-items: center">
+          <el-form ref="multiFieldFormEditTimeRef" :rules="rules.multiField" :model="multi_field_form"
+                   style="text-align: left"
+                   size="small" label-width="100px">
+            <el-form-item required prop="complete_date" label="补齐时间">
+              <el-date-picker
+                v-model="multi_field_form.complete_date"
+                type="datetime"
+                placeholder="必填"
+              ></el-date-picker>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="editCompleteTime">确定</el-button>
+          <el-button size="small" @click="edit_time_dialog_visible=false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!--应收款项备注列表dialog-->
+    <lj-dialog :visible.sync="remarks_dialog_visible"
+               :size="'small'"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header flex">
+          <h3>备注</h3>
+          <span class="add_mark" @click="new_remark_dialog_visible = true;new_mark={}">+</span>
+        </div>
+        <div class="dialog_main">
+          <div class="address">{{tableSettingData.remarks.current_address}}</div>
+          <div class="record">
+            <el-table
+              :data="tableSettingData.remarks.tableData"
+            >
+              <el-table-column label="备注时间" prop="create_time" align="center"></el-table-column>
+              <el-table-column label="备注内容" show-overflow-tooltip prop="content" align="center"
+                               width="200"></el-table-column>
+              <el-table-column label="备注人" prop="staff_name" align="center"></el-table-column>
+            </el-table>
+          </div>
+        </div>
+        <!--<div class="dialog_footer">
+          <div class="page">
+            <el-pagination
+              :total="tableSettingData.remarks.count"
+              layout="total,jumper,prev,pager,next"
+              :current-page="tableSettingData.remarks.params.page"
+              :page-size="tableSettingData.remarks.params.limit"
+              @current-change="handleChangePage_markData"
+            ></el-pagination>
+          </div>
+        </div>-->
+      </div>
+    </lj-dialog>
+
+
+    <!--新增备注-->
     <lj-dialog
-      :visible="new_mark_visible"
-      :size="{width: 500 + 'px' ,height: 520 + 'px'}"
-      @close="new_mark_visible = false">
+      :visible.sync="new_remark_dialog_visible"
+      :size="{width: 600 + 'px' ,height: 420 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>新增备注</h3>
         </div>
         <div class="dialog_main borderNone">
+          <div class="address" style="margin-bottom: 40px">{{tableSettingData.remarks.current_address}}</div>
           <el-form :mode="new_mark" label-width="80px">
             <el-form-item label="备注内容">
               <el-input type="textarea" v-model="new_mark.content" :rows="4"></el-input>
             </el-form-item>
-            <el-form-item label="备注类型">
-              <el-button
-                v-for="(index,item) in categoryList"
-                :key="item" style="margin-bottom: 10px"
-                @click="new_mark.category = index.value"
-              >{{index.title}}
-              </el-button>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="addNewRemark">确定</el-button>
+          <el-button size="small" @click="new_remark_dialog_visible=false;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+
+    <!--新增滞纳金dialog-->
+    <lj-dialog :visible.sync="new_overdue_fine_dialog_visible"
+               :size="{width: 450 + 'px',height: 550 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增滞纳金</h3>
+        </div>
+        <div class="dialog_main borderNone" style="display: flex;align-items: center">
+          <el-form ref="newOverdueFineFormRef" :rules="rules.newOverdueFine" :model="new_overdue_fine_form"
+                   style="text-align: left"
+                   size="small" label-width="100px">
+            <el-form-item required prop="pay_date" label="收款时间">
+              <el-date-picker
+                v-model="new_overdue_fine_form.pay_date"
+                type="datetime"
+                placeholder="必填"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="客户姓名">
+              <el-input disabled v-model="new_overdue_fine_form.customer_name"></el-input>
+            </el-form-item>
+            <el-form-item label="详情">
+              <el-input type="textarea" autosize disabled v-model="new_overdue_fine_form.details"></el-input>
+            </el-form-item>
+            <el-form-item label="收入科目">
+              <el-input disabled v-model="new_overdue_fine_form.subject_title"></el-input>
+            </el-form-item>
+            <el-form-item required prop="amount" label="应收金额">
+              <el-input v-model="new_overdue_fine_form.amount"></el-input>
             </el-form-item>
           </el-form>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="postReceivable_tag()">确定</el-button>
-          <el-button size="small" @click="new_mark_visible=false;">取消</el-button>
+          <el-button size="small" type="danger" @click="handleNewOverdueFine">确定</el-button>
+          <el-button size="small" @click="new_overdue_fine_dialog_visible=false">取消</el-button>
         </div>
       </div>
     </lj-dialog>
+
+
     <!--登记收款-->
     <lj-dialog
       :visible="register_visible"
@@ -890,9 +1111,10 @@
               this.current_row = val[0];
               this.action_visible = true;
               this.register_from.address = val[0].customer && val[0].customer.address;
-              this.user_info_form = {
-                name:val[0].customer?.customer_name||'',
-                phone:val[0].customer?.contact||'',
+              this.multi_field_form = {
+                assembly_id: val[0].id,
+                name: val[0].customer?.customer_name || '',
+                phone: val[0].customer?.contact || '',
               };
               this.btn_group = [
                 {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit'},
@@ -900,13 +1122,16 @@
                 {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
                 {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
                 {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
+                {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit'},
+                {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit'},
+                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
                 {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
 
             } else if (val.length == 0) {
               this.action_visible = false;
             } else {
               this.current_row = '';
-
+              this.action_visible = true;
               this.btn_group = [
                 {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
                 {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
@@ -931,6 +1156,24 @@
             ],
           },
 
+          multiField: {
+            exit_date: [
+              {required: true, message: '请选择违约金日期', trigger: ['change', 'blur']}
+            ],
+            complete_date: [
+              {required: true, message: '请选择补齐时间', trigger: ['change', 'blur']}
+            ],
+          },
+
+          newOverdueFine: {
+            pay_date: [
+              {required: true, message: '请选择收款时间', trigger: ['change', 'blur']}
+            ],
+            amount: [
+              {required: true, message: '请输入应收金额', trigger: ['change', 'blur']}
+            ],
+          },
+
 
           amount_payable: [
             {required: true, message: '请输入活动名称', trigger: 'blur'},
@@ -938,7 +1181,7 @@
           ],
         },
 
-        url:globalConfig.temporary_server,
+        url: globalConfig.temporary_server,
 
         is_table_choose: '',
 
@@ -1012,22 +1255,58 @@
         current_row: '',
         showFinMenuList: false,
         receipt_visible: false,//开收据
-        receipt_detail_dialog_visible:false,//开收据详情dialog显示隐藏
-        receipt_detail_dialog_data:{},//开收据详情dialog数据
-        edit_username_dialog_visible:false,//修改姓名dialog显示隐藏
-        edit_phone_dialog_visible:false,//修改手机号dialog显示隐藏
+        receipt_detail_dialog_visible: false,//开收据详情dialog显示隐藏
+        receipt_detail_dialog_data: {},//开收据详情dialog数据
+        edit_username_dialog_visible: false,//修改姓名dialog显示隐藏
+        edit_phone_dialog_visible: false,//修改手机号dialog显示隐藏
         edit_username_form: {
-          name:'',
+          name: '',
         },//修改姓名form表单
         edit_phone_form: {
-          phone:'',
+          phone: '',
         },//修改手机号form表单
-        user_info_form: {//包含客户姓名和联系电话的表单 分 2个接口提交
-          id:'',//电子收据id
-          assembly_id:'',//流水id
-          name:'',
-          phone:'',
+        multi_field_form: {//包含客户姓名和联系电话及违约金日期,补齐时间的表单 分多个接口提交
+          id: '',//电子收据id
+          assembly_id: '',//流水id
+          name: '',
+          phone: '',
+          exit_date: null,//违约金日期
+          complete_date: null,//补齐时间
         },
+        pre_send_message_dialog_visible: false,//发送短信之前的dialog显示隐藏
+
+        send_type_choose: 1,
+        send_type_list: [
+          {
+            id: 1, name: '催缴短信',
+            template: '【乐伽公寓】尊敬的@先生/女士：您租住的@小区，下一期房租需要缴纳，请@前及时缴纳，打款账户为收据上方的汇款账号。请您合理安排好缴款时间，及时缴款！如已缴纳，请忽略此条短信！乐伽客户服务热线4008926606。',
+          },
+          {
+            id: 2, name: '到期短信',
+            template: '【乐伽公寓】尊敬的***先生/女士：您租住的****小区，房租于***日到期，如续签/退租，请致电乐伽客户服务热线400-892-6606，谢谢。',
+          },
+          {
+            id: 3, name: '逾期短信',
+            template: '【乐伽公寓】尊敬的***先生/女士：您租住的****小区，需要在XXX前缴纳下一期房租，您已经逾期XX天，请今天及时缴纳，如不缴纳，我们将按照合同处理，收回房屋！请您合理安排好缴款时间，及时缴款！如已缴纳，请忽略此条短信，感谢您的配合！如需咨询（如有疑问），请致电乐伽客户服务热线400-892-6606，谢谢。',
+          },
+        ],
+        send_message_template_dialog_visible: false,//短信模板展示
+        generate_dialog_visible: false,//生成违约金日期页面
+
+        edit_time_dialog_visible: false,//修改补齐时间dialog页面
+        new_overdue_fine_dialog_visible: false,//新增滞纳金dialog页面
+        new_overdue_fine_form: {//新增滞纳金form
+          subject_id: '',//科目id
+          forfeit_day: 0,//滞纳天数
+          pay_date: "",//收款时间
+          customer_name: "",//客户姓名
+          details: "",//详情
+          subject_title: "",//滞纳金
+          amount: null//应收金额
+        },
+        remarks_dialog_visible: false,//应收款项备注列表dialog
+        new_remark_dialog_visible: false,//新增备注
+
         delete_visible: false,//删除
         add_visible: false,//新增
         recall_visible: false,//回滚
@@ -1095,18 +1374,19 @@
         },
         new_mark: {
           content: '',
-          category: '',
+          category: 1,
         },
+        category_choose: 1,
         categoryList: [
-          // {title: "违约", value: 1},
-          // {title: "延期", value: 2},
+          {title: "违约", value: 1},
+          {title: "延期", value: 2},
           {title: "贴条", value: 3},
           {title: "换锁", value: 4},
-          // {title: "维修", value: 5},
-          // {title: "资金", value: 6},
-          // {title: "炸单", value: 7},
-          // {title: "调房", value: 8},
-          // {title: "特殊情况", value: 9},
+          {title: "维修", value: 5},
+          {title: "资金", value: 6},
+          {title: "炸单", value: 7},
+          {title: "调房", value: 8},
+          {title: "特殊情况", value: 9},
         ],
         date_deviation: [//时间误差
           {title: "天", value: 5},
@@ -1150,7 +1430,8 @@
           "balance": '剩余金额',
           "complete_date": '补齐时间',
           "description.description": '明细详情',
-          // "remark": "备注",
+          //"remark":'备注',
+          //"remarks": "备注",
           // "receTag": "催缴备注"
         },
         btn_group: [
@@ -1160,6 +1441,9 @@
           {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
           {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
           {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
+          {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit'},
+          {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit'},
+          {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
           {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},
 
         ],
@@ -1181,6 +1465,16 @@
         },
         mark_data: [],
         mark_data_count: 0,
+
+        tableSettingData: {
+          remarks: {//收款列表备注
+            params: {},
+            count: 0,
+            tableData: [],
+            current_address: '',
+          },
+        },
+
         new_record: {
           flow_staff_id: '',//跟进人id
           flow_up_type: '',//跟进类型
@@ -1555,7 +1849,8 @@
       handleOkDel() {
         //this.$http.delete(globalConfig.temporary_server + 'account_receivable/delete/' + this.current_row.id).then(res => {
         this.$http.delete(globalConfig.temporary_server + 'account_receivable/delete/', {
-            params: {ids: _.map(this.multipleSelectionIndex, 'id')},}
+            params: {ids: _.map(this.multipleSelectionIndex, 'id')},
+          }
         ).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {
@@ -1661,7 +1956,7 @@
           fund_id: ids,
           cate: 1
         };
-        if(!isReturn) {
+        if (!isReturn) {
           await this.$http.put(globalConfig.temporary_server + 'fund_flow_record/fund_flow', paramsForm).then(res => {
             this.showLoading(false);
             if (res.code === 200) {
@@ -1672,7 +1967,7 @@
               this.count = 0;
             }
           })
-        }else {
+        } else {
           return await this.$http.put(globalConfig.temporary_server + 'fund_flow_record/fund_flow', paramsForm);
         }
 
@@ -1800,7 +2095,7 @@
           console.log(err);
         })
       },
-      getReceiveList() {//加载应收款列表
+      /*getReceiveList() {//加载应收款列表
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'account_receivable', this.params).then(res => {
           this.showLoading(false);
@@ -1818,7 +2113,103 @@
             this.received_sum = 0;
           }
         })
+      },*/
+
+      getReceiveList() {//加载应收款列表
+        this.showLoading(true);
+        this.$http.get(globalConfig.temporary_server + 'account_receivable', this.params).then(async res => {
+          this.showLoading(false);
+          if (res.code === 200) {
+            let resultData = res.data.data;
+            let fund_id = _.map(resultData, 'id');
+            let params = {
+              fund_id,
+              fund_type: 'receivable'
+            };
+            let tags = await this.$http.post(`${this.url}account_should_tag/tags`, params);
+            let tagsResult = [];
+            if (tags.code == 200) {
+              tagsResult = tags.data.data;
+
+            }else {
+              _.forEach(resultData,(o)=> {
+                o.remarks = '暂无备注';
+              });
+            }
+            _.forEach(tagsResult, (o) => {
+              let id = Number(o.id);
+              if(o.data.count==0) {
+                _.find(resultData,{id:id}).remarks = '暂无备注';
+              }else {
+                _.find(resultData,{id:id}).remarks = _.map(o.data.data,'content').join(',');
+              }
+            });
+
+
+            this.tableData = resultData;
+            this.count = res.data.count;
+            this.balance_sum = res.data.balance_sum;
+            this.receivable_sum = res.data.receivable_sum;
+            this.received_sum = res.data.received_sum;
+          } else {
+            this.tableData = [];
+            this.count = 0;
+            this.balance_sum = 0;
+            this.receivable_sum = 0;
+            this.received_sum = 0;
+          }
+        })
       },
+
+
+      //打开应收款项备注列表
+      openRemarksList(row) {
+        this.multi_field_form.assembly_id = row.id;
+        this.tableSettingData.remarks.current_address = row.customer.address;
+        this.getRemarkList();
+        this.remarks_dialog_visible = true;
+      },
+
+      //添加新的备注
+      addNewRemark(row) {
+        let id = this.multi_field_form.assembly_id;//应收款项id
+        let params = {
+          content: this.new_mark.content,
+        };
+        this.$http.post(`${this.url}account_receivable/tag/${id}`, params).then(res => {
+          this.$LjMessageEasy(res, () => {
+            this.getRemarkList();
+            this.getReceiveList();
+          });
+        });
+      },
+
+      //获取应收款项备注列表
+      getRemarkList() {
+        this.tableSettingData.remarks.tableData = [];
+        let id = this.multi_field_form.assembly_id;//应收款项id
+        let fund_id = [id];
+        let params = {
+          fund_id,
+          fund_type: 'receivable',
+        };
+        this.new_remark_dialog_visible = false;
+        this.$http.post(`${this.url}account_should_tag/tags`, params).then(res => {
+            if(res.code==200) {
+              let list = res.data.data[0]?.data?.data||[];
+              for (let item of list) {
+                let obj = {
+                  id:item.id,
+                  create_time: item.create_time,
+                  content:item.content,
+                  staff_name:item.operator.name,
+                };
+                this.tableSettingData.remarks.tableData.push(obj);
+              }
+            }
+        });
+      },
+
       handleClickBtn(key, row) {//表单操作栏
         if (key === 'should_receive') {//应收入账
           this.receive_visible = true;
@@ -1849,12 +2240,17 @@
           this.recall_visible = true;
           this.handleProcess(row);
         }
-        if (key === 'handleDelete') {
+        if (key === 'generate') {//生成违约金日期
+          this.generate_dialog_visible = true;
+        }
+        if (key === 'editTime') {//修改补齐时间
+          this.edit_time_dialog_visible = true;
+        }
+        if (key === 'handleDelete') {//删除
           this.delete_visible = true;
         }
-
-        if (key === 'sendMessage') {
-          alert('发送短信');
+        if (key === 'sendMessage') {//发送短信
+          this.pre_send_message_dialog_visible = true;
         }
       },
 
@@ -1928,40 +2324,64 @@
       },
 
 
+      /*批量发送短信*/
+      handleMultiSendMessage() {
+        let params = {
+          ids: _.map(this.multipleSelectionIndex, 'id'),
+          type: this.send_type_choose,
+        };
 
+        this.$http.put(`${this.url}account_receivable/notify`, params).then(res => {
+          this.$LjMessageEasy(res, () => {
+            this.pre_send_message_dialog_visible = false;
+          });
+        });
+      },
 
       //发送短信之前 首先打开编辑手机号码表单
       beforeSend() {
         this.edit_phone_dialog_visible = true;
-        this.edit_phone_form.phone = this.user_info_form.phone;
+        this.edit_phone_form.phone = this.multi_field_form.phone;
+      },
+
+      //发送给客户
+      handleSendMessage() {
+        let params = {
+          receipt_id: this.multi_field_form.id,
+          phone: this.multi_field_form.phone,
+        };
+        this.$http.post(`${this.url}sms/receipt`, params).then(res => {
+          this.$LjMessageEasy(res, () => {
+            this.edit_phone_dialog_visible = false;
+            //this.receipt_detail_dialog_visible = false;
+          });
+        });
       },
 
       //提交修改用户名
       handleEditUserNameConfirm() {
-        this.$refs['editUserNameFormRef'].validate((valid)=> {
-          if(valid) {
+        this.$refs['editUserNameFormRef'].validate((valid) => {
+          if (valid) {
             let params = {
               name: this.edit_username_form.name
             };
-            let id = this.user_info_form.id;
-            this.$http.put(`${this.url}receipt/name/${id}`,params).then(res=> {
-              this.$LjMessageEasy(res,async ()=> {
+            let id = this.multi_field_form.id;
+            this.$http.put(`${this.url}receipt/name/${id}`, params).then(res => {
+              this.$LjMessageEasy(res, async () => {
                 this.edit_username_dialog_visible = false;
                 let result = await this.getReceiptDataLists(true);
-                debugger
-                this.receipt_detail_dialog_data = _.find(result.data.data,{id:this.user_info_form.assembly_id})?.receipts[0];
+                this.receipt_detail_dialog_data = _.find(result.data.data, {id: this.multi_field_form.assembly_id})?.receipts[0];
               });
             });
           }
         });
 
 
-
       },
       //展示修改用户名对话框
       editUserName() {
         this.edit_username_dialog_visible = true;
-        this.edit_username_form.name = this.user_info_form.name;
+        this.edit_username_form.name = this.multi_field_form.name;
 
       },
 
@@ -1970,8 +2390,92 @@
         console.log(row);
         this.receipt_detail_dialog_visible = true;
         this.receipt_detail_dialog_data = row?.receipts[0];
-        this.user_info_form.id = row?.receipts[0].id;//电子收据id
-        this.user_info_form.assembly_id = row?.id;//流水id
+        this.multi_field_form.id = row?.receipts[0].id;//电子收据id
+        this.multi_field_form.assembly_id = row?.id;//流水id
+      },
+
+
+      /*生成违约金日期*/
+      generateExitDate() {
+        this.$refs['multiFieldFormExitDateRef'].validate((valid) => {
+          if (valid) {
+            let id = this.multi_field_form.assembly_id;//应收款项id
+            let params = {
+              exit_date: this.myUtils.formatDate(this.multi_field_form.exit_date, 'yyyy-MM-dd hh:mm:ss'),
+            };
+
+            this.$http.post(`${this.url}account_receivable/liquidate/${id}`, params).then(res => {
+              this.$LjMessageEasy(res, () => {
+                this.generate_dialog_visible = false;
+              });
+            });
+          }
+        });
+      },
+      /*修改补齐时间*/
+      editCompleteTime() {
+        this.$refs['multiFieldFormEditTimeRef'].validate((valid) => {
+          if (valid) {
+            let id = this.multi_field_form.assembly_id;//应收款项id
+            let params = {
+              complete_date: this.myUtils.formatDate(this.multi_field_form.complete_date, 'yyyy-MM-dd hh:mm:ss'),
+            };
+
+            this.$http.put(`${this.url}account_receivable/complete_date/${id}`, params).then(res => {
+              if (res.code == 201) {//201生成滞纳金
+                this.new_overdue_fine_form = res.data;
+                if (res.data.details && res.data.details.constructor === Array && res.data.details.length > 0) {
+                  this.new_overdue_fine_form.details = res.data.details[0];
+                }
+                this.$LjNotify('success', {
+                  title: '成功',
+                  message: res.msg,
+                })
+                this.$LjConfirm({title: '警告', content: '是否生成滞纳金？'}).then(() => {
+                  this.new_overdue_fine_dialog_visible = true;
+                }).catch(() => {
+                  this.edit_time_dialog_visible = false;
+                  this.getReceiveList();
+                });
+              } else if (res.code == 200) {
+                this.$LjMessageEasy(res, () => {
+                  this.edit_time_dialog_visible = false;
+                  this.getReceiveList();
+                });
+              } else {
+
+              }
+            });
+          }
+        });
+      },
+
+      /*提交新增滞纳金*/
+      handleNewOverdueFine() {
+        this.$refs['newOverdueFineFormRef'].validate((valid) => {
+          if (valid) {
+            let id = this.multi_field_form.assembly_id;//应收款项id
+            let params = {
+              forfeit_day: this.new_overdue_fine_form.forfeit_day,
+              pay_date: this.new_overdue_fine_form.pay_date,
+              amount: this.new_overdue_fine_form.amount,
+            };
+            if (isNaN(params.amount)) {
+              this.$LjMessage('warning', {
+                title: '警告',
+                msg: '金额请输入数字',
+              });
+              return;
+            }
+            this.$http.post(`${this.url}account_receivable/forfeit/${id}`, params).then(res => {
+              this.$LjMessageEasy(res, () => {
+                this.new_overdue_fine_dialog_visible = false;
+                this.edit_time_dialog_visible = false;
+                this.getReceiveList();
+              });
+            });
+          }
+        });
       },
     },
   }
@@ -2028,11 +2532,13 @@
           width: 1500px;
           height: 650px;
         }
+
         .receipt-img {
           @include financeImg('tp.png', 'theme1');
         }
+
         .href-img {
-          @include financeImg('lianjie_2.png','theme1');
+          @include financeImg('lianjie_2.png', 'theme1');
         }
       }
 

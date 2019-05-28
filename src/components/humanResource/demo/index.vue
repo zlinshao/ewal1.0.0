@@ -1,11 +1,13 @@
 <template>
   <div class="demo-container" style="width: 800px">
 
-    <div @click="more_visible = !more_visible">测试</div>
-  <app-index-more :visible.sync="more_visible"></app-index-more>
+    <!--div @click="more_visible = !more_visible">测试</div>
+  <app-index-more :visible.sync="more_visible"></app-index-more>-->
 
-    <!--<el-button @click="demo">测试</el-button>
-    <user-choose v-model="user_list"></user-choose>-->
+    <el-button @click="demo">测试</el-button>
+<!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
+<!--    <post-choose v-model="post_list"></post-choose>-->
+<!--    <user-choose v-model="user_list"></user-choose>-->
 <!--    <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>
     <search-high></search-high>-->
@@ -28,8 +30,8 @@
         </div>
       </div>
     </calendar>-->
-    <!--<img-slider :size="{width:'100%',height:'100%'}" :single="true" :arr="sliders"></img-slider>-->
-    <!--<lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>-->
+<!--    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>-->
+    <lj-upload v-model="list"></lj-upload>
     <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->
@@ -54,6 +56,7 @@
   import DropdownList from '../../../components/common/lightweightComponents/dropdown-list';
   import UserChoose from '../../../components/common/lightweightComponents/UserChoose';
   import OrgChoose from '../../../components/common/lightweightComponents/OrgChoose.vue';
+  import PostChoose from '../../../components/common/lightweightComponents/PostChoose';
 
   export default {
     name: "index",
@@ -72,6 +75,7 @@
       OrgChoose,
       UserChoose,
       AppIndexMore,
+      PostChoose,
     },
     data() {
       return {
@@ -90,12 +94,13 @@
               "size": 243104,
               "bucket": "lejia-test"
             },
-          }
+          },
         ],
-        list: [4225067],
+        list: [4228545],
         //user_list: [211, 289, 3604, 3623, 3590, 3589],
         user_list: [3604, 3335, 3338, 3337, 3339, 3336, 3334, 3343, 3388, 3630],
         org_list: [411,418, 419],
+        post_list:[],
         paper_params: {
           paper_name: '新建问卷',
           title: '入职考试',

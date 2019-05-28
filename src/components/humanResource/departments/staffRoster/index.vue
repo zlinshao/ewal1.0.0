@@ -1,3 +1,4 @@
+<!--员工名册-->
 <template>
   <div id="staffRoster">
     <div class="mainListTable"  :style="{'height': this.mainListHeight() + 'px'}">
@@ -8,11 +9,9 @@
         :row-class-name="tableChooseRow"
         @cell-dblclick="tableClickRow"
         header-row-class-name="tableHeader"
-        :default-sort="{prop: 'staff.enroll',order: 'descending'}"
-        :key="random_key"
         style="width: 100%">
         <div v-for="(item,index) in table_column" :key="index">
-          <el-table-column :min-width="item.width"  :label="item.val" :prop="item.key" align="center" v-if="item.info">
+          <el-table-column :min-width="item.width" show-overflow-tooltip  :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-if="item.info">
             <template slot-scope="scope">
               <span v-if="item.key.indexOf('staff') === -1">
                 {{ item.info[scope.row[item.key]] ? item.info[scope.row[item.key]] : '/' }}
@@ -22,7 +21,7 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column :min-width="item.width" :label="item.val" align="center" v-else-if="item.isArray" :fixed="item.key === 'position'">
+          <el-table-column :min-width="item.width" show-overflow-tooltip :label="item.val" :align="item.position=='left'?'left':'center'" v-else-if="item.isArray" :fixed="item.key === 'position'">
             <template slot-scope="scope">
               <span v-if="item.key.indexOf('staff') === -1">
                 <span v-if="scope.row[item.key] && scope.row[item.key].length > 0">
@@ -38,14 +37,14 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column :min-width="item.width" :label="item.val" align="center" v-else-if="item.isBtn">
+          <el-table-column :min-width="item.width" show-overflow-tooltip :label="item.val" :align="item.position=='left'?'left':'center'" v-else-if="item.isBtn">
             <template slot-scope="scope"><el-button type="text" v-if="scope.row.staff && scope.row.staff[item.key.split('.')[1]]" size="small" @click.stop="handleLookInfo(scope.row,item.key)">查看</el-button>
               <el-button type="text" v-else-if="! scope.row.staff[item.key.split('.')[1]] && item.isGenerate" size="small" @click.stop="generateContract(scope.row,item.key)">生成</el-button>
               <span v-else>/</span>
             </template>
           </el-table-column>
-          <el-table-column :min-width="item.width" :label="item.val" :prop="item.key" align="center" v-else-if="item.key === 'name'" fixed="left" style="background-color: white"></el-table-column>
-          <el-table-column :min-width="item.width" :label="item.val" :prop="item.key" align="center" v-else></el-table-column>
+          <el-table-column :min-width="item.width" show-overflow-tooltip :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-else-if="item.key === 'name'" fixed="left" style="background-color: white"></el-table-column>
+          <el-table-column :min-width="item.width" show-overflow-tooltip :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-else></el-table-column>
         </div>
       </el-table>
       <!--劳务合同-->
@@ -341,6 +340,9 @@
     components: {StaffFiles,LjDialog},
     data() {
       return {
+        url:globalConfig.humanResource_server,
+
+
         checkList: [],
         chooseRowIds: [],
         tableData: [],
@@ -348,31 +350,34 @@
         table_column: [
           { key: 'staff.internship_number',val: '实习协议',isBtn: true},
           { key: 'name',val: '姓名'},
-          { key: 'position',val: '岗位',isArray: true,showKey: 'name',width: "120px"},
-          { key: 'gender',val: '性别',info:{0: '女',1: '男'}},
-          { key: 'staff.origin_addr',val: '籍贯',width: "180px"},
-          { key: 'staff.political_status',val: '政治面貌',info: {1: '群众',2: '团员',3: '党员',4: '其他'}},
-          { key: 'staff.birthday',val: '出生年月',width: "150px"},
-          { key: 'staff.enroll',val: '入职时间',width: "150px"},
-          { key: 'staff.city',val: '城市'},
-          { key: 'staff.origin_addr',val: '家庭住址',width: "180px"},
+          { key: 'org',val: '部门',isArray: true,showKey: 'name',width: "120px",position:'left'},
+          { key: 'position',val: '岗位',isArray: true,showKey: 'name',width: "120px",position:'left'},
           { key: 'phone',val: '联系方式',width: "150px"},
-          { key: 'staff.id_num',val: '身份证',width: "180px"},
-          { key: 'staff.emergency_call',val: '紧急联系人',width: "150px"},
-          { key: 'staff.household_register',val: '户口性质',info: {0: '农村',1: '城市'}},
-          { key: 'staff.national',val: '民族'},
-          { key: 'staff.marital_fertility_status',val: '婚育情况',info: {1: '未婚', 2: '已婚未育',3: '已婚已育'}},
-          { key: 'staff.education',val: '学历',info: {1: '高中及以下',2: '大专',3: '本科', 4: '本科及以上', 5: '其他'},width: "120px"},
-          { key: 'staff.school',val: '毕业院校'},
-          { key: 'staff.graduation_time',val: '毕业时间',width: "150px"},
-          { key: 'staff.major',val: '专业'},
-          { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
-          { key: 'staff.dismiss_time',val: '离职时间',width: "150px"},
+          { key: 'on_job_status',val: '在职状态',width: "150px",info: {1: '在职', 2: '离职'}},
+          // { key: 'gender',val: '性别',info:{0: '女',1: '男'}},
+          // { key: 'staff.origin_addr',val: '籍贯',width: "180px",position:'left'},
+          // { key: 'staff.political_status',val: '政治面貌',info: {1: '群众',2: '团员',3: '党员',4: '其他'}},
+          // { key: 'staff.birthday',val: '出生年月',width: "150px"},
+          { key: 'staff.enroll',val: '入职时间',width: "150px"},
+          // { key: 'staff.city',val: '城市'},
+          // { key: 'staff.origin_addr',val: '家庭住址',width: "180px",position:'left'},
+
+          // { key: 'staff.id_num',val: '身份证',width: "180px"},
+          // { key: 'staff.emergency_call',val: '紧急联系人',width: "150px"},
+          // { key: 'staff.household_register',val: '户口性质',info: {0: '农村',1: '城市'}},
+          // { key: 'staff.national',val: '民族'},
+          // { key: 'staff.marital_fertility_status',val: '婚育情况',info: {1: '未婚', 2: '已婚未育',3: '已婚已育'}},
+          // { key: 'staff.education',val: '学历',info: {1: '高中及以下',2: '大专',3: '本科', 4: '本科及以上', 5: '其他'},width: "120px"},
+          // { key: 'staff.school',val: '毕业院校'},
+          // { key: 'staff.graduation_time',val: '毕业时间',width: "150px"},
+          // { key: 'staff.major',val: '专业'},
+          // { key: 'staff.position_level',val: '职级',info: {1: 'P1',2: ' P2',3: 'P3',4: 'P4',5: 'P5',6: 'P6', 7: 'P7'}},
+          // { key: 'staff.dismiss_time',val: '离职时间',width: "150px"},
           // { key: 'staff.dismiss_reason.dismiss_type',val: '离职类型',info: {1: '主动离职',2: '旷工离职',3: '劝退',4: '开除',5: '其他'}},
           // { key: 'staff.dismiss_reason.dismiss_mess',val: '离职原因'},
-          { key: 'staff.bank_num',val: '银行卡号',width: "180px"},
-          { key: 'staff.account_name',val: '户主',width: "120px"},
-          { key: 'staff.account_bank',val: '开户行',width: "120px"},
+          // { key: 'staff.bank_num',val: '银行卡号',width: "180px",position:'left'},
+          // { key: 'staff.account_name',val: '户主',width: "120px"},
+          // { key: 'staff.account_bank',val: '开户行',width: "120px"},
           { key: 'staff.ca',val: 'ca认证',isBtn: true,isGenerate:true},
           { key: 'staff.contract_number',val: '劳务合同',isBtn: true,isGenerate:true},
           { key: 'staff.leaveproof_image_url',val: '上家单位离职证明',isBtn: true},
@@ -390,7 +395,7 @@
         params: {
           search: '',
           page: 1,
-          limit: 30,
+          limit: 12,
           org_id: '',
           position_id: '',
         },
@@ -497,7 +502,7 @@
         });
       },
         getLabourInfo(id) {
-            this.$http.get(`staff/e_contract/get_contract_info/${id}`).then(res => {
+            this.$http.get(`${this.url}staff/e_contract/get_contract_info/${id}`).then(res => {
                 console.log(res);
                 if (res.code === '20010') {
                     this.labour_form = res.data;
@@ -520,7 +525,7 @@
         handleConfirmContract() {
             this.labour_form.send = 1;
             this.labour_form.type = 1;
-            this.$http.post('staff/e_contract/view_contract',this.labour_form).then(res => {
+            this.$http.post(`${this.url}staff/e_contract/view_contract`,this.labour_form).then(res => {
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -544,7 +549,7 @@
             })
         },
         handleConfirEmemployProof(){
-            this.$http.post('staff/e_contract/view_contract',this.employ_proof_form).then(res => {
+            this.$http.post(`${this.url}staff/e_contract/view_contract`,this.employ_proof_form).then(res => {
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -566,7 +571,7 @@
             })
         },
         handleConfirIncomeProof(){
-            this.$http.post('staff/e_contract/view_contract',this.income_proof_form).then(res => {
+            this.$http.post(`${this.url}staff/e_contract/view_contract`,this.income_proof_form).then(res => {
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -587,16 +592,30 @@
                 console.log(err);
             })
         },
+        alertWarnings(){
+            this.$LjNotify('warning',{
+                title: '失败',
+                message: '用户未完成ca认证'
+            });
+        },
         generateContract(row,key){
-            console.log(key);
+            console.log(row);
             switch (key) {
                 case 'staff.contract_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     this.getLabourInfo(row.id);
                     break;
                 case 'staff.ca':
                     this.staffCertific(row.id);
                     break;
                 case 'staff.commitment_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     let params={user_id:row.id,pdf_scene:6,type:1,send:1};
                     this.commitmentGenerate(params);
                     break;
@@ -609,13 +628,25 @@
                     this.getIncomeInfo(row.id,10);
                     break;
                 case 'staff.notice_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     let param={user_id:row.id,pdf_scene:7,type:1,send:1};
                     this.commitmentGenerate(param);
                     break;
                 case 'staff.secret_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     this.commitmentGenerate({user_id:row.id,pdf_scene:5,type:1,send:1});
                     break;
                 case 'staff.insurance_prohibit_number':
+                    if (!row.fdd_ca) {
+                        this.alertWarnings();
+                        return false;
+                    }
                     this.commitmentGenerate({user_id:row.id,pdf_scene:8,type:1,send:1});
                     break;
                 default:
@@ -623,7 +654,7 @@
             }
         },
         getIncomeInfo(id,scene){
-            this.$http.get('staff/e_contract/get_income_info/'+id+'?pdf_scene='+scene).then(res => {
+            this.$http.get(`${this.url}staff/e_contract/get_income_info/`+id+'?pdf_scene='+scene).then(res => {
                 console.log(res);
                 if (Number(res.code) %10 ===0){
                     switch (scene) {
@@ -643,7 +674,7 @@
             });
         },
         commitmentGenerate(params){
-            this.$http.post('staff/e_contract/view_contract',params).then(res => {
+            this.$http.post(`${this.url}staff/e_contract/view_contract`,params).then(res => {
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -662,7 +693,7 @@
             })
         },
         staffCertific(id){
-            this.$http.get('staff/e_contract/ca/'+id).then(res => {
+            this.$http.get(`${this.url}staff/e_contract/ca/`+id).then(res => {
                 if (Number(res.code) % 10 === 0) {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -722,7 +753,7 @@
                   return;
           }
           if (pdf){
-              window.open(globalConfig.server + `staff/e_contract/show/${row.staff[key.split('.')[1]]}`);
+              window.open(this.url + `staff/e_contract/show/${row.staff[key.split('.')[1]]}`);
           }else if(picture){
               window.open(msg)
           }else if (text){
@@ -734,7 +765,7 @@
 
       },
       exportStaffList() {
-        this.$http.get('staff/user/record',this.export_params,'arraybuffer').then(res => {
+        this.$http.get(this.url+'staff/user/record',this.export_params,'arraybuffer').then(res => {
           if (!res) {
             return;
           }
@@ -751,14 +782,33 @@
         });
       },
       getStaffList() {
-        this.$http.get('staff/user', this.params).then(res => {
-          this.tableData = res.data.data;
-          this.counts = res.data.count;
+        this.showLoading(true);
+        this.$http.get(this.url+'staff/user', this.params).then(res => {
+          this.showLoading(false)
+          if(res.code.endsWith('0')) {
+            res.data.data.forEach((item,index)=> {
+              if(!item.is_on_job&&!item.is_enable) {
+                item.on_job_status = 1;
+              }else {
+                item.on_job_status = 2;
+              }
+            });
+            this.tableData = res.data.data;
+            this.counts = res.data.count;
+          }else{
+              this.tableData=[];
+              this.counts=[];
+          }
+
         })
       },
       //获取当前员工详情
-      getStaffDetail(id) {
-        this.$http.get(`staff/user/${id}`).then(res => {
+      async getStaffDetail(id) {
+        if(!this.VALIDATE_PERMISSION['Employee-File-Select']) {
+          this.$LjMessage('warning',{title:'警告',msg:'无权限'});
+          return;
+        };
+        this.$http.get(`${this.url}staff/user/${id}`).then(res => {
           if (res.code === '20020') {
             this.staff_detail_info = res.data;
             this.filesVisible = true;
@@ -774,9 +824,9 @@
       },
       // 当前点击
       tableClickRow(row) {
-        let ids = this.chooseRowIds;
-        ids.push(row.id);
-        this.chooseRowIds = this.myUtils.arrayWeight(ids);
+        //let ids = this.chooseRowIds;
+        //ids.push(row.id);
+        //this.chooseRowIds = this.myUtils.arrayWeight(ids);
 
         this.getStaffDetail(row.id);
       },

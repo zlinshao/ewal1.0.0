@@ -21,7 +21,7 @@
 
       <!--房屋详情-->
       <lj-dialog
-        :visible="lj_visible"
+        :visible.sync="lj_visible"
         :size="lj_size"
         @close="handleCloseLjDialog">
         <div class="house_info">
@@ -29,21 +29,24 @@
             <div class="house_photo">
               <div class="big_img">
                 <div class="sijiao"></div>
-                <div class="history_pic" @click="history_pic_visible = true">
+                <div class="history-pic" @click="getHistoryPicList">
                   <a></a>
                 </div>
                 <img v-if="house_detail.house_detail && house_detail.house_detail.cover" :src="house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器" :data-src="house_detail.house_detail && house_detail.house_detail.cover">
                 <img v-else src="./swipe6.jpg" data-magnify="" data-caption="图片查看器" data-src="./swipe6.jgp">
               </div>
-              <div class="small_img">
-                <div v-if="house_detail.album_photo" class="img_container items-center" ref="img_contain"
+              <div class="small-img">
+
+                <lj-upload :disabled="true" id="house_picture_view" style="position: absolute" :style="{'left': img_trams + 'px'}" :size="{width:'100px',height:'50px'}" :download="false" :view-file="house_detail.album_photo"></lj-upload>
+
+                <!--<div v-if="house_detail.album_photo" class="img-container items-center" ref="img_contain"
                      :style="{'left': img_trams + '%'}">
                   <img data-magnify="" data-caption="图片查看器" :data-src="item.uri"
                        v-for="item in house_detail.album_photo" :src="item.uri" alt="" style="min-height: 80px">
                 </div>
-                <div v-else style="margin-top: 30px">暂无照片信息</div>
-                <span class="btn left_btn" @click="handleTransLeft"><i class="el-icon-arrow-left"></i></span>
-                <span class="btn right_btn" @click="handleTransRight"><i class="el-icon-arrow-right"></i></span>
+                <div v-else style="margin-top: 30px">暂无照片信息</div>-->
+                <span class="btn left-btn" @click="handleTransLeft"><i class="el-icon-arrow-left"></i></span>
+                <span class="btn right-btn" @click="handleTransRight"><i class="el-icon-arrow-right"></i></span>
               </div>
             </div>
             <div class="house_detail">
@@ -74,7 +77,7 @@
               </div>
               <div class="deploy">
                 <h3>房屋配置</h3>
-                <div class="deploy_info flex">
+                <div class="deploy-info flex">
                   <span v-for="item in deploy_info" :key="item.id" class="items-column"
                         :class="{'deploy_none': parseInt(item.num) < 1}">
                     <span class="flex-center">
@@ -86,8 +89,8 @@
               </div>
             </div>
           </div>
-          <div class="table_info">
-            <div class="info_type flex-center">
+          <div class="table-info">
+            <div class="info-type flex-center">
               <span @click="handleCheckModule(item)" v-for="item in house_type" :key="item.id"
                     :class="{'current-change': item.id === current_house_type}">{{ item.val }}</span>
             </div>
@@ -163,7 +166,7 @@
         :visible="look_visible"
         :size="{width: 700 + 'px',height: '800' + 'px'}"
         @close="look_visible = false">
-        <div class="look_info">
+        <div class="look-info">
           <h3>查看带看记录</h3>
           <div class="flex" style="margin-bottom: 30px">
               <span class="items-column">
@@ -207,7 +210,7 @@
       </lj-dialog>
 
       <!--搜索房源-->
-      <HouseFilter :visible="house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
+      <HouseFilter :visible.sync="house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
 
       <!--设置-->
       <lj-dialog
@@ -239,7 +242,7 @@
                   <el-input placeholder="请选择" v-model="set_price_form.suggest_name"
                             @focus="handleOpenChooseHouse('suggest')"></el-input>
                 </el-form-item>
-                <el-form-item label="最低价">
+                <el-form-item label="建议价格">
                   <el-input placeholder="请输入" v-model="set_price_form.suggest_price"></el-input>
                 </el-form-item>
               </el-form>
@@ -275,9 +278,8 @@
 
       <!--历史相册-->
       <lj-dialog
-        :visible="history_pic_visible"
+        :visible.sync="history_pic_visible"
         :size="{width: 800 + 'px',height: 600 + 'px'}"
-        @close="history_pic_visible = false"
       >
         <div class="dialog_container">
           <div class="dialog_header">
@@ -287,15 +289,15 @@
             <div v-for="item in house_detail.house_album_data">
               <p class="flex">
                 <a :style="pic_style">{{ item.created_at }}</a>
-                <a :style="pic_style">上传人：{{ item.user_name }}</a>
-                <a :style="pic_style">部门：{{ item.department_name }}</a>
-                <a>岗位：{{ item.position_name }}</a>
+                <a :style="pic_style">上传人：{{ item.user_name||'无' }}</a>
+                <a :style="pic_style">部门：{{ item.department_name||'无' }}</a>
+                <a>岗位：{{ item.position_name||'无' }}</a>
               </p>
               <div class="flex" v-if="item.album_photo && item.album_photo.length > 0">
                 <img v-for="tmp in item.album_photo" alt="" :key="tmp.id" data-magnify="" data-caption="图片查看器"
                      :data-src="tmp.uri" :src="tmp.uri" style="width: 70px;height: 70px;border-radius: 5px;margin: 15px 15px 15px 0" v-if="tmp.uri">
               </div>
-              <div v-else>暂无图片</div>
+<!--              <div v-else>暂无图片</div>-->
             </div>
           </div>
           <div class="dialog_main" v-else>暂无数据</div>
@@ -382,7 +384,8 @@
           house_identity: []
         },
 
-        img_trams: 0,
+        img_trans_count:0,//点击偏移次数
+        img_trams: 0,//偏移
         //房屋配置
         deploy_info: [
           {
@@ -534,6 +537,7 @@
 
         furniture_list: [],
 
+
       }
     },
     mounted() {
@@ -635,7 +639,7 @@
         this.table_params.limit = 15;
         this.table_params.page = 1;
         this.current_house_type = item.id;
-        var url = '';
+        let url = '';
         switch (item.id) {
           case 1:
             url = `v1.0/market/house/houseVillage/${this.current_house.id}`;
@@ -678,6 +682,7 @@
         this.set_price_visible = false;
       },
       handleSubmitSetPrice() {
+
         this.$http.post(this.market_server + '/v1.0/market/house/houseBottSuggPrice', this.set_price_form).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {
@@ -757,18 +762,37 @@
           }
         })
       },
+      //获取历史相册列表
+      getHistoryPicList() {
+
+        console.log(this.current_house);
+        let id = this.current_house.id;
+        let params = {id};
+        this.$http.get(`${this.market_server}v1.0/market/house/houseAlbum`,params).then(res=> {
+          if(res.code==200) {
+            this.house_detail.house_album_data = res.data;
+          }
+          this.$nextTick(()=> {
+            this.history_pic_visible = true;
+          });
+        });
+      },
+
+      //打开房屋详情
       handleOpenCardDetail(item) {
         this.current_house = item;
         this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
           if (res.code === 200) {
+            this.lj_visible = true;
+            this.img_trams = 0;//下方相册offset归位
+            this.img_trans_count = res.data.album_photo?.length||0;
             this.house_detail = res.data;
-            console.log(this.house_detail);
             if (this.house_detail.house_goods) {
-              for (var item of this.deploy_info) {
+              for (let item of this.deploy_info) {
                 item.num = this.house_detail.house_goods[item.key] ? this.house_detail.house_goods[item.key] : 0;
               }
             } else {
-              for (var item of this.deploy_info) {
+              for (let item of this.deploy_info) {
                 item.num = 0;
               }
             }
@@ -777,22 +801,27 @@
               width: 1220 + 'px',
               height: 800 + 'px'
             };
-            this.lj_visible = true;
+
           } else {
             this.house_detail = '';
           }
         });
       },
       handleTransLeft() {
-        var keys = Object.keys(this.house_detail.album_photo);
-        var offset = (keys.length - 4) * 120 - 80;
-        if (this.$refs['img_contain'].offsetLeft > -offset) {
-          this.img_trams -= 10;
+        let keys = Object.keys(this.house_detail.album_photo);
+        let len = keys.length;
+        if(this.img_trans_count<len) {
+          this.img_trams += 110;
+          this.img_trans_count++;
         }
       },
       handleTransRight() {
-        if (this.img_trams < 0) {
-          this.img_trams += 10;
+        let keys = Object.keys(this.house_detail.album_photo);
+        let len = keys.length;
+        let cou = this.img_trans_count;
+        if(cou>=len) {
+          this.img_trams -= 110;
+          this.img_trans_count--;
         }
       },
       handleCloseMenu() {
@@ -835,17 +864,11 @@
           }
         }
         .house_info {
-          > div {
-
-          }
           .base_info {
             border-bottom: 1px dashed #808080;
-            > div {
-
-            }
             .house_photo {
               .big_img {
-                .history_pic {
+                .history-pic {
                   a {
                     @include houseManagementImg('history_pic.png','theme1');
                   }
@@ -854,7 +877,7 @@
                   @include houseManagementImg('sijiao.png', 'theme1');
                 }
               }
-              .small_img {
+              .small-img {
                 .btn {
                   background-color: $color874;
                 }
@@ -878,7 +901,7 @@
                 }
               }
               .deploy {
-                .deploy_info {
+                .deploy-info {
                   > span {
                     > span {
                       @include radius(50%);
@@ -949,40 +972,13 @@
               }
             }
           }
-          .table_info {
-            > div {
-
-            }
-            .info_type {
-              > span {
-                color: $colorFDF;
-              }
+          .table-info {
+            .info-type {
               .current-change {
                 @include houseManagementImg('hongdi.png', 'theme1');
-                color: white;
               }
             }
-            .page {
-              margin-top: 20px;
-            }
-          }
-        }
-        .look_info {
-          > div {
-            > span {
-              width: 100%;
-            }
-          }
-          .all {
-            color: $colorDFF;
-            font-size: 34px;
-          }
-          .current {
-            color: $colorC00;
-            font-size: 34px;
-          }
-          .txt {
-            font-size: 14px;
+
           }
         }
         .price_min_container, .suggest_price_container {

@@ -24,6 +24,7 @@ div.el-popover {
 }
 
 #theme_name {
+
   .el-form-item__label:before {
     content: '' !important;
   }
@@ -365,8 +366,11 @@ div.el-popover {
   #nq,
   #discussPolitics,
   #militaryOrganization,
+  #departments,
+  //#humanResource,
   #todo_list,
   #personal_center,
+
   #intellectualPropertyProtection {
     .el-input__inner {
       transition: none;
@@ -500,11 +504,24 @@ div.el-popover {
 
 #theme_name.theme1 {
   .el-table {
-    thead {
+    //注释掉 否则无法有全选按钮
+   /* thead {
       tr th {
         .el-checkbox__input {
           display: none;
         }
+      }
+    }*/
+    /*所有th头部居中*/
+    thead {
+      tr {
+        th {
+          .cell {
+            display: flex;
+            justify-content: center;
+          }
+        }
+
       }
     }
     tbody {
@@ -512,6 +529,15 @@ div.el-popover {
         td {
           color: $colorE33;
         }
+      }
+      //selection居中
+      .el-table-column--selection {
+        .cell {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
       }
 
       tr:hover {

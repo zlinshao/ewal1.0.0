@@ -1,5 +1,5 @@
 <template>
-  <LjDialog :visible="visible" :size="{width: 600 + 'px',height: 600 + 'px'}" @close="handleClose" id='invalid_dailog'>
+  <lj-dialog :visible="visible" :size="{width: 600 + 'px',height: 600 + 'px'}" @close="handleClose" id='invalid_dialog'>
     <div class='dialog_container'>
       <div class='dialog_header'>
         <h3>作废重签</h3>
@@ -12,7 +12,7 @@
               <span v-if='item == "photo"'>(重新报备)</span>
             </p>
             <div v-if='moduleData.album' class='imgBox'>
-              <Ljupload size='40' v-model='moduleData.album[item]' disabled=true :download='false'></Ljupload>
+              <lj-upload size='40' v-model='moduleData.album[item]' disabled=true :download='false'></lj-upload>
               <!-- <img :src="img.uri" alt="" v-for='img in moduleData.album[item]' :key='img.id' data-magnify=""
                 data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'> -->
             </div>
@@ -24,16 +24,12 @@
         <el-button id='active-info' size="small" @click="handleClose">取消</el-button>
       </div>
     </div>
-  </LjDialog>
+  </lj-dialog>
 </template>
 <script>
-import LjDialog from '../../common/lj-dialog.vue';
-import Ljupload from '../../common/lightweightComponents/lj-upload'
 export default {
   props: ['visible', 'moduleData'],
   components: {
-    LjDialog,
-    Ljupload
   },
   data () {
     return {
@@ -82,8 +78,6 @@ export default {
         });
 
       })
-
-
     },
   }
 }
@@ -92,7 +86,7 @@ export default {
 <style lang="scss">
 @import "../../../assets/scss/common.scss";
 #theme_name {
-  #invalid_dailog {
+  #invalid_dialog {
     .dialog_footer {
       display: flex;
       justify-content: center;
@@ -147,7 +141,7 @@ export default {
 }
 
 #theme_name.theme1 {
-  #invalid_dailog {
+  #invalid_dialog {
   }
 }
 </style>

@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "index",
+  name: "ljDialog",
   props: ['visible', 'size'],
   data () {
     return {

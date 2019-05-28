@@ -1,8 +1,8 @@
 <template>
   <div id="orgChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
-      <el-input @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
-      <p class="icons organization"></p>
+      <el-input :size="size" :disabled="disabled" @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <p v-if="showIcon" class="icons organization"></p>
     </div>
 
     <DepartOrgan :initial="value" :module="departModule" :organ-data="organData" @close="hiddenOrgan"></DepartOrgan>
@@ -15,7 +15,28 @@
 
   export default {
     name: "OrgChoose",
-    props: ['value', 'width', 'num', 'title'],
+    //props: ['value', 'width', 'num', 'title'],
+    props:{
+      value:{},
+      width:{},
+      num:{},
+      title:{},
+      size: {
+        default() {
+          return null;
+        }
+      },
+      disabled: {
+        default() {
+          return false;
+        }
+      },
+      showIcon: {
+        default() {
+          return true;
+        }
+      }
+    },
     components: {
       DepartOrgan
     },

@@ -22,7 +22,7 @@ $colorC65: #9ccc65;
 $colorC00: #fb8c00;
 $color9F9: #f9f9f9;
 $color0F0: #f0f0f0;
-/*@font-face {
+@font-face {
   font-family: 'jingDianXingShu';
   src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
 }
@@ -35,8 +35,8 @@ $color0F0: #f0f0f0;
 @font-face {
   font-family: 'jianyue';
   src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
-}*/
-@font-face {
+}
+/*@font-face {
   font-family: 'jingDianXingShu';
   src: url('/static/font/JDJXINSHU.otf');
 }
@@ -49,7 +49,7 @@ $color0F0: #f0f0f0;
 @font-face {
   font-family: 'jianyue';
   src: url('/static/font/BaiZhouRenZhe.otf');
-}
+}*/
 
 @mixin inputColor($c) {
   input {

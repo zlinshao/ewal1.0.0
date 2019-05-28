@@ -1,6 +1,6 @@
 <template>
   <div id="upLoad">
-    <transition-group name="list" tag="p" class="items-center">
+    <transition-group name="list" tag="p" class="items-center" style="flex-wrap: nowrap">
       <div v-for="(item,index) in showFile" :key="JSON.stringify(item)" class="showFile" :style="uploadCss">
         <!--图片-->
         <img :src="item.uri" v-if="item.info.mime.includes('image') && editable">
@@ -51,7 +51,8 @@
         <input type="file" :id="file.keyName" hidden multiple @change="uploadPic">
       </label>
       <!--下载按钮-->
-      <label title="下载全部" @click="downloadAll" v-if="!editable && download &&showFile.length>0" class="uploadPic" :key="1" :style="uploadCss"
+      <label title="下载全部" @click="downloadAll" v-if="!editable && download &&showFile.length>0" class="uploadPic"
+             :key="1" :style="uploadCss"
              :for="file.keyName">
         <img src="../../../assets/image/common/theme1/xiazai_xue.png">
       </label>
@@ -111,10 +112,19 @@
     //props: ['file', 'disabled','download'],
     props: {
       file: {},
-      disabled:{},
-      download:{},
+      disabled: {},
+      download: {},
+      limit: {
+        type: Array,
+        default() {
+          return [];
+        }
+      },
       maxSize: {
-        type:[Number],
+        type: [Number],
+      },
+      viewFile: {
+        type: Array,
       },
     },
     components: {
@@ -132,6 +142,7 @@
         isVideo: '',//是否视频
         progress: [],
         uploadCss: this.file.size || {width: '100px', height: '100px'},
+        //limit: ['doc','txt','png'],
       }
     },
     mounted() {
@@ -141,6 +152,9 @@
     watch: {
       file: {
         handler(val, oldVal) {
+          //debugger
+          //console.log(val);
+          //if(!this.disabled && oldVal) return;
           if (val.setFile.length > 0) {
             this.showFile = [];
             for (let item of val.setFile) {
@@ -153,11 +167,20 @@
             this.showFile = [];
             this.progress = [];
           }
-          this.$emit('success', [this.file.keyName, this.ids, true]);
+
+          this.$emit('success', [this.file.keyName, _.uniq(this.ids), true]);
         },
         deep: true,
         immediate: true,
-      }
+      },
+      viewFile: {
+        handler(val, oldVal) {
+          if (val.constructor === Array && val.length > 0) {
+            this.showFile = val;
+          }
+        },
+        immediate: true,
+      },
     },
     computed: {
       editable() {
@@ -197,8 +220,8 @@
         showFile = _.filter(showFile, (value) => {
 
           let sResult = value.info.mime.includes('image') || value.info.mime.includes('video');
-          if(!sResult) {
-            if(index>mIdx) {
+          if (!sResult) {
+            if (index > mIdx) {
               index--;
             }
           }
@@ -221,7 +244,7 @@
         this.ids.splice(index, 1);
         this.progress.splice(index, 1);
         let status = this.ids.length === this.showFile.length;
-        this.$emit('success', [this.file.keyName, this.ids, status]);
+        this.$emit('success', [this.file.keyName, _.uniq(this.ids), status]);
       },
       // 获取token
       uploadPic() {
@@ -252,11 +275,22 @@
           let fileType = '';
           let fileName = file.name;
           let fileSize = file.size;
-          if(this.maxSize) {
-            if(this.maxSize*1024*1024<=file.size) {
-              this.$LjMessage('warning',{
-                title:'警告',
-                msg:`超过最大上传限制${this.maxSize}M`,
+          let ext = file.name.split('.')[file.name.split('.').length - 1];
+          if (this.limit.constructor === Array && this.limit.length > 0) {
+            if (!_.includes(this.limit, ext)) {
+              this.$LjMessage('warning', {
+                title: '警告',
+                msg: `仅支持上传${this.limit.join(',')}的类型`,
+              });
+              document.getElementById(that.file.keyName).value = null;
+              return;
+            }
+          }
+          if (this.maxSize) {
+            if (this.maxSize * 1024 * 1024 <= file.size) {
+              this.$LjMessage('warning', {
+                title: '警告',
+                msg: `超过最大上传限制${this.maxSize}M`,
               });
               return;
             }
@@ -305,7 +339,12 @@
           let observable = qiniu.upload(file, key, that.token, putExtra, config);
           let subscription = observable.subscribe({
             next(res) {
+              /*let docElement = document.getElementById(pro);
+              if(!docElement&&!docElement.innerText) {
+                docElement.innerText = Math.floor(res.total.percent) + '%';
+              }*/
               document.getElementById(pro).innerText = Math.floor(res.total.percent) + '%';
+
             },
             error(err) {
               console.log(err);
@@ -322,7 +361,8 @@
                 if (res.code === "110100") {
                   that.ids.push(Number(res.data.id));
                   let status = that.ids.length === that.showFile.length;
-                  that.$emit('success', [that.file.keyName, that.ids, status]);
+                  let s = that.ids;
+                  that.$emit('success', [that.file.keyName, _.uniq(that.ids), status]);
                 }
               })
             }
@@ -347,24 +387,31 @@
       width: 100%;
       height: 100%;
     }
+
     width: 100%;
+
     .list-enter-active, .list-leave-active {
       transition: all 1s;
     }
+
     .list-enter, .list-leave-to {
       opacity: 0;
       transform: translateY(30px);
     }
+
     .showFile, .uploadPic {
       overflow: hidden;
       @include radius(6px);
     }
+
     .items-center {
       flex-wrap: wrap;
     }
+
     .showFile {
       position: relative;
       margin: 10px 10px 0 0;
+
       .progress {
         position: absolute;
         bottom: 0;
@@ -377,6 +424,7 @@
         line-height: 30px;
         text-align: center;
       }
+
       .remove {
         cursor: pointer;
         position: absolute;
@@ -387,6 +435,7 @@
         @include radius(50%);
         background-color: $colorE33;
         align-items: flex-end;
+
         img {
           margin: 0 0 7px 7px;
           width: 12px;
@@ -394,6 +443,7 @@
         }
       }
     }
+
     .uploadPic {
       cursor: pointer;
       margin-top: 10px;

@@ -1,6 +1,7 @@
 .flex {
   display: flex;
-  display: -webkit-flex; }
+  display: -webkit-flex;
+}
 
 .bet-column {
   display: flex;
@@ -8,7 +9,8 @@
   flex-direction: column;
   justify-content: space-between;
   flex-direction: column;
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 .bet-column {
   display: flex;
@@ -16,135 +18,160 @@
   flex-direction: column;
   justify-content: space-between;
   flex-direction: column;
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 .space-column {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .items-column {
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
-  align-items: center; }
+  align-items: center;
+}
 
 .flex-center {
   display: flex;
   display: -webkit-flex;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .items-bet {
   display: flex;
   display: -webkit-flex;
   align-items: center;
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 .items-center {
   display: flex;
   display: -webkit-flex;
-  align-items: center; }
+  align-items: center;
+}
 
 .items-start {
   display: flex;
   display: -webkit-flex;
-  align-items: flex-start; }
+  align-items: flex-start;
+}
 
 .items-end {
   display: flex;
   display: -webkit-flex;
-  align-items: flex-end; }
+  align-items: flex-end;
+}
 
 .justify-center {
   display: flex;
   display: -webkit-flex;
-  justify-content: center; }
+  justify-content: center;
+}
 
 .justify-around {
   display: flex;
   display: -webkit-flex;
-  justify-content: space-around; }
+  justify-content: space-around;
+}
 
 .justify-bet {
   display: flex;
   display: -webkit-flex;
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 .justify-start {
   display: flex;
   display: -webkit-flex;
-  justify-content: flex-start; }
+  justify-content: flex-start;
+}
 
 .justify-end {
   display: flex;
   display: -webkit-flex;
-  justify-content: flex-end; }
+  justify-content: flex-end;
+}
 
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf");
+}
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF");
+}
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf");
+}
 /*@font-face {
   font-family: 'jingDianXingShu';
-  src: url('http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf');
+  src: url('/static/font/JDJXINSHU.otf');
 }
 
 @font-face {
   font-family: 'mengFeiSiTe';
-  src: url('http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF');
+  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
 }
 
 @font-face {
   font-family: 'jianyue';
-  src: url('http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf');
+  src: url('/static/font/BaiZhouRenZhe.otf');
 }*/
-@font-face {
-  font-family: 'jingDianXingShu';
-  src: url("/static/font/JDJXINSHU.otf"); }
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url("/static/font/ITCAVANTGARDESTD-MD.OTF"); }
-@font-face {
-  font-family: 'jianyue';
-  src: url("/static/font/BaiZhouRenZhe.otf"); }
 .writingMode {
   writing-mode: vertical-rl;
-  writing-mode: tb-rl; }
+  writing-mode: tb-rl;
+}
 
 .line-clamp1 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1; }
+  -webkit-line-clamp: 1;
+}
 
 .line-clamp2 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; }
+  -webkit-line-clamp: 2;
+}
 
 .line-clamp3 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; }
+  -webkit-line-clamp: 3;
+}
 
 .scroll_bar {
-  overflow: auto; }
-  .scroll_bar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-button {
-    height: 10px;
-    background-color: #e4e7ed;
-    border-radius: 10px; }
-  .scroll_bar::-webkit-scrollbar-track {
-    background: #e4e7ed; }
-  .scroll_bar::-webkit-scrollbar-thumb {
-    background: #999999;
-    border-radius: 4px; }
+  overflow: auto;
+}
+.scroll_bar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-button {
+  height: 10px;
+  background-color: #e4e7ed;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-track {
+  background: #e4e7ed;
+}
+.scroll_bar::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 4px;
+}
 
 .action-bar {
   width: 100%;
@@ -154,93 +181,121 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #f2f2f2; }
-  .action-bar div {
-    display: flex;
-    flex-direction: row;
-    align-items: center; }
-  .action-bar .check-count {
-    margin-left: 30px;
-    margin-right: 50px; }
-    .action-bar .check-count i {
-      font-style: normal;
-      color: #ff4545; }
-  .action-bar .action-bar-name {
-    display: inline-block;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around; }
-    .action-bar .action-bar-name span {
-      display: inline-block;
-      text-align: center;
-      border-left: 1px solid #9b9b9b;
-      font-size: 18px;
-      padding: 0 10px;
-      cursor: pointer; }
-    .action-bar .action-bar-name span:first-child {
-      border-left: 0; }
-  .action-bar .delete {
-    color: #ff4545; }
-  .action-bar .edit {
-    color: #0c66ff; }
-  .action-bar .check {
-    color: #0bb07b; }
+  border-top: 1px solid #f2f2f2;
+}
+.action-bar div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.action-bar .check-count {
+  margin-left: 30px;
+  margin-right: 50px;
+}
+.action-bar .check-count i {
+  font-style: normal;
+  color: #ff4545;
+}
+.action-bar .action-bar-name {
+  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.action-bar .action-bar-name span {
+  display: inline-block;
+  text-align: center;
+  border-left: 1px solid #9b9b9b;
+  font-size: 18px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.action-bar .action-bar-name span:first-child {
+  border-left: 0;
+}
+.action-bar .delete {
+  color: #ff4545;
+}
+.action-bar .edit {
+  color: #0c66ff;
+}
+.action-bar .check {
+  color: #0bb07b;
+}
 
 .colorE33 {
-  color: #cf2e33; }
+  color: #cf2e33;
+}
 
 .color874 {
-  color: #686874; }
+  color: #686874;
+}
 
 #theme_name #HousingDue .cell span {
-  white-space: nowrap; }
+  white-space: nowrap;
+}
 #theme_name #HousingDue .dialog_header .header_tit {
   text-align: right;
   font-size: 16px;
-  color: #cf2e33; }
-#theme_name #HousingDue .dialog_main {
+  color: #cf2e33;
+}
+#theme_name #HousingDue .edit-markup {
   overflow: hidden;
-  overflow-y: scroll; }
-  #theme_name #HousingDue .dialog_main .detail_dialog_left {
-    flex: 1;
-    font-size: 14px;
-    text-align: right; }
-    #theme_name #HousingDue .dialog_main .detail_dialog_left p + p {
-      margin-top: 10px; }
-  #theme_name #HousingDue .dialog_main .detail_dialog_center {
-    height: 100%;
-    margin: 0 80px; }
-    #theme_name #HousingDue .dialog_main .detail_dialog_center .circle {
-      width: 15px;
-      height: 15px; }
-  #theme_name #HousingDue .dialog_main .detail_dialog_right {
-    flex: 1;
-    text-align: left;
-    font-size: 10px; }
-    #theme_name #HousingDue .dialog_main .detail_dialog_right p + p {
-      margin-top: 10px; }
-    #theme_name #HousingDue .dialog_main .detail_dialog_right .other_fee p {
-      margin-top: 5px;
-      padding-left: 10px; }
-    #theme_name #HousingDue .dialog_main .detail_dialog_right .detail_dialog_rato {
-      margin-left: 20px;
-      display: inline-block; }
-      #theme_name #HousingDue .dialog_main .detail_dialog_right .detail_dialog_rato .el-rate__icon {
-        font-size: 12px; }
-    #theme_name #HousingDue .dialog_main .detail_dialog_right .detail_dialog_note {
-      margin-top: 0; }
+  overflow-y: scroll;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_left {
+  flex: 1;
+  font-size: 14px;
+  text-align: right;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_left p + p {
+  margin-top: 10px;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_center {
+  height: 100%;
+  margin: 0 80px;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_center .circle {
+  width: 15px;
+  height: 15px;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_right {
+  flex: 1;
+  text-align: left;
+  font-size: 10px;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_right p + p {
+  margin-top: 10px;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_right .other_fee p {
+  margin-top: 5px;
+  padding-left: 10px;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_right .detail_dialog_rato {
+  margin-left: 20px;
+  display: inline-block;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_right .detail_dialog_rato .el-rate__icon {
+  font-size: 12px;
+}
+#theme_name #HousingDue .edit-markup .detail_dialog_right .detail_dialog_note {
+  margin-top: 0;
+}
 #theme_name #HousingDue .detail_dialog .back_info {
-  padding: 0 30px 50px; }
+  padding: 0 30px 50px;
+}
 #theme_name #HousingDue .detail_dialog .content + .content {
-  position: relative; }
-  #theme_name #HousingDue .detail_dialog .content + .content:before {
-    content: '';
-    width: 1px;
-    height: 70%;
-    background-color: #cf2e33;
-    position: absolute;
-    top: -10%;
-    left: 50%; }
+  position: relative;
+}
+#theme_name #HousingDue .detail_dialog .content + .content:before {
+  content: '';
+  width: 1px;
+  height: 70%;
+  background-color: #cf2e33;
+  position: absolute;
+  top: -10%;
+  left: 50%;
+}
 #theme_name #HousingDue .detail_dialog .content {
   padding-top: 50px;
   display: flex;
@@ -248,90 +303,122 @@
   justify-content: center;
   display: flex;
   display: -webkit-flex;
-  align-items: center; }
+  align-items: center;
+}
 #theme_name #HousingDue .cell.time {
-  font-size: 14px; }
+  font-size: 14px;
+}
 #theme_name #HousingDue .contract_detail .main_tit {
   font-size: 14px;
   text-align: left;
-  margin: 20px 0 8px; }
+  margin: 20px 0 8px;
+}
 #theme_name #HousingDue .contract_detail .noMarginTop {
-  margin-top: 0; }
+  margin-top: 0;
+}
 #theme_name #HousingDue .contract_detail .common_info {
-  padding: 20px 0 12px; }
+  padding: 20px 0 12px;
+}
 #theme_name #HousingDue .contract_detail .mian_tit {
-  font-size: 14px; }
+  font-size: 14px;
+}
 #theme_name #HousingDue .contract_detail .el-form-item {
-  margin-right: 0 !important; }
-  #theme_name #HousingDue .contract_detail .el-form-item .el-row {
-    margin-right: 0 !important; }
-  #theme_name #HousingDue .contract_detail .el-form-item .el-form-item__label {
-    line-height: 30px;
-    height: 30px;
-    white-space: nowrap; }
-  #theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content {
-    font-size: 14px;
-    text-align: left;
-    width: 230px;
-    line-height: 30px;
-    height: 36px;
-    overflow-x: scroll;
-    overflow: auto; }
-    #theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-      border-radius: 10px; }
-    #theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content::-webkit-scrollbar-button {
-      height: 10px;
-      background-color: #e4e7ed;
-      border-radius: 10px; }
-    #theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content::-webkit-scrollbar-track {
-      background: #e4e7ed; }
-    #theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content::-webkit-scrollbar-thumb {
-      background: #999999;
-      border-radius: 4px; }
-    #theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content span {
-      white-space: nowrap; }
+  margin-right: 0 !important;
+}
+#theme_name #HousingDue .contract_detail .el-form-item .el-row {
+  margin-right: 0 !important;
+}
+#theme_name #HousingDue .contract_detail .el-form-item .el-form-item__label {
+  line-height: 30px;
+  height: 30px;
+  white-space: nowrap;
+}
+#theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content {
+  font-size: 14px;
+  text-align: left;
+  width: 230px;
+  line-height: 30px;
+  height: 36px;
+  overflow-x: scroll;
+  overflow: auto;
+}
+#theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 10px;
+}
+#theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content::-webkit-scrollbar-button {
+  height: 10px;
+  background-color: #e4e7ed;
+  border-radius: 10px;
+}
+#theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content::-webkit-scrollbar-track {
+  background: #e4e7ed;
+}
+#theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 4px;
+}
+#theme_name #HousingDue .contract_detail .el-form-item .el-form-item__content span {
+  white-space: nowrap;
+}
 #theme_name #HousingDue .contract_detail .person_tit {
   width: 100px;
   display: inline-block;
   font-size: 14px;
   line-height: 30px;
-  height: 30px; }
+  height: 30px;
+}
 #theme_name #HousingDue .contract_detail .el-col-7 .el-form-item__content {
-  width: 200px; }
+  width: 200px;
+}
 #theme_name #HousingDue .urgedDeal .el-form {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+}
 #theme_name #HousingDue .urgedDeal .el-textarea textarea {
-  min-height: 120px !important; }
+  min-height: 120px !important;
+}
 
 #theme_name.theme1 #HousingDue .active-warning {
   background: #e6a23c;
-  color: #fff; }
+  color: #fff;
+}
 #theme_name.theme1 #HousingDue .active-primary {
   background: #409eff;
-  color: #fff; }
+  color: #fff;
+}
 #theme_name.theme1 #HousingDue .detail_dialog {
   background: #ffffff;
-  color: #686874; }
-  #theme_name.theme1 #HousingDue .detail_dialog .circle {
-    background: url("../../../assets/image/customService/housingDue/theme1/biaoji.png") no-repeat scroll center;
-    background-size: 100% 100%; }
+  color: #686874;
+}
+#theme_name.theme1 #HousingDue .detail_dialog .circle {
+  background: url("../../../assets/image/customService/housingDue/theme1/biaoji.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
 #theme_name.theme1 #HousingDue .mainListTable .status1 {
   background: url("../../../assets/image/customService/housingDue/theme1/landi.png") no-repeat scroll center;
   background-size: 100% 100%;
-  color: #0c66ff; }
+  color: #0c66ff;
+}
 #theme_name.theme1 #HousingDue .mainListTable .status2 {
   background: url("../../../assets/image/customService/housingDue/theme1/fendi.png") no-repeat scroll center;
   background-size: 100% 100%;
-  color: #cf2e33; }
+  color: #cf2e33;
+}
 #theme_name.theme1 #HousingDue .contract_detail .common_info {
-  background-color: #ffffff; }
+  background-color: #ffffff;
+}
 #theme_name.theme1 #HousingDue .contract_detail .el-form-item__label {
-  color: #b0b0b0; }
+  color: #b0b0b0;
+}
 #theme_name.theme1 #HousingDue .contract_detail .el-form-item__content {
-  color: #686874; }
+  color: #686874;
+}
 #theme_name.theme1 #HousingDue .contract_detail .person_tit {
-  color: #b0b0b0; }
+  color: #b0b0b0;
+}
 #theme_name.theme1 #HousingDue .contract_detail .main_tit {
-  color: #686874; }
+  color: #686874;
+}
+
+/*# sourceMappingURL=index.css.map */

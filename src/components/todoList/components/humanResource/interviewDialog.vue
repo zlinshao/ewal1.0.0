@@ -168,7 +168,7 @@
             this.interview_form.user = this.$todo_list_current_selection.user;
             this.interview_form.platform = this.$todo_list_current_selection.platform;
             this.interview_form.date = this.$todo_list_current_selection.date;
-            this.interview_form.interviewer = '张三';
+            this.interview_form.current_interviewer = '张三';
 
 
             this.interview_form.resume = _.find(this.$todo_list_current_selection.variables,{name:'resume_url'})?.value;
@@ -192,7 +192,7 @@
 
 
           radio: 1,//是否接受此次面试任务 不接收转移面试官
-          interviewer: '',//面试官
+          interviewer: [],//面试官
           result: 1,//面试结果
           reason: '',//未通过原因
 
@@ -220,6 +220,10 @@
         let type = this.interview_form.radio;//radio为1 当前用户提交面试结果 radio为2 转移面试官
         let process_id = _.find(this.$todo_list_current_selection.variables,{name:'interview_process_id'})?.value;//面试流程id
         if(type==2) {//转移面试官
+          if(this.interview_form.interviewer.length==0) {
+            this.$LjMessage('warning',{title:'警告',msg:'请选择面试官'});
+            return;
+          }
           let interviewer_id = this.interview_form.interviewer[0];//转交面试官id
           let params = {
             interviewer_id
@@ -228,6 +232,8 @@
             if(res.code.endsWith('0')) {
               this.$store.dispatch('change_refresh_todo_list');
               this.interviewHandler();
+            }else {
+              this.$LjMessage('error',{title:'失败',msg:res.msg});
             }
           });
         }else if(type==1) {//本人提交面试结果

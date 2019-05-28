@@ -1,3 +1,4 @@
+<!--租客-->
 <template>
   <div class="mainListTable changeChoose">
     <!--列表-->
@@ -39,12 +40,13 @@
         </template>
       </el-table-column>
       <el-table-column
+        show-overflow-tooltip
         v-for="item in Object.keys(renterLabel)"
         :label="renterLabel[item]" :key="item"
         :prop="item"
-        align="center">
+        :align="item=='address'?'left':'center'">
       </el-table-column>
-      <el-table-column label="付款方式/月单价" prop="prices" align="center" width="180" show-overflow-tooltip>
+      <el-table-column  show-overflow-tooltip label="付款方式/月单价" prop="prices" align="center" width="180" show-overflow-tooltip>
       </el-table-column>
       <el-table-column label="状态" prop="" align="center">
         <template slot-scope="scope">
@@ -206,6 +208,8 @@
         } else {
           this.params.search = ''
         }
+        this.params.page = val.page;
+        this.params.limit = val.limit;
         if (val.date1) {
           this.params.startRange = val.date1[0];
           this.params.endRange = val.date1[1];
@@ -254,8 +258,8 @@
       getRenterList() {
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'customer_renter', this.params).then(res => {
+          this.showLoading(false);
           if (res.code === 200) {
-            this.showLoading(false);
             this.renterLists = res.data.data.sort(
               function (a, b) {
                 return a.id - b.id
@@ -266,13 +270,19 @@
               this.renterIds.push(item.id)
             }
             this.$http.get(globalConfig.temporary_server + 'customer_renter_repeat', {id: this.renterIds}).then(res => {
-              console.log(res);
+              //console.log(res);
               if (res.code === 200) {
                 this.renterStatus = res.data.data.sort(
                   function (a, b) {
                     return a.id - b.id
                   }
                 );
+                _.forEach(this.renterLists,(o)=> {
+                  let findRst = _.find(this.renterStatus,{id:o.id});
+                  o.prefix = findRst;
+                  o.type = 'renter';//租客
+                  o.prefix_suppress_dup = findRst?.suppress_dup||0;
+                });
               }
             });
             this.renterCount = res.data.count;
@@ -301,16 +311,23 @@
           this.callbackSuccess(res);
         })
       },
-      //忽略重复标记
-      handleRemarkRenter(row) {
+      //取消或恢复重复标记
+      handleRemarkRenter(row,type) {
+        let operate;
+        if(!type) {//取消重复标记
+          operate = 1;
+        }else {//恢复重复标记
+          operate = 2;
+        }
         this.ra_ids = [];
         this.ra_ids.push(row.id);
         console.log(this.ra_ids);
         this.$http.put(globalConfig.temporary_server + 'customer_renter_repeat/is_ignore', {
           ids: this.ra_ids,
-          operate: 1
+          operate: operate
         }).then(res => {
           this.callbackSuccess(res);
+          this.is_table_choose = null;
           if (res.code === 200) {
 
           }

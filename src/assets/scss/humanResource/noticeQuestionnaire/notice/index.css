@@ -1,46 +1,369 @@
-/*
-Error: Invalid GBK character "\xE4"
-        on line 141 of index.scss
+.flex {
+  display: flex;
+  display: -webkit-flex;
+}
 
-136:                 }
-137: 
-138:               }
-139:             }
-140: 
-141:             //会议个数dialog
-142: 
-143:           }
-144:         }
-145:         .notice-table-container {
-146:           flex: 1;
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-Backtrace:
-index.scss:141
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1043:in `rescue in block in find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1040:in `block in find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `each_with_index'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:1039:in `find_encoding_error'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:773:in `rescue in check_sass_encoding'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/util.rb:769:in `check_sass_encoding'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:444:in `check_encoding!'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:400:in `_to_tree'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/engine.rb:307:in `render_with_sourcemap'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `each'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/plugin.rb:82:in `update_stylesheets'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:340:in `watch_or_update'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/sass_scss.rb:51:in `process_result'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:52:in `parse'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/lib/sass/exec/base.rb:19:in `parse!'
-C:/App/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.5/bin/scss:13:in `<top (required)>'
-C:/App/Ruby24-x64/bin/scss:23:in `load'
-C:/App/Ruby24-x64/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE4\"\A         on line 141 of index.scss\A \A 136:                 }\A 137: \A 138:               }\A 139:             }\A 140: \A 141:             //会议个数dialog\A 142: \A 143:           }\A 144:         }\A 145:         .notice-table-container {\A 146:           flex: 1;"; }
+.bet-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.space-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.items-column {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.items-bet {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.items-center {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+}
+
+.items-start {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start;
+}
+
+.items-end {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-end;
+}
+
+.justify-center {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+}
+
+.justify-around {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-around;
+}
+
+.justify-bet {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: space-between;
+}
+
+.justify-start {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-start;
+}
+
+.justify-end {
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end;
+}
+
+@font-face {
+  font-family: 'jingDianXingShu';
+  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf");
+}
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF");
+}
+@font-face {
+  font-family: 'jianyue';
+  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf");
+}
+/*@font-face {
+  font-family: 'jingDianXingShu';
+  src: url('/static/font/JDJXINSHU.otf');
+}
+
+@font-face {
+  font-family: 'mengFeiSiTe';
+  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
+}
+
+@font-face {
+  font-family: 'jianyue';
+  src: url('/static/font/BaiZhouRenZhe.otf');
+}*/
+.writingMode {
+  writing-mode: vertical-rl;
+  writing-mode: tb-rl;
+}
+
+.line-clamp1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.scroll_bar {
+  overflow: auto;
+}
+.scroll_bar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-button {
+  height: 10px;
+  background-color: #e4e7ed;
+  border-radius: 10px;
+}
+.scroll_bar::-webkit-scrollbar-track {
+  background: #e4e7ed;
+}
+.scroll_bar::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 4px;
+}
+
+.action-bar {
+  width: 100%;
+  padding: 0 40px;
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f2f2f2;
+}
+.action-bar div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.action-bar .check-count {
+  margin-left: 30px;
+  margin-right: 50px;
+}
+.action-bar .check-count i {
+  font-style: normal;
+  color: #ff4545;
+}
+.action-bar .action-bar-name {
+  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.action-bar .action-bar-name span {
+  display: inline-block;
+  text-align: center;
+  border-left: 1px solid #9b9b9b;
+  font-size: 18px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.action-bar .action-bar-name span:first-child {
+  border-left: 0;
+}
+.action-bar .delete {
+  color: #ff4545;
+}
+.action-bar .edit {
+  color: #0c66ff;
+}
+.action-bar .check {
+  color: #0bb07b;
+}
+
+.colorE33 {
+  color: #cf2e33;
+}
+
+.color874 {
+  color: #686874;
+}
+
+#theme_name #notice .listTopCss {
+  height: 0;
+}
+#theme_name #notice .listTopCss .search-toolbar {
+  position: fixed;
+  top: 106px;
+  right: 70px;
+  height: 30px;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: flex-end;
+  width: 40%;
+}
+#theme_name #notice .listTopCss .search-toolbar > div {
+  width: 30px;
+  height: 30px;
+}
+#theme_name #notice .listTopCss .search-toolbar .icons-font {
+  height: 30px;
+  width: 70px;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+#theme_name #notice .listTopCss .search-toolbar .icons-font b {
+  color: white;
+  font-size: 14px;
+}
+#theme_name #notice .header_right {
+  display: flex;
+  flex-direction: row-reverse;
+}
+#theme_name #notice .header_right .icon-add {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #CF2E33;
+}
+#theme_name #notice .header_right .icon-add b {
+  color: #ffffff;
+  font-size: 30px;
+  margin-bottom: 6px;
+}
+#theme_name #notice .read-dialog .dialog_main {
+  display: flex;
+  flex-direction: column;
+}
+#theme_name #notice .read-dialog .dialog_main .read-toolbar {
+  height: 10%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+#theme_name #notice .read-dialog .dialog_main .read-toolbar .read-icon {
+  height: 30px;
+  width: 100px;
+  cursor: pointer;
+  margin-right: 20px;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+}
+#theme_name #notice .read-dialog .dialog_main .read-toolbar .read-icon b {
+  color: #797982;
+  font-size: 14px;
+}
+#theme_name #notice .read-dialog .dialog_main .read-toolbar .read-icon.checked b {
+  color: white;
+}
+#theme_name #notice .read-dialog .dialog_main .read-container {
+  flex: 1 0 auto;
+  padding: 20px;
+  background-color: white;
+}
+#theme_name #notice .notice-detail-dialog {
+  padding-top: 15px;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main {
+  display: flex;
+  flex-direction: column;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main .notice-detail-container {
+  height: 300px;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main .notice-detail-container .notice-detail-list {
+  font-size: 14px;
+  width: calc(100% - 40px);
+  height: 100%;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main .notice-detail-container .notice-detail-list .form-item {
+  width: 100%;
+  padding: 12px 0;
+  vertical-align: center;
+  position: relative;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main .notice-detail-container .notice-detail-list .form-item .form-item-title {
+  opacity: .5;
+  text-align: right;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main .notice-detail-container .notice-detail-list .form-item .form-item-content {
+  position: relative;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main .notice-detail-container .notice-detail-list .form-item .form-item-content.attachment-container {
+  position: absolute;
+  top: -20px;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main .notice-detail-container .notice-detail-list .form-item .form-item-content .form-item-content-span-red {
+  color: #D1373C;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main .notice-detail-container .notice-detail-list .form-item .form-item-content .form-item-content-span-input {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  width: 40px;
+  background-color: #fff;
+  text-align: center;
+}
+#theme_name #notice .notice-detail-dialog .dialog_main .notice-table-container {
+  flex: 1;
+}
+#theme_name #notice .publish-notice-container .form-dynamic {
+  min-height: 200px;
+  position: relative;
+}
+
+/*# sourceMappingURL=index.css.map */

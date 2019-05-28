@@ -7,6 +7,8 @@ globalConfig = {
   leJiaCollege_server: 'http://test.university.api.ewal.lejias.cn/', //乐伽大学  测试地址 http://ewal_university.test
   risk_sever: 'http://test.risk.api.ewal.lejias.cn', //风险控制
   newMedia_sever: 'http://test.new_media.api.ewal.lejias.cn', //新媒体  http://test.new_media.api.ewal.lejias.cn/  测试地址  http://ewal_new_media.test
+  president_sever: 'http://bmzy67.natappfree.cc/', // 梁晓东
+  network_sever: ' http://test.monitor.api.ewal.lejias.cn/', // 方圆
   organ_server: 'http://gml.vaiwan.com/ewal/public/',
   upload_sever: 'http://recommend.ewal.lejias.cn/',
   humanResource_server: 'http://test.hr.api.ewal.lejias.cn/',
@@ -16,6 +18,9 @@ globalConfig = {
   kpi: 'http://test.kpi.api.ewal.lejias.cn/',
   favorite: 'http://test.new_media.api.ewal.lejias.cn/',
   approval_sever: 'http://47.101.204.100:8080/',
-  message_sever: 'http://test.mcs.lejias.cn/'
+  message_sever: 'http://test.mcs.lejias.cn/',
+  shield_server:'http://test.shield.api.ewal.lejias.cn/',//第三方登录
+
+  user_info:{},//用户信息
   // mcs.lejias.cn
 }

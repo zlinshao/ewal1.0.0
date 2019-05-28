@@ -49,8 +49,11 @@
                 <el-button type="success" plain size="mini" @click="handleOpenPolishing(scope.row)">补齐资料</el-button>
                 <el-tooltip placement="bottom-end" :visible-arrow="false">
                   <div class="flex control-btn" slot="content">
-                    <span v-for="tmp in choose_list" :key="tmp.id"
-                          @click.stop="handleClickSpan(tmp,scope.row)">{{ tmp.val }}</span>
+                    <span v-for="item in choose_list" :key="item.id"
+                          @click.stop="handleClickSpan(item,scope.row,scope.row.is_tag)">
+                      <div v-if="item.id==3&&scope.row.is_tag">修改标记</div>
+                      <div v-else>{{item.val}}</div>
+                    </span>
                   </div>
                   <span class="point_btn writingMode">···</span>
                 </el-tooltip>
@@ -324,6 +327,16 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
+                  <el-form-item label="合同开始时间">
+                    <span>{{ contractDetail.start_at || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="合同结束时间">
+                    <span>{{ contractDetail.end_at || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
                   <el-form-item label="违约金">
                     <!--mortgage_price-->
                     <span>{{ contractDetail.mortgage_price || '/'}}</span>
@@ -487,8 +500,7 @@
               <div class="flex-center" v-for="(item,index) in contractDetail.album" style="min-height: 80px">
                 <div style="width: 10%;text-align: right;padding-right: 15px">{{ other_pictures[index] }}</div>
                 <div style="width: 90%;text-align: left">
-                  <img v-for="tmp in item" :key="tmp.id" data-magnify="" data-caption="图片查看器" :data-src="tmp.uri" :src="tmp.uri"
-                    style="width: 70px;height: 70px;margin-right: 15px" v-if="tmp.uri">
+                  <lj-upload v-model="contractDetail.album[index]" :download="false" :disabled="true"></lj-upload>
                 </div>
               </div>
             </div>
@@ -535,7 +547,7 @@
     <lj-dialog :visible="add_mark_visible" :size="{width: 450 + 'px',height: 500 + 'px'}" @close="handleCancelMark">
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>添加标记</h3>
+          <h3>{{add_or_edit_mark==1?'添加标记':'修改标记'}}</h3>
         </div>
         <div class="dialog_main borderNone">
           <el-form :model="mark_form" label-width="80px">
@@ -555,7 +567,7 @@
               <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="6"></el-input>
             </el-form-item>
             <el-form-item label="上传图片">
-              <Upload :file="mark_upload" @success="handleGetMarkUpload"></Upload>
+              <lj-upload size="50" style="position: absolute;top: -13px;" v-model="mark_form.album"></lj-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -567,7 +579,7 @@
     </lj-dialog>
 
     <!--审核详情-->
-    <lj-dialog :visible="check_visible" :size="{width: 600 + 'px',height: 500 + 'px'}" @close="check_visible = false">
+    <lj-dialog :visible.sync="check_visible" :size="{width: 700 + 'px',height: 500 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">审核详情</div>
         <div class="dialog_main">
@@ -575,7 +587,7 @@
             <div>
               <div class="content flex" v-for="(item,key) in check_info">
                 <div>
-                  <a>{{ item.create.name || '/' }}</a><br>
+                  <a>{{ item.create.name || '无' }}</a><br>
                   <span>{{ item.created_at }}</span>
                 </div>
                 <div class="flex-center">
@@ -585,7 +597,8 @@
                   <div class="line" v-if="key !== check_info.length -1"></div>
                 </div>
                 <div>
-                  <a>{{ item.remark }}</a><br>
+                  <p :title="item.remark" style="margin-bottom: 5px">{{ substringPlugin(item.remark,13) }}</p>
+                  <p>发送对象:{{item.receive && item.receive.name || '--'}}</p>
                 </div>
               </div>
             </div>
@@ -664,7 +677,8 @@ export default {
         checkout_photo: '退租交接单照片',
         checkout_settle_photo: '退租结算照片',
         water_card_photo: '水卡照片',
-        property_photo: '物业照片'
+        property_photo: '物业照片',
+        house_video:'房屋影像',
       },
       //添加标记
       add_mark_visible: false,
@@ -678,14 +692,6 @@ export default {
         { id: 1, val: '续租' },
         { id: 2, val: '退租' },
       ],
-      mark_upload: {
-        keyName: 'album',
-        setFile: [],
-        size: {
-          width: '50px',
-          height: '50px'
-        }
-      },
 
       show_control: '',
       current_choose_control: '',
@@ -694,6 +700,7 @@ export default {
         { id: 2, val: '回访记录' },
         { id: 3, val: '添加标记' },
       ],
+      add_or_edit_mark:1,//添加还是修改标记  1为添加,2为修改
 
       //作废重签
       rewrite_visible: false,
@@ -773,6 +780,7 @@ export default {
       params: {
         page: 1,
         limit: 30,
+        search:'',
         contract_type: 1,
         sign_date_min: '',
         sign_date_max: '',
@@ -1026,34 +1034,40 @@ export default {
       this.contract_detail_visible = false;
     },
     handleCancelMark () {
-      for (var key in this.mark_form) {
+      for (let key in this.mark_form) {
         this.mark_form[key] = '';
       }
       this.mark_form.album = [];
       this.add_mark_visible = false;
     },
     handleSubmitMark () {
-      this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
-        console.log(res);
-        if (res.code === 200) {
-          this.$LjNotify('success', {
-            title: '成功',
-            message: res.message
+      if(this.add_or_edit_mark==1) {//添加标记
+        this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
+          //console.log(res);
+          if (res.code === 200) {
+            this.$LjNotify('success', {
+              title: '成功',
+              message: res.message
+            });
+            this.handleCancelMark();
+            this.getContractList();
+          } else {
+            this.$LjNotify('warning', {
+              title: '失败',
+              message: res.message
+            })
+          }
+        })
+      }else  {//修改标记
+        let tag_id = this.currentRow.is_tag;
+        this.$http.put(`${this.market_server}v1.0/market/contract/tag/${tag_id}`,this.mark_form).then(res=> {
+          this.$LjMessageEasy(res,()=> {
+            this.handleCancelMark();
+            this.getContractList();
           });
-          this.handleCancelMark();
-          this.getContractList();
-        } else {
-          this.$LjNotify('warning', {
-            title: '失败',
-            message: res.message
-          })
-        }
-      })
-    },
-    handleGetMarkUpload (file) {
-      if (file !== 'close') {
-        this.mark_form[file[0]] = file[1];
+        });
       }
+
     },
     chooseMarkRadio (item) {
       this.mark_form.tag_status = item.id;
@@ -1063,12 +1077,13 @@ export default {
       this.backInfo = '';
       this.backInfo_visible = false;
     },
-    handleClickSpan (tmp, item) {
-      this.currentRow = item;
-      this.current_choose_control = tmp.id;
-      switch (tmp.id) {
+    handleClickSpan (item, row,isEdit) {//isEdit  是否为修改标记
+      this.add_or_edit_mark=!isEdit?1:2;
+      this.currentRow = row;
+      this.current_choose_control = item.id;
+      switch (item.id) {
         case 1:
-          this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${item.contract_id}`).then(res => {
+          this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
             if (res.code === 200) {
               console.log(res);
               if (res.data.checkout_remark && res.data.checkout_remark.length > 0) {
@@ -1093,8 +1108,8 @@ export default {
           });
           break;
         case 2:
-          if (item.record) {
-            this.backInfo = item.record;
+          if (row.record) {
+            this.backInfo = row.record;
             this.backInfo_visible = true;
           } else {
             this.$LjNotify('warning', {
@@ -1104,7 +1119,16 @@ export default {
           }
           break;
         case 3:
-          this.add_mark_visible = true;
+
+          if(isEdit) {//为修改标记
+            let id  = row.is_tag;//tagid
+            this.$http.get(`${this.market_server}v1.0/market/contract/tagdetail/${id}`).then(res=> {
+              if(res.code==200) {
+                this.mark_form = res.data;
+                this.add_mark_visible = true;
+              }
+            });
+          }
           break;
       }
     },
@@ -1138,9 +1162,15 @@ export default {
       this.currentRow = row;
       // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
-        console.log(res);
+        //console.log(res);
         if (res.code === 200) {
           this.contractDetail = res.data;
+          //遍历图片生成需要的格式
+          /*if(this.contractDetail.album&&Object.keys(this.contractDetail.album).length>0) {
+            _(this.contractDetail.album).forEach((val,key)=>{
+              album[key] = Object.keys(val);
+            });
+          }*/
           this.contract_detail_visible = true;
         } else {
           this.contractDetail = '';
@@ -1162,7 +1192,7 @@ export default {
         });
         return false;
       }
-      for (var key in this.polishing_params) {
+      for (let key in this.polishing_params) {
         if (!this.polishing_params[key] || this.polishing_params[key].length < 1) {
           this.$LjNotify('warning',{
             title: '警告',
@@ -1171,10 +1201,17 @@ export default {
           return false;
         }
       }
-      var form = new FormData();
-      form.append('complete_content', this.polishing_params);
+      let form = new FormData();
+      form.append('complete_content', JSON.stringify(this.polishing_params));
       form.append('property_number', this.property_number);
       form.append('mound_number', this.mound_number);
+
+      /*let form = {};
+      form['complete_content']=this.polishing_params;
+      form['property_number']= this.property_number;
+      form['mound_number']= this.mound_number;*/
+      debugger
+      let s = this.currentRow.contract_id;
       this.$http.post(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, form).then(res => {
         if (res.code === 200) {
           this.$LjNotify('success', {
@@ -1208,10 +1245,12 @@ export default {
     selfLabel (idx) {
       return this.polishing_data[this.chooseTab - 1][idx];
     },
+    /*打开补齐资料对话框*/
     handleOpenPolishing (row) {
+      this.currentRow = row;
       if (row.needComplete && row.needComplete.length > 0) {
-        var obj = {};
-        var param = {};
+        let obj = {};
+        let param = {};
         row.needComplete.map(item => {
           obj[item] = '';
           param[item] = {
@@ -1256,6 +1295,7 @@ export default {
       this.searchData = {
         status: 'contractManagement',
         keywords: 'search',
+        placeholder: '地址/合同编号',
         data: [
           {
             keyType: 'dateRange',
@@ -1276,7 +1316,7 @@ export default {
                 { id: 1, title: '新租' },
                 { id: 2, title: '转租' },
                 { id: 3, title: '续租' },
-                { id: 4, title: '未收先租' },
+                /*{ id: 4, title: '未收先租' },*/
                 { id: 5, title: '调租' },
               ]
           },
@@ -1302,6 +1342,17 @@ export default {
             dataType: '',
             value: {
               num: '',
+            }
+          },
+          {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org',
+            dataType: [],
+            value: {
+              num: '',
+              arr: []
             }
           }
         ]
@@ -1330,6 +1381,8 @@ export default {
         this.params.end_date_max = val.date3 && val.date3.length > 0 ? val.date3[1] ? val.date2[1] : '' : '';
         this.params.signer = val.signer && val.signer[0] ? val.signer[0] : '';
         this.params.type = val.type && val.type;
+        this.params.org =val.org;
+        this.params.search = val.search;
         this.getContractList();
       }
       this.highVisible = false;

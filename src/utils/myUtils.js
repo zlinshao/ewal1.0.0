@@ -78,10 +78,13 @@ class myUtils {
     let eTime = new Date(endTime.replace(/-/g, '/')).getTime();
     if (sTime < time && eTime > time) {
       return true;
-    }
-    ;
+    };
     return false;
+  }
 
+  //获取地址栏参数
+  static getUrlParams(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
   }
 
 }

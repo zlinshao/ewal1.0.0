@@ -3,6 +3,7 @@ export const staffBookSearch = {
   status: 'staffBookSearch',
   placeholder: '请输入搜索内容',
   keywords: 'search',
+  limit:12,
   data: [
     {
       keyType: 'radio',
@@ -58,6 +59,26 @@ export const staffBookSearch = {
       }
     }
   ]
+}
+// 离职管理
+export const OrgSearch = {
+    status: 'OrgSearch',
+    keywords: 'search',
+    limit: 7,
+    page:1,
+    data: [
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org_id',
+            dataType: [],
+            value: {
+                num: '',
+                arr: []
+            }
+        }
+    ]
 }
 
 // 离职管理
@@ -243,7 +264,7 @@ export const workOrderSearch = {
 // 回访记录
 export const visitToRecordSearch = {
   status: 'visitToRecord',
-  placeholder: '地址/合同编号/工单编号/内容',
+  placeholder: '地址/合同编号/内容',
   keywords: 'search',
   data: [
     {
@@ -280,7 +301,7 @@ export const visitToRecordSearch = {
 // 房屋到期
 export const housingDueSearch = {
   status: 'housingDue',
-  placeholder: '地址/合同编号/工单编号/内容',
+  placeholder: '地址/合同编号/房东姓名/电话',
   keywords: 'search',
   data: [
     {
@@ -342,7 +363,7 @@ export const housingDueSearch = {
 // 资料审核
 export const dataAuditSearch = {
   status: 'housingDue',
-  placeholder: '地址/合同编号/工单编号/内容',
+  placeholder: '地址/合同编号',
   keywords: 'search',
   data: [
     {
@@ -359,11 +380,11 @@ export const dataAuditSearch = {
       dataType: [],
       value: [
         {
-          id: 22,
+          id: 1,
           title: '新收'
         },
         {
-          id: 23,
+          id: 2,
           title: '续收'
         }
       ]
@@ -378,7 +399,7 @@ export const dataAuditSearch = {
         num: 1
       }
     },
-    {
+    /*{
       keyType: 'staff',
       title: '负责人',
       placeholder: '请选择员工',
@@ -386,6 +407,17 @@ export const dataAuditSearch = {
       dataType: '',
       value: {
         num: 1
+      }
+    },*/
+    {
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'org',
+      dataType: [],
+      value: {
+        num: '',
+        arr: []
       }
     }
   ]
@@ -558,6 +590,7 @@ export const overViewSearch = {
   status: 'overViewSearch',
   placeholder: '请输入物品名称',
   keywords: 'search',
+  data:[],
 }
 
 //借用领用
@@ -666,7 +699,7 @@ export const borrowReceiveSearch = {
   ]
 }
 
-//招兵买马
+//招聘管理
 export const recruitmentSearchList = {
   1: {
     status: 'recruitmentSearchList',
@@ -699,7 +732,7 @@ export const recruitmentSearchList = {
     status: 'recruitmentSearchList',
     keywords: 'search',
     data: [
-      {
+      /*{
         keyType: 'depart',
         title: '部门',
         placeholder: '请选择部门',
@@ -709,7 +742,8 @@ export const recruitmentSearchList = {
           num: '',
           arr: []
         }
-      },
+      },*/
+
       {
         keyType: 'position',
         title: '岗位',
@@ -719,14 +753,33 @@ export const recruitmentSearchList = {
         value: {
           num: ''
         }
-      }
+      },
+      {
+        keyType: 'radio',
+        title: '来源',
+        keyName: 'platform',
+        dataType: [],
+        value: [
+          { id: 0, title: '智联招聘' },
+          { id: 1, title: '前程无忧' },
+          { id: 2, title: '58同城' },
+          { id: 3, title: 'BOSS直聘' },
+          { id: 4, title: '猎聘网' },
+          { id: 5, title: '首席信才' },
+          { id: 6, title: '德胜人才' },
+          { id: 7, title: '校园招聘会' },
+          { id: 8, title: '社会招聘会' },
+          { id: 9, title: '推荐' },
+          { id: 10, title: '其他' },
+        ]
+      },
     ]
   },
   3: {
     status: 'recruitmentSearchList',
     keywords: 'search',
     data: [
-      {
+      /*{
         keyType: 'depart',
         title: '部门',
         placeholder: '请选择部门',
@@ -736,7 +789,8 @@ export const recruitmentSearchList = {
           num: '',
           arr: []
         }
-      },
+      },*/
+
       {
         keyType: 'position',
         title: '岗位',
@@ -746,14 +800,33 @@ export const recruitmentSearchList = {
         value: {
           num: ''
         }
-      }
+      },
+      {
+        keyType: 'radio',
+        title: '来源',
+        keyName: 'platform',
+        dataType: [],
+        value: [
+          { id: 0, title: '智联招聘' },
+          { id: 1, title: '前程无忧' },
+          { id: 2, title: '58同城' },
+          { id: 3, title: 'BOSS直聘' },
+          { id: 4, title: '猎聘网' },
+          { id: 5, title: '首席信才' },
+          { id: 6, title: '德胜人才' },
+          { id: 7, title: '校园招聘会' },
+          { id: 8, title: '社会招聘会' },
+          { id: 9, title: '推荐' },
+          { id: 10, title: '其他' },
+        ]
+      },
     ]
   },
-  4: {
+  4: {//预约入职
     status: 'recruitmentSearchList',
     keywords: 'search',
     data: [
-      {
+      /*{
         keyType: 'depart',
         title: '部门',
         placeholder: '请选择部门',
@@ -763,7 +836,7 @@ export const recruitmentSearchList = {
           num: '',
           arr: []
         }
-      },
+      },*/
       {
         keyType: 'position',
         title: '岗位',
@@ -773,7 +846,26 @@ export const recruitmentSearchList = {
         value: {
           num: ''
         }
-      }
+      },
+      {
+        keyType: 'radio',
+        title: '来源',
+        keyName: 'platform',
+        dataType: [],
+        value: [
+          { id: 0, title: '智联招聘' },
+          { id: 1, title: '前程无忧' },
+          { id: 2, title: '58同城' },
+          { id: 3, title: 'BOSS直聘' },
+          { id: 4, title: '猎聘网' },
+          { id: 5, title: '首席信才' },
+          { id: 6, title: '德胜人才' },
+          { id: 7, title: '校园招聘会' },
+          { id: 8, title: '社会招聘会' },
+          { id: 9, title: '推荐' },
+          { id: 10, title: '其他' },
+        ]
+      },
     ]
   }
 }

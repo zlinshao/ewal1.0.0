@@ -2,7 +2,7 @@
   <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
       <el-input :size="size" :disabled="disabled" @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
-      <p class="icons user"></p>
+      <p v-if="showIcon" class="icons user"></p>
     </div>
 
 
@@ -25,6 +25,11 @@
       disabled: {},
       size: {
         default:'',
+      },
+      showIcon: {
+        default() {
+          return true;
+        }
       },
     },
     components: {
@@ -87,7 +92,7 @@
             this.dropdownListWidth = val;
           }
         },
-        immediate: true//第一次绑定也执行
+        immediate: true
       },
       num: {
         handler(val, oldVal) {
@@ -95,7 +100,7 @@
             this.organData.num = parseInt(val);
           }
         },
-        immediate: true//第一次绑定也执行
+        immediate: true
       }
     },
     methods: {

@@ -1,6 +1,6 @@
 <template>
   <div id='contract_detail'>
-    <lj-dialog :visible="visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
+    <lj-dialog :visible="visible" :size="{width: 1250 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container" v-if='visible && contractDetail'>
         <div class="dialog_header">
           <h3>合同详情</h3>
@@ -305,7 +305,7 @@
                   <div class='el_check_box'>
                     <div class='main_tit'> {{tit}}</div>
                     <div style="width: 90%;text-align: left" v-if='contractDetail.album_temp && contractDetail.album_temp[key]'>
-                      <Ljupload size='40' :value="contractDetail.album_temp[key]" disabled=true :download='false'></Ljupload>
+                      <lj-upload size='40' v-model="contractDetail.album_temp[key]" disabled=true :download='false'></lj-upload>
                     </div>
                   </div>
                 </template>
@@ -326,7 +326,7 @@
             </el-form>
           </div>
 
-          <p class='main_tit' v-if='showData'>资料不齐记录</p>
+          <p class='main_tit' v-if='showData'>资料补齐记录</p>
           <div class='data_info' v-if='showData'>
             <div class="flex-center">
               <div class="flex_center_tit">发送对象</div>
@@ -337,17 +337,17 @@
             </div>
 
             <div class="flex-center flex-center2">
-              <div class="flex_center_tit">不齐内容</div>
+              <div class="flex_center_tit">补齐内容</div>
               <div class="flex_center_content flex_center_content2">
-                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请选择不齐内容" v-model="dataRecord.content"
+                <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请选择补齐内容" v-model="dataRecord.content"
                   disabled style='background:transparent'>
                 </el-input>
                 <div class='buttons'>
-                  <p class='buttons_left' @click='handlePostRecord'>
+                  <p class='buttons-left' @click='handlePostRecord'>
                     <i class='icon'></i>
                     <span>发送</span>
                   </p>
-                  <el-button id='active-primary' @click='handleGetRecord'>不齐记录</el-button>
+                  <el-button id='active-primary' @click='handleGetRecord'>补齐记录</el-button>
                 </div>
               </div>
             </div>
@@ -365,24 +365,24 @@
     <!--资料不全 开单人选择-->
     <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
 
-    <!--资料不齐记录-->
-    <lj-dialog :visible="dataRecord_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseRecord">
+    <!--资料补齐记录-->
+    <lj-dialog :visible.sync="dataRecord_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseRecord">
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>资料不齐记录</h3>
+          <h3>资料补齐记录</h3>
         </div>
         <div class="dialog_main dataRecord_dialog_main" v-if='dataRecord_visible'>
-          <div v-for='(remark,index) in contractDetail.checkout_remark' class='dataRecord_cell' :key='index' v-if='dataRecord_visible && contractDetail.checkout_remark'>
+          <div v-for='(item,index) in contractDetail.checkout_remark' class='dataRecord_cell' :key='index' v-if='dataRecord_visible && contractDetail.checkout_remark'>
             <div class='detail_dialog_left'>
-              <p>{{remark.create.name}}</p>
-              <p>2019.1.16</p>
+              <p>{{item.create.name||'无'}}</p>
+              <p>{{item.created_at}}</p>
             </div>
             <div class="detail_dialog_center">
               <div class='circle'></div>
             </div>
             <div class='detail_dialog_right'>
-              <p>{{remark.remark}}</p>
-              <p>发送对象:{{remark.receive && remark.receive.name || '--'}}</p>
+              <p :title="item.remark">{{item.remark}}</p>
+              <p>发送对象:{{item.receive && item.receive.name || '--'}}</p>
             </div>
           </div>
           <div v-else>暂无记录</div>
@@ -397,23 +397,19 @@
 
 
 <script>
-import LjDialog from '../../common/lj-dialog.vue';
 import StaffOrgan from '../../common/staffOrgan.vue';
-import Ljupload from '../../common/lightweightComponents/lj-upload'
 import InvalidDialog from '../components/invalid-dialog'
 export default {
   props: ['visible',
     'moduleData',
     'chooseTab',  // 合同类型
-    'showData',  // 不齐记录
+    'showData',  // 补齐记录
     'showFooter',  // 底部操作
     'showRelated', // 显示合同相关信息
     'disabled'], // 是否可选
   components: {
-    LjDialog,
     StaffOrgan,
     InvalidDialog,
-    Ljupload
   },
   data () {
     return {
@@ -461,7 +457,7 @@ export default {
       organData: {
         num: ''
       },
-      //资料不齐记录
+      //资料补齐记录
       dataRecord_visible: false,
       dataRecord: {
         send_name: '',
@@ -471,7 +467,7 @@ export default {
       complete: {
         task_id: '',
         key_name: ''
-      }, // 发送不齐信息
+      }, // 发送补齐信息
       payArr: ['水费', '电费', '燃气费', '物业费', '网络费', '其他'],
       market_server: globalConfig.market_server,
     }
@@ -572,12 +568,12 @@ export default {
         this.dataRecord.send_id = arr
       }
     },
-    // 发送不齐记录
+    // 发送补齐记录
     handlePostRecord () {
       if (!this.dataRecord.content) {
         this.$LjNotify('warning', {
           title: '提示',
-          message: '不齐内容未选择'
+          message: '补齐内容未选择'
         });
         return
       }
@@ -607,7 +603,7 @@ export default {
       })
 
     },
-    //资料不齐
+    //资料补齐
     handleGetRecord () {
       this.dataRecord_visible = true;
     },
@@ -631,7 +627,7 @@ export default {
         }
       })
     },
-    //资料不齐
+    //资料补齐
     handleGetRecord () {
       this.dataRecord_visible = true;
     },
@@ -646,11 +642,11 @@ export default {
         contract_type: this.contractDetail.type,
         album: this.contractDetail.album
       }
-      this.rewrite_visible = true
+      this.rewrite_visible = true;
     },
     // 取消合同作废
     handleCancelRewrite () {
-      this.rewrite_visible = false
+      this.rewrite_visible = false;
     },
   }
 }
@@ -658,6 +654,8 @@ export default {
 
 <style lang="scss">
 @import "../../../assets/scss/common.scss";
+
+@import "../../../assets/scss/customService/components/contract_detail";
 
 @mixin confirmImg($m, $n) {
   $url: "../../../assets/image/customService/dataAudit/" + $n + "/" + $m;
@@ -789,7 +787,7 @@ export default {
             bottom: 30px;
             right: 40px;
             @include flex("justify-bet");
-            .buttons_left {
+            .buttons-left {
               @include flex("items-center");
               .icon {
                 display: inline-block;
@@ -848,7 +846,8 @@ export default {
         }
         .flex-center2 {
           .buttons {
-            .buttons_left {
+            .buttons-left {
+              cursor: pointer;
               .icon {
                 @include confirmImg("fasong.png", "theme1");
               }

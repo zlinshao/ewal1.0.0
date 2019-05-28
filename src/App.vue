@@ -21,16 +21,14 @@
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
           </div>
-          <span style="position: relative" @mouseenter="more_visible = true">
-            更多
-            <app-index-more :visible.sync="more_visible"></app-index-more>
-          </span>
+          <app-index-more></app-index-more>
         </div>
         <div class="items-center personal">
-          <span>冯宝宝</span>
+          <span>{{$storage.get('user_info').name||'冯宝宝'}}</span>
           <!--@click="routerLink('login')"-->
           <p @click="routerLink('/personalCenter')">
-            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+<!--            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">-->
+            <img :src="photoUrl">
           </p>
           <!--&lt;!&ndash;<span class="icon3024 icon-personal-center"   @click="routerLink('/messageCenter')"></span>&ndash;&gt;-->
           <!-- <span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span> -->
@@ -104,6 +102,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
 import TodoList from './components/todoList/index';
 import Approval from './components/approval/index';
 import AppIndexMore from './components/index/components/AppIndexMore';
@@ -211,8 +210,16 @@ export default {
     todo_list_badge_count () {
       return this.$store.state.todo.todo_list_badge_count;
     },
+    user_name() {
+      //let name  = this.$storage.get()
+      return this.$storage.get('user_info').name||'冯宝宝';
+    },
+    photoUrl() {
+      return this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
+    }
   },
   created () {
+    this.theme_name = '1'
     this.getPerson()
   },
   methods: {
