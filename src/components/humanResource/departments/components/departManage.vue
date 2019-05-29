@@ -1094,7 +1094,7 @@
           this.staffParams.org_id = val.id;
           this.dutyParams.org_id = val.id;
           this.getStaffList();
-          // this.getDutyList();
+          this.getDutyList();
         },
         deep: true
       },
