@@ -98,8 +98,9 @@
                     <div
                       class="writingMode depart_item"
                       :class="depart_choose_id==depart.id?'depart-active':''"
-                      style="text-align: left;padding-top: 15px"
-                      @click="handleInnerNextDepart(depart)">
+                      style="text-align: left;padding-top: 15px;text-overflow: ellipsis;overflow: hidden; "
+                      @click="handleInnerNextDepart(depart)"
+                      :title="depart.name">
                       {{ depart.name }}
                     </div>
                     <div class="depart_ctl flex-center" v-show="depart.id === is_active_depart">
