@@ -531,29 +531,32 @@ export default {
         //     data:['入职','离职']
         // },
         grid: {
-            top: 10,
-            bottom: 10
+            top: 30,
+            bottom: 20
         },
         calculable : true,
         xAxis : [
             {
                 type : 'category',
                 boundaryGap : false,
-                // data : [820, 932, 901, 934, 1290, 1330, 1320, 1320, 1320, 1320, 1320, 1320]
-                data : this.weekDateData
+                data : this.weekDateData,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         yAxis : [
             {
-              show: false
-            },
-            {
-              splitLine: {
-                show: false
-              }
-            },
-            {
-                type : 'value'
+                type : 'value',
+                axisLabel : {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         series : [
@@ -570,33 +573,33 @@ export default {
         tooltip : {
             trigger: 'axis'
         },
-        //  legend: {
-        //     data:['入职','离职']
-        // },
         grid: {
-            top: 10,
-            bottom: 10
+            top: 30,
+            bottom: 20
         },
         calculable : true,
         xAxis : [
             {
                 type : 'category',
                 boundaryGap : false,
-                // data : [820, 932, 901, 934, 1290, 1330, 1320, 1320, 1320, 1320, 1320, 1320]
-                data : this.weekDateData
+                data : this.weekDateData,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         yAxis : [
             {
-              show: false
-            },
-            {
-              splitLine: {
-                show: false
-              }
-            },
-            {
-                type : 'value'
+                type : 'value',
+                axisLabel : {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         series : [
@@ -604,6 +607,7 @@ export default {
                 name:'外网(出网)',
                 type:'line',
                 smooth:true,
+                color: ['#FE5757'],
                 itemStyle: {normal: {areaStyle: {type: 'default'}}},
                 data:this.internetTArr
             },
@@ -611,6 +615,7 @@ export default {
                 name:'外网(入网)',
                 type:'line',
                 smooth:true,
+                color: ['#FDA158'],
                 itemStyle: {normal: {areaStyle: {type: 'default'}}},
                 data:this.internetRArr
             }
@@ -620,33 +625,33 @@ export default {
         tooltip : {
             trigger: 'axis'
         },
-        //  legend: {
-        //     data:['入职','离职']
-        // },
         grid: {
-            top: 10,
-            bottom: 10
+            top: 30,
+            bottom: 20
         },
         calculable : true,
         xAxis : [
             {
                 type : 'category',
                 boundaryGap : false,
-                // data : [820, 932, 901, 934, 1290, 1330, 1320, 1320, 1320, 1320, 1320, 1320]
-                data : this.weekDateData
+                data : this.weekDateData,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         yAxis : [
             {
-              show: false
-            },
-            {
-              splitLine: {
-                show: false
-              }
-            },
-            {
-                type : 'value'
+                type : 'value',
+                axisLabel : {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         series : [
@@ -654,6 +659,7 @@ export default {
                 name:'内网(出网)',
                 type:'line',
                 smooth:true,
+                color: ['#FE5757'],
                 itemStyle: {normal: {areaStyle: {type: 'default'}}},
                 data:this.intarnetTArr
             },
@@ -661,6 +667,7 @@ export default {
                 name:'内网(入网)',
                 type:'line',
                 smooth:true,
+                color: ['#FDA158'],
                 itemStyle: {normal: {areaStyle: {type: 'default'}}},
                 data:this.intarnetRArr
             }
@@ -1108,8 +1115,8 @@ export default {
     >div:nth-child(1) {
         color: #ffffff;
         position: relative;
-        left: 107px;
-        font-size: 30px;
+        left: 75px;
+        font-size: 25px;
     }
     div {
         >span:nth-child(1) {
@@ -1131,8 +1138,8 @@ export default {
     >div:nth-child(1) {
         color: #ffffff;
         position: relative;
-        left: 107px;
-        font-size: 30px;
+        left: 65px;
+        font-size: 25px;
     }
     div {
         >span:nth-child(1) {

@@ -94,7 +94,6 @@
                 <div class="arrow-btn"><i class="arrow-btn-left" @click="handleIconClick('left')"  v-show="this.left_arrow_display"></i></div>
                 <div class="list scroll_bar" v-if="next_depart.length > 0">
                   <div v-for="depart in next_depart" @mouseleave="is_active_depart = ''"
-                       @click="depart_choose_id=depart.id"
                        @mouseover="show_depart_ctl(depart)">
                     <div
                       class="writingMode depart_item"
@@ -880,6 +879,7 @@
         this.departInfo = item;
         this.getNextDepart(item);
         this.show_depart_detail = true;
+        this.depart_choose_id=0;
       },
       //关闭部门详情
       handleCloseDepartDetail() {
@@ -921,6 +921,7 @@
             }
           }
           this.is_child = false;
+          // this.depart_choose_id=0;
         })
       },
       //子部门点击获取子部门

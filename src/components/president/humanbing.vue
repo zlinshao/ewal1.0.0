@@ -352,9 +352,9 @@ export default {
     this.drawLine();
   },
   activated() {
-    //   this.getEntryData();
-    //   this.getTodayEntryData();
-    //   this.getMonthEntryData();
+      this.startTime = '';
+      this.endTime = '';
+      this.value6 = '';
       this.getActive(this.chooseCity)
       this.getStaff(this.chooseCity)
   },
@@ -725,35 +725,41 @@ export default {
         let myChart3 = this.$echarts.init(document.getElementById('lessYear'))
         // 绘制图表
         myChart.setOption({
+        title : {
+            text: '一周入职人数(人)',
+            textStyle: {
+                color: '#ffffff'
+            }
+        },
         tooltip : {
             trigger: 'axis'
         },
          legend: {
             data:['入职','离职']
         },
-        grid: {
-            top: 10,
-            bottom: 10
-        },
         calculable : true,
         xAxis : [
             {
                 type : 'category',
                 boundaryGap : false,
-                data : this.weekDate
+                data : this.weekDate,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         yAxis : [
             {
-              show: false
-            },
-            {
-              splitLine: {
-                show: false
-              }
-            },
-            {
-                type : 'value'
+                type : 'value',
+                axisLabel : {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         series : [
@@ -770,30 +776,35 @@ export default {
         tooltip : {
             trigger: 'axis'
         },
-        grid: {
-            top: 0,
-            bottom: 20
+        title : {
+            text: '一周离职人数(人)',
+            textStyle: {
+                color: '#ffffff'
+            }
         },
         calculable : true,
         xAxis : [
             {
                 type : 'category',
                 boundaryGap : false,
-                data: this.weekDate
-                // data : ['周一','周二','周三','周四','周五','周六','周日']
+                data : this.weekDate,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         yAxis : [
             {
-              show: false
-            },
-            {
-              splitLine: {
-                show: false
-              }
-            },
-            {
-                type : 'value'
+                type : 'value',
+                axisLabel : {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
         ],
         series : [
@@ -1624,5 +1635,8 @@ export default {
 .progress {
     margin:15px 0 0 15px;
     width: 80%;
+}
+#sex {
+    bottom: 12px;
 }
 </style>
