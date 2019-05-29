@@ -21,7 +21,7 @@
             {{isreceive ? "挂起":"接收"}}
           </p>
           <div class="margin">
-            <p :class='["ele_p",receive_check_name.length >0?"receive_span":""]' @click.stop='setRecive_type'>
+            <p :class='["ele_p",receive_check_name.length >0?"receive_span":""]' @click.stop='setReceiveType'>
               {{ receive_check_name.length == 0 ? "接收类型" : receive_check_name.join('-') }}</p>
 
             <div class='receive_box' v-if='isreceive_visible'>
@@ -44,7 +44,7 @@
 
       <div class="mainListTable" :style="{'height': this.mainListHeight(30) + 'px'}">
         <el-table :data="tableData['data' + status_type ]" :height="this.mainListHeight(180) + 'px'"
-          highlight-current-row @row-dblclick="handlerDbClick" header-row-class-name="tableHeader" style="width: 100%">
+          highlight-current-row @row-dblclick="handleDbClick" header-row-class-name="tableHeader" style="width: 100%">
 
           <el-table-column align="center" v-for='item in Object.keys(tableShow)' :key='item' :prop='item' :label="tableShow[item]"></el-table-column>
 
@@ -391,7 +391,7 @@ export default {
       this.isreceive = !this.isreceive
       this.handleCheckType()
     },
-    setRecive_type () {
+    setReceiveType () {
       if (this.isreceive) {
         this.isreceive_visible = !this.isreceive_visible
       } else {
@@ -432,8 +432,15 @@ export default {
       this.controlPanel_visible = false
     },
     // 详情
-    handlerDbClick (row) {
-      this.current_row = row
+    handleDbClick (row) {
+      let url = row.bm_detail_request_url;
+      if(!url) {
+        this.$LjMessage('warning',{title:'警告',msg:'无详情地址'});
+        return;
+      }
+     // row.bm_detail_request_url = '';
+      this.current_row = row;
+
       // if (row.type == 2) { // 拓展新盘
       //   this.develop_visible = true
       // } else {

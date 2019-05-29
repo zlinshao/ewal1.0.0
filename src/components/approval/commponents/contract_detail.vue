@@ -278,7 +278,7 @@ export default {
   },
   methods: {
     getDetailForm (params) {
-      let url = params.bm_detail_request_url
+      let url = params.bm_detail_request_url;
       this.$http.get(url).then(res => {
         if (res.code === 200) {
           this.formData = res.data.content
