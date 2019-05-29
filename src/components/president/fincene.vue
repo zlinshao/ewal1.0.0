@@ -30,42 +30,42 @@
             <div id="area">
                 <div>
                     <section style="width: 90%;height:97%;margin:0 auto;padding-top:12px">
-                        <p>今日亏损率</p>
+                        <p>今日亏损</p>
                         <p style="font-size:42px;color:#ffffff">{{lossData}}</p>
                         <section id="entryRate"></section>
                         <section id="allData">
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#BA25DC">超置空房源</section>
                                 <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100"></el-progress>
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="emptyRate"></el-progress>
                                 </section>
                                 <span>{{emptyNum}}</span>
                             </section>
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#8047CC">公司违约</section>
                                 <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" ></el-progress>
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="breakPreRate" ></el-progress>
                                 </section>
                                 <span>{{breakPre}}</span>
                             </section>
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#3262EC">公司任责费用</section>
                                 <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" ></el-progress>
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="resPayRate" ></el-progress>
                                 </section>
                                 <span>{{resPay}}</span>
                             </section>
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#FF564F">收租差价</section>
                                 <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" ></el-progress>
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="recv_rent_gap_rate" ></el-progress>
                                 </section>
                                 <span>{{recv_rent_gap}}</span>
                             </section>
                             <section style="display:flex;width:100%;height:16%;">
                                 <section style="width:24%;height:100%;display:inline-block;text-align:right;color:#53C13B">中介费</section>
                                 <section style="width:50%;height:100%;display:inline-block;margin-left:15px">
-                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="100" ></el-progress>
+                                    <el-progress :text-inside="true" :stroke-width="18" :percentage="middleRate" ></el-progress>
                                 </section>
                                 <span>{{middle}}</span>
                             </section>
@@ -189,9 +189,15 @@ export default {
   data() {
     return {
       value6: '',
+      disburse: '',
       win: '',
       lossData: '',
       recv_rent_gap: '',
+      emptyRate: 0,
+      recv_rent_gap_rate: 0,
+      breakPreRate: 0,
+      resPayRate: 0,
+      middleRate: 0,
       middle: '',
       resPay: '',
       breakPre: '',
@@ -227,7 +233,12 @@ export default {
     };
   },
   mounted() {
-    let d = new Date()
+    
+    this.getLangDate()
+    this.drawLine();
+  },
+  activated() {
+      let d = new Date()
     let yes0 = new Date().getTime()
     let yes1 = new Date().getTime() - 7 * 24 * 3600 * 1000
     let yes2 = new Date().getTime() - 1 * 24 * 3600 * 1000
@@ -278,13 +289,11 @@ export default {
         this.weekDate.push(week[i])
     }
     this.weekDate = this.weekDate.slice(0, 7)
-    this.getLangDate()
-    this.drawLine();
-  },
-  activated() {
-      this.getLoss();
-      this.getEmptyHome();
-      this.getRate();
+      this.startTime = '';
+      this.endTime = '';
+      this.value6 = '';
+    //   this.getEmptyHome();
+    //   this.getRate();
       this.getMoney(this.chooseCity);
       this.getWin(this.chooseCity);
   },
@@ -304,7 +313,7 @@ export default {
         this.citys[this.citys.length - 1] = i;
         this.citys[index] = temp;
         this.$forceUpdate()
-        this.getLoss()
+        // this.getLoss()
         this.getMoney(this.chooseCitys)
         this.getWin(this.chooseCitys)
     },
@@ -334,7 +343,24 @@ export default {
         let e = 0
         let f = 0
         let g = 0
+        let one = 0
+        let two = 0
+        let three = 0
+        let four = 0
+        let five = 0
+        let six = 0
+        let seven = 0
         this.$http.post(this.allUrl + "income_and_disburse_for_ceo", params).then(res => {
+         this.disburse = res.data[this.dateTime].乐伽.disburse
+         one = res.data[this.weekDates[0]][city].disburse - res.data[this.weekDates[0]][city].income   
+         two = res.data[this.weekDates[1]][city].disburse - res.data[this.weekDates[1]][city].income   
+         three = res.data[this.weekDates[2]][city].disburse - res.data[this.weekDates[2]][city].income   
+         four = res.data[this.weekDates[3]][city].disburse - res.data[this.weekDates[3]][city].income   
+         five = res.data[this.weekDates[4]][city].disburse - res.data[this.weekDates[4]][city].income   
+         six = res.data[this.weekDates[5]][city].disburse - res.data[this.weekDates[5]][city].income   
+         seven = res.data[this.weekDates[6]][city].disburse - res.data[this.weekDates[6]][city].income   
+         this.lossData = Math.round(seven)
+         this.lossArr = [one,two,three,four,five,six,seven]
         if (res.data[this.weekDates[0]][city].disburse === 0) {
             a = 0
         } else {
@@ -374,7 +400,9 @@ export default {
         this.winArr = [a,b,c,d,e,f,g]
         console.log(this.winArr)
         }).then(() => {
-
+            this.getEmptyHome()
+            this.getRate()
+            this.drawLine()
         })
     },
     // 学历
@@ -466,29 +494,9 @@ export default {
         this.startTime = day6
         this.endTime = day0
         console.log(this.startTime, this.dateTime)
-        this.getLoss()
+        // this.getLoss()
         this.getMoney(this.chooseCity)
         this.getWin(this.chooseCity)
-    },
-    // 亏损
-    getLoss() {
-        let params = {
-            start: this.startTime,
-            end: this.endTime,
-            department: this.chooseCity
-        }
-      this.$http.post(this.allUrl + "loss_detail", params).then(res => {
-        let d = new Date()
-        console.log(res)
-        this.lossData = res.data[res.data.length - 1].income_and_disburse
-        res.data.forEach((item) => {
-          this.lossArr.push(item.income_and_disburse)
-        })
-        console.log(this.lossArr)
-        
-      }).then(()=> {
-         this.drawLine()
-      })
     },
     // 空房源
     getEmptyHome () {
@@ -499,9 +507,10 @@ export default {
         end: this.dateTime
       }
       this.$http.post(this.allUrl + "rent_detail", params).then(res => {
-        console.log(res)
         this.emptyNum =  Math.round(res.data.vacancy_fee)
         this.recv_rent_gap = Math.round(res.data.recv_rent_gap)
+        this.emptyRate = Math.round(((this.emptyNum / this.disburse)*10000) / 100)
+        this.recv_rent_gap_rate = Math.round(((this.recv_rent_gap / 10000000)*10000) / 100)
       })
     },
     // 获取违约金..
@@ -517,6 +526,13 @@ export default {
         this.breakPre = res.data[this.dateTime].break_pay.amount_paid
         this.resPay = res.data[this.dateTime].mediation_pay.amount_paid
         this.middle = res.data[this.dateTime].responsibility_pay.amount_paid
+        console.log(this.breakPre)
+        console.log(this.resPay)
+        console.log(this.middle)
+        console.log(this.disburse)
+        this.breakPreRate = Math.round(((this.breakPre / this.disburse)*10000) / 100)
+        this.resPayRate = Math.round(((this.resPay / this.disburse)*10000) / 100)
+        this.middleRate = Math.round(((this.middle / this.disburse)*10000) / 100)
         let year = new Date().getFullYear() + '年';
         let obj = res.data[year]
         // this.emptyHome
@@ -537,21 +553,35 @@ export default {
             },
             xAxis: {
             type: "category",
-            data: this.weekDate
+            data: this.weekDate,
+            axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             },
+            yAxis : [
+                {
+                    type : 'value',
+                    axisLabel : {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    }
+                }
+            ],
             grid: {
-            x: 10,
-            y: 0,
-            x2: 10,
-            y2: 0,
+            // x: -10,
+            // y: 10,
+            // x2: 30,
+            // y2: 0,
             borderWidth: 1
-            },
-            yAxis: {
-            type: "value"
             },
             series: [
             {
-                name: "今日盈亏",
+                name: "今日亏损",
                 smooth: true,
                 data: this.lossArr,
                 type: "line"

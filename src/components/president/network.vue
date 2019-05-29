@@ -58,7 +58,7 @@
                                  </li>
                                  <li>
                                      <span>镜像ID</span>
-                                     <span>{{image}}</span>
+                                     <span :title="image">{{image}}</span>
                                  </li>
                                  <li>
                                      <span>密钥对名称</span>
@@ -257,12 +257,12 @@
                                 <p>
                                     <img src="../../assets/image/president/pic_4.png" alt="">
                                     <span>磁盘</span>
-                                    <span>{{risk}}</span>
+                                    <span style="left:130px!important">{{risk}}个</span>
                                 </p>
                                 <p>
                                     <img src="../../assets/image/president/pic_5.png" alt="">
                                     <span>快照</span>
-                                    <span>{{photo}}</span>
+                                    <span style="left:130px!important">{{photo}}个</span>
                                 </p>
                                 <p>
                                     <img src="../../assets/image/president/pic_6.png" alt="">
@@ -315,11 +315,13 @@
                             <div>
                                 <div>
                                     <p>系统事件</p>
+                                    <p>{{SystemEvent}}</p>
                                 </div>
                             </div>
                             <div>
                                 <div>
                                     <p>潜在风险安全组</p>
+                                    <p>{{RiskGroup}}</p>
                                 </div>
                             </div>
                         </section>
@@ -329,14 +331,14 @@
                     <div>
                         <div>监控信息</div>
                         <div>
-                            <div>
+                            <!-- <div>
                                 <img src="../../assets/image/president/chakan.png" alt="" >
                                 查看内存等更多指标
                             </div>
                             <div>
                                 <img src="../../assets/image/president/shezhi.png" alt="" >
                                 设置报警规则
-                            </div>
+                            </div> -->
                             <div>
                                 <el-date-picker
                                 v-model="value6"
@@ -359,7 +361,7 @@
                         <div id="network"></div>
                     </div>
                     <div id="cpu">
-                        <div class="use">
+                        <div class="innerNet">
                             <div>网络&nbsp;(外网)</div>
                             <div>
                                 <span></span>
@@ -371,7 +373,7 @@
                         <div id="cunstomPie"></div>
                     </div>
                     <div id="cpu">
-                        <div class="use">
+                        <div class="innerNet">
                             <div>网络&nbsp;(内网)</div>
                             <div>
                                 <span></span>
@@ -396,6 +398,8 @@ export default {
   name: "index",
   data() {
     return {
+      SystemEvent: '',
+      RiskGroup: '',
       risk: '',
       photo: '',
       netType: '',
@@ -668,7 +672,9 @@ export default {
         let params = {
             InstanceId: this.value
         }
-        this.$http.post(this.allUrl + "instance?InstanceId=i-uf64hh8q8vtixbwq0q7p", params).then(res => {
+        this.$http.post(this.allUrl + "instance", params).then(res => {
+            this.SystemEvent = res.data.SystemEvent
+            this.RiskGroup = res.data.RiskGroup
             this.ID = res.data.InstanceId
             this.netType = res.data.InstanceNetworkType
             this.ID = res.data.InstanceId
@@ -689,9 +695,11 @@ export default {
             this.title = res.data.InstanceId
             this.pay = res.data.InstanceChargeType
             this.stop = res.data.StopModule
-            this.expireTime = res.data.ExpiredTime
+            let b =res.data.ExpiredTime.replace('T', ' ')
+            this.expireTime = b.replace('Z', ':00')
             this.keepPay = res.data.StoppedMode
-            this.creatTime = res.data.CreationTime
+            let a = res.data.CreationTime.replace('T', ' ')
+            this.creatTime = a.replace('Z', ':00')
             this.releaseTime = res.data.AutoReleaseTime
             this.cpu = res.data.Cpu + '核'
             this.ram = res.data.Memory + 'M'
@@ -701,7 +709,7 @@ export default {
             this.publicIp = res.data.PublicIpAddress.IpAddress
             this.privateIp = res.data.NetworkInterfaces.NetworkInterface[0].PrimaryIpAddress
             this.BillingMode = res.data.InternetChargeType
-            this.bandwidth = res.data.InternetMaxBandwidthOut
+            this.bandwidth = res.data.InternetMaxBandwidthOut + 'M'
             this.privateNet = res.data.VpcAttributes.VpcId
             this.Switch = res.data.VpcAttributes.VSwitchId
       })
@@ -871,7 +879,7 @@ export default {
                 }
                 >span:nth-child(2) {
                     position: relative;
-                    left: 43px;
+                    left: 3px;
                 }
                 >span:nth-child(3) {
                     position: relative;
@@ -1019,7 +1027,8 @@ export default {
                     width: 40px;
                     height: 40px;
                     position: relative;
-                    left: 100px;
+                    top: 20px;
+                    left: 50px;
                 }
             }
         }
@@ -1037,7 +1046,8 @@ export default {
                     width: 40px;
                     height: 40px;
                     position: relative;
-                    left: 100px;
+                    top: 20px;
+                    left: 50px;
                 }
             }
         }
@@ -1047,6 +1057,11 @@ export default {
         height: 48%;
         margin-top: 7px;
         display: flex;
+        p:nth-child(2) {
+            font-size: 35px;
+            margin-top: 20px;
+            text-align: center;
+        }
         >div:nth-child(1) {
             width: 40%;
             height: 100%;
@@ -1101,7 +1116,38 @@ export default {
             display: inline-block;
             width: 10px;
             height: 10px;
-            background-color: #298AC1
+            background: linear-gradient(left,#76FFF6,#298AC1);
+            border-radius: 100%;
+        }
+        width: 13%;
+        height: 100%;
+    }
+}
+.innerNet {
+    width: 100%;
+    height: 8%;
+    display: flex;
+    justify-content: space-between;
+    >div:nth-child(1) {
+        color: #ffffff;
+        position: relative;
+        left: 107px;
+        font-size: 30px;
+    }
+    div {
+        >span:nth-child(1) {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(left,#FFF3B0,#FF8A30);
+            border-radius: 100%;
+        }
+        >span:nth-child(3) {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(left,#FFBAAF,#FE5785);
+            border-radius: 100%;
         }
         width: 13%;
         height: 100%;
@@ -1190,6 +1236,7 @@ export default {
 .inner>div:nth-of-type(1){
     width: 95%;
     height: 8%;
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     >div:nth-child(1) {
@@ -1199,7 +1246,7 @@ export default {
         top: 25px;
     }
     >div:nth-child(2) {
-        width: 68%;
+        width: 33%;
         height: 100%;
         display: flex;
         >div{
@@ -1210,17 +1257,9 @@ export default {
             }
         }
         >div:nth-child(1){
-            width: 25%;
+            width: 100%;
             position: relative;
             top: 9px;
-        }
-        >div:nth-child(2){
-            width: 25%;
-            position: relative;
-            top: 9px;
-        }
-        >div:nth-child(3){
-            width: 50%;
         }
     }
 }
