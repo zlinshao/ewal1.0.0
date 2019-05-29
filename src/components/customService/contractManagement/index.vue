@@ -260,21 +260,22 @@
     </LjDialog>
 
     <!--资料补齐-->
-    <lj-dialog :visible="data_polishing_visible" :size="{width: 550 + 'px',height: 700 + 'px'}" @close="handleCancelPolishing">
+    <lj-dialog :visible.sync="data_polishing_visible" :size="{width: 550 + 'px',height: 700 + 'px'}" @close="handleCancelPolishing">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>补齐资料</h3>
         </div>
         <div class="dialog_main borderNone">
-          <el-form label-width="100px" class="showPadding">
+          <el-form :model="polishing_data_form" label-width="100px" class="showPadding">
             <el-form-item label="房产证号">
-              <el-input v-model="property_number" placeholder="请输入"></el-input>
+              <el-input v-model="polishing_data_form.property_number" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item label="丘号">
-              <el-input v-model="mound_number" placeholder="请输入"></el-input>
+              <el-input v-model="polishing_data_form.mound_number" placeholder="请输入"></el-input>
             </el-form-item>
-            <el-form-item :label="selfLabel(idx)" v-for="(tmp,idx) in polishing_params" :key="idx">
-              <Upload :file="upload_file[idx]" @success="handleGetFile"></Upload>
+            <el-form-item :label="selfLabel(key)" v-for="(val,key) in polishing_data[chooseTab-1]" :key="key">
+              <lj-upload size="50" style="position: absolute;top: -13px;" v-model="polishing_data_form.complete_content[key]"></lj-upload>
+<!--              <Upload :file="upload_file[idx]" @success="handleGetFile"></Upload>-->
             </el-form-item>
           </el-form>
         </div>
@@ -715,8 +716,12 @@ export default {
       currentRow: '',
       data_polishing_visible: false,
       polishing_params: {},
-      property_number: '',
-      mound_number: '',
+
+      polishing_data_form: {
+        property_number:'',//房产证号
+        mound_number:'',//丘号
+        complete_content:{},//补齐资料
+      },
       polishing_data: [
         {
           identity_photo: '证件照片',
@@ -1183,21 +1188,21 @@ export default {
       })
     },
     handleConfirmPolishing () {
-      if (!this.property_number) {
+      if (!this.polishing_data_form.property_number) {
         this.$LjNotify('warning',{
           title: '警告',
           message: '请输入房产证号'
         });
         return false;
       }
-      if (!this.mound_number) {
+      if (!this.polishing_data_form.mound_number) {
         this.$LjNotify('warning',{
           title: '警告',
           message: '请输入丘号'
         });
         return false;
       }
-      for (let key in this.polishing_params) {
+      /*for (let key in this.polishing_params) {
         if (!this.polishing_params[key] || this.polishing_params[key].length < 1) {
           this.$LjNotify('warning',{
             title: '警告',
@@ -1205,18 +1210,14 @@ export default {
           });
           return false;
         }
-      }
-      let form = new FormData();
-      form.append('complete_content', JSON.stringify(this.polishing_params));
-      form.append('property_number', this.property_number);
-      form.append('mound_number', this.mound_number);
-
-      /*let form = {};
-      form['complete_content']=this.polishing_params;
-      form['property_number']= this.property_number;
-      form['mound_number']= this.mound_number;*/
+      }*/
       debugger
-      let s = this.currentRow.contract_id;
+      console.log(this.polishing_data_form);
+      let form = new FormData();
+      form.append('complete_content', JSON.stringify(this.polishing_data_form.complete_content));
+      form.append('property_number', this.polishing_data_form.property_number);
+      form.append('mound_number', this.polishing_data_form.mound_number);
+
       this.$http.post(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, form).then(res => {
         if (res.code === 200) {
           this.$LjNotify('success', {
@@ -1235,10 +1236,11 @@ export default {
     },
     //取消补齐
     handleCancelPolishing () {
-      this.polishing_params = {};
-      this.mound_number = '';
-      this.property_number = '';
-      this.upload_file = {};
+      this.polishing_data_form= {
+        property_number:'',//房产证号
+          mound_number:'',//丘号
+          complete_content:{},//补齐资料
+      };
       // this.currentRow = '';
       this.data_polishing_visible = false;
     },
@@ -1253,7 +1255,13 @@ export default {
     /*打开补齐资料对话框*/
     handleOpenPolishing (row) {
       this.currentRow = row;
-      if (row.needComplete && row.needComplete.length > 0) {
+
+      this.data_polishing_visible = true;
+
+
+
+
+      /*if (row.needComplete && row.needComplete.length > 0) {
         let obj = {};
         let param = {};
         row.needComplete.map(item => {
@@ -1276,7 +1284,7 @@ export default {
           message: "暂无需要补齐的资料"
         });
         return false;
-      }
+      }*/
     },
     handleCloseMenu () {
       this.show_market = false;

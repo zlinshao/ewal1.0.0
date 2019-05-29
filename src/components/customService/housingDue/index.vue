@@ -70,7 +70,7 @@
         <el-table-column label="付款方式" align="center">
           <template slot-scope="scope">
             <p v-if='scope.row.pay_way&& scope.row.pay_way.length >0'>
-              <span v-for='(item,key) in scope.row.pay_way'>{{item.pay_way_str? item.pay_way_str :'押'+ item.pay_way_bet
+              <span v-for='(item,key) in scope.row.pay_way'>{{item.pay_way_str? item.pay_way_str :'押'+ item.pay_way_bet||'/'
                 + '付'+ item.pay_way}}</span>
             </p>
             <span v-else>--</span>
