@@ -378,6 +378,7 @@
           room: [],
           warningStatus: [],
           decoration: [],
+          quality:[],//质量
           area: [],
           suggestPrice: [],
           quality: [],

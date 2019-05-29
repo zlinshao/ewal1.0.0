@@ -567,7 +567,7 @@
               <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="6"></el-input>
             </el-form-item>
             <el-form-item label="上传图片">
-              <lj-upload size="50" style="position: absolute;top: -13px;" v-model="mark_form.album"></lj-upload>
+              <lj-upload size="50" style="position: absolute;top: -13px;" :limit-easy="['image']" v-model="mark_form.album"></lj-upload>
             </el-form-item>
           </el-form>
         </div>
@@ -779,7 +779,7 @@ export default {
 
       params: {
         page: 1,
-        limit: 30,
+        limit: 15,
         search:'',
         contract_type: 1,
         sign_date_min: '',
@@ -1125,10 +1125,15 @@ export default {
             this.$http.get(`${this.market_server}v1.0/market/contract/tagdetail/${id}`).then(res=> {
               if(res.code==200) {
                 this.mark_form = res.data;
-                this.add_mark_visible = true;
+                this.$nextTick(()=> {
+                  this.add_mark_visible = true;
+                });
               }
             });
+          }else {
+            this.add_mark_visible = true;
           }
+
           break;
       }
     },

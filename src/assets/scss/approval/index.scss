@@ -101,13 +101,13 @@
         .margin {
           margin-left: 30px;
           position: relative;
-          .revice_span {
+          .receive_span {
             max-width: 250px;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
           }
-          .revice_box {
+          .receive_box {
             width: 324px;
             padding: 0 30px;
             position: absolute;
@@ -222,18 +222,18 @@
           color: #686874;
         }
         .margin {
-          .revice_span {
+          .receive_span {
             background: #cf2e33;
             color: #fff;
           }
-          .revice_box {
+          .receive_box {
             background: #fff;
           }
         }
         .gua_icons {
           @include confirmImg('guaqi.png', 'theme1');
         }
-        .revice_icons {
+        .receive_icons {
           @include confirmImg('jieshou.png', 'theme1');
         }
         .icons_main {

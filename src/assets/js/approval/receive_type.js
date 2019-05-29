@@ -1,10 +1,10 @@
-export const revice_type = {
+export const receive_type = {
   bulletin_lose_rent: '取消预定', //租房炸弹
   2: '家居补齐',
   bulletin_collect_basic: '收房报备',
   bulletin_rent_basic: '租房报备',
   bulletin_rent_continued: '续收报备',
-  bulletin_rent_continued: '续租报备',
+  //bulletin_rent_continued: '续租报备',
   bulletin_rent_trans: '转租报备',
   bulletin_change: '调房报备',
   bulletin_checkout_collect: '房东退租',
