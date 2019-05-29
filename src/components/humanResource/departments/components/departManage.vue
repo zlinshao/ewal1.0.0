@@ -820,7 +820,7 @@
         //离职
         outForm: {
           type: 'dimission',
-          dismiss_time: '',
+          dismiss_time: new Date(),
           dismiss_reason: {
             dismiss_mess: '',
             dismiss_type: ''
@@ -1465,6 +1465,7 @@
       handleSubmitOut() {
         this.$refs['leaveForm'].validate(valid=>{
           if (valid){
+              this.outForm.dismiss_time = this.myUtils.formatDate(this.outForm.dismiss_time);
             this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
               if (res.code === '20030') {
                 this.$LjNotify('success',{
