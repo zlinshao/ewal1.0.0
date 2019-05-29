@@ -149,6 +149,7 @@
         <div id="earth" style="width:100%;height:75%"></div>
       </div>
       <div class="end">
+       <EntryLeaverComponent></EntryLeaverComponent>
         <div id="entry" style="display:flex">
           <section style="width:70%;height:100%;display:flex">
             <div style="width:50%;height:100%" id="entryRate">
@@ -287,8 +288,9 @@
 <script>
 import Clock from "vue-clock2";
 import earthData  from '../../../static//earth/earthData';  //地球的echarts数据
+import EntryLeaverComponent from '../common//president-component/entry_leaver_staff'
 export default {
-  components: { Clock },
+  components: { Clock,EntryLeaverComponent },
   name: "index",
   data() {
     return {
@@ -351,22 +353,22 @@ export default {
       tabPages: [
         {
           name: "市场",
-          url: "markting",
+          url: "president/markting",
           imgUrl: require("../../assets/image/president/shichang_0.png")
         },
         {
           name: "人事",
-          url: "humanbing",
+          url: "president/humanbing",
           imgUrl: require("../../assets/image/president/renshi_1.png")
         },
         {
           name: "财务",
-          url: "fincene",
+          url: "president/fincene",
           imgUrl: require("../../assets/image/president/caiwu_0.png")
         },
         {
           name: "网络",
-          url: "network",
+          url: "president/network",
           imgUrl: require("../../assets/image/president/wangluo_0.png")
         }
       ],
@@ -379,6 +381,7 @@ export default {
     };
   },
   mounted() {
+    this.$store.dispatch('theme_name','2');
     this.getLangDate()
     this.drawLine();
     this.drawEarth();
@@ -436,6 +439,12 @@ export default {
   watch: {},
   computed: {},
   methods: {
+
+   
+     
+     
+   
+
   // 获取服务器数据
     getHost() {
         this.$http.post(this.netUrl + "instance-list").then(res => {

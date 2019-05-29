@@ -62,7 +62,7 @@
     </div>
     <div id="theme_name" :class="'theme' + theme_name">
       <keep-alive>
-        <router-view />
+        <router-view @changeTheme="changeTheme"/>
       </keep-alive>
     </div>
     <div class="flex-center changeLoad" v-if="changeLoad">
@@ -186,6 +186,10 @@ export default {
       handler (val, oldVal) {
         this.moduleList = false;
         this.showLoading(false);
+           console.log('val'+val )
+       console.log('oldVal'+oldVal)
+       console.log('val'+JSON.stringify(val) )
+       console.log('oldVal'+JSON.stringify(oldVal))
         this.$store.dispatch('route_animation');
       },
       deep: true// 深度观察监听
@@ -223,6 +227,9 @@ export default {
     this.getPerson()
   },
   methods: {
+    changeTheme(a) {
+      console.log(a)
+    },
     // 路由跳转
     toPath(url) {
       this.url = url
@@ -279,12 +286,20 @@ export default {
       this.$store.dispatch('close_notify', false);
     },
     handleChangeTheme(item) {
-      this.themeKey = item.key;
-      this.theme_name = item.key;
-      if (this.url === '/president') {
-        this.theme_name = '2'
+      
+     if (this.url === '/president') {
+        this.$store.dispatch('theme_name','2');
+        this.themeKey = '2';
+        this.theme_name = '2';
+      }else{
+        this.$store.dispatch('theme_name',item.key);
+        this.themeKey = item.key;
+        this.theme_name = item.key;
       }
-      this.$store.dispatch('theme_name',item.key);
+
+  
+     
+      // this.$store.dispatch('theme_name',item.key);
       this.changeLoad = true;
       let that = this;
       setTimeout(function () {

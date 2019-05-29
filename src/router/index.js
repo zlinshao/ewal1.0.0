@@ -327,22 +327,22 @@ export default new Router({
       component: President
     },
     {
-      path: '/markting',
+      path: '/president/markting',
       name: '市场',
       component: Markting,
     },
     {
-      path: '/humanbing',
+      path: '/president/humanbing',
       name: '人事',
       component: Humanbing
     },
     {
-      path: '/fincene',
+      path: '/president/fincene',
       name: '财务',
       component: Fincene
     },
     {
-      path: '/network',
+      path: '/president/network',
       name: '网络',
       component: Network
     },
