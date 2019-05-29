@@ -710,6 +710,7 @@
     components: {UserChoose, LjDialog, StaffOrgan,DepartOrgan,PostOrgan},
     data() {
       return {
+        url:globalConfig.humanResource_server,
         //表格信息
         tableList: [],
         chooseRowIds: [], //图标点击
@@ -895,7 +896,7 @@
       handleConfirmContract() {
         this.labour_form.send = 1;
         this.labour_form.type = 1;
-        this.$http.post('recruitment/interviewer_process/view_contract',this.labour_form).then(res => {
+        this.$http.post(this.url+'recruitment/interviewer_process/view_contract',this.labour_form).then(res => {
           if (res.code === '20000') {
             this.$LjNotify('success',{
               title: '成功',
@@ -999,7 +1000,7 @@
         }
 
 
-        this.$http.put(`recruitment/interviewer_process/send_offer/${this.currentInfo.interviewee_id}`,this.offer_info_form).then(res => {
+        this.$http.put(`${this.url}recruitment/interviewer_process/send_offer/${this.currentInfo.interviewee_id}`,this.offer_info_form).then(res => {
           if (res.code === "20000") {
             this.$LjNotify('success',{
               title: '成功',
@@ -1044,7 +1045,7 @@
       },
 
       getLabourInfo(id) {
-        this.$http.get(`recruitment/interviewer_process/get_contract_info/${id}`).then(res => {
+        this.$http.get(`${this.url}recruitment/interviewer_process/get_contract_info/${id}`).then(res => {
           console.log(res);
           if (res.code === '20010') {
             this.labour_form = res.data;
@@ -1069,7 +1070,7 @@
           ...this.interview_info_detail
         };
         params.send_info = isSendMessage?1:0;
-        this.$http.put(`recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,params).then(res => {
+        this.$http.put(`${this.url}recruitment/interviewer_process/update_info/${this.currentRow.interviewee_id}`,params).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1097,7 +1098,7 @@
         this.interviewee_info_visible = false;
       },
       handleOkEdit() {
-          this.$http.put(`recruitment/interviewer_process/entry_feedback/${this.currentRow.id}`, {
+          this.$http.put(`${this.url}recruitment/interviewer_process/entry_feedback/${this.currentRow.id}`, {
               entry_feedback: this.edit_result_form.entry_feedback,
               unentry_reason: this.edit_result_form.unentry_reason
           }).then(res => {
@@ -1172,7 +1173,7 @@
       handleEntryEdit(row) {
         if(!this.validatePermission('Preparing-Entry-Edit')) return;
         this.currentRow = row;
-        this.$http.get(`recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
+        this.$http.get(`${this.url}recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
           if (res.code === '20030') {
             this.interviewee_info = res.data;
             console.log(this.interviewee_info);
@@ -1205,7 +1206,7 @@
       //获取表格数据
       getTableList() {
         if(!this.validatePermission('Preparing-Entry-Select')) return;
-        this.$http.get('recruitment/interviewer_process/interviewedList',this.params).then(res => {
+        this.$http.get(this.url+'recruitment/interviewer_process/interviewedList',this.params).then(res => {
           if (res.code === '20000') {
             this.tableList = res.data.data;
             this.count = res.data.count;

@@ -242,7 +242,7 @@
         if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
           return false;
         } else {
-          this.$http.get(`staff/user/${row.id}/sendinfo`,{
+          this.$http.get(`${this.url}staff/user/${row.id}/sendinfo`,{
             type
           }).then(res => {
             if (res.code === '20000') {
@@ -269,13 +269,13 @@
             this.$LjMessageNoPermission();
             return;
           }
-          window.open(globalConfig.server + `staff/e_contract/show/${row.staff.leave_proof_number}`);
+          window.open(`${this.url}staff/e_contract/show/${row.staff.leave_proof_number}`);
         } else {//发送离职证明
           if(!this.VALIDATE_PERMISSION['Dimission-Certificate-Send']) {
             this.$LjMessageNoPermission();
             return;
           }
-          this.$http.get(`staff/user/${row.id}/sendinfo`,{
+          this.$http.get(`${this.url}staff/user/${row.id}/sendinfo`,{
             type: ['leave_proof_send']
           }).then(res => {
             if (res.code === '20000') {
@@ -333,7 +333,7 @@
       /*获取离职列表*/
       getStaffList() {
         this.showLoading(true);
-        this.$http.get('staff/user', this.params).then(res => {
+        this.$http.get(this.url+'staff/user', this.params).then(res => {
           this.showLoading(false);
           if (Number(res.code)%10 ===0){
             this.tableData = res.data.data;

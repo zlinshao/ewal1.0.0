@@ -782,6 +782,7 @@
     components: {ljDialog,PositionOrgan,StaffOrgan,DepartOrgan},
     data() {
       return {
+        url:globalConfig.humanResource_server,
         rules: {
           dismiss_time: [
               {required:true,message:'请选择离职日期',trigger:['change','blur']}
@@ -1134,7 +1135,7 @@
         this.addPostVisible = true;
       },
       handleConfirmDelPosition() {
-        this.$http.delete(`organization/position/${this.is_del_position_row.id}`).then(res => {
+        this.$http.delete(`${this.url}organization/position/${this.is_del_position_row.id}`).then(res => {
           if (res.code === '20040') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1155,7 +1156,7 @@
         this.is_del_position = true;
       },
       handleConfirmEdit() {
-        this.$http.put(`organization/duty/${this.edit_post_form.id}`,this.edit_post_form).then(res => {
+        this.$http.put(`${this.url}organization/duty/${this.edit_post_form.id}`,this.edit_post_form).then(res => {
           if (res.code === '20030') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1185,7 +1186,7 @@
         this.edit_post_visible = true;
       },
       handleConfirmDelPost() {
-        this.$http.delete(`organization/duty/${this.del_post.id}`).then(res => {
+        this.$http.delete(`${this.url}organization/duty/${this.del_post.id}`).then(res => {
           if (res.code === '20040') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1210,7 +1211,7 @@
       },
       //身份验证
       handleGetStaffInfo() {
-        this.$http.post('staff/user/check',{
+        this.$http.post(this.url+'staff/user/check',{
           id_num: this.interview_info_detail.id_num
         }).then(res => {
           if (res.code === "20000") {
@@ -1252,7 +1253,7 @@
         if (this.checkLists.includes(3)) {
           type.push('leave_proof_send');
         }
-        this.$http.get(`staff/user/${this.currentStaff.id}/sendinfo`,{type}).then(res => {
+        this.$http.get(`${this.url}staff/user/${this.currentStaff.id}/sendinfo`,{type}).then(res => {
           if (res.code === '20000') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1305,7 +1306,7 @@
         this.set_power.permission_id = this.checkList;
         this.set_power.permission_field_id = this.field_list;
         this.set_power.system_id = this.powerChildName;
-        this.$http.post('organization/permission/set',this.set_power).then(res => {
+        this.$http.post(this.url+'organization/permission/set',this.set_power).then(res => {
           if (res.code === '20000') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1321,7 +1322,7 @@
       },
       getSelfPower(id) {
         this.self_power_params.system_id = id;
-        this.$http.get('organization/permission/all',this.self_power_params).then(res => {
+        this.$http.get(this.url+'organization/permission/all',this.self_power_params).then(res => {
           if (res.code === '20000') {
             var field = [];
             var permission = [];
@@ -1414,7 +1415,7 @@
       },
       getPowerList(id) {
         this.power_params.system_id = id;
-        this.$http.get('organization/permission',this.power_params).then(res => {
+        this.$http.get(this.url+'organization/permission',this.power_params).then(res => {
           if (res.code === '20000') {
             this.power_list = res.data.data;
             let count = 0;
@@ -1429,7 +1430,7 @@
       },
       getModuleList(id) {
         this.module_params.parent_id = id;
-        this.$http.get('organization/system',this.module_params).then(res => {
+        this.$http.get(this.url+'organization/system',this.module_params).then(res => {
           if (res.code === '20000') {
             this.module_list = res.data.data;
             this.getPowerList(res.data.data[0].id);
@@ -1441,7 +1442,7 @@
         })
       },
       getSystemList() {
-        this.$http.get('organization/system',this.system_params).then(res => {
+        this.$http.get(this.url+'organization/system',this.system_params).then(res => {
           if (res.code === '20000') {
             this.powerNames = res.data.data;
             this.getModuleList(res.data.data[0].id);
@@ -1465,7 +1466,7 @@
       handleSubmitOut() {
         this.$refs['leaveForm'].validate(valid=>{
           if (valid){
-            this.$http.put(`staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
+            this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
               if (res.code === '20030') {
                 this.$LjNotify('success',{
                   title: '成功',
@@ -1488,7 +1489,7 @@
 
       },
       handleOkDisable() {
-        this.$http.put(`staff/user/${this.currentStaff.id}`,{
+        this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,{
           type: 'enable'
         }).then(res => {
           if (res.code === '20030') {
@@ -1516,7 +1517,7 @@
       handleSubmitAddStaff() {
         if (this.is_edit) {
           this.interview_info_detail.type = 'update';
-          this.$http.put(`staff/user/${this.currentStaff.id}`,this.interview_info_detail).then(res => {
+          this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,this.interview_info_detail).then(res => {
             if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -1533,7 +1534,7 @@
           });
           return false;
         }
-        this.$http.post('staff/user',this.interview_info_detail).then(res => {
+        this.$http.post(this.url+'staff/user',this.interview_info_detail).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1550,7 +1551,7 @@
         })
       },
       handleSubmitAddDuty() {
-        this.$http.post('organization/duty',this.positionForm).then(res => {
+        this.$http.post(this.url+'organization/duty',this.positionForm).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1603,7 +1604,7 @@
       },
       handleSubmitAddPosition() {
         if (this.is_edit_position) {
-          this.$http.put(`organization/position/${this.add_position_form.id}`,this.add_position_form).then(res => {
+          this.$http.put(`${this.url}organization/position/${this.add_position_form.id}`,this.add_position_form).then(res => {
             if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -1620,7 +1621,7 @@
           });
           return false;
         }
-        this.$http.post('organization/position',this.add_position_form).then(res => {
+        this.$http.post(this.url+'organization/position',this.add_position_form).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1643,7 +1644,7 @@
       },
       //获取职位列表
       getDutyList() {
-        this.$http.get('organization/duty',this.dutyParams).then(res => {
+        this.$http.get(this.url+'organization/duty',this.dutyParams).then(res => {
           if (res.code === '20000') {
             this.dutyList = res.data.data;
           } else {
@@ -1655,7 +1656,7 @@
       async getStaffList() {
         //if(! await this.validatePermission('User-Index')) {return};
         if(! this.VALIDATE_PERMISSION['User-Index']) {return};
-        this.$http.get('staff/user',this.staffParams).then(res => {
+        this.$http.get(this.url+'staff/user',this.staffParams).then(res => {
           if (res.code === '20000') {
             this.staffList = res.data.data;
           } else {
@@ -1679,7 +1680,7 @@
         }
       },
       getPositionList() {
-        this.$http.get('organization/position',{
+        this.$http.get(this.url+'organization/position',{
           duty_id: this.currentDutyInfo.id,
           page: 1,
           limit: 999

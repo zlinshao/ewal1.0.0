@@ -613,6 +613,8 @@
     data() {
       return {
 
+        url:globalConfig.humanResource_server,
+
         //新部门管理
         show_depart_detail: false,
         control_btn: [
@@ -902,7 +904,7 @@
       // 部门管理 搜索下级部门
       getNextDepart(val, next) {
         this.next_depart_params.parent_id = val.id;
-        this.$http.get('organization/organization', this.next_depart_params).then(res => {
+        this.$http.get(this.url+'organization/organization', this.next_depart_params).then(res => {
           if (res.code === '20000') {
             this.next_depart_pool = res.data.data;
             if (this.next_depart_pool.length>9){
@@ -932,7 +934,7 @@
       },
       //判断是否有下级部门
       handleConfirmNext(depart) {
-        this.$http.get('organization/organization', {
+        this.$http.get(this.url+'organization/organization', {
           page: 1,
           limit: 999,
           parent_id: depart.id
@@ -964,7 +966,7 @@
       },
       //添加系统
       handleSubmitAddSys() {
-        this.$http.post('organization/system', this.system_form).then(res => {
+        this.$http.post(this.url+'organization/system', this.system_form).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success', {
               title: '成功',
@@ -991,7 +993,7 @@
         this.del_field_visible = true;
       },
       handleSubmitDelField() {
-        this.$http.delete(`organization/permission_field/${this.current_field.id}`).then(res => {
+        this.$http.delete(`${this.url}organization/permission_field/${this.current_field.id}`).then(res => {
           if (res.code === '20040') {
             this.$LjNotify('success', {
               title: '成功',
@@ -1024,7 +1026,7 @@
       },
       handleSubmitOk() {
         if (this.is_edit_field) {
-          this.$http.put(`organization/permission_field/${this.current_field.id}`, this.field_form).then(res => {
+          this.$http.put(`${this.url}organization/permission_field/${this.current_field.id}`, this.field_form).then(res => {
             if (res.code === '20030') {
               this.$LjNotify('success', {
                 title: '成功',
@@ -1041,7 +1043,7 @@
           });
           return false;
         }
-        this.$http.post('organization/permission_field', this.field_form).then(res => {
+        this.$http.post(this.url+'organization/permission_field', this.field_form).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success', {
               title: '成功',
@@ -1068,7 +1070,7 @@
       },
       getFieldList(permission_id) {
         this.permission_params.permission_id = permission_id;
-        this.$http.get('organization/permission_field', this.permission_params).then(res => {
+        this.$http.get(this.url+'organization/permission_field', this.permission_params).then(res => {
           if (res.code === '20000') {
             this.field_list = res.data.data;
             this.field_count = res.data.count;
@@ -1084,7 +1086,7 @@
         this.new_power_visible = true;
       },
       handleSubmitAddPower() {
-        this.$http.post('organization/permission', this.new_power_form).then(res => {
+        this.$http.post(this.url+'organization/permission', this.new_power_form).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success', {
               title: '成功',
@@ -1108,7 +1110,7 @@
         this.new_power_visible = false;
       },
       handleSubmitAddModule() {
-        this.$http.post('organization/system', this.new_module_form).then(res => {
+        this.$http.post(this.url+'organization/system', this.new_module_form).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success', {
               title: '成功',
@@ -1136,7 +1138,7 @@
       },
       handleSubmitEdit() {
         if (this.edit_type === 'system' || this.edit_type === 'module') {
-          this.$http.put(`organization/system/${this.edit_row.id}`, this.edit_module_form).then(res => {
+          this.$http.put(`${this.url}organization/system/${this.edit_row.id}`, this.edit_module_form).then(res => {
             if (res.code === '20030') {
               this.$LjNotify('success', {
                 title: '成功',
@@ -1152,7 +1154,7 @@
             }
           })
         } else {
-          this.$http.put(`organization/permission/${this.edit_row.id}`, this.edit_module_form).then(res => {
+          this.$http.put(`${this.url}organization/permission/${this.edit_row.id}`, this.edit_module_form).then(res => {
             if (res.code === '20030') {
               this.$LjNotify('success', {
                 title: '成功',
@@ -1198,7 +1200,7 @@
       },
       handleConfirmDel() {
         if (this.confirm_type === 'system') {
-          this.$http.delete(`organization/system/${this.confirm_row.id}`).then(res => {
+          this.$http.delete(`${this.url}organization/system/${this.confirm_row.id}`).then(res => {
             if (res.code === '20040') {
               this.$LjNotify('success', {
                 title: '成功',
@@ -1214,7 +1216,7 @@
             }
           })
         } else {
-          this.$http.delete(`organization/permission/${this.confirm_row.id}`).then(res => {
+          this.$http.delete(`${this.url}organization/permission/${this.confirm_row.id}`).then(res => {
             if (res.code.endsWith('0')) {
               this.$LjNotify('success', {
                 title: '成功',
@@ -1238,7 +1240,7 @@
       },
       getPowerBottomList(id) {
         this.bottom_params.system_id = id;
-        this.$http.get('organization/permission', this.bottom_params).then(res => {
+        this.$http.get(this.url+'organization/permission', this.bottom_params).then(res => {
           if (res.code.endsWith('0')) {
             this.power_list = res.data.data;
             this.power_count = res.data.count;
@@ -1265,7 +1267,7 @@
       },
       getModuleList(id) {
         this.module_params.parent_id = id;
-        this.$http.get('organization/system', this.module_params).then(res => {
+        this.$http.get(this.url+'organization/system', this.module_params).then(res => {
           if (res.code.endsWith('0')) {
             this.module_list = res.data.data;
             this.module_count = res.data.count;
@@ -1289,7 +1291,7 @@
           this.$LjMessageNoPermission('无权限查看系统列表');
           return;
         }
-        this.$http.get('organization/system', this.power_params).then(res => {
+        this.$http.get(this.url+'organization/system', this.power_params).then(res => {
           if (res.code === '20000') {
             this.system_list = res.data.data;
             this.system_count = res.data.count;
@@ -1328,7 +1330,7 @@
 
       /*确定删除部门*/
       handleSubmitDel() {
-        this.$http.delete(`organization/organization/${this.del_depart.id}`).then(res => {
+        this.$http.delete(`${this.url}organization/organization/${this.del_depart.id}`).then(res => {
           if (res.code === '20040') {
             this.$LjNotify('success', {
               title: '成功',
@@ -1381,7 +1383,7 @@
       //确定添加部门
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
-          this.$http.put(`organization/organization/${this.edit_depart.id}`, this.departForm).then(res => {
+          this.$http.put(`${this.url}organization/organization/${this.edit_depart.id}`, this.departForm).then(res => {
             if (res.code === '20030') {
               this.$LjNotify('success', {
                 title: '成功',
@@ -1402,7 +1404,7 @@
           });
           return false;
         }
-        this.$http.post('organization/organization', this.departForm).then(res => {
+        this.$http.post(this.url+'organization/organization', this.departForm).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success', {
               title: '成功',
@@ -1447,7 +1449,7 @@
           this.$LjMessageNoPermission();
           return;
         }
-        this.$http.get('organization/organization', this.params).then(res => {
+        this.$http.get(this.url+'organization/organization', this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;
             this.departCount = res.data.count;

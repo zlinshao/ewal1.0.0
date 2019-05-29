@@ -120,6 +120,12 @@
           return [];
         }
       },
+      limitEasy: {
+        type:Array,
+        default() {
+          return [];
+        }
+      },
       maxSize: {
         type: [Number],
       },
@@ -277,13 +283,34 @@
           let fileSize = file.size;
           let ext = file.name.split('.')[file.name.split('.').length - 1];
           if (this.limit.constructor === Array && this.limit.length > 0) {
-            if (!_.includes(this.limit, ext)) {
-              this.$LjMessage('warning', {
-                title: '警告',
-                msg: `仅支持上传${this.limit.join(',')}的类型`,
+            if(this.limitEasy.length>0) {
+              let msg = [];
+              _.forEach(this.limitEasy,(o)=> {
+                if(o=='video') {
+                  msg.push('视频');
+                }else if(o=='image') {
+                  msg.push('图片');
+                }else if (o=='text') {
+                  msg.push('文本');
+                }
               });
-              document.getElementById(that.file.keyName).value = null;
-              return;
+             if (!_.includes(this.limit, ext)) {
+                this.$LjMessage('warning', {
+                  title: '警告',
+                  msg: `仅支持上传${msg.join(',')}的类型`,
+                });
+                document.getElementById(that.file.keyName).value = null;
+                return;
+              }
+            }else {
+              if (!_.includes(this.limit, ext)) {
+                this.$LjMessage('warning', {
+                  title: '警告',
+                  msg: `仅支持上传${this.limit.join(',')}的类型`,
+                });
+                document.getElementById(that.file.keyName).value = null;
+                return;
+              }
             }
           }
           if (this.maxSize) {

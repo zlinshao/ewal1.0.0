@@ -352,7 +352,7 @@
     computed: {},
     methods: {
       getPositionList() {
-        this.$http.get('recruitment/staff_needs/position/get').then(res => {
+        this.$http.get(this.url+'recruitment/staff_needs/position/get').then(res => {
           if (res.code === '20030') {
             this.position_list = res.data;
           } else {
@@ -363,7 +363,7 @@
         })
       },
       getPapers() {
-        this.$http.get('train/exam?type=1').then(res => {
+        this.$http.get(this.url+'train/exam?type=1').then(res => {
           if (res.code === '20000') {
             this.paper = res.data.data;
           } else {
@@ -374,7 +374,7 @@
         })
       },
       handleLookOffer(row) {
-        this.$http.get(`recruitment/interviewees/get_resume_url/${row.interviewee_id}`).then(res => {
+        this.$http.get(`${this.url}recruitment/interviewees/get_resume_url/${row.interviewee_id}`).then(res => {
           if (res.code === '20020') {
             if (res.data.url) {
                 window.open(res.data.url);
@@ -402,7 +402,7 @@
         })
       },
       handleConfirmAddOffer() {
-        this.$http.post('recruitment/interviewees',this.add_interviewer_form).then(res => {
+        this.$http.post(this.url+'recruitment/interviewees',this.add_interviewer_form).then(res => {
           this.handleSuccessCallback(res,'20010');
           if (res.code === '20010') {
             this.send_msg_offer=false;
@@ -419,7 +419,7 @@
           return;
         }
 
-        this.$http.post('recruitment/interviewers',this.add_msg_form).then(res => {
+        this.$http.post(this.url+'recruitment/interviewers',this.add_msg_form).then(res => {
           this.handleSuccessCallback(res,'20010');
           if (res.code === '20010') {
             this.handleCloseAddMsg();
@@ -463,7 +463,7 @@
       },
       handleGetOffer(id) {
         this.interview_list = [];
-        this.$http.get('recruitment/interviewers',{
+        this.$http.get(this.url+'recruitment/interviewers',{
           position_id: id
         }).then(res => {
           if (res.code === '20000') {
@@ -485,7 +485,7 @@
         this.cancel_interviewee_visible = true;
       },
       handleOkCancelInterview() {
-        this.$http.get(`recruitment/interviewees/cancel_interview/${this.currentRow.id}`).then(res => {
+        this.$http.get(`${this.url}recruitment/interviewees/cancel_interview/${this.currentRow.id}`).then(res => {
           this.handleSuccessCallback(res,'20030');
           this.cancel_interviewee_visible = false;
         })
@@ -507,7 +507,7 @@
       },
       //提交修改
       handleSubmitEdit() {
-        this.$http.put(`recruitment/interviewees/${this.currentRow.id}`,this.add_interviewer_form).then(res => {
+        this.$http.put(`${this.url}recruitment/interviewees/${this.currentRow.id}`,this.add_interviewer_form).then(res => {
           this.handleSuccessCallback(res,'20010');
           this.handleCancelEditInterviewee();
         })
@@ -536,7 +536,7 @@
       getIntervieweeList() {
         if(!this.validatePermission('Preparing-Audition-Select')) return;
         this.showLoading(true);
-        this.$http.get('recruitment/interviewer_process/reservationList',this.params).then(res => {
+        this.$http.get(this.url+'recruitment/interviewer_process/reservationList',this.params).then(res => {
           this.showLoading(false);
           if (res.code === "20000") {
             this.tableList = res.data.data;

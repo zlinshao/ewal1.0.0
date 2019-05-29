@@ -1175,17 +1175,17 @@ export const houseManagementSearch = {
           id: 1,
           title: '未出租'
         },
-        {
+        /*{
           id: 2,
           title: '预订'
-        },
+        },*/
         {
-          id: 3,
+          id: 4,
           title: '已出租'
         },
         {
-          id: 4,
-          title: '已完成'
+          id: 2,
+          title: '已预定'
         }
       ]
     },
@@ -1213,7 +1213,7 @@ export const houseManagementSearch = {
         },
         {
           id: 5,
-          title: '其他'
+          title: '以上'
         }
       ]
     },
@@ -1271,8 +1271,24 @@ export const houseManagementSearch = {
       keyName: 'decoration',
       dataType: [],
       value: [
+        /*{
+          id: 3,
+          title: '精装'
+        },
         {
-          id: 405,
+          id: 2,
+          title: '简装'
+        },
+        {
+          id: 4,
+          title: '豪装'
+        },
+        {
+          id: 1,
+          title: '毛坯'
+        },*/
+        {
+          id: 407,
           title: '精装'
         },
         {
@@ -1280,14 +1296,30 @@ export const houseManagementSearch = {
           title: '简装'
         },
         {
-          id: 407,
+          id: 408,
           title: '豪装'
         },
         {
-          id: 408,
+          id: 405,
           title: '毛坯'
-        }
+        },
       ]
+    },
+    {
+      keyType: 'radio',
+      title: '质量',
+      keyName: 'quality',
+      dataType: [],
+      value:[
+        {
+          id:1,
+          title:'低质量',
+        },
+        {
+          id:0,
+          title:'正常',
+        },
+      ],
     },
     {
       keyType: 'check',

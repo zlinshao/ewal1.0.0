@@ -2,34 +2,42 @@
   <div id="lj_upload">
     <div class="upload-container">
       <span v-if="title" class="upload-title">{{title}}</span>
-      <upload :max-size="maxSize" :download="download" :view-file="viewFile" show :limit="limit" :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
+      <upload :max-size="maxSize" :download="download" :view-file="viewFile" show :limit="limit_origin"
+              :limitEasy="limitEasy" :disabled="disabled" :file="photoData" @success="handleSuccess"></upload>
     </div>
   </div>
 </template>
 
 <script>
+  import _ from 'lodash';
   import Upload from './upload';
 
   export default {
     name: "ljUpload",
     //props: ['title', 'value', 'size', 'data', 'disabled'],
     props: {
-      title:{},
-      value:{},
-      size:{},
-      data:{},
+      title: {},
+      value: {},
+      size: {},
+      data: {},
       limit: {},
-      disabled:{
-        default:false,
+      limitEasy: {//
+        type: Array,
+        default() {
+          return [];
+        }
+      },
+      disabled: {
+        default: false,
       },
       download: {
         default: true
       },
-      maxSize:{
+      maxSize: {
         type: Number,
       },
-      viewFile:{
-        type:Array,
+      viewFile: {
+        type: Array,
         default() {
           return [];
         }
@@ -39,6 +47,32 @@
       Upload
     },
     watch: {
+      limit: {
+        handler(val, oldVal) {
+          if (val.length > 0) {
+            this.limit_origin = val;
+          }
+        },
+        //immediate:true,
+      },
+      limitEasy: {
+        handler(val, oldVal) {
+          if (val.length > 0 && !oldVal) {
+            _.forEach(val, (o) => {
+              if (o == 'image') {
+                this.limit_origin = _.concat(this.limit_origin, ['png', 'jpg', 'jpeg', 'gif', 'bmp']);
+              } else if (o == 'video') {
+                this.limit_origin = _.concat(this.limit_origin, ['mp4', 'avi', 'mov', 'wmv', '3gp', 'rmvb']);
+              } else if (o == 'text') {
+                this.limit_origin = _.concat(this.limit_origin, ['txt', 'doc', 'pdf', 'xls', 'md']);
+              }
+              this.limit_origin = _.uniq(this.limit_origin);
+            });
+          }
+        },
+        immediate: true,
+      },
+
       data: {
         handler(val, oldVal) {
           if (val) {
@@ -50,10 +84,22 @@
 
       value: {
         handler(val, oldVal) {
-          //debugger
-          if(val && val.length>0 && this.count==0 && this.disabled) {
+          if (val && val.length == 0 && this.count == 0) {
+            if(oldVal) {
+              this.count++;
+            }
+            return;
+          }
+
+          if (val && val.length > 0 && this.count == 0) {
             this.count++;
             this.getPhotoInfoList(_.uniq(val));
+            return;
+          }
+          if(val && val.length > 0 && this.count == 0 && this.disabled) {
+            this.count++;
+            this.getPhotoInfoList(_.uniq(val));
+            return;
           }
           /*if (val && !oldVal && this.count == 0) {
             this.count++;
@@ -67,10 +113,10 @@
           /*let s = val.constructor;
           let t = typeof val;*/
           if (val) {
-            if(val.constructor===Object) {
-              this.photoData.size.width = parseInt(val.width)+'px';
-              this.photoData.size.height = parseInt(val.height)+'px';
-            }else {
+            if (val.constructor === Object) {
+              this.photoData.size.width = parseInt(val.width) + 'px';
+              this.photoData.size.height = parseInt(val.height) + 'px';
+            } else {
               this.photoData.size.width = val + 'px';
               this.photoData.size.height = val + 'px';
             }
@@ -82,6 +128,7 @@
     data() {
       return {
         url: globalConfig.humanResource_server,
+        limit_origin: [],
         photoData: {
           keyName: Date.now(),
           setFile: [],
@@ -91,12 +138,13 @@
           },
         },
         count: 0,
+        oldVal:null,
       }
     },
     mounted() {
-      if (this.value && this.value.length > 0) {
+      /*if (this.value && this.value.length > 0) {
         this.getPhotoInfoList(this.value);
-      }
+      }*/
     },
     methods: {
       handleSuccess(val) {
@@ -111,7 +159,7 @@
           if (res.code.endsWith('0')) {
             this.photoData.setFile = res.data;
           }
-        }).catch();
+        });
       }
     }
   }

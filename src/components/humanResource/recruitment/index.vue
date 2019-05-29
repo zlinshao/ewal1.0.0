@@ -354,7 +354,7 @@
           this.$LjMessage('warning',{title:'警告',msg:'不可选择相同的面试官'});
           return;
         }
-        this.$http.put(`recruitment/interviewers/${this.currentRow.id}`,this.edit_offer).then(res => {
+        this.$http.put(`${this.url}recruitment/interviewers/${this.currentRow.id}`,this.edit_offer).then(res => {
           console.log(res);
           if (res.code === '20030') {
             this.$LjNotify('success',{
@@ -387,7 +387,7 @@
         this.edit_offer_visible = true;
       },
       handleOpenLookOffer() {
-        this.$http.get('recruitment/interviewers').then(res => {
+        this.$http.get(this.url+'recruitment/interviewers').then(res => {
           console.log(res);
           if (res.code === '20000') {
             this.office_data = res.data.data;
@@ -411,7 +411,7 @@
         this.showSearch = true;
       },
       handleCreateCode(row) {
-        this.$http.put(`recruitment/interviewer_process/get_qrcode/${row.id}`,{
+        this.$http.put(`${this.url}recruitment/interviewer_process/get_qrcode/${row.id}`,{
           id: row.id,
           position_id: row.depart.id
         }).then(res => {
@@ -429,7 +429,7 @@
         });
       },
       handleSearchInterview() {
-        this.$http.get('recruitment/interviewer_process/intervieweeListForFront').then(res => {
+        this.$http.get(this.url+'recruitment/interviewer_process/intervieweeListForFront').then(res => {
           console.log(res);
           if (res.code === '20000') {
             this.interview_list = res.data.data;
