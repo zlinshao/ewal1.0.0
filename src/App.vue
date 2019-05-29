@@ -62,7 +62,7 @@
     </div>
     <div id="theme_name" :class="'theme' + theme_name">
       <keep-alive>
-        <router-view />
+        <router-view/>
       </keep-alive>
     </div>
     <div class="flex-center changeLoad" v-if="changeLoad">
@@ -186,6 +186,7 @@ export default {
       handler (val, oldVal) {
         this.moduleList = false;
         this.showLoading(false);
+        console.log(val, oldVal)
         this.$store.dispatch('route_animation');
       },
       deep: true// 深度观察监听

@@ -211,7 +211,7 @@ export default {
       lossArr: [],
       pieArr: [],
       allUrl: globalConfig.president_sever,
-      citys: [{name: '成都'}, {name: '西安'}, {name: '重庆'}, {name: '合肥'}, {name: '上海'}, {name: '杭州'}, {name: '南京'}, {name: '苏州'},{name: '乐伽'}],
+      citys: [{name: '成都'}, {name: '西安'}, {name: '重庆'}, {name: '合肥'}, {name: '无锡'}, {name: '杭州'}, {name: '南京'}, {name: '苏州'},{name: '乐伽'}],
       tabBar: [
         {name: '房租', color: '#F64C7E'},
         {name: '定金', color: '#FFCC4D'},
@@ -292,8 +292,9 @@ export default {
       this.startTime = '';
       this.endTime = '';
       this.value6 = '';
-    //   this.getEmptyHome();
-    //   this.getRate();
+      if (this.chooseCity !== '乐伽') {
+          this.chooseCity = this.chooseCity + '市'
+      }
       this.getMoney(this.chooseCity);
       this.getWin(this.chooseCity);
   },
@@ -841,6 +842,7 @@ export default {
         }
     }
     .branch {
+        cursor: pointer;
         transition: all 0.5s linear;
         position: absolute;
         left: 282px;
