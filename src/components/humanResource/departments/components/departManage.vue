@@ -806,7 +806,6 @@
         ],
         confirm_send_visible: false,
         position_level: [
-          {id: 0, val: 'P0'},
           {id: 1, val: 'P1'},
           {id: 2, val: 'P2'},
           {id: 3, val: 'P3'},
