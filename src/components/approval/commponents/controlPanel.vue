@@ -35,9 +35,9 @@
               <span class='cell_tit'>接收类型</span>
               <div class='cell_content cell_type'>
 
-                <span class='cell_blue'>{{item.typeName.join(',')}}</span>
+                <span class='cell_blue'>{{item.typeName.length>0?item.typeName.join(','):''}}</span>
                 <ul v-if='item.typeName.length > 1'>
-                  <li v-for='(item,idx) in item.typeName' :key='idx'>{{item}}</li>
+                  <li v-for='(subItem,idx) in item.typeName' :key='idx'>{{subItem}}</li>
                 </ul>
               </div>
             </div>
@@ -168,6 +168,11 @@ export default {
     getApproval () {
       let key = this.current_status_type == 1 ? 'gkzx_approval' : 'pqjl_approval'
       this.$http.get(`${this.approval_sever}runtime/taskDashboard?taskDefinitionKey=${key}`).then(res => {
+        _.forEach(res,(o)=> {
+          if(!o.typeName||o.typeName.constructor!=Array) {//防止报错
+            o.typeName = [];
+          }
+        });
         this.panelList = res || []
       }).catch(err => {
         this.panelList = []
@@ -209,6 +214,8 @@ export default {
         this.$http.post(`${this.approval_sever}monitor/process-instances/${this.currentInfo.id}`, params).then(res => {
           // 改变当前这个值
           this.currentInfo.typeName = [];
+          debugger
+          let mType = this.currentInfo.type;
           this.currentInfo.type.forEach(ele => {
             this.currentInfo.typeName.push(this.receive_type[ele])
           });

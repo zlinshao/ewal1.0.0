@@ -48,6 +48,7 @@ import './assets/js/approval/approval.js';
 
 Vue.prototype.$echarts = echarts;
 Vue.use(Boss);
+Vue.use(_);
 Vue.use(Vuex);
 Vue.use(fun);
 Vue.use(ElementUI);
