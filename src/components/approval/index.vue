@@ -16,23 +16,23 @@
         </div>
 
         <div class='header_right'>
-          <p class='ele_p gua' @click='change_revice_type'>
-            <i :class='["icons",isRevice ? "revice_icons":"gua_icons"]'></i>
-            {{isRevice ? "挂起":"接收"}}
+          <p class='ele_p gua' @click='change_receive_type'>
+            <i :class='["icons",isreceive ? "receive_icons":"gua_icons"]'></i>
+            {{isreceive ? "挂起":"接收"}}
           </p>
           <div class="margin">
-            <p :class='["ele_p",revice_check_name.length >0?"revice_span":""]' @click.stop='setRecive_type'>
-              {{ revice_check_name.length == 0 ? "接收类型" : revice_check_name.join('-') }}</p>
+            <p :class='["ele_p",receive_check_name.length >0?"receive_span":""]' @click.stop='setReceiveType'>
+              {{ receive_check_name.length == 0 ? "接收类型" : receive_check_name.join('-') }}</p>
 
-            <div class='revice_box' v-if='isRevice_visible'>
-              <el-checkbox-group v-model="revice_check">
-                <el-checkbox v-for='type in Object.keys(revice_type)' :key='type' :label="type">
-                  {{revice_type[type]}}
+            <div class='receive_box' v-if='isreceive_visible'>
+              <el-checkbox-group v-model="receive_check">
+                <el-checkbox v-for='type in Object.keys(receive_type)' :key='type' :label="type">
+                  {{receive_type[type]}}
                 </el-checkbox>
               </el-checkbox-group>
               <div class="dialog_footer">
-                <el-button type="danger" size="small" @click='handleChangeRevice'>确定</el-button>
-                <el-button type="info" size="small" @click='handleCancelRevice'>取消</el-button>
+                <el-button type="danger" size="small" @click='handleChangeReceive'>确定</el-button>
+                <el-button type="info" size="small" @click='handleCancelReceive'>取消</el-button>
               </div>
             </div>
           </div>
@@ -44,7 +44,7 @@
 
       <div class="mainListTable" :style="{'height': this.mainListHeight(30) + 'px'}">
         <el-table :data="tableData['data' + status_type ]" :height="this.mainListHeight(180) + 'px'"
-          highlight-current-row @row-dblclick="handlerDbclick" header-row-class-name="tableHeader" style="width: 100%">
+          highlight-current-row @row-dblclick="handleDbClick" header-row-class-name="tableHeader" style="width: 100%">
 
           <el-table-column align="center" v-for='item in Object.keys(tableShow)' :key='item' :prop='item' :label="tableShow[item]"></el-table-column>
 
@@ -73,7 +73,7 @@
       <!-- 搜索 -->
       <SearchHigh :module="showSearch" :showData="searchHigh" @close="hiddenModule" />
       <!-- 控制面板 -->
-      <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' :revice_type='revice_type' />
+      <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' :receive_type='receive_type' />
       <!-- 详情 -->
       <ContractDetail :visible='contract_detail_visible' :moduleData='current_row' :status_type='status_type' @close='hiddenContractDetail'
         @changeData='handleChange' />
@@ -88,7 +88,7 @@ import SearchHigh from '../common/searchHigh.vue'
 import ControlPanel from './commponents/controlPanel'
 import ContractDetail from './commponents/contract_detail'
 import DevelopNewDish from './commponents/developNewDish'
-import { revice_type } from '../../assets/js/approval/revice_type.js'
+import { receive_type } from '../../assets/js/approval/receive_type.js'
 export default {
   components: {
     SearchHigh, //高级搜索
@@ -98,7 +98,7 @@ export default {
   },
   data () {
     return {
-      revice_type, // 接收类型设置
+      receive_type, // 接收类型设置
       show_form_visible: false,
       chosenTag: 1,
       isCaputer: true, // 当前登录人：组员 或者 组长
@@ -191,10 +191,10 @@ export default {
           department: ''
         }
       },
-      isRevice: false, //是否接收
-      isRevice_visible: false,  // 接收类型设置 显示隐藏
-      revice_check: [], // 接收类型 选择
-      revice_check_name: [],
+      isreceive: false, //是否接收
+      isreceive_visible: false,  // 接收类型设置 显示隐藏
+      receive_check: [], // 接收类型 选择
+      receive_check_name: [],
       controlPanel_visible: false, // 控制面板 显示隐藏
       showSearch: false, // 高级搜索 显示隐藏
       searchHigh: {}, // 高级搜索 参数
@@ -231,7 +231,7 @@ export default {
       if (val) {
         this.getApprovalsList(1)
       }
-      this.isRevice_visible = false
+      this.isreceive_visible = false
       this.showSearch = false
       this.controlPanel_visible = false
       this.contract_detail_visible = false
@@ -277,15 +277,15 @@ export default {
     },
     // 接口请求
     getApproval (url, params, val) {  // page分页
-      this.showLoading(true);
+      //this.showLoading(true);
       this.$http.get(`${this.approval_sever}${url}`, params).then(res => {
-        this.showLoading(false);
+        //this.showLoading(false);
 
-        this.tableData['data' + val] = res.size > 0 ? this.setFormateApproval(res.data) : []
+        this.tableData['data' + val] = res.size > 0 ? this.setFormatApproval(res.data) : []
         this.total['total' + val] = res.total
       })
     },
-    setFormateApproval (data) {
+    setFormatApproval (data) {
       let arr = []
       for (let item of data) {
         let obj = {};
@@ -361,7 +361,7 @@ export default {
             title: '审批类型',
             keyName: 'type',
             dataType: '',
-            value: revice_type
+            value: receive_type
           },
           {
             keyType: 'depart',
@@ -387,13 +387,13 @@ export default {
       }
     },
     // 接收 挂起
-    change_revice_type () {
-      this.isRevice = !this.isRevice
+    change_receive_type () {
+      this.isreceive = !this.isreceive
       this.handleCheckType()
     },
-    setRecive_type () {
-      if (this.isRevice) {
-        this.isRevice_visible = !this.isRevice_visible
+    setReceiveType () {
+      if (this.isreceive) {
+        this.isreceive_visible = !this.isreceive_visible
       } else {
         this.$LjNotify('warning', {
           title: '提示',
@@ -403,26 +403,26 @@ export default {
     },
     handleCheckType () {
       let params = {
-        "receiveTypeList": this.revice_check,
-        "suspend": !this.isRevice
+        "receiveTypeList": this.receive_check,
+        "suspend": !this.isreceive
       }
-      this.$http.post(`${this.approval_sever}monitor/process-instances`, params).then(res => {
+      this.$http.post(`${this.approval_sever}monitor/process-instances/${this.$storage.get('user_info').id}`, params).then(res => {
         console.log(res)
       })
     },
     // 选择 接收类型
-    handleChangeRevice () {
-      this.isRevice_visible = false
-      this.revice_check_name = []
-      this.revice_check.forEach(ele => {
-        this.revice_check_name.push(this.revice_type[ele])
+    handleChangeReceive () {
+      this.isreceive_visible = false
+      this.receive_check_name = []
+      this.receive_check.forEach(ele => {
+        this.receive_check_name.push(this.receive_type[ele])
       });
       this.handleCheckType()
     },
     // 取消 接收类型
-    handleCancelRevice () {
-      this.isRevice_visible = false
-      this.revice_check = []
+    handleCancelReceive () {
+      this.isreceive_visible = false
+      this.receive_check = []
     },
     // 组长 控制面板
     handleSeeMain () {
@@ -432,8 +432,15 @@ export default {
       this.controlPanel_visible = false
     },
     // 详情
-    handlerDbclick (row) {
-      this.current_row = row
+    handleDbClick (row) {
+      let url = row.bm_detail_request_url;
+      if(!url) {
+        this.$LjMessage('warning',{title:'警告',msg:'无详情地址'});
+        return;
+      }
+     // row.bm_detail_request_url = '';
+      this.current_row = row;
+
       // if (row.type == 2) { // 拓展新盘
       //   this.develop_visible = true
       // } else {

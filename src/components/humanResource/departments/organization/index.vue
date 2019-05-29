@@ -108,7 +108,7 @@
     components: {},
     data() {
       return {
-        url: globalConfig.server,
+        url: globalConfig.humanResource_server,
         top_position: [],
         next_depart: {
 
@@ -153,7 +153,7 @@
             [key]: []
           });
         }
-        this.$http.get('organization/organization',{
+        this.$http.get(this.url+'organization/organization',{
           parent_id: item.id
         }).then(res => {
           if (res.code === '20000') {
@@ -165,7 +165,7 @@
       },
       //获取营销中心下级部门
       handleGetMarketNext() {
-        this.$http.get('organization/organization',{
+        this.$http.get(this.url+'organization/organization',{
           parent_id: this.market_id
         }).then(res => {
           if (res.code === '20000') {
@@ -182,7 +182,7 @@
         this.market_child = Object.assign({},this.market_child,{
           [key]: {}
         });
-        this.$http.get('organization/organization',{
+        this.$http.get(this.url+'organization/organization',{
           parent_id
         }).then(res => {
           if (res.code === '20000') {
@@ -198,7 +198,7 @@
           this.staff_list[index][idx][child_idx] = [];
           return false;
         }
-        this.$http.get('staff/user',{
+        this.$http.get(this.url+'staff/user',{
           page: 1,
           limit: 999,
           org_id: child_depart.id
@@ -232,7 +232,7 @@
         this.staff_list[index] = Object.assign({},this.staff_list[index],{
           [idx]:{}
         });
-        this.$http.get('organization/organization',{
+        this.$http.get(this.url+'organization/organization',{
           parent_id: next_depart.id
         }).then(res => {
           if (res.code === '20000') {
@@ -258,7 +258,7 @@
         this.staff_list = Object.assign({},this.child_depart,{
           [index]: {}
         });
-        this.$http.get('organization/organization',{
+        this.$http.get(this.url+'organization/organization',{
           position_id: [item.id]
         }).then(res => {
           if (res.code === '20000') {
@@ -282,7 +282,7 @@
       },
       //获取顶级领导列表
       getTopPosition() {
-        this.$http.get('organization/position',{
+        this.$http.get(this.url+'organization/position',{
           page: 1,
           limit: 999,
           is_top: 1

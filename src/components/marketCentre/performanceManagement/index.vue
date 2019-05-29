@@ -95,6 +95,8 @@
     components: { SearchHigh ,MarketMenuList},
     data() {
       return {
+        url:globalConfig.humanResource_server,
+
         highVisible: false,
         searchData: {},
         performanceSearch,
@@ -147,14 +149,14 @@
       },
       handleExport(){
         this.params.export=1;
-        this.$http.get('achv/achv/index',this.params,'arraybuffer').then((res) => {
+        this.$http.get(this.url+'achv/achv/index',this.params,'arraybuffer').then((res) => {
             if (!res) return;
             this.$exportData(res);
             this.params.export=0;
         });
       },
       handleGetPerformanceList() {
-        this.$http.get('achv/achv/index', this.params).then(res => {
+        this.$http.get(this.url+'achv/achv/index', this.params).then(res => {
           console.log(res);
           if (res.code === "50000") {
             this.performance_list = res.data.data;

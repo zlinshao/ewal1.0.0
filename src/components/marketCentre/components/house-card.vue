@@ -81,7 +81,7 @@
                 </div>
               </el-form-item>
               <el-form-item label="上传照片">
-                <lj-upload size="50" v-model="upload_form.album"></lj-upload>
+                <lj-upload size="50" :limit-easy="['image']" v-model="upload_form.album"></lj-upload>
               </el-form-item>
             </el-form>
           </div>
@@ -276,8 +276,8 @@
               }, //所有上传文件
               //跟进
               follow_form: {
-                follow_content: '',
-                warning_status: '',
+                follow_content: -1,
+                warning_status: -1,
               },
               follow_up_visible: false,
               follow_up_content: [
@@ -458,7 +458,24 @@
           chooseRadioNotice(item) {
             this.follow_form.warning_status = item.id;
           },
+
+          validateForm() {
+            let msg = null;
+            if(this.follow_form.follow_content<0) {
+              msg = '跟进内容不能为空';
+            }
+            if(this.follow_form.warning_status<0) {
+              msg = '调整预警不能为空';
+            }
+            if(msg) {
+              this.$LjMessage('warning',{title:'警告',msg:msg});
+              return false;
+            }
+            return true;
+          },
+
           handleFollowInfo() {
+            if(!this.validateForm()) return;
             //提交更进记录
             this.$http.post(this.market_server + 'v1.0/market/house/followrecord',{
               id: this.currentHouse.id,
@@ -473,7 +490,7 @@
             this.upload_form.album = [];
             this.currentHouse = '';
             for (let key in this.follow_form) {
-              this.follow_form[key] = '';
+              this.follow_form[key] = -1;
             }
             this.follow_up_visible = false;
             this.$emit('change',1);

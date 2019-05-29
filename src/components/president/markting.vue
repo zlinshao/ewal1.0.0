@@ -290,6 +290,7 @@ export default {
     
   },
   activated() {
+      this.$emit('change', '市场')
       this.startTime = '';
       this.endTime = '';
       this.value6 = '';

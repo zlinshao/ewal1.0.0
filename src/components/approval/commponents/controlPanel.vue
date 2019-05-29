@@ -77,8 +77,8 @@
         </div>
         <div class='dialog_main check_type_dialog'>
           <el-checkbox-group v-model="currentInfo.type" :disabled='currentInfo.suspend'>
-            <el-checkbox v-for='type in Object.keys(revice_type)' :key='type' :label="type">
-              {{revice_type[type]}}
+            <el-checkbox v-for='type in Object.keys(receive_type)' :key='type' :label="type">
+              {{receive_type[type]}}
             </el-checkbox>
           </el-checkbox-group>
         </div>
@@ -99,7 +99,7 @@ export default {
     PanelDialog,
     LjDialog
   },
-  props: ['visible', 'revice_type'],
+  props: ['visible', 'receive_type'],
   data () {
     return {
       current_status_type: 1,
@@ -148,7 +148,7 @@ export default {
       },
       show_set_visible: false,
       setting_info: {},
-      revice_check: [],
+      receive_check: [],
 
       currentIndex: 0, //设置的是第几个的值
       currentInfo: {},  // 当前设置类型
@@ -210,7 +210,7 @@ export default {
           // 改变当前这个值
           this.currentInfo.typeName = [];
           this.currentInfo.type.forEach(ele => {
-            this.currentInfo.typeName.push(this.revice_type[ele])
+            this.currentInfo.typeName.push(this.receive_type[ele])
           });
 
           this.panelList.splice(this.currentIndex, 1, this.currentInfo)

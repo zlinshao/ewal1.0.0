@@ -49,6 +49,7 @@
     components: {MenuList},
     data() {
       return {
+        url:globalConfig.humanResource_server,
         humanResource,
         title: '',
         mainHeight: {
@@ -133,7 +134,7 @@
         })
       },
       handleGetStaffInfo() {
-        this.$http.get('staff/user/statistical',this.staff_time).then(res => {
+        this.$http.get(this.url+'staff/user/statistical',this.staff_time).then(res => {
           if (res.code === '20000') {
             for (let key in this.staff_info) {
               this.staff_info[key] = res.data[key];

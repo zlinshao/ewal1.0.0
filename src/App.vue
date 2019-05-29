@@ -62,7 +62,7 @@
     </div>
     <div id="theme_name" :class="'theme' + theme_name">
       <keep-alive>
-        <router-view @changeTheme="changeTheme"/>
+        <router-view/>
       </keep-alive>
     </div>
     <div class="flex-center changeLoad" v-if="changeLoad">
@@ -179,6 +179,7 @@ export default {
       ],
       messageTable: [],
       market_server: globalConfig.market_server,
+      theme_name_Two:false,  //是否是自己选择第二主题
     }
   },
   watch: {
@@ -186,11 +187,26 @@ export default {
       handler (val, oldVal) {
         this.moduleList = false;
         this.showLoading(false);
-           console.log('val'+val )
-       console.log('oldVal'+oldVal)
-       console.log('val'+JSON.stringify(val) )
-       console.log('oldVal'+JSON.stringify(oldVal))
+        console.log(val, oldVal)
         this.$store.dispatch('route_animation');
+        
+       // 处理总裁办进入后的页面的皮肤只能用2的问题
+        if(val.fullPath.indexOf('/president') !=-1){
+          localStorage.setItem('president_theme_name', '2');
+        }else {
+          localStorage.removeItem('president_theme_name');
+          if(!this.theme_name_Two && this.theme_name != '2'){
+             localStorage.setItem('theme_name', this.theme_name);
+          }else if(this.theme_name_Two){
+            localStorage.setItem('theme_name', '2');
+          }
+        }
+        if(localStorage.getItem("president_theme_name")){
+          this.theme_name = '2';
+        }else{
+          this.theme_name = localStorage.getItem('theme_name');
+        }
+        
       },
       deep: true// 深度观察监听
     }
@@ -286,17 +302,16 @@ export default {
       this.$store.dispatch('close_notify', false);
     },
     handleChangeTheme(item) {
+      this.$store.dispatch('theme_name',item.key);
+      this.themeKey = item.key;
+      this.theme_name = item.key;
       
-     if (this.url === '/president') {
-        this.$store.dispatch('theme_name','2');
-        this.themeKey = '2';
-        this.theme_name = '2';
+      // 判断是否是手动选择主题2
+      if(item.key=='2'){
+        this.theme_name_Two=true;
       }else{
-        this.$store.dispatch('theme_name',item.key);
-        this.themeKey = item.key;
-        this.theme_name = item.key;
+        this.theme_name_Two=false;
       }
-
   
      
       // this.$store.dispatch('theme_name',item.key);
