@@ -43,7 +43,7 @@
               </div>
               <div style="padding: 10px 0 0 10px">
                 <p>{{item.sale}}</p>
-                <el-progress :percentage="70"></el-progress>
+                <el-progress :percentage="item.rate"></el-progress>
               </div>
             </section>
           </div>
@@ -137,7 +137,7 @@
               </section>
             </div>
             <div>
-              <el-progress :percentage="70"></el-progress>
+              <el-progress :percentage="item.rate"></el-progress>
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="18"
-                    :percentage="50"
+                    :percentage="emptyRate"
                     status="exception"
                   ></el-progress>
                   <span>{{emptyNum}}</span>
@@ -230,7 +230,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="18"
-                    :percentage="50"
+                    :percentage="breakPreRate"
                     status="exception"
                   ></el-progress>
                   <span>{{breakPre}}</span>
@@ -240,7 +240,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="18"
-                    :percentage="50"
+                    :percentage="resPayRate"
                     status="exception"
                   ></el-progress>
                   <span>{{resPay}}</span>
@@ -254,7 +254,7 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="18"
-                    :percentage="50"
+                    :percentage="recv_rent_gap_rate"
                     status="exception"
                   ></el-progress>
                   <span>{{recv_rent_gap}}</span>
@@ -264,10 +264,10 @@
                   <el-progress
                     :text-inside="true"
                     :stroke-width="18"
-                    :percentage="50"
+                    :percentage="middleRate"
                     status="exception"
                   ></el-progress>
-                  <span>{{middle}}</span>
+                  <span>{{middleRate}}</span>
                 </li>
               </ul>
             </div>
@@ -292,6 +292,7 @@ export default {
   name: "index",
   data() {
     return {
+      earth: {},
       num: 0,
       num1: 0,
       num2: 0,
@@ -307,6 +308,7 @@ export default {
       num12: 0,
       num13: 0,
       color: 'color',
+      disburse: '', //支出
       recv_rent_gap: '',
       totalSale: '',
       total: [],
@@ -316,6 +318,11 @@ export default {
       lossData: '',
       quitRate: 0,
       entryRate: 0,
+      emptyRate: 0,
+      recv_rent_gap_rate: 0,
+      breakPreRate: 0,
+      resPayRate: 0,
+      middleRate: 0,
       emptyHome: '',
       emptyNum: '',
       default: '',
@@ -414,33 +421,41 @@ export default {
     this.getLangDate();
   },
   activated() {
-    console.log(this.$route)
-    console.log(this.$router)
+    this.flag = false;
     this.getDetail();
     // this.getRentDetail();
     this.getEntryData();
-    this.getRate();
-    this.getEmptyHome();
+    // this.getRate();
+    // this.getEmptyHome();
     this.getLoss();
     this.getHost();
+    this.getWin();
     this.getAchieve();
+    
   },
   watch: {},
   computed: {},
   methods: {
+  // 获取服务器数据
     getHost() {
         this.$http.post(this.netUrl + "instance-list").then(res => {
           this.hosts = res.data.InstanceStatuses.InstanceStatus
+      })
+    },
+    // 获取总支出
+    getWin() {
+        this.$http.post(this.allUrl + "income_and_disburse_for_ceo").then(res => {
+          // this.hosts = res.data.InstanceStatuses.InstanceStatus
+          this.disburse = res.data[this.dateTime].乐伽.disburse
+      }).then(() => {
+        this.getRate()
+        this.getEmptyHome()
       })
     },
     // 业绩
     getAchieve() {
         this.$http.post(this.allUrl + "achievement_detail_for_ceo").then(res => {
           this.totalSale = res.data[res.data.length - 1][1]
-          this.totalSale = this.payZero(this.totalSale, 8) + '00'
-          this.total = this.totalSale.split('')
-          console.log(this.totalSale)
-          // console.log(this.total)
           this.cityData = []
           for(let i of res.data.reverse().slice(1,4)) {
             this.cityData.push({city: i[0], sale: i[1],num: i[2]})
@@ -448,6 +463,37 @@ export default {
           for(let i of res.data.reverse().slice(1,res.data.reverse().length - 1)) {
             this.cityDataAll.push({city: i[0], sale: i[1],num: i[2]})
           }
+          if (this.totalSale === 0) {
+            this.cityData.forEach((item) => {
+              item.rate = 0
+            })
+            this.cityDataAll.forEach((item) => {
+              item.rate = 0
+            })
+          } else {
+            let one = Math.round((((res.data[res.data.length - 2][1] / this.totalSale) *10000) / 100).toFixed(2))
+            let two = Math.round((((res.data[res.data.length - 3][1] / this.totalSale) *10000) / 100).toFixed(2))
+            let three = Math.round((((res.data[res.data.length - 4][1] / this.totalSale) *10000) / 100).toFixed(2))
+            let four = Math.round((((res.data[res.data.length - 5][1] / this.totalSale) *10000) / 100).toFixed(2))
+            let five = Math.round((((res.data[res.data.length - 6][1] / this.totalSale) *10000) / 100).toFixed(2))
+            let six = Math.round((((res.data[res.data.length - 7][1] / this.totalSale) *10000) / 100).toFixed(2))
+            let seven = Math.round((((res.data[res.data.length - 8][1] / this.totalSale) *10000) / 100).toFixed(2))
+            let eight = Math.round((((res.data[res.data.length - 9][1] / this.totalSale) *10000) / 100).toFixed(2))
+            let arr = [eight,seven,six,five,four,three,two,one]
+            console.log(arr)
+            // let arr = [1,2,3,4,5,6,7,8]
+            this.cityDataAll.forEach((item,index) => {
+              arr.forEach((item2, index2) => {
+                item.rate = arr[index]
+              })
+            })
+            this.cityData = this.cityDataAll.slice(0,3)
+            console.log(this.cityDataAll)
+          }
+          // console.log(this.total)
+          this.totalSale = this.payZero(this.totalSale, 8) + '00'
+          this.total = this.totalSale.split('')
+          console.log(this.totalSale)
           console.log(this.cityData)
       })
     },
@@ -475,6 +521,9 @@ export default {
         this.breakPre = res.data[this.dateTime].break_pay.amount_paid
         this.resPay = res.data[this.dateTime].mediation_pay.amount_paid
         this.middle = res.data[this.dateTime].responsibility_pay.amount_paid
+        this.breakPreRate = Math.round(((this.breakPre / this.disburse)*10000) / 100)
+        this.resPayRate = Math.round(((this.resPay / this.disburse)*10000) / 100)
+        this.middleRate = Math.round(((this.middle / this.disburse)*10000) / 100)
         let year = new Date().getFullYear() + '年';
         let obj = res.data[year]
         // this.emptyHome
@@ -570,9 +619,10 @@ export default {
         end: this.dateTime
       }
       this.$http.post(this.allUrl + "rent_detail", params).then(res => {
-        console.log(res)
         this.emptyNum = res.data.vacancy_fee
+        this.emptyRate = Math.round(((this.emptyNum / this.disburse)*10000) / 100)
         this.recv_rent_gap = res.data.recv_rent_gap
+        this.recv_rent_gap_rate = Math.round(((this.recv_rent_gap / 10000000)*10000) / 100)
       })
     },
     // 今日入职
@@ -638,7 +688,7 @@ export default {
         this.weekDate = this.weekDate.slice(0, 7)
       let myChart = this.$echarts.init(document.getElementById("statistics"));
       let myChart1 = this.$echarts.init(document.getElementById("statistics1"));
-      // let myChart2 = this.$echarts.init(document.getElementById("entryRate"));
+      let myChart2 = this.$echarts.init(document.getElementById("earth"));
       // let myChart3 = this.$echarts.init(document.getElementById("quitRate"));
       let myChart4 = this.$echarts.init(document.getElementById("lossRate"));
       // 绘制图表
@@ -728,17 +778,30 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: this.weekDate
+          data: this.weekDate,
+          axisLabel: {
+                show: true,
+                textStyle: {
+                    color: '#ffffff'
+                }
+            }
         },
         grid: {
-          x: 10,
-          y: 0,
-          x2: 10,
-          y2: 0,
+          top: 10,
+          // bottom: 0,
+          // left:5,
+          // x2: 10,
+          // y2: 10,
           borderWidth: 1
         },
         yAxis: {
-          type: "value"
+          type: "value",
+          axisLabel : {
+              show: true,
+              textStyle: {
+                  color: '#ffffff'
+              }
+          }
         },
         series: [
           {
@@ -749,6 +812,49 @@ export default {
           }
         ]
       });
+      // myChart2.setOption({
+      //     title: {
+      //         text: 'Map with texture',
+      //         x: 'center',
+      //         textStyle: {
+      //             color: 'white'
+      //         }
+      //     },
+      //     tooltip: {
+      //         formatter: '{b}'
+      //     },
+      //     series: [{
+      //         type: 'map3d',
+      //         mapType: 'world',
+      //         baseLayer: {
+      //             backgroundColor: '',
+      //             backgroundImage: 'asset/earth.jpg',
+      //             quality: 'high',
+      //         },
+
+      //         surfaceLayers: [{
+      //             type: 'texture',
+      //             distance: 3,
+      //             image: 'asset/clouds.png'
+      //         }],
+
+      //         selectedMode: 'single',
+
+      //         itemStyle: {
+      //             normal: {
+      //                 label: {
+      //                     show: true
+      //                 },
+      //                 borderWidth: 1,
+      //                 borderColor: 'yellow',
+      //                 areaStyle: {
+      //                     color: 'rgba(0, 0, 0, 0)'
+      //                 }
+      //             }
+      //         },
+      //         data: [{}]
+      //     }]
+      // });
     },
     getLangDate() {
       function dateFilter(date) {
@@ -1241,5 +1347,9 @@ export default {
 }
 .color2 {
   color: #76FFF6;
+}
+#earth {
+  width: 500px;
+  height: 500px;
 }
 </style>

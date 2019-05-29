@@ -1261,7 +1261,7 @@ export default {
         border-radius: 100%;
         span {
             position: absolute;
-            left: 28px;
+            left: 19px;
             top: 39px;
             color: #ffffff;
         }
@@ -1312,7 +1312,7 @@ export default {
         border-radius: 100%;
         span {
             position: absolute;
-            left: 33px;
+            left: 27px;
             top: 39px;
             color: #ffffff;
         }

@@ -71,8 +71,8 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item label="总栋数">
-                    <el-input-number :controls="false" :min="1" :max="1000" placeholder="请输入"
-                                     v-model.number="new_village_form.total_buildings"></el-input-number>
+                    <el-input placeholder="请输入"
+                                     v-model.number="new_village_form.total_buildings"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -85,8 +85,10 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item label="房屋总数">
-                    <el-input-number :controls="false" placeholder="请输入"
-                                     v-model.number="new_village_form.total_houses"></el-input-number>
+                    <el-input placeholder="请输入"
+                                     v-model.number="new_village_form.total_houses"></el-input>
+                    <!--<el-input-number :controls="false" :min="0" :max="1000" placeholder="请输入"
+                                     v-model.number="new_village_form.total_houses"></el-input-number>-->
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -333,8 +335,27 @@
           }
         });
       },
+
+      /*验证添加小区*/
+      validateForm() {
+        let msg = null;
+        if(isNaN(this.new_village_form.total_buildings)||!this.new_village_form.total_buildings) {
+          msg = '总栋数只能为数字';
+        }
+        if(isNaN(this.new_village_form.total_houses||!this.new_village_form.total_houses)) {
+          msg = '房屋总数只能为数字';
+        }
+        if(msg) {
+          this.$LjMessage('warning',{title:'警告',msg:msg});
+          return false;
+        }
+        return true;
+      },
+
       //确定添加
       handleConfirmAddVillage() {
+        if(!this.validateForm()) return;
+
         if (this.is_edit) {
           this.$http.patch(this.server + `v1.0/market/community/${this.edit_village_info.id}`, this.new_village_form).then(res => {
             if (res.code === 200) {

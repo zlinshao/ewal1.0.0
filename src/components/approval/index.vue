@@ -32,7 +32,7 @@
               </el-checkbox-group>
               <div class="dialog_footer">
                 <el-button type="danger" size="small" @click='handleChangeRevice'>确定</el-button>
-                <el-button type="info" size="small" @click='handleCancleRevice'>取消</el-button>
+                <el-button type="info" size="small" @click='handleCancelRevice'>取消</el-button>
               </div>
             </div>
           </div>
@@ -420,7 +420,7 @@ export default {
       this.handleCheckType()
     },
     // 取消 接收类型
-    handleCancleRevice () {
+    handleCancelRevice () {
       this.isRevice_visible = false
       this.revice_check = []
     },

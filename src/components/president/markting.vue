@@ -315,6 +315,7 @@ export default {
         this.$forceUpdate()
         this.getDetail(this.chooseCity + '市')
         this.getWarning(this.chooseCity + '市')
+        this.getTotalSale(this.chooseCity + '市')
     },
     // 路由跳转
     toPath(item) {
@@ -365,6 +366,7 @@ export default {
             start: this.startTime,
             end: this.endTime
         }
+        console.log(city)
         this.$http.post(this.allUrl + "achievement_details_for_ceo", params).then(res => {
             this.totalSales = 0
             this.totalSalesArr = [res.data[this.weekDates[0]][city],res.data[this.weekDates[1]][city],res.data[this.weekDates[2]][city],res.data[this.weekDates[3]][city],res.data[this.weekDates[4]][city],res.data[this.weekDates[5]][city],res.data[this.weekDates[6]][city]]
@@ -632,7 +634,7 @@ export default {
             {
                 type: "category",
                 boundaryGap: false,
-                data: this.weekDate
+                data: this.weekDate,
                 // data: ['05-15','05-16','05-17','05-18','05-19','05-20']
             }
             ],
