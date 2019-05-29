@@ -290,10 +290,12 @@ export default {
     
   },
   activated() {
+      this.startTime = '';
+      this.endTime = '';
+      this.value6 = '';
       this.getTotalSale('南京市')
       this.getWarning('南京市')
       this.getDetail('南京市')
-    //   this.getRentDetail()
   },
   watch: {},
   computed: {},
@@ -626,8 +628,15 @@ export default {
             trigger: "axis"
             },
             grid: {
-                top: 10,
-                bottom: 10
+                top: 20,
+                bottom: 30
+            },
+            title : {
+                text: '一周收房量(套)',
+                textStyle: {
+                    color: '#ffffff',
+                    fontSize:10
+                }
             },
             calculable: true,
             xAxis: [
@@ -635,12 +644,24 @@ export default {
                 type: "category",
                 boundaryGap: false,
                 data: this.weekDate,
-                // data: ['05-15','05-16','05-17','05-18','05-19','05-20']
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
             ],
             yAxis: [
             {
-                show: false
+                // show: false,
+                type : 'value',
+                axisLabel : {
+                show: true,
+                textStyle: {
+                    color: '#ffffff'
+                }
+            }
             },
             {
                 splitLine: {
@@ -657,7 +678,7 @@ export default {
                 type: "line",
                 smooth: true,
                 itemStyle: { normal: { areaStyle: { type: "default" } } },
-                // data:[30, 40, 430, 401, 390, 30, 10]
+                color: ['#68E29B'],
                 data: this.detailData
             }
             ]
@@ -668,19 +689,39 @@ export default {
             },
             calculable: true,
             grid: {
-                top: 10,
-                bottom: 10
+                top: 20,
+                bottom: 30
+            },
+            title : {
+                text: '一周租房量(套)',
+                textStyle: {
+                    color: '#ffffff',
+                    fontSize:10
+                }
             },
             xAxis: [
             {
                 type: "category",
                 boundaryGap: false,
-                data : this.weekDate
+                data : this.weekDate,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             }
             ],
             yAxis: [
             {
-                show: false
+                // show: false,
+                type : 'value',
+                axisLabel : {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             },
             {
                 splitLine: {
@@ -696,6 +737,7 @@ export default {
                 name: "租房量",
                 type: "line",
                 smooth: true,
+                color: ['#FE6581'],
                 itemStyle: { normal: { areaStyle: { type: "default" } } },
                 data: this.rentDetailData
             }
@@ -705,12 +747,16 @@ export default {
             tooltip : {
                 trigger: 'axis'
             },
-            grid: {
-                top: 0,
-                bottom: 0
-            },
+            // grid: {
+            //     top: 0,
+            //     bottom: 0
+            // },
             legend: {
-                data:['出租率','房屋周转率']
+                data:['出租率','房屋周转率'],
+                textStyle:{//图例文字的样式
+                    color:'#ffffff',
+                    fontSize:16
+                }
             },
             color: ['red', 'green'],
             calculable : true,
@@ -718,12 +764,24 @@ export default {
                 {
                     type : 'category',
                     boundaryGap : false,
-                    data : this.weekDate
+                    data : this.weekDate,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    }
                 }
             ],
             yAxis : [
                 {
-                    type : 'value'
+                    type : 'value',
+                    axisLabel : {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    }
                 }
             ],
             series : [
@@ -808,16 +866,28 @@ export default {
             xAxis: {
                 // type: 'category',
                 boundaryGap: false,
-                data: this.weekDate
+                data: this.weekDate,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                axisLabel : {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             },
             series: [{
                 symbolSize: 20,
                 data: this.lowHouseArr,
-                // data: [820, 932, 901, 934, 1290, 1330, 1320],
                 type: 'scatter',
+                color: ['#469BAE'],
                 areaStyle: {}
             }]
         })
@@ -828,15 +898,27 @@ export default {
             xAxis: {
                 // type: 'category',
                 boundaryGap: false,
-                data: this.weekDate
+                data: this.weekDate,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                axisLabel : {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             },
             series: [{
                 symbolSize: 20,
                 data: this.totalSalesArr,
-                // data: [820, 932, 901, 934, 1290, 1330, 1320],
+                color: ['#8D629B'],
                 type: 'scatter',
                 areaStyle: {}
             }]

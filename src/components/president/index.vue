@@ -723,6 +723,7 @@ export default {
             name: "收房量",
             type: "line",
             smooth: true,
+            color: ['#68E29B'],
             itemStyle: { normal: { areaStyle: { type: "default" } } },
             // data:[30, 40, 430, 401, 390, 30, 10]
             data: this.detailData
@@ -763,6 +764,7 @@ export default {
             name: "租房量",
             type: "line",
             smooth: true,
+            color: ['#FE6581'],
             itemStyle: { normal: { areaStyle: { type: "default" } } },
             data: this.rentDetailData
           }
@@ -784,11 +786,11 @@ export default {
         },
         grid: {
           top: 10,
-          // bottom: 0,
+          bottom: 20,
           // left:5,
-          // x2: 10,
-          // y2: 10,
-          borderWidth: 1
+          // x2: 0,
+          // y2: 0,
+          // borderWidth: 1
         },
         yAxis: {
           type: "value",
@@ -801,56 +803,13 @@ export default {
         },
         series: [
           {
-            name: "今日盈亏",
+            name: "一周盈亏",
             smooth: true,
             data: this.lossArr,
             type: "line"
           }
         ]
       });
-      // myChart2.setOption({
-      //     title: {
-      //         text: 'Map with texture',
-      //         x: 'center',
-      //         textStyle: {
-      //             color: 'white'
-      //         }
-      //     },
-      //     tooltip: {
-      //         formatter: '{b}'
-      //     },
-      //     series: [{
-      //         type: 'map3d',
-      //         mapType: 'world',
-      //         baseLayer: {
-      //             backgroundColor: '',
-      //             backgroundImage: 'asset/earth.jpg',
-      //             quality: 'high',
-      //         },
-
-      //         surfaceLayers: [{
-      //             type: 'texture',
-      //             distance: 3,
-      //             image: 'asset/clouds.png'
-      //         }],
-
-      //         selectedMode: 'single',
-
-      //         itemStyle: {
-      //             normal: {
-      //                 label: {
-      //                     show: true
-      //                 },
-      //                 borderWidth: 1,
-      //                 borderColor: 'yellow',
-      //                 areaStyle: {
-      //                     color: 'rgba(0, 0, 0, 0)'
-      //                 }
-      //             }
-      //         },
-      //         data: [{}]
-      //     }]
-      // });
     },
     getLangDate() {
       function dateFilter(date) {

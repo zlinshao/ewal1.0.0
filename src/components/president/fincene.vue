@@ -139,7 +139,7 @@
                         <div>
                             <div>
                                 <section style="width:70%;height:100%;margin:10px auto">
-                                    <p>盈亏比</p>
+                                    <p style="color:#ffffff">盈亏比</p>
                                     <p style="color:#ffffff;font-size:45px">{{win}}</p>
                                 </section>
                             </div>
@@ -238,7 +238,7 @@ export default {
     this.drawLine();
   },
   activated() {
-      let d = new Date()
+    let d = new Date()
     let yes0 = new Date().getTime()
     let yes1 = new Date().getTime() - 7 * 24 * 3600 * 1000
     let yes2 = new Date().getTime() - 1 * 24 * 3600 * 1000
@@ -352,14 +352,14 @@ export default {
         let seven = 0
         this.$http.post(this.allUrl + "income_and_disburse_for_ceo", params).then(res => {
          this.disburse = res.data[this.dateTime].乐伽.disburse
-         one = res.data[this.weekDates[0]][city].disburse - res.data[this.weekDates[0]][city].income   
-         two = res.data[this.weekDates[1]][city].disburse - res.data[this.weekDates[1]][city].income   
-         three = res.data[this.weekDates[2]][city].disburse - res.data[this.weekDates[2]][city].income   
-         four = res.data[this.weekDates[3]][city].disburse - res.data[this.weekDates[3]][city].income   
-         five = res.data[this.weekDates[4]][city].disburse - res.data[this.weekDates[4]][city].income   
-         six = res.data[this.weekDates[5]][city].disburse - res.data[this.weekDates[5]][city].income   
-         seven = res.data[this.weekDates[6]][city].disburse - res.data[this.weekDates[6]][city].income   
-         this.lossData = Math.round(seven)
+         one = ((res.data[this.weekDates[0]][city].disburse - res.data[this.weekDates[0]][city].income) / 10000).toFixed(2) 
+         two = ((res.data[this.weekDates[1]][city].disburse - res.data[this.weekDates[1]][city].income) / 10000).toFixed(2)   
+         three = ((res.data[this.weekDates[2]][city].disburse - res.data[this.weekDates[2]][city].income) / 10000).toFixed(2)  
+         four = ((res.data[this.weekDates[3]][city].disburse - res.data[this.weekDates[3]][city].income) / 10000).toFixed(2)   
+         five = ((res.data[this.weekDates[4]][city].disburse - res.data[this.weekDates[4]][city].income) / 10000).toFixed(2)   
+         six = ((res.data[this.weekDates[5]][city].disburse - res.data[this.weekDates[5]][city].income) / 10000).toFixed(2)   
+         seven = ((res.data[this.weekDates[6]][city].disburse - res.data[this.weekDates[6]][city].income) / 10000).toFixed(2)  
+         this.lossData = seven + '万元'
          this.lossArr = [one,two,three,four,five,six,seven]
         if (res.data[this.weekDates[0]][city].disburse === 0) {
             a = 0
@@ -492,7 +492,9 @@ export default {
             })
         }
         this.startTime = day6
+        this.dateTime1 = day6
         this.endTime = day0
+        this.dateTime = day0
         console.log(this.startTime, this.dateTime)
         // this.getLoss()
         this.getMoney(this.chooseCity)
@@ -540,14 +542,17 @@ export default {
       })
     },
     drawLine(){
-        // let myChart = this.$echarts.init(document.getElementById('statistics'))
-        // let myChart1 = this.$echarts.init(document.getElementById('levetRate'))
         let myChart = this.$echarts.init(document.getElementById('entryRate'))
         let myChart1 = this.$echarts.init(document.getElementById('cunstomPie'))
         let myChart2 = this.$echarts.init(document.getElementById('lossRatio'))
-        // let myChart3 = this.$echarts.init(document.getElementById('showLeave'))
         // 绘制图表
         myChart.setOption({
+            title : {
+                text: '一周亏损(单位:万元)',
+                textStyle: {
+                    color: '#ffffff'
+                }
+            },
             tooltip : {
                 trigger: 'axis'
             },
@@ -647,7 +652,7 @@ export default {
         });
         myChart2.setOption({
             grid: {
-                top: 0,
+                top: 10,
                 bottom: 20
             },
             tooltip : {
@@ -656,11 +661,25 @@ export default {
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
-                data: this.weekDate
+                data: this.weekDate,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                }
             },
-            yAxis: {
-                type: 'value'
-            },
+            yAxis : [
+                {
+                    type : 'value',
+                    axisLabel : {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    }
+                }
+            ],
             series: [{
                 data: this.winArr,
                 type: 'line',
@@ -1139,5 +1158,8 @@ export default {
 .progress {
     margin:15px 0 0 15px;
     width: 80%;
+}
+#entryRate {
+    top: 25px;
 }
 </style>
