@@ -931,6 +931,7 @@
         this.is_next = true;
         this.getNextDepart(item, 'next');
         this.departInfo = item;
+        this.depart_choose_id=item.id;
       },
       //判断是否有下级部门
       handleConfirmNext(depart) {
