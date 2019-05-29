@@ -851,7 +851,7 @@
           account_bank: '',
           branch_bank: '',
           account_name: '',
-          enroll: '',
+          enroll: new Date(),
           salary: '',
           recommender: '',
           recommenders: {
@@ -1534,6 +1534,7 @@
           });
           return false;
         }
+        this.interview_info_detail.enroll=this.myUtils.formatDate(this.interview_info_detail.enroll);
         this.$http.post(this.url+'staff/user',this.interview_info_detail).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
