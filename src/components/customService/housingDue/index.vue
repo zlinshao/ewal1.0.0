@@ -412,8 +412,9 @@ export default {
             this.mark_visible = true;
           }
         });
+      }else if(type==1) {
+        this.mark_visible = true;
       }
-
 
     },
     // close 添加标记

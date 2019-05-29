@@ -384,7 +384,7 @@
             </el-form-item>
             <el-form-item label="所属部门" required>
               <div class="items-center iconInput">
-                <el-input v-model="positionForm.depart"></el-input>
+                <el-input v-model="positionForm.depart" readonly></el-input>
                 <p class="icons organization"></p>
               </div>
             </el-form-item>
@@ -806,7 +806,6 @@
         ],
         confirm_send_visible: false,
         position_level: [
-          {id: 0, val: 'P0'},
           {id: 1, val: 'P1'},
           {id: 2, val: 'P2'},
           {id: 3, val: 'P3'},

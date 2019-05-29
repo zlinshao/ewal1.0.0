@@ -40,7 +40,6 @@
 </template>
 
 <script>
-  import _ from 'lodash';
   import AppIndexMore from '../../../components/index/components/AppIndexMore';
   import SearchHigh from '../../../components/common/lightweightComponents/SearchHigh/index';
   import CountDown from '@/components/common/lightweightComponents/CountDown.vue';
@@ -113,7 +112,10 @@
       }
     },
     mounted() {
-      this.initDaysList(new Date('2019-04-01'));
+      _.forEach(this.user_list,(o)=> {
+        console.log(o);
+      });
+      //this.initDaysList(new Date('2019-04-01'));
     },
     methods: {
       demoSuccess(exam) {
