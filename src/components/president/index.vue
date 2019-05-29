@@ -146,7 +146,7 @@
         <div id="topSale">
           <div class="number" v-for="(n, index) in total" :key="index">{{n}}</div>
         </div>
-        <div id="earth" style="width:500px;height:500px"></div>
+        <div id="earth" style="width:100%;height:75%"></div>
       </div>
       <div class="end">
         <div id="entry" style="display:flex">
@@ -904,10 +904,7 @@ export default {
       });
 
       myChartEarth.setOption({
-        // backgroundColor: '#000',
         globe: {
-            // baseTexture: 'https://echarts.baidu.com/examples/data-gl/asset/world.topo.bathy.200401.jpg',
-            // heightTexture: 'https://echarts.baidu.com/examples/data-gl/asset/bathymetry_bw_composite_4k.jpg',
             baseTexture: require('../../assets/image/earthImage/world.jpg'),
             heightTexture: require('../../assets/image/earthImage/bathymetry.jpg'),
             shading: 'lambert',
@@ -1349,7 +1346,8 @@ export default {
   color: #76FFF6;
 }
 #earth {
-  width: 500px;
-  height: 500px;
+  // width: 100%;
+  // height: 79%;
+  padding-top:20px;
 }
 </style>
