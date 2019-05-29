@@ -32,7 +32,7 @@
           <span class="edit" @click="action_status.details_visible=true;action_status.is_check=true">查看</span>
           <span class="edit"
                 @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
-          <span class="edit" @click="cancelRemark(chooseTab,current_row)" style="color: #FFAB40">取消重复标记</span>
+          <span class="edit" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
           <span class="edit" style="color: orangered"
                 @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
               {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
@@ -272,12 +272,12 @@
         this.current_row = '';
         this.action_visible = false;
       },
-      //取消重复标记
-      cancelRemark(tab, val) {
+      //取消或恢复重复标记  取消type 0 恢复type 1
+      cancelOrRecoverRemark(tab, val,type) {
         if (tab === 1) {
-          this.$refs.lord.handleRemark(val);
+          this.$refs.lord.handleRemark(val,type);
         } else if (tab === 2) {
-          this.$refs.renter.handleRemarkRenter(val);
+          this.$refs.renter.handleRemarkRenter(val,type);
         }
       },
       //生成处理项

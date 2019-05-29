@@ -110,7 +110,7 @@ export default {
       if (res.code.toString().endsWith('0')) {
         this.$LjNotify('success', {
           title: '成功',
-          message: res.msg,
+          message: res.msg||res.message,
         });
         if(callback) {
           callback();
@@ -118,7 +118,7 @@ export default {
       } else {
         this.$LjNotify('error', {
           title: '失败',
-          message: res.msg,
+          message: res.msg||res.message,
         });
       }
     }
@@ -127,7 +127,7 @@ export default {
       if (res.code.toString().endsWith('0')) {
         this.$LjMessage('success', {
           title: '成功',
-          msg: res.msg,
+          msg: res.msg||res.message,
         });
         if(callback) {
           callback();
@@ -135,7 +135,7 @@ export default {
       } else {
         this.$LjMessage('error', {
           title: '失败',
-          msg: res.msg,
+          msg: res.msg||res.message,
         });
       }
     }

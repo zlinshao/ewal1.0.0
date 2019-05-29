@@ -9,8 +9,6 @@
         :row-class-name="tableChooseRow"
         @cell-dblclick="tableClickRow"
         header-row-class-name="tableHeader"
-        :default-sort="{prop: 'staff.enroll',order: 'descending'}"
-        :key="random_key"
         style="width: 100%">
         <div v-for="(item,index) in table_column" :key="index">
           <el-table-column :min-width="item.width" show-overflow-tooltip  :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-if="item.info">
@@ -797,6 +795,9 @@
             });
             this.tableData = res.data.data;
             this.counts = res.data.count;
+          }else{
+              this.tableData=[];
+              this.counts=[];
           }
 
         })

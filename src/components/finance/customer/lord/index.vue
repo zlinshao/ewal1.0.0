@@ -122,6 +122,7 @@
   </div>
 </template>
 <script>
+  import _ from 'lodash';
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjSubject from '../../../common/lj-subject.vue';
   import LordForm from "./lordForm";
@@ -242,6 +243,12 @@
                 this.LordStatus = res.data.data.sort((a, b) => {
                   return a.id - b.id;
                 });
+                _.forEach(this.lordLists,(o)=> {
+                  let findRst = _.find(this.LordStatus,{id:o.id});
+                  o.prefix = findRst;
+                  o.type = 'lord';//房东
+                  o.prefix_suppress_dup = findRst?.suppress_dup||0;
+                });
               }
             });
           } else {
@@ -304,16 +311,24 @@
           console.log(row.id);
         })
       },
-      //取消重复标记
-      handleRemark(row) {
+      //取消或恢复重复标记
+      handleRemark(row,type) {
+        let operate;
+        if(!type) {//取消重复标记
+          operate = 1;
+        }else {//恢复重复标记
+          operate = 2;
+        }
         this.ra_ids = [];
         this.ra_ids.push(row.id);
         this.$http.put(globalConfig.temporary_server + 'customer_lord_repeat/is_ignore', {
           ids: this.ra_ids,
-          operate: 1
+          operate: operate
         }).then(res => {
+          this.is_table_choose = null;
           this.callbackSuccess(res);
         })
+
       },
       //删除房东
       handleOkDel() {
@@ -322,9 +337,7 @@
           this.action_status.delete_visible = false;
           this.current_row = '';
 
-        }).catch(err => {
-          console.log(err);
-        })
+        });
       },
     },
   }

@@ -94,9 +94,11 @@
                 <div class="arrow-btn"><i class="arrow-btn-left" @click="handleIconClick('left')"  v-show="this.left_arrow_display"></i></div>
                 <div class="list scroll_bar" v-if="next_depart.length > 0">
                   <div v-for="depart in next_depart" @mouseleave="is_active_depart = ''"
+                       @click="depart_choose_id=depart.id"
                        @mouseover="show_depart_ctl(depart)">
                     <div
                       class="writingMode depart_item"
+                      :class="depart_choose_id==depart.id?'depart-active':''"
                       style="text-align: left;padding-top: 15px"
                       @click="handleInnerNextDepart(depart)">
                       {{ depart.name }}
@@ -631,6 +633,8 @@
         },
         nav_depart: [],
         is_next: true,
+
+        depart_choose_id:0,
 
         departModule: false,//部门管理/员工管理
         departInfo: '',
@@ -1646,6 +1650,10 @@
                   @include departmentsImg('hongdikuang.png', 'theme1');
                   color: white;
                 }
+              }
+              .depart-active{
+                color: $colorE33;
+                border: 1px solid $colorE33 !important;
               }
             }
           }

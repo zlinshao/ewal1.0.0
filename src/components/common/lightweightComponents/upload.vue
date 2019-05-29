@@ -51,7 +51,8 @@
         <input type="file" :id="file.keyName" hidden multiple @change="uploadPic">
       </label>
       <!--下载按钮-->
-      <label title="下载全部" @click="downloadAll" v-if="!editable && download &&showFile.length>0" class="uploadPic" :key="1" :style="uploadCss"
+      <label title="下载全部" @click="downloadAll" v-if="!editable && download &&showFile.length>0" class="uploadPic"
+             :key="1" :style="uploadCss"
              :for="file.keyName">
         <img src="../../../assets/image/common/theme1/xiazai_xue.png">
       </label>
@@ -111,16 +112,16 @@
     //props: ['file', 'disabled','download'],
     props: {
       file: {},
-      disabled:{},
-      download:{},
+      disabled: {},
+      download: {},
       limit: {
-        type:Array,
+        type: Array,
         default() {
           return [];
         }
       },
       maxSize: {
-        type:[Number],
+        type: [Number],
       },
       viewFile: {
         type: Array,
@@ -151,7 +152,9 @@
     watch: {
       file: {
         handler(val, oldVal) {
-          if(!this.disabled) return;
+          //debugger
+          //console.log(val);
+          //if(!this.disabled && oldVal) return;
           if (val.setFile.length > 0) {
             this.showFile = [];
             for (let item of val.setFile) {
@@ -171,8 +174,8 @@
         immediate: true,
       },
       viewFile: {
-        handler(val,oldVal) {
-          if(val.constructor===Array&&val.length>0) {
+        handler(val, oldVal) {
+          if (val.constructor === Array && val.length > 0) {
             this.showFile = val;
           }
         },
@@ -217,8 +220,8 @@
         showFile = _.filter(showFile, (value) => {
 
           let sResult = value.info.mime.includes('image') || value.info.mime.includes('video');
-          if(!sResult) {
-            if(index>mIdx) {
+          if (!sResult) {
+            if (index > mIdx) {
               index--;
             }
           }
@@ -272,22 +275,22 @@
           let fileType = '';
           let fileName = file.name;
           let fileSize = file.size;
-          let ext = file.name.split('.')[file.name.split('.').length-1];
-          if(this.limit.constructor===Array&&this.limit.length>0) {
-            if(!_.includes(this.limit,ext)) {
-              this.$LjMessage('warning',{
-                title:'警告',
-                msg:`仅支持上传${this.limit.join(',')}的类型`,
+          let ext = file.name.split('.')[file.name.split('.').length - 1];
+          if (this.limit.constructor === Array && this.limit.length > 0) {
+            if (!_.includes(this.limit, ext)) {
+              this.$LjMessage('warning', {
+                title: '警告',
+                msg: `仅支持上传${this.limit.join(',')}的类型`,
               });
               document.getElementById(that.file.keyName).value = null;
               return;
             }
           }
-          if(this.maxSize) {
-            if(this.maxSize*1024*1024<=file.size) {
-              this.$LjMessage('warning',{
-                title:'警告',
-                msg:`超过最大上传限制${this.maxSize}M`,
+          if (this.maxSize) {
+            if (this.maxSize * 1024 * 1024 <= file.size) {
+              this.$LjMessage('warning', {
+                title: '警告',
+                msg: `超过最大上传限制${this.maxSize}M`,
               });
               return;
             }
@@ -336,7 +339,12 @@
           let observable = qiniu.upload(file, key, that.token, putExtra, config);
           let subscription = observable.subscribe({
             next(res) {
+              /*let docElement = document.getElementById(pro);
+              if(!docElement&&!docElement.innerText) {
+                docElement.innerText = Math.floor(res.total.percent) + '%';
+              }*/
               document.getElementById(pro).innerText = Math.floor(res.total.percent) + '%';
+
             },
             error(err) {
               console.log(err);
@@ -379,24 +387,31 @@
       width: 100%;
       height: 100%;
     }
+
     width: 100%;
+
     .list-enter-active, .list-leave-active {
       transition: all 1s;
     }
+
     .list-enter, .list-leave-to {
       opacity: 0;
       transform: translateY(30px);
     }
+
     .showFile, .uploadPic {
       overflow: hidden;
       @include radius(6px);
     }
+
     .items-center {
       flex-wrap: wrap;
     }
+
     .showFile {
       position: relative;
       margin: 10px 10px 0 0;
+
       .progress {
         position: absolute;
         bottom: 0;
@@ -409,6 +424,7 @@
         line-height: 30px;
         text-align: center;
       }
+
       .remove {
         cursor: pointer;
         position: absolute;
@@ -419,6 +435,7 @@
         @include radius(50%);
         background-color: $colorE33;
         align-items: flex-end;
+
         img {
           margin: 0 0 7px 7px;
           width: 12px;
@@ -426,6 +443,7 @@
         }
       }
     }
+
     .uploadPic {
       cursor: pointer;
       margin-top: 10px;

@@ -31,7 +31,7 @@
       </div>
     </calendar>-->
 <!--    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>-->
-    <lj-upload :disabled="true" v-model="list" :download="false"></lj-upload>
+    <lj-upload v-model="list"></lj-upload>
     <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->
@@ -95,28 +95,6 @@
               "bucket": "lejia-test"
             },
           },
-          {
-            id: 10086,
-            uri: 'http://static.lejias.cn/lejia35b673cf3a51c850e3c0489a31a574a9.MP4',
-            "info": {
-              "ext": "video",
-              "host": "static.lejias.cn",
-              "mime": "video",
-              "size": 243104,
-              "bucket": "lejia-test"
-            },
-          },
-          {
-            id: 10086,
-            uri: 'http://static.lejias.cn/lejia35b673cf3a51c850e3c0489a31a574a9.MP4',
-            "info": {
-              "ext": "video",
-              "host": "static.lejias.cn",
-              "mime": "video",
-              "size": 243104,
-              "bucket": "lejia-test"
-            },
-          }
         ],
         list: [4228545],
         //user_list: [211, 289, 3604, 3623, 3590, 3589],

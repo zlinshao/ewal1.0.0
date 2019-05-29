@@ -3,6 +3,7 @@ export const staffBookSearch = {
   status: 'staffBookSearch',
   placeholder: '请输入搜索内容',
   keywords: 'search',
+  limit:12,
   data: [
     {
       keyType: 'radio',
@@ -362,7 +363,7 @@ export const housingDueSearch = {
 // 资料审核
 export const dataAuditSearch = {
   status: 'housingDue',
-  placeholder: '地址/合同编号/工单编号/内容',
+  placeholder: '地址/合同编号',
   keywords: 'search',
   data: [
     {
@@ -379,11 +380,11 @@ export const dataAuditSearch = {
       dataType: [],
       value: [
         {
-          id: 22,
+          id: 1,
           title: '新收'
         },
         {
-          id: 23,
+          id: 2,
           title: '续收'
         }
       ]
@@ -398,7 +399,7 @@ export const dataAuditSearch = {
         num: 1
       }
     },
-    {
+    /*{
       keyType: 'staff',
       title: '负责人',
       placeholder: '请选择员工',
@@ -406,6 +407,17 @@ export const dataAuditSearch = {
       dataType: '',
       value: {
         num: 1
+      }
+    },*/
+    {
+      keyType: 'depart',
+      title: '部门',
+      placeholder: '请选择部门',
+      keyName: 'org',
+      dataType: [],
+      value: {
+        num: '',
+        arr: []
       }
     }
   ]

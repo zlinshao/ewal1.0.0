@@ -203,7 +203,6 @@
       },
       // 搜索参数
       handleParamsRenter(val) {
-        debugger
         if (val.search) {
           this.params.search = val.search;
         } else {
@@ -271,13 +270,19 @@
               this.renterIds.push(item.id)
             }
             this.$http.get(globalConfig.temporary_server + 'customer_renter_repeat', {id: this.renterIds}).then(res => {
-              console.log(res);
+              //console.log(res);
               if (res.code === 200) {
                 this.renterStatus = res.data.data.sort(
                   function (a, b) {
                     return a.id - b.id
                   }
                 );
+                _.forEach(this.renterLists,(o)=> {
+                  let findRst = _.find(this.renterStatus,{id:o.id});
+                  o.prefix = findRst;
+                  o.type = 'renter';//租客
+                  o.prefix_suppress_dup = findRst?.suppress_dup||0;
+                });
               }
             });
             this.renterCount = res.data.count;
@@ -306,16 +311,23 @@
           this.callbackSuccess(res);
         })
       },
-      //忽略重复标记
-      handleRemarkRenter(row) {
+      //取消或恢复重复标记
+      handleRemarkRenter(row,type) {
+        let operate;
+        if(!type) {//取消重复标记
+          operate = 1;
+        }else {//恢复重复标记
+          operate = 2;
+        }
         this.ra_ids = [];
         this.ra_ids.push(row.id);
         console.log(this.ra_ids);
         this.$http.put(globalConfig.temporary_server + 'customer_renter_repeat/is_ignore', {
           ids: this.ra_ids,
-          operate: 1
+          operate: operate
         }).then(res => {
           this.callbackSuccess(res);
+          this.is_table_choose = null;
           if (res.code === 200) {
 
           }

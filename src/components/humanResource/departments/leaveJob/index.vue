@@ -335,8 +335,13 @@
         this.showLoading(true);
         this.$http.get('staff/user', this.params).then(res => {
           this.showLoading(false);
-          this.tableData = res.data.data;
-          this.counts = res.data.count;
+          if (Number(res.code)%10 ===0){
+            this.tableData = res.data.data;
+            this.counts = res.data.count;
+          } else {
+            this.tableData=[];
+            this.counts=0;
+          }
         })
       },
       // 当前点击
@@ -386,6 +391,7 @@
                 params.message="second_entry";
               }
               this.$http.put(`${this.url}staff/user/${id}`,params).then(res=> {
+                this.second_entry_dialog_visible=false;
                 this.$LjMessageEasy(res,()=> {
                   this.getStaffList();
                 });

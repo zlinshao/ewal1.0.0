@@ -38,7 +38,7 @@
             <p @click="operateModule('positionManagement',item)">
               <span class="writingMode">{{ item.name }}</span>
             </p>
-            <div class="ctl" v-show="is_active_ctl === item.id">
+            <div class="ctl" style="margin-bottom: 30px;" v-show="is_active_ctl === item.id">
               <span v-show="VALIDATE_PERMISSION['Position-Update']" @click="handleEditPost(item)">编辑</span>
               <span v-show="VALIDATE_PERMISSION['Position-Delete']" @click="handleDelPost(item)">删除</span>
             </div>
@@ -624,11 +624,11 @@
           <h3>离职</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
-          <el-form :model="outForm" ref="postForm" label-width="120px" class="depart_visible">
-            <el-form-item label="离职日期" required>
+          <el-form :model="outForm" ref="leaveForm" :rules="rules"  label-width="120px" class="depart_visible">
+            <el-form-item label="离职日期" prop="dismiss_time" required>
               <el-date-picker type="date" value-format="yyyy-MM-dd"  v-model="outForm.dismiss_time"></el-date-picker>
             </el-form-item>
-            <el-form-item label="离职原因" required>
+            <el-form-item label="离职原因" prop="dismiss_reason.dismiss_type" required>
               <el-select v-model="outForm.dismiss_reason.dismiss_type">
                 <el-option :value="1" label="主动离职"></el-option>
                 <el-option :value="2" label="旷工离职"></el-option>
@@ -782,6 +782,14 @@
     components: {ljDialog,PositionOrgan,StaffOrgan,DepartOrgan},
     data() {
       return {
+        rules: {
+          dismiss_time: [
+              {required:true,message:'请选择离职日期',trigger:['change','blur']}
+          ],
+          'dismiss_reason.dismiss_type': [
+              {required:true,message:'请选择离职原因',trigger:'change'}
+          ],
+        },
         staff_visible: false,
         departOrgan_visible: false,
 
@@ -1454,24 +1462,29 @@
         this.leaveVisible = false;
       },
       handleSubmitOut() {
-        this.$http.put(`staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
-          if (res.code === '20030') {
-            this.$LjNotify('success',{
-              title: '成功',
-              message: res.msg
-            });
-            this.handleCancelOut();
-            this.getStaffList();
-            if (this.checkLists.length > 0) {
-              this.confirm_send_visible = true;
-            }
-          } else {
-            this.$LjNotify('warning',{
-              title: '失败',
-              message: res.msg
+        this.$refs['leaveForm'].validate(valid=>{
+          if (valid){
+            this.$http.put(`staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
+              if (res.code === '20030') {
+                this.$LjNotify('success',{
+                  title: '成功',
+                  message: res.msg
+                });
+                this.handleCancelOut();
+                this.getStaffList();
+                if (this.checkLists.length > 0) {
+                  this.confirm_send_visible = true;
+                }
+              } else {
+                this.$LjNotify('warning',{
+                  title: '失败',
+                  message: res.msg
+                })
+              }
             })
           }
-        })
+        });
+
       },
       handleOkDisable() {
         this.$http.put(`staff/user/${this.currentStaff.id}`,{
