@@ -305,6 +305,9 @@
     props: ['searchData'],
     data() {
       return {
+
+        url:globalConfig.humanResource_server,
+
         params: {
           page: 1,
           limit: 6
@@ -391,7 +394,7 @@
     computed: {},
     methods: {
       handleLookDetailInfo() {
-        this.$http.get(`recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
+        this.$http.get(`${this.url}recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
           console.log(res);
           if (res.code === '20030') {
             this.info = res.data;
@@ -425,7 +428,7 @@
           return;
         }
 
-        this.$http.put(`recruitment/interviewers/edit_result/${this.currentRow.id}`,params).then(res => {
+        this.$http.put(`${this.url}recruitment/interviewers/edit_result/${this.currentRow.id}`,params).then(res => {
           if (res.code === '20030') {
             this.$LjNotify('success',{
               title: '成功',
@@ -447,7 +450,7 @@
           this.$LjMessageNoPermission();
           return;
         }
-        this.$http.get('recruitment/interviewer_process/resultList',this.params).then(res => {
+        this.$http.get(this.url+'recruitment/interviewer_process/resultList',this.params).then(res => {
           if (res.code === '20000') {
             this.tableList = res.data.data;
             this.tableCount = res.data.count;

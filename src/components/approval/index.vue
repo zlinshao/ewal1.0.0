@@ -277,9 +277,9 @@ export default {
     },
     // 接口请求
     getApproval (url, params, val) {  // page分页
-      this.showLoading(true);
+      //this.showLoading(true);
       this.$http.get(`${this.approval_sever}${url}`, params).then(res => {
-        this.showLoading(false);
+        //this.showLoading(false);
 
         this.tableData['data' + val] = res.size > 0 ? this.setFormatApproval(res.data) : []
         this.total['total' + val] = res.total

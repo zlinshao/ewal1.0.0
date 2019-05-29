@@ -303,7 +303,7 @@
     methods: {
       //停止招聘
       handleStopNeed() {
-        this.$http.get(`recruitment/staff_needs/stop/${this.dblCurrentRow.id}`).then(res => {
+        this.$http.get(`${this.url}recruitment/staff_needs/stop/${this.dblCurrentRow.id}`).then(res => {
           console.log(res);
           if (res.code === '20030') {
             this.$LjNotify('success', {
@@ -343,7 +343,7 @@
           if(valid) {
             this.control_mb_form.org_id = this.control_mb_form.org_id[0];
             this.control_mb_form.position_id = this.control_mb_form.position_id[0];
-              this.$http.put(`recruitment/staff_needs/${this.dblCurrentRow.id}`, this.control_mb_form).then(res => {
+              this.$http.put(`${this.url}recruitment/staff_needs/${this.dblCurrentRow.id}`, this.control_mb_form).then(res => {
               this.$LjMessageEasy(res,()=> {
                 this.getSoldiersList();
               });
@@ -359,7 +359,7 @@
           if(valid) {
             this.control_mb_form.org_id = this.control_mb_form.org_id[0];
             this.control_mb_form.position_id = this.control_mb_form.position_id[0];
-            this.$http.post('recruitment/staff_needs', this.control_mb_form).then(res => {
+            this.$http.post(this.url+'recruitment/staff_needs', this.control_mb_form).then(res => {
               this.$LjMessageEasy(res,()=> {
                 this.getSoldiersList();
                 this.handleCancelAddMb();
