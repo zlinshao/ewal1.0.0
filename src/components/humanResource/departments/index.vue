@@ -921,6 +921,7 @@
             }
           }
           this.is_child = false;
+          this.depart_choose_id=0;
         })
       },
       //子部门点击获取子部门
