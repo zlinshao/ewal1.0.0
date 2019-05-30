@@ -312,6 +312,9 @@
                 <org-choose v-model="departForm.parent_id"></org-choose>
               </div>
             </el-form-item>
+            <el-form-item label="部门排序">
+              <el-input v-model="departForm.order" placeholder="必填"></el-input>
+            </el-form-item>
             <el-form-item label="部门负责人">
               <div class="items-center">
                 <user-choose v-model="departForm.leader_id" title="请选择部门负责人" num="1"></user-choose>
@@ -792,7 +795,8 @@
           name: '',
           leader_id: [],
           parent_id: [1],
-          position_id: []
+          position_id: [],
+          order:0
         },//新增部门
         visibleStatus: false,//弹出部门
 
@@ -1319,11 +1323,14 @@
         }
         this.edit_depart = item;
         this.departForm.name = item.name;
+        this.departForm.order = item.order;
         this.departForm.leader = item.leader && item.leader.name || '';
         this.departForm.leader_id.push(item.leader_id);
         this.departForm.parent = item.parent_org && item.parent_org.name || '';
         this.departForm.parent_id = [];
         this.departForm.parent_id.push(item.parent_id);
+        this.departForm.position_id=[];
+        this.departForm.position_id.push(item.position_id);
         this.is_edit_depart = true;
         this.lj_size = {
           width: '510px',
@@ -1370,7 +1377,9 @@
           leader: '',
           leader_id: [],
           parent_id: [],
-          parent: ''
+          parent: '',
+          position_id:[],
+          order:0
         };
         if (!this.show_depart_detail) {
           this.departForm.parent_id = [1];
