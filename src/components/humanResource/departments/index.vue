@@ -883,6 +883,8 @@
         this.getNextDepart(item);
         this.show_depart_detail = true;
         this.depart_choose_id=0;
+        this.right_arrow_display=false;
+        this.left_arrow_display=false;
       },
       //关闭部门详情
       handleCloseDepartDetail() {
