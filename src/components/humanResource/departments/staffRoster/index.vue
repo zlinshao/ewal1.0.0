@@ -246,7 +246,7 @@
               </el-form-item>
               <el-form-item class="item_margin">
                 <div class="flex">
-                  <div style="width: 70px">职位</div>
+                  <div style="width: 70px">岗位</div>
                   <el-input v-model="employ_proof_form.position"></el-input>
                 </div>
               </el-form-item>
