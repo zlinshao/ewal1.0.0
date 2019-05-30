@@ -668,7 +668,7 @@
           this.$LjMessageNoPermission();
           return;
         }
-        this.$http.get(`staff/user/${item.user_id}/growth_record`).then(res => {
+        this.$http.get(globalConfig.humanResource_server+`staff/user/${item.user_id}/growth_record`).then(res => {
           console.log(res);
           if (res.code === '20000') {
             this.current_grow = res.data.data;
@@ -724,7 +724,7 @@
             return;
           }
         }
-        this.$http.put(`staff/user/${this.currentStaffInfo.id}`, {
+        this.$http.put(globalConfig.humanResource_server+`staff/user/${this.currentStaffInfo.id}`, {
           type: 'update',
           ...this.staffDetail
         }).then(res => {
@@ -766,7 +766,7 @@
         this.depart_visible = false;
       },
       getStaffGrowInfo(id) {
-        this.$http.get(`staff/user/${id}/growth`, {
+        this.$http.get(globalConfig.humanResource_server+`staff/user/${id}/growth`, {
           page: 1,
           limit: 999
         }).then(res => {
