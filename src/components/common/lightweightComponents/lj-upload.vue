@@ -85,7 +85,7 @@
       value: {
         handler(val, oldVal) {
           if (val && val.length == 0 && this.count == 0) {
-            if(oldVal) {
+            if (oldVal) {
               this.count++;
             }
             return;
@@ -93,10 +93,10 @@
 
           if (val && val.length > 0 && this.count == 0) {
             this.count++;
-            this.getPhotoInfoList(_.uniq(val));
+            //this.getPhotoInfoList(_.uniq(val));
             return;
           }
-          if(val && val.length > 0 && this.count == 0 && this.disabled) {
+          if (val && val.length > 0 && this.count == 0 && this.disabled) {
             this.count++;
             this.getPhotoInfoList(_.uniq(val));
             return;
@@ -138,13 +138,13 @@
           },
         },
         count: 0,
-        oldVal:null,
+        oldVal: null,
       }
     },
     mounted() {
-      /*if (this.value && this.value.length > 0) {
+      if (this.value && this.value.length > 0) {
         this.getPhotoInfoList(this.value);
-      }*/
+      }
     },
     methods: {
       handleSuccess(val) {

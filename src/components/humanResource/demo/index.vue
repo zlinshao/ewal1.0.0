@@ -31,7 +31,7 @@
       </div>
     </calendar>-->
 <!--    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>-->
-    <lj-upload :download="false" :disabled="true" :limit-easy="['image']" v-model="list"></lj-upload>
+    <lj-upload :limit-easy="['image']" v-model="list"></lj-upload>
     <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->
@@ -95,6 +95,7 @@
             },
           },
         ],
+        //list: [4228777],
         list: [4228777],
         //user_list: [211, 289, 3604, 3623, 3590, 3589],
         user_list: [3604, 3335, 3338, 3337, 3339, 3336, 3334, 3343, 3388, 3630],

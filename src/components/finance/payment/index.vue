@@ -707,7 +707,7 @@
           "complete_date": "补齐时间",
           "customer.contact": "手机号",
           "description.description": "明细详情",
-          "remark": "备注",
+          // "remark": "备注",
           "leader.name": "负责人",
           "staff.name": "开单人",
           "org.name": "部门"
@@ -1032,8 +1032,7 @@
 
       handleOkCompleteData(row, val) {//修改补齐时间
         this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: val}).then(res => {
-
-          this.callbackSuccess(res);
+          this.callbackSuccess(res,function () {});
           this.complete_visible = false;
           this.current_row = '';
         }).catch(err => {

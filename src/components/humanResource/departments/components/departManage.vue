@@ -820,7 +820,7 @@
         //离职
         outForm: {
           type: 'dimission',
-          dismiss_time: '',
+          dismiss_time: new Date(),
           dismiss_reason: {
             dismiss_mess: '',
             dismiss_type: ''
@@ -851,7 +851,7 @@
           account_bank: '',
           branch_bank: '',
           account_name: '',
-          enroll: '',
+          enroll: new Date(),
           salary: '',
           recommender: '',
           recommenders: {
@@ -1465,6 +1465,7 @@
       handleSubmitOut() {
         this.$refs['leaveForm'].validate(valid=>{
           if (valid){
+              this.outForm.dismiss_time = this.myUtils.formatDate(this.outForm.dismiss_time);
             this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
               if (res.code === '20030') {
                 this.$LjNotify('success',{
@@ -1533,6 +1534,7 @@
           });
           return false;
         }
+        this.interview_info_detail.enroll=this.myUtils.formatDate(this.interview_info_detail.enroll);
         this.$http.post(this.url+'staff/user',this.interview_info_detail).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{

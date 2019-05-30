@@ -98,8 +98,9 @@
                     <div
                       class="writingMode depart_item"
                       :class="depart_choose_id==depart.id?'depart-active':''"
-                      style="text-align: left;padding-top: 15px"
-                      @click="handleInnerNextDepart(depart)">
+                      style="text-align: left;padding-top: 15px;text-overflow: ellipsis;overflow: hidden; "
+                      @click="handleInnerNextDepart(depart)"
+                      :title="depart.name">
                       {{ depart.name }}
                     </div>
                     <div class="depart_ctl flex-center" v-show="depart.id === is_active_depart">
@@ -1381,6 +1382,29 @@
         this.is_edit_depart = false;
         this.depart_visible = false;
       },
+      checkForm(){
+          let data=this.departForm;
+          if (!data.name) {
+              this.$LjNotify('warning', {
+                  title: '失败',
+                  message: '部门名称不能为空'
+              })
+              return false;
+          }else if (!data.leader_id[0]){
+              this.$LjNotify('warning', {
+                  title: '失败',
+                  message: '部门负责人不能为空'
+              })
+              return false;
+          }else if (!data.position_id[0]){
+              this.$LjNotify('warning', {
+                  title: '失败',
+                  message: '负责岗位不能为空'
+              })
+              return false;
+          }
+          return true;
+      },
       //确定添加部门
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
@@ -1404,6 +1428,10 @@
             }
           });
           return false;
+        }
+
+        if (!this.checkForm()){
+            return false;
         }
         this.$http.post(this.url+'organization/organization', this.departForm).then(res => {
           if (res.code === '20010') {

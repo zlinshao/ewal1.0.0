@@ -22,12 +22,15 @@
         <el-table-column label="离职操作时间" prop="is_on_job" align="center" min-width="120px"></el-table-column>
         <el-table-column label="禁用操作时间" prop="is_enable" align="center" min-width="120px"></el-table-column>
         <el-table-column label="联系方式" prop="phone" align="center"></el-table-column>
-        <el-table-column label="离职类型" prop="staff.dismiss_reason.dismiss_type" align="center">
+        <el-table-column label="离职类型" prop="staff.dismiss_reason" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.staff && scope.row.staff.dismiss_reason && scope.row.staff.dismiss_reason.dismiss_type === 1 ? '主动离职' : scope.row.staff.dismiss_reason.dismiss_type === 2 ? '旷工离职' : scope.row.staff.dismiss_reason.dismiss_type === 3 ? '劝退' :'开除' }}</span>
+            <span v-if="scope.row.staff && scope.row.staff.dismiss_reason && scope.row.staff.dismiss_reason.dismiss_type && scope.row.staff.dismiss_reason.dismiss_type === 1">主动离职</span>
+            <span v-else-if="scope.row.staff && scope.row.staff.dismiss_reason && scope.row.staff.dismiss_reason.dismiss_type && scope.row.staff.dismiss_reason.dismiss_type === 2">旷工离职</span>
+            <span v-else-if="scope.row.staff && scope.row.staff.dismiss_reason && scope.row.staff.dismiss_reason.dismiss_type && scope.row.staff.dismiss_reason.dismiss_type === 2">劝退</span>
+            <span v-else>开除</span>
           </template>
         </el-table-column>
-        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" align="center" min-width="230px"></el-table-column>
+        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" show-overflow-tooltip align="center" min-width="230px"></el-table-column>
         <el-table-column label="离职交接单" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="handleLookResignation(scope.row)">查看</el-button>

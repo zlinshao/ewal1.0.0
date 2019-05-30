@@ -105,7 +105,7 @@
                                               :disabled="is_disabled"></el-input>
                                 </el-form-item>
                                 <el-form-item label="月单价">
-                                    <el-input v-model="item.month_unit_price" style="width: 200px" type="number"
+                                    <el-input v-model="item.price" style="width: 200px" type="text"
                                               :disabled="is_disabled"></el-input>
                                 </el-form-item>
                                 <el-form-item label="付款方式" style="position: relative">
@@ -409,7 +409,7 @@
                     pay_way: '',
                     end_date: '',
                     begin_date: '',
-                    month_unit_price: '',
+                    price: '',
                     key: Date.now(),
                 })
             },

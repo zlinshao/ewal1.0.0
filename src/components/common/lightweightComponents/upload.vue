@@ -158,7 +158,6 @@
     watch: {
       file: {
         handler(val, oldVal) {
-          //debugger
           //console.log(val);
           //if(!this.disabled && oldVal) return;
           if (val.setFile.length > 0) {
