@@ -8,7 +8,7 @@
         <div class="p2">
 
           <div class="inner-top">
-            <i></i>
+            <i title="手机验证码登录"></i>
           </div>
           <div class="inner-login">
             <div class="inner-item">
@@ -126,17 +126,6 @@
           }
           this.sendRemain();
         });
-
-        /* this.$http.post(`${this.url}api/sns/sms/send`,params).then(res=> {
-           debugger
-           //debugger
-           this.sendRemain();
-           if(res&&res.success) {
-             this.$LjNotify('success',{title:'成功',message:'验证码发送成功'});
-           }else {
-             this.$LjMessage('error',{title:'失败',msg:'服务器请求失败'});
-           }
-         });*/
       },
 
       /*登录*/

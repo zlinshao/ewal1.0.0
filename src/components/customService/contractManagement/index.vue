@@ -24,10 +24,10 @@
         <el-table header-row-class-name="tableHeader" :data="contractList" @expand-change="handleExpandRow" @row-dblclick="handleGetDetail" :height="this.mainListHeight(30) + 'px'">
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
-          <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
-          <el-table-column label="合同性质" prop="type" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip label="地址" prop="house_name" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip label="合同性质" prop="type" align="center"></el-table-column>
           <!--<el-table-column label="所属公司" prop="" align="center"></el-table-column>-->
-          <el-table-column label="收房价格" prop="month_price" align="center">
+          <el-table-column show-overflow-tooltip label="收房价格" prop="month_price" align="center">
             <template slot-scope="scope">
               <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
                 <span v-for="(item,index) in scope.row.month_price">
@@ -1211,7 +1211,6 @@ export default {
           return false;
         }
       }*/
-      debugger
       let form = new FormData();
       form.append('complete_content', JSON.stringify(this.polishing_data_form.complete_content));
       form.append('property_number', this.polishing_data_form.property_number);
@@ -1224,7 +1223,7 @@ export default {
             message: res.message
           });
           this.handleCancelPolishing();
-          this.getContractList();
+          //this.getContractList();
         } else {
           this.$LjNotify('warning', {
             title: '失败',
@@ -1254,15 +1253,12 @@ export default {
     /*打开补齐资料对话框*/
     handleOpenPolishing (row) {
       this.currentRow = row;
-
-      debugger
       this.$http.get(`${this.url}v1.0/market/contract/album/${this.chooseTab}/${this.currentRow.contract_id}`).then(res=> {
-        debugger
         if(res.code == 200) {
-          this.polishing_data_form.property_number = res.data.property_number||null;
-          this.polishing_data_form.mound_number = res.data.mound_number||null;
-          this.polishing_data_form.complete_content = res.data.mound_number||{};
-          //this.polishing_data_form = res.data;
+          //this.polishing_data_form.property_number = res.data.property_number||null;
+          //this.polishing_data_form.mound_number = res.data.mound_number||null;
+          //this.polishing_data_form.complete_content = res.data.mound_number||{};
+          this.polishing_data_form = res.data;
           this.data_polishing_visible = true;
         }
       });
