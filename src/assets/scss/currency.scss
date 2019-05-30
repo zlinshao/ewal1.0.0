@@ -31,6 +31,10 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
+  .upload-offset {/*lj-upload组件 偏移样式*/
+    position: absolute;
+    top: -13px;
+  }
 
   .table_choose {
     display: inline-block;

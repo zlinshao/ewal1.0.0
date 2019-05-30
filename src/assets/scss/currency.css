@@ -337,6 +337,11 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+#theme_name .upload-offset {
+  /*lj-upload组件 偏移样式*/
+  position: absolute;
+  top: -13px;
+}
 #theme_name .table_choose {
   display: inline-block;
   width: 20px;

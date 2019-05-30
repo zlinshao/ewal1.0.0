@@ -49,19 +49,13 @@
   import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
   import mixins from '@/assets/js/mixins/calendar.js';
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
-  import LjUpload from "../../common/lightweightComponents/lj-upload";
   import ButtonUpload from '@/components/common/lightweightComponents/ButtonUpload.vue';
   import {DROPDOWN_CONSTANT} from "../../../assets/js/allConstantData";
-  import DropdownList from '../../../components/common/lightweightComponents/dropdown-list';
-  import UserChoose from '../../../components/common/lightweightComponents/UserChoose';
-  import OrgChoose from '../../../components/common/lightweightComponents/OrgChoose.vue';
-  import PostChoose from '../../../components/common/lightweightComponents/PostChoose';
 
   export default {
     name: "index",
     mixins: [mixins],
     components: {
-      LjUpload,
       Calendar,
       ImgSlider,
       UserList,
@@ -69,12 +63,8 @@
       TestPaper,
       CountDown,
       ButtonUpload,
-      DropdownList,
       SearchHigh,
-      OrgChoose,
-      UserChoose,
       AppIndexMore,
-      PostChoose,
     },
     data() {
       return {
@@ -96,7 +86,7 @@
           },
         ],
         //list: [4228777],
-        list: [4228777],
+        list: ["4228777"],
         //user_list: [211, 289, 3604, 3623, 3590, 3589],
         user_list: [3604, 3335, 3338, 3337, 3339, 3336, 3334, 3343, 3388, 3630],
         org_list: [411,418, 419],
