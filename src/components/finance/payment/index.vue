@@ -707,7 +707,7 @@
           "complete_date": "补齐时间",
           "customer.contact": "手机号",
           "description.description": "明细详情",
-          "remark": "备注",
+          // "remark": "备注",
           "leader.name": "负责人",
           "staff.name": "开单人",
           "org.name": "部门"
