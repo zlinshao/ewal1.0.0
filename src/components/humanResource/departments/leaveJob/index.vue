@@ -147,8 +147,8 @@
 
           </div>
           <div class="dialog_footer">
-            <el-button type="danger" size="small" @click="confirmSecondEntry(false)">复职</el-button>
-            <el-button type="danger" size="small" @click="confirmSecondEntry(true)">复职并发送消息通知</el-button>
+            <el-button type="danger" size="small" :disabled="reEntery_disabled" @click="confirmSecondEntry(false)">复职</el-button>
+            <el-button type="danger" size="small" :disabled="reEntery_disabled" @click="confirmSecondEntry(true)">复职并发送消息通知</el-button>
             <el-button type="info" size="small" @click="second_entry_dialog_visible = false">取消</el-button>
           </div>
         </div>
@@ -176,7 +176,7 @@
         confirm_visible: false,
         confirm_type: '',
         confirm_row: '',
-
+        reEntery_disabled:true,
         checkList: [],
         chooseRowIds: [],
         tableData: [],
@@ -225,10 +225,11 @@
         handler(val,oldVal) {
           if(val.constructor===Array&&val.length==1) {//选取岗位了
             let id = val[0];
+            this.reEntery_disabled=true;
             this.$http.get(`${this.url}organization/position/${id}`).then(res=> {
               if(res.code.endsWith('0')) {
                 this.second_entry_form.org_id = [res.data.duty?.org_id];
-                console.log(this.second_entry_form.org_id);
+                this.reEntery_disabled=false;
               }
             });
           }
