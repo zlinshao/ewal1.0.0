@@ -30,7 +30,7 @@
             <span v-else>开除</span>
           </template>
         </el-table-column>
-        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" align="center" min-width="230px"></el-table-column>
+        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" show-overflow-tooltip align="center" min-width="230px"></el-table-column>
         <el-table-column label="离职交接单" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="handleLookResignation(scope.row)">查看</el-button>
