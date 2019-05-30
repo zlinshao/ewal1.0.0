@@ -73,35 +73,33 @@
             <div class="balance-detail-title">
               <span v-for="(item,index) in tabs" @click="selectTabs(item.id)" :class="selectTab===item.id?'activeTab':''">{{item.title}}</span>
             </div>
-
+            
+              <!-- 图片、评论-->
             <div class="balance-detail-info">
-              <div v-if="selectTab===2||selectTab===3||selectTab===4" class="tab">
+              <div v-if="selectTab===2||selectTab===4" class="tab">
                 <el-form ref="form" :model="form" label-width="80px" class="balance-detail-form">
+
                   <div class="balance-detail-form-info" :class="selectTab===2?'activeBorder':''">
                     <div class="img-wall">
                       <div class="balance-detail-img" v-for="(item,index) in imgData">
                         <img :src="item" alt="" :key="index">
                       </div>
-                    </div>
-
-                    <!-- <el-form-item label="" label-width="0px">
-                                            <el-input v-model="form.remark" type="textarea" :rows="14"></el-input>
-                                        </el-form-item> -->
+                    </div>             
                   </div>
-                  <div class="balance-detail-form-info" :class="selectTab===3?'activeBorder':''">
+                  <!--  <div class="balance-detail-form-info" :class="selectTab===3?'activeBorder':''">
                     <el-form-item label="备注">
                       <el-input v-model="form.remark" @change="getReimburseRemark" type="textarea" :rows="14"></el-input>
                     </el-form-item>
-                  </div>
+                  </div>-->
                   <div class="balance-detail-form-info" :class="selectTab===4?'activeBorder':''">
                     <el-form-item label="评论">
-                      <el-input v-model="form.remark" type="textarea" :rows="14"></el-input>
+                      <el-input v-model="form.contentMessage"  @change="getProcessInstances" type="textarea" :rows="14"></el-input>
                     </el-form-item>
                   </div>
 
                 </el-form>
-
               </div>
+               <!-- 款项明细-selectTab为1-->
               <div v-if="selectTab===1" class="tab8">
                 <el-table height="410" style="width:100%" :data="balanceDataDetail"
                   highlight-current-row header-row-class-name="tableHeader" @selection-change="handleSelectionChange">
@@ -129,7 +127,6 @@
                       </el-button>
                     </template>
                   </el-table-column>
-
                 </el-table>
                 <div class="page">
                   <el-pagination :total=feeCount layout="total,jumper,prev,pager,next" :current-page="feeParams.page"
@@ -137,6 +134,18 @@
                   </el-pagination>
                 </div>
               </div>
+               <!-- 备注-selectTab为3-->
+              <div v-if="selectTab===3" class="tab8">
+                  <div class="balance-detail-form-info" :class="selectTab===3?'activeBorder':''">
+                    <el-form-item label="备注">
+                      <el-input v-model="form.remark" @change="getReimburseRemark" type="textarea" :rows="14"></el-input>
+                    </el-form-item>
+                  </div>
+              </div>
+
+
+            
+              
 
             </div>
           </div>
@@ -511,12 +520,14 @@ export default {
     },
     selectTabs (id) {//结算单详情tab切换
       this.selectTab = id;
-      if (id === 3) {
+      if (id === 3) {  //备注
         this.getReimburseRemark();
+      }else if (id === 4) {  //评论
+        this.getProcessInstances();
       }
     },
+    
     getReimburseRemark () {//添加报销单备注信息
-
       this.$http.put(globalConfig.temporary_server + 'customer_reimburse/reimburse_remark/' + this.balance_id, { remark: this.form.remark }).then(res => {
         this.showLoading(false);
         if (res.code === 200) {
@@ -527,6 +538,29 @@ export default {
       })
 
     },
+
+    getProcessInstances () {//添加报销单评论信息
+      let params={
+          author: this.$storage.get('user_info').id,
+          content: {
+            message: this.form.contentMessage,
+            attachments: []
+          },
+          saveProcessInstanceId: true
+      }
+      this.$http.post(`${globalConfig.approval_sever}history/process-instances/${this.current_row.flow_id}/comments`, params).then(res => {
+        this.showLoading(false);
+        // debugger
+        // console.log(res)
+        if (res.status === 201) {
+         this.form.contentMessage=res.content.message;
+        }
+      }).catch(err => {
+        console.log(err);
+      })
+
+    },
+
     handleOkAdd () {//报销单详情编辑提交
       let paramsForm = {
         "reimburse_fee_id": this.current_row.id,//报销单费用id
@@ -683,7 +717,7 @@ export default {
           this.feeCount = res.data.count;
           this.imgData = res.data.urls;
           this.form.remark = res.data.remark;
-
+          // this.form.getReimburseDetails = res.data.remark;
         }
       }).catch(err => {
         console.log(err);
@@ -695,6 +729,8 @@ export default {
         if (res.code === 200) {
           this.balanceDataDetail = res.data.data;
           this.feeCount = res.data.count;
+          //结算图片(lili) 
+          this.imgData=res.data.urls;
         }
       }).catch(err => {
         console.log(err);

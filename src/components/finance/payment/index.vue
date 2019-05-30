@@ -979,6 +979,7 @@
             subMessage: '',
           });
         }
+        // callback();
       },
 
       handleOkPay(row, val) {//修改金额
@@ -1031,6 +1032,7 @@
 
       handleOkCompleteData(row, val) {//修改补齐时间
         this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: val}).then(res => {
+
           this.callbackSuccess(res);
           this.complete_visible = false;
           this.current_row = '';
