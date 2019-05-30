@@ -259,82 +259,22 @@
   padding: 100px 100px 0 0;
   flex-direction: column;
 }
+#theme_name #login .login > div .p1 {
+  width: 120px;
+  height: 120px;
+  margin-right: 35px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
 #theme_name #login .login > div .p2 {
   width: 600px;
   height: 450px;
   background-color: #ffffff;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
-}
-#theme_name #login .login > div .p2 .inner-login {
-  width: 70%;
-  height: 130px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-#theme_name #login .login > div .p2 .inner-login .inner-item {
-  display: flex;
-  height: 40px;
-  justify-content: space-between;
-  font-size: 22px;
-  width: 100%;
-}
-#theme_name #login .login > div .p2 .inner-login .inner-item input {
-  width: 300px;
-  color: #979797;
-  font-size: 22px;
-  padding: 6px 20px 6px 40px;
-}
-#theme_name #login .login > div .p2 .inner-login .inner-item input::placeholder {
-  color: #DFDFDF;
-}
-#theme_name #login .login > div .p2 .inner-login .inner-item .phone-tip {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: center;
-}
-#theme_name #login .login > div .p2 .inner-login .inner-item:nth-child(1) input {
-  border-right: 1px solid #979797;
-}
-#theme_name #login .login > div .p2 .inner-top {
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  top: 20px;
-  width: 100%;
-}
-#theme_name #login .login > div .p2 .inner-top i {
-  width: 50px;
-  height: 50px;
-  display: inline-block;
-}
-#theme_name #login .login > div .p2 .inner-bottom {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 26px;
-  position: absolute;
-  bottom: 70px;
-}
-#theme_name #login .login > div .p2 .inner-bottom div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  color: #979797;
-  cursor: pointer;
-  /* &:nth-child(1) {
-     border-right: 1px solid #979797;
-     padding-right: 25px;
-     margin-right: 25px;
-   }*/
 }
 #theme_name #login .login > div .p2 .formData {
   margin: 30px 0;
@@ -376,7 +316,7 @@
   cursor: pointer;
 }
 #theme_name #login .login footer {
-  margin: 100px auto;
+  margin: 100px 0 0 94px;
   width: 240px;
   height: 24px;
 }
@@ -516,4 +456,4 @@
   transform: rotateY(0deg) perspective(800px);
 }
 
-/*# sourceMappingURL=index.css.map */
+/*# sourceMappingURL=index_backup.css.map */
