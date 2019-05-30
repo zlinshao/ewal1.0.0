@@ -1031,7 +1031,7 @@
 
       handleOkCompleteData(row, val) {//修改补齐时间
         this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: val}).then(res => {
-          this.callbackSuccess(res);
+          this.callbackSuccess(res,function () {});
           this.complete_visible = false;
           this.current_row = '';
         }).catch(err => {
