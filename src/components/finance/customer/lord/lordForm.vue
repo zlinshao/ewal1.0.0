@@ -409,7 +409,7 @@
                     pay_way: '',
                     end_date: '',
                     begin_date: '',
-                    price_str: '',
+                    price: '',
                     key: Date.now(),
                 })
             },
