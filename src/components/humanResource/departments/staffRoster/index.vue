@@ -144,7 +144,7 @@
                 <el-col :span="12">
                   <div class="flex">
                     <div style="width: 150px">出生年月</div>
-                    <el-input v-model="labour_form.birthday"></el-input>
+                    <el-date-picker v-model="labour_form.birthday" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                   </div>
                 </el-col>
                 <el-col :span="12">
@@ -158,7 +158,7 @@
             <el-form-item class="item_margin">
               <div class="flex">
                 <div style="width: 250px">在本单位工作起始时间</div>
-                <el-input v-model="labour_form.begin_date"></el-input>
+                <el-date-picker v-model="labour_form.begin_date" type="date" value-format="yyyy-MM-dd"></el-date-picker>
               </div>
             </el-form-item>
             <el-form-item class="item_margin">
