@@ -91,6 +91,10 @@
       depart_visible(val) {
         if (!val) {
           this.$emit('close', 'close');
+        }else {
+          if(!this.initial || (this.initial&&this.initial.length==0)) {
+            this.checkList = [];
+          }
         }
       },
       organData: {
@@ -99,7 +103,7 @@
           this.checkList = val ? (val.arr ? val.arr : []) : [];
         },
         deep: true,
-        immediate: true
+        immediate: true,
       },
     },
     computed: {},

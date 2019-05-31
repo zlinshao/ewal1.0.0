@@ -47,19 +47,16 @@
               </p>
             </div>
             <div v-if="item.keyType === 'staff'">
-              <user-choose width="470" :num="item.value.num||null" :title="item.placeholder" v-model="params[item.keyName]"></user-choose>
-              <!--<el-input @focus="organSearch(item)" readonly v-model="showName[item.keyName]"
-                        :placeholder="item.placeholder"></el-input>-->
+              <user-choose width="470" :num="item.value.num||null" :title="item.placeholder"
+                           v-model="params[item.keyName]"></user-choose>
             </div>
             <div v-if="item.keyType === 'depart'">
-              <!--<el-input @focus="organSearch(item)" readonly v-model="showName[item.keyName]"
-                        :placeholder="item.placeholder"></el-input>-->
-              <org-choose width="470" :num="item.value.num||null" :title="item.placeholder" v-model="params[item.keyName]"></org-choose>
+              <org-choose width="470" :num="item.value.num||null" :title="item.placeholder"
+                          v-model="params[item.keyName]"></org-choose>
             </div>
             <div v-if="item.keyType === 'position'">
-              <!--<el-input @focus="organSearch(item)" readonly v-model="showName[item.keyName]"
-                        :placeholder="item.placeholder"></el-input>-->
-              <post-choose width="470" :num="item.value.num||null" :title="item.placeholder" v-model="params[item.keyName]"></post-choose>
+              <post-choose width="470" :num="item.value.num||null" :title="item.placeholder"
+                           v-model="params[item.keyName]"></post-choose>
             </div>
           </div>
         </div>
@@ -182,6 +179,12 @@
         this.$emit('close', this.params);
       },
       resetting() {
+        _.forEach(this.showData.data, (o) => {
+          if (_(['depart', 'position', 'staff']).includes(o.keyType)) {
+            //this.$set(this.params, o.keyName, []);
+            this.params[o.keyName] = [];
+          }
+        });
         this.params = this.jsonData(this.reset);
       },
     },
