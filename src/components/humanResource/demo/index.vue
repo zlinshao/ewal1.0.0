@@ -41,7 +41,6 @@
 
 <script>
   import AppIndexMore from '../../../components/index/components/AppIndexMore';
-  import SearchHigh from '../../../components/common/lightweightComponents/SearchHigh/index';
   import CountDown from '@/components/common/lightweightComponents/CountDown.vue';
   import TestPaper from '@/components/common/lightweightComponents/TestPaper.vue';
   import NameShower from '@/components/common/lightweightComponents/NameShower.vue';
@@ -63,7 +62,6 @@
       TestPaper,
       CountDown,
       ButtonUpload,
-      SearchHigh,
       AppIndexMore,
     },
     data() {

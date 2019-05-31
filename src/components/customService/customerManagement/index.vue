@@ -33,7 +33,7 @@
           <el-table-column show-overflow-tooltip prop="name" label="客户姓名" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip prop="sex" label="性别" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip prop="house_name" label="地址" align="center"></el-table-column>
-          <el-table-column show-overflow-tooltip prop="idtype" label="身份" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="customer_type" label="身份" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip prop="sign_user" label="开单人" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip prop="org_leader" label="负责人" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip prop="sign_org" label="所属部门" align="center"></el-table-column>
@@ -447,13 +447,13 @@
       },
       //打开详情
       handleOpenDetail(row) {
-        debugger
+        //debugger
         if (this.params.is_black === 1) {
           return false;
         }
         this.customer_type = row.customer_type;
         if (row.customer_type === '房东') {
-          console.log(row.customer_type);
+          //console.log(row.customer_type);
           // this.$http.get(this.market_server + `v1.0/market/customer/lord/${row.id}`).then(res => {
           this.$http.get(this.market_server + `v1.0/market/customer/lord/${row.id}`).then(res => {
             console.log(res,'房东');
@@ -466,10 +466,9 @@
           })
         }
         if (row.customer_type === '租客') {
-          console.log(row.customer_type);
+          //console.log(row.customer_type);
           this.$http.get(this.market_server + `v1.0/market/customer/renter/${row.id}`).then(res => {
             // this.$http.get(this.market_server + `v1.0/market/customer/renter/${row.id}`).then(res => {
-            console.log(res,'租客');
             if (res.code === 200) {
               this.current_detail = res.data;
               this.detail_visible = true;
@@ -478,7 +477,34 @@
             }
           })
         }
+
+        if (row.customer_type === '房东,租客') {
+          //console.log(row.customer_type);
+          this.$http.get(this.market_server + `v1.0/market/customer/integrated/${row.id}`).then(res => {
+            // this.$http.get(this.market_server + `v1.0/market/customer/renter/${row.id}`).then(res => {
+            if (res.code === 200) {
+
+              this.current_detail = this.joinTwoObject(res.data.lord,res.data.renter);;
+              this.detail_visible = true;
+            } else {
+              this.current_detail = '';
+            }
+          })
+        }
       },
+
+      /*聚合2个object*/
+      joinTwoObject(obj1,obj2) {
+        let origin = Object.keys(obj1).length?obj1:obj2;//初始化循环体
+        _(origin).forEach((o,key)=> {
+          if(obj1[key]==obj2[key]||(obj1.constructor==Object||obj1.constructor==Array)) {return}
+          origin[key] = `${obj1[key]||''}${(!obj1[key]||!obj2[key])?'':'/'}${obj2[key]||''}`;
+        });
+        return origin;
+      },
+
+
+
       handleGoMoveBlack(row) {
         this.currentRow = row;
         this.black_mark_visible = true;
@@ -517,12 +543,12 @@
           //console.log(res);
           this.showLoading(false);
           if (res.code === 200) {
-            if(this.params.type==3||this.params.is_black==1) {
+            if(this.params.type==3||this.params.is_black==1) {//处理综合页数据
               res.data.data = _.forEach(res.data.data,(o)=> {
-                o.house_name = `${o.lord?.house_name||'无'}/${o.renter?.house_name||'无'}`;
-                o.sign_user = `${o.lord?.sign_user||'无'}/${o.renter?.sign_user||'无'}`;
-                o.org_leader = `${o.lord?.org_leader||'无'}/${o.renter?.org_leader||'无'}`;
-                o.sign_org = `${o.lord?.sign_org||'无'}/${o.renter?.sign_org||'无'}`;
+                o.house_name = `${o.lord?.house_name||''}${(!o.lord?.house_name||!o.renter?.house_name)?'':'/'}${o.renter?.house_name||''}`;
+                o.sign_user = `${o.lord?.sign_user||''}${(!o.lord?.sign_user||!o.renter?.sign_user)?'':'/'}${o.renter?.sign_user||''}`;
+                o.org_leader = `${o.lord?.org_leader||''}${(!o.lord?.org_leader||!o.renter?.org_leader)?'':'/'}${o.renter?.org_leader||''}`;
+                o.sign_org = `${o.lord?.sign_org||''}${(!o.lord?.sign_org||!o.renter?.sign_org)?'':'/'}${o.renter?.sign_org||''}`;
               });
             }
             this.customerList = res.data.data;

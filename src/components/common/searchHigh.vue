@@ -4,7 +4,7 @@
     <div class="searchContent" :class="{'showSearchContent': showModule}">
       <div class="scroll_bar">
         <div class="items-center searchInput">
-          <input type="text" v-model="params[showData.keywords]" :placeholder="showData.placeholder || '请输入搜索内容'">
+          <input type="text" v-model.trim="params[showData.keywords]" :placeholder="showData.placeholder || '请输入搜索内容'">
           <span @click="subSearch">搜索</span>
         </div>
         <div v-if="showData.data&&showData.data.length>0" class="highGrade">

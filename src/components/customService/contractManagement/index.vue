@@ -1211,14 +1211,12 @@ export default {
           return false;
         }
       }*/
-      let form = new FormData();
+      /*let form = new FormData();
       form.append('complete_content', JSON.stringify(this.polishing_data_form.complete_content));
       form.append('property_number', this.polishing_data_form.property_number);
-      form.append('mound_number', this.polishing_data_form.mound_number);
+      form.append('mound_number', this.polishing_data_form.mound_number);*/
 
-
-
-      this.$http.post(this.url + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, form).then(res => {
+      this.$http.post(this.url + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, this.polishing_data_form).then(res => {
         if (res.code === 200) {
           this.$LjNotify('success', {
             title: '成功',

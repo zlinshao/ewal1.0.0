@@ -160,7 +160,7 @@
       </lj-dialog>
 
       <!--选小区-->
-      <HouseFilter :visible="merge_village_visible" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
+      <HouseFilter :visible="merge_village_visible" :show-house="false" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
 
       <!--MenuList-->
       <MenuList :module="menu_visible" :list="customService" :backdrop="true" @close="menu_visible = false"></MenuList>
@@ -723,6 +723,8 @@
             //清空region
             this.village_params.region = '';
             this.region_list = [];
+
+            debugger
 
             this.village_params.city = [];
             this.village_params.province = '';

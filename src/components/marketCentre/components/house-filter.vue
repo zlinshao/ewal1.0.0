@@ -12,7 +12,7 @@
           </div>
           <div class="dialog_main">
             <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane v-if="!hideHouse" label="地址" name="first">
+              <el-tab-pane v-if="showHouse" label="地址" name="first">
                 <div class="flex">
                   <div class="left_container changeChoose">
                     <div class="header_control flex">
@@ -154,11 +154,9 @@
     props: {
       visible: {},
       onlyChoose: {},
-      hideHouse: {
+      showHouse: {//是否显示房屋tab
         type: Boolean,
-        default() {
-          return false;
-        }
+        default: true,
       },
     },
     data() {
@@ -231,6 +229,15 @@
         this.only_choose = val;
         this.activeName = this.only_choose === 'all' || this.only_choose === 'house'  ? 'first' : 'second';
         this.params.type = this.only_choose === 'all' || this.only_choose === 'house' ? 1 : 2;
+      },
+      /*监听是否显示房屋*/
+      showHouse: {
+        handler(val) {
+          if(!val) {
+            this.activeName = 'second';
+          }
+        },
+        immediate: true
       },
     },
     computed: {},
