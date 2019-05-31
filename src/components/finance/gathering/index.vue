@@ -1661,11 +1661,18 @@
         };
         this.$http.put(globalConfig.temporary_server + 'registration/match/' + id, paramsForm).then(res => {
           if (res.code === 200) {
-            console.log(res)
+            this.$LjNotify('success', {
+              title: '成功',
+              message: res.msg,
+              subMessage: '',
+            });
           } else {
+            this.$LjNotify('error', {
+              title: '失败',
+              message: res.msg,
+              subMessage: '',
+            });
           }
-        }).catch(err => {
-          console.log(err);
         })
       },
       openCustomer() {
