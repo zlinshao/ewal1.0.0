@@ -169,7 +169,7 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small"
-                     @click="handleOkCompleteData(current_row,formData.complete_date)">确定
+                     @click="handleOkCompleteData(current_row)">确定
           </el-button>
           <el-button type="info" size="small" @click="complete_visible = false;current_row = ''">取消
           </el-button>
@@ -726,7 +726,10 @@
           subject_name: '',//科目名
         },
         subject_val: '',
-        formData: {},
+        formData: {
+          complete_date:'' ,  //补齐时间
+          pay_date:'' ,  //应付时间
+        },
 
         transferForm: {//应付入账
         },
@@ -833,6 +836,8 @@
         },
 
         import_file: '',
+        // 选中当前的列表的数据
+        current_row_info:{},
       }
     },
     mounted() {
@@ -955,6 +960,7 @@
         let ids = this.chooseRowIds;
         ids.push(row.id);
         this.chooseRowIds = this.myUtils.arrayWeight(ids);
+        this.current_row_info=row; //用于补齐和应付时间使用
       },
       tableChooseRow({row, rowIndex}) {// 点击过
         return this.chooseRowIds.includes(row.id) ? 'tableChooseRow' : '';
@@ -1030,8 +1036,12 @@
         });
       },
 
-      handleOkCompleteData(row, val) {//修改补齐时间
-        this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: val}).then(res => {
+      handleOkCompleteData(row) {//修改补齐时间
+        // 时间格式转化
+        let  date = new Date(this.formData.complete_date);  
+        let  complete_date=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();  
+        this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + this.current_row_info.id, {complete_date: complete_date}).then(res => {
+        // this.$http.put(globalConfig.temporary_server + "account_payable/complete_date/" + row.id, {complete_date: complete_date}).then(res => {
           this.callbackSuccess(res,function () {});
           this.complete_visible = false;
           this.current_row = '';
@@ -1040,8 +1050,12 @@
         })
       },
       handleOkPayDate(row) {//修改付款时间
-        this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: this.formData.pay_date}).then(res => {
-          this.callbackSuccess(res);
+        let  date = new Date(this.formData.pay_date);  
+        let  pay_date=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(); 
+        this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + this.current_row_info.id, {pay_date: pay_date}).then(res => {
+        // this.$http.put(globalConfig.temporary_server + "account_payable/pay_date/" + row.id, {pay_date: pay_date}).then(res => {
+          // this.callbackSuccess(res);
+           this.callbackSuccess(res,function () {});
           this.payData_visible = false;
           this.current_row = '';
         }).catch(err => {
@@ -1133,7 +1147,8 @@
         this.current_row = row;
         if (key === "complete_visible") {
           this.complete_visible = true;
-          this.formData.complete_date = this.current_row.complete_date;
+          // this.formData.complete_date = this.current_row.complete_date;
+            this.formData.complete_date = this.current_row_info.complete_date;
         }
         if (key === "subject_visible") {//科目
           this.subject_visible = true;
@@ -1155,7 +1170,8 @@
         }
         if (key === "payData_visible") {
           this.payData_visible = true;
-          this.formData.pay_date = this.current_row.pay_date;
+          // this.formData.pay_date = this.current_row.pay_date;
+           this.formData.pay_date = this.current_row_info.pay_date;
         }
         if (key === "delete_visible") {
           this.delete_visible = true;
