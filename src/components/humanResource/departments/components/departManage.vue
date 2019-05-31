@@ -97,14 +97,16 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="部门">
-                      <el-input placeholder="请选择" readonly @focus="departOrgan_visible = true" v-model="interview_info_detail.depart"></el-input>
+                      <org-choose width="260" num="1" v-model="interview_info_detail.org_id"></org-choose>
+<!--                      <el-input placeholder="请选择" readonly @focus="departOrgan_visible = true" v-model="interview_info_detail.depart"></el-input>-->
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="岗位">
-                      <el-input v-model="interview_info_detail.position" @focus="modules = true" placeholder="请选择"></el-input>
+                      <post-choose width="260" num="1" v-model="interview_info_detail.position_id"></post-choose>
+<!--                      <el-input v-model="interview_info_detail.position" @focus="modules = true" placeholder="请选择"></el-input>-->
                     </el-form-item>
                   </el-col>
                   <el-col :span="16">

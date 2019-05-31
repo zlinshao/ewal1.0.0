@@ -1,7 +1,7 @@
 <template>
   <div id="postOrgan">
     <lj-dialog
-      :visible="lj_visible"
+      :visible.sync="lj_visible"
       :size="'small'"
       @close="handleCloseLjDialog">
       <div class="dialog_container">
@@ -137,10 +137,16 @@
       lj_visible: {
         handler(val, oldVal) {
           if(val) {
+            this.crumbs= [
+              {
+                id: 1,
+                name: '乐伽商业管理有限公司',
+              },
+            ];
             this.getList();
           }
         }
-      }
+      },
     },
     computed: {},
     methods: {

@@ -320,7 +320,6 @@
         watch: {
           houseSource: {
             handler(val) {
-              debugger
               this.house_info = val;
             },
             deep: true
