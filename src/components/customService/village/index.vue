@@ -69,8 +69,6 @@
               </div>
               <div class="village-footer">
                 <div class="flex-center">
-
-                  <!--<el-button type="primary" size="small" plain @click.stop="handleOpenMergeVillage(village)">合并</el-button>-->
                 </div>
                 <div class="flex-center">
                   <div class="flex-center" :class="{'choose-village': check_choose.includes(index)}" @click.stop="handleCheckVillage(village,index)">
@@ -472,8 +470,10 @@
             this.merge_form.save_village = val[0].village_name;
             this.merge_form.id = val[0].village_id;
           } else {
-            this.merge_form.merge_to_community_id = val[0].village_id;
-            this.merge_form.merge_village = val[0].village_name;
+            //this.merge_form.merge_to_community_id = val[0].village_id;
+            //this.merge_form.merge_village = val[0].village_name;
+            this.merge_form.merge_to_community_id = _.map(val,'village_id');
+            this.merge_form.merge_village = _.map(val,'village_name').join(',');
           }
           this.merge_choose = 'all';
         }
@@ -499,11 +499,11 @@
       },
       handleOpenMergeVillage(type) {
         this.is_control = type;
-        this.merge_choose = 'village';
+        this.merge_choose = type=='save'?'village':null;
         this.merge_village_visible = true;
       },
       handleCancelMergeVillage() {
-        for (var key in this.merge_form) {
+        for (let key in this.merge_form) {
           this.merge_form[key] = '';
         }
         this.merge_visible = false;
@@ -534,7 +534,7 @@
           return false;
         }
         this.allot_village_params.community_id = [];
-        for (var item of this.current_check_village) {
+        for (let item of this.current_check_village) {
           this.allot_village_params.community_id.push(item.id);
           this.allot_village_params.village_name += item.village_name + ',';
         }
@@ -565,7 +565,7 @@
           zoom: 13
         });
         let infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(5, -20)});
-        var marker = new AMap.Marker({
+        let marker = new AMap.Marker({
           position,
           map: that.map
         });
@@ -587,7 +587,7 @@
         }
         this.check_choose = [];
         this.current_check_village = this.village_list;
-        for (var key in this.village_list) {
+        for (let key in this.village_list) {
           this.check_choose.push(parseInt(key));
         }
       },
@@ -597,13 +597,13 @@
           if (res.code === 200) {
             this.current_village_detail = res.data;
             this.village_detail_visible = true;
-            for (var key in this.village_detail_form) {
+            for (let key in this.village_detail_form) {
               this.village_detail_form[key].val = res.data[key] ? res.data[key] : '';
             }
             this.village_detail_form.city_name.val = res.data.city && res.data.city.city_name;
             this.village_detail_form.area_name.val = res.data.area && res.data.area.area_name;
             this.outer_net_data = res.data.outer_net_data ? res.data.outer_net_data : [];
-            var location = [res.data.longitude,res.data.latitude];
+            let location = [res.data.longitude,res.data.latitude];
             this.village_pic = res.data && res.data.album && res.data.album.village_photo ? res.data.album.village_photo : [];
             this.house_pic = res.data && res.data.album && res.data.album.home_photo ? res.data.album.home_photo : [];
             this.files = res.data && res.data.album && res.data.album.files ? res.data.album.files : [];
@@ -650,7 +650,7 @@
       },
       handleCancelAllotVillage() {
         this.allot_village_visible = false;
-        for (var key in this.allot_village_params) {
+        for (let key in this.allot_village_params) {
           this.allot_village_params[key] = '';
         }
       },
@@ -828,7 +828,7 @@
       },
       //获取区域下的街道
       getAreaNextList() {
-        var params = {
+        let params = {
           province: this.village_params.province,
           city: this.village_params.city[0],
           area: this.village_params.area,
@@ -885,7 +885,7 @@
         this.HighVisible = true;
       },
       handleCheckVillage(village,index) {
-        for (var i=0;i<this.check_choose.length;i++) {
+        for (let i=0;i<this.check_choose.length;i++) {
           if (index === this.check_choose[i]) {
             this.check_choose.splice(i,1);
             this.current_check_village.splice(this.village_list[i],1);

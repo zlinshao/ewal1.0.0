@@ -12,7 +12,7 @@
           </div>
           <div class="dialog_main">
             <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane label="地址" name="first">
+              <el-tab-pane v-if="!hideHouse" label="地址" name="first">
                 <div class="flex">
                   <div class="left_container changeChoose">
                     <div class="header_control flex">
@@ -148,11 +148,19 @@
 </template>
 
 <script>
-  import LjDialog from '../../common/lj-dialog.vue';
   export default {
     name: "index",
-    components: { LjDialog },
-    props: ['visible','onlyChoose'],
+    //props: ['visible','onlyChoose'],
+    props: {
+      visible: {},
+      onlyChoose: {},
+      hideHouse: {
+        type: Boolean,
+        default() {
+          return false;
+        }
+      },
+    },
     data() {
       return {
         market_server: globalConfig.market_server,
