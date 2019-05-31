@@ -247,15 +247,17 @@
 }
 #houseCard > div .content > div.cards .house-item {
   min-width: 20%;
-}
-#houseCard > div .content > div.cards .house-item .control {
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease-in-out;
-}
-#houseCard > div .content > div.cards .house-item:hover .control {
-  opacity: 1;
-  visibility: visible;
+  /*.control {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+  }
+  &:hover {
+    .control {
+      opacity: 1;
+      visibility: visible;
+    }
+  }*/
 }
 #houseCard > div .content > div.cards .house-item .card {
   min-width: 280px;

@@ -9,19 +9,16 @@
     bottom: 0;
     z-index: 42;
     background-color: $color2F2;
-
     header {
       position: absolute;
       top: 50px;
       left: 0;
       right: 0;
-
       span {
         width: 280px;
         height: 80px;
       }
     }
-
     .login {
       position: absolute;
       left: 10%;
@@ -30,107 +27,29 @@
       bottom: 0;
       padding: 100px 100px 0 0;
       flex-direction: column;
-
       > div {
+        .p1 {
+          width: 120px;
+          height: 120px;
+          margin-right: 35px;
+          @include radius(6px);
+        }
         .p2 {
           width: 600px;
           height: 450px;
           background-color: $colorFFF;
           position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
           @include radius(6px);
-
-          .inner-login {
-            width: 70%;
-            height: 130px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-
-            .inner-item {
-              display: flex;
-              height: 40px;
-              justify-content: space-between;
-              font-size: 22px;
-              //background-color: #000;
-              width: 100%;
-
-              input {
-                width: 300px;
-                color: #979797;
-                font-size: 22px;
-                padding: 6px 20px 6px 40px;
-
-                &::placeholder {
-                  color: #DFDFDF;
-                }
-              }
-
-              .phone-tip {
-                @include flex('flex-center');
-              }
-
-              &:nth-child(1) {
-                input {
-                  border-right: 1px solid #979797;
-                }
-              }
-            }
-          }
-
-          .inner-top {
-            display: flex;
-            justify-content: center;
-            position: absolute;
-            top: 20px;
-            width: 100%;
-            i {
-              width: 50px;
-              height: 50px;
-              display: inline-block;
-            }
-          }
-
-          .inner-bottom {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            height: 26px;
-            //background-color: #000;
-            position: absolute;
-            bottom: 70px;
-
-            div {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 16px;
-              color: #979797;
-              cursor: pointer;
-             /* &:nth-child(1) {
-                border-right: 1px solid #979797;
-                padding-right: 25px;
-                margin-right: 25px;
-              }*/
-            }
-          }
-
-
           .formData {
             margin: 30px 0;
-
             i {
               width: 26px;
               height: 26px;
             }
-
             input {
               width: 210px;
               padding: 6px 20px 6px 40px;
             }
-
             b {
               cursor: pointer;
               width: 80px;
@@ -141,7 +60,6 @@
               background-color: #AAA;
             }
           }
-
           .forgetPassword {
             position: absolute;
             bottom: 30px;
@@ -149,12 +67,10 @@
             font-size: 16px;
             cursor: pointer;
           }
-
           .loginBtn {
             display: none;
           }
         }
-
         .p3 {
           width: 60px;
           height: 120px;
@@ -163,15 +79,12 @@
           cursor: pointer;
         }
       }
-
       footer {
-        margin: 100px auto;
-        //margin: 100px 0 0 94px;
+        margin: 100px 0 0 94px;
         width: 240px;
         height: 24px;
       }
     }
-
     h1 {
       display: none;
     }
@@ -185,13 +98,11 @@
         .p3 {
           @include radius(0 100px 100px 0);
         }
-
         .p2 {
           .forgetPassword {
             color: $color0C0;
           }
         }
-
         .p2, .p3 {
           @include boxShaw(-6px 10px 20px 0px rgba(223, 223, 223, 1));
         }
@@ -206,30 +117,25 @@
       > div {
         .p2 {
           @include inputColor($colorDFF);
-
           .forgetPassword {
             bottom: 80px;
             right: 40px;
             color: $colorDFF;
           }
-
           input {
             color: $colorDFF;
           }
         }
-
         .p3 {
           color: $colorDFF;
           opacity: .8;
           padding-right: 22px;
-
           &:hover {
             opacity: 1;
           }
         }
       }
     }
-
     footer {
       span + span {
         border-color: $colorDFF;
@@ -245,7 +151,6 @@
         .p2 {
           > div {
             margin-right: 70px;
-
             .formData {
               border: 3px solid #000;
               padding: 0 30px;
@@ -255,13 +160,11 @@
               margin: 20px 0;
             }
           }
-
           .forgetPassword {
             right: 80px;
             bottom: 25px;
             color: $color000;
           }
-
           .loginBtn {
             cursor: pointer;
             display: block;
@@ -270,20 +173,17 @@
             padding: 26px;
             top: 50%;
             @include transform(translateY(-50%));
-
             span {
               font-weight: bold;
               color: $colorFFF;
             }
           }
         }
-
         .p3 {
           display: none;
         }
       }
     }
-
     h1 {
       display: block;
       position: absolute;
@@ -299,27 +199,22 @@
     .login {
       opacity: 0;
       @include transition(all .8s linear);
-
       > div {
         transform: rotateY(60deg);
         @include transition(all .8s linear);
-
         .p2 {
           .forgetPassword {
             color: $colorA7B;
           }
         }
-
         .p3 {
           background-color: $colorA7B;
           @include radius(0 20px 20px 0);
         }
       }
     }
-
     .loginRotate {
       opacity: 1;
-
       > div {
         transform: rotateY(0deg) perspective(800px);
       }

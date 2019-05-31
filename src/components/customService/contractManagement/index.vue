@@ -24,10 +24,10 @@
         <el-table header-row-class-name="tableHeader" :data="contractList" @expand-change="handleExpandRow" @row-dblclick="handleGetDetail" :height="this.mainListHeight(30) + 'px'">
           <el-table-column label="签约时间" prop="sign_at" align="center"></el-table-column>
           <el-table-column label="合同编号" prop="contract_number" align="center"></el-table-column>
-          <el-table-column label="地址" prop="house_name" align="center"></el-table-column>
-          <el-table-column label="合同性质" prop="type" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip label="地址" prop="house_name" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip label="合同性质" prop="type" align="center"></el-table-column>
           <!--<el-table-column label="所属公司" prop="" align="center"></el-table-column>-->
-          <el-table-column label="收房价格" prop="month_price" align="center">
+          <el-table-column show-overflow-tooltip label="收房价格" prop="month_price" align="center">
             <template slot-scope="scope">
               <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
                 <span v-for="(item,index) in scope.row.month_price">
@@ -221,7 +221,7 @@
     <MenuList :module="show_market" :list="customService" :backdrop="true" @close="handleCloseMenu"></MenuList>
 
     <!--查看回访记录-->
-    <LjDialog :visible="backInfo_visible" :size="{width: 600 + 'px',height: 500 + 'px'}" @close="handleCloseLookBackInfo">
+    <lj-dialog :visible.sync="backInfo_visible" :size="{width: 600 + 'px',height: 500 + 'px'}" @close="handleCloseLookBackInfo">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{ currentRow.house_name }}</h3>
@@ -257,7 +257,7 @@
           <el-button type="danger" size="small" @click="handleCloseLookBackInfo">确定</el-button>
         </div>
       </div>
-    </LjDialog>
+    </lj-dialog>
 
     <!--资料补齐-->
     <lj-dialog :visible.sync="data_polishing_visible" :size="{width: 550 + 'px',height: 700 + 'px'}" @close="handleCancelPolishing">
@@ -274,7 +274,7 @@
               <el-input v-model="polishing_data_form.mound_number" placeholder="请输入"></el-input>
             </el-form-item>
             <el-form-item :label="selfLabel(key)" v-for="(val,key) in polishing_data[chooseTab-1]" :key="key">
-              <lj-upload size="50" style="position: absolute;top: -13px;" v-model="polishing_data_form.complete_content[key]"></lj-upload>
+              <lj-upload size="50" class="upload-offset" :limit-easy="['video','image']" v-model="polishing_data_form.complete_content[key]"></lj-upload>
 <!--              <Upload :file="upload_file[idx]" @success="handleGetFile"></Upload>-->
             </el-form-item>
           </el-form>
@@ -287,7 +287,7 @@
     </lj-dialog>
 
     <!--合同详情-->
-    <lj-dialog :visible="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
+    <lj-dialog :visible.sync="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>合同详情</h3>
@@ -765,7 +765,7 @@ export default {
 
       show_market: false,
 
-      market_server: globalConfig.market_server,
+      url: globalConfig.market_server,
       selects: [
         {
           id: 1,
@@ -867,7 +867,7 @@ export default {
   computed: {},
   methods: {
     handleGetLeaseNote () {
-      this.$http.get(this.market_server + 'v1.0/market/leaseNote', this.leaseNote_params).then(res => {
+      this.$http.get(this.url + 'v1.0/market/leaseNote', this.leaseNote_params).then(res => {
         console.log(res);
         if (res.code === 200) {
           this.remeber_list = res.data.data;
@@ -880,7 +880,7 @@ export default {
     },
 
     handleGetFixClearList () {
-      this.$http.get(this.market_server + 'v1.0/csd/work_order', this.fix_clear).then(res => {
+      this.$http.get(this.url + 'v1.0/csd/work_order', this.fix_clear).then(res => {
         console.log(res);
         if (res.code === 200) {
           this.fix_clear_list = res.data.data;
@@ -892,7 +892,7 @@ export default {
       })
     },
     handleGetWorkOrderList () {
-      this.$http.get(this.market_server + 'v1.0/csd/work_order', this.work_order).then(res => {
+      this.$http.get(this.url + 'v1.0/csd/work_order', this.work_order).then(res => {
         console.log(res);
         if (res.code === 200) {
           this.work_list = res.data.data;
@@ -904,7 +904,7 @@ export default {
       })
     },
     handleGetRevisitList () {
-      this.$http.get(this.market_server + 'v1.0/csd/revisit', this.revisit_params).then(res => {
+      this.$http.get(this.url + 'v1.0/csd/revisit', this.revisit_params).then(res => {
         if (res.code === 200) {
           this.revisit_list = res.data.data;
           this.revisit_count = res.data.count;
@@ -923,7 +923,7 @@ export default {
       this.handleGetCustomerInfo();
     },
     handleCheckOutList () {
-      this.$http.get(this.market_server + 'v1.0/market/checkOut', this.list_params).then(res => {
+      this.$http.get(this.url + 'v1.0/market/checkOut', this.list_params).then(res => {
         if (res.code === 200) {
           this.checkout_list = res.data.data;
           this.list_count = res.data.all_count;
@@ -964,7 +964,7 @@ export default {
       }
     },
     handleGetCustomerInfo () {
-      this.$http.get(this.market_server + 'v1.0/market/customer', this.list_params).then(res => {
+      this.$http.get(this.url + 'v1.0/market/customer', this.list_params).then(res => {
         console.log(res);
         if (res.code === 200) {
           this.customer_list = res.data.data;
@@ -1010,7 +1010,7 @@ export default {
     },
     //获取展开行数据
     getExpandData () {
-      this.$http.get(this.market_server + 'v1.0/market/contract', this.expand_params).then(res => {
+      this.$http.get(this.url + 'v1.0/market/contract', this.expand_params).then(res => {
         if (res.code === 200) {
           this.expand_data = res.data.data;
           this.expand_count = res.data.count;
@@ -1047,7 +1047,7 @@ export default {
     },
     handleSubmitMark () {
       if(this.add_or_edit_mark==1) {//添加标记
-        this.$http.post(this.market_server + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
+        this.$http.post(this.url + `v1.0/market/contract/tag/${this.chooseTab}/${this.currentRow.contract_id}`, this.mark_form).then(res => {
           //console.log(res);
           if (res.code === 200) {
             this.$LjNotify('success', {
@@ -1065,7 +1065,7 @@ export default {
         })
       }else  {//修改标记
         let tag_id = this.currentRow.is_tag;
-        this.$http.put(`${this.market_server}v1.0/market/contract/tag/${tag_id}`,this.mark_form).then(res=> {
+        this.$http.put(`${this.url}v1.0/market/contract/tag/${tag_id}`,this.mark_form).then(res=> {
           this.$LjMessageEasy(res,()=> {
             this.handleCancelMark();
             this.getContractList();
@@ -1088,7 +1088,7 @@ export default {
       this.current_choose_control = item.id;
       switch (item.id) {
         case 1:
-          this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+          this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
             if (res.code === 200) {
               console.log(res);
               if (res.data.checkout_remark && res.data.checkout_remark.length > 0) {
@@ -1127,7 +1127,7 @@ export default {
 
           if(isEdit) {//为修改标记
             let id  = row.is_tag;//tagid
-            this.$http.get(`${this.market_server}v1.0/market/contract/tagdetail/${id}`).then(res=> {
+            this.$http.get(`${this.url}v1.0/market/contract/tagdetail/${id}`).then(res=> {
               if(res.code==200) {
                 this.mark_form = res.data;
                 this.$nextTick(()=> {
@@ -1143,7 +1143,7 @@ export default {
       }
     },
     handleSubmitRewrite () {
-      this.$http.post(this.market_server + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
+      this.$http.post(this.url + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
         note: this.rewrite_note
       }).then(res => {
         if (res.code === 200) {
@@ -1170,8 +1170,8 @@ export default {
     //双击详情
     handleGetDetail (row) {
       this.currentRow = row;
-      // this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+      // this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
+      this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
         //console.log(res);
         if (res.code === 200) {
           this.contractDetail = res.data;
@@ -1211,21 +1211,21 @@ export default {
           return false;
         }
       }*/
-      debugger
-      console.log(this.polishing_data_form);
       let form = new FormData();
       form.append('complete_content', JSON.stringify(this.polishing_data_form.complete_content));
       form.append('property_number', this.polishing_data_form.property_number);
       form.append('mound_number', this.polishing_data_form.mound_number);
 
-      this.$http.post(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, form).then(res => {
+
+
+      this.$http.post(this.url + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, form).then(res => {
         if (res.code === 200) {
           this.$LjNotify('success', {
             title: '成功',
             message: res.message
           });
           this.handleCancelPolishing();
-          this.getContractList();
+          //this.getContractList();
         } else {
           this.$LjNotify('warning', {
             title: '失败',
@@ -1237,8 +1237,8 @@ export default {
     //取消补齐
     handleCancelPolishing () {
       this.polishing_data_form= {
-        property_number:'',//房产证号
-          mound_number:'',//丘号
+        property_number:null,//房产证号
+          mound_number:null,//丘号
           complete_content:{},//补齐资料
       };
       // this.currentRow = '';
@@ -1255,10 +1255,15 @@ export default {
     /*打开补齐资料对话框*/
     handleOpenPolishing (row) {
       this.currentRow = row;
-
-      this.data_polishing_visible = true;
-
-
+      this.$http.get(`${this.url}v1.0/market/contract/album/${this.chooseTab}/${this.currentRow.contract_id}`).then(res=> {
+        if(res.code == 200) {
+          //this.polishing_data_form.property_number = res.data.property_number||null;
+          //this.polishing_data_form.mound_number = res.data.mound_number||null;
+          //this.polishing_data_form.complete_content = res.data.mound_number||{};
+          this.polishing_data_form = res.data;
+          this.data_polishing_visible = true;
+        }
+      });
 
 
       /*if (row.needComplete && row.needComplete.length > 0) {
@@ -1292,7 +1297,7 @@ export default {
     //获取合同列表
     getContractList () {
       this.showLoading(true);
-      this.$http.get(this.market_server + 'v1.0/market/contract', this.params).then(res => {
+      this.$http.get(this.url + 'v1.0/market/contract', this.params).then(res => {
         if (res.code === 200) {
           this.contractList = res.data.data;
           this.contractCount = res.data.count;

@@ -231,7 +231,9 @@
                             @focus="handleOpenChooseHouse('bottom')"></el-input>
                 </el-form-item>
                 <el-form-item label="最低价">
-                  <el-input placeholder="请输入" v-model="set_price_form.bottom_price"></el-input>
+                  <el-input placeholder="请输入" v-model.number="set_price_form.bottom_price">
+                    <template slot="append">元/月</template>
+                  </el-input>
                 </el-form-item>
               </el-form>
             </div>
@@ -243,7 +245,9 @@
                             @focus="handleOpenChooseHouse('suggest')"></el-input>
                 </el-form-item>
                 <el-form-item label="建议价格">
-                  <el-input placeholder="请输入" v-model="set_price_form.suggest_price"></el-input>
+                  <el-input placeholder="请输入" v-model.number="set_price_form.suggest_price">
+                    <template slot="append">元/月</template>
+                  </el-input>
                 </el-form-item>
               </el-form>
             </div>
@@ -682,8 +686,28 @@
         };
         this.set_price_visible = false;
       },
-      handleSubmitSetPrice() {
 
+      validateForm() {
+        let msg = null;
+        if(isNaN(this.set_price_form.bottom_price)||!this.set_price_form.bottom_price) {
+          msg = '最低价格只能为数字';
+        }
+        if(isNaN(this.set_price_form.suggest_price||!this.set_price_form.suggest_price)) {
+          msg = '建议价格只能为数字';
+        }
+        if(parseInt(this.set_price_form.bottom_price)>parseInt(this.set_price_form.suggest_price)) {
+          msg='最低价格需小于建议价格';
+        }
+        if(msg) {
+          this.$LjMessage('warning',{title:'警告',msg:msg});
+          return false;
+        }
+        return true;
+      },
+
+
+      handleSubmitSetPrice() {
+        if(!this.validateForm()) return;
         this.$http.post(this.market_server + '/v1.0/market/house/houseBottSuggPrice', this.set_price_form).then(res => {
           if (res.code === 200) {
             this.$LjNotify('success', {

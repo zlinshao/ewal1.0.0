@@ -280,7 +280,7 @@ export default {
       //this.showLoading(true);
       this.$http.get(`${this.approval_sever}${url}`, params).then(res => {
         //this.showLoading(false);
-
+        debugger
         this.tableData['data' + val] = res.size > 0 ? this.setFormatApproval(res.data) : []
         this.total['total' + val] = res.total
       })
@@ -340,7 +340,7 @@ export default {
       this.searchHigh = {
         status: 'approval_leader',
         placeholder: '',
-        keywords: 'sarch',
+        keywords: 'search',
         data: [
           {
             keyType: 'dateRange',
@@ -353,7 +353,7 @@ export default {
             keyType: 'dateRange',
             title: '结束时间',
             placeholder: '请选择日期',
-            keyName: 'finish_time',
+            keyName: 'end_time',
             dataType: []
           },
           {
@@ -367,7 +367,7 @@ export default {
             keyType: 'depart',
             title: '部门',
             placeholder: '请选择部门',
-            keyName: 'department',
+            keyName: 'org_id',
             dataType: [],
             value: {
               num: 1,

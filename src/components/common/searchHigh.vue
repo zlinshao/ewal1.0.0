@@ -7,7 +7,7 @@
           <input type="text" v-model="params[showData.keywords]" :placeholder="showData.placeholder || '请输入搜索内容'">
           <span @click="subSearch">搜索</span>
         </div>
-        <div class="highGrade">
+        <div v-if="showData.data&&showData.data.length>0" class="highGrade">
           <h5>高级</h5>
           <div class="formData borderNone" v-for="item in showData.data">
             <h5>{{item.title}}</h5>

@@ -130,6 +130,9 @@ export default {
       moduleList: false,
       more_visible: false,
       changeLoad: false,
+
+      photoUrl:'',
+
       modules: [
         {
           url: '/president',
@@ -187,7 +190,6 @@ export default {
       handler (val, oldVal) {
         this.moduleList = false;
         this.showLoading(false);
-        console.log(val, oldVal)
         this.$store.dispatch('route_animation');
         
        // 处理总裁办进入后的页面的皮肤只能用2的问题
@@ -209,7 +211,13 @@ export default {
         
       },
       deep: true// 深度观察监听
-    }
+    },
+    computedPhotoUrl: {
+      handler(val,oldVal) {
+        this.photoUrl = val;
+      },
+      immediate:true,
+    },
   },
   computed: {
     routeAnimation () {
@@ -234,15 +242,27 @@ export default {
       //let name  = this.$storage.get()
       return this.$storage.get('user_info').name||'冯宝宝';
     },
-    photoUrl() {
-      return this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
+    computedPhotoUrl() {
+      let url = this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
+      return url;
     }
   },
   created () {
     this.theme_name = '1'
     this.getPerson()
   },
+  mounted() {
+    this.listenPhotoUrl();
+  },
   methods: {
+    /*监听头像变动*/
+    listenPhotoUrl() {
+      this.$bus.on('photo-url',(val)=> {
+        this.photoUrl = val;
+      });
+    },
+
+
     changeTheme(a) {
       console.log(a)
     },

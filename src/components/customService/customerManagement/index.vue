@@ -29,14 +29,14 @@
           height="700px"
           @row-dblclick="handleOpenDetail"
         >
-          <el-table-column prop="created_at" label="创建时间" align="center"></el-table-column>
-          <el-table-column prop="name" label="客户姓名" align="center"></el-table-column>
-          <el-table-column prop="sex" label="性别" align="center"></el-table-column>
-          <el-table-column prop="house_name" label="地址" align="center"></el-table-column>
-          <el-table-column prop="idtype" label="身份" align="center"></el-table-column>
-          <el-table-column prop="sign_user" label="开单人" align="center"></el-table-column>
-          <el-table-column prop="org_leader" label="负责人" align="center"></el-table-column>
-          <el-table-column prop="sign_org" label="所属部门" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="created_at" label="创建时间" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="name" label="客户姓名" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="sex" label="性别" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="house_name" label="地址" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="idtype" label="身份" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="sign_user" label="开单人" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="org_leader" label="负责人" align="center"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="sign_org" label="所属部门" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="warning" id="active-warning" size="mini" @click="handleGoMoveOutBlack(scope.row)" v-if="chooseTab === 4">移出黑名单</el-button>
@@ -510,12 +510,20 @@
         })
       },
       //列表
-      getCustomerList() {
+      async getCustomerList() {
         this.showLoading(true);
-        this.$http.get(this.market_server + 'v1.0/market/customer',this.params).then(res => {
-          console.log(res);
+        await this.$http.get(this.market_server + 'v1.0/market/customer',this.params).then(res => {
+          //console.log(res);
           this.showLoading(false);
           if (res.code === 200) {
+            if(this.params.type==3||this.params.is_black==1) {
+              res.data.data = _.forEach(res.data.data,(o)=> {
+                o.house_name = `${o.lord?.house_name||'无'}/${o.renter?.house_name||'无'}`;
+                o.sign_user = `${o.lord?.sign_user||'无'}/${o.renter?.sign_user||'无'}`;
+                o.org_leader = `${o.lord?.org_leader||'无'}/${o.renter?.org_leader||'无'}`;
+                o.sign_org = `${o.lord?.sign_org||'无'}/${o.renter?.sign_org||'无'}`;
+              });
+            }
             this.customerList = res.data.data;
             this.customerCount = res.data.count;
           } else {
@@ -538,14 +546,18 @@
       changeTabs(id) {
         this.chooseTab = id;
         this.params.search = '';
-        var obj = {};
+        let obj = {};
         if (id === 4) {
+          // obj.type = 3;
           obj.is_black = 1;
+          this.params = {...this.params,...obj};
+          delete this.params['type'];
         } else {
           obj.is_black = 0;
           obj.type = id;
+          this.params = {...this.params,...obj};
         }
-        this.params = Object.assign({},this.params,obj);
+        //this.params = {...this.params,...obj};
         this.getCustomerList();
       },
       //分页

@@ -219,24 +219,40 @@ export default {
       this.showSearch = true;
       if (this.tag_status == 2) {
         dataAuditSearch.data[1].value = [
+          //1-新租，2-转租，3-续租，4-未收先租，5-调租
           {
             id: 1,
-            title: '租房'
+            title: '新租'
           },
           {
             id: 2,
-            title: '续租'
+            title: '转租'
           },
           {
             id: 3,
-            title: '调房'
+            title: '续租'
           },
           {
             id: 4,
-            title: '转租'
+            title: '未收先租'
+          },
+          {
+            id:5,
+            title:'调租',
           }
         ]
-
+      }
+      if(this.tag_status==1) {
+        dataAuditSearch.data[1].value = [
+          {
+            id: 1,
+            title: '新收'
+          },
+          {
+            id: 2,
+            title: '续收'
+          },
+        ]
       }
       this.searchData = dataAuditSearch;
     },
