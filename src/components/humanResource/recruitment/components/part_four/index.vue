@@ -1212,6 +1212,7 @@
             this.count = res.data.count;
           } else {
             this.tableList = [];
+            this.count=0;
           }
         }).catch(err => {
           console.log(err);
