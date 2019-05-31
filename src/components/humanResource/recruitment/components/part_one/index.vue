@@ -287,6 +287,8 @@
       },
       'control_mb_form.position_id': {//自动获取部门
         handler(val,oldVal) {
+          console.log(val);
+          if (val===undefined) return;
           if(val.constructor===Array&&val.length==1) {//选取岗位了
             let id = val[0];
             this.$http.get(`${this.url}organization/position/${id}`).then(res=> {
@@ -296,7 +298,7 @@
             });
           }
         },
-        immediate:true
+        // immediate:true
       },
     },
     computed: {},
@@ -341,8 +343,8 @@
         if(!this.validateNumberBetween()) return;
         this.$refs['newUserFormRef'].validate(valid=> {
           if(valid) {
-            this.control_mb_form.org_id = this.control_mb_form.org_id[0];
-            this.control_mb_form.position_id = this.control_mb_form.position_id[0];
+            // this.control_mb_form.org_id = this.control_mb_form.org_id[0];
+            // this.control_mb_form.position_id = this.control_mb_form.position_id[0];
               this.$http.put(`${this.url}recruitment/staff_needs/${this.dblCurrentRow.id}`, this.control_mb_form).then(res => {
               this.$LjMessageEasy(res,()=> {
                 this.getSoldiersList();
@@ -357,8 +359,8 @@
         if(!this.validateNumberBetween()) return;
         this.$refs['newUserFormRef'].validate(valid=> {
           if(valid) {
-            this.control_mb_form.org_id = this.control_mb_form.org_id[0];
-            this.control_mb_form.position_id = this.control_mb_form.position_id[0];
+            // this.control_mb_form.org_id = this.control_mb_form.org_id[0];
+            // this.control_mb_form.position_id = this.control_mb_form.position_id[0];
             this.$http.post(this.url+'recruitment/staff_needs', this.control_mb_form).then(res => {
               this.$LjMessageEasy(res,()=> {
                 this.getSoldiersList();

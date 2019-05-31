@@ -47,16 +47,16 @@
               </p>
             </div>
             <div v-if="item.keyType === 'staff'">
-              <el-input @focus="organSearch(item)" readonly v-model="showName[item.keyName]"
-                        :placeholder="item.placeholder"></el-input>
+              <user-choose width="470" :num="item.value.num||null" :title="item.placeholder"
+                           v-model="params[item.keyName]"></user-choose>
             </div>
             <div v-if="item.keyType === 'depart'">
-              <el-input @focus="organSearch(item)" readonly v-model="showName[item.keyName]"
-                        :placeholder="item.placeholder"></el-input>
+              <org-choose width="470" :num="item.value.num||null" :title="item.placeholder"
+                          v-model="params[item.keyName]"></org-choose>
             </div>
             <div v-if="item.keyType === 'position'">
-              <el-input @focus="organSearch(item)" readonly v-model="showName[item.keyName]"
-                        :placeholder="item.placeholder"></el-input>
+              <post-choose width="470" :num="item.value.num||null" :title="item.placeholder"
+                           v-model="params[item.keyName]"></post-choose>
             </div>
           </div>
         </div>
@@ -66,30 +66,16 @@
         </footer>
       </div>
     </div>
-    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
-    <DepartOrgan :module="departModule" :organData="organData" @close="hiddenOrgan"></DepartOrgan>
-    <PostOrgan :module="postModule" :organData="organData" @close="hiddenOrgan"></PostOrgan>
   </div>
 </template>
 
 <script>
-  import StaffOrgan from './staffOrgan.vue'
-  import DepartOrgan from './departOrgan.vue'
-  import PostOrgan from './postOrgan.vue'
-
   export default {
     name: "search-high",
     props: ['module', 'showData'],
-    components: {StaffOrgan, DepartOrgan, PostOrgan},
     data() {
       return {
         showModule: false,
-        staffModule: false,
-        departModule: false,
-        postModule: false,
-        organData: {},// 组织架构配置 选择数量 num
-        organKey: '',
-        showName: {},
         params: {},
         reset: {},
         pickerOptions1: {
@@ -189,38 +175,17 @@
           check.push(val);
         }
       },
-      // 组织架构筛选
-      organSearch(val = {}) {
-        switch (val.keyType) {
-          case 'staff':
-            this.staffModule = true;
-            break;
-          case 'depart':
-            this.departModule = true;
-            break;
-          case 'position':
-            this.postModule = true;
-            break;
-        }
-        this.organData = val.value;
-        this.organKey = val.keyName;
-      },
-      // 关闭 选择人员
-      hiddenOrgan(ids, names, arr) {
-        this.departModule = false;
-        this.staffModule = false;
-        this.postModule = false;
-        if (ids !== 'close') {
-          this.params[this.organKey] = ids;
-          this.showName[this.organKey] = names;
-        }
-      },
       subSearch() {
         this.$emit('close', this.params);
       },
       resetting() {
+        _.forEach(this.showData.data, (o) => {
+          if (_(['depart', 'position', 'staff']).includes(o.keyType)) {
+            //this.$set(this.params, o.keyName, []);
+            this.params[o.keyName] = [];
+          }
+        });
         this.params = this.jsonData(this.reset);
-        this.showName = {};
       },
     },
   }

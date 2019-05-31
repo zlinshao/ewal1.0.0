@@ -797,7 +797,7 @@
             this.counts = res.data.count;
           }else{
               this.tableData=[];
-              this.counts=[];
+              this.counts=0;
           }
 
         })

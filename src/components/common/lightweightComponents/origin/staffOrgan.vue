@@ -97,7 +97,6 @@
   export default {
     name: "staff-organ",
     components: {ljDialog},
-    //props: ['module', 'organData'],
     props: {
       module: {},
       organData: {},
@@ -136,6 +135,17 @@
     activated() {
     },
     watch: {
+      lj_visible: {
+        handler(val, oldVal) {
+          if (!val) {
+            this.$emit('close', 'close');
+          }else {
+            if(!this.initial || (this.initial&&this.initial.length==0)) {
+              this.checkList = [];
+            }
+          }
+        }
+      },
       initial: {
         handler(val, oldVal) {
           if (val && !oldVal) {
@@ -156,16 +166,6 @@
                 this.chooseStaff = _.uniqBy(this.chooseStaff, 'id');
               }
             });
-
-
-            /*_.forEach(this.initial,(o)=> {
-              let curUser = _.find(this.staffList,{id:o});
-              if(curUser) {
-
-                this.chooseStaff.push(curUser);
-                this.chooseStaff = _.uniqBy(this.chooseStaff,'id');
-              }
-            });*/
           }
         },
         immediate: true,

@@ -44,7 +44,7 @@ export const staffBookSearch = {
       keyName: 'org_id',
       dataType: [],
       value: {
-        num: '',
+        num: '1',
         arr: []
       }
     },
@@ -55,7 +55,7 @@ export const staffBookSearch = {
       keyName: 'position_id',
       dataType: [],
       value: {
-        num: ''
+        num: '1'
       }
     }
   ]
