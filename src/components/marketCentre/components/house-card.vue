@@ -28,7 +28,7 @@
                     <span :class="['announcement-' + item.warning_status ]" class="notice"></span>
                   </div>
                 </div>
-                <div class="control flex-center">
+                <div class="control flex-center" v-if="show_control === item.id ">
                   <span v-for="tmp in tip_btn" :key="tmp.id" @click.stop="handleOpenModule(tmp,item)">{{ tmp.val }}</span>
                   <div class="arrows"></div>
                 </div>
@@ -320,6 +320,7 @@
         watch: {
           houseSource: {
             handler(val) {
+              debugger
               this.house_info = val;
             },
             deep: true
@@ -512,6 +513,10 @@
             this.$emit('close');
           },
           handleOpenControl(id) {
+            if(this.show_control) {
+              this.show_control = false;
+              return;
+            }
             this.show_control = id;
             this.is_tip = 0;
           },

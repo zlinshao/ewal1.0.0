@@ -221,7 +221,7 @@
     <MenuList :module="show_market" :list="customService" :backdrop="true" @close="handleCloseMenu"></MenuList>
 
     <!--查看回访记录-->
-    <LjDialog :visible="backInfo_visible" :size="{width: 600 + 'px',height: 500 + 'px'}" @close="handleCloseLookBackInfo">
+    <lj-dialog :visible.sync="backInfo_visible" :size="{width: 600 + 'px',height: 500 + 'px'}" @close="handleCloseLookBackInfo">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>{{ currentRow.house_name }}</h3>
@@ -257,7 +257,7 @@
           <el-button type="danger" size="small" @click="handleCloseLookBackInfo">确定</el-button>
         </div>
       </div>
-    </LjDialog>
+    </lj-dialog>
 
     <!--资料补齐-->
     <lj-dialog :visible.sync="data_polishing_visible" :size="{width: 550 + 'px',height: 700 + 'px'}" @close="handleCancelPolishing">
@@ -287,7 +287,7 @@
     </lj-dialog>
 
     <!--合同详情-->
-    <lj-dialog :visible="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
+    <lj-dialog :visible.sync="contract_detail_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseDetail">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>合同详情</h3>
@@ -1215,6 +1215,8 @@ export default {
       form.append('complete_content', JSON.stringify(this.polishing_data_form.complete_content));
       form.append('property_number', this.polishing_data_form.property_number);
       form.append('mound_number', this.polishing_data_form.mound_number);
+
+
 
       this.$http.post(this.url + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, form).then(res => {
         if (res.code === 200) {

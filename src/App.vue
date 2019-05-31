@@ -190,7 +190,6 @@ export default {
       handler (val, oldVal) {
         this.moduleList = false;
         this.showLoading(false);
-        console.log(val, oldVal)
         this.$store.dispatch('route_animation');
         
        // 处理总裁办进入后的页面的皮肤只能用2的问题
