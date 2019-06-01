@@ -1096,7 +1096,7 @@ export default {
                 this.check_visible = true;
               } else {
                 this.check_info = [];
-                this.$LjNotify('success', {
+                this.$LjNotify('warning', {
                   title: '提示',
                   message: '暂无审核记录'
                 });
@@ -1104,7 +1104,7 @@ export default {
               }
             } else {
               this.check_info = [];
-              this.$LjNotify('success', {
+              this.$LjNotify('warning', {
                 title: '提示',
                 message: '获取审核记录失败'
               });

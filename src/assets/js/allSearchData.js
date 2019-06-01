@@ -301,7 +301,7 @@ export const visitToRecordSearch = {
 // 房屋到期
 export const housingDueSearch = {
   status: 'housingDue',
-  placeholder: '地址/合同编号/房东姓名/电话',
+  placeholder: '地址/合同编号/姓名/电话',
   keywords: 'search',
   data: [
     {

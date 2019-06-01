@@ -617,13 +617,18 @@ export default {
       }
       params.data[this.complete.key_name] = isTrue
       this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
-        this.$LjNotify('success', {
-          title: '提示',
-          message: res.message
-        });
 
         if (res.code === 200) {
+          this.$LjNotify('success', {
+            title: '提示',
+            message: res.message
+          });
           this.handleCloseDetail()
+        }else {
+          this.$LjNotify('error', {
+            title: '错误',
+            message: res.message
+          });
         }
       })
     },

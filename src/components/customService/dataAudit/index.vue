@@ -29,9 +29,9 @@
           </template>
         </el-table-column>
         <el-table-column key="合同编号" align="center" prop="contract_number" label="合同编号"></el-table-column>
-        <el-table-column key="地址" align="center" prop="house_name" label="地址"></el-table-column>
+        <el-table-column show-overflow-tooltip key="地址" align="center" prop="house_name" label="地址"></el-table-column>
         <el-table-column key="合同性质" align="center" prop="type" label="合同性质"></el-table-column>
-        <el-table-column key="收房价格" align="center" label="收房价格" v-if='tag_status == 1'>>
+        <el-table-column show-overflow-tooltip key="收房价格" align="center" label="收房价格" v-if='tag_status == 1'>>
           <template slot-scope="scope">
             <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
               <span v-for="(item,index) in scope.row.month_price">
