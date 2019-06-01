@@ -13,7 +13,14 @@
           </span>
         </h2>
       </div>
-      <div class="items-center listTopRight" v-show="!action_visible">
+      <!-- 银行流水时展示的图标 -->
+      <div class="items-center listTopRight" v-show="bankFlowFlag">
+         <el-tooltip content="导入" placement="bottom" :visible-arrow="false">
+          <div class="icons bankImport" @click="openBankFlowTempalte"></div>
+        </el-tooltip>
+      </div>
+        <!-- 非银行流水时展示的图标 -->
+      <div class="items-center listTopRight" v-show="!action_visible && !bankFlowFlag">
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>
         </el-tooltip>
@@ -28,7 +35,7 @@
         </el-tooltip>
       </div>
     </div>
-    <div class="action-bar changeChoose">
+    <div class="action-bar changeChoose" v-show="!bankFlowFlag">
       <div class="action-bar-left" v-show="action_visible">
         <!--<el-checkbox>全选</el-checkbox>-->
         <!--<span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
@@ -47,7 +54,7 @@
         <span style="margin-right: 15px">剩余款项（元） <i class="delete">{{ balance_sum }}</i></span>
       </div>
     </div>
-    <div class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
+    <div v-if="chooseTab!=5" class="mainListTable changeChoose" :style="{'height': this.mainListHeight() + 'px'}">
       <el-table
         :data="tableData"
         :height="this.mainListHeight(30) + 'px'"
@@ -79,7 +86,7 @@
           label="备注"
         >
           <template slot-scope="scope">
-<!--            <div style="cursor: pointer" @click="openRemarksList(scope.row)">{{scope.row.remarks}}</div>-->
+           <!-- <div style="cursor: pointer" @click="openRemarksList(scope.row)">{{scope.row.remarks}}</div>-->
             <div style="cursor: pointer;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" v-html="scope.row.remarks" @click="openRemarksList(scope.row)"></div>
           </template>
         </el-table-column>
@@ -109,6 +116,33 @@
         </div>
       </footer>
     </div>
+    <!-- 银行流水的列表 -->
+    <div v-if="chooseTab==5">
+      <div class="bankTabelList">
+          <el-table :data="bankTabelList" @cell-click="tableClickBankRow"   header-row-class-name="tableHeader" style="width: 100%">
+            <el-table-column label="导入时间" prop="create_time" align="center"></el-table-column>
+            <el-table-column label="流水导入批次" prop="id" align="center" show-overflow-tooltip ></el-table-column>
+            <el-table-column label="包含账户数量" prop="account_num" align="center" ></el-table-column>
+            <el-table-column label="流水数量" prop="bank_flow_num" align="center"></el-table-column>
+            <el-table-column label="操作人" prop="operator" align="center"></el-table-column>
+          </el-table>
+          <footer class="flex-center bottomPage">
+            <div class="develop flex-center">
+              <i class="el-icon-d-arrow-right"></i>
+            </div>
+            <div class="page">
+              <el-pagination
+                :total="bankListcount"
+                :current-page="bankListPageParams.page"
+                :page-size="bankListPageParams.limit"
+                layout="total,jumper,prev,pager,next"
+                @current-change="handleChangebankListPage"
+              ></el-pagination>
+            </div>
+          </footer>
+      </div>
+    </div>
+
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
     <!--删除-->
@@ -544,8 +578,7 @@
 
     <!--收据详情-->
     <lj-dialog :visible.sync="receipt_detail_dialog_visible"
-               :size="{width: 1550 + 'px',height: 900 + 'px'}"
-    >
+               :size="{width: 1550 + 'px',height: 900 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header" style="padding-top: 30px">
           <h3>电子收据</h3>
@@ -563,8 +596,7 @@
 
     <!--修改姓名-->
     <lj-dialog :visible.sync="edit_username_dialog_visible"
-               :size="{width: 450 + 'px',height: 320 + 'px'}"
-    >
+               :size="{width: 450 + 'px',height: 320 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>修改姓名</h3>
@@ -588,8 +620,7 @@
 
     <!--修改手机号页面..不修改则直接发送-->
     <lj-dialog :visible.sync="edit_phone_dialog_visible"
-               :size="{width: 450 + 'px',height: 320 + 'px'}"
-    >
+               :size="{width: 450 + 'px',height: 320 + 'px'}">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>提示</h3>
@@ -1070,6 +1101,90 @@
         </div>
       </div>
     </lj-dialog>
+
+    <!-- 银行流水详情模态框-->
+    <lj-dialog :visible="bankflow_detail_visible" @close="bankflow_detail_visible=false"
+               :size="{width:1200+ 'px',height: 760+ 'px'}">
+      <div class="bankdetail_dialog">
+        <div class="header items-bet">
+          <h3>流水详情</h3>
+          <div class="right_info">
+            <p>批次号为{{bank_list_row.id}}的流水</p>
+            <p class="total">银行流水Total:{{bankDetailcount}}</p>
+          </div>
+        </div>
+        <div>
+          <el-table :data="bankDetailList"   header-row-class-name="tableHeader" style="width: 100%">
+            <el-table-column label="打款时间" prop="create_time" align="center"></el-table-column>
+            <el-table-column label="支出金额" prop="expend_amount" align="center" show-overflow-tooltip ></el-table-column>
+            <el-table-column label="收入金额" prop="income_amount" align="center" ></el-table-column>
+            <el-table-column label="备注" prop="remark" align="center"></el-table-column>
+            <el-table-column label="所属银行" prop="bank.name" align="center"></el-table-column>
+          </el-table>
+        </div>
+        <div class="page">
+          <el-pagination
+            :total="bankDetailcount"
+            :current-page="bankDetailPageParams.page"
+            :page-size="bankDetailPageParams.limit"
+            layout="total,jumper,prev,pager,next"
+            @current-change="handleChangebankDetailPage"
+          ></el-pagination>
+        </div>
+      </div>
+    </lj-dialog>
+
+    <!-- 银行流水导入模态框 -->
+    <lj-dialog :visible="bankflow_upload_visible" @close="bankflow_upload_visible=false"
+               :size="{width: 600 + 'px',height: 500 + 'px'}">
+       <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>导入</h3>
+          </div>
+          <div class="dialog_main borderNone">
+            <el-form :mode="import_template" label-width="80px" >
+               <el-form-item label="流水模板" prop="import_template">
+                  <div class="bank_template_select">
+                    <el-select   placeholder="请选择流水模板" v-model="import_template.bank_template" style="width: 200px" @change="import_template.account=''">
+                        <el-option  v-for="(item,index) in bankTemplateData" :label="item.name" :value="item.id" :key="index"></el-option>
+                    </el-select>
+                  </div>
+              </el-form-item>
+              <!-- 当流水模板为南京银行、农业银行(对公账户)、宁波银行、招商银行时需要选择账户类型和选择账户 -->
+              <div v-if='import_template.bank_template==3 || import_template.bank_template==9||import_template.bank_template==11||import_template.bank_template==12'>
+                <el-form-item label="账户类型" prop="bank_template">
+                    <div class="bank_template_select">
+                      <el-select   placeholder="请选择账户类型" v-model="bank_account_type" style="width: 200px"  @change="getBankAccount">
+                          <el-option  v-for="(item,index) in cate" :label="item.title" :value="item.value" :key="index"></el-option>
+                      </el-select>
+                    </div>
+                </el-form-item>
+                <el-form-item label="选择账户" prop="bank_template">
+                    <div class="bank_template_select">
+                      <el-select   placeholder="请选择账户" v-model="import_template.account" style="width: 200px">
+                          <el-option  v-for="(item,index) in BankAccountLists" :label="item.name" :value="item.id" :key="index"></el-option>
+                      </el-select>
+                    </div>
+                </el-form-item>
+              </div>
+              <el-form-item align="center" label="上传附件">
+                  <div class="upload_imgVideo">
+                      <lj-upload
+                          v-model="import_template.doc_id"
+                          size="50"
+                          :limit="['xls','xlsx']"
+                          class="upload-offset"
+                      ></lj-upload>
+                  </div>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button size="small" type="danger" @click="uploadBankFundFlowFun">确定</el-button>
+            <el-button size="small" @click="bankflow_upload_visible=false;">取消</el-button>
+          </div>
+        </div>
+    </lj-dialog>
   </div>
 </template>
 
@@ -1416,6 +1531,10 @@
             id: 4,
             title: '房租',
           },
+          {
+            id: 5,
+            title: '银行流水',
+          },
 
         ],
         tableData: [],
@@ -1517,11 +1636,39 @@
         chooseTabI: '',
         collect_img: '',
         is_disabled: true,
+        //银行流水
+        bankFlowFlag:false,  //当点击银行流水时，只展示导入的图标
+        bankTabelList:[],    //银行流水列表
+        bankDetailList:[],    //银行流水详情
+        bankTemplateData:[],  //银行流水模板
+        bankflow_detail_visible:false,  //银行流水详情模态框
+        bankflow_upload_visible:false,  //银行流水上传模态框
+        bankListcount:0,   //列表总条数
+        bankDetailcount:0, //详情总条数
+        bank_list_row:{}, //当前被选中的列表数据
+        bank_account_type:'',  //账户类型的v-model
+        BankAccountLists:[] ,//根据支付方式查询到的账户
+        bankListPageParams:{   //银行流水列表的分页
+          limit: 12,
+          page: 1,
+        },
+        bankDetailPageParams:{  //银行流水详情的分页
+          limit: 10,
+          page: 1,
+        },  
+        import_template:{  //导入时需要的传参
+          doc_id:[],
+          account:'',
+          bank_template:''
+        },
+       
+
       }
     },
     mounted() {
       this.chooseTabI = this.compareParams.status;
       this.getReceiveList();
+    
     },
     computed: {},
     methods: {
@@ -1722,6 +1869,7 @@
         this.chooseTab = id;
         this.is_table_choose = '';
         this.action_visible = false;
+        this.bankFlowFlag=false;  //银行流水
         switch (id) {
           case 1:
             this.params.is_deposit = '';//定金
@@ -1746,10 +1894,16 @@
             break;
           case 4:
             this.params.is_deposit = '';
-            this.params.is_tail_fund = '';
-            this.params.is_rank_rent = 2;//房租
+            this.params.is_tail_fund = 2;
+            this.params.is_rank_rent = '';//房租
             this.tableData = [];
             this.getReceiveList();
+            break;
+          case 5:  //银行流水
+            this.bankFlowFlag=true;
+            this.bankTabelList = [];
+            this.getBankFlowList();  //获取银行流水的列表
+            this.getBankTemplateFun(); //获取银行流水的所有银行模板
             break;
         }
       },
@@ -2477,6 +2631,106 @@
           }
         });
       },
+      /**
+       * 银行流水
+       */
+      // 获取银行流水列表（lili）
+      getBankFlowList() {
+        this.$http.get(`${globalConfig.temporary_server}bank_batch_count`,this.bankListPageParams).then(res => {
+          if(res.code === 200){
+              this.bankTabelList=res.data.data;
+              this.bankListcount= res.data.count;   
+          }
+        });
+      },
+      // 银行列表分页
+      handleChangebankListPage(page){
+        this.bankListPageParams.page=page;
+        this.getBankFlowList();
+      },
+      // 点击银行列表中的某一条
+      tableClickBankRow(row){
+        this.bank_list_row=row;
+        this.bankflow_detail_visible=true;
+        this.getBankFlowDetail();
+      },
+      // 某一批次的银行流水(详情)
+      getBankFlowDetail() {
+        this.bankDetailPageParams['batch_flow_code']=this.bank_list_row.id;
+         this.$http.get(`${globalConfig.temporary_server}/bank_fund_flow`,this.bankDetailPageParams).then(res => {
+           if(res.code === 200){
+              this.bankDetailList = res.data.data;
+              this.bankDetailcount = res.data.count;
+           }
+         });
+      },
+      // 银行详情分页
+      handleChangebankDetailPage(page){
+        this.bankDetailPageParams.page = page;
+        this.getBankFlowDetail();
+      },
+      // 导入图标的点击事件
+      openBankFlowTempalte(){
+        this.import_template.doc_id=[];
+        this.import_template.bank_template='';
+        this.bankflow_upload_visible=true;
+
+      },
+      //获取银行模板
+      getBankTemplateFun() {
+         let params={
+           page:1,
+           limit:999  //传100,可以返回所有数据
+         };
+         this.$http.get(`${globalConfig.temporary_server}/bank_template`,params).then(res => {
+           if(res.code === 200){
+             this.bankTemplateData=res.data.data;
+           }else{
+              
+           }
+         });
+      },
+      //导入银行流水
+      uploadBankFundFlowFun() {
+        this.$http.post(`${globalConfig.temporary_server}/bank_fund_flow?`,this.import_template).then(res => {
+          if (res.code === 200) {
+            this.bankflow_upload_visible=false;
+            this.getBankFlowList();
+            this.$LjNotify('success', {
+              title: '成功',
+              message: res.msg,
+              subMessage: '',
+            });
+          } else {
+             this.bankflow_upload_visible=false;
+            this.$LjNotify('error', {
+              title: '失败',
+              message: res.msg,
+              subMessage: '',
+            });
+          }
+        });
+      },
+      // 根据账户类型查找账户
+      getBankAccount(){
+          let params={
+            cate:this.bank_account_type,
+            limit: 999,
+            page: 1,
+          }
+          this.$http.get(globalConfig.temporary_server + "account", params).then(res => {
+          // debugger
+          if (res.code === 200) {
+            this.BankAccountLists = res.data.data;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      }
+    
+     
+
+       
     },
   }
 </script>
@@ -2516,6 +2770,10 @@
 
       .allInsert {
         @include financeImg('allInsert.png', 'theme1')
+      }
+
+      .bankImport {
+        @include financeImg('bankImport.png', 'theme1')
       }
 
       > div {

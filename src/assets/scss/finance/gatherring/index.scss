@@ -1,160 +1,156 @@
 @import '../../common.scss';
-
 #theme_name {
-  #gathering {
-    > div {
-      .address {
-        font-size: 18px;
-      }
-
-      .record {
-        padding: 20px;
-      }
-
-      .add_mark {
-        width: 30px;
-        height: 30px;
-        @include radius(5px);
-        background-color: $colorE33;
-        font-size: 20px;
-        text-align: center;
-        color: white;
-        position: absolute;
-        right: 20px;
-        top: 0;
-        cursor: pointer;
-      }
-    }
-
-    .action-bar {
-      justify-content: flex-end;
-      position: relative;
-
-      .action-bar-left {
-        position: absolute;
-        left: 40px;
-      }
-
-      .action-bar-right {
-
-      }
-    }
-
-    .bank-compare {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      .bank-left {
-        width: 50%;
-        height: 600px;
-        padding-right: 30px;
-        border-right: 1px dashed #999999;
-
-        .bank-left-top {
-          height: 100px;
-
-        }
-
-        .collect_img {
-          width: 50px;
-          height: 50px;
-        }
-
-        span {
-          display: flex;
-          flex-direction: row;
-
-          i {
-            display: block;
-            padding: 5px 30px;
-            font-style: normal;
-            cursor: pointer;
-          }
-        }
-      }
-
-      .bank-right {
-        width: 50%;
-        padding-left: 30px;
-        height: 600px;
-
-        .bank-right-top {
-          height: 100px;
-
-        }
-      }
-
-      .active {
-        background: #ff4545;
-        color: #FFFFFF;
-      }
-    }
-
-
-    .dialog_container {
-      .receipt-img {
-        width: 35px;
-        height: 35px;
-        cursor: pointer;
-      }
-
-      .edit-name-container, .template-message {
-        @include flex('flex-center');
-      }
-
-      .pre-send-message {
-        @include flex('flex-center');
-
-        .send-type-list {
-          width: 100%;
-          height: 40px;
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-
-          .send-item {
-            width: 20%;
-            height: 100%;
-            background-color: $colorFFF;
-            color: #686874;
-            cursor: pointer;
-            font-size: 14px;
-            @include flex('flex-center');
-
-            &.checked {
-              background-color: #FFEAEA;
-              color: $colorE33;
+    #gathering {
+        >div {
+            .address {
+                font-size: 18px;
             }
-          }
+            .record {
+                padding: 20px;
+            }
+            .add_mark {
+                width: 30px;
+                height: 30px;
+                @include radius(5px);
+                background-color: $colorE33;
+                font-size: 20px;
+                text-align: center;
+                color: white;
+                position: absolute;
+                right: 20px;
+                top: 0;
+                cursor: pointer;
+            }
         }
-      }
-
-      .remark-type {
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        width: 460px;
-
-        .remark-type-item {
-          padding: 0 20px;
-          color: #686874;
-          background-color: $colorFFF;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 10px 5px;
-          cursor: pointer;
-
-          &.checked {
-            color: #CF2E33;
-            background-color: #FFEAEA;
-          }
+        .action-bar {
+            justify-content: flex-end;
+            position: relative;
+            .action-bar-left {
+                position: absolute;
+                left: 40px;
+            }
+            .action-bar-right {}
         }
-      }
-
+        .bank-compare {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            .bank-left {
+                width: 50%;
+                height: 600px;
+                padding-right: 30px;
+                border-right: 1px dashed #999999;
+                .bank-left-top {
+                    height: 100px;
+                }
+                .collect_img {
+                    width: 50px;
+                    height: 50px;
+                }
+                span {
+                    display: flex;
+                    flex-direction: row;
+                    i {
+                        display: block;
+                        padding: 5px 30px;
+                        font-style: normal;
+                        cursor: pointer;
+                    }
+                }
+            }
+            .bank-right {
+                width: 50%;
+                padding-left: 30px;
+                height: 600px;
+                .bank-right-top {
+                    height: 100px;
+                }
+            }
+            .active {
+                background: #ff4545;
+                color: #FFFFFF;
+            }
+        }
+        .dialog_container {
+            .receipt-img {
+                width: 35px;
+                height: 35px;
+                cursor: pointer;
+            }
+            .edit-name-container,
+            .template-message {
+                @include flex('flex-center');
+            }
+            .pre-send-message {
+                @include flex('flex-center');
+                .send-type-list {
+                    width: 100%;
+                    height: 40px;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    .send-item {
+                        width: 20%;
+                        height: 100%;
+                        background-color: $colorFFF;
+                        color: #686874;
+                        cursor: pointer;
+                        font-size: 14px;
+                        @include flex('flex-center');
+                        &.checked {
+                            background-color: #FFEAEA;
+                            color: $colorE33;
+                        }
+                    }
+                }
+            }
+            .remark-type {
+                display: flex;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                width: 460px;
+                .remark-type-item {
+                    padding: 0 20px;
+                    color: #686874;
+                    background-color: $colorFFF;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 10px 5px;
+                    cursor: pointer;
+                    &.checked {
+                        color: #CF2E33;
+                        background-color: #FFEAEA;
+                    }
+                }
+            }
+        }
+        // 银行流水
+        .bankTabelList {
+            padding: 0 30px;
+            background-color: #ffffff;
+            margin-top: 9px;
+            font-size: 14px;
+        }
+        // 银行流水详情模态框
+        .bankdetail_dialog {
+            .header {
+                padding: 20px 0;
+                .right_info {
+                    font-size: 14px;
+                    .total {
+                        text-align: right;
+                    }
+                }
+            }
+            .page {
+                margin-top: 20px;
+            }
+        }
+        .bank_template_select {
+            text-align: left;
+        }
     }
-  }
 }
