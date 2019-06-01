@@ -41,13 +41,16 @@ const DROPDOWN_CONSTANT = {//下拉列表常量
   //调查状态
   INSPECT_STATUS:[{id:0,name:'未开始'},{id:1,name:'已开始'},{id:2,name:'已结束'}],
   INTERVIEW_RESULT:[{id:0,name:'未通过'},{id:1,name:'已通过'},{id:2,name:'二轮'},{id:3,name:'通过待定'}],
+
 };
 
 const GLOBAL_CONSTANT = {
   TRAINING:{//培训考核
     /*考试状态*/
     EXAM_STATUS:[{id:0,name:'未开始'},{id:1,name:'进行中'},{id:2,name:'已结束'}]
-  }
+  },
+  //运维中心房屋到期付款方式
+  PAY_WAY:[{id:444,name:'月付'},{id:445,name:'双月付'},{id:446,name:'季付'},{id:447,name:'半年付'},{id:448,name:'年付'},],
 };
 
 export{ DROPDOWN_CONSTANT,GLOBAL_CONSTANT };

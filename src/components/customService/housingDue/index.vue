@@ -37,12 +37,12 @@
             <span>{{scope.row.end_at || '--'}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="合同编号" align="center">
+        <el-table-column show-overflow-tooltip label="合同编号" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.contract_number || '--'}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="地址" align="center">
+        <el-table-column show-overflow-tooltip label="地址" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.house_name || '--'}}</span>
           </template>
@@ -59,7 +59,7 @@
             <span v-else>--</span>
           </template>
         </el-table-column>
-        <el-table-column :label="chooseTab == 1 ? '收房价格':'出租价格'" align="center">
+        <el-table-column show-overflow-tooltip :label="chooseTab == 1 ? '收房价格':'出租价格'" align="center">
           <template slot-scope="scope">
             <p class="content" v-if="scope.row.month_price &&scope.row.month_price.length > 0">
               <span v-for="(item,key) in scope.row.month_price" :key="key"> {{ item.price }}元 {{
@@ -67,15 +67,23 @@
             </p>
           </template>
         </el-table-column>
-        <el-table-column label="付款方式" align="center">
+
+        <el-table-column prop="pay_way_content" label="付款方式" align="center">
+        </el-table-column>
+
+        <!--<el-table-column label="付款方式" align="center">
           <template slot-scope="scope">
+           &lt;!&ndash; <p v-if='scope.row.pay_way&& scope.row.pay_way.length >0'>
+              <span v-for='(item,key) in scope.row.pay_way'>{{item.pay_way_str? item.pay_way_str :'押'+ (item.pay_way_bet||'/')
+                + '付'+ item.pay_way}}</span>
+            </p>&ndash;&gt;
             <p v-if='scope.row.pay_way&& scope.row.pay_way.length >0'>
-              <span v-for='(item,key) in scope.row.pay_way'>{{item.pay_way_str? item.pay_way_str :'押'+ item.pay_way_bet||'/'
+              <span v-for='(item,key) in scope.row.pay_way'>{{item.pay_way_str? item.pay_way_str :'押'+ (item.pay_way_bet||'/')
                 + '付'+ item.pay_way}}</span>
             </p>
-            <span v-else>--</span>
+            <span v-else>&#45;&#45;</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="开单人" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.sign_user.name || '--'}}</span>
@@ -101,7 +109,7 @@
         <el-table-column label="操作" align="center" v-if='tabType ==2' width='300'>
           <template slot-scope="scope" align='left'>
             <div style='display:flex;justify-content:flex-start;align-items:center;'>
-              <el-button id='active-warning' size="mini" @click.stop="readhousingTag(scope.row)">查看标记</el-button>
+              <el-button id='active-warning' size="mini" @click.stop="readHousingTag(scope.row)">查看标记</el-button>
               <el-button id='active-primary' size="mini" @click.stop="addOrEditHousingTag(scope.row,2)">修改标记</el-button>
               <el-button id='active-success' size="mini" @click.stop="postHelp(scope.row)" v-if='scope.row.is_send == 0'>发送代办</el-button>
               <el-button id='active-success' size="mini" @click.stop="urgedDealWith(scope.row)" v-if='scope.row.is_send == 1'>催办</el-button>
@@ -317,7 +325,7 @@ export default {
     }
   },
   created () {
-    this.formateParams()
+    this.formatParams()
   },
   methods: {
     // 客服入口
@@ -325,7 +333,7 @@ export default {
       this.visibleStatus = !this.visibleStatus;
       this.$store.dispatch('route_animation');
     },
-    formateParams () {
+    formatParams () {
       this.params.is_mark = 0
       this.params.is_overdue = 0
       this.params.is_complete = 0
@@ -346,6 +354,14 @@ export default {
       this.showLoading(true);
       this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}`, this.params).then(res => {
         if (res.code === 200) {
+          _.forEach(res.data.data,(o)=> {//付款方式字段拼接
+            let result = null;
+            if(o.pay_way&&o.pay_way.length>0) {
+              result = _.find(this.GLOBAL_CONSTANT.PAY_WAY,{id:o.pay_way[0].pay_way}).name;
+            }
+            o.pay_way_content = result;//付款方式
+          });
+
           this.tableData = res.data.data;
           this.tableDateCount = res.data.count;
         } else {
@@ -359,14 +375,14 @@ export default {
     chosenType (id) {
       if (this.tabType !== id) {
         this.tabType = id
-        this.formateParams()
+        this.formatParams()
       }
     },
     // 收房 租房
     changeTab (id) {
       if (this.chooseTab !== id) {
         this.chooseTab = id
-        this.formateParams()
+        this.formatParams()
       }
     },
     //高级搜索
@@ -501,7 +517,7 @@ export default {
 
     },
     // 查看标记
-    readhousingTag (row) {
+    readHousingTag (row) {
       this.currentRow = row;
       this.backInfo_visible = true;
       this.getHousingRecord(row.tag_id)
