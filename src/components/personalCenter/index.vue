@@ -16,7 +16,8 @@
               {{workStatus}}
             </div>
             <div v-show="workType==2" class="personal-info-status" :title="workStatus">
-              <el-input ref="workStatusRef" size="small" @blur="triggerBlurWorkStatus" v-model="workStatusEditContent" style="width: 160px"></el-input>
+              <el-input ref="workStatusRef" size="small" @blur="triggerBlurWorkStatus" v-model="workStatusEditContent"
+                        style="width: 160px"></el-input>
             </div>
           </div>
           <div class="personal-group-button">
@@ -41,15 +42,23 @@
         <div class="container-left-down">
           <ul>
 
-            <li @click="checkedId=item.id" v-for="item of navbarList" :class="{checked:item.id==checkedId}">
-              <router-link :to="'/personalCenter/'+item.router">
-                <div class="li-item">
-                  <i class="li-item-icon" :class="[item.icon]"></i>
-                  <span class="li-item-content">
+            <li @click="routerRedirect(item)" v-for="item of navbarList" :class="{checked:item.id==checkedId}">
+              <!-- <router-link :to="'/personalCenter/'+item.router">
+                 <div class="li-item">
+                   <i class="li-item-icon" :class="[item.icon]"></i>
+                   <span class="li-item-content">
+                   {{item.name}}
+                 </span>
+                 </div>
+               </router-link>-->
+
+              <div class="li-item">
+                <i class="li-item-icon" :class="[item.icon]"></i>
+                <span class="li-item-content">
                   {{item.name}}
                 </span>
-                </div>
-              </router-link>
+              </div>
+
             </li>
           </ul>
         </div>
@@ -64,7 +73,6 @@
 </template>
 
 <script>
-  import _ from 'lodash';
 
   export default {
     name: "index",
@@ -98,11 +106,17 @@
             name: '我的KPI',
             router: 'myKPI',
           },
+          {
+            id: 5,
+            icon: 'icon-kpi',
+            name: '退出',
+            router: 'myKPI',
+          },
         ],
 
-        workStatus:'',//工作状态文本
-        workStatusEditContent:'',
-        workType:1,//1为查看 2为编辑  点击1时为编辑状态 blur后提交接口 变为查看状态
+        workStatus: '',//工作状态文本
+        workStatusEditContent: '',
+        workType: 1,//1为查看 2为编辑  点击1时为编辑状态 blur后提交接口 变为查看状态
       }
     },
     mounted() {
@@ -110,28 +124,50 @@
       this.getWorkStatus();
     },
     methods: {
+
+      /*路由跳转*/
+      routerRedirect(item) {
+        this.checkedId = item.id;
+        if(item.id!=5) {
+          this.routerLink(`/personalCenter/${item.router}`);
+        }else {
+
+          this.$LjConfirm({content:'确定退出吗？'}).then(()=> {
+            this.$storage.remove('Authorization');
+            this.$storage.remove('user_info');
+            this.routerLink('/login');
+          });
+
+
+        }
+
+      },
+
+
       triggerEditWorkStatus() {
         this.workType = 2;
-        this.workStatusEditContent=this.workStatus;
-        this.$nextTick(()=> {
+        this.workStatusEditContent = this.workStatus;
+        this.$nextTick(() => {
           this.$refs['workStatusRef'].focus();
-          if(this.workStatus=='请输入工作状态') {
+          if (this.workStatus == '请输入工作状态') {
             this.workStatusEditContent = '';
           }
         });
       },
 
       triggerBlurWorkStatus() {
-        this.workType=1;
-        if(this.workStatusEditContent==this.workStatus) {return;}
+        this.workType = 1;
+        if (this.workStatusEditContent == this.workStatus) {
+          return;
+        }
         let params = {
-          user_id:289,
-          work_status:this.workStatusEditContent,
+          user_id: 289,
+          work_status: this.workStatusEditContent,
         };
-        this.$http.post(`${this.url}staff/user/saveWorkStatus`,params).then(res=> {
-          this.$LjMessageEasy(res,()=> {
+        this.$http.post(`${this.url}staff/user/saveWorkStatus`, params).then(res => {
+          this.$LjMessageEasy(res, () => {
             this.workStatus = this.workStatusEditContent;
-            if(!this.workStatus) {
+            if (!this.workStatus) {
               this.workStatus = '请输入工作状态';
             }
           });
@@ -142,12 +178,12 @@
       //获取工作状态
       getWorkStatus() {
         let params = {
-          user_id:289,
+          user_id: 289,
         };
-        this.$http.get(`${this.url}staff/user/getWorkStatus`,params).then(res=> {
-          if(res.code.endsWith('0')) {
+        this.$http.get(`${this.url}staff/user/getWorkStatus`, params).then(res => {
+          if (res.code.endsWith('0')) {
             this.workStatus = res.data.work_status;
-            if(!this.workStatus) {
+            if (!this.workStatus) {
               this.workStatus = '请输入工作状态';
             }
           }
@@ -191,24 +227,31 @@
           .personal-info-badge {
             @include personalCenterImg('fill_1.png', 'theme1');
           }
+
           .icon-collect {
             @include personalCenterImg('shoucang.png', 'theme1');
           }
+
           .icon-message {
             @include personalCenterImg('huifu.png', 'theme1');
           }
+
           .icon-log {
             @include personalCenterImg('rizhi.png', 'theme1');
           }
+
           .icon-check {
             @include personalCenterImg('kaoqin.png', 'theme1');
           }
+
           .icon-track {
             @include personalCenterImg('guiji.png', 'theme1');
           }
+
           .icon-log-gray {
             @include personalCenterImg('gongzuorizhi.png', 'theme1');
           }
+
           .icon-kpi {
             @include personalCenterImg('kpi.png', 'theme1');
           }

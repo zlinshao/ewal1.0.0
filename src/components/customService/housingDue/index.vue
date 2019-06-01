@@ -156,7 +156,7 @@
             <el-form-item label="标记类型">
               <div class="items-center">
                 <p class="radioSelection" @click="chooseMarkRadio(item)" :class="{'highChoose': mark_form.tag_status === item.id}"
-                  v-for="item in mark_status">
+                  v-for="item in mark_status[chooseTab-1]">
                   {{ item.val }}
                 </p>
               </div>
@@ -307,8 +307,10 @@ export default {
       },
 
       mark_status: [
-        { id: 1, val: '续租' },
-        { id: 2, val: '退租' },
+        [{ id: 1, val: '续约' },
+          { id: 2, val: '退房' },],
+        [{ id: 1, val: '续租' },
+        { id: 2, val: '退租' },]
       ],
 
       // 回访记录
@@ -324,6 +326,7 @@ export default {
       currentMethod: '',
     }
   },
+
   created () {
     this.formatParams()
   },
@@ -356,8 +359,8 @@ export default {
         if (res.code === 200) {
           _.forEach(res.data.data,(o)=> {//付款方式字段拼接
             let result = null;
-            if(o.pay_way&&o.pay_way.length>0) {
-              result = _.find(this.GLOBAL_CONSTANT.PAY_WAY,{id:o.pay_way[0].pay_way}).name;
+            if(o.month_price&&o.month_price.length>0) {
+              result = _.find(this.GLOBAL_CONSTANT.PAY_WAY,{id:parseInt(o.month_price[0].pay_way)})?.name;
             }
             o.pay_way_content = result;//付款方式
           });

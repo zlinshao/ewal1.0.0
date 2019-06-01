@@ -50,7 +50,7 @@ const GLOBAL_CONSTANT = {
     EXAM_STATUS:[{id:0,name:'未开始'},{id:1,name:'进行中'},{id:2,name:'已结束'}]
   },
   //运维中心房屋到期付款方式
-  PAY_WAY:[{id:444,name:'月付'},{id:445,name:'双月付'},{id:446,name:'季付'},{id:447,name:'半年付'},{id:448,name:'年付'},],
+  PAY_WAY:[{id:1,name:'月付'},{id:2,name:'双月付'},{id:3,name:'季付'},{id:4,name:'四月付'},{id:5,name:'五月付'},{id:6,name:'半年付'},{id:7,name:'七月付'},{id:8,name:'八月付'},{id:9,name:'九月付'},{id:10,name:'十月付'},{id:11,name:'十一月付'},{id:12,name:'年付'},{id:444,name:'月付'},{id:445,name:'双月付'},{id:446,name:'季付'},{id:447,name:'半年付'},{id:448,name:'年付'},],
 };
 
 export{ DROPDOWN_CONSTANT,GLOBAL_CONSTANT };
