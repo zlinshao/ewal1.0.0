@@ -1191,13 +1191,11 @@
 <script>
   import _ from 'lodash';
   import SearchHigh from '../../common/searchHigh.vue';
-  import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue';
   import LjSubject from '../../common/lj-subject.vue';
   import CustomerLists from '../components/customerLists.vue';
   import {gatheringSearchList} from "../../../assets/js/allSearchData.js";
   import StaffOrgan from '../../common/staffOrgan.vue';
-  import LjUpload from '../../common/lightweightComponents/lj-upload';
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
 
   import Customer from '../../common/customer.vue';
@@ -1208,11 +1206,9 @@
     name: "index",
     components: {
       SearchHigh,
-      LjDialog,
       FinMenuList,
       LjSubject,
       CustomerLists,
-      LjUpload,
       StaffOrgan,
       HouseFilter,
       Customer,
