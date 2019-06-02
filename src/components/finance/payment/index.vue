@@ -7,7 +7,7 @@
         </p>
         <h1>付款</h1>
       </div>
-      <div class="items-center listTopRight">
+      <div class="items-center listTopRight" v-show="!action_visible">
         <!--<div class="icons upLoad"></div>-->
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>

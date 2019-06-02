@@ -1152,14 +1152,14 @@
               </el-form-item>
               <!-- 当流水模板为南京银行、农业银行(对公账户)、宁波银行、招商银行时需要选择账户类型和选择账户 -->
               <div v-if='import_template.bank_template==3 || import_template.bank_template==9||import_template.bank_template==11||import_template.bank_template==12'>
-                <el-form-item label="账户类型" prop="bank_template">
+                <el-form-item label="账户类型" prop="import_template">
                     <div class="bank_template_select">
                       <el-select   placeholder="请选择账户类型" v-model="bank_account_type" style="width: 200px"  @change="getBankAccount">
                           <el-option  v-for="(item,index) in cate" :label="item.title" :value="item.value" :key="index"></el-option>
                       </el-select>
                     </div>
                 </el-form-item>
-                <el-form-item label="选择账户" prop="bank_template">
+                <el-form-item label="选择账户"  prop="import_template">
                     <div class="bank_template_select">
                       <el-select   placeholder="请选择账户" v-model="import_template.account" style="width: 200px">
                           <el-option  v-for="(item,index) in BankAccountLists" :label="item.name" :value="item.id" :key="index"></el-option>
@@ -1167,7 +1167,7 @@
                     </div>
                 </el-form-item>
               </div>
-              <el-form-item align="center" label="上传附件">
+              <el-form-item align="center" label="上传附件"  prop="import_template">
                   <div class="upload_imgVideo">
                       <lj-upload
                           v-model="import_template.doc_id"
@@ -2674,7 +2674,6 @@
         this.import_template.doc_id=[];
         this.import_template.bank_template='';
         this.bankflow_upload_visible=true;
-
       },
       //获取银行模板
       getBankTemplateFun() {
