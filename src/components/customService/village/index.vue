@@ -459,7 +459,9 @@
       this.getVillageList();
       await this.getCityList();
       this.address_filter[0].val =this.city_list[0].name;//初始化加载选择南京
-
+      this.village_params.city.push(this.city_list[0].code);
+      this.village_params.province = this.city_list[0].province.code;
+      this.getAreaList();
     },
     watch: {},
     computed: {},
@@ -657,9 +659,10 @@
       //部门确定
       handleGetDepart(id,name) {
         if (id !== 'close') {
+          debugger
           switch (this.user_type) {
             case 'filter':
-              this.village_params.org_id = id;
+              this.village_params.org_id = id[0];
               this.address_filter[3].val = name;
               this.getVillageList();
               break;
@@ -723,18 +726,15 @@
             //清空region
             this.village_params.region = '';
             this.region_list = [];
-
-            debugger
-
             this.village_params.city = [];
             this.village_params.province = '';
             this.village_params.province = item.province.code;
 
-
-
-            this.village_params.city.push(item.code);
-
-
+            if(item.code.constructor===Array&&item.code.length === 2) {//重庆
+              this.village_params.city = item.code;
+            }else {//其他地区
+              this.village_params.city.push(item.code);
+            }
 
             this.address_filter[0].val = item.name;
             this.current_choose = item.code;

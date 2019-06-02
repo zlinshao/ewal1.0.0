@@ -6,10 +6,10 @@
           <div class="personal-info">
             <div class="personal-info-photo">
               <img
-                src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+                :src="photoUrl">
             </div>
             <div class="personal-info-name">
-              张三
+              {{$storage.get('user_info').name}}
               <div class="personal-info-badge"><span>P2</span></div>
             </div>
             <div v-show="workType==1" class="personal-info-status" @click="triggerEditWorkStatus" :title="workStatus">
@@ -123,6 +123,11 @@
       //this.$router.push('/personalCenter/myAttendance');
       this.getWorkStatus();
     },
+    computed: {
+      photoUrl() {
+        return this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
+      },
+    },
     methods: {
 
       /*路由跳转*/
@@ -158,7 +163,7 @@
           return;
         }
         let params = {
-          user_id: 289,
+          user_id: this.$storage.get('user_info').id,
           work_status: this.workStatusEditContent,
         };
         this.$http.post(`${this.url}staff/user/saveWorkStatus`, params).then(res => {
@@ -171,11 +176,10 @@
         });
       },
 
-
       //获取工作状态
       getWorkStatus() {
         let params = {
-          user_id: 289,
+          user_id: this.$storage.get('user_info').id,
         };
         this.$http.get(`${this.url}staff/user/getWorkStatus`, params).then(res => {
           if (res.code.endsWith('0')) {

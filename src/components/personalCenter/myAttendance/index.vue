@@ -140,7 +140,7 @@
         this.attence.tableData = [];
         let params = {
           is_on_job: this.attence.isLeave ? 1 : 0,
-          date: new Date(this.datetime),
+          date: this.myUtils.formatDate(new Date(this.datetime),'yyyy-MM-dd hh:mm:ss'),
           ...this.attence.params,
           org_id: this.attence.departmentId[0] || 2,
         };

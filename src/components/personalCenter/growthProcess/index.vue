@@ -54,12 +54,9 @@
     },
     methods: {
       getGrowthList: function() {
-        let params = {
-          id: 60
-        }
-        this.$http.get(`${this.url}/staff/user/289/growth`).then(res => {
+        this.$http.get(`${this.url}/staff/user/${this.$storage.get('user_info').id}/growth`).then(res => {
           if (res.code==="20000") {
-            for(var i = 0; i < res.data.data.length; i++){
+            for(let i = 0; i < res.data.data.length; i++){
               let date = new Date(res.data.data[0].created_at)
               let year = date.getFullYear();
               let month = date.getMonth()+1;
@@ -75,15 +72,10 @@
         })
       },
       showDialogDetail: function(item) {
-        this.growthDetailList = []
-        let params = {
-          id: 60,
-          growth_id: item.id
-        }
-        
-        this.$http.get(`${this.url}/staff/user/289/growth_record`).then(res => {
+        this.growthDetailList = [];
+        this.$http.get(`${this.url}/staff/user/${this.$storage.get('user_info').id}/growth_record`).then(res => {
           if (res.code==="20000") {
-            for(var i = 0; i < res.data.data.length; i++){
+            for(let i = 0; i < res.data.data.length; i++){
               let data = res.data.data[i]
               let obj = {}
               //判断系统或者操作员
@@ -112,7 +104,7 @@
               }
               if(data.new_data !== null){
                 let new_dataName = ''
-                for(var j = 0; j< data.new_data.length; j++){
+                for(let j = 0; j< data.new_data.length; j++){
                   if(data.new_data[j].name !== undefined){
                     new_dataName = new_dataName + ',' + data.new_data[j].name
                   }
