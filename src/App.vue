@@ -21,17 +21,15 @@
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
           </div>
-          <app-index-more></app-index-more>
+          <app-index-more :router-list="more_list">更多</app-index-more>
         </div>
         <div class="items-center personal">
           <span>{{$storage.get('user_info').name||'冯宝宝'}}</span>
-          <!--@click="routerLink('login')"-->
-          <p @click="routerLink('/personalCenter')">
-<!--            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">-->
-            <img :src="photoUrl">
-          </p>
-          <!--&lt;!&ndash;<span class="icon3024 icon-personal-center"   @click="routerLink('/messageCenter')"></span>&ndash;&gt;-->
-          <!-- <span class="icon3024 icon-personal-center" @click="routerLink('/messageCenter')"></span> -->
+          <app-index-more :router-list="personal_center_list">
+            <p @click="routerLink('/personalCenter')">
+              <img :src="photoUrl">
+            </p>
+          </app-index-more>
           <span class="icon3024 icon_mess" @click="routerLink('/messageCenter')"></span>
           <!-- <span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span> -->
         </div>
@@ -116,6 +114,24 @@ export default {
   },
   data () {
     return {
+      more_list:[
+        {id:1,name:'新建会议',router:'/discussPolitics'},
+        {id:2,name:'新建公告',router:'/noticeQuestionnaire/notice'},
+        {id:3,name:'新建问卷',router:'/noticeQuestionnaire/questionnaire'},
+      ],
+
+      personal_center_list: [
+        {id:1,name:'我的收藏',router:'/personalCenter/myFavorite'},
+        {id:2,name:'我的回复',router:'/personalCenter/myResponse'},
+        {id:3,name:'下属日志',router:'/personalCenter/subLog'},
+        {id:4,name:'我的考勤',router:'/personalCenter/myAttendance'},
+        {id:5,name:'成长轨迹',router:'/personalCenter/growthProcess'},
+        {id:6,name:'工作日志',router:'/personalCenter/workLog'},
+        {id:7,name:'我的KPI',router:'/personalCenter/myKPI'},
+        {id:8,name:'退出',router:'/login'},
+      ],
+
+
       theme_list: [
         {key: '1',val: '极简中国风',color: 'color-1'},
         {key: '3',val: '活泼孟菲斯',color: 'color-2'},

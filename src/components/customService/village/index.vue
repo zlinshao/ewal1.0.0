@@ -659,7 +659,6 @@
       //部门确定
       handleGetDepart(id,name) {
         if (id !== 'close') {
-          debugger
           switch (this.user_type) {
             case 'filter':
               this.village_params.org_id = id[0];

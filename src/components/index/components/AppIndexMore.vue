@@ -1,13 +1,15 @@
 <template>
-<!--  <div style="width: 100px;height: 161px" @mouseleave="app_more_visible = false" v-if="app_more_visible" id="app_index_more">-->
   <div id="app_index_more">
-    <div class="app-more">更多</div>
-    <div class="module-list-container" style="width: 100px;height: 161px">
+    <div class="app-more">
+      <slot></slot>
+    </div>
+    <div class="module-list-container" style="width: 100px">
       <el-card>
         <div class="module-list">
-          <div class="module-item"><span @click="routerLink('/discussPolitics')">新建会议</span></div>
+          <div class="module-item" @click="routerJump(item)" v-for="item in routerList"><span>{{item.name}}</span></div>
+          <!--<div class="module-item"><span @click="routerLink('/discussPolitics')">新建会议</span></div>
           <div class="module-item"><span @click="routerLink('/noticeQuestionnaire/notice')">新建公告</span></div>
-          <div class="module-item"><span @click="routerLink('/noticeQuestionnaire/questionnaire')">新建问卷</span></div>
+          <div class="module-item"><span @click="routerLink('/noticeQuestionnaire/questionnaire')">新建问卷</span></div>-->
         </div>
       </el-card>
     </div>
@@ -20,21 +22,32 @@
     name: "AppIndexMore",
     data() {
       return {
-        app_more_visible:false,
+
       }
     },
     props: {
-      visible: false,
+      routerList: {
+        type: Array,
+        default() {
+          return [];
+        }
+      },
     },
     watch: {
-      visible(val) {
-        this.app_more_visible = val;
-      },
-      app_more_visible: {
-        handler(val,oldVal) {
-          this.$emit('update:visible', val);
-        },
-        //immediate: true
+    },
+
+    methods: {
+      routerJump(item) {
+        if(item.name=='退出') {
+          this.$LjConfirm({content:'确定退出登录吗？'}).then(()=> {
+            this.$storage.remove('Authorization');
+            this.$storage.remove('user_info');
+            this.routerLink('/login');
+          });
+        }else {
+          this.routerLink(item.router);
+        }
+
       },
     },
   }
@@ -59,12 +72,14 @@
   #app_index_more {
     display: inline-block;
     position: relative;
+
     &:hover {
       .module-list-container {
         visibility: visible;
         opacity: 1;
       }
     }
+
     .app-more {
       width: 92px;
       height: 45px;
@@ -86,17 +101,22 @@
       flex-direction: column;
 
       .module-item {
-
         color: #686874;
         font-size: 12px;
         width: 100%;
-        height: 33.33%;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
+
         span {
           cursor: pointer;
           padding: 5px 10px;
+        }
+
+        &:hover {
+          background-color: #CF2E33;
+          color: #ffffff;
         }
       }
     }

@@ -106,12 +106,6 @@
             name: '我的KPI',
             router: 'myKPI',
           },
-          {
-            id: 5,
-            icon: 'icon-kpi',
-            name: '退出',
-            router: 'myKPI',
-          },
         ],
 
         workStatus: '',//工作状态文本
@@ -136,11 +130,11 @@
         if(item.id!=5) {
           this.routerLink(`/personalCenter/${item.router}`);
         }else {
-          this.$LjConfirm({content:'确定退出吗？'}).then(()=> {
+         /* this.$LjConfirm({content:'确定退出吗？'}).then(()=> {
             this.$storage.remove('Authorization');
             this.$storage.remove('user_info');
             this.routerLink('/login');
-          });
+          });*/
         }
 
       },
