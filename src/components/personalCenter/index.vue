@@ -131,14 +131,11 @@
         if(item.id!=5) {
           this.routerLink(`/personalCenter/${item.router}`);
         }else {
-
           this.$LjConfirm({content:'确定退出吗？'}).then(()=> {
             this.$storage.remove('Authorization');
             this.$storage.remove('user_info');
             this.routerLink('/login');
           });
-
-
         }
 
       },

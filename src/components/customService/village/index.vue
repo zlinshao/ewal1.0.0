@@ -729,7 +729,13 @@
             this.village_params.city = [];
             this.village_params.province = '';
             this.village_params.province = item.province.code;
+
+
+
             this.village_params.city.push(item.code);
+
+
+
             this.address_filter[0].val = item.name;
             this.current_choose = item.code;
             break;

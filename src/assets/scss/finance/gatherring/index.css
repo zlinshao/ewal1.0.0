@@ -306,7 +306,8 @@
   height: 35px;
   cursor: pointer;
 }
-#theme_name #gathering .dialog_container .edit-name-container, #theme_name #gathering .dialog_container .template-message {
+#theme_name #gathering .dialog_container .edit-name-container,
+#theme_name #gathering .dialog_container .template-message {
   display: flex;
   display: -webkit-flex;
   align-items: center;
@@ -361,6 +362,27 @@
 #theme_name #gathering .dialog_container .remark-type .remark-type-item.checked {
   color: #CF2E33;
   background-color: #FFEAEA;
+}
+#theme_name #gathering .bankTabelList {
+  padding: 0 30px;
+  background-color: #ffffff;
+  margin-top: 9px;
+  font-size: 14px;
+}
+#theme_name #gathering .bankdetail_dialog .header {
+  padding: 20px 0;
+}
+#theme_name #gathering .bankdetail_dialog .header .right_info {
+  font-size: 14px;
+}
+#theme_name #gathering .bankdetail_dialog .header .right_info .total {
+  text-align: right;
+}
+#theme_name #gathering .bankdetail_dialog .page {
+  margin-top: 20px;
+}
+#theme_name #gathering .bank_template_select {
+  text-align: left;
 }
 
 /*# sourceMappingURL=index.css.map */
