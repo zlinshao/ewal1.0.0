@@ -160,7 +160,7 @@
       </lj-dialog>
 
       <!--选小区-->
-      <HouseFilter :visible="merge_village_visible" :show-house="false" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
+      <HouseFilter :visible="merge_village_visible" :outer-params="village_params" :show-house="false" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
 <!--      <HouseFilter :visible="merge_village_visible" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>-->
 
       <!--MenuList-->
@@ -468,13 +468,14 @@
     methods: {
       handleGetVillage(val) {
         if (val !== 'close') {
+          debugger
           if (this.is_control === 'save') {
             this.merge_form.save_village = val[0].village_name;
-            this.merge_form.id = val[0].village_id;
+            this.merge_form.id = val[0].id;
           } else {
             //this.merge_form.merge_to_community_id = val[0].village_id;
             //this.merge_form.merge_village = val[0].village_name;
-            this.merge_form.merge_to_community_id = _.map(val,'village_id');
+            this.merge_form.merge_to_community_id = _.map(val,'id');
             this.merge_form.merge_village = _.map(val,'village_name').join(',');
           }
           this.merge_choose = 'all';

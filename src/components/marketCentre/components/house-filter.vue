@@ -158,6 +158,7 @@
         type: Boolean,
         default: true,
       },
+      outerParams: {},//从外部传过来 province及city
     },
     data() {
       return {
@@ -248,6 +249,15 @@
           }
         },
         immediate: true
+      },
+      outerParams: {
+        handler(val) {
+          if(Object.keys(val).length>0) {
+            this.village_params.province = val.province;
+            this.village_params.city = val.city;
+          }
+        },
+        deep:true,
       },
     },
     computed: {},
