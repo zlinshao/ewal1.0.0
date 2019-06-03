@@ -161,6 +161,7 @@
 
       <!--选小区-->
       <HouseFilter :visible="merge_village_visible" :show-house="false" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
+<!--      <HouseFilter :visible="merge_village_visible" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>-->
 
       <!--MenuList-->
       <MenuList :module="menu_visible" :list="customService" :backdrop="true" @close="menu_visible = false"></MenuList>

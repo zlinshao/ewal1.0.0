@@ -52,7 +52,7 @@
               <el-tab-pane label="小区" name="second">
                 <div class="flex">
                   <div class="left_container transparent_bg">
-                    <div class="header_search">
+                    <!--<div class="header_search">
                       <div class="control">
                         <div class="toggle_btn" @click="hide_header_search = !hide_header_search">
                           <i class="el-icon-arrow-up" v-if="hide_header_search"></i>
@@ -89,16 +89,16 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div>-->
                     <div class="plot_container changeChoose scroll_bar">
                       <div>
                         <el-checkbox-group v-model="office_choose" @change="handleChooseOffice" :max="only_choose === 'village' ? 1 : 30">>
                           <div class="office_content" v-for="(office,index) in office_resource" :key="index">
                             <el-checkbox :label="index">
                               <div class="checkbox_content flex">
-                                <div style="width: 200px">{{ office.house_name }}</div>
-                                <div style="width: 150px;text-align: center">{{ office.city_name }}</div>
-                                <div style="width: 100px;text-align: right">{{ office.num }}套</div>
+                                <div style="width: 200px">{{ office.village_name }}</div>
+                                <div style="width: 150px;text-align: center">{{ office.address }}</div>
+<!--                                <div style="width: 100px;text-align: right">{{ office.num }}套</div>-->
                               </div>
                             </el-checkbox>
                           </div>
@@ -114,9 +114,9 @@
                     <div class="office_choose scroll_bar">
                       <div>
                         <div class="flex" v-for="(office,index) in show_office" :key="index">
-                          <div style="width: 40%;text-align: left">{{ office.house_name }}</div>
-                          <div style="width: 35%;text-align: center">{{ office.city_name }}</div>
-                          <div style="width: 15%;text-align: left">{{ office.num }}套</div>
+                          <div style="width: 40%;text-align: left">{{ office.village_name }}</div>
+                          <div style="width: 35%;text-align: center">{{ office.address }}</div>
+<!--                          <div style="width: 15%;text-align: left">{{ office.num }}套</div>-->
                           <div class="delete_choose" @click="handleDeleteOffice(index)">－</div>
                         </div>
                       </div>
@@ -184,6 +184,13 @@
           area_max: ''
         },
 
+        village_params: {
+          page:1,
+          limit:30,
+          province:320000,
+          city:320100,
+        },
+
         house_config: {
           type: 1,
           office: '',
@@ -218,6 +225,9 @@
       visible(val) {
         this.dialog_visible = val;
         if (val) {
+          if(!this.showHouse) {
+            this.activeName = 'second';
+          }
           this.getHouseList();
         }else {
           this.house_resource = [];
@@ -258,10 +268,17 @@
         this.getHouseList();
       },
       handleChangePage(page) {
-        this.params.page = page;
+        if(this.activeName=='first') {
+          this.params.page = page;
+          //this.getHouseList();
+        }else {
+          this.office_choose = [];
+          this.village_params.page = page;
+        }
         this.getHouseList();
+
       },
-      //获取房屋
+      /*//获取房屋
       getHouseList() {
         this.$http.get(this.market_server + '/v1.0/market/house/searchVH',this.params).then(res => {
           if (res.code === 200) {
@@ -282,7 +299,33 @@
             this.house_count = 0;
           }
         })
+      },*/
+
+      //获取房屋
+      getHouseList() {
+        if(this.activeName =='first') {
+          this.$http.get(this.market_server + '/v1.0/market/house/searchVH',this.params).then(res => {
+            if (res.code === 200) {
+              this.house_resource = res.data.data;
+              this.house_count = res.data.count;
+            } else {
+              this.house_resource = [];
+              this.house_count = 0;
+            }
+          })
+        }else {
+          this.$http.get(this.market_server + 'v1.0/market/community',this.village_params).then(res => {
+            if (res.code === 200) {
+              this.office_resource = res.data.data;
+              this.house_count = res.data.count;
+            } else {
+              this.office_resource = [];
+              this.house_count = 0;
+            }
+          })
+        }
       },
+
 
       //清空小区
       handleClearOffice() {
