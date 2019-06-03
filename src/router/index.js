@@ -178,6 +178,11 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path:'/reward',
+      name:'reward',
+      component:Reward
+    },
+    {
       path: '/',
       name: '首页',
       component: HomePage

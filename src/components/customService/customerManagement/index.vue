@@ -199,6 +199,7 @@
                     <el-col :span="8">
                       <el-form-item label="付款方式" v-if="customer_type === '房东'">
                         <div v-if="item.pay_way && item.pay_way.length > 0">
+<!--                          <span v-for="tmp in item.pay_way">{{ pay_type[tmp.pay_way ]}} {{ tmp.period }}月</span>-->
                           <span v-for="tmp in item.pay_way">{{ pay_type[tmp.pay_way ]}} {{ tmp.period }}月</span>
                         </div>
                         <div v-else>/</div>
@@ -374,12 +375,15 @@
         chooseTab: 3,
         params: {
           page: 1,
-          limit: 15,
+          limit: 30,
           type: 1,
           address: '',
           contract_number: '',
           phone: '',
-          is_black: 0
+          is_black: 0,
+          user_id:[],
+          org_id:[],
+          search:'',
         },
         customerList: [],
         customerCount: 0,
@@ -438,9 +442,12 @@
       },
       handleCloseHigh(val) {
         if (val !== 'close') {
-          val.search = val.search.trim();
-          this.params = Object.assign({},this.params,val);
-          console.log(this.params);
+          debugger
+          console.log(val);
+          //this.params = Object.assign({},this.params,val);
+          this.params = {...this.params,...val};
+          this.params.org_id = val.org_id.length==1?val.org_id[0]:'';
+          this.params.user_id = val.user_id.length==1?val.user_id[0]:'';
           this.getCustomerList();
         }
         this.highVisible = false;
@@ -483,7 +490,6 @@
           this.$http.get(this.market_server + `v1.0/market/customer/integrated/${row.id}`).then(res => {
             // this.$http.get(this.market_server + `v1.0/market/customer/renter/${row.id}`).then(res => {
             if (res.code === 200) {
-
               this.current_detail = this.joinTwoObject(res.data.lord,res.data.renter);;
               this.detail_visible = true;
             } else {
@@ -566,7 +572,29 @@
           status: 'customerManagement',
           keywords: 'search',
           placeholder: '地址/合同编号/手机号/客户姓名',
-          data: []
+          data: [
+            {
+              keyType: 'depart',
+              title: '部门',
+              placeholder: '请选择部门',
+              keyName: 'org_id',
+              dataType: [],
+              value: {
+                num: 1,
+                arr: ''
+              }
+            },
+            {
+              keyType: 'staff',
+              title: '开单人',
+              placeholder: '请选择开单人',
+              keyName: 'user_id',
+              dataType: [],
+              value: {
+                num: 1
+              }
+            },
+          ],
         }
       },
       //tab切换

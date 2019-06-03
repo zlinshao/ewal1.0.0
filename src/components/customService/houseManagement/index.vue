@@ -37,7 +37,7 @@
               </div>
               <div class="small-img">
 
-                <lj-upload :disabled="true" id="house_picture_view" style="position: absolute" :style="{'left': img_trams + 'px'}" :size="{width:'100px',height:'50px'}" :download="false" :view-file="house_detail.album_photo"></lj-upload>
+                <lj-upload :disabled="true" style="position: absolute" :style="{'left': img_trams + 'px'}" :size="{width:'100px',height:'50px'}" :download="false" :view-file="house_detail.album_photo"></lj-upload>
 
                 <!--<div v-if="house_detail.album_photo" class="img-container items-center" ref="img_contain"
                      :style="{'left': img_trams + '%'}">

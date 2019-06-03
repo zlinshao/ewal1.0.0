@@ -1171,7 +1171,7 @@ export default {
     handleGetDetail (row) {
       this.currentRow = row;
       // this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
-      this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.contract_id}`).then(res => {
+      this.$http.get(this.url + `v1.0/market/contract/${row.contract_type}/${row.contract_id}`).then(res => {
         //console.log(res);
         if (res.code === 200) {
           this.contractDetail = res.data;

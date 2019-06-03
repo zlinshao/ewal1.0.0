@@ -54,12 +54,12 @@
 
           event_chart.setOption({
             color: ['#DFDFDF', '#9E9E9E', '#B9292D'],
-            // legend: {
-            //   orient: 'vertical',
-            //   x: 'left',
-            //   y: 'middle',
-            //   data: ['一般', '特殊', '紧急']
-            // },
+            legend: {
+              orient: 'vertical',
+              x: 'left',
+              y: 'middle',
+              data: ['一般', '特殊', '紧急']
+            },
             series: [
               {
                 name: this.eventDataList[i].title,

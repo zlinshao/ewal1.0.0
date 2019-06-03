@@ -40,7 +40,6 @@
 </template>
 
 <script>
-  //import _ from 'lodash';
   import MenuList from '../common/menuList.vue'
   import {humanResource} from '../../assets/js/allModuleList.js';
 

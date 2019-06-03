@@ -356,8 +356,9 @@
         </div>
 
         <div class="dialog_footer" v-if='showFooter'>
-          <el-button id='active-success' class='el-button-active' size="small" @click="handleContract(true)" v-if='chooseTab == 1 || chooseTab == 2'>通过</el-button>
-          <el-button id='active-danger' class='el-button-active' size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>
+          <el-button :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="item.route" v-for="item in operate_list" @click="handleContract(item.action)">{{item.title}}</el-button>
+          <!--<el-button id='active-success' class='el-button-active' size="small" @click="handleContract(true)" v-if='chooseTab == 1 || chooseTab == 2'>通过</el-button>
+          <el-button id='active-danger' class='el-button-active' size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>-->
         </div>
       </div>
     </lj-dialog>
@@ -468,6 +469,10 @@ export default {
         task_id: '',
         key_name: ''
       }, // 发送补齐信息
+      operate_list:[],//底部操作按钮
+      check_data:null,//资料审核data
+
+
       payArr: ['水费', '电费', '燃气费', '物业费', '网络费', '其他'],
       market_server: globalConfig.market_server,
     }
@@ -524,12 +529,20 @@ export default {
 
       this.$emit('setCookie')
     },
-    getProcess_id (PROCESS_ID) {
-      this.$http.get(this.market_server + `v1.0/market/contract/kf-check-button?process_id=${PROCESS_ID}`).then(res => {
+    getProcess_id (process_id) {
+      if(!process_id) return;
+      this.$http.get(this.market_server + `v1.0/market/contract/kf-check-button?process_id=${process_id}`).then(res => {
         if (res.code === 200) {
           let data = res.data;
+          //if(data.buttons&&data.buttons.length>0) {
+          if(data.buttons) {
+            this.operate_list = data.buttons?.outcomeOptions;
+            this.check_data = data;
+          }else {
+            this.operate_list = [];
+          }
           this.complete.task_id = data.taskId
-          this.complete.key_name = data.buttons.variableName || 'kf_approved'
+          this.complete.key_name = data.buttons?.variableName || 'kf_approved'
 
         }
       })
@@ -609,18 +622,23 @@ export default {
     },
     // 合同通过 驳回
     handleContract (isTrue) {
+     /* let params = {
+        task_id: this.check_data.taskId,
+        data: {
+          [this.check_data.buttons.variableName]:isTrue,
+        }
+      }*/
       let params = {
-        process_id: this.contractDetail.process_instance_id,
-        contract_type: this.chooseTab,
         task_id: this.complete.task_id,
-        data: {}
-      }
-      params.data[this.complete.key_name] = isTrue
+        data: {
+          [this.complete.key_name]:isTrue,
+        }
+      };
+      //params.data[this.complete.key_name] = isTrue
       this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
-
         if (res.code === 200) {
           this.$LjNotify('success', {
-            title: '提示',
+            title: '成功',
             message: res.message
           });
           this.handleCloseDetail()

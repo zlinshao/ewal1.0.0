@@ -160,16 +160,16 @@
       </lj-dialog>
 
       <!--选小区-->
-      <HouseFilter :visible="merge_village_visible" :show-house="false" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
+      <HouseFilter :visible="merge_village_visible" :outer-params="village_params" :show-house="false" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
+<!--      <HouseFilter :visible="merge_village_visible" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>-->
 
       <!--MenuList-->
       <MenuList :module="menu_visible" :list="customService" :backdrop="true" @close="menu_visible = false"></MenuList>
 
       <!--小区详情-->
       <lj-dialog
-        :visible="village_detail_visible"
+        :visible.sync="village_detail_visible"
         :size="{width: 1200 + 'px',height: 850 + 'px'}"
-        @close="village_detail_visible = false"
       >
         <div class="dialog_container">
           <div class="dialog_header">
@@ -459,20 +459,23 @@
       this.getVillageList();
       await this.getCityList();
       this.address_filter[0].val =this.city_list[0].name;//初始化加载选择南京
-
+      this.village_params.city.push(this.city_list[0].code);
+      this.village_params.province = this.city_list[0].province.code;
+      this.getAreaList();
     },
     watch: {},
     computed: {},
     methods: {
       handleGetVillage(val) {
         if (val !== 'close') {
+          debugger
           if (this.is_control === 'save') {
             this.merge_form.save_village = val[0].village_name;
-            this.merge_form.id = val[0].village_id;
+            this.merge_form.id = val[0].id;
           } else {
             //this.merge_form.merge_to_community_id = val[0].village_id;
             //this.merge_form.merge_village = val[0].village_name;
-            this.merge_form.merge_to_community_id = _.map(val,'village_id');
+            this.merge_form.merge_to_community_id = _.map(val,'id');
             this.merge_form.merge_village = _.map(val,'village_name').join(',');
           }
           this.merge_choose = 'all';
@@ -659,7 +662,7 @@
         if (id !== 'close') {
           switch (this.user_type) {
             case 'filter':
-              this.village_params.org_id = id;
+              this.village_params.org_id = id[0];
               this.address_filter[3].val = name;
               this.getVillageList();
               break;
@@ -723,18 +726,15 @@
             //清空region
             this.village_params.region = '';
             this.region_list = [];
-
-            debugger
-
             this.village_params.city = [];
             this.village_params.province = '';
             this.village_params.province = item.province.code;
 
-
-
-            this.village_params.city.push(item.code);
-
-
+            if(item.code.constructor===Array&&item.code.length === 2) {//重庆
+              this.village_params.city = item.code;
+            }else {//其他地区
+              this.village_params.city.push(item.code);
+            }
 
             this.address_filter[0].val = item.name;
             this.current_choose = item.code;

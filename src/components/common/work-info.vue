@@ -137,5 +137,43 @@
 
 <style lang="scss" scoped>
   @import "../../assets/scss/workInfo/index.scss";
+  @mixin menuImg($m, $n) {
+    $url: '../../assets/image/workInfo/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
+  #theme_name.theme1 {
+    #workInfo {
+      .info_container {
+        .date_change {
+          li {
+            color: #999999;
+            background-color: $colorFDF;
+          }
+          .mark_li {
+            background-color: $colorE33;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  #theme_name.theme2 {
+    #workInfo {
+      .info_container {
+        .date_change {
+          li {
+            color: #00ffff;
+            @include menuImg('kf_bz.png', 'theme2');
+          }
+          .mark_li {
+            color: #ff0089;
+            @include menuImg('kf_dr.png', 'theme2');
+          }
+        }
+      }
+    }
+  }
 
 </style>
