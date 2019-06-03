@@ -160,16 +160,15 @@
       </lj-dialog>
 
       <!--选小区-->
-      <HouseFilter :visible="merge_village_visible"  :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
+      <HouseFilter :visible="merge_village_visible" :show-house="false" :only-choose="merge_choose" @close="handleGetVillage"></HouseFilter>
 
       <!--MenuList-->
       <MenuList :module="menu_visible" :list="customService" :backdrop="true" @close="menu_visible = false"></MenuList>
 
       <!--小区详情-->
       <lj-dialog
-        :visible="village_detail_visible"
+        :visible.sync="village_detail_visible"
         :size="{width: 1200 + 'px',height: 850 + 'px'}"
-        @close="village_detail_visible = false"
       >
         <div class="dialog_container">
           <div class="dialog_header">
