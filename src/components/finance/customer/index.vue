@@ -30,13 +30,15 @@
         <!--<span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">
           <span class="edit" @click="action_status.details_visible=true;action_status.is_check=true">查看</span>
-          <span class="edit"
-                @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
-          <span class="edit" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
-          <span class="edit" style="color: orangered"
-                @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
-              {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
-          </span>
+          <span class="edit" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
+          <!-- 当切换为租房预定时，只展示查看和编辑按钮 -->
+          <div v-show='chooseTab != 3'>
+            <span class="edit" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
+            <span class="edit" style="color: orangered"
+                  @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
+                {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
+            </span>
+          </div>
           <!--<span class="delete" style="color: #CF2E33" @click="action_status.delete_visible=true">删除</span>-->
         </span>
       </div>
@@ -63,6 +65,15 @@
               :current_row_info="current_row">
       </renter>
     </div>
+    <!--租房预定-->
+    <div v-if="chooseTab === 3">
+      <rent-order @getMultipleSelection="getSelectionVal"
+              ref="rentOrder"
+              :searchParams="search_params"
+              :status="action_status"
+              :current_row_info="current_row">
+      </rent-order>
+    </div>
 
     <HouseFilter :visible="commonModule.house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
     <StaffOrgan :module="commonModule.staffModule" @close="hiddenStaff"></StaffOrgan>
@@ -76,11 +87,13 @@
   import SearchHigh from '../../common/searchHigh.vue';
   import lord from './lord/index.vue';
   import renter from './renter/index.vue';
+  import rentOrder from './rent-order/index.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import FinMenuList from '../components/finMenuList.vue';
   import LjSubject from '../../common/lj-subject.vue';
   import LordForm from "./lord/lordForm.vue";
   import renterForm from "./renter/renterForm.vue";
+  import rentOrderForm from "./rent-order/rentOrderForm.vue";
   import {pendingSearchList, lordRenterSearchList} from "../../../assets/js/allSearchData.js";
 
   import StaffOrgan from '../../common/staffOrgan.vue';
@@ -93,12 +106,14 @@
     components: {
       LordForm,
       renterForm,
+      rentOrderForm,
       SearchHigh,
       LjDialog,
       FinMenuList,
       LjSubject,
       lord,
       renter,
+      rentOrder,
       StaffOrgan,
       DepartOrgan,
       PostOrgan,
@@ -113,6 +128,7 @@
         selects: [
           {id: 1, title: '房东',},
           {id: 2, title: '租客',},
+          {id: 3, title: '租房预定'},
         ],
         statusBar: [
           {class: "phone", iconText: "手机"},
@@ -202,9 +218,9 @@
           "cate": "",
         },
         action_status: {//操作条状态
-          delete_visible: false,
-          edit_visible: false,
-          details_visible: false,
+          delete_visible: false, 
+          edit_visible: false,    
+          details_visible: false,  
           is_check: false,
         },
         current_row: '',//选中的行

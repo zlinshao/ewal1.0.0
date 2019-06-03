@@ -319,7 +319,7 @@
   import OverviewInfo from '../../marketCentre/components/overview-info.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
-  import { houseManagementSearch } from '../../../assets/js/allSearchData.js';
+  import { customHouseManagementSearch } from '../../../assets/js/allSearchData.js';
   import MenuList from '../../common/menuList.vue';
   import { customService } from '../../../assets/js/allModuleList.js';
 
@@ -333,7 +333,7 @@
           marginRight: 15 + 'px'
         },
 
-        houseManagementSearch,
+        customHouseManagementSearch,
         customService,
         //房屋详情
         house_detail: '',
@@ -768,7 +768,7 @@
       },
       //打开高级设置
       handleOpenHighSearch() {
-        this.searchData = this.houseManagementSearch;
+        this.searchData = this.customHouseManagementSearch;
         this.isHigh = true;
       },
       //关闭设置

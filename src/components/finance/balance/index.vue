@@ -90,7 +90,7 @@
     <!--结算单详情-->
     <lj-dialog
       :visible="detail_visible"
-      :size="{width: 1200 + 'px',height: 760 + 'px'}"
+      :size="{width: 1200 + 'px',height: 780 + 'px'}"
       @close="detail_visible = false"
     >
       <div class="dialog_container">
@@ -182,17 +182,8 @@
                   ></el-pagination>
                 </div>
               </div>
-              <!-- 图片 selectTab为2-->
-              <div v-if="selectTab===2" class="tab8">
-                <div class="balance-detail-form-info" :class="selectTab===2?'activeBorder':''">
-                  <div class="img-wall">
-                    <div class="balance-detail-img" v-for="(item,index) in imgData">
-                      <img :src="item" alt :key="index">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- 备注-selectTab为3-->
+             
+              <!-- 备注列表selectTab为3-->
               <div v-if="selectTab===3" class="tab8">
                 <div class="dialog_header flex">
                   <h3>备注</h3>
@@ -217,100 +208,49 @@
                     ></el-pagination>
                   </div>
                 </div>
-                <!--新增备注模态框-->
-                <lj-dialog
-                  :visible.sync="new_remark_dialog_visible"
-                  :size="{width: 600 + 'px' ,height: 420 + 'px'}"
-                >
-                  <div class="dialog_container">
-                    <div class="dialog_header">
-                      <h3>新增备注</h3>
-                    </div>
-                    <div class="dialog_main borderNone">
-                      <div class="address" style="margin-bottom: 40px">{{current_row.address}}</div>
-                      <el-form :mode="new_mark" label-width="80px">
-                        <el-form-item label="备注内容">
-                            <div class="textareaBg">
-                                <el-input type="textarea" v-model="new_mark.content" :rows="4"></el-input>
-                            </div>
-                        </el-form-item>
-                      </el-form>
-                    </div>
-                    <div class="dialog_footer">
-                      <el-button size="small" type="danger" @click="addNewRemark">确定</el-button>
-                      <el-button size="small" @click="new_remark_dialog_visible=false;">取消</el-button>
-                    </div>
-                  </div>
-                </lj-dialog>
               </div>
-
-              <!-- 评论-selectTab为4-->
-              <div v-if="selectTab===4" class="tab8">
-                <div class="dialog_header flex">
-                  <h3>评论</h3>
-                  <span class="add_mark" @click="comments_dialog_visible = true;new_comments={}">+</span>
+              <!-- 图片和评论展示 -->
+              <div class="Imgs_comments"  v-if="selectTab===2 || selectTab===4"  >
+                <!-- 图片 selectTab为2-->
+                <div  class="imgs" :class="{activeImgsComments: selectTab!=2}">
+                  <h3>照片</h3>
+                  <div class="img-wall">
+                    <span class="balance-detail-img" v-for="(item,index) in imgData">
+                      <img :src="item" alt :key="index">
+                    </span>
+                  </div>
                 </div>
-                <div class="dialog_main">
-                  <div class="address">{{current_row.address}}</div>
-                  <div class="record">
-                    <div class='comments_content'>
-                      <div v-for="(items,index) in commentsData">
-                        <p>{{items.content.message}} </p>
-                        <div  class="comments_img_video" v-for="(item,i) in items.content.attachmentBody" v-if='items.content.attachmentBody.length!=0||items.content.attachmentBody'>
-                            <div v-if="item && item.info">
-                                <span v-if="item.info.mime =='image'" ><img   :src="item.uri" alt :key="i"></span>
-                                <span v-if="item.info.mime =='video'" ><video :src="item.uri" controls="controls"></video></span>
-                            </div>
+                <!-- 评论-selectTab为4-->
+                <div class="comments"  :class="{activeImgsComments: selectTab!=4}">
+                  <div class="comments_list">
+                    <div class="add_btn">
+                        <h3>评论</h3>
+                        <span class="add_mark_comment" @click="comments_dialog_visible = true;new_comments={}">+</span>
+                    </div>
+                    <div  class="comment_content">
+                      <div v-for="(items,index) in commentsData" class="comment_item">
+                        <div class="comment_basic_info">
+                          <img :src="$storage.get('user_info').avatar" alt="">
+                          <div class="operter_date">
+                            <span>{{$storage.get("user_info").name,}}</span>
+                            <span>{{items.time}}</span>
+                          </div>
+                        </div>
+                        <div class="comment_content_info">
+                          <p>{{items.content.message}} </p>
+                          <div class="comments_img_video">
+                            <span  class="img_video_item" v-for="(item,i) in items.content.attachmentBody" v-if='items.content.attachmentBody||items.content.attachmentBody.length!=0'>
+                                <span v-if="item && item.info">
+                                    <span v-if="item.info.mime =='image'" ><img   :src="item.uri" alt :key="i"></span>
+                                    <span v-if="item.info.mime =='video'" ><video :src="item.uri" controls="controls"></video></span>
+                                </span>
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="page">
-                                    <el-pagination :total=remarkCount layout="total,jumper,prev,pager,next" :current-page="remarkPageParams.page" :page-size="remarkPageParams.limit" @current-change="handleChangeRemarkPage">
-                                    </el-pagination>
-                  </div>-->
                 </div>
-                <!--新增评论模态框-->
-                <lj-dialog
-                  :visible.sync="comments_dialog_visible"
-                  :size="{width: 600 + 'px' ,height: 420 + 'px'}"
-                >
-                  <div class="dialog_container">
-                    <div class="dialog_header">
-                      <h3>新增评论</h3>
-                    </div>
-                    <div class="dialog_main borderNone">
-                      <div class="address" style="margin-bottom: 40px">{{current_row.address}}</div>
-                      <el-form :mode="new_comments" label-width="80px">
-                        <el-form-item label="评论内容">
-                          <div class="textareaBg">
-                              <el-input
-                            style="background-color: #ffffff"
-                            type="textarea"
-                            v-model="new_comments.message"
-                            :rows="4"
-                          ></el-input>
-                          </div>
-                          
-                        </el-form-item>
-                        <el-form-item align="center" label="上传附件">
-                            <div class="upload_imgVideo">
-                                <lj-upload
-                                    v-model="new_comments.attachments"
-                                    size="50"
-                                    :limit-esay="['video','image']"
-                                    class="upload-offset"
-                                ></lj-upload>
-                            </div>
-                        </el-form-item>
-                      </el-form>
-                    </div>
-                    <div class="dialog_footer">
-                      <el-button size="small" type="danger" @click="addNewProcessFun">确定</el-button>
-                      <el-button size="small" @click="comments_dialog_visible=false;">取消</el-button>
-                    </div>
-                  </div>
-                </lj-dialog>
               </div>
             </div>
           </div>
@@ -321,6 +261,8 @@
         </div>
       </div>
     </lj-dialog>
+
+
 
     <!--报销费用项-->
     <lj-dialog
@@ -565,13 +507,82 @@
       </div>
     </lj-dialog>
 
-    <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
-    <DepartOrgan :module="departModule" @close="hiddenDepart"></DepartOrgan>
-    <customer :module="customerModule" @close="hiddenCustomer"></customer>
+    <!--结算单详情页的新增备注模态框-->
+    <lj-dialog
+      :visible.sync="new_remark_dialog_visible"
+      :size="{width: 600 + 'px' ,height: 420 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增备注</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <div class="address" style="margin-bottom: 40px">{{current_row.address}}</div>
+          <el-form :mode="new_mark" label-width="80px">
+            <el-form-item label="备注内容">
+                <div class="textareaBg">
+                    <el-input type="textarea" v-model="new_mark.content" :rows="4"></el-input>
+                </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="addNewRemark">确定</el-button>
+          <el-button size="small" @click="new_remark_dialog_visible=false;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+
+     <!--结算单详情页的新增评论模态框-->
+    <lj-dialog
+      :visible.sync="comments_dialog_visible"
+      :size="{width: 600 + 'px' ,height: 420 + 'px'}"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>新增评论</h3>
+        </div>
+        <div class="dialog_main borderNone">
+          <div class="address" style="margin-bottom: 40px">{{current_row.address}}</div>
+          <el-form :mode="new_comments" label-width="80px">
+            <el-form-item label="评论内容">
+              <div class="textareaBg">
+                  <el-input
+                style="background-color: #ffffff"
+                type="textarea"
+                v-model="new_comments.message"
+                :rows="4"
+              ></el-input>
+              </div>
+              
+            </el-form-item>
+            <el-form-item align="center" label="上传附件">
+                <div class="upload_imgVideo">
+                    <lj-upload
+                        v-model="new_comments.attachments"
+                        size="50"
+                        :limit-esay="['video','image']"
+                        class="upload-offset"
+                    ></lj-upload>
+                </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="addNewProcessFun">确定</el-button>
+          <el-button size="small" @click="comments_dialog_visible=false;">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
     <!-- 结算单详情==》评论==》新增评论==》图片放大查看效果图 -->
     <!-- <el-dialog :visible.sync="uploadDialogVisible">
         <img width="100%" :src="uploadDialogImageUrl" alt="">
-    </el-dialog>-->
+    </el-dialog> -->
+
+    <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
+    <DepartOrgan :module="departModule" @close="hiddenDepart"></DepartOrgan>
+    <customer :module="customerModule" @close="hiddenCustomer"></customer>
+    
   </div>
 </template>
 
@@ -644,12 +655,12 @@ export default {
           title: "款项明细"
         },
         {
-          id: 2,
-          title: "照片"
-        },
-        {
           id: 3,
           title: "备注"
+        },
+        {
+          id: 2,
+          title: "照片"
         },
         {
           id: 4,
@@ -881,15 +892,13 @@ export default {
         this.getBalanceDataLists();
       }
     },
-    selectTabs(id) {
-      //结算单详情tab切换
+    selectTabs(id) { //详情页tab切换
       this.selectTab = id;
-      if (id === 3) {
-        //备注
+      if (id === 3) { //备注
         this.getDetailRemarkListFun();
         // this.getReimburseRemark();
-      } else if (id === 4) {
-        //评论
+      } else if (id === 4) { //评论
+       
         this.getProcessListFun();
       }
     },
@@ -1196,62 +1205,14 @@ export default {
         // this.getSubjectList();
       }
     },
-    /**
-     * 结算单详情页面的备注
-     ***/
-    // 备注列表的获取（lili）
-    getDetailRemarkListFun() {
-      this.$http
-        .get(
-          globalConfig.temporary_server +
-            "customer_settle/remark/" +
-            this.balance_id,
-          this.remarkPageParams
-        )
-        .then(res => {
-          this.showLoading(false);
-          if (res.code === 200) {
-            this.remarkTabelData = res.data.data;
-            this.remarkCount = res.data.count; //总条数
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    // 备注分页
-    handleChangeRemarkPage(page) {
-      this.remarkPageParams.page = page;
-      this.getDetailRemarkListFun();
-    },
-    // 新增备注(lili)
-    addNewRemark() {
-      this.$http
-        .post(
-          globalConfig.temporary_server +
-            "customer_settle/remark/" +
-            this.balance_id,
-          this.new_mark
-        )
-        .then(res => {
-          this.showLoading(false);
-          if (res.code === 200) {
-            this.new_remark_dialog_visible = false;
-            this.getDetailRemarkListFun();
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
 
-    /**
-     * 结算单详情页面的评论
+
+     /**
+     * 详情页面的评论(每个页面的评论接口都一致)
      ***/
     // 评论的内容回显(lili)
     getProcessListFun() {
-      axios
-        .get(
+      axios.get(
           `${globalConfig.approval_sever}history/process-instances/${
             this.current_row.flow_id
           }/comments`
@@ -1266,6 +1227,8 @@ export default {
           console.log(err);
         });
     },
+
+
     // 新增评论（lili）
     addNewProcessFun() {
       let params = {
@@ -1290,7 +1253,73 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
+
+    /**
+     * 详情页面的备注列表，每个页面的备注接口不一样
+     ***/
+    // 备注列表的获取（lili）
+    getDetailRemarkListFun() {
+      let interfaceName=''
+      if(this.chooseTab== 4){ //结算单备注列表接口
+        interfaceName='customer_settle';    
+      }else if(this.chooseTab== 5){  //报销单备注列表接口
+        interfaceName='customer_reimburse';  
+      }
+      this.$http
+        .get(
+          globalConfig.temporary_server +interfaceName+
+            "/remark/" +
+            this.balance_id,
+          this.remarkPageParams
+        )
+        .then(res => {
+          this.showLoading(false);
+          if (res.code === 200) {
+            this.remarkTabelData = res.data.data;
+            this.remarkCount = res.data.count; //总条数
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    // 备注分页
+    handleChangeRemarkPage(page) {
+      this.remarkPageParams.page = page;
+      this.getDetailRemarkListFun();
+    },
+
+
+    // 新增备注(lili)
+    addNewRemark() {
+       let interfaceName=''
+      if(this.chooseTab== 4){ //结算单备注新增接口
+        interfaceName='customer_settle';    
+      }else if(this.chooseTab== 5){  //报销单备注接口
+        interfaceName='customer_reimburse';  
+      }
+      this.$http
+        .post(
+          globalConfig.temporary_server +interfaceName+
+            "/remark/" +
+            this.balance_id,
+          this.new_mark
+        )
+        .then(res => {
+          this.showLoading(false);
+          if (res.code === 200) {
+            this.new_remark_dialog_visible = false;
+            this.getDetailRemarkListFun();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+   
   }
 };
 </script>

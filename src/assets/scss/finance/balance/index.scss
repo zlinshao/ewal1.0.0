@@ -103,10 +103,10 @@
                     //         }
                     //     }
                     // }
-                    // .activeBorder {
-                    //     border: 1px solid #f56c6c;
-                    //     border-radius: 5px;
-                    // }
+                    .activeBorder {
+                        border: 1px solid #f56c6c;
+                        border-radius: 5px;
+                    }
                 }
                 .add_mark {
                     width: 30px;
@@ -208,6 +208,121 @@
             color: #ffffff;
             font-style: normal;
             font-size: 20px;
+        }
+        // 照片、评论的列表样式
+        .Imgs_comments {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            // 照片
+            .imgs {
+                // 图片展示
+                width: 30%;
+                margin-left: 5%;
+                border: 1px solid #f56c6c;
+                border-radius: 5px;
+                background-color: #ffffff;
+                background: #ffffff;
+                h3 {
+                    padding: 10px 10px 10px 40px;
+                    text-align: left;
+                }
+                .img-wall {
+                    height: 440px;
+                    overflow-y: scroll;
+                    .balance-detail-img {
+                        display: inline-block;
+                        padding: 10px;
+                        img {
+                            width: 50px;
+                            height: 50px;
+                        }
+                    }
+                }
+            }
+            // 评论
+            .comments {
+                width: 50%;
+                border: 1px solid #f56c6c;
+                border-radius: 5px;
+                background-color: #ffffff;
+                margin-right: 5%;
+                .comments_list {
+                    color: rgba(104, 104, 116, 1);
+                    margin-left: 40px;
+                    .add_btn {
+                        text-align: right;
+                        padding: 10px 10px 10px 0;
+                        display: flex;
+                        justify-content: space-between;
+                        .add_mark_comment {
+                            display: inline-block;
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 5px;
+                            background-color: #cf2e33;
+                            font-size: 20px;
+                            color: white;
+                            cursor: pointer;
+                            text-align: center;
+                        }
+                    }
+                    .comment_content {
+                        height: 440px;
+                        overflow-y: scroll;
+                        .comment_item {
+                            margin-top: 40px;
+                            .comment_basic_info {
+                                display: flex;
+                                justify-content: flex-start;
+                                img {
+                                    width: 40px;
+                                    height: 40px;
+                                    border-radius: 40px;
+                                }
+                                .operter_date {
+                                    margin-left: 20px;
+                                    span {
+                                        display: block;
+                                        font-size: 12px;
+                                        color: rgba(0, 0, 0, 1);
+                                        text-align: left;
+                                    }
+                                    span:nth-child(2) {
+                                        font-size: 14px;
+                                        color: rgba(155, 155, 155, 1)
+                                    }
+                                }
+                            }
+                            .comment_content_info {
+                                margin-left: 60px;
+                                margin-top: 10px;
+                                p {
+                                    font-size: 14px;
+                                    text-align: left;
+                                    margin-bottom: 10px;
+                                }
+                                .comments_img_video {
+                                    text-align: left;
+                                    .img_video_item {
+                                        padding-right: 10px;
+                                    }
+                                    video,
+                                    img {
+                                        width: 40px;
+                                        height: 40px;
+                                        background-size: cover;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // 被选中时，去除红色边框
+            .activeImgsComments {
+                border-color: #fff;
+            }
         }
     }
 }
