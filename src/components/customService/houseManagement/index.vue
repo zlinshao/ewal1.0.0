@@ -54,7 +54,9 @@
                 <div class="title flex-center">
                   <div class="flex">
                     <span class="address">{{ current_house.name }}</span>
-                    <span class="mark"></span>
+                    <span :class="['noticeIcon_' + current_house.warning_status]" ></span>
+                     <!-- <span class="noticeIcon_2"></span>
+                     <span class="mark"></span> -->
                   </div>
                   <div style="text-align: right">
                     <span class="look" @click="handleLookInfo"></span>
@@ -918,6 +920,19 @@
                     }
                     .mark {
                       @include houseManagementImg('hs.png', 'theme1');
+                    }
+                     // 预警
+                    .noticeIcon_2{    //黄色预警
+                      @include houseManagementImg('hs.png','theme1');
+                      background-size: contain;
+                    }
+                    .noticeIcon_3{  //橙色预警
+                    @include houseManagementImg('cs.png','theme1');
+                      background-size: contain;
+                    }
+                    .noticeIcon_4{  //红色预警
+                      @include houseManagementImg('hhs.png','theme1');
+                      background-size: contain;
                     }
                     .look {
                       @include houseManagementImg('look.png', 'theme1');

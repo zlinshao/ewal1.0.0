@@ -14,7 +14,12 @@
                     <div class="btn" @click.stop="handleOpenControl(item.id)">...</div>
                     <div class="house_type">{{ item.decorate }}</div>
                   </div>
-                  <span class="mark" :class="{'marked' : item.quality === 1}"></span>
+                  <!-- 标记图标 -->
+                  <div v-show="item.quality == 0 || item.quality == 1 || item.quality == 2">
+                    <el-tooltip  content="取消标记">
+                      <span class="mark marked"  @click="openRemarkCancel()"></span>
+                    </el-tooltip>
+                  </div>
                 </div>
                 <div class="info">
                   <span class="address">{{ item.name }}</span>
@@ -25,7 +30,8 @@
                   </div>
                   <div class="notice_info flex-center">
                     <span class="notice-type">{{ item.house_status_name }}</span>
-                    <span :class="['announcement-' + item.warning_status ]" class="notice"></span>
+                    <!-- <span :class="['announcement-' + item.warning_status ]" class="notice"></span> -->
+                    <span :class="['noticeIcon-' + item.warning_status ]" class="notice"></span>
                   </div>
                 </div>
                 <div class="control flex-center" v-if="show_control === item.id ">
@@ -175,6 +181,25 @@
           </div>
         </div>
       </lj-dialog>
+      <!--取消标记弹框-->
+        <!-- <lj-dialog
+        :visible="cancel_remark_visible"
+        :size="{width: 500 + 'px',height: 400 + 'px'}"
+        @close="handleCancelAddCheck"
+      >
+          <div v-show="cancel_remark_visible" >
+            <div class="global_message" >
+              <div class="notify_icon" :class="['notify_icon__warning' ]"></div>
+              <div class="notify_title" :class="['notify_title__warning' ]">{{ "警告" }}</div>
+              <div class="message">{{ "你确定取消低质量标记吗？" }}</div>
+              <div class="dialog_footer">
+                <el-button type="danger" size="small" @click="handleConfirmMark">确定</el-button>
+                <el-button type="info" size="small" @click="handleCancelMark">取消</el-button>
+              </div>
+            </div>
+          </div>
+      
+      </lj-dialog> -->
 
       <!--行政检查-->
       <lj-dialog
@@ -311,7 +336,10 @@
                 quality: 1,
                 quality_cause: '',
                 quality_content: '',
-              }
+              },
+              // 取消标记
+              cancel_remark_visible:false, //取消标记弹框是否展示
+
             }
         },
         mounted() {
@@ -406,6 +434,7 @@
             })
           },
           handleCancelMark() {
+            // 清空标记内容
             for (let key in this.mark_form) {
               this.mark_form[key] = '';
             }
@@ -454,7 +483,6 @@
           },
           //上传回调
           handleSuccessUpload(item) {
-            debugger
             if (item !== 'close') {
               this.upload_form[item[0]] = item[1];
             }
@@ -534,6 +562,21 @@
             this.params.page = page;
             this.$emit('change',page);
           },
+          // 取消标记
+          openRemarkCancel(){
+             this.$LjConfirm({
+              title:'警告',
+              icon:'delete',
+              content:'确定案例',
+            }).then(()=> {
+              //操作完后，列表返回的还在当前页，而不是第一页
+              this.$emit('change',this.params.page);
+                alert('去顶');
+            }).catch(()=> {
+              alert("取消");
+            });
+          },
+
         },
     }
 </script>
@@ -544,7 +587,6 @@
     $url: '../../../assets/image/marketCentre/' + $n + '/' + $m;
     @include bgImage($url);
   }
-
   #houseCard {
     > div {
       .content {
@@ -556,7 +598,6 @@
           }
         }
         .card {
-
           .photo {
             .bg {
               @include marketCentreImg('bk.png','theme1');
@@ -608,6 +649,19 @@
                 @include marketCentreImg('hs.png','theme1');
                 background-size: contain;
               };
+              // 预警
+              .noticeIcon-2{    //黄色预警
+                @include marketCentreImg('hs.png','theme1');
+                background-size: contain;
+              }
+               .noticeIcon-3{  //橙色预警
+               @include marketCentreImg('cs.png','theme1');
+                background-size: contain;
+              }
+               .noticeIcon-4{  //红色预警
+                @include marketCentreImg('hhs.png','theme1');
+                background-size: contain;
+              }
             }
           }
           .control {
