@@ -656,6 +656,7 @@
           switch (this.user_type) {
             case 'filter':
               this.village_params.org_id = id[0];
+              name = name||'选部门';
               this.address_filter[3].val = name;
               this.getVillageList();
               break;

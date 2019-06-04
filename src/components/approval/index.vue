@@ -359,7 +359,7 @@
             if (item.endTime) {
               obj.isfinish = true
               if (this.status_type == 2) {
-                let title = JSON.parse(obj.outcome).variableName
+                let title = JSON.parse(obj.outcome||{}).variableName;
                 for (let key of item.variables) {
                   if (key.name == title) {
                     obj.status = key.value ? "已通过" : "已拒绝"
@@ -504,7 +504,7 @@
       handleDbClick(row) {
         let url = row.bm_detail_request_url;
         if (!url) {
-          this.$LjMessage('warning', {title: '警告', msg: '无详情地址'});
+          this.$LjMessage('warning', {title: '警告', msg: '无接口详情url'});
           return;
         }
         // row.bm_detail_request_url = '';

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LjDialog :visible="visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleClose">
+    <lj-dialog :visible="visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleClose">
       <div class='dialog_container' id='form_detail' v-if='visible && moduleData'>
         <div class='dialog_header'>{{formData.house_address}}</div>
         <div class='dialog_main' id='form_dialog'>
@@ -24,7 +24,7 @@
               </el-row>
               <template v-else>
                 <!-- 可增加或者减少 -->
-                <el-row :gutter='10' v-for='(cell,cellIndex) in form' :key='cell.keyName' v-if='cell.type == "change"'>
+                <!--<el-row :gutter='10' v-for='(cell,cellIndex) in form' :key='cell.keyName' v-if='cell.type == "change"'>
                   <el-col :span='cell.formSpan || formSpan' v-for='(child,child_index) in cell.children' :key='child_index'>
                     <el-form-item :label='col.label' v-for='(col,col_index) in child' :key='col_index'>
                       <el-input :type='col.typeStatus' v-model='formData[cell.keyName][child_index][col.keyName]'
@@ -43,7 +43,7 @@
                       <span>{{child_index==0?"增加":"删除"}}</span>
                     </div>
                   </el-col>
-                </el-row>
+                </el-row>-->
 
                 <!-- 正常表单 -->
                 <el-row :gutter='10' v-if='form.type != "change"'>
@@ -89,7 +89,7 @@
                       </template>
 
                       <template v-if='cell.type == "upload"'>
-                        <Ljupload size='40' v-model='formData[cell.keyName]'></Ljupload>
+                        <lj-upload size='40' v-model='formData[cell.keyName]'></lj-upload>
                       </template>
                     </el-form-item>
                   </el-col>
@@ -100,26 +100,22 @@
 
         </div>
         <div class='dialog_footer'>
-          <el-button type="danger" size="small" @click='handlerSure'>确定</el-button>
+          <el-button type="danger" size="small" @click='handleSure'>确定</el-button>
           <el-button type="info" size="small">取消</el-button>
         </div>
       </div>
-    </LjDialog>
+    </lj-dialog>
 
   </div>
 </template>
 
 <script>
-import LjDialog from '../../common/lj-dialog.vue';
 import VillageContainer from '../../customService/village/components/village-container.vue';
-import Ljupload from '../../common/lightweightComponents/lj-upload'
 
 export default {
   props: ['visible', 'moduleData'],
   components: {
-    LjDialog,
     VillageContainer,
-    Ljupload,
   },
   data () {
     return {
@@ -193,7 +189,7 @@ export default {
       this.defineReport[slither][cellIndex].children.splice(childIndex, 1)
     },
     handleClose () { },
-    handlerSure () {
+    handleSure () {
       console.log(this.formData)
     },
     getDetailForm () {

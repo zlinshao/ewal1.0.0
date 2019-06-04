@@ -26,6 +26,17 @@
                           </div>
                         </el-checkbox-group>
                       </div>
+
+                      <div
+                        class="flex-center"
+                        v-loading="fullLoading"
+                        element-loading-text="拼命加载中"
+                        element-loading-spinner="el-icon-loading"
+                        element-loading-background="rgba(255, 255, 255, 0)">
+                        <div v-if="house_resource.length < 1 && !fullLoading">无相关数据</div>
+                      </div>
+
+
                     </div>
                   </div>
                   <div class="right_container">
@@ -103,6 +114,14 @@
                             </el-checkbox>
                           </div>
                         </el-checkbox-group>
+                        <div
+                          class="flex-center"
+                          v-loading="fullLoading"
+                          element-loading-text="拼命加载中"
+                          element-loading-spinner="el-icon-loading"
+                          element-loading-background="rgba(255, 255, 255, 0)">
+                          <div v-if="office_resource.length < 1 && !fullLoading">无相关数据</div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -163,6 +182,9 @@
     data() {
       return {
         market_server: globalConfig.market_server,
+
+        fullLoading:false,//加载
+
         dialog_visible: false,
         activeName: 'first',
         show_search: false,
@@ -313,8 +335,12 @@
 
       //获取房屋
       getHouseList() {
+        this.fullLoading = true;
+        this.house_resource = [];
+        this.office_resource = [];
         if(this.activeName =='first') {
           this.$http.get(this.market_server + '/v1.0/market/house/searchVH',this.params).then(res => {
+            this.fullLoading = false;
             if (res.code === 200) {
               this.house_resource = res.data.data;
               this.house_count = res.data.count;
@@ -325,6 +351,7 @@
           })
         }else {
           this.$http.get(this.market_server + 'v1.0/market/community',this.village_params).then(res => {
+            this.fullLoading = false;
             if (res.code === 200) {
               this.office_resource = res.data.data;
               this.house_count = res.data.count;
