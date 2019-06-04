@@ -629,6 +629,7 @@ export default {
         }
       }*/
       let params = {
+        contract_type:this.contract_type,
         task_id: this.complete.task_id,
         data: {
           [this.complete.key_name]:isTrue,

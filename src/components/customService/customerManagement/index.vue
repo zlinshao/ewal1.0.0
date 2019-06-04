@@ -398,13 +398,15 @@
         current_detail: '',
         activeName: 'first',
         customer_type: '',
+
+        isLoading: false,
       }
     },
-    mounted() {
+    async mounted() {
       this.params = Object.assign({},this.params,{
         type: this.chooseTab
       });
-      this.getCustomerList();
+      await this.getCustomerList();
     },
     watch: {},
     computed: {},
@@ -417,14 +419,14 @@
         this.detail_visible = false;
       },
       handleSubmitMoveOut() {
-        this.$http.delete(this.market_server + `v1.0/market/customer/remove-black/${this.move_row.id}`).then(res => {
+        this.$http.delete(this.market_server + `v1.0/market/customer/remove-black/${this.move_row.id}`).then(async res => {
           if (res.code === 200) {
             this.$LjNotify('success',{
               title: '成功',
               message: res.message
             });
             this.move_out_visible = false;
-            this.getCustomerList();
+            await this.getCustomerList();
           } else {
             this.$LjNotify('warning',{
               title: '失败',
@@ -440,15 +442,13 @@
       handleCloseMenu() {
         this.show_market = false;
       },
-      handleCloseHigh(val) {
+      async handleCloseHigh(val) {
         if (val !== 'close') {
-          debugger
-          console.log(val);
           //this.params = Object.assign({},this.params,val);
           this.params = {...this.params,...val};
           this.params.org_id = val.org_id.length==1?val.org_id[0]:'';
           this.params.user_id = val.user_id.length==1?val.user_id[0]:'';
-          this.getCustomerList();
+          await this.getCustomerList();
         }
         this.highVisible = false;
       },
@@ -526,14 +526,14 @@
         this.$http.post(this.market_server + 'v1.0/market/customer/black',{
           customer_id: this.currentRow.id,
           remark: this.remark
-        }).then(res => {
+        }).then(async res => {
           if (res.code === 200) {
             this.$LjNotify('success',{
               title: '成功',
               message: res.message
             });
             this.handleCancelMoveBlack();
-            this.getCustomerList();
+            await this.getCustomerList();
           } else {
             this.$LjNotify('warning',{
               title: '失败',
@@ -544,10 +544,15 @@
       },
       //列表
       async getCustomerList() {
+        if(this.isLoading) {
+          this.$LjMessage('warning',{title:'警告',msg:'加载中..请稍后重试'});
+          return;
+        }
         this.showLoading(true);
+        this.isLoading = true;
         await this.$http.get(this.market_server + 'v1.0/market/customer',this.params).then(res => {
-          //console.log(res);
           this.showLoading(false);
+          this.isLoading = false;
           if (res.code === 200) {
             if(this.params.type==3||this.params.is_black==1) {//处理综合页数据
               res.data.data = _.forEach(res.data.data,(o)=> {
@@ -598,7 +603,11 @@
         }
       },
       //tab切换
-      changeTabs(id) {
+      async changeTabs(id) {
+        if(this.isLoading) {
+          this.$LjMessage('warning',{title:'警告',msg:'加载中..请稍后重试'});
+          return;
+        }
         this.chooseTab = id;
         this.params.search = '';
         let obj = {};
@@ -613,12 +622,12 @@
           this.params = {...this.params,...obj};
         }
         //this.params = {...this.params,...obj};
-        this.getCustomerList();
+        await this.getCustomerList();
       },
       //分页
-      handleChangePage(page) {
+      async handleChangePage(page) {
         this.params.page = page;
-        this.getCustomerList();
+        await this.getCustomerList();
       },
     },
   }
