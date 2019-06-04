@@ -66,9 +66,9 @@
           <div class="dialog_header">
             <h3>跟进记录</h3>
           </div>
-          <div class="dialog_main">
+          <div class="dialog_main borderNone">
             <el-form class="showPadding">
-              <el-form-item label="跟进内容">
+              <!-- <el-form-item label="跟进内容">
                 <div class="items-center">
                   <p class="radioSelection" @click="chooseRadioContent(item)"
                      :class="{'highChoose': follow_form.follow_content === item.id}"
@@ -76,8 +76,14 @@
                     {{item.value}}
                   </p>
                 </div>
+              </el-form-item> -->
+              <el-form-item label="跟进内容" label-width="80px">
+                <el-input v-model="follow_form.suggest_price" placeholder="请输入跟进内容"></el-input>
               </el-form-item>
-              <el-form-item label="调整预警">
+                <el-form-item label="应对方案" label-width="80px">
+                <el-input v-model="follow_form.suggest_price" placeholder="请输入应对方案"></el-input>
+              </el-form-item>
+              <el-form-item label="调整预警" label-width="80px">
                 <div class="items-center">
                   <p class="radioSelection" @click="chooseRadioNotice(item)"
                      :class="{'highChoose': follow_form.warning_status === item.id}"
@@ -86,7 +92,7 @@
                   </p>
                 </div>
               </el-form-item>
-              <el-form-item label="上传照片">
+              <el-form-item label="上传照片" label-width="80px">
                 <lj-upload size="50" :limit-easy="['image']" v-model="upload_form.album"></lj-upload>
               </el-form-item>
             </el-form>
@@ -488,9 +494,10 @@
             }
           },
           //跟进
-          chooseRadioContent(item) {
-            this.follow_form.follow_content = item.id;
-          },
+          // chooseRadioContent(item) {
+          //   this.follow_form.follow_content = item.id;
+          // },
+          // 跟进==调整预警
           chooseRadioNotice(item) {
             this.follow_form.warning_status = item.id;
           },
