@@ -115,7 +115,8 @@
       demo() {
         this.$LjConfirm(
           {
-            icon: 'success'
+            //icon: 'success',
+            content:'员工禁用状态将会改变，是否继续？'
           }
         ).then(() => {
           console.log('删除成功');

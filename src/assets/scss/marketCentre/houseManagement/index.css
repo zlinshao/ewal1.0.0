@@ -255,7 +255,8 @@
   margin-left: 20px;
   font-size: 30px;
 }
-#theme_name #houseManagement > div .header span.set, #theme_name #houseManagement > div .header span.search {
+#theme_name #houseManagement > div .header span.set,
+#theme_name #houseManagement > div .header span.search {
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -366,6 +367,13 @@
   font-size: 18px;
 }
 #theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div .mark {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+#theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div .noticeIcon_2,
+#theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div .noticeIcon_3,
+#theme_name #houseManagement > div .house_info .base_info .house_detail .easy_info .title > div .noticeIcon_4 {
   width: 20px;
   height: 20px;
   vertical-align: middle;
@@ -487,7 +495,8 @@
 #theme_name #houseManagement > div .look-info .txt {
   font-size: 14px;
 }
-#theme_name #houseManagement > div .price_min_container > div:first-child, #theme_name #houseManagement > div .suggest_price_container > div:first-child {
+#theme_name #houseManagement > div .price_min_container > div:first-child,
+#theme_name #houseManagement > div .suggest_price_container > div:first-child {
   width: 120px;
   height: 30px;
   margin: 0 auto;

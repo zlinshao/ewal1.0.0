@@ -58,11 +58,6 @@
       },
       icon: {
         handler(val, oldVal) {
-          if (val == 'delete') {
-            this.iconTip = "删除";
-            this.iconTipColor = "#cf2e33";
-          }
-
           switch (val) {
             case "delete":
               this.iconTip = "删除";
