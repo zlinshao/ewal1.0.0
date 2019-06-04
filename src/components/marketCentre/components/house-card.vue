@@ -384,7 +384,9 @@
             }).then(res => {
               this.handleSuccess(res);
               this.handleCancelUpload();
-              this.$emit('change',1);
+              //操作完后，列表返回的还在当前页，而不是第一页
+              // this.$emit('change',1);
+              this.$emit('change',this.params.page);
             })
           },
           handleCancelUpload() {
@@ -406,7 +408,9 @@
             for (let key in this.mark_form) {
               this.mark_form[key] = '';
             }
-            this.$emit('change',1);
+            //操作完后，列表返回的还在当前页，而不是第一页
+            // this.$emit('change',1);
+            this.$emit('change',this.params.page);
             this.mark_visible = false;
           },
           chooseRadioMark(item) {
@@ -428,7 +432,9 @@
               this.setPriceForm[key] = '';
             }
             this.setPriceVisible = false;
-            this.$emit('change',1);
+            //操作完后，列表返回的还在当前页，而不是第一页
+            // this.$emit('change',1);
+            this.$emit('change',this.params.page);
           },
           //成功回调
           handleSuccess(res) {
@@ -493,7 +499,9 @@
               this.follow_form[key] = -1;
             }
             this.follow_up_visible = false;
-            this.$emit('change',1);
+            //操作完后，列表返回的还在当前页，而不是第一页
+            // this.$emit('change',1);
+            this.$emit('change',this.params.page);
           },
           //点击操作
           handleOpenModule(tmp,item) {
@@ -505,6 +513,7 @@
             this.mark_visible = tmp.id === 4;
             this.check_visible = tmp.id === 5;
           },
+          // 提交到父页面打开详情的事件
           handleOpenCard(item) {
             this.$emit('open',item);
           },

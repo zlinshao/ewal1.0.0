@@ -384,7 +384,7 @@
           decoration: [],
           quality:[],//质量
           area: [],
-          suggestPrice: [],
+          suggest_price: [],
           quality: [],
           house_identity: []
         },
@@ -670,6 +670,7 @@
 
         }
       },
+      // 房源列表的分页
       handleChangePage(page) {
         this.house_params.page = page;
         this.getHouseResource();
@@ -803,7 +804,7 @@
         });
       },
 
-      //打开房屋详情
+      //双击列表打开房屋详情
       handleOpenCardDetail(item) {
         this.current_house = item;
         this.$http.get(this.market_server + `/v1.0/market/house/detail/${item.id}`).then(res => {
