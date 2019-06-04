@@ -24,9 +24,12 @@
         header-row-class-name="tableHeader" style="width: 100%">
         <el-table-column v-for="item in Object.keys(tableShowDate)" :key="item" align="center" :prop="item" :label="tableShowDate[item]">
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column width="200" label="操作" align="center">
           <template slot-scope="scope">
-            <el-button id='active-success' size="mini" @click.stop="handleAddRecord(scope.row)">新增回访记录</el-button>
+            <div class="flex-center">
+              <el-button id='active-success' size="mini" @click.stop="handleAddRecord(scope.row)">新增回访记录</el-button>
+              <el-button id='active-danger' v-if="scope.row.revist_id&&accessTab!==4" size="mini" @click.stop="completeRecord(scope.row)">完成</el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -99,6 +102,34 @@
               </el-row>
             </el-col>
           </el-row>
+
+          <el-row :gutter="20" class='add_record_form'>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='satisfied'>
+              <p><i class='icon'></i>中介名称</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_name" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='note'>
+              <p><i class='icon'></i>中介价格</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_price" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='note'>
+              <p><i class='icon'></i>中介人</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_user" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='note'>
+              <p><i class='icon'></i>中介电话</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_phone" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+          </el-row>
+
 
           <el-row :gutter="20" class='add_record_form'>
             <el-col v-if="recordOption.is_connect==1" :span="6" class='satisfied'>
@@ -193,7 +224,7 @@
                   </div>
                   <div>
                     <span class='tit'>合同状态</span>
-                    <span class="content">{{recordDetail | contractStatusFormate}}</span>
+                    <span class="content">{{recordDetail | contractStatusFormat}}</span>
                   </div>
                   <div>
                     <span class='tit'>回访状态</span>
@@ -390,7 +421,10 @@ export default {
         from: '',
         star: null,
         record: '',
-
+        agent_name:null,//中介名称
+        agent_price:null,//中介价格
+        agent_user:null,//中介人
+        agent_phone:null,//中介电话
       },
       other_free: [{
         name: null,
@@ -398,7 +432,7 @@ export default {
       }],
       //暂存 点击row
       currentRow: null,
-      market_server: globalConfig.market_server,
+      url: globalConfig.market_server,
       dataAblum: {
         identity_photo: '证件照片',
         bank_photo: '银行卡照片',
@@ -424,7 +458,7 @@ export default {
     this.getRecordList()
   },
   filters: {
-    contractStatusFormate (item) {
+    contractStatusFormat (item) {
       const { start_at, end_at, end_real_at, end_type } = item
       let startAt = new Date(start_at).getTime(),
         endAt = new Date(end_at).getTime(),
@@ -448,12 +482,24 @@ export default {
     }
   },
   methods: {
+
+    //完成回访
+    completeRecord(row) {
+      let revist_id = row.revist_id||null;//回访id
+      if(!revist_id) return;
+      this.$http.put(`${this.url}/v1.0/csd/revisit/${revist_id}`).then(res=> {
+        this.$LjNotifyEasy(res,()=> {
+          this.getRecordList();
+        });
+      });
+    },
+
     //初始化数据
     getRecordList () {
       this.showLoading(true);
       this.params.type = this.chooseTab
       this.params.status = this.accessTab
-      this.$http.get(this.market_server + 'v1.0/csd/revisit', this.params).then(res => {
+      this.$http.get(this.url + 'v1.0/csd/revisit', this.params).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.data;
           this.tableDateCount = res.data.count;
@@ -527,7 +573,7 @@ export default {
     handleAddRecord (row) {
       this.recordOption.contract_id = row.con_id
       this.recordOption.contract_number = row.contract_number
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
+      this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
           res.data.album_temp = JSON.parse(res.data.album_temp)
           this.recordDetail = res.data
@@ -580,7 +626,7 @@ export default {
         recordOption.other_free = ''
       }
 
-      this.$http.post(this.market_server + 'v1.0/csd/revisit', recordOption).then(res => {
+      this.$http.post(this.url + 'v1.0/csd/revisit', recordOption).then(res => {
         if (res.code === 200) {
           this.$LjNotify('success', {
             title: '成功',

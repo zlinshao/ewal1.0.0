@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="items-center listTopRight">
-          <el-button size="small" style="width: 80px" type="success" plain @click="handleAllotVillage">分配</el-button>
+          <el-button size="small" style="width: 80px" :disabled="current_check_village.length == 0" type="success" plain @click="handleAllotVillage">分配</el-button>
           <el-button size="small" style="width: 80px" type="primary" plain @click="handleMergeVillage">合并</el-button>
           <div class="sort-control flex-center">
             <span @click="handleChangeSort(item)" v-for="item in sort_list" :key="item.id + 1" :class="{'current-choose': current_sort === item.id }">{{ item.val }}</span>
@@ -148,7 +148,7 @@
                 <el-input v-model="allot_village_params.village_name" readonly></el-input>
               </el-form-item>
               <el-form-item label="分配部门">
-                <el-input readonly v-model="allot_village_params.depart_name" @focus="handleOpenDepart('allot')"></el-input>
+                <org-choose v-model="allot_village_params.org_id" width="310" num="1"></org-choose>
               </el-form-item>
             </el-form>
           </div>
@@ -484,21 +484,14 @@
       },
       //合并小区
       handleConfirmMerge() {
-        this.$http.put(this.http_server + `v1.0/market/community/merge/${this.merge_form.id}`,this.merge_form).then(res => {
-          if (res.code === 200) {
-            this.$LjNotify('success',{
-              title: '成功',
-              message: res.message
-            });
-            this.is_control = '';
-            this.getVillageList();
-          } else {
-            this.$LjNotify('warning',{
-              title: '失败',
-              message: res.message
+        this.$LjConfirm({content:'确定合并吗？'}).then(()=> {
+          this.$http.put(this.http_server + `v1.0/market/community/merge/${this.merge_form.id}`,this.merge_form).then(res => {
+            this.$LjMessageEasy(res,()=> {
+              this.is_control = '';
+              this.getVillageList();
             })
-          }
-        })
+          })
+        });
       },
       handleOpenMergeVillage(type) {
         this.is_control = type;
@@ -665,10 +658,6 @@
               this.village_params.org_id = id[0];
               this.address_filter[3].val = name;
               this.getVillageList();
-              break;
-            case 'allot':
-              this.allot_village_params.org_id[0] = id[0];
-              this.allot_village_params.depart_name = name;
               break;
           }
         }
@@ -939,6 +928,18 @@
     },
   }
 </script>
+
+<style lang="scss">
+  #village {
+    .listTopCss {
+      .el-button--success {
+        &.is-disabled {
+          color: #C9C9C9;
+        }
+      }
+    }
+  }
+</style>
 
 <style lang="scss" scoped>
   @import "../../../assets/scss/customService/village/index.scss";

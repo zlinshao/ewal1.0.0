@@ -226,8 +226,9 @@
         receive_type: {},//接收类型
       }
     },
-    mounted() {
-      this.getApprovalTypeList();
+    async mounted() {
+      await this.getApprovalTypeList();
+      await this.getChoseApprovalTypeList();
     },
     computed: {
       message_visible() {
@@ -250,13 +251,26 @@
       }
     },
     methods: {
+
+      //获取已选择的审核类型
+      async getChoseApprovalTypeList() {
+        await axios.get(`${this.url}monitor/process-instances/${this.$storage.get('user_info').id}`).then(res=> {
+          if(res.status==200) {
+            let data = res.data;
+            _.forEach(data,(o)=> {
+              this.receive_check.push(o.receiveType);
+              this.receive_check_name.push(this.receive_type[o.receiveType]);
+            });
+          }
+        });
+      },
+
       /*获取高级搜索审核类型*/
-      getApprovalTypeList() {
+      async getApprovalTypeList() {
         let params = {
           tenantId: 'market',
         };
-        axios.get(`${this.url}history/process-defintion-map`,{params: {tenantId: 'market'}}).then(res=> {
-          //debugger
+        await axios.get(`${this.url}history/process-defintion-map`,{params: {tenantId: 'market'}}).then(res=> {
           if(res.status==200) {
             let data = res.data;
             _.forEach(data,(val,key)=> {
@@ -275,7 +289,6 @@
           }
         });
         /*this.$http.get(`${this.url}history/process-defintion-map`,params).then(res=> {
-          debugger
         });*/
       },
 
@@ -319,7 +332,6 @@
       },
       // 接口请求
       getApproval(url, params, val) {  // page分页
-        debugger
         //this.showLoading(true);
         this.$http.get(`${this.url}${url}`, params).then(res => {
           //this.showLoading(false);
@@ -382,7 +394,7 @@
         this.searchHigh = {
           status: 'approval_leader',
           placeholder: '',
-          keywords: 'search',
+          keywords: 'title',
           data: [
             {
               keyType: 'dateRange',
@@ -422,7 +434,6 @@
       },
       // 高级搜索 确定
       hiddenModule(val) {
-        debugger
         if(val.orgId&&val.orgId.length==1) {//部门高级搜索
           val.orgId = val.orgId[0];
         }
