@@ -3,13 +3,18 @@
     <div class="app-more">
       <slot></slot>
     </div>
-    <div class="module-list-container" style="width: 100px">
+    <div v-if="type=='hover'" class="module-list-container" style="width: 100px">
       <el-card>
         <div class="module-list">
           <div class="module-item" @click="routerJump(item)" v-for="item in routerList"><span>{{item.name}}</span></div>
-          <!--<div class="module-item"><span @click="routerLink('/discussPolitics')">新建会议</span></div>
-          <div class="module-item"><span @click="routerLink('/noticeQuestionnaire/notice')">新建公告</span></div>
-          <div class="module-item"><span @click="routerLink('/noticeQuestionnaire/questionnaire')">新建问卷</span></div>-->
+        </div>
+      </el-card>
+    </div>
+
+    <div v-else class="module-list-container-click" :class="{checked:show}" style="width: 100px">
+      <el-card>
+        <div class="module-list">
+          <div class="module-item" @click="routerJump(item)" v-for="item in routerList"><span>{{item.name}}</span></div>
         </div>
       </el-card>
     </div>
@@ -32,12 +37,28 @@
           return [];
         }
       },
+      type: {
+        type:String,
+        default:"hover",
+      },
+
+      show: {
+        type:Boolean,
+      },
+
     },
     watch: {
+      show: {
+        handler(val,oldVal) {
+          this.$emit('update:show',val);
+        },
+        immediate:true,
+      },
     },
 
     methods: {
       routerJump(item) {
+        this.$emit('update:show',false);
         if(item.name=='退出') {
           this.$LjConfirm({content:'确定退出登录吗？'}).then(()=> {
             this.$storage.remove('Authorization');
@@ -93,6 +114,16 @@
       transition: all 0.5s ease-in-out;
       visibility: hidden;
       opacity: 0;
+    }
+    .module-list-container-click {
+      position: absolute;
+      visibility: hidden;
+      opacity: 0;
+
+      &.checked {
+        visibility: visible;
+        opacity: 1;
+      }
     }
 
     .module-list {

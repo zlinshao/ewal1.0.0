@@ -113,6 +113,29 @@
         workType: 1,//1为查看 2为编辑  点击1时为编辑状态 blur后提交接口 变为查看状态
       }
     },
+
+    watch: {
+      $route: {
+        handler(val,oldVal) {
+          switch (val.name) {
+            case "growProcess":
+              this.checkedId = 2;
+              break;
+            case "workLog":
+              this.checkedId = 3;
+              break;
+            case "myKPI":
+              this.checkedId = 4;
+              break;
+            default:
+              this.checkedId = 1;
+              break;
+          }
+        },
+        immediate:true,
+      },
+    },
+
     mounted() {
       //this.$router.push('/personalCenter/myAttendance');
       this.getWorkStatus();

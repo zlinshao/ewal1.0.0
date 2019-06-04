@@ -24,10 +24,11 @@
           <app-index-more :router-list="more_list">更多</app-index-more>
         </div>
         <div class="items-center personal">
-          <span>{{$storage.get('user_info').name||'冯宝宝'}}</span>
-          <app-index-more :router-list="personal_center_list">
-            <p>
-              <img :src="photoUrl">
+          <span>{{$storage.get('user_info').name||'乐伽'}}</span>
+          <app-index-more type="click" :show.sync="showPersonal" :router-list="personal_center_list">
+            <p @click="showPersonal = !showPersonal">
+              <img v-if="photoUrl" :src="photoUrl">
+              <img v-else src="./assets/image/no_avatar.png">
             </p>
           </app-index-more>
           <span class="icon3024 icon_mess" @click="routerLink('/messageCenter')"></span>
@@ -148,6 +149,7 @@ export default {
       changeLoad: false,
 
       photoUrl:'',
+      showPersonal:false,//是否显示个人中心下拉框
 
       modules: [
         {
@@ -256,10 +258,11 @@ export default {
     },
     user_name() {
       //let name  = this.$storage.get()
-      return this.$storage.get('user_info').name||'冯宝宝';
+      return this.$storage.get('user_info').name||'乐伽';
     },
     computedPhotoUrl() {
-      let url = this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
+      //let url = this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
+      let url = this.$storage.get('user_info').avatar;
       return url;
     }
   },
