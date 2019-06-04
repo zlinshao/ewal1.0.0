@@ -309,7 +309,7 @@
             </el-form-item>
             <el-form-item label="上级部门">
               <div class="items-center">
-                <org-choose v-model="departForm.parent_id"></org-choose>
+                <org-choose :num="1" v-model="departForm.parent_id"></org-choose>
               </div>
             </el-form-item>
             <el-form-item label="部门排序">
