@@ -148,11 +148,7 @@
                 <el-input v-model="allot_village_params.village_name" readonly></el-input>
               </el-form-item>
               <el-form-item label="分配部门">
-
                 <org-choose v-model="allot_village_params.org_id" width="310" num="1"></org-choose>
-
-
-<!--                <el-input readonly v-model="allot_village_params.depart_name" @focus="handleOpenDepart('allot')"></el-input>-->
               </el-form-item>
             </el-form>
           </div>
