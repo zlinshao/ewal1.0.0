@@ -14,10 +14,11 @@
                     <div class="btn" @click.stop="handleOpenControl(item.id)">...</div>
                     <div class="house_type">{{ item.decorate }}</div>
                   </div>
-                  <!-- 标记图标 -->
-                  <div v-show="item.quality == 0 || item.quality == 1 || item.quality == 2">
-                    <el-tooltip  content="取消标记">
-                      <span class="mark marked"  @click="openRemarkCancel()"></span>
+                  <!-- 标记图标 quality为1,2,3的时候表示被标记，大于0表示已经取消标记-->
+                  <div v-show="item.quality == 1 ">
+                     <!-- :content="item.quality_cause+'  ' +item.quality_content" -->
+                    <el-tooltip :content="item.quality_cause+'  ' +item.quality_content">
+                      <span class="mark marked"  @click="openRemarkCancel(item)"></span>
                     </el-tooltip>
                   </div>
                 </div>
@@ -78,10 +79,10 @@
                 </div>
               </el-form-item> -->
               <el-form-item label="跟进内容" label-width="80px">
-                <el-input v-model="follow_form.suggest_price" placeholder="请输入跟进内容"></el-input>
+                <el-input v-model="follow_form.follow_content" placeholder="请输入跟进内容"></el-input>
               </el-form-item>
                 <el-form-item label="应对方案" label-width="80px">
-                <el-input v-model="follow_form.suggest_price" placeholder="请输入应对方案"></el-input>
+                <el-input v-model="follow_form.response_plan" placeholder="请输入应对方案"></el-input>
               </el-form-item>
               <el-form-item label="调整预警" label-width="80px">
                 <div class="items-center">
@@ -187,25 +188,6 @@
           </div>
         </div>
       </lj-dialog>
-      <!--取消标记弹框-->
-        <!-- <lj-dialog
-        :visible="cancel_remark_visible"
-        :size="{width: 500 + 'px',height: 400 + 'px'}"
-        @close="handleCancelAddCheck"
-      >
-          <div v-show="cancel_remark_visible" >
-            <div class="global_message" >
-              <div class="notify_icon" :class="['notify_icon__warning' ]"></div>
-              <div class="notify_title" :class="['notify_title__warning' ]">{{ "警告" }}</div>
-              <div class="message">{{ "你确定取消低质量标记吗？" }}</div>
-              <div class="dialog_footer">
-                <el-button type="danger" size="small" @click="handleConfirmMark">确定</el-button>
-                <el-button type="info" size="small" @click="handleCancelMark">取消</el-button>
-              </div>
-            </div>
-          </div>
-      
-      </lj-dialog> -->
 
       <!--行政检查-->
       <lj-dialog
@@ -307,8 +289,9 @@
               }, //所有上传文件
               //跟进
               follow_form: {
-                follow_content: -1,
-                warning_status: -1,
+                follow_content: '', //跟进内容
+                response_plan:'',  //应对方案
+                warning_status: -1,  //调整预警
               },
               follow_up_visible: false,
               follow_up_content: [
@@ -333,13 +316,13 @@
               //标记
               mark_visible: false,
               mark_reason: [
-                {id: 0,value: '装修太差'},
-                {id: 1,value: '性价比底'},
-                {id: 2,value: '其他'},
+                {id: 2,value: '装修太差'},
+                {id: 3,value: '性价比底'},
+                {id: 4,value: '其他'},
               ],
               // 标记的传参
               mark_form: {
-                quality: 1,
+                quality: 1, //为1的时候表示被标记，0表示已经取消标记
                 quality_cause: '',
                 quality_content: '',
               },
@@ -429,30 +412,7 @@
             this.upload_form.album_file = [];
             this.upload_visible = false;
           },
-          //标记
-          handleConfirmMark() {
-            this.$http.post(this.market_server + 'v1.0/market/house/annotation',{
-              id: this.currentHouse.id,
-              ...this.mark_form
-            }).then(res => {
-              this.handleSuccess(res);
-              this.handleCancelMark();
-            })
-          },
-          handleCancelMark() {
-            // 清空标记内容
-            for (let key in this.mark_form) {
-              this.mark_form[key] = '';
-            }
-            //操作完后，列表返回的还在当前页，而不是第一页
-            // this.$emit('change',1);
-            this.$emit('change',this.params.page);
-            this.mark_visible = false;
-          },
-          chooseRadioMark(item) {
-            this.mark_form.quality = item.id;
-            this.mark_form.quality_cause = item.value;
-          },
+        
           //标价
           handleSubmitSetPrice() {
             this.$http.post(this.market_server + 'v1.0/market/house/setHousePrice',{
@@ -493,10 +453,6 @@
               this.upload_form[item[0]] = item[1];
             }
           },
-          //跟进
-          // chooseRadioContent(item) {
-          //   this.follow_form.follow_content = item.id;
-          // },
           // 跟进==调整预警
           chooseRadioNotice(item) {
             this.follow_form.warning_status = item.id;
@@ -504,7 +460,7 @@
 
           validateForm() {
             let msg = null;
-            if(this.follow_form.follow_content<0) {
+            if(this.follow_form.follow_content=='') {
               msg = '跟进内容不能为空';
             }
             if(this.follow_form.warning_status<0) {
@@ -522,19 +478,24 @@
             //提交更进记录
             this.$http.post(this.market_server + 'v1.0/market/house/followrecord',{
               id: this.currentHouse.id,
-              album: this.upload_form.album,
+              album_file: this.upload_form.album,
               ...this.follow_form
             }).then(res => {
               this.handleSuccess(res);
               this.handleCancelFollowInfo();
             })
           },
+          // 跟进的取消按钮
           handleCancelFollowInfo() {
             this.upload_form.album = [];
             this.currentHouse = '';
-            for (let key in this.follow_form) {
-              this.follow_form[key] = -1;
-            }
+            // 清空跟进数据
+            this.follow_form.follow_content='';
+            this.follow_form.response_plan='';
+            this.follow_form.warning_status=-1;
+            // for (let key in this.follow_form) {
+            //   // this.follow_form[key] = -1;
+            // }
             this.follow_up_visible = false;
             //操作完后，列表返回的还在当前页，而不是第一页
             // this.$emit('change',1);
@@ -549,6 +510,12 @@
             this.setPriceVisible = tmp.id === 3;
             this.mark_visible = tmp.id === 4;
             this.check_visible = tmp.id === 5;
+            // 打开标记弹框时，如果被标记则需回显数据
+            if(this.mark_visible==true && this.currentHouse.quality > 0){
+              // this.mark_form.quality=this.currentHouse.quality;
+              this.mark_form.quality_cause=this.currentHouse.quality_cause;
+              this.mark_form.quality_content=this.currentHouse.quality_content;
+            }
           },
           // 提交到父页面打开详情的事件
           handleOpenCard(item) {
@@ -569,18 +536,53 @@
             this.params.page = page;
             this.$emit('change',page);
           },
-          // 取消标记
-          openRemarkCancel(){
+
+          /**
+           * 标记
+           */
+          // 标记弹框的原因
+          chooseRadioMark(item) {
+            // this.mark_form.quality = item.id;
+            this.mark_form.quality_cause = item.value;
+          },
+          //标记弹框确认按钮
+          handleConfirmMark() {
+            this.mark_form.quality=1;  //1表示标记，0表示不标记
+            this.$http.post(this.market_server + 'v1.0/market/house/annotation',{
+              id: this.currentHouse.id,
+              ...this.mark_form
+            }).then(res => {
+              this.handleSuccess(res);
+              this.handleCancelMark();
+            })
+          },
+          // 标记弹框的取消按钮
+          handleCancelMark() {
+            // 清空标记内容
+            for (let key in this.mark_form) {
+              this.mark_form[key] = '';
+            }
+            this.$emit('change',this.params.page);   //操作完后，列表返回的还在当前页，而不是第一页
+            this.mark_visible = false;
+          },
+          // 点击标记图标进行取消标记（lili）
+          openRemarkCancel(item){
              this.$LjConfirm({
               title:'警告',
-              icon:'delete',
-              content:'确定案例',
+              icon:'warning',
+              content:'你确定取消低质量标记吗？',
             }).then(()=> {
-              //操作完后，列表返回的还在当前页，而不是第一页
-              this.$emit('change',this.params.page);
-                alert('去顶');
+              this.$http.post(this.market_server + 'v1.0/market/house/deleteAnnotation',{
+                id: item.id,
+              }).then(res => {
+                //执行确定按钮的事件
+                this.handleSuccess(res);
+                this.$emit('change',this.params.page); //操作完后，列表返回的还在当前页，而不是第一页
+              })
             }).catch(()=> {
-              alert("取消");
+                // 执行取消按钮的事件
+                this.mark_form.quality_cause ='';  // 清空跟进数据
+                this.mark_form.quality_content ='';
             });
           },
 

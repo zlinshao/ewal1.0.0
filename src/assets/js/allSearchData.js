@@ -1550,7 +1550,7 @@ export const customHouseManagementSearch = {
             keyType: 'depart',
             title: '部门',
             placeholder: '请选择部门',
-            keyName: 'org',
+            keyName: 'org_user_id',
             dataType: [],
             value: {
                 num: '',
@@ -1561,29 +1561,29 @@ export const customHouseManagementSearch = {
             keyType: 'input',
             title: '当前空置时长',
             placeholder: '请输入空置时长',
-            keyName: 'house_identitybb',
+            keyName: 'kong',
             dataType: '',
             // inputType: 'number'
         },
-        {
-            keyType: 'check',
-            title: '其他',
-            keyName: 'house_identitycc',
-            dataType: [],
-            value: [{
-                    id: 419,
-                    title: '保洁'
-                },
-                {
-                    id: 420,
-                    title: '需维修'
-                },
-                {
-                    id: 421,
-                    title: '物品待补齐'
-                },
-            ]
-        }
+        // {
+        //     keyType: 'check',
+        //     title: '其他',
+        //     keyName: 'house_identitycc',
+        //     dataType: [],
+        //     value: [{
+        //             id: 419,
+        //             title: '保洁'
+        //         },
+        //         {
+        //             id: 420,
+        //             title: '需维修'
+        //         },
+        //         {
+        //             id: 421,
+        //             title: '物品待补齐'
+        //         },
+        //     ]
+        // }
     ]
 }
 
