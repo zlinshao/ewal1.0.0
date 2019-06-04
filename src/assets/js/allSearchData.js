@@ -1358,6 +1358,14 @@ export const customHouseManagementSearch = {
                 {
                     id: 2,
                     title: '已预定'
+                },
+                {
+                    id: 3,
+                    title: '待入住'
+                },
+                {
+                    id: 5,
+                    title: '已结束'
                 }
             ]
         },

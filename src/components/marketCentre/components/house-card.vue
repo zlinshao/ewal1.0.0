@@ -306,6 +306,7 @@
                 {id: 1,value: '性价比底'},
                 {id: 2,value: '其他'},
               ],
+              // 标记的传参
               mark_form: {
                 quality: 1,
                 quality_cause: '',
@@ -414,6 +415,7 @@
             this.mark_visible = false;
           },
           chooseRadioMark(item) {
+            this.mark_form.quality = item.id;
             this.mark_form.quality_cause = item.value;
           },
           //标价
