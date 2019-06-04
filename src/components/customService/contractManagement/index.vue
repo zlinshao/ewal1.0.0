@@ -508,7 +508,8 @@
           </div>
 
           <p style="text-align: left">相关合同</p>
-          <div class="have_info" v-if="contractDetail.related_contract && contractDetail.related_contract.length > 0">
+          <div>暂无数据...</div>
+          <!--<div class="have_info" v-if="contractDetail.related_contract && contractDetail.related_contract.length > 0">
             <el-form label-width="120px">
               <el-row :gutter="10">
                 <el-col :span="8" v-for="(item,index) in contractDetail.related_contract" :key="index">
@@ -519,7 +520,7 @@
               </el-row>
             </el-form>
           </div>
-          <div v-else>暂无</div>
+          <div v-else>暂无</div>-->
         </div>
       </div>
     </lj-dialog>
@@ -1357,7 +1358,7 @@ export default {
             keyName: 'signer',
             dataType: '',
             value: {
-              num: '',
+              num: 1,
             }
           },
           {
@@ -1367,7 +1368,7 @@ export default {
             keyName: 'org',
             dataType: [],
             value: {
-              num: '',
+              num: 1,
               arr: []
             }
           }
