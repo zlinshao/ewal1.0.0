@@ -472,7 +472,7 @@ export default {
       }
 
       let params = {
-        author: 69,
+        author: this.$storage.get('user_info').id,
         content: this.comment_info,
         saveProcessInstanceId: true
       }

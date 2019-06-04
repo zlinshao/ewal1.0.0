@@ -102,6 +102,34 @@
 
           <el-row :gutter="20" class='add_record_form'>
             <el-col v-if="recordOption.is_connect==1" :span="6" class='satisfied'>
+              <p><i class='icon'></i>中介名称</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_name" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='note'>
+              <p><i class='icon'></i>中介价格</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_price" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='note'>
+              <p><i class='icon'></i>中介人</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_user" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='note'>
+              <p><i class='icon'></i>中介电话</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_phone" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+          </el-row>
+
+
+          <el-row :gutter="20" class='add_record_form'>
+            <el-col v-if="recordOption.is_connect==1" :span="6" class='satisfied'>
               <p><i class='icon'></i>满意度</p>
               <div class='input_box'>
                 <el-rate v-model="recordOption.star" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
@@ -390,7 +418,10 @@ export default {
         from: '',
         star: null,
         record: '',
-
+        agent_name:null,//中介名称
+        agent_price:null,//中介价格
+        agent_user:null,//中介人
+        agent_phone:null,//中介电话
       },
       other_free: [{
         name: null,
