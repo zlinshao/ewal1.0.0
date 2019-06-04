@@ -398,6 +398,8 @@
         current_detail: '',
         activeName: 'first',
         customer_type: '',
+
+        isLoading: false,
       }
     },
     async mounted() {
@@ -542,10 +544,15 @@
       },
       //列表
       async getCustomerList() {
+        if(this.isLoading) {
+          this.$LjMessage('warning',{title:'警告',msg:'加载中..请稍后重试'});
+          return;
+        }
         this.showLoading(true);
+        this.isLoading = true;
         await this.$http.get(this.market_server + 'v1.0/market/customer',this.params).then(res => {
-          //console.log(res);
           this.showLoading(false);
+          this.isLoading = false;
           if (res.code === 200) {
             if(this.params.type==3||this.params.is_black==1) {//处理综合页数据
               res.data.data = _.forEach(res.data.data,(o)=> {
@@ -597,6 +604,10 @@
       },
       //tab切换
       async changeTabs(id) {
+        if(this.isLoading) {
+          this.$LjMessage('warning',{title:'警告',msg:'加载中..请稍后重试'});
+          return;
+        }
         this.chooseTab = id;
         this.params.search = '';
         let obj = {};
