@@ -2498,7 +2498,7 @@
       handleSendMessage() {
         let params = {
           receipt_id: this.multi_field_form.id,
-          phone: this.multi_field_form.phone,
+          phone: this.edit_phone_form.phone,
         };
         this.$http.post(`${this.url}sms/receipt`, params).then(res => {
           this.$LjMessageEasy(res, () => {

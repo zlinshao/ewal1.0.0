@@ -24,7 +24,7 @@
               </el-row>
               <template v-else>
                 <!-- 可增加或者减少 -->
-                <!--<el-row :gutter='10' v-for='(cell,cellIndex) in form' :key='cell.keyName' v-if='cell.type == "change"'>
+                <el-row :gutter='10' v-for='(cell,cellIndex) in form' :key='cell.keyName' v-if='cell.type == "change"'>
                   <el-col :span='cell.formSpan || formSpan' v-for='(child,child_index) in cell.children' :key='child_index'>
                     <el-form-item :label='col.label' v-for='(col,col_index) in child' :key='col_index'>
                       <el-input :type='col.typeStatus' v-model='formData[cell.keyName][child_index][col.keyName]'
@@ -43,7 +43,7 @@
                       <span>{{child_index==0?"增加":"删除"}}</span>
                     </div>
                   </el-col>
-                </el-row>-->
+                </el-row>
 
                 <!-- 正常表单 -->
                 <el-row :gutter='10' v-if='form.type != "change"'>
@@ -58,7 +58,9 @@
                       <!-- 多个选择checkbox -->
                       <template v-if='cell.type== "picker"'>
                         <div v-if='cell.children' class='more_checkbox'>
-                          <el-select v-model="formData[cell.keyName][child_index]" :placeholder="child.placeholder"
+                          <!--{{cell.keyName}}{{cell.children}}
+                          {{formData[cell.keyName]}}-->
+                          <el-select v-model="formData[cell.keyName][child_index].keyValue" :placeholder="child.placeholder"
                             v-for='(child,child_index) in cell.children' :key='child_index'>
                             <el-option v-for='(item,item_idx) in dicties[cell.keyName]["value_"+child_index]' :key="item_idx"
                               :value='item_idx' :label="item"></el-option>
