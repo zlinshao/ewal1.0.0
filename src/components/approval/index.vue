@@ -359,7 +359,7 @@
             if (item.endTime) {
               obj.isfinish = true
               if (this.status_type == 2) {
-                let title = JSON.parse(obj.outcome||{}).variableName;
+                let title = JSON.parse(obj.outcome||"{}").variableName;
                 for (let key of item.variables) {
                   if (key.name == title) {
                     obj.status = key.value ? "已通过" : "已拒绝"
