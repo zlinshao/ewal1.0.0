@@ -26,7 +26,7 @@
         <div class="items-center personal">
           <span>{{$storage.get('user_info').name||'冯宝宝'}}</span>
           <app-index-more :router-list="personal_center_list">
-            <p @click="routerLink('/personalCenter')">
+            <p>
               <img :src="photoUrl">
             </p>
           </app-index-more>

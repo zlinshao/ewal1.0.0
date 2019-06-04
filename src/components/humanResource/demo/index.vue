@@ -5,20 +5,20 @@
   <app-index-more :visible.sync="more_visible"></app-index-more>-->
 
     <el-button @click="demo">测试</el-button>
-<!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
-<!--    <post-choose v-model="post_list"></post-choose>-->
-<!--    <user-choose v-model="user_list"></user-choose>-->
-<!--    <org-choose v-model="org_list"></org-choose>-->
+    <!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
+    <!--    <post-choose v-model="post_list"></post-choose>-->
+    <!--    <user-choose v-model="user_list"></user-choose>-->
+    <!--    <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>
     <search-high></search-high>-->
-<!--    <button-upload></button-upload>-->
-<!--    <count-down :datetime="datetime"></count-down>-->
+    <!--    <button-upload></button-upload>-->
+    <!--    <count-down :datetime="datetime"></count-down>-->
     <!--<el-button @click="paper_visible=true">测试</el-button>
     <el-button @click="demo2">测试222</el-button>
     <test-paper :visible.sync="paper_visible" :params="paper_params" :type="2" :statisticsResult="view_result_list"
                 @success="demoSuccess"></test-paper>-->
-<!--        <name-shower type="user" :ids="org_list"></name-shower>-->
-<!--    <user-list :mini="true" :ids="user_list"></user-list>-->
+    <!--        <name-shower type="user" :ids="org_list"></name-shower>-->
+    <!--    <user-list :mini="true" :ids="user_list"></user-list>-->
     <!--<calendar week-type="en" style="width: 1366px;height: 768px">
       <div :slot="'slot'+item.id" v-for="item in daysList"
       class="days-item" :class="{rest:!item.reason,current:item.today}"
@@ -30,8 +30,8 @@
         </div>
       </div>
     </calendar>-->
-<!--    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>-->
-    <lj-upload :limit-easy="['image']" v-model="list"></lj-upload>
+    <!--    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>-->
+<!--    <lj-upload :limit-easy="['image']" v-model="list"></lj-upload>-->
     <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->
@@ -66,9 +66,9 @@
     },
     data() {
       return {
-        more_visible:false,
+        more_visible: false,
         DROPDOWN_CONSTANT,
-        datetime:'2019-05-01',
+        datetime: '2019-05-01',
         daysList: [],
         sliders: [
           {
@@ -87,8 +87,8 @@
         list: ["4228777"],
         //user_list: [211, 289, 3604, 3623, 3590, 3589],
         user_list: [3604, 3335, 3338, 3337, 3339, 3336, 3334, 3343, 3388, 3630],
-        org_list: [411,418, 419],
-        post_list:[],
+        org_list: [411, 418, 419],
+        post_list: [],
         paper_params: {
           paper_name: '新建问卷',
           title: '入职考试',
@@ -101,7 +101,7 @@
       }
     },
     mounted() {
-      _.forEach(this.user_list,(o)=> {
+      _.forEach(this.user_list, (o) => {
         console.log(o);
       });
       //this.initDaysList(new Date('2019-04-01'));
@@ -113,37 +113,47 @@
       },
 
       demo() {
-        console.log(this.user_list);
+        this.$LjConfirm(
+          {
+            //icon: 'success',
+            content:'员工禁用状态将会改变，是否继续？'
+          }
+        ).then(() => {
+          console.log('删除成功');
+        }).catch(() => {
+          console.log('取消');
+        });
+
       },
 
       demo2() {
         this.view_result_list = [
           {
-          "exam_question_id": 223,
-          "exam_question_info": {
-            "id": "223",
-            "stem": "选择题题干",
-            "score": 0,
-            "answer": null,
-            "choice": {
-              "A": "选项A",
-              "B": "选项B",
-              "C": "选项C",
-              "D": "选项D"
+            "exam_question_id": 223,
+            "exam_question_info": {
+              "id": "223",
+              "stem": "选择题题干",
+              "score": 0,
+              "answer": null,
+              "choice": {
+                "A": "选项A",
+                "B": "选项B",
+                "C": "选项C",
+                "D": "选项D"
+              },
+              "user_id": 289,
+              "category": "1",
+              "created_at": "2019-04-09 16:30:34",
+              "order_factor": 0,
+              "exam_question_bank_id": "66",
             },
-            "user_id": 289,
-            "category": "1",
-            "created_at": "2019-04-09 16:30:34",
-            "order_factor": 0,
-            "exam_question_bank_id": "66",
+            "count": {
+              "A": 0,
+              "B": 0,
+              "C": 1,
+              "D": 0,
+            }
           },
-          "count": {
-            "A": 0,
-            "B": 0,
-            "C": 1,
-            "D": 0,
-          }
-        },
           {
             "exam_question_id": 224,
             "exam_question_info": {
