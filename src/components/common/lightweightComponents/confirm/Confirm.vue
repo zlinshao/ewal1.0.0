@@ -11,7 +11,7 @@
             <!--            <i v-if="icon" class="content-icon" :class="{icon}">图片</i>-->
             <div v-if="icon" class="center-container">
               <i class="icon-img" :class="icon"></i>
-              <i class="icon-desc" :style="{color:iconTipColor}">{{iconTip}}</i>
+              <span class="icon-desc" :style="{color:iconTipColor}">{{iconTip}}</span>
 
               <span class="icon-content">{{content}}</span>
             </div>
@@ -82,7 +82,17 @@
           }
         },
         immediate: true
-      }
+      },
+      title: {
+        handler(val, oldVal) {
+          if(val) {
+            this.$nextTick(()=> {
+              this.iconTip = val;
+            });
+          }
+        },
+        immediate: true,
+      },
     },
     methods: {
       confirm() {

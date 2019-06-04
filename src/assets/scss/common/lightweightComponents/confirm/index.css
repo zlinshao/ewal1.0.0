@@ -293,12 +293,11 @@
   width: 60px;
   height: 60px;
 }
-.confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content .center-container i.icon-desc {
+.confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content .center-container span.icon-desc {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 26px;
-  font-family: MicrosoftYaHei;
 }
 .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content .center-container span.icon-content {
   color: #686874;

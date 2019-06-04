@@ -115,8 +115,10 @@
       demo() {
         this.$LjConfirm(
           {
-            //icon: 'success',
-            content:'员工禁用状态将会改变，是否继续？'
+
+            icon: 'error',
+            content:'员工禁用状态将会改变，是否继续？',
+            title:'测试',
           }
         ).then(() => {
           console.log('删除成功');
