@@ -60,8 +60,6 @@
             </div>
             <div v-if="item.keyType === 'input'">
               <el-input width="470"  :placeholder="item.placeholder" v-model="params[item.keyName]"  ></el-input>
-              <!-- <post-choose width="470" :num="item.value.num||null" :title="item.placeholder"
-                           v-model="params[item.keyName]"></post-choose> -->
             </div>
           </div>
         </div>

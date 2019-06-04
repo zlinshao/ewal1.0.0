@@ -771,7 +771,10 @@
       },
       //打开高级设置
       handleOpenHighSearch() {
+        // console.log(this.searchData)
+        // debugger
         this.searchData = this.customHouseManagementSearch;
+        // console.log(this.searchData)
         this.isHigh = true;
       },
       //关闭设置
@@ -779,8 +782,8 @@
         this.set_price_visible = false;
       },
       //获取房源列表
-      getHouseResource() {
-        this.$http.get(this.market_server + 'v1.0/market/house', this.house_params).then(res => {
+      async getHouseResource() {
+        await this.$http.get(this.market_server + 'v1.0/market/house', this.house_params).then(res => {
           if (res.code === 200) {
             this.house_source = res.data.data;
             this.house_params.count = res.data.all_count;
@@ -855,10 +858,12 @@
       handleCloseMenu() {
         this.show_market = false;
       },
-      handleCloseSearch(search) {
+      async handleCloseSearch(search) {
         if (search !== 'close') {
           this.house_params = Object.assign({}, this.house_params, search);
-          this.getHouseResource();
+          this.house_params.is_org_user = 1;  //0不限，1部门，2人员
+          await this.getHouseResource();
+          delete this.house_params.is_org_user;
         }
         this.isHigh = false;
       },

@@ -1563,7 +1563,6 @@ export const customHouseManagementSearch = {
             placeholder: '请输入空置时长',
             keyName: 'kong',
             dataType: '',
-            // inputType: 'number'
         },
         // {
         //     keyType: 'check',
