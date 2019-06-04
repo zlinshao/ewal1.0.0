@@ -17,10 +17,11 @@
 
     .confirm-modal-container {
       width: 400px;
-      height: 240px;
-      border-radius: 10px;
+      height: 280px;
+      //border-radius: 10px;
       overflow: hidden;
-      background-color: $colorFFF;
+      position: relative;
+      //background-color: $colorFFF;
       @include flex('bet-column');
       .confirm-modal-container-title {
         height: 50px;
@@ -34,21 +35,47 @@
       }
       .confirm-modal-container-content {
         flex: 1;
-        @include flex('flex-center');
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-top: 40px;
         span.content-row {
           font-size: 22px;
         }
-        i.content-icon {
-          display: inline-block;
-          width: 100px;
-          height: 100px;
+        .center-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          i.icon-img {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+          }
+          i.icon-desc {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-family:MicrosoftYaHei;
+          }
+          span.icon-content {
+            color: #686874;
+            padding-top: 14px;
+            font-size: 18px;
+          }
         }
+
 
       }
       .confirm-modal-container-footer {
-        margin: 20px;
+        position: absolute;
+        //margin: 20px 20px 20px 20px;
         height: 32px;
-        @include flex('justify-around');
+        bottom: 30px;
+        width: 100%;
+
+        @include flex('flex-center');
 
 
         button {

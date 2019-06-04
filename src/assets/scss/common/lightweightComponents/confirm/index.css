@@ -251,10 +251,9 @@
 }
 .confirm-theme .confirm-modal .confirm-modal-container {
   width: 400px;
-  height: 240px;
-  border-radius: 10px;
+  height: 280px;
   overflow: hidden;
-  background-color: #ffffff;
+  position: relative;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
@@ -276,24 +275,45 @@
 .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content {
   flex: 1;
   display: flex;
-  display: -webkit-flex;
-  align-items: center;
   justify-content: center;
+  align-items: flex-start;
+  margin-top: 40px;
 }
 .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content span.content-row {
   font-size: 22px;
 }
-.confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content i.content-icon {
+.confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content .center-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content .center-container i.icon-img {
   display: inline-block;
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
+}
+.confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content .center-container i.icon-desc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-family: MicrosoftYaHei;
+}
+.confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-content .center-container span.icon-content {
+  color: #686874;
+  padding-top: 14px;
+  font-size: 18px;
 }
 .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-footer {
-  margin: 20px;
+  position: absolute;
   height: 32px;
+  bottom: 30px;
+  width: 100%;
   display: flex;
   display: -webkit-flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: center;
 }
 .confirm-theme .confirm-modal .confirm-modal-container .confirm-modal-container-footer button {
   min-width: 90px;
