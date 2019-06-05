@@ -65,7 +65,8 @@
           </div>
           <div class="justify-bet chooseStaff">
             <div>
-              <label>已选&nbsp;：</label>
+              <div class="user-toolbar"><label>已选&nbsp;：</label><label @click="clearAll" class="clear-all">清空</label></div>
+
               <div class="scroll_bar flex">
                 <div v-for="(item,index) in chooseStaff" class="lists">
                   <h4>
@@ -195,6 +196,14 @@
     },
     computed: {},
     methods: {
+      //清空
+      clearAll() {
+        this.checkedStaff = [];
+        this.chooseStaff = [];
+      },
+
+
+
       handleSearchStaff() {
         this.searchStaff('', this.search);
       },

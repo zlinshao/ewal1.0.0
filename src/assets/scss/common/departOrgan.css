@@ -1,268 +1,59 @@
-.flex {
-  display: flex;
-  display: -webkit-flex;
-}
+/*
+Error: Invalid CSS after "      .": expected "{", was "}"
+        on line 21 of departOrgan.scss
 
-.bet-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-direction: column;
-  justify-content: space-between;
-}
+16: 
+17:     .dialog_header {
+18:       display: flex;
+19:       justify-content: space-between;
+20:       .
+21:     }
+22: 
+23: 
+24: 
+25:     .dialog_main {
+26:       padding: 0 15px;
 
-.bet-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.space-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.items-column {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.flex-center {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.items-bet {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.items-center {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-}
-
-.items-start {
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-start;
-}
-
-.items-end {
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-end;
-}
-
-.justify-center {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: center;
-}
-
-.justify-around {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: space-around;
-}
-
-.justify-bet {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: space-between;
-}
-
-.justify-start {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: flex-start;
-}
-
-.justify-end {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: flex-end;
-}
-
-@font-face {
-  font-family: 'jingDianXingShu';
-  src: url("http://static.lejias.cn/lejiad17b0198e884e4e4420a5b58cf9f31f5.otf");
-}
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url("http://static.lejias.cn/lejia554520b9f0c3f55796b39bcb82da665a.OTF");
-}
-@font-face {
-  font-family: 'jianyue';
-  src: url("http://static.lejias.cn/lejia770e3cb6b4dc27196abc5c3eb4da6e00.otf");
-}
-/*@font-face {
-  font-family: 'jingDianXingShu';
-  src: url('/static/font/JDJXINSHU.otf');
-}
-
-@font-face {
-  font-family: 'mengFeiSiTe';
-  src: url('/static/font/ITCAVANTGARDESTD-MD.OTF');
-}
-
-@font-face {
-  font-family: 'jianyue';
-  src: url('/static/font/BaiZhouRenZhe.otf');
-}*/
-.writingMode {
-  writing-mode: vertical-rl;
-  writing-mode: tb-rl;
-}
-
-.line-clamp1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-}
-
-.line-clamp2 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.line-clamp3 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-}
-
-.scroll_bar {
-  overflow: auto;
-}
-.scroll_bar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  border-radius: 10px;
-}
-.scroll_bar::-webkit-scrollbar-button {
-  height: 10px;
-  background-color: #e4e7ed;
-  border-radius: 10px;
-}
-.scroll_bar::-webkit-scrollbar-track {
-  background: #e4e7ed;
-}
-.scroll_bar::-webkit-scrollbar-thumb {
-  background: #999999;
-  border-radius: 4px;
-}
-
-.action-bar {
-  width: 100%;
-  padding: 0 40px;
-  height: 46px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid #f2f2f2;
-}
-.action-bar div {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.action-bar .check-count {
-  margin-left: 30px;
-  margin-right: 50px;
-}
-.action-bar .check-count i {
-  font-style: normal;
-  color: #ff4545;
-}
-.action-bar .action-bar-name {
-  display: inline-block;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-.action-bar .action-bar-name span {
-  display: inline-block;
-  text-align: center;
-  border-left: 1px solid #9b9b9b;
-  font-size: 18px;
-  padding: 0 10px;
-  cursor: pointer;
-}
-.action-bar .action-bar-name span:first-child {
-  border-left: 0;
-}
-.action-bar .delete {
-  color: #ff4545;
-}
-.action-bar .edit {
-  color: #0c66ff;
-}
-.action-bar .check {
-  color: #0bb07b;
-}
-
-.colorE33 {
-  color: #cf2e33;
-}
-
-.color874 {
-  color: #686874;
-}
-
-#theme_name #departOrgan .choose-title {
-  text-align: left;
-  font-size: 16px;
-  margin: 10px 0;
-}
-#theme_name #departOrgan .choose-title span {
-  cursor: pointer;
-}
-#theme_name #departOrgan .choose-title span:hover {
-  color: #cf2e33;
-}
-#theme_name #departOrgan .dialog_main {
-  padding: 0 15px;
-}
-#theme_name #departOrgan .dialog_main .checkboxBottom {
-  margin-top: 20px;
-}
-#theme_name #departOrgan .dialog_main .checkbox-container {
-  position: relative;
-  cursor: pointer;
-}
-#theme_name #departOrgan .dialog_main .checkbox-container span {
-  position: absolute;
-  bottom: 2px;
-  right: 15px;
-  width: 80px;
-  height: 20px;
-  vertical-align: middle;
-  font-size: 14px;
-}
-#theme_name #departOrgan .dialog_main .checkbox-container:hover {
-  color: #cf2e33;
-}
-
-/*# sourceMappingURL=departOrgan.css.map */
+Backtrace:
+departOrgan.scss:21
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1308:in `expected'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1238:in `expected'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:1233:in `tok!'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:688:in `block'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:758:in `declaration_or_ruleset'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:708:in `block_child'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:700:in `block_contents'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:689:in `block'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:758:in `declaration_or_ruleset'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:708:in `block_child'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:700:in `block_contents'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:689:in `block'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:758:in `declaration_or_ruleset'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:708:in `block_child'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:697:in `block_contents'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:689:in `block'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:681:in `ruleset'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:707:in `block_child'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:700:in `block_contents'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:137:in `stylesheet'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/scss/parser.rb:41:in `parse'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/engine.rb:414:in `_to_tree'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/engine.rb:307:in `render_with_sourcemap'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:209:in `each'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/plugin.rb:82:in `update_stylesheets'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/exec/sass_scss.rb:51:in `process_result'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/exec/base.rb:50:in `parse'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/lib/sass/exec/base.rb:18:in `parse!'
+C:/Program Files/Ruby25-x64/lib/ruby/gems/2.5.0/gems/sass-3.7.4/bin/sass:13:in `<top (required)>'
+C:/Program Files/Ruby25-x64/bin/sass:23:in `load'
+C:/Program Files/Ruby25-x64/bin/sass:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid CSS after \"      .\": expected \"{\", was \"}\"\A         on line 21 of departOrgan.scss\A \A 16: \A 17:     .dialog_header {\A 18:       display: flex;\A 19:       justify-content: space-between;\A 20:       .\A 21:     }\A 22: \A 23: \A 24: \A 25:     .dialog_main {\A 26:       padding: 0 15px;"; }

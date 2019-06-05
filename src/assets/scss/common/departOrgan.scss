@@ -13,6 +13,19 @@
         }
       }
     }
+
+    .dialog_header {
+      display: flex;
+      justify-content: space-between;
+      .clear-all {
+        cursor: pointer;
+        color: #0C66FF;
+        opacity: .5;
+      }
+    }
+
+
+
     .dialog_main {
       padding: 0 15px;
       .checkboxBottom {

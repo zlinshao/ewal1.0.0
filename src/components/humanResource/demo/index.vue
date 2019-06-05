@@ -6,9 +6,9 @@
 
     <el-button @click="demo">测试</el-button>
     <!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
-    <!--    <post-choose v-model="post_list"></post-choose>-->
-        <user-choose v-model="user_list"></user-choose>
-    <!--    <org-choose v-model="org_list"></org-choose>-->
+        <post-choose v-model="post_list"></post-choose>
+<!--        <user-choose v-model="user_list"></user-choose>-->
+<!--        <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>
     <search-high></search-high>-->
     <!--    <button-upload></button-upload>-->
@@ -88,7 +88,7 @@
         //user_list: [211, 289, 3604, 3623, 3590, 3589],
         user_list: [3604, 3335, 3338, 3337],
         org_list: [411, 418, 419],
-        post_list: [],
+        post_list: [139,140,141],
         paper_params: {
           paper_name: '新建问卷',
           title: '入职考试',
@@ -113,7 +113,8 @@
       },
 
       demo() {
-        this.$LjConfirm(
+        console.log(this.post_list);
+        /*this.$LjConfirm(
           {
 
             icon: 'error',
@@ -124,7 +125,7 @@
           console.log('删除成功');
         }).catch(() => {
           console.log('取消');
-        });
+        });*/
 
       },
 
