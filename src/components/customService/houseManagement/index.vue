@@ -771,10 +771,7 @@
       },
       //打开高级设置
       handleOpenHighSearch() {
-        // console.log(this.searchData)
-        // debugger
         this.searchData = this.customHouseManagementSearch;
-        // console.log(this.searchData)
         this.isHigh = true;
       },
       //关闭设置
@@ -795,8 +792,7 @@
       },
       //获取历史相册列表
       getHistoryPicList() {
-
-        console.log(this.current_house);
+        // console.log(this.current_house);
         let id = this.current_house.id;
         let params = {id};
         this.$http.get(`${this.market_server}v1.0/market/house/houseAlbum`,params).then(res=> {
@@ -858,11 +854,16 @@
       handleCloseMenu() {
         this.show_market = false;
       },
+      // 搜索的确定按钮
       async handleCloseSearch(search) {
         if (search !== 'close') {
           this.house_params = Object.assign({}, this.house_params, search);
-          this.house_params.is_org_user = 1;  //0不限，1部门，2人员
+          // 如果高级搜索，选择了部门，则is_org_user则为1，否则不传该字段
+          if(this.house_params['org_user_id'].length>0){
+             this.house_params.is_org_user = 1;  //0不限，1部门，2人员
+          }
           await this.getHouseResource();
+          // 清空字段
           delete this.house_params.is_org_user;
         }
         this.isHigh = false;

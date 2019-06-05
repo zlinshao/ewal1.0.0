@@ -135,7 +135,11 @@
                                         margin-right: 20px;
                                     }
                                     .address {
+                                        width: 90%;
                                         font-size: 18px;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        white-space: nowrap;
                                     }
                                     .mark {
                                         width: 20px;
