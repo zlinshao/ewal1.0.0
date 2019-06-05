@@ -323,6 +323,10 @@
             .activeImgsComments {
                 border-color: #fff;
             }
+            // 当为报销单的详情时，评论居中
+            .isCenterComments {
+                margin: auto;
+            }
         }
     }
 }

@@ -91,7 +91,7 @@
     <lj-dialog
       :visible="detail_visible"
       :size="{width: 1200 + 'px',height: 780 + 'px'}"
-      @close="detail_visible = false"
+      @close="detialDialogClose"
     >
       <div class="dialog_container">
         <div class="dialog_header">
@@ -156,6 +156,12 @@
                   </el-table-column>
                   <el-table-column label="时间" prop="create_time" align="center"></el-table-column>
                   <el-table-column label="备注" prop="remark" align="center"></el-table-column>
+                  <el-table-column label="照片" prop="urls" align="center" v-if="params.settle_type===''">
+                      <template slot-scope="scope">
+                        <!-- <lj-upload  :size="{width:'25px',height:'25px'}" :limit-esay="['image']"  :disabled="true"  :download="false" v-model="scope.row.album"></lj-upload> -->
+                      <img :src="require('../../../assets/image/no_avatar.png')"  style="width:25px" @click="lookImgsClick(scope.row)">
+                    </template>
+                    </el-table-column>
                   <el-table-column
                     label="操作"
                     prop="data"
@@ -212,7 +218,7 @@
               <!-- 图片和评论展示 -->
               <div class="Imgs_comments"  v-if="selectTab===2 || selectTab===4"  >
                 <!-- 图片 selectTab为2-->
-                <div  class="imgs" :class="{activeImgsComments: selectTab!=2}">
+                <div  class="imgs" :class="{activeImgsComments: selectTab!=2}" v-if="params.settle_type != ''">
                   <h3>照片</h3>
                   <div class="img-wall">
                     <span class="balance-detail-img" v-for="(item,index) in imgData">
@@ -221,7 +227,7 @@
                   </div>
                 </div>
                 <!-- 评论-selectTab为4-->
-                <div class="comments"  :class="{activeImgsComments: selectTab!=4}">
+                <div class="comments"  :class="{activeImgsComments: selectTab!=4, isCenterComments: params.settle_type==''}">
                   <div class="comments_list">
                     <div class="add_btn">
                         <h3>评论</h3>
@@ -230,7 +236,8 @@
                     <div  class="comment_content">
                       <div v-for="(items,index) in commentsData" class="comment_item">
                         <div class="comment_basic_info">
-                          <img :src="$storage.get('user_info').avatar" alt="">
+                          <!-- 当登陆人没有头像选择本地的默认图片 -->
+                          <img :src="$storage.get('user_info').avatar ? $storage.get('user_info').avatar:require('../../../assets/image/no_avatar.png')" alt="">
                           <div class="operter_date">
                             <span>{{$storage.get("user_info").name,}}</span>
                             <span>{{items.time}}</span>
@@ -574,10 +581,14 @@
         </div>
       </div>
     </lj-dialog>
-    <!-- 结算单详情==》评论==》新增评论==》图片放大查看效果图 -->
-    <!-- <el-dialog :visible.sync="uploadDialogVisible">
-        <img width="100%" :src="uploadDialogImageUrl" alt="">
-    </el-dialog> -->
+    <!-- 报销单详情==》款项明细==》照片-->
+      <lj-dialog
+      :visible.sync="reimbursePhotosVisible"
+      :size="{width: 800 + 'px' ,height: 500 + 'px'}"
+    >
+       <lj-upload  :size="{width:'50px',height:'50px'}" :limit-esay="['image']"  :disabled="true"  :download="false" v-model="reimburseAlbumPhotos"></lj-upload>
+    </lj-dialog>
+
 
     <StaffOrgan :module="staffModule" @close="hiddenStaff"></StaffOrgan>
     <DepartOrgan :module="departModule" @close="hiddenDepart"></DepartOrgan>
@@ -649,7 +660,8 @@ export default {
           title: "公司"
         }
       ],
-      tabs: [
+      tabs: [],
+      tabs1:[
         {
           id: 1,
           title: "款项明细"
@@ -667,6 +679,21 @@ export default {
           title: "评论"
         }
       ],
+       tabs2:[
+        {
+          id: 1,
+          title: "款项明细"
+        },
+        {
+          id: 3,
+          title: "备注"
+        },
+        {
+          id: 4,
+          title: "评论"
+        }
+      ],
+
       selectTab: 1,
       detail_visible: false,
       count: 0,
@@ -790,13 +817,13 @@ export default {
         message: "",
         attachments: []
       }, //新增的评论内容
-      uploadDialogVisible: false, //上传的图片点击后查看大图片
-      uploadDialogImageUrl: "", //被选中查看的图片路径
-      uploadImgFileList: [] //删除和上传成功后的图片集合
+      reimbursePhotosVisible:false, ///报销款项明细的图片展示弹框
+      reimburseAlbumPhotos:[], //报销款项明细列表的图片
+      
     };
   },
   mounted() {
-    this.getBalanceDataLists();
+    this.getBalanceDataLists();  //结算单列表
   },
   activated() {},
   watch: {
@@ -846,7 +873,9 @@ export default {
       this.commonModuleData.customer_identity = val.identity;
       this.commonModuleData.customer_id = val.id;
     },
-
+    /**
+     * 首页列表
+     */
     getBalanceDataLists() {
       //结算单列表
       this.showLoading(true);
@@ -885,11 +914,25 @@ export default {
       this.params.settle_type = type;
       this.balanceData = [];
       this.params.page = 1;
+      this.tabs=this.tabs1;
       if (type === 10) {
-        this.params.settle_type = "";
-        this.getReimburseDataLists();
+        this.getReimburseDataLists();  //报销单列表
+        this.params.settle_type = "";   //空表示切换报销
+        this.tabs=this.tabs2;
       } else {
-        this.getBalanceDataLists();
+        this.getBalanceDataLists();    //结算单列表
+      }
+    },
+    tableClickRow(row) {
+      // 当前点击列表项
+      this.detail_visible = true;
+      this.current_row = row;
+      this.balance_id = row.id;
+      this.selectTab=1;  //默认展示款项明细列表
+      if (this.params.settle_type === "") {
+        this.getReimburseDetails();   //报销单款项明细列表
+      } else {
+        this.getBalanceDetails();  //结算单款项明细列表
       }
     },
     selectTabs(id) { //详情页tab切换
@@ -898,7 +941,6 @@ export default {
         this.getDetailRemarkListFun();
         // this.getReimburseRemark();
       } else if (id === 4) { //评论
-       
         this.getProcessListFun();
       }
     },
@@ -1125,6 +1167,28 @@ export default {
       }
     },
 
+     tableChooseRow({ row, rowIndex }) {
+      // 点击过
+    },
+    highSearch() {
+      // 高级搜索
+      this.showSearch = true;
+      // this.searchData = subjectSearch;
+    },
+
+    hiddenModule(val) {
+      // 确认搜索
+      this.showSearch = false;
+      if (val !== "close") {
+        // this.params.er_type = val.er_type;
+        // this.getSubjectList();
+      }
+    },
+
+
+    /**
+     * 款项明细列表
+     */
     getReimburseDetails() {
       //报销单款项明细列表
       this.$http
@@ -1139,8 +1203,6 @@ export default {
           if (res.code === 200) {
             this.balanceDataDetail = res.data.data;
             this.feeCount = res.data.count;
-            this.imgData = res.data.urls;
-            // this.form.remark = res.data.remark;
           }
         })
         .catch(err => {
@@ -1172,38 +1234,19 @@ export default {
     handleChangeFeePage(page) {
       //报销单详情列表分页
       this.feeParams.page = page;
-      this.getReimburseDetails();
-    },
-
-    tableClickRow(row) {
-      // 当前点击列表项
-      this.detail_visible = true;
-      this.current_row = row;
-      this.balance_id = row.id;
-      if (this.params.settle_type === "") {
+      if(this.params.settle_type===''){
         this.getReimburseDetails();
-      } else {
+      }else{
         this.getBalanceDetails();
       }
     },
-
-    tableChooseRow({ row, rowIndex }) {
-      // 点击过
-    },
-
-    highSearch() {
-      // 高级搜索
-      this.showSearch = true;
-      // this.searchData = subjectSearch;
-    },
-
-    hiddenModule(val) {
-      // 确认搜索
-      this.showSearch = false;
-      if (val !== "close") {
-        // this.params.er_type = val.er_type;
-        // this.getSubjectList();
-      }
+    // 报销单详情列表的照片查看事件
+    lookImgsClick(item){
+      this.reimbursePhotosVisible=true;
+      this.reimburseAlbumPhotos=item.album;
+      // album
+      console.log(item)
+      console.log(item.urls)
     },
 
 
@@ -1227,7 +1270,6 @@ export default {
           console.log(err);
         });
     },
-
 
     // 新增评论（lili）
     addNewProcessFun() {
@@ -1261,10 +1303,10 @@ export default {
     // 备注列表的获取（lili）
     getDetailRemarkListFun() {
       let interfaceName=''
-      if(this.chooseTab== 4){ //结算单备注列表接口
-        interfaceName='customer_settle';    
-      }else if(this.chooseTab== 5){  //报销单备注列表接口
+     if(this.chooseTab== 5){  //报销单备注列表接口
         interfaceName='customer_reimburse';  
+      }else{                 //结算单备注列表接口
+        interfaceName='customer_settle';    
       }
       this.$http
         .get(
@@ -1291,14 +1333,13 @@ export default {
       this.getDetailRemarkListFun();
     },
 
-
     // 新增备注(lili)
     addNewRemark() {
        let interfaceName=''
-      if(this.chooseTab== 4){ //结算单备注新增接口
-        interfaceName='customer_settle';    
-      }else if(this.chooseTab== 5){  //报销单备注接口
+      if(this.chooseTab== 5){  //报销单备注接口
         interfaceName='customer_reimburse';  
+      }else{          //结算单备注新增接口
+        interfaceName='customer_settle';    
       }
       this.$http
         .post(
@@ -1318,6 +1359,13 @@ export default {
           console.log(err);
         });
     },
+    //结算单、报销单详情弹框关闭事件
+    detialDialogClose(){
+      this.detail_visible=false;
+      // 备注列表的分页初始化
+      this.remarkPageParams.page = 1;
+      this.remarkPageParams.limit = 5;
+    }
 
    
   }
