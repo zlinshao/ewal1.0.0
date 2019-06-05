@@ -1549,7 +1549,7 @@
           education[o.id] = o.name;
         });
         this.setFormData = [
-          {key: 'staff.internship_number', val: '实习协议', isBtn: true},
+          // {key: 'staff.internship_number', val: '实习协议', isBtn: true},
           {key: 'name', val: '姓名'},
           {key: 'position', val: '岗位', isArray: true, showKey: 'name'},
           {key: 'gender', val: '性别', info: {0: '女', 1: '男'}},

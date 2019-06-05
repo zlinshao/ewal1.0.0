@@ -124,8 +124,8 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
-                    <el-form-item label="婚育情况:">
-                      <span>{{ info.married_status_type || '/' }}</span>
+                    <el-form-item label="民族:">
+                      <span>{{ info.national_type }}</span>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -203,11 +203,11 @@
                       <span>{{ info.english_level_type	 || '/' }}</span>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="8">
-                    <el-form-item label="民族:">
-                      <span>{{ info.national_type }}</span>
-                    </el-form-item>
-                  </el-col>
+                  <!--<el-col :span="8">-->
+                    <!--<el-form-item label="民族:">-->
+                      <!--<span>{{ info.national_type }}</span>-->
+                    <!--</el-form-item>-->
+                  <!--</el-col>-->
                 </el-row>
               </el-form>
             </div>
