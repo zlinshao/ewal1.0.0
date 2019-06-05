@@ -467,10 +467,10 @@
   justify-content: center;
 }
 #theme_name #visitToRecord .dialog_container .dialog_main .detail .el-col div .content_album .imgs_box {
+  min-height: 30px;
   display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 5px;
 }
 #theme_name #visitToRecord .dialog_container .dialog_main .detail .el-col div .content_album .imgs_box div {

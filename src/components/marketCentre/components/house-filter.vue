@@ -6,7 +6,7 @@
           <div class="dialog_header">
             <h3>{{ activeName === 'first' ? '请选择房屋地址' : '请选择小区地址'}}</h3>
             <div class="header_right borderNone">
-              <el-input style="width: 200px;" size="small" v-if="show_search" v-model="params.key"></el-input>
+              <el-input style="width: 200px;" size="small" v-if="show_search" v-model="params.search"></el-input>
               <div class="search" @click="handleGoSearch"></div>
             </div>
           </div>
@@ -168,7 +168,7 @@
 
 <script>
   export default {
-    name: "index",
+    name: "houseFilter",
     //props: ['visible','onlyChoose'],
     props: {
       visible: {},
@@ -198,20 +198,21 @@
 
         params: {
           page: 1,
-          limit: 30,
+          limit: 15,
           type: 1,
-          key: '',
+          search: '',
           room: '',
           hall: '',
           area_min: '',
           area_max: ''
         },
 
-        village_params: {
+        village_params: {//小区搜索params
           page:1,
-          limit:30,
-          province:320000,
-          city:320100,
+          limit:15,
+          province:null,
+          city:null,
+          search:'',
         },
 
         house_config: {
@@ -350,6 +351,7 @@
             }
           })
         }else {
+          this.village_params.search = this.params.search;
           this.$http.get(this.market_server + 'v1.0/market/community',this.village_params).then(res => {
             this.fullLoading = false;
             if (res.code === 200) {

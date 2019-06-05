@@ -58,13 +58,26 @@
                       <!-- 多个选择checkbox -->
                       <template v-if='cell.type== "picker"'>
                         <div v-if='cell.children' class='more_checkbox'>
+                          <!--<div v-for="(item,key) in cell.children">
+                            {{item}}/{{key}}
+                          </div>-->
                           <!--{{cell.keyName}}{{cell.children}}
                           {{formData[cell.keyName]}}-->
-                          <el-select v-model="formData[cell.keyName][child_index].keyValue" :placeholder="child.placeholder"
+
+
+
+                          <el-select v-model="formData[cell.keyName][child.keyName]" :placeholder="child.placeholder"
+                                     v-for='(child,child_index) in cell.children' :key='child_index'>
+                            <el-option v-for='(item,item_idx) in dicties[cell.keyName]["value_"+child_index]' :key="item_idx"
+                                       :value='item_idx' :label="item"></el-option>
+                          </el-select>
+
+
+                          <!--<el-select v-model="formData[cell.keyName][child_index]" :placeholder="child.placeholder"
                             v-for='(child,child_index) in cell.children' :key='child_index'>
                             <el-option v-for='(item,item_idx) in dicties[cell.keyName]["value_"+child_index]' :key="item_idx"
                               :value='item_idx' :label="item"></el-option>
-                          </el-select>
+                          </el-select>-->
                         </div>
 
                         <el-select v-model="formData[cell.keyName]" :placeholder="cell.placeholder" @change='changeSelect(cell.keyName,dicties[cell.keyName],$event)'
@@ -153,7 +166,7 @@ export default {
     this.resetForm()
   },
   methods: {
-    resetForm () {
+    /*resetForm () {
       let formData = {}
       for (let label in this.defineReport) {
         let form = this.defineReport[label]
@@ -180,8 +193,56 @@ export default {
 
         })
       }
+      console.log(formData);
+      this.formData = formData
+    },*/
+
+
+    resetForm () {
+      let formData = {}
+      for (let label in this.defineReport) {
+        //debugger
+        let form = this.defineReport[label]
+        form.forEach(item => {
+          if (!item.keyName) return
+          if(item.keyName=='house_type') {
+            debugger
+          }
+          formData[item.keyName] = item.keyValue
+
+          if (item.children) {
+            if(item.keyName=='house_type') {//房屋类型
+              let mVal = {};
+              _.forEach(item.children,(o)=> {
+                mVal[o.keyName] = o.keyValue;
+              });
+              formData[item.keyName] = mVal;
+            }
+            else {
+              let isArr = ((typeof item.childType) == 'object'),
+                children = isArr ? item.children[0] : item.children,
+                newVal = {};
+              children.forEach(child => {
+                if (isArr) {
+                  newVal[child.keyName] = child.keyValue
+                } else {
+                  formData[item.keyName].push(child.keyValue)
+                }
+                if (isArr) {
+                  formData[item.keyName].push(newVal)
+                }
+              })
+            }
+          }
+        })
+      }
+      debugger
+      console.log(formData);
       this.formData = formData
     },
+
+
+
     changeAddCount (keyName, slither, index, child) { // 添加keyname  index 和 approval中的children
       this.formData[keyName].push(JSON.parse(JSON.stringify(this.formData[keyName][0])))
       this.defineReport[slither][index].children.push(child)
@@ -197,6 +258,7 @@ export default {
     getDetailForm () {
       let content = JSON.parse(JSON.stringify(this.moduleData));
       this.copyFormData = JSON.parse(JSON.stringify(content))
+      debugger
       for (let item in this.formData) {
         if (typeof content[item] == 'object') {
           if (content[item].id) {

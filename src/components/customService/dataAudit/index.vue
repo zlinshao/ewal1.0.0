@@ -232,10 +232,10 @@ export default {
             id: 3,
             title: '续租'
           },
-          {
+          /*{
             id: 4,
             title: '未收先租'
-          },
+          },*/
           {
             id:5,
             title:'调租',

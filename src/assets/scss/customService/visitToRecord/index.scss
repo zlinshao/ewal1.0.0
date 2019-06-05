@@ -183,7 +183,10 @@
               .content_album {
                 @include flex('space-column');
                 .imgs_box {
-                  @include flex('space-column');
+                  min-height: 30px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
                   margin-bottom: 5px;
                   div {
                     margin-bottom: 0px;

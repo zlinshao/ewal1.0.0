@@ -173,7 +173,7 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span='12' class='detail_col el-border'>
+            <el-col :span='12' class="detail_col el-border scroll_bar">
               <h5>合同信息</h5>
               <el-row :gutter="6" class='detail_col_box'>
                 <el-col :span='12'>
@@ -200,7 +200,7 @@
                   <div>
                     <span class='tit'>合同照片</span>
                     <p class='content' v-if='recordDetail.album'>
-                      <Ljupload size='40' :value="recordDetail.album_temp.photo" disabled=true :download='false'></Ljupload>
+                      <lj-upload size='40' :value="recordDetail.album_temp.photo" disabled=true :download='false'></lj-upload>
                       <!-- <img :src="img.uri" alt="" v-for='img in recordDetail.album.photo' :key='img.id' data-magnify=""
                         data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'> -->
                     </p>
@@ -235,7 +235,7 @@
                     <div class='content content_album'>
                       <div v-for='(item,key) in recordDetail.album_temp' :key="key" class='imgs_box' v-if='key !="photo"'>
                         <p>{{dataAblum[key]}}</p>
-                        <lj-upload size='40' :value="recordDetail.album_temp[key]" disabled=true :download='false'></lj-upload>
+                        <lj-upload size='40' v-model="recordDetail.album_temp[key]" disabled=true :download='false'></lj-upload>
                         <!-- <div v-if='item'> -->
                         <!-- <img :src="img.uri" alt="" v-for='img in item' :key='img.id' data-magnify="" data-caption="图片查看器"
                             :data-src="img.uri" v-if='img.uri'> -->
@@ -300,14 +300,12 @@ import MenuList from '../../common/menuList.vue';
 import RecordeDialog from '../components/recorde-dialog';
 import { visitToRecordSearch } from '../../../assets/js/allSearchData.js';
 import { customService } from '../../../assets/js/allModuleList.js';
-import Ljupload from '../../common/lightweightComponents/lj-upload'
 export default {
   name: "index",
   components: {
     SearchHigh,
     LjDialog,
     MenuList,
-    Ljupload,
     RecordeDialog
   },
   data () {
@@ -441,13 +439,17 @@ export default {
         electricity_photo: '电表',
         gas_photo: '气表照片',
         checkin_photo: '交接单照片',
+        checkout_photo:'退租交接单照片',
+        checkout_settle_photo:'退租结算照片',
         auth_photo: '委托书照片',
         deposit_photo: '押金照片',
         promise: '承诺书照片',
         property_photo: '房产证',
         water_card_photo: '水卡',
         electricity_card_photo: '电卡',
-        gas_card_photo: '气卡'
+        gas_card_photo: '气卡',
+        other_photo:'其他照片',
+
       },
       record_info: {},
       currentMethod: '',
