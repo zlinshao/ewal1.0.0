@@ -468,7 +468,6 @@
     methods: {
       handleGetVillage(val) {
         if (val !== 'close') {
-          debugger
           if (this.is_control === 'save') {
             this.merge_form.save_village = val[0].village_name;
             this.merge_form.id = val[0].id;
@@ -485,9 +484,13 @@
       //合并小区
       handleConfirmMerge() {
         this.$LjConfirm({content:'确定合并吗？'}).then(()=> {
-          this.$http.put(this.http_server + `v1.0/market/community/merge/${this.merge_form.id}`,this.merge_form).then(res => {
+          let params = {
+            ids:this.merge_form.merge_to_community_id
+          };
+          this.$http.put(this.http_server + `v1.0/market/community/merge/${this.merge_form.id}`,params).then(res => {
             this.$LjMessageEasy(res,()=> {
               this.is_control = '';
+              this.merge_visible = false;
               this.getVillageList();
             })
           })
@@ -528,6 +531,23 @@
             message: '请选择需要分配的小区'
           });
           return false;
+        }
+        if(this.current_check_village.length==1) {
+          this.allot_village_params.org_id = this.current_check_village[0].orgs;
+        }
+        if (this.current_check_village.length > 1) {
+          let isEqual = true;
+          let originArr = this.current_check_village[0].orgs;
+          _(this.current_check_village).forEach((o)=> {
+            if(!_.isEqual(originArr,o.orgs)) {
+              isEqual = false;
+            }
+          });
+          if(isEqual) {
+            this.allot_village_params.org_id = originArr;
+          }
+          //let s = this.current_check_village;
+          //debugger
         }
         this.allot_village_params.community_id = [];
         for (let item of this.current_check_village) {
