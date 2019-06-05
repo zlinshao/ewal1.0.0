@@ -473,6 +473,9 @@
   justify-content: space-between;
   margin-bottom: 5px;
 }
+#theme_name #visitToRecord .dialog_container .dialog_main .detail .el-col div .content_album .imgs_box > p {
+  font-size: 14px;
+}
 #theme_name #visitToRecord .dialog_container .dialog_main .detail .el-col div .content_album .imgs_box div {
   margin-bottom: 0px;
 }
