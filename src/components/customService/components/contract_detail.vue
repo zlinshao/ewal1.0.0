@@ -26,7 +26,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="产权地址">
-                    <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{contractDetail.house_extension.community.detailed_address
+                    <span :title="contractDetail.house_extension.community.detailed_address" v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{substringPlugin(contractDetail.house_extension.community.detailed_address,15)
                       || '--'}}</span>
                     <span v-else>--</span>
                   </el-form-item>
@@ -723,7 +723,7 @@ export default {
             width: 230px;
             height: 36px;
             line-height: 30px;
-            overflow-x: scroll;
+            overflow: hidden;
             @include scroll;
             span {
               white-space: nowrap;
