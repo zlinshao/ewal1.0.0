@@ -206,7 +206,7 @@ export default {
         form.forEach(item => {
           if (!item.keyName) return
           if(item.keyName=='house_type') {
-            debugger
+            //debugger
           }
           formData[item.keyName] = item.keyValue
 
@@ -236,7 +236,7 @@ export default {
           }
         })
       }
-      debugger
+      //debugger
       console.log(formData);
       this.formData = formData
     },
@@ -258,7 +258,7 @@ export default {
     getDetailForm () {
       let content = JSON.parse(JSON.stringify(this.moduleData));
       this.copyFormData = JSON.parse(JSON.stringify(content))
-      debugger
+      //debugger
       for (let item in this.formData) {
         if (typeof content[item] == 'object') {
           if (content[item].id) {

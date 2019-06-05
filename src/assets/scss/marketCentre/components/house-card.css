@@ -334,6 +334,10 @@
   height: 40px;
   line-height: 40px;
   font-family: 'jingDianXingShu';
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
 }
 #houseCard > div .content > div.cards .house-item .card .info .text {
   text-align: left;
