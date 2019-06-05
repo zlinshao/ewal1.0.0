@@ -506,5 +506,8 @@
 #theme_name #balance .Imgs_comments .activeImgsComments {
   border-color: #fff;
 }
+#theme_name #balance .Imgs_comments .isCenterComments {
+  margin: auto;
+}
 
 /*# sourceMappingURL=index.css.map */

@@ -39,7 +39,7 @@
                     <h4>
                       <img :src="item.avatar" v-if="item.avatar">
                       <img
-                        src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg"
+                        src="../../../../assets/image/no_avatar.png"
                         v-else>
                     </h4>
                     <h5>
@@ -72,7 +72,7 @@
                     <i class="el-icon-remove" @click="removeStaff(index,item)"></i>
                     <img :src="item.avatar" v-if="item.avatar">
                     <img
-                      src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg"
+                      src="../../../../assets/image/no_avatar.png"
                       v-else>
                   </h4>
                   <p>{{item.name}}</p>
