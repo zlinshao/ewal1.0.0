@@ -24,10 +24,9 @@
           <div v-for="(item, index) in patentList" :key="index" class='patentList'>
             <div>
               <div @click="showPatent(index)" class="patentDetail">
-                <h1>{{item.departmentHeader}}</h1>
-                <h1>{{item.departmentFooter}}</h1>
+                <h1 :title="item.departmentHeader">{{substringPlugin(item.departmentHeader,5)}}</h1>
                 ...............................
-                <h3>{{item.name}}</h3>
+                <h3 :title="item.name">{{substringPlugin(item.name,11)}}</h3>
               </div>
               <a class="handleTrigger flex-center">
                 <a class="handlePointer">...</a>
@@ -208,13 +207,7 @@ export default {
               file_id: res.data.data[i].file_id[0].id,
               fileUrl: res.data.data[i].file_id[0].uri
             }
-            if(res.data.data[i].org_id.name?res.data.data[i].org_id.name.length:'' > 12){
-              obj.departmentHeader = res.data.data[i].org_id.name.slice(0, 6)
-              obj.departmentFooter = res.data.data[i].org_id.name.slice(6, 11)+"..."
-            }else{
-              obj.departmentHeader = res.data.data[i].org_id.name.slice(0, 6)
-              obj.departmentFooter = res.data.data[i].org_id.name.slice(6, 12)
-            }
+            obj.departmentHeader = res.data.data[i].org_id.name;
             this.patentList.push(obj);
           }
           if (this.patentList.length > 0) {
