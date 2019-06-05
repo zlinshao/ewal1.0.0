@@ -50,7 +50,7 @@
     <!--新增员工-->
     <lj-dialog
       :visible="add_newStaff_visible"
-      :size="{width: 1200 + 'px',height: 800 + 'PX'}"
+      :size="{width: 1200 + 'px',height: 800 + 'PX','top':'55%'}"
       @close="handleCancelAddStaff"
     >
       <div class="dialog_container">
@@ -502,7 +502,7 @@
                   header-row-class-name="tableHeader"
                   height="250px"
                   style="width: 100%">
-                  <el-table-column label="名称" prop="name" align="center"></el-table-column>
+                  <el-table-column label="名称" prop="name" show-overflow-tooltip align="center"></el-table-column>
                   <el-table-column label="人数" prop="users_count" align="center"></el-table-column>
                   <el-table-column label="职级" prop="level" align="center">
                     <template slot-scope="scope">

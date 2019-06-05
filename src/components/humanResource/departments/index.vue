@@ -21,7 +21,7 @@
                     :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
-        <div class="icons search" @click="highSearch(chooseTab)" v-show=" chooseTab !== 1"></div>
+        <div class="icons search" @click="highSearch(chooseTab)" v-show=" chooseTab !== 1 && chooseTab !== 5"></div>
       </div>
     </div>
 
