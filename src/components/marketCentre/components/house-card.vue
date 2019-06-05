@@ -23,7 +23,9 @@
                   </div>
                 </div>
                 <div class="info">
-                  <span class="address">{{ item.name }}</span>
+                  <el-tooltip :content="item.name">
+                      <span class="address" >{{ item.name }}</span>
+                  </el-tooltip>
                   <div class="text">
                     <p><b class="type_icon"></b>{{ item.hk }}</p>
                     <p><b class="info_icon"></b>空置{{ item.warning_current_days }}天 / 剩余 {{ item.month }}月</p>

@@ -98,6 +98,10 @@
                                 height: 40px;
                                 line-height: 40px;
                                 font-family: 'jingDianXingShu';
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                width: 90%;
                             }
                             .text {
                                 text-align: left;
