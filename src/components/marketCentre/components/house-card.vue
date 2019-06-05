@@ -14,9 +14,8 @@
                     <div class="btn" @click.stop="handleOpenControl(item.id)">...</div>
                     <div class="house_type">{{ item.decorate }}</div>
                   </div>
-                  <!-- 标记图标 quality为1,2,3的时候表示被标记，大于0表示已经取消标记-->
+                  <!-- 标记图标 quality为1表示被标记，等于0表示已经取消标记-->
                   <div v-show="item.quality == 1 ">
-                     <!-- :content="item.quality_cause+'  ' +item.quality_content" -->
                     <el-tooltip :content="item.quality_cause+'  ' +item.quality_content">
                       <span class="mark marked"  @click="openRemarkCancel(item)"></span>
                     </el-tooltip>
@@ -33,7 +32,6 @@
                   </div>
                   <div class="notice_info flex-center">
                     <span class="notice-type">{{ item.house_status_name }}</span>
-                    <!-- <span :class="['announcement-' + item.warning_status ]" class="notice"></span> -->
                     <span :class="['noticeIcon-' + item.warning_status ]" class="notice"></span>
                   </div>
                 </div>

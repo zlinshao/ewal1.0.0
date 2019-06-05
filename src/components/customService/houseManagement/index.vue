@@ -865,6 +865,7 @@
           await this.getHouseResource();
           // 清空字段
           delete this.house_params.is_org_user;
+          // this.house_params.kong='';
         }
         this.isHigh = false;
       },
