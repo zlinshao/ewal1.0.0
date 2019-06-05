@@ -385,6 +385,7 @@
           is_share: '',
           allocation: '',
           address: '',
+          search:'',
           py_all: '',
           org_id: [],
           name: '',
@@ -435,7 +436,7 @@
         searchData: {
           status: 'village',
           placeholder: '小区名称',
-          keywords: 'address',
+          keywords: 'search',
           data: []
         },
 
@@ -472,8 +473,6 @@
             this.merge_form.save_village = val[0].village_name;
             this.merge_form.id = val[0].id;
           } else {
-            //this.merge_form.merge_to_community_id = val[0].village_id;
-            //this.merge_form.merge_village = val[0].village_name;
             this.merge_form.merge_to_community_id = _.map(val,'id');
             this.merge_form.merge_village = _.map(val,'village_name').join(',');
           }
@@ -546,8 +545,6 @@
           if(isEqual) {
             this.allot_village_params.org_id = originArr;
           }
-          //let s = this.current_check_village;
-          //debugger
         }
         this.allot_village_params.community_id = [];
         for (let item of this.current_check_village) {
@@ -893,7 +890,7 @@
       //关闭高级搜索
       handleCloseSearch(val) {
         if (val !== 'close') {
-          this.village_params.address = val.address;
+          this.village_params.search = val.search;
           this.getVillageList();
         }
         this.HighVisible = false;
