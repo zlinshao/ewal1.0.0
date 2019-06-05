@@ -303,6 +303,7 @@
   justify-content: center;
 }
 #theme_name.theme1 #patent > div .patentContainer .patentContainerMid .patentList > div .patentDetail > h3 {
+  text-align: center;
   width: 136px;
   height: 26px;
   font-size: 20px;

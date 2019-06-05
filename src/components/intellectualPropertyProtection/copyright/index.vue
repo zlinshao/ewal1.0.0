@@ -24,10 +24,10 @@
           <div v-for="(item, index) in patentList" :key="index" class='patentList'>
             <div>
               <div @click="showPatent(index)" class="patentDetail">
-                <h1>{{item.departmentHeader}}</h1>
-                <h1>{{item.departmentFooter}}</h1>
+                <h1 :title="item.departmentHeader">{{substringPlugin(item.departmentHeader,5)}}</h1>
+<!--                <h1>{{item.departmentFooter}}</h1>-->
                 ...............................
-                <h3>{{item.name}}</h3>
+                <h3 :title="item.name">{{substringPlugin(item.name,11)}}</h3>
               </div>
               <a class="handleTrigger flex-center">
                 <a class="handlePointer">...</a>
@@ -98,7 +98,7 @@
         <div class="dialog_main flex-center borderNone">
           <el-form label-width="120px" class="depart_visible">
             <el-form-item label="所属部门">
-              <org-choose title="请选择部门" v-model="patentEditDetail.org_id"></org-choose>
+              <org-choose title="请选择部门" num="1" v-model="patentEditDetail.org_id"></org-choose>
             </el-form-item>
             <el-form-item label="专利名称">
               <div class="items-center iconInput">
@@ -110,7 +110,7 @@
             </el-form-item>
             <el-form-item label="编辑文件">
               <div class="patentUpload">
-                <lj-upload :max-size="5" v-model="patentEditDetail.file_id"></lj-upload>
+                <lj-upload :max-size="5" :limit-easy="['image']" v-model="patentEditDetail.file_id"></lj-upload>
               </div>
             </el-form-item>
           </el-form>
@@ -208,13 +208,7 @@ export default {
               file_id: res.data.data[i].file_id[0].id,
               fileUrl: res.data.data[i].file_id[0].uri
             }
-            if(res.data.data[i].org_id.name.length > 12){
-              obj.departmentHeader = res.data.data[i].org_id.name.slice(0, 6)
-              obj.departmentFooter = res.data.data[i].org_id.name.slice(6, 11)+"..."
-            }else{
-              obj.departmentHeader = res.data.data[i].org_id.name.slice(0, 6)
-              obj.departmentFooter = res.data.data[i].org_id.name.slice(6, 12)
-            }
+            obj.departmentHeader = res.data.data[i].org_id.name;
             this.patentList.push(obj);
           }
           if (this.patentList.length > 0) {

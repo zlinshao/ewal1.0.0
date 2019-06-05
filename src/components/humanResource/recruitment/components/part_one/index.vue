@@ -93,16 +93,16 @@
                 <org-choose width="360" num="1" :disabled="true" title="自动获取" :show-icon="false" v-model="control_mb_form.org_id"></org-choose>
               </el-form-item>
               <el-form-item label="所需人数" prop="number">
-                <el-input-number :controls="false" :min="1" :max="10" v-model.number="control_mb_form.number.min"
-                                 style="width: 49%" placeholder="请输入至少需求人数"></el-input-number>
-                <el-input-number :controls="false" :min="1" :max="10" v-model.number="control_mb_form.number.max"
-                                 style="width: 49%" placeholder="请输入至多需求人数"></el-input-number>
+                <el-input v-model.number="control_mb_form.number.min"
+                                 style="width: 49%" placeholder="请输入至少需求人数"></el-input>
+                <el-input v-model.number="control_mb_form.number.max"
+                                 style="width: 49%" placeholder="请输入至多需求人数"></el-input>
               </el-form-item>
               <el-form-item label="年龄范围" prop="year">
-                <el-input-number :controls="false" :min="18" :max="100" v-model.number="control_mb_form.year.min"
-                                 style="width: 49%" placeholder="请输入年龄最小值"></el-input-number>
-                <el-input-number :controls="false" :min="18" :max="100" v-model.number="control_mb_form.year.max"
-                                 style="width: 49%" placeholder="请输入年龄最大值"></el-input-number>
+                <el-input v-model.number="control_mb_form.year.min"
+                                 style="width: 49%" placeholder="请输入年龄最小值"></el-input>
+                <el-input v-model.number="control_mb_form.year.max"
+                                 style="width: 49%" placeholder="请输入年龄最大值"></el-input>
               </el-form-item>
               <el-form-item label="性别" prop="gender" required>
                 <el-select v-model="control_mb_form.gender">
@@ -114,10 +114,10 @@
                                  style="width: 49%" placeholder="请输入薪资最小值(必填)"></el-input>
                 <el-input  v-model="control_mb_form.salary.max"
                                  style="width: 49%" placeholder="请输入薪资最大值(必填)"></el-input>-->
-                <el-input-number :controls="false" :min="1000" :max="1000000" v-model.number="control_mb_form.salary.min"
-                                 style="width: 49%" placeholder="请输入薪资最小值(必填)"></el-input-number>
-                <el-input-number :controls="false" :min="1000" :max="1000000" v-model.number="control_mb_form.salary.max"
-                                 style="width: 49%" placeholder="请输入薪资最大值(必填)"></el-input-number>
+                <el-input v-model.number="control_mb_form.salary.min"
+                                 style="width: 49%" placeholder="请输入薪资最小值(必填)"></el-input>
+                <el-input  v-model.number="control_mb_form.salary.max"
+                                 style="width: 49%" placeholder="请输入薪资最大值(必填)"></el-input>
               </el-form-item>
               <el-form-item label="工作经验" prop="experience" required>
                 <el-select v-model="control_mb_form.experience">

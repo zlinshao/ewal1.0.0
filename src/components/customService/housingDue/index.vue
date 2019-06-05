@@ -162,14 +162,14 @@
               </div>
             </el-form-item>
             <el-form-item label="预约时间">
-              <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="mark_form.appointment_time" type="datetime"
+              <el-date-picker format="yyyy-MM-dd" v-model="mark_form.appointment_time" type="datetime"
                 placeholder="请选择"></el-date-picker>
             </el-form-item>
             <el-form-item label="备注信息">
               <el-input v-model="mark_form.remark" type="textarea" placeholder="请输入" :row="6"></el-input>
             </el-form-item>
             <el-form-item label="上传图片">
-              <lj-upload size="50" style="position: absolute;top: -13px" v-model='mark_form.album'></lj-upload>
+              <lj-upload size="50" style="position: absolute;top: -13px" :limit-easy="['image']" v-model='mark_form.album'></lj-upload>
             </el-form-item>
           </el-form>
         </div>

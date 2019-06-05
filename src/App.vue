@@ -34,13 +34,14 @@
           <span class="icon3024 icon_mess" @click="routerLink('/messageCenter')"></span>
           <!-- <span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span> -->
         </div>
-        <div class="change_theme" @mouseover="theme_visible = true"></div>
+        <!--皮肤切换-->
+        <!--<div class="change_theme" @mouseover="theme_visible = true"></div>
         <div class="change_theme_content" v-show="theme_visible" @mouseleave="theme_visible = false">
           <a class="btn"></a>
           <div v-for="item in theme_list" :class="['theme-bg-' + item.key,item.color]" @click="handleChangeTheme(item)">
             {{ item.val }}
           </div>
-        </div>
+        </div>-->
       </div>
     </header>
     <div id="moduleList" :class="{'moduleList':moduleList}" style="z-index: 1000">

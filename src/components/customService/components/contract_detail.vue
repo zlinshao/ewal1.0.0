@@ -356,7 +356,7 @@
         </div>
 
         <div class="dialog_footer" v-if='showFooter'>
-          <el-button :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="item.route" v-for="item in operate_list" @click="handleContract(item.action)">{{item.title}}</el-button>
+          <el-button :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="JSON.stringify(item)" v-for="item in operate_list" @click="handleContract(item.action)">{{item.title}}</el-button>
           <!--<el-button id='active-success' class='el-button-active' size="small" @click="handleContract(true)" v-if='chooseTab == 1 || chooseTab == 2'>通过</el-button>
           <el-button id='active-danger' class='el-button-active' size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>-->
         </div>
@@ -542,24 +542,24 @@ export default {
             this.operate_list = [];
           }
           this.complete.task_id = data.taskId
-          this.complete.key_name = data.buttons?.variableName || 'kf_approved'
+          this.complete.key_name = data.buttons?.variableName || 'kf_approved';
 
         }
       })
     },
     getCookie (cname) {
-      var name = cname + "=";
-      var ca = document.cookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i].trim();
+      let name = cname + "=";
+      let ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
         if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
       }
       return "";
     },
     setCookie (cname, cvalue, exdays) {
-      var d = new Date();
+      let d = new Date();
       d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-      var expires = "expires=" + d.toGMTString();
+      let expires = "expires=" + d.toGMTString();
       document.cookie = cname + "=" + cvalue + "; " + expires;
     },
     handleCloseDetail () {
@@ -629,12 +629,13 @@ export default {
         }
       }*/
       let params = {
-        contract_type:this.contract_type,
+        contract_type:this.chooseTab,
         task_id: this.complete.task_id,
         data: {
           [this.complete.key_name]:isTrue,
         }
       };
+      debugger
       //params.data[this.complete.key_name] = isTrue
       this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
         if (res.code === 200) {
