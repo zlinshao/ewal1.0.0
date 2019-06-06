@@ -273,7 +273,20 @@
             this.$LjMessageNoPermission();
             return;
           }
-          window.open(`${this.url}staff/e_contract/show/${row.staff.leave_proof_number}`);
+          this.$http.get(`${this.url}staff/e_contract/show/${row.staff.leave_proof_number}`).then(res=>{
+              if (res.code === '20010') {
+                  // this.$LjNotify('dimission_sms',{
+                  //     title: '成功',
+                  //     message: res.msg
+                  // });
+                  window.open(res.data);
+              } else {
+                  this.$LjNotify('warning',{
+                      title: '失败',
+                      message: res.msg
+                  })
+              }
+          });
         } else {//发送离职证明
           if(!this.VALIDATE_PERMISSION['Dimission-Certificate-Send']) {
             this.$LjMessageNoPermission();
