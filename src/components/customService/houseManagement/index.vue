@@ -129,16 +129,24 @@
                 <el-table-column label="跟进人" prop="follow_user" align="center"></el-table-column>
               </el-table>
               <!-- 收房合同、租房合同 -->
-              <el-table :data="contract_list" height="250" v-show="current_house_type === 6 || current_house_type === 7">
+              <!-- :data="rentOrderLists"
+      :height="this.mainListHeight() + 'px'"
+      highlight-current-row
+      header-row-class-name="tableHeader"
+      :cell-class-name="tableCell"
+      @cell-click="tableClickRow"
+      style="width: 100%" -->
+            <div v-show="current_house_type === 6 || current_house_type === 7">
+              <el-table :data="contract_list" height="250"  @cell-click="tableClickRowContract" >
                 <el-table-column label="签约时间" prop="sign_at" align="center">
-                   <template slot-scope="scope">
+                    <template slot-scope="scope">
                       <el-tooltip :content="scope.row.sign_at" placement="bottom-start" :visible-arrow="false">
                         <div>{{scope.row.sign_at}}</div>
                       </el-tooltip>
                   </template>
                 </el-table-column>
                 <el-table-column label="合同编号" prop="contract_number" align="center">
-                   <template slot-scope="scope">
+                    <template slot-scope="scope">
                       <el-tooltip :content="scope.row.contract_number" placement="bottom-start" :visible-arrow="false">
                         <div>{{scope.row.contract_number}}</div>
                       </el-tooltip>
@@ -174,6 +182,7 @@
                 </el-table-column>
                 <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
               </el-table>
+      </div>
             </div>
             <div class="page">
               <el-pagination
@@ -335,7 +344,17 @@
         </div>
       </lj-dialog>
 
+      <!-- 详情中的收房合同、租房合同的合同详情 -->
+      <lj-dialog  :visible.sync="contract_detail_visible"   @close="contract_detail_visible = false"
+        :size="{width: 1200 + 'px',height: 800 + 'px'}"> 
+         <contractDetailCustom :contractDetailData='contractDetailCustomer' :currentRow='currentRow' :chooseTab='customer_contract_type'></contractDetailCustom>
+      </lj-dialog>
+
       <MenuList :module="show_market" :list="customService" :backdrop="true" @close="handleCloseMenu"></MenuList>
+
+
+    
+
     </div>
   </div>
 </template>
@@ -346,13 +365,14 @@
   import OverviewInfo from '../../marketCentre/components/overview-info.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
+  import contractDetailCustom from '../../common/contract-detail-custom';
   import { customHouseManagementSearch } from '../../../assets/js/allSearchData.js';
   import MenuList from '../../common/menuList.vue';
   import { customService } from '../../../assets/js/allModuleList.js';
 
   export default {
     name: "index",
-    components: {MenuList, searchHigh, HouseCard, OverviewInfo, LjDialog, HouseFilter},
+    components: {MenuList, searchHigh, HouseCard, OverviewInfo, LjDialog, HouseFilter,contractDetailCustom},
     data() {
       return {
         history_pic_visible: false,
@@ -569,7 +589,11 @@
 
         furniture_list: [],
 
-
+        // 合同详情
+        contract_detail_visible:false, 
+        currentRow:{} ,  //被选中的当前条数据
+        contractDetailCustomer:{} , //合同详情数据
+        customer_contract_type:1,   //合同类型，1为收房，2为租房
       }
     },
     mounted() {
@@ -899,7 +923,31 @@
       },
       handleCloseLjDialog() {
         this.lj_visible = false;
-      }
+      },
+
+      // 详情页中的收房合同、租房合同的详情
+      tableClickRowContract(row){
+        this.customer_contract_type=row.contract_type;// 合同类型
+        this.$http.get(this.market_server + `v1.0/market/contract/${row.contract_type}/${row.contract_id}`).then(res => {
+          if (res.code === 200) {
+            this.currentRow=row;
+            this.contractDetailCustomer = res.data;
+            this.contract_detail_visible = true;
+            //遍历图片生成需要的格式
+            /*if(this.contractDetail.album&&Object.keys(this.contractDetail.album).length>0) {
+              _(this.contractDetail.album).forEach((val,key)=>{
+                album[key] = Object.keys(val);
+              });
+            }*/
+            
+          } else {
+            this.contractDetailCustomer = {};
+          }
+        })
+      },
+    
+
+
     },
   }
 </script>
