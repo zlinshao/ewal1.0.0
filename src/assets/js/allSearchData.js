@@ -1672,3 +1672,71 @@ export const performanceSearch = {
         }
     ]
 }
+
+
+// 合同管理
+export const contractManagementSearch = {
+        status: 'contractManagement',
+        keywords: 'search',
+        placeholder: '地址/合同编号',
+        data: [
+          {
+            keyType: 'dateRange',
+            title: '签约时间',
+            placeholder: '请选择日期',
+            keyName: 'date1',
+            dataType: [],
+          },
+          {
+            keyType: 'radio',
+            title: '合同性质',
+            keyName: 'type',
+            dataType: '',
+            value: this.chooseTab === 1 ? [
+              { id: 1, title: '新收' },
+              { id: 2, title: '续收' }
+            ] : [
+                { id: 1, title: '新租' },
+                { id: 2, title: '转租' },
+                { id: 3, title: '续租' },
+                /*{ id: 4, title: '未收先租' },*/
+                { id: 5, title: '调租' },
+              ]
+          },
+          {
+            keyType: 'dateRange',
+            title: '合同开始时间周期',
+            placeholder: '请选择日期',
+            keyName: 'date2',
+            dataType: [],
+          },
+          {
+            keyType: 'dateRange',
+            title: '合同结束时间周期',
+            placeholder: '请选择日期',
+            keyName: 'date3',
+            dataType: [],
+          },
+          {
+            keyType: 'staff',
+            title: '开单人',
+            placeholder: '请选择开单人',
+            keyName: 'signer',
+            dataType: '',
+            value: {
+              num: 1,
+            }
+          },
+          {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org',
+            dataType: [],
+            value: {
+              num: 1,
+              arr: []
+            }
+          }
+        ]
+}
