@@ -11,7 +11,7 @@
         header-row-class-name="tableHeader"
         style="width: 100%">
         <div v-for="(item,index) in table_column" :key="index">
-          <el-table-column :min-width="item.width" show-overflow-tooltip  :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-if="item.info">
+          <el-table-column :width="item.width" show-overflow-tooltip  :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-if="item.info">
             <template slot-scope="scope">
               <span v-if="item.key.indexOf('staff') === -1">
                 {{ item.info[scope.row[item.key]] ? item.info[scope.row[item.key]] : '/' }}
@@ -380,7 +380,7 @@
           // { key: 'staff.account_bank',val: '开户行',width: "120px"},
           { key: 'staff.ca',val: 'ca认证',isBtn: true,isGenerate:true},
           { key: 'staff.contract_number',val: '劳务合同',isBtn: true,isGenerate:true},
-          { key: 'staff.leaveproof_image_url',val: '上家单位离职证明',isBtn: true},
+          { key: 'staff.leaveproof_image_url',val: '上家单位离职证明',isBtn: true,width: '150px'},
           { key: 'staff.commitment_number',val: '入职承诺书',isBtn: true,isGenerate:true},
           { key: 'staff.employ_proof_number',val: '在职证明',isBtn: true,isGenerate:true},
           { key: 'staff.income_proof_number',val: '收入证明',isBtn: true,isGenerate:true},
