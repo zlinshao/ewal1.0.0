@@ -131,11 +131,11 @@
                              :key="index"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="岗位职责" prop="content">
-                <el-input v-model="control_mb_form.content" type="text"  placeholder="必填(300字以内)"></el-input>
+              <el-form-item label="岗位职责"prop="content" >
+                <el-input v-model="control_mb_form.content" type="textarea" :autosize="{ minRows: 2, maxRows: 14}" placeholder="必填(300字以内)"></el-input>
               </el-form-item>
               <el-form-item label="招聘状态" prop="publish_status">
-                <el-input v-model="control_mb_form.publish_status" type="text"  placeholder="必填(300字以内)"></el-input>
+                <el-input v-model="control_mb_form.publish_status" type="textarea" :autosize="{ minRows: 2, maxRows: 14}" placeholder="必填(300字以内)"></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -435,7 +435,7 @@
           experience: '',
           education: '',
           content: '',
-          status: ''
+          publish_status: ''
         };
         this.control_info_visible = false;
         this.$emit('close');

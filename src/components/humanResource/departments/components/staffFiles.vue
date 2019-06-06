@@ -158,15 +158,15 @@
                         </el-select>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="6">
-                      <el-form-item label="婚育状况">
-                        <el-select v-model="staffDetail.marital_fertility_status">
-                          <el-option :value="1" label="未婚"></el-option>
-                          <el-option :value="2" label="已婚未育"></el-option>
-                          <el-option :value="3" label="已婚已育"></el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
+                    <!--<el-col :span="6">-->
+                      <!--<el-form-item label="婚育状况">-->
+                        <!--<el-select v-model="staffDetail.marital_fertility_status">-->
+                          <!--<el-option :value="1" label="未婚"></el-option>-->
+                          <!--<el-option :value="2" label="已婚未育"></el-option>-->
+                          <!--<el-option :value="3" label="已婚已育"></el-option>-->
+                        <!--</el-select>-->
+                      <!--</el-form-item>-->
+                    <!--</el-col>-->
                     <el-col :span="6">
                       <el-form-item label="英语等级">
                         <el-input v-model="staffDetail.english_level"></el-input>
