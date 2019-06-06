@@ -332,6 +332,9 @@
           case 2:
             this.searchData = this.lordRenterSearchList;
             break;
+          case 3:
+            this.searchData = this.lordRenterSearchList;
+            break;
         }
 
       },

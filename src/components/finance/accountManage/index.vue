@@ -47,12 +47,19 @@
             <span class="table_choose" :class="{'is_table_choose': scope.row.id === is_table_choose }"></span>
           </template>
         </el-table-column>
-        <el-table-column
-          v-for="item in Object.keys(showData)" :key="item"
-          align="center"
-          :prop="item"
-          :label="showData[item]">
+        <el-table-column  key="name" align="center"  prop="name"  label="账户名称"></el-table-column>
+        <el-table-column  key="cate" align="center"  prop="cate"  label="账户类型">
+            <template slot-scope="scope">
+              <span v-for='(item,key) in cate' v-if='key==scope.row.cate'>{{item}}</span>
+          </template>
         </el-table-column>
+        <el-table-column  key="account_num" align="center"  prop="account_num"  label="账号"></el-table-column>
+        <el-table-column  key="bank" align="center"  prop="bank"  label="开户银行"></el-table-column>
+        <el-table-column  key="sub_bank" align="center"  prop="sub_bank"  label="支行"></el-table-column>
+        <el-table-column  key="amount_base" align="center"  prop="amount_base"  label="初始金额"></el-table-column>
+        <el-table-column  key="amount_remain" align="center"  prop="amount_remain"  label="当前余额"></el-table-column>
+        <el-table-column  key="remark" align="center"  prop="remark"  label="备注"></el-table-column>
+          
       </el-table>
       <footer class="flex-center bottomPage">
         <div class="develop flex-center">
@@ -323,10 +330,14 @@
         info_visible: false,
         showFinMenuList: false,
         showData: {
-          name: '户名',
-          account_num: '卡号',
-          account_owner: '开户人',
+          name: '账户名称',
+          cate:'账户类型',
+          account_num:'账号',
+          bank:'开户银行',
+          sub_bank:'支行',
+          amount_base:'初始金额',
           amount_remain: '当前余额',
+          remark: '备注',
         },
         chooseRowIds: [],
         accountData: [],

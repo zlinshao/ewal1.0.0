@@ -1244,9 +1244,6 @@ export default {
     lookImgsClick(item){
       this.reimbursePhotosVisible=true;
       this.reimburseAlbumPhotos=item.album;
-      // album
-      console.log(item)
-      console.log(item.urls)
     },
 
 
@@ -1255,6 +1252,7 @@ export default {
      ***/
     // 评论的内容回显(lili)
     getProcessListFun() {
+       this.commentsData=[];  //清空数据
       axios.get(
           `${globalConfig.approval_sever}history/process-instances/${
             this.current_row.flow_id
@@ -1302,7 +1300,8 @@ export default {
      ***/
     // 备注列表的获取（lili）
     getDetailRemarkListFun() {
-      let interfaceName=''
+      let interfaceName='';
+      this.remarkTabelData=[];  //清空数据
      if(this.chooseTab== 5){  //报销单备注列表接口
         interfaceName='customer_reimburse';  
       }else{                 //结算单备注列表接口

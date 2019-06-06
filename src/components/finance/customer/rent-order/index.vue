@@ -32,8 +32,6 @@
       <el-table-column prop="contact" label="客户手机号" align="center"></el-table-column>
       <el-table-column prop="months" label="租房月数" align="center"></el-table-column>
       <el-table-column prop="deal_date" label="待签约日期" align="center"></el-table-column>
-      <!-- <el-table-column prop="account_type" label="客户汇款方式" align="center" show-overflow-tooltip></el-table-column>
-      <el-table-column label="账号" prop="account_num" align="center" min-width="150"></el-table-column> -->
       <el-table-column label="签约人" prop="operator.name" align="center"></el-table-column>
       <el-table-column label="付款方式/月单价" prop="prices" align="center" min-width="200">
         <template slot-scope="scope">
@@ -104,15 +102,14 @@
         action_status: '',//操作状态
         chooseRowIds: [],//列表ids
 
-        rentOrderStatus: [],//前缀状态
 
         delete_visible: false,//删除
-        edit_visible: false,//编辑
+        // edit_visible: false,//编辑
         details_visible: false,//详情
         is_disabled: true,//是否禁用
         current_row: '',//当前row
         rentOrderLists: [],//列表数据
-        rentOrderCount: 0,
+        rentOrderCount: 0,  //总条数
         rentOrderIds: [],
         ra_ids: [],
         rentOrderDetailData: this.row,
@@ -198,20 +195,7 @@
                    this.$emit('getMultipleSelection', item);
                }
              })
-            // //前缀状态
-            // this.$http.get(globalConfig.temporary_server + 'customer_lord_repeat', {id: this.rentOrderIds}).then(res => {
-            //   if (res.code === 200) {
-            //     this.rentOrderStatus = res.data.data.sort((a, b) => {
-            //       return a.id - b.id;
-            //     });
-            //     _.forEach(this.rentOrderLists,(o)=> {
-            //       let findRst = _.find(this.rentOrderStatus,{id:o.id});
-            //       o.prefix = findRst;
-            //       o.type = 'lord';//房东
-            //       o.prefix_suppress_dup = findRst?.suppress_dup||0;
-            //     });
-            //   }
-            // });
+           
           } else {
             this.rentOrderLists = [];
             this.rentOrderCount = 0;
