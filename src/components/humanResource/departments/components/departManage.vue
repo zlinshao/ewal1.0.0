@@ -50,7 +50,7 @@
     <!--新增员工-->
     <lj-dialog
       :visible="add_newStaff_visible"
-      :size="{width: 1200 + 'px',height: 800 + 'PX'}"
+      :size="{width: 1200 + 'px',height: 800 + 'PX','top':'55%'}"
       @close="handleCancelAddStaff"
     >
       <div class="dialog_container">
@@ -502,7 +502,7 @@
                   header-row-class-name="tableHeader"
                   height="250px"
                   style="width: 100%">
-                  <el-table-column label="名称" prop="name" align="center"></el-table-column>
+                  <el-table-column label="名称" prop="name" show-overflow-tooltip align="center"></el-table-column>
                   <el-table-column label="人数" prop="users_count" align="center"></el-table-column>
                   <el-table-column label="职级" prop="level" align="center">
                     <template slot-scope="scope">
@@ -865,7 +865,7 @@
           },
           political_status: '',
           education: '',
-          level: '',
+          level: 0,
           platform: '',
           society_number: '',
           emergency_call: '',
@@ -1528,6 +1528,7 @@
               this.handleCancelAddStaff();
               this.getStaffList();
             } else {
+                console.log(res);
               this.$LjNotify('warning',{
                 title: '失败',
                 message: res.msg
@@ -1705,6 +1706,9 @@
           this.add_newStaff_visible = true;
           for (var key in this.interview_info_detail) {
             this.interview_info_detail[key] = item.staff && item.staff[key] || '';
+          }
+          if (item.staff['level']===0){
+              this.interview_info_detail['level']=0;
           }
           if (item.staff && item.staff.entry_way) {
             this.interview_info_detail.entry_way = Object.assign({},this.interview_info_detail.entry_way,item.staff.entry_way);

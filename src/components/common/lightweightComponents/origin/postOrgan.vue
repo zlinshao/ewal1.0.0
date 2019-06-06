@@ -7,6 +7,7 @@
       <div class="dialog_container">
         <div class="items-bet dialog_header">
           <h3>选择岗位</h3>
+          <div class="clear-all" @click="clearAll">清空</div>
         </div>
         <div class="justify-bet dialog_main">
           <div class="flex depart">
@@ -84,10 +85,20 @@
   export default {
     name: "post-organ",
     components: {ljDialog},
-    props: ['module', 'organData'],
+    //props: ['module', 'organData'],
+    props: {
+      module: {},
+      organData: {},
+      initial: {
+        default() {
+          return [];
+        }
+      },
+    },
     data() {
       return {
         url: globalConfig.organ_server,
+        hr_url: globalConfig.humanResource_server,
         lj_visible: false,
         fullLoading: false,
         configure: {},
@@ -124,6 +135,38 @@
     activated() {
     },
     watch: {
+      initial: {
+        handler(val, oldVal) {
+          if (val && !oldVal) {
+            let params = {
+              limit: 1000,
+              id: val,
+            };
+            this.$http.get(`${this.hr_url}organization/position`, params).then(res => {
+              if (res.code.endsWith('0')) {
+                let result = res.data.data;
+                _.forEach(this.initial, (o) => {
+                  let curUser = _.find(result, {id: o});
+                  if (curUser) {
+                    this.choosePosition.push(curUser);
+                  }
+                });
+                this.choosePosition = _.uniqBy(this.choosePosition, 'id');
+              }
+            });
+          }
+        },
+        immediate: true,
+      },
+
+      choosePosition: {
+        handler(val, oldVal) {
+          if (val && val.length > 0) {
+            this.checkedPosition = _.map(val, 'id');
+          }
+        },
+      },
+
       module(val) {
         this.lj_visible = val;
       },
@@ -150,6 +193,13 @@
     },
     computed: {},
     methods: {
+
+      //清空
+      clearAll() {
+        this.choosePosition = [];
+        this.checkedPosition = [];
+      },
+
       // 部门
       getList(org = 1) {
         this.departList = [];

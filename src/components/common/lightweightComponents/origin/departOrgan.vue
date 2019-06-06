@@ -7,6 +7,7 @@
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>部门选择</h3>
+          <div class="clear-all" @click="clearAll">清空</div>
         </div>
         <div class="dialog_main">
           <p class="choose-title">
@@ -108,6 +109,11 @@
     },
     computed: {},
     methods: {
+      //清空
+      clearAll() {
+        this.checkList = [];
+      },
+
       //定位部门
       handleLocationDepart(tmp,idx) {
         console.log(tmp,idx);
