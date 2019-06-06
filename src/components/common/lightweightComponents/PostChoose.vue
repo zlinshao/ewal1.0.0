@@ -58,10 +58,12 @@
               if(res.code.endsWith('0')) {
                 this.inputContent = _.map(res.data.data,'name').join(',');
               }else {
-                console.log(res);
+                // this.inputContent = '';
               }
 
             });
+          }else{
+            this.inputContent = '';
           }
         },
         immediate: true,

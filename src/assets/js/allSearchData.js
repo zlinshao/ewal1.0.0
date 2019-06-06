@@ -52,7 +52,8 @@ export const staffBookSearch = {
                 keyName: 'position_id',
                 dataType: [],
                 value: {
-                    num: '1'
+                    num: '1',
+                    arr: []
                 }
             }
         ]
