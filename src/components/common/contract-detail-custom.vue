@@ -8,7 +8,7 @@
             <span>
               {{ contractDetailData.contract_number }}
             </span>
-            <el-button type="danger" size="mini" @click="handleRewrite" style="margin-left: 10px">作废重签</el-button>
+            <!-- <el-button type="danger" size="mini" @click="handleRewrite" style="margin-left: 10px">作废重签</el-button> -->
           </div>
         </div>
         <div class="dialog_main">
@@ -207,7 +207,7 @@
           <!--收房 -->
           <div class="other_info" v-if="chooseTab === 1">
             <div style="text-align: right">
-              <el-button type="danger" size="mini" @click="handleOpenPolishing(currentRow)">补齐资料</el-button>
+              <!-- <el-button type="danger" size="mini" @click="handleOpenPolishing(currentRow)">补齐资料</el-button> -->
             </div>
             <div v-if="contractDetailData.album">
               <div class="flex-center" v-for="(item,index) in contractDetailData.album" style="min-height: 80px">
@@ -395,22 +395,22 @@ export default {
       return this.polishing_data[this.chooseTab - 1][idx];
     },
   
-    // 打开作废重签对话框
-    handleRewrite () {
-      this.rewrite_visible = true;
-    },
-    /*打开补齐资料对话框*/
-    handleOpenPolishing (row) {
-      this.currentRow = row;
-      this.$http.get(`${this.url}v1.0/market/contract/album/${this.chooseTab}/${this.currentRow.contract_id}`).then(res=> {
-        if(res.code == 200) {
-          //this.polishing_data_form.property_number = res.data.property_number||null;
-          //this.polishing_data_form.mound_number = res.data.mound_number||null;
-          //this.polishing_data_form.complete_content = res.data.mound_number||{};
-          this.polishing_data_form = res.data;
-          this.data_polishing_visible = true;
-        }
-      });
+    // // 打开作废重签对话框
+    // handleRewrite () {
+    //   this.rewrite_visible = true;
+    // },
+    // /*打开补齐资料对话框*/
+    // handleOpenPolishing (row) {
+    //   this.currentRow = row;
+    //   this.$http.get(`${this.url}v1.0/market/contract/album/${this.chooseTab}/${this.currentRow.contract_id}`).then(res=> {
+    //     if(res.code == 200) {
+    //       //this.polishing_data_form.property_number = res.data.property_number||null;
+    //       //this.polishing_data_form.mound_number = res.data.mound_number||null;
+    //       //this.polishing_data_form.complete_content = res.data.mound_number||{};
+    //       this.polishing_data_form = res.data;
+    //       this.data_polishing_visible = true;
+    //     }
+    //   });
 
 
       /*if (row.needComplete && row.needComplete.length > 0) {
@@ -437,48 +437,48 @@ export default {
         });
         return false;
       }*/
-    },
-     // 作废重签的确定按钮
-    handleSubmitRewrite () {
-      this.$http.post(this.url + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
-        note: this.rewrite_note
-      }).then(res => {
-        if (res.code === 200) {
-          this.$LjNotify('success', {
-            title: '成功',
-            message: res.message
-          });
-          this.handleCancelRewrite();
-        } else {
-          this.$LjNotify('warning', {
-            title: '失败',
-            message: res.message
-          })
-        }
-      })
-    },
-     // 作废重签的取消按钮   
-    handleCancelRewrite () {
-      this.rewrite_note = '';
-      this.rewrite_visible = false;
-    },
+    // },
+  //    // 作废重签的确定按钮
+  //   handleSubmitRewrite () {
+  //     this.$http.post(this.url + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
+  //       note: this.rewrite_note
+  //     }).then(res => {
+  //       if (res.code === 200) {
+  //         this.$LjNotify('success', {
+  //           title: '成功',
+  //           message: res.message
+  //         });
+  //         this.handleCancelRewrite();
+  //       } else {
+  //         this.$LjNotify('warning', {
+  //           title: '失败',
+  //           message: res.message
+  //         })
+  //       }
+  //     })
+  //   },
+  //    // 作废重签的取消按钮   
+  //   handleCancelRewrite () {
+  //     this.rewrite_note = '';
+  //     this.rewrite_visible = false;
+  //   },
 
-   // 补齐资料确定按钮
-    handleConfirmPolishing () {
-      if (!this.polishing_data_form.property_number) {
-        this.$LjNotify('warning',{
-          title: '警告',
-          message: '请输入房产证号'
-        });
-        return false;
-      }
-      if (!this.polishing_data_form.mound_number) {
-        this.$LjNotify('warning',{
-          title: '警告',
-          message: '请输入丘号'
-        });
-        return false;
-      }
+  //  // 补齐资料确定按钮
+  //   handleConfirmPolishing () {
+  //     if (!this.polishing_data_form.property_number) {
+  //       this.$LjNotify('warning',{
+  //         title: '警告',
+  //         message: '请输入房产证号'
+  //       });
+  //       return false;
+  //     }
+  //     if (!this.polishing_data_form.mound_number) {
+  //       this.$LjNotify('warning',{
+  //         title: '警告',
+  //         message: '请输入丘号'
+  //       });
+  //       return false;
+  //     }
       /*for (let key in this.polishing_params) {
         if (!this.polishing_params[key] || this.polishing_params[key].length < 1) {
           this.$LjNotify('warning',{
@@ -493,32 +493,32 @@ export default {
       form.append('property_number', this.polishing_data_form.property_number);
       form.append('mound_number', this.polishing_data_form.mound_number);*/
 
-      this.$http.post(this.url + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, this.polishing_data_form).then(res => {
-        if (res.code === 200) {
-          this.$LjNotify('success', {
-            title: '成功',
-            message: res.message
-          });
-          this.handleCancelPolishing();
-          //this.getContractList();
-        } else {
-          this.$LjNotify('warning', {
-            title: '失败',
-            message: res.message
-          })
-        }
-      })
-    },
+    //   this.$http.post(this.url + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, this.polishing_data_form).then(res => {
+    //     if (res.code === 200) {
+    //       this.$LjNotify('success', {
+    //         title: '成功',
+    //         message: res.message
+    //       });
+    //       this.handleCancelPolishing();
+    //       //this.getContractList();
+    //     } else {
+    //       this.$LjNotify('warning', {
+    //         title: '失败',
+    //         message: res.message
+    //       })
+    //     }
+    //   })
+    // },
       //补齐资料的取消按钮
-    handleCancelPolishing () {
-      this.polishing_data_form= {
-          property_number:null,//房产证号
-          mound_number:null,//丘号
-          complete_content:{},//补齐资料
-      };
-      // this.currentRow = '';
-      this.data_polishing_visible = false;
-    },
+    // handleCancelPolishing () {
+    //   this.polishing_data_form= {
+    //       property_number:null,//房产证号
+    //       mound_number:null,//丘号
+    //       complete_content:{},//补齐资料
+    //   };
+    //   // this.currentRow = '';
+    //   this.data_polishing_visible = false;
+    // },
 
   },
 }

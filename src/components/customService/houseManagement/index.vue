@@ -676,7 +676,7 @@
       //家具补齐
       handlePolishFurniture(id){
         this.$http.get(this.market_server + 'v1.0/market/task/getTask',{
-          house_id: 4,
+          house_id: 4,   // house_id: this.current_house.id, 
           task_type: 10,
           ...this.table_params
         }).then(res => {
@@ -692,6 +692,7 @@
       },
       //切换列表信息
       handleCheckModule(item) {
+        // debugger
         this.table_params.limit = 15;
         this.table_params.page = 1;
         this.current_house_type = item.id;
