@@ -699,7 +699,8 @@ export const recruitmentSearchList = {
                 keyName: 'position_id',
                 dataType: [],
                 value: {
-                    num: ''
+                    num: '',
+                    arr: []
                 }
             }
         ]
@@ -727,7 +728,8 @@ export const recruitmentSearchList = {
                 keyName: 'position_id',
                 dataType: [],
                 value: {
-                    num: ''
+                    num: '',
+                    arr: []
                 }
             },
             {
@@ -774,7 +776,8 @@ export const recruitmentSearchList = {
                 keyName: 'position_id',
                 dataType: [],
                 value: {
-                    num: ''
+                    num: '',
+                    arr: []
                 }
             },
             {
@@ -820,7 +823,8 @@ export const recruitmentSearchList = {
                 keyName: 'position_id',
                 dataType: [],
                 value: {
-                    num: ''
+                    num: '',
+                    arr: []
                 }
             },
             {

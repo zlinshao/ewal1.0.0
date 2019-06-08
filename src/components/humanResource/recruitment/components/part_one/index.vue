@@ -12,7 +12,7 @@
           @row-dblclick="tableDblClick"
           header-row-class-name="tableHeader"
           style="width: 100%">
-          <el-table-column label="岗位" prop="position.name" align="center"></el-table-column>
+          <el-table-column label="岗位" show-overflow-tooltip prop="position.name" align="center"></el-table-column>
           <el-table-column label="部门" show-overflow-tooltip prop="org.name" align="center"></el-table-column>
           <el-table-column label="所需人数" prop="number" align="center">
             <template slot-scope="scope">

@@ -10,7 +10,7 @@
         :default-sort="{prop: 'staff.enroll',order: 'descending'}"
         style="width: 100%">
         <el-table-column label="姓名" prop="name" align="center"></el-table-column>
-        <el-table-column label="岗位" prop="position" align="center">
+        <el-table-column label="岗位" show-overflow-tooltip prop="position" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.position && scope.row.position.length > 0">
               <span v-for="(item,idx) in scope.row.position">{{ item.name }}<a v-if="idx !== scope.row.position.length - 1">;</a></span>
