@@ -98,7 +98,6 @@
           limit: 15,
           department_ids: '',
           export: '',
-          bulletin_type:'2'  //报备类型 1 未收先租 2 租房预定
         },
         action_status: '',//操作状态
         chooseRowIds: [],//列表ids
@@ -179,11 +178,11 @@
         this.$http.get(globalConfig.temporary_server + 'customer_bulletin', this.params).then(res => {
           this.showLoading(false);
           if (res.code === 200) {
-            this.rentOrderLists = res.data.data.sort((a, b) => {
-              return a.id - b.id;
-            });
+            // this.rentOrderLists = res.data.data.sort((a, b) => {
+            //   return a.id - b.id;
+            // });
+            this.rentOrderLists = res.data.data;
             this.rentOrderCount = res.data.count;
-
             this.rentOrderIds = [];
             for (let item of this.rentOrderLists) {
               this.rentOrderIds.push(item.id);

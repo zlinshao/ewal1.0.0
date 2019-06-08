@@ -228,9 +228,10 @@
         this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
           this.showLoading(false);
           if (res.code === 200) {
-            this.lordLists = res.data.data.sort((a, b) => {
-              return a.id - b.id;
-            });
+            // this.lordLists = res.data.data.sort((a, b) => {
+            //   return a.id - b.id;
+            // });
+            this.lordLists = res.data.data;
             this.lordCount = res.data.count;
             this.lordIds = [];
 

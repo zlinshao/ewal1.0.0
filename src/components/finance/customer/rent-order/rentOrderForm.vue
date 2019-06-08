@@ -10,15 +10,15 @@
                         <div class="">
                             <el-form-item label="签约人">
                                 <el-input v-model="commonModuleData.staff_name" style="width: 200px"
-                                          @focus="clickCallback('签约人')" readonly :disabled="is_disabled"></el-input>
+                                          @focus="clickCallback('签约人')" readonly :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
                             <el-form-item label="所属部门">
                                 <el-input v-model="commonModuleData.department_name" style="width: 200px"
-                                          @focus="clickCallback('所属部门')" readonly :disabled="is_disabled"></el-input>
+                                          @focus="clickCallback('所属部门')" readonly :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
                             <el-form-item label="负责人">
                                 <el-input v-model="commonModuleData.leader_name" style="width: 200px"
-                                           readonly :disabled="is_disabled"></el-input>
+                                           readonly :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
                             <el-form-item label="客户姓名">
                                 <el-input v-model="formParams.customer_name" style="width: 200px"
@@ -348,13 +348,16 @@
             }
         },
         mounted() {
+          
             this.formData =JSON.parse(JSON.stringify(this.initData));
             for (let item of Object.keys(this.formParams)) {
                 this.formParams[item] = this.formData[item];
             }
+            debugger
             this.commonModuleData.leader_name = this.formData.leader.name;
             this.commonModuleData.department_name = this.formData.department.name;
             this.commonModuleData.staff_name = this.formData.staff.name;
+            // this.formParams.staff_id= this.formData.staff_id;
             this.prices = this.formData.prices_raw;
             this.formParams.leader_id = this.formData.leader.id;
 
@@ -488,7 +491,7 @@
                         message: res.msg,
                         subMessage: '',
                     });
-                    this.$emit("updateList", false)
+                    this.$emit("editSuccess", false)
                 } else {
                     this.$LjNotify('error', {
                         title: '失败',
@@ -500,7 +503,9 @@
 
             //编辑确认
             postLordEditData(formName) {
+                debugger
                 this.formParams.prices = this.prices;
+                this.formParams.subject_id=this.initData.subject_id;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.$http.put(globalConfig.temporary_server + 'customer_bulletin/' + this.initData.id, this.formParams).then(res => {

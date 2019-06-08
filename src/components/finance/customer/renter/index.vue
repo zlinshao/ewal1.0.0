@@ -256,11 +256,12 @@
         this.$http.get(globalConfig.temporary_server + 'customer_renter', this.params).then(res => {
           this.showLoading(false);
           if (res.code === 200) {
-            this.renterLists = res.data.data.sort(
-              function (a, b) {
-                return a.id - b.id
-              }
-            );
+            // this.renterLists = res.data.data.sort(
+            //   function (a, b) {
+            //     return a.id - b.id
+            //   }
+            // );
+             this.renterLists = res.data.data;
             this.renterIds = [];
             for (let item of this.renterLists) {
               this.renterIds.push(item.id)

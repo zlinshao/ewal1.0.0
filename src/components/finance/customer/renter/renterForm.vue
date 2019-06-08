@@ -503,7 +503,6 @@
                     if (valid) {
                         this.$http.put(globalConfig.temporary_server + 'customer_renter/' + this.row.id, this.formParams).then(res => {
                             this.callbackSuccess(res);
-
                         })
                     } else {
                         console.log('error submit!!');
