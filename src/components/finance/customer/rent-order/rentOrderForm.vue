@@ -348,7 +348,7 @@
             }
         },
         mounted() {
-            this.formData = this.initData;
+            this.formData =JSON.parse(JSON.stringify(this.initData));
             for (let item of Object.keys(this.formParams)) {
                 this.formParams[item] = this.formData[item];
             }
