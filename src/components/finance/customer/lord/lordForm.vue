@@ -69,6 +69,7 @@
                             </el-form-item>
                         </div>
                     </el-col>
+                    <!-- 付款周期 -->
                     <el-col :span="8">
                         <div class="" style="width: 100%">
                             <el-form-item label="付款周期">
@@ -326,7 +327,7 @@
             }
         },
         mounted() {
-            this.formData = this.initData;
+            this.formData =JSON.parse(JSON.stringify(this.initData));
             for (let item of Object.keys(this.formParams)) {
                 this.formParams[item] = this.formData[item];
             }
@@ -401,6 +402,7 @@
             },
             cancel() {
                 this.$emit('cancel', false);
+                this.prices = this.formData.prices_raw;
             },
             //增加付款周期
             addPrices() {
