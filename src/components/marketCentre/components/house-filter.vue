@@ -5,12 +5,14 @@
         <div class="dialog_container">
           <div class="dialog_header">
             <h3>{{ activeName === 'first' ? '请选择房屋地址' : '请选择小区地址'}}</h3>
+            <!-- 搜索按钮 -->
             <div class="header_right borderNone">
               <el-input style="width: 200px;" size="small" v-if="show_search" v-model="params.search"></el-input>
               <div class="search" @click="handleGoSearch"></div>
             </div>
           </div>
           <div class="dialog_main">
+            <!-- 房屋地址 -->
             <el-tabs v-model="activeName" @tab-click="handleClick">
               <el-tab-pane v-if="showHouse" label="地址" name="first">
                 <div class="flex">
@@ -60,6 +62,7 @@
                   </div>
                 </div>
               </el-tab-pane>
+              <!-- 小区地址 -->
               <el-tab-pane label="小区" name="second">
                 <div class="flex">
                   <div class="left_container transparent_bg">
@@ -259,6 +262,7 @@
           this.house_count = 0;
         }
       },
+      deep:true,
       onlyChoose(val) {
         this.only_choose = val;
         this.activeName = this.only_choose === 'all' || this.only_choose === 'house'  ? 'first' : 'second';
@@ -285,13 +289,14 @@
     },
     computed: {},
     methods: {
+      // 确定按钮
       handleSubmitChoose(type) {
-        if (type === 'house') {
+        if (type === 'house') {  //房屋
           this.$emit('close',this.house_choose_items,type);
-          this.handleResetHouse();
-        } else {
+          // this.handleResetHouse();  //清空数据
+        } else {             //小区
           this.$emit('close',this.show_office,type);
-          this.handleResetOffice();
+          // this.handleResetOffice();   //清空数据
         }
       },
       //搜索
@@ -393,14 +398,14 @@
       },
       //取消
       handleCancelChoose(type) {
-        if (type === 'house') {
-          this.handleResetHouse();
-        } else {
-          this.handleResetOffice();
-        }
-        this.dialog_visible = false;
+        // if (type === 'house') {
+        //   this.handleResetHouse();
+        // } else {
+        //   this.handleResetOffice();
+        // }
+        // this.dialog_visible = false;
         this.$emit('close','close');
-        this.$emit('update:visible',this.dialog_visible);
+        // this.$emit('update:visible',this.dialog_visible);
       },
       //删除一个
       handleDeleteItem(house,idx) {
@@ -410,7 +415,7 @@
         var choose_len = this.house_choose.length;
         this.choose_all = house_len === choose_len;
       },
-      //全选
+      //清空全选
       handleChooseAll(val) {
         if (val) {
           var len = this.house_resource.length;

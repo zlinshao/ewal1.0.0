@@ -37,7 +37,8 @@
         </div>
         <div class="dialog_footer">
           <el-button type="danger" size="small" @click="departInfo">确定</el-button>
-          <el-button type="info" size="small" @click="depart_visible = false">取消</el-button>
+          <!-- <el-button type="info" size="small" @click="depart_visible = false">取消</el-button> -->
+            <el-button type="info" size="small" @click="handleCloseLjDialog">取消</el-button>
         </div>
       </div>
     </lj-dialog>

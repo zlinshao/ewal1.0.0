@@ -426,6 +426,7 @@
                     this.prices.splice(index, 1);
                 }
             },
+           
             clickCallback(val) {
                 switch (val) {
                     case "签约人":
@@ -434,7 +435,7 @@
                     case "所属部门":
                         this.commonModule.departModule = true;
                         break;
-                    case "地址":
+                    case "地址":   
                         this.commonModule.house_filter_visible = true;
                         break;
                 }

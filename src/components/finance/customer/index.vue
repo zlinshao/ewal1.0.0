@@ -350,6 +350,7 @@
 
       //获取共用组件状态
       getCommonModule(val) {
+        // debugger
         if (val) {
           for (let item of Object.keys(this.commonModule)) {
             this.commonModule[item] = val[item];
@@ -380,25 +381,30 @@
       },
       //获取房源信息
       handleGetHouseResource(house, type) {
-        console.log(house);
-        console.log(type);
-        if (house) {
+        // console.log(house);
+        // console.log(type);
+        this.commonModule.house_filter_visible = false;
+        if (house!='close') {
           this.commonModuleData.address_name = '';
           this.commonModuleData.address_id = [];
-          house.map(item => {
-            this.commonModuleData.address_name += item.house_name + ',';
-            if (type === 'house') {
-              this.commonModuleData.address_type = 1;
-              this.commonModuleData.address_id.push(item.house_id);
-            } else {
-              this.commonModuleData.address_type = 2;
-              this.commonModuleData.address_id.push(item.village_id);
-            }
-          });
-          this.commonModuleData.address_name = this.commonModuleData.address_name.substring(0, this.commonModuleData.address_name.length - 1);
-
+          if(house.length>0){
+            house.map(item => {
+              this.commonModuleData.address_name += item.house_name + ',';
+              if (type === 'house') {
+                this.commonModuleData.address_type = 1;
+                this.commonModuleData.address_id.push(item.house_id);
+              } else {
+                this.commonModuleData.address_type = 2;
+                this.commonModuleData.address_id.push(item.village_id);
+              }
+            });
+            this.commonModuleData.address_name = this.commonModuleData.address_name.substring(0, this.commonModuleData.address_name.length - 1);
+            // this.commonModule.house_filter_visible = false;
+          }
         }
-        this.commonModule.house_filter_visible = false;
+        // else{
+          // this.commonModule.house_filter_visible = false;
+        // }
 
       },
     },

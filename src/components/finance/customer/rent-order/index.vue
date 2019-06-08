@@ -98,6 +98,7 @@
           limit: 15,
           department_ids: '',
           export: '',
+          bulletin_type:'2'  //报备类型 1 未收先租 2 租房预定
         },
         action_status: '',//操作状态
         chooseRowIds: [],//列表ids
