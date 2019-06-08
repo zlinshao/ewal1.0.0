@@ -180,6 +180,9 @@
         type: Boolean,
         default: true,
       },
+      showFlag:{
+
+      },
       outerParams: {},//从外部传过来 province及city
     },
     data() {

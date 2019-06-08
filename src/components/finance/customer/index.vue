@@ -76,9 +76,6 @@
     </div>
 
     <HouseFilter :visible="commonModule.house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
-    
-    <StaffOrgan :module="commonModule.staffModule" @close="hiddenStaff"></StaffOrgan>
-    <DepartOrgan :module="commonModule.departModule" @close="hiddenDepart"></DepartOrgan>
     <PostOrgan :module="commonModule.postModule" @close="hiddenPost"></PostOrgan>
 
   </div>
@@ -96,9 +93,6 @@
   import renterForm from "./renter/renterForm.vue";
   import rentOrderForm from "./rent-order/rentOrderForm.vue";
   import {pendingSearchList, lordSearchList,RenterSearchList,RenterOrderSearchList} from "../../../assets/js/allSearchData.js";
-
-  import StaffOrgan from '../../common/staffOrgan.vue';
-  import DepartOrgan from '../../common/departOrgan.vue';
   import PostOrgan from '../../common/postOrgan.vue';
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
 
@@ -115,8 +109,6 @@
       lord,
       renter,
       rentOrder,
-      StaffOrgan,
-      DepartOrgan,
       PostOrgan,
       HouseFilter
     },
