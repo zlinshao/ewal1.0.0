@@ -186,11 +186,9 @@
           if (_(['depart', 'position', 'staff']).includes(o.keyType)) {
             //this.$set(this.params, o.keyName, []);
             this.params[o.keyName] = [];
-            console.log(this.params);
           }
         });
         this.params = this.jsonData(this.reset);
-        console.log(this.params)
       },
     },
   }
