@@ -47,7 +47,7 @@
         :prop="item"
         :align="item=='address'?'left':'center'">
       </el-table-column>
-      <el-table-column  show-overflow-tooltip label="付款方式/月单价" prop="prices" align="center" width="180" show-overflow-tooltip>
+      <el-table-column  show-overflow-tooltip label="付款方式/月单价" prop="prices" align="center" width="180" >
       </el-table-column>
       <el-table-column label="状态" prop="" align="center">
         <template slot-scope="scope">
@@ -204,17 +204,12 @@
       },
       // 搜索参数
       handleParamsRenter(val) {
-        if (val.search) {
-          this.params.search = val.search;
-        } else {
-          this.params.search = ''
+        if (val.gatherDate) {  //生成时间
+          this.params.startRange = val.gatherDate[0];
+          this.params.endRange = val.gatherDate[1];
         }
-        this.params.page = val.page;
-        this.params.limit = val.limit;
-        if (val.date1) {
-          this.params.startRange = val.date1[0];
-          this.params.endRange = val.date1[1];
-        }
+        Object.assign(this.params,val);
+        delete this.params.gatherDate;
         this.getRenterList();
       },
       updateRenterList(val) {

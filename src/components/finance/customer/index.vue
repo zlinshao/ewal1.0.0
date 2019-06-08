@@ -94,7 +94,7 @@
   import LordForm from "./lord/lordForm.vue";
   import renterForm from "./renter/renterForm.vue";
   import rentOrderForm from "./rent-order/rentOrderForm.vue";
-  import {pendingSearchList, lordRenterSearchList} from "../../../assets/js/allSearchData.js";
+  import {pendingSearchList, lordSearchList,RenterSearchList,RenterOrderSearchList} from "../../../assets/js/allSearchData.js";
 
   import StaffOrgan from '../../common/staffOrgan.vue';
   import DepartOrgan from '../../common/departOrgan.vue';
@@ -122,7 +122,9 @@
     data() {
       return {
         pendingSearchList,
-        lordRenterSearchList,
+        lordSearchList,
+        RenterSearchList,
+        RenterOrderSearchList,
         action_visible: false,//操作栏作态
         chooseTab: 1,
         selects: [
@@ -327,13 +329,13 @@
         this.showSearch = true;
         switch (val) {
           case 1:
-            this.searchData = this.lordRenterSearchList;
+            this.searchData = this.lordSearchList;
             break;
           case 2:
-            this.searchData = this.lordRenterSearchList;
+            this.searchData = this.RenterSearchList;
             break;
           case 3:
-            this.searchData = this.lordRenterSearchList;
+            this.searchData = this.RenterOrderSearchList;
             break;
         }
 
@@ -342,7 +344,6 @@
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
           this.search_params = val;
           this.$bus.emit('getParams', this.search_params);
         }
