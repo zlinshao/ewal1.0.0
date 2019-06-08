@@ -350,6 +350,7 @@
       /*获取离职列表*/
       getStaffList() {
         this.showLoading(true);
+        this.params.is_on_job=1;
         this.$http.get(this.url+'staff/user', this.params).then(res => {
           this.showLoading(false);
           if (Number(res.code)%10 ===0){
