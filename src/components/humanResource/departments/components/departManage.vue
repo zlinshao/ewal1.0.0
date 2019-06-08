@@ -10,7 +10,7 @@
       </div>
       <div class="scroll_bar" v-if="tabsManage === 'staff'" @click="checkOverflow()">
         <div id="scroll-body" class="staffManage" v-if="staffList.length > 0">
-          <div v-for="item in staffList" style="min-width: 150px">
+          <div v-for="item in staffList" class="staff-item">
             <div class="items-center" :class="{'is_enable': item.is_enable}" @click="reviseStaff(item)">
               <p>
                 <img :src="item.avatar" alt="" v-if="item.avatar">
@@ -18,7 +18,7 @@
               </p>
               <div>
                 <h4>{{ item.name }}</h4>
-                <h5>{{ item.position[0].name }}</h5>
+                <h5 :title="item.position[0].name">{{ substringPlugin(item.position[0].name,8) }}</h5>
               </div>
             </div>
             <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">

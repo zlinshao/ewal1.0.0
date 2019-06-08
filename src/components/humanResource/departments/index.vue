@@ -884,7 +884,7 @@
         this.nav_depart.push(item);
         this.departModule = true;
         this.departInfo = item;
-        this.getNextDepart(item);
+        await this.getNextDepart(item);
         this.show_depart_detail = true;
         this.depart_choose_id=0;
         this.right_arrow_display=false;
@@ -909,9 +909,9 @@
       },
 
       // 部门管理 搜索下级部门
-      getNextDepart(val, next) {
+      async getNextDepart(val, next) {
         this.next_depart_params.parent_id = val.id;
-        this.$http.get(this.url+'organization/organization', this.next_depart_params).then(res => {
+        await this.$http.get(this.url+'organization/organization', this.next_depart_params).then(res => {
           if (res.code === '20000') {
             this.next_depart_pool = res.data.data;
             if (this.next_depart_pool.length>9){
@@ -934,9 +934,9 @@
         })
       },
       //子部门点击获取子部门
-      handleInnerNextDepart(item) {
+      async handleInnerNextDepart(item) {
         this.is_next = true;
-        this.getNextDepart(item, 'next');
+        await this.getNextDepart(item, 'next');
         this.departInfo = item;
         this.depart_choose_id=item.id;
       },
@@ -959,9 +959,9 @@
         })
       },
       //点击导航菜单
-      handleGetCurrentDepart(item, idx) {
+      async handleGetCurrentDepart(item, idx) {
         this.departInfo = item;
-        this.getNextDepart(item);
+        await this.getNextDepart(item);
         this.nav_depart.splice(idx + 1);
       },
       //取消添加系统
@@ -1341,7 +1341,7 @@
 
       /*确定删除部门*/
       handleSubmitDel() {
-        this.$http.delete(`${this.url}organization/organization/${this.del_depart.id}`).then(res => {
+        this.$http.delete(`${this.url}organization/organization/${this.del_depart.id}`).then(async res => {
           if (res.code === '20040') {
             this.$LjNotify('success', {
               title: '成功',
@@ -1350,7 +1350,7 @@
             this.del_depart_visible = false;
             // this.show_depart_detail = false; //隐藏当前部门点开
             if (this.is_child) {
-              this.getNextDepart(this.current_depart);
+              await this.getNextDepart(this.current_depart);
             } else {
               this.getDepartList();
             }
@@ -1419,14 +1419,14 @@
       //确定添加部门
       handleSubmitAddDepart() {
         if (this.is_edit_depart) {
-          this.$http.put(`${this.url}organization/organization/${this.edit_depart.id}`, this.departForm).then(res => {
+          this.$http.put(`${this.url}organization/organization/${this.edit_depart.id}`, this.departForm).then(async res => {
             if (res.code === '20030') {
               this.$LjNotify('success', {
                 title: '成功',
                 message: res.msg
               });
               if (this.is_child) {
-                this.getNextDepart(this.current_depart);
+                await this.getNextDepart(this.current_depart);
               } else {
                 this.getDepartList();
               }
@@ -1444,7 +1444,7 @@
         if (!this.checkForm()){
             return false;
         }
-        this.$http.post(this.url+'organization/organization', this.departForm).then(res => {
+        this.$http.post(this.url+'organization/organization', this.departForm).then(async res => {
           if (res.code === '20010') {
             this.$LjNotify('success', {
               title: '成功',
@@ -1452,7 +1452,7 @@
             });
             this.getDepartList();
             if (this.show_depart_detail) {
-              this.getNextDepart({id: this.departForm.parent_id});
+              await this.getNextDepart({id: this.departForm.parent_id});
             }
             this.handleCancelAddDepart();
           } else {

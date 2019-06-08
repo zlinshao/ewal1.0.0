@@ -260,7 +260,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="离职类型">
-                        <el-select v-model="staffDetail.dismiss_reason.dismiss_type">
+                        <el-select v-model="staffDetail.dismiss_reason.dismiss_type" clearable>
                           <el-option :value="1" label="主动离职"></el-option>
                           <el-option :value="2" label="旷工离职"></el-option>
                           <el-option :value="3" label="劝退"></el-option>

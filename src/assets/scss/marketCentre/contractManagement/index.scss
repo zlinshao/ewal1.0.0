@@ -98,7 +98,8 @@
         margin-left: 20px;
       }
     }
-    .base_house_info ,
+    .house-info,
+    .house-address ,
     .account_info,
     .have_info,
     .other_info{
@@ -128,6 +129,16 @@
         .page {
           background-color: #FFF6E5;
         }
+      }
+    }
+
+
+    //合同详情dialog
+    .contract-detail {
+      .form-item-content {
+        display: inline-block;
+        width: 100%;
+        text-align: left;
       }
     }
   }

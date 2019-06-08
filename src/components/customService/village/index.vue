@@ -462,11 +462,11 @@
       this.address_filter[0].val =this.city_list[0].name;//初始化加载选择南京
       this.village_params.city.push(this.city_list[0].code);
       this.village_params.province = this.city_list[0].province.code;
-      this.getAreaList();
     },
     watch: {},
     computed: {},
     methods: {
+
       handleGetVillage(val) {
         if (val !== 'close') {
           if (this.is_control === 'save') {
@@ -707,8 +707,19 @@
           {key: 'type', val: '选类型'},
           {key: 'depart', val: '选部门'}
         ];
-        this.getVillageList();
+        this.initGetList();
         this.show_filter_search = false;
+      },
+
+
+      //重置搜索参数时选中南京
+      async initGetList() {
+        await this.getCityList();
+        this.address_filter[0].val =this.city_list[0].name;//初始化加载选择南京
+        this.village_params.city.push(this.city_list[0].code);
+        this.village_params.province = this.city_list[0].province.code;
+        this.getAreaList();
+        await this.getVillageList();
       },
 
       //确定筛选
@@ -829,8 +840,8 @@
         })
       },
       //区域列表
-      getAreaList() {
-        this.$http.get(this.http_server + '/v1.0/city/address',{
+      async getAreaList() {
+        await this.$http.get(this.http_server + '/v1.0/city/address',{
           province: this.village_params.province,
           city: this.village_params.city[0]
         }).then(res => {
@@ -925,9 +936,9 @@
       }
       },
       //获取小区列表
-      getVillageList() {
+      async getVillageList() {
         this.showLoading(true);
-        this.$http.get(this.http_server + 'v1.0/market/community',this.village_params).then(res => {
+        await this.$http.get(this.http_server + 'v1.0/market/community',this.village_params).then(res => {
           if (res.code === 200) {
             this.village_list = res.data.data;
             this.village_count = res.data.count;
