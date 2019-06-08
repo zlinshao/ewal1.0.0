@@ -379,7 +379,7 @@
   display: inline-block;
   cursor: pointer;
   width: 30px;
-  height: 24px;
+  height: 32px;
 }
 #app header .items-center .icon_mess {
   background: url("./assets/image/xx_hs.png") no-repeat scroll center;

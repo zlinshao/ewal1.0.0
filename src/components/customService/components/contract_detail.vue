@@ -8,7 +8,7 @@
             <span>{{contractDetail.contract_number}}</span>
             <span style='margin-left:20px;margin-right:60px;'>{{moduleData.type}}</span>
             <el-button id='active-danger' class='el-button-active' size='mini' @click='handleRewrite' style='margin-left:10px'
-              v-if='showFooter'>作废重签</el-button>
+              v-if='showFooter'>{{contractDetail.is_resign?'重签中':'作废重签'}}</el-button>
           </div>
         </div>
         <div class="dialog_main contract_detail">

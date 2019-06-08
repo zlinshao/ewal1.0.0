@@ -313,7 +313,7 @@
   transform: translateX(-50%);
   text-align: center;
   font-size: 16px;
-  color: #999999;
+  color: #000;
 }
 #houseCard > div .content > div.cards .house-item .card .photo .mark {
   width: 30px;
