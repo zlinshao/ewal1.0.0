@@ -295,7 +295,7 @@
             <span>
               {{ contractDetail.contract_number }}
             </span>
-            <el-button type="danger" size="mini" @click="handleRewrite" style="margin-left: 10px">作废重签</el-button>
+            <el-button type="danger" :disabled="contractDetail.is_resign==1" size="mini" @click="handleRewrite" style="margin-left: 10px">{{contractDetail.is_resign?'重签中':'作废重签'}}</el-button>
           </div>
         </div>
         <div class="dialog_main">
@@ -1146,10 +1146,15 @@ export default {
           break;
       }
     },
+    //重签确认
     handleSubmitRewrite () {
-      this.$http.post(this.url + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
-        note: this.rewrite_note
-      }).then(res => {
+      let params = {
+        note:this.rewrite_note,
+        contract_type:this.currentRow.contract_type,
+        contract_id: this.currentRow.contract_id
+      };
+
+      this.$http.post(this.url + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, params).then(res => {
         if (res.code === 200) {
           this.$LjNotify('success', {
             title: '成功',

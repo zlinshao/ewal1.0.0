@@ -25,5 +25,5 @@ export default async function getPermission() {
     }
   }
   await permission();
-  setInterval(permission, 1000 * 30*300);
+  setInterval(permission, 1000 * 60*5);
 }

@@ -162,6 +162,7 @@ export default {
       return "";
     },
     cookieChange () {
+      if(!this.currentRow?.contract_id) return;
       this.$set(this.cookieArr, this.currentRow.contract_id, new Date().getTime())
       this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
       this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
