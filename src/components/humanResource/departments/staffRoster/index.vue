@@ -752,8 +752,17 @@
               default:
                   return;
           }
-          if (pdf){
-              window.open(this.url + `staff/e_contract/show/${row.staff[key.split('.')[1]]}`);
+          if (pdf ) {
+              this.$http.get(`${this.url}staff/e_contract/show/${row.staff[key.split('.')[1]]}`).then(res => {
+                  if (res.code === '20010') {
+                      window.open(res.data);
+                  } else {
+                      this.$LjNotify('warning', {
+                          title: '失败',
+                          message: res.msg
+                      })
+                  }
+              });
           }else if(picture){
               window.open(msg)
           }else if (text){
