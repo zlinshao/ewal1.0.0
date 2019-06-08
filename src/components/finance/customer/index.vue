@@ -14,7 +14,7 @@
         </h2>
       </div>
 
-      <div class="items-center listTopRight">
+      <div class="items-center listTopRight" v-show="!action_visible">
         <!--<p class="status-icon" v-for="item in statusBar" v-if="chooseTab===1||chooseTab===2">-->
           <!--<span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>-->
         <!--</p>-->
@@ -76,6 +76,7 @@
     </div>
 
     <HouseFilter :visible="commonModule.house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
+    
     <StaffOrgan :module="commonModule.staffModule" @close="hiddenStaff"></StaffOrgan>
     <DepartOrgan :module="commonModule.departModule" @close="hiddenDepart"></DepartOrgan>
     <PostOrgan :module="commonModule.postModule" @close="hiddenPost"></PostOrgan>
