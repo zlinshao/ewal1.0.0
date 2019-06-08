@@ -505,9 +505,9 @@
             </el-form>
           </div>
 
-          <p style="text-align: left" v-if="chooseTab === 1">签约人及产权人信息</p>
+          <p style="text-align: left">签约人{{chooseTab==1?'及产权人':''}}信息</p>
           <!--收房 customer_info-->
-          <div class="have_info" v-if="chooseTab === 1">
+          <div class="have_info">
             <el-form label-width="120px">
               <el-row :gutter="10">
                 <div v-for="item in contractDetail.customer_info">
