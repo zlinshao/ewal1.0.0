@@ -353,7 +353,7 @@
             for (let item of Object.keys(this.formParams)) {
                 this.formParams[item] = this.formData[item];
             }
-            debugger
+            // debugger
             this.commonModuleData.leader_name = this.formData.leader.name;
             this.commonModuleData.department_name = this.formData.department.name;
             this.commonModuleData.staff_name = this.formData.staff.name;
@@ -503,7 +503,7 @@
 
             //编辑确认
             postLordEditData(formName) {
-                debugger
+                // debugger
                 this.formParams.prices = this.prices;
                 this.formParams.subject_id=this.initData.subject_id;
                 this.$refs[formName].validate((valid) => {
