@@ -295,7 +295,7 @@
             <span>
               {{ contractDetail.contract_number }}
             </span>
-            <el-button type="danger" :disabled="contractDetail.is_resign==1" size="mini" @click="handleRewrite" style="margin-left: 10px">{{contractDetail.is_resign?'重签中':'作废重签'}}</el-button>
+            <el-button type="danger" :disabled="contractDetail.is_resign===1" size="mini" @click="handleRewrite" style="margin-left: 10px">{{contractDetail.is_resign?'重签中':'作废重签'}}</el-button>
           </div>
         </div>
         <div class="dialog_main">
@@ -617,16 +617,13 @@
 <script>
 import SearchHigh from '../../common/searchHigh.vue';
 import MarketMenuList from '../../marketCentre/components/market-menu-list.vue';
-import LjDialog from '../../common/lj-dialog.vue';
-import Upload from '../../common/upload.vue';
 import MenuList from '../../common/menuList.vue';
 import { customService } from '../../../assets/js/allModuleList.js';
- import { contractManagementSearch } from '../../../assets/js/allSearchData.js';
-// contractManagementSearch
+import { contractManagementSearch } from '../../../assets/js/allSearchData.js';
 
 export default {
   name: "index",
-  components: { SearchHigh, MarketMenuList, LjDialog, Upload, MenuList },
+  components: { SearchHigh, MarketMenuList, MenuList },
   data () {
     return {
       current_house_type: 1,

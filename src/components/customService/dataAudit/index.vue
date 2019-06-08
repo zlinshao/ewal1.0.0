@@ -263,7 +263,7 @@ export default {
       if (val !== 'close') {
         this.searchParams = val
         this.currentPage = 1;
-        this.getDateList()
+        this.getDateList();
       }
     },
     //双击 合同详情

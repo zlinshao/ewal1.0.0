@@ -363,6 +363,7 @@
         this.move(offset, direction, jumpSpeed)
       },
       play() {
+        if(this.sliders.length<=1) return;
         if (this.timer) {
           window.clearInterval(this.timer)
           this.timer = null

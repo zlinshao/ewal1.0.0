@@ -314,9 +314,8 @@
 
       <!--确定移出黑名单-->
       <lj-dialog
-        :visible="move_out_visible"
+        :visible.sync="move_out_visible"
         :size="{width: 400 + 'px',height: 250 + 'px'}"
-        @close="move_out_visible = false"
       >
         <div class="dialog_container">
           <div class="dialog_header">
@@ -403,6 +402,34 @@
       }
     },
     async mounted() {
+      this.searchData = {
+        status: 'customerManagement',
+        keywords: 'search',
+        placeholder: '地址/合同编号/手机号/客户姓名',
+        data: [
+          {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'org_id',
+            dataType: [],
+            value: {
+              num: 1,
+              arr: ''
+            }
+          },
+          {
+            keyType: 'staff',
+            title: '开单人',
+            placeholder: '请选择开单人',
+            keyName: 'user_id',
+            dataType: [],
+            value: {
+              num: 1
+            }
+          },
+        ],
+      };
       this.params = Object.assign({},this.params,{
         type: this.chooseTab
       });
@@ -573,34 +600,6 @@
       //高级
       handleOpenHigh() {
         this.highVisible = true;
-        this.searchData = {
-          status: 'customerManagement',
-          keywords: 'search',
-          placeholder: '地址/合同编号/手机号/客户姓名',
-          data: [
-            {
-              keyType: 'depart',
-              title: '部门',
-              placeholder: '请选择部门',
-              keyName: 'org_id',
-              dataType: [],
-              value: {
-                num: 1,
-                arr: ''
-              }
-            },
-            {
-              keyType: 'staff',
-              title: '开单人',
-              placeholder: '请选择开单人',
-              keyName: 'user_id',
-              dataType: [],
-              value: {
-                num: 1
-              }
-            },
-          ],
-        }
       },
       //tab切换
       async changeTabs(id) {
