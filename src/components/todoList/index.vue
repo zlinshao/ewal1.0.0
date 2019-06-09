@@ -1,5 +1,5 @@
 <template>
-  <div id="theme_name">
+  <div id="theme_name" class="theme1">
     <!--为了正常显示lj-dialog的css样式-->
     <div id="todo_list" :class="{'todo-list': todo_list_visible}">
       <div class="pendant-container">
@@ -53,12 +53,12 @@
       <attence-dialog></attence-dialog>
       <!--罚款缴纳相关-->
       <finespayment-dialog></finespayment-dialog>
-
       <!--收租房带看-->
       <SeeHouse></SeeHouse>
-
       <!--问卷/考试答题-->
       <answer-questionnaire-or-exam></answer-questionnaire-or-exam>
+      <!--稽查中心审批-->
+      <agency-check></agency-check>
     </div>
   </div>
 
@@ -72,6 +72,7 @@
   import finespaymentDialog from './components/humanResource/finespaymentDialog';
   //市场客服
   import SeeHouse from './components/marketCentre/see-house.vue';
+  import AgencyCheck from './components/customService/agencyCheck';
 
   export default {
     name: "todoList",
@@ -81,7 +82,8 @@
       attenceDialog,
       finespaymentDialog,
       SeeHouse,
-      AnswerQuestionnaireOrExam
+      AnswerQuestionnaireOrExam,
+      AgencyCheck,
     },
     computed: {
       currentTodoModule() {
@@ -118,7 +120,7 @@
           title: '',
           page: 1,
           size: 10,//每页条数
-          assignee: this.$storage.get('user_info').id,
+          //assignee: this.$storage.get('user_info').id,
         },
         checked: 1,//选择哪个toolbar
         categoryKey: '',
@@ -366,6 +368,14 @@
                 obj.name = _.find(variables, {name: 'title'})?.value || '-';
                 obj.user = item.description;
                 obj.date = _.find(variables, {name: 'start_time'})?.value || '-';
+                break;
+              /*稽查中心审批*/
+              case 'Agency-Supervision':
+                obj.onClick = 'customerService_agency_check';
+                obj.date = item.createTime;
+                obj.tip = _.find(variables, {name: 'title'})?.value || '-';
+                obj.project = _.find(variables, {name: 'doubt_reason'})?.value || '-';
+                obj.user = _.find(variables, {name: 'bulletin_staff_name'})?.value || '--';
                 break;
               default:
                 break;

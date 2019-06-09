@@ -153,11 +153,11 @@ export default {
       showPersonal:false,//是否显示个人中心下拉框
 
       modules: [
-        {
+        /*{
           url: '/president',
           title: '总裁办',
           English: 'Presidents',
-        },
+        },*/
         {
           url: '/finance',
           title: '财务中心',
@@ -272,8 +272,16 @@ export default {
   },
   mounted() {
     this.listenPhotoUrl();
+    //this.getWeather();
   },
   methods: {
+    /*获取天气*/
+    /*getWeather() {
+      this.$http.get(`https://www.tianqiapi.com/api/?version=v1`).then(res=> {
+        debugger
+      });
+    },*/
+
     /*监听头像变动*/
     listenPhotoUrl() {
       this.$bus.on('photo-url',(val)=> {
