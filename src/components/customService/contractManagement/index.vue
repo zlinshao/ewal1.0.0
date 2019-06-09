@@ -536,11 +536,11 @@
           <div class="account_info" v-if="chooseTab === 2">
             <el-form label-width="120px">
               <el-row :gutter="10">
-                <el-col :span="8">
+                <!--<el-col :span="8">
                   <el-form-item label="已收金额类型">
                     <span class="form-item-content">定金</span>
                   </el-form-item>
-                </el-col>
+                </el-col>-->
                 <el-col :span="8">
                   <el-form-item label="总金额">
                     <span class="form-item-content">{{ contractDetail.money_sum || '/'}}</span>

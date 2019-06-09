@@ -65,29 +65,6 @@
         },
         immediate: true,
       },
-
-
-      /*value: {
-        handler(val, oldVal) {
-          if (val) {
-            if (val.constructor == Array) {
-              return;
-            }
-            let username = storage.get(`user-id${val}`);
-            if (username) {
-              this.inputContent = username;
-              return;
-            }
-            this.$http.get(`${this.url}/staff/user/${val}`).then(res => {
-              if (res.code.endsWith('0')) {
-                this.inputContent = res.data.name;
-                storage.set(`user-id${val}`, res.data.name);
-              }
-            });
-          }
-        },
-        immediate: true//第一次绑定也执行
-      },*/
       width: {
         handler(val, oldVal) {
           if (val) {
