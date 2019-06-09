@@ -883,7 +883,7 @@
         this.nav_depart = [];
         this.nav_depart.push(item);
         this.departModule = true;
-        this.departInfo = item;
+        this.departInfo = _.cloneDeep(item);//防止切换模块 departManage watch props info 不触发
         await this.getNextDepart(item);
         this.show_depart_detail = true;
         this.depart_choose_id=0;
