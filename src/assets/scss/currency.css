@@ -286,11 +286,6 @@
   /*lj-upload缁勪欢 鍋忕Щ鏍峰紡*/
   position: absolute;
   top: -13px; }
-#theme_name .comments .el-textarea {
-  height: 100%; }
-#theme_name .comments textarea {
-  height: 100%;
-  border: none; }
 #theme_name .table_choose {
   display: inline-block;
   width: 20px;
