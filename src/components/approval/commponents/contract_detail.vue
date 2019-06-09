@@ -113,7 +113,7 @@
             </li>
           </ul>
           <div class='float-btn'>
-            <div @click.stop='changeBtn_type'>
+            <div @click.stop='comment_show_visible = !comment_show_visible'>
               <h1></h1>
               <p>评论信息</p>
             </div>
@@ -147,27 +147,15 @@
       <!-- 评论 -->
       <div v-if="comment_show_visible" class="comments">
         <div class="historyComments">
-          <div v-for="item in 100">
+          <div v-for="item in record_list">
             <div class="commentTop">
-              <p>程咬金-大唐官府</p>
-              <span>2019-01-22 10:00:00</span>
+              <p>{{item.author_name}}-{{item.department}}</p>
+              <span>{{item.time}}</span>
             </div>
             <div class="commentText">
-              <div>发货的色卡符合开绿灯撒</div>
+              <div>{{item.content.message}}</div>
               <h1>
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
-                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img v-for="pic in item.content.attachmentBody" :src="pic.uri" alt="">
               </h1>
             </div>
           </div>
@@ -182,36 +170,12 @@
               v-model="comment_info.message">
             </el-input>
           </div>
-          <lj-upload size="50" v-model="comment_info.attachments"></lj-upload>
+          <lj-upload ref="closeComment" size="50" v-model="comment_info.attachments"></lj-upload>
           <p>
             <el-button size="mini" type="info" @click="closeComment">清空</el-button>
             <el-button size="mini" type="danger" @click="postComment">发送</el-button>
           </p>
         </div>
-        <!--        <div class='comments_list'>-->
-        <!--          <div class='comment_cell' v-for='item in record_list' :key='item.id'>-->
-        <!--            <div class='comment_cell_header'>-->
-        <!--              <span class='span1'>{{item.title}}</span>-->
-        <!--              <span class='span2'>{{item.time}}</span>-->
-        <!--            </div>-->
-        <!--            <div class='comment_cell_words'>{{item.content.message}}</div>-->
-        <!--            <Ljupload size='30' v-model="item.content.attachments" disabled=true :download='false'></Ljupload>-->
-        <!--            <div class='comment_border'></div>-->
-        <!--          </div>-->
-        <!--        </div>-->
-        <!--        <div class='comments_footer'>-->
-        <!--          <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="comment_info.message">-->
-        <!--          </el-input>-->
-        <!--          &lt;!&ndash; 上传图片 &ndash;&gt;-->
-        <!--          <p class='postTit'>发送图片</p>-->
-        <!--          <div class='img_box'>-->
-        <!--            <Ljupload size='30' v-model='comment_info.attachments'></Ljupload>-->
-        <!--          </div>-->
-        <!--          <div class='post' @click='postComment'>-->
-        <!--            <i class='post_icons'></i>-->
-        <!--            发送-->
-        <!--          </div>-->
-        <!--        </div>-->
       </div>
     </LjDialog>
 
@@ -311,17 +275,22 @@
           message: '',
           attachments: []
         },
+        record_list: [],//评论记录
 
         record_show_visible: false,
         show_form_visible: false,
         reject_visible: false, // 拒绝弹框
         reject_mark: null, // 拒绝理由
         relateions: {},
-        record_list: [], // 评论信息
         approval_list: [], //审核记录
       }
     },
     watch: {
+      comment_show_visible(val) {
+        if (val) {
+          this.changeBtn_type();
+        }
+      },
       moduleData: {
         handler(val) {
           if (val) {
@@ -330,8 +299,8 @@
             this.allDetail = val;
             this.bulletin_type = val.bulletin_type;
             this.getOperates(val);
-            this.getStaffInfo(val.assignee).then(res => {
-              this.allDetail.assignee_name = res;
+            this.getStaffInfo([val.assignee]).then(res => {
+              this.allDetail.assignee_name = res[0].name;
             });
             this.handleData(val, val.bulletin_type);
             this.getDetailForm(val.bm_detail_request_url);
@@ -349,9 +318,14 @@
       // 获取员工信息
       getStaffInfo(id) {
         return new Promise((resolve, reject) => {
-          this.$http.get(`${this.hr_server}staff/user/${id}`).then(res => {
+          let params = {
+            limit: 1000,
+            user_id: id,
+            staff: 1,
+          };
+          this.$http.get(`${this.hr_server}staff/user`, params).then(res => {
             if (res.code.endsWith('0')) {
-              resolve(res.data.name);
+              resolve(res.data.data);
             } else {
               this.$LjNotify('error', {
                 title: '警告',
@@ -659,23 +633,47 @@
       },
       // 评论弹窗
       changeBtn_type() {
-        this.comment_show_visible = !this.comment_show_visible;
-        if (this.comment_show_visible) {
+        this.$http.get(`${this.approval_sever}history/process-instances/${this.allDetail.process_id}/comments`).then(res => {
+          let ids = [];
+          for (let item of res) {
+            if (item.content) {
+              ids.push(item.author);
+            }
+          }
+          if (ids.length) {
+            this.handlerComments(res, ids);
+          }
+        })
+      },
+      handlerComments(value, ids) {
+        let staff = Array.from(new Set(ids));
+        let arr = [], obj = {};
+        this.getStaffInfo(staff).then(res => {
+          for (let names of res) {
+            obj.name = names.name;
+            obj.id = names.id;
+            if (names.org && names.org.length) {
+              obj.department = names.org[0].name;
+            } else {
+              obj.department = '******';
+            }
+            arr.push(obj);
+          }
           this.record_list = [];
-          this.$http.get(`${this.approval_sever}history/process-instances/${this.allDetail.process_id}/comments`).then(res => {
-            for (let item of res) {
-              if (res.content) {
-                this.getStaffInfo(item.author).then(res => {
-                  item.author_name = res;
-                  this.record_list.push(item);
-                });
+          for (let item of arr) {
+            for (let val of value) {
+              if (val.author == item.id) {
+                val.author_name = item.name;
+                val.department = item.department;
+                this.record_list.push(val);
               }
             }
-          })
-        }
+          }
+        });
       },
       // 清空评论内容
       closeComment() {
+        this.$refs['closeComment'].reset();
         this.comment_info.message = '';
         this.comment_info.attachments = [];
       },
@@ -695,6 +693,11 @@
         };
         this.$http.post(`${this.approval_sever}history/process-instances/${this.allDetail.process_id}/comments`, params).then(res => {
           if (100 < res.httpCode < 300) {
+            this.$LjNotify('success', {
+              title: '评论',
+              message: '评论成功！'
+            });
+            this.changeBtn_type();
             this.closeComment();
           }
         })
