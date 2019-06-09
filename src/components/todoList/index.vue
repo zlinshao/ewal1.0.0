@@ -1,5 +1,5 @@
 <template>
-  <div id="theme_name">
+  <div id="theme_name" class="theme1">
     <!--为了正常显示lj-dialog的css样式-->
     <div id="todo_list" :class="{'todo-list': todo_list_visible}">
       <div class="pendant-container">

@@ -3,7 +3,9 @@
   <div id="agency_check">
     <contract-detail
       :visible="contract_detail_visible"
-      :contract_id="contract_id"
+      :module-data="currentRow"
+      :show-check="false"
+      :todo-footer="true"
       :chooseTab='contract_type'
       :showRelated='false'
       @close="handleCloseDetail"
@@ -18,7 +20,10 @@ export default {
   components: {ContractDetail},
   data () {
     return {
-      contract_id:null,
+      currentRow: {
+        contract_id:null,
+        type:null,
+      },
       contract_type:1,
     }
   },
@@ -26,13 +31,14 @@ export default {
     contract_detail_visible: {
       handler(val,oldVal) {
         if(val) {
-          this.$nextTick(()=> {
-            let current_selection = this.$todo_list_current_selection;
-            let contract_id = _.find(current_selection,{name:'contract_id'});
-            let contract_type = _.find(current_selection,{name:'contract_type'});
-            this.contract_id = contract_id;
-            this.contract_type = contract_type;
-          });
+          let _this = this;
+            _this.$nextTick(()=> {
+              let current_selection = _this.$todo_list_current_selection;
+              let contract_id = _.find(current_selection.variables,{name:'contract_id'}).value;
+              let contract_type = _.find(current_selection.variables,{name:'contract_type'}).value;
+              _this.currentRow.contract_id = contract_id;
+              _this.contract_type = contract_type;
+            });
         }
       },
     },
@@ -47,7 +53,8 @@ export default {
     // 关闭详情
     handleCloseDetail () {
       this.$store.dispatch('change_customerService_agency_check_visible');
-      this.contract_id = null;
+      this.currentRow = null;
+      this.contract_type = 10086;
     },
 
   },

@@ -235,6 +235,9 @@
 #theme_name #contract_detail .dialog_container {
   /*资料补齐记录*/
 }
+#theme_name #contract_detail .dialog_container .dialog_main .common_info {
+  background-color: #ffffff;
+}
 #theme_name #contract_detail .dialog_container .detail_dialog_right {
   width: 330px;
 }

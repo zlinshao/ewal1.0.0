@@ -3,7 +3,11 @@
 #theme_name {
   #contract_detail {
     .dialog_container {
-
+      .dialog_main {
+        .common_info {
+          background-color: #ffffff;
+        }
+      }
 
       /*资料补齐记录*/
       .detail_dialog_right {

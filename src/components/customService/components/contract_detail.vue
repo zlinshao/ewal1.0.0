@@ -299,7 +299,7 @@
           </div>
 
           <p class='main_tit'>附件信息</p>
-          <div class="common_info">
+          <div v-if="showCheck" class="common_info">
             <el-checkbox-group v-model='rewrite_data' :disabled='disabled'>
               <el-checkbox name="type" v-for="(tit,key) in polishing_data[chooseTab-1]" :key='tit' :label='key'
                 :disabled="chooseTab == 3">
@@ -313,6 +313,16 @@
                 </template>
               </el-checkbox>
             </el-checkbox-group>
+          </div>
+          <div v-if="!showCheck" class="common_info">
+            <div v-if="contractDetail.album">
+              <div class="flex-center" v-for="(item,key) in polishing_data[chooseTab-1]" style="min-height: 80px">
+                <div style="width: 10%;text-align: right;padding-right: 15px">{{ item }}</div>
+                <div style="width: 90%;text-align: left">
+                  <lj-upload v-model="contractDetail.album[key]" :download="false" :disabled="true"></lj-upload>
+                </div>
+              </div>
+            </div>
           </div>
 
           <p class='main_tit' v-if='showRelated && contractDetail.related_contract && contractDetail.related_contract.length > 0'>相关合同</p>
@@ -359,10 +369,12 @@
         <div class="dialog_footer" v-if='showFooter'>
           <el-button :disabled="contractDetail.is_resign==1" :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="JSON.stringify(item)" v-for="item in operate_list" @click="handleContract(item.action)">{{item.title}}</el-button>
           <el-button id="active-danger" class='el-button-active' size="small" type="danger" v-if="operate_list.length==0" @click="handleContract(null)">提交</el-button>
-
-          <!--<el-button id='active-success' class='el-button-active' size="small" @click="handleContract(true)" v-if='chooseTab == 1 || chooseTab == 2'>通过</el-button>
-          <el-button id='active-danger' class='el-button-active' size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>-->
         </div>
+
+        <div class="dialog_footer" v-if="todoFooter">
+          <el-button :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="JSON.stringify(item)" v-for="item in todo_operate_list" @click="handleAgencyCheck(item.action)">{{item.title}}</el-button>
+        </div>
+
       </div>
     </lj-dialog>
 
@@ -410,11 +422,16 @@ export default {
   props: {
     visible: {},
     moduleData: {},
-    contract_id:{},
     chooseTab: {},// 合同类型
     showData: {},// 补齐记录
     showFooter:{},// 底部操作
     showRelated: {},//显示合同相关信息
+    showCheck: {//是否附件信息显示多选框
+      default: true,
+    },
+    todoFooter: {//代办footer按钮
+      default:false,
+    },
     disabled: {//是否可选
       type:Boolean,
       default:false,
@@ -456,6 +473,26 @@ export default {
           gas_photo: '气表照片'
         }
       ],
+      other_pictures: {
+        identity_photo: '证件照片',
+        bank_photo: '银行卡照片',
+        photo: '合同照片',
+        water_photo: '水表照片',
+        electricity_photo: '电表照片',
+        electricity_card_photo: '电卡照片',
+        gas_photo: '气表照片',
+        gas_card_photo: '气卡照片',
+        checkin_photo: '交接单照片',
+        auth_photo: '委托书照片',
+        deposit_photo: '押金照片',
+        promise: '承诺书照片',
+        other_photo: '补充照片',
+        checkout_photo: '退租交接单照片',
+        checkout_settle_photo: '退租结算照片',
+        water_card_photo: '水卡照片',
+        property_photo: '物业照片',
+        house_video:'房屋影像',
+      },
       // 合同作废重签
       rewrite_visible: false,
       rewrite_data: [],
@@ -477,6 +514,10 @@ export default {
         key_name: ''
       }, // 发送补齐信息
       operate_list:[],//底部操作按钮
+      todo_operate_list:[],//代办底部操作按钮
+      todo_complete: {
+        key_name:'',
+      },
       check_data:null,//资料审核data
 
 
@@ -485,6 +526,19 @@ export default {
     }
   },
   watch: {
+    /*todoFooter: {
+      handler(val,oldVal) {
+        if(val) {
+          let variables = this.$todo_list_current_selection.variables;
+          let listStr = _.find(variables,{name:'outcome'}).value;
+          let result = JSON.parse(listStr);
+          if(result&&result.outcomeOptions&&result.outcomeOptions.length>0) {
+            this.todo_operate_list = result.outcomeOptions;
+          }
+        }
+      }
+    },*/
+
     rewrite_data (newVal) {
       this.dataRecord.content = ''
       let data = this.polishing_data[this.chooseTab - 1]
@@ -498,25 +552,17 @@ export default {
     },
     moduleData: {
       handler (val) {
-        if (val){
+        if (val && val.contract_id){
           this.getDetailContract();
         }
       },
       deep: true,
     },
-    contract_id: {
-      handler(val) {
-        debugger
-        if(val) {
-          this.getDetailContract();
-        }
-      }
-    }
+
   },
   methods: {
     getDetailContract () {
-      let m_contract_id = this.contract_id?this.contract_id:this.moduleData.contract_id;
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${m_contract_id}`).then(res => {
+      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.moduleData.contract_id}`).then(res => {
         if (res.code === 200) {
           let data = res.data
           if (data.house_extension) {
@@ -538,6 +584,15 @@ export default {
           if (this.showFooter) {
             this.$emit('setCookie')
             this.getProcess_id(res.data.process_instance_id)
+          }
+          if(this.todoFooter) {
+            let variables = this.$todo_list_current_selection.variables;
+            let listStr = _.find(variables,{name:'outcome'}).value;
+            let result = JSON.parse(listStr);
+            if(result&&result.outcomeOptions&&result.outcomeOptions.length>0) {
+              this.todo_operate_list = result.outcomeOptions;
+              this.todo_complete.key_name = result.variableName;
+            }
           }
         }
       })
@@ -631,17 +686,11 @@ export default {
     },
     // 合同通过 驳回
     handleContract (isTrue) {
-     /* let params = {
-        task_id: this.check_data.taskId,
-        data: {
-          [this.check_data.buttons.variableName]:isTrue,
-        }
-      }*/
       let params = {
         contract_type:this.chooseTab,
         task_id: this.contractDetail.task_id,
         data: {
-          [this.complete.key_name]:isTrue,
+          [this.todo_complete.key_name]:isTrue,
         }
       };
       if(isTrue===null) {
@@ -654,6 +703,28 @@ export default {
         });
       })
     },
+
+    // 稽查中心审批 通过/驳回
+    handleAgencyCheck (isTrue) {
+      let params = {
+        contract_type:this.chooseTab,
+        task_id: this.$todo_list_current_selection.id,
+        data: {
+          //[this.complete.key_name]:isTrue,
+          tk_result:isTrue,
+        }
+      };
+      if(isTrue===null) {
+        delete params.data;
+      }
+      this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
+        this.$LjNotifyEasy(res,()=> {
+          this.handleCloseDetail();
+        });
+      })
+    },
+
+
     //资料补齐
     handleGetRecord () {
       this.dataRecord_visible = true;
