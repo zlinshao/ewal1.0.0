@@ -690,7 +690,7 @@ export default {
         contract_type:this.chooseTab,
         task_id: this.contractDetail.task_id,
         data: {
-          [this.todo_complete.key_name]:isTrue,
+          [this.complete.key_name]:isTrue,
         }
       };
       if(isTrue===null) {
@@ -710,8 +710,8 @@ export default {
         contract_type:this.chooseTab,
         task_id: this.$todo_list_current_selection.id,
         data: {
-          //[this.complete.key_name]:isTrue,
-          tk_result:isTrue,
+          //[this.todo_complete.key_name]:isTrue,
+          jczx_approved:isTrue,
         }
       };
       if(isTrue===null) {

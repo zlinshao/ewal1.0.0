@@ -749,8 +749,10 @@
             this.village_params.province = item.province.code;
 
             if(item.code.constructor===Array&&item.code.length === 2) {//重庆
+              debugger
               this.village_params.city = item.code;
             }else {//其他地区
+              debugger
               this.village_params.city.push(item.code);
             }
 

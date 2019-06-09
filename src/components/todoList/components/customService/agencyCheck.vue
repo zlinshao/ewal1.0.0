@@ -31,13 +31,12 @@ export default {
     contract_detail_visible: {
       handler(val,oldVal) {
         if(val) {
-          let _this = this;
-            _this.$nextTick(()=> {
-              let current_selection = _this.$todo_list_current_selection;
+            this.$nextTick(()=> {
+              let current_selection = this.$todo_list_current_selection;
               let contract_id = _.find(current_selection.variables,{name:'contract_id'}).value;
               let contract_type = _.find(current_selection.variables,{name:'contract_type'}).value;
-              _this.currentRow.contract_id = contract_id;
-              _this.contract_type = contract_type;
+              this.currentRow.contract_id = contract_id;
+              this.contract_type = contract_type;
             });
         }
       },
