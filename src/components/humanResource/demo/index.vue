@@ -31,7 +31,7 @@
       </div>
     </calendar>-->
     <!--    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>-->
-    <lj-upload ref="ljUpload" :limit-easy="['image']" v-model="list"></lj-upload>
+    <lj-upload ref="ljUpload" :limit-easy="['image']" v-model="list" :download="false" :disabled="true"></lj-upload>
     <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->

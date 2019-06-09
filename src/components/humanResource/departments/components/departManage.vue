@@ -1096,7 +1096,6 @@
       },
       info: {
         handler(val) {
-          debugger
           this.departInfo = val;
           this.interview_info_detail.depart = val.name;
           this.interview_info_detail.org_id = [];
