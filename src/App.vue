@@ -153,11 +153,11 @@ export default {
       showPersonal:false,//是否显示个人中心下拉框
 
       modules: [
-        {
+        /*{
           url: '/president',
           title: '总裁办',
           English: 'Presidents',
-        },
+        },*/
         {
           url: '/finance',
           title: '财务中心',

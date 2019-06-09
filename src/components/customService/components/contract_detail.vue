@@ -333,8 +333,7 @@
             <div class="flex-center">
               <div class="flex_center_tit">发送对象</div>
               <div class="flex_center_content flex_center_content1 borderNone">
-                <el-input @focus="organSearch" readonly v-model="dataRecord.send_name" :placeholder="contractDetail.sign_user || contractDetail.org_leader">
-                </el-input>
+                <user-choose v-model="dataRecord.send_id" num="1"></user-choose>
               </div>
             </div>
 
@@ -366,9 +365,6 @@
         </div>
       </div>
     </lj-dialog>
-
-    <!--资料不全 开单人选择-->
-    <StaffOrgan :module="staffModule" :organData="organData" @close="hiddenOrgan"></StaffOrgan>
 
     <!--资料补齐记录-->
     <lj-dialog :visible.sync="dataRecord_visible" :size="{width: 900 + 'px',height: 600 + 'px'}" @close="handleCloseRecord">
@@ -402,18 +398,29 @@
 
 
 <script>
-import StaffOrgan from '../../common/staffOrgan.vue';
 import InvalidDialog from '../components/invalid-dialog'
 export default {
-  props: ['visible',
+  /*props: ['visible',
     'moduleData',
     'chooseTab',  // 合同类型
     'showData',  // 补齐记录
     'showFooter',  // 底部操作
     'showRelated', // 显示合同相关信息
-    'disabled'], // 是否可选
+    'disabled'], // 是否可选*/
+  props: {
+    visible: {},
+    moduleData: {},
+    contract_id:{},
+    chooseTab: {},// 合同类型
+    showData: {},// 补齐记录
+    showFooter:{},// 底部操作
+    showRelated: {},//显示合同相关信息
+    disabled: {//是否可选
+      type:Boolean,
+      default:false,
+    },
+  },
   components: {
-    StaffOrgan,
     InvalidDialog,
   },
   data () {
@@ -458,10 +465,6 @@ export default {
         contract_type: null,
         album: []
       },
-      staffModule: false,//显示人员选择
-      organData: {
-        num: ''
-      },
       //资料补齐记录
       dataRecord_visible: false,
       dataRecord: {
@@ -495,14 +498,25 @@ export default {
     },
     moduleData: {
       handler (val) {
-        if (val) this.getDetailContract()
+        if (val){
+          this.getDetailContract();
+        }
       },
-      deeper: true
+      deep: true,
+    },
+    contract_id: {
+      handler(val) {
+        debugger
+        if(val) {
+          this.getDetailContract();
+        }
+      }
     }
   },
   methods: {
     getDetailContract () {
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.moduleData.contract_id}`).then(res => {
+      let m_contract_id = this.contract_id?this.contract_id:this.moduleData.contract_id;
+      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${m_contract_id}`).then(res => {
         if (res.code === 200) {
           let data = res.data
           if (data.house_extension) {
@@ -519,7 +533,8 @@ export default {
             }
           }
 
-          this.contractDetail = data
+          this.contractDetail = data;
+          this.dataRecord.send_id = [data.sign_user_id];
           if (this.showFooter) {
             this.$emit('setCookie')
             this.getProcess_id(res.data.process_instance_id)
@@ -569,23 +584,11 @@ export default {
       document.cookie = cname + "=" + cvalue + "; " + expires;
     },
     handleCloseDetail () {
-      this.$emit('close', false)
+      this.$emit('close', false);
     },
     //相关合同label
     contractLabel (item) {
       return item.type === 1 ? `新收合同(${item.is_invalid === 0 ? '正常' : '作废'})` : `续收合同(${item.is_invalid === 0 ? '正常' : '作废'})`;
-    },
-    //选择人员
-    organSearch () {
-      this.staffModule = true
-    },
-    // 关闭 选择人员
-    hiddenOrgan (ids, names, arr) {
-      this.staffModule = false;
-      if (ids !== 'close') {
-        this.dataRecord.send_name = names
-        this.dataRecord.send_id = arr
-      }
     },
     // 发送补齐记录
     handlePostRecord () {

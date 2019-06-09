@@ -451,7 +451,6 @@
         this.depart_visible = false;
       },
       handleGetFile(val){
-        debugger
         if (val !== 'close') {
           if (this.is_paper === 'offer') {
             this.add_msg_form.paper_id = val[1];

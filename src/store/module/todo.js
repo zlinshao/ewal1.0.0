@@ -180,6 +180,7 @@ const todo = {
     // 客服 待办模块
     customerService_createdTodo_visible: false, //客服创建待办
     customerService_order_visible: false, // 客服工单详情
+    customerService_agency_check_visible: false,//中介费(稽查中心审批)
 
     currentTodoModule: 'customerService' // 待办模块
   },
@@ -228,7 +229,12 @@ const todo = {
     //问卷/考试页面显示隐藏
     CHANGE_HUMANRESOURCE_ANSWER_TEST_PAPER_VISIBLE(state) {
       state.humanResource_answer_test_paper_visible = !state.humanResource_answer_test_paper_visible
-    }
+    },
+
+    //稽查中心审核页面显示隐藏
+    CHANGE_CUSTOMERSERVICE_AGENCY_CHECK_VISIBLE(state) {
+      state.customerService_agency_check_visible = !state.customerService_agency_check_visible
+    },
   },
   // 执行函数
   actions: {
@@ -273,7 +279,11 @@ const todo = {
     //改变调查问卷/考试页面显示隐藏
     change_humanResource_answer_test_paper_visible({commit}, status) {
       commit('CHANGE_HUMANRESOURCE_ANSWER_TEST_PAPER_VISIBLE',status);
-    }
+    },
+    //改变稽查中心审核页面显示隐藏
+    change_customerService_agency_check_visible({commit}, status) {
+      commit('CHANGE_CUSTOMERSERVICE_AGENCY_CHECK_VISIBLE',status);
+    },
   }
 }
 

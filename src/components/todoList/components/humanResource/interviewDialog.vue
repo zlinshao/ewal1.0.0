@@ -169,8 +169,6 @@
             this.interview_form.platform = this.$todo_list_current_selection.platform;
             this.interview_form.date = this.$todo_list_current_selection.date;
             this.interview_form.current_interviewer = '张三';
-
-
             this.interview_form.resume = _.find(this.$todo_list_current_selection.variables,{name:'resume_url'})?.value;
           }
         },
