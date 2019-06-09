@@ -708,10 +708,11 @@ export default {
     handleAgencyCheck (isTrue) {
       let params = {
         contract_type:this.chooseTab,
+        contract_id: this.moduleData.contract_id,
         task_id: this.$todo_list_current_selection.id,
         data: {
           //[this.todo_complete.key_name]:isTrue,
-          jczx_approved:isTrue,
+          "jczx_approved":isTrue,
         }
       };
       if(isTrue===null) {

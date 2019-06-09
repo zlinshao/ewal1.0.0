@@ -14,6 +14,7 @@ globalConfig = {
     upload_sever: 'http://recommend.ewal.lejias.cn/',
     humanResource_server: 'http://test.hr.api.ewal.lejias.cn/',
     market_server: 'http://test.market.api.ewal.lejias.cn/',
+    //market_server: 'http://192.168.20.40:8086/',
     // intellectualPropertyProtection:'http://ewal_knowledge_right.test/', //http://test.knowledge.api.ewal.lejias.cn/
     intellectualPropertyProtection: 'http://test.knowledge.api.ewal.lejias.cn/',
     kpi: 'http://test.kpi.api.ewal.lejias.cn/',
