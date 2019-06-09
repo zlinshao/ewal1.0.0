@@ -72,16 +72,15 @@
                         {{val.remittance_account + ':' + val.money_sep + '元'}}
                       </h4>
                     </div>
-                    <div :class="key" v-else>
-                      {{val}}
-                    </div>
+                    <div :class="key" v-else>{{val}}</div>
                   </div>
                 </div>
                 <span :class="key" v-else>{{formatData[key]}}</span>
               </div>
             </li>
           </ul>
-          <ul class="related">
+          <ul class="related"
+              v-if="bulletin_type === 'bulletin_collect_basic' || bulletin_type === 'bulletin_rent_basic'">
             <li class="title">
               <p></p>
               <span class="writingMode">相关信息</span>
@@ -97,10 +96,14 @@
             </li>
             <li>
               <div>
-                <div>收房价格：</div>
-                <div>3室精装均价4500元</div>
-                <div>2室精装均价3500元</div>
-                <div>2室简装均价2500元</div>
+                <div>链家推荐：</div>
+                <div v-for="item of Object.keys(relatedInfoL)">{{relatedInfoL[item]}}</div>
+              </div>
+            </li>
+            <li>
+              <div>
+                <div>系统推荐：</div>
+                <div v-for="item of Object.keys(relatedInfo)">{{relatedInfo[item]}}</div>
               </div>
             </li>
           </ul>
@@ -203,6 +206,8 @@
         bulletin_type: '',//报备类型
         allBulletin: {},//报备原数据
         changeFormData: {},//附属房东变化
+        relatedInfo: {},
+        relatedInfoL: {},//链家推荐
         operates: {},
         allDetail: {},
         comment_show_visible: false,//评论模态框
@@ -266,17 +271,19 @@
         })
       },
       // 报备类型
-      divisionBulletinType(type, num) {
+      divisionBulletinType(type, val) {
         let data, title;
         switch (type) {
           case 'bulletin_collect_basic':
             title = ['房屋信息', '物品信息', '客户信息', '合同信息'];
             data = this.jsonData(defineCollectReport);
+            this.villageRelation(val, val.ctl_detail_request_url);
             break;
           case 'bulletin_rent_basic':
             title = ['客户信息', '合同信息'];
             data = this.jsonData(defineRentReport);
             data.slither0 = defineNewRentReport.concat(data.slither0);
+            this.villageRelation(val, val.rtl_detail_request_url);
             break;
           case 'bulletin_agency':
             title = ['渠道费报备'];
@@ -327,10 +334,58 @@
         }
         return {data, title}
       },
+      villageRelation(val, url) {
+        this.relatedInfo = {};
+        this.$http.get(url).then(res => {
+          let data = res.data.content;
+          let params = {
+            hall: data.house_info && data.house_info.hall || 0,
+            area: data.house_info && data.house_info.area || 0,
+            city: data.house_info && data.house_info.city_name || '',
+            village: data.community_info && data.community_info.village_name || '',
+          };
+          this.$http.post('http://26mdfw.natappfree.cc/get_price_section', params).then(result => {
+            if (!result.lejia_error) {
+              let obj = {};
+              for (let house of Object.keys(result.lejia)) {
+                for (let area of Object.keys(result.lejia[house])) {
+                  for (let price of Object.keys(result.lejia[house][area])) {
+                    let money = result.lejia[house][area][price], p;
+                    if (money.min_price == money.max_price) {
+                      p = money.min_price + '元';
+                    } else {
+                      p = money.min_price + '-' + money.max_price + '元';
+                    }
+                    obj[price] = area + house + '平米' + price + '均价' + p;
+                  }
+                }
+              }
+              this.relatedInfo = Object.assign({}, obj)
+            }
+            if (!result.lianjia_error) {
+              let obj = {};
+              for (let house of Object.keys(result.lianjia)) {
+                for (let area of Object.keys(result.lianjia[house])) {
+                  for (let price of Object.keys(result.lianjia[house][area])) {
+                    let money = result.lianjia[house][area][price], p;
+                    if (money.min_price == money.max_price) {
+                      p = money.min_price + '元';
+                    } else {
+                      p = money.min_price + '-' + money.max_price + '元';
+                    }
+                    obj[price] = area + house + '平米' + price + '均价' + p;
+                  }
+                }
+              }
+              this.relatedInfoL = Object.assign({}, obj)
+            }
+          })
+        });
+      },
       // 处理相关显示数据
       handleData(val, type) {
         this.drawSlither = {};
-        let bulletinData = this.divisionBulletinType(type, val.pact_type = 1);
+        let bulletinData = this.divisionBulletinType(type, val);
         let data = this.jsonData(bulletinData.data);
         this.allBulletin = data;
         this.titleTips = bulletinData.title;
@@ -360,15 +415,16 @@
       // 详情接口
       getDetailForm(url, type) {
         this.$http.get(url).then(res => {
+          console.log(res);
           if (res.code === 200) {
             this.vLoading = false;
             this.formatData = res.data.content;
             this.handleDetail(res.data.content);
-            this.getVillageRelatedParams(this.formatData, type)
+            this.getVillageRelatedParams(this.formatData, type);
           } else {
             this.$LjNotify('error', {
               title: '提示',
-              message: res.message
+              message: res.message,
             });
           }
         })
