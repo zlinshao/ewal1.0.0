@@ -120,7 +120,7 @@
           title: '',
           page: 1,
           size: 10,//每页条数
-          //assignee: this.$storage.get('user_info').id,
+          assignee: this.$storage.get('user_info').id,
         },
         checked: 1,//选择哪个toolbar
         categoryKey: '',
