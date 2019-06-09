@@ -391,7 +391,7 @@
 #theme_name h5.operate span {
   white-space: nowrap;
   color: #ffffff;
-  padding: 6px 30px;
+  padding: 6px 20px;
 }
 #theme_name h5.operate span:hover {
   cursor: pointer;

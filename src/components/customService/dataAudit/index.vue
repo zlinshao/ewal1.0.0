@@ -135,8 +135,8 @@ export default {
     }
   },
   created () {
-    this.getDateList()
-    this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
+    this.getDateList();
+    this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {};
   },
   computed: {
     contract_disable () {

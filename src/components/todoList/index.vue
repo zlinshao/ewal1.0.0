@@ -65,8 +65,6 @@
 </template>
 
 <script>
-  import _ from 'lodash';
-
   import AnswerQuestionnaireOrExam from './components/humanResource/answerQuestionnaireOrExam';
   import interviewDialog from './components/humanResource/interviewDialog';
   import repositoryDialog from './components/humanResource/repositoryDialog';
@@ -126,9 +124,21 @@
         categoryKey: '',
         categoryChecked: 0,
 
-        search:'Agency-Supervision',
+        /*
+        * Agency-Supervision
+        *
+        *
+        *
+        * */
+        processDefinitionKey:'Agency-Supervision',
+        /*
+        * jczx_approval  稽查中心审批
+        *
+        *
+        * */
+        taskDefinitionKey:'jczx_approval',
         //,Market-HouseCleaning,Market-HouseRepair,Market-CompleteData,HandoverOrder
-        noSearch: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
+        processDefinitionKeyNotIn: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
           {
@@ -239,11 +249,14 @@
         let params = {
           ...this.params,
           processDefinitionKey:this.search,
-          procDefKeyNotIn: this.noSearch,
+          procDefKeyNotIn: this.processDefinitionKeyNotIn,
           //assignee:289,//用户id
         };
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
           if (res.constructor == Array) {//返回正确
+
+
+
             this.todo_list_toolbar = res;
             let allCount = _(res).map('count').sum();
             this.$store.dispatch('change_todo_list_badge_count', allCount);
@@ -276,10 +289,14 @@
         let params = {
           ...this.params,
           //assignee:this.$storage.get('user_info').id,
-          //processDefinitionKey: item.key || categoryKey || '',
-          processDefinitionKey: this.search,
-          processDefinitionKeyNotIn: this.noSearch
+          processDefinitionKey: item.key || categoryKey || '',
+          //processDefinitionKey: this.taskDefinitionKey,
+          processDefinitionKeyNotIn: this.processDefinitionKeyNotIn,
         };
+
+        if(params.processDefinitionKey=='Agency-Supervision') {
+          params.taskDefinitionKey = 'jczx_approval';
+        }
 
         this.checked = categoryChecked || (index + 1);
         this.categoryChecked = this.checked;
