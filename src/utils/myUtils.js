@@ -1,3 +1,5 @@
+import {Notification} from 'element-ui';
+
 class myUtils {
   constructor(data) {
     this.arr = data;
@@ -6,6 +8,13 @@ class myUtils {
   // 判断字符串是否为空
   static isNull(str) {
     return str === null || str.length === 0 || str === '';
+  }
+
+  static open4(msg) {
+    Notification.error({
+      title: '错误',
+      message: msg,
+    });
   }
 
   // 清空图片
@@ -76,10 +85,26 @@ class myUtils {
     let time = new Date(inTime).getTime();
     let sTime = new Date(startTime.replace(/-/g, '/')).getTime();
     let eTime = new Date(endTime.replace(/-/g, '/')).getTime();
-    if (sTime < time && eTime > time) {
-      return true;
+    return sTime < time && eTime > time;
+  }
+
+  // 阿拉伯数字 转换 中文数字
+  static DX(num) {
+    let changeNum = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']; //changeNum[0] = "零"
+    let unit = ["", "十", "百", "千", "万"];
+    num = parseInt(num);
+    let getWan = (temp) => {
+      let strArr = temp.toString().split("").reverse();
+      let newNum = "";
+      for (var i = 0; i < strArr.length; i++) {
+        newNum = (i == 0 && strArr[i] == 0 ? "" : (i > 0 && strArr[i] == 0 && strArr[i - 1] == 0 ? "" : changeNum[strArr[i]] + (strArr[i] == 0 ? unit[0] : unit[i]))) + newNum;
+      }
+      return newNum;
     };
-    return false;
+    let overWan = Math.floor(num / 10000);
+    let noWan = num % 10000;
+    if (noWan.toString().length < 4) noWan = "0" + noWan;
+    return overWan ? getWan(overWan) + "万" + getWan(noWan) : getWan(num);
   }
 
   //获取地址栏参数

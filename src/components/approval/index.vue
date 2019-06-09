@@ -1,13 +1,6 @@
 <template>
   <div id="theme_name" class='theme1'>
     <div id='approval' :class="{'approval':message_visible}">
-      <!-- <div class="header_btns">
-        <p :class='{"activeTag":chosenTag == item.value}' v-for='item in shenHe_type' :key='item.value'>
-          <i :class='["icons",item.icons]'></i>
-          <span>{{item.tit}}</span>
-        </p>
-      </div> -->
-
       <div class="header">
         <!--全部 我审批的 暂不处理 抄送我的-->
         <div class='header_methods'>
@@ -43,20 +36,24 @@
         </div>
       </div>
 
-      <div class="mainListTable" :style="{'height': this.mainListHeight(30) + 'px'}">
-        <el-table :data="tableData['data' + status_type ]" :height="this.mainListHeight(180) + 'px'"
-                  highlight-current-row @row-dblclick="handleDbClick" header-row-class-name="tableHeader"
+      <div class="mainListTable" :style="{'height': mainListHeight(30) + 'px'}">
+        <el-table :data="tableData['data' + status_type ]"
+                  :height="mainListHeight(130) + 'px'"
+                  highlight-current-row @row-dblclick="handleDbClick"
+                  header-row-class-name="tableHeader"
+                  :empty-text='tableStatus'
+                  v-loading="tableLoading"
+                  element-loading-text="拼命加载中"
+                  element-loading-spinner="el-icon-loading"
+                  element-loading-background="rgba(255, 255, 255, 0)"
                   style="width: 100%">
-
-          <el-table-column align="center" v-for='item in Object.keys(tableShow)' :key='item' :prop='item'
-                           :label="tableShow[item]"></el-table-column>
-
+          <el-table-column align="center" prop='bulletin_date' label="发起时间"></el-table-column>
+          <el-table-column align="center" v-for="item in Object.keys(tableShow['table' + status_type])" :key='item'
+                           :prop='item' :label="tableShow['table' + status_type][item]"></el-table-column>
           <el-table-column align="center" label="状态">
             <template slot-scope="scope">
-              <span class='status status3' v-if='scope.row.status == "已通过" 
-              || scope.row.status == "已读"'>{{scope.row.status}}</span>
-              <span class='status status1' v-else-if='scope.row.status == "已拒绝"'>{{scope.row.status}}</span>
-              <span class='status status2' v-else>{{scope.row.status}}</span>
+              <p v-if="scope.row.status && scope.row.status[0]">{{scope.row.status[0]}}</p>
+              <p>{{scope.row.name}}</p>
             </template>
           </el-table-column>
         </el-table>
@@ -66,8 +63,12 @@
             <i class="el-icon-d-arrow-right"></i>
           </div>
           <div class="page">
-            <el-pagination @current-change="handleCurrentChange" :current-page="params['param'+ status_type].page"
-                           :page-size="10" :total="total['total'+ status_type]" layout="total,jumper,prev,pager,next">
+            <el-pagination
+              @current-change="handleCurrentChange"
+              :current-page="params['param'+ status_type].page"
+              :page-size="params['param'+ status_type].size"
+              :total="total['total'+ status_type]"
+              layout="total,jumper,prev,pager,next">
             </el-pagination>
           </div>
         </footer>
@@ -75,11 +76,12 @@
 
       <!-- 搜索 -->
       <SearchHigh :module="showSearch" :showData="searchHigh" @close="hiddenModule"/>
+
       <!-- 控制面板 -->
       <ControlPanel :visible='controlPanel_visible' @close='hiddenControlPanel' :receive_type='receive_type'/>
+
       <!-- 详情 -->
       <ContractDetail :visible='contract_detail_visible' :moduleData='current_row' :status_type='status_type'
-                      @close='hiddenContractDetail'
                       @changeData='handleChange'/>
       <!-- 拓展新盘详情 -->
       <DevelopNewDish :visible='develop_visible' :moduleData='current_row' @close='hiddenDevelopNew'/>
@@ -105,101 +107,89 @@
     data() {
       return {
         url: globalConfig.approval_sever,
-
-
-        //receive_type, // 接收类型设置
         show_form_visible: false,
+        tableStatus: ' ',
+        tableLoading: false,
         chosenTag: 1,
         isCaputer: true, // 当前登录人：组员 或者 组长
-        shenHe_type: [
-          {
-            tit: '报备审核',
-            value: 1,
-            icons: 'icons_app'
-          }
-          // {
-          //   tit: '办公审核',
-          //   value: 2,
-          //   icons: 'icons_ban'
-          // }
-        ],
-        tableShow: {  // 表格数据显示
-          startTime: '发起时间',
-          bulletin_name: '报备类型',
-          bulletin_staff_name: '报备人',
-          house_address: '房屋地址',
-          endTime: '完成时间',
-        },
+
+        urlApi: '', //数据请求
         status_type: 1, // 当前显示表格类型
+        tableShow: {  // 表格数据显示
+          table1: {
+            bulletin_name: '报备类型',
+            bulletin_staff_name: '报备人',
+            house_address: '房屋地址',
+          },
+          table2: {
+            bulletin_name: '报备类型',
+            bulletin_staff_name: '报备人',
+            house_address: '房屋地址',
+          },
+          table3: {
+            bulletin_name: '报备类型',
+            bulletin_staff_name: '报备人',
+            house_address: '房屋地址',
+            endTime: '完成时间',
+          },
+          table4: {
+            bulletin_name: '报备类型',
+            bulletin_staff_name: '报备人',
+            house_address: '房屋地址',
+          },
+          table5: {
+            bulletin_name: '报备类型',
+            bulletin_staff_name: '报备人',
+            house_address: '房屋地址',
+          }
+        },//表格显示字段
         status_types: [
           {
             tit: '全部',
             value: 1
           },
-          // {
-          //   tit: '我发起的',
-          //   value: 5
-          // },
           {
-            tit: '我审批的',
+            tit: '待审批的',
             value: 2
           },
           {
-            tit: '暂不处理',
+            tit: '已审批的',
             value: 3
           },
           {
-            tit: '抄送我的',
+            tit: '暂不处理',
             value: 4
+          },
+          {
+            tit: '抄送我的',
+            value: 5
           }
-        ],
-        urlApi: '', // 数据请求
+        ],//头部切换
         tableData: {
           data1: [],
           data2: [],
           data3: [],
-          data4: []
-        },
+          data4: [],
+          data5: [],
+        },//获取数据
         total: {
           total1: 0,
           total2: 0,
           total3: 0,
-          total4: 0
-        },
+          total4: 0,
+          total5: 0
+        },//总条数
         params: {
-          param1: {
-            page: 1,
-            search: '',
-            start_time: [],
-            finish_time: [],
-            type: null,
-            department: ''
-          },
-          param2: {
-            page: 1,
-            search: '',
-            start_time: [],
-            finish_time: [],
-            type: null,
-            department: ''
-          },
-          param3: {
-            page: 1,
-            search: '',
-            start_time: [],
-            finish_time: [],
-            type: null,
-            department: ''
-          },
-          param4: {
-            page: 1,
-            search: '',
-            start_time: [],
-            finish_time: [],
-            type: null,
-            department: ''
-          }
-        },
+          param1: {},
+          param2: {},
+          param3: {},
+          param4: {},
+          param5: {}
+        },//接口参数
+
+        current_row: {},//报备详情
+        contract_detail_visible: false, //报备详情
+
         isreceive: false, //是否接收
         isreceive_visible: false,  // 接收类型设置 显示隐藏
         receive_check: [], // 接收类型 选择
@@ -208,19 +198,8 @@
         showSearch: false, // 高级搜索 显示隐藏
         searchHigh: {}, // 高级搜索 参数
 
-        contract_detail_visible: false, //详情
+
         develop_visible: false, //新盘
-        current_row: null,
-        taskType: [
-          'task_id',
-          'bulletin_staff_id',  // 报备人id
-          'bulletin_staff_name', // 报备人name
-          'bulletin_name', // 报备类型
-          'bulletin_type',
-          'house_address',  // 房屋地址
-          'bm_detail_request_url', // 报备详情
-          'outcome'
-        ],
 
         approval_type_list: [],//高级搜索审核类型
         receive_type: {},//接收类型
@@ -237,27 +216,171 @@
     },
     watch: {
       status_type(val) { //类型切换
-        this.getApprovalsList(val)
+        this.getApprovalsList(val);
       },
       message_visible(val) {
         if (val) {
           this.getApprovalsList(1)
         }
-        this.isreceive_visible = false
-        this.showSearch = false
-        this.controlPanel_visible = false
-        this.contract_detail_visible = false
-        this.develop_visible = false
+        this.contract_detail_visible = false;
+
+        this.isreceive_visible = false;
+        this.showSearch = false;
+        this.controlPanel_visible = false;
+        this.develop_visible = false;
       }
     },
     methods: {
+      // 页面数据请求
+      getApprovalsList(val) {
+        this.paramsHandle(val);  // 配置
+        this.getApproval(this.urlApi, this.params['param' + val], val)     // 接口请求
+      },
+      // 配置
+      paramsHandle(val) {
+        this.params['param' + val] = {};
+        switch (val) {
+          case 1:
+            this.urlApi = 'history/process-instances';
+            break;
+          case 2://待审批
+          case 3://已审批
+            this.params['param' + val] = {
+              taskDefinitionKeyIn: approvalSearch.approvals1.join(','),
+              category: 'approval',
+              finished: false,
+              active: true,
+            };
+            this.params['param' + val].finished = val === 3;
+            this.urlApi = val === 3 ? 'history/tasks' : 'runtime/tasks';
+            break;
+          case 4://暂不处理
+            this.urlApi = 'runtime/process-instances';
+            this.params['param' + val].suspended = true;
+            break;
+          case 5:
+            this.urlApi = 'runtime/tasks';
+            this.params['param' + val].category = 'cc';
+            break;
+        }
+      },
+      // 接口请求
+      getApproval(url, val, tab) {  // page分页
+        this.tableData['data' + tab] = [];
+        this.tableStatus = ' ';
+        this.tableLoading = true;
+        let params = {
+          title: '',
+          size: 24,
+        };
+        for (let key of Object.keys(val)) {
+          params[key] = val[key]
+        }
+        this.$http.get(`${this.url}${url}`, params).then(res => {
+          this.tableLoading = false;
+          this.total['total' + tab] = 0;
+          if (199 < res.httpCode < 300) {
+            if (res.data.length) {
+              this.tableData['data' + tab] = this.setFormatApproval(res.data, this.urlApi);
+              this.total['total' + tab] = res.total;
+            } else {
+              this.tableStatus = '暂无相关数据';
+            }
+          } else {
+            this.tableStatus = '暂无相关数据';
+          }
+        }).catch(err => {
+
+        })
+      },
+      // table 分页
+      handleCurrentChange(page) {
+        let val = this.status_type;
+        this.params['param' + val].page = page;
+        this.getApproval(this.urlApi, this.params['param' + val], val);
+      },
+      // 初始化数据
+      setFormatApproval(data, url) {
+        let arr = [];
+        for (let item of data) {
+          let obj = {};
+          for (let key of item.variables) {
+            obj[key.name] = key.value;
+            if (key.name === 'signer') {
+              if (key.value && key.value.length > 12) {
+                if (JSON.parse(key.value)) {
+                  obj.signer = JSON.parse(key.value);
+                }
+              }
+            }
+            if (key.name.includes('detail_request_url')) {
+              if (key.name !== 'bm_detail_request_url') {
+                obj.detail_request_url = key.value || '';
+              } else {
+                obj[key.name] = key.value || '';
+              }
+            }
+            if (key.name === 'ewal_contract') {
+              if (key.value) {
+                let contract = JSON.parse(key.value);
+                obj.contract_id = contract.v3_contract_id;
+              }
+            }
+            if (key.name.includes('_approved')) {
+              obj.approvedStatus = key.value || '';
+            }
+          }
+          for (let key of Object.keys(item)) {
+            if (key !== 'variables') {
+              obj[key] = item[key]
+            }
+          }
+          if (url && url.includes('process-instances')) {
+            obj.process_id = item.id;
+            if (item.taskInfo && item.taskInfo.length) {
+              obj.task_id = item.taskInfo[0].id;
+            } else {
+              obj.task_id = '';
+            }
+          } else {
+            obj.task_id = item.id;
+            obj.process_id = item.processInstanceId;
+          }
+          obj.status = item.status || [];
+          obj.root_id = item.rootProcessInstanceId;
+          obj.taskDefinitionKey = item.taskDefinitionKey;
+          arr.push(obj);
+        }
+        return arr;
+      },
+
+      // 详情
+      handleDbClick(row) {
+        this.current_row = {};
+        let url = row.bm_detail_request_url;
+        if (!url) {
+          this.$LjMessage('warning', {title: '警告', msg: '详情获取失败！'});
+          return;
+        }
+        this.current_row = row;
+        this.contract_detail_visible = true
+      },
+      // 关闭审批
+      // 审批
+      handleChange(val) {
+        this.contract_detail_visible = false;
+        if (val !== 'close') {
+          let type = this.status_type;
+          this.getApproval(this.urlApi, this.params['param' + type], type)
+        }
+      },
 
       //获取已选择的审核类型
       async getChoseApprovalTypeList() {
-        await axios.get(`${this.url}monitor/process-instances/${this.$storage.get('user_info').id}`).then(res=> {
-          if(res.status==200) {
+        await axios.get(`${this.url}monitor/process-instances/${this.$storage.get('user_info').id}`).then(res => {
+          if (res.status == 200) {
             let data = res.data;
-            _.forEach(data,(o)=> {
+            _.forEach(data, (o) => {
               this.receive_check.push(o.receiveType);
               this.receive_check_name.push(this.receive_type[o.receiveType]);
             });
@@ -270,18 +393,18 @@
         let params = {
           tenantId: 'market',
         };
-        await axios.get(`${this.url}history/process-defintion-map`,{params: {tenantId: 'market'}}).then(res=> {
-          if(res.status==200) {
+        await axios.get(`${this.url}history/process-defintion-map`, {params: {tenantId: 'market'}}).then(res => {
+          if (res.status == 200) {
             let data = res.data;
-            _.forEach(data,(val,key)=> {
+            _.forEach(data, (val, key) => {
               //console.log(val,key);
-              if(!key||!val) {
+              if (!key || !val) {
                 delete data[key];
                 return;
-              };
+              }
               let obj = {
-                id:key,
-                title:val
+                id: key,
+                title: val
               };
               this.approval_type_list.push(obj);
             });
@@ -290,104 +413,6 @@
         });
         /*this.$http.get(`${this.url}history/process-defintion-map`,params).then(res=> {
         });*/
-      },
-
-
-      // 页面数据请求
-      getApprovalsList(val) {
-        this.paramsHandle(val)  // 配置
-        this.getApproval(this.urlApi, this.params['param' + val], val)     // 接口请求
-      },
-      // 配置
-      paramsHandle(val) {
-        switch (val) {
-          case 1:
-            this.urlApi = 'history/process-instances'
-            break;
-          case 2:
-            this.urlApi = 'history/tasks?category=approval&processDefinitionKey=MG-BulletinApproval'
-            break;
-          case 3:
-            this.urlApi = 'runtime/process-instances'
-            break;
-          case 4:
-            this.urlApi = 'history/tasks?category=cc'
-            break;
-          case 5:
-            this.urlApi = 'history/process-instances?processDefinitionKey=MC-Bulletin&taskOwner'
-            break;
-          default:
-            break;
-        }
-        this.params['param' + val] = {
-          page: 1,
-          size: 10,
-          title: '',
-          startTimeBefore: '',
-          startTimeAfter: '',
-          endTimeBefore: '',
-          endTimeAfter: '',
-          orgId: ''
-        }
-      },
-      // 接口请求
-      getApproval(url, params, val) {  // page分页
-        //this.showLoading(true);
-        this.$http.get(`${this.url}${url}`, params).then(res => {
-          //this.showLoading(false);
-          this.tableData['data' + val] = res.size > 0 ? this.setFormatApproval(res.data) : []
-          this.total['total' + val] = res.total
-        })
-      },
-      setFormatApproval(data) {
-        let arr = []
-        for (let item of data) {
-          let obj = {};
-          obj.startTime = item.startTime || item.createTime
-          obj.name = item.name
-          obj.endTime = item.endTime
-          obj.id = item.id
-          for (let key of item.variables) {
-            if (this.taskType.includes(key.name)) {
-              obj[key.name] = key.value
-            }
-          }
-
-          obj.isfinish = false
-
-          if (this.status_type == 2 || this.status_type == 4) {
-            if (item.endTime) {
-              obj.isfinish = true
-              if (this.status_type == 2) {
-                let title = JSON.parse(obj.outcome||"{}").variableName;
-                for (let key of item.variables) {
-                  if (key.name == title) {
-                    obj.status = key.value ? "已通过" : "已拒绝"
-                  }
-                }
-              } else {
-                obj.status = '已读'
-              }
-            } else {
-              obj.status = this.status_type == 2 ? item.name : '未读'
-            }
-            obj.suspended = item.suspended
-            obj.rootProcessInstanceId = item.processInstanceId
-          } else {
-            if (item.status.includes('已通过')) {
-              obj.isfinish = true
-            }
-            obj.status = item.status.join(',')
-          }
-          arr.push(obj)
-        }
-        return arr
-      },
-      // table 分页
-      handleCurrentChange(page) {
-        let val = this.status_type
-        this.params['param' + val].page = page
-        this.getApproval(this.urlApi, this.params['param' + val], val)
       },
       // 高级搜索 显示
       highSearch() {
@@ -434,16 +459,16 @@
       },
       // 高级搜索 确定
       hiddenModule(val) {
-        if(val.orgId&&val.orgId.length==1) {//部门高级搜索
+        if (val.orgId && val.orgId.length == 1) {//部门高级搜索
           val.orgId = val.orgId[0];
         }
-        if(val.start_time&&val.start_time.length==2) {//开始时间区间
+        if (val.start_time && val.start_time.length == 2) {//开始时间区间
           val.startedAfter = val.start_time[0];
           val.startedBefore = val.start_time[1];
         }
         delete val['start_time'];
 
-        if(val.end_time&&val.end_time.length==2) {//结束时间区间
+        if (val.end_time && val.end_time.length == 2) {//结束时间区间
           val.finishedAfter = val.end_time[0];
           val.finishedBefore = val.end_time[1];
         }
@@ -457,7 +482,7 @@
       },
       // 接收 挂起
       change_receive_type() {
-        this.isreceive = !this.isreceive
+        this.isreceive = !this.isreceive;
         this.handleCheckType()
       },
       setReceiveType() {
@@ -474,15 +499,15 @@
         let params = {
           "receiveTypeList": this.receive_check,
           "suspend": !this.isreceive
-        }
+        };
         this.$http.post(`${this.url}monitor/process-instances/${this.$storage.get('user_info').id}`, params).then(res => {
           console.log(res)
         })
       },
       // 选择 接收类型
       handleChangeReceive() {
-        this.isreceive_visible = false
-        this.receive_check_name = []
+        this.isreceive_visible = false;
+        this.receive_check_name = [];
         this.receive_check.forEach(ele => {
           this.receive_check_name.push(this.receive_type[ele])
         });
@@ -490,7 +515,7 @@
       },
       // 取消 接收类型
       handleCancelReceive() {
-        this.isreceive_visible = false
+        this.isreceive_visible = false;
         this.receive_check = []
       },
       // 组长 控制面板
@@ -500,32 +525,7 @@
       hiddenControlPanel() {
         this.controlPanel_visible = false
       },
-      // 详情
-      handleDbClick(row) {
-        let url = row.bm_detail_request_url;
-        if (!url) {
-          this.$LjMessage('warning', {title: '警告', msg: '无接口详情url'});
-          return;
-        }
-        // row.bm_detail_request_url = '';
-        this.current_row = row;
 
-        // if (row.type == 2) { // 拓展新盘
-        //   this.develop_visible = true
-        // } else {
-        this.contract_detail_visible = true
-
-        // 抄送我的 + 未读 已读状态
-
-        // }
-      },
-      handleChange() {
-        let val = this.status_type
-        this.getApproval(this.urlApi, this.params['param' + val], val)
-      },
-      hiddenContractDetail() {
-        this.contract_detail_visible = false
-      },
       hiddenDevelopNew() {
         this.develop_visible = false
       }

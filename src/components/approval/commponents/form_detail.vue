@@ -237,7 +237,6 @@ export default {
         })
       }
       //debugger
-      console.log(formData);
       this.formData = formData
     },
 
