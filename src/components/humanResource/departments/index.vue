@@ -1401,18 +1401,18 @@
                   message: '部门名称不能为空'
               })
               return false;
-          }else if (!data.leader_id[0]){
-              this.$LjNotify('warning', {
-                  title: '失败',
-                  message: '部门负责人不能为空'
-              })
-              return false;
-          }else if (!data.position_id[0]){
-              this.$LjNotify('warning', {
-                  title: '失败',
-                  message: '负责岗位不能为空'
-              })
-              return false;
+          // }else if (!data.leader_id[0]){
+          //     this.$LjNotify('warning', {
+          //         title: '失败',
+          //         message: '部门负责人不能为空'
+          //     })
+          //     return false;
+          // }else if (!data.position_id[0]){
+          //     this.$LjNotify('warning', {
+          //         title: '失败',
+          //         message: '负责岗位不能为空'
+          //     })
+          //     return false;
           }
           return true;
       },
