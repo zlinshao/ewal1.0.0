@@ -379,7 +379,7 @@
         village_count: 0,
         village_params: {
           province: '',
-          city: [],
+          city: '',
           area: '',
           region: '',
           is_share: '',
@@ -459,8 +459,9 @@
     async mounted() {
       await this.getCityList();
       this.address_filter[0].val =this.city_list[0].name;//初始化加载选择
-      this.village_params.city = this.city_list[0].code;
-      this.village_params.province = this.city_list[0].province.code;
+      let provinceCode = this.city_list[0].province.code;
+      this.village_params.city = provinceCode;
+      this.village_params.province = provinceCode;
       await this.getVillageList();
     },
     watch: {},
@@ -686,7 +687,7 @@
       clearFilter() {
         this.village_params= {
           province: '',
-            city: [],
+            city: '',
             area: '',
             region: '',
             is_share: '',
@@ -712,12 +713,13 @@
       },
 
 
-      //重置搜索参数时选中南京
+      //重置搜索参数时选中
       async initGetList() {
         await this.getCityList();
-        this.address_filter[0].val =this.city_list[0].name;//初始化加载选择南京
-        this.village_params.city = this.city_list[0].code;
-        this.village_params.province = this.city_list[0].province.code;
+        this.address_filter[0].val =this.city_list[0].name;//初始化加载选择
+        let provinceCode = this.city_list[0].province.code;
+        this.village_params.city = provinceCode;
+        this.village_params.province = provinceCode;
         this.getAreaList();
         await this.getVillageList();
       },
@@ -733,7 +735,7 @@
           case 'city':
             if (item.code === this.current_choose) {
               this.current_choose = '';
-              this.village_params.city = [];
+              this.village_params.city = '';
               this.village_params.province = '';
               this.getCityListal = '选城市';
               return false;
@@ -744,12 +746,12 @@
             //清空region
             this.village_params.region = '';
             this.region_list = [];
-            this.village_params.city = [];
+            this.village_params.city = '';
             this.village_params.province = '';
             this.village_params.province = item.province.code;
 
             if(item.code.constructor===Array&&item.code.length === 2) {//重庆
-              this.village_params.city = item.code;
+              this.village_params.city = item.code[0];
             }else {//其他地区
               this.village_params.city = item.code;
             }
@@ -843,7 +845,8 @@
       async getAreaList() {
         await this.$http.get(this.http_server + '/v1.0/city/address',{
           province: this.village_params.province,
-          city: this.village_params.city[0]
+          city: this.village_params.city,
+          area: this.village_params.province,//区域填和省市一样
         }).then(res => {
           if (res.code === 200) {
             this.area_list = res.data;
@@ -879,7 +882,7 @@
             break;
           case 'area':
             this.current_choose = this.village_params.area;
-            if (this.village_params.city.length > 0) {
+            if (this.village_params.city) {
               this.getAreaList();
               this.show_filter_search = true;
             } else {
