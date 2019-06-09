@@ -720,6 +720,7 @@ export default {
       this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
         this.$LjNotifyEasy(res,()=> {
           this.handleCloseDetail();
+          this.$store.dispatch('change_refresh_todo_list');
         });
       })
     },

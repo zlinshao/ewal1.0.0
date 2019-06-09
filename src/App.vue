@@ -272,8 +272,16 @@ export default {
   },
   mounted() {
     this.listenPhotoUrl();
+    //this.getWeather();
   },
   methods: {
+    /*获取天气*/
+    /*getWeather() {
+      this.$http.get(`https://www.tianqiapi.com/api/?version=v1`).then(res=> {
+        debugger
+      });
+    },*/
+
     /*监听头像变动*/
     listenPhotoUrl() {
       this.$bus.on('photo-url',(val)=> {

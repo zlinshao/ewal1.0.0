@@ -242,6 +242,7 @@ const todo = {
     change_todo_list_visible({ commit }, status) {
       commit('CHANGE_TODO_LIST_VISIBLE', status)
     },
+    //刷新代办
     change_refresh_todo_list({commit},status) {
       commit('CHANGE_REFRESH_TODO_LIST');
     },
