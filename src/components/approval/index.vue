@@ -107,7 +107,6 @@
     data() {
       return {
         url: globalConfig.approval_sever,
-        show_form_visible: false,
         tableStatus: ' ',
         tableLoading: false,
         chosenTag: 1,
@@ -242,6 +241,9 @@
         switch (val) {
           case 1:
             this.urlApi = 'history/process-instances';
+            this.params['param' + val] = {
+              processDefinitionKey: 'MG-BulletinApproval',
+            };
             break;
           case 2://待审批
           case 3://已审批
@@ -409,8 +411,6 @@
             this.receive_type = data;
           }
         });
-        /*this.$http.get(`${this.url}history/process-defintion-map`,params).then(res=> {
-        });*/
       },
       // 高级搜索 显示
       highSearch() {
@@ -452,7 +452,7 @@
               }
             },
           ]
-        }
+        };
         this.showSearch = true
       },
       // 高级搜索 确定

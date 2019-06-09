@@ -88,22 +88,25 @@
             <li>
               <div>
                 <div>同类型房源市场价2500-3000元</div>
-                <div>该小区曾违约5套房</div>
                 <div>该小区已有房源1000套,未出租500套</div>
-                <div>该业务员通过率30%</div>
-                <div>该报备价格已超出房源最低价300元,请谨</div>
               </div>
             </li>
             <li>
               <div>
                 <div>链家推荐：</div>
-                <div v-for="item of Object.keys(relatedInfoL)">{{relatedInfoL[item]}}</div>
+                <div v-if="Object.keys(relatedInfoL).length">
+                  <div v-for="item of Object.keys(relatedInfoL)">{{relatedInfoL[item]}}</div>
+                </div>
+                <div v-else>暂无推荐</div>
               </div>
             </li>
             <li>
               <div>
                 <div>系统推荐：</div>
-                <div v-for="item of Object.keys(relatedInfo)">{{relatedInfo[item]}}</div>
+                <div v-if="Object.keys(relatedInfo).length">
+                  <div v-for="item of Object.keys(relatedInfo)">{{relatedInfo[item]}}</div>
+                </div>
+                <div v-else>暂无推荐</div>
               </div>
             </li>
           </ul>
@@ -344,7 +347,7 @@
             city: data.house_info && data.house_info.city_name || '',
             village: data.community_info && data.community_info.village_name || '',
           };
-          this.$http.post('http://26mdfw.natappfree.cc/get_price_section', params).then(result => {
+          this.$http.post('http://47.101.210.105:8084/get_price_section', params).then(result => {
             if (!result.lejia_error) {
               let obj = {};
               for (let house of Object.keys(result.lejia)) {
@@ -820,6 +823,12 @@
                   color: #B0B0B0;
                   padding-right: 10px;
                 }
+
+                > div {
+                  @include flex('items-center');
+                  flex-wrap: wrap;
+                  width: 100%;
+                }
               }
 
               .keyName {
@@ -835,8 +844,6 @@
                 @include flex();
 
                 span {
-                  @include flex('items-center');
-                  flex-wrap: wrap;
 
                   img {
                     width: 45px;
@@ -851,6 +858,7 @@
 
           .related {
             @include flex('justify-around');
+            min-height: 180px;
 
             li + li {
               font-size: 14px;
