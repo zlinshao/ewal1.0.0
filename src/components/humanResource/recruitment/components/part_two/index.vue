@@ -74,7 +74,7 @@
               </el-form-item>
               <el-form-item label="来源">
                 <el-select v-model="add_interviewer_form.platform">
-                  <el-option v-for="(item,index) in platform" :value="index + 1" :label="item" :key="index"></el-option>
+                  <el-option v-for="(item,index) in platform" :value="index" :label="item" :key="index"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="面试官">
@@ -177,7 +177,7 @@
               </el-form-item>
               <el-form-item label="来源">
                 <el-select v-model="add_interviewer_form.platform">
-                  <el-option v-for="(item,index) in platform" :value="index + 1" :label="item" :key="index"></el-option>
+                  <el-option v-for="(item,index) in platform" :value="index" :label="item" :key="index"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="预约时间">
