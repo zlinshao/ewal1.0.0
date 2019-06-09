@@ -252,7 +252,7 @@
                   </div>
                   <div class='order_content_boxes' v-else>
                     <div class='custmer_content' v-for='info in customer_info.data' :key='info.id'>
-                      <el-radio v-model="chosenCustomer" :label="info" @change="changeCustmInfo">
+                      <el-radio v-model="chosenCustomer" :label="info" @change="changeCustomInfo">
                         <el-row width='100%'>
                           <el-col :span='index<2? 6:(index<4?3:6)' v-for='(item,index) in custmer_showInfo' :key='item.value'>
                             <span class='tit'>{{item.title}}</span>
@@ -294,7 +294,7 @@
                         <div class='contract_img_box'>
                           <span class='tit'>合同照片</span>
                           <p class='content_tit'>
-                            <Ljupload size='40' :value="customer_info.contract_Detail.album_temp.photo" disabled=true
+                            <Ljupload size='40' :value="customer_info.contract_Detail.album.photo" disabled=true
                               :download='false'></Ljupload>
                           </p>
                         </div>
@@ -320,7 +320,7 @@
                         <div class='contract_img_box'>
                           <span class='tit'>其他附件</span>
                           <div class='content_tit content_album'>
-                            <div v-for='(item,key) in customer_info.contract_Detail.album_temp' class='imgs_box' v-if='key !="photo"'>
+                            <div v-for='(item,key) in customer_info.contract_Detail.album' class='imgs_box' v-if='key !="photo"'>
                               <p>{{dataAblum[key]}}</p>
 
                               <Ljupload size='40' :value="item" disabled=true :download='false' v-if='item'></Ljupload>
@@ -900,14 +900,13 @@ export default {
       this.timer = setTimeout(this.addOrder_search, 1000);
     },
     // 选择当前客户
-    changeCustmInfo (val) {
+    changeCustomInfo (val) {
       this.customer_search = val.house_name
       this.createOrder.house_id = val.house_id
       this.createOrder.house_name = val.house_name
       this.createOrder.chooseTab = val.type
       this.$http.get(this.market_server + `v1.0/market/contract/${val.type}/${val.contract_id}`).then(res => {
         if (res.code === 200) {
-          res.data.album_temp = JSON.parse(res.data.album_temp)
           this.customer_info.contract_Detail = res.data
           this.show_Contract_Detail = true
 

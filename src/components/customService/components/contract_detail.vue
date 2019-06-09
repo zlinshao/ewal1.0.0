@@ -306,8 +306,8 @@
                 <template>
                   <div class='el_check_box'>
                     <div class='main_tit'> {{tit}}</div>
-                    <div style="width: 90%;text-align: left" v-if='contractDetail.album_temp && contractDetail.album_temp[key]'>
-                      <lj-upload size='40' v-model="contractDetail.album_temp[key]" disabled=true :download='false'></lj-upload>
+                    <div style="width: 90%;text-align: left" v-if='contractDetail.album && contractDetail.album[key]'>
+                      <lj-upload size='40' v-model="contractDetail.album[key]" disabled=true :download='false'></lj-upload>
                     </div>
                   </div>
                 </template>
@@ -517,7 +517,6 @@ export default {
             }
           }
 
-          data.album_temp = JSON.parse(data.album_temp)
           this.contractDetail = data
           if (this.showFooter) {
             this.$emit('setCookie')
@@ -526,11 +525,11 @@ export default {
         }
       })
     },
+
     setProcess_id (res) {
-
-
       this.$emit('setCookie')
     },
+
     getProcess_id (process_id) {
       if(!process_id) return;
       this.$http.get(this.market_server + `v1.0/market/contract/kf-check-button?process_id=${process_id}`).then(res => {
