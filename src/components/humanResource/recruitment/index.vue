@@ -122,9 +122,9 @@
               <el-table-column show-overflow-tooltip label="创建人" prop="creator.real_name"
                                align="center"></el-table-column>
               <el-table-column show-overflow-tooltip label="创建时间" prop="created_at" align="center"></el-table-column>
-              <el-table-column label="编辑" align="center">
+              <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <el-button type="text" @click="handleEditOffer(scope.row)">操作</el-button>
+                  <el-button type="text" @click="handleEditOffer(scope.row)">编辑</el-button>
                 </template>
               </el-table-column>
             </el-table>
