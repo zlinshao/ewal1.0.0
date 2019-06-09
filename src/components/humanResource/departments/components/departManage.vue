@@ -1668,7 +1668,7 @@
       async getStaffList() {
         //if(! await this.validatePermission('User-Index')) {return};
         if(! this.VALIDATE_PERMISSION['User-Index']) {return};
-        if(!this.staffParams) return;
+        if(!this.staffParams.org_id) return;
         this.$http.get(this.url+'staff/user',this.staffParams).then(res => {
           if (res.code === '20000') {
             this.staffList = res.data.data;
