@@ -1,34 +1,26 @@
 <template>
   <div id='contract_detail_approval'>
     <LjDialog :visible="visible" :size="{width: 1300 + 'px',height: 800 + 'px'}" @close="handleClose">
-      <div class='dialog_container' v-if='visible && formatData'>
+      <div
+        v-if="vLoading"
+        style="width: 90%;height: 100%;"
+        v-loading="vLoading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(255, 255, 255, 0)">
+      </div>
+      <div class='dialog_container' v-if='visible && formatData && !vLoading'>
         <div class='dialog_header'>
           <h3>{{allDetail.house_address}}</h3>
           <!--<p>查看审核记录</p>-->
         </div>
-        <div
-          style="width: 90%;"
-          v-loading="vLoading"
-          element-loading-text="拼命加载中"
-          element-loading-spinner="el-icon-loading"
-          element-loading-background="rgba(255, 255, 255, 0)">
-        </div>
-        <div class="dialog_main" v-if="!vLoading">
+
+        <div class="dialog_main">
           <ul class="slither">
             <li></li>
-            <li>
+            <li v-for="item in Object.keys(bulletinSlither)">
               <div>
-                <h1>报备类型</h1><span>{{allDetail.bulletin_name}}</span>
-              </div>
-            </li>
-            <li>
-              <div>
-                <h1>状态</h1><span>{{allDetail.name}}</span>
-              </div>
-            </li>
-            <li>
-              <div>
-                <h1>处理人</h1><span>{{allDetail.assignee_name}}</span>
+                <h1>{{bulletinSlither[item]}}</h1><span>{{allDetail[item]}}</span>
               </div>
             </li>
           </ul>
@@ -119,7 +111,6 @@
             </div>
           </div>
         </div>
-
         <!-- 我审批的 暂不处理  已通过或者已拒绝 无操作 -->
         <div class="dialog_footer">
           <el-button
@@ -143,11 +134,10 @@
           <el-button size="mini" type="info" @click="handleClose()">取消</el-button>
         </div>
       </div>
-
       <!-- 评论 -->
       <div v-if="comment_show_visible" class="comments">
         <div class="historyComments">
-          <div v-for="item in record_list">
+          <div v-for="item in comment_list">
             <div class="commentTop">
               <p>{{item.author_name}}-{{item.department}}</p>
               <span>{{item.time}}</span>
@@ -179,66 +169,7 @@
       </div>
     </LjDialog>
 
-    <!--    &lt;!&ndash;审核&ndash;&gt;-->
-    <!--    <LjDialog :visible="record_show_visible" :size="{width: 720 + 'px',height: 480 + 'px'}" @close="handleCloseRecord">-->
-    <!--      <div class='dialog_container'>-->
-    <!--        <div class='dialog_header'>-->
-    <!--          <h3>审核记录</h3>-->
-    <!--        </div>-->
-    <!--        <div class='dialog_main record_dialog'>-->
-    <!--          <div class='record_cell' v-for='(item,index) in approval_list' :key='index'>-->
-    <!--            <div class='record_cell_left'>-->
-    <!--              <div class='record_status'>-->
-    <!--                <div class='circle circle1' v-if='item.name =="评论"'></div>-->
-    <!--                <div class='circle circle2' v-else-if='item.name =="报备"'></div>-->
-    <!--                <img v-else></img>-->
-    <!--              </div>-->
-
-    <!--              <div class='record_cell_mess'>-->
-    <!--                <p class='record_person'>-->
-    <!--                  {{item.userId}}-->
-    <!--                  <span class='agree' v-if='item.name=="审批"'>{{item.result ? ('已' + item.result) : ''}}</span>-->
-    <!--                  <span class='agree transfer' v-if='item.name == "转交"'>已转交</span>-->
-    <!--                  <span v-if='item.name =="评论"'>做了评论</span>-->
-    <!--                  <span v-else-if='item.name =="报备"'>修改了报备</span>-->
-    <!--                </p>-->
-    <!--                &lt;!&ndash; 评论 &ndash;&gt;-->
-    <!--                <template v-if='item.name =="评论"'>-->
-    <!--                  <p class='record_message'>{{JSON.parse(item.result).message}}</p>-->
-    <!--                  <Ljupload size='40' :value='JSON.parse(item.result).attachments' :download="false"-->
-    <!--                            disabled="false"></Ljupload>-->
-    <!--                </template>-->
-
-    <!--              </div>-->
-    <!--            </div>-->
-    <!--            <div class='record_time'>-->
-    <!--              <p class='record_uptime'>{{item.time}}</p>-->
-    <!--              <p class='fre_time' v-if='item.name=="审批"'>耗时{{item.duration | formDataMin}}min</p>-->
-    <!--            </div>-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </LjDialog>-->
-    <!--    &lt;!&ndash; 拒绝 &ndash;&gt;-->
-    <!--    <LjDialog :visible='reject_visible' :size='{width:600+"px",height:400+"px"}' @close='handleCloseReject(false)'>-->
-    <!--      <div class='dialog_container'>-->
-    <!--        <div class='dialog_header'>-->
-    <!--          <h3>拒绝</h3>-->
-    <!--        </div>-->
-    <!--        <div class="dialog_main borderNone urgedDeal">-->
-    <!--          <el-form label-width="80px">-->
-    <!--            <el-form-item label="备注">-->
-    <!--              <el-input v-model="reject_mark" type="textarea" placeholder="请输入" :row="10"></el-input>-->
-    <!--            </el-form-item>-->
-    <!--          </el-form>-->
-    <!--        </div>-->
-    <!--        <div class="dialog_footer">-->
-    <!--          <el-button type="danger" size="small" @click="handleCloseReject(true)">确定</el-button>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </LjDialog>-->
-
-    <!--    <FormDetail :visible='show_form_visible' :moduleData='formatData'/>-->
+    <!--<FormDetail :visible='show_form_visible' :moduleData='formatData'/>-->
   </div>
 </template>
 
@@ -261,6 +192,11 @@
         hr_server: globalConfig.humanResource_server,
         vLoading: true,
         fullLoading: false,
+        bulletinSlither: {
+          name: '状态',
+          bulletin_name: '报备类型',
+          assignee_name: '处理人',
+        },
         drawSlither: {},//自定义报备数据
         titleTips: [],//详情标题
         formatData: {},//获取详情数据
@@ -275,13 +211,8 @@
           message: '',
           attachments: []
         },
-        record_list: [],//评论记录
+        comment_list: [],//评论记录
 
-        record_show_visible: false,
-        show_form_visible: false,
-        reject_visible: false, // 拒绝弹框
-        reject_mark: null, // 拒绝理由
-        relateions: {},
         approval_list: [], //审核记录
       }
     },
@@ -293,6 +224,7 @@
       },
       moduleData: {
         handler(val) {
+          console.log(val);
           if (val) {
             this.vLoading = true;
             this.fullLoading = false;
@@ -327,10 +259,8 @@
             if (res.code.endsWith('0')) {
               resolve(res.data.data);
             } else {
-              this.$LjNotify('error', {
-                title: '警告',
-                message: res.msg
-              });
+              let data = [{name: '******'}];
+              resolve(data)
             }
           })
         })
@@ -373,10 +303,26 @@
             title = ['客厅', '厨房/阳台/卫生间', '主卧', '次卧', '费用交接'];
             data = this.jsonData(defineCheckoutReport);
             break;
-          case 'supplement_lord_time'://补充协议
+          case 'supplement_lord_time': //延长收房时长
+          case 'supplement_lord_change_bank': //房东跟还银行卡
+          case 'supplement_lord_change_price': //调整收房价格
+          case 'supplement_renter_time': //租客延长租期
             data = {};
             title = ['补充协议'];
-            data.slither0 = this.jsonData(defineSupplyAgreement[num - 1]);
+            switch (type) {
+              case 'supplement_lord_time':
+                data.slither0 = this.jsonData(defineSupplyAgreement[1]);
+                break;
+              case 'supplement_lord_change_bank':
+                data.slither0 = this.jsonData(defineSupplyAgreement[2]);
+                break;
+              case 'supplement_lord_change_price':
+                data.slither0 = this.jsonData(defineSupplyAgreement[3]);
+                break;
+              case 'supplement_renter_time':
+                data.slither0 = this.jsonData(defineSupplyAgreement[4]);
+                break;
+            }
             break;
         }
         return {data, title}
@@ -414,11 +360,16 @@
       // 详情接口
       getDetailForm(url, type) {
         this.$http.get(url).then(res => {
-          this.vLoading = false;
           if (res.code === 200) {
+            this.vLoading = false;
             this.formatData = res.data.content;
             this.handleDetail(res.data.content);
             this.getVillageRelatedParams(this.formatData, type)
+          } else {
+            this.$LjNotify('error', {
+              title: '提示',
+              message: res.message
+            });
           }
         })
       },
@@ -535,8 +486,6 @@
             this.formatData[pic] = res.album[pic];
           }
         }
-        console.log(this.formatData)
-
       },
       // 所有单选 字段
       objIntArray(data) {
@@ -659,13 +608,13 @@
             }
             arr.push(obj);
           }
-          this.record_list = [];
+          this.comment_list = [];
           for (let item of arr) {
             for (let val of value) {
               if (val.author == item.id) {
                 val.author_name = item.name;
                 val.department = item.department;
-                this.record_list.push(val);
+                this.comment_list.push(val);
               }
             }
           }
@@ -702,79 +651,10 @@
           }
         })
       },
-
+      // 审核历史
       handleRecord() {
-        this.$http.get(`${this.approval_sever}history/process-instances/${this.moduleData.id}/log`).then(res => {
-          console.log(res);
-          this.approval_list = res
-        }).catch(e => {
-          this.approval_list = []
-        });
-        this.record_show_visible = true
-      },
-      handleCloseRecord() {
-        this.record_show_visible = false
-      },
-      handleBuff() { // 暂缓
-        let params = {
-          'action': this.moduleData.suspended ? "activate" : "suspend"
-        };
-        this.$http.put(`${this.approval_sever}runtime/process-instances/${this.moduleData.rootProcessInstanceId}`, params).then(res => {
-          if (this.status_type == 2) {
-            this.$LjNotify('success', {
-              title: this.moduleData.suspended ? "激活成功" : "暂缓成功",
-              message: ''
-            });
-            this.$emit('changeData')
-          }
-          this.moduleData.suspended = !this.moduleData.suspended
-        })
-      },
-      handleRewrite() { // 修改
-        this.show_form_visible = true
-      },
-      handleReject() { // 拒绝
-        this.AggreeAndReject('拒绝')
-      },
-      handleCloseReject(isSure) {
-        if (isSure) {
-
-        }
-        this.reject_mark = null;
-        this.reject_visible = false;
-      },
-      handleAggree() { // 同意
-        this.AggreeAndReject('同意')
-      },
-      AggreeAndReject(tit) {
-        if (this.type == 3 && this.moduleData.suspended) {
-          this.handleBuff()
-        }
-        let params = {
-          "action": "complete",
-          "variables": []
-        }
-        if (tit != '已读') {
-          let outcome = this.moduleData.outcome;
-          let outcomeOptions = JSON.parse(outcome).outcomeOptions;
-          let isReject = null;
-          for (let item of outcomeOptions) {
-            if (item.title = tit) {
-              isReject = item.action
-            }
-          }
-          params = {
-            "action": "complete",
-            "variables": [
-              {
-                "name": JSON.parse(outcome).variableName,
-                "value": isReject
-              }
-            ]
-          }
-        }
-        this.$http.post(`${this.approval_sever}runtime/tasks/${this.moduleData.id}`, params).then(res => {
-          this.$emit('changeData')
+        this.$http.get(`${this.approval_sever}history/process-instances/${this.allDetail.process_id}/log`).then(res => {
+          this.approval_list = res;
         })
       },
     }
@@ -1018,279 +898,6 @@
         }
       }
     }
-
-    #contract_detail_approval1 {
-      // 表格设置
-      .dialog_main {
-        @include scroll;
-        overflow-x: hidden;
-
-        .el-form {
-          border-radius: 4px;
-          // padding: 16px 0 16px 30px;
-          position: relative;
-
-          .seeRecord {
-            width: 110px;
-            height: 30px;
-            position: absolute;
-            right: 140px;
-            top: 20px;
-            text-align: center;
-            line-height: 30px;
-            font-size: 14px;
-            z-index: 9;
-          }
-
-          .dialog_tit {
-            position: absolute;
-            top: 0;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            .dialog_tit_img {
-              width: 20px;
-              height: 60px;
-            }
-
-            p {
-              padding-top: 10px;
-              writing-mode: vertical-rl;
-              font-size: 14px;
-              font-family: "jingdianxingshu";
-            }
-          }
-
-          .house_video {
-            img {
-              width: 50px;
-              height: 50px;
-            }
-          }
-        }
-
-        .el-form + .el-form {
-          margin-top: 20px;
-        }
-
-        .float-btn {
-          position: fixed;
-          top: 180px;
-          right: 60px;
-
-          .h1 {
-            width: 60px;
-            height: 60px;
-            @include confirmImg("pinglun.png", "theme1");
-          }
-
-          p {
-            margin-top: 3px;
-            font-size: 10px;
-            text-align: center;
-          }
-        }
-      }
-
-      .record_dialog {
-        padding: 30px;
-
-        .record_cell {
-          display: flex;
-          align-items: flex-start;
-          height: 130px;
-          position: relative;
-
-          .record_cell_left {
-            flex: 1;
-            display: flex;
-
-            .record_status {
-              height: 40px;
-              width: 40px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-
-              img {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-              }
-
-              .circle {
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-              }
-            }
-
-            .record_cell_mess {
-              margin-left: 20px;
-
-              .record_person {
-                font-size: 12px;
-                text-align: left;
-
-                .agree {
-                  display: inline-block;
-                  width: 50px;
-                  height: 24px;
-                  text-align: center;
-                  line-height: 24px;
-                }
-
-                span {
-                  font-size: 12px;
-                }
-              }
-
-              .record_message {
-                text-align: left;
-                margin-top: 10px;
-                font-size: 12px;
-                font-family: "jingdianxingshu";
-              }
-            }
-          }
-
-          .record_time {
-            width: 140px;
-
-            .record_uptime {
-              white-space: nowrap;
-              font-size: 12px;
-            }
-
-            .fre_time {
-              font-size: 12px;
-              margin-top: 10px;
-            }
-          }
-        }
-
-        .record_cell + .record_cell {
-          &::before {
-            content: "";
-            position: absolute;
-            left: 20px;
-            top: -80px;
-            width: 1px;
-            height: 60px;
-            border-left: 1px dashed #dfdfdf;
-          }
-        }
-      }
-
-      .dialog_footer {
-        display: flex;
-        justify-content: flex-end;
-      }
-
-      // 拒绝
-      .urgedDeal {
-        background: #fff;
-        padding: 10px 0;
-      }
-
-      // 评论
-      .comments_box {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 160px;
-        width: 350px;
-        background: #fff;
-        padding: 30px;
-        z-index: 12;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0px 5px 5px 0px rgba(229, 229, 229, 1);
-        border-radius: 4px;
-        @include transform(scale(0));
-        @include transOrigin(50%);
-        @include transition(all 0.4s linear);
-        opacity: 0;
-
-        &.comments_box_active {
-          @include transOrigin(50%);
-          @include transition(all 0.4s linear);
-          @include transform(scale(1));
-          opacity: 1;
-        }
-
-        .comments_list {
-          flex: 1;
-          padding-bottom: 20px;
-          @include scroll;
-          overflow-x: hidden;
-
-          .comment_cell {
-            .comment_cell_header {
-              display: flex;
-              justify-content: space-between;
-              align-content: center;
-              height: 40px;
-
-              span {
-                line-height: 40px;
-                font-size: 14px;
-              }
-            }
-
-            .comment_cell_words {
-              font-size: 10px;
-              font-weight: 700;
-              text-align: left;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;
-            }
-
-            .comment_border {
-              margin-top: 15px;
-            }
-          }
-        }
-
-        .comments_footer {
-          height: 180px;
-
-          .postTit {
-            font-size: 14px;
-            color: #b0b0b0;
-            text-align: left;
-            padding-left: 8px;
-          }
-
-          .img_box {
-            height: 50px;
-            padding-left: 8px;
-            @include scroll;
-            overflow: hidden;
-            overflow-y: scroll;
-          }
-
-          .post {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            font-size: 14px;
-            padding-right: 10px;
-            margin-top: 6px;
-
-            .post_icons {
-              display: inline-block;
-              width: 14px;
-              height: 14px;
-              margin-right: 12px;
-            }
-          }
-        }
-      }
-    }
   }
 
   #theme_name.theme1 {
@@ -1423,163 +1030,15 @@
 </style>
 
 <style lang="scss">
-  #contract_detail_approval1 {
-    z-index: 100;
-
-    .lj_dialog > .flex-center {
-      top: 0 !important;
-    }
-  }
-
-  #theme_name7 {
-    #contract_detail_approval {
-      // 表格设置
-      .dialog_main {
-        .el-form {
-          .el-form-item {
-            margin-bottom: 0;
-
-            .el-form-item__label,
-            .el-form-item__content {
-              display: flex;
-
-              align-items: center;
-              // height: 30px;
-              font-family: "Microsoft YaHei";
-            }
-
-            .el-form-item__label {
-              text-align: right;
-              justify-content: flex-end;
-            }
-
-            .el-form-item__content {
-              text-align: left;
-              flex-direction: column;
-              align-items: flex-start;
-              justify-content: center;
-
-              .more_checkbox {
-                display: flex;
-
-                .el-select {
-                  flex: 1;
-                }
-
-                .el-input__inner {
-                  padding: 0 5px;
-                }
-              }
-            }
-
-            .el-date-editor--date {
-              input {
-                border: none;
-              }
-            }
-          }
-
-          .house_video {
-            height: 50px;
-
-            .el-form-item__label,
-            .el-form-item__content {
-              line-height: 50px;
-              height: 50px;
-            }
-          }
-
-          .message_box {
-            .message_form {
-              .el-form-item__label {
-                height: 20px;
-                position: relative;
-
-                &:after {
-                  content: "";
-                  width: 6px;
-                  height: 6px;
-                  background: #b0b0b0;
-                  border-radius: 50%;
-                  position: absolute;
-                  top: 7px;
-                  right: 15px;
-                }
-              }
-
-              .el-form-item__content {
-                line-height: 20px;
-                max-height: 40px;
-                overflow: hidden;
-              }
-            }
-
-            .message_form + .message_form {
-              margin-top: 10px;
-            }
-
-            .message_con {
-              text-align: left;
-
-              div {
-                color: #e79699;
-              }
-            }
-
-            .message_price {
-              text-align: left;
-
-              div {
-                white-space: nowrap;
-                font-size: 14px;
-                font-weight: 700;
-                color: #686874;
-              }
-            }
-          }
-        }
+  #contract_detail_approval {
+    .comments {
+      .el-textarea {
+        height: 100%;
       }
 
-      .comments_box {
-        .el-textarea__inner {
-          border: none;
-          height: 60px;
-        }
-      }
-
-      // 拒绝
-      .urgedDeal {
-        .el-textarea__inner {
-          border: none;
-          height: 170px;
-        }
-      }
-    }
-  }
-
-  #theme_name.theme17 {
-    #contract_detail_approval {
-      // 表格设置
-      .dialog_main {
-        .el-form {
-          background: #fff;
-
-          .el-form-item {
-            .el-form-item__label {
-              color: #b0b0b0;
-            }
-
-            .el-form-item__content {
-              color: #686874;
-            }
-          }
-
-          .el-button--primary.is-plain {
-            background: #fff;
-            border-color: #0c66ff;
-            color: #0c66ff;
-          }
-        }
+      textarea {
+        height: 100%;
+        border: none;
       }
     }
   }

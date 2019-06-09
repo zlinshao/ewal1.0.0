@@ -40,7 +40,7 @@
           <el-table-column label="开单人" prop="sign_user" align="center"></el-table-column>
           <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
           <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
-          <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
+          <el-table-column label="审核状态" prop="check_status_name" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <!--<el-button type="primary" plain size="mini">查看审核记录</el-button>-->
@@ -82,7 +82,7 @@
                     <el-table-column label="开单人" prop="sign_user" align="center"></el-table-column>
                     <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
                     <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
-                    <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
+                    <el-table-column label="审核状态" prop="check_status_name" align="center"></el-table-column>
                   </el-table>
                   <div class="page">
                     <el-pagination :total="expand_count" :current-page="expand_params.page" layout="total,prev,pager,next"
@@ -299,7 +299,7 @@
           </div>
         </div>
         <div class="dialog_main">
-          <p style="text-align: left" v-if="chooseTab === 1">房屋信息</p>
+          <p style="text-align: left">房屋信息</p>
           <!--收房 customer_info-->
           <div class="house-info">
             <el-form label-width="120px">
@@ -337,7 +337,7 @@
 
 
 
-          <p style="text-align: left">房屋地址</p>
+          <p style="text-align: left">合同信息</p>
           <div class="house-address">
             <el-form label-width="120px">
               <el-row :gutter="10">
@@ -572,10 +572,9 @@
             </el-form>
           </div>
 
-
-          <p style="text-align: left" v-if="chooseTab === 1">附件信息</p>
+          <p style="text-align: left">附件信息</p>
           <!--收房 -->
-          <div class="other_info" v-if="chooseTab === 1">
+          <div class="other_info">
             <div style="text-align: right">
               <el-button type="danger" size="mini" @click="handleOpenPolishing(currentRow)">补齐资料</el-button>
             </div>
@@ -1390,6 +1389,24 @@ export default {
       this.showLoading(true);
       this.$http.get(this.url + 'v1.0/market/contract', this.params).then(res => {
         if (res.code === 200) {
+          res.data.data.forEach((o)=> {
+            let check_status_name = '';
+            switch (o.check_status) {
+              case 'waiting':
+                check_status_name = '待提交';
+                break;
+              case 'pending':
+                check_status_name = '待审核';
+                break;
+              case 'published':
+                check_status_name = '已完成';
+                break;
+              default:
+                check_status_name = '已完成';
+                break;
+            }
+            o.check_status_name = check_status_name;
+          });
           this.contractList = res.data.data;
           this.contractCount = res.data.count;
         } else {
