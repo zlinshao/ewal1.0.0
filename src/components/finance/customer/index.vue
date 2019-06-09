@@ -14,7 +14,7 @@
         </h2>
       </div>
 
-      <div class="items-center listTopRight">
+      <div class="items-center listTopRight" v-show="!action_visible">
         <!--<p class="status-icon" v-for="item in statusBar" v-if="chooseTab===1||chooseTab===2">-->
           <!--<span style="margin-left: 16px"><i :class="item.class"></i><span>{{item.iconText}}</span></span>-->
         <!--</p>-->
@@ -76,8 +76,6 @@
     </div>
 
     <HouseFilter :visible="commonModule.house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
-    <StaffOrgan :module="commonModule.staffModule" @close="hiddenStaff"></StaffOrgan>
-    <DepartOrgan :module="commonModule.departModule" @close="hiddenDepart"></DepartOrgan>
     <PostOrgan :module="commonModule.postModule" @close="hiddenPost"></PostOrgan>
 
   </div>
@@ -94,10 +92,7 @@
   import LordForm from "./lord/lordForm.vue";
   import renterForm from "./renter/renterForm.vue";
   import rentOrderForm from "./rent-order/rentOrderForm.vue";
-  import {pendingSearchList, lordRenterSearchList} from "../../../assets/js/allSearchData.js";
-
-  import StaffOrgan from '../../common/staffOrgan.vue';
-  import DepartOrgan from '../../common/departOrgan.vue';
+  import {pendingSearchList, lordSearchList,RenterSearchList,RenterOrderSearchList} from "../../../assets/js/allSearchData.js";
   import PostOrgan from '../../common/postOrgan.vue';
   import HouseFilter from '../../marketCentre/components/house-filter.vue';
 
@@ -114,15 +109,15 @@
       lord,
       renter,
       rentOrder,
-      StaffOrgan,
-      DepartOrgan,
       PostOrgan,
       HouseFilter
     },
     data() {
       return {
         pendingSearchList,
-        lordRenterSearchList,
+        lordSearchList,
+        RenterSearchList,
+        RenterOrderSearchList,
         action_visible: false,//操作栏作态
         chooseTab: 1,
         selects: [
@@ -327,13 +322,13 @@
         this.showSearch = true;
         switch (val) {
           case 1:
-            this.searchData = this.lordRenterSearchList;
+            this.searchData = this.lordSearchList;
             break;
           case 2:
-            this.searchData = this.lordRenterSearchList;
+            this.searchData = this.RenterSearchList;
             break;
           case 3:
-            this.searchData = this.lordRenterSearchList;
+            this.searchData = this.RenterOrderSearchList;
             break;
         }
 
@@ -342,7 +337,6 @@
       hiddenModule(val) {
         this.showSearch = false;
         if (val !== 'close') {
-          console.log(val);
           this.search_params = val;
           this.$bus.emit('getParams', this.search_params);
         }
@@ -350,6 +344,7 @@
 
       //获取共用组件状态
       getCommonModule(val) {
+        // debugger
         if (val) {
           for (let item of Object.keys(this.commonModule)) {
             this.commonModule[item] = val[item];
@@ -380,25 +375,30 @@
       },
       //获取房源信息
       handleGetHouseResource(house, type) {
-        console.log(house);
-        console.log(type);
-        if (house) {
+        // console.log(house);
+        // console.log(type);
+        this.commonModule.house_filter_visible = false;
+        if (house!='close') {
           this.commonModuleData.address_name = '';
           this.commonModuleData.address_id = [];
-          house.map(item => {
-            this.commonModuleData.address_name += item.house_name + ',';
-            if (type === 'house') {
-              this.commonModuleData.address_type = 1;
-              this.commonModuleData.address_id.push(item.house_id);
-            } else {
-              this.commonModuleData.address_type = 2;
-              this.commonModuleData.address_id.push(item.village_id);
-            }
-          });
-          this.commonModuleData.address_name = this.commonModuleData.address_name.substring(0, this.commonModuleData.address_name.length - 1);
-
+          if(house.length>0){
+            house.map(item => {
+              this.commonModuleData.address_name += item.house_name + ',';
+              if (type === 'house') {
+                this.commonModuleData.address_type = 1;
+                this.commonModuleData.address_id.push(item.house_id);
+              } else {
+                this.commonModuleData.address_type = 2;
+                this.commonModuleData.address_id.push(item.village_id);
+              }
+            });
+            this.commonModuleData.address_name = this.commonModuleData.address_name.substring(0, this.commonModuleData.address_name.length - 1);
+            // this.commonModule.house_filter_visible = false;
+          }
         }
-        this.commonModule.house_filter_visible = false;
+        // else{
+          // this.commonModule.house_filter_visible = false;
+        // }
 
       },
     },

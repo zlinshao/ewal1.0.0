@@ -60,7 +60,7 @@
       routerJump(item) {
         this.$emit('update:show',false);
         if(item.name=='退出') {
-          this.$LjConfirm({content:'确定退出登录吗？'}).then(()=> {
+          this.$LjConfirm({content:'确定退出登录吗？',icon:'warning'}).then(()=> {
             this.$storage.remove('Authorization');
             this.$storage.remove('user_info');
             this.routerLink('/login');

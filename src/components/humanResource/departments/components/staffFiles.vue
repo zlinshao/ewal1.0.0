@@ -260,7 +260,7 @@
                     </el-col>
                     <el-col :span="6">
                       <el-form-item label="离职类型">
-                        <el-select v-model="staffDetail.dismiss_reason.dismiss_type">
+                        <el-select v-model="staffDetail.dismiss_reason.dismiss_type" clearable>
                           <el-option :value="1" label="主动离职"></el-option>
                           <el-option :value="2" label="旷工离职"></el-option>
                           <el-option :value="3" label="劝退"></el-option>
@@ -278,7 +278,7 @@
               </el-tab-pane>
               <el-tab-pane label="学历资料" name="second">
                 <el-form class="borderNone" :disabled="reviseInfo" label-width="120px" size="small" style="width: 100%" v-if="staffDetail.education_history.length > 0">
-                  <div v-for="item in staffDetail.education_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
+                  <div v-for="(item,key) in staffDetail.education_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                     <el-row>
                       <el-col :span="8">
                         <el-form-item label="起始时间">
@@ -305,15 +305,7 @@
                     <el-row>
                       <el-col :span="8">
                         <el-form-item label="学历">
-
                           <dropdown-list v-model="item.eduction" title="请选择" width="260" :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND"></dropdown-list>
-
-                          <!--<el-select v-model="item.education" placeholder="请选择">
-                            <el-option :value="1" label="高中及以上"></el-option>
-                            <el-option :value="2" label="大专及以上"></el-option>
-                            <el-option :value="3" label="本科及以上"></el-option>
-                            <el-option :value="4" label="不限"></el-option>
-                          </el-select>-->
                         </el-form-item>
                       </el-col>
                       <el-col :span="8">
@@ -325,6 +317,10 @@
                         </el-form-item>
                       </el-col>
                     </el-row>
+                    <div v-if="!reviseInfo && key==staffDetail.education_history.length-1" style="text-align: right">
+                      <el-button type="danger" size="mini" style="width: 120px" @click="handleAddItem('eduction')">添加</el-button>
+                      <el-button type="info" size="mini" style="width: 120px" v-if="staffDetail.education_history.length > 1" @click="handleDelItem('eduction')">删除</el-button>
+                    </div>
                   </div>
                   <el-form-item label="入职材料">
                     <el-checkbox-group v-model="staffDetail.entry_materials" class="changeChoose flex-center">
@@ -354,10 +350,7 @@
                     </el-col>
                   </el-row>
                 </el-form>
-                <div v-if="!reviseInfo" style="text-align: right">
-                  <el-button type="danger" size="mini" style="width: 120px" @click="handleAddItem('eduction')">添加</el-button>
-                  <el-button type="info" size="mini" style="width: 120px" v-if="staffDetail.education_history.length > 1" @click="handleDelItem('eduction')">删除</el-button>
-                </div>
+
               </el-tab-pane>
               <el-tab-pane label="工作履历" name="third">
                 <el-form class="borderNone" :disabled="reviseInfo" label-width="120px" size="small" style="width: 100%" v-if="staffDetail.work_history.length > 0">
@@ -587,6 +580,13 @@
     mounted() {
     },
     watch: {
+      'staffDetail.city': {
+        handler(val,oldVal) {
+        },
+        immediate: true,
+        deep: true
+      },
+
       module(val) {
         this.files_visible = val;
         this.files_size = {
@@ -602,7 +602,7 @@
       detailInfo: {
         handler(val) {
           this.currentStaffInfo = val;
-          for (var key in this.staffDetail) {
+          for (let key in this.staffDetail) {
             this.staffDetail[key] = key in val ? val[key] : val.staff && key in val.staff ? val.staff[key] : '';
           }
           this.staffDetail.work_status = val.is_on_job ? '离职' : '在职';
@@ -638,7 +638,7 @@
             this.staffDetail.age = Math.ceil((new Date() - new Date(this.staffDetail.birthday)) / 1000 / 60 / 60 / 24 / 365) || '';
           }
         },
-        deep: true
+        //deep: true
       }
     },
     computed: {
@@ -689,6 +689,7 @@
       },
       //添加item
       handleAddItem(type) {
+        console.log(this.staffDetail);
         if (type === 'work') {
           this.staffDetail.work_history.push({
             work_place: '',
@@ -700,13 +701,16 @@
           })
         }
         if (type === 'eduction') {
-          this.staffDetail.education_history.push({
-            start_end_time: '',
-            school: '',
-            major: '',
-            eduction: '',
-            learn_type: '',
-          })
+
+          this.$nextTick(()=> {
+            this.staffDetail.education_history.push({
+              start_end_time: '',
+              school: '',
+              major: '',
+              eduction: '',
+              learn_type: '',
+            });
+          });
         }
       },
       handleClickTab(tab) {

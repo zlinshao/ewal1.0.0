@@ -9,12 +9,10 @@
                     <el-col :span="8">
                         <div class="">
                             <el-form-item label="签约人">
-                                <el-input v-model="commonModuleData.staff_name" style="width: 200px"
-                                          @focus="clickCallback('签约人')" readonly :disabled="is_disabled"></el-input>
+                                <user-choose v-model="formParams.staff_id" num="1" width="200"></user-choose>
                             </el-form-item>
                             <el-form-item label="所属部门">
-                                <el-input v-model="commonModuleData.department_name" style="width: 200px"
-                                          @focus="clickCallback('所属部门')" readonly :disabled="is_disabled"></el-input>
+                                <org-choose v-model="formParams.department_id" num="1" width="200"></org-choose>
                             </el-form-item>
                             <el-form-item label="负责人">
                                 <el-input v-model="commonModuleData.leader_name" style="width: 200px"
@@ -29,7 +27,7 @@
                                           :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="房屋地址">
-                                <el-input placeholder="请选择" v-model="formParams.address" @focus="clickCallback('地址')"
+                                <el-input placeholder="请选择" v-model="formParams.address" @focus="clickCallback()"
                                           style="width: 200px" :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="收房月数">
@@ -69,6 +67,7 @@
                             </el-form-item>
                         </div>
                     </el-col>
+                    <!-- 付款周期 -->
                     <el-col :span="8">
                         <div class="" style="width: 100%">
                             <el-form-item label="付款周期">
@@ -245,8 +244,8 @@
                     "中原银行"
                 ],
                 formParams: {
-                    staff_id: '',//签约人姓名
-                    department_id: '',//部门id
+                    staff_id: [],//签约人姓名
+                    department_id: [],//部门id
                     leader_id: '',//部门领导id
                     customer_name: "",//客户姓名
                     contact: "",//联系方式
@@ -325,17 +324,24 @@
                 prices: [],
             }
         },
-        mounted() {
-            this.formData = this.initData;
+        beforeMount() {
+            this.formData =JSON.parse(JSON.stringify(this.initData));
             for (let item of Object.keys(this.formParams)) {
-                this.formParams[item] = this.formData[item];
+                // 人员、部门必须是数组形式
+                if(item=='staff_id'){
+                    this.formParams.staff_id[0]=this.formData.staff_id;
+                }else if(item=='department_id'){
+                    this.formParams.department_id[0]=this.formData.department_id;
+                }else{
+                   this.formParams[item] = this.formData[item];
+                }
             }
             this.commonModuleData.leader_name = this.formData.leader.name;
-            this.commonModuleData.department_name = this.formData.department.name;
-            this.commonModuleData.staff_name = this.formData.staff.name;
-            this.prices = this.formData.prices_raw;
             this.formParams.leader_id = this.formData.leader.id;
-
+            this.prices = this.formData.prices_raw;
+            
+        },
+        mounted() {
             //是否可编辑
             if (this.checkOrEdit.is_check === true) {
                 this.is_disabled = true;
@@ -384,13 +390,11 @@
             },
         },
         methods: {
-            //获取部门组件的值
+            // 获取部门组件的值
             getModuleData(val) {
                 for (let item of Object.keys(this.commonModuleData)) {
                     this.commonModuleData[item] = val[item];
                 }
-                this.formParams.staff_id = val.staff_id;
-                this.formParams.department_id = val.department_id;
                 this.formParams.leader_id = val.leader_id;
                 this.formParams.house_id = val.address_id[0];
                 this.formParams.address = val.address_name;
@@ -399,8 +403,10 @@
             getModuleDataStatus(val) {
                 this.commonModule = val;
             },
+            // 编辑的取消按钮
             cancel() {
                 this.$emit('cancel', false);
+                this.prices = this.formData.prices_raw;
             },
             //增加付款周期
             addPrices() {
@@ -426,18 +432,9 @@
                     this.prices.splice(index, 1);
                 }
             },
-            clickCallback(val) {
-                switch (val) {
-                    case "签约人":
-                        this.commonModule.staffModule = true;
-                        break;
-                    case "所属部门":
-                        this.commonModule.departModule = true;
-                        break;
-                    case "地址":
-                        this.commonModule.house_filter_visible = true;
-                        break;
-                }
+            // 房屋地址
+            clickCallback() {
+                this.commonModule.house_filter_visible = true;
                 this.$bus.emit('openCommonModule', this.commonModule);
             },
             callbackSuccess(res) {

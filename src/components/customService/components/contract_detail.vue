@@ -7,8 +7,10 @@
           <div class="header_right">
             <span>{{contractDetail.contract_number}}</span>
             <span style='margin-left:20px;margin-right:60px;'>{{moduleData.type}}</span>
-            <el-button id='active-danger' class='el-button-active' size='mini' @click='handleRewrite' style='margin-left:10px'
-              v-if='showFooter'>作废重签</el-button>
+            <el-button
+              :disabled="contractDetail.is_resign==1"
+              id='active-danger' class='el-button-active' size='mini' @click='handleRewrite' style='margin-left:10px'
+              v-if='showFooter'>{{contractDetail.is_resign?'重签中':'作废重签'}}</el-button>
           </div>
         </div>
         <div class="dialog_main contract_detail">
@@ -304,8 +306,8 @@
                 <template>
                   <div class='el_check_box'>
                     <div class='main_tit'> {{tit}}</div>
-                    <div style="width: 90%;text-align: left" v-if='contractDetail.album_temp && contractDetail.album_temp[key]'>
-                      <lj-upload size='40' v-model="contractDetail.album_temp[key]" disabled=true :download='false'></lj-upload>
+                    <div style="width: 90%;text-align: left" v-if='contractDetail.album && contractDetail.album[key]'>
+                      <lj-upload size='40' v-model="contractDetail.album[key]" disabled=true :download='false'></lj-upload>
                     </div>
                   </div>
                 </template>
@@ -356,7 +358,7 @@
         </div>
 
         <div class="dialog_footer" v-if='showFooter'>
-          <el-button :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="JSON.stringify(item)" v-for="item in operate_list" @click="handleContract(item.action)">{{item.title}}</el-button>
+          <el-button :disabled="contractDetail.is_resign==1" :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="JSON.stringify(item)" v-for="item in operate_list" @click="handleContract(item.action)">{{item.title}}</el-button>
           <!--<el-button id='active-success' class='el-button-active' size="small" @click="handleContract(true)" v-if='chooseTab == 1 || chooseTab == 2'>通过</el-button>
           <el-button id='active-danger' class='el-button-active' size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>-->
         </div>
@@ -515,7 +517,6 @@ export default {
             }
           }
 
-          data.album_temp = JSON.parse(data.album_temp)
           this.contractDetail = data
           if (this.showFooter) {
             this.$emit('setCookie')
@@ -524,11 +525,11 @@ export default {
         }
       })
     },
+
     setProcess_id (res) {
-
-
       this.$emit('setCookie')
     },
+
     getProcess_id (process_id) {
       if(!process_id) return;
       this.$http.get(this.market_server + `v1.0/market/contract/kf-check-button?process_id=${process_id}`).then(res => {

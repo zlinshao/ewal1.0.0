@@ -58,7 +58,7 @@
               if(res.code.endsWith('0')) {
                 this.inputContent = _.map(res.data.data,'name').join(',');
               }else {
-                // this.inputContent = '';
+                this.inputContent = '';
               }
 
             });

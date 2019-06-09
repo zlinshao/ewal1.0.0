@@ -10,7 +10,7 @@
       </div>
       <div class="scroll_bar" v-if="tabsManage === 'staff'" @click="checkOverflow()">
         <div id="scroll-body" class="staffManage" v-if="staffList.length > 0">
-          <div v-for="item in staffList" style="min-width: 150px">
+          <div v-for="item in staffList" class="staff-item">
             <div class="items-center" :class="{'is_enable': item.is_enable}" @click="reviseStaff(item)">
               <p>
                 <img :src="item.avatar" alt="" v-if="item.avatar">
@@ -18,7 +18,7 @@
               </p>
               <div>
                 <h4>{{ item.name }}</h4>
-                <h5>{{ item.position[0].name }}</h5>
+                <h5 :title="item.position[0].name">{{ substringPlugin(item.position[0].name,8) }}</h5>
               </div>
             </div>
             <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
@@ -1096,6 +1096,7 @@
       },
       info: {
         handler(val) {
+          debugger
           this.departInfo = val;
           this.interview_info_detail.depart = val.name;
           this.interview_info_detail.org_id = [];
@@ -1116,7 +1117,8 @@
           this.departInfo = '';
           this.interview_info_detail.depart = '';
           this.interview_info_detail.org_id = [];
-          this.staffParams.org_id = '';
+          //this.staffParams.org_id = '';
+          //debugger
         }
       },
     },
@@ -1250,7 +1252,7 @@
         this.staff_visible = false;
       },
       handleConfirmSendMsg() {
-        var type = [];
+        let type = [];
         if (this.checkLists.includes(1)) {
           type.push('dimission');
         }
@@ -1292,7 +1294,7 @@
             this.checkList.push(this.current_field.id);
           }
         } else {
-          var idx = this.checkList.indexOf(this.current_field.id);
+          let idx = this.checkList.indexOf(this.current_field.id);
           this.checkList.splice(idx,1);
         }
         let count = this.handleGetPowerLen();
@@ -1331,8 +1333,8 @@
         this.self_power_params.system_id = id;
         this.$http.get(this.url+'organization/permission/all',this.self_power_params).then(res => {
           if (res.code === '20000') {
-            var field = [];
-            var permission = [];
+            let field = [];
+            let permission = [];
             if (res.data.field && res.data.field.length > 0) {
               for (let item of res.data.field) {
                 field.push(item.id);
@@ -1343,8 +1345,8 @@
                 permission.push(tmp.id);
               }
             }
-            var count = 0;
-            for (var key in this.power_list) {
+            let count = 0;
+            for (let key in this.power_list) {
               count += this.power_list[key].length;
             }
             this.$nextTick(() => {
@@ -1360,7 +1362,7 @@
       // 权限切换
       handleClick(val) {
         this.show_field_list = [];
-        var id = parseInt(val.name);
+        let id = parseInt(val.name);
         this.getModuleList(id);
       },
       // 权限子集切换
@@ -1381,13 +1383,13 @@
           count = count + list[item].length;
           for (let tmp of list[item]) {
             if (!value.includes(tmp.id)) {
-              for (var field of tmp.fields) {
+              for (let field of tmp.fields) {
                 this.field_list = this.field_list.filter(item => item !== field.id);
               }
             }
             if (tmp.id === value[value.length - 1]) {
               if (tmp.fields) {
-                for (var tmp2 of tmp.fields) {
+                for (let tmp2 of tmp.fields) {
                   this.field_list = this.field_list.filter(item => item !== tmp2.id);
                   this.field_list.push(tmp2.id);
                 }
@@ -1403,9 +1405,9 @@
           this.checkList = [];
           this.field_list = [];
           let list = this.power_list;
-          var keys = Object.keys(list);
-          for (var key of keys) {
-            for (var i =0;i<list[key].length;i++) {
+          let keys = Object.keys(list);
+          for (let key of keys) {
+            for (let i =0;i<list[key].length;i++) {
               this.checkList.push(list[key][i].id);
               if (list[key][i].fields && list[key][i].fields.length > 0) {
                 for (let tmp of list[key][i].fields) {
@@ -1426,7 +1428,7 @@
           if (res.code === '20000') {
             this.power_list = res.data.data;
             let count = 0;
-            for (var key in this.power_list) {
+            for (let key in this.power_list) {
               count = count + this.power_list[key].length;
             }
             this.checkAll = this.checkList.length === count;
@@ -1664,8 +1666,8 @@
       },
       //获取员工列表
       async getStaffList() {
-        //if(! await this.validatePermission('User-Index')) {return};
-        if(! this.VALIDATE_PERMISSION['User-Index']) {return};
+        if(!this.VALIDATE_PERMISSION['User-Index']) {return};
+        if(!this.staffParams.org_id) return;
         this.$http.get(this.url+'staff/user',this.staffParams).then(res => {
           if (res.code === '20000') {
             this.staffList = res.data.data;
@@ -1710,7 +1712,7 @@
           this.currentStaff = item;
           this.is_edit = true;
           this.add_newStaff_visible = true;
-          for (var key in this.interview_info_detail) {
+          for (let key in this.interview_info_detail) {
             this.interview_info_detail[key] = item.staff && item.staff[key] || '';
           }
           if (item.staff['level']===0){

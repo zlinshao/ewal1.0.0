@@ -252,7 +252,7 @@ Vue.prototype.$video = Video;
   next();
 });*/
 
-getPermission();//进入系统后首先同步获取权限 然后再每隔30秒异步获取权限
+//getPermission();//进入系统后首先同步获取权限 然后再每隔30秒异步获取权限
 
 router.beforeEach((to, from, next) => {
   Vue.prototype.VALIDATE_PERMISSION = {

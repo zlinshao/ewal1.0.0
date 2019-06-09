@@ -6,7 +6,7 @@
 
     <el-button @click="demo">测试</el-button>
     <!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
-        <post-choose v-model="post_list"></post-choose>
+        <post-choose v-model="post_list" num="1"></post-choose>
 <!--        <user-choose v-model="user_list"></user-choose>-->
 <!--        <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>

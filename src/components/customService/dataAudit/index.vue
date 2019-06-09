@@ -162,6 +162,7 @@ export default {
       return "";
     },
     cookieChange () {
+      if(!this.currentRow?.contract_id) return;
       this.$set(this.cookieArr, this.currentRow.contract_id, new Date().getTime())
       this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
       this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
@@ -262,7 +263,7 @@ export default {
       if (val !== 'close') {
         this.searchParams = val
         this.currentPage = 1;
-        this.getDateList()
+        this.getDateList();
       }
     },
     //双击 合同详情

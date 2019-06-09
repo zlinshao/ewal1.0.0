@@ -82,6 +82,16 @@
     activated() {
     },
     watch: {
+
+      value: {
+        handler(val, oldVal) {
+          if(val.constructor===Array&&val.length===0) {
+            debugger
+            this.checkList = [];
+          }
+         }
+      },
+
       module(val) {
         this.depart_visible = val;
         this.depart_size = {

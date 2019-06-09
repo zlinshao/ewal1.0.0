@@ -200,7 +200,7 @@
                   <div>
                     <span class='tit'>合同照片</span>
                     <p class='content' v-if='recordDetail.album'>
-                      <lj-upload size='40' :value="recordDetail.album_temp.photo" disabled=true :download='false'></lj-upload>
+                      <lj-upload size='40' :value="recordDetail.album.photo" disabled=true :download='false'></lj-upload>
                       <!-- <img :src="img.uri" alt="" v-for='img in recordDetail.album.photo' :key='img.id' data-magnify=""
                         data-caption="图片查看器" :data-src="img.uri" v-if='img.uri'> -->
                     </p>
@@ -233,13 +233,9 @@
                   <div>
                     <span class='tit'>其他附件</span>
                     <div class='content content_album'>
-                      <div v-for='(item,key) in recordDetail.album_temp' :key="key" class='imgs_box' v-if='key !="photo"'>
-                        <p>{{dataAblum[key]}}</p>
-                        <lj-upload size="40" v-model="recordDetail.album_temp[key]" disabled=true :download='false'></lj-upload>
-                        <!-- <div v-if='item'> -->
-                        <!-- <img :src="img.uri" alt="" v-for='img in item' :key='img.id' data-magnify="" data-caption="图片查看器"
-                            :data-src="img.uri" v-if='img.uri'> -->
-                        <!-- </div> -->
+                      <div v-for='(item,key) in recordDetail.album' :key="key" class='imgs_box' v-if='key !="photo"'>
+                        <p>{{dataAlbum[key]}}</p>
+                        <lj-upload size="40" v-model="recordDetail.album[key]" disabled=true :download='false'></lj-upload>
                       </div>
                     </div>
                   </div>
@@ -431,7 +427,7 @@ export default {
       //暂存 点击row
       currentRow: null,
       url: globalConfig.market_server,
-      dataAblum: {
+      dataAlbum: {
         identity_photo: '证件照片',
         bank_photo: '银行卡照片',
         photo: '合同照片',
@@ -449,7 +445,7 @@ export default {
         electricity_card_photo: '电卡',
         gas_card_photo: '气卡',
         other_photo:'其他照片',
-
+        house_video:'房屋照片',
       },
       record_info: {},
       currentMethod: '',
@@ -577,7 +573,6 @@ export default {
       this.recordOption.contract_number = row.contract_number
       this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
-          res.data.album_temp = JSON.parse(res.data.album_temp)
           this.recordDetail = res.data
           this.add_visible = true
         }

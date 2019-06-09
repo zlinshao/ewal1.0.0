@@ -21,7 +21,7 @@
         <el-table-column label="离职时间" prop="staff.dismiss_time" align="center"></el-table-column>
         <el-table-column label="离职操作时间" prop="is_on_job" align="center" min-width="120px"></el-table-column>
         <el-table-column label="禁用操作时间" prop="is_enable" align="center" min-width="120px"></el-table-column>
-        <el-table-column label="联系方式" prop="phone" align="center"></el-table-column>
+        <el-table-column show-overflow-tooltip label="联系方式" prop="phone" align="center" width="120px"></el-table-column>
         <el-table-column label="离职类型" prop="staff.dismiss_reason" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.staff && scope.row.staff.dismiss_reason && scope.row.staff.dismiss_reason.dismiss_type && scope.row.staff.dismiss_reason.dismiss_type === 1">主动离职</span>
@@ -30,7 +30,7 @@
             <span v-else>开除</span>
           </template>
         </el-table-column>
-        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" show-overflow-tooltip align="center" min-width="230px"></el-table-column>
+        <el-table-column label="离职备注" prop="staff.dismiss_reason.dismiss_mess" show-overflow-tooltip align="center" min-width="200px"></el-table-column>
         <el-table-column label="离职交接单" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="handleLookResignation(scope.row)">查看</el-button>
@@ -216,7 +216,7 @@
     watch: {
       searchVal: {
         handler(val) {
-          this.params = Object.assign({},this.params,val);
+          this.params = {...this.params,...val};
           this.getStaffList();
         },
         deep: true
@@ -350,6 +350,7 @@
       /*获取离职列表*/
       getStaffList() {
         this.showLoading(true);
+        this.params.is_on_job=1;
         this.$http.get(this.url+'staff/user', this.params).then(res => {
           this.showLoading(false);
           if (Number(res.code)%10 ===0){

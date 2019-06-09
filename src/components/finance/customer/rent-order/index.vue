@@ -178,11 +178,11 @@
         this.$http.get(globalConfig.temporary_server + 'customer_bulletin', this.params).then(res => {
           this.showLoading(false);
           if (res.code === 200) {
-            this.rentOrderLists = res.data.data.sort((a, b) => {
-              return a.id - b.id;
-            });
+            // this.rentOrderLists = res.data.data.sort((a, b) => {
+            //   return a.id - b.id;
+            // });
+            this.rentOrderLists = res.data.data;
             this.rentOrderCount = res.data.count;
-
             this.rentOrderIds = [];
             for (let item of this.rentOrderLists) {
               this.rentOrderIds.push(item.id);
@@ -219,17 +219,12 @@
       },
       // 搜索参数
       handleParams(val) {
-        if (val.search) {
-          this.params.search = val.search;
-        } else {
-          this.params.search = ''
+        if (val.gatherDate) {  //生成时间
+          this.params.startRange = val.gatherDate[0];
+          this.params.endRange = val.gatherDate[1];
         }
-        this.params.page = val.page;
-        this.params.limit = val.limit;
-        if (val.date1) {
-          this.params.startRange = val.date1[0];
-          this.params.endRange = val.date1[1];
-        }
+        Object.assign(this.params,val);
+        delete this.params.gatherDate;
         this.getRentOrderList();
       },
       // 当前点击

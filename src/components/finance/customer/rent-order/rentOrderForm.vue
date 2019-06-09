@@ -9,28 +9,26 @@
                     <el-col :span="8">
                         <div class="">
                             <el-form-item label="签约人">
-                                <el-input v-model="commonModuleData.staff_name" style="width: 200px"
-                                          @focus="clickCallback('签约人')" readonly :disabled="is_disabled"></el-input>
+                                <user-choose v-model="formParams.staff_id" num="1" width="200"></user-choose>
                             </el-form-item>
                             <el-form-item label="所属部门">
-                                <el-input v-model="commonModuleData.department_name" style="width: 200px"
-                                          @focus="clickCallback('所属部门')" readonly :disabled="is_disabled"></el-input>
+                                <org-choose v-model="formParams.department_id" num="1" width="200"></org-choose>
                             </el-form-item>
                             <el-form-item label="负责人">
                                 <el-input v-model="commonModuleData.leader_name" style="width: 200px"
-                                           readonly :disabled="is_disabled"></el-input>
+                                           readonly :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
                             <el-form-item label="客户姓名">
                                 <el-input v-model="formParams.customer_name" style="width: 200px"
-                                          :disabled="is_disabled"></el-input>
+                                          :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
                             <el-form-item label="客户手机号">
                                 <el-input v-model="formParams.contact" style="width: 200px"
-                                          :disabled="is_disabled"></el-input>
+                                          :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
                             <el-form-item label="房屋地址">
-                                <el-input placeholder="请选择" v-model="formParams.address" @focus="clickCallback('地址')"
-                                          style="width: 200px" :disabled="is_disabled"></el-input>
+                                <el-input placeholder="请选择" v-model="formParams.address" @focus="clickCallback()"
+                                          style="width: 200px" :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
 
                             <el-form-item label="租房状态">
@@ -47,13 +45,13 @@
                             <el-form-item label="签约日期">
                                 <el-date-picker
                                         v-model="formParams.deal_date" type="date" placeholder="" style="width: 200px"
-                                        :disabled="is_disabled">
+                                        :disabled="is_disabled && editIsFalg">
                                 </el-date-picker>
                             </el-form-item>
                             <el-form-item label="尾款补齐时间">
                                 <el-date-picker
                                         v-model="formParams.complete_date" type="date" placeholder=""
-                                        :disabled="is_disabled"
+                                        :disabled="is_disabled && editIsFalg"
                                         style="width: 200px">
                                 </el-date-picker>
                             </el-form-item>
@@ -63,7 +61,7 @@
                             </el-form-item>
 
                             <el-form-item label="备注">
-                                <el-input v-model="formParams.remark" style="width: 200px" :disabled="is_disabled"
+                                <el-input v-model="formParams.remark" style="width: 200px" :disabled="is_disabled && editIsFalg"
                                           type="textarea" :rows="3"></el-input>
                             </el-form-item>
                         </div>
@@ -71,7 +69,7 @@
                     <el-col :span="8">
                         <div class="" style="width: 100%">
                             <el-form-item label="付款周期">
-                                <el-button size="mini" v-if="type==='edit'" type="danger" @click="addPrices"
+                                <el-button size="mini" v-if="checkOrEdit.is_check===false" type="danger" @click="addPrices"
                                            style="cursor: pointer;position: absolute;right:-50px;top:0;">添加
                                 </el-button>
                             </el-form-item>
@@ -101,8 +99,8 @@
                                               :disabled="is_disabled"></el-input>
                                 </el-form-item>
                                 <el-form-item label="月单价">
-                                    <el-input v-model="item.month_unit_price" style="width: 200px" type="number"
-                                              :disabled="is_disabled"></el-input>
+                                    <el-input v-model="item.price" style="width: 200px" type="number"
+                                              :disabled="is_disabled && editIsFalg"></el-input>
                                 </el-form-item>
                                 <el-form-item label="付款方式" style="position: relative">
                                     <el-select placeholder="请选择付款方式" v-model="item.pay_way" style="width: 200px;"
@@ -110,7 +108,7 @@
                                         <el-option v-for="(item,index) in payTypes" :label="item.val" :value="item.id"
                                                    :key="index"></el-option>
                                     </el-select>
-                                    <el-button size="mini" v-if="type==='edit'" class="el-icon-circle-close-outline"
+                                    <el-button size="mini" v-if="checkOrEdit.is_check===false" class="el-icon-circle-close-outline"
                                                type="danger" @click="reducePrices(index)"
                                                style="cursor: pointer;position: absolute;right:-50px;top:0;"></el-button>
                                 </el-form-item>
@@ -124,29 +122,29 @@
                         <div class="">
                             <el-form-item label="账户类型" prop="account_type">
                                 <el-select placeholder="请选择" v-model="formParams.account_type" style="width: 200px"
-                                           :disabled="is_disabled">
+                                           :disabled="is_disabled && editIsFalg">
                                     <el-option v-for="item in Object.keys(cate)" :label="cate[item]" :value="item"
                                                :key="item"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="收款人信息">
                                 <el-input v-model="formParams.account_owner" style="width: 200px"
-                                          :disabled="is_disabled"></el-input>
+                                          :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
                             <el-form-item label="开户银行" prop="account_bank">
                                 <el-select placeholder="请选择银行" v-model="formParams.account_bank" style="width: 200px"
-                                           :disabled="is_disabled">
+                                           :disabled="is_disabled && editIsFalg">
                                     <el-option v-for="(item,index) in banks" :label="item" :value="item"
                                                :key="index"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="支行">
                                 <el-input v-model="formParams.account_subbank" style="width: 200px"
-                                          :disabled="is_disabled"></el-input>
+                                          :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
                             <el-form-item label="账号">
                                 <el-input v-model="formParams.account_num" style="width: 200px"
-                                          :disabled="is_disabled"></el-input>
+                                          :disabled="is_disabled && editIsFalg"></el-input>
                             </el-form-item>
                         </div>
                     </el-col>
@@ -154,7 +152,7 @@
                 </el-row>
             </el-form>
         </div>
-        <div class="dialog_footer" v-if="type==='edit'">
+        <div class="dialog_footer" v-if="checkOrEdit.is_check===false">
             <el-button type="danger" size="small" @click="postLordEditData('formParams')">确定</el-button>
             <el-button type="info" size="small" @click="cancel">取消</el-button>
         </div>
@@ -164,10 +162,14 @@
 </template>
 
 <script>
+
+
     export default {
         name: "rentOrderForm",
-        props: ['initData', 'edit_visible', 'checkOrEdit',],
-        components: {},
+        props: ['initData', 'checkOrEdit', 'edit_visible', 'type'],
+        components: {
+
+        },
         data() {
             return {
                 commonModule: {},
@@ -176,16 +178,26 @@
                     department_name: '',
                     staff_name: '',
                 },
-                is_disabled: false,//是否可编辑
-                formData: {},//表单初始数据
-                cate: {"1": "银行卡", "2": "支付宝", "3": "微信", "4": "银行卡(数据来自房管中心)"},
-                payTypes: [
-                    {id: "1", val: '月付'},
-                    {id: "2", val: '双月付'},
-                    {id: "3", val: '季付'},
-                    {id: "4", val: '半年付'},
-                    {id: "5", val: '年付'}
+                is_disabled: false,
+                // chooseType: this.type,
+                formData: {},//表单初始数据,//初始化数据
+                row: this.current_row,
+                house_filter_visible: false,//房源
+                renterStatus: [
+                    {key: 1, val: '出租'},
+                    {key: 2, val: '提前一个月续租'},
+                    {key: 3, val: '提前两个月以上续租'},
+                    {key: 4, val: '公司转租'},
+                    {key: 5, val: '个人转租'},
+                    {key: 6, val: '个人转租'},
+                    {key: 7, val: '续租'},
                 ],
+
+                cate: {"1": "银行卡", "2": "支付宝", "3": "微信", "4": "银行卡(数据来自房管中心)"},
+                payTypes: [{id: "1", val: '月付'}, {id: "2", val: '双月付'}, {id: "3", val: '季付'}, {
+                    id: "4",
+                    val: '半年付'
+                }, {id: "5", val: '年付'}],
                 banks: [
                     "未知银行",
                     "中国工商银行",
@@ -244,38 +256,37 @@
                     "中原银行"
                 ],
                 formParams: {
-                    staff_id: '',//签约人姓名
-                    department_id: '',//部门id
-                    leader_id: '',//部门领导id
-                    customer_name: "",//客户姓名
-                    contact: "",//联系方式
-                    house_id: '',//房屋id
-                    address: "",//房屋地址
-                    months: "",//签约月数
+                    staff_id: [],//签约人姓名
+                    contact: '',
+                    department_id: [],//部门id
+                    leader_id: '',
+                    house_id: '',
+                    address: '',
+                    customer_name: '',
+                    months: '',
+                    rent_type: '',//租房类型1：新租，2：转租（公司转租/个人转租），3：续租，4：未收先租，5：调租
                     prices: [],
-                    deposit: "",//押金
-                    deal_date: "",//签约日期
-                    first_pay_date: "",//第一次打房租日期
-                    second_pay_date: "",//第二次打房租日期
-                    remark: "",//备注
-                    account_type: '',//账户类型
-                    account_owner: "",//账户所属人姓名
-                    account_subbank: "",//支行
-                    account_bank: '',//银行
-                    account_num: "",//银行账户账号
-                    // "v3_contract_id": "15698",//合同id
+                    bet: '',//压几付几
+                    deal_date: '',
+                    complete_date: '',
+                    remark: '',
+                    account_type: '',
+                    account_owner: '',
+                    account_subbank: '',
+                    account_bank: '',
+                    account_num: '',
                 },
                 rulesForm: {
-                    staff_id: [
+                    staffName: [
                         {required: true, message: '请选择签约人', trigger: 'change'},
                     ],
-                    department_id: [
+                    departmentName: [
                         {required: true, message: '请选择所属部门', trigger: 'change'},
                     ],
-                    leader_id: [
+                    leaderName: [
                         {required: true, message: '请选择负责人', trigger: 'change'},
                     ],
-                    house_id: [
+                    address: [
                         {required: true, message: '请选择房屋地址', trigger: 'change'},
                     ],
                     customer_name: [
@@ -290,7 +301,18 @@
                     deposit: [
                         {required: true, message: '请输入押金', trigger: 'blur'},
                     ],
-
+                    warrenty: [
+                        {required: true, message: '请输入保修期', trigger: 'blur'},
+                    ],
+                    medi_cost: [
+                        {required: true, message: '请输入中介费', trigger: 'blur'},
+                    ],
+                    pay_types_val: [
+                        {required: true, message: '请选择付款方式', trigger: 'change'},
+                    ],
+                    prices_val: [
+                        {required: true, message: '请输入月单价', trigger: 'blur'},
+                    ],
                     deal_date: [
                         {required: true, message: '请选择待签约日期', trigger: 'change'},
                     ],
@@ -312,36 +334,63 @@
                     account_subbank: [
                         {required: true, message: '请输入支行名称', trigger: 'blur'},
                     ],
-                    account_num: [
-                        {required: true, message: '请输入支行名称', trigger: 'blur'},
-                    ],
-                    remark: [
+                    deposit_subject: [
                         {required: true, message: '请选择押金科目', trigger: 'change'},
                     ],
-
+                    rental_subject: [
+                        {required: true, message: '请选择房租科目', trigger: 'change'},
+                    ],
                 },
-                // 付款周期,月单价
                 prices: [],
+                editIsFalg:false, //编辑页面，可以进行编辑的部分
             }
         },
-        mounted() {
-            this.formData = this.initData;
+         beforeMount() {
+            this.formData =JSON.parse(JSON.stringify(this.initData));
             for (let item of Object.keys(this.formParams)) {
-                this.formParams[item] = this.formData[item];
+                // 人员、部门必须是数组形式
+                if(item=='staff_id'){
+                    this.formParams.staff_id[0]=this.formData.staff_id;
+                }else if(item=='department_id'){
+                    this.formParams.department_id[0]=this.formData.department_id;
+                }else{
+                   this.formParams[item] = this.formData[item];
+                }
             }
             this.commonModuleData.leader_name = this.formData.leader.name;
-            this.commonModuleData.department_name = this.formData.department.name;
-            this.commonModuleData.staff_name = this.formData.staff.name;
+            this.formParams.leader_id = this.formData.leader.id;
+            this.prices = this.formData.prices_raw;
+            
+        },
+        mounted() {
+            this.commonModuleData.leader_name = this.formData.leader.name;
             this.prices = this.formData.prices_raw;
             this.formParams.leader_id = this.formData.leader.id;
 
             //是否可编辑
             if (this.checkOrEdit.is_check === true) {
-                this.is_disabled = true;
+                this.is_disabled = true;  //查看
             } else {
-                this.is_disabled = false;
+                this.is_disabled = true; //编辑
+                 // this.is_disabled = false; //编辑
             }
-            //转换付款类型
+            switch (this.formData.rent_status) {
+                case "新租":
+                    this.formParams.rent_type = 1;
+                    break;
+                case "转租":
+                    this.formParams.rent_type = 2;
+                    break;
+                case "续租":
+                    this.formParams.rent_type = 3;
+                    break;
+                case "未收先租":
+                    this.formParams.rent_type = 4;
+                    break;
+                case "调租":
+                    this.formParams.rent_type = 5;
+                    break;
+            }
             switch (this.formData.account_type) {
                 case "银行卡":
                     this.formParams.account_type = "1";
@@ -388,8 +437,6 @@
                 for (let item of Object.keys(this.commonModuleData)) {
                     this.commonModuleData[item] = val[item];
                 }
-                this.formParams.staff_id = val.staff_id;
-                this.formParams.department_id = val.department_id;
                 this.formParams.leader_id = val.leader_id;
                 this.formParams.house_id = val.address_id[0];
                 this.formParams.address = val.address_name;
@@ -408,12 +455,13 @@
                     pay_way: '',
                     end_date: '',
                     begin_date: '',
-                    price: '',
+                    month_unit_price: '',
                     key: Date.now(),
                 })
             },
             //减少付款周期
             reducePrices(index) {
+                // alert(index);
                 var i = this.prices.length;
                 if (i <= 1) {
                     this.$LjNotify('error', {
@@ -421,22 +469,13 @@
                         message: '请至少保留一项付款方式',
                         subMessage: '',
                     });
+
                 } else {
                     this.prices.splice(index, 1);
                 }
             },
             clickCallback(val) {
-                switch (val) {
-                    case "签约人":
-                        this.commonModule.staffModule = true;
-                        break;
-                    case "所属部门":
-                        this.commonModule.departModule = true;
-                        break;
-                    case "地址":
-                        this.commonModule.house_filter_visible = true;
-                        break;
-                }
+                this.commonModule.house_filter_visible = true;
                 this.$bus.emit('openCommonModule', this.commonModule);
             },
             callbackSuccess(res) {
@@ -446,7 +485,7 @@
                         message: res.msg,
                         subMessage: '',
                     });
-                    this.$emit('editSuccess', false)
+                    this.$emit("editSuccess", false)
                 } else {
                     this.$LjNotify('error', {
                         title: '失败',
@@ -458,20 +497,20 @@
 
             //编辑确认
             postLordEditData(formName) {
+                // debugger
                 this.formParams.prices = this.prices;
-                console.log(this.formParams);
+                this.formParams.subject_id=this.initData.subject_id;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$http.put(globalConfig.temporary_server + 'customer_collect/' + this.formData.id, this.formParams).then(res => {
+                        this.$http.put(globalConfig.temporary_server + 'customer_bulletin/' + this.initData.id, this.formParams).then(res => {
                             this.callbackSuccess(res);
-                            this.formData = {};
+
                         })
                     } else {
                         console.log('error submit!!');
                         return false;
                     }
                 });
-
             },
         },
     }
