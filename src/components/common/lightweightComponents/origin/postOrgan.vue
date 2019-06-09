@@ -155,6 +155,10 @@
               }
             });
           }
+          if(val&&val.length===0) {
+            this.choosePosition = [];
+            this.checkedPosition = [];
+          }
         },
         immediate: true,
       },

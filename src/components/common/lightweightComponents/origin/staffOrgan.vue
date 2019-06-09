@@ -168,6 +168,11 @@
               }
             });
           }
+
+          if(val&&val.length===0) {
+            this.checkedStaff = [];//左侧选中人员ID
+            this.chooseStaff = [];//右侧 选中人员列表
+          }
         },
         immediate: true,
       },

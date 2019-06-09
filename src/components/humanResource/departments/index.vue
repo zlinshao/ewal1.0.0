@@ -1525,6 +1525,7 @@
       },
       // 确认搜索
       hiddenModule(val) {
+        val = _.cloneDeep(val);
         this.showSearch = false;
         if (val !== 'close') {
           switch (this.chooseTab) {
