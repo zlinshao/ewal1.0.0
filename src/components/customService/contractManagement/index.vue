@@ -299,7 +299,7 @@
           </div>
         </div>
         <div class="dialog_main">
-          <p style="text-align: left" v-if="chooseTab === 1">房屋信息</p>
+          <p style="text-align: left">房屋信息</p>
           <!--收房 customer_info-->
           <div class="house-info">
             <el-form label-width="120px">
@@ -337,7 +337,7 @@
 
 
 
-          <p style="text-align: left">房屋地址</p>
+          <p style="text-align: left">合同信息</p>
           <div class="house-address">
             <el-form label-width="120px">
               <el-row :gutter="10">
@@ -572,10 +572,9 @@
             </el-form>
           </div>
 
-
-          <p style="text-align: left" v-if="chooseTab === 1">附件信息</p>
+          <p style="text-align: left">附件信息</p>
           <!--收房 -->
-          <div class="other_info" v-if="chooseTab === 1">
+          <div class="other_info">
             <div style="text-align: right">
               <el-button type="danger" size="mini" @click="handleOpenPolishing(currentRow)">补齐资料</el-button>
             </div>

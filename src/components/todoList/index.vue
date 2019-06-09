@@ -120,7 +120,7 @@
           title: '',
           page: 1,
           size: 10,//每页条数
-          //assignee: 289,
+          assignee: this.$storage.get('user_info').id,
         },
         checked: 1,//选择哪个toolbar
         categoryKey: '',
@@ -239,7 +239,7 @@
         let params = {
           ...this.params,
           processDefinitionKey:this.search,
-          //procDefKeyNotIn: this.noSearch,
+          procDefKeyNotIn: this.noSearch,
           //assignee:289,//用户id
         };
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
@@ -275,7 +275,7 @@
         }
         let params = {
           ...this.params,
-          //assignee:289,
+          //assignee:this.$storage.get('user_info').id,
           //processDefinitionKey: item.key || categoryKey || '',
           processDefinitionKey: this.search,
           processDefinitionKeyNotIn: this.noSearch
