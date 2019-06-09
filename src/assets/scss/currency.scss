@@ -25,15 +25,29 @@
   cursor: pointer;
   @include radius($m);
 }
+
 #theme_name {
-  .hide-text-elli {/*多余文字...*/
+  .hide-text-elli { /*多余文字...*/
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  .upload-offset {/*lj-upload组件 偏移样式*/
+
+  .upload-offset { /*lj-upload组件 偏移样式*/
     position: absolute;
     top: -13px;
+  }
+
+  //
+  .comments {
+    .el-textarea {
+      height: 100%;
+    }
+
+    textarea {
+      height: 100%;
+      border: none;
+    }
   }
 
   .table_choose {
@@ -45,10 +59,12 @@
     cursor: pointer;
     box-sizing: border-box;
   }
+
   .date_change {
     position: absolute;
     top: 30px;
     right: 0;
+
     li {
       width: 90px;
       height: 40px;
@@ -61,15 +77,18 @@
       font-size: 18px;
       cursor: pointer;
     }
+
     .mark_li {
       background-color: $colorE33;
       color: white;
     }
   }
+
   .is_table_choose {
     background-color: $colorE33;
     border-color: $colorE33;
   }
+
   h5.operate {
     position: absolute;
     top: -60px;
@@ -77,16 +96,19 @@
     @include radius(6px);
     background-color: $colorE33;
     @include flex('items-center');
+
     span {
       white-space: nowrap;
       color: $colorFFF;
       padding: 6px 30px;
+
       &:hover {
         cursor: pointer;
         color: $colorE33;
         @include bgImage('../../assets/image/common/theme1/xzgj.png');
       }
     }
+
     b,
     i {
       position: absolute;
@@ -96,23 +118,29 @@
       bottom: -5px;
       transform: rotateZ(45deg);
     }
+
     b {
       left: 60px;
     }
+
     i {
       right: 60px;
     }
   }
+
   h5.left.operate {
     left: 0;
   }
+
   h5.right.operate {
     right: 0;
   }
+
   //表格头部
   .listTopCss {
     background-color: $colorFFF;
     height: 80px;
+
     .listTopLeft {
       p {
         width: 42px;
@@ -121,17 +149,21 @@
         @include radius(0 4px 4px 0);
         cursor: pointer;
         padding-bottom: 20px;
+
         b {
           font-size: 30px;
         }
       }
+
       h1 {
         font-family: 'jingDianXingShu';
         font-size: 32px;
         padding: 0 40px;
       }
+
       h2 {
         border-left: 1px solid $color2F2;
+
         span {
           color: $color2D2;
           margin-left: 40px;
@@ -139,6 +171,7 @@
           padding-top: 6px;
           font-size: 18px;
           position: relative;
+
           i {
             width: 16px;
             height: 3px;
@@ -146,6 +179,7 @@
             border-radius: 30px 30px 0 0;
             background-color: transparent;
           }
+
           b {
             position: absolute;
             top: -7px;
@@ -162,68 +196,84 @@
         }
       }
     }
+
     .listTopRight {
       > div,
       > span {
         margin-right: 40px;
       }
+
       > div {
         @include radius(6px);
         cursor: pointer;
       }
+
       h4 {
         margin-right: 20px;
       }
+
       //增加
       .add {
         @include flex('flex-center');
+
         b {
           color: $colorFFF;
           font-size: 30px;
           padding-bottom: 6px;
         }
       }
+
       //举报
       .report {
         @include commonImg('jubao.png', 'theme1');
       }
+
       //搜索
       .search {
         @include commonImg('search.png', 'theme1');
       }
+
       .btn_output {
         @include commonImg('search.png', 'theme1');
       }
+
       //离职管理
       .dimission {
         @include commonImg('lizhiguanli.png', 'theme1');
       }
+
       //bank流水
       .bank {
         @include bgImage(
-          '../../assets/image/finance/budgetStream/theme1/yinhangliushui.png'
+            '../../assets/image/finance/budgetStream/theme1/yinhangliushui.png'
         );
       }
+
       .icons {
         width: 30px;
         height: 30px;
       }
+
       .buttons {
         padding: 0 20px;
         height: 40px;
         line-height: 38px;
       }
+
       .button1 {
         background-color: #fff7e4;
         color: #ffad0b;
+
         &:hover {
           background-color: #ffad0b;
           color: #fff7e4;
         }
       }
+
       .button2 {
         background-color: #cff8ea;
         color: #0bb07b;
+
         &:hover {
           background-color: #0bb07b;
           color: #cff8ea;
@@ -231,6 +281,7 @@
       }
     }
   }
+
   //module灰底
   .dialogVisible {
     position: fixed;
@@ -241,14 +292,17 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 10;
   }
+
   //表格样式
   .mainListTable {
     padding: 0 30px;
     background-color: $colorFFF;
     margin-top: 9px;
     font-size: 14px;
+
     .status {
       @include flex('flex-center');
+
       p {
         width: 90px;
         height: 30px;
@@ -257,6 +311,7 @@
       }
     }
   }
+
   // radio check
   .radioSelection {
     width: 90px;
@@ -273,19 +328,23 @@
     margin: 0 20px 10px 0;
     @include radius(6px);
   }
+
   //模态kuang
   .dialog_container {
     height: 100%;
     @include flex('justify-bet');
     flex-direction: column;
+
     .dialog_header {
       padding: 0 15px;
       height: 40px;
       text-align: left;
       position: relative;
+
       > h3 {
         font-size: 22px;
       }
+
       .header_right {
         width: 70%;
         height: 100%;
@@ -296,6 +355,7 @@
         overflow: hidden;
       }
     }
+
     .dialog_main {
       height: 100%;
       overflow: hidden;
@@ -305,10 +365,12 @@
       .unUse-txt {
         font-size: 18px;
       }
+
       .showPadding {
         padding: 0 20px;
       }
     }
+
     .dialog_main::-webkit-scrollbar-thumb {
       background: #999 !important;
     }
@@ -317,11 +379,13 @@
       width: 100%;
       padding: 20px 0;
       text-align: center;
+
       button {
         min-width: 90px;
         @include radius(5px);
       }
     }
+
     .footerBtn {
       //margin-bottom: 40px;
       //@include flex('justify-center');
@@ -348,13 +412,16 @@
       //}
     }
   }
+
   .form_item_container {
     display: flex;
     padding: 5px 40px;
+
     .item_label {
       width: 40%;
       display: flex;
       align-items: center;
+
       .item_icons {
         width: 25px;
         height: 25px;
@@ -362,93 +429,116 @@
         background-color: $color0C0;
         margin-right: 20px;
         @include radius(50%);
+
         > i {
           display: inline-block;
           width: 50%;
           height: 50%;
         }
       }
+
       > span {
         min-width: 60px;
         color: $color0C0;
         text-align-last: justify;
       }
     }
+
     .item_content {
       width: 60%;
       text-align: left;
       padding-left: 15px;
       flex-wrap: wrap;
     }
+
     .all_width {
       width: 100%;
     }
+
     &:hover .item_icons {
       background-color: $colorE33;
     }
+
     .icon_mark {
       @include gatheringImg('beizhu.png', 'theme1');
     }
+
     .icon_money {
       @include gatheringImg('yingshoukuanfenxi.png', 'theme1');
     }
+
     .icon_payTime {
       @include gatheringImg('fukuan.png', 'theme1');
     }
+
     .icon_subject {
       @include gatheringImg('kemuyue.png', 'theme1');
     }
+
     .icon_come {
       @include gatheringImg('kemubianma.png', 'theme1');
     }
+
     .icon_case {
       @include gatheringImg('money.png', 'theme1');
     }
+
     .icon_account {
       @include gatheringImg('zhanghu.png', 'theme1');
     }
+
     .icon_type {
       @include gatheringImg('leibie.png', 'theme1');
     }
+
     .icon_bank {
       @include gatheringImg('yinhang.png', 'theme1');
     }
   }
+
   //input图标
   .iconInput {
     background-color: $colorFFF;
     @include radius(4px);
     padding-right: 15px;
+
     .icons {
       width: 20px;
       height: 20px;
     }
   }
+
   //form 表单 icons
   .user {
     @include commonImg('yonghu.png', 'theme1');
   }
+
   .organization {
     @include commonImg('zuzhijiagou.png', 'theme1');
   }
+
   //成功图标
   .resIcon {
     margin: 0 auto 15px;
     width: 80px;
     height: 80px;
   }
+
   .btn_add {
     //@include btn_square(50%);
     @include btn_square(2px);
   }
+
   .all-choose {
     @include commonImg('quanxuan.png', 'theme1');
   }
+
   .icon-address {
     width: 20px;
     height: 20px;
     @include commonImg('dizhi.png', 'theme1');
   }
+
   .search {
     display: inline-block;
     width: 30px;
@@ -462,10 +552,12 @@
     @include btn_square(4px);
     margin-right: 15px;
   }
+
   .btn_square_minus {
     @include btn_square(4px);
     background-color: $color2D2;
   }
+
   .btn_look {
     width: 15px;
     height: 19px;
@@ -475,12 +567,15 @@
     background-size: contain;
     vertical-align: middle;
   }
+
   .iconSuccess {
     @include commonImg('success.png', 'theme1');
   }
+
   .iconDelete {
     @include commonImg('delete.png', 'theme1');
   }
+
   //失败图标
   //分页
   footer.bottomPage {
@@ -493,6 +588,7 @@
     background-color: $color2F2;
     z-index: 6;
     @include transition(bottom 0.5s);
+
     .develop {
       position: absolute;
       top: -30px;
@@ -503,6 +599,7 @@
       @include transition(all 0.5s);
       border-radius: 10px 10px 0 0;
       background-color: $color2F2;
+
       i {
         -webkit-animation: bounce-up 1s linear infinite;
         animation: bounce-up 1s linear infinite;
@@ -513,10 +610,13 @@
         color: $colorE33;
       }
     }
+
     &:hover {
       bottom: 0;
+
       .develop {
         opacity: 0;
+
         i {
           -webkit-animation: bounce-down 0.8s linear infinite;
           animation: bounce-down 0.8s linear infinite;
@@ -524,6 +624,7 @@
       }
     }
   }
+
   //分页动画
   @keyframes bounce-up {
     25% {
@@ -565,15 +666,18 @@
     justify-content: center;
     align-items: center;
   }
+
   #active-danger.el-button {
     background: #fff8f8;
     border: 1px solid #cf2e33;
     color: #cf2e33;
+
     &:hover {
       background: #cf2e33;
       color: #fff8f8;
     }
   }
+
   #active-danger.el-button-active {
     border: 1px solid #cf2e33;
     background: #cf2e33;
@@ -584,11 +688,13 @@
     background: #f5faff;
     border: 1px solid #0c66ff;
     color: #0c66ff;
+
     &:hover {
       background: #0c66ff;
       color: #f5faff;
     }
   }
+
   #active-primary.el-button-active {
     background: #0c66ff;
     border: 1px solid #0c66ff;
@@ -599,11 +705,13 @@
     background: #fdf6ec;
     border: 1px solid #e6a23c;
     color: #e6a23c;
+
     &:hover {
       background: #e6a23c;
       color: #fdf6ec;
     }
   }
+
   #active-warning.el-button-active {
     background: #e6a23c;
     color: #fdf6ec;
@@ -614,11 +722,13 @@
     background: #f0f9eb;
     border: 1px solid #67c23a;
     color: #67c23a;
+
     &:hover {
       background: #67c23a;
       color: #f0f9eb;
     }
   }
+
   #active-success.el-button-active {
     background: #67c23a;
     border: 1px solid #67c23a;
@@ -648,28 +758,34 @@
     background-color: #ffeaea;
     color: $colorE33;
   }
+
   //表格头部
   .listTopCss {
     .listTopLeft {
       p {
         background-color: $colorFDF;
       }
+
       h1 {
         font-family: 'jingDianXingShu';
       }
+
       h2 {
         .chooseTab {
           color: $colorE33;
+
           i {
             background-color: $colorE33;
           }
         }
       }
     }
+
     .listTopRight {
       .add {
         background-color: $colorE33;
       }
+
       .searchTerm {
         > b {
           padding-right: 15px;
@@ -682,20 +798,26 @@
 #theme_name.theme2 {
   .listTopCss {
     background-color: transparent;
+
     .listTopLeft {
       p {
         background-color: #090448;
       }
+
       b {
         color: #ff5252;
       }
+
       h2 {
         border-left: 1px solid #dfdfdf;
+
         span {
           color: #d2d2d2;
         }
+
         .chooseTab {
           color: #00ffff;
+
           i {
             background-color: #00ffff;
           }
@@ -703,6 +825,7 @@
       }
     }
   }
+
   .mainListTable {
     background-color: transparent;
   }

@@ -1,6 +1,6 @@
 <template>
   <div id="upLoad">
-    <transition-group name="list" tag="p" class="items-center" style="flex-wrap: nowrap">
+    <transition-group name="list" tag="p" class="items-center">
       <div v-for="(item,index) in showFile" :key="JSON.stringify(item)" class="showFile" :style="uploadCss">
         <!--图片-->
         <img :src="item.uri" v-if="item.info.mime.includes('image') && editable">
@@ -417,7 +417,7 @@
     width: 100%;
 
     .list-enter-active, .list-leave-active {
-      transition: all 1s;
+      transition: all .5s;
     }
 
     .list-enter, .list-leave-to {

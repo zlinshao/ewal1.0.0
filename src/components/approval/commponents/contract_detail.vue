@@ -145,32 +145,74 @@
       </div>
 
       <!-- 评论 -->
-      <!--      <div :class='["comments_box",comment_show_visible?"comments_box_active":""]'>-->
-      <!--        <div class='comments_list'>-->
-      <!--          <div class='comment_cell' v-for='item in record_list' :key='item.id'>-->
-      <!--            <div class='comment_cell_header'>-->
-      <!--              <span class='span1'>{{item.title}}</span>-->
-      <!--              <span class='span2'>{{item.time}}</span>-->
-      <!--            </div>-->
-      <!--            <div class='comment_cell_words'>{{item.content.message}}</div>-->
-      <!--            <Ljupload size='30' v-model="item.content.attachments" disabled=true :download='false'></Ljupload>-->
-      <!--            <div class='comment_border'></div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class='comments_footer'>-->
-      <!--          <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="comment_info.message">-->
-      <!--          </el-input>-->
-      <!--          &lt;!&ndash; 上传图片 &ndash;&gt;-->
-      <!--          <p class='postTit'>发送图片</p>-->
-      <!--          <div class='img_box'>-->
-      <!--            <Ljupload size='30' v-model='comment_info.attachments'></Ljupload>-->
-      <!--          </div>-->
-      <!--          <div class='post' @click='postComment'>-->
-      <!--            <i class='post_icons'></i>-->
-      <!--            发送-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
+      <div v-if="comment_show_visible" class="comments">
+        <div class="historyComments">
+          <div v-for="item in 100">
+            <div class="commentTop">
+              <p>程咬金-大唐官府</p>
+              <span>2019-01-22 10:00:00</span>
+            </div>
+            <div class="commentText">
+              <div>发货的色卡符合开绿灯撒</div>
+              <h1>
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+                <img src="http://p.qlogo.cn/bizmail/TS1DO8GPlAzOtrtIWicqPd6SVURcN7e2rqmhABvQdh9nXCuAbCkzpQw/0" alt="">
+              </h1>
+            </div>
+          </div>
+        </div>
+        <div class="inputText">
+          <h1></h1>
+          <div class="textarea">
+            <el-input
+              type="textarea"
+              :row="6"
+              placeholder="请输入内容"
+              v-model="comment_info.message">
+            </el-input>
+          </div>
+          <lj-upload size="50" v-model="comment_info.attachments"></lj-upload>
+          <p>
+            <el-button size="mini" type="info" @click="closeComment">清空</el-button>
+            <el-button size="mini" type="danger" @click="postComment">发送</el-button>
+          </p>
+        </div>
+        <!--        <div class='comments_list'>-->
+        <!--          <div class='comment_cell' v-for='item in record_list' :key='item.id'>-->
+        <!--            <div class='comment_cell_header'>-->
+        <!--              <span class='span1'>{{item.title}}</span>-->
+        <!--              <span class='span2'>{{item.time}}</span>-->
+        <!--            </div>-->
+        <!--            <div class='comment_cell_words'>{{item.content.message}}</div>-->
+        <!--            <Ljupload size='30' v-model="item.content.attachments" disabled=true :download='false'></Ljupload>-->
+        <!--            <div class='comment_border'></div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+        <!--        <div class='comments_footer'>-->
+        <!--          <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="comment_info.message">-->
+        <!--          </el-input>-->
+        <!--          &lt;!&ndash; 上传图片 &ndash;&gt;-->
+        <!--          <p class='postTit'>发送图片</p>-->
+        <!--          <div class='img_box'>-->
+        <!--            <Ljupload size='30' v-model='comment_info.attachments'></Ljupload>-->
+        <!--          </div>-->
+        <!--          <div class='post' @click='postComment'>-->
+        <!--            <i class='post_icons'></i>-->
+        <!--            发送-->
+        <!--          </div>-->
+        <!--        </div>-->
+      </div>
     </LjDialog>
 
     <!--    &lt;!&ndash;审核&ndash;&gt;-->
@@ -239,7 +281,6 @@
 <script>
   import LjDialog from '../../common/lj-dialog.vue';
   import VillageContainer from './village-container.vue';
-  import Ljupload from '../../common/lightweightComponents/lj-upload.vue';
   import FormDetail from './form_detail.vue'
 
   export default {
@@ -247,7 +288,6 @@
     components: {
       LjDialog,
       VillageContainer,
-      Ljupload,
       FormDetail
     },
     data() {
@@ -265,12 +305,13 @@
         changeFormData: {},//附属房东变化
         operates: {},
         allDetail: {},
-
+        comment_show_visible: false,//评论模态框
+        // 评论内容
         comment_info: {
-          message: null,
+          message: '',
           attachments: []
         },
-        comment_show_visible: false,//评论
+
         record_show_visible: false,
         show_form_visible: false,
         reject_visible: false, // 拒绝弹框
@@ -283,14 +324,15 @@
     watch: {
       moduleData: {
         handler(val) {
-          console.log(val);
           if (val) {
             this.vLoading = true;
             this.fullLoading = false;
             this.allDetail = val;
             this.bulletin_type = val.bulletin_type;
             this.getOperates(val);
-            this.getStaffInfo(val.assignee);
+            this.getStaffInfo(val.assignee).then(res => {
+              this.allDetail.assignee_name = res;
+            });
             this.handleData(val, val.bulletin_type);
             this.getDetailForm(val.bm_detail_request_url);
           }
@@ -306,15 +348,17 @@
       },
       // 获取员工信息
       getStaffInfo(id) {
-        this.$http.get(`${this.hr_server}staff/user/${id}`).then(res => {
-          if (res.code.endsWith('0')) {
-            this.allDetail.assignee_name = res.data.name;
-          } else {
-            this.$LjNotify('error', {
-              title: '警告',
-              message: res.msg
-            });
-          }
+        return new Promise((resolve, reject) => {
+          this.$http.get(`${this.hr_server}staff/user/${id}`).then(res => {
+            if (res.code.endsWith('0')) {
+              resolve(res.data.name);
+            } else {
+              this.$LjNotify('error', {
+                title: '警告',
+                message: res.msg
+              });
+            }
+          })
         })
       },
       // 报备类型
@@ -574,9 +618,8 @@
           name: name,
           value: action.action,
         }];
-        let url = this.approval_sever;
         if (name === 'suspend') {//暂不处理
-          this.$http.put(`${url}runtime/process-instances/${this.allDetail.process_id}`, {action: name}).then(res => {
+          this.$http.put(`${this.approval_sever}runtime/process-instances/${this.allDetail.process_id}`, {action: name}).then(res => {
             this.fullLoading = false;
             if (199 < res.httpCode < 300) {
               this.$LjNotify('success', {
@@ -595,7 +638,7 @@
             this.fullLoading = false;
           })
         } else {//通过 拒绝
-          this.$http.post(`${url}runtime/tasks/${this.allDetail.task_id}`, postData).then(res => {
+          this.$http.post(`${this.approval_sever}runtime/tasks/${this.allDetail.task_id}`, postData).then(res => {
             this.fullLoading = false;
             if (199 < res.httpCode < 300) {
               this.$LjNotify('success', {
@@ -612,44 +655,51 @@
       },
       // 关闭模态框
       handleClose(status = 'close') {
-        this.comment_show_visible = false;
         this.$emit('changeData', status)
       },
-
       // 评论弹窗
-      changeBtn_type(val) { // 查看评论信息
+      changeBtn_type() {
         this.comment_show_visible = !this.comment_show_visible;
         if (this.comment_show_visible) {
-          this.$http.get(`${this.approval_sever}history/process-instances/${this.moduleData.id}/comments`).then(res => {
-            this.record_list = res
+          this.record_list = [];
+          this.$http.get(`${this.approval_sever}history/process-instances/${this.allDetail.process_id}/comments`).then(res => {
+            for (let item of res) {
+              if (res.content) {
+                this.getStaffInfo(item.author).then(res => {
+                  item.author_name = res;
+                  this.record_list.push(item);
+                });
+              }
+            }
           })
         }
       },
+      // 清空评论内容
+      closeComment() {
+        this.comment_info.message = '';
+        this.comment_info.attachments = [];
+      },
+      // 发送评论
       postComment() {
-        console.log(this.comment_info);
         if (!this.comment_info.message) {
           this.$LjNotify('warning', {
-            title: '评论内容不得为空',
-            message: ''
+            title: '警告',
+            message: '评论内容不得为空'
           });
           return
         }
-
         let params = {
           author: this.$storage.get('user_info').id,
           content: this.comment_info,
           saveProcessInstanceId: true
         };
-
-
-        this.$http.post(`${this.approval_sever}history/process-instances/${this.moduleData.id}/comments`, params).then(res => {
-          console.log(res);
-          this.comment_info = {
-            message: null,
-            attachments: []
+        this.$http.post(`${this.approval_sever}history/process-instances/${this.allDetail.process_id}/comments`, params).then(res => {
+          if (100 < res.httpCode < 300) {
+            this.closeComment();
           }
         })
       },
+
       handleRecord() {
         this.$http.get(`${this.approval_sever}history/process-instances/${this.moduleData.id}/log`).then(res => {
           console.log(res);
@@ -738,153 +788,231 @@
 
   #theme_name {
     #contract_detail_approval {
-      .dialog_header {
-        @include flex('items-bet');
-
-        p {
-          cursor: pointer;
-          font-size: 14px;
-          color: #0C66FF;
-          padding: 6px 10px;
-          background: rgba(245, 250, 255, 1);
-          border-radius: 4px;
-          border: 1px solid #0C66FF;
-        }
-      }
-
-      .dialog_main {
-        /*评论*/
-        .float-btn {
-          position: fixed;
-          top: 180px;
-          right: 60px;
-
-          h1 {
-            width: 60px;
-            height: 60px;
-            @include radius(6px);
-            @include confirmImg("pinglun_dianji.png", "theme1");
-          }
+      .dialog_container {
+        .dialog_header {
+          @include flex('items-bet');
 
           p {
-            margin-top: 3px;
-            font-size: 10px;
-            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #0C66FF;
+            padding: 6px 10px;
+            background: rgba(245, 250, 255, 1);
+            border-radius: 4px;
+            border: 1px solid #0C66FF;
           }
         }
 
-        ul + ul {
-          margin-top: 30px;
-        }
+        .dialog_main {
+          /*评论*/
+          .float-btn {
+            position: fixed;
+            top: 180px;
+            right: 60px;
 
-        ul {
-          position: relative;
-          background-color: #FFFFFF;
-          padding: 30px 30px 20px 60px;
-          @include radius(6px);
-          @include flex();
-          flex-wrap: wrap;
-
-          .title {
-            position: absolute;
-            top: 0;
-            left: 20px;
-            color: #CF2E33;
+            h1 {
+              width: 60px;
+              height: 60px;
+              @include radius(6px);
+              @include confirmImg("pinglun_dianji.png", "theme1");
+            }
 
             p {
-              width: 30px;
-              height: 60px;
-              @include confirmImg("mokuai.png", "theme1");
-            }
-
-            span {
-              font-family: 'jingdianxingshu';
-              padding-top: 6px;
+              margin-top: 3px;
+              font-size: 10px;
+              text-align: center;
             }
           }
 
-          .remark_terms {
-            font-size: 13px;
-            color: #E79699;
+          ul + ul {
+            margin-top: 30px;
           }
-        }
 
-        .slither {
-          li + li {
-            margin-bottom: 15px;
-            width: 33.33%;
-            text-align: left;
+          ul {
+            position: relative;
+            background-color: #FFFFFF;
+            padding: 30px 30px 20px 60px;
+            @include radius(6px);
+            @include flex();
+            flex-wrap: wrap;
 
-            > div {
-              @include flex();
+            .title {
+              position: absolute;
+              top: 0;
+              left: 20px;
+              color: #CF2E33;
 
-              h1, h2, h3, h4, h5, h6, span {
-                font-weight: normal;
-                font-size: 13px;
+              p {
+                width: 30px;
+                height: 60px;
+                @include confirmImg("mokuai.png", "theme1");
               }
-
-              h1 {
-                text-align: right;
-                min-width: 120px;
-                max-width: 120px;
-                color: #B0B0B0;
-                padding-right: 10px;
-              }
-            }
-
-            .keyName {
-              margin-bottom: 10px;
-            }
-
-            h3 {
-              color: #000;
-              margin-bottom: 6px;
-            }
-
-            .upload {
-              @include flex();
 
               span {
-                @include flex('items-center');
-                flex-wrap: wrap;
+                font-family: 'jingdianxingshu';
+                padding-top: 6px;
+              }
+            }
 
-                img {
-                  width: 45px;
-                  height: 45px;
-                  @include radius(6px);
-                  margin: 0 6px 6px 0;
+            .remark_terms {
+              font-size: 13px;
+              color: #E79699;
+            }
+          }
+
+          .slither {
+            li + li {
+              margin-bottom: 15px;
+              width: 33.33%;
+              text-align: left;
+
+              > div {
+                @include flex();
+
+                h1, h2, h3, h4, h5, h6, span {
+                  font-weight: normal;
+                  font-size: 13px;
+                }
+
+                h1 {
+                  text-align: right;
+                  min-width: 120px;
+                  max-width: 120px;
+                  color: #B0B0B0;
+                  padding-right: 10px;
+                }
+              }
+
+              .keyName {
+                margin-bottom: 10px;
+              }
+
+              h3 {
+                color: #000;
+                margin-bottom: 6px;
+              }
+
+              .upload {
+                @include flex();
+
+                span {
+                  @include flex('items-center');
+                  flex-wrap: wrap;
+
+                  img {
+                    width: 45px;
+                    height: 45px;
+                    @include radius(6px);
+                    margin: 0 6px 6px 0;
+                  }
+                }
+              }
+            }
+          }
+
+          .related {
+            @include flex('justify-around');
+
+            li + li {
+              font-size: 14px;
+              text-align: left;
+              min-width: 33.33%;
+              max-width: 33.33%;
+              @include flex('justify-center');
+
+              > div {
+                div {
+                  margin-bottom: 6px;
                 }
               }
             }
           }
         }
 
-        .related {
-          @include flex('justify-around');
+        .dialog_footer {
+          button {
+            margin: 0 6px;
+          }
 
-          li + li {
-            font-size: 14px;
-            text-align: left;
-            min-width: 33.33%;
-            max-width: 33.33%;
-            @include flex('justify-center');
+          @include flex();
+          flex-direction: row-reverse;
+        }
+      }
 
-            > div {
-              div {
-                margin-bottom: 6px;
+      .comments {
+        position: fixed;
+        top: 0;
+        right: 130px;
+        width: 360px;
+        height: 800px;
+        @include radius(6px);
+        background-color: #FFFFFF;
+        border: 1px solid #F2F2F2;
+        @include flex('bet-column');
+
+        .historyComments {
+          padding: 20px;
+          text-align: left;
+          height: 100%;
+          @include scroll;
+          font-size: 14px;
+
+          > div {
+            width: 100%;
+            margin-bottom: 20px;
+          }
+
+          .commentTop {
+            @include flex('items-bet');
+
+            p {
+              color: #686874;
+            }
+
+            span {
+              color: #B0B0B0;
+            }
+          }
+
+          .commentText {
+            margin-top: 10px;
+
+            div {
+              color: #000;
+            }
+
+            h1 {
+              @include flex('items-center');
+              flex-wrap: wrap;
+
+              img {
+                width: 40px;
+                height: 40px;
+                @include radius(6px);
+                margin: 6px 6px 0 0;
               }
             }
           }
         }
-      }
 
-      .dialog_footer {
-        button {
-          margin: 0 6px;
+        .inputText {
+          h1 {
+            border-top: 2px solid #F2F2F2;
+          }
+
+          .textarea {
+            height: 100px;
+          }
+
+          #lj_upload {
+            padding: 0 10px;
+          }
+
+          p {
+            text-align: right;
+            padding: 12px;
+          }
         }
-
-        @include flex();
-        flex-direction: row-reverse;
       }
     }
 
