@@ -3,7 +3,7 @@ import common from './myUtils.js';
 
 let url = globalConfig.server;
 
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 100000;
 
 //响应拦截器即异常处理
 axios.interceptors.response.use(response => {

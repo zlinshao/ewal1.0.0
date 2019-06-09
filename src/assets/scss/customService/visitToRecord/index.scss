@@ -95,7 +95,7 @@
             height: 40px;
             @include flex('justify-start');
             p {
-              width: 36%;
+              width: 40%;
               font-size: 14px;
               margin-right: 10px;
               @include flex('justify-start');
@@ -107,7 +107,7 @@
                 margin-right: 15px;
               }
               span {
-                width: 60px;
+                width: 70px;
               }
             }
 
@@ -345,6 +345,58 @@
           }
         }
       }
+      .record-user {
+        .icon {
+          @include confirmImg('sfzj.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('sfzjdh.png', 'theme1');
+          }
+        }
+      }
+      .record-name {//中介名称
+         .icon {
+           @include confirmImg('cyyy.png', 'theme1');
+         }
+         &:hover {
+           .icon {
+             @include confirmImg('ycyyh.png', 'theme1');
+           }
+         }
+       }
+      .record-username {//中介人姓名
+        .icon {
+          @include confirmImg('cyyy.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('ycyyh.png', 'theme1');
+          }
+        }
+      }
+
+      .record-check {//信息审核
+        .icon {
+          @include confirmImg('xxsh.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('xxshh.png', 'theme1');
+          }
+        }
+      }
+      .record-reason {
+        .icon {
+          @include confirmImg('xxsh.png', 'theme1');
+        }
+        &:hover {
+          .icon {
+            @include confirmImg('xxshh.png', 'theme1');
+          }
+        }
+      }
+
     }
     .detail {
       background-color: #ffffff;

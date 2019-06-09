@@ -328,7 +328,7 @@
   justify-content: flex-start;
 }
 #theme_name #visitToRecord .dialog_container .dialog_main .add_record_form .el-col p {
-  width: 36%;
+  width: 40%;
   font-size: 14px;
   margin-right: 10px;
   display: flex;
@@ -345,7 +345,7 @@
   margin-right: 15px;
 }
 #theme_name #visitToRecord .dialog_container .dialog_main .add_record_form .el-col p span {
-  width: 60px;
+  width: 70px;
 }
 #theme_name #visitToRecord .dialog_container .dialog_main .add_record_form .el-col .input_box {
   flex: 1;
@@ -596,6 +596,46 @@
 }
 #theme_name.theme1 #visitToRecord .add_record_form .feiyong:hover .icon {
   background: url("../../../assets/image/customService/visitToRecord/theme1/feiyongmingcheng_hong.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-user .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/sfzj.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-user:hover .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/sfzjdh.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-name .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/cyyy.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-name:hover .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/ycyyh.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-username .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/cyyy.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-username:hover .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/ycyyh.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-check .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/xxsh.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-check:hover .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/xxshh.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-reason .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/xxsh.png") no-repeat scroll center;
+  background-size: 100% 100%;
+}
+#theme_name.theme1 #visitToRecord .add_record_form .record-reason:hover .icon {
+  background: url("../../../assets/image/customService/visitToRecord/theme1/xxshh.png") no-repeat scroll center;
   background-size: 100% 100%;
 }
 #theme_name.theme1 #visitToRecord .detail {
