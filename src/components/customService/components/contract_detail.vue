@@ -550,7 +550,6 @@ export default {
           }
           this.complete.task_id = data.taskId
           this.complete.key_name = data.buttons?.variableName || 'kf_approved';
-
         }
       })
     },

@@ -40,7 +40,7 @@
           <el-table-column label="开单人" prop="sign_user" align="center"></el-table-column>
           <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
           <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
-          <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
+          <el-table-column label="审核状态" prop="check_status_name" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <!--<el-button type="primary" plain size="mini">查看审核记录</el-button>-->
@@ -82,7 +82,7 @@
                     <el-table-column label="开单人" prop="sign_user" align="center"></el-table-column>
                     <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
                     <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
-                    <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
+                    <el-table-column label="审核状态" prop="check_status_name" align="center"></el-table-column>
                   </el-table>
                   <div class="page">
                     <el-pagination :total="expand_count" :current-page="expand_params.page" layout="total,prev,pager,next"
@@ -1390,6 +1390,24 @@ export default {
       this.showLoading(true);
       this.$http.get(this.url + 'v1.0/market/contract', this.params).then(res => {
         if (res.code === 200) {
+          res.data.data.forEach((o)=> {
+            let check_status_name = '';
+            switch (o.check_status) {
+              case 'waiting':
+                check_status_name = '待提交';
+                break;
+              case 'pending':
+                check_status_name = '待审核';
+                break;
+              case 'published':
+                check_status_name = '已完成';
+                break;
+              default:
+                check_status_name = '已完成';
+                break;
+            }
+            o.check_status_name = check_status_name;
+          });
           this.contractList = res.data.data;
           this.contractCount = res.data.count;
         } else {
