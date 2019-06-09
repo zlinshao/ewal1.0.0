@@ -62,8 +62,8 @@
                   </div>
                 </div>
               </el-tab-pane>
-              <!-- 小区地址 -->
-              <el-tab-pane label="小区" name="second">
+              <!-- 小区地址 v-if='showFlag || showFlag==undefined'-->
+              <el-tab-pane  label="小区" name="second" >
                 <div class="flex">
                   <div class="left_container transparent_bg">
                     <!--<div class="header_search">
@@ -180,6 +180,7 @@
         type: Boolean,
         default: true,
       },
+      // showFlag: true,//是否展示小区
       outerParams: {},//从外部传过来 province及city
     },
     data() {
@@ -247,7 +248,8 @@
         only_choose: 'all',
       }
     },
-    mounted() {},
+    mounted() {
+    },
     watch: {
       visible(val) {
         this.dialog_visible = val;
@@ -277,6 +279,16 @@
         },
         immediate: true
       },
+       /*监听是否显示小区*/
+      // showFlag: {
+      //   handler(val) {
+      //     // debugger
+      //     if(!val) {
+      //       this.activeName = 'first';
+      //     }
+      //   },
+      //   immediate: true
+      // },
       outerParams: {
         handler(val) {
           if(Object.keys(val).length>0) {
