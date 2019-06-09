@@ -84,6 +84,7 @@
 
       value: {
         handler(val, oldVal) {
+
           if (val && val.length == 0 && this.count == 0) {
             if (oldVal) {
               this.count++;
@@ -151,6 +152,10 @@
         if (val[2]) {
           this.$emit('input', val[1]);
         }
+      },
+
+      reset() {
+        this.photoData.setFile = [];
       },
 
       getPhotoInfoList(val) {

@@ -4,9 +4,9 @@
     <!--div @click="more_visible = !more_visible">测试</div>
   <app-index-more :visible.sync="more_visible"></app-index-more>-->
 
-    <el-button @click="demo">测试</el-button>
+    <el-button @click="demo">清空</el-button>
     <!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
-        <post-choose v-model="post_list" num="1"></post-choose>
+<!--        <post-choose v-model="post_list" num="1"></post-choose>-->
 <!--        <user-choose v-model="user_list"></user-choose>-->
 <!--        <org-choose v-model="org_list"></org-choose>-->
     <!--<el-button>测试</el-button>
@@ -31,7 +31,7 @@
       </div>
     </calendar>-->
     <!--    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>-->
-<!--    <lj-upload :limit-easy="['image']" v-model="list" :disabled="true" :download="false"></lj-upload>-->
+    <lj-upload ref="ljUpload" :limit-easy="['image']" v-model="list"></lj-upload>
     <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->
@@ -109,11 +109,15 @@
     methods: {
       demoSuccess(exam) {
         debugger
+        console.log('******');
         console.log(exam);
       },
 
       demo() {
-        console.log(this.post_list);
+        this.list = [];
+        this.$refs['ljUpload'].reset();
+        console.log(this.list);
+        //console.log(this.post_list);
         /*this.$LjConfirm(
           {
 
