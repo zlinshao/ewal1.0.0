@@ -359,6 +359,8 @@
 
         <div class="dialog_footer" v-if='showFooter'>
           <el-button :disabled="contractDetail.is_resign==1" :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="JSON.stringify(item)" v-for="item in operate_list" @click="handleContract(item.action)">{{item.title}}</el-button>
+          <el-button id="active-danger" class='el-button-active' size="small" type="danger" v-if="operate_list.length==0" @click="handleContract(null)">提交</el-button>
+
           <!--<el-button id='active-success' class='el-button-active' size="small" @click="handleContract(true)" v-if='chooseTab == 1 || chooseTab == 2'>通过</el-button>
           <el-button id='active-danger' class='el-button-active' size="small" @click="handleContract(false)" v-if='chooseTab == 3'>驳回</el-button>-->
         </div>
@@ -636,21 +638,14 @@ export default {
           [this.complete.key_name]:isTrue,
         }
       };
-      debugger
+      if(isTrue===null) {
+        delete params.data;
+      }
       //params.data[this.complete.key_name] = isTrue
       this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
-        if (res.code === 200) {
-          this.$LjNotify('success', {
-            title: '成功',
-            message: res.message
-          });
+        this.$LjNotifyEasy(res,()=> {
           this.handleCloseDetail()
-        }else {
-          this.$LjNotify('error', {
-            title: '错误',
-            message: res.message
-          });
-        }
+        });
       })
     },
     //资料补齐
