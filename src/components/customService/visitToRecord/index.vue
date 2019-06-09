@@ -124,7 +124,7 @@
             <el-col v-if="recordOption.from=='中介'" :span="6" class='record-user'>
               <p><i class='icon'></i><span>是否中介单</span></p>
               <div class='input_box'>
-                <el-select v-model="recordOption.is_agent" clearable>
+                <el-select v-model="recordOption.is_agency_order" clearable>
                   <el-option value="1" label="是"></el-option>
                   <el-option value="2" label="否"></el-option>
                 </el-select>
@@ -165,15 +165,15 @@
             <el-col :span="6" class='freePay'>
               <p><i class='icon'></i><span>信息审核</span></p>
               <div class='input_box'>
-                <el-radio v-model="recordOption.info_check" label="1">存疑</el-radio>
-                <el-radio v-model="recordOption.info_check" label="2">正常</el-radio>
+                <el-radio v-model="recordOption.data_check_result" label="doubt">存疑</el-radio>
+                <el-radio v-model="recordOption.data_check_result" label="normal">正常</el-radio>
               </div>
             </el-col>
 
-            <el-col :span="12" class='record-reason'>
+            <el-col v-if="recordOption.data_check_result=='doubt'" :span="12" class='record-reason'>
               <p style="width: 120px"><i class='icon'></i><span>存疑原因</span></p>
               <div class='input_box'>
-                <el-input placeholder="请输入" v-model="recordOption.reason"></el-input>
+                <el-input placeholder="请输入" v-model="recordOption.doubt_reason"></el-input>
               </div>
             </el-col>
 
@@ -447,13 +447,13 @@ export default {
         from: '',
         star: null,
         record: '',
-        is_agent:null,//是否中介单
+        is_agency_order:null,//是否中介单
         agent_name:null,//中介名称
         agent_price:null,//中介价格
         agent_user:null,//中介人
         agent_phone:null,//中介电话
-        info_check:null,//信息审核
-        reason:'',//存疑原因
+        data_check_result:null,//信息审核
+        doubt_reason:'',//存疑原因
       },
       other_free: [{
         name: null,
@@ -649,13 +649,13 @@ export default {
         })
         return;
       }
-      if(this.recordOption.info_check) {
-        if(this.recordOption.info_check==1) {
+      if(this.recordOption.data_check_result) {
+        if(this.recordOption.data_check_result=='doubt') {
           this.$LjConfirm({content:'中介费是否确定存疑？</br> （确定后将向管控发送核实任务）'}).then(()=> {
             this.addRecordApi();
           })
         }
-        if(this.recordOption.info_check==2) {
+        if(this.recordOption.data_check_result=='normal') {
           this.$LjConfirm({content:'中介费是否确定正常？</br> （确定后将向业务员派发中介费报备任务）'}).then(()=> {
             this.addRecordApi();
           });

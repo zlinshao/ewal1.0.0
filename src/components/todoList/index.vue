@@ -276,7 +276,8 @@
         let params = {
           ...this.params,
           //assignee:289,
-          processDefinitionKey: item.key || categoryKey || '',
+          //processDefinitionKey: item.key || categoryKey || '',
+          processDefinitionKey: this.search,
           processDefinitionKeyNotIn: this.noSearch
         };
 
