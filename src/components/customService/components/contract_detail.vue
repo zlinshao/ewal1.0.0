@@ -533,7 +533,11 @@ export default {
     },
 
     getProcess_id (process_id) {
-      if(!process_id) return;
+      if(!process_id) {
+        this.operate_list = [];
+        return;
+      }
+
       this.$http.get(this.market_server + `v1.0/market/contract/kf-check-button?process_id=${process_id}`).then(res => {
         if (res.code === 200) {
           let data = res.data;
@@ -546,7 +550,6 @@ export default {
           }
           this.complete.task_id = data.taskId
           this.complete.key_name = data.buttons?.variableName || 'kf_approved';
-
         }
       })
     },
@@ -633,7 +636,7 @@ export default {
       }*/
       let params = {
         contract_type:this.chooseTab,
-        task_id: this.complete.task_id,
+        task_id: this.contractDetail.task_id,
         data: {
           [this.complete.key_name]:isTrue,
         }

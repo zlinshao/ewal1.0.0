@@ -58,8 +58,8 @@
                     <span class="mark"></span>
                   </div>
                   <div style="text-align: right">
-                    <span class="look" @click="handleLookInfo"></span>
-                    <span class="status">{{ house_detail.house_status_name }}</span>
+                    <!-- <span class="look" @click="handleLookInfo"></span> -->
+                    <!-- <span class="status">{{ house_detail.house_status_name }}</span> -->
                   </div>
                 </div>
                 <div class="h_type">
@@ -214,7 +214,8 @@
       </lj-dialog>
 
       <!--搜索房源-->
-      <HouseFilter :visible="house_filter_visible" @close="handleGetHouseResource"></HouseFilter>
+      <!-- :showFlag="house_filter_showcommunity" -->
+      <HouseFilter :visible="house_filter_visible"  @close="handleGetHouseResource"></HouseFilter>
 
       <!--设置-->
       <lj-dialog

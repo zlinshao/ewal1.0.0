@@ -40,7 +40,7 @@
         houseItem:{
           house_id:'',
           house_name:''
-        }, //传给子自组件的房屋id
+        }, //传给子自组件的房屋信息
       }
     },
     watch: {

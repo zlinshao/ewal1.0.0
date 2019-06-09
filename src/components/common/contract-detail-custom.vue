@@ -12,6 +12,39 @@
           </div>
         </div>
         <div class="dialog_main">
+          <p style="text-align: left" v-if="chooseTab === 1">房屋信息</p>
+          <div class="base_house_info">
+            <el-form label-width="120px">
+              <el-row :gutter="10">
+                <el-col :span="8">
+                  <el-form-item label="物业地址">
+                    <span :title="contractDetailData.house_extension && contractDetailData.house_extension.community && contractDetailData.house_extension.community.detailed_address" class="form-item-content hide-text-elli">{{ contractDetailData.house_extension && contractDetailData.house_extension.community && contractDetailData.house_extension.community.detailed_address || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="产权地址">
+                    <span class="form-item-content">{{ contractDetailData.house_extension && contractDetailData.house_extension.community && contractDetailData.house_extension.community.address || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="水卡卡号">
+                    <span class="form-item-content">{{ contractDetailData.house_extension && contractDetailData.house_extension.cards && contractDetailData.house_extension.cards.water_card_number || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="电卡卡号">
+                    <span class="form-item-content">{{ contractDetailData.house_extension && contractDetailData.house_extension.cards && contractDetailData.house_extension.cards.electricity_card_number || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="燃气卡号">
+                    <span class="form-item-content">{{ contractDetailData.house_extension && contractDetailData.house_extension.cards && contractDetailData.house_extension.cards.gas_card_number || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </div>
+
           <p style="text-align: left">房屋地址</p>
           <div class="base_house_info">
             <el-form label-width="120px">
@@ -145,7 +178,7 @@
             <div class="type">{{ currentRow.type }}</div>
           </div>
 
-          <p style="text-align: left">{{ chooseTab === 1 ? '收款账户' : '汇款账户'}}</p>
+          <p v-if="chooseTab === 1" style="text-align: left">{{ chooseTab === 1 ? '收款账户' : '汇款账户'}}</p>
           <!--收 房东收款账户 pay_account_info  租 公司汇款账户money_table-->
           <div class="account_info" v-if="chooseTab === 1">
             <el-form label-width="120px">
@@ -179,29 +212,71 @@
             </el-form>
           </div>
 
-          <p style="text-align: left" v-if="chooseTab === 1">签约人及产权人信息</p>
+          <p style="text-align: left">签约人{{chooseTab==1?'及产权人':''}}信息</p>
           <!--收房 customer_info-->
-          <div class="have_info" v-if="chooseTab === 1">
+          <div class="have_info">
             <el-form label-width="120px">
               <el-row :gutter="10">
-                <el-col :span="8">
-                  <el-form-item label="姓名">
-                    <span>{{ contractDetailData.customer_info && contractDetailData.customer_info.name || '/'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="联系方式">
-                    <span>{{ contractDetailData.customer_info && contractDetailData.customer_info.phone || '/'}}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="身份证号">
-                    <span>{{ contractDetailData.customer_info && contractDetailData.customer_info.idcard || '/'}}</span>
-                  </el-form-item>
-                </el-col>
+                <div v-for="item in contractDetailData.customer_info">
+                  <el-col :span="8">
+                    <el-form-item label="姓名">
+                      <span class="form-item-content">{{ item.name || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="联系方式">
+                      <span class="form-item-content">{{ item.phone || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="身份证号">
+                      <span class="form-item-content">{{ item.idcard || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                </div>
               </el-row>
             </el-form>
           </div>
+
+           <p v-if="chooseTab === 2" style="text-align: left">汇款账户</p>
+          <div class="account_info" v-if="chooseTab === 2">
+            <el-form label-width="120px">
+              <el-row :gutter="10">
+                <!--<el-col :span="8">
+                  <el-form-item label="已收金额类型">
+                    <span class="form-item-content">定金</span>
+                  </el-form-item>
+                </el-col>-->
+                <el-col :span="8">
+                  <el-form-item label="总金额">
+                    <span class="form-item-content">{{ contractDetailData.money_sum || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <div v-for="item in contractDetailData.money_table">
+                <el-row :gutter="10">
+                  <el-col :span="8">
+                    <el-form-item label="金额(元)">
+                      <span class="form-item-content">{{ item.money_sep || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="汇款账户">
+                      <span class="form-item-content">{{ contractDetailData.pay_account_info && contractDetailData.pay_account_info.account || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="实际收款时间">
+                      <span class="form-item-content">{{ item.real_pay_at  || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+
+            </el-form>
+          </div>
+
 
           <p style="text-align: left" v-if="chooseTab === 1">附件信息</p>
           <!--收房 -->
@@ -411,36 +486,10 @@ export default {
           this.data_polishing_visible = true;
         }
       });
-
-
-      /*if (row.needComplete && row.needComplete.length > 0) {
-        let obj = {};
-        let param = {};
-        row.needComplete.map(item => {
-          obj[item] = '';
-          param[item] = {
-            keyName: item,
-            setFile: [],
-            size: {
-              width: '50px',
-              height: '50px'
-            }
-          }
-        });
-        this.polishing_params = Object.assign({}, this.polishing_params, obj);
-        this.upload_file = Object.assign({}, param);
-        this.data_polishing_visible = true;
-      } else {
-        this.$LjNotify('info', {
-          title: '提示',
-          message: "暂无需要补齐的资料"
-        });
-        return false;
-      }*/
     },
      // 作废重签的确定按钮
     handleSubmitRewrite () {
-      this.$http.post(this.url + `v1.0/market/contract/e-contract-resign/${this.contractDetail.contract_number}`, {
+      this.$http.post(this.url + `v1.0/market/contract/e-contract-resign/${this.contractDetailData.contract_number}`, {
         note: this.rewrite_note
       }).then(res => {
         if (res.code === 200) {
@@ -479,19 +528,6 @@ export default {
         });
         return false;
       }
-      /*for (let key in this.polishing_params) {
-        if (!this.polishing_params[key] || this.polishing_params[key].length < 1) {
-          this.$LjNotify('warning',{
-            title: '警告',
-            message: '请完善上传文件'
-          });
-          return false;
-        }
-      }*/
-      /*let form = new FormData();
-      form.append('complete_content', JSON.stringify(this.polishing_data_form.complete_content));
-      form.append('property_number', this.polishing_data_form.property_number);
-      form.append('mound_number', this.polishing_data_form.mound_number);*/
 
       this.$http.post(this.url + `v1.0/market/contract/${this.chooseTab}/${this.currentRow.contract_id}`, this.polishing_data_form).then(res => {
         if (res.code === 200) {
@@ -524,6 +560,22 @@ export default {
 }
 </script>
 
+
+<style lang="scss">
+  #theme_name {
+    #contractDetailCustomer {
+      .dialog_container{
+        .el-form-item__label {
+          color: #B0B0B0;
+        }
+        .el-form-item__content{
+          text-align: left;
+        }
+      }
+    }
+  }
+</style>
+
 <style lang="scss" scoped>
-@import "../../assets/scss//common/contract-detail-custom/contract-detail-custom.scss";
+@import "../../assets/scss/common/contract-detail-custom/contract-detail-custom.scss";
 </style>

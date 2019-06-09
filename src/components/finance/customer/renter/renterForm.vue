@@ -110,10 +110,7 @@
                                                type="danger" @click="reducePrices(index)"
                                                style="cursor: pointer;position: absolute;right:-50px;top:0;"></el-button>
                                 </el-form-item>
-
                             </div>
-
-
                         </div>
                     </el-col>
                     <el-col :span="8">
@@ -150,7 +147,7 @@
                 </el-row>
             </el-form>
         </div>
-        <div class="dialog_footer" v-if="type==='edit'">
+        <div class="dialog_footer" v-if="checkOrEdit.is_check===false">
             <el-button type="danger" size="small" @click="postLordEditData('formParams')">确定</el-button>
             <el-button type="info" size="small" @click="cancel">取消</el-button>
         </div>

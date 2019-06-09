@@ -2,11 +2,11 @@
   <div id="app" class="scroll_bar" :class="'app' + theme_name">
     <header class="items-bet">
       <div class="headLeft items-center">
-        <span class="items-center">
-          <span>南京</span>
+        <span class="items-center" style="width: 220px">
+          <!--<span>南京</span>
           <b>❄</b>
           <span>小雪</span>
-          <label>-1～1.5°C</label>
+          <label>-1～1.5°C</label>-->
         </span>
         <span @click="showModules()" class="showButton">
           EWAL
@@ -31,7 +31,7 @@
               <img v-else src="./assets/image/no_avatar.png">
             </p>
           </app-index-more>
-          <span class="icon3024 icon_mess" @click="routerLink('/messageCenter')"></span>
+<!--          <span class="icon3024 icon_mess" @click="routerLink('/messageCenter')"></span>-->
           <!-- <span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span> -->
         </div>
         <!--皮肤切换-->

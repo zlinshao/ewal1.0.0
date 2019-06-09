@@ -59,7 +59,7 @@
                      <span class="mark"></span> -->
                   </div>
                   <div style="text-align: right">
-                    <span class="look" @click="handleLookInfo"></span>
+                    <!-- <span class="look" @click="handleLookInfo"></span> -->
                     <span class="status">{{ house_detail.house_status_name }}</span>
                   </div>
                 </div>
@@ -128,14 +128,6 @@
                 <el-table-column label="状态" prop="status_name" align="center"></el-table-column>
                 <el-table-column label="跟进人" prop="follow_user" align="center"></el-table-column>
               </el-table>
-              <!-- 收房合同、租房合同 -->
-              <!-- :data="rentOrderLists"
-      :height="this.mainListHeight() + 'px'"
-      highlight-current-row
-      header-row-class-name="tableHeader"
-      :cell-class-name="tableCell"
-      @cell-click="tableClickRow"
-      style="width: 100%" -->
             <div v-show="current_house_type === 6 || current_house_type === 7">
               <el-table :data="contract_list" height="250"  @cell-click="tableClickRowContract" >
                 <el-table-column label="签约时间" prop="sign_at" align="center">
@@ -644,6 +636,7 @@
           }
         })
       },
+      //收房合同、租房合同的列表，contract_type为1是收房，2为租房
       getContractList(house_id,contract_type) {
         this.$http.get(this.market_server + 'v1.0/market/contract',{
           ...this.table_params,
@@ -932,6 +925,12 @@
           if (res.code === 200) {
             this.currentRow=row;
             this.contractDetailCustomer = res.data;
+            if(this.contractDetailCustomer.house_extension?.community) {
+              this.contractDetailCustomer.house_extension.community = JSON.parse(this.contractDetailCustomer.house_extension?.community);
+            }
+            if(this.contractDetailCustomer.house_extension?.cards) {
+              this.contractDetailCustomer.house_extension.cards = JSON.parse(this.contractDetailCustomer.house_extension?.cards);
+            }
             this.contract_detail_visible = true;
             //遍历图片生成需要的格式
             /*if(this.contractDetail.album&&Object.keys(this.contractDetail.album).length>0) {
