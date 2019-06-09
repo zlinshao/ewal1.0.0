@@ -2671,6 +2671,22 @@ defineRentReport = {
       slot: '',
     },
     {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '证件照片',
+          placeholder: '必填',
+          keyName: 'id_card_photo',
+        },
+        {
+          label: '银行卡照片',
+          placeholder: '必填',
+          keyName: 'bank_card_photo',
+        }
+      ]
+    },
+    {
       keyName: undefined,
       status: 'subsidiary_customer',
       picker: 'changeHiddenAll',
@@ -2750,22 +2766,6 @@ defineRentReport = {
           },
         ],
       ],
-    },
-    {
-      label: '上传',
-      picker: 'upload',
-      photos: [
-        {
-          label: '证件照片',
-          placeholder: '必填',
-          keyName: 'id_card_photo',
-        },
-        {
-          label: '银行卡照片',
-          placeholder: '必填',
-          keyName: 'bank_card_photo',
-        }
-      ]
     },
     {
       label: '开单人',

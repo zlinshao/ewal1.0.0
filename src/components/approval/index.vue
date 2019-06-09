@@ -58,7 +58,7 @@
           </el-table-column>
         </el-table>
 
-        <footer class="flex-center bottomPage" v-if="!controlPanel_visible">
+        <footer class="flex-center bottomPage">
           <div class="develop flex-center">
             <i class="el-icon-d-arrow-right"></i>
           </div>
@@ -264,8 +264,14 @@
             break;
         }
       },
+      // table 分页
+      handleCurrentChange(page) {
+        let val = this.status_type;
+        this.params['param' + val].page = page;
+        this.getApproval(this.urlApi, this.params['param' + val], val);
+      },
       // 接口请求
-      getApproval(url, val, tab) {  // page分页
+      getApproval(url, val, tab) {//page分页
         this.tableData['data' + tab] = [];
         this.tableStatus = ' ';
         this.tableLoading = true;
@@ -289,15 +295,7 @@
           } else {
             this.tableStatus = '暂无相关数据';
           }
-        }).catch(err => {
-
         })
-      },
-      // table 分页
-      handleCurrentChange(page) {
-        let val = this.status_type;
-        this.params['param' + val].page = page;
-        this.getApproval(this.urlApi, this.params['param' + val], val);
       },
       // 初始化数据
       setFormatApproval(data, url) {

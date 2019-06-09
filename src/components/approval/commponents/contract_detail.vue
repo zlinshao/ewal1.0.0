@@ -3,7 +3,8 @@
     <LjDialog :visible="visible" :size="{width: 1300 + 'px',height: 800 + 'px'}" @close="handleClose">
       <div class='dialog_container' v-if='visible && formatData'>
         <div class='dialog_header'>
-
+          <h3>{{allDetail.house_address}}</h3>
+          <!--<p>查看审核记录</p>-->
         </div>
         <div
           style="width: 90%;"
@@ -13,7 +14,29 @@
           element-loading-background="rgba(255, 255, 255, 0)">
         </div>
         <div class="dialog_main" v-if="!vLoading">
-          <ul v-for="item in Object.keys(drawSlither)" v-if="item !== 'slither'">
+          <ul class="slither">
+            <li></li>
+            <li>
+              <div>
+                <h1>报备类型</h1><span>{{allDetail.bulletin_name}}</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h1>状态</h1><span>{{allDetail.name}}</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <h1>处理人</h1><span>{{allDetail.assignee_name}}</span>
+              </div>
+            </li>
+          </ul>
+          <ul v-for="(item,index) in Object.keys(drawSlither)" v-if="item !== 'slither'" class="slither">
+            <li class="title">
+              <p></p>
+              <span class="writingMode">{{titleTips[index]}}</span>
+            </li>
             <li v-for="key in Object.keys(drawSlither[item])" v-if="formatData[key]">
               <div>
                 <h1>{{drawSlither[item][key]}}</h1>
@@ -57,9 +80,35 @@
                         {{val.remittance_account + ':' + val.money_sep + '元'}}
                       </h4>
                     </div>
+                    <div :class="key" v-else>
+                      {{val}}
+                    </div>
                   </div>
                 </div>
-                <span v-else>{{formatData[key]}}</span>
+                <span :class="key" v-else>{{formatData[key]}}</span>
+              </div>
+            </li>
+          </ul>
+          <ul class="related">
+            <li class="title">
+              <p></p>
+              <span class="writingMode">相关信息</span>
+            </li>
+            <li>
+              <div>
+                <div>同类型房源市场价2500-3000元</div>
+                <div>该小区曾违约5套房</div>
+                <div>该小区已有房源1000套,未出租500套</div>
+                <div>该业务员通过率30%</div>
+                <div>该报备价格已超出房源最低价300元,请谨</div>
+              </div>
+            </li>
+            <li>
+              <div>
+                <div>收房价格：</div>
+                <div>3室精装均价4500元</div>
+                <div>2室精装均价3500元</div>
+                <div>2室简装均价2500元</div>
               </div>
             </li>
           </ul>
@@ -205,6 +254,7 @@
       return {
         approval_sever: globalConfig.approval_sever,
         market_server: globalConfig.market_server,
+        hr_server: globalConfig.humanResource_server,
         vLoading: true,
         fullLoading: false,
         drawSlither: {},//自定义报备数据
@@ -233,12 +283,14 @@
     watch: {
       moduleData: {
         handler(val) {
+          console.log(val);
           if (val) {
             this.vLoading = true;
             this.fullLoading = false;
             this.allDetail = val;
             this.bulletin_type = val.bulletin_type;
             this.getOperates(val);
+            this.getStaffInfo(val.assignee);
             this.handleData(val, val.bulletin_type);
             this.getDetailForm(val.bm_detail_request_url);
           }
@@ -251,6 +303,19 @@
       getOperates(detail) {
         if (!detail.outcome) return;
         this.operates = JSON.parse(detail.outcome || '{}');
+      },
+      // 获取员工信息
+      getStaffInfo(id) {
+        this.$http.get(`${this.hr_server}staff/user/${id}`).then(res => {
+          if (res.code.endsWith('0')) {
+            this.allDetail.assignee_name = res.data.name;
+          } else {
+            this.$LjNotify('error', {
+              title: '警告',
+              message: res.msg
+            });
+          }
+        })
       },
       // 报备类型
       divisionBulletinType(type, num) {
@@ -426,7 +491,7 @@
               for (let name of res[item]) {
                 terms.push(name + '、' + dicties[item][name]);
               }
-              this.formatData[item] = terms.join(',');
+              this.formatData[item] = terms;
               break;
             case 'subsidiary_customer'://附属房东
               if (res[item]) {
@@ -673,6 +738,20 @@
 
   #theme_name {
     #contract_detail_approval {
+      .dialog_header {
+        @include flex('items-bet');
+
+        p {
+          cursor: pointer;
+          font-size: 14px;
+          color: #0C66FF;
+          padding: 6px 10px;
+          background: rgba(245, 250, 255, 1);
+          border-radius: 4px;
+          border: 1px solid #0C66FF;
+        }
+      }
+
       .dialog_main {
         /*评论*/
         .float-btn {
@@ -694,15 +773,44 @@
           }
         }
 
+        ul + ul {
+          margin-top: 30px;
+        }
+
         ul {
+          position: relative;
           background-color: #FFFFFF;
-          margin-bottom: 30px;
-          padding: 30px 30px 20px;
+          padding: 30px 30px 20px 60px;
           @include radius(6px);
           @include flex();
           flex-wrap: wrap;
 
-          li {
+          .title {
+            position: absolute;
+            top: 0;
+            left: 20px;
+            color: #CF2E33;
+
+            p {
+              width: 30px;
+              height: 60px;
+              @include confirmImg("mokuai.png", "theme1");
+            }
+
+            span {
+              font-family: 'jingdianxingshu';
+              padding-top: 6px;
+            }
+          }
+
+          .remark_terms {
+            font-size: 13px;
+            color: #E79699;
+          }
+        }
+
+        .slither {
+          li + li {
             margin-bottom: 15px;
             width: 33.33%;
             text-align: left;
@@ -712,7 +820,7 @@
 
               h1, h2, h3, h4, h5, h6, span {
                 font-weight: normal;
-                font-size: 14px;
+                font-size: 13px;
               }
 
               h1 {
@@ -741,11 +849,29 @@
                 flex-wrap: wrap;
 
                 img {
-                  width: 60px;
+                  width: 45px;
                   height: 45px;
                   @include radius(6px);
                   margin: 0 6px 6px 0;
                 }
+              }
+            }
+          }
+        }
+
+        .related {
+          @include flex('justify-around');
+
+          li + li {
+            font-size: 14px;
+            text-align: left;
+            min-width: 33.33%;
+            max-width: 33.33%;
+            @include flex('justify-center');
+
+            > div {
+              div {
+                margin-bottom: 6px;
               }
             }
           }
