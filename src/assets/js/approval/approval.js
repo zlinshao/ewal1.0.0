@@ -1,493 +1,4315 @@
-defineReports = {
-  1: {
-    slither0: [
+// 报备类型
+bulletinRouterStatus = {
+  // 收房报备
+  bulletin_collect_basic: {
+    bulletin: 'bulletin_collect_basic',
+    to: 'collect',
+    type: 1,
+  },
+  // 租房报备
+  bulletin_rent_basic: {
+    bulletin: 'bulletin_rent_basic',
+    to: 'rent',
+    type: 1,
+  },
+  // 续租报备
+  bulletin_rent_trans: {
+    bulletin: 'bulletin_rent_trans',
+    to: 'rent',
+    type: 3,
+  },
+  // 转租报备
+  newSublet: {
+    bulletin: 'bulletin_rent_trans',
+    to: 'rent',
+    type: 2,
+  },
+  // 调租报备
+  newChange: {
+    bulletin: 'bulletin_change',
+    to: 'change',
+    type: 1,
+  },
+  // 渠道费报备
+  bulletin_agency: {
+    bulletin: 'bulletin_agency',
+    to: 'agency',
+  },
+  // 房屋尾款报备
+  newRetainage: {
+    bulletin: 'bulletin_retainage',
+    to: 'retainage',
+  },
+  // 特殊事项报备
+  newSpecial: {
+    bulletin: 'bulletin_special',
+    to: 'special',
+  },
+  //退租报备
+  newCheckout: {
+    bulletin: 'bulletin_checkout',
+    to: 'checkout',
+    type: 1,
+  },
+};
+
+// 审批筛选
+approvalSearch = {
+  toBeDoneCollect: ['CollectTakeLook', 'InputBulletinData', 'SignEC', 'CollectReceiptSign'],
+  toBeDoneRent: ['RentTakeLook', 'InputBulletinData', 'SignEC', 'RentBooking'],
+  toBeDoneRetainage: ['RentRetainage'],
+  toBeDoneAgency: ['BulletinAgency'],
+  approvals1: ['pqjl_approval', 'gkzx_approval', 'zcb_approval', 'finance_approved'],
+  approvals22: ['SignEC'],
+  approvals23: ['InputBulletinData'],
+};
+
+// 新建小区
+defineNewAddVillage = [
+  {
+    label: '省',
+    placeholder: '必填 请选择',
+    readonly: 'readonly',
+    keyName: 'province',
+    keyType: '',
+    type: 'text',
+    status: 'obj',
+    showForm: 'formatData',//picker 显示form 或 formatData
+    picker: 'picker',
+    slot: '',
+  },
+  {
+    label: '市',
+    placeholder: '必填 请选择',
+    readonly: 'readonly',
+    keyName: 'city',
+    keyType: '',
+    type: 'text',
+    status: 'obj',
+    showForm: 'formatData',//picker 显示form 或 formatData
+    picker: 'picker',
+    slot: '',
+  },
+  {
+    label: '区/县',
+    placeholder: '必填 请选择',
+    readonly: 'readonly',
+    keyName: 'district',
+    keyType: '',
+    type: 'text',
+    status: 'obj',
+    showForm: 'formatData',//picker 显示form 或 formatData
+    picker: 'picker',
+    slot: '',
+  },
+  {
+    label: '区域',
+    placeholder: '必填 请选择',
+    readonly: 'readonly',
+    keyName: 'region',
+    keyType: '',
+    type: 'text',
+    status: 'obj',
+    showForm: 'formatData',//picker 显示form 或 formatData
+    picker: 'picker',
+    slot: '',
+  },
+  {
+    label: '小区名称',
+    placeholder: '必填 请输入',
+    keyName: 'village_name',
+    keyType: '',
+    type: 'text',
+    showForm: 'formatData',//picker 显示form 或 formatData
+    status: '',
+    slot: '',
+  },
+  {
+    label: '小区别名',
+    placeholder: '请输入',
+    keyName: 'village_alias',
+    keyType: '',
+    type: 'text',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '街道地址',
+    placeholder: '已禁用',
+    keyName: 'address',
+    disabled: 'disabled',
+    keyType: '',
+    type: 'text',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '求租人电话',
+    placeholder: '必填 请输入',
+    keyName: 'lessor_phone',
+    keyType: '',
+    type: 'number',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '建筑年限',
+    placeholder: '必填 请选择',
+    readonly: 'readonly',
+    keyName: 'built_year',
+    keyType: '',
+    type: 'text',
+    status: 'arr',
+    picker: 'picker',
+    showForm: 'formatData',//picker 显示form 或 formatData
+    slot: '',
+  },
+  {
+    label: '房屋类型',
+    placeholder: '必填 请选择',
+    readonly: 'readonly',
+    keyName: 'property_type',
+    keyType: '',
+    type: 'text',
+    status: 'objInt',
+    picker: 'picker',
+    showForm: 'formatData',//picker 显示form 或 formatData
+    slot: '',
+  },
+  {
+    label: '总栋数',
+    placeholder: '请输入',
+    keyName: 'total_buildings',
+    keyType: '',
+    type: 'number',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '物业费',
+    placeholder: '必填 请输入',
+    keyName: 'property_fee',
+    keyType: '',
+    type: 'number',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '物业电话',
+    placeholder: '必填 请输入',
+    keyName: 'property_phone',
+    keyType: '',
+    type: 'number',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '物业公司',
+    placeholder: '必填 请输入',
+    keyName: 'property_com',
+    keyType: '',
+    type: 'text',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '开发商',
+    placeholder: '必填 请输入',
+    keyName: 'developers',
+    keyType: '',
+    type: 'text',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '小区房屋数量',
+    placeholder: '必填 请输入',
+    keyName: 'total_houses',
+    keyType: '',
+    type: 'number',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '周边信息',
+    placeholder: '请输入',
+    keyName: 'peripheral_info',
+    keyType: '',
+    type: 'text',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '地铁路线',
+    placeholder: '请输入',
+    keyName: 'subway_road',
+    keyType: '',
+    type: 'text',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '详情',
+    placeholder: '必填 请输入',
+    keyName: 'content',
+    keyType: '',
+    type: 'textarea',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '备注',
+    placeholder: '请输入',
+    keyName: 'remark',
+    keyType: '',
+    type: 'textarea',
+    status: '',
+    slot: '',
+  },
+  {
+    label: '上传',
+    picker: 'upload',
+    photos: [
       {
-        label: '产权地址',
-        placeholder: '必填 请输入',
-        keyName: 'house_address',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'text'
-      },
-      {
-        label: '门锁类型',
-        placeholder: '必填 请选择',
-        keyName: 'lock_type',
-        keyValue: '',
-        type: 'picker'
-      },
-      {
-        label: '衣柜',
-        placeholder: '必填 请选择',
-        keyName: 'wardrobe',
-        keyValue: '',
-        type: 'picker'
-      },
-      {
-        label: '持有证件',
-        placeholder: '必填 请填入',
-        keyName: 'holding_documents_type',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'text'
-      },
-      {
-        label: '产权证号',
-        placeholder: '必填 请填入',
-        keyName: 'property_right_card_number',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'text'
-      },
-      {
-        label: '丘权号',
-        placeholder: '必填 请填入',
-        keyName: 'qiu_quan_number',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'text'
-      },
-      {
-        label: '户型',
-        placeholder: '必填 选择',
-        keyName: 'house_type',
-        keyValue: [],
-        type: 'picker',
-        childType: '',
-        children: [
+        label: '小区照片',
+        placeholder: '必填',
+        keyName: 'village_photo',
+      }, {
+        label: '房屋照片',
+        placeholder: '必填',
+        keyName: 'home_photo',
+      }, {
+        label: '调研报告',
+        placeholder: '可选文件',
+        keyName: 'files',
+      }
+    ]
+  },
+];
+
+// 新建待办
+defineNewTask = {
+  // 收房待办
+  CollectTakeLook: [
+    {
+      label: '小区名称',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'community_name',
+      keyType: [],
+      type: 'text',
+      status: '',
+      picker: 'searchVillage',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '门牌地址',
+      placeholder: '必填 请填写',// placeholder
+      readonly: 'readonly',
+      keyName: 'door_address',
+      keyType: [],
+      type: 'text',
+      status: '',
+      picker: 'noPicker',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+      moreArray: [
+        {
+          label: '栋',
+          placeholder: '必填',
+          type: 'text',
+          keyType: '',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '单元',
+          placeholder: '必填',
+          type: 'text',
+          keyType: '',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '门牌号',
+          placeholder: '必填',
+          type: 'text',
+          keyType: '',
+          status: '',
+          slot: '',
+        },
+      ],
+    },
+    {
+      label: '客户姓名',
+      placeholder: '必填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '客户电话',
+      placeholder: '必填 请输入',
+      keyName: 'contact_phone',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '房屋类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'property_type',
+      keyType: '',
+      type: 'text',
+      status: 'obj',
+      picker: 'pickerSlot',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '户型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'house_type',
+      keyType: [],
+      type: 'text',
+      status: 'column-0-1-1',
+      picker: 'pickerSlot',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '面积',
+      placeholder: '必填 请输入',
+      readonly: 'readonly',
+      keyName: 'area',
+      keyType: '',
+      type: 'number',
+      status: '',
+      unit: '平米',
+      picker: 'pickerSlot',
+      pickerRead: 'no',
+      slot: '',
+    },
+    {
+      label: '装修',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'decorate',
+      keyType: '',
+      type: 'text',
+      status: 'obj',
+      picker: 'pickerSlot',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '朝向',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'direction',
+      keyType: '',
+      type: 'text',
+      status: 'obj',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerSlot',
+      slot: '',
+    },
+    {
+      label: '楼层',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'floors',
+      keyType: [],
+      type: 'text',
+      status: 'column-3-0',
+      picker: 'pickerSlot',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '带看人',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'take_peoples',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: 'searchStaff',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    // {
+    //   label: '主带看人',
+    //   placeholder: '必填 请选择',
+    //   readonly: 'readonly',
+    //   keyName: 'primary',
+    //   keyType: [],
+    //   type: 'text',
+    //   status: 'objInt',
+    //   picker: 'picker',
+    //   showForm: 'formatData',//picker 显示form 或 formatData
+    //   slot: '',
+    // },
+  ],
+  // 租房待办
+  RentTakeLook: [
+    {
+      label: '带看时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'take_time',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '带看地址',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'house_id',
+      keyType: '',
+      type: 'text',
+      picker: 'searchHouse',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      placeholder: '必填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      button: '银行卡识别',
+      icon: 'identity',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '客户电话',
+      placeholder: '必填 请输入',
+      keyName: 'contact_phone',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '带看人',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'take_peoples',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: 'searchStaff',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    // {
+    //   label: '主带看人',
+    //   placeholder: '必填 请选择',
+    //   readonly: 'readonly',
+    //   keyName: 'primary',
+    //   keyType: [],
+    //   type: 'text',
+    //   status: 'objInt',
+    //   picker: 'picker',
+    //   showForm: 'formatData',//picker 显示form 或 formatData
+    //   slot: '',
+    // },
+  ],
+  // 保洁任务
+  HouseCleaning: [
+    {
+      label: '房屋地址',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'house_id',
+      keyType: [],
+      type: 'text',
+      picker: 'searchHouse',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '保洁时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'cleaning_time',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '保洁内容',
+      placeholder: '必填 请输入',
+      keyName: 'repair_item',
+      keyType: '',
+      type: 'textarea',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '处理人',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'cleaning_type',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '任务接收人',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'receive_id',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: 'searchStaff',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '房屋影像',
+          placeholder: '必填',
+          keyName: 'album',
+        }
+      ]
+    },
+  ],
+  // 维修任务
+  HouseRepair: [
+    {
+      label: '房屋地址',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'house_id',
+      keyType: '',
+      type: 'text',
+      picker: 'searchHouse',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '维修时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'repair_time',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '维修内容',
+      placeholder: '必填 请输入',
+      keyName: 'repair_item',
+      keyType: '',
+      type: 'textarea',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '处理人',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'repair_type',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '任务接收人',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'receive_id',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: 'searchStaff',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '房屋影像',
+          placeholder: '必填',
+          keyName: 'album',
+        }
+      ]
+    },
+  ],
+};
+
+// 补充协议
+defineSupplyAgreement = {
+  // 延长收房时长
+  0: [
+    {
+      label: '协议类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'pact_type',
+      keyType: 1,
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '房屋地址',// 标题
+      placeholder: '必填 请选择',// placeholder
+      readonly: 'readonly',// 只读 picker必须有值
+      keyName: 'house_address',// 字段名
+      keyType: '',// 数据类型
+      type: 'text',// input 类型
+      picker: 'searchHouse',
+      showForm: 'formatData',//picker 显示form 或 formatData
+    },
+    {
+      label: '原合同结束时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'old_end_at',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '延长天数',
+      placeholder: '必填 请输入',
+      keyName: 'add_days',
+      keyType: '',
+      type: 'number',
+      slot: '',
+    },
+    {
+      label: '现合同结束时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'now_end_at',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      placeholder: '必填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '身份证号',
+      placeholder: '必填 请输入',
+      keyName: 'card_id',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '联系电话',
+      placeholder: '必填 请输入',
+      keyName: 'contact_phone',
+      keyType: '',
+      type: 'number',
+      button: '身份识别',
+      icon: 'identity',
+      slot: '',
+    },
+    {
+      label: '备注',
+      placeholder: '必填 请输入',
+      keyName: 'remark',
+      keyType: '',
+      type: 'textarea',
+      slot: '',
+    },
+  ],
+  // 房东更换银行卡
+  1: [
+    {
+      label: '协议类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'pact_type',
+      keyType: 2,
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '房屋地址',// 标题
+      placeholder: '必填 请选择',// placeholder
+      readonly: 'readonly',// 只读 picker必须有值
+      keyName: 'house_address',// 字段名
+      keyType: '',// 数据类型
+      type: 'text',// input 类型
+      picker: 'searchHouse',
+      showForm: 'formatData',//picker 显示form 或 formatData
+    },
+    {
+      label: '原卡号',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'old_account',
+      keyType: '',
+      type: 'number',
+      slot: '',
+    },
+    {
+      label: '现卡号',
+      placeholder: '必填 请输入',
+      keyName: 'account',
+      keyType: '',
+      type: 'number',
+      slot: '',
+    },
+    {
+      label: '开户人',
+      placeholder: '必填 请输入',
+      keyName: 'account_name',
+      keyType: '',
+      type: 'text',
+      button: '银行卡识别',
+      icon: 'bank',
+      slot: '',
+    },
+    {
+      label: '开户行',
+      placeholder: '必填 请输入',
+      keyName: 'bank',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '支行',
+      placeholder: '必填 请输入',
+      keyName: 'subbranch',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      placeholder: '必填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '身份证号',
+      placeholder: '必填 请输入',
+      keyName: 'card_id',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '联系电话',
+      placeholder: '必填 请输入',
+      keyName: 'contact_phone',
+      keyType: '',
+      type: 'number',
+      button: '身份识别',
+      icon: 'identity',
+      slot: '',
+    },
+    {
+      label: '备注',
+      placeholder: '必填 请输入',
+      keyName: 'remark',
+      keyType: '',
+      type: 'textarea',
+      slot: '',
+    },
+  ],
+  // 调整收房价格
+  2: [
+    {
+      label: '协议类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'pact_type',
+      keyType: 3,
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '房屋地址',// 标题
+      placeholder: '必填 请选择',// placeholder
+      readonly: 'readonly',// 只读 picker必须有值
+      keyName: 'house_address',// 字段名
+      keyType: '',// 数据类型
+      type: 'text',// input 类型
+      picker: 'searchHouse',
+      showForm: 'formatData',//picker 显示form 或 formatData
+    },
+    {
+      label: '原收房价格',
+      disabled: 'disabled',
+      placeholder: '已禁用',
+      keyName: 'old_month_price',
+      keyType: '',
+      type: 'number',
+      slot: '',
+    },
+    {
+      label: '现收房价格',
+      placeholder: '必填 请输入',
+      keyName: 'new_month_price',
+      keyType: '',
+      type: 'number',
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      placeholder: '必填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '身份证号',
+      placeholder: '必填 请输入',
+      keyName: 'card_id',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '联系电话',
+      placeholder: '必填 请输入',
+      keyName: 'contact_phone',
+      keyType: '',
+      type: 'number',
+      button: '身份识别',
+      icon: 'identity',
+      slot: '',
+    },
+    {
+      label: '备注',
+      placeholder: '必填 请输入',
+      keyName: 'remark',
+      keyType: '',
+      type: 'textarea',
+      slot: '',
+    },
+  ],
+  // 延长租房时长
+  3: [
+    {
+      label: '协议类型',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'pact_type',
+      keyType: 4,
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '房屋地址',// 标题
+      placeholder: '必填 请选择',// placeholder
+      readonly: 'readonly',// 只读 picker必须有值
+      keyName: 'house_address',// 字段名
+      keyType: '',// 数据类型
+      type: 'text',// input 类型
+      picker: 'searchHouse',
+      showForm: 'formatData',//picker 显示form 或 formatData
+    },
+    {
+      label: '原合同结束时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'old_end_at',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '延长天数',
+      placeholder: '必填 请输入',
+      keyName: 'add_days',
+      keyType: '',
+      type: 'number',
+      slot: '',
+    },
+    {
+      label: '现合同结束时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'now_end_at',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      placeholder: '必填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '身份证号',
+      placeholder: '必填 请输入',
+      keyName: 'card_id',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '联系电话',
+      placeholder: '必填 请输入',
+      keyName: 'contact_phone',
+      keyType: '',
+      type: 'number',
+      button: '身份识别',
+      icon: 'identity',
+      slot: '',
+    },
+    {
+      label: '备注',
+      placeholder: '必填 请输入',
+      keyName: 'remark',
+      keyType: '',
+      type: 'textarea',
+      slot: '',
+    },
+  ],
+};
+
+// 收房报备
+defineCollectReport = {
+  // 房屋信息
+  slither0: [
+    {
+      label: '房屋地址',// 标题
+      placeholder: '必填 请选择',// placeholder
+      // readonly: 'readonly',// 只读 picker必须有值
+      disabled: 'disabled',// 禁用
+      keyName: 'house_address',// 字段名
+      keyType: '',// 数据类型
+      type: 'text',// input 类型
+      // hidden: false,// true隐藏 false显示
+      // status: '',// date为正常日期选择  arr picker源数据为数组确定值为int  obj picker源数据为对象确定值为{id:'',name:''}格式 column多列选择确定值为[] objInt确定值为 int 弹窗内选择日期dateSlot
+      // picker: 'searchHouse',// 是否显示在弹窗内 不存在为正常输入框 值为picker正常选择 searchVillage 搜索小区
+      // showForm: 'formatData',//picker 显示form 或 formatData
+      // prompts: '',//红色提示信息
+      // pickerRead: 'no', // 在弹窗内是否为readonly// 1房屋信息 2物品信息 3合同信息 4客户信息
+      // slot: '',// 预留字段
+    },
+    {
+      label: '小区地址',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'community',
+      keyType: '',
+      type: 'text',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '所属区域',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'position',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '产权地址',
+      placeholder: '必填 请输入',
+      keyName: 'property_address',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '产权人',
+      placeholder: '必填 请输入',
+      keyName: 'property_owner',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '门牌地址',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'door_address',
+      keyType: [],
+      type: 'text',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+      moreArray: [
+        {
+          label: '栋',
+          placeholder: '必填',
+          type: 'text',
+          keyType: '',
+          slot: '',
+        },
+        {
+          label: '单元',
+          placeholder: '必填',
+          type: 'text',
+          keyType: '',
+          slot: '',
+        },
+        {
+          label: '门牌号',
+          placeholder: '必填',
+          type: 'text',
+          keyType: '',
+          slot: '',
+        },
+      ],
+    },
+    {
+      label: '户型',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'house_type',
+      keyType: [],
+      type: 'text',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '面积',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'area',
+      keyType: '',
+      type: 'number',
+      unit: '平米',
+      slot: '',
+    },
+    {
+      label: '装修',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'decorate',
+      keyType: '',
+      type: 'text',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '朝向',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'direction',
+      keyType: '',
+      type: 'text',
+      status: 'obj',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '楼层',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'floors',
+      moreKeys: {floor: '', floors: ''},
+      keyType: [],
+      type: 'text',
+      status: 'moreKeys',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '物业费',
+      disabled: 'disabled',
+      placeholder: '已禁用',
+      keyName: 'property_fee',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '物业电话',
+      disabled: 'disabled',
+      placeholder: '已禁用',
+      keyName: 'property_phone',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '房屋类型',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'property_type',
+      keyType: '',
+      type: 'text',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '持有证件',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'holding_documents_type',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '产权证号',
+      placeholder: '必填 请输入',
+      keyName: 'property_right_card_number',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '丘权号',
+      placeholder: '必填 请输入',
+      keyName: 'qiu_quan_number',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '门锁类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'lock_type',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '其它问题',
+      placeholder: '请输入',
+      keyName: 'other_remark',
+      keyType: '',
+      type: 'textarea',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '房产证照片',
+          placeholder: '必填',
+          keyName: 'photo',
+        }, {
+          label: '房屋影像',
+          placeholder: '必填',
+          keyName: 'house_video',
+        }
+      ]
+    },
+  ],
+  // 物品信息
+  slither1: [
+    {
+      label: '床和床垫的情况',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'bed',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerArticle',
+      slot: '',
+    },
+    {
+      label: '床备注',
+      placeholder: '请输入',
+      keyName: 'bed_remark',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '衣柜情况',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'wardrobe',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerArticle',
+      slot: '',
+    },
+    {
+      label: '衣柜备注',
+      placeholder: '请输入',
+      keyName: 'wardrobe_remark',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '窗帘情况',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'curtain',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerArticle',
+      slot: '',
+    },
+    {
+      label: '窗帘备注',
+      placeholder: '请输入',
+      keyName: 'curtain_remark',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '家电是否齐全',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_fill',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerArticle',
+      slot: '',
+    },
+    {
+      label: '是否有电梯',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_elevator',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerArticle',
+      slot: '',
+    },
+    {
+      label: '卫生情况',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_clean',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerArticle',
+      slot: '',
+    },
+    {
+      label: '房东是否补齐',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_lord_fill',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerArticle',
+      slot: '',
+    },
+    {
+      label: '是否有暖气',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'has_heater',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerArticle',
+      slot: '',
+    },
+    {
+      label: '是否有天然气',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'has_gas',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'pickerArticle',
+      slot: '',
+    },
+    {
+      label: '最迟补齐日期',
+      placeholder: '若房东补齐 请选择',
+      readonly: 'readonly',
+      keyName: 'lord_fill_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '其他家具',
+      placeholder: '请输入',
+      keyName: 'other_furniture',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '家电',
+      placeholder: '必填 请选择',
+      keyName: 'electrical',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: 'electrical',
+      slot: '',
+      // 家具列表
+      lists: [
+        {
+          label: '空调',
+          key: 'air_condition',
+          num: 1,
+        },
+        {
+          label: '冰箱',
+          key: 'fridge',
+          num: 1,
+        },
+        {
+          label: '电视',
+          key: 'television',
+          num: 1,
+        },
+        {
+          label: '洗衣机',
+          key: 'wash_machine',
+          num: 1,
+        },
+        {
+          label: '热水器',
+          key: 'water_heater',
+          num: 1,
+        },
+        {
+          label: '油烟机',
+          key: 'hood',
+          num: 1,
+        },
+        {
+          label: '微波炉',
+          key: 'microwave',
+          num: 1,
+        },
+        {
+          label: '沙发',
+          key: 'sofa',
+          num: 1,
+        },
+        {
+          label: '衣架',
+          key: 'clothe_rack',
+          num: 1,
+        },
+        {
+          label: '燃气灶',
+          key: 'gas_stove',
+          num: 1,
+        },
+        {
+          label: '餐桌',
+          key: 'dining_table',
+          num: 1,
+        },
+        {
+          label: '椅子',
+          key: 'chair',
+          num: 1,
+        },
+      ],
+    },
+  ],
+  // 客户信息
+  slither2: [
+    {
+      label: '签约人身份',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'signatory_identity',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      placeholder: '必填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      button: '身份识别',
+      icon: 'identity',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '性别',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'customer_sex',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '证件类型',
+      placeholder: '必填 已禁用',
+      disabled: 'disabled',
+      keyName: 'card_type',
+      keyType: 411,
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '证件号',
+      placeholder: '必填 请输入',
+      keyName: 'card_id',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '联系方式',
+      placeholder: '必填 已禁用',
+      disabled: 'disabled',
+      keyName: 'contact_way',
+      keyType: 1,
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '联系电话',
+      placeholder: '必填 请输入',
+      keyName: 'contact_phone',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '卡号',
+      placeholder: '必填 请输入',
+      keyName: 'account',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '开户名',
+      placeholder: '必填 请输入',
+      keyName: 'account_name',
+      keyType: '',
+      type: 'text',
+      button: '银行卡识别',
+      icon: 'bank',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '银行',
+      placeholder: '必填 请输入',
+      keyName: 'bank',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '支行',
+      placeholder: '请输入',
+      keyName: 'subbranch',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '与房东关系',
+      placeholder: '必填 请输入',
+      keyName: 'relationship',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '证件照片',
+          placeholder: '必填',
+          keyName: 'id_card_photo',
+        }, {
+          label: '银行卡照片',
+          keyName: 'bank_card_photo',
+        }
+      ]
+    },
+    {
+      keyName: undefined,
+      status: 'subsidiary_customer',
+      picker: 'changeHiddenAll',
+      changeBtn: '+增加附属房东',
+    },
+    {
+      keyName: 'subsidiary_customer',
+      picker: 'changeHiddenAll',
+      label: '附属房东',
+      changeBtn: '增加附属房东',
+      keyType: [],
+      children: [
+        [
           {
-            placeholder: '-室',
-            keyName: 'room',
-            keyValue: 0
+            label: '客户姓名',
+            placeholder: '必填 请输入',
+            keyName: 'customer_name',
+            keyType: '',
+            type: 'text',
+            status: '',
+            slot: '',
           },
           {
-            placeholder: '-厅',
-            keyName: 'ting',
-            keyValue: 0
+            label: '性别',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'customer_sex',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            picker: 'picker',
+            slot: '',
           },
           {
-            placeholder: '-卫',
-            keyName: 'wei',
-            keyValue: 0
+            label: '证件类型',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'card_type',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            picker: 'picker',
+            slot: '',
+          },
+          {
+            label: '证件号',
+            placeholder: '必填 请输入',
+            keyName: 'card_id',
+            keyType: '',
+            type: 'text',
+            status: '',
+            slot: '',
+          },
+          {
+            label: '联系方式',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'contact_way',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            picker: 'picker',
+            slot: '',
+          },
+          {
+            label: '联系电话',
+            placeholder: '必填 请输入',
+            keyName: 'contact_phone',
+            keyType: '',
+            type: 'text',
+            status: '',
+            slot: '',
+          },
+        ],
+      ],
+    },
+  ],
+  // 合同信息
+  slither3: [
+    {
+      label: '是否电子合同',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_electronic_contract',
+      keyType: '1',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '合同编号',
+      placeholder: '必填 请填写',
+      keyName: 'contract_number',
+      keyType: 'LJSHE',
+      type: 'text',
+      status: '',
+      picker: '',
+      slot: '',
+    },
+    {
+      label: '签约时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'sign_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '签约时长',
+      keyName: 'month',
+      placeholder: '必填 请输入',
+      prompts: '不包含空置期',
+      moreString: [
+        {
+          placeholder: '必填 月数',
+          keyName: 'month',
+          keyType: '',
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+        {
+          placeholder: '选填 天数',
+          keyName: 'day',
+          keyType: '',
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ],
+    },
+    {
+      label: '空置天数',
+      placeholder: '请输入',
+      keyName: 'vacancy',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '合同开始时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'begin_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '合同结束时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'end_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '空置期结束时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'end_date_vacant',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '押',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'pay_way_bet',
+      keyType: 1,
+      type: 'text',
+      status: 'arr',
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '应付款信息',
+      keyName: 'period_price_way_arr',
+      picker: 'changeHiddenDefault',
+      pickerText: '周期',
+      status: 'countDate',
+      keyType: [],
+      changeBtn: '付款变化',
+      children: [
+        [
+          {
+            label: '开始时间',
+            placeholder: '已禁用',
+            disabled: 'disabled',
+            keyName: 'begin_date',
+            keyType: '',
+            type: 'text',
+            status: '',
+            picker: '',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '结束时间',
+            placeholder: '已禁用',
+            disabled: 'disabled',
+            keyName: 'end_date',
+            keyType: '',
+            type: 'text',
+            status: '',
+            picker: '',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '变化周期',
+            placeholder: '必填 请填写',
+            keyName: 'period',
+            keyType: '',
+            type: 'number',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '付款方式',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'pay_way',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            picker: 'picker',
+            changeBtn: '付款变化',
+            slot: '',
+          },
+          {
+            label: '月单价',
+            placeholder: '必填 月单价',
+            keyName: 'month_unit_price',
+            keyType: '',
+            type: 'number',
+            status: '',
+            picker: '',
+            slot: '',
+          },
+        ],
+      ],
+    },
+    {
+      label: '押金',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'deposit',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '第一次支付时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'pay_first_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '第二次支付时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'pay_second_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '可否装修',
+      readonly: 'readonly',
+      placeholder: '必填 请选择',
+      keyName: 'can_decorate',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'pickerCon',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '可否添加物品',
+      readonly: 'readonly',
+      placeholder: '必填 请选择',
+      keyName: 'can_add_goods',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'pickerCon',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '是否渠道',
+      readonly: 'readonly',
+      placeholder: '必填 请选择',
+      keyName: 'is_agency',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      controlShow: '1',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+      showList: [
+        {
+          label: '渠道名称',
+          placeholder: '必填 请输入',
+          keyName: 'agency_name',
+          keyType: '',
+          hidden: true,
+          type: 'text',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '渠道价格',
+          placeholder: '必填 请输入',
+          keyName: 'agency_price',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '渠道联系人',
+          placeholder: '必填 请输入',
+          keyName: 'agency_user_name',
+          keyType: '',
+          hidden: true,
+          type: 'text',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '渠道手机',
+          placeholder: '必填 请输入',
+          keyName: 'agency_phone',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ]
+    },
+    {
+      label: '非房东费用',
+      placeholder: '请选择',
+      readonly: 'readonly',
+      keyName: 'non_landlord_fee',
+      keyType: [],
+      type: 'textarea',
+      status: '',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'non_landlord_fee',
+      slot: '',
+      checks: [
+        {
+          id: 1,
+          text: '水费',
+        },
+        {
+          id: 2,
+          text: '电费',
+        },
+        {
+          id: 3,
+          text: '燃气费',
+        },
+        {
+          id: 4,
+          text: '物业管理费',
+        },
+        {
+          id: 5,
+          text: '网费',
+        },
+        {
+          id: 6,
+          text: '其它费用',
+        },
+      ],
+    },
+    {
+      label: '备注条款',
+      placeholder: '请选择',
+      keyName: 'remark_terms',
+      keyType: [],
+      type: 'textarea',
+      picker: 'remark_terms',
+      slot: '',
+    },
+    {
+      label: '开单人',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'staff_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '部门',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'department_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+  ],
+};
+
+// 租房报备
+defineRentReport = {
+  // 合同信息
+  slither0: [
+    {
+      label: '是否电子合同',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_electronic_contract',
+      keyType: '1',
+      type: 'text',
+      status: 'objInt',
+      controlShow: 'disabled',
+      picker: 'picker',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '合同编号',
+      disabled: 'disabled',
+      placeholder: '必填 请填写',
+      keyName: 'contract_number',
+      keyType: 'LJSHE',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '签约日期',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'sign_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '签约时长',
+      keyName: 'month',
+      placeholder: '必填 请输入',
+      prompts: '不包含空置期',
+      moreString: [
+        {
+          placeholder: '必填 月数',
+          keyName: 'month',
+          keyType: '',
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+        {
+          placeholder: '选填 天数',
+          keyName: 'day',
+          keyType: '',
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ],
+    },
+    {
+      label: '合同开始时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'begin_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '合同结束时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'end_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '押',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'pay_way_bet',
+      keyType: 1,
+      type: 'text',
+      status: 'arr',
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '应付款信息',
+      keyName: 'period_price_way_arr',
+      picker: 'changeHiddenDefault',
+      pickerText: '周期',
+      status: 'countDate',
+      keyType: [],
+      changeBtn: '付款变化',
+      children: [
+        [
+          {
+            label: '开始时间',
+            placeholder: '已禁用',
+            disabled: 'disabled',
+            keyName: 'begin_date',
+            keyType: '',
+            type: 'text',
+            status: '',
+            picker: '',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '结束时间',
+            placeholder: '已禁用',
+            disabled: 'disabled',
+            keyName: 'end_date',
+            keyType: '',
+            type: 'text',
+            status: '',
+            picker: '',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '变化周期',
+            placeholder: '必填 请填写',
+            keyName: 'period',
+            keyType: '',
+            type: 'number',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '付款方式',
+            placeholder: '必填 请输入',
+            keyName: 'pay_way',
+            keyType: '',
+            type: 'number',
+            changeBtn: '付款变化',
+            slot: '',
+          },
+          // {
+          //   label: '付款方式',
+          //   placeholder: '必填 请选择',
+          //   readonly: 'readonly',
+          //   keyName: 'pay_way',
+          //   keyType: '',
+          //   type: 'text',
+          //   status: 'objInt',
+          //   showForm: 'formatData',//picker 显示form 或 formatData
+          //   picker: 'picker',
+          //   changeBtn: '付款变化',
+          //   slot: '',
+          // },
+          {
+            label: '月单价',
+            placeholder: '必填 月单价',
+            keyName: 'month_unit_price',
+            keyType: '',
+            type: 'number',
+            status: '',
+            picker: '',
+            slot: '',
+          },
+        ],
+      ],
+    },
+    {
+      label: '押金',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'deposit',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '已收金额类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'amount_type_received',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',
+    },
+    {
+      label: '总金额',
+      placeholder: '必填 请输入',
+      keyName: 'money_sum',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '分金额付款信息',
+      keyName: 'current_pay_info',
+      picker: 'changeHiddenDefault',
+      pickerText: '周期',
+      keyType: [],
+      changeBtn: '分金额付款',
+      children: [
+        [
+          {
+            label: '分金额',
+            placeholder: '必填 请输入',
+            keyName: 'money_sep',
+            keyType: '',
+            type: 'number',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '实际付款时间',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'real_pay_at',
+            keyType: '',
+            type: 'text',
+            picker: 'datetime',
+            showForm: 'formatData',
+            slot: '',
+          },
+          {
+            label: '收款账户',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'remittance_account',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            picker: 'picker',
+            showForm: 'formatData',
+            changeBtn: '分金额付款',
+            slot: '',
+          },
+        ]
+      ]
+    },
+    {
+      label: '收款备注',
+      placeholder: '必填 请输入',
+      keyName: 'memo',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '让总价金额',
+      placeholder: '必填 请输入',
+      keyName: 'discount',
+      keyType: '',
+      type: 'number',
+      slot: '',
+    },
+    {
+      label: '是否有其他金额',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_other_fee',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      controlShow: '1',
+      showForm: 'formatData',
+      slot: '',
+      showList: [
+        {
+          label: '其他金额名称',
+          placeholder: '必填 请输入',
+          keyName: 'other_fee_name',
+          keyType: '',
+          hidden: true,
+          needHidden: 'hidden',
+          type: 'text',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '其他金额',
+          placeholder: '选填 请输入',
+          keyName: 'other_fee',
+          keyType: '',
+          hidden: true,
+          needHidden: 'hidden',
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ]
+    },
+    {
+      label: '尾款补齐时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'retainage_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      slot: '',
+    },
+    {
+      label: '租赁用途',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'rental_use',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      controlShow: '3',
+      showForm: 'formatData',
+      slot: '',
+      showList: [
+        {
+          label: '其他',
+          placeholder: '必填 请输入',
+          keyName: 'rental_use_remark',
+          keyType: '',
+          hidden: true,
+          needHidden: 'hidden',
+          type: 'text',
+          status: '',
+          slot: '',
+        },
+      ]
+    },
+    {
+      label: '居住人数',
+      placeholder: '必填 请输入',
+      keyName: 'num_of_residents',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '是否是家庭',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_family',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',
+      slot: '',
+    },
+    {
+      label: '是否渠道',
+      readonly: 'readonly',
+      placeholder: '必填 请选择',
+      keyName: 'is_agency',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      controlShow: '1',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+      showList: [
+        {
+          label: '渠道名称',
+          placeholder: '必填 请输入',
+          keyName: 'agency_name',
+          keyType: '',
+          hidden: true,
+          type: 'text',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '渠道价格',
+          placeholder: '必填 请输入',
+          keyName: 'agency_price',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '渠道联系人',
+          placeholder: '必填 请输入',
+          keyName: 'agency_user_name',
+          keyType: '',
+          hidden: true,
+          type: 'text',
+          slot: '',
+        },
+        {
+          label: '渠道手机',
+          placeholder: '必填 请输入',
+          keyName: 'agency_phone',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ]
+    },
+    {
+      label: '是否合租',
+      readonly: 'readonly',
+      placeholder: '必填 请选择',
+      keyName: 'is_joint',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      controlShow: '1',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+      showList: [
+        {
+          label: '网络费',
+          placeholder: '必填 请输入',
+          keyName: 'network_fee',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '管理费',
+          placeholder: '必填 请输入',
+          keyName: 'management_fee',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '水费',
+          placeholder: '必填 请输入',
+          keyName: 'water_fee',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '物业公摊费',
+          placeholder: '必填 请输入',
+          keyName: 'property_fee',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ]
+    },
+    {
+      label: '备注条款',
+      placeholder: '必填 请选择',
+      keyName: 'remark_terms',
+      keyType: [],
+      type: 'textarea',
+      picker: 'remark_terms',
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '凭证截图',
+          placeholder: '必填',
+          keyName: 'photo',
+        }
+      ]
+    },
+  ],
+  // 客户信息
+  slither1: [
+    {
+      label: '客户姓名',
+      placeholder: '必填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      button: '身份识别',
+      icon: 'identity',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '客户性别',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'customer_sex',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',
+      slot: '',
+    },
+    {
+      label: '证件类型',
+      placeholder: '必填 请选择',
+      disabled: 'disabled',
+      keyName: 'card_type',
+      keyType: 411,
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',
+      slot: '',
+    },
+    {
+      label: '证件号',
+      placeholder: '必填 请输入',
+      keyName: 'card_id',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '联系方式',
+      placeholder: '必填 请选择',
+      keyName: 'contact_way',
+      disabled: 'disabled',
+      keyType: 1,
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',
+      slot: '',
+    },
+    {
+      label: '联系电话',
+      placeholder: '必填 请输入',
+      keyName: 'contact_phone',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '卡号',
+      placeholder: '必填 请输入',
+      keyName: 'account',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '开户名',
+      placeholder: '必填 请输入',
+      keyName: 'account_name',
+      keyType: '',
+      type: 'text',
+      button: '银行卡识别',
+      icon: 'bank',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '银行',
+      placeholder: '必填 请输入',
+      keyName: 'bank',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '支行',
+      placeholder: '请输入',
+      keyName: 'subbranch',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      keyName: undefined,
+      status: 'subsidiary_customer',
+      picker: 'changeHiddenAll',
+      changeBtn: '+增加附属租客',
+    },
+    {
+      keyName: 'subsidiary_customer',
+      picker: 'changeHiddenAll',
+      label: '附属租客',
+      changeBtn: '增加附属租客',
+      keyType: [],
+      children: [
+        [
+          {
+            label: '客户姓名',
+            placeholder: '必填 请输入',
+            keyName: 'customer_name',
+            keyType: '',
+            type: 'text',
+            button: '身份识别',
+            icon: 'identity',
+            slot: '',
+          },
+          {
+            label: '性别',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'customer_sex',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            picker: 'picker',
+            slot: '',
+          },
+          {
+            label: '证件类型',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'card_type',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            picker: 'picker',
+            slot: '',
+          },
+          {
+            label: '证件号',
+            placeholder: '必填 请输入',
+            keyName: 'card_id',
+            keyType: '',
+            type: 'text',
+            status: '',
+            slot: '',
+          },
+          {
+            label: '联系方式',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'contact_way',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            picker: 'picker',
+            slot: '',
+          },
+          {
+            label: '联系电话',
+            placeholder: '必填 请输入',
+            keyName: 'contact_phone',
+            keyType: '',
+            type: 'text',
+            status: '',
+            slot: '',
+          },
+        ],
+      ],
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '证件照片',
+          placeholder: '必填',
+          keyName: 'id_card_photo',
+        },
+        {
+          label: '银行卡照片',
+          placeholder: '必填',
+          keyName: 'bank_card_photo',
+        }
+      ]
+    },
+    {
+      label: '开单人',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'staff_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '部门',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'department_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+  ],
+};
+
+// 新租
+defineNewRentReport = [
+  {
+    label: '房屋地址',
+    placeholder: '已禁用',
+    disabled: 'disabled',
+    keyName: 'house_id',
+    keyType: '',
+    type: 'text',
+    status: '',
+    showForm: 'formatData',
+    slot: '',
+  },
+];
+
+// 续租
+defineContinueRent = [
+  {
+    label: '原房屋地址',
+    disabled: 'disabled',
+    placeholder: '已禁用',
+    keyName: 'old_house_name',
+    keyType: '',
+    type: 'text',
+    slot: '',
+  },
+  {
+    label: '现房屋地址',
+    readonly: 'readonly',
+    placeholder: '必填 请选择',
+    keyName: 'house_name',
+    keyType: '',
+    type: 'text',
+    picker: 'searchHouse',
+    showForm: 'formatData',//picker 显示form 或 formatData
+    slot: '',
+  }
+];
+
+// 转租报备
+defineSubletReport = [
+  {
+    label: '转租类型',
+    placeholder: '必填 请选择',
+    readonly: 'readonly',
+    keyName: 'trans_type',
+    keyType: '0',
+    type: 'text',
+    status: 'objInt',
+    picker: 'picker',
+    showForm: 'formatData',//picker 显示form 或 formatData
+    slot: '',
+  },
+  {
+    label: '房屋地址',
+    disabled: 'disabled',
+    placeholder: '已禁用',
+    keyName: 'address',
+    keyType: '',
+    type: 'text',
+    status: '',
+    slot: '',
+  },
+];
+
+// 调租报备
+defineChangeReport = {
+  slither0: [
+    {
+      label: '原房屋地址',
+      disabled: 'disabled',
+      placeholder: '已禁用',
+      keyName: 'old_house_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '现房屋地址',
+      readonly: 'readonly',
+      placeholder: '必填 请选择',
+      keyName: 'house_name',
+      keyType: '',
+      type: 'text',
+      picker: 'searchHouse',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '签约日期',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'sign_date',
+      keyType: '',
+      type: 'text',
+      status: 'date',
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '签约时长',
+      keyName: 'month',
+      placeholder: '必填 请输入',
+      prompts: '不包含空置期',
+      moreString: [
+        {
+          placeholder: '必填 月数',
+          keyName: 'month',
+          keyType: '',
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+        {
+          placeholder: '选填 天数',
+          keyName: 'day',
+          keyType: '',
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ],
+    },
+    {
+      label: '合同开始时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'begin_date',
+      keyType: '',
+      type: 'text',
+      status: 'date',
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '合同结束时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'end_date',
+      keyType: '',
+      type: 'text',
+      status: 'date',
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '押金',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'deposit',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '应付款信息',
+      keyName: 'period_price_way_arr',
+      picker: 'changeHiddenDefault',
+      pickerText: '周期',
+      status: 'countDate',
+      keyType: [],
+      changeBtn: '付款变化',
+      children: [
+        [
+          {
+            label: '开始时间',
+            placeholder: '已禁用',
+            disabled: 'disabled',
+            keyName: 'begin_date',
+            keyType: '',
+            type: 'text',
+            status: '',
+            picker: '',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '结束时间',
+            placeholder: '已禁用',
+            disabled: 'disabled',
+            keyName: 'end_date',
+            keyType: '',
+            type: 'text',
+            status: '',
+            picker: '',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '变化周期',
+            placeholder: '必填 请填写',
+            keyName: 'period',
+            keyType: '',
+            type: 'number',
+            length: 1,
+            slot: '',
+          },
+          {
+            label: '付款方式',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'pay_way',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            picker: 'picker',
+            changeBtn: '付款变化',
+            slot: '',
+          },
+          {
+            label: '月单价',
+            placeholder: '必填 月单价',
+            keyName: 'month_unit_price',
+            keyType: '',
+            type: 'number',
+            status: '',
+            picker: '',
+            slot: '',
+          },
+        ],
+      ],
+    },
+    {
+      label: '补交押金',
+      placeholder: '必填 请输入',
+      keyName: 'make_up_the_deposit',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '已收金额类型',
+      placeholder: '必填 请选择',
+      keyName: 'amount_type_received',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',
+    },
+    {
+      label: '总金额',
+      placeholder: '必填 请输入',
+      keyName: 'money_sum',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '分金额付款信息',
+      keyName: 'current_pay_info',
+      picker: 'changeHiddenDefault',
+      pickerText: '周期',
+      keyType: [],
+      changeBtn: '分金额付款',
+      children: [
+        [
+          {
+            label: '分金额',
+            placeholder: '必填 请输入',
+            keyName: 'money_sep',
+            keyType: '',
+            type: 'number',
+            length: 1,
+            status: '',
+            slot: '',
+          },
+          {
+            label: '实际付款时间',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'real_pay_at',
+            keyType: '',
+            type: 'text',
+            picker: 'date',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            slot: '',
+          },
+          {
+            label: '收款账户',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'remittance_account',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            picker: 'picker',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            changeBtn: '分金额付款',
+            slot: '',
           }
         ]
-      },
+      ]
+    },
+    {
+      label: '收款备注',
+      placeholder: '必填 请输入',
+      keyName: 'memo',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '让总价金额',
+      placeholder: '必填 请输入',
+      keyName: 'discount',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '尾款补齐时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'retainage_date',
+      keyType: '',
+      type: 'text',
+      status: 'date',
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '租赁用途',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'rental_use',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',
+      slot: '',
+    },
+    {
+      label: '居住人数',
+      placeholder: '必填 请输入',
+      keyName: 'num_of_residents',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '是否有其他金额',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_other_fee',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      controlShow: '1',
+      showForm: 'formatData',
+      slot: '',
+      showList: [
+        {
+          label: '其他金额名称',
+          placeholder: '必填 请输入',
+          keyName: 'other_fee_name',
+          keyType: '',
+          hidden: true,
+          needHidden: 'hidden',
+          type: 'text',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '其他金额',
+          placeholder: '选填 请输入',
+          keyName: 'other_fee',
+          keyType: '',
+          hidden: true,
+          needHidden: 'hidden',
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ]
+    },
+    {
+      label: '是否渠道',
+      readonly: 'readonly',
+      placeholder: '必填 请选择',
+      keyName: 'is_agency',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      controlShow: '1',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+      showList: [
+        {
+          label: '渠道名称',
+          placeholder: '必填 请输入',
+          keyName: 'agency_name',
+          keyType: '',
+          hidden: true,
+          type: 'text',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '渠道价格',
+          placeholder: '必填 请输入',
+          keyName: 'agency_price',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '渠道联系人',
+          placeholder: '必填 请输入',
+          keyName: 'agency_user_name',
+          keyType: '',
+          hidden: true,
+          type: 'text',
+          slot: '',
+        },
+        {
+          label: '渠道手机',
+          placeholder: '必填 请输入',
+          keyName: 'agency_phone',
+          keyType: '',
+          hidden: true,
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ]
+    },
+    {
+      label: '备注条款',
+      placeholder: '必填 请选择',
+      keyName: 'remark_terms',
+      keyType: [],
+      type: 'textarea',
+      picker: 'remark_terms',
+      slot: '',
+    },
+    {
+      label: '备注',
+      placeholder: '必填 请输入',
+      keyName: 'remark',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '凭证截图',
+          placeholder: '必填',
+          keyName: 'photo',
+        }
+      ]
+    },
+  ],
+  // 客户信息
+  slither1: [
+    {
+      label: '客户姓名',
+      placeholder: '必填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      button: '身份识别',
+      icon: 'identity',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '性别',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'customer_sex',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '证件类型',
+      placeholder: '必填 已禁用',
+      disabled: 'disabled',
+      keyName: 'card_type',
+      keyType: 411,
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '证件号',
+      placeholder: '必填 请输入',
+      keyName: 'card_id',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '联系方式',
+      placeholder: '必填 已禁用',
+      disabled: 'disabled',
+      keyName: 'contact_way',
+      keyType: 1,
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '联系电话',
+      placeholder: '必填 请输入',
+      keyName: 'contact_phone',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '证件照片',
+          placeholder: '必填',
+          keyName: 'id_card_photo',
+        }
+      ]
+    },
+    {
+      label: '签约人姓名',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'staff_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '部门名称',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'department_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+  ],
+};
+
+// 渠道报备
+defineAgencyReport = {
+  slither0: [
+    {
+      label: '收租标记',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'collect_or_rent',
+      keyType: '',
+      type: 'text',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      status: '',
+      slot: '',
+    },
+    {
+      label: '房屋地址',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'house_address',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      disabled: 'disabled',
+      placeholder: '已禁用',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '签约时长',
+      disabled: 'disabled',
+      placeholder: '已禁用',
+      keyName: 'month',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '月单价',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'price',
+      keyType: '',
+      type: 'textarea',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '渠道费信息',
+      keyName: 'agency_infos',
+      picker: 'changeHiddenDefault',
+      keyType: [],
+      children: [
+        [
+          {
+            label: '卡号',
+            placeholder: '必填 请输入',
+            keyName: 'account',
+            keyType: '',
+            type: 'number',
+            slot: '',
+          },
+          {
+            label: '开户人',
+            placeholder: '必填 请输入',
+            keyName: 'account_name',
+            keyType: '',
+            type: 'text',
+            button: '银行卡识别',
+            icon: 'bank',
+            slot: '',
+          },
+          {
+            label: '开户行',
+            placeholder: '必填 请输入',
+            keyName: 'bank',
+            keyType: '',
+            type: 'text',
+            slot: '',
+          },
+          {
+            label: '支行',
+            placeholder: '请填写',
+            keyName: 'subbranch',
+            keyType: '',
+            type: 'text',
+            slot: '',
+          },
+          {
+            label: '渠道名称',
+            placeholder: '必填 月单价',
+            keyName: 'agency_name',
+            keyType: '',
+            type: 'text',
+            slot: '',
+          },
+          {
+            label: '渠道价格',
+            placeholder: '必填 请输入',
+            keyName: 'agency_price',
+            keyType: '',
+            type: 'number',
+            slot: '',
+          },
+          {
+            label: '渠道联系人',
+            placeholder: '必填 请输入',
+            keyName: 'agency_user_name',
+            keyType: '',
+            type: 'text',
+            slot: '',
+          },
+          {
+            label: '渠道手机',
+            placeholder: '必填 请输入',
+            keyName: 'agency_phone',
+            keyType: '',
+            type: 'number',
+            slot: '',
+          },
+        ],
+      ],
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '特殊情况截图',
+          placeholder: '必填',
+          keyName: 'photo',
+        }
+      ]
+    },
+    {
+      label: '签约人姓名',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'staff_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '部门名称',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'department_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+  ]
+};
+
+// 房屋尾款报备
+defineRetainageReport = {
+  slither0: [
+    {
+      label: '房屋地址',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'address',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      disabled: 'disabled',
+      placeholder: '已禁用',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '签约时长',
+      disabled: 'disabled',
+      placeholder: '已禁用',
+      keyName: 'month',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '月单价',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'price',
+      keyType: '',
+      type: 'textarea',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      status: '',
+      slot: '',
+    },
+    {
+      label: '剩余金额',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'balance',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '已收金额类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'amount_type_received',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',
+    },
+    {
+      label: '总金额',
+      placeholder: '必填 请输入',
+      keyName: 'money_sum',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '分金额付款信息',
+      keyName: 'current_pay_info',
+      picker: 'changeHiddenDefault',
+      pickerText: '周期',
+      keyType: [],
+      changeBtn: '分金额付款',
+      children: [
+        [
+          {
+            label: '分金额',
+            placeholder: '必填 请输入',
+            keyName: 'money_sep',
+            keyType: '',
+            type: 'number',
+            length: 1,
+            status: '',
+            picker: '',
+            slot: '',
+          },
+          {
+            label: '实际付款时间',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'real_pay_at',
+            keyType: '',
+            type: 'text',
+            picker: 'datetime',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            slot: '',
+          },
+          {
+            label: '收款账户',
+            placeholder: '必填 请选择',
+            readonly: 'readonly',
+            keyName: 'remittance_account',
+            keyType: '',
+            type: 'text',
+            status: 'objInt',
+            picker: 'picker',
+            showForm: 'formatData',//picker 显示form 或 formatData
+            changeBtn: '分金额付款',
+            slot: '',
+          }
+        ]
+      ]
+    },
+    {
+      label: '收款备注',
+      placeholder: '必填 请输入',
+      keyName: 'memo',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '是否有其他金额',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_other_fee',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      controlShow: '1',
+      showForm: 'formatData',
+      slot: '',
+      showList: [
+        {
+          label: '其他金额名称',
+          placeholder: '必填 请输入',
+          keyName: 'other_fee_name',
+          keyType: '',
+          hidden: true,
+          needHidden: 'hidden',
+          type: 'text',
+          status: '',
+          slot: '',
+        },
+        {
+          label: '其他金额',
+          placeholder: '选填 请输入',
+          keyName: 'other_fee',
+          keyType: '',
+          hidden: true,
+          needHidden: 'hidden',
+          type: 'number',
+          status: '',
+          slot: '',
+        },
+      ]
+    },
+    {
+      label: '尾款补齐时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'retainage_date',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '凭证截图',
+          placeholder: '必填',
+          keyName: 'screenshot',
+        }
+      ]
+    },
+    {
+      label: '备注',
+      placeholder: '请输入',
+      keyName: 'remark',
+      keyType: '',
+      type: 'textarea',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '签约人',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'staff_name',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: '',
+      slot: '',
+    },
+    {
+      label: '部门名称',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'department_name',
+      keyType: '',
+      type: 'text',
+      picker: '',
+      status: '',
+      slot: '',
+    },
+  ]
+};
+
+// 特殊事项报备
+defineSpecialReport = {
+  slither0: [
+    {
+      label: '房屋地址',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'house_id',
+      keyType: '',
+      type: 'text',
+      slot: '',
+    },
+    {
+      label: '收房/租房',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'collect_or_rent',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      placeholder: '选填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: '',
+      slot: '',
+    },
+    {
+      label: '签约时长',
+      placeholder: '选填 请输入',
+      keyName: 'month',
+      keyType: '',
+      type: 'text',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '月单价',
+      placeholder: '必填 请输入',
+      keyName: 'price',
+      keyType: '',
+      type: 'number',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '报备内容',
+      placeholder: '必填 请输入',
+      keyName: 'bulletin_content',
+      keyType: '',
+      type: 'textarea',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '图片',
+          placeholder: '必填',
+          keyName: 'photo',
+        }
+      ]
+    },
+    {
+      label: '签约人姓名',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'staff_name',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: '',
+      slot: '',
+    },
+    {
+      label: '部门名称',
+      placeholder: '已禁用',
+      disabled: 'disabled',
+      keyName: 'department_name',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: '',
+      slot: '',
+    },
+  ]
+};
+
+// 退租报备
+defineCheckoutReport = {
+  slither0: [
+    {
+      label: '收房/租房',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'collect_or_rent',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',
+      slot: '',
+    },
+    {
+      label: '客户姓名',
+      placeholder: '选填 请输入',
+      keyName: 'customer_name',
+      keyType: '',
+      type: 'text',
+      status: '',
+      picker: '',
+      slot: '',
+    },
+  ]
+};
+
+// 收房交接单
+// 物品交接
+const childKeysTypeBad = ['type', 'is_bad', 'bad_number'];
+const childKeysTypeNum = ['type', 'is_bad', 'bad_number', 'number'];
+const childKeysHaveBad = ['is_have', 'is_bad', 'bad_number'];
+
+// 费用交接
+function handlerFreeDelivery(name, key, type = 'number', place = '必填 请输入', prompts) {
+  return {
+    label: name,
+    placeholder: place,
+    keyName: key,
+    keyType: '',
+    type: type,
+    status: '',
+    prompts: prompts,
+    slot: '',
+  }
+}
+
+// 费用交接切换
+handlerFreeDeliveryChange = [
+  [],
+  [
+    {
+      label: '缴费类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'payment_type',
+      keyType: 1,
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    handlerFreeDelivery('水卡卡号', 'water_card_num'),
+    // handlerFreeDelivery('水务公司', 'water_company', 'text'),
+    handlerFreeDelivery('用水档数', 'water_level'),
+    handlerFreeDelivery('用水单价', 'water_unit_price'),
+    handlerFreeDelivery('上次缴费底数', 'water_fee_last'),
+    handlerFreeDelivery('本次缴费底数', 'water_meter'),
+    handlerFreeDelivery('结算金额', 'water_settlement_amount'),
+    handlerFreeDelivery('电卡卡号', 'electric_card_num'),
+    // handlerFreeDelivery('电力公司', 'electric_company', 'text'),
+    handlerFreeDelivery('用电档数', 'electric_level'),
+    handlerFreeDelivery('谷值用电单价', 'electric_valley_unit_price'),
+    handlerFreeDelivery('上次缴费底数', 'electric_valley_last'),
+    handlerFreeDelivery('本次缴费底数', 'electric_valley'),
+    handlerFreeDelivery('谷值结算金额', 'electric_valley_settlement_amount'),
+    handlerFreeDelivery('峰值用电单价', 'electric_peak_unit_price'),
+    handlerFreeDelivery('上次缴费底数', 'electric_peak_last'),
+    handlerFreeDelivery('本次缴费底数', 'electric_peak'),
+    handlerFreeDelivery('峰值结算金额', 'electric_peak_settlement_amount'),
+    handlerFreeDelivery('燃气卡卡号', 'gas_card_num'),
+    // handlerFreeDelivery('燃气公司', 'gas_company', 'text'),
+    handlerFreeDelivery('燃气档数', 'gas_level'),
+    handlerFreeDelivery('燃气单价', 'gas_price'),
+    handlerFreeDelivery('上次缴费底数', 'gas_fee_last'),
+    handlerFreeDelivery('本次缴费底数', 'gas_meter'),
+    handlerFreeDelivery('结算金额', 'gas_settlement_amount'),
+    handlerFreeDelivery('物业费', 'property_costs'),
+    handlerFreeDelivery('公摊费', 'public_fee', 'number', '必填 请输入', '若公摊物业费算在一起，则将总费用填写在物业费中即可'),
+    handlerFreeDelivery('维修费', 'repair_fees'),
+    {
+      label: '其他费用',
+      placeholder: '必填 请输入',
+      keyName: 'other_fee',
+      keyType: [],
+      type: 'number',
+      status: 'other_fee',
+      button: 'other_fee',
+      slot: '',
+      value: [
+        [
+          {
+            placeholder: '费用名称',
+            keyName: 'name',
+            keyType: '',
+            type: 'text',
+            status: '',
+            slot: '',
+          },
+          {
+            placeholder: '金额 必填',
+            keyName: 'value',
+            keyType: '',
+            type: 'number',
+            status: '',
+            slot: '',
+          },
+        ]
+      ],
+    },
+    handlerFreeDelivery('费用总计', 'total_fee'),
+    handlerFreeDelivery('备注', 'total_fee_remark', 'textarea')
+  ],
+  [
+    {
+      label: '缴费类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'payment_type',
+      keyType: 2,
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    handlerFreeDelivery('水务公司', 'water_company', 'text'),
+    handlerFreeDelivery('用水档数', 'water_level'),
+    handlerFreeDelivery('用水单价', 'water_unit_price'),
+    handlerFreeDelivery('上次缴费底数', 'water_fee_last'),
+    handlerFreeDelivery('本次缴费底数', 'water_meter'),
+    handlerFreeDelivery('结算金额', 'water_settlement_amount'),
+    handlerFreeDelivery('电力公司', 'electric_company', 'text'),
+    handlerFreeDelivery('用电档数', 'electric_level'),
+    handlerFreeDelivery('谷值用电单价', 'electric_valley_unit_price'),
+    handlerFreeDelivery('上次缴费底数', 'electric_valley_last'),
+    handlerFreeDelivery('本次缴费底数', 'electric_valley'),
+    handlerFreeDelivery('谷值结算金额', 'electric_valley_settlement_amount'),
+    handlerFreeDelivery('峰值用电单价', 'electric_peak_unit_price'),
+    handlerFreeDelivery('上次缴费底数', 'electric_peak_last'),
+    handlerFreeDelivery('本次缴费底数', 'electric_peak'),
+    handlerFreeDelivery('峰值结算金额', 'electric_peak_settlement_amount'),
+    handlerFreeDelivery('燃气公司', 'gas_company', 'text'),
+    handlerFreeDelivery('燃气档数', 'gas_level'),
+    handlerFreeDelivery('燃气单价', 'gas_price'),
+    handlerFreeDelivery('上次缴费底数', 'gas_fee_last'),
+    handlerFreeDelivery('本次缴费底数', 'gas_meter'),
+    handlerFreeDelivery('结算金额', 'gas_settlement_amount'),
+    handlerFreeDelivery('物业费', 'property_costs'),
+    handlerFreeDelivery('公摊费', 'public_fee', 'number', '必填 请输入', '若公摊物业费算在一起，则将总费用填写在物业费中即可'),
+    handlerFreeDelivery('维修费', 'repair_fees'),
+    {
+      label: '其他费用',
+      placeholder: '必填 请输入',
+      keyName: 'other_fee',
+      keyType: [],
+      type: 'number',
+      status: 'other_fee',
+      button: 'other_fee',
+      slot: '',
+      value: [
+        [
+          {
+            placeholder: '费用名称',
+            keyName: 'name',
+            keyType: '',
+            type: 'text',
+            status: '',
+            slot: '',
+          },
+          {
+            placeholder: '金额 必填',
+            keyName: 'value',
+            keyType: '',
+            type: 'number',
+            status: '',
+            slot: '',
+          },
+        ]
+      ],
+    },
+    handlerFreeDelivery('费用总计', 'total_fee'),
+    handlerFreeDelivery('备注', 'total_fee_remark', 'textarea')
+  ],
+  [
+    {
+      label: '缴费类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'payment_type',
+      keyType: 3,
+      type: 'text',
+      status: 'objInt',
+      picker: 'picker',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    handlerFreeDelivery('水卡余额', 'water_card_balance',),
+    handlerFreeDelivery('电卡余额', 'electric_card_balance',),
+    handlerFreeDelivery('燃气卡余额', 'gas_card_balance',),
+    handlerFreeDelivery('结算金额', 'settlement_amount',),
+    handlerFreeDelivery('物业费', 'property_costs'),
+    handlerFreeDelivery('公摊费', 'public_fee', 'number', '必填 请输入', '若公摊物业费算在一起，则将总费用填写在物业费中即可'),
+    handlerFreeDelivery('维修费', 'repair_fees'),
+    {
+      label: '其他费用',
+      placeholder: '必填 请输入',
+      keyName: 'other_fee',
+      keyType: [],
+      type: 'number',
+      status: 'other_fee',
+      button: 'other_fee',
+      slot: '',
+      value: [
+        [
+          {
+            placeholder: '费用名称',
+            keyName: 'name',
+            keyType: '',
+            type: 'text',
+            status: '',
+            slot: '',
+          },
+          {
+            placeholder: '金额 必填',
+            keyName: 'value',
+            keyType: '',
+            type: 'number',
+            status: '',
+            slot: '',
+          },
+        ]
+      ],
+    },
+    handlerFreeDelivery('费用总计', 'total_fee'),
+    handlerFreeDelivery('备注', 'total_fee_remark', 'textarea')
+  ]
+];
+
+// 客厅
+function handlerHallGoods(value, num) {
+  return [
+    {
+      label: '是否干净',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'is_clean',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '卫生备注',
+      placeholder: '必填 请输入',
+      keyName: 'health_remark',
+      keyType: '',
+      type: 'textarea',
+      status: '',
+      slot: '',
+    },
+    {
+      label: '保洁时间',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'cleaning_time',
+      keyType: '',
+      type: 'text',
+      picker: 'date',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      slot: '',
+    },
+    {
+      label: '保洁类型',
+      placeholder: '必填 请选择',
+      readonly: 'readonly',
+      keyName: 'cleaning_type',
+      keyType: '',
+      type: 'text',
+      status: 'objInt',
+      showForm: 'formatData',//picker 显示form 或 formatData
+      picker: 'picker',
+      slot: '',
+    },
+    {
+      label: '上传',
+      picker: 'upload',
+      photos: [
+        {
+          label: '需保洁照片',
+          placeholder: '必填',
+          keyName: 'house_album',
+        }
+      ]
+    },
+    deliveryMorePickersBrand('彩电', value, 'tv', childKeysTypeNum, num),
+    deliveryMorePickers('门锁类型', value, 'gate_lock', childKeysTypeBad, num),
+    deliveryMorePickers('钥匙', value, 'key', childKeysTypeBad, num),
+    deliveryMorePickers('窗户', value, 'screen_window', childKeysTypeBad, num),
+    deliveryMorePickers('遥控器', value, 'remote_control', childKeysHaveBad, num),
+    deliveryMorePickers('沙发', value, 'sofa', childKeysTypeNum, num),
+    deliveryMorePickers('茶几', value, 'tea_table', undefined, num),
+    deliveryMorePickers('冰箱', value, 'refrigerator', childKeysTypeNum, num),
+    deliveryMorePickers('椅子', value, 'chair', undefined, num),
+    deliveryMorePickers('餐桌', value, 'dining_table', childKeysTypeNum, num),
+    deliveryMorePickers('客厅灯', value, 'light', childKeysTypeNum, num),
+    deliveryMorePickersRemark('客厅备注'),
+  ]
+}
+
+// 厨房/阳台/卫生间
+function handlerKitchenBalconyBathroom(value, num) {
+  return [
+    deliveryMorePickers('热水器', value, 'water_heater', childKeysTypeNum, num),
+    deliveryMorePickers('浴霸', value, 'bath_heater', childKeysTypeNum, num),
+    deliveryMorePickersBrand('洗衣机', value, 'washer', childKeysTypeNum, num),
+    deliveryMorePickers('燃气灶', value, 'gas_stove', childKeysTypeNum, num),
+    deliveryMorePickers('橱柜', value, 'sideboard', undefined, num),
+    deliveryMorePickers('洗菜池', value, 'washing_pool', undefined, num),
+    deliveryMorePickers('水龙头', value, 'faucet', undefined, num),
+    deliveryMorePickers('微波炉', value, 'microwave_oven', undefined, num),
+    deliveryMorePickers('厨房灯', value, 'kitchen_light', undefined, num),
+    deliveryMorePickers('阳台灯', value, 'balcony_light', undefined, num),
+    deliveryMorePickers('卫生间灯', value, 'bathroom_light', undefined, num),
+    deliveryMorePickers('浴霸灯', value, 'bath_heater_light', undefined, num),
+    deliveryMorePickers('洗面池', value, 'wash_basin', undefined, num),
+    deliveryMorePickers('马桶盖', value, 'toilet_lid', undefined, num),
+    deliveryMorePickers('晾衣架', value, 'drying_rack', undefined, num),
+    deliveryMorePickersRemark('厨房/阳台/卫生间备注'),
+  ]
+}
+
+// 主卧次卧
+function handlerBedroom(value, num) {
+  return [
+    deliveryMorePickers('床', value, 'delivery_bed', undefined, num),
+    deliveryMorePickers('床垫', value, 'mattress', undefined, num),
+    deliveryMorePickers('衣柜', value, 'delivery_wardrobe', undefined, num),
+    deliveryMorePickers('窗帘', value, 'delivery_curtain', undefined, num),
+    deliveryMorePickers('空调', value, 'air_conditioning', childKeysTypeNum, num),
+    deliveryMorePickers('空调遥控器', value, 'air_conditioner_remote', undefined, num),
+    deliveryMorePickers('吸顶灯', value, 'light', childKeysTypeNum, num),
+    deliveryMorePickers('电视', value, 'tv', childKeysTypeNum, num),
+    deliveryMorePickers('电视遥控器', value, 'tv_remote_control', undefined, num),
+    deliveryMorePickers('门锁钥匙', value, 'door_lock_key', undefined, num),
+    deliveryMorePickers('书桌', value, 'desk', undefined, num),
+    deliveryMorePickers('椅子', value, 'chair', undefined, num),
+    deliveryMorePickersRemark('卧室备注'),
+  ]
+}
+
+// 正常选项
+function deliveryMorePickers(name, parent, key, childKeys = ['is_bad', 'bad_number', 'number'], num) {
+  return {
+    label: name,// 标题
+    placeholder: '请选择',
+    readonly: 'readonly',// 只读 picker必须有值
+    keyName: key,
+    keyType: {},
+    type: 'text',// input 类型
+    status: 'child',
+    picker: 'picker' + num,
+    showForm: 'formatData',
+    childKeys: childKeys,
+    children: [
       {
-        label: '燃气灶',
-        placeholder: '必填 请填入',
-        keyName: 'gas_stove',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'input'
-      },
-      {
-        label: '空调',
-        placeholder: '必填 请填入',
-        keyName: 'air_condition',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '面积',
-        placeholder: '请填写',
-        keyName: 'area',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '洗衣机',
-        placeholder: '请填写',
-        keyName: 'wash_machine',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '电视',
-        placeholder: '请填写',
-        keyName: 'television',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '装修',
+        label: '损坏照片',
         placeholder: '必填',
-        keyName: 'decorate',
-        keyValue: '',
-        // keyValue: {
-        //   id: '',
-        //   name: ''
-        // },
-        valueStatus: 'obj',
-        type: 'picker'
-      },
-      {
-        label: '微波炉',
-        keyName: 'microwave',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '衣架',
-        keyName: 'clothe_rack',
-        keyValue: 0,
-        type: 'input',
-        status: 'number'
-      },
-      {
-        label: '房屋类型',
-        placeholder: '请选择',
-        keyName: 'property_type',
-        // keyValue: {
-        //   id: '',
-        //   name: ''
-        // },
-        keyValue: '',
-        valueStatus: 'obj',
-        type: 'picker'
-      },
-      {
-        label: '冰箱',
-        keyName: 'fridge',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '沙发',
-        keyName: 'sofa',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '朝向',
-        placeholder: '请选择',
-        keyName: 'direction',
-        // keyValue: {
-        //   id: '',
-        //   name: ''
-        // },
-        keyValue: '',
-        valueStatus: 'obj',
-        type: 'picker'
-      },
-      {
-        label: '油烟机',
-        keyName: 'hood',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '椅子',
-        keyName: 'chair',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '楼层',
-        placeholder: '必填',
-        keyName: 'floors',
-        keyValue: '1',
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '热水器',
-        keyName: 'water_heater',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '床和床垫的情况',
-        placeholder: '必填 请选择',
-        keyName: 'bed',
-        keyValue: '0',
-        type: 'picker'
-      },
-      {
-        label: '物业电话',
-        keyName: 'property_phone',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'input'
-      },
-      {
-        label: '餐桌',
-        keyName: 'dining_table',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'number'
-      },
-      {
-        label: '卫生情况',
-        placeholder: '必填 请选择',
-        keyName: 'is_clean',
-        keyValue: '',
-        type: 'radio'
-      },
-      {
-        label: '物业费',
-        placeholder: '必填',
-        keyName: 'property_fee',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'text'
-      },
-      {
-        label: '是否有天然气',
-        placeholder: '必填 请选择',
-        keyName: 'has_gas',
-        keyValue: '',
-        type: 'radio'
-      },
-      {
-        label: '家电是否补齐',
-        placeholder: '必填 请选择',
-        keyName: 'is_fill',
-        keyValue: '',
-        type: 'radio'
-      },
-      {
-        label: '是否有暖气',
-        keyName: 'has_heater',
-        keyValue: '',
-        type: 'radio'
-      },
-      {
-        label: '窗帘情况',
-        placeholder: '必填 请选择',
-        keyName: 'curtain',
-        keyValue: '',
-        type: 'picker'
-      },
-      {
-        label: '结束时间',
-        keyName: 'end_date',
-        keyValue: '',
-        type: 'picktimer',
-        format: 'yyyy 年 MM 月 dd 日'
+        keyName: key,
+        keyType: [],
+        slither: parent,
+        status: 'upload',
+        picker: 0,
+        hidden: true,
+        slot: '',
       },
       {
         label: '备注',
+        placeholder: '请输入',
         keyName: 'remark',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'textarea',
-        formSpan: 24
+        keyType: '',
+        type: 'text',
+        picker: '',
+        status: '',
+        hidden: true,
+        slot: '',
       },
-      {
-        label: '其它问题',
-        keyName: 'other_remark',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'textarea',
-        formSpan: 24
-      },
-      {
-        label: '房屋影像',
-        keyName: 'house_video',
-        keyValue: [],
-        type: 'upload'
-      }
     ],
-    slither1: [
-      {
-        label: '签约时间',
-        keyName: 'sign_date',
-        keyValue: '',
-        type: 'picktimer',
-        format: 'yyyy 年 MM 月 dd 日'
-      },
-      {
-        label: '是否渠道',
-        keyName: 'is_agency',
-        keyValue: '',
-        type: 'radio'
-      },
-      {
-        label: '第一次付款时间',
-        keyName: 'pay_first_date',
-        keyValue: '',
-        type: 'picktimer',
-        format: 'yyyy 年 MM 月 dd 日'
-      },
-      {
-        label: '合同开始时间',
-        keyName: 'begin_date',
-        keyValue: '',
-        type: 'picktimer',
-        format: 'yyyy 年 MM 月 dd 日'
-      },
-      {
-        label: '渠道费',
-        keyName: 'agency_price',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'text'
-      },
-      {
-        label: '第二次付款时间',
-        placeholder: '必填 请选择',
-        keyName: 'pay_second_date',
-        keyValue: '',
-        type: 'picktimer',
-        format: 'yyyy 年 MM 月 dd 日'
-      },
-      {
-        label: '合同结束时间',
-        placeholder: '必填 请选择',
-        keyName: 'end_date',
-        keyValue: '',
-        type: 'picktimer',
-        format: 'yyyy 年 MM 月 dd 日'
-      },
-      {
-        label: '是否是电子合同',
-        placeholder: '必填 请选择',
-        keyName: 'is_electronic_contract',
-        keyValue: '0',
-        type: 'radio'
-      },
-      {
-        label: '签约时长',
-        placeholder: '请输入',
-        keyName: 'month',
-        keyValue: 0,
-        type: 'input',
-        status: 'text'
-      },
-      {
-        label: '月单价',
-        keyName: 'month_unit_price',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'text'
-      },
-      {
-        label: '合同编号',
-        keyName: 'contract_number',
-        keyValue: 'LJSHE',
-        type: 'input',
-        typeStatus: 'text'
-      },
-      {
-        label: '空置期天数',
-        keyName: 'vacancy',
-        keyValue: 0,
-        type: 'input',
-        typeStatus: 'text'
-      },
-      {
-        label: '付款方式',
-        placeholder: '请输入',
-        keyName: 'pay_way',
-        keyValue: '',
-        type: 'picker'
-      },
-      {
-        label: '备注条款',
-        placeholder: '请输入',
-        keyName: 'remark_terms',
-        keyValue: '',
-        type: 'input',
-        typeStatus: 'textarea',
-        formSpan: 24
-      }
-    ],
-    slither2: [
-      {
-        label: '开户名',
-        placeholder: '必填 请输入',
-        keyName: 'account_name',
-        keyValue: '',
-        typeStatus: 'text',
-        type: 'input'
-      },
-      {
-        label: '开户行',
-        placeholder: '必填 请输入',
-        keyName: 'bank',
-        keyValue: '',
-        typeStatus: 'text',
-        type: 'input'
-      },
-      {
-        label: '与房东关系',
-        placeholder: '必填 请输入',
-        keyName: 'relationship',
-        keyValue: '',
-        typeStatus: 'text',
-        type: 'input'
-      },
-      {
-        label: '卡号',
-        placeholder: '必填 请输入',
-        keyName: 'account',
-        keyValue: '',
-        typeStatus: 'text',
-        type: 'input'
-      },
-      {
-        label: '支行',
-        placeholder: '必填 请输入',
-        keyName: 'subbranch',
-        keyValue: '',
-        typeStatus: 'text',
-        type: 'input'
-      }
-    ],
-    slither3: [
-      {
-        keyName: 'subsidiary_customer',
-        keyValue: [],
-        button: '增加',
-        type: 'change', // 会增加 删减客户
-        formSpan: 8,
-        childType: {},
-        children: [
-          [
-            {
-              label: '客户姓名',
-              placeholder: '必填 请输入',
-              keyName: 'customer_name',
-              keyValue: '',
-              typeStatus: 'text',
-              type: 'input'
-            },
-            {
-              label: '手机号码',
-              placeholder: '必填 请输入',
-              keyName: 'contact_phone',
-              keyValue: '',
-              typeStatus: 'text',
-              type: 'input'
-            },
-            {
-              label: '证件类型',
-              placeholder: '必填 请输入',
-              keyName: 'card_type',
-              keyValue: '',
-              type: 'picker'
-            },
-            {
-              label: '证件号',
-              placeholder: '必填 请输入',
-              keyName: 'card_id',
-              keyValue: '',
-              typeStatus: 'text',
-              type: 'input'
-            }
-          ]
-        ]
-      }
-    ]
   }
 }
+
+// 品牌
+function deliveryMorePickersBrand(name, parent, key, childKeys = ['is_bad', 'bad_number', 'number'], num) {
+  return {
+    label: name,// 标题
+    placeholder: '请选择',
+    readonly: 'readonly',// 只读 picker必须有值
+    keyName: key,
+    keyType: {},
+    type: 'text',// input 类型
+    status: 'child',
+    picker: 'picker' + num,
+    showForm: 'formatData',
+    childKeys: childKeys,
+    children: [
+      {
+        label: '损坏照片',
+        placeholder: '必填',
+        keyName: key,
+        keyType: [],
+        slither: parent,
+        status: 'upload',
+        hidden: true,
+        slot: '',
+      },
+      {
+        label: '品牌',
+        placeholder: '必填 请输入',
+        keyName: 'brand',
+        keyType: '',
+        type: 'text',
+        status: '',
+        hidden: true,
+        slot: '',
+      },
+      {
+        label: '备注',
+        placeholder: '请输入',
+        keyName: 'remark',
+        keyType: '',
+        type: 'text',
+        status: '',
+        hidden: true,
+        slot: '',
+      },
+    ],
+  }
+}
+
+// 备注
+function deliveryMorePickersRemark(name) {
+  return {
+    label: name,
+    placeholder: '请输入',
+    keyName: 'remark',
+    keyType: '',
+    type: 'textarea',
+    status: 'child',
+    slot: '',
+  }
+}
+
+// 交接单
+defineArticleReceipt = {
+  // 客厅
+  hall_goods: handlerHallGoods('hall_goods', 11),
+  // 厨房/阳台/卫生间
+  kitchen_balcony_bathroom: handlerKitchenBalconyBathroom('kitchen_balcony_bathroom', 12),
+  // 主卧
+  master_bedroom: handlerBedroom('master_bedroom', 13),
+  // 次卧
+  bedroom: [handlerBedroom('bedroom', 15)],
+  // 费用交接
+  slither: handlerFreeDeliveryChange[1],
+};

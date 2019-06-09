@@ -3,7 +3,7 @@
     <div class="flex">
       <div class="left">
         <div class="module-icon" v-if='!hidden'></div>
-        <div class="writingMode txt" v-if='!hidden'>{{ my_title }}</div>
+        <div class="writingMode txt" v-if='!hidden'>{{my_title}}</div>
       </div>
       <div class="right">
         <slot></slot>

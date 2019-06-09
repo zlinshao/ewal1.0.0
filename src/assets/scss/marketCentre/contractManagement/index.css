@@ -325,7 +325,8 @@
   vertical-align: middle;
   margin-left: 20px;
 }
-#theme_name #contractManagement .base_house_info,
+#theme_name #contractManagement .house-info,
+#theme_name #contractManagement .house-address,
 #theme_name #contractManagement .account_info,
 #theme_name #contractManagement .have_info,
 #theme_name #contractManagement .other_info {
@@ -334,7 +335,8 @@
   margin: 10px 0;
   position: relative;
 }
-#theme_name #contractManagement .base_house_info .type,
+#theme_name #contractManagement .house-info .type,
+#theme_name #contractManagement .house-address .type,
 #theme_name #contractManagement .account_info .type,
 #theme_name #contractManagement .have_info .type,
 #theme_name #contractManagement .other_info .type {
@@ -355,6 +357,11 @@
 }
 #theme_name #contractManagement .expand-container .expand-bottom .page {
   background-color: #FFF6E5;
+}
+#theme_name #contractManagement .contract-detail .form-item-content {
+  display: inline-block;
+  width: 100%;
+  text-align: left;
 }
 
 /*# sourceMappingURL=index.css.map */

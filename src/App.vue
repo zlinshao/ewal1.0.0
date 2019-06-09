@@ -263,12 +263,11 @@ export default {
     },
     computedPhotoUrl() {
       //let url = this.$storage.get('user_info').avatar||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg';
-      let url = this.$storage.get('user_info').avatar;
-      return url;
+      return this.$storage.get('user_info').avatar;
     }
   },
   created () {
-    this.theme_name = '1'
+    this.theme_name = '1';
     this.getPerson()
   },
   mounted() {
@@ -281,8 +280,6 @@ export default {
         this.photoUrl = val;
       });
     },
-
-
     changeTheme(a) {
       console.log(a)
     },

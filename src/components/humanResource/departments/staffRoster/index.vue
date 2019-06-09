@@ -385,8 +385,8 @@
           { key: 'staff.employ_proof_number',val: '在职证明',isBtn: true,isGenerate:true},
           { key: 'staff.income_proof_number',val: '收入证明',isBtn: true,isGenerate:true},
           { key: 'staff.notice_number',val: '入职须知',isBtn: true,isGenerate:true},
-          { key: 'staff.secret_number',val: '保密协议编号',isBtn: true,isGenerate:true},
-          { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书',isBtn: true,isGenerate:true,width: '150px'},
+          { key: 'staff.secret_number',val: '保密协议编号',isBtn: true,isGenerate:true,width:'100px'},
+          { key: 'staff.insurance_prohibit_number',val: '大学生无法缴纳社保知晓书',isBtn: true,isGenerate:true,width: '170px'},
         ],
         export_params: {
           field: [],
