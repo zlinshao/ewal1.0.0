@@ -252,6 +252,7 @@
               category: 'approval',
               finished: false,
               active: true,
+              assignee: this.$storage.get('user_info').id,
             };
             this.params['param' + val].finished = val === 3;
             this.urlApi = val === 3 ? 'history/tasks' : 'runtime/tasks';
@@ -259,10 +260,12 @@
           case 4://暂不处理
             this.urlApi = 'runtime/process-instances';
             this.params['param' + val].suspended = true;
+            this.params['param' + val].taskOwner = this.$storage.get('user_info').id;
             break;
           case 5:
             this.urlApi = 'runtime/tasks';
             this.params['param' + val].category = 'cc';
+            this.params['param' + val].assignee = this.$storage.get('user_info').id;
             break;
         }
       },
