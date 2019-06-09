@@ -48,7 +48,7 @@
     <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
 
     <!-- 新增回访 -->
-    <lj-dialog :visible="add_visible" :size="{width: 1200 + 'px',height: 800 + 'px'}" @close="handleCloseAdd">
+    <lj-dialog :visible="add_visible" :size="{width: 1300 + 'px',height: 800 + 'px'}" @close="handleCloseAdd">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>新增回访记录</h3>
@@ -104,34 +104,6 @@
           </el-row>
 
           <el-row :gutter="20" class='add_record_form'>
-            <el-col v-if="recordOption.from=='中介'" :span="6" class='satisfied'>
-              <p><i class='icon'></i>中介名称</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.agent_name" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-            <el-col v-if="recordOption.from=='中介'" :span="6" class='note'>
-              <p><i class='icon'></i>中介价格</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.agent_price" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-            <el-col v-if="recordOption.from=='中介'" :span="6" class='note'>
-              <p><i class='icon'></i>中介人</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.agent_user" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-            <el-col v-if="recordOption.from=='中介'" :span="6" class='note'>
-              <p><i class='icon'></i>中介电话</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.agent_phone" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-          </el-row>
-
-
-          <el-row :gutter="20" class='add_record_form'>
             <el-col v-if="recordOption.is_connect==1" :span="6" class='satisfied'>
               <p><i class='icon'></i>满意度</p>
               <div class='input_box'>
@@ -145,6 +117,66 @@
                 <el-input v-model="recordOption.record" placeholder="请输入"></el-input>
               </div>
             </el-col>
+          </el-row>
+
+          <el-row :gutter="20" class='add_record_form'>
+
+            <el-col v-if="recordOption.from=='中介'" :span="6" class='record-user'>
+              <p><i class='icon'></i><span>是否中介单</span></p>
+              <div class='input_box'>
+                <el-select v-model="recordOption.is_agent" clearable>
+                  <el-option value="1" label="是"></el-option>
+                  <el-option value="2" label="否"></el-option>
+                </el-select>
+              </div>
+            </el-col>
+
+            <el-col v-if="recordOption.from=='中介'" :span="6" class='record-name'>
+              <p><i class='icon'></i>中介名称</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_name" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.from=='中介'" :span="6" class='freePay'>
+              <p><i class='icon'></i>中介价格</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_price" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.from=='中介'" :span="6" class='record-username'>
+              <p><i class='icon'></i>中介人</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_user" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+
+          </el-row>
+
+
+          <el-row :gutter="20" class='add_record_form'>
+
+            <el-col v-if="recordOption.from=='中介'" :span="6" class='contact'>
+              <p><i class='icon'></i>中介电话</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_phone" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+
+            <el-col :span="6" class='freePay'>
+              <p><i class='icon'></i><span>信息审核</span></p>
+              <div class='input_box'>
+                <el-radio v-model="recordOption.info_check" label="1">存疑</el-radio>
+                <el-radio v-model="recordOption.info_check" label="2">正常</el-radio>
+              </div>
+            </el-col>
+
+            <el-col :span="12" class='record-reason'>
+              <p style="width: 120px"><i class='icon'></i><span>存疑原因</span></p>
+              <div class='input_box'>
+                <el-input placeholder="请输入" v-model="recordOption.reason"></el-input>
+              </div>
+            </el-col>
+
           </el-row>
 
           <el-row :gutter="10" class="detail" v-if='recordDetail'>
@@ -415,10 +447,13 @@ export default {
         from: '',
         star: null,
         record: '',
+        is_agent:null,//是否中介单
         agent_name:null,//中介名称
         agent_price:null,//中介价格
         agent_user:null,//中介人
         agent_phone:null,//中介电话
+        info_check:null,//信息审核
+        reason:'',//存疑原因
       },
       other_free: [{
         name: null,
@@ -606,39 +641,44 @@ export default {
       return null
     },
     addRecord () {
-      let warn = this.vailRecord()
+      let warn = this.vailRecord();
       if (warn) {
         this.$LjNotify('warning', {
           title: '提示',
-          message: warn
+          message: warn,
         })
-        return
+        return;
       }
-
-      let recordOption = this.recordOption
-      recordOption.contract_type = this.chooseTab
-      if (this.recordFree == 1) {
-        recordOption.other_free = JSON.stringify(this.other_free)
-      } else {
-        recordOption.other_free = ''
-      }
-
-      this.$http.post(this.url + 'v1.0/csd/revisit', recordOption).then(res => {
-        if (res.code === 200) {
-          this.$LjNotify('success', {
-            title: '成功',
-            message: '记录添加成功'
-          })
-          this.isAddRecord = true
-          this.handleCloseAdd()
-        } else {
-          this.$LjNotify('warning', {
-            title: '警告',
-            message: '记录添加失败'
+      if(this.recordOption.info_check) {
+        if(this.recordOption.info_check==1) {
+          this.$LjConfirm({content:'中介费是否确定存疑？</br> （确定后将向管控发送核实任务）'}).then(()=> {
+            this.addRecordApi();
           })
         }
+        if(this.recordOption.info_check==2) {
+          this.$LjConfirm({content:'中介费是否确定正常？</br> （确定后将向业务员派发中介费报备任务）'}).then(()=> {
+            this.addRecordApi();
+          });
+        }
+      }
+    },
+    //添加记录接口调用
+    addRecordApi() {
+      let recordOption = this.recordOption;
+      recordOption.contract_type = this.chooseTab;
+      if (this.recordFree == 1) {
+        recordOption.other_free = JSON.stringify(this.other_free);
+      } else {
+        recordOption.other_free = '';
+      }
+      this.$http.post(this.url + 'v1.0/csd/revisit', recordOption).then(res => {
+        this.$LjNotifyEasy(res,()=> {
+          this.isAddRecord = true;
+          this.handleCloseAdd();
+        });
       })
     },
+
     record_addRecord () {
       this.handleAddRecord(this.currentRow)
       this.detail_visible = false

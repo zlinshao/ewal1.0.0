@@ -7,7 +7,7 @@
             <span>{{title}}</span>
           </div>-->
           <div class="confirm-modal-container-content">
-            <span class="content-row" v-if="!icon">{{content}}</span>
+            <span class="content-row" v-if="!icon"><span v-html="content"></span></span>
             <!--            <i v-if="icon" class="content-icon" :class="{icon}">图片</i>-->
             <div v-if="icon" class="center-container">
               <i class="icon-img" :class="icon"></i>

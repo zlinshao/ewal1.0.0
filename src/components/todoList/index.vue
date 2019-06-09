@@ -120,11 +120,13 @@
           title: '',
           page: 1,
           size: 10,//每页条数
-          assignee: 289,
+          //assignee: 289,
         },
         checked: 1,//选择哪个toolbar
         categoryKey: '',
         categoryChecked: 0,
+
+        search:'Agency-Supervision',
         //,Market-HouseCleaning,Market-HouseRepair,Market-CompleteData,HandoverOrder
         noSearch: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
 
@@ -236,7 +238,8 @@
       getTodoListToolBar() {
         let params = {
           ...this.params,
-          procDefKeyNotIn: this.noSearch,
+          processDefinitionKey:this.search,
+          //procDefKeyNotIn: this.noSearch,
           //assignee:289,//用户id
         };
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {

@@ -531,6 +531,48 @@
             </el-form>
           </div>
 
+
+          <p v-if="chooseTab === 2" style="text-align: left">汇款账户</p>
+          <div class="account_info" v-if="chooseTab === 2">
+            <el-form label-width="120px">
+              <el-row :gutter="10">
+                <el-col :span="8">
+                  <el-form-item label="已收金额类型">
+                    <span class="form-item-content">定金</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="总金额">
+                    <span class="form-item-content">{{ contractDetail.money_sum || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+
+              <div v-for="item in contractDetail.money_table">
+                <el-row :gutter="10">
+                  <el-col :span="8">
+                    <el-form-item label="金额(元)">
+                      <span class="form-item-content">{{ item.money_sep || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="汇款账户">
+                      <span class="form-item-content">{{ contractDetail.pay_account_info && contractDetail.pay_account_info.account || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item label="实际收款时间">
+                      <span class="form-item-content">{{ item.real_pay_at  || '/'}}</span>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+
+            </el-form>
+          </div>
+
+
           <p style="text-align: left" v-if="chooseTab === 1">附件信息</p>
           <!--收房 -->
           <div class="other_info" v-if="chooseTab === 1">
