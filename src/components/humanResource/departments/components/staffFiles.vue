@@ -587,6 +587,13 @@
     mounted() {
     },
     watch: {
+      'staffDetail.city': {
+        handler(val,oldVal) {
+        },
+        immediate: true,
+        deep: true
+      },
+
       module(val) {
         this.files_visible = val;
         this.files_size = {
@@ -602,7 +609,7 @@
       detailInfo: {
         handler(val) {
           this.currentStaffInfo = val;
-          for (var key in this.staffDetail) {
+          for (let key in this.staffDetail) {
             this.staffDetail[key] = key in val ? val[key] : val.staff && key in val.staff ? val.staff[key] : '';
           }
           this.staffDetail.work_status = val.is_on_job ? '离职' : '在职';
@@ -638,7 +645,7 @@
             this.staffDetail.age = Math.ceil((new Date() - new Date(this.staffDetail.birthday)) / 1000 / 60 / 60 / 24 / 365) || '';
           }
         },
-        deep: true
+        //deep: true
       }
     },
     computed: {
@@ -689,6 +696,7 @@
       },
       //添加item
       handleAddItem(type) {
+        console.log(this.staffDetail);
         if (type === 'work') {
           this.staffDetail.work_history.push({
             work_place: '',
@@ -700,13 +708,16 @@
           })
         }
         if (type === 'eduction') {
-          this.staffDetail.education_history.push({
-            start_end_time: '',
-            school: '',
-            major: '',
-            eduction: '',
-            learn_type: '',
-          })
+
+          this.$nextTick(()=> {
+            this.staffDetail.education_history.push({
+              start_end_time: '',
+              school: '',
+              major: '',
+              eduction: '',
+              learn_type: '',
+            });
+          });
         }
       },
       handleClickTab(tab) {
