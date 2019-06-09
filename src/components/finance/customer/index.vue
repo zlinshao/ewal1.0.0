@@ -110,7 +110,7 @@
       renter,
       rentOrder,
       PostOrgan,
-      HouseFilter
+      HouseFilter,
     },
     data() {
       return {

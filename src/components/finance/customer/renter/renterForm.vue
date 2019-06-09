@@ -27,10 +27,8 @@
                                           :disabled="is_disabled"></el-input>
                             </el-form-item>
                             <el-form-item label="房屋地址">
-                                <el-input placeholder="请选择" v-model="formParams.address" @focus="clickCallback('地址')"
-                                          style="width: 200px" :disabled="is_disabled"></el-input>
+                                <HouseCommunity @getHouseIdName='getHouseIdName' v-model="formParams.house_id" width="200" ></HouseCommunity>
                             </el-form-item>
-
                             <el-form-item label="租房状态">
                                 <el-select placeholder="请选择租房状态" v-model="formParams.rent_type" style="width: 200px;"
                                            :disabled="is_disabled">
@@ -468,9 +466,15 @@
                     this.prices.splice(index, 1);
                 }
             },
-            clickCallback() {
-                this.commonModule.house_filter_visible = true;
-                this.$bus.emit('openCommonModule', this.commonModule);
+             // 房屋地址
+            getHouseIdName(val){
+                if(val.house_id){
+                    this.formParams.address=val.house_name;
+                    this.formParams.house_id=val.house_id;
+                }else{
+                    this.formParams.address='';
+                    this.formParams.house_id='';
+                }
             },
             callbackSuccess(res) {
                 if (res.code === 200) {
