@@ -125,17 +125,13 @@
         checked: 1,//选择哪个toolbar
         categoryKey: '',
         categoryChecked: 0,
-
         /*
         * Agency-Supervision
-        *
-        *
         *
         * */
         processDefinitionKey:'Agency-Supervision',
         /*
         * jczx_approval  稽查中心审批
-        *
         *
         * */
         taskDefinitionKey:'jczx_approval',

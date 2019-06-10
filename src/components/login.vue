@@ -122,7 +122,7 @@
           } else if (res.status == 204) {
             this.$LjNotify('success', {title: '成功', message: '验证码发送成功'});
           } else {
-            this.$LjMessage('error', {title: '失败', msg: '服务器请求失败'});
+            this.$LjMessage('error', {title: '失败', msg: res.data.message});
           }
           this.sendRemain();
         });
@@ -133,6 +133,7 @@
         if (!this.validatePhone()) return;
         if(!this.login_form.ver_code) {
           this.$LjMessage('warning',{title:'警告',msg:'请输入验证码'});
+          return;
         }
         let params = {
           phone:this.login_form.phone,
