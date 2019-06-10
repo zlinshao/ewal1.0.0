@@ -224,6 +224,7 @@
       },
       //加载初始数据
       getLordList() {
+        if(!this.validatePermission('Lord-List')) return;
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'customer_collect', this.params).then(res => {
           this.showLoading(false);

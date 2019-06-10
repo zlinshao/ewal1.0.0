@@ -322,6 +322,10 @@ router.beforeEach((to, from, next) => {
     "Loan-Record-Index": true,
     "Loan-Record-Read": true,
     "Loan-Record-Update": true,
+    "Lord-List":true,//房东列表
+    "Lord-Edit":true,//房东编辑
+    "Lord-Pending":true,//房东转待处理项
+    "Lord-Is-Ignore":true,//房东是否忽略
     "Lost-Record-Add": true,
     "Lost-Record-Update": true,
     "Media-Manager": true,
@@ -349,6 +353,8 @@ router.beforeEach((to, from, next) => {
     "Organization-Read": true,//查看部门详情
     "Organization-Structure": true,//查看组织结构图
     "Organization-Update": true,//编辑部门
+    "Payable-List":true,//应付款项列表
+    "Payable-Complete-Date":true,//修改应付款项补齐时间
     "Permission-Delete": true,
     "Permission-Index": true,//查看权限
     "Permission-Read": true,
@@ -376,6 +382,10 @@ router.beforeEach((to, from, next) => {
     "Recruit-Position-Edit": true,//编辑人员需求
     "Recruit-Position-Finish": true,//结束招聘岗位
     "Recruit-Position-Select": true,//获取人员需求列表
+    "Renter-List":true,//租客列表
+    "Renter-Edit":true,//租客编辑
+    "Renter-Pending":true,//租客转待处理项
+    "Renter-Is-Ignore":true,//租客是否忽略重复
     "Roster-Export": true,
     "Roster-Set": true,
     "Storage-Delete": true,

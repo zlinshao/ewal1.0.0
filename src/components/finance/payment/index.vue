@@ -27,6 +27,7 @@
 
         <span class="action-bar-name">
                     <span v-for="(item,index) in btnData"
+                          v-show="!item.show"
                           :key="index"
                           :class="item.class"
                           @click="handleClickBtn(item.methods,current_row,index,item.key)">
@@ -789,7 +790,8 @@
             methods: "handlePayTime",
             content: "应付时间",
             key: "payData_visible",
-            class: 'edit'
+            class: 'edit',
+            show:this.VALIDATE_PERMISSION['Payable-Complete-Date']
           },
           {
             label: "",
@@ -1187,6 +1189,7 @@
         }
       },
       getPaymentList() {//加载应付款项列表
+        if(!this.validatePermission('Payable-List')) return;
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'account_payable', this.params).then(async res => {
           this.showLoading(false);
