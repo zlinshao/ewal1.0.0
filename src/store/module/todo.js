@@ -185,7 +185,12 @@ const todo = {
     currentTodoModule: 'customerService' // 待办模块
   },
   // 计算属性
-  getter: {},
+  getters: {
+    //refresh_todo_list_getter: state => state.refresh_todo_list
+    refresh_todo_list_getter: (state) => () => {
+      return state.refresh_todo_list;
+    }
+  },
   // 函数声明
   mutations: {
     //切换待办事项显示隐藏
@@ -244,7 +249,7 @@ const todo = {
     },
     //刷新代办
     change_refresh_todo_list({commit},status) {
-      commit('CHANGE_REFRESH_TODO_LIST');
+      commit('CHANGE_REFRESH_TODO_LIST', status);
     },
 
     change_todo_list_badge_count({ commit }, status) {
@@ -285,7 +290,7 @@ const todo = {
     change_customerService_agency_check_visible({commit}, status) {
       commit('CHANGE_CUSTOMERSERVICE_AGENCY_CHECK_VISIBLE',status);
     },
-  }
+  },
 }
 
 export default todo

@@ -24,7 +24,7 @@
           <app-index-more :router-list="more_list">更多</app-index-more>
         </div>
         <div class="items-center personal">
-          <span>{{$storage.get('user_info').name||'乐伽'}}</span>
+          <span @click="demoTrigger">{{$storage.get('user_info').name||'乐伽'}}</span>
           <app-index-more type="click" :show.sync="showPersonal" :router-list="personal_center_list">
             <p @click="showPersonal = !showPersonal">
               <img v-if="photoUrl" :src="photoUrl">
@@ -275,6 +275,9 @@ export default {
     //this.getWeather();
   },
   methods: {
+    demoTrigger() {
+      this.$store.dispatch('change_refresh_todo_list');
+    },
     /*获取天气*/
     /*getWeather() {
       this.$http.get(`https://www.tianqiapi.com/api/?version=v1`).then(res=> {

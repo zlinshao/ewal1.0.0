@@ -110,10 +110,17 @@
         handler(val,oldVal) {
           this.getTodoListToolBar();
         },
+        deep:true,
+      },
+      todo_list_visible(val) {
+        if(val) {
+          this.getTodoListToolBar();
+        }
       },
     },
     data() {
       return {
+
         url: globalConfig.approval_sever,//待办接口
         counts: 0,
         params: {
@@ -232,14 +239,16 @@
     mounted() {
       this.getTodoListToolBar();
     },
+
+
+
     methods: {
       handleCreateTodo() {
         //  收租房带看
         this.$store.dispatch('switch_see_house', true);
       },
       demo() {
-        console.log(this.todo_list_current_selection);
-        debugger
+        //this.$store.dispatch('change_refresh_todo_list');
       },
 
       //获取待办toolbar数据
@@ -248,13 +257,10 @@
           ...this.params,
           processDefinitionKey:this.search,
           procDefKeyNotIn: this.processDefinitionKeyNotIn,
-          //assignee:289,//用户id
         };
+        if(!params.assignee) return;
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
           if (res.constructor == Array) {//返回正确
-
-
-
             this.todo_list_toolbar = res;
             let allCount = _(res).map('count').sum();
             this.$store.dispatch('change_todo_list_badge_count', allCount);

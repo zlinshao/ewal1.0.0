@@ -205,8 +205,8 @@
       }
     },
     async mounted() {
-      await this.getApprovalTypeList();
-      await this.getChoseApprovalTypeList();
+      //await this.getApprovalTypeList();
+      //await this.getChoseApprovalTypeList();
     },
     computed: {
       message_visible() {
@@ -219,6 +219,8 @@
       },
       message_visible(val) {
         if (val) {
+          this.getApprovalTypeList();
+          this.getChoseApprovalTypeList();
           this.getApprovalsList(1)
         }
         this.contract_detail_visible = false;

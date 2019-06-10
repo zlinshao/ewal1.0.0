@@ -167,6 +167,7 @@
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       },
 
+      //获取用户信息
       getUserInfo(res) {
         if (res) {
           this.$http.get(`${this.url}api/auth/user`).then(async res2 => {
@@ -185,14 +186,15 @@
                 };
                 let result = await that.$http.get(`${globalConfig.humanResource_server}organization/permission/all`, params);
                 if (result.code.endsWith('0')) {
-                  this.VALIDATE_PERMISSION = {};
+                  that.VALIDATE_PERMISSION = {};
                   _(result.data).forEach((o, index) => {
-                    this.VALIDATE_PERMISSION[o] = true;
+                    that.VALIDATE_PERMISSION[o] = true;
                   });
+                  that.$store.dispatch('change_refresh_todo_list');//刷新代办
                 }
               }
               await getPermission();
-              this.routerLink('/');
+              that.routerLink('/');
             }
           });
         }
