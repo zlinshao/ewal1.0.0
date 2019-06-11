@@ -35,7 +35,7 @@
     <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->
-    <coming-soon></coming-soon>
+<!--    <coming-soon></coming-soon>-->
   </div>
 
 </template>
