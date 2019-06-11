@@ -1775,7 +1775,6 @@
           case 'position'://岗位管理
             this.positionForm.depart = this.departInfo.name || '';
             //this.positionForm.org_id.push(this.departInfo.id);
-            debugger
             this.positionForm.org_id=[this.departInfo.id];
             this.addStaffVisible = true;
             break;
