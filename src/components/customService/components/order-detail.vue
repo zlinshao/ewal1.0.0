@@ -69,7 +69,7 @@
             <el-col :span='10'>
               <div class='detail_tit'>
                 <span>跟进进度</span>
-                <b @click='handleAddRecord'>+</b>
+                <b v-if="VALIDATE_PERMISSION['Order-Operate']" @click='handleAddRecord'>+</b>
               </div>
               <div class='detail_box scroll_bar'>
                 <div class="content flex" v-for='follow in follow_data' :key='follow.next_follow_time' v-if='follow_data'>
@@ -90,7 +90,7 @@
           </el-row>
         </div>
       </div>
-      <div class="dialog_footer">
+      <div v-if="VALIDATE_PERMISSION['Order-Operate']" class="dialog_footer">
         <el-button id='active-info' size="small" @click="handleTransfer">转交</el-button>
         <el-button id='active-info' size="small" @click="handleNotice">通知</el-button>
         <el-button id='active-danger' class='el-button-active' size="small" @click="handleEnd" v-if='moduleData.chosenTag!=338'>结束</el-button>

@@ -8,7 +8,7 @@
         <h1>科目</h1>
       </div>
       <div class="items-center listTopRight">
-        <el-tooltip content="新增" placement="bottom" :visible-arrow="false">
+        <el-tooltip v-show="VALIDATE_PERMISSION['Subject-Save']" content="新增" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="new_subject_visible = true"><b>+</b></div>
         </el-tooltip>
         <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
@@ -21,10 +21,10 @@
         <!--<el-checkbox>全选</el-checkbox>-->
         <span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>
         <span class="action-bar-name">
-                    <span class="edit" @click="handleOpenEdit(current_row)">编辑</span>
-                    <span class="edit" @click="handleMoveSubject(current_row)">迁移</span>
-                    <span class="edit" @click="handleUnUseSubject(current_row)">{{current_row.is_enable===2 ? '禁用' : '启用'}}</span>
-                    <span class="delete" @click="handleDeleteSubject(current_row)">删除</span>
+                    <span class="edit" v-if="VALIDATE_PERMISSION['Subject-Edit']" @click="handleOpenEdit(current_row)">编辑</span>
+                    <span class="edit" v-if="VALIDATE_PERMISSION['Subject-Migrate']" @click="handleMoveSubject(current_row)">迁移</span>
+                    <span class="edit" v-if="VALIDATE_PERMISSION['Subject-Enable']" @click="handleUnUseSubject(current_row)">{{current_row.is_enable===2 ? '禁用' : '启用'}}</span>
+                    <span class="delete" v-if="VALIDATE_PERMISSION['Subject-Delete']" @click="handleDeleteSubject(current_row)">删除</span>
                 </span>
       </div>
       <div class="action-bar-right">
@@ -447,7 +447,9 @@
         this.edit_subject.subject_code = row.subject_code;
         this.edit_visible = true;
       },
+      //获取科目列表
       getSubjectList() {
+        if(!this.validatePermission('Subject-List')) return;
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'subject', this.params).then(res => {
           this.showLoading(false);

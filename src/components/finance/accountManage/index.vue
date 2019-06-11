@@ -21,11 +21,11 @@
         <!--<el-checkbox>全选</el-checkbox>-->
         <!--<span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">
-                    <span class="edit" @click="handleOpenUpdateAccount(current_row)">更新</span>
-                    <span class="edit" @click="handleOpenRecharge(current_row)">充值</span>
-                    <span class="edit" @click="initial_visible = true;">归零</span>
-                    <span class="edit" @click="handleOpenInfo(current_row)">记录</span>
-                    <span class="delete" @click="handleOpenDel(current_row)">删除</span>
+                    <span class="edit" v-if="VALIDATE_PERMISSION['Account-Edit']" @click="handleOpenUpdateAccount(current_row)">更新</span>
+                    <span class="edit" v-if="VALIDATE_PERMISSION['Account-Recharge']" @click="handleOpenRecharge(current_row)">充值</span>
+                    <span class="edit" v-if="VALIDATE_PERMISSION['Account-Archive']" @click="initial_visible = true;">归零</span>
+                    <span class="edit" v-if="VALIDATE_PERMISSION['Account-Change-Log']" @click="handleOpenInfo(current_row)">记录</span>
+                    <span class="delete" v-if="VALIDATE_PERMISSION['Account-Delete']" @click="handleOpenDel(current_row)">删除</span>
                 </span>
       </div>
       <div class="action-bar-right">
@@ -542,7 +542,9 @@
           return false;
         }
       },
+      //获取账户列表
       getAccountList() {
+        if(!this.validatePermission('Account-List')) return;
         this.$http.get(globalConfig.temporary_server + 'account', this.params).then(res => {
           if (res.code === 200) {
             this.cate = res.data.cate;

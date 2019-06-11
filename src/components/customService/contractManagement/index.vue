@@ -41,7 +41,7 @@
           <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
           <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
           <el-table-column label="审核状态" prop="check_status_name" align="center"></el-table-column>
-          <el-table-column label="操作" align="center">
+          <el-table-column v-if="VALIDATE_PERMISSION['Contract-Operate']" label="操作" align="center">
             <template slot-scope="scope">
               <!--<el-button type="primary" plain size="mini">查看审核记录</el-button>-->
               <!--<el-button type="warning" plain size="mini" @click="handleLookBackInfo(scope.row)">查看回访记录</el-button>-->
@@ -1257,6 +1257,7 @@ export default {
     //双击详情
     handleGetDetail (row) {
       this.currentRow = row;
+      if(!this.validatePermission('Contract-Operate')) return;
       // this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/9397`).then(res => {
       this.$http.get(this.url + `v1.0/market/contract/${row.contract_type}/${row.contract_id}`).then(res => {
         if (res.code === 200) {
@@ -1386,6 +1387,7 @@ export default {
     },
     //获取合同列表
     getContractList () {
+      if(!this.validatePermission('Contract-Read')) return;
       this.showLoading(true);
       this.$http.get(this.url + 'v1.0/market/contract', this.params).then(res => {
         if (res.code === 200) {
