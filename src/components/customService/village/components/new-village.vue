@@ -38,7 +38,7 @@
                 <el-col :span="6">
                   <el-form-item label="街道">
                     <el-select v-model="new_village_form.region" placeholder="请选择">
-                      <el-option v-for="item in region_list" :key="item.region_name" :value="item.region_id"
+                      <el-option v-for="item in region_list" :key="item.region_id" :value="item.region_id"
                                  :label="item.region_name"></el-option>
                     </el-select>
                   </el-form-item>
