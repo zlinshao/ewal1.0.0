@@ -253,7 +253,13 @@
                     <span class='tit'>回访状态</span>
                     <span class="content">{{recordDetail.is_connect ?'已回访':'未回访'}}</span>
                   </div>
-                  <div>
+                    <div>
+                    <span class='tit'>合同链接</span>
+                    <span class="content">
+                      <a :href="recordDetail.e_contract" target='_blank'>{{recordDetail.e_contract}}</a>
+                    </span>
+                  </div>
+                  <!-- <div>
                     <span class='tit'>其他附件</span>
                     <div class='content content_album'>
                       <div v-for='(item,key) in recordDetail.album' :key="key" class='imgs_box' v-if='key !="photo"'>
@@ -261,7 +267,7 @@
                         <lj-upload size="40" v-model="recordDetail.album[key]" disabled=true :download='false'></lj-upload>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </el-col>
               </el-row>
             </el-col>
