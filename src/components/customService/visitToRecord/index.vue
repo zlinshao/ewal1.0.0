@@ -102,7 +102,32 @@
               </el-row>
             </el-col>
           </el-row>
-
+          <el-row :gutter="20" class='add_record_form'>
+            <el-col v-if="recordOption.from=='中介' && recordOption.is_connect =='1' " :span="6" class='record-name'>
+              <p><i class='icon'></i>中介名称</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_name" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.from=='中介' && recordOption.is_connect =='1' " :span="6" class='freePay'>
+              <p><i class='icon'></i>中介价格</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_price" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+            <el-col v-if="recordOption.from=='中介' && recordOption.is_connect =='1' " :span="6" class='record-username'>
+              <p><i class='icon'></i>中介人</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_user" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+             <el-col v-if="recordOption.from=='中介' && recordOption.is_connect =='1' " :span="6" class='contact'>
+              <p><i class='icon'></i>中介电话</p>
+              <div class='input_box'>
+                <el-input v-model="recordOption.agent_phone" placeholder="请输入"></el-input>
+              </div>
+            </el-col>
+          </el-row>
           <el-row :gutter="20" class='add_record_form'>
             <el-col v-if="recordOption.is_connect==1" :span="6" class='satisfied'>
               <p><i class='icon'></i>满意度</p>
@@ -112,56 +137,24 @@
               </div>
             </el-col>
             <el-col :span="18" class='note'>
-              <p><i class='icon'></i>备注</p>
+              <p id="notep"><i class='icon'></i>备注</p>
               <div class='input_box'>
                 <el-input v-model="recordOption.record" placeholder="请输入"></el-input>
               </div>
             </el-col>
           </el-row>
-
           <el-row :gutter="20" class='add_record_form'>
-
             <el-col v-if="recordOption.from=='中介'" :span="6" class='record-user'>
               <p><i class='icon'></i><span>是否中介单</span></p>
               <div class='input_box'>
-                <el-select v-model="recordOption.is_agency_order" clearable>
+                <el-select v-model="recordOption.is_agency_order"  disabled clearable>
                   <el-option value="1" label="是"></el-option>
                   <el-option value="2" label="否"></el-option>
                 </el-select>
               </div>
             </el-col>
-
-            <el-col v-if="recordOption.from=='中介'" :span="6" class='record-name'>
-              <p><i class='icon'></i>中介名称</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.agent_name" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-            <el-col v-if="recordOption.from=='中介'" :span="6" class='freePay'>
-              <p><i class='icon'></i>中介价格</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.agent_price" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-            <el-col v-if="recordOption.from=='中介'" :span="6" class='record-username'>
-              <p><i class='icon'></i>中介人</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.agent_user" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-
           </el-row>
-
-
-          <el-row :gutter="20" class='add_record_form'>
-
-            <el-col v-if="recordOption.from=='中介'" :span="6" class='contact'>
-              <p><i class='icon'></i>中介电话</p>
-              <div class='input_box'>
-                <el-input v-model="recordOption.agent_phone" placeholder="请输入"></el-input>
-              </div>
-            </el-col>
-
+          <el-row :gutter="20" class='add_record_form' v-if="recordOption.from=='中介' && recordOption.is_connect =='1' ">
             <el-col :span="6" class='freePay'>
               <p><i class='icon'></i><span>信息审核</span></p>
               <div class='input_box'>
@@ -169,14 +162,12 @@
                 <el-radio v-model="recordOption.data_check_result" label="normal">正常</el-radio>
               </div>
             </el-col>
-
             <el-col v-if="recordOption.data_check_result=='doubt'" :span="12" class='record-reason'>
               <p style="width: 120px"><i class='icon'></i><span>存疑原因</span></p>
               <div class='input_box'>
                 <el-input placeholder="请输入" v-model="recordOption.doubt_reason"></el-input>
               </div>
             </el-col>
-
           </el-row>
 
           <el-row :gutter="10" class="detail" v-if='recordDetail'>
@@ -274,13 +265,6 @@
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span='6' class='detail_col'>
-              <h5>房屋信息</h5>
-              <div class='detail_col_box'>
-                <span class='tit'>房屋地址</span>
-                <span class="content">{{recordDetail.house_extension && recordDetail.house_extension.address || '--'}}</span>
-              </div>
-            </el-col>
             <el-col :span='6' class='detail_col' v-if='recordDetail.is_agency == 1'>
               <h5>中介信息</h5>
               <div class='detail_col_box  detail_col_box2'>
@@ -290,7 +274,7 @@
                 </div>
                 <div>
                   <span class='tit'>中介价格</span>
-                  <span class="content">{{recordDetail.agency_info && recordDetail.agency_info.agency_price_now || '--'
+                  <span class="content">{{recordDetail.agency_info && recordDetail.agency_info.agency_price || '--'
                     + "元"}}</span>
                 </div>
                 <div>
@@ -302,6 +286,13 @@
                   <span class='tit'>中介电话</span>
                   <span class="content">{{recordDetail.agency_info && recordDetail.agency_info.agency_phone || '--'}}</span>
                 </div>
+              </div>
+            </el-col>
+             <el-col :span='6' class='detail_col'>
+              <h5>房屋信息</h5>
+              <div class='detail_col_box'>
+                <span class='tit'>房屋地址</span>
+                <span class="content">{{recordDetail.house_extension && recordDetail.house_extension.address || '--'}}</span>
               </div>
             </el-col>
           </el-row>
@@ -609,8 +600,9 @@ export default {
       this.recordOption.contract_number = row.contract_number
       this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
-          this.recordDetail = res.data
-          this.add_visible = true
+          this.recordDetail = res.data;
+          this.recordOption.is_agency_order = this.recordDetail.is_agency == 0 ? '2' : this.recordDetail.is_agency.toString();
+          this.add_visible = true;
         }
       })
     },
@@ -740,4 +732,7 @@ export default {
     align-items: center;
   }
 }
+//  .notep{
+//     margin-right: 30px;
+//   }
 </style>
