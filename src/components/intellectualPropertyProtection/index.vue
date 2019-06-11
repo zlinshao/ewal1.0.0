@@ -1,5 +1,6 @@
 <template>
   <div id="intellectualPropertyProtection">
+    <coming-soon></coming-soon>
     <div>
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
