@@ -285,7 +285,6 @@
         let params = {
           title: '',
           size: 24,
-          assignee: this.$storage.get('user_info').id,
         };
         for (let key of Object.keys(val)) {
           params[key] = val[key]
