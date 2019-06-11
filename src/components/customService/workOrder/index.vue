@@ -197,7 +197,9 @@ export default {
         }
       })
     },
+    //获取工单管理列表
     getDataList () {
+      if(!this.validatePermission('Order-Read')) return;
       this.showLoading(true);
       let params = {
         type: this.searchParams.type || 0,
