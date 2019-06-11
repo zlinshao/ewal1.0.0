@@ -1,5 +1,6 @@
 <template>
   <div id="repository">
+    <coming-soon></coming-soon>
     <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
