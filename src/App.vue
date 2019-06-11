@@ -2,12 +2,12 @@
   <div id="app" class="scroll_bar" :class="'app' + theme_name">
     <header class="items-bet">
       <div class="headLeft items-center">
-        <span class="items-center" style="width: 220px">
-          <!--<span>南京</span>
+        <!--<span class="items-center" style="width: 220px">
+          &lt;!&ndash;<span>南京</span>
           <b>❄</b>
           <span>小雪</span>
-          <label>-1～1.5°C</label>-->
-        </span>
+          <label>-1～1.5°C</label>&ndash;&gt;
+        </span>-->
         <span @click="showModules()" class="showButton">
           EWAL
         </span>
@@ -24,13 +24,14 @@
 <!--          <app-index-more :router-list="more_list">更多</app-index-more>-->
         </div>
         <div class="items-center personal">
-          <span>{{$storage.get('user_info').name||'乐伽'}}</span>
+
           <app-index-more type="click" :show.sync="showPersonal" :router-list="personal_center_list">
             <p @click="showPersonal = !showPersonal">
               <img v-if="photoUrl" :src="photoUrl">
               <img v-else src="./assets/image/no_avatar.png">
             </p>
           </app-index-more>
+          <span>{{$storage.get('user_info').name||'乐伽'}}</span>
 <!--          <span class="icon3024 icon_mess" @click="routerLink('/messageCenter')"></span>-->
           <!-- <span title="个人中心" @click="routerLink('/personalCenter')" class="icon3024 icon-personal-center"></span> -->
         </div>

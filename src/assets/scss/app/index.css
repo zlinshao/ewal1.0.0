@@ -310,6 +310,11 @@
   color: #cf2e33;
   border-color: #cf2e33;
 }
+#app header .items-center {
+  /*.personal div {
+    margin-left: 0;
+  }*/
+}
 #app header .items-center .funTop {
   height: 45px;
   margin-right: 40px;
@@ -354,20 +359,29 @@
   opacity: 1;
   display: block;
 }
-#app header .items-center .personal div {
-  margin-left: 30px;
-}
-#app header .items-center .personal,
 #app header .items-center .funTop {
   cursor: pointer;
 }
-#app header .items-center .personal span,
 #app header .items-center .funTop span {
   margin: 0 30px;
   white-space: nowrap;
 }
-#app header .items-center .personal p,
 #app header .items-center .funTop p {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 45px;
+  height: 45px;
+}
+#app header .items-center .personal {
+  cursor: pointer;
+}
+#app header .items-center .personal span {
+  margin: 0;
+  white-space: nowrap;
+}
+#app header .items-center .personal p {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
