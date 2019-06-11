@@ -205,8 +205,8 @@
       }
     },
     async mounted() {
-      //await this.getApprovalTypeList();
-      //await this.getChoseApprovalTypeList();
+      // await this.getApprovalTypeList();
+      // await this.getChoseApprovalTypeList();
     },
     computed: {
       message_visible() {
@@ -385,8 +385,14 @@
         await axios.get(`${this.url}monitor/process-instances/${this.$storage.get('user_info').id}`).then(res => {
           if (res.status == 200) {
             let data = res.data;
+            //  console.log(' this.data',  data.length);
+             if(data.length>1){
+                this.receive_check =[];
+             }
             _.forEach(data, (o) => {
+              // console.log(' this.receive_check',  this.receive_check);
               this.receive_check.push(o.receiveType);
+              // console.log('this.receive_type[o.receiveType]', this.receive_type, o.receiveType);
               this.receive_check_name.push(this.receive_type[o.receiveType]);
             });
           }
@@ -414,6 +420,12 @@
               this.approval_type_list.push(obj);
             });
             this.receive_type = data;
+            if(this.receive_check.length==0) {
+              _.forEach(data,(value, key)=> {
+                this.receive_check.push(key);
+                this.receive_check_name.push(value);
+              });
+            }
           }
         });
       },
