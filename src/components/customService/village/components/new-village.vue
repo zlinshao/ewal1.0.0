@@ -65,7 +65,7 @@
                 </el-col>
                 <el-col :span="6">
                   <el-form-item label="建筑年代">
-                    <el-date-picker format="yyyy" type="year" placeholder="请输入"
+                    <el-date-picker format="yyyy" type="year"  value-format="yyyy" placeholder="请输入"
                                     v-model="new_village_form.built_year"></el-date-picker>
                   </el-form-item>
                 </el-col>
