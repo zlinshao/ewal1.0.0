@@ -12,7 +12,7 @@
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>
         </el-tooltip>
-        <el-tooltip content="新增应付款项" placement="bottom" :visible-arrow="false">
+        <el-tooltip v-show="VALIDATE_PERMISSION['Payable-Save']" content="新增应付款项" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="openAdd"><b>+</b></div>
         </el-tooltip>
         <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
@@ -27,7 +27,7 @@
 
         <span class="action-bar-name">
                     <span v-for="(item,index) in btnData"
-                          v-show="!item.show"
+                          v-show="item.show"
                           :key="index"
                           :class="item.class"
                           @click="handleClickBtn(item.methods,current_row,index,item.key)">
@@ -467,8 +467,8 @@
         <div class="dialog_header justify-bet">
           <h3>批量入账</h3>
           <h3 class="batchEntry-icon">
-            <i class="" @click="out_account_visible = true"></i>
-            <i class="" @click="import_account_visible = true"></i>
+            <i class="" v-if="VALIDATE_PERMISSION['Batch-Payable-Export']" @click="out_account_visible = true"></i>
+            <i class="" v-if="VALIDATE_PERMISSION['Batch-Payable-Import']" @click="import_account_visible = true"></i>
           </h3>
         </div>
         <div class="dialog_main changeChoose">
@@ -760,7 +760,8 @@
             methods: "handleEditPay",
             content: "金额",
             key: "pay_visible",
-            class: 'edit'
+            class: 'edit',
+            show: this.VALIDATE_PERMISSION['Payable-Amount'],
           },
           {
             label: "",
@@ -770,7 +771,8 @@
             methods: "handleSub",
             content: "科目",
             key: "show_subject",
-            class: 'edit'
+            class: 'edit',
+            show:this.VALIDATE_PERMISSION['Payable-Edit-Subject'],
           },
           {
             label: "",
@@ -780,7 +782,8 @@
             methods: "handleComplete",
             content: "补齐时间",
             key: "complete_visible",
-            class: 'edit'
+            class: 'edit',
+            show:this.VALIDATE_PERMISSION['Payable-Complete-Date'],
           },
           {
             label: "",
@@ -791,7 +794,7 @@
             content: "应付时间",
             key: "payData_visible",
             class: 'edit',
-            show:this.VALIDATE_PERMISSION['Payable-Complete-Date']
+            show:this.VALIDATE_PERMISSION['Payable-Pay-Date']
           },
           {
             label: "",
@@ -801,7 +804,8 @@
             methods: "handleComplete",
             content: "应付入账",
             key: "transfer_visible",
-            class: 'edit'
+            class: 'edit',
+            show:this.VALIDATE_PERMISSION['Payable-Transfer'],
           },
           {
             label: "",
@@ -811,7 +815,8 @@
             methods: "handleProcess",
             content: "回滚",
             key: "recall_visible",
-            class: 'edit'
+            class: 'edit',
+            show:this.VALIDATE_PERMISSION['Payable-Revert'],
           },
           {
             label: "",
@@ -821,7 +826,8 @@
             methods: "handleDelete",
             content: "删除",
             key: "delete_visible",
-            class: 'delete'
+            class: 'delete',
+            show:this.VALIDATE_PERMISSION['Payable-Delete'],
           },
         ],
         accountLists: [],
@@ -910,9 +916,11 @@
       },
       openBatchEntry() {
         this.batchEntry_visible = true;
-        this.getBatchEntryData();
+        this.getBatchEntryList();
       },
-      getBatchEntryData() {
+      //获取应付批量入账列表
+      getBatchEntryList() {
+        if(!this.validatePermission('Batch-Payable-List')) return;
         this.$http.get(globalConfig.temporary_server + "batch_payable", this.batchEntryParams).then(res => {
           if (res.code === 200) {
             this.batchEntryData = res.data.data;
@@ -934,7 +942,7 @@
       },
       handleBatchEntryChangePage(page) {//批量入账分页
         this.batchEntryParams.page = page;
-        this.getBatchEntryData();
+        this.getBatchEntryList();
       },
       openCustomer() {//客户组件
         this.customerModule = true;

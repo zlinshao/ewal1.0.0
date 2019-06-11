@@ -24,7 +24,7 @@
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>
         </el-tooltip>
-        <el-tooltip content="新增应收款项" placement="bottom" :visible-arrow="false">
+        <el-tooltip v-show="VALIDATE_PERMISSION['Receivable-Save']" content="新增应收款项" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="openAdd"><b>+</b></div>
         </el-tooltip>
         <el-tooltip content="收款记录" placement="bottom" :visible-arrow="false">
@@ -41,6 +41,7 @@
         <!--<span class="check-count">已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">
                     <span v-for="(item,index) in btn_group"
+                          v-show="item.show"
                           :key="index"
                           :class="item.class"
                           @click="handleClickBtn(item.key,current_row)">
@@ -587,7 +588,7 @@
           <iframe :src="receipt_detail_dialog_data.view_uri"></iframe>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="warning" @click="editUserName">修改姓名</el-button>
+          <el-button v-if="VALIDATE_PERMISSION['Receivable-Receipt-Name']" size="small" type="warning" @click="editUserName">修改姓名</el-button>
           <el-button size="small" type="danger" @click="beforeSend">发送</el-button>
           <el-button size="small" @click="receipt_detail_dialog_visible=false">取消</el-button>
         </div>
@@ -1010,8 +1011,8 @@
         <div class="dialog_header justify-bet">
           <h3>批量入账</h3>
           <h3 class="batchEntry-icon">
-            <i class="" @click="out_account_visible = true"></i>
-            <i class="" @click="import_account_visible = true"></i>
+            <i class="" v-if="VALIDATE_PERMISSION['Batch-Receivable-Export']" @click="out_account_visible = true"></i>
+            <i class="" v-if="VALIDATE_PERMISSION['Batch-Receivable-Import']" @click="import_account_visible = true"></i>
           </h3>
         </div>
         <div class="dialog_main changeChoose">
@@ -1228,15 +1229,15 @@
                 phone: val[0].customer?.contact || '',
               };
               this.btn_group = [
-                {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit'},
-                {val: '登记收款', key: 'register', type: 'warning', class: 'edit'},
-                {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
-                {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
-                {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
-                {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit'},
-                {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit'},
-                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
-                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
+                {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Urgetag']},
+                {val: '登记收款', key: 'register', type: 'warning', class: 'edit',show:true},
+                {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Receive']},
+                {val: '开收据', key: 'receipt', type: 'edit', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Receipt']},
+                {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Revert']},
+                {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Liquid']},
+                {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Complete-Date']},
+                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Notify']},
+                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.VALIDATE_PERMISSION['Receivable-Delete']}]
 
             } else if (val.length == 0) {
               this.action_visible = false;
@@ -1244,8 +1245,8 @@
               this.current_row = '';
               this.action_visible = true;
               this.btn_group = [
-                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
-                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},]
+                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Notify']},
+                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.VALIDATE_PERMISSION['Receivable-Delete']},]
             }
           }
         },
@@ -1551,15 +1552,15 @@
         },
         btn_group: [
           // {val: '跟进列表', key: 'record', type: 'success',class:'edit'},
-          {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit'},
-          {val: '登记收款', key: 'register', type: 'warning', class: 'edit'},
-          {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit'},
-          {val: '开收据', key: 'receipt', type: 'edit', class: 'edit'},
-          {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit'},
-          {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit'},
-          {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit'},
-          {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit'},
-          {val: '删除', key: 'handleDelete', type: 'success', class: 'delete'},
+          {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Urgetag']},
+          {val: '登记收款', key: 'register', type: 'warning', class: 'edit',show:true},
+          {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Receive']},
+          {val: '开收据', key: 'receipt', type: 'edit', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Receipt']},
+          {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Revert']},
+          {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Liquid']},
+          {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Complete-Date']},
+          {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Notify']},
+          {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.VALIDATE_PERMISSION['Receivable-Delete']}
 
         ],
         searchData: {},
@@ -1727,13 +1728,15 @@
       },
       handleBatchEntryChangePage(page) {//批量入账分页
         this.batchEntryParams.page = page;
-        this.getBatchEntryData();
+        this.getBatchEntryList();
       },
       openBatchEntry() {
         this.batchEntry_visible = true;
-        this.getBatchEntryData();
+        this.getBatchEntryList();
       },
-      getBatchEntryData() {
+      //获取批量入账列表
+      getBatchEntryList() {
+        if(!this.validatePermission('Batch-Receivable-List')) return;
         this.$http.get(globalConfig.temporary_server + "batch_receivable", this.batchEntryParams).then(res => {
           if (res.code === 200) {
             this.batchEntryData = res.data.data;
@@ -2266,6 +2269,7 @@
       },*/
 
       getReceiveList() {//加载应收款列表
+        if(!this.validatePermission('Receivable-List')) return;
         this.showLoading(true);
         this.$http.get(globalConfig.temporary_server + 'account_receivable', this.params).then(async res => {
           this.showLoading(false);

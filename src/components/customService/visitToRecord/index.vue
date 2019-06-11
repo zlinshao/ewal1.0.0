@@ -24,7 +24,7 @@
         header-row-class-name="tableHeader" style="width: 100%">
         <el-table-column v-for="item in Object.keys(tableShowDate)" :key="item" align="center" :prop="item" :label="tableShowDate[item]">
         </el-table-column>
-        <el-table-column width="200" label="操作" align="center">
+        <el-table-column width="200" v-if="VALIDATE_PERMISSION['Revisit-Operate']" label="操作" align="center">
           <template slot-scope="scope">
             <div class="flex-center">
               <el-button id='active-success' size="mini" @click.stop="handleAddRecord(scope.row)">新增回访记录</el-button>
@@ -529,6 +529,7 @@ export default {
 
     //初始化数据
     getRecordList () {
+      if(!this.validatePermission('Revisit-Read')) return;
       this.showLoading(true);
       this.params.type = this.chooseTab
       this.params.status = this.accessTab
