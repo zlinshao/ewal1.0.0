@@ -70,7 +70,7 @@ axios.interceptors.response.use(response => {
         console.log(`连接错误${err.response.status}`)
     }
   } else {
-    common.open4('连接到服务器失败');
+    //common.open4('连接到服务器失败');
     console.log('连接到服务器失败')
   }
   return Promise.resolve(err.response);
