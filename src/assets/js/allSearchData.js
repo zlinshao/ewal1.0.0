@@ -1784,10 +1784,7 @@ export const contractManagementSearch = {
             title: '合同性质',
             keyName: 'type',
             dataType: '',
-            value: this.chooseTab === 1 ? [
-                { id: 1, title: '新收' },
-                { id: 2, title: '续收' }
-            ] : [
+            value: [
                 { id: 1, title: '新租' },
                 { id: 2, title: '转租' },
                 { id: 3, title: '续租' },

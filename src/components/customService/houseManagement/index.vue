@@ -174,6 +174,18 @@
                 </el-table-column>
                 <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
               </el-table>
+              <el-table :data="furniture_list" height="250" v-show="current_house_type === 8">
+                <el-table-column label="房屋户型" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="面积" prop="follow_content" align="center"></el-table-column>
+                <el-table-column label="装修" prop="warning_name" align="center"></el-table-column>
+                 <el-table-column label="成交日期" prop="follow_name" align="center"></el-table-column>
+                <!-- <el-table-column label="照片" prop="album_photo" align="center">
+                  <template slot-scope="scope">
+                    <i class="el-icon-picture" @click="handleOpenLookPic(scope.row)"></i>
+                  </template>
+                </el-table-column> -->
+                <el-table-column label="成交价" prop="follow_name" align="center"></el-table-column>
+              </el-table>
       </div>
             </div>
             <div class="page">
@@ -555,10 +567,10 @@
             id: 7,
             val: '租房合同'
           },
-          // {
-          //   id: 8,
-          //   val: '报备管理'
-          // },
+          {
+            id: 8,
+            val: '报备管理'
+          },
         ],
         current_house_type: 1,
         table_params: {
@@ -710,6 +722,9 @@
             break;
           case 4:
             this.handlePolishFurniture(this.current_house.id);
+            break;
+            case 8:
+           this.handlePolishFurniture(this.current_house.id);
             break;
 
         }

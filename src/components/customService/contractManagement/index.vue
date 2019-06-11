@@ -1421,6 +1421,20 @@ export default {
     //打开高级
     handleOpenHigh () {
       this.searchData=this.contractManagementSearch;
+      if(this.chooseTab == 1) {
+        this.searchData.data[1].value=[
+                { id: 1, title: '新收' },
+                { id: 2, title: '续收' }
+            ];
+      } else {
+        this.searchData.data[1].value=[
+                { id: 1, title: '新租' },
+                { id: 2, title: '转租' },
+                { id: 3, title: '续租' },
+                /*{ id: 4, title: '未收先租' },*/
+                { id: 5, title: '调租' },
+            ]
+      }
       // this.searchData = {
       //   status: 'contractManagement',
       //   keywords: 'search',
