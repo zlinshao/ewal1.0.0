@@ -737,7 +737,6 @@
               this.current_choose = '';
               this.village_params.city = '';
               this.village_params.province = '';
-              this.getCityListal = '选城市';
               return false;
             }
             //清空area
@@ -754,7 +753,6 @@
             }else {//其他地区
               this.village_params.city = item.code;
             }
-
             this.address_filter[0].val = item.name;
             this.current_choose = item.code;
             break;

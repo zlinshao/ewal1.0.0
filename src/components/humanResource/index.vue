@@ -67,8 +67,8 @@
           {value: 20,name: '紧急'},
         ],
         staff_time: {
-          start_time: '',
-          end_time: ''
+          start_time: this.myUtils.formatDate(new Date(),'yyyy-MM-dd'),
+          end_time: this.myUtils.formatDate(new Date(),'yyyy-MM-dd'),
         },
         staff_info: {
           dismiss: '',
@@ -94,8 +94,8 @@
       clickMark(tmp) {
         switch (tmp.id) {
           case 1:
-            this.staff_time.end_time = '';
-            this.staff_time.start_time = '';
+            this.staff_time.end_time = this.myUtils.formatDate(new Date(),'yyyy-MM-dd');
+            this.staff_time.start_time = this.myUtils.formatDate(new Date(),'yyyy-MM-dd');
             break;
           case 2:
             let date = new Date().getDay();
