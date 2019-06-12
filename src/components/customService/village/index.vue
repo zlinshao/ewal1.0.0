@@ -517,7 +517,7 @@
         this.new_village_visible = false;
         setTimeout(() => {
           this.getVillageList();
-        },2000);
+        },200);
       },
       handleEditVillage(village) {
         this.edit_info = village;
@@ -757,7 +757,6 @@
             this.current_choose = item.code;
             break;
           case 'area':
-            debugger
             if (item.area_id === this.current_choose) {
               this.address_filter[1].val = '选区域';
               this.village_params.area = '';

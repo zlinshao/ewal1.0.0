@@ -10,7 +10,7 @@
             <div @click="getCurrentList(item,index)" class="item-detail" :class="{'checked':checked==(index+1)}"
                  v-for="(item,index) in todo_list_toolbar">
               <span v-if="item.count">{{item.count}}</span>
-              <i :class="{'multi-font':item.name.length>3}">{{item.name}}</i>
+              <i :class="{'multi-font':item.name.length>=3}">{{item.name}}</i>
             </div>
           </div>
           <div class="search-bar">
@@ -127,7 +127,7 @@
           title: '',
           page: 1,
           size: 10,//每页条数
-          assignee: this.$storage.get('user_info').id,
+          //assignee: this.$storage.get('user_info').id,
         },
         checked: 1,//选择哪个toolbar
         categoryKey: '',
@@ -141,9 +141,15 @@
         * jczx_approval  稽查中心审批
         *
         * */
-        taskDefinitionKey:'jczx_approval',
+        taskDefinitionKeyNotIn:'Return-visit',
         //,Market-HouseCleaning,Market-HouseRepair,Market-CompleteData,HandoverOrder
-        processDefinitionKeyNotIn: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
+        /*
+        * Market-RentCompletionData 租房资料补齐
+        * HandoverOrder 交接
+        * Rent-Retainage 尾款报备
+        *
+        * */
+        processDefinitionKeyNotIn: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory,Market-RentCompletionData,HandoverOrder,Rent-Retainage',//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
           {
@@ -258,7 +264,7 @@
           processDefinitionKey:this.search,
           procDefKeyNotIn: this.processDefinitionKeyNotIn,
         };
-        if(!params.assignee) return;
+        //if(!params.assignee) return;
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
           if (res.constructor == Array) {//返回正确
             this.todo_list_toolbar = res;
@@ -292,6 +298,8 @@
         }
         let params = {
           ...this.params,
+          //taskDefinitionKey:this.taskDefinitionKey,
+          taskDefinitionKeyNotIn:this.taskDefinitionKeyNotIn,
           //assignee:this.$storage.get('user_info').id,
           processDefinitionKey: item.key || categoryKey || '',
           //processDefinitionKey: this.taskDefinitionKey,
