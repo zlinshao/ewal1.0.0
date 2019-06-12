@@ -166,26 +166,8 @@
         checked: 1,//选择哪个toolbar
         categoryKey: '',
         categoryChecked: 0,
-        /*
-        * Agency-Supervision
-        *
-        * */
-        //processDefinitionKey:'Agency-Supervision',
         processDefinitionKey:Object.keys(processDefinitionKey).join(','),
-        /*
-        * jczx_approval  稽查中心审批
-        *
-        * */
-        //taskDefinitionKeyNotIn:'Return-visit',
         taskDefinitionKeyNotIn:Object.keys(taskDefinitionKeyNotIn).join(','),
-        //,Market-HouseCleaning,Market-HouseRepair,Market-CompleteData,HandoverOrder
-        /*
-        * Market-RentCompletionData 租房资料补齐
-        * HandoverOrder 交接
-        * Rent-Retainage 尾款报备
-        *
-        * */
-        //processDefinitionKeyNotIn: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory,Market-RentCompletionData,HandoverOrder,Rent-Retainage',//pc端不需要的category及列表 筛选
         processDefinitionKeyNotIn: Object.keys(processDefinitionKeyNotIn).join(','),//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
@@ -196,85 +178,6 @@
             count: 0,
           },
         ],
-        /*todo_list_container: [
-          {
-            id: 1,
-            name: '维修工单',
-            tip: '距离考试20分钟',
-            money: '扣款200元',
-            project: '研发中心会议',
-            onClick: 'humanResource_interview' //click事件控制lj-dialog显示隐藏
-          },
-          {
-            id: 2,
-            name: '资料补齐',
-            user: '张无忌',
-            date: '2019-03-22',
-            location: '艺术家工厂',
-            onClick: 'humanResource_interview_evaluate' //click事件控制lj-dialog显示隐藏
-          },
-          {
-            id: 3,
-            name: '资料补齐',
-            user: '张无忌',
-            money: '扣款200元',
-            project: '研发中心会议',
-            onClick: 'humanResource_attence'
-          },
-          {
-            id: 4,
-            name: '资料补齐',
-            user: '张无忌',
-            date: '2019-03-22',
-            project: '研发中心会议',
-            onClick: 'humanResource_finespayment'
-          },
-          {
-            id: 5,
-            name: '资料补齐',
-            date: '2019-03-22',
-            tip: '距离考试20分钟',
-            money: '扣款200元',
-            onClick: 'humanResource_answer_test_paper',
-          },
-          {
-            id: 6,
-            name: '资料补齐',
-            user: '张无忌',
-            date: '2019-03-22',
-            location: '艺术家工厂'
-          },
-          {
-            id: 7,
-            name: '资料补齐',
-            user: '张无忌',
-            money: '扣款200元',
-            project: '研发中心会议'
-          },
-          {
-            id: 8,
-            name: '资料补齐',
-            tip: '距离考试20分钟',
-            money: '扣款200元',
-            project: '研发中心会议'
-          },
-          {
-            id: 9,
-            name: '文职入职考试',
-            tip: '距离考试20分钟',
-            money: '扣款200元',
-            project: '研发中心会议'
-          },
-          {
-            id: 10,
-            name: '领取通知',
-            date: '2019-03-22',
-            user: '张无忌',
-            location: '财务部领取',
-            project: '借用审批编号10086',
-            onClick: 'humanResource_repository' //click事件控制lj-dialog显示隐藏
-          }
-        ],*/
 
         todo_list_container: [],
       }
@@ -299,6 +202,7 @@
         let params = {
           ...this.params,
           processDefinitionKey:this.search,
+          taskDefinitionKeyNotIn:this.taskDefinitionKeyNotIn,
           procDefKeyNotIn: this.processDefinitionKeyNotIn,
         };
         //if(!params.assignee) return;
@@ -336,16 +240,14 @@
         let params = {
           ...this.params,
           //taskDefinitionKey:this.taskDefinitionKey,
-          taskDefinitionKeyNotIn:this.taskDefinitionKeyNotIn,
-          //assignee:this.$storage.get('user_info').id,
+          //taskDefinitionKeyNotIn:this.taskDefinitionKeyNotIn,
           processDefinitionKey: item.key || categoryKey || '',
-          //processDefinitionKey: this.taskDefinitionKey,
           processDefinitionKeyNotIn: this.processDefinitionKeyNotIn,
         };
 
-        if(params.processDefinitionKey=='Agency-Supervision') {
+        /*if(params.processDefinitionKey=='Agency-Supervision') {
           params.taskDefinitionKey = 'jczx_approval';
-        }
+        }*/
 
         this.checked = categoryChecked || (index + 1);
         this.categoryChecked = this.checked;
