@@ -12,7 +12,7 @@
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>
         </el-tooltip>
-        <el-tooltip v-show="VALIDATE_PERMISSION['Payable-Save']" content="新增应付款项" placement="bottom" :visible-arrow="false">
+        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Payable-Save']" content="新增应付款项" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="openAdd"><b>+</b></div>
         </el-tooltip>
         <el-tooltip content="高级搜索" placement="bottom" :visible-arrow="false">
@@ -467,8 +467,8 @@
         <div class="dialog_header justify-bet">
           <h3>批量入账</h3>
           <h3 class="batchEntry-icon">
-            <i class="" v-if="VALIDATE_PERMISSION['Batch-Payable-Export']" @click="out_account_visible = true"></i>
-            <i class="" v-if="VALIDATE_PERMISSION['Batch-Payable-Import']" @click="import_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Export']" @click="out_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Payable-Import']" @click="import_account_visible = true"></i>
           </h3>
         </div>
         <div class="dialog_main changeChoose">
@@ -761,7 +761,7 @@
             content: "金额",
             key: "pay_visible",
             class: 'edit',
-            show: this.VALIDATE_PERMISSION['Payable-Amount'],
+            show: this.$storage.get('VALIDATE_PERMISSION')['Payable-Amount'],
           },
           {
             label: "",
@@ -772,7 +772,7 @@
             content: "科目",
             key: "show_subject",
             class: 'edit',
-            show:this.VALIDATE_PERMISSION['Payable-Edit-Subject'],
+            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Edit-Subject'],
           },
           {
             label: "",
@@ -783,7 +783,7 @@
             content: "补齐时间",
             key: "complete_visible",
             class: 'edit',
-            show:this.VALIDATE_PERMISSION['Payable-Complete-Date'],
+            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Complete-Date'],
           },
           {
             label: "",
@@ -794,7 +794,7 @@
             content: "应付时间",
             key: "payData_visible",
             class: 'edit',
-            show:this.VALIDATE_PERMISSION['Payable-Pay-Date']
+            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Pay-Date']
           },
           {
             label: "",
@@ -805,7 +805,7 @@
             content: "应付入账",
             key: "transfer_visible",
             class: 'edit',
-            show:this.VALIDATE_PERMISSION['Payable-Transfer'],
+            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Transfer'],
           },
           {
             label: "",
@@ -816,7 +816,7 @@
             content: "回滚",
             key: "recall_visible",
             class: 'edit',
-            show:this.VALIDATE_PERMISSION['Payable-Revert'],
+            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Revert'],
           },
           {
             label: "",
@@ -827,7 +827,7 @@
             content: "删除",
             key: "delete_visible",
             class: 'delete',
-            show:this.VALIDATE_PERMISSION['Payable-Delete'],
+            show:this.$storage.get('VALIDATE_PERMISSION')['Payable-Delete'],
           },
         ],
         accountLists: [],

@@ -100,13 +100,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" v-if="tabType == 1 && VALIDATE_PERMISSION['House-Due-Operate']" width='300'>
+        <el-table-column label="操作" align="center" v-if="tabType == 1 && $storage.get('VALIDATE_PERMISSION')['House-Due-Operate']" width='300'>
           <template slot-scope="scope" align='left'>
             <el-button type="success" plain size="mini" @click.stop="addOrEditHousingTag(scope.row,1)">添加标记</el-button>
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" v-if="tabType ==2 && VALIDATE_PERMISSION['House-Due-Operate']" width='300'>
+        <el-table-column label="操作" align="center" v-if="tabType ==2 && $storage.get('VALIDATE_PERMISSION')['House-Due-Operate']" width='300'>
           <template slot-scope="scope" align='left'>
             <div style='display:flex;justify-content:flex-start;align-items:center;'>
               <el-button id='active-warning' size="mini" @click.stop="readHousingTag(scope.row)">查看标记</el-button>
@@ -117,7 +117,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" v-if="tabType == 4 && VALIDATE_PERMISSION['House-Due-Operate']" width='300'>
+        <el-table-column label="操作" align="center" v-if="tabType == 4 && $storage.get('VALIDATE_PERMISSION')['House-Due-Operate']" width='300'>
           <template slot-scope="scope" align='left'>
             <el-button id='active-success' size="mini" @click.stop="addOrEditHousingTag(scope.row,1)">添加标记</el-button>
             <el-button id='active-success' size="mini" @click.stop="urgedDealWith(scope.row)">催办</el-button>

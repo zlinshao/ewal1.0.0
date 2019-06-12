@@ -18,13 +18,13 @@
           </div>
         </div>
         <div class="items-center listTopRight">
-          <el-button v-if="VALIDATE_PERMISSION['Community-Operate']" size="small" style="width: 80px" :disabled="current_check_village.length == 0" type="success" plain @click="handleAllotVillage">分配</el-button>
-          <el-button v-if="VALIDATE_PERMISSION['Community-Operate']" size="small" style="width: 80px" type="primary" plain @click="handleMergeVillage">合并</el-button>
+          <el-button v-if="$storage.get('VALIDATE_PERMISSION')['Community-Operate']" size="small" style="width: 80px" :disabled="current_check_village.length == 0" type="success" plain @click="handleAllotVillage">分配</el-button>
+          <el-button v-if="$storage.get('VALIDATE_PERMISSION')['Community-Operate']" size="small" style="width: 80px" type="primary" plain @click="handleMergeVillage">合并</el-button>
           <div class="sort-control flex-center">
             <span @click="handleChangeSort(item)" v-for="item in sort_list" :key="item.id + 1" :class="{'current-choose': current_sort === item.id }">{{ item.val }}</span>
           </div>
-          <div v-if="VALIDATE_PERMISSION['Community-Operate']" class="icons all-choose" @click="handleChooseAll"></div>
-          <div v-if="VALIDATE_PERMISSION['Community-Operate']" class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
+          <div v-if="$storage.get('VALIDATE_PERMISSION')['Community-Operate']" class="icons all-choose" @click="handleChooseAll"></div>
+          <div v-if="$storage.get('VALIDATE_PERMISSION')['Community-Operate']" class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
           <div class="icons search" @click="handleHighSearch"></div>
         </div>
       </div>
@@ -64,7 +64,7 @@
                     </span>
                   </span>
                   <span v-else>-</span>
-                  <el-button v-if="VALIDATE_PERMISSION['Community-Operate']" style="float: right;min-width: 80px" type="warning" plain size="mini" @click="handleEditVillage(village)">编辑</el-button>
+                  <el-button v-if="$storage.get('VALIDATE_PERMISSION')['Community-Operate']" style="float: right;min-width: 80px" type="warning" plain size="mini" @click="handleEditVillage(village)">编辑</el-button>
                 </p>
               </div>
               <div class="village-footer">

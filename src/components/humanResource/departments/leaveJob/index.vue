@@ -269,10 +269,7 @@
       handleLeaveProof(row) {
         //查看离职证明
         if (row.staff && row.staff.leave_proof_number) {
-          if(!this.VALIDATE_PERMISSION['Dimission-Certificate-Read']) {
-            this.$LjMessageNoPermission();
-            return;
-          }
+          if(!this.validatePermission('Dimission-Certificate-Read')) return;
           this.$http.get(`${this.url}staff/e_contract/show/${row.staff.leave_proof_number}`).then(res=>{
               if (res.code === '20010') {
                   // this.$LjNotify('dimission_sms',{
@@ -288,10 +285,7 @@
               }
           });
         } else {//发送离职证明
-          if(!this.VALIDATE_PERMISSION['Dimission-Certificate-Send']) {
-            this.$LjMessageNoPermission();
-            return;
-          }
+          if(!this.validatePermission('Dimission-Certificate-Send')) return;
           this.$http.get(`${this.url}staff/user/${row.id}/sendinfo`,{
             type: ['leave_proof_send']
           }).then(res => {
@@ -313,15 +307,9 @@
       //打开离职短信或离职群消息
       handleControlMsg(row,where) {
         if(where =='sms') {//离职短信权限验证
-          if(!this.VALIDATE_PERMISSION['Dimission-Message-Send']) {
-            this.$LjMessageNoPermission();
-            return;
-          }
+          if(!this.validatePermission('Dimission-Message-Send')) return;
         }else if(where =='announcement') {//离职群消息权限验证
-          if(!this.VALIDATE_PERMISSION['Dimission-News-Send']) {
-            this.$LjMessageNoPermission();
-            return;
-          }
+          if(!this.validatePermission('Dimission-News-Send')) return;
         }
         if (row.staff && row.staff.send_info && row.staff.send_info.forward_group === 1) {
           this.$LjMessage('success',{
@@ -341,10 +329,7 @@
       },
       /*查看离职交接单*/
       handleLookResignation(row) {
-        if(!this.VALIDATE_PERMISSION['Delivery-Recept-Read']) {
-          this.$LjMessageNoPermission();
-          return;
-        }
+        if(!this.validatePermission('Delivery-Recept-Read')) return;
         console.log(row);
       },
       /*获取离职列表*/
@@ -382,10 +367,7 @@
       },
       /*打开二次入职*/
       openSecondEntryDialog(row) {
-        if(!this.VALIDATE_PERMISSION['User-Second_Entry']) {
-          this.$LjMessageNoPermission();
-          return;
-        }
+        if(!this.validatePermission('User-Second_Entry')) return;
 
         this.currentSelection = _.cloneDeep(row);
         this.second_entry_form.position_id = [row.position[0]?.id||null];

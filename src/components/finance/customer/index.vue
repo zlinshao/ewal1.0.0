@@ -30,32 +30,32 @@
         <!--<span class="check-count" >已选中 <i>{{multipleSelection.length}}</i> 项</span>-->
         <span class="action-bar-name">
           <span class="edit" @click="action_status.details_visible=true;action_status.is_check=true">查看</span>
-          <!--<span class="edit" v-show="VALIDATE_PERMISSION['Lord-Edit']" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>-->
+          <!--<span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Edit']" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>-->
           <!-- 当切换为租房预定时，只展示查看和编辑按钮 -->
           <!--<div v-show='chooseTab != 3'>
-            <span class="edit" v-show="VALIDATE_PERMISSION['Lord-Is-Ignore']" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
+            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Is-Ignore']" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
             <span class="edit" style="color: orangered"
-                  v-show="VALIDATE_PERMISSION['Lord-Pending']"
+                  v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Pending']"
                   @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
                 {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
             </span>
           </div>-->
           <!--房东-->
           <div v-show='chooseTab == 1'>
-            <span class="edit" v-show="VALIDATE_PERMISSION['Lord-Edit']" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
-            <span class="edit" v-show="VALIDATE_PERMISSION['Lord-Is-Ignore']" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
+            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Edit']" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
+            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Is-Ignore']" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
             <span class="edit" style="color: orangered"
-                  v-show="VALIDATE_PERMISSION['Lord-Pending']"
+                  v-show="$storage.get('VALIDATE_PERMISSION')['Lord-Pending']"
                   @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
                 {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
             </span>
           </div>
           <!--租客-->
           <div v-show='chooseTab == 2'>
-            <span class="edit" v-show="VALIDATE_PERMISSION['Renter-Edit']" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
-            <span class="edit" v-show="VALIDATE_PERMISSION['Renter-Is-Ignore']" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
+            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Renter-Edit']" @click="action_status.details_visible=true;action_status.is_check=false">编辑</span>
+            <span class="edit" v-show="$storage.get('VALIDATE_PERMISSION')['Renter-Is-Ignore']" @click="cancelOrRecoverRemark(chooseTab,current_row,current_row.prefix_suppress_dup)" style="color: #FFAB40">{{current_row.prefix_suppress_dup?'恢复重复标记':'忽略重复标记'}}</span>
             <span class="edit" style="color: orangered"
-                  v-show="VALIDATE_PERMISSION['Renter-Pending']"
+                  v-show="$storage.get('VALIDATE_PERMISSION')['Renter-Pending']"
                   @click="current_row.freeze===0 ? handleProcess(chooseTab,current_row):handleCancelProcess(chooseTab,current_row)">
                 {{current_row.freeze === 0 ? '生成待处理项':'取消待处理项'}}
             </span>

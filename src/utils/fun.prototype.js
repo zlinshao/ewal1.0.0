@@ -197,13 +197,22 @@ export default {
         /*全局权限变量*/
         Vue.prototype.VALIDATE_PERMISSION = {};
 
-        Vue.prototype.validatePermission = function(validName) {
+
+      Vue.prototype.validatePermission = function(validName,tip='无权限') {
+        if (!this.$storage.get('VALIDATE_PERMISSION')[validName]) {
+          this.$LjMessageNoPermission(tip);
+          return false;
+        }
+        return true;
+      }
+
+        /*Vue.prototype.validatePermission = function(validName) {
             if (!this.VALIDATE_PERMISSION[validName]) {
                 this.$LjMessageNoPermission();
                 return false;
             }
             return true;
-        }
+        }*/
 
         Vue.prototype.$LjMessageNoPermission = function(msg = '无权限') {
             this.$LjMessage('warning', { title: '警告', msg: msg });

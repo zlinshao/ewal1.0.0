@@ -37,7 +37,7 @@
           <el-table-column show-overflow-tooltip prop="sign_user" label="开单人" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip prop="org_leader" label="负责人" align="center"></el-table-column>
           <el-table-column show-overflow-tooltip prop="sign_org" label="所属部门" align="center"></el-table-column>
-          <el-table-column v-if="VALIDATE_PERMISSION['Customer-Operate']" label="操作" align="center">
+          <el-table-column v-if="$storage.get('VALIDATE_PERMISSION')['Customer-Operate']" label="操作" align="center">
             <template slot-scope="scope">
               <el-button type="warning" id="active-warning" size="mini" @click="handleGoMoveOutBlack(scope.row)" v-if="chooseTab === 4">移出黑名单</el-button>
               <el-button id="active-danger" type="danger" size="mini" @click="handleGoMoveBlack(scope.row)" v-else>移至黑名单</el-button>

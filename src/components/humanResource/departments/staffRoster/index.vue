@@ -813,10 +813,7 @@
       },
       //获取当前员工详情
       async getStaffDetail(id) {
-        if(!this.VALIDATE_PERMISSION['Employee-File-Select']) {
-          this.$LjMessage('warning',{title:'警告',msg:'无权限'});
-          return;
-        };
+        if(!this.validatePermission('Employee-File-Select')) return;
         this.$http.get(`${this.url}staff/user/${id}`).then(res => {
           if (res.code === '20020') {
             this.staff_detail_info = res.data;

@@ -24,7 +24,7 @@
         <el-tooltip content="批量入账" placement="bottom" :visible-arrow="false">
           <div class="icons allInsert" @click="openBatchEntry"></div>
         </el-tooltip>
-        <el-tooltip v-show="VALIDATE_PERMISSION['Receivable-Save']" content="新增应收款项" placement="bottom" :visible-arrow="false">
+        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Receivable-Save']" content="新增应收款项" placement="bottom" :visible-arrow="false">
           <div class="icons add" @click="openAdd"><b>+</b></div>
         </el-tooltip>
         <el-tooltip content="收款记录" placement="bottom" :visible-arrow="false">
@@ -588,7 +588,7 @@
           <iframe :src="receipt_detail_dialog_data.view_uri"></iframe>
         </div>
         <div class="dialog_footer">
-          <el-button v-if="VALIDATE_PERMISSION['Receivable-Receipt-Name']" size="small" type="warning" @click="editUserName">修改姓名</el-button>
+          <el-button v-if="$storage.get('VALIDATE_PERMISSION')['Receivable-Receipt-Name']" size="small" type="warning" @click="editUserName">修改姓名</el-button>
           <el-button size="small" type="danger" @click="beforeSend">发送</el-button>
           <el-button size="small" @click="receipt_detail_dialog_visible=false">取消</el-button>
         </div>
@@ -1011,8 +1011,8 @@
         <div class="dialog_header justify-bet">
           <h3>批量入账</h3>
           <h3 class="batchEntry-icon">
-            <i class="" v-if="VALIDATE_PERMISSION['Batch-Receivable-Export']" @click="out_account_visible = true"></i>
-            <i class="" v-if="VALIDATE_PERMISSION['Batch-Receivable-Import']" @click="import_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Receivable-Export']" @click="out_account_visible = true"></i>
+            <i class="" v-if="$storage.get('VALIDATE_PERMISSION')['Batch-Receivable-Import']" @click="import_account_visible = true"></i>
           </h3>
         </div>
         <div class="dialog_main changeChoose">
@@ -1229,15 +1229,15 @@
                 phone: val[0].customer?.contact || '',
               };
               this.btn_group = [
-                {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Urgetag']},
+                {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Urgetag']},
                 {val: '登记收款', key: 'register', type: 'warning', class: 'edit',show:true},
-                {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Receive']},
-                {val: '开收据', key: 'receipt', type: 'edit', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Receipt']},
-                {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Revert']},
-                {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Liquid']},
-                {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Complete-Date']},
-                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Notify']},
-                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.VALIDATE_PERMISSION['Receivable-Delete']}]
+                {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receive']},
+                {val: '开收据', key: 'receipt', type: 'edit', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receipt']},
+                {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Revert']},
+                {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Liquid']},
+                {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Complete-Date']},
+                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Notify']},
+                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Delete']}]
 
             } else if (val.length == 0) {
               this.action_visible = false;
@@ -1245,8 +1245,8 @@
               this.current_row = '';
               this.action_visible = true;
               this.btn_group = [
-                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Notify']},
-                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.VALIDATE_PERMISSION['Receivable-Delete']},]
+                {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Notify']},
+                {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Delete']},]
             }
           }
         },
@@ -1552,15 +1552,15 @@
         },
         btn_group: [
           // {val: '跟进列表', key: 'record', type: 'success',class:'edit'},
-          {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Urgetag']},
+          {val: '催缴备注', key: 'mark', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Urgetag']},
           {val: '登记收款', key: 'register', type: 'warning', class: 'edit',show:true},
-          {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Receive']},
-          {val: '开收据', key: 'receipt', type: 'edit', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Receipt']},
-          {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Revert']},
-          {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Liquid']},
-          {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Complete-Date']},
-          {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.VALIDATE_PERMISSION['Receivable-Notify']},
-          {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.VALIDATE_PERMISSION['Receivable-Delete']}
+          {val: '应收入账', key: 'should_receive', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receive']},
+          {val: '开收据', key: 'receipt', type: 'edit', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Receipt']},
+          {val: '回滚', key: 'handleProcess', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Revert']},
+          {val: '生成违约金日期', key: 'generate', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Liquid']},
+          {val: '修改补齐时间', key: 'editTime', type: 'success', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Complete-Date']},
+          {val: '发送短信', key: 'sendMessage', type: 'danger', class: 'edit',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Notify']},
+          {val: '删除', key: 'handleDelete', type: 'success', class: 'delete',show:this.$storage.get('VALIDATE_PERMISSION')['Receivable-Delete']}
 
         ],
         searchData: {},

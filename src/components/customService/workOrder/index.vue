@@ -14,7 +14,7 @@
         </h2>
       </div>
       <div class="items-center listTopRight">
-        <div v-if="VALIDATE_PERMISSION['Order-Operate']" class="icons add" @click='createOrder_visible = true'><b>+</b></div>
+        <div v-if="$storage.get('VALIDATE_PERMISSION')['Order-Operate']" class="icons add" @click='createOrder_visible = true'><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -31,7 +31,7 @@
 
         <el-table-column align="center" v-for='item in Object.keys(tableShowData)' :key='item' :prop='item' :label="tableShowData[item]"></el-table-column>
 
-        <el-table-column v-if="VALIDATE_PERMISSION['Order-Operate']" align="center" label="操作">
+        <el-table-column v-if="$storage.get('VALIDATE_PERMISSION')['Order-Operate']" align="center" label="操作">
           <template slot-scope="scope">
             <el-button id='active-primary' size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
             <el-button id='active-danger' plain size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>

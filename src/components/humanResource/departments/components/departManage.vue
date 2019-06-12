@@ -5,8 +5,8 @@
       <div class="items-bet mainTop">
         <div></div>
 <!--        <el-button type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">{{ tabsManage === 'staff' ? '新增员工' : '新建职位' }}</el-button>-->
-        <el-button v-show="VALIDATE_PERMISSION['User-Add']" v-if="tabsManage=='staff'" type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">新增员工</el-button>
-        <el-button v-show="VALIDATE_PERMISSION['Position-Save']" v-else type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">新建职位</el-button>
+        <el-button v-show="$storage.get('VALIDATE_PERMISSION')['User-Add']" v-if="tabsManage=='staff'" type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">新增员工</el-button>
+        <el-button v-show="$storage.get('VALIDATE_PERMISSION')['Position-Save']" v-else type="text" style="color: #CF2E33" size="mini" @click="operateModule(tabsManage)">新建职位</el-button>
       </div>
       <div class="scroll_bar" v-if="tabsManage === 'staff'" @click="checkOverflow()">
         <div id="scroll-body" class="staffManage" v-if="staffList.length > 0">
@@ -39,8 +39,8 @@
               <span class="writingMode">{{ item.name }}</span>
             </p>
             <div class="ctl" style="margin-bottom: 30px;" v-show="is_active_ctl === item.id">
-              <span v-show="VALIDATE_PERMISSION['Position-Update']" @click="handleEditPost(item)">编辑</span>
-              <span v-show="VALIDATE_PERMISSION['Position-Delete']" @click="handleDelPost(item)">删除</span>
+              <span v-show="$storage.get('VALIDATE_PERMISSION')['Position-Update']" @click="handleEditPost(item)">编辑</span>
+              <span v-show="$storage.get('VALIDATE_PERMISSION')['Position-Delete']" @click="handleDelPost(item)">删除</span>
             </div>
           </div>
         </div>
@@ -432,11 +432,11 @@
           <div v-if="module_list.length > 0">
             <div class="flex powerMain scroll_bar changeChoose" v-for="item in module_list" v-if="item.id === powerChildName">
               <div v-if="power_list">
-                <el-checkbox :disabled="!VALIDATE_PERMISSION['Permission-Update']" v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
+                <el-checkbox :disabled="!$storage.get('VALIDATE_PERMISSION')['Permission-Update']" v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
               </div>
               <div v-else>暂无权限</div>
               <div v-for="(item,key) in power_list">
-                <el-checkbox-group :disabled="!VALIDATE_PERMISSION['Permission-Update']" v-model="checkList" @change="handleCheck">
+                <el-checkbox-group :disabled="!$storage.get('VALIDATE_PERMISSION')['Permission-Update']" v-model="checkList" @change="handleCheck">
                   <el-row v-for="(tmp,idx) in power_list[key]" :key="idx">
                     <el-col :span="6">
                       <el-button type="text" size="large" @click="handleSearchField(tmp)" style="color: #CF2E33;font-size: 18px"></el-button>
@@ -487,7 +487,7 @@
             <div class="items-bet">
               <span class="hover">岗位</span>
             </div>
-            <h2 v-show="VALIDATE_PERMISSION['Duty-Save']" class="add" @click="operateModule('post')">
+            <h2 v-show="$storage.get('VALIDATE_PERMISSION')['Duty-Save']" class="add" @click="operateModule('post')">
               <b>+</b>
             </h2>
           </div>
@@ -512,14 +512,14 @@
                   <el-table-column label="部门" prop="duty.org.name" align="center"></el-table-column>
                   <el-table-column label="权限" align="center">
                     <template slot-scope="scope">
-                      <el-button v-show="VALIDATE_PERMISSION['Permission-Index']" type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
+                      <el-button v-show="$storage.get('VALIDATE_PERMISSION')['Permission-Index']" type="text" size="mini" @click="operateModule('power',scope.row,'position')">查看</el-button>
                     </template>
                   </el-table-column>
                   <el-table-column label="操作" align="center" width="180">
                     <template slot-scope="scope">
                       <div class="flex-center">
-                        <el-button v-show="VALIDATE_PERMISSION['Duty-Update']"  id="active-success" type="danger" size="mini" @click="handleEditPosition(scope.row)">编辑</el-button>
-                        <el-button v-show="VALIDATE_PERMISSION['Duty-Delete']" id="active-danger" type="danger" size="mini" @click="handleDelPosition(scope.row)">删除</el-button>
+                        <el-button v-show="$storage.get('VALIDATE_PERMISSION')['Duty-Update']"  id="active-success" type="danger" size="mini" @click="handleEditPosition(scope.row)">编辑</el-button>
+                        <el-button v-show="$storage.get('VALIDATE_PERMISSION')['Duty-Delete']" id="active-danger" type="danger" size="mini" @click="handleDelPosition(scope.row)">删除</el-button>
                       </div>
                     </template>
                   </el-table-column>
@@ -945,7 +945,7 @@
           }, {
             type: 'revise',
             label: '修改',
-            show:this.VALIDATE_PERMISSION['Organization-Index'],
+            show:this.$storage.get('VALIDATE_PERMISSION')['Organization-Index'],
           }, {
             type: 'leave',
             label: '离职',
@@ -960,11 +960,11 @@
           }, {
             type: 'disabled',
             label: '禁用',
-            show:this.VALIDATE_PERMISSION['User-Enable'],
+            show:this.$storage.get('VALIDATE_PERMISSION')['User-Enable'],
           }, {
             type: 'revise',
             label: '修改',
-            show:this.VALIDATE_PERMISSION['Organization-Index'],
+            show:this.$storage.get('VALIDATE_PERMISSION')['Organization-Index'],
           }, {
             type: 'leave',
             label: '离职',
@@ -1665,7 +1665,10 @@
       },
       //获取员工列表
       async getStaffList() {
-        if(!this.VALIDATE_PERMISSION['User-Index']) {return};
+        debugger
+        //if(!this.validatePermission['User-Index']) {return};
+        if(!this.validatePermission('User-Index')) return;
+        debugger
         if(!this.staffParams.org_id) return;
         this.$http.get(this.url+'staff/user',this.staffParams).then(res => {
           if (res.code === '20000') {

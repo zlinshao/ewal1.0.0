@@ -16,7 +16,7 @@
       <div class="items-center listTopRight">
         <el-button id='active-warning' @click='chosenTag_status(7)' :class="[tag_status ==7?'el-button-active':'']">维修</el-button>
         <el-button id='active-primary' @click='chosenTag_status(8)' :class="[tag_status==8?'el-button-active':'']">保洁</el-button>
-        <div v-if="VALIDATE_PERMISSION['Service-Clean-Operate']" class="icons add" @click='addOrder'><b>+</b></div>
+        <div v-if="$storage.get('VALIDATE_PERMISSION')['Service-Clean-Operate']" class="icons add" @click='addOrder'><b>+</b></div>
         <div class="icons search" @click="highSearch"></div>
       </div>
     </div>
@@ -33,7 +33,7 @@
 
         <el-table-column align="center" v-for='item in Object.keys(showTableData)' :key='item' :prop='item' :label="showTableData[item]"></el-table-column>
 
-        <el-table-column v-if="VALIDATE_PERMISSION['Service-Clean-Operate']" align="center" label="操作">
+        <el-table-column v-if="$storage.get('VALIDATE_PERMISSION')['Service-Clean-Operate']" align="center" label="操作">
           <template slot-scope="scope">
             <el-button id='active-primary' size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
             <el-button id='active-danger' size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>

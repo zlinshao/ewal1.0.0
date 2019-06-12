@@ -78,7 +78,7 @@ Vue.prototype.$video = Video;
 getPermission();//进入系统后首先同步获取权限 然后再每隔30秒异步获取权限
 
 router.beforeEach((to, from, next) => {
-  Vue.prototype.VALIDATE_PERMISSION = {
+  /*Vue.prototype.VALIDATE_PERMISSION = {
     "Account-List":true,//获取账户列表
     "Account-Allocation-List":true,//账户分配列表
     "Account-Change-Log":true,//账户操作记录
@@ -299,7 +299,7 @@ router.beforeEach((to, from, next) => {
     "User-Read": true,//查看员工详情
     "User-Second_Entry": true,//二次入职员工
     "User-Update": true,//修改员工
-  };
+  };*/
   if (!storage.get('Authorization') && to.path != '/login') {
     next({path: '/login'})
   } else {

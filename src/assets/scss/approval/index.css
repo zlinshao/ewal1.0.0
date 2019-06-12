@@ -363,7 +363,7 @@
   position: absolute;
   right: 0;
   top: 60px;
-  z-index: 900;
+  z-index: 10;
   box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.1);
 }
 #theme_name #approval .header .header_right .margin .receive_box .el-checkbox-group {
