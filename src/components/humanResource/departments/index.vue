@@ -1513,6 +1513,17 @@
             break;
         }
       },
+
+      /*获取部门详情*/
+      async getDepartDetail(id) {
+        let result = await this.$http.get(`${this.url}organization/organization/${id}`);
+        if(result.code.endsWith('0')) {
+          return result.data;
+        }else {
+          return null;
+        }
+      },
+
       // 确认搜索
       hiddenModule(val) {
         val = _.cloneDeep(val);
@@ -1520,9 +1531,11 @@
         if (val !== 'close') {
           switch (this.chooseTab) {
             case 2:
-              debugger
+              //debugger
               if(val.org_id.length==1) {
-
+                this.getDepartDetail(val.org_id[0]).then((res)=> {
+                  this.handleOpenDepartDetail(res);
+                });
               }else {
                 this.params=val;
                 this.params.parent_id=1;

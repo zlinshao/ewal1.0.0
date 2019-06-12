@@ -701,6 +701,7 @@ export default {
     handleContract (isTrue) {
       let params = {
         contract_type:this.chooseTab,
+        contract_id: this.moduleData.contract_id,
         task_id: this.contractDetail.task_id,
         data: {
           [this.complete.key_name]:isTrue,
