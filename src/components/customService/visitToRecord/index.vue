@@ -24,7 +24,7 @@
         header-row-class-name="tableHeader" style="width: 100%">
         <el-table-column v-for="item in Object.keys(tableShowDate)" :key="item" align="center" :prop="item" :label="tableShowDate[item]">
         </el-table-column>
-        <el-table-column width="200" label="操作" align="center">
+        <el-table-column width="200" v-if="VALIDATE_PERMISSION['Revisit-Operate']" label="操作" align="center">
           <template slot-scope="scope">
             <div class="flex-center">
               <el-button id='active-success' size="mini" @click.stop="handleAddRecord(scope.row)">新增回访记录</el-button>
@@ -253,7 +253,13 @@
                     <span class='tit'>回访状态</span>
                     <span class="content">{{recordDetail.is_connect ?'已回访':'未回访'}}</span>
                   </div>
-                  <div>
+                    <div>
+                    <span class='tit'>合同链接</span>
+                    <span class="content">
+                      <a :href="recordDetail.e_contract" target='_blank'>{{recordDetail.e_contract}}</a>
+                    </span>
+                  </div>
+                  <!-- <div>
                     <span class='tit'>其他附件</span>
                     <div class='content content_album'>
                       <div v-for='(item,key) in recordDetail.album' :key="key" class='imgs_box' v-if='key !="photo"'>
@@ -261,7 +267,7 @@
                         <lj-upload size="40" v-model="recordDetail.album[key]" disabled=true :download='false'></lj-upload>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </el-col>
               </el-row>
             </el-col>
@@ -520,6 +526,7 @@ export default {
 
     //初始化数据
     getRecordList () {
+      if(!this.validatePermission('Revisit-Read')) return;
       this.showLoading(true);
       this.params.type = this.chooseTab
       this.params.status = this.accessTab

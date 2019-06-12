@@ -11,7 +11,7 @@ globalConfig = {
     president_sever: '  http://ta6xxr.natappfree.cc/', // 梁晓东
     network_sever: ' http://test.monitor.api.ewal.lejias.cn/', // 方圆
     organ_server: 'http://gml.vaiwan.com/ewal/public/',
-    upload_sever: 'http://recommend.ewal.lejias.cn/',
+    upload_sever: 'http://test.file.api.ewal.lejias.cn/',
     humanResource_server: 'http://test.hr.api.ewal.lejias.cn/',
     market_server: 'http://test.market.api.ewal.lejias.cn/',
     //market_server: 'http://192.168.20.40:8086/',

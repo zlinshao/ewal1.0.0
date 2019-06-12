@@ -158,14 +158,27 @@
           }
         }
       }
-      .personal div {
-        margin-left: 30px;
-      }
-      .personal,
+      /*.personal div {
+        margin-left: 0;
+      }*/
+
       .funTop {
         cursor: pointer;
         span {
           margin: 0 30px;
+          white-space: nowrap;
+        }
+        p {
+          @include radius(10px);
+          overflow: hidden;
+          width: 45px;
+          height: 45px;
+        }
+      }
+      .personal {
+        cursor: pointer;
+        span {
+          margin: 0;
           white-space: nowrap;
         }
         p {

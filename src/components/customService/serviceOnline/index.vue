@@ -145,7 +145,9 @@
     watch: {},
     computed: {},
     methods: {
+      //获取接线记录列表
       getServiceOnlineList() {
+        if(!this.validatePermission('Service-Online-Read')) return;
         this.showLoading(true);
         this.$http.get(this.server + 'v1.0/csd/udesk/calllog',this.params).then(res => {
           if (res.code === 200) {
@@ -159,6 +161,7 @@
         })
       },
       handleClickRow(row) {
+        if(!this.validatePermission('Service-Online-Operate')) return;
         this.online_detail.address = row.customer && row.customer.name;
         this.online_detail.call_during = row.call_log && row.call_log.duration + 's' || '无';
         this.online_detail.call_time = row.call_log && row.call_log.start_time || '无';

@@ -18,13 +18,13 @@
           </div>
         </div>
         <div class="items-center listTopRight">
-          <el-button size="small" style="width: 80px" :disabled="current_check_village.length == 0" type="success" plain @click="handleAllotVillage">分配</el-button>
-          <el-button size="small" style="width: 80px" type="primary" plain @click="handleMergeVillage">合并</el-button>
+          <el-button v-if="VALIDATE_PERMISSION['Community-Operate']" size="small" style="width: 80px" :disabled="current_check_village.length == 0" type="success" plain @click="handleAllotVillage">分配</el-button>
+          <el-button v-if="VALIDATE_PERMISSION['Community-Operate']" size="small" style="width: 80px" type="primary" plain @click="handleMergeVillage">合并</el-button>
           <div class="sort-control flex-center">
             <span @click="handleChangeSort(item)" v-for="item in sort_list" :key="item.id + 1" :class="{'current-choose': current_sort === item.id }">{{ item.val }}</span>
           </div>
-          <div class="icons all-choose" @click="handleChooseAll"></div>
-          <div class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
+          <div v-if="VALIDATE_PERMISSION['Community-Operate']" class="icons all-choose" @click="handleChooseAll"></div>
+          <div v-if="VALIDATE_PERMISSION['Community-Operate']" class="icons add" @click="new_village_visible = !new_village_visible"><b>+</b></div>
           <div class="icons search" @click="handleHighSearch"></div>
         </div>
       </div>
@@ -64,7 +64,7 @@
                     </span>
                   </span>
                   <span v-else>-</span>
-                  <el-button style="float: right;min-width: 80px" type="warning" plain size="mini" @click="handleEditVillage(village)">编辑</el-button>
+                  <el-button v-if="VALIDATE_PERMISSION['Community-Operate']" style="float: right;min-width: 80px" type="warning" plain size="mini" @click="handleEditVillage(village)">编辑</el-button>
                 </p>
               </div>
               <div class="village-footer">
@@ -737,7 +737,6 @@
               this.current_choose = '';
               this.village_params.city = '';
               this.village_params.province = '';
-              this.getCityListal = '选城市';
               return false;
             }
             //清空area
@@ -749,17 +748,16 @@
             this.village_params.city = '';
             this.village_params.province = '';
             this.village_params.province = item.province.code;
-
             if(item.code.constructor===Array&&item.code.length === 2) {//重庆
               this.village_params.city = item.code[0];
             }else {//其他地区
               this.village_params.city = item.code;
             }
-
             this.address_filter[0].val = item.name;
             this.current_choose = item.code;
             break;
           case 'area':
+            debugger
             if (item.area_id === this.current_choose) {
               this.address_filter[1].val = '选区域';
               this.village_params.area = '';
@@ -843,10 +841,10 @@
       },
       //区域列表
       async getAreaList() {
-        await this.$http.get(this.http_server + '/v1.0/city/address',{
+        await this.$http.get(this.http_server + 'v1.0/city/address',{
           province: this.village_params.province,
           city: this.village_params.city,
-          area: this.village_params.province,//区域填和省市一样
+          //area: this.village_params.area,//区域填和省市一样
         }).then(res => {
           if (res.code === 200) {
             this.area_list = res.data;
@@ -862,7 +860,7 @@
           city: this.village_params.city[0],
           area: this.village_params.area,
         };
-        this.$http.get(this.http_server + '/v1.0/city/address',params).then(res => {
+        this.$http.get(this.http_server + 'v1.0/city/address',params).then(res => {
           if (res.code === 200) {
             this.region_list = res.data;
           } else {
@@ -940,6 +938,7 @@
       },
       //获取小区列表
       async getVillageList() {
+        if(!this.validatePermission('Community-Read')) return;
         this.showLoading(true);
         await this.$http.get(this.http_server + 'v1.0/market/community',this.village_params).then(res => {
           if (res.code === 200) {

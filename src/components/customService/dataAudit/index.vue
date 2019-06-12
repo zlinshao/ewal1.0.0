@@ -174,7 +174,9 @@ export default {
       let expires = "expires=" + d.toGMTString();
       document.cookie = cname + "=" + cvalue + "; " + expires;
     },
+    //获取资料审核列表
     getDateList () {
+      if(!this.validatePermission('Data-Audit-Read')) return;
       this.showLoading(true);
       let params = {
         contract_type: this.tag_status, // 收房 租房
@@ -269,7 +271,8 @@ export default {
     },
     //双击 合同详情
     handleGetDetail (row) {
-      this.currentRow = row
+      this.currentRow = row;
+      if(!this.validatePermission('Data-Audit-Operate')) return;
       this.contract_detail_visible = true;
     },
     // 关闭详情

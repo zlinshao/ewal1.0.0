@@ -14,11 +14,11 @@
             <div class="items-center" :class="{'is_enable': item.is_enable}" @click="reviseStaff(item)">
               <p>
                 <img :src="item.avatar" alt="" v-if="item.avatar">
-                <img v-else src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552912676050&di=fd46be51272d18ea8ffc89e2956a8d4c&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F8d64400852949b685670d52be88910a57e2e1542.jpg">
+                <img v-else src="../../../../assets/image/no_avatar.png">
               </p>
               <div>
                 <h4>{{ item.name }}</h4>
-                <h5 :title="item.position[0].name">{{ substringPlugin(item.position[0].name,8) }}</h5>
+                <h5 :title="item.position && item.position.constructor==Array && item.position.length>0 && item.position[0].name||'未知'">{{ substringPlugin(item.position && item.position.constructor==Array && item.position.length>0 && item.position[0].name||'未知',8) }}</h5>
               </div>
             </div>
             <h5 class="operate" :class="[operatePos?'right':'left']" v-show="staffId === item">
@@ -1774,7 +1774,8 @@
             break;
           case 'position'://岗位管理
             this.positionForm.depart = this.departInfo.name || '';
-            this.positionForm.org_id.push(this.departInfo.id);
+            //this.positionForm.org_id.push(this.departInfo.id);
+            this.positionForm.org_id=[this.departInfo.id];
             this.addStaffVisible = true;
             break;
           case 'positionManagement'://岗位管理

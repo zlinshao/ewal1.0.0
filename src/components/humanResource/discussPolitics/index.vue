@@ -1,5 +1,6 @@
 <template>
   <div id="discussPolitics" class="discuss-politics">
+    <coming-soon></coming-soon>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">

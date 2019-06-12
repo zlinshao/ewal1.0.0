@@ -437,6 +437,7 @@
       },
 
       getAccountRunList() {//收支流水列表
+        if(!this.validatePermission('Running-List')) return;
         this.$http.get(globalConfig.temporary_server + 'fund_flow_record', this.params).then(res => {
           if (res.code === 200) {
             this.tableData = res.data.data;

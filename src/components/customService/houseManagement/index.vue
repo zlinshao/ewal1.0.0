@@ -7,7 +7,7 @@
           <span class="title">房源管理</span>
         </div>
         <div class="items-center">
-          <span class="set" @click="set_price_visible = true"></span>
+          <span v-if="VALIDATE_PERMISSION['House-Center-Operate']" class="set" @click="set_price_visible = true"></span>
           <span class="search" @click="handleOpenHighSearch"></span>
         </div>
       </div>
@@ -838,6 +838,7 @@
       },
       //获取房源列表
       async getHouseResource() {
+        if(!this.validatePermission('House-Center-Read')) return;
         await this.$http.get(this.market_server + 'v1.0/market/house', this.house_params).then(res => {
           if (res.code === 200) {
             this.house_source = res.data.data;

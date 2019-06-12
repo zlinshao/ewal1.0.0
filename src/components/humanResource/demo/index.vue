@@ -35,6 +35,7 @@
     <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->
+<!--    <coming-soon></coming-soon>-->
   </div>
 
 </template>
@@ -46,6 +47,7 @@
   import NameShower from '@/components/common/lightweightComponents/NameShower.vue';
   import UserList from '@/components/common/lightweightComponents/UserList.vue';
   import ImgSlider from '@/components/common/lightweightComponents/ImgSlider.vue';
+  import ComingSoon from '@/components/common/ComingSoon.vue';
   import mixins from '@/assets/js/mixins/calendar.js';
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
   import ButtonUpload from '@/components/common/lightweightComponents/ButtonUpload.vue';
@@ -63,6 +65,7 @@
       CountDown,
       ButtonUpload,
       AppIndexMore,
+      ComingSoon,
     },
     data() {
       return {

@@ -38,7 +38,7 @@
                 <el-col :span="6">
                   <el-form-item label="街道">
                     <el-select v-model="new_village_form.region" placeholder="请选择">
-                      <el-option v-for="item in region_list" :key="item.region_name" :value="item.region_id"
+                      <el-option v-for="item in region_list" :key="item.region_id" :value="item.region_id"
                                  :label="item.region_name"></el-option>
                     </el-select>
                   </el-form-item>
@@ -280,7 +280,7 @@
       },
       //初始化编辑小区
       handleInitialVillage(village) {
-        for (var key in this.new_village_form) {
+        for (let key in this.new_village_form) {
           this.new_village_form[key] = village[key] || '';
         }
         this.new_village_form.album = village.album ? village.album : {
@@ -292,15 +292,15 @@
         this.new_village_form.city = village.city && parseInt(village.city.city_id);
         this.new_village_form.area = village.area && parseInt(village.area.area_id);
         this.new_village_form.region = village.region && parseInt(village.region.region_id);
-        var province = village.province && village.province.province_id;
-        var city = village.city && village.city.city_id;
-        var area = village.area && village.area.area_id;
+        let province = village.province && village.province.province_id;
+        let city = village.city && village.city.city_id;
+        let area = village.area && village.area.area_id;
         this.$http.get(this.server + '/v1.0/city/address', {
           province
         }).then(res => {
           if (res.code === 200) {
             this.city_list = res.data;
-            for (var i = 0; i < this.city_list.length; i++) {
+            for (let i = 0; i < this.city_list.length; i++) {
               this.city_list[i].city_id = Number(this.city_list[i].city_id);
             }
             this.$http.get(this.server + '/v1.0/city/address', {
@@ -309,7 +309,7 @@
             }).then(res => {
               if (res.code === 200) {
                 this.area_list = res.data;
-                for (var i = 0; i < this.area_list.length; i++) {
+                for (let i = 0; i < this.area_list.length; i++) {
                   this.area_list[i].area_id = Number(this.area_list[i].area_id);
                 }
                 this.$http.get(this.server + '/v1.0/city/address', {
@@ -319,7 +319,7 @@
                 }).then(res => {
                   if (res.code === 200) {
                     this.region_list = res.data;
-                    for (var i = 0; i < this.region_list.length; i++) {
+                    for (let i = 0; i < this.region_list.length; i++) {
                       this.region_list[i].region_id = Number(this.region_list[i].region_id);
                     }
                   } else {
@@ -398,7 +398,7 @@
         });
         AMap.plugin('AMap.Autocomplete', () => {
           //实例化Autocomplete
-          var autoOptions = {
+          let autoOptions = {
             province: '江苏省',
             city: '南京市',
             input: 'tipInput'
@@ -422,6 +422,7 @@
         this.new_village_form.region = '';
         this.address_params.area = '';
         this.address_params.city = val;
+        this.address_params.province = this.editInfo.province.province_id;
         this.getAddressList('area');
       },
       handleChangeProvince(val) {
@@ -440,25 +441,25 @@
             switch (type) {
               case 'province':
                 this.province_list = res.data;
-                for (var i = 0; i < this.province_list.length; i++) {
+                for (let i = 0; i < this.province_list.length; i++) {
                   this.province_list[i].province_id = Number(this.province_list[i].province_id);
                 }
                 break;
               case 'city':
                 this.city_list = res.data;
-                for (var i = 0; i < this.city_list.length; i++) {
+                for (let i = 0; i < this.city_list.length; i++) {
                   this.city_list[i].city_id = Number(this.city_list[i].city_id);
                 }
                 break;
               case 'area':
                 this.area_list = res.data;
-                for (var i = 0; i < this.area_list.length; i++) {
+                for (let i = 0; i < this.area_list.length; i++) {
                   this.area_list[i].area_id = Number(this.area_list[i].area_id);
                 }
                 break;
               case 'region':
                 this.region_list = res.data;
-                for (var i = 0; i < this.region_list.length; i++) {
+                for (let i = 0; i < this.region_list.length; i++) {
                   this.region_list[i].region_id = Number(this.region_list[i].region_id);
                 }
                 break;
@@ -486,7 +487,7 @@
         this.new_village_visible = false;
         this.edit_village_info = '';
         this.is_edit = false;
-        for (var key in this.new_village_form) {
+        for (let key in this.new_village_form) {
           this.new_village_form[key] = '';
         }
         this.new_village_form.album = {

@@ -165,8 +165,13 @@
         /*_(val).forEach((o)=> {
           o = parseInt(o);
         });*/
-        let params = {"id": val};
-        this.$http.post(`${this.url}public/pic`, params).then(res => {
+        let params = {"ids": val};
+        /*this.$http.post(`${this.url}public/pic`, params).then(res => {
+          if (res.code.endsWith('0')) {
+            this.photoData.setFile = res.data;
+          }
+        });*/
+        this.$http.post(`${globalConfig.upload_sever}api/v1/get_urls`,params).then(res=> {
           if (res.code.endsWith('0')) {
             this.photoData.setFile = res.data;
           }
