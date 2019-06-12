@@ -713,7 +713,7 @@ export default {
       //params.data[this.complete.key_name] = isTrue
       this.$http.post(this.market_server + `v1.0/market/contract/complete`, params).then(res => {
         this.$LjNotifyEasy(res,()=> {
-          this.handleCloseDetail()
+          this.handleCloseDetail();
         });
       })
     },

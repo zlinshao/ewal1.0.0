@@ -20,8 +20,8 @@ import './assets/scss/rest.css'
 import './assets/scss/element.css'
 import './assets/scss/currency.css'
 import './assets/scss/partical.css'
-import './assets/magnify/jquery.magnify.css'
-import './assets/magnify/jquery.magnify.js'
+//import './assets/magnify/jquery.magnify.css'
+//import './assets/magnify/jquery.magnify.js'
 import Confirm from '@/components/common/lightweightComponents/confirm/index.js'
 
 import '../static/UE/ueditor.config.js'
@@ -53,7 +53,6 @@ import getPermission from './utils/permission';
 import _ from 'lodash';
 
 axios.defaults.headers.common['Authorization'] = storage.get('Authorization');//设置请求头Authorization
-
 
 
 
