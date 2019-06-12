@@ -10,7 +10,7 @@
             <div @click="getCurrentList(item,index)" class="item-detail" :class="{'checked':checked==(index+1)}"
                  v-for="(item,index) in todo_list_toolbar">
               <span v-if="item.count">{{item.count}}</span>
-              <i :class="{'multi-font':item.name.length>=3}">{{item.name}}</i>
+              <i :class="{'multi-font':item.name.length>=3}" :title="item.name">{{item.name.slice(0,4)}}</i>
             </div>
           </div>
           <div class="search-bar">
@@ -119,6 +119,40 @@
       },
     },
     data() {
+      /*
+      * 流程筛选(in)
+      *
+      * */
+      let processDefinitionKey = {
+        "Agency-Supervision":"",
+      };
+      /*
+      * 流程筛选(notIn)
+      *
+      * */
+      let processDefinitionKeyNotIn = {
+        "MarketCollect":'',
+        "MC-Bulletin":'',
+        "HR-ApplyForSubOfficeDormitory":'',
+        "HR-ApplyForAddOfficeDormitory":'',
+        "Market-RentCompletionData":'租房资料补齐',
+        "HandoverOrder":'交接',
+        "Rent-Retainage":'尾款报备',
+      };
+
+      /*
+      * 任务筛选(notIn)
+      *
+      * */
+      let taskDefinitionKeyNotIn = {
+        "Return-visit":'回访',
+      };
+
+
+
+
+
+
       return {
 
         url: globalConfig.approval_sever,//待办接口
@@ -136,12 +170,14 @@
         * Agency-Supervision
         *
         * */
-        processDefinitionKey:'Agency-Supervision',
+        //processDefinitionKey:'Agency-Supervision',
+        processDefinitionKey:Object.keys(processDefinitionKey).join(','),
         /*
         * jczx_approval  稽查中心审批
         *
         * */
-        taskDefinitionKeyNotIn:'Return-visit',
+        //taskDefinitionKeyNotIn:'Return-visit',
+        taskDefinitionKeyNotIn:Object.keys(taskDefinitionKeyNotIn).join(','),
         //,Market-HouseCleaning,Market-HouseRepair,Market-CompleteData,HandoverOrder
         /*
         * Market-RentCompletionData 租房资料补齐
@@ -149,7 +185,8 @@
         * Rent-Retainage 尾款报备
         *
         * */
-        processDefinitionKeyNotIn: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory,Market-RentCompletionData,HandoverOrder,Rent-Retainage',//pc端不需要的category及列表 筛选
+        //processDefinitionKeyNotIn: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory,Market-RentCompletionData,HandoverOrder,Rent-Retainage',//pc端不需要的category及列表 筛选
+        processDefinitionKeyNotIn: Object.keys(processDefinitionKeyNotIn).join(','),//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
           {

@@ -270,7 +270,7 @@ router.beforeEach((to, from, next) => {
     "Order-Operate":true,//工单管理操作权限
     "Order-Read":true,//工单管理只读权限
     "Data-Audit-Read":true,//资料审核只读权限
-    "Data-Audit-Operate":false,//资料审核操作权限
+    "Data-Audit-Operate":true,//资料审核操作权限
     "Revisit-Read":true,//回访管理只读权限
     "Revisit-Operate":true,//回访管理操作权限
     "House-Due-Operate":true,//房屋到期操作权限

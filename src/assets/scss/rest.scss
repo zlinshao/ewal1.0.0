@@ -31,10 +31,10 @@ html, body {
 .control-btn {
   text-align: center;
   span {
-    padding: 5px 20px;
+    padding: 5px 15px;
     cursor: pointer;
     color: white;
-    margin: 0 8px;
+    margin: 0 5px;
     &:hover {
       color: $colorE33;
       @include bgImage('../image/components/theme1/xzgj.png');

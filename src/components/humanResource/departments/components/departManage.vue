@@ -537,7 +537,7 @@
                   <el-table-column label="员工姓名" prop="name" align="center"></el-table-column>
                   <el-table-column label="手机号" prop="phone" align="center"></el-table-column>
                   <el-table-column label="入职时间" prop="created_at" align="center"></el-table-column>
-                  <el-table-column label="岗位状态"  align="center">
+                  <el-table-column label="账户状态"  align="center">
                     <template slot-scope="scope">
                       <span v-if="scope.row.is_enable">禁用</span>
                       <span v-else>启用</span>
