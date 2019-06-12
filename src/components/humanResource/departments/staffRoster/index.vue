@@ -805,7 +805,9 @@
           this.export_params.export = 0;
         });
       },
+      //获取员工名册列表
       getStaffList() {
+        if(!this.validatePermission('Staff-Roster-Read')) return;
         this.showLoading(true);
         this.$http.get(this.url+'staff/user', this.params).then(res => {
           this.showLoading(false)

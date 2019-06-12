@@ -154,7 +154,7 @@
               </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20" class='add_record_form' v-if="recordOption.from=='中介' && recordOption.is_connect =='1' ">
+          <el-row :gutter="20" class='add_record_form' v-if="recordOption.from=='中介' && recordOption.is_connect =='1' && recordOption.is_agency_order=='1' ">
             <el-col :span="6" class='freePay'>
               <p><i class='icon'></i><span>信息审核</span></p>
               <div class='input_box'>

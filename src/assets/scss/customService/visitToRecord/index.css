@@ -544,6 +544,13 @@
 #theme_name.theme1 #visitToRecord .dialog_header .main_header .right_tips {
   background-color: #cf2e33;
   color: #ffffff;
+  cursor: pointer;
+}
+#theme_name.theme1 #visitToRecord .dialog_header .main_header .right_tips b {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
 }
 #theme_name.theme1 #visitToRecord .dialog_main_box .box .input_box {
   background-color: #ffffff;
