@@ -1524,7 +1524,13 @@
         this.modules = false;
       },
       handleSubmitAddStaff() {
-        if (this.is_edit) {
+        if(this.interview_info_detail && this.interview_info_detail.position_id.length==0){
+          this.$LjNotify('warning',{
+                title: '失败',
+                message: '岗位必填'
+              })
+        }else {
+          if (this.is_edit) {
           this.interview_info_detail.type = 'update';
           this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,this.interview_info_detail).then(res => {
             if (res.code === '20030') {
@@ -1560,6 +1566,7 @@
             })
           }
         })
+        }
       },
       handleSubmitAddDuty() {
         this.$http.post(this.url+'organization/duty',this.positionForm).then(res => {

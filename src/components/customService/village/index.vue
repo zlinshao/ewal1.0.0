@@ -898,6 +898,7 @@
           case 'depart':
             this.user_type = 'filter';
             this.depart_visible = true;
+            this.show_filter_search = false;
             break;
         }
       },
