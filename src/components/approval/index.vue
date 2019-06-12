@@ -388,6 +388,7 @@
             //  console.log(' this.data',  data.length);
              if(data.length>1){
                 this.receive_check =[];
+                this.receive_check_name =[];
              }
             _.forEach(data, (o) => {
               // console.log(' this.receive_check',  this.receive_check);
@@ -531,7 +532,7 @@
       // 取消 接收类型
       handleCancelReceive() {
         this.isreceive_visible = false;
-        this.receive_check = []
+        // this.receive_check = []
       },
       // 组长 控制面板
       handleSeeMain() {
