@@ -829,6 +829,7 @@
       //打开高级设置
       handleOpenHighSearch() {
         this.searchData = this.customHouseManagementSearch;
+        console.log('this.searchData', this.searchData);
         this.isHigh = true;
       },
       //关闭设置

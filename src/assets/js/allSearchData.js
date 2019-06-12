@@ -350,7 +350,7 @@ export const housingDueSearch = {
 
 // 资料审核
 export const dataAuditSearch = {
-    status: 'housingDue',
+    status: 'dataAudit',
     placeholder: '地址/合同编号',
     keywords: 'search',
     data: [{

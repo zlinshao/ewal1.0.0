@@ -144,7 +144,7 @@
             </el-col>
           </el-row>
           <el-row :gutter="20" class='add_record_form'>
-            <el-col v-if="recordOption.from=='中介'" :span="6" class='record-user'>
+            <el-col :span="6" class='record-user'>
               <p><i class='icon'></i><span>是否中介单</span></p>
               <div class='input_box'>
                 <el-select v-model="recordOption.is_agency_order"  disabled clearable>

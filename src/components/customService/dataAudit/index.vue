@@ -68,7 +68,7 @@
     </div>
 
     <!--高级搜索-->
-    <SearchHigh :module="showSearch" :showData="searchData" @close="hiddenModule"></SearchHigh>
+    <SearchHigh :module="showSearch" :show-data="searchData" @close="hiddenModule"></SearchHigh>
 
     <!--合同详情-->
     <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :chooseTab='tag_status' :showFooter='true'
@@ -100,6 +100,7 @@ export default {
     return {
       customService,
       visibleStatus: false,
+      dataAuditSearch,
       selects: [
         {
           id: 1,
@@ -216,9 +217,10 @@ export default {
     },
     //高级搜索
     highSearch () {
-      this.showSearch = true;
+      this.searchData = dataAuditSearch;
+      console.log('this.searchData', this.searchData);
       if (this.tag_status == 2) {
-        dataAuditSearch.data[1].value = [
+        this.searchData.data[1].value = [
           //1-新租，2-转租，3-续租，4-未收先租，5-调租
           {
             id: 1,
@@ -243,7 +245,7 @@ export default {
         ]
       }
       if(this.tag_status==1) {
-        dataAuditSearch.data[1].value = [
+        this.searchData.data[1].value = [
           {
             id: 1,
             title: '新收'
@@ -254,16 +256,16 @@ export default {
           },
         ]
       }
-      this.searchData = dataAuditSearch;
+      this.showSearch = true;
     },
     //高级搜索
     hiddenModule (val) {
-      this.showSearch = false;
       if (val !== 'close') {
         this.searchParams = val
         this.currentPage = 1;
         this.getDateList();
       }
+      this.showSearch = false;
     },
     //双击 合同详情
     handleGetDetail (row) {
