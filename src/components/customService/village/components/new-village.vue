@@ -363,7 +363,7 @@
                 title: '成功',
                 message: res.message
               });
-              this.handleCloseAddVillage();
+              this.handleCloseAddVillage('ok');
             } else {
               this.$LjNotify('warning', {
                 title: '失败',
@@ -380,7 +380,7 @@
               title: '成功',
               message: res.message
             });
-            this.handleCloseAddVillage();
+            this.handleCloseAddVillage('ok');
           } else {
             this.$LjNotify('warning', {
               title: '失败',
@@ -483,7 +483,7 @@
         })
       },
       //关闭添加小区
-      handleCloseAddVillage() {
+      handleCloseAddVillage(type) {
         this.new_village_visible = false;
         this.edit_village_info = '';
         this.is_edit = false;
@@ -495,7 +495,7 @@
           files: [],
           village_photo: []
         };
-        this.$emit('close');
+        this.$emit('close', type);
       },
     },
   }
