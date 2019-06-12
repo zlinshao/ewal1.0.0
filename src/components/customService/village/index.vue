@@ -512,12 +512,14 @@
         this.merge_visible = true;
       },
       //关闭操作小区
-      handleCloseControlVillage() {
+      handleCloseControlVillage(type) {
         this.edit_info = '';
         this.new_village_visible = false;
-        setTimeout(() => {
-          this.getVillageList();
-        },200);
+        if(type=='ok'){
+          setTimeout(() => {
+            this.getVillageList();
+          },2000);
+        }
       },
       handleEditVillage(village) {
         this.edit_info = village;
