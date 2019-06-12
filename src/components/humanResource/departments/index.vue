@@ -88,9 +88,7 @@
             <div class="depart-staff">
               <!--下级部门列表-->
               <div class="depart_list flex">
-                <!--<div class="next_btn" :class="{'show_next_btn': is_next}"><i class="el-icon-arrow-right"></i></div>-->
                 <!--鼠标移入判断是否有下级部门不合理-->
-<!--                <div class="next_btn"><i @click="handleIconClick('left')"  v-show="this.left_arrow_display" class="el-icon-arrow-left"></i></div>-->
                 <div class="arrow-btn"><i class="arrow-btn-left" @click="handleIconClick('left')"  v-show="this.left_arrow_display"></i></div>
                 <div class="list scroll_bar" v-if="next_depart.length > 0">
                   <div v-for="depart in next_depart" @mouseleave="is_active_depart = ''"
@@ -872,6 +870,7 @@
       },
       //部门列表打开部门详情
       async handleOpenDepartDetail(item) {
+        debugger
         if(!this.validatePermission('Organization-Read')) return;
         this.departForm.parent = item.name;
         this.departForm.parent_id = [];
@@ -1520,11 +1519,16 @@
         this.showSearch = false;
         if (val !== 'close') {
           switch (this.chooseTab) {
-              case 2:
-                  this.params=val;
-                  this.params.parent_id=1;
-                  this.getDepartList();
-                  break;
+            case 2:
+              debugger
+              if(val.org_id.length==1) {
+
+              }else {
+                this.params=val;
+                this.params.parent_id=1;
+                this.getDepartList();
+              }
+              break;
             case 3:
               this.searchFruit3 = val;
               break;
