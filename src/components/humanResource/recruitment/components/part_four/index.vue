@@ -216,8 +216,8 @@
                     <el-col :span="8">
                       <el-form-item label="入职 等级">
                         <el-select v-model="interview_info_detail.level" placeholder="请选择">
-                          <el-option label="实习" :value="0"></el-option>
-                          <el-option label="正式" :value="1"></el-option>
+                          <el-option label="实习" value="0" key="0"></el-option>
+                          <el-option label="正式" value="1" key="1"></el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -259,16 +259,16 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="第一次合同开始时间">
-                        <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.agreement_first_time" value-format="yyyy-MM-dd"></el-date-picker>
+                        <el-date-picker placeholder="请选择" v-model="interview_info_detail.agreement_first_time" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col><el-col :span="8">
                       <el-form-item label="第一次合同结束时间">
-                        <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.agreement_first_end_time" value-format="yyyy-MM-dd"></el-date-picker>
+                        <el-date-picker placeholder="请选择" v-model="interview_info_detail.agreement_first_end_time" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
                       <el-form-item label="第二次合同开始时间">
-                        <el-date-picker placeholder="请选择" type="datetime" v-model="interview_info_detail.agreement_second_time" value-format="yyyy-MM-dd"></el-date-picker>
+                        <el-date-picker placeholder="请选择" v-model="interview_info_detail.agreement_second_time" value-format="yyyy-MM-dd"></el-date-picker>
                       </el-form-item>
                     </el-col>
 
@@ -797,11 +797,16 @@
           recommender_name: '',
           entry_way: '',
           level: '',
+          salary_level: '',
+          position_level: '',
           account_name: '',
           platform: '',
           entry_materials: [],
           emergency_call: '',
           branch_bank_code: '',
+          agreement_first_time: '',
+          agreement_first_end_time: '',
+          agreement_second_time: '',
         },
         activeName: 'first',
 
@@ -1176,9 +1181,13 @@
         this.$http.get(`${this.url}recruitment/interviewees/get_info/${this.currentRow.interviewee_id}`).then(res => {
           if (res.code === '20030') {
             this.interviewee_info = res.data;
-            console.log(this.interviewee_info);
             for (var key in this.interview_info_detail) {
-              this.interview_info_detail[key] = res.data[key] ? res.data[key] : null;
+              if(key == 'level'){
+               this.interview_info_detail[key] = res.data[key] ? res.data[key].toString() : null;
+              }else {
+                 this.interview_info_detail[key] = res.data[key] ? res.data[key] : null;
+              }
+              
             }
             this.interviewee_info_visible = true;
           } else {
