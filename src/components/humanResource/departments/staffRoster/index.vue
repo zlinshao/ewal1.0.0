@@ -241,7 +241,14 @@
               <el-form-item class="item_margin">
                 <div class="flex">
                   <div style="width: 70px">入职日期</div>
-                  <el-input v-model="employ_proof_form.start_date"></el-input>
+                   <el-date-picker
+                    v-model="employ_proof_form.start_date"
+                    value-format="yyyy-MM-dd"
+                    format="yyyy-MM-dd"
+                    type="date"
+                    placeholder="选择日期">
+                  </el-date-picker>
+                  <!-- <el-input v-model="employ_proof_form.start_date"></el-input> -->
                 </div>
               </el-form-item>
               <el-form-item class="item_margin">
@@ -286,7 +293,7 @@
               </el-form-item>
               <el-form-item class="item_margin">
                 <div class="flex">
-                  <div style="width: 70px">职位</div>
+                  <div style="width: 70px">岗位</div>
                   <el-input v-model="income_proof_form.position"></el-input>
                 </div>
               </el-form-item>
@@ -549,6 +556,8 @@
             })
         },
         handleConfirEmemployProof(){
+          console.log('this.employ_proof_form.start_date',this.employ_proof_form.start_date);
+          if(this.employ_proof_form.start_date){
             this.$http.post(`${this.url}staff/e_contract/view_contract`,this.employ_proof_form).then(res => {
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
@@ -569,6 +578,12 @@
             }).catch(err => {
                 console.log(err);
             })
+          }else {
+             this.$LjNotify('warning',{
+                        title: '警告',
+                        message: '入职日期必填'
+                    });
+          }
         },
         handleConfirIncomeProof(){
             this.$http.post(`${this.url}staff/e_contract/view_contract`,this.income_proof_form).then(res => {
