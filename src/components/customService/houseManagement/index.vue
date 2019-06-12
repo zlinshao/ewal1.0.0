@@ -7,7 +7,7 @@
           <span class="title">房源管理</span>
         </div>
         <div class="items-center">
-          <span v-if="VALIDATE_PERMISSION['House-Center-Operate']" class="set" @click="set_price_visible = true"></span>
+          <span v-if="$storage.get('VALIDATE_PERMISSION')['House-Center-Operate']" class="set" @click="set_price_visible = true"></span>
           <span class="search" @click="handleOpenHighSearch"></span>
         </div>
       </div>

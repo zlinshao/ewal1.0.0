@@ -84,7 +84,7 @@
             <el-button size="small" type="info" @click="handleCloseInterview">取消</el-button>
           </div>
           <div class="dialog_footer" v-else>
-            <el-button type="danger" v-if="VALIDATE_PERMISSION['Finished-Audition-Edit']" size="small" @click="is_edit = true">修改面试结果</el-button>
+            <el-button type="danger" v-if="$storage.get('VALIDATE_PERMISSION')['Finished-Audition-Edit']" size="small" @click="is_edit = true">修改面试结果</el-button>
           </div>
         </div>
       </lj-dialog>
@@ -446,10 +446,7 @@
       },
       //面试结果列表
       getInterviewResList() {
-        if(!this.VALIDATE_PERMISSION['Invited-Audition-Select']) {
-          this.$LjMessageNoPermission();
-          return;
-        }
+        if(!this.validatePermission('Invited-Audition-Select')) return;
         this.$http.get(this.url+'recruitment/interviewer_process/resultList',this.params).then(res => {
           if (res.code === '20000') {
             this.tableList = res.data.data;

@@ -21,7 +21,9 @@ export default async function getPermission() {
       Vue.prototype.VALIDATE_PERMISSION = {};
       _(result.data).forEach((o, index) => {
         Vue.prototype.VALIDATE_PERMISSION[o] = true;
+        storage.set('VALIDATE_PERMISSION',Vue.prototype.VALIDATE_PERMISSION);
       });
+      return true;
     }
   }
   await permission();

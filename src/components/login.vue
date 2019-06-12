@@ -189,6 +189,7 @@
                   that.VALIDATE_PERMISSION = {};
                   _(result.data).forEach((o, index) => {
                     that.VALIDATE_PERMISSION[o] = true;
+                    that.$storage.set('VALIDATE_PERMISSION',that.VALIDATE_PERMISSION);
                   });
                   that.$store.dispatch('change_refresh_todo_list');//刷新代办
                 }

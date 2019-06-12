@@ -10,7 +10,7 @@
             <div @click="getCurrentList(item,index)" class="item-detail" :class="{'checked':checked==(index+1)}"
                  v-for="(item,index) in todo_list_toolbar">
               <span v-if="item.count">{{item.count}}</span>
-              <i :class="{'multi-font':item.name.length>3}">{{item.name}}</i>
+              <i :class="{'multi-font':item.name.length>=3}" :title="item.name">{{item.name.slice(0,4)}}</i>
             </div>
           </div>
           <div class="search-bar">
@@ -119,6 +119,40 @@
       },
     },
     data() {
+      /*
+      * 流程筛选(in)
+      *
+      * */
+      let processDefinitionKey = {
+        "Agency-Supervision":"",
+      };
+      /*
+      * 流程筛选(notIn)
+      *
+      * */
+      let processDefinitionKeyNotIn = {
+        "MarketCollect":'',
+        "MC-Bulletin":'',
+        "HR-ApplyForSubOfficeDormitory":'',
+        "HR-ApplyForAddOfficeDormitory":'',
+        "Market-RentCompletionData":'租房资料补齐',
+        "HandoverOrder":'交接',
+        "Rent-Retainage":'尾款报备',
+      };
+
+      /*
+      * 任务筛选(notIn)
+      *
+      * */
+      let taskDefinitionKeyNotIn = {
+        "Return-visit":'回访',
+      };
+
+
+
+
+
+
       return {
 
         url: globalConfig.approval_sever,//待办接口
@@ -127,23 +161,14 @@
           title: '',
           page: 1,
           size: 10,//每页条数
-          assignee: this.$storage.get('user_info').id,
+          //assignee: this.$storage.get('user_info').id,
         },
         checked: 1,//选择哪个toolbar
         categoryKey: '',
         categoryChecked: 0,
-        /*
-        * Agency-Supervision
-        *
-        * */
-        processDefinitionKey:'Agency-Supervision',
-        /*
-        * jczx_approval  稽查中心审批
-        *
-        * */
-        taskDefinitionKey:'jczx_approval',
-        //,Market-HouseCleaning,Market-HouseRepair,Market-CompleteData,HandoverOrder
-        processDefinitionKeyNotIn: 'MarketCollect,MC-Bulletin,HR-ApplyForSubOfficeDormitory,HR-ApplyForAddOfficeDormitory',//pc端不需要的category及列表 筛选
+        processDefinitionKey:Object.keys(processDefinitionKey).join(','),
+        taskDefinitionKeyNotIn:Object.keys(taskDefinitionKeyNotIn).join(','),
+        processDefinitionKeyNotIn: Object.keys(processDefinitionKeyNotIn).join(','),//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
           {
@@ -153,85 +178,6 @@
             count: 0,
           },
         ],
-        /*todo_list_container: [
-          {
-            id: 1,
-            name: '维修工单',
-            tip: '距离考试20分钟',
-            money: '扣款200元',
-            project: '研发中心会议',
-            onClick: 'humanResource_interview' //click事件控制lj-dialog显示隐藏
-          },
-          {
-            id: 2,
-            name: '资料补齐',
-            user: '张无忌',
-            date: '2019-03-22',
-            location: '艺术家工厂',
-            onClick: 'humanResource_interview_evaluate' //click事件控制lj-dialog显示隐藏
-          },
-          {
-            id: 3,
-            name: '资料补齐',
-            user: '张无忌',
-            money: '扣款200元',
-            project: '研发中心会议',
-            onClick: 'humanResource_attence'
-          },
-          {
-            id: 4,
-            name: '资料补齐',
-            user: '张无忌',
-            date: '2019-03-22',
-            project: '研发中心会议',
-            onClick: 'humanResource_finespayment'
-          },
-          {
-            id: 5,
-            name: '资料补齐',
-            date: '2019-03-22',
-            tip: '距离考试20分钟',
-            money: '扣款200元',
-            onClick: 'humanResource_answer_test_paper',
-          },
-          {
-            id: 6,
-            name: '资料补齐',
-            user: '张无忌',
-            date: '2019-03-22',
-            location: '艺术家工厂'
-          },
-          {
-            id: 7,
-            name: '资料补齐',
-            user: '张无忌',
-            money: '扣款200元',
-            project: '研发中心会议'
-          },
-          {
-            id: 8,
-            name: '资料补齐',
-            tip: '距离考试20分钟',
-            money: '扣款200元',
-            project: '研发中心会议'
-          },
-          {
-            id: 9,
-            name: '文职入职考试',
-            tip: '距离考试20分钟',
-            money: '扣款200元',
-            project: '研发中心会议'
-          },
-          {
-            id: 10,
-            name: '领取通知',
-            date: '2019-03-22',
-            user: '张无忌',
-            location: '财务部领取',
-            project: '借用审批编号10086',
-            onClick: 'humanResource_repository' //click事件控制lj-dialog显示隐藏
-          }
-        ],*/
 
         todo_list_container: [],
       }
@@ -258,7 +204,7 @@
           processDefinitionKey:this.search,
           procDefKeyNotIn: this.processDefinitionKeyNotIn,
         };
-        if(!params.assignee) return;
+        //if(!params.assignee) return;
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
           if (res.constructor == Array) {//返回正确
             this.todo_list_toolbar = res;
@@ -292,6 +238,8 @@
         }
         let params = {
           ...this.params,
+          //taskDefinitionKey:this.taskDefinitionKey,
+          taskDefinitionKeyNotIn:this.taskDefinitionKeyNotIn,
           //assignee:this.$storage.get('user_info').id,
           processDefinitionKey: item.key || categoryKey || '',
           //processDefinitionKey: this.taskDefinitionKey,

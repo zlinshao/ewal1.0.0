@@ -35,7 +35,7 @@
                     <span :class="['noticeIcon-' + item.warning_status ]" class="notice"></span>
                   </div>
                 </div>
-                <div class="control flex-center" v-if="show_control === item.id && VALIDATE_PERMISSION['House-Center-Operate']">
+                <div class="control flex-center" v-if="show_control === item.id && $storage.get('VALIDATE_PERMISSION')['House-Center-Operate']">
                   <span v-for="tmp in tip_btn" :key="tmp.id" @click.stop="handleOpenModule(tmp,item)">{{ tmp.val }}</span>
                   <div class="arrows"></div>
                 </div>

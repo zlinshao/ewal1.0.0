@@ -17,7 +17,7 @@
         <!--<div class="icons dimission" v-if="chooseTab === 3"></div>-->
         <div class="buttons button1" style="font-weight: bold" @click="showSetForm" v-if="chooseTab === 3">设置报表</div>
 <!--        <div class="buttons button2" style="font-weight: bold" v-if="chooseTab === 3" @click="handleExportInfo">导出报表</div>-->
-        <el-tooltip v-show="VALIDATE_PERMISSION['Organization-Add']" content="新增部门" placement="bottom"
+        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Organization-Add']" content="新增部门" placement="bottom"
                     :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
@@ -39,8 +39,8 @@
           </span>
           <a class="control flex-center">
             <a class="pointer">...</a>
-            <b v-show="VALIDATE_PERMISSION['Organization-Update']" @click.stop="handleOpenEditDepart(item)">编辑</b>
-            <b v-show="VALIDATE_PERMISSION['Organization-Delete']" @click.stop="handleDelDepart(item)">删除</b>
+            <b v-show="$storage.get('VALIDATE_PERMISSION')['Organization-Update']" @click.stop="handleOpenEditDepart(item)">编辑</b>
+            <b v-show="$storage.get('VALIDATE_PERMISSION')['Organization-Delete']" @click.stop="handleDelDepart(item)">删除</b>
           </a>
         </p>
       </div>
@@ -104,8 +104,8 @@
                       {{ depart.name }}
                     </div>
                     <div class="depart_ctl flex-center" v-show="depart.id === is_active_depart">
-                      <span v-show="VALIDATE_PERMISSION['Organization-Update']" @click="handleOpenEditDepart(depart,'child')">编辑</span>
-                      <span v-show="VALIDATE_PERMISSION['Organization-Delete']" @click="handleDelDepart(depart,'child')">删除</span>
+                      <span v-show="$storage.get('VALIDATE_PERMISSION')['Organization-Update']" @click="handleOpenEditDepart(depart,'child')">编辑</span>
+                      <span v-show="$storage.get('VALIDATE_PERMISSION')['Organization-Delete']" @click="handleDelDepart(depart,'child')">删除</span>
                     </div>
                   </div>
                 </div>
@@ -146,7 +146,7 @@
           <p style="font-weight: bold;font-size: 20px;color: #757580;margin: 10px 0">系统</p>
           <div style="padding: 20px;background-color: white">
             <div style="text-align: right">
-              <div class="btn_square_add" v-show="VALIDATE_PERMISSION['System-Save']" @click="add_system_visible = true"><b>+</b></div>
+              <div class="btn_square_add" v-show="$storage.get('VALIDATE_PERMISSION')['System-Save']" @click="add_system_visible = true"><b>+</b></div>
             </div>
             <el-table
               :data="system_list"
@@ -166,9 +166,9 @@
                       <!--<el-button type="success" size="mini" plain @click="handleOpenAddModule(scope.row)">新增模块</el-button>-->
                       <!--<el-button type="warning" size="mini" plain @click="handleOpenEdit('system',scope.row)">编辑</el-button>-->
                       <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
-                      <span v-if="VALIDATE_PERMISSION['Permission-Save']" @click="handleOpenAddModule(scope.row)">新增模块</span>
-                      <span v-if="VALIDATE_PERMISSION['System-Update']" @click="handleOpenEdit('system',scope.row)">编辑</span>
-                      <span v-if="VALIDATE_PERMISSION['System-Delete']" @click="handleDelControl('system',scope.row)">删除</span>
+                      <span v-if="$storage.get('VALIDATE_PERMISSION')['Permission-Save']" @click="handleOpenAddModule(scope.row)">新增模块</span>
+                      <span v-if="$storage.get('VALIDATE_PERMISSION')['System-Update']" @click="handleOpenEdit('system',scope.row)">编辑</span>
+                      <span v-if="$storage.get('VALIDATE_PERMISSION')['System-Delete']" @click="handleDelControl('system',scope.row)">删除</span>
                     </div>
                     <span class="table_control writingMode">···</span>
                   </el-tooltip>
@@ -205,9 +205,9 @@
                     <!--<el-button type="danger" size="mini" plain @click="handleDelControl('system',scope.row)">删除</el-button>-->
                     <el-tooltip placement="left" :visible-arrow="false">
                       <div class="flex control-btn" slot="content">
-                        <span v-if="VALIDATE_PERMISSION['Permission-Save']" @click="handleOpenAddPower(scope.row)">新增权限</span>
-                        <span v-if="VALIDATE_PERMISSION['System-Update']" @click="handleOpenEdit('module',scope.row)">编辑</span>
-                        <span v-if="VALIDATE_PERMISSION['System-Delete']" @click="handleDelControl('system',scope.row)">删除</span>
+                        <span v-if="$storage.get('VALIDATE_PERMISSION')['Permission-Save']" @click="handleOpenAddPower(scope.row)">新增权限</span>
+                        <span v-if="$storage.get('VALIDATE_PERMISSION')['System-Update']" @click="handleOpenEdit('module',scope.row)">编辑</span>
+                        <span v-if="$storage.get('VALIDATE_PERMISSION')['System-Delete']" @click="handleDelControl('system',scope.row)">删除</span>
                       </div>
                       <span class="table_control writingMode">···</span>
                     </el-tooltip>
@@ -240,9 +240,9 @@
                     <!--<el-button type="danger" size="mini" plain @click="handleDelControl('power',scope.row)">删除</el-button>-->
                     <el-tooltip placement="left" :visible-arrow="false">
                       <div class="flex control-btn" slot="content">
-                        <span v-if="VALIDATE_PERMISSION['Permission-Save']" @click="handleOpenAddField(scope.row)">添加字段权限</span>
-                        <span v-if="VALIDATE_PERMISSION['System-Update']" @click="handleOpenEdit('power',scope.row)">编辑</span>
-                        <span v-if="VALIDATE_PERMISSION['System-Delete']" @click="handleDelControl('power',scope.row)">删除</span>
+                        <span v-if="$storage.get('VALIDATE_PERMISSION')['Permission-Save']" @click="handleOpenAddField(scope.row)">添加字段权限</span>
+                        <span v-if="$storage.get('VALIDATE_PERMISSION')['System-Update']" @click="handleOpenEdit('power',scope.row)">编辑</span>
+                        <span v-if="$storage.get('VALIDATE_PERMISSION')['System-Delete']" @click="handleDelControl('power',scope.row)">删除</span>
                       </div>
                       <span class="table_control writingMode">···</span>
                     </el-tooltip>
@@ -872,10 +872,7 @@
       },
       //部门列表打开部门详情
       async handleOpenDepartDetail(item) {
-        if (!this.VALIDATE_PERMISSION['Organization-Read']) {
-          this.$LjMessage('warning', {title: '警告', msg: '无权限'});
-          return;
-        };
+        if(!this.validatePermission('Organization-Read')) return;
         this.departForm.parent = item.name;
         this.departForm.parent_id = [];
         this.departForm.parent_id.push(item.id);
@@ -1288,6 +1285,7 @@
       },
       //权限管理->加载系统模块
       getPowerList() {
+        if(!this.validatePermission('System-Index','无权限查看系统列表')) return;
         this.power_params.parent_id = '';
         this.module_list = [];
         this.module_count = 0;
@@ -1295,10 +1293,6 @@
         this.power_count = 0;
         this.field_list = [];
         this.field_count = 0;
-        if(!this.VALIDATE_PERMISSION['System-Index']) {
-          this.$LjMessageNoPermission('无权限查看系统列表');
-          return;
-        }
         this.$http.get(this.url+'organization/system', this.power_params).then(res => {
           if (res.code === '20000') {
             this.system_list = res.data.data;
@@ -1485,10 +1479,7 @@
       },
       // 部门管理列表
       getDepartList() {
-        if (!this.VALIDATE_PERMISSION['Organization-Index']) {
-          this.$LjMessageNoPermission();
-          return;
-        }
+        if(!this.validatePermission('Organization-Index')) return;
         this.$http.get(this.url+'organization/organization', this.params).then(res => {
           if (res.code === '20000') {
             this.departList = res.data.data;

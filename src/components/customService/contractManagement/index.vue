@@ -41,7 +41,7 @@
           <el-table-column label="负责人" prop="org_leader" align="center"></el-table-column>
           <el-table-column label="部门" prop="sign_org" align="center"></el-table-column>
           <el-table-column label="审核状态" prop="check_status_name" align="center"></el-table-column>
-          <el-table-column v-if="VALIDATE_PERMISSION['Contract-Operate']" label="操作" align="center">
+          <el-table-column v-if="$storage.get('VALIDATE_PERMISSION')['Contract-Operate']" label="操作" align="center">
             <template slot-scope="scope">
               <!--<el-button type="primary" plain size="mini">查看审核记录</el-button>-->
               <!--<el-button type="warning" plain size="mini" @click="handleLookBackInfo(scope.row)">查看回访记录</el-button>-->
@@ -463,6 +463,11 @@
                   <el-form-item label="部门">
                     <!--sign_org-->
                     <span class="form-item-content">{{ contractDetail.sign_org || '/'}}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col  v-if="contractDetail.e_contract" :span="8">
+                  <el-form-item label="电子合同">
+                    <span class="form-item-content"><a target="_blank" style="color: #1069FF" :href="contractDetail.e_contract">链接</a></span>
                   </el-form-item>
                 </el-col>
               </el-row>

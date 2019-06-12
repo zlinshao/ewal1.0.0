@@ -418,11 +418,12 @@
         this.getAddressList('region');
       },
       handleChangeCity(val) {
+        debugger
         this.new_village_form.area = '';
         this.new_village_form.region = '';
         this.address_params.area = '';
         this.address_params.city = val;
-        this.address_params.province = this.editInfo.province.province_id;
+        this.address_params.province = this.editInfo?.province?.province_id||val;
         this.getAddressList('area');
       },
       handleChangeProvince(val) {

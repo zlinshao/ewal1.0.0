@@ -417,7 +417,7 @@
         </div>
         <div class="dialog_footer" style="text-align: right">
           <el-button v-if="!reviseInfo" type="danger" size="small" @click="handleSubmitUpdate">确定</el-button>
-          <el-button v-if="VALIDATE_PERMISSION['Employee-File-Update']" type="info" size="small" @click="reviseInfo = !reviseInfo">编辑</el-button>
+          <el-button v-if="$storage.get('VALIDATE_PERMISSION')['Employee-File-Update']" type="info" size="small" @click="reviseInfo = !reviseInfo">编辑</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -664,10 +664,7 @@
         this.$emit('close');
       },
       handleOpenGrow(item) {
-        if(!this.VALIDATE_PERMISSION['Operation-Record-Index']) {
-          this.$LjMessageNoPermission();
-          return;
-        }
+        if(!this.validatePermission('Operation-Record-Index')) return;
         this.$http.get(globalConfig.humanResource_server+`staff/user/${item.user_id}/growth_record`).then(res => {
           console.log(res);
           if (res.code === '20000') {

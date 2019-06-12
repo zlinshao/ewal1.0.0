@@ -78,7 +78,7 @@ Vue.prototype.$video = Video;
 getPermission();//进入系统后首先同步获取权限 然后再每隔30秒异步获取权限
 
 router.beforeEach((to, from, next) => {
-  Vue.prototype.VALIDATE_PERMISSION = {
+  /*Vue.prototype.VALIDATE_PERMISSION = {
     "Account-List":true,//获取账户列表
     "Account-Allocation-List":true,//账户分配列表
     "Account-Change-Log":true,//账户操作记录
@@ -270,7 +270,7 @@ router.beforeEach((to, from, next) => {
     "Order-Operate":true,//工单管理操作权限
     "Order-Read":true,//工单管理只读权限
     "Data-Audit-Read":true,//资料审核只读权限
-    "Data-Audit-Operate":false,//资料审核操作权限
+    "Data-Audit-Operate":true,//资料审核操作权限
     "Revisit-Read":true,//回访管理只读权限
     "Revisit-Operate":true,//回访管理操作权限
     "House-Due-Operate":true,//房屋到期操作权限
@@ -299,7 +299,7 @@ router.beforeEach((to, from, next) => {
     "User-Read": true,//查看员工详情
     "User-Second_Entry": true,//二次入职员工
     "User-Update": true,//修改员工
-  };
+  };*/
   if (!storage.get('Authorization') && to.path != '/login') {
     next({path: '/login'})
   } else {
