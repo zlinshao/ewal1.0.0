@@ -141,6 +141,12 @@
         "MC-Bulletin-Collect":'报备',
         "MG-BulletinApproval":'片区经理审批',
         "Market-VillageExpand":'产控审核',
+        "Market-CollectTakeLook":'带看',
+        "MC-CollectContractSigning":'合同签署',
+        "MC-RentContractSigning":'合同签署',
+        "Market-RentBooking":'租房预定',
+        "Market-RentTakeLook":'租房带看',
+        "MC-Bulletin-Renter":'报备',
       };
 
       /*
