@@ -526,6 +526,14 @@ export default {
     }
   },
   watch: {
+    visible: {
+      handler(val,oldVal) {
+        if(!val) {
+          this.todo_operate_list = [];
+          this.contractDetail = null;
+        }
+      }
+    },
     /*todoFooter: {
       handler(val,oldVal) {
         if(val) {

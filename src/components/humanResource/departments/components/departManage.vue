@@ -1665,10 +1665,7 @@
       },
       //获取员工列表
       async getStaffList() {
-        debugger
-        //if(!this.validatePermission['User-Index']) {return};
         if(!this.validatePermission('User-Index')) return;
-        debugger
         if(!this.staffParams.org_id) return;
         this.$http.get(this.url+'staff/user',this.staffParams).then(res => {
           if (res.code === '20000') {

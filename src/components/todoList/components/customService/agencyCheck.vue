@@ -22,7 +22,6 @@ export default {
     return {
       currentRow: {
         contract_id:null,
-        type:null,
       },
       contract_type:1,
     }
@@ -52,7 +51,7 @@ export default {
     // 关闭详情
     handleCloseDetail () {
       this.$store.dispatch('change_customerService_agency_check_visible');
-      this.currentRow = null;
+      this.currentRow = {contract_id:null};
       this.contract_type = 10086;
     },
 

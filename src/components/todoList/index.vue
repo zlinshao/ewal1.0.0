@@ -202,7 +202,6 @@
         let params = {
           ...this.params,
           processDefinitionKey:this.search,
-          taskDefinitionKeyNotIn:this.taskDefinitionKeyNotIn,
           procDefKeyNotIn: this.processDefinitionKeyNotIn,
         };
         //if(!params.assignee) return;
@@ -240,14 +239,16 @@
         let params = {
           ...this.params,
           //taskDefinitionKey:this.taskDefinitionKey,
-          //taskDefinitionKeyNotIn:this.taskDefinitionKeyNotIn,
+          taskDefinitionKeyNotIn:this.taskDefinitionKeyNotIn,
+          //assignee:this.$storage.get('user_info').id,
           processDefinitionKey: item.key || categoryKey || '',
+          //processDefinitionKey: this.taskDefinitionKey,
           processDefinitionKeyNotIn: this.processDefinitionKeyNotIn,
         };
 
-        /*if(params.processDefinitionKey=='Agency-Supervision') {
+        if(params.processDefinitionKey=='Agency-Supervision') {
           params.taskDefinitionKey = 'jczx_approval';
-        }*/
+        }
 
         this.checked = categoryChecked || (index + 1);
         this.categoryChecked = this.checked;
