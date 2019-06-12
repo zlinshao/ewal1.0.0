@@ -163,7 +163,7 @@ export default {
       return "";
     },
     cookieChange () {
-      if(!this.currentRow?.contract_id) return;
+      if(!this.currentRow.contract_id) return;
       this.$set(this.cookieArr, this.currentRow.contract_id, new Date().getTime())
       this.setCookie('cookieArr', JSON.stringify(this.cookieArr), 7)
       this.cookieArr = this.getCookie('cookieArr') ? JSON.parse(this.getCookie('cookieArr')) : {}
@@ -220,7 +220,6 @@ export default {
     //高级搜索
     highSearch () {
       this.searchData = dataAuditSearch;
-      console.log('this.searchData', this.searchData);
       if (this.tag_status == 2) {
         this.searchData.data[1].value = [
           //1-新租，2-转租，3-续租，4-未收先租，5-调租
@@ -247,25 +246,24 @@ export default {
         ]
       }
       if(this.tag_status==1) {
-        this.searchData.data[1].value = [
-          {
-            id: 1,
-            title: '新收'
-          },
-          {
-            id: 2,
-            title: '续收'
-          },
-        ]
+        this.searchData.data[1].value =  [{
+                    id: 1,
+                    title: '新收'
+                },
+                {
+                    id: 2,
+                    title: '续收'
+                }
+            ]
       }
       this.showSearch = true;
     },
     //高级搜索
-    hiddenModule (val) {
+   async hiddenModule (val) {
       if (val !== 'close') {
-        this.searchParams = val
+        this.searchParams = Object.assign({}, this.searchParams, val)
         this.currentPage = 1;
-        this.getDateList();
+        await this.getDateList();
       }
       this.showSearch = false;
     },

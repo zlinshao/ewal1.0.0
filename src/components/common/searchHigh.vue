@@ -147,14 +147,16 @@
       },
       showData: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
+         if(val != oldVal) {
           for (let key of val.data) {
-            this.reset[key.keyName] = key.dataType;
-          }
-          let word = val.keywords ? val.keywords : 'search';
-          this.reset[word] = '';
-          this.reset.page = val.page ? val.page : 1;
-          this.reset.limit = val.limit ? val.limit : 30;
-          this.resetting();
+              this.reset[key.keyName] = key.dataType;
+            }
+            let word = val.keywords ? val.keywords : 'search';
+            this.reset[word] = '';
+            this.reset.page = val.page ? val.page : 1;
+            this.reset.limit = val.limit ? val.limit : 30;
+            this.resetting();
+         }  
         },
         deep: true
       },

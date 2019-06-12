@@ -602,8 +602,8 @@ export default {
     },
     //添加回访记录
     handleAddRecord (row) {
-      this.recordOption.contract_id = row.con_id
-      this.recordOption.contract_number = row.contract_number
+      this.recordOption.contract_id = row.con_id;
+      this.recordOption.contract_number = row.contract_number;
       this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
           this.recordDetail = res.data;
@@ -626,6 +626,11 @@ export default {
       if (!is_connect && is_connect != 0) return '是否接通未选择'
       if (is_connect == 1) {
         if (!from) return '来源未选择'
+        if(from =='中介') {
+          if(!this.recordOption.data_check_result){
+             return '信息审核必填'
+          }
+        }
         if (!this.recordFree) return '是否收取其他费用未选择'
         if (star == 0) return '满意度未选择,满意度至少一分'
         if (this.recordFree == 1) {
@@ -637,6 +642,7 @@ export default {
           }
         }
       }
+  
       return null
     },
     addRecord () {
@@ -659,6 +665,8 @@ export default {
             this.addRecordApi();
           });
         }
+      }else {
+        this.addRecordApi();
       }
     },
     //添加记录接口调用
