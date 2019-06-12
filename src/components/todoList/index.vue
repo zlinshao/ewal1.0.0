@@ -138,6 +138,9 @@
         "Market-RentCompletionData":'租房资料补齐',
         "HandoverOrder":'交接',
         "Rent-Retainage":'尾款报备',
+        "MC-Bulletin-Collect":'报备',
+        "MG-BulletinApproval":'片区经理审批',
+        "Market-VillageExpand":'产控审核',
       };
 
       /*
@@ -146,11 +149,8 @@
       * */
       let taskDefinitionKeyNotIn = {
         "Return-visit":'回访',
+        "BulletinAgency":'报备中介费',
       };
-
-
-
-
 
 
       return {
