@@ -617,6 +617,8 @@
 
         url:globalConfig.humanResource_server,
 
+        parent_org_id_list:[],//存放父级org_id的数组
+
         //新部门管理
         show_depart_detail: false,
         control_btn: [
@@ -956,6 +958,7 @@
       },
       //点击导航菜单
       async handleGetCurrentDepart(item, idx) {
+        debugger
         this.departInfo = item;
         await this.getNextDepart(item);
         this.nav_depart.splice(idx + 1);
@@ -1524,6 +1527,23 @@
         }
       },
 
+      /*递归获取部门详情*/
+      getDepartDetailRecursion(id) {
+        this.$http.get(`${this.url}organization/organization/${id}`).then(async res=> {
+          if(res.code.endsWith('0')) {
+            if(!this.parent_org_id_list.includes(res.data.parent_id)) {
+              this.parent_org_id_list.push(res.data.parent_id);
+              await this.handleGetCurrentDepart(res.data);
+              await this.getDepartDetailRecursion(res.data.id);
+            }else {
+              this.parent_org_id_list = [];
+            }
+          }else {
+          }
+        });
+
+      },
+
       // 确认搜索
       hiddenModule(val) {
         val = _.cloneDeep(val);
@@ -1533,8 +1553,17 @@
             case 2:
               //debugger
               if(val.org_id.length==1) {
+
+                //this.getDepartDetailRecursion(val.org_id[0]);
+
+
+
+
                 this.getDepartDetail(val.org_id[0]).then((res)=> {
                   this.handleOpenDepartDetail(res);
+                  if(res.parent_id!==1) {
+                    this.getDepartDetailRecursion(res.id);
+                  }
                 });
               }else {
                 this.params=val;
