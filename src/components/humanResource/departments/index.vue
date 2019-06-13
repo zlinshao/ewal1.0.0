@@ -1551,12 +1551,7 @@
             case 2:
               //debugger
               if(val.org_id.length==1) {
-
                 //this.getDepartDetailRecursion(val.org_id[0]);
-
-
-
-
                 this.getDepartDetail(val.org_id[0]).then((res)=> {
                   this.handleOpenDepartDetail(res);
                   if(res.parent_id!==1) {

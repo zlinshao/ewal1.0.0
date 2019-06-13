@@ -142,6 +142,7 @@
         "Market-RentBooking":'租房预定',
         "Market-RentTakeLook":'租房带看',
         "MC-Bulletin-Renter":'报备',
+        "Market-CompleteAsset":'报备-补齐物品',
       };
 
       /*
