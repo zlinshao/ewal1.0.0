@@ -310,6 +310,16 @@
                 <org-choose :num="1" v-model="departForm.parent_id"></org-choose>
               </div>
             </el-form-item>
+            <el-form-item label="所属城市">
+              <el-select v-model="departForm.city_id" clearable placeholder="请选择">
+                <el-option
+                        v-for="item in city_options"
+                        :key="item.id"
+                        :label="item.city_name"
+                        :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="部门排序">
               <el-input v-model="departForm.order" placeholder="必填"></el-input>
             </el-form-item>
@@ -728,6 +738,7 @@
           page: 1,
           limit: 5
         },
+        city_options:[],
         system_list: [],
         system_count: 0,
         module_list: [],
@@ -795,7 +806,8 @@
           leader_id: [],
           parent_id: [1],
           position_id: [],
-          order:0
+          order:0,
+          city_id:''
         },//新增部门
         visibleStatus: false,//弹出部门
 
@@ -829,6 +841,7 @@
     },
     mounted() {
       this.getDepartList();
+      this.getCityList();
       //this.getPowerList();
     },
     watch: {},
@@ -838,6 +851,14 @@
       },
     },
     methods: {
+        getCityList(){
+            this.$http.get(this.url+'company/city').then(res=>{
+                console.log(res);
+                if(Number(res.code)%10===0){
+                    this.city_options=res.data;
+                }
+            });
+        },
       show_depart_ctl(depart) {
         this.is_active_depart = depart.id;
       },
@@ -1322,6 +1343,7 @@
         this.departForm.leader_id.push(item.leader_id);
         this.departForm.parent = item.parent_org && item.parent_org.name || '';
         this.departForm.parent_id = [];
+        this.departForm.city_id = item.city[0].id;
         this.departForm.parent_id.push(item.parent_id);
         this.departForm.position_id=[];
         this.departForm.position_id.push(item.position_id);
