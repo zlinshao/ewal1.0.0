@@ -126,7 +126,7 @@
     </div>
 
     <!--员工名册-->
-    <div v-show="chooseTab === 3">
+    <div v-if="chooseTab === 3">
       <StaffRoster :searchVal="searchFruit3" :export-data="export_data" :export-info="exportInfo"
                    :search-params="staff_params"></StaffRoster>
     </div>
@@ -614,7 +614,6 @@
     },
     data() {
       return {
-
         url:globalConfig.humanResource_server,
 
         parent_org_id_list:[],//存放父级org_id的数组
@@ -779,10 +778,10 @@
             id: 4,
             title: '离职管理',
           },
-          {
+          /*{
             id: 1,
             title: '组织结构图',
-          },
+          },*/
         ],//tab切换
 
 
@@ -872,7 +871,6 @@
       },
       //部门列表打开部门详情
       async handleOpenDepartDetail(item) {
-        debugger
         if(!this.validatePermission('Organization-Read')) return;
         this.departForm.parent = item.name;
         this.departForm.parent_id = [];
