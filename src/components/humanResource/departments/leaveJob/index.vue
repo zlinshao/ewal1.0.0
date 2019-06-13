@@ -334,6 +334,7 @@
       },
       /*获取离职列表*/
       getStaffList() {
+        if(!this.validatePermission('Dimission-Index')) return;
         this.showLoading(true);
         this.params.is_on_job=1;
         this.$http.get(this.url+'staff/user', this.params).then(res => {
