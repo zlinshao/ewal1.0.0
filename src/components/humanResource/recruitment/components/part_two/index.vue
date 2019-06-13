@@ -66,7 +66,7 @@
             <el-form :model="add_interviewer_form" size="small" label-width="100px">
               <el-form-item label="岗位">
                 <el-select v-model="add_interviewer_form.position_id" placeholder="请选择" @change="handleGetOffer">
-                  <el-option v-for="(tmp,idx) in position_list" :value="tmp.position_id" :label="tmp.position.name" :key="idx"></el-option>
+                  <el-option v-for="(tmp,idx) in position_list" :value="tmp.position_id" :label="tmp.position ? tmp.position.name : ''" :key="idx"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="姓名">
