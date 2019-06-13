@@ -870,6 +870,7 @@
             entry_mess: ''
           },
           political_status: '',
+          position: {},
           education: '',
           level: 0,
           platform: '',
@@ -1538,7 +1539,7 @@
                 title: '成功',
                 message: res.msg
               });
-              this.handleCancelAddStaff();
+              this.handleCancelAddStaff('ok');
               this.getStaffList();
             } else {
                 console.log(res);
@@ -1557,7 +1558,7 @@
               title: '成功',
               message: res.msg
             });
-            this.handleCancelAddStaff();
+            this.handleCancelAddStaff('ok');
             this.getStaffList();
           } else {
             this.$LjNotify('warning',{
@@ -1655,10 +1656,14 @@
           }
         })
       },
-      handleCancelAddStaff() {
+      handleCancelAddStaff(type) {
         this.is_edit = false;
-        this.$resetForm(this.interview_info_detail);
+         console.log('this.interview_info_detail.recommenders.name');
+        if(type=='ok'){
+          this.$resetForm(this.interview_info_detail);
+        }
         this.interview_info_detail.org_id = [this.departInfo.id];
+        console.log('this.interview_info_detail.recommenders.name');
         this.add_newStaff_visible = false;
       },
       //获取职位列表

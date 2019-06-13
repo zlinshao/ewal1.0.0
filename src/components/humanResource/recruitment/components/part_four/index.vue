@@ -149,8 +149,9 @@
                       <el-form-item label="婚姻状况">
                         <div class="changeChoose" style="margin-top: 8px">
                           <el-radio-group v-model="interview_info_detail.married_status" placeholder="请选择">
-                            <el-radio :label="2">已婚</el-radio>
                             <el-radio :label="1">未婚</el-radio>
+                            <el-radio :label="2">已婚未育</el-radio>
+                            <el-radio :label="3">已婚已育</el-radio>
                           </el-radio-group>
                         </div>
                       </el-form-item>
