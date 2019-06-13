@@ -956,7 +956,6 @@
       },
       //点击导航菜单
       async handleGetCurrentDepart(item, idx) {
-        debugger
         this.departInfo = item;
         await this.getNextDepart(item);
         this.nav_depart.splice(idx + 1);
@@ -1549,9 +1548,9 @@
         if (val !== 'close') {
           switch (this.chooseTab) {
             case 2:
-              //debugger
               if(val.org_id.length==1) {
                 //this.getDepartDetailRecursion(val.org_id[0]);
+                //TODO
                 this.getDepartDetail(val.org_id[0]).then((res)=> {
                   this.handleOpenDepartDetail(res);
                   if(res.parent_id!==1) {
