@@ -15,8 +15,8 @@
           </div>
           <div class="search-bar">
             <!--            <div class="search-bar-item icons-category"></div>-->
-            <div class="search-bar-item icons-add" @click='handleCreateTodo'></div>
-            <div class="search-bar-item icons-search"></div>
+<!--            <div class="search-bar-item icons-add" @click='handleCreateTodo'></div>-->
+<!--            <div class="search-bar-item icons-search"></div>-->
           </div>
         </div>
       </div>
@@ -95,12 +95,6 @@
       refresh_todo_list() {
         return this.$store.state.todo.refresh_todo_list;
       },
-      /*todo_list_toolbar () {
-        return this.$store.state.todo.todo_list_toolbar;
-      },*/
-      /*todo_list_container() {
-        return this.$store.state.todo.todo_list_container;
-      },*/
       todo_list_current_selection() {
         return this.$store.state.todo.todo_list_current_selection;
       },
@@ -136,6 +130,7 @@
         "HR-ApplyForSubOfficeDormitory":'',
         "HR-ApplyForAddOfficeDormitory":'',
         "Market-RentCompletionData":'租房资料补齐',
+        "Market-CompleteData":'补齐资料',
         "HandoverOrder":'交接',
         "Rent-Retainage":'尾款报备',
         "MC-Bulletin-Collect":'报备',
@@ -207,6 +202,7 @@
       getTodoListToolBar() {
         let params = {
           ...this.params,
+          taskDefKeyNotIn:this.taskDefinitionKeyNotIn,
           processDefinitionKey:this.search,
           procDefKeyNotIn: this.processDefinitionKeyNotIn,
         };
