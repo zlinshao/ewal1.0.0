@@ -154,7 +154,7 @@
               </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20" class='add_record_form' v-if="recordOption.from=='中介' && recordOption.is_connect =='1' && recordOption.is_agency_order=='1' ">
+          <el-row :gutter="20" class='add_record_form' v-if="recordOption.from=='中介' && recordOption.is_connect =='1'">
             <el-col :span="6" class='freePay'>
               <p><i class='icon'></i><span>信息审核</span></p>
               <div class='input_box'>
@@ -626,7 +626,7 @@ export default {
       if (!is_connect && is_connect != 0) return '是否接通未选择'
       if (is_connect == 1) {
         if (!from) return '来源未选择'
-        if(from =='中介') {
+        if(from =='中介' ) {
           if(!this.recordOption.data_check_result){
              return '信息审核必填'
           }
