@@ -356,7 +356,7 @@
         counts: 0,
         table_column: [
           // { key: 'staff.internship_number',val: '实习协议',isBtn: true},
-          { key: 'name',val: '姓名'},
+          { key: 'name',val: '姓名', width: "60px"},
           { key: 'org',val: '部门',isArray: true,showKey: 'name',width: "120px",position:'left'},
           { key: 'position',val: '岗位',isArray: true,showKey: 'name',width: "120px",position:'left'},
           { key: 'phone',val: '联系方式',width: "150px"},
