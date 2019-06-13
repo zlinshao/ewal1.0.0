@@ -118,7 +118,7 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="婚育情况">
-                      <el-select v-model="interview_info_detail.marital_fertility_status" placeholder="请输入">
+                      <el-select v-model="interview_info_detail.marital_fertility_status" placeholder="请选择">
                         <el-option :value="1" label="未婚"></el-option>
                         <el-option :value="2" label="已婚未育"></el-option>
                         <el-option :value="3" label="已婚已育"></el-option>
@@ -180,7 +180,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="推荐人">
-                      <el-input readonly v-model="interview_info_detail.recommenders.name" @focus="staff_visible = true"></el-input>
+                      <el-input readonly v-model="interview_info_detail.recommenders.name" @focus="staff_visible = true" placeholder="请选择"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -192,7 +192,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="入职途径">
-                      <el-select v-model="interview_info_detail.entry_way.entry_type">
+                      <el-select v-model="interview_info_detail.entry_way.entry_type" placeholder="请选择">
                         <el-option :value="1" label="智联招聘"></el-option>
                         <el-option :value="2" label="前程无忧"></el-option>
                         <el-option :value="3" label="58同城"></el-option>
@@ -229,7 +229,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="政治面貌">
-                      <el-select v-model="interview_info_detail.political_status" placeholder="请输入">
+                      <el-select v-model="interview_info_detail.political_status" placeholder="请选择">
                         <el-option :value="0" label="群众"></el-option>
                         <el-option :value="1" label="团员"></el-option>
                         <el-option :value="2" label="党员"></el-option>
