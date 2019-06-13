@@ -1658,6 +1658,7 @@
       handleCancelAddStaff() {
         this.is_edit = false;
         this.$resetForm(this.interview_info_detail);
+        this.interview_info_detail.org_id = [this.departInfo.id];
         this.add_newStaff_visible = false;
       },
       //获取职位列表
