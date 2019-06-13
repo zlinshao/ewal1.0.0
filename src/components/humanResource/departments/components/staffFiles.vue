@@ -96,6 +96,15 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="6">
+                      <el-form-item label="婚育情况">
+                         <el-select v-model="staffDetail.marital_fertility_status" placeholder="请选择">
+                          <el-option label="未婚" :value="1"></el-option>
+                          <el-option label="已婚未育" :value="2"></el-option>
+                          <el-option label="正式" :value="3"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
                       <el-form-item label="生日">
                         <el-date-picker value-format="yyyy-MM-dd" v-model="staffDetail.birthday"></el-date-picker>
                       </el-form-item>
