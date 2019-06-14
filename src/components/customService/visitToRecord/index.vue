@@ -298,7 +298,7 @@
               <h5>房屋信息</h5>
               <div class='detail_col_box'>
                 <span class='tit'>房屋地址</span>
-                <span class="content">{{recordDetail.address || '--'}}</span>
+                <span class="content">{{recordDetail.house && recordDetail.house.name || '--'}}</span>
               </div>
             </el-col>
           </el-row>
