@@ -300,7 +300,7 @@
               </el-tab-pane>
               <el-tab-pane label="学历信息" name="second">
                 <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.education_history.length > 0">
-                  <div v-for="item in interview_info_detail.education_history" :key="item.id">
+                  <div v-for="item in interview_info_detail.education_history" v-show="item.start_time||item.school||item.major||item.education||item.learning_ways" :key="item.id">
                     <el-row>
                       <el-col :span="8">
                         <el-form-item label="起始时间:">
@@ -335,7 +335,7 @@
               </el-tab-pane>
               <el-tab-pane label="工作履历" name="third">
                 <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.work_history.length > 0">
-                  <div v-for="item in interview_info_detail.work_history" :key="item.id">
+                  <div v-for="item in interview_info_detail.work_history" v-show="item.start_time||item.end_time||item.position||item.work_place||item.salary||item.witness||item.witness_phone" :key="item.id">
                     <el-row>
                       <el-col :span="8">
                         <el-form-item label="起始时间:">

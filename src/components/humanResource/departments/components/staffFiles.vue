@@ -287,12 +287,11 @@
               </el-tab-pane>
               <el-tab-pane label="学历资料" name="second">
                 <el-form class="borderNone" :disabled="reviseInfo" label-width="120px" size="small" style="width: 100%" v-if="staffDetail.education_history.length > 0">
-                  <div v-for="(item,key) in staffDetail.education_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
+                  <div v-for="(item,key) in staffDetail.education_history" v-show="item.id_num||item.start_time||item.school||item.major||item.eduction||item.learn_type" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                     <el-row>
                       <el-col :span="8">
                         <el-form-item label="起始时间">
-                          <el-date-picker
-                            v-model="item.start_end_time"
+                          <el-date-picker v-model="item.start_time"
                             type="daterange"
                             range-separator="至"
                             start-placeholder="开始日期"
@@ -363,7 +362,7 @@
               </el-tab-pane>
               <el-tab-pane label="工作履历" name="third">
                 <el-form class="borderNone" :disabled="reviseInfo" label-width="120px" size="small" style="width: 100%" v-if="staffDetail.work_history.length > 0">
-                  <div v-for="item in staffDetail.work_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
+                  <div v-for="item in staffDetail.work_history" v-show="item.id_num||item.start_end_time || item.position || item.work_place||item.salary||item.witness||item.witness_phone" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                     <el-row>
                       <el-col :span="8">
                         <el-form-item label="起始时间">
@@ -698,6 +697,7 @@
         console.log(this.staffDetail);
         if (type === 'work') {
           this.staffDetail.work_history.push({
+            id_num:'2',
             work_place: '',
             start_end_time: '',
             position: '',
@@ -710,6 +710,7 @@
 
           this.$nextTick(()=> {
             this.staffDetail.education_history.push({
+              id_num:'2',
               start_end_time: '',
               school: '',
               major: '',

@@ -230,6 +230,7 @@
             if(res.code.endsWith('0')) {
               this.$store.dispatch('change_refresh_todo_list');
               this.interviewHandler();
+              
             }else {
               this.$LjMessage('error',{title:'失败',msg:res.msg});
             }
