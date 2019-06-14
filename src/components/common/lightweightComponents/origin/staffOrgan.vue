@@ -280,6 +280,8 @@
           org_id: org,
           search: val,
           is_on_job: this.is_on_job2,
+          page:1,
+          limit: 999
         }).then(res => {
           this.fullLoading = false;
           if (res.code === '20000') {
@@ -293,6 +295,8 @@
           org_id: org,
           search: val,
           is_on_job: this.is_on_job2,
+          page:1,
+          limit: 999
         });
       },
       // 选人

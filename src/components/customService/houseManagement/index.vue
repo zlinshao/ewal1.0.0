@@ -32,7 +32,7 @@
                 <div class="history-pic" @click="getHistoryPicList">
                   <a></a>
                 </div>
-                <img v-if="house_detail.house_detail && house_detail.house_detail.cover" :src="house_detail.house_detail.cover" data-magnify="" data-caption="图片查看器" :data-src="house_detail.house_detail && house_detail.house_detail.cover">
+                <img v-if="house_detail.cover && house_detail.cover.info && house_detail.cover.info.ext=='image'" :src="house_detail.cover.uri" data-magnify="" data-caption="图片查看器" :data-src="house_detail.cover && house_detail.cover.uri">
                 <img v-else src="./swipe6.jpg" data-magnify="" data-caption="图片查看器" data-src="./swipe6.jgp">
               </div>
               <div class="small-img">
