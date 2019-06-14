@@ -1349,7 +1349,7 @@
         this.is_edit_depart = true;
         this.lj_size = {
           width: '510px',
-          height: '550px',
+          height: '650px',
         };
         this.depart_visible = true;
       },
@@ -1515,7 +1515,7 @@
             this.depart_visible = true;
             this.lj_size = {
               width: '510px',
-              height: '550px',
+              height: '650px',
             };
             break;
         }
