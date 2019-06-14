@@ -240,7 +240,6 @@
                     <el-form-item label="学历">
 
                       <dropdown-list :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND" width="253" v-model="interview_info_detail.education" title="请选择"></dropdown-list>
-
                       <!--<el-select v-model="interview_info_detail.education" placeholder="请输入">
                         <el-option :value="0" label="高中及以上"></el-option>
                         <el-option :value="1" label="大专及以上"></el-option>
@@ -249,6 +248,12 @@
                       </el-select>-->
                     </el-form-item>
                   </el-col>
+                  <el-col :span="8">
+                      <el-form-item label="角色">
+                         <post-choose width="470" :num="999"
+                           v-model="interview_info_detail.role_id"></post-choose>
+                      </el-form-item>
+                    </el-col>
                 </el-row>
               </el-form>
             </el-tab-pane>
@@ -846,6 +851,7 @@
           phone: '',
           id_num: '',
           birthday: '',
+          role_id:[],
           marital_status: '',
           marital_fertility_status: '',
           home_addr: '',
@@ -1658,12 +1664,12 @@
       },
       handleCancelAddStaff(type) {
         this.is_edit = false;
-         console.log('this.interview_info_detail.recommenders.name');
+        //  console.log('this.interview_info_detail.recommenders.name');
         if(type=='ok'){
           this.$resetForm(this.interview_info_detail);
         }
         this.interview_info_detail.org_id = [this.departInfo.id];
-        console.log('this.interview_info_detail.recommenders.name');
+        // console.log('this.interview_info_detail.recommenders.name');
         this.add_newStaff_visible = false;
       },
       //获取职位列表
@@ -1721,6 +1727,18 @@
       // 权限/禁用/修改/离职
       operateModule(val,item,type) {
         if (val === 'revise') {
+          this.$http.get(this.url+'staff/user/'+item.id).then(res => {
+          if (res.code === '20020') {
+            if(res.data &&res.data.role){
+              _.forEach(res.data.role,(o,index)=> {
+                 this.interview_info_detail.role_id=[];
+                 this.interview_info_detail.role_id.push(o.id);
+              });
+            }
+          } else {
+            this.interview_info_detail.role_id = [];
+          }
+        })
           this.currentStaff = item;
           this.is_edit = true;
           this.add_newStaff_visible = true;
