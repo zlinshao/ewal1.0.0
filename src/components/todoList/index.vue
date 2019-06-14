@@ -8,15 +8,15 @@
           <div class="todo-list-title" @click="demo">待办事项</div>
           <div class="item-list">
             <div @click="getCurrentList(item,index)" class="item-detail" :class="{'checked':checked==(index+1)}"
-                 v-for="(item,index) in todo_list_toolbar">
+                 v-for="(item,index) in todo_list_toolbar" :key="index">
               <span v-if="item.count">{{item.count}}</span>
               <i :class="{'multi-font':item.name.length>=3}" :title="item.name">{{item.name.slice(0,4)}}</i>
             </div>
           </div>
           <div class="search-bar">
             <!--            <div class="search-bar-item icons-category"></div>-->
-<!--            <div class="search-bar-item icons-add" @click='handleCreateTodo'></div>-->
-<!--            <div class="search-bar-item icons-search"></div>-->
+            <!--            <div class="search-bar-item icons-add" @click='handleCreateTodo'></div>-->
+            <!--            <div class="search-bar-item icons-search"></div>-->
           </div>
         </div>
       </div>
@@ -28,6 +28,7 @@
              class="todo-list-item">
           <div :title="item.name" class="todo-list-item-title">{{item.name}}</div>
           <div v-for="(value,key) in item"
+               :key="key"
                v-if="(key=='user'||key=='date'||key=='tip'||key=='money'||key=='project'||key=='location')&&value"
                class="todo-list-item-content">
             <i :class="'todo-list-item-content-icon-'+key"></i>
@@ -87,7 +88,7 @@
     },
     computed: {
       currentTodoModule() {
-        return this.$store.state.todo.currentModule
+        return this.$store.state.todo.currentModule;
       },
       todo_list_visible() {
         return this.$store.state.todo.todo_list_visible;
@@ -207,7 +208,7 @@
           processDefinitionKey:this.search,
           procDefKeyNotIn: this.processDefinitionKeyNotIn,
         };
-        //if(!params.assignee) return;
+        if(!params.assignee) return;
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
           if (res.constructor == Array) {//返回正确
             this.todo_list_toolbar = res;
