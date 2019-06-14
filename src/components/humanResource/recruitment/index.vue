@@ -197,7 +197,7 @@
         <div></div>
       </div> -->
 
-     <work-info></work-info>
+<!--     <work-info></work-info>-->
 
     </div>
   </div>
