@@ -140,9 +140,9 @@
                 <org-choose title="自动获取" width="310" :disabled="true" num="1" v-model="add_msg_form.org_id"></org-choose>
               </el-form-item>
               <el-form-item label="面试官">
-                <user-choose title="请选择" width="310" num="1" v-model="add_msg_form.interviewer_first_id"></user-choose>
-                <user-choose title="请选择" style="margin-top: 10px" width="310" num="1" v-model="add_msg_form.interviewer_second_id"></user-choose>
-                <user-choose title="请选择" style="margin-top: 10px" width="310" num="1" v-model="add_msg_form.interviewer_third_id"></user-choose>
+                <user-choose title="请选择" width="310" num="1" is_on_job="0" v-model="add_msg_form.interviewer_first_id"></user-choose>
+                <user-choose title="请选择" style="margin-top: 10px" is_on_job="0" width="310" num="1" v-model="add_msg_form.interviewer_second_id"></user-choose>
+                <user-choose title="请选择" style="margin-top: 10px" is_on_job="0" width="310" num="1" v-model="add_msg_form.interviewer_third_id"></user-choose>
               </el-form-item>
               <el-form-item label="添加试卷">
                 <el-select v-model="add_msg_form.paper_id" clearable>

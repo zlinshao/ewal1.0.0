@@ -6,7 +6,7 @@
     </div>
 
 
-    <StaffOrgan :initial="value" :module="staffModule" :organ-data="organData" @close="hiddenOrgan"></StaffOrgan>
+    <StaffOrgan :initial="value" :module="staffModule" :is_on_job="is_on_job" :organ-data="organData" @close="hiddenOrgan"></StaffOrgan>
   </div>
 </template>
 
@@ -21,6 +21,7 @@
       value: {},
       width: {},
       num: {},
+      is_on_job: {},
       title:{},
       disabled: {},
       size: {
@@ -39,6 +40,7 @@
       return {
         url: globalConfig.humanResource_server,
         staffModule: false,
+        // is_on_job: '',
         organData: {
           //num:1,
         },// 组织架构配置 选择数量 num
@@ -47,7 +49,6 @@
       }
     },
     watch: {
-
       value: {
         handler(val, oldVal) {
           if (val && val.length > 0) {
@@ -57,7 +58,7 @@
               staff:1,
             };
             this.$http.get(`${this.url}staff/user`,params).then(res=> {
-              this.inputContent = _.map(res.data?.data,'name').join(',');
+              this.inputContent = _.map(res.data,'name').join(',');
             });
           }else {
             this.inputContent = '';
@@ -80,7 +81,7 @@
           }
         },
         immediate: true
-      }
+      },
     },
     methods: {
       // 关闭 选择部门

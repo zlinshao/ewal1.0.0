@@ -100,7 +100,8 @@
     components: {ljDialog},
     props: {
       module: {},
-      organData: {},
+      is_on_job: {},
+      organData: '',
       initial: {
         default() {
           return [];
@@ -112,6 +113,7 @@
         url: globalConfig.humanResource_server,
         lj_visible: false,
         fullLoading: false,
+        is_on_job2: '',
         configure: {
           num: '',
         },
@@ -186,6 +188,13 @@
       organData: {
         handler(val, oldVal) {
           this.configure.num = val ? (val.num ? val.num : '') : '';
+        },
+        deep: true,
+        immediate: true
+      },
+      is_on_job: {
+        handler(val, oldVal) {
+          this.is_on_job2 = val || '';
         },
         deep: true,
         immediate: true
@@ -270,6 +279,7 @@
         this.$http.get(this.url + 'staff/user', {
           org_id: org,
           search: val,
+          is_on_job: this.is_on_job2,
         }).then(res => {
           this.fullLoading = false;
           if (res.code === '20000') {
@@ -279,9 +289,10 @@
       },
 
       async searchStaffReturn(org, val = '') {
-       return await this.$http.get(this.url + 'staff/user', {
+        return await this.$http.get(this.url + 'staff/user', {
           org_id: org,
           search: val,
+          is_on_job: this.is_on_job2,
         });
       },
       // 选人

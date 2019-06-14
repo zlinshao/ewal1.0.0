@@ -373,7 +373,7 @@
 
         <div class="dialog_footer" v-if='showFooter'>
           <el-button :disabled="contractDetail.is_resign==1" :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="JSON.stringify(item)" v-for="item in operate_list" @click="handleContract(item.action)">{{item.title}}</el-button>
-          <el-button id="active-danger" class='el-button-active' size="small" type="danger" v-if="operate_list.length==0" @click="handleContract(null)">提交</el-button>
+          <el-button id="active-danger" class='el-button-active' size="small" type="danger" v-if="operate_list && operate_list.length==0" @click="handleContract(null)">提交</el-button>
         </div>
 
         <div class="dialog_footer" v-if="todoFooter">
@@ -626,13 +626,13 @@ export default {
           let data = res.data;
           //if(data.buttons&&data.buttons.length>0) {
           if(data.buttons) {
-            this.operate_list = data.buttons?.outcomeOptions;
+            this.operate_list = data.buttons.outcomeOptions;
             this.check_data = data;
           }else {
             this.operate_list = [];
           }
           this.complete.task_id = data.taskId
-          this.complete.key_name = data.buttons?.variableName || 'kf_approved';
+          this.complete.key_name = data.buttons.variableName || 'kf_approved';
         }
       })
     },
