@@ -211,7 +211,7 @@ export default {
         this.moduleList = false;
         this.showLoading(false);
         this.$store.dispatch('route_animation');
-        
+
        // 处理总裁办进入后的页面的皮肤只能用2的问题
         if(val.fullPath.indexOf('/president') !=-1){
           localStorage.setItem('president_theme_name', '2');
@@ -228,7 +228,7 @@ export default {
         }else{
           this.theme_name = localStorage.getItem('theme_name');
         }
-        
+
       },
       deep: true// 深度观察监听
     },
@@ -269,7 +269,7 @@ export default {
   },
   created () {
     this.theme_name = '1';
-    this.getPerson()
+    //this.getPerson()
   },
   mounted() {
     this.listenPhotoUrl();
@@ -351,15 +351,15 @@ export default {
       this.$store.dispatch('theme_name',item.key);
       this.themeKey = item.key;
       this.theme_name = item.key;
-      
+
       // 判断是否是手动选择主题2
       if(item.key=='2'){
         this.theme_name_Two=true;
       }else{
         this.theme_name_Two=false;
       }
-  
-     
+
+
       // this.$store.dispatch('theme_name',item.key);
       this.changeLoad = true;
       let that = this;
