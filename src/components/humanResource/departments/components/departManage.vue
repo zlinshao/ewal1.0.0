@@ -105,7 +105,7 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="岗位">
-                      <post-choose width="260" num="1" v-model="interview_info_detail.position_id"></post-choose>
+                      <post-choose width="260" v-model="interview_info_detail.position_id"></post-choose>
 <!--                      <el-input v-model="interview_info_detail.position" @focus="modules = true" placeholder="请选择"></el-input>-->
                     </el-form-item>
                   </el-col>
