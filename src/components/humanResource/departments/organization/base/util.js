@@ -1,7 +1,8 @@
 import * as colorUtil from './color-util.js'
 function text(context, text, x, y,maxWidth, lineHeight, fontSize, fontColor) {
-  context.font = '14px Arial'
+  context.font = 'bold 16px Arial'
   context.fillStyle = fontColor
+  context.textAlign = 'center';
   let words = text.split(' ')
   let line = ''
   for (let n = 0; n < words.length; n++) {
@@ -20,6 +21,7 @@ function text(context, text, x, y,maxWidth, lineHeight, fontSize, fontColor) {
 }
 
 function wrapText(context, text, x, y, maxWidth, lineHeight, fontColor) {
+  context.font = '14px Arial'
   context.fillStyle = fontColor
   let words = text.split(' ')
   let line = ''
@@ -53,7 +55,7 @@ function roundRect(context, x, y, width, height, radius, fill, stroke) {
       radius[side] = radius[side] || defaultRadius[side]
     }
   }
-  context.strokeStyle = '#d2d2d2';
+  context.strokeStyle = '#d2d2d2';//连接线的颜色
   context.beginPath()
   context.moveTo(x + radius.tl, y)
   context.lineTo(x + width - radius.tr, y)
