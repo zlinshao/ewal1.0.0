@@ -308,7 +308,7 @@ class OrgChart {
       let node = self.d3.select(this)
       let treeNode = node.data()[0]
       let data = treeNode.data
-      self.context.fillStyle = '#c0c0c0'//每个色块的颜色
+      self.context.fillStyle = '#ffffff'//每个色块的颜色
       //self.context.fillStyle = '#d9686c'
       /*let img = new Image()
       img.src = 'http://k.zol-img.com.cn/sjbbs/7692/a7691515_s.jpg'
@@ -336,23 +336,23 @@ class OrgChart {
       Util.text(
         self.context,
         data.user,
-        indexX + self.unitPadding+45,
+        indexX + self.unitPadding+50,
         indexY + self.unitPadding+20,
         maxWidth,
         30,
         '20px',
-        '#ffffff'//人名颜色
+        '#333333'//人名颜色
       )
       // Util.text(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 30, '20px', '#000000')
       //let maxWidth = self.unitWidth - 2 * self.unitPadding
       Util.wrapText(
         self.context,
         data.name,
-        indexX + self.unitPadding+45,
+        indexX + self.unitPadding+50,
         indexY + self.unitPadding + 24+20,
         maxWidth,
         20,
-        '#000000'//职位颜色
+        '#cf2e33'//职位颜色
       )
     })
   }

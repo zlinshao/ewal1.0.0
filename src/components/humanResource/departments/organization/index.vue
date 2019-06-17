@@ -141,7 +141,7 @@
 
   #theme_name.theme1 {
     #organization {
-
+      background-color: #F2F2F2;
     }
   }
 

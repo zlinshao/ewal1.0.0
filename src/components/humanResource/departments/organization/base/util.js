@@ -21,7 +21,7 @@ function text(context, text, x, y,maxWidth, lineHeight, fontSize, fontColor) {
 }
 
 function wrapText(context, text, x, y, maxWidth, lineHeight, fontColor) {
-  context.font = '14px Arial'
+  context.font = '12px Arial'
   context.fillStyle = fontColor
   let words = text.split(' ')
   let line = ''
@@ -55,7 +55,7 @@ function roundRect(context, x, y, width, height, radius, fill, stroke) {
       radius[side] = radius[side] || defaultRadius[side]
     }
   }
-  context.strokeStyle = '#d2d2d2';//连接线的颜色
+  context.strokeStyle = '#c0c0c0';//连接线的颜色
   context.beginPath()
   context.moveTo(x + radius.tl, y)
   context.lineTo(x + width - radius.tr, y)
