@@ -1730,10 +1730,12 @@
           this.$http.get(this.url+'staff/user/'+item.id).then(res => {
           if (res.code === '20020') {
             if(res.data &&res.data.role){
+               let roles = [];
               _.forEach(res.data.role,(o,index)=> {
                  this.interview_info_detail.role_id=[];
-                 this.interview_info_detail.role_id.push(o.id);
+                roles.push(o.id);
               });
+              this.interview_info_detail.role_id=roles;
             }
           } else {
             this.interview_info_detail.role_id = [];
