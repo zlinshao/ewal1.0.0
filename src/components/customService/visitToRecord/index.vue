@@ -149,7 +149,7 @@
               <div class='input_box'>
                 <el-select v-model="recordOption.is_agency_order"  disabled clearable>
                   <el-option value="1" label="是"></el-option>
-                  <el-option value="2" label="否"></el-option>
+                  <el-option value="0" label="否"></el-option>
                 </el-select>
               </div>
             </el-col>
@@ -642,7 +642,7 @@ export default {
           }
         }
       }
-  
+
       return null
     },
     addRecord () {

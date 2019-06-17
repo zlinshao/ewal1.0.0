@@ -36,6 +36,10 @@
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
                    v-model="demo"></dropdown-list>-->
 <!--    <coming-soon></coming-soon>-->
+
+
+
+    <canvas id="canvas" width="500" height="500"></canvas>
   </div>
 
 </template>
@@ -52,6 +56,8 @@
   import Calendar from '@/components/common/lightweightComponents/Calendar/index.vue';
   import ButtonUpload from '@/components/common/lightweightComponents/ButtonUpload.vue';
   import {DROPDOWN_CONSTANT} from "../../../assets/js/allConstantData";
+
+  import img from './img/login.png';
 
   export default {
     name: "index",
@@ -104,10 +110,14 @@
       }
     },
     mounted() {
-      _.forEach(this.user_list, (o) => {
-        console.log(o);
-      });
-      //this.initDaysList(new Date('2019-04-01'));
+      let canvas = document.querySelector('#canvas');
+      let ctx = canvas.getContext('2d');
+      let mImg = new Image();
+      mImg.src = 'http://k.zol-img.com.cn/sjbbs/7692/a7691515_s.jpg';
+      mImg.onload = function() {
+        ctx.drawImage(mImg,0,0);
+      }
+
     },
     methods: {
       demoSuccess(exam) {
