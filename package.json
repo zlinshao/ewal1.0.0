@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "d3": "^5.9.2",
     "echarts": "^4.2.0-rc.2",
     "echarts-gl": "^1.1.1",
     "element-ui": "^2.5.4",

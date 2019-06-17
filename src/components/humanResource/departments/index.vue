@@ -328,8 +328,8 @@
                 <user-choose v-model="departForm.leader_id" title="请选择部门负责人" num="1"></user-choose>
               </div>
             </el-form-item>
-            <el-form-item label="部门负责岗位">
-              <post-choose v-model="departForm.position_id" title="请选择部门负责岗位" width="276" num="1"></post-choose>
+            <el-form-item label="部门上级岗位">
+              <post-choose v-model="departForm.position_id" title="请选择部门上级岗位" width="276" num="1"></post-choose>
             </el-form-item>
           </el-form>
         </div>
@@ -789,10 +789,10 @@
             id: 4,
             title: '离职管理',
           },
-          /*{
+          {
             id: 1,
             title: '组织结构图',
-          },*/
+          },
         ],//tab切换
 
 
@@ -1342,7 +1342,7 @@
         this.departForm.leader_id.push(item.leader_id);
         this.departForm.parent = item.parent_org && item.parent_org.name || '';
         this.departForm.parent_id = [];
-        this.departForm.city_id = item.city[0].id;
+        this.departForm.city_id = item.city[0]?.id;
         this.departForm.parent_id.push(item.parent_id);
         this.departForm.position_id=[];
         this.departForm.position_id.push(item.position_id);
