@@ -275,6 +275,7 @@
       },
       // 报备类型
       divisionBulletinType(type, val) {
+        // console.log('type----------', type);
         let data, title;
         switch (type) {
           case 'bulletin_collect_basic':
@@ -283,7 +284,7 @@
             this.villageRelation(val, val.ctl_detail_request_url);
             break;
           case 'bulletin_rent_basic':
-            title = ['客户信息', '合同信息'];
+            title = ['合同信息', '客户信息'];
             data = this.jsonData(defineRentReport);
             data.slither0 = defineNewRentReport.concat(data.slither0);
             this.villageRelation(val, val.rtl_detail_request_url);

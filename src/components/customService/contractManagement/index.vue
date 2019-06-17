@@ -332,11 +332,6 @@
               </el-row>
             </el-form>
           </div>
-
-
-
-
-
           <p style="text-align: left">合同信息</p>
           <div class="house-address">
             <el-form label-width="120px">

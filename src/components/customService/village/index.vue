@@ -279,6 +279,7 @@
   import {customService} from '../../../assets/js/allModuleList.js';
   import VillageContainer from './components/village-container.vue';
   import LjUpload from '../../common/lightweightComponents/lj-upload';
+import { constants } from 'zlib';
 
   export default {
     name: "index",
@@ -671,15 +672,20 @@
         }
       },
       //部门确定
-      handleGetDepart(id,name) {
+      handleGetDepart(id, name) {
         if (id !== 'close') {
-          switch (this.user_type) {
-            case 'filter':
+          if (this.user_type =='filter') {
               this.village_params.org_id = id[0];
               name = name||'选部门';
               this.address_filter[3].val = name;
               this.getVillageList();
-              break;
+            }
+        } else {
+          if(name == 'reset'){
+            this.village_params.org_id = '';
+            name ='选部门';
+            this.address_filter[3].val = '选部门';
+            this.getVillageList();
           }
         }
         this.user_type = '';
@@ -687,29 +693,50 @@
       },
 
       clearFilter() {
-        this.village_params= {
-          province: '',
+        // this.village_params= {
+        //   province: '',
+        //     city: '',
+        //     area: '',
+        //     region: '',
+        //     is_share: '',
+        //     allocation: '',
+        //     address: '',
+        //     py_all: '',
+        //     org_id: [],
+        //     name: '',
+        //     py_first: '',
+        //     house_type: '',
+        //     rental_ratio_order: '',
+        //     page: 1,
+        //     limit: 20
+        // };
+        if(this.check_module =='type'){
+          this.village_params.house_type = '';
+          this.village_params.page =1;
+          this.village_params.limit =20;
+          this.current_choose_type ='';
+           this.current_choose_house = '';
+          _(this.address_filter).forEach((item)=>{
+              if(item.key=='type'){
+                item.val='选类型'
+              }
+          });
+        }else {
+           this.village_params= {
+            province: '',
             city: '',
             area: '',
             region: '',
-            is_share: '',
-            allocation: '',
-            address: '',
-            py_all: '',
-            org_id: [],
-            name: '',
-            py_first: '',
-            house_type: '',
-            rental_ratio_order: '',
             page: 1,
             limit: 20
         };
-        this.address_filter = [
-          {key: 'city', val: '选城市'},
-          {key: 'area', val: '选区域'},
-          {key: 'type', val: '选类型'},
-          {key: 'depart', val: '选部门'}
-        ];
+        this.current_choose_region = '';
+        this.current_choose = '';
+        _(this.address_filter).forEach((item)=>{
+            item.val=item.key=='city'?'选城市':item.val; 
+            item.val=item.key=='area'?'选区域':item.val; 
+          });
+        }
         this.initGetList();
         this.show_filter_search = false;
       },
