@@ -17,6 +17,12 @@ export default async function getPermission() {
       type:'all',
     };*/
     let result = await Axios.get(`${globalConfig.humanResource_server}organization/permission/all`, params);
+    if(result.code==88800) {
+      storage.remove('Authorization');
+      storage.remove('VALIDATE_PERMISSION');
+      return;
+    }
+
     if (result.code.endsWith('0')) {
       Vue.prototype.VALIDATE_PERMISSION = {};
       _(result.data).forEach((o, index) => {
