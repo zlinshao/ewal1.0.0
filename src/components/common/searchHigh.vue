@@ -144,6 +144,7 @@
         if (!val) {
           this.$emit('close', 'close');
         }
+        this.listenOnKeyDownEnter(val);
       },
       showData: {//深度监听，可监听到对象、数组的变化
         handler(val, oldVal) {
@@ -156,13 +157,31 @@
             this.reset.page = val.page ? val.page : 1;
             this.reset.limit = val.limit ? val.limit : 30;
             this.resetting();
-         }  
+         }
         },
         deep: true
       },
     },
     computed: {},
     methods: {
+      /**
+       * 监听或禁用enter事件
+       * @param flag 控制是否监听enter事件
+       */
+      listenOnKeyDownEnter(flag = false) {
+        let _this = this;
+        document.onkeydown = function(e){
+          e = window.event || e;
+          if(e.keyCode=='13'||e.keyCode=='108'){
+            if (flag) {
+              _this.subSearch();
+            } else {
+              return false;
+            }
+          }
+        }
+      },
+
       // 单选
       chooseRadio(key, val) {
         if (val === this.params[key]) {

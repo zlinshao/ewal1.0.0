@@ -465,6 +465,11 @@
                     <span class="form-item-content"><a target="_blank" style="color: #1069FF" :href="contractDetail.e_contract">链接</a></span>
                   </el-form-item>
                 </el-col>
+                <el-col  v-if="contractDetail.handover" :span="8">
+                  <el-form-item label="交接单">
+                    <span class="form-item-content"><a target="_blank" style="color: #1069FF" :href="contractDetail.handover">链接</a></span>
+                  </el-form-item>
+                </el-col>
               </el-row>
             </el-form>
 
