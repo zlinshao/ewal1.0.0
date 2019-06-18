@@ -93,8 +93,8 @@
         }
         tempdata.user = tempdata.user||'无名';
         if (tempdata.name) {
-          if(tempdata.name.length>=8) {
-            tempdata.name = insertStr(tempdata.name,8);
+          if(tempdata.name.length>=10) {
+            tempdata.name = insertStr(tempdata.name,10);
             function insertStr(str, start) {//往字符串指定位置增加空格
               return str.slice(0, start) + ' ' + str.slice(start);
             }
