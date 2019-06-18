@@ -71,7 +71,7 @@
     <SearchHigh :module="showSearch" :show-data="searchData" @close="hiddenModule"></SearchHigh>
 
     <!--合同详情-->
-    <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :chooseTab='tag_status' :showFooter='true'
+    <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :tagStatus='tag_status' :chooseTab='chooseTab' :showFooter='true'
       :showRelated='false' :disabled='contract_disable' :showData='contract_showData' @close="handleCloseDetail"
       @setCookie='cookieChange' />
 

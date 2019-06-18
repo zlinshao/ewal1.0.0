@@ -19,7 +19,7 @@
           <div class="common_info">
             <el-form label-width="120px">
               <el-row :gutter="10">
-                <el-col :span="8" v-if='chooseTab == 1'>
+                <el-col :span="8" v-if='tagStatus == 1'>
                   <el-form-item label="物业地址">
                     <span v-if='contractDetail.house_extension && contractDetail.house_extension.community'>{{contractDetail.house_extension.community.name
                       || '--'}}</span>
@@ -78,7 +78,7 @@
                     <span>{{ contractDetail.sign_at || '--' }}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if='chooseTab == 1'>
+                <el-col :span="8" v-if='tagStatus == 1'>
                   <el-form-item label="空置期">
                     <span>{{ contractDetail.ready_days || '--'}}</span>
                   </el-form-item>
@@ -116,32 +116,32 @@
                     <span>{{ contractDetail.pay_way || '--'}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="contractDetail.first_pay_at && chooseTab === 1 ">
+                <el-col :span="8" v-if="contractDetail.first_pay_at && tagStatus === 1 ">
                   <el-form-item label="第一次打房租日期">
                     <span>{{ contractDetail.first_pay_at || '--'}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="contractDetail.second_pay_at && chooseTab === 1">
+                <el-col :span="8" v-if="contractDetail.second_pay_at && tagStatus === 1">
                   <el-form-item label="第二次打房租日期">
                     <span>{{ contractDetail.second_pay_at || '--' }}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
+                <el-col :span="8" v-if="tagStatus === 1">
                   <el-form-item label="房东承担费用">
                     <span v-for='pay in contractDetail.houserPay'>{{payArr[pay-1] || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="租客承担费用" v-if='chooseTab == 2'>
+                  <el-form-item label="租客承担费用" v-if='tagStatus == 2'>
                     <span v-for='pay in contractDetail.non_landlord_fee'>{{payArr[pay-1] + '/'|| '--'}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
+                <el-col :span="8" v-if="tagStatus === 1">
                   <el-form-item label="可否装修">
                     <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.can_decorate== 1?'是':'否' }}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
+                <el-col :span="8" v-if="tagStatus === 1">
                   <el-form-item label="可否添加物品">
                     <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.can_add_goods == 1?'是':'否' }}</span>
                   </el-form-item>
@@ -211,8 +211,8 @@
             </el-form>
           </div>
 
-          <p class='main_tit' v-if="chooseTab === 1">签约人及产权人信息</p>
-          <p class='main_tit' v-if="chooseTab === 2">签约人信息</p>
+          <p class='main_tit' v-if="tagStatus === 1">签约人及产权人信息</p>
+          <p class='main_tit' v-if="tagStatus === 2">签约人信息</p>
           <div class="common_info">
             <el-form label-width="120px" v-if=' contractDetail.customer_info'>
               <el-row :gutter="10" v-for='(item,index) in  contractDetail.customer_info' :key='index'>
@@ -236,7 +236,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :gutter="10" v-if="chooseTab === 1">
+              <el-row :gutter="10" v-if="tagStatus === 1">
                 <el-col :span="1">
                   <span class='person_tit'>产权人</span>
                   <!-- <el-form-item label="产权人" class='person_tit'></el-form-item> -->
@@ -261,7 +261,7 @@
             <el-form label-width="120px" v-else>
               <el-row :gutter="10">
                 <el-col :span="1">
-                  <span class='person_tit'>{{chooseTab === 1?'产权人':'签约人'}}</span>
+                  <span class='person_tit'>{{tagStatus === 1?'产权人':'签约人'}}</span>
                 </el-col>
                 <el-col :span="7" style='font-size:14px;'>
                   <span>暂无资料</span>
@@ -270,8 +270,8 @@
             </el-form>
           </div>
 
-          <p class='main_tit' v-if="chooseTab === 1">收款账号</p>
-          <div class="common_info" v-if="chooseTab === 1">
+          <p class='main_tit' v-if="tagStatus === 1">收款账号</p>
+          <div class="common_info" v-if="tagStatus === 1">
             <el-form label-width="120px">
               <el-row :gutter="10">
                 <el-col :span="8">
@@ -311,8 +311,8 @@
           <p class='main_tit'>附件信息</p>
           <div v-if="showCheck" class="common_info">
             <el-checkbox-group v-model='rewrite_data' :disabled='disabled'>
-              <el-checkbox name="type" v-for="(tit,key) in polishing_data[chooseTab-1]" :key='tit' :label='key'
-                :disabled="chooseTab == 3">
+              <el-checkbox name="type" v-for="(tit,key) in polishing_data[tagStatus-1]" :key='tit' :label='key'
+                :disabled="tagStatus == 3">
                 <template>
                   <div class='el_check_box'>
                     <div class='main_tit'> {{tit}}</div>
@@ -326,7 +326,7 @@
           </div>
           <div v-if="!showCheck" class="common_info">
             <div v-if="contractDetail.album">
-              <div class="flex-center" v-for="(item,key) in polishing_data[chooseTab-1]" style="min-height: 80px">
+              <div class="flex-center" v-for="(item,key) in polishing_data[tagStatus-1]" style="min-height: 80px">
                 <div style="width: 10%;text-align: right;padding-right: 15px">{{ item }}</div>
                 <div style="width: 90%;text-align: left">
                   <lj-upload v-model="contractDetail.album[key]" :download="false" :disabled="true"></lj-upload>
@@ -378,7 +378,7 @@
 
         <div class="dialog_footer" v-if='showFooter'>
           <el-button :disabled="contractDetail.is_resign==1" :id="item.action?'active-success':'active-danger'" class='el-button-active' size="small" :key="JSON.stringify(item)" v-for="item in operate_list" @click="handleContract(item.action)">{{item.title}}</el-button>
-          <el-button id="active-danger" class='el-button-active' size="small" type="danger" v-if="!operate_list || operate_list.length==0" @click="handleContract(null)">提交</el-button>
+          <el-button id="active-danger" class='el-button-active' size="small" type="danger" v-if="(!operate_list || operate_list.length==0)&& chooseTab!=3" @click="handleContract(null)">提交</el-button>
         </div>
 
         <div class="dialog_footer" v-if="todoFooter">
@@ -424,7 +424,7 @@ import InvalidDialog from '../components/invalid-dialog'
 export default {
   /*props: ['visible',
     'moduleData',
-    'chooseTab',  // 合同类型
+    'tagStatus',  // 合同类型
     'showData',  // 补齐记录
     'showFooter',  // 底部操作
     'showRelated', // 显示合同相关信息
@@ -432,7 +432,8 @@ export default {
   props: {
     visible: {},
     moduleData: {},
-    chooseTab: {},// 合同类型
+    chooseTab: {},// 合同状态
+    tagStatus: {},// 合同类型
     showData: {},// 补齐记录
     showFooter:{},// 底部操作
     showRelated: {},//显示合同相关信息
@@ -559,7 +560,7 @@ export default {
 
     rewrite_data (newVal) {
       this.dataRecord.content = ''
-      let data = this.polishing_data[this.chooseTab - 1]
+      let data = this.polishing_data[this.tagStatus - 1]
       newVal.forEach((item, index) => {
         if (index != 0) {
           this.dataRecord.content += ','
@@ -580,7 +581,7 @@ export default {
   },
   methods: {
     getDetailContract () {
-      this.$http.get(this.market_server + `v1.0/market/contract/${this.chooseTab}/${this.moduleData.contract_id}`).then(res => {
+      this.$http.get(this.market_server + `v1.0/market/contract/${this.tagStatus}/${this.moduleData.contract_id}`).then(res => {
         if (res.code === 200) {
           let data = res.data
           if (data.house_extension) {
@@ -673,7 +674,7 @@ export default {
         return
       }
       let current = {
-        contract_type: this.chooseTab,
+        contract_type: this.tagStatus,
         contract_id: this.moduleData.contract_id,
         house_name: this.moduleData.house_name,
         contract_number: this.moduleData.contract_number,
@@ -705,7 +706,7 @@ export default {
     // 合同通过 驳回
     handleContract (isTrue) {
       let params = {
-        contract_type:this.chooseTab,
+        contract_type:this.tagStatus,
         contract_id: this.moduleData.contract_id,
         task_id: this.contractDetail.task_id,
         data: {
@@ -726,7 +727,7 @@ export default {
     // 稽查中心审批 通过/驳回
     handleAgencyCheck (isTrue) {
       let params = {
-        contract_type:this.chooseTab,
+        contract_type:this.tagStatus,
         contract_id: this.moduleData.contract_id,
         task_id: this.$todo_list_current_selection.id,
         data: {
