@@ -11,8 +11,6 @@
 
 <script>
   import OrgChart from './org-chart'
-  import { generateOrgChartData, Data } from './base/data-generator'
-
 
   export default {
     name: 'tree',
