@@ -873,9 +873,9 @@
             this.img_trams = 0;//下方相册offset归位
             this.img_trans_count = res.data.album_photo?.length||0;
             this.house_detail = res.data;
-            if (this.house_detail.house_goods) {
+            if (this.house_detail.house_detail && this.house_detail.house_detail.house_res && this.house_detail.house_detail.house_res.house_goods ) {
               for (let item of this.deploy_info) {
-                item.num = this.house_detail.house_goods[item.key] ? this.house_detail.house_goods[item.key] : 0;
+                item.num = this.house_detail.house_detail.house_res.house_goods[item.key] ? this.house_detail.house_detail.house_res.house_goods[item.key] : 0;
               }
             } else {
               for (let item of this.deploy_info) {
