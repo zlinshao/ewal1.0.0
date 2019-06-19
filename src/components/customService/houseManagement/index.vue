@@ -853,7 +853,6 @@
       },
       //获取历史相册列表
       getHistoryPicList() {
-        // console.log(this.current_house);
         let id = this.current_house.id;
         let params = {id};
         this.$http.get(`${this.market_server}v1.0/market/house/houseAlbum`,params).then(res=> {
