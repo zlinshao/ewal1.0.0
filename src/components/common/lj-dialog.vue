@@ -1,6 +1,7 @@
 <template>
   <div id="lj_dialog" ref="dialog_ref" class="lj_dialog" v-if="dialog_visible">
-    <div class="flex-center" @click.self="handleCloseDialog">
+    <!-- @click.self="handleCloseDialog" -->
+    <div class="flex-center" >
       <div class="lj_container" :style="style[lj_size]" :class="{'show_upright': is_upright}">
         <slot></slot>
         <span class="close_btn" @click="handleCloseDialog"></span>

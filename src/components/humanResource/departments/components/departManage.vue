@@ -412,13 +412,22 @@
         <div class="dialog_main powerContent space-column">
           <div class="powerHead items-bet">
             <div class="inputLabel borderNone">
-              <h4>权限类型</h4>
-              <el-select disabled :popper-class="'appTheme' + themeName" placeholder="请选择" v-model="self_power_params.type" size="small" @change="handleChangePowerType">
+              <h4>权限类型</h4> 
+              <!-- disabled :popper-class="'appTheme' + themeName" -->
+              <el-select  placeholder="请选择" v-model="self_power_params.type" size="small" @change="handleChangePowerType">
                 <el-option value="position" label="岗位"></el-option>
                 <el-option value="user" label="用户"></el-option>
                 <el-option value="ban" label="黑名单"></el-option>
-                <el-option value="all" label="全部"></el-option>
+                <!-- <el-option value="all" label="全部"></el-option> -->
               </el-select>
+            </div>
+             <div class="inputLabel borderNone" v-show="self_power_params.type=='position'">
+                <h4>岗位</h4> 
+                <post-choose size="mini" :num="1" v-model="self_power_params.position_id"></post-choose>
+            </div>
+            <div class="inputLabel borderNone" v-show="self_power_params.type=='position'">
+                <h4></h4> 
+                <!-- <post-choose  v-model="self_power_params.position"></post-choose> -->
             </div>
           </div>
           <div class="powerTabs">
@@ -1059,7 +1068,7 @@
           user_id: '',
           system_id: '',
           type: '',
-          position_id: '',
+          position_id: [],
         },
         //设置权限
         set_power: {
@@ -1068,6 +1077,7 @@
           permission_type: 'user',
           permission_id: '',
           permission_field_id: '',
+          position_id: '',
         },
         current_field: '', //点击查看当前权限
 
@@ -1318,10 +1328,16 @@
         this.powerVisible = false;
       },
       handleSubmitSetPower() {
-        this.set_power.permission_id = this.checkList;
-        this.set_power.permission_field_id = this.field_list;
-        this.set_power.system_id = this.powerChildName;
-        this.$http.post(this.url+'organization/permission/set',this.set_power).then(res => {
+        if(this.set_power.permission_type == 'position' && this.self_power_params.position_id.length<1){
+          this.$LjNotify('warning',{
+              title: '提醒',
+              message: '岗位必填'
+            });
+        } else {
+          this.set_power.permission_id = this.checkList;
+          this.set_power.permission_field_id = this.field_list;
+          this.set_power.system_id = this.set_power.permission_type == 'position' ? this.self_power_params.position_id[0] : this.powerChildName;
+          this.$http.post(this.url+'organization/permission/set',this.set_power).then(res => {
           if (res.code === '20000') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1333,7 +1349,8 @@
               message: res.msg
             })
           }
-        })
+          })
+        }
       },
       getSelfPower(id) {
         this.self_power_params.system_id = id;
@@ -1665,9 +1682,9 @@
       handleCancelAddStaff(type) {
         this.is_edit = false;
         //  console.log('this.interview_info_detail.recommenders.name');
-        if(type=='ok'){
+        // if(type=='ok'){
           this.$resetForm(this.interview_info_detail);
-        }
+        // }
         this.interview_info_detail.org_id = [this.departInfo.id];
         // console.log('this.interview_info_detail.recommenders.name');
         this.add_newStaff_visible = false;

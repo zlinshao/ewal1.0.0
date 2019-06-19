@@ -99,7 +99,7 @@
       <!--查看面试官-->
       <lj-dialog
         :visible="office_visible"
-        :size="{width: 650 + 'px',height: 600 + 'px'}"
+        :size="{width: 700 + 'px',height: 750 + 'px'}"
         @close="office_visible = false"
       >
         <div class="dialog_container">
@@ -109,6 +109,7 @@
           <div class="dialog_main">
             <el-table
               :data="office_data"
+              height="500"
               :default-sort="{prop: 'org.name', order: 'descending'}"
             >
               <el-table-column show-overflow-tooltip label="岗位" prop="position.name" align="center"></el-table-column>
@@ -399,7 +400,10 @@
         this.edit_offer_visible = true;
       },
       handleOpenLookOffer() {
-        this.$http.get(this.url + 'recruitment/interviewers').then(res => {
+        this.$http.get(this.url + 'recruitment/interviewers',{
+          page: 1,
+          limit: 9999,
+        }).then(res => {
           console.log(res);
           if (res.code === '20000') {
             this.office_data = res.data.data;

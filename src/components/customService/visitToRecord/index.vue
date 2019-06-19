@@ -154,7 +154,7 @@
               </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20" class='add_record_form' v-if="recordOption.from=='中介' && recordOption.is_connect =='1'">
+          <el-row :gutter="20" class='add_record_form' v-if="recordOption.is_agency_order=='1'">
             <el-col :span="6" class='freePay'>
               <p><i class='icon'></i><span>信息审核</span></p>
               <div class='input_box'>
@@ -176,11 +176,11 @@
               <div class='detail_col_box detail_col_box2' width='100%'>
                 <div>
                   <span class='tit'>姓名</span>
-                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info.name || '--'}}</span>
+                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info[0].name || '--'}}</span>
                 </div>
                 <div>
                   <span class='tit'>性别</span>
-                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info.sex == 2 ? "男":"女"}}</span>
+                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info[0].sex == 2 ? "男":"女"}}</span>
                 </div>
                 <div>
                   <span class='tit'>性质</span>
@@ -188,11 +188,11 @@
                 </div>
                 <div>
                   <span class='tit'>手机号</span>
-                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info.phone || '--'}}</span>
+                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info[0].phone || '--'}}</span>
                 </div>
                 <div>
                   <span class='tit'>身份证号</span>
-                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info.idcard || '--'}}</span>
+                  <span class="content">{{recordDetail.customer_info && recordDetail.customer_info[0].idcard || '--'}}</span>
                 </div>
               </div>
             </el-col>
@@ -607,7 +607,7 @@ export default {
       this.$http.get(this.url + `v1.0/market/contract/${this.chooseTab}/${row.con_id}`).then(res => {
         if (res.code === 200) {
           this.recordDetail = res.data;
-          this.recordOption.is_agency_order = this.recordDetail.is_agency == 0 ? '2' : this.recordDetail.is_agency.toString();
+          this.recordOption.is_agency_order = this.recordDetail.is_agency.toString();
           this.add_visible = true;
         }
       })
@@ -622,15 +622,15 @@ export default {
       this.other_free.splice(index, 1)
     },
     vailRecord () {
-      let { is_connect, from, star, record } = this.recordOption
+      let { is_connect, from, star, record, is_agency_order } = this.recordOption
       if (!is_connect && is_connect != 0) return '是否接通未选择'
-      if (is_connect == 1) {
-        if (!from) return '来源未选择'
-        if(from =='中介' ) {
+       if(is_agency_order == '1' ) {
           if(!this.recordOption.data_check_result){
              return '信息审核必填'
           }
         }
+      if (is_connect == 1) {
+        if (!from) return '来源未选择'
         if (!this.recordFree) return '是否收取其他费用未选择'
         if (star == 0) return '满意度未选择,满意度至少一分'
         if (this.recordFree == 1) {
