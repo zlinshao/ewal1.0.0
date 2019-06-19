@@ -174,19 +174,19 @@
                 </el-table-column>
                 <el-table-column label="审核状态" prop="verify_status.name" align="center"></el-table-column>
               </el-table>
-              <el-table :data="furniture_list" height="250" v-show="current_house_type === 8">
-                <el-table-column label="房屋户型" prop="created_at" align="center"></el-table-column>
-                <el-table-column label="面积" prop="follow_content" align="center"></el-table-column>
-                <el-table-column label="装修" prop="warning_name" align="center"></el-table-column>
-                 <el-table-column label="成交日期" prop="follow_name" align="center"></el-table-column>
+      </div>
+       <el-table :data="newspaper_list" height="250" v-show="current_house_type === 8">
+                <el-table-column label="报备时间" prop="created_at" align="center"></el-table-column>
+                <el-table-column label="报备类型" prop="type" align="center">租房报备</el-table-column>
+                <el-table-column label="审批状态" prop="check_status" align="center"></el-table-column>
+                 <el-table-column label="报备人" prop="sign_user.name" align="center"></el-table-column>
                 <!-- <el-table-column label="照片" prop="album_photo" align="center">
                   <template slot-scope="scope">
                     <i class="el-icon-picture" @click="handleOpenLookPic(scope.row)"></i>
                   </template>
                 </el-table-column> -->
-                <el-table-column label="成交价" prop="follow_name" align="center"></el-table-column>
+                <el-table-column label="所属片区" prop="sign_org.name" align="center"></el-table-column>
               </el-table>
-      </div>
             </div>
             <div class="page">
               <el-pagination
@@ -392,6 +392,7 @@
 
         house_resource: [],//已出租房源
         price_setting: [], //价格调整
+        newspaper_list: [], // 报备管理
 
         market_server: globalConfig.market_server,
         //设置
@@ -695,6 +696,20 @@
           }
         })
       },
+      // 报备管理
+      handleNewspaperManagemen(id){
+        this.$http.get(this.market_server + url+ id).then(res => {
+          console.log(res);
+          if (res.code === 200) {
+            this.furniture_list = res.data;
+            this.table_params.count = res.data.count;
+          }else {
+            this.furniture_list = [];
+            this.table_params.count = 0;
+          }
+        })
+      },
+      
       //切换列表信息
       handleCheckModule(item) {
         this.table_params.limit = 15;
@@ -723,9 +738,10 @@
           case 4:
             this.handlePolishFurniture(this.current_house.id);
             break;
-            case 8:
-           this.handlePolishFurniture(this.current_house.id);
-            break;
+            // case 8:
+            //    url = 'v1.0/market/house/detail/';
+            // this.handleNewspaperManagemen(this.current_house.id, url);
+            // break;
 
         }
       },
@@ -881,6 +897,9 @@
               for (let item of this.deploy_info) {
                 item.num = 0;
               }
+            }
+            if(this.house_detail.bulletin_data ){
+              this.newspaper_list = this.house_detail.bulletin_data;
             }
             this.handleCheckModule(this.house_type[this.current_house_type - 1]);
             this.lj_size = {
