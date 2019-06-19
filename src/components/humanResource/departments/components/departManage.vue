@@ -421,11 +421,11 @@
                 <!-- <el-option value="all" label="全部"></el-option> -->
               </el-select>
             </div>
-             <div class="inputLabel borderNone" style="float:left" v-show="self_power_params.type=='position'">
+             <div class="inputLabel borderNone" v-show="self_power_params.type=='position'">
                 <h4>岗位</h4> 
-                <post-choose  v-model="self_power_params.position_id"></post-choose>
+                <post-choose size="mini" :num="1" v-model="self_power_params.position_id"></post-choose>
             </div>
-            <div class="inputLabel borderNone" style="float:left" v-show="self_power_params.type=='position'">
+            <div class="inputLabel borderNone" v-show="self_power_params.type=='position'">
                 <h4></h4> 
                 <!-- <post-choose  v-model="self_power_params.position"></post-choose> -->
             </div>
@@ -1329,7 +1329,7 @@
       },
       handleSubmitSetPower() {
         if(this.set_power.permission_type == 'position' && this.self_power_params.position_id.length<1){
-          this.$LjNotify('success',{
+          this.$LjNotify('warning',{
               title: '提醒',
               message: '岗位必填'
             });
