@@ -471,6 +471,7 @@
   import DepartOrgan from '../../../common/departOrgan.vue';
   import PostOrgan from '../../../common/postOrgan.vue';
   import StaffOrgan from '../../../common/staffOrgan.vue';
+import { constants } from 'fs';
 
   export default {
     name: "staff-files",
@@ -694,7 +695,7 @@
       },
       //添加item
       handleAddItem(type) {
-        console.log(this.staffDetail);
+        // console.log(this.staffDetail);
         if (type === 'work') {
           this.staffDetail.work_history.push({
             id_num:'2',
@@ -735,9 +736,22 @@
             return;
           }
         }
+        const staffDetailData = this.staffDetail;
+        if(staffDetailData&& staffDetailData.work_history) {
+           _.forEach(staffDetailData.work_history,(item)=>{
+             delete item.id_num;
+           })
+        }
+        if(staffDetailData&& staffDetailData.education_history) {
+           _.forEach(staffDetailData.education_history,(item)=>{
+             delete item.id_num;
+           })
+         }
+        console.log('staffDetailData7-------', staffDetailData);
+        console.log('this.staffDetail-------', this.staffDetail);
         this.$http.put(globalConfig.humanResource_server+`staff/user/${this.currentStaffInfo.id}`, {
           type: 'update',
-          ...this.staffDetail
+          ...staffDetailData
         }).then(res => {
           if (res.code === '20030') {
             this.$LjNotify('success', {
