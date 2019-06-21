@@ -845,7 +845,7 @@
       //打开高级设置
       handleOpenHighSearch() {
         this.searchData = this.customHouseManagementSearch;
-        console.log('this.searchData', this.searchData);
+        // console.log('this.searchData', this.searchData);
         this.isHigh = true;
       },
       //关闭设置
@@ -889,9 +889,9 @@
             this.img_trams = 0;//下方相册offset归位
             this.img_trans_count = res.data.album_photo?.length||0;
             this.house_detail = res.data;
-            if (this.house_detail.house_detail && this.house_detail.house_detail.house_res && this.house_detail.house_detail.house_res.house_goods ) {
+            if (this.house_detail.house_detail && this.house_detail.house_detail.house_state && this.house_detail.house_detail.house_state.goods_info ) {
               for (let item of this.deploy_info) {
-                item.num = this.house_detail.house_detail.house_res.house_goods[item.key] ? this.house_detail.house_detail.house_res.house_goods[item.key] : 0;
+                item.num = this.house_detail.house_detail.house_state.goods_info[item.key] ? this.house_detail.house_detail.house_state.goods_info[item.key] : 0;
               }
             } else {
               for (let item of this.deploy_info) {

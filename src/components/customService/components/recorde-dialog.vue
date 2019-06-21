@@ -22,7 +22,7 @@
 
               <div class='circle'></div>
             </div>
-            <div class='detail_dialog_right' v-if='item.is_connect== 0'>
+            <div class='detail_dialog_right' style="line-height: 200px;vertical-align: middle" v-if='item.is_connect== 0'>
               <p>未接通</p>
             </div>
             <div class='detail_dialog_right' v-else>
@@ -34,9 +34,17 @@
                   <p v-for='fee in  item.other_fee' :key='fee.name'>{{fee.name + ':' + fee.money + '元'}}</p>
                 </div>
               </template>
-              <p class='detail_dialog_note'>{{item.remark}}</p>
+              <p v-if='item.remark' class='detail_dialog_note'>备注:{{item.remark}}</p>
               <el-rate class='detail_dialog_rato' v-model="item.star" disabled score-template="{value}">
               </el-rate>
+              <p v-if="item.from=='中介'" class='detail_dialog_note'>中介名称:{{item.agent_name}}</p>
+              <p v-if="item.from=='中介'" class='detail_dialog_note'>中介价格:{{item.agent_price}}</p>
+              <p v-if="item.from=='中介'" class='detail_dialog_note'>中介人:{{item.agent_user}}</p>
+              <p v-if="item.from=='中介'" class='detail_dialog_note'>中介电话:{{item.agent_phone}}</p>
+              <p class='detail_dialog_note'>是否中介单:{{item.is_agency_order=='1' ? '是' : '否'}}</p>
+              <p v-if="item.is_agency_order=='1'" class='detail_dialog_note'>信息审核:{{item.data_check_result=='doubt'?'存疑': '正常'}}</p>
+              <p v-if="item.is_agency_order=='1' && item.data_check_result=='doubt'" class='detail_dialog_note'>存疑原因:{{item.doubt_reason}}</p>
+              
             </div>
           </li>
         </ul>
@@ -120,10 +128,10 @@ export default {
         &:before {
           content: "";
           width: 1px;
-          height: 70%;
+          height: 100%;
           background-color: #cf2e33;
           position: absolute;
-          top: -10%;
+          top: -38%;
         }
       }
       li {
@@ -150,6 +158,7 @@ export default {
         .detail_dialog_right {
           flex: 1;
           text-align: left;
+          min-height: 200px;
           font-size: 10px;
           p + p {
             margin-top: 10px;

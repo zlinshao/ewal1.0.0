@@ -290,12 +290,23 @@
                   <div v-for="(item,key) in staffDetail.education_history" v-show="item.id_num||item.start_time||item.school||item.major||item.eduction||item.learn_type" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
                     <el-row>
                       <el-col :span="8">
-                        <el-form-item label="起始时间">
+                        <el-form-item label="开始日期">
                           <el-date-picker v-model="item.start_time"
-                            type="daterange"
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期">
+                            type="date"
+                            format="yyyy-MM-dd"
+                             placeholder="开始日期"
+                             value-format="yyyy-MM-dd"
+                           >
+                          </el-date-picker>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-form-item label="结束日期">
+                          <el-date-picker v-model="item.end_time"
+                            type="date"
+                            format="yyyy-MM-dd"
+                            value-format="yyyy-MM-dd"
+                            placeholder="结束日期">
                           </el-date-picker>
                         </el-form-item>
                       </el-col>

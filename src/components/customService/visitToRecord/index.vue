@@ -674,7 +674,7 @@ export default {
       let recordOption = this.recordOption;
       recordOption.contract_type = this.chooseTab;
       if (this.recordFree == 1) {
-        recordOption.other_free = JSON.stringify(this.other_free);
+        recordOption.other_free = this.other_free;
       } else {
         recordOption.other_free = '';
       }

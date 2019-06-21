@@ -1,7 +1,7 @@
 // 员工名册
 export const staffBookSearch = {
         status: 'staffBookSearch',
-        placeholder: '请输入搜索内容',
+        placeholder: '姓名/联系方式',
         keywords: 'search',
         limit: 12,
         data: [{
@@ -58,9 +58,10 @@ export const staffBookSearch = {
             }
         ]
     }
-    // 离职管理
+    // 部门管理
 export const OrgSearch = {
     status: 'OrgSearch',
+    placeholder: '部门名称',
     keywords: 'search',
     limit: 7,
     page: 1,
@@ -80,6 +81,7 @@ export const OrgSearch = {
 // 离职管理
 export const LeaveJobSearch = {
     status: 'LeaveJobSearch',
+    placeholder: '姓名/联系方式',
     keywords: 'search',
     data: [{
             keyType: 'radio',
@@ -680,6 +682,7 @@ export const borrowReceiveSearch = {
 export const recruitmentSearchList = {
     1: {
         status: 'recruitmentSearchList',
+        placeholder: '岗位职责/部门/岗位',
         keywords: 'search',
         data: [{
                 keyType: 'depart',
@@ -707,6 +710,7 @@ export const recruitmentSearchList = {
     },
     2: {
         status: 'recruitmentSearchList',
+        placeholder: '姓名/来源/岗位',
         keywords: 'search',
         data: [
             /*{
@@ -755,6 +759,7 @@ export const recruitmentSearchList = {
     },
     3: {
         status: 'recruitmentSearchList',
+        placeholder: '姓名/来源/岗位',
         keywords: 'search',
         data: [
             /*{
@@ -803,6 +808,7 @@ export const recruitmentSearchList = {
     },
     4: { //预约入职
         status: 'recruitmentSearchList',
+        placeholder: '姓名/来源/岗位',
         keywords: 'search',
         data: [
             /*{
