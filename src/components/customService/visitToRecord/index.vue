@@ -305,7 +305,8 @@
         </div>
 
         <div class='dialog_footer'>
-          <el-button id='active-danger' class='el-button-active' size="small" @click='addRecord'>新增</el-button>
+          <el-button id='active-danger' class='el-button-active' size="small" @click='addRecord(1)'>新增并完成</el-button>
+          <el-button id='active-danger' class='el-button-active' size="small" @click='addRecord(0)'>新增</el-button>
           <el-button id='active-info' size="small" @click='handleCloseAdd'>取消</el-button>
         </div>
       </div>
@@ -645,7 +646,7 @@ export default {
 
       return null
     },
-    addRecord () {
+    addRecord (status) {
       let warn = this.vailRecord();
       if (warn) {
         this.$LjNotify('warning', {
@@ -657,20 +658,20 @@ export default {
       if(this.recordOption.data_check_result) {
         if(this.recordOption.data_check_result=='doubt') {
           this.$LjConfirm({content:'中介费是否确定存疑？</br> （确定后将向管控发送核实任务）'}).then(()=> {
-            this.addRecordApi();
+            this.addRecordApi(status);
           })
         }
         if(this.recordOption.data_check_result=='normal') {
           this.$LjConfirm({content:'中介费是否确定正常？</br> （确定后将向业务员派发中介费报备任务）'}).then(()=> {
-            this.addRecordApi();
+            this.addRecordApi(status);
           });
         }
       }else {
-        this.addRecordApi();
+        this.addRecordApi(status);
       }
     },
     //添加记录接口调用
-    addRecordApi() {
+    addRecordApi(status) {
       let recordOption = this.recordOption;
       recordOption.contract_type = this.chooseTab;
       if (this.recordFree == 1) {
@@ -678,6 +679,7 @@ export default {
       } else {
         recordOption.other_free = '';
       }
+      recordOption.status=status;
       this.$http.post(this.url + 'v1.0/csd/revisit', recordOption).then(res => {
         this.$LjNotifyEasy(res,()=> {
           this.isAddRecord = true;

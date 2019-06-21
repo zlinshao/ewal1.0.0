@@ -1565,7 +1565,7 @@
               this.handleCancelAddStaff('ok');
               this.getStaffList();
             } else {
-                console.log(res);
+                // console.log(res);
               this.$LjNotify('warning',{
                 title: '失败',
                 message: res.msg
@@ -1682,9 +1682,9 @@
       handleCancelAddStaff(type) {
         this.is_edit = false;
         //  console.log('this.interview_info_detail.recommenders.name');
-        // if(type=='ok'){
+        if(type=='ok'){
           this.$resetForm(this.interview_info_detail);
-        // }
+        }
         this.interview_info_detail.org_id = [this.departInfo.id];
         // console.log('this.interview_info_detail.recommenders.name');
         this.add_newStaff_visible = false;
@@ -1746,7 +1746,7 @@
         if (val === 'revise') {
           this.$http.get(this.url+'staff/user/'+item.id).then(res => {
           if (res.code === '20020') {
-            if(res.data &&res.data.role){
+            if(res.data && res.data.role){
                let roles = [];
               _.forEach(res.data.role,(o,index)=> {
                  this.interview_info_detail.role_id=[];
@@ -1754,6 +1754,7 @@
               });
               this.interview_info_detail.role_id=roles;
             }
+            this.interview_info_detail.recommenders = res.data.staff && res.data.staff.recommenders || {name: ''};
           } else {
             this.interview_info_detail.role_id = [];
           }
@@ -1776,7 +1777,8 @@
             };
           }
           this.interview_info_detail.salary = item.staff && item.staff.salary;
-          this.interview_info_detail.recommenders = item.staff && item.staff.recommenders || {name: ''};
+          // this.interview_info_detail.recommenders = item.staff && item.staff.recommenders || {name: ''};
+          // console.log('this.interview_info_detail.recommenders.name',item, this.interview_info_detail.recommenders);
           this.interview_info_detail.name = item.name;
           this.interview_info_detail.position = item.position[0].name;
           this.interview_info_detail.position_id = [];
@@ -1821,6 +1823,8 @@
             break;
           case 'staff'://新增 员工
             this.add_newStaff_visible = true;
+            this.$resetForm(this.interview_info_detail);
+            this.interview_info_detail.org_id = [this.departInfo.id];
             break;
           case 'position'://岗位管理
             this.positionForm.depart = this.departInfo.name || '';
