@@ -3,11 +3,11 @@
     <div>
       <div class="container">
         <div class="btn_show" @click="handleOpenInfo"></div>
-        <ul class="date_change">
+        <!--<ul class="date_change">
           <li @click="handleChangeDate(tmp.id)" v-for="tmp in date_change_list" :key="tmp.id"
               :class="{ 'mark_li' : isActive === tmp.id }">{{ tmp.val }}
           </li>
-        </ul>
+        </ul>-->
         <div class="details flex-center">
           <div class="items-column">
             <p>共计房源：{{ left_info.houseNum && left_info.houseNum.value }}套</p>
@@ -87,7 +87,7 @@
         this.isActive = id;
       },
       init_notice_chart() {
-        var notice = this.$echarts.init(document.getElementById('notice_chart'));
+        let notice = this.$echarts.init(document.getElementById('notice_chart'));
         notice.setOption({
           color: ['#CF2E33', '#FFAD0D', '#FFEB00', '#D8D8D8','#808080'],
           legend: {
@@ -149,7 +149,7 @@
         })
       },
       init_renter_chart() {
-        var renter = this.$echarts.init(document.getElementById('renter_chart'));
+        let renter = this.$echarts.init(document.getElementById('renter_chart'));
         renter.setOption({
           color: ['#CF2E33', '#0BB07B', '#0C66FF', '#FFAD0D'],
           legend: {

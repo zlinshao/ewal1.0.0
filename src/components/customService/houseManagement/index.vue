@@ -350,14 +350,14 @@
 
       <!-- 详情中的收房合同、租房合同的合同详情 -->
       <lj-dialog  :visible.sync="contract_detail_visible"   @close="contract_detail_visible = false"
-        :size="{width: 1200 + 'px',height: 800 + 'px'}"> 
+        :size="{width: 1200 + 'px',height: 800 + 'px'}">
          <contractDetailCustom :contractDetailData='contractDetailCustomer' :currentRow='currentRow' :chooseTab='customer_contract_type'></contractDetailCustom>
       </lj-dialog>
 
       <MenuList :module="show_market" :list="customService" :backdrop="true" @close="handleCloseMenu"></MenuList>
 
 
-    
+
 
     </div>
   </div>
@@ -595,7 +595,7 @@
         furniture_list: [],
 
         // 合同详情
-        contract_detail_visible:false, 
+        contract_detail_visible:false,
         currentRow:{} ,  //被选中的当前条数据
         contractDetailCustomer:{} , //合同详情数据
         customer_contract_type:1,   //合同类型，1为收房，2为租房
@@ -682,7 +682,7 @@
       //家具补齐
       handlePolishFurniture(id){
         this.$http.get(this.market_server + 'v1.0/market/task/getTask',{
-         house_id: this.current_house.id, // house_id: 4,   // house_id: this.current_house.id, 
+         house_id: this.current_house.id, // house_id: 4,   // house_id: this.current_house.id,
           task_type: 10, //用10，10是家居补齐类型
           ...this.table_params
         }).then(res => {
@@ -854,8 +854,10 @@
       },
       //获取房源列表
       async getHouseResource() {
+        this.showLoading(true);
         if(!this.validatePermission('House-Center-Read')) return;
         await this.$http.get(this.market_server + 'v1.0/market/house', this.house_params).then(res => {
+          this.showLoading(false);
           if (res.code === 200) {
             this.house_source = res.data.data;
             this.house_params.count = res.data.all_count;
@@ -867,7 +869,6 @@
       },
       //获取历史相册列表
       getHistoryPicList() {
-        // console.log(this.current_house);
         let id = this.current_house.id;
         let params = {id};
         this.$http.get(`${this.market_server}v1.0/market/house/houseAlbum`,params).then(res=> {
@@ -974,13 +975,13 @@
                 album[key] = Object.keys(val);
               });
             }*/
-            
+
           } else {
             this.contractDetailCustomer = {};
           }
         })
       },
-    
+
 
 
     },
