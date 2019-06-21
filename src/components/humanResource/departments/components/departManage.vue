@@ -259,7 +259,7 @@
             </el-tab-pane>
             <el-tab-pane label="学历信息" name="second">
               <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.education_history.length > 0">
-                <div v-for="item in interview_info_detail.education_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
+                <div v-for="item in interview_info_detail.education_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px" v-show="item.start_end_time || item.school || item.major || item.eduction || item.learn_type || item.item_id">
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="起始时间">
@@ -282,8 +282,6 @@
                         <el-input v-model="item.major"  placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
-                  </el-row>
-                  <el-row>
                     <el-col :span="8">
                       <el-form-item label="学历">
                         <dropdown-list v-model="item.eduction" title="请选择" width="253" :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND"></dropdown-list>
@@ -320,7 +318,7 @@
             </el-tab-pane>
             <el-tab-pane label="工作履历" name="third">
               <el-form label-width="120px" size="small" style="width: 100%" v-if="interview_info_detail.work_history.length > 0">
-                <div v-for="item in interview_info_detail.work_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px">
+                <div v-for="item in interview_info_detail.work_history" :key="item.id" style="border-bottom: 1px dashed #E4E7ED;padding: 20px 10px;margin-bottom: 10px" v-show="item.start_end_time || item.position || item.work_place || item.salary || item.witness || item.witness_phone || item.item_id">
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="起始时间">
@@ -343,8 +341,6 @@
                         <el-input v-model="item.work_place" placeholder="请输入"></el-input>
                       </el-form-item>
                     </el-col>
-                  </el-row>
-                  <el-row>
                     <el-col :span="8">
                       <el-form-item label="薪资">
                         <el-input v-model="item.salary" placeholder="请输入"></el-input>
@@ -1554,9 +1550,20 @@
                 message: '岗位必填'
               })
         }else {
+          const detail = this.interview_info_detail;
+          if(detail && detail.education_history){
+           _.forEach(detail.education_history,(item)=>{
+            delete item.item_id;
+           })
+          }
+          if(detail && detail.work_history){
+           _.forEach(detail.work_history,(item)=>{
+            delete item.item_id;
+           })
+          }
           if (this.is_edit) {
-          this.interview_info_detail.type = 'update';
-          this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,this.interview_info_detail).then(res => {
+          detail.type = 'update';
+          this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,detail).then(res => {
             if (res.code === '20030') {
               this.$LjNotify('success',{
                 title: '成功',
@@ -1574,8 +1581,8 @@
           });
           return false;
         }
-        this.interview_info_detail.enroll=this.myUtils.formatDate(this.interview_info_detail.enroll);
-        this.$http.post(this.url+'staff/user',this.interview_info_detail).then(res => {
+        detail.enroll=this.myUtils.formatDate(detail.enroll);
+        this.$http.post(this.url+'staff/user',detail).then(res => {
           if (res.code === '20010') {
             this.$LjNotify('success',{
               title: '成功',
@@ -1616,6 +1623,7 @@
       },
       handleAddEducation() {
         this.interview_info_detail.education_history.push({
+          item_id:1,
           start_end_time: '',
           school: '',
           major: '',
@@ -1628,6 +1636,7 @@
       },
       handleAddWork() {
         this.interview_info_detail.work_history.push({
+          item_id:1,
           work_place: '',
           start_end_time: '',
           position: '',

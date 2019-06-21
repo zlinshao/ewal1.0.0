@@ -217,8 +217,7 @@ export default {
                 mVal[o.keyName] = o.keyValue;
               });
               formData[item.keyName] = mVal;
-            }
-            else {
+            } else {
               let isArr = ((typeof item.childType) == 'object'),
                 children = isArr ? item.children[0] : item.children,
                 newVal = {};
