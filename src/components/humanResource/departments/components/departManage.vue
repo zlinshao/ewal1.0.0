@@ -97,7 +97,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="部门">
-                      <org-choose width="260" num="1" v-model="interview_info_detail.org_id"></org-choose>
+                      <org-choose width="260" num="5" v-model="interview_info_detail.org_id"></org-choose>
 <!--                      <el-input placeholder="请选择" readonly @focus="departOrgan_visible = true" v-model="interview_info_detail.depart"></el-input>-->
                     </el-form-item>
                   </el-col>
@@ -1768,6 +1768,16 @@
           } else {
             this.interview_info_detail.role_id = [];
           }
+          if(res.data && res.data.org){
+               let orgs = [];
+              _.forEach(res.data.org,(o,index)=> {
+                 this.interview_info_detail.org_id=[];
+                orgs.push(o.id);
+              });
+              this.interview_info_detail.org_id=orgs;
+            } else {
+            this.interview_info_detail.org_id = [];
+          }
         })
           this.currentStaff = item;
           this.is_edit = true;
@@ -1792,9 +1802,9 @@
           this.interview_info_detail.name = item.name;
           this.interview_info_detail.position = item.position[0].name;
           this.interview_info_detail.position_id = [];
-          this.interview_info_detail.org_id = [];
+          // this.interview_info_detail.org_id = [];
           this.interview_info_detail.position_id.push(item.position[0].id);
-          this.interview_info_detail.org_id.push(item.org[0].id);
+          // this.interview_info_detail.org_id.push(item.org[0].id);
           this.interview_info_detail.depart = item.org[0].name;
           this.interview_info_detail.work_history = item.staff && item.staff.work_history || [];
           if (this.interview_info_detail.work_history === "[]") {
