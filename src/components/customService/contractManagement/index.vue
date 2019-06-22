@@ -1286,20 +1286,20 @@ export default {
       })
     },
     handleConfirmPolishing () {
-      if (!this.polishing_data_form.property_number) {
-        this.$LjNotify('warning',{
-          title: '警告',
-          message: '请输入房产证号'
-        });
-        return false;
-      }
-      if (!this.polishing_data_form.mound_number) {
-        this.$LjNotify('warning',{
-          title: '警告',
-          message: '请输入丘号'
-        });
-        return false;
-      }
+      // if (!this.polishing_data_form.property_number) {
+      //   this.$LjNotify('warning',{
+      //     title: '警告',
+      //     message: '请输入房产证号'
+      //   });
+      //   return false;
+      // }
+      // if (!this.polishing_data_form.mound_number) {
+      //   this.$LjNotify('warning',{
+      //     title: '警告',
+      //     message: '请输入丘号'
+      //   });
+      //   return false;
+      // }
       /*for (let key in this.polishing_params) {
         if (!this.polishing_params[key] || this.polishing_params[key].length < 1) {
           this.$LjNotify('warning',{

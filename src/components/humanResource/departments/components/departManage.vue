@@ -1694,6 +1694,7 @@
         if(type=='ok'){
           this.$resetForm(this.interview_info_detail);
         }
+        this.activeName = 'first';
         this.interview_info_detail.org_id = [this.departInfo.id];
         // console.log('this.interview_info_detail.recommenders.name');
         this.add_newStaff_visible = false;
