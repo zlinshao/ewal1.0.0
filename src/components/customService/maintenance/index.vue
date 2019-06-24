@@ -30,10 +30,49 @@
             </div>
           </template>
         </el-table-column>
-
+         <el-table-column show-overflow-tooltip label="创建时间" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.create_time || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="工单编号" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.num || '--'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" v-for='item in Object.keys(showTableData)' :key='item' :prop='item' :label="showTableData[item]"></el-table-column>
-
-        <el-table-column v-if="$storage.get('VALIDATE_PERMISSION')['Service-Clean-Operate']" align="center" label="操作">
+        <el-table-column show-overflow-tooltip label="地址" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.house_name || '--'}}</span>
+          </template>
+        </el-table-column>
+         <el-table-column show-overflow-tooltip label="内容" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.content || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="截止时间" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.finish_time || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="处理人" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.operate_user_name || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="创建人" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.create_name || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="部门" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.operate_org_name || '--'}}</span>
+          </template>
+        </el-table-column>
+        
+        <el-table-column v-if="$storage.get('VALIDATE_PERMISSION')['Service-Clean-Operate']" width="180" align="center" label="操作">
           <template slot-scope="scope">
             <el-button id='active-primary' size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
             <el-button id='active-danger' size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>
@@ -109,15 +148,15 @@ export default {
       customService,
       visibleStatus: false,
       showTableData: {
-        create_time: '创建时间',
-        num: '工单编号',
+        // create_time: '创建时间',
+        // num: '工单编号',
         type_name: '类型',
-        house_name: '地址',
-        content: '内容',
-        finish_time: '截止时间',
-        operate_user_name: '处理人',
-        create_name: '创建人',
-        org_name: '部门'
+        // house_name: '地址',
+        // content: '内容',
+        // finish_time: '截止时间',
+        // operate_user_name: '处理人',
+        // create_name: '创建人',
+        // org_name: '部门'
       },
       tableData: [], // 工单列表
       tableDateCount: 0, // 工单列表count

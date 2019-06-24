@@ -117,10 +117,10 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" v-if="tabType == 4 && $storage.get('VALIDATE_PERMISSION')['House-Due-Operate']" width='300'>
-          <template slot-scope="scope" align='left'>
-            <el-button id='active-success' size="mini" @click.stop="addOrEditHousingTag(scope.row,1)">添加标记</el-button>
-            <el-button id='active-success' size="mini" @click.stop="urgedDealWith(scope.row)">催办</el-button>
+        <el-table-column label="操作" align="center" v-if="tabType == 4 && $storage.get('VALIDATE_PERMISSION')['House-Due-Operate']" width='180'>
+          <template slot-scope="scope" align='center'>
+            <el-button id='active-success' size="mini" style="float: left" @click.stop="addOrEditHousingTag(scope.row,1)">添加标记</el-button>
+            <el-button id='active-success' style="float: left" size="mini" @click.stop="urgedDealWith(scope.row)">催办</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -142,7 +142,7 @@
     <MenuList :list="customService" :module="visibleStatus" :backdrop="true" @close="visibleStatus = false"></MenuList>
 
     <!--合同详情-->
-    <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :chooseTab='chooseTab' :showFooter='false'
+    <contractDetail :visible="contract_detail_visible" :moduleData='currentRow' :tagStatus='chooseTab' :showFooter='false'
       :disabled='true' :showData='false' :showRelated='true' @close="handleCloseDetail" />
 
     <!-- 添加 修改标记 -->
@@ -393,18 +393,38 @@ export default {
     //高级搜索
     highSearch () {
       this.showSearch = true;
-      this.searchData = housingDueSearch;
+      const data =housingDueSearch;
+      // this.searchData = housingDueSearch;
+
+      if ( this.tabType==1) { // 待标记不分续租和退租
+         _.forEach(data.data,(item)=>{
+          if(item.keyName=='tag_status'){
+            item.keyType='';
+            item.title ='';
+          }
+        
+        });
+      } else {
+        _.forEach(data.data,(item)=>{
+           if(item.keyName=='tag_status'){
+            item.keyType= 'check',
+            item.title ='状态';
+           }
+        });
+      }
+      this.searchData=data;
+      console.log('this.searchData-----', this.searchData);
     },
     hiddenModule (val) {
       this.showSearch = false;
       if (val !== 'close') {
-        this.params.page = 1
-        this.params.search = val.search
-        this.params.tag_status = val.tag_status
-        this.params.sign_user_id = val.openPer[0] || ''
-        this.params.sign_org_id = val.handler[0] || ''
-        this.params.end_at_min = val.date1[0] || ''
-        this.params.end_at_max = val.date1[1] || ''
+        this.params.page = 1,
+        this.params.search = val.search,
+        this.params.tag_status = val.tag_status,
+        this.params.sign_user_id = val.openPer[0] || '',
+        this.params.sign_org_id = val.handler[0] || '',
+        this.params.end_at_min = val.date1[0] || '',
+        this.params.end_at_max = val.date1[1] || '',
         this.getDateList()
       }
     },
