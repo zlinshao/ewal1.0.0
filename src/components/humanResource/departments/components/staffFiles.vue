@@ -282,6 +282,17 @@
                         <el-input v-model="staffDetail.dismiss_reason.dismiss_mess"></el-input>
                       </el-form-item>
                     </el-col>
+                    <el-col :span="6">
+                    <el-form-item label="学历">
+                      <dropdown-list :json-arr="DROPDOWN_CONSTANT.EDUCATION_BACKGROUND" width="219" v-model="staffDetail.education" title="请选择"></dropdown-list>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                      <el-form-item label="角色">
+                         <post-choose  :num="999"  width="300"
+                           v-model="staffDetail.role_id"></post-choose>
+                      </el-form-item>
+                    </el-col>
                   </el-row>
                 </el-form>
               </el-tab-pane>
@@ -525,6 +536,8 @@ import { constants } from 'fs';
           org_id: [], //部门id
           org_name: '', //部门名称
           enroll: '',
+          role_id: [],
+          education: '',
           email: '',
           gender: '',
           education: '',

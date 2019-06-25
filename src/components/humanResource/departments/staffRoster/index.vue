@@ -46,7 +46,162 @@
           <el-table-column :min-width="item.width" show-overflow-tooltip :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-else-if="item.key === 'name'" fixed="left" style="background-color: white"></el-table-column>
           <el-table-column :min-width="item.width" show-overflow-tooltip :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-else></el-table-column>
         </div>
+        <el-table-column label="操作" align="center" width="260">
+                <template slot-scope="scope">
+                  <el-button plain type="success" size="mini" @click="operateModule('power',scope.row)">权限</el-button>
+                  <el-button plain type="warning" size="mini" @click="operateModule('leave',scope.row)">离职</el-button>
+                  <el-button plain type="warning" size="mini" @click="operateModule('disabled',scope.row)">禁用</el-button>
+                </template>
+              </el-table-column>
       </el-table>
+      <lj-dialog
+      :visible="disable_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="disable_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>禁用</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定{{ currentStaff.is_enable ? '启用' : '禁用'}}该员工吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleOkDisable">确定</el-button>
+          <el-button type="info" size="small" @click="disable_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+    <!--离职==================================================================================================-->
+    <lj-dialog :visible="leaveVisible" :size="leave_size" @close="leaveVisible = false">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>离职</h3>
+        </div>
+        <div class="dialog_main flex-center borderNone">
+          <el-form :model="outForm" ref="leaveForm" :rules="rules"  label-width="120px" class="depart_visible">
+            <el-form-item label="离职日期" prop="dismiss_time" required>
+              <el-date-picker type="date" value-format="yyyy-MM-dd"  v-model="outForm.dismiss_time"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="离职原因" prop="dismiss_reason.dismiss_type" required>
+              <el-select v-model="outForm.dismiss_reason.dismiss_type">
+                <el-option :value="1" label="主动离职"></el-option>
+                <el-option :value="2" label="旷工离职"></el-option>
+                <el-option :value="3" label="劝退"></el-option>
+                <el-option :value="4" label="开除"></el-option>
+                <el-option :value="5" label="其他"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="具体描述" required>
+              <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入内容"
+                v-model="outForm.dismiss_reason.dismiss_mess">
+              </el-input>
+            </el-form-item>
+            <div>
+              <el-checkbox-group v-model="checkLists" style="display: flex;justify-content: center;color: #D2D2D2;">
+                <el-checkbox :label="1">发送离职群消息</el-checkbox>
+                <el-checkbox :label="2">发送离职短信</el-checkbox>
+                <el-checkbox :label="3">发送离职证明</el-checkbox>
+              </el-checkbox-group>
+            </div>
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleSubmitOut">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancelOut">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
+    <!--权限管理===============================================================================================-->
+    <lj-dialog :visible="powerVisible" :size="power_size" @close="handleCancelSetPower">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>权限</h3>
+        </div>
+        <div class="dialog_main powerContent space-column">
+          <div class="powerHead items-bet">
+            <div class="inputLabel borderNone">
+              <h4>权限类型</h4> 
+              <!-- disabled :popper-class="'appTheme' + themeName" -->
+              <el-select  placeholder="请选择" v-model="self_power_params.type" size="small" @change="handleChangePowerType">
+                <el-option value="position" label="岗位"></el-option>
+                <el-option value="user" label="用户"></el-option>
+                <el-option value="ban" label="黑名单"></el-option>
+                <!-- <el-option value="all" label="全部"></el-option> -->
+              </el-select>
+            </div>
+             <div class="inputLabel borderNone" v-show="self_power_params.type=='position'">
+                <h4>岗位</h4> 
+                <post-choose size="mini" :num="1" v-model="self_power_params.position_id"></post-choose>
+            </div>
+            <div class="inputLabel borderNone" v-show="self_power_params.type=='position'">
+                <h4></h4> 
+                <!-- <post-choose  v-model="self_power_params.position"></post-choose> -->
+            </div>
+          </div>
+          <div class="powerTabs">
+            <el-tabs v-model="powerName" @tab-click="handleClick">
+              <el-tab-pane :label="item.name" :name="item.id.toString()" v-for="(item,index) in powerNames" :key="index">
+                <p class="childPower" v-if="module_list.length > 0">
+                  <span :class="{'hover':powerChildName === tmp.id}" v-for="tmp in module_list"
+                        @click="handleName(tmp)">{{tmp.name}}</span>
+                </p>
+                <p class="childPower" v-else>
+                  <span>暂无数据</span>
+                </p>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+          <div v-if="module_list.length > 0">
+            <div class="flex powerMain scroll_bar changeChoose" v-for="item in module_list" v-if="item.id === powerChildName">
+              <div v-if="power_list">
+                <el-checkbox :disabled="!$storage.get('VALIDATE_PERMISSION')['Permission-Update']" v-model="checkAll" @change="handleCheckAll">全选</el-checkbox>
+              </div>
+              <div v-else>暂无权限</div>
+              <div v-for="(item,key) in power_list">
+                <el-checkbox-group :disabled="!$storage.get('VALIDATE_PERMISSION')['Permission-Update']" v-model="checkList" @change="handleCheck">
+                  <el-row v-for="(tmp,idx) in power_list[key]" :key="idx">
+                    <el-col :span="6">
+                      <el-button type="text" size="large" @click="handleSearchField(tmp)" style="color: #CF2E33;font-size: 18px"></el-button>
+                    </el-col>
+                    <el-col :span="18">
+                      <el-checkbox :label="tmp.id" :key="tmp.id" style="margin-top: 13px">
+                        {{tmp.name}}
+                      </el-checkbox>
+                    </el-col>
+                  </el-row>
+                </el-checkbox-group>
+              </div>
+            </div>
+            <div style="border-top: 1px solid #e6f1fe;background-color: white;">
+             <div v-if="show_field_list.length > 0" class="changeChoose">
+               <el-checkbox-group v-model="field_list" @change="handleCheckField">
+                 <div class="flex" style="height: 40px;line-height: 40px;padding-left: 10px">
+                   <el-checkbox v-for="(tmp,idx) in show_field_list" :key="idx" :label="tmp.id">{{ tmp.name }}</el-checkbox>
+                 </div>
+               </el-checkbox-group>
+             </div>
+              <div v-else style="height: 40px;line-height: 40px;font-size: 14px;padding-left: 10px">
+                暂无字段权限
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <div class="powerMain" style="padding-left: 30px">暂无权限</div>
+            <div style="height: 40px;line-height: 40px;font-size: 14px;padding-left: 10px">
+              暂无字段权限
+            </div>
+          </div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleSubmitSetPower">确定</el-button>
+          <el-button type="info" size="small" @click="handleCancelSetPower">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
       <!--劳务合同-->
       <div class="labour_contract scroll_bar" :class="{'hide_labour_contract': labour_contract_visible}">
         <div>
@@ -348,12 +503,33 @@
     data() {
       return {
         url:globalConfig.humanResource_server,
-
+        disable_visible: false,
 
         checkList: [],
+        field_list: [],
+         //个人权限
+        self_power_params: {
+          user_id: '',
+          system_id: '',
+          type: '',
+          position_id: [],
+        },
+        power_list: [],
+        power_size: {},
+        leave_size: {},
+        checkAll: false,
         chooseRowIds: [],
         tableData: [],
         counts: 0,
+        //离职
+        outForm: {
+          type: 'dimission',
+          dismiss_time: new Date(),
+          dismiss_reason: {
+            dismiss_mess: '',
+            dismiss_type: ''
+          }
+        },
         table_column: [
           // { key: 'staff.internship_number',val: '实习协议',isBtn: true},
           { key: 'name',val: '姓名', width: "60px"},
@@ -406,8 +582,26 @@
           org_id: '',
           position_id: '',
         },
+        show_field_list: [],
+        currentStaff: '',
+        module_list: [],
+        powerName: '1',//部门
+        powerChildName: '',//部门模块
+        powerNames: [],
+        //获取系统列表
+        system_params: {
+          limit: 999,
+          parent_id: '',
+          is_permissions: ''
+        },
+         power_params: {
+          limit: 999,
+          system_id: '',
+          type: 1
+        },
         //劳务合同
         labour_contract_visible: true,
+        leaveVisible: false,
         labour_form: {
             company_name: '',
             birthday: '',
@@ -427,6 +621,7 @@
             postal_code: '',
             leader_name: '',
         },
+        powerVisible: false,
         ok_send_contract: false,
         ok_send_employ_proof: false,
         employ_proof_form: {
@@ -449,10 +644,25 @@
             salary_month: '',
             salary_year: ''
         },
+        module_params: {
+          limit: 999,
+          parent_id: '',
+          is_permissions: ''
+        },
         filesVisible: false,
 
         //员工详情
         staff_detail_info: '',
+         current_field: '', //点击查看当前权限
+ //设置权限
+        set_power: {
+          system_id: '',
+          type_id: '',
+          permission_type: 'user',
+          permission_id: '',
+          permission_field_id: '',
+          position_id: '',
+        },
 
         random_key: '',
       }
@@ -501,12 +711,293 @@
     },
     computed: {},
     methods: {
+      // 权限、离职、禁用
+       operateModule(val,item) {
+         if (val === 'disabled') {
+          this.currentStaff = item;
+        }
+        switch (val) {
+          case 'power'://权限
+            this.getSystemList();
+            this.powerVisible = true;
+            this.set_power.type_id = item.id;
+            this.self_power_params.type = '';
+            this.set_power.permission_type = '';
+            this.getSelfPower(this.powerChildName);
+            break;
+          case 'leave'://离职
+            this.currentStaff = item;
+            this.leaveVisible = true;
+            break;
+          case 'disabled': // 禁用
+            this.disable_visible = true;
+            break;
+        }
+        switch (val) {
+          case 'power'://权限
+            this.power_size = {
+              width: '1600px',
+              height: '840px',
+            };
+            break;
+          case 'leave'://新增 岗位
+            this.leave_size = {
+              width: '510px',
+              height: '480px',
+            };
+            break;
+        }
+       },
+       //禁用
+       handleOkDisable() {
+        this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,{
+          type: 'enable'
+        }).then(res => {
+          if (res.code === '20030') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.disable_visible = false;
+            this.getStaffList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleCheckField(val) {
+        if (val.length > 0) {
+          if (this.checkList.indexOf(this.current_field.id) === -1) {
+            this.checkList.push(this.current_field.id);
+          }
+        } else {
+          let idx = this.checkList.indexOf(this.current_field.id);
+          this.checkList.splice(idx,1);
+        }
+        let count = this.handleGetPowerLen();
+        this.checkAll = count === this.checkList.length;
+      },
+       // 权限子集切换
+      handleName(val) {
+        this.checkAll = false;
+        this.show_field_list = [];
+        this.powerChildName = val.id;
+        this.set_power.system_id = val.id;
+        this.getPowerList(val.id);
+        this.getSelfPower(val.id);
+      },
+       handleSubmitOut() {
+        this.$refs['leaveForm'].validate(valid=>{
+          if (valid){
+              this.outForm.dismiss_time = this.myUtils.formatDate(this.outForm.dismiss_time);
+            this.$http.put(`${this.url}staff/user/${this.currentStaff.id}`,this.outForm).then(res => {
+              if (res.code === '20030') {
+                this.$LjNotify('success',{
+                  title: '成功',
+                  message: res.msg
+                });
+                this.handleCancelOut();
+                this.getStaffList();
+                if (this.checkLists.length > 0) {
+                  this.confirm_send_visible = true;
+                }
+              } else {
+                this.$LjNotify('warning',{
+                  title: '失败',
+                  message: res.msg
+                })
+              }
+            })
+          }
+        });
+
+      },
+      handleCancelOut() {
+        this.outForm = {
+          type: 'dimission',
+          dismiss_time: new Date(),
+          dismiss_reason: {
+            dismiss_mess: '',
+            dismiss_type: ''
+          }
+        };
+        this.leaveVisible = false;
+      },
+       // 权限复选
+      handleCheck(value) {
+        let checkCount = value.length;
+        let list = this.power_list;
+        let count = 0;
+        for (let item of  Object.keys(list)) {
+          count = count + list[item].length;
+          for (let tmp of list[item]) {
+            if (!value.includes(tmp.id)) {
+              for (let field of tmp.fields) {
+                this.field_list = this.field_list.filter(item => item !== field.id);
+              }
+            }
+            if (tmp.id === value[value.length - 1]) {
+              if (tmp.fields) {
+                for (let tmp2 of tmp.fields) {
+                  this.field_list = this.field_list.filter(item => item !== tmp2.id);
+                  this.field_list.push(tmp2.id);
+                }
+              }
+            }
+          }
+        }
+        this.checkAll = checkCount === count;
+      },
+      handleSubmitSetPower() {
+        if(this.set_power.permission_type == 'position' && this.self_power_params.position_id.length<1){
+          this.$LjNotify('warning',{
+              title: '提醒',
+              message: '岗位必填'
+            });
+        } else {
+          this.set_power.permission_id = this.checkList;
+          this.set_power.permission_field_id = this.field_list;
+          this.set_power.system_id = this.set_power.permission_type == 'position' ? this.self_power_params.position_id[0] : this.powerChildName;
+          this.$http.post(this.url+'organization/permission/set',this.set_power).then(res => {
+          if (res.code === '20000') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.powerVisible = false;
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+          })
+        }
+      },
+      //查看该权限下的字段
+      handleSearchField(tmp) {
+        this.current_field = tmp;
+        this.show_field_list = tmp.fields || [];
+      },
+      // 全选
+      handleCheckAll(val) {
+        if (val) {
+          this.checkList = [];
+          this.field_list = [];
+          let list = this.power_list;
+          let keys = Object.keys(list);
+          for (let key of keys) {
+            for (let i =0;i<list[key].length;i++) {
+              this.checkList.push(list[key][i].id);
+              if (list[key][i].fields && list[key][i].fields.length > 0) {
+                for (let tmp of list[key][i].fields) {
+                  this.field_list.push(tmp.id);
+                }
+              }
+            }
+          }
+        } else {
+          this.checkList = [];
+          this.field_list = [];
+          // this.show_field_list = [];
+        }
+      },
+      // 关闭权限按钮
+      handleCancelSetPower() {
+        this.checkList = [];
+        this.field_list = [];
+        this.checkAll = false;
+        this.powerVisible = false;
+      },
+      // 权限切换
+      handleClick(val) {
+        this.show_field_list = [];
+        let id = parseInt(val.name);
+        this.getModuleList(id);
+      },
+      getModuleList(id) {
+        this.module_params.parent_id = id;
+        this.$http.get(this.url+'organization/system',this.module_params).then(res => {
+          if (res.code === '20000') {
+            this.module_list = res.data.data;
+            console.log('res.data.data', res.data.data)
+            this.getPowerList(res.data.data[0].id);
+            this.getSelfPower(res.data.data[0].id);
+            this.powerChildName = res.data.data[0].id;
+          } else {
+            this.module_list = [];
+          }
+        })
+      },
+      getPowerList(id) {
+        this.power_params.system_id = id;
+        this.$http.get(this.url+'organization/permission',this.power_params).then(res => {
+          if (res.code === '20000') {
+            this.power_list = res.data.data;
+            let count = 0;
+            for (let key in this.power_list) {
+              count = count + this.power_list[key].length;
+            }
+            this.checkAll = this.checkList.length === count;
+          } else {
+            this.power_list = '';
+          }
+        })
+      },
+      getSelfPower(id) {
+        this.self_power_params.system_id = id;
+        this.$http.get(this.url+'organization/permission/all',this.self_power_params).then(res => {
+          if (res.code === '20000') {
+            let field = [];
+            let permission = [];
+            if (res.data.field && res.data.field.length > 0) {
+              for (let item of res.data.field) {
+                field.push(item.id);
+              }
+            }
+            if (res.data.permission && res.data.permission.length > 0) {
+              for (let tmp of res.data.permission) {
+                permission.push(tmp.id);
+              }
+            }
+            let count = 0;
+            for (let key in this.power_list) {
+              count += this.power_list[key].length;
+            }
+            this.$nextTick(() => {
+              if (permission.length >= count) {
+                this.checkAll = true;
+              }
+              this.checkList = permission;
+              this.field_list = field;
+            });
+          }
+        })
+      },
+      handleChangePowerType(type) {
+        this.set_power.permission_type = type;
+        this.self_power_params.type = type;
+      },
       //设置导出数据
       handleSetData() {
         this.export_params.field = ['id'];
         this.table_column.map(item => {
           this.export_params.field.push(item.key);
         });
+      },
+      getSystemList() {
+        this.$http.get(this.url+'organization/system',this.system_params).then(res => {
+          if (res.code === '20000') {
+            this.powerNames = res.data.data;
+            this.getModuleList(res.data.data[0].id);
+            this.powerName = res.data.data[0].id.toString();
+          } else {
+            this.powerNames = [];
+          }
+        })
       },
         getLabourInfo(id) {
             this.$http.get(`${this.url}staff/e_contract/get_contract_info/${id}`).then(res => {
@@ -834,6 +1325,14 @@
         this.$http.get(`${this.url}staff/user/${id}`).then(res => {
           if (res.code === '20020') {
             this.staff_detail_info = res.data;
+            if(res.data && res.data.role){
+               let roles = [];
+              _.forEach(res.data.role,(o,index)=> {
+                 this.staff_detail_info.role_id=[];
+                roles.push(o.id);
+              });
+              this.staff_detail_info.role_id=roles;
+            }
             this.filesVisible = true;
           } else {
             this.staff_detail_info = '';
@@ -871,9 +1370,19 @@
 
 <style lang="scss" scoped>
   @import "../../../../assets/scss/humanResource/staffRoster/index.scss";
+   @import "../../../../assets/scss/humanResource/departments/components/departManage.scss";
 
   @mixin childrenImg($m, $n) {
     $url: '../../../../assets/image/humanResource/staffRoster/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+   @mixin organImg($m, $n) {
+    $url: '../../../../assets/image/humanResource/departments/departManage/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
+  @mixin commonImg($m, $n) {
+    $url: '../../../../assets/image/common/' + $n + '/' + $m;
     @include bgImage($url);
   }
 
@@ -902,6 +1411,34 @@
       .hide_labour_contract {
         top: -1920px;
         right: -1920px;
+      }
+    }
+    #departManage {
+      .mainTop {
+        span {
+          @include organImg('huidi.png', 'theme1');
+        }
+        .hover {
+          @include organImg('hongdi.png', 'theme1');
+        }
+      }
+      .iconInput {
+        .organization {
+          @include commonImg('zuzhijiagou.png', 'theme1');
+        }
+        .position {
+          @include commonImg('zhiwei.png', 'theme1');
+        }
+        .user {
+          @include commonImg('yonghu.png', 'theme1');
+        }
+      }
+      .powerContent {
+        .powerHead {
+          i {
+            @include commonImg('xiugai.png', 'theme1');
+          }
+        }
       }
     }
   }
