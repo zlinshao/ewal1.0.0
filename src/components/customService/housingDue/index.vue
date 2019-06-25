@@ -27,7 +27,7 @@
         <el-table-column align="center" label="标记" v-if='tabType == 2'>
           <template slot-scope="scope">
             <div class="status" :class="['status' + scope.row.tag_status]">
-              <p v-if='scope.row.tag_status'>{{scope.row.tag_status == 1 ? "续租":"退租"}}</p>
+              <p v-if='scope.row.tag_status'>{{scope.row.tag_status == 1 ? chooseTab==1 ?"续约" : "续租":  chooseTab==1 ?"退房" : "退租"}}</p>
             </div>
           </template>
         </el-table-column>
