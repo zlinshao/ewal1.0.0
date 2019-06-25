@@ -6,9 +6,10 @@
           <p class="flex-center" @click='moduleList'>
             <b>...</b>
           </p>
-          <h1>{{this.$route.query.pre_name}}</h1>
+          <!-- <h1>{{this.$route.query.pre_name}}</h1> -->
+          <h1>{{classify_second_data[chooseTab].name}}</h1>
           <h2 class="items-center">
-            <span v-for="(item,index) in selects" @click="changeTabs(index+1,item.id)" class="items-column" :class="{'chooseTab': chooseTab === index+1}">
+            <span v-for="(item,index) in classify_second_data" @click="changeTabs(index,item.id)" class="items-column" :class="{'chooseTab': chooseTab === index}" :key="item.id">
               {{item.name}}<i></i>
             </span>
           </h2>
@@ -16,8 +17,8 @@
       </div>
       <div class="mainList scroll_bar" :style="{'height': this.mainListHeight(-9) + 'px'}">
         <div>
-          <div class="marketRisk-list" v-if='gradeChildrenData.length > 0'>
-            <div class="marketRisk-list-info flex-center" v-for="(item,index) in gradeChildrenData">
+          <div class="marketRisk-list" v-if='classify_third_data.length > 0'>
+            <div class="marketRisk-list-info flex-center" v-for="(item,index) in classify_third_data" :key="index">
               <!-- <div class="marketRisk-box flex-center" @click="routerLink('riskManagementDetail',{pre_name:item.name,pre_id:item.id,pre_data:gradeChildrenData})"> -->
               <div class="marketRisk-box flex-center" @click="jumpNewWindow(item)">
                 <span>{{item.name}}</span>
@@ -34,7 +35,7 @@
 </template>
 
 <script>
-import { riskManagement } from '../../../assets/js/allModuleList.js';
+// import { riskManagement } from '../../../assets/js/allModuleList.js';
 import MenuList from '../common/menu'
 
 export default {
@@ -42,39 +43,41 @@ export default {
   components: { MenuList },
   data () {
     return {
-      riskManagement,
+      // riskManagement,
       navVisible: false,
-      chooseTab: 1,
-      params: {//查询参数
-        search: '',
-        offset: 1,
-        limit: '',
-      },
-      gradeChildrenData: [],//三级列表数据
-      selects: [],
-      parent_id: '',
-
+      chooseTab: parseInt(this.$route.query.classify_second_index),
+      // 当前的二级数据id
+      classify_second_id_current:this.$route.query.classify_second_id,
+      // 二级分类列表
+      classify_second_data:[{}],
+      // 三级数据列表
+      classify_third_data:[{}]
     }
   },
   mounted () {
-    this.chooseTab = this.$route.query.pre_index;//切换tab
-    this.selects = this.$route.query.pre_data;
-    this.parent_id = this.$route.query.pre_id;
-    this.getDataList();
+    // this.selects = this.$route.query.pre_data;
+    // this.chooseTab = this.$route.query.pre_index;//切换tab
+    // this.parent_id = this.$route.query.pre_id;
+    // 获取当前的二级id
+    this.getDataList_second();
+    this.getDataList_third();
   },
   watch: {
-    $route: {
-      handler: function (val, oldVal) {
-        this.chooseTab = this.$route.query.pre_index;//切换tab
-        this.selects = this.$route.query.pre_data;
-        this.parent_id = this.$route.query.pre_id;
-        if (oldVal.path === '/riskManagementDetail') {
-
+    $route: function (newRoute, oldRoute) {
+        // this.chooseTab = this.$route.query.pre_index;//切换tab
+        // this.selects = this.$route.query.pre_data;
+        // this.parent_id = this.$route.query.pre_id;
+        // if (oldVal.path === '/riskManagementDetail') {
+        // }
+        // this.classify_second_id_current:
+        // 如果是在三级页面
+        if(newRoute.path==="/riskManagementMenu"){
+          this.classify_second_id_current=newRoute.query.classify_second_id;
+          this.chooseTab=newRoute.query.classify_second_index;
+          this.getDataList_second();
+          this.getDataList_third();
         }
       },
-      // 深度观察监听
-      deep: true
-    },
   },
   methods: {
     moduleList () {
@@ -84,26 +87,45 @@ export default {
     handleClose () {
       this.navVisible = false
     },
-    changeTabs (id, pre_id) {
-      this.chooseTab = id;
-      this.parent_id = pre_id;
-      this.getDataList();
+    changeTabs (index,classify_second_id) {
+      this.chooseTab = index;
+      // 改当前激活的classify_second_id
+      // 重新获取数据
+      this.classify_second_id_current = classify_second_id;
+      this.getDataList_third();
     },
-    getDataList () {
-      this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: this.parent_id }).then(res => {
+    // 获取二级分类
+    getDataList_second () {
+      this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: this.$route.query.classify_first_id }).then(res => {
         if (res.status === 200) {
-          this.gradeChildrenData = res.data.data;
+          // console.log("二级：",res.data.data);
+          this.classify_second_data=res.data.data;
         }
       })
     },
+    // 获取三级具体数据
+    getDataList_third () {
+      this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id:this.classify_second_id_current}).then(res => {
+        if (res.status === 200) {
+          // console.log("三级：",res.data.data);
+          this.classify_third_data = res.data.data;
+        }
+      })
+    },
+    // compareID(classify_second_data){
+    //   let num=parseInt(this.classify_second_id_current);
+    //   return classify_second_data.filter(item=>{
+    //     return item.id===num
+    //   })
+    // }
     jumpNewWindow (item) {
       const { href } = this.$router.resolve({
         path: 'riskManagementDetail',
-        query: { pre_name: item.name, pre_id: item.id, pre_data: this.gradeChildrenData }
+        // query: { pre_name: item.name, pre_id: item.id, pre_data: this.gradeChildrenData }
+        query: { pre_name: item.name, pre_id: item.id }
       })
       window.open(href, '_blank')
     }
-
   },
 }
 </script>

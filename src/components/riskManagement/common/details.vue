@@ -49,7 +49,7 @@
           <div class="InternalRegulations-info">
             <div class="left-info">
               <div class="scroll_bar" style="padding-left: 30px;">
-                <p v-for="(item,index) in fileData" @click="selects(item.id)" :class="chooseTab===item.id?'activeTab':''">
+                <p v-for="(item,index) in fileData" @click="selects(item.id)" :class="chooseTab===item.id?'activeTab':''"  :key="item.id">
                   <span class="flex-center"><i>{{index+1}}</i></span>
                   <span><i>{{item.name}}</i></span>
                 </p>
@@ -58,7 +58,7 @@
             <div class="right-info flex-center">
               <div class="scroll_bar">
                 <template v-if='classify_document.length >0'>
-                  <div v-for="(item,index) in classify_document" class="right-info-list flex-center">
+                  <div v-for="(item,index) in classify_document" class="right-info-list flex-center" :key="index">
                     <div class="right-info-box" @mouseleave="onMousteOut()" @mouseenter="onMousteIn(index)">
                       <p class="flex-center">
                         <span v-show="seen&&index===current">
@@ -169,7 +169,7 @@ export default {
       open_type: '',
       pre_id: '',
       current_item: '',
-      pre_data: '',
+      // pre_data: '',
     }
   },
   watch: {
@@ -191,7 +191,7 @@ export default {
       this.chooseTab = 63;
       this.getTabList();
     }
-    this.pre_data = this.$route.query.pre_data;
+    // this.pre_data = this.$route.query.pre_data;
   },
   methods: {
     getPath () {

@@ -191,10 +191,10 @@
       .icon3024 {
         display: inline-block;
         cursor: pointer;
-        width: 30px;
-        height: 32px;
+        width: 26px;
+        height: 24px;
       }
-      .icon_mess {
+      .icon-mess {
         @include appImg('xx_hs.png');
         &:hover {
           @include appImg('xx_h.png');

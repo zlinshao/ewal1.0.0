@@ -1,6 +1,6 @@
 <template>
   <div id="intellectualPropertyProtection">
-    <coming-soon></coming-soon>
+    <!-- <coming-soon></coming-soon> -->
     <div>
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
@@ -17,7 +17,7 @@
 
 <script>
   import MenuList from '../common/menuList.vue';
-  export default {
+  export default {  
     name: "index",
     components: {MenuList},
     data() {
