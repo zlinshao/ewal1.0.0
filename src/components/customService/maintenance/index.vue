@@ -53,7 +53,7 @@
         </el-table-column>
         <el-table-column show-overflow-tooltip label="截止时间" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.finish_time || '--'}}</span>
+            <span>{{scope.row.expected_finish_time || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="处理人" align="center">

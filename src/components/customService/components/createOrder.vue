@@ -1290,22 +1290,22 @@ export default {
       })
 
       this.$http.post(`${this.market_server}v1.0/csd/work_order`, order).then(res => {
-        let warn = null
         if (res.code === 200) {
           this.$emit('close', {
             visible: false,
             method: 'created'
           })
           this.clearInfo()
-          warn = '工单创建成功'
+          this.$LjNotify('success', {
+            title: '提示',
+            message: '工单创建成功'
+          });
         } else {
-          warn = '工单创建失败'
+           this.$LjNotify('success', {
+            title: '提示',
+            message: '工单创建失败'
+          });
         }
-
-        this.$LjNotify('warning', {
-          title: '提示',
-          message: res.message
-        });
       })
 
     },

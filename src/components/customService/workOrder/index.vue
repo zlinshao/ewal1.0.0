@@ -28,10 +28,48 @@
             </div>
           </template>
         </el-table-column>
-
+         <el-table-column show-overflow-tooltip label="创建时间" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.create_time || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="工单编号" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.num || '--'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" v-for='item in Object.keys(tableShowData)' :key='item' :prop='item' :label="tableShowData[item]"></el-table-column>
-
-        <el-table-column v-if="$storage.get('VALIDATE_PERMISSION')['Order-Operate']" align="center" label="操作">
+<el-table-column show-overflow-tooltip label="地址" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.house_name || '--'}}</span>
+          </template>
+        </el-table-column>
+         <el-table-column show-overflow-tooltip label="内容" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.content || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="截止时间" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.expected_finish_time || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="处理人" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.operate_user_name || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="创建人" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.create_name || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip label="部门" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.operate_org_name || '--'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="$storage.get('VALIDATE_PERMISSION')['Order-Operate']" width="180" align="center" label="操作">
           <template slot-scope="scope">
             <el-button id='active-primary' size="mini" v-if='chooseTab != 338' @click='handleCuiBan(scope.row)'>催办</el-button>
             <el-button id='active-danger' plain size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>
@@ -140,15 +178,15 @@ export default {
       market_server: globalConfig.market_server,
       tableData: [],
       tableShowData: {
-        create_time: '创建时间',
-        num: '工单编号',
+        // create_time: '创建时间',
+        // num: '工单编号',
         type_name: '类型',
-        house_name: '地址',
-        content: '内容',
-        finish_time: '截止时间',
-        operate_user_name: '处理人',
-        create_name: '创建人',
-        org_name: '部门'
+        // house_name: '地址',
+        // content: '内容',
+        // finish_time: '截止时间',
+        // operate_user_name: '处理人',
+        // create_name: '创建人',
+        // org_name: '部门'
       },
       tableDateCount: 0,
       currentRow: null,
@@ -256,8 +294,9 @@ export default {
     },
     // 关闭 添加工单
     handleCloseOrder (params) {
-      let { visible, method } = params
-      this.createOrder_visible = false
+      let { visible, method } = params;
+      console.log('3333333333333333333333', visible, method)
+      this.createOrder_visible = false;
       if (method != 'cancle') {
         this.getDataList()
       }
