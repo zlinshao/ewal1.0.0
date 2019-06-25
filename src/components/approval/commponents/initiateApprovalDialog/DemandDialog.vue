@@ -1,7 +1,7 @@
 <template>
   <div id="demand-dialog">
     <lj-dialog :visible.sync="demand_dialog_visible" :size="{width: 580 + 'px',height: 780 + 'px'}">
-      <div class="dialog_container">
+      <div class="dialog_container">g
         <div class="dialog_header">
           <h3>人员需求审批</h3>
 
