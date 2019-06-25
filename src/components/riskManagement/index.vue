@@ -1,6 +1,6 @@
 <template>
   <div id="riskManagement">
-    <coming-soon></coming-soon>
+    <!-- <coming-soon></coming-soon> -->
     <div>
       <div class="listTopCss items-bet">
         <div class="items-center listTopLeft">
@@ -9,8 +9,9 @@
       </div>
       <div class="mainList" :style="{'height': this.mainListHeight() + 'px'}">
         <div class="menu-list">
-          <div v-for="(item,index) in riskData" @click="routerLink(item.url,{pre_id:item.id,pre_name:item.name,pre_data:riskData},item.name)"
-            class="flex-center childrenMenu">
+          <!-- <div v-for="(item) in riskData" @click="routerLink(item.url,JSON.stringify({pre_id:item.id,pre_name:item.name,pre_data:riskData}),item.name)" -->
+          <div v-for="(item) in riskData" @click="routerLink(item.url,{classify_first_id:item.id,classify_first_name:item.name},item.name)"
+            class="flex-center childrenMenu" :key="item.id">
             <span class="writingMode">{{item.name}}</span>
           </div>
         </div>
@@ -24,21 +25,24 @@ export default {
   name: "index",
   data () {
     return {
-      params: {//查询参数
-        search: '',
-        offset: 1,
-        limit: 3,
-      },
-      riskData: [],
+      // params: {//查询参数
+      //   search: '',
+      //   offset: 1,
+      //   limit: 3,
+      // },
+      riskData: [{}],
     }
   },
   mounted () {
     this.getDataList();
   },
   methods: {
-    getDataList () {//一级目录
+    // 获取风险控制分类
+    //一级分类
+    getDataList () {
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: 0 }).then(res => {
         if (res.status === 200) {
+          console.log(res.data)
           this.riskData = res.data.data;
         }
       })

@@ -11,8 +11,7 @@
       </div>
       <div class="mainList" :style="{'height': this.mainListHeight() + 'px'}">
         <div class="menu-list">
-          <div v-for="(item,index) in childrenRiskData" @click="routerLink('riskManagementMenu',{pre_id:item.id,pre_name:item.name,pre_data:childrenRiskData,pre_index:index+1},)"
-            class="flex-center childrenMenu">
+          <div v-for="(item,index) in childrenRiskData" @click="routerLink('riskManagementMenu',{pre_id:item.id,pre_name:item.name,pre_data:JSON.stringify(childrenRiskData),pre_index:index+1})" class="flex-center childrenMenu" :key="item.id">
             <span class="writingMode">{{item.name}}</span>
           </div>
         </div>

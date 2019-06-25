@@ -21,7 +21,8 @@
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
           </div>
-<!--          <app-index-more :router-list="more_list">更多</app-index-more>-->
+          <app-index-more :router-list="more_list">更多</app-index-more>
+          <span title="消息" class="icon3024 icon-mess" @click="routerLink('/messageCenter')"></span>
         </div>
         <div class="items-center personal">
 
@@ -154,11 +155,11 @@ export default {
       showPersonal:false,//是否显示个人中心下拉框
 
       modules: [
-        /*{
+        {
           url: '/president',
           title: '总裁办',
           English: 'Presidents',
-        },*/
+        },
         {
           url: '/finance',
           title: '财务中心',
