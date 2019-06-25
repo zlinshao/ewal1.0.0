@@ -45,39 +45,40 @@ export default {
     return {
       // riskManagement,
       navVisible: false,
-      chooseTab: 0,
+      chooseTab: parseInt(this.$route.query.classify_second_index),
       // 当前的二级数据id
       classify_second_id_current:this.$route.query.classify_second_id,
       // 二级分类列表
-      classify_second_data:[],
+      classify_second_data:[{}],
       // 三级数据列表
-      classify_third_data:[]
+      classify_third_data:[{}]
     }
   },
   mounted () {
     // this.selects = this.$route.query.pre_data;
     // this.chooseTab = this.$route.query.pre_index;//切换tab
     // this.parent_id = this.$route.query.pre_id;
+    // 获取当前的二级id
     this.getDataList_second();
     this.getDataList_third();
   },
-  // watch: {
-  //   $route: {
-  //     handler: function (val, oldVal) {
-  //       // this.chooseTab = this.$route.query.pre_index;//切换tab
-  //       // this.selects = this.$route.query.pre_data;
-  //       // this.parent_id = this.$route.query.pre_id;
-  //       // if (oldVal.path === '/riskManagementDetail') {
-
-  //       // }
-  //       this.selects = JSON.parse(this.$route.query.pre_data);
-  //       this.chooseTab = this.$route.query.pre_index;//切换tab
-  //       this.parent_id = this.$route.query.pre_id;
-  //     },
-  //     // 深度观察监听
-  //     deep: true
-  //   },
-  // },
+  watch: {
+    $route: function (newRoute, oldRoute) {
+        // this.chooseTab = this.$route.query.pre_index;//切换tab
+        // this.selects = this.$route.query.pre_data;
+        // this.parent_id = this.$route.query.pre_id;
+        // if (oldVal.path === '/riskManagementDetail') {
+        // }
+        // this.classify_second_id_current:
+        // 如果是在三级页面
+        if(newRoute.path==="/riskManagementMenu"){
+          this.classify_second_id_current=newRoute.query.classify_second_id;
+          this.chooseTab=newRoute.query.classify_second_index;
+          this.getDataList_second();
+          this.getDataList_third();
+        }
+      },
+  },
   methods: {
     moduleList () {
       this.navVisible = !this.navVisible;
@@ -88,14 +89,16 @@ export default {
     },
     changeTabs (index,classify_second_id) {
       this.chooseTab = index;
+      // 改当前激活的classify_second_id
+      // 重新获取数据
       this.classify_second_id_current = classify_second_id;
-      
+      this.getDataList_third();
     },
     // 获取二级分类
     getDataList_second () {
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: this.$route.query.classify_first_id }).then(res => {
         if (res.status === 200) {
-          console.log("二级：",res.data.data);
+          // console.log("二级：",res.data.data);
           this.classify_second_data=res.data.data;
         }
       })
@@ -104,18 +107,25 @@ export default {
     getDataList_third () {
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id:this.classify_second_id_current}).then(res => {
         if (res.status === 200) {
-          console.log("三级：",res.data.data);
+          // console.log("三级：",res.data.data);
           this.classify_third_data = res.data.data;
         }
       })
     },
-    // jumpNewWindow (item) {
-    //   const { href } = this.$router.resolve({
-    //     path: 'riskManagementDetail',
-    //     query: { pre_name: item.name, pre_id: item.id, pre_data: this.gradeChildrenData }
+    // compareID(classify_second_data){
+    //   let num=parseInt(this.classify_second_id_current);
+    //   return classify_second_data.filter(item=>{
+    //     return item.id===num
     //   })
-    //   window.open(href, '_blank')
     // }
+    jumpNewWindow (item) {
+      const { href } = this.$router.resolve({
+        path: 'riskManagementDetail',
+        // query: { pre_name: item.name, pre_id: item.id, pre_data: this.gradeChildrenData }
+        query: { pre_name: item.name, pre_id: item.id }
+      })
+      window.open(href, '_blank')
+    }
   },
 }
 </script>

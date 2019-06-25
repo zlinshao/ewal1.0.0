@@ -6,12 +6,14 @@
           <p class="flex-center" @click='moduleList'>
             <b>...</b>
           </p>
-          <h1>{{this.$route.query.pre_name}}</h1>
+          <!-- <h1>{{this.$route.query.pre_name}}</h1> -->
+          <h1>{{this.$route.query.classify_first_name}}</h1>
         </div>
       </div>
       <div class="mainList" :style="{'height': this.mainListHeight() + 'px'}">
         <div class="menu-list">
-          <div v-for="(item,index) in childrenRiskData" @click="routerLink('riskManagementMenu',{pre_id:item.id,pre_name:item.name,pre_data:JSON.stringify(childrenRiskData),pre_index:index+1})" class="flex-center childrenMenu" :key="item.id">
+          <!-- <div v-for="(item,index) in childrenRiskData" @click="routerLink('riskManagementMenu',{pre_id:item.id,pre_name:item.name,pre_data:childrenRiskData,pre_index:index+1})" class="flex-center childrenMenu" :key="item.id"> -->
+          <div v-for="(item,index) in childrenRiskData" @click="routerLink('riskManagementMenu',{classify_first_id:$route.query.classify_first_id,classify_first_name:$route.query.classify_first_name,classify_second_id:item.id,classify_second_name:item.name,classify_second_index:index})" class="flex-center childrenMenu" :key="item.id">
             <span class="writingMode">{{item.name}}</span>
           </div>
         </div>
@@ -50,7 +52,7 @@ export default {
       this.navVisible = false
     },
     getDataList () {//二级目录
-      this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: this.$route.query.pre_id }).then(res => {
+      this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: this.$route.query.classify_first_id }).then(res => {
         if (res.status === 200) {
           this.childrenRiskData = res.data.data;
         }

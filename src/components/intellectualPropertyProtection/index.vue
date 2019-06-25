@@ -17,7 +17,7 @@
 
 <script>
   import MenuList from '../common/menuList.vue';
-  export default {
+  export default {  
     name: "index",
     components: {MenuList},
     data() {
