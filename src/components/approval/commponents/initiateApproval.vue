@@ -11,7 +11,8 @@
           <!--      右侧清单-->
           <div class="right-list">
             <!--        单个子清单-->
-            <div class="simple-list" v-for="item in moduleItem.Item" :key="item.itemIndex">
+            <div class="simple-list" v-for="item in moduleItem.Item" :key="item.itemIndex"
+                 @click="openDialog(item)">
 
               <!--          左边图标-->
               <div :class="['simple-list-icon','icon-'+item.icon]"></div>
@@ -23,10 +24,35 @@
         </div>
       </div>
     </div>
+
+    <!--    动态组件-->
+    <component
+      ref="dialog"
+      v-if="dialog.component"
+      :is="dialog.component"
+      v-bind="dialog.props"
+    />
   </div>
 </template>
 
 <script>
+  const dialogRequireContext = require.context(
+    "./initiateApprovalDialog", // 搜索的文件夹
+    true, // 是否搜索子目录
+    /\.vue$/ //正则表达式
+  );
+
+  function getDialogsFromContext(context) {
+    return context.keys().reduce((ret, key) => {
+      const component = context(key);
+      ret[key.slice(2, -4)] = component.default;
+      return ret;
+    }, {});
+  }
+
+  const Dialogs = getDialogsFromContext(dialogRequireContext);
+
+  const {DemandDialog} = Dialogs;
 
   export default {
     name: "initiateApproval",
@@ -41,7 +67,9 @@
               {
                 itemIndex: 1,
                 itemTitle: '人员需求审批',
-                icon: 'ry'
+                icon: 'ry',
+                component: DemandDialog,
+                props: {}
               },
               {
                 itemIndex: 2,
@@ -174,10 +202,36 @@
               }
             ]
           }
-        ]
+        ],
+        // 动态组件参数
+        dialog: {
+          component: null,
+          props: null
+        },
+      }
+    },
+
+    methods: {
+      /**校验字段大小 */
+      compare({min, max}, _this, tip) {
+        if (min > max) {
+          _this.$LjMessage('warning', {title: '警告', msg: `${tip}最小值比最大值大`});
+          return false;
+        }
+        return true;
+      },
+
+      /**打开对话框 */
+      openDialog(item) {
+        this.dialog = {
+          component: item.component,
+          props: item.props
+        };
+        this.$nextTick(() => {
+          this.$refs.dialog.open();
+        });
       }
     }
-
   }
 </script>
 
