@@ -628,6 +628,8 @@ export default {
        if(is_agency_order == '1' ) {
           if(!this.recordOption.data_check_result){
              return '信息审核必填'
+          } else if(this.recordOption.data_check_result=='doubt' && !this.recordOption.doubt_reason){
+              return '存疑原因必填'
           }
         }
       if (is_connect == 1) {

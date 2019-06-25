@@ -27,7 +27,7 @@
         <el-table-column align="center" label="标记" v-if='tabType == 2'>
           <template slot-scope="scope">
             <div class="status" :class="['status' + scope.row.tag_status]">
-              <p v-if='scope.row.tag_status'>{{scope.row.tag_status == 1 ? chooseTab==1 ?"续约" : "续租":  chooseTab==1 ?"退房" : "退租"}}</p>
+              <p v-if='scope.row.tag_status'>{{scope.row.tag_status == 1 ? chooseTab==1 ?"退房" : "退租":  chooseTab==1 ?"续约" : "续租"}}</p>
             </div>
           </template>
         </el-table-column>
@@ -307,10 +307,10 @@ export default {
       },
 
       mark_status: [
-        [{ id: 1, val: '续约' },
-          { id: 2, val: '退房' },],
-        [{ id: 1, val: '续租' },
-        { id: 2, val: '退租' },]
+        [{ id: 1, val: '退房' },
+          { id: 2, val: '续约' },],
+        [{ id: 1, val: '退租' },
+        { id: 2, val: '续租' },]
       ],
 
       // 回访记录
