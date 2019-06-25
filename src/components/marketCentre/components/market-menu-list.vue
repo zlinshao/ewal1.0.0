@@ -30,17 +30,17 @@
               market_list: [
                 {
                   title: '合同管理',
-                  url: '/contractManagement',
+                  url: '/serviceContractManagement',
                   id: 1
                 },
                 {
                   title: '客户管理',
-                  url: '/customerManagement',
+                  url: '/serviceCustomerManagement',
                   id: 2
                 },
                 {
                   title: '房源管理',
-                  url: '/houseManagement',
+                  url: '/serviceHouseManagement',
                   id: 3
                 },
                 {

@@ -832,7 +832,7 @@ export default {
       }
     },
     getOrganDepart (ids) {
-      this.$http.get(`staff/user/${ids}`).then(res => {
+      this.$http.get(`${globalConfig.humanResource_server}staff/user/${ids}`).then(res => {
         if (res.code == 20020) {
           let data = res.data.org[0]
           this.createOrder.operate_org = {
@@ -1165,15 +1165,16 @@ export default {
           })
           this.createdTodo(order)
           this.clearInfo()
-          word = '工单创建成功'
-        } else {
-          word = '工单创建失败'
-        }
-
-        this.$LjNotify('warning', {
+          this.$LjNotify('success', {
           title: '提示',
-          message: word
+          message: '工单创建成功'
         });
+        } else {
+          this.$LjNotify('warning', {
+          title: '提示',
+          message: '工单创建失败'
+        });
+        }
       })
     },
     createdTodo (params) { // 维修 保洁创建任务
@@ -1289,22 +1290,22 @@ export default {
       })
 
       this.$http.post(`${this.market_server}v1.0/csd/work_order`, order).then(res => {
-        let warn = null
         if (res.code === 200) {
           this.$emit('close', {
             visible: false,
             method: 'created'
           })
           this.clearInfo()
-          warn = '工单创建成功'
+          this.$LjNotify('success', {
+            title: '提示',
+            message: '工单创建成功'
+          });
         } else {
-          warn = '工单创建失败'
+           this.$LjNotify('success', {
+            title: '提示',
+            message: '工单创建失败'
+          });
         }
-
-        this.$LjNotify('warning', {
-          title: '提示',
-          message: res.message
-        });
       })
 
     },

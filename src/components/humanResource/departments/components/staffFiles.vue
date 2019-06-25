@@ -747,6 +747,22 @@ import { constants } from 'fs';
             return;
           }
         }
+        if(this.staffDetail.enroll&&this.staffDetail.agreement_first_time) {
+          let enroll = new Date(this.staffDetail.enroll).getTime();
+          let firstime = new Date(this.staffDetail.agreement_first_time).getTime();
+          if(firstime<enroll) {
+            this.$LjMessage('warning',{title:'警告',msg:'第一次合同时间不可比入职时间早'});
+            return;
+          }
+        }
+        if(this.staffDetail.agreement_first_end_time&&this.staffDetail.agreement_first_time) {
+          let endtime = new Date(this.staffDetail.agreement_first_end_time).getTime();
+          let firstime = new Date(this.staffDetail.agreement_first_time).getTime();
+          if(endtime<firstime) {
+            this.$LjMessage('warning',{title:'警告',msg:'第一次合同到期时间不可比第一次合同时间早'});
+            return;
+          }
+        }
         const staffDetailData = this.staffDetail;
         if(staffDetailData&& staffDetailData.work_history) {
            _.forEach(staffDetailData.work_history,(item)=>{
