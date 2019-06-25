@@ -1,6 +1,5 @@
 <template>
   <div id="discussPolitics" class="discuss-politics">
-    <coming-soon></coming-soon>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
@@ -1673,7 +1672,7 @@
           //处理数据
           let startTime = utils.formatDate(daysList[0].datetime, 'yyyy-MM-dd hh:mm:ss');
           let endTime = utils.formatDate(daysList[daysList.length - 1].datetime, 'yyyy-MM-dd hh:mm:ss');
-          let params = {data: [startTime, endTime]};
+          let params = {data: [startTime, endTime],type:2};
 
           let tempData = [];
 
