@@ -348,7 +348,6 @@
                       </el-col>
                     </el-row>
                     <div v-if="!reviseInfo && key==staffDetail.education_history.length-1" style="text-align: right">
-                      <el-button type="danger" size="mini" style="width: 120px" @click="handleAddItem('eduction')">添加</el-button>
                       <el-button type="info" size="mini" style="width: 120px" v-if="staffDetail.education_history.length > 1" @click="handleDelItem('eduction')">删除</el-button>
                     </div>
                   </div>
@@ -380,7 +379,9 @@
                     </el-col>
                   </el-row>
                 </el-form>
-
+                  <div v-if="!reviseInfo" style="text-align: right">
+                      <el-button type="danger" size="mini" style="width: 120px" @click="handleAddItem('eduction')">添加</el-button>
+                  </div>
               </el-tab-pane>
               <el-tab-pane label="工作履历" name="third">
                 <el-form class="borderNone" :disabled="reviseInfo" label-width="120px" size="small" style="width: 100%" v-if="staffDetail.work_history.length > 0">
