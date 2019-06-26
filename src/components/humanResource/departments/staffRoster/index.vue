@@ -50,7 +50,7 @@
                 <template slot-scope="scope">
                   <el-button plain type="success" size="mini" @click="operateModule('power',scope.row)">权限</el-button>
                   <el-button plain type="warning" size="mini" @click="operateModule('leave',scope.row)">离职</el-button>
-                  <el-button plain type="warning" size="mini" @click="operateModule('disabled',scope.row)">禁用</el-button>
+                  <el-button plain type="warning" size="mini" @click="operateModule('disabled',scope.row)">{{scope.row.is_enable ? '启用' : '禁用'}}</el-button>
                 </template>
               </el-table-column>
       </el-table>
@@ -61,7 +61,7 @@
     >
       <div class="dialog_container">
         <div class="dialog_header">
-          <h3>禁用</h3>
+          <h3>{{currentStaff.is_enable ? '启用' : '禁用'}}</h3>
         </div>
         <div class="dialog_main">
           <div class="unUse-txt">确定{{ currentStaff.is_enable ? '启用' : '禁用'}}该员工吗？</div>
