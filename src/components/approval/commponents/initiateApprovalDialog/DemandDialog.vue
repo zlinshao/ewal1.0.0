@@ -1,13 +1,9 @@
 <template>
   <div id="demand-dialog">
     <lj-dialog :visible.sync="demand_dialog_visible" :size="{width: 580 + 'px',height: 780 + 'px'}">
-      <div class="dialog_container">g
+      <div class="dialog_container">
         <div class="dialog_header">
           <h3>人员需求审批</h3>
-
- <!--            <div>header_right</div>-->
-          <!--          </div>-->
-
         </div>
         <div class="dialog_main borderNone add-meeting-container">
           <el-form ref="demandForm" :rules="demand_form_rule" :model="demand_form"
@@ -169,6 +165,8 @@
           experience: null,
           // 学历
           education: null,
+          // 性别
+          gender: null,
           // 期望到岗日期
           expect_date: null,
           // 附件
@@ -180,10 +178,10 @@
       open() {
         this.demand_dialog_visible = true
       },
-      /**提交人员需求审批 */
+      /**提交 */
       submitDemand() {
       },
-      /**取消人员需求审批 */
+      /**取消 */
       cancelDemand() {
       }
     }
