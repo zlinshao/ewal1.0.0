@@ -1,53 +1,73 @@
 <template>
   <div id="notice-dialog">
-    <lj-dialog :visible.sync="notice_dialog_visible" :size="{width: 580 + 'px',height: 540 + 'px'}">
+    <lj-dialog :visible.sync="notice_dialog_visible" :size="size">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>公告审核审批</h3>
         </div>
-        <div class="dialog_main borderNone add-meeting-container">
-          <el-form ref="noticeForm" :rules="notice_form_rule" :model="notice_form"
-                   style="text-align: left" size="small" label-width="100px">
+        <div class="dialog_main borderNone">
+          <div class="dialog-top">
+            <el-form ref="noticeForm" :rules="notice_form_rule" :model="notice_form"
+                     style="text-align: left" size="small" label-width="100px">
 
-            <el-form-item required prop="date" label="日期">
-              <div class="items-center iconInput">
-                <el-date-picker v-model="notice_form.date" type="date" placeholder="选择日期"></el-date-picker>
-              </div>
-            </el-form-item>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item required prop="date" label="公告日期">
+                    <div class="items-center iconInput" style="width: 220px">
+                      <el-date-picker v-model="notice_form.date" type="date" placeholder="选择日期"></el-date-picker>
+                    </div>
+                  </el-form-item>
 
-
-            <el-form-item required label="公共类型" prop="announcement_type">
-              <el-select v-model="notice_form.announcement_type">
-                <el-option v-for="(item,index) in announcement_type" :key="index" :value="index + 1"
-                           :label="item"></el-option>
-              </el-select>
-            </el-form-item>
-
-
-            <el-form-item required prop="announcement_title" label="公告标题">
-              <el-input v-model="notice_form.announcement_title" placeholder="必填" style="width: 418px"></el-input>
-            </el-form-item>
-
-
-            <el-form-item required prop="announcement_content" label="公告内容">
-              <el-input type="textarea"
-                        v-model="notice_form.announcement_content"
-                        :autosize="{ minRows: 2, maxRows: 14}"
-                        placeholder="必填">
-              </el-input>
-            </el-form-item>
-
-            <el-form-item required prop="announcement_sign" label="公告署名">
-              <el-input v-model="notice_form.announcement_sign" placeholder="必填" style="width: 418px"></el-input>
-            </el-form-item>
+                  <el-form-item required prop="announcement_sign" label="公告署名">
+                    <el-input v-model="notice_form.announcement_sign" placeholder="必填" style="width: 220px"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item required label="公共类型" prop="announcement_type">
+                    <el-select v-model="notice_form.announcement_type">
+                      <el-option v-for="(item,index) in announcement_type" :key="index" :value="index + 1"
+                                 :label="item"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item required prop="announcement_title" label="公告标题">
+                    <el-input v-model="notice_form.announcement_title" placeholder="必填" style="width: 220px"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
 
-            <el-form-item align="center" label="附件">
-              <lj-upload v-model="notice_form.attachment" size="40"
-                         style="position: absolute; top: -12px;"></lj-upload>
-            </el-form-item>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item required prop="announcement_content" label="公告内容">
+                    <el-input type="textarea"
+                              v-model="notice_form.announcement_content"
+                              :autosize="{ minRows: 2, maxRows: 14}"
+                              placeholder="必填">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-          </el-form>
+              <el-row>
+                <el-col :span="24">
+
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="附件">
+                    <lj-upload v-model="notice_form.attachment" size="40"
+                               style="position: absolute; top: -12px;"></lj-upload>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </div>
+
+          <!--          流程组件-->
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitNotice">提交
@@ -70,10 +90,7 @@
       LjDialog,
       LjUpload
     },
-    props: {
-      type: String,
-      default: ''
-    },
+    props: ['size'],
     data() {
       return {
         // 校验规则
@@ -135,7 +152,7 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  @import "../../../../assets/scss/approval/commponents/dialogApproval.scss";
 </style>
 
