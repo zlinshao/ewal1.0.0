@@ -420,7 +420,25 @@
           </div>
         </div>
       </lj-dialog>
-
+<!--确定发送离职信息-->
+    <lj-dialog
+      :visible="confirm_send_visible"
+      :size="{width: 400 + 'px',height: 250 + 'px'}"
+      @close="confirm_send_visible = false"
+    >
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>确定</h3>
+        </div>
+        <div class="dialog_main">
+          <div class="unUse-txt">确定发送离职短信吗？</div>
+        </div>
+        <div class="dialog_footer">
+          <el-button type="danger" size="small" @click="handleConfirmSendMsg">确定</el-button>
+          <el-button type="info" size="small" @click="confirm_send_visible = false">取消</el-button>
+        </div>
+      </div>
+    </lj-dialog>
 
       <!--收入证明-->
       <lj-dialog
@@ -504,8 +522,17 @@
       return {
         url:globalConfig.humanResource_server,
         disable_visible: false,
-
+rules: {
+          dismiss_time: [
+              {required:true,message:'请选择离职日期',trigger:['change','blur']}
+          ],
+          'dismiss_reason.dismiss_type': [
+              {required:true,message:'请选择离职原因',trigger:'change'}
+          ],
+        },
         checkList: [],
+        confirm_send_visible: false,
+        checkLists: [],
         field_list: [],
          //个人权限
         self_power_params: {
@@ -760,6 +787,32 @@
             });
             this.disable_visible = false;
             this.getStaffList();
+          } else {
+            this.$LjNotify('warning',{
+              title: '失败',
+              message: res.msg
+            })
+          }
+        })
+      },
+      handleConfirmSendMsg() {
+        let type = [];
+        if (this.checkLists.includes(1)) {
+          type.push('dimission');
+        }
+        if (this.checkLists.includes(2)) {
+          type.push('dimission_sms');
+        }
+        if (this.checkLists.includes(3)) {
+          type.push('leave_proof_send');
+        }
+        this.$http.get(`${this.url}staff/user/${this.currentStaff.id}/sendinfo`,{type}).then(res => {
+          if (res.code === '20000') {
+            this.$LjNotify('success',{
+              title: '成功',
+              message: res.msg
+            });
+            this.confirm_send_visible = false;
           } else {
             this.$LjNotify('warning',{
               title: '失败',
