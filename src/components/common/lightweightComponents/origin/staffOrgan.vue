@@ -341,7 +341,7 @@
 
         results.forEach((item,index)=> {
           let positionName = '';
-          if(item.position&&item.position.constructor===Array&&item.position.length==1) {
+          if(item.position&&item.position.constructor===Array&&item.position.length>0) {
             positionName = item.position[0].name;
           }
           item.value = `${item.name}(${positionName||'暂无职位信息'})`;
