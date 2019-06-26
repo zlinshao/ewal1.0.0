@@ -1,0 +1,168 @@
+<template>
+  <div id="group-change-dialog">
+    <lj-dialog :visible.sync="group_change_dialog_visible" :size="{width: 580 + 'px'}">
+      <div class="dialog_container">
+        <div class="dialog_header">
+          <h3>整组异动/调岗审批</h3>
+        </div>
+        <div class="dialog_main borderNone add-meeting-container">
+          <el-form ref="groupChangeForm" :rules="group_change_form_rule" :model="group_change_form"
+                   style="text-align: left" size="small" label-width="100px">
+
+            <el-form-item required prop="name" label="申请人">
+              <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 418px"></el-input>
+            </el-form-item>
+
+            <el-form-item required prop="group_user" label="调岗组员">
+              <div class="items-center iconInput">
+                <user-choose width="418" num="1" :disabled="false" title="必填" :show-icon="false"
+                             v-model="group_change_form.group_user">
+                </user-choose>
+              </div>
+            </el-form-item>
+
+            <el-form-item required prop="now_org" label="转入部门">
+              <org-choose width="418" num="1" :disabled="false" title="必填" :show-icon="false"
+                          v-model="group_change_form.now_org">
+              </org-choose>
+            </el-form-item>
+
+            <el-form-item required prop="now_position" label="转入岗位">
+              <post-choose width="418" num="1" :disabled="false" title="必填" :show-icon="false"
+                           v-model="group_change_form.now_position">
+              </post-choose>
+            </el-form-item>
+
+            <el-form-item required prop="date" label="调岗日期">
+              <div class="items-center iconInput">
+                <el-date-picker v-model="group_change_form.date" type="date" placeholder="必填"></el-date-picker>
+              </div>
+            </el-form-item>
+
+            <el-form-item required prop="change_reason" label="调岗原因">
+              <el-input type="textarea"
+                        v-model="group_change_form.change_reason"
+                        :autosize="{ minRows: 2, maxRows: 14}"
+                        placeholder="必填">
+              </el-input>
+            </el-form-item>
+
+            <el-form-item required prop="change_receipt" label="异动申请单以及异动交接单">
+              <el-input type="textarea"
+                        v-model="group_change_form.change_receipt"
+                        :autosize="{ minRows: 2, maxRows: 14}"
+                        placeholder="必填">
+              </el-input>
+            </el-form-item>
+
+
+            <el-form-item align="center" label="附件">
+              <lj-upload v-model="group_change_form.attachment" size="40"
+                         style="position: absolute; top: -12px;"></lj-upload>
+            </el-form-item>
+
+          </el-form>
+        </div>
+        <div class="dialog_footer">
+          <el-button size="small" type="danger" @click="submitGroupChange">提交
+          </el-button>
+          <el-button size="small" type="info" @click="cancelGroupChange">取消
+          </el-button>
+        </div>
+      </div>
+    </lj-dialog>
+  </div>
+</template>
+
+<script>
+  import LjDialog from '../../../common/lj-dialog.vue';
+  import LjUpload from '../../../common/lightweightComponents/lj-upload';
+  import _ from 'lodash';
+
+  export default {
+    name: "GroupChange",
+    components: {
+      LjDialog,
+      LjUpload
+    },
+    props: ['user_info_all'],
+    data() {
+      return {
+        // 校验规则
+        group_change_form_rule: {
+          now_org: [
+            {required: true, message: '请选择转入部门', trigger: ['blur', 'change']}
+          ],
+          now_position: [
+            {required: true, message: '请选择转入岗位', trigger: ['blur', 'change']}
+          ],
+          change_reason: [
+            {required: true, message: '请输入调岗原因', trigger: ['blur', 'change']},
+            {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
+          ],
+          change_receipt: [
+            {required: true, message: '请输入异动申请单以及异动交接单', trigger: ['blur', 'change']},
+            {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
+          ],
+          date: [
+            {required: true, message: '请输入调岗日期', trigger: ['blur', 'change']}
+          ],
+          group_user: [
+            {required: true, message: '请输入调岗组员', trigger: ['blur', 'change']}
+          ]
+        },
+        group_change_dialog_visible: false,
+        group_change_form: {
+          type: "group_change",
+          // 转入部门
+          now_org: null,
+          // 转入岗位
+          now_position: null,
+          // 调岗原因
+          change_reason: null,
+          // 附件
+          attachment: [],
+          // 调岗组员
+          group_user: null,
+          change_receipt: null,
+          // 调岗日期
+          date: null,
+        },
+        user_info: null
+      }
+    },
+    methods: {
+      open() {
+        this.group_change_dialog_visible = true
+      },
+      /**获取个人信息 */
+      getUserInfo() {
+        this.user_info = {
+          name: this.user_info_all.name
+        }
+      },
+      /**提交*/
+      submitGroupChange() {
+      },
+      /**取消*/
+      cancelGroupChange() {
+      }
+    },
+    created() {
+      this.getUserInfo()
+
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+
+
+
+
+
+
+

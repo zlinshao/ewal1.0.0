@@ -31,11 +31,16 @@
       v-if="dialog.component"
       :is="dialog.component"
       v-bind="dialog.props"
+      :user_info_all="user_info_all"
     />
   </div>
 </template>
 
 <script>
+  import _ from 'lodash'
+  import TurnPositiveDialog from "./initiateApprovalDialog/TurnPositiveDialog";
+  import GroupChange from "./initiateApprovalDialog/GroupChange";
+
   const dialogRequireContext = require.context(
     "./initiateApprovalDialog", // 搜索的文件夹
     true, // 是否搜索子目录
@@ -52,12 +57,14 @@
 
   const Dialogs = getDialogsFromContext(dialogRequireContext);
 
-  const {DemandDialog} = Dialogs;
+  const {DemandDialog, TransferDialog, NoticeDialog} = Dialogs;
 
   export default {
     name: "initiateApproval",
     data() {
       return {
+        url: globalConfig.humanResource_server,
+
         // 模块清单
         initiateModuleList: [
           {
@@ -74,17 +81,23 @@
               {
                 itemIndex: 2,
                 itemTitle: '个人异动/调岗',
-                icon: 'gryd'
+                icon: 'gryd',
+                component: TransferDialog,
+                props: {}
               },
               {
                 itemIndex: 3,
                 itemTitle: '整组调岗/异动',
-                icon: 'zzyd'
+                icon: 'zzyd',
+                component: GroupChange,
+                props: {}
               },
               {
                 itemIndex: 4,
                 itemTitle: '转正申请',
-                icon: 'zzsq'
+                icon: 'zzsq',
+                component: TurnPositiveDialog,
+                props: {}
               },
               {
                 itemIndex: 5,
@@ -146,7 +159,9 @@
               {
                 itemIndex: 1,
                 itemTitle: '公告审核审批',
-                icon: 'ggsp'
+                icon: 'ggsp',
+                component: NoticeDialog,
+                props: {}
               }
             ]
           },
@@ -203,6 +218,8 @@
             ]
           }
         ],
+        // 个人信息
+        user_info_all: null,
         // 动态组件参数
         dialog: {
           component: null,
@@ -221,6 +238,16 @@
         return true;
       },
 
+      /**获取个人信息 */
+      getLoginUser() {
+        let user_id = this.$storage.get('user_info').id
+        this.$http.get(`${this.url}staff/user/${user_id}?staff=0`)
+          .then(res => {
+            if (res.code == 20020) {
+              this.user_info_all = res.data
+            }
+          })
+      },
       /**打开对话框 */
       openDialog(item) {
         this.dialog = {
@@ -231,6 +258,9 @@
           this.$refs.dialog.open();
         });
       }
+    },
+    created() {
+      this.getLoginUser()
     }
   }
 </script>
