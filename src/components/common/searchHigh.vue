@@ -61,6 +61,9 @@
             <div v-if="item.keyType === 'input'">
               <el-input width="470"  :placeholder="item.placeholder" v-model="params[item.keyName]"  ></el-input>
             </div>
+            <div v-if="item.keyType === 'subject'">
+              <el-input width="470"  :placeholder="item.placeholder" @focus="subject_visible = true;which_subject = 'out_account';is_disabled = true;keyName=item.keyName;lebleName=item.lebleName" v-model="params[item.lebleName]"  ></el-input>
+            </div>
           </div>
         </div>
         <footer class="flex-center">
@@ -69,16 +72,30 @@
         </footer>
       </div>
     </div>
+     <lj-subject :visible="subject_visible" @close="subject_visible = false" @confirm="handleConfirmSubject"
+                style="z-index:1000"></lj-subject>
   </div>
 </template>
 
 <script>
+import LjSubject from './lj-subject.vue';
   export default {
     name: "search-high",
     props: ['module', 'showData'],
+    components: { LjSubject},
     data() {
       return {
         showModule: false,
+        subject_visible: false,
+        is_disabled: false,
+        which_subject: '',
+        lebleName: '',
+        lebleName: '',
+        move_subject: {
+          initial: '',
+          parent_id: '',
+          title: ''
+        },
         params: {},
         reset: {},
         pickerOptions1: {
@@ -179,6 +196,32 @@
               return false;
             }
           }
+        }
+      },
+      handleConfirmSubject(val) { //科目确定
+        if (this.which_subject === 'move_subject') {
+          // this.move_subject.parent_id = val.id;
+          // this.move_subject.title = val.title;
+           this.params[this.keyName] =  val.id;
+          this.params[this.lebleName] =  val.title;
+        }
+        if (this.which_subject === 'subject') {
+           this.params[this.keyName] =  val.id;
+           this.params[this.lebleName] =  val.title;
+          // this.subject.parent_name = val.title;
+          // this.subject.parent_id = val.id;
+
+          // this.formData.subject_id = val.id;
+          // this.formData.subject_name = val.title;
+
+          // this.ruleForm.subject_id = val.id;
+          // this.ruleForm.subject_name = val.title;
+        }
+        if (this.which_subject === 'out_account') {
+          this.params[this.keyName] =  val.id;
+          this.params[this.lebleName] =  val.title;
+          // this.out_form.subject_id = val.id;
+          // this.out_form.subject_name = val.title;
         }
       },
 
