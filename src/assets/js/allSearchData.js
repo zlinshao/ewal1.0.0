@@ -297,7 +297,7 @@ export const housingDueSearch = {
     keywords: 'search',
     data: [{
             keyType: 'dateRange',
-            title: '签约时间',
+            title: '到期时间',
             placeholder: '请选择日期',
             keyName: 'date1',
             dataType: []
