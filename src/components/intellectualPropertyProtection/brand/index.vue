@@ -43,7 +43,7 @@
         <div></div>
       </div>
       <div class="page flex-center common-page" v-if="showAllData">
-        <el-pagination :current-page="currentPage" :page-size="6" :total="total" layout="total,jumper,prev,pager,next">
+        <el-pagination :current-page="currentPage" :page-size="6" :total="total" layout="total,jumper,prev,pager,next" @current-change="changeOffset">
         </el-pagination>
       </div>
 
@@ -67,7 +67,7 @@
                 <org-choose title="请选择部门" num="1" v-model="patentAddDetail.org_id"></org-choose>
               </div>
             </el-form-item>
-            <el-form-item label="专利名称">
+            <el-form-item label="商标名称">
               <div class="items-center iconInput">
                 <el-input placeholder="请输入" v-model="patentAddDetail.name" class="patentInput"></el-input>
               </div>
@@ -100,7 +100,7 @@
             <el-form-item label="所属部门">
               <org-choose title="请选择部门" v-model="patentEditDetail.org_id"></org-choose>
             </el-form-item>
-            <el-form-item label="专利名称">
+            <el-form-item label="商标名称">
               <div class="items-center iconInput">
                 <el-input placeholder="请输入" v-model="patentEditDetail.name" class="patentInput"></el-input>
               </div>
@@ -110,7 +110,7 @@
             </el-form-item>
             <el-form-item label="编辑文件">
               <div class="patentUpload">
-                <lj-upload :max-size="5" v-model="patentEditDetail.file_id"></lj-upload>
+                <lj-upload :max-size="5" v-model="patentEditDetail.file_id" :limit-easy="['image']"></lj-upload>
               </div>  
             </el-form-item>
           </el-form>
@@ -190,6 +190,10 @@ export default {
   },
 
   methods: {
+    changeOffset(offset){
+      this.currentPage=offset;
+      this.getPatentList();
+    },
     getPatentList: function () {
       let params = {
         classify_id: 4,
@@ -262,10 +266,11 @@ export default {
           org_id: this.patentAddDetail.permission
         }
       }
-      if (!params.name) {
+      let nameRule=/^[\u4e00-\u9fa5a-z]+$/gi;
+      if (!nameRule.test(params.name)) {
         this.$LjNotify('error', {
           title: '失败',
-          message: '请输入专利名称',
+          message: '请输入合法名称',
         });
       }
       else if (!params.org_id) {
@@ -274,13 +279,13 @@ export default {
           message: '请选择部门',
         });
       }
-      else if (!params.permission) {
+      else if (params.permission.org_id==="") {
         this.$LjNotify('error', {
           title: '失败',
           message: '请选择可见范围',
         });
       }
-      else if (!params.file_id) {
+      else if (params.file_id.length===0) {
         this.$LjNotify('error', {
           title: '失败',
           message: '请上传文件',
@@ -313,7 +318,8 @@ export default {
           org_id: this.patentEditDetail.permission
         }
       }
-      if (!params.name) {
+      let nameRule=/^[\u4e00-\u9fa5a-z]+$/gi;
+      if (!nameRule.test(params.name)) {
         this.$LjNotify('error', {
           title: '失败',
           message: '请输入专利名称',
@@ -325,13 +331,13 @@ export default {
           message: '请选择部门',
         });
       }
-      else if (!params.permission) {
+      else if (params.permission.org_id.length===0) {
         this.$LjNotify('error', {
           title: '失败',
           message: '请选择可见范围',
         });
       }
-      else if (!params.file_id) {
+      else if (!params.file_id.length===0) {
         this.$LjNotify('error', {
           title: '失败',
           message: '请上传文件',
@@ -382,6 +388,13 @@ export default {
     width: 100%;
     height: 821px;
     padding: 0px 0px 0px 0px !important;
+        img{
+      width:100%;
+      height: auto;
+      position: relative;
+      top:50%;
+      transform: translateY(-50%);
+    }
   }
 }
 .patentUpload{
