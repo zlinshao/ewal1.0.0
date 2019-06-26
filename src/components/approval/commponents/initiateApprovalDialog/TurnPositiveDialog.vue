@@ -1,64 +1,79 @@
 <template>
   <div id="turn-positive-dialog">
-    <lj-dialog :visible.sync="turn_positive_dialog_visible" :size="{width: 580 + 'px'}">
+    <lj-dialog :visible.sync="turn_positive_dialog_visible" :size="size">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>转正申请</h3>
         </div>
-        <div class="dialog_main borderNone add-meeting-container">
-          <el-form ref="turnPositiveForm" :rules="turn_positive_form_rule" :model="turn_positive_form"
-                   style="text-align: left" size="small" label-width="100px">
+        <div class="dialog_main borderNone">
+          <div class="dialog-top">
+            <el-form ref="turnPositiveForm" :rules="turn_positive_form_rule" :model="turn_positive_form"
+                     style="text-align: left" size="small" label-width="120px">
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item required prop="name" label="申请人">
+                    <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 220px"></el-input>
+                  </el-form-item>
 
-            <el-form-item required prop="name" label="申请人">
-              <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 418px"></el-input>
-            </el-form-item>
+                  <el-form-item required prop="forward_time" label="实际转正日期">
+                    <div class="items-center iconInput" style="width: 220px">
+                      <el-date-picker v-model="user_info.forward_time" type="date" placeholder="必填"></el-date-picker>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item required prop="enroll" label="入职时间">
+                    <div class="items-center iconInput">
+                      <el-date-picker disabled v-model="user_info.enroll" type="date"
+                                      placeholder="自动获取"></el-date-picker>
+                    </div>
+                  </el-form-item>
 
-            <el-form-item required prop="enroll" label="入职时间">
-              <div class="items-center iconInput">
-                <el-date-picker disabled v-model="user_info.enroll" type="date" placeholder="自动获取"></el-date-picker>
-              </div>
-            </el-form-item>
+                  <el-form-item required prop="trial_salary" label="试用期薪资">
+                    <el-input v-model="turn_positive_form.trial_salary" placeholder="必填"
+                              style="width: 220px"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item required prop="expect_forward_time" label="预期转正日期">
+                    <div class="items-center iconInput" style="width: 220px">
+                      <el-date-picker v-model="turn_positive_form.expect_forward_time" type="date"
+                                      placeholder="必填">
+                      </el-date-picker>
+                    </div>
+                  </el-form-item>
 
+                  <el-form-item required prop="positive_salary" label="转正后薪资">
+                    <el-input v-model="turn_positive_form.positive_salary" placeholder="必填"
+                              style="width: 220px"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-            <el-form-item required prop="expect_forward_time" label="预期转正日期">
-              <div class="items-center iconInput">
-                <el-date-picker v-model="turn_positive_form.expect_forward_time" type="date"
-                                placeholder="必填">
-                </el-date-picker>
-              </div>
-            </el-form-item>
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item required prop="reason" label="自我评价">
+                    <el-input type="textarea"
+                              v-model="turn_positive_form.reason"
+                              :autosize="{ minRows: 2, maxRows: 14}"
+                              placeholder="必填">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="附件">
+                    <lj-upload v-model="turn_positive_form.attachment" size="40"
+                               style="position: absolute; top: -12px;"></lj-upload>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </div>
 
-            <el-form-item required prop="forward_time" label="实际转正日期">
-              <div class="items-center iconInput">
-                <el-date-picker v-model="user_info.forward_time" type="date" placeholder="必填"></el-date-picker>
-              </div>
-            </el-form-item>
-
-
-            <el-form-item required prop="trial_salary" label="试用期薪资">
-              <el-input v-model="turn_positive_form.trial_salary" placeholder="必填" style="width: 418px"></el-input>
-            </el-form-item>
-
-
-            <el-form-item required prop="positive_salary" label="转正后薪资">
-              <el-input v-model="turn_positive_form.positive_salary" placeholder="必填" style="width: 418px"></el-input>
-            </el-form-item>
-
-            <el-form-item required prop="reason" label="自我评价">
-              <el-input type="textarea"
-                        v-model="turn_positive_form.reason"
-                        :autosize="{ minRows: 2, maxRows: 14}"
-                        placeholder="必填">
-              </el-input>
-            </el-form-item>
-
-            <el-form-item align="center" label="附件">
-              <lj-upload v-model="turn_positive_form.attachment" size="40"
-                         style="position: absolute; top: -12px;"></lj-upload>
-            </el-form-item>
-
-          </el-form>
+          <!--          流程组件-->
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitTurnPositive">提交
@@ -81,7 +96,7 @@
       LjDialog,
       LjUpload
     },
-    props: ['user_info_all'],
+    props: ['user_info_all', 'size'],
     data() {
       return {
         // 校验规则
@@ -155,7 +170,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+  @import "../../../../assets/scss/approval/commponents/dialogApproval.scss";
 </style>
 
 

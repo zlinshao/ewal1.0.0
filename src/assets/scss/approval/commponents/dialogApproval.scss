@@ -1,0 +1,13 @@
+@import '../../common.scss';
+
+#theme_name.theme1 {
+  #approval {
+    //弹窗表单
+    .dialog-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+  }
+}

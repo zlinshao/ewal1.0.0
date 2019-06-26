@@ -32,15 +32,16 @@
       :is="dialog.component"
       v-bind="dialog.props"
       :user_info_all="user_info_all"
+      :size="size"
     />
   </div>
 </template>
 
 <script>
-  import _ from 'lodash'
   import TurnPositiveDialog from "./initiateApprovalDialog/TurnPositiveDialog";
   import GroupChange from "./initiateApprovalDialog/GroupChange";
   import PromotionDialog from "./initiateApprovalDialog/PromotionDialog";
+  import LeaveDialog from "./initiateApprovalDialog/LeaveDialog";
 
   const dialogRequireContext = require.context(
     "./initiateApprovalDialog", // 搜索的文件夹
@@ -66,6 +67,10 @@
       return {
         url: globalConfig.humanResource_server,
 
+        size: {
+          width: '1400px',
+          height: '800px'
+        },
         // 模块清单
         initiateModuleList: [
           {
@@ -110,7 +115,9 @@
               {
                 itemIndex: 6,
                 itemTitle: '离职审批',
-                icon: 'lzsp'
+                icon: 'lzsp',
+                component: LeaveDialog,
+                props: {}
               },
               {
                 itemIndex: 7,

@@ -1,83 +1,107 @@
 <template>
   <div id="demand-dialog">
-    <lj-dialog :visible.sync="demand_dialog_visible" :size="{width: 580 + 'px',height: 780 + 'px'}">
+    <lj-dialog :visible.sync="demand_dialog_visible" :size="size">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>人员需求审批</h3>
         </div>
-        <div class="dialog_main borderNone add-meeting-container">
-          <el-form ref="demandForm" :rules="demand_form_rule" :model="demand_form"
-                   style="text-align: left" size="small" label-width="100px">
+        <div class="dialog_main borderNone">
+          <div class="dialog-top">
+            <el-form ref="demandForm" :rules="demand_form_rule" :model="demand_form"
+                     style="text-align: left" size="small" label-width="100px">
 
-            <el-form-item required prop="org_id" label="申请部门">
-              <org-choose width="418" num="1" :disabled="false" title="请选择部门" :show-icon="false"
-                          v-model="demand_form.org_id">
-              </org-choose>
-            </el-form-item>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item required prop="org_id" label="申请部门">
+                    <org-choose width="220" num="1" :disabled="false" title="请选择部门" :show-icon="false"
+                                v-model="demand_form.org_id">
+                    </org-choose>
+                  </el-form-item>
 
-            <el-form-item required prop="position_id" label="需求岗位">
-              <post-choose width="418" num="1" title="请选择岗位" :show-icon="false"
-                           v-model="demand_form.position_id">
-              </post-choose>
-            </el-form-item>
+                  <el-form-item prop="number" label="所需人数">
+                    <div style="width: 220px">
+                      <el-input v-model.number="demand_form.number.min"
+                                style="width: 49%" placeholder="请输入最小值"></el-input>
+                      <el-input v-model.number="demand_form.number.max"
+                                style="width: 49%" placeholder="请输入最大值"></el-input>
+                    </div>
+                  </el-form-item>
 
+                  <el-form-item label="薪资范围" prop="salary">
+                    <div style="width: 220px">
+                      <el-input v-model.number="demand_form.salary.min"
+                                style="width: 49%" placeholder="请输入最小值"></el-input>
+                      <el-input v-model.number="demand_form.salary.max"
+                                style="width: 49%" placeholder="请输入最大值"></el-input>
+                    </div>
+                  </el-form-item>
 
-            <el-form-item required prop="now_count" label="现有人数">
-              <el-input v-model="demand_form.now_count" placeholder="必填" style="width: 418px"></el-input>
-            </el-form-item>
+                  <el-form-item required prop="expect_date" label="期望到岗日期">
+                    <div class="items-center iconInput" style="width: 220px">
+                      <el-date-picker v-model="demand_form.expect_date" type="date"
+                                      placeholder="选择日期"></el-date-picker>
+                    </div>
+                  </el-form-item>
+                </el-col>
 
-            <el-form-item prop="number" label="所需人数">
-              <el-input v-model.number="demand_form.number.min"
-                        style="width: 49%" placeholder="请输入所需人数最小值"></el-input>
-              <el-input v-model.number="demand_form.number.max"
-                        style="width: 49%" placeholder="请输入所需人数最大值"></el-input>
-            </el-form-item>
+                <el-col :span="8">
+                  <el-form-item required prop="position_id" label="需求岗位">
+                    <post-choose width="220" num="1" title="请选择岗位" :show-icon="false"
+                                 v-model="demand_form.position_id">
+                    </post-choose>
+                  </el-form-item>
 
-            <el-form-item prop="year" label="年龄范围">
-              <el-input v-model.number="demand_form.year.min"
-                        style="width: 49%" placeholder="请输入年龄最小值"></el-input>
-              <el-input v-model.number="demand_form.year.max"
-                        style="width: 49%" placeholder="请输入年龄最大值"></el-input>
-            </el-form-item>
+                  <el-form-item prop="year" label="年龄范围">
+                    <div style="width: 220px">
+                      <el-input v-model.number="demand_form.year.min"
+                                style="width: 49%" placeholder="请输入最小值"></el-input>
+                      <el-input v-model.number="demand_form.year.max"
+                                style="width: 49%" placeholder="请输入最大值"></el-input>
+                    </div>
+                  </el-form-item>
 
-            <el-form-item required label="性别" prop="gender">
-              <el-select v-model="demand_form.gender">
-                <el-option v-for="(item,index) in gender" :key="index" :value="index + 1" :label="item"></el-option>
-              </el-select>
-            </el-form-item>
+                  <el-form-item required label="工作经验" prop="experience">
+                    <el-select v-model="demand_form.experience" style="width: 220px">
+                      <el-option v-for="(item,index) in experience" :key="index" :value="index + 1"
+                                 :label="item"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
 
-            <el-form-item label="薪资范围" prop="salary">
-              <el-input v-model.number="demand_form.salary.min"
-                        style="width: 49%" placeholder="请输入薪资最小值"></el-input>
-              <el-input v-model.number="demand_form.salary.max"
-                        style="width: 49%" placeholder="请输入薪资最大值"></el-input>
-            </el-form-item>
+                <el-col :span="8">
+                  <el-form-item required prop="now_count" label="现有人数">
+                    <el-input v-model="demand_form.now_count" placeholder="必填" style="width: 220px"></el-input>
+                  </el-form-item>
 
-            <el-form-item required label="工作经验" prop="experience">
-              <el-select v-model="demand_form.experience">
-                <el-option v-for="(item,index) in experience" :key="index" :value="index + 1" :label="item"></el-option>
-              </el-select>
-            </el-form-item>
+                  <el-form-item required label="性别" prop="gender">
+                    <el-select v-model="demand_form.gender" style="width: 220px">
+                      <el-option v-for="(item,index) in gender" :key="index" :value="index + 1"
+                                 :label="item"></el-option>
+                    </el-select>
+                  </el-form-item>
 
-            <el-form-item required label="学历" prop="education">
-              <el-select v-model="demand_form.education">
-                <el-option v-for="(item,index) in education" :key="index" :value="index + 1" :label="item"></el-option>
-              </el-select>
-            </el-form-item>
+                  <el-form-item required label="学历" prop="education">
+                    <el-select v-model="demand_form.education" style="width: 220px">
+                      <el-option v-for="(item,index) in education" :key="index" :value="index + 1"
+                                 :label="item"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item align="center" label="附件">
+                    <lj-upload v-model="demand_form.attachment" size="40"
+                               style="position: absolute; top: -12px;"></lj-upload>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </div>
 
-            <el-form-item required prop="expect_date" label="期望到岗日期">
-              <div class="items-center iconInput">
-                <el-date-picker v-model="demand_form.expect_date" type="date" placeholder="选择日期"></el-date-picker>
-              </div>
-            </el-form-item>
+          <!--          流程组件-->
 
-            <el-form-item align="center" label="附件">
-              <lj-upload v-model="demand_form.attachment" size="40"
-                         style="position: absolute; top: -12px;"></lj-upload>
-            </el-form-item>
-
-          </el-form>
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitDemand">提交
@@ -101,10 +125,7 @@
       LjDialog,
       LjUpload
     },
-    props: {
-      type: String,
-      default: ''
-    },
+    props: ['size'],
     data() {
       return {
         // 校验规则
@@ -184,10 +205,13 @@
       /**取消 */
       cancelDemand() {
       }
+    },
+    created() {
+
     }
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  @import "../../../../assets/scss/approval/commponents/dialogApproval.scss";
 </style>
