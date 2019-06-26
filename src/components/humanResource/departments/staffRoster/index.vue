@@ -43,14 +43,17 @@
               <span v-else>/</span>
             </template>
           </el-table-column>
+          <el-table-column :min-width="item.width" :label="item.val"  :align="item.position=='left'?'left':'center'" v-else-if="item.key=='is_enable'">
+            <template slot-scope="scope"><span>{{scope.row.is_enable ? '禁用' : '启用'}}</span></template>
+          </el-table-column>
           <el-table-column :min-width="item.width" show-overflow-tooltip :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-else-if="item.key === 'name'" fixed="left" style="background-color: white"></el-table-column>
           <el-table-column :min-width="item.width" show-overflow-tooltip :label="item.val" :prop="item.key" :align="item.position=='left'?'left':'center'" v-else></el-table-column>
         </div>
         <el-table-column label="操作" align="center" width="260">
                 <template slot-scope="scope">
-                  <el-button plain type="success" size="mini" @click="operateModule('power',scope.row)">权限</el-button>
-                  <el-button plain type="warning" size="mini" @click="operateModule('leave',scope.row)">离职</el-button>
-                  <el-button plain type="warning" size="mini" @click="operateModule('disabled',scope.row)">{{scope.row.is_enable ? '启用' : '禁用'}}</el-button>
+                  <el-button type="text" size="mini" @click="operateModule('power',scope.row)">权限</el-button>
+                  <el-button type="text" size="mini" @click="operateModule('leave',scope.row)">离职</el-button>
+                  <el-button type="text" size="mini" @click="operateModule('disabled',scope.row)">{{scope.row.is_enable ? '启用' : '禁用'}}</el-button>
                 </template>
               </el-table-column>
       </el-table>
@@ -564,6 +567,7 @@ rules: {
           { key: 'position',val: '岗位',isArray: true,showKey: 'name',width: "120px",position:'left'},
           { key: 'phone',val: '联系方式',width: "150px"},
           { key: 'on_job_status',val: '在职状态',width: "80px",info: {1: '在职', 2: '离职'}},
+          { key: 'is_enable',val: '账号状态',width: "80px"},
           // { key: 'gender',val: '性别',info:{0: '女',1: '男'}},
           // { key: 'staff.origin_addr',val: '籍贯',width: "180px",position:'left'},
           // { key: 'staff.political_status',val: '政治面貌',info: {1: '群众',2: '团员',3: '党员',4: '其他'}},
