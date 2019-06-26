@@ -414,7 +414,7 @@
                 <el-option value="position" label="岗位"></el-option>
                 <el-option value="user" label="用户"></el-option>
                 <el-option value="ban" label="黑名单"></el-option>
-                <!-- <el-option value="all" label="全部"></el-option> -->
+                <el-option value="all" label="全部"></el-option>
               </el-select>
             </div>
              <div class="inputLabel borderNone" v-show="self_power_params.type=='position'">
