@@ -372,7 +372,9 @@ export default {
         if (val && val.length > 0) {
           val.forEach((item, index) => {
             if (item.category != 3) {
-              item.answer = item.answer.join();
+              if(item.answer.constructor===Array) {
+                item.answer = item.answer.join();
+              }
             }
           });
           val = _.sortBy(val, ['category']);

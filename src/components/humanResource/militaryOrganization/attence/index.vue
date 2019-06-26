@@ -47,7 +47,6 @@
           <el-table
             ref="multipleTable"
             :data="tableSettingData.attence.tableData"
-            height="100%"
             :border="true"
             @selection-change="handleSelectionChange"
             :row-class-name="tableChooseRow"
@@ -55,7 +54,7 @@
             @row-dblclick="tableDblClick($event,'attence')"
             header-row-class-name="tableHeader"
             :row-style="{height:'60px'}"
-            style="width: 100%">
+            style="width: 100%;height: 100%">
             <el-table-column
               :selectable='isDisabled'
               v-if="tableSettingData.attence.isShowMultiSelection"
@@ -183,7 +182,7 @@
         <div class="page">
           <el-pagination
             @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+            @current-change="handleCurrentChange($event,'attence')"
             :current-page="tableSettingData.attence.params.page"
             :page-size="tableSettingData.attence.params.limit"
             :total="tableSettingData.attence.counts"
@@ -197,14 +196,13 @@
         <div class="mainListTable changeChoose" :style="{'height': '100%'}">
           <el-table
             :data="tableSettingData.confirm.tableData"
-            height="100%"
             :border="true"
             :row-class-name="tableChooseRow"
             @cell-click="tableClickRow"
             @row-dblclick="tableDblClick($event,'confirm')"
             header-row-class-name="tableHeader"
             :row-style="{height:'80px'}"
-            style="width: 100%">
+            style="width: 100%;height: 100%">
             <el-table-column
               key="department"
               align="center"
@@ -234,7 +232,7 @@
         <div class="page">
           <el-pagination
             @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+            @current-change="handleCurrentChange($event,'confirm')"
             :current-page="tableSettingData.confirm.params.page"
             :page-size="tableSettingData.confirm.params.limit"
             :total="tableSettingData.confirm.counts"
@@ -450,7 +448,7 @@
             params: {
               //search: '',
               page: 1,
-              limit: 1000,
+              limit: 8,
 
             },
             init() {
@@ -460,7 +458,7 @@
             chooseRowIds: [],
             currentSelection: {},//当前选择行
 
-            departmentId: [106],
+            departmentId: [],
             isShowMultiSelection: false,//是否显示多选框
             multipleSelection: [],
             isLeave: false,//是否离职  true离职 false在职
@@ -648,7 +646,7 @@
         }
       },
 
-
+      //获取考勤列表
       getAttenceList() {
         this.showLoading(true);
         this.tableSettingData.attence.tableData = [];
@@ -837,7 +835,7 @@
       //发送通知
       sendResult(row) {
         if (row.status === 1) {
-          this.$LjConfirm({content: '月度统计表将发送至对应员工待办中'}).then(() => {
+          this.$LjConfirm({icon:'warning', content: '月度统计表将发送至对应员工待办中'}).then(() => {
             alert('发送成功');
           });
         }
@@ -846,7 +844,7 @@
       //考勤确认
       confirmAttence() {
         let org_id = this.tableSettingData.attence.departmentId;
-        this.$LjConfirm({content: '月度统计表将发送至对应部门待办中'}).then(() => {
+        this.$LjConfirm({icon:'warning', content: '月度统计表将发送至对应部门待办中'}).then(() => {
           let params = {
             org_id: org_id[0],
             month: this.myUtils.formatDate(this.monthValue, 'yyyy-MM'),
@@ -892,6 +890,7 @@
           return;
         }
         this.$LjConfirm({
+          icon:'warning',
           content:'考勤确认单将发送到指定部门下',
         }).then(()=> {
           let params = {
@@ -1001,6 +1000,18 @@
            default :
              break;
          }*/
+         switch (currentTable) {
+           case 'attence':
+             this.tableSettingData[currentTable].params.page = val;
+             this.getAttenceList();
+             break;
+           case 'confirm':
+             this.tableSettingData[currentTable].params.page = val;
+             this.getAttenceConfirmList();
+             break;
+           default :
+             break;
+         }
       }
     },
     mounted() {

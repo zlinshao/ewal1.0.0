@@ -1,7 +1,7 @@
 <template>
   <div id="orgChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
-      <el-input :size="size" :disabled="disabled" @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <el-input :size="size" :disabled="disabled" readonly @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p v-if="showIcon" class="icons organization"></p>
     </div>
 
