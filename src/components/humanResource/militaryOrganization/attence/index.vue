@@ -837,6 +837,7 @@
         if (row.status === 1) {
           this.$LjConfirm({icon:'warning', content: '月度统计表将发送至对应员工待办中'}).then(() => {
             alert('发送成功');
+            console.log('发送成功');
           });
         }
       },
