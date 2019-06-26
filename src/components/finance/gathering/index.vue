@@ -2442,6 +2442,7 @@
             status: val.status,
             tag_status: val.tag_status,
             search: val.search,
+            subject_id: val.subject_id,
 
           };
           for (let item of Object.keys(this.params)) {
@@ -2541,7 +2542,7 @@
 
       //显示收据详情
       showReceiptDetail(row) {
-        console.log(row);
+        // consoleconsole.log(row);
         this.receipt_detail_dialog_visible = true;
         this.receipt_detail_dialog_data = row?.receipts[0];
         this.multi_field_form.id = row?.receipts[0].id;//电子收据id
