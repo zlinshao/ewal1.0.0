@@ -40,6 +40,7 @@
   import _ from 'lodash'
   import TurnPositiveDialog from "./initiateApprovalDialog/TurnPositiveDialog";
   import GroupChange from "./initiateApprovalDialog/GroupChange";
+  import PromotionDialog from "./initiateApprovalDialog/PromotionDialog";
 
   const dialogRequireContext = require.context(
     "./initiateApprovalDialog", // 搜索的文件夹
@@ -102,7 +103,9 @@
               {
                 itemIndex: 5,
                 itemTitle: '文职晋升申请',
-                icon: 'wzjs'
+                icon: 'wzjs',
+                component: PromotionDialog,
+                props: {}
               },
               {
                 itemIndex: 6,
