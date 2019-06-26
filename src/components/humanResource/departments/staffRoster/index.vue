@@ -538,7 +538,7 @@ rules: {
         self_power_params: {
           user_id: '',
           system_id: '',
-          type: '',
+          type: 'user',
           position_id: [],
         },
         power_list: [],
@@ -716,7 +716,6 @@ rules: {
         deep: true
       },
       exportInfo(val) {
-        console.log(val);
         this.export_params.export = 1;
         this.export_params = Object.assign({},this.export_params,this.params);
         this.exportStaffList();
@@ -745,10 +744,12 @@ rules: {
         }
         switch (val) {
           case 'power'://权限
+           this.currentStaff = item;
             this.getSystemList();
             this.powerVisible = true;
             this.set_power.type_id = item.id;
-            this.self_power_params.type = '';
+            this.self_power_params.type = 'user';
+            this.self_power_params.user_id = item.id;
             this.set_power.permission_type = '';
             this.getSelfPower(this.powerChildName);
             break;
@@ -920,7 +921,7 @@ rules: {
               title: '成功',
               message: res.msg
             });
-            this.powerVisible = false;
+            // this.powerVisible = false;
           } else {
             this.$LjNotify('warning',{
               title: '失败',
@@ -976,7 +977,6 @@ rules: {
         this.$http.get(this.url+'organization/system',this.module_params).then(res => {
           if (res.code === '20000') {
             this.module_list = res.data.data;
-            console.log('res.data.data', res.data.data)
             this.getPowerList(res.data.data[0].id);
             this.getSelfPower(res.data.data[0].id);
             this.powerChildName = res.data.data[0].id;
@@ -1002,6 +1002,7 @@ rules: {
       },
       getSelfPower(id) {
         this.self_power_params.system_id = id;
+        this.self_power_params.user_id = this.currentStaff.id;
         this.$http.get(this.url+'organization/permission/all',this.self_power_params).then(res => {
           if (res.code === '20000') {
             let field = [];
@@ -1054,7 +1055,7 @@ rules: {
       },
         getLabourInfo(id) {
             this.$http.get(`${this.url}staff/e_contract/get_contract_info/${id}`).then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res.code === '20010') {
                     this.labour_form = res.data;
                     // setTimeout(() => {
@@ -1100,7 +1101,6 @@ rules: {
             })
         },
         handleConfirEmemployProof(){
-          console.log('this.employ_proof_form.start_date',this.employ_proof_form.start_date);
           if(this.employ_proof_form.start_date){
             this.$http.post(`${this.url}staff/e_contract/view_contract`,this.employ_proof_form).then(res => {
                 if (res.code === '20000') {
@@ -1158,7 +1158,6 @@ rules: {
             });
         },
         generateContract(row,key){
-            console.log(row);
             switch (key) {
                 case 'staff.contract_number':
                     if (!row.fdd_ca) {
@@ -1214,7 +1213,6 @@ rules: {
         },
         getIncomeInfo(id,scene){
             this.$http.get(`${this.url}staff/e_contract/get_income_info/`+id+'?pdf_scene='+scene).then(res => {
-                console.log(res);
                 if (Number(res.code) %10 ===0){
                     switch (scene) {
                         case 11:
@@ -1269,7 +1267,6 @@ rules: {
         },
       //列表按钮
       handleLookInfo(row,key) {
-        console.log(row,key);
         if (!row.staff || !row.staff[key.split('.')[1]]) {
             this.$LjNotify('warning', {
                 title: '提示',
