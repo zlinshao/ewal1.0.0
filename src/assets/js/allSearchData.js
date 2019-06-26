@@ -297,7 +297,7 @@ export const housingDueSearch = {
     keywords: 'search',
     data: [{
             keyType: 'dateRange',
-            title: '签约时间',
+            title: '到期时间',
             placeholder: '请选择日期',
             keyName: 'date1',
             dataType: []
@@ -1823,21 +1823,22 @@ export const performanceSearch = {
     status: 'performanceSearch',
     keywords: 'search',
     limit: 5,
-    data: [{
-            keyType: 'radio',
-            title: '出租类型',
-            keyName: 'achv_type',
-            dataType: '',
-            value: [{
-                    id: 1,
-                    title: '新收新租'
-                },
-                {
-                    id: 2,
-                    title: '二次出租'
-                }
-            ]
-        },
+    data: [
+        // {
+        //     keyType: 'radio',
+        //     title: '出租类型',
+        //     keyName: 'achv_type',
+        //     dataType: '',
+        //     value: [{
+        //             id: 1,
+        //             title: '新收新租'
+        //         },
+        //         {
+        //             id: 2,
+        //             title: '二次出租'
+        //         }
+        //     ]
+        // },
         {
             keyType: 'depart',
             title: '租房片区',
