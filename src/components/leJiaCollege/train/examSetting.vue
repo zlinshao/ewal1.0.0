@@ -437,7 +437,7 @@
 
           addExam: {
             name: [
-              {required: true, message: '请输入考试场次', trigger: 'blur'},
+              {required: true, message: '请输入考试场次', trigger: ['blur', 'change']},
               {min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: ['blur', 'change']}
             ],
             type: [
