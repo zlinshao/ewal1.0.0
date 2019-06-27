@@ -63,25 +63,25 @@
           })
         }*/
       },
-      // size: {
-      //   handler(val) {
-      //     if (typeof val === 'string') {
-      //       this.lj_size = val;
-      //       this.is_upright = false;
-      //     } else {
-      //       this.lj_size = 'other';
-      //       this.style.other = val;
-      //       if(!val.width) return;
-      //       if (val.width.indexOf('%') !== -1) {
-      //         if (parseInt(val.height) > parseInt(val.width)) {
-      //           this.is_upright = true;
-      //         }
-      //       }
-      //     }
-      //   },
-      //   deep: true,
-      //   immediate: true
-      // }
+      size: {
+        handler(val) {
+          if (typeof val === 'string') {
+            this.lj_size = val;
+            this.is_upright = false;
+          } else {
+            this.lj_size = 'other';
+            this.style.other = val;
+            if (!val.width) return;
+            if (val.width.indexOf('%') !== -1) {
+              if (parseInt(val.height) > parseInt(val.width)) {
+                this.is_upright = true;
+              }
+            }
+          }
+        },
+        deep: true,
+        immediate: true
+      }
     },
     computed: {
       dialogZIndex() {
@@ -94,25 +94,25 @@
         this.$emit('update:visible', this.dialog_visible);
         this.$emit('close');
       },
-      handlerSize(val) {
-        if (typeof val === 'string') {
-          this.lj_size = val;
-          this.is_upright = false;
-        } else {
-          this.lj_size = 'other';
-          this.style.other = val;
-          if (!val.width) return;
-          if (val.width.indexOf('%') !== -1) {
-            if (parseInt(val.height) > parseInt(val.width)) {
-              this.is_upright = true;
-            }
-          }
-        }
-      }
+      // handlerSize(val) {
+      //   if (typeof val === 'string') {
+      //     this.lj_size = val;
+      //     this.is_upright = false;
+      //   } else {
+      //     this.lj_size = 'other';
+      //     this.style.other = val;
+      //     if (!val.width) return;
+      //     if (val.width.indexOf('%') !== -1) {
+      //       if (parseInt(val.height) > parseInt(val.width)) {
+      //         this.is_upright = true;
+      //       }
+      //     }
+      //   }
+      // }
     },
-    created() {
-      this.handlerSize(this.size)
-    }
+    // created() {
+    //   this.handlerSize(this.size)
+    // }
   }
 </script>
 
