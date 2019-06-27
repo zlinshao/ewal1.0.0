@@ -32,7 +32,6 @@
           <span @click="toggleSelection(tableSettingData.attence.tableData)">全选/</span>
           <span @click="tableSettingData.attence.isShowMultiSelection = false">取消</span>
         </span>-->
-
         <el-checkbox v-model="tableSettingData.attence.isLeave">离职员工</el-checkbox>
         <org-choose num="1" width="200" title="请选择部门" v-model="tableSettingData.attence.departmentId"></org-choose>
         <span @click="confirmAttence" class="colorE33">生成考勤确认表</span>
@@ -350,14 +349,12 @@
 </template>
 
 <script>
-  import _ from 'lodash';
   import mixins from '@/assets/js/mixins/calendar.js';
   import Calendar from '../../../common/lightweightComponents/Calendar/index';
   import MonthChoose from '../../../common/lightweightComponents/Calendar/MonthChoose/index';
   import YearChoose from '../../../common/lightweightComponents/Calendar/YearChoose/index';
   import UserChoose from '../../../common/lightweightComponents/UserChoose';
   import OrgChoose from '../../../common/lightweightComponents/OrgChoose';
-  import LjDialog from '../../../common/lj-dialog';
   import ButtonUpload from '../../../common/lightweightComponents/ButtonUpload';
 
   export default {
@@ -367,7 +364,6 @@
       YearChoose,
       UserChoose,
       OrgChoose,
-      LjDialog,
       Calendar,
       ButtonUpload,
     },
@@ -628,12 +624,14 @@
       'tableSettingData.attence.departmentId': {
         handler(val, oldVal) {
           if (val && val.length > 0) {
+            this.tableSettingData.attence.params.page = 1;
             this.getAttenceList();
           }
         },
       },
       'tableSettingData.attence.isLeave': {
         handler(val, oldVal) {
+          this.tableSettingData.attence.params.page = 1;
           this.getAttenceList();
         },
       },
@@ -726,10 +724,6 @@
             this.tableSettingData.attence.counts = res.data.count;
           }
         });
-      },
-
-      demo() {
-        console.log(this.tableSettingData.attence.departmentId[0]);
       },
 
       //显示详情弹窗
