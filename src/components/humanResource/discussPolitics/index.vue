@@ -1507,7 +1507,7 @@
 
       //取消会议
       cancelMeeting(item, index, todoListIndex) {
-        this.$LjConfirm({content: '确定要取消会议吗？'}).then(res => {
+        this.$LjConfirm({icon:'warning', content: '确定要取消会议吗？'}).then(res => {
           let params = {
             status: 2
           };
