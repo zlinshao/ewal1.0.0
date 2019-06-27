@@ -71,6 +71,7 @@
       //     } else {
       //       this.lj_size = 'other';
       //       this.style.other = val;
+      //       if(!val.width) return;
       //       if (val.width.indexOf('%') !== -1) {
       //         if (parseInt(val.height) > parseInt(val.width)) {
       //           this.is_upright = true;
@@ -100,6 +101,7 @@
         } else {
           this.lj_size = 'other';
           this.style.other = val;
+          if (!val.width) return;
           if (val.width.indexOf('%') !== -1) {
             if (parseInt(val.height) > parseInt(val.width)) {
               this.is_upright = true;
