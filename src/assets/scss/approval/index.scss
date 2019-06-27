@@ -199,14 +199,20 @@
       }
     }
 
-    /*办公审批搜索*/
-    #office-search {
-      .icons {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        right: 50px;
+    /*办公审批*/
+    #office_approval {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      /*办公审批搜索*/
+      #office-search {
+        .icons {
+          display: inline-block;
+          width: 40px;
+          height: 40px;
+          position: absolute;
+          right: 50px;
+        }
       }
     }
   }
