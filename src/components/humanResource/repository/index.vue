@@ -1,6 +1,6 @@
 <template>
   <div id="repository">
-    <coming-soon></coming-soon>
+    <!-- <coming-soon></coming-soon> -->
     <StaffOrgan :module="organModule" @close="hiddenOrgan"></StaffOrgan>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
@@ -17,8 +17,8 @@
       </div>
       <div class="items-center listTopRight">
         <div class="icons add" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>+</b></div>
-        <div class="icons add" @click="addDialog(chooseTab)" v-if="chooseTab===4"><b>+</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
+        <div class="icons add" @click="addDialog(chooseTab)" v-if="chooseTab===4"><b>+</b></div>
         <div class="icons search" v-if="chooseTab === 4"></div>
       </div>
     </div>
@@ -28,7 +28,7 @@
         <div class="bg-container flex-center" @click="chooseTab=1"><span>库存管理</span></div>
         <div class="bg-container flex-center" @click="chooseTab=2"><span>领用借用</span></div>
         <div class="bg-container flex-center" @click="chooseTab=3"><span>资料库</span></div>
-        <!-- <div class="bg-container flex-center" @click="chooseTab=4"><span>办公住宿</span></div> -->
+        <div class="bg-container flex-center" @click="chooseTab=4"><span>办公室·宿舍</span></div>
       </div>
       <!--<work-info v-show="!chooseTab" :work-info="work_info" :attend-data="attend_data" :event-data="event_data"
                  @change="handleChangeDate"></work-info>-->
@@ -119,10 +119,10 @@
             id: 3,
             title: '资料库',
           },
-          // {
-          //   id: 4,
-          //   title: "办公室/宿舍管理"
-          // }
+          {
+            id: 4,
+            title: "办公室·宿舍"
+          }
         ],//tab切换
 
         organModule: false,//组织架构

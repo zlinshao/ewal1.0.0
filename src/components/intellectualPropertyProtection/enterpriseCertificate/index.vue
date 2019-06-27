@@ -337,7 +337,7 @@ export default {
           message: '请选择可见范围',
         });
       }
-      else if (!params.file_id.length===0) {
+      else if (params.file_id.length===0) {
         this.$LjNotify('error', {
           title: '失败',
           message: '请上传文件',
