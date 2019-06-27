@@ -1,6 +1,5 @@
 <template>
   <div id="discussPolitics" class="discuss-politics">
-    <coming-soon></coming-soon>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
@@ -1254,21 +1253,15 @@
         if (params.id) {//修改
           promise1 = this.$http.put(`${this.url}meeting/minutes/${params.id}`, params).then(res => {
             return res;
-            /*this.$LjMessageEasy(res,()=> {
-              this.meeting_summary_editable = false;
-            });*/
           });
         } else {
           promise1 = this.$http.post(`${this.url}meeting/minutes`, params).then(res => {//添加
             return res;
-            /*this.$LjMessageEasy(res,()=> {
-              this.meeting_summary_editable = false;
-            });*/
           });
         }
         promises.push(promise1);
 
-        let list = this.meeting_remaining_form.list;
+        let list = _.cloneDeep(this.meeting_remaining_form.list);
         list.forEach(function (item, index) {
           item.meeting_id = meeting_id;
           item.follow_id = item.follow_id[0] || [];
@@ -1285,6 +1278,10 @@
               msg: '操作成功',
             });
             this.meeting_summary_editable = false;
+            /*let list = this.meeting_remaining_form.list;
+            list.forEach(function (item, index) {
+              item.follow_id = [item.follow_id];
+            });*/
           } else {
             this.$LjMessage('error', {
               title: '失败',
@@ -1292,8 +1289,6 @@
             });
           }
         });
-
-
       },
 
 
@@ -1492,7 +1487,7 @@
 
       //删除会议
       deleteMeeting(item, index, todoListIndex) {
-        this.$LjConfirm({content: '确定要删除会议吗？'}).then(res => {
+        this.$LjConfirm({icon:'warning', content: '确定要删除会议吗？'}).then(res => {
           this.$http.delete(`${this.url}/meeting/meeting/${item.id}`).then(res => {
             if (res.code.endsWith('0')) {
               this.$LjNotify('success', {
@@ -1512,7 +1507,7 @@
 
       //取消会议
       cancelMeeting(item, index, todoListIndex) {
-        this.$LjConfirm({content: '确定要取消会议吗？'}).then(res => {
+        this.$LjConfirm({icon:'warning', content: '确定要取消会议吗？'}).then(res => {
           let params = {
             status: 2
           };
@@ -1673,7 +1668,7 @@
           //处理数据
           let startTime = utils.formatDate(daysList[0].datetime, 'yyyy-MM-dd hh:mm:ss');
           let endTime = utils.formatDate(daysList[daysList.length - 1].datetime, 'yyyy-MM-dd hh:mm:ss');
-          let params = {data: [startTime, endTime]};
+          let params = {data: [startTime, endTime],type:2};
 
           let tempData = [];
 

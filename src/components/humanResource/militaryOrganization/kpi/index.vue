@@ -168,7 +168,7 @@ export default {
           this.total = res.data.length
           for (let i = 0; i < res.data.length; i++) {
             let obj = {
-              name: res.data[i].staff_info.name,
+              name: res.data[i].staff_info?.name,
               department: res.data[i].org_info.name,
             }
             this.handleMonthKpi(obj, res.data[i].value);
@@ -190,7 +190,7 @@ export default {
           this.total = res.data.length
           for (let i = 0; i < res.data.length; i++) {
             let obj = {
-              name: res.data[i].staff_info.name,
+              name: res.data[i].staff_info?.name,
               department: res.data[i].org_info.name,
             }
             for (let j = 0; j < res.data[i].value.length; j++) {
@@ -227,7 +227,7 @@ export default {
           this.total = res.data.length
           for (let i = 0; i < res.data.length; i++) {
             let obj = {
-              name: res.data[i].staff_info.name,
+              name: res.data[i].staff_info?.name,
               department: res.data[i].org_info.name,
             }
             for (let j = 0; j < res.data[i].value.length; j++) {
