@@ -615,7 +615,7 @@
       monthValue: {
         handler(val, oldVal) {
           if (val) {
-            this.getAttenceList();
+            this.getAttenceList(true);
             this.monthContent = this.myUtils.formatDate(val, 'yyyy-MM');
           }
         },
@@ -624,15 +624,13 @@
       'tableSettingData.attence.departmentId': {
         handler(val, oldVal) {
           if (val && val.length > 0) {
-            this.tableSettingData.attence.params.page = 1;
-            this.getAttenceList();
+            this.getAttenceList(true);
           }
         },
       },
       'tableSettingData.attence.isLeave': {
         handler(val, oldVal) {
-          this.tableSettingData.attence.params.page = 1;
-          this.getAttenceList();
+          this.getAttenceList(true);
         },
       },
     },
@@ -644,8 +642,14 @@
         }
       },
 
-      //获取考勤列表
-      getAttenceList() {
+      /*
+       *  description: 获取考勤列表
+       *  params: isOrigin 是否初始化页码  默认false 不初始化
+      **/
+      getAttenceList(isOrigin = false) {
+        if(isOrigin) {
+          this.tableSettingData.attence.params.page = 1;
+        }
         this.showLoading(true);
         this.tableSettingData.attence.tableData = [];
         let params = {
