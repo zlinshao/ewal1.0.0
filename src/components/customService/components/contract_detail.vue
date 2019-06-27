@@ -95,12 +95,12 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="押金">
-                    <span>{{ contractDetail.deposit_payed+ '元' || '--'}}</span>
+                    <span>{{ (contractDetail.deposit_payed || '--') + '元' }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="违约金">
-                    <span>{{ contractDetail.mortgage_price+ '元' || '--'}}</span>
+                    <span>{{ (contractDetail.mortgage_price || '--') + '元'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
