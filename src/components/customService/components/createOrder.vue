@@ -335,7 +335,7 @@
                     <h5>房屋信息</h5>
                     <div>
                       <span class='tit'>房屋地址</span>
-                      <span class="content_tit" v-if='customer_info.contract_Detail.house_extension'>{{customer_info.contract_Detail.house_extension.address
+                      <span class="content_tit" v-if='customer_info.contract_Detail.house'>{{customer_info.contract_Detail.house.name
                         || '--'}}</span>
                       <span class="content_tit" v-else>--</span>
                     </div>
@@ -351,7 +351,7 @@
                       </div>
                       <div>
                         <span class='tit'>中介价格</span>
-                        <span class="content_tit" v-if='customer_info.contract_Detail.agency_info'>{{customer_info.contract_Detail.agency_info.agency_price_now
+                        <span class="content_tit" v-if='customer_info.contract_Detail.agency_info'>{{customer_info.contract_Detail.agency_info.agency_price
                           || '--' +
                           "元"}}</span>
                         <span class="content_tit" v-else>--</span>
@@ -1301,7 +1301,7 @@ export default {
             message: '工单创建成功'
           });
         } else {
-           this.$LjNotify('success', {
+           this.$LjNotify('warning', {
             title: '提示',
             message: '工单创建失败'
           });
