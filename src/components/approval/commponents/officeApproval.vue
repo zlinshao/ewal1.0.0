@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="office_approval">
     <!--    头部审批按钮-->
     <div class="header">
       <!--发起审批 我审批的 我发起的 抄送我的 暂不处理-->

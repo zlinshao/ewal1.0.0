@@ -42,6 +42,11 @@
   import GroupChange from "./initiateApprovalDialog/GroupChange";
   import PromotionDialog from "./initiateApprovalDialog/PromotionDialog";
   import LeaveDialog from "./initiateApprovalDialog/LeaveDialog";
+  import Salary from "./initiateApprovalDialog/Salary";
+  import AddOfficeDialog from "./initiateApprovalDialog/AddOfficeDialog";
+  import ReduceOfficeDialog from "./initiateApprovalDialog/ReduceOfficeDialog";
+  import StayDialog from "./initiateApprovalDialog/StayDialog";
+  import AwayDialog from "./initiateApprovalDialog/AwayDialog";
 
   const dialogRequireContext = require.context(
     "./initiateApprovalDialog", // 搜索的文件夹
@@ -158,7 +163,9 @@
               {
                 itemIndex: 3,
                 itemTitle: '薪资调整申请',
-                icon: 'xztz'
+                icon: 'xztz',
+                component: Salary,
+                props: {}
               }
             ]
           },
@@ -197,22 +204,30 @@
               {
                 itemIndex: 4,
                 itemTitle: '增加办公室/宿舍申请',
-                icon: 'zjbgs'
+                icon: 'zjbgs',
+                component: AddOfficeDialog,
+                props: {}
               },
               {
                 itemIndex: 5,
                 itemTitle: '减少办公室/宿舍申请',
-                icon: 'jsbgs'
+                icon: 'jsbgs',
+                component: ReduceOfficeDialog,
+                props: {}
               },
               {
                 itemIndex: 6,
                 itemTitle: '住宿申请',
-                icon: 'zssq'
+                icon: 'zssq',
+                component: StayDialog,
+                props: {}
               },
               {
                 itemIndex: 7,
                 itemTitle: '离宿申请',
-                icon: 'lssq'
+                icon: 'lssq',
+                component: AwayDialog,
+                props: {}
               }
             ]
           },
