@@ -98,10 +98,10 @@
                 </el-col>
               </el-row>
             </el-form>
+
+            <!--          流程组件-->
+            <ApprovalProcess></ApprovalProcess>
           </div>
-
-          <!--          流程组件-->
-
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitDemand">提交
@@ -119,11 +119,14 @@
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
   import _ from 'lodash';
 
+  import ApprovalProcess from '../ApprovalProcess';
+
   export default {
     name: "demandDialog",
     components: {
       LjDialog,
-      LjUpload
+      LjUpload,
+      ApprovalProcess
     },
     props: ['size'],
     data() {

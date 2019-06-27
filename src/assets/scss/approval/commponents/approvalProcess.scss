@@ -1,0 +1,42 @@
+@import '../../common.scss';
+
+#theme_name.theme1 {
+  #approval {
+    #approval_process {
+      width: 1200px;
+      height: 374px;
+      background: rgba(255, 255, 255, 1);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: row;
+
+      /*左侧标题 */
+      .left-title {
+        width: 135px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .top-icon {
+          width: 25px;
+          height: 55px;
+        }
+
+        .main-text {
+          margin-top: 5px;
+          width: 15px;
+          height: 57px;
+          font-size: 14px;
+          font-family: 'jingDianXingShu';
+          color: rgba(207, 46, 51, 1);
+          line-height: 14px;
+        }
+      }
+
+      /**右侧流程*/
+      .right-process {
+        flex: 1;
+      }
+    }
+  }
+}
