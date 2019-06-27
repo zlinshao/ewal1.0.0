@@ -3,7 +3,7 @@
   <div id="menuList" class="riskManagement">
     <div :class="{'dialogVisible': backdrop && dialogVisible}" @click="dialogVisible = false"></div>
     <div class="justify-around list" :class="{'menuList':routeAnimation,'backdrop': backdrop,'hover':dialogVisible}">
-      <div v-for="(item,index) in menuParams.data" class="flex-center menu" :class="['menu-' + (index + 1)]">
+      <div v-for="(item,index) in menuParams.data" class="flex-center menu" :class="['menu-' + (index + 1)]" :key="index">
         <div class="flex-center childrenMenu" @click="moduleRouter(item)">
           <span class="writingMode">{{item.name}}</span>
         </div>
@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import MenuList from '../../common/menuList'
+// import MenuList from '../../common/menuList'
 export default {
   props: ['visible'],
   components: {
-    MenuList
+    // MenuList
   },
   data () {
     return {
@@ -55,29 +55,21 @@ export default {
   methods: {
     moduleRouter (item) {
       // this.routerLink(item.url, { pre_name: item.title, pre_id: item.id });
-      this.$router.push({ path: item.url, query: { pre_name: item.name, pre_id: item.id } })
+      this.$router.push({ path: item.url, query: { classify_first_name: item.name, classify_first_id: item.id } })
       this.dialogVisible = false;
     },
-    // 出自己以外的元素关闭
-    hidePanel (event) {
-      let sp = document.getElementById("list");
-      if (sp) {
-        if (!sp.contains(event.target)) {
-          this.$emit('close');
-        }
-      }
-    },
+    // 除自己以外的元素关闭
+    // hidePanel (event) {
+    //   let sp = document.getElementById("list");
+    //   if (sp) {
+    //     if (!sp.contains(event.target)) {
+    //       this.$emit('close');
+    //     }
+    //   }
+    // },
     getMenu () {
       this.$http.get(globalConfig.risk_sever + "/api/risk/classify", { parent_id: 0 }).then(res => {
         if (res.status === 200) {
-          // let data = []
-          // res.data.data.forEach(el => {
-          //   data.push({
-          //     title: el.name,
-          //     url: el.url,
-          //     id: el.id
-          //   })
-          // });
           this.menuParams = {
             type: 'riskManagement',
             data: res.data.data
@@ -85,9 +77,9 @@ export default {
         }
       })
     },
-    handleClose () {
-      this.$emit('close', false)
-    }
+    // handleClose () {
+    //   this.$emit('close', false)
+    // }
   }
 }
 </script>
