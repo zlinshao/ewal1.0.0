@@ -200,7 +200,7 @@
                 <div class="circle"></div>
               </div>
               <div class='detail_dialog_right'>
-                <p>{{ item.tag_status == 1 ? "续租" : "退租" }}</p>
+                <p>{{item.tag_status == 1 ? chooseTab==1 ?"退房" : "退租":  chooseTab==1 ?"续约" : "续租" }}</p>
                 <p>{{item.remark}}</p>
               </div>
             </div>
