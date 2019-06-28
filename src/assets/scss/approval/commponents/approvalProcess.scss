@@ -1,0 +1,93 @@
+@import '../../common.scss';
+
+#theme_name.theme1 {
+  #approval {
+    #approval_process {
+      .approval-process-box {
+        width: 1200px;
+        height: 374px;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 4px;
+        display: flex;
+        flex-direction: row;
+
+        /*左侧标题 */
+        .left-title {
+          width: 135px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .top-icon {
+            width: 25px;
+            height: 55px;
+          }
+
+          .main-text {
+            margin-top: 5px;
+            width: 15px;
+            height: 57px;
+            font-size: 14px;
+            font-family: 'jingDianXingShu';
+            color: rgba(207, 46, 51, 1);
+            line-height: 14px;
+          }
+        }
+
+        /**右侧流程*/
+        .right-process {
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+          //justify-content: center;
+          align-items: center;
+
+          .el-timeline-item__tail {
+            border: 1px dotted #DFDFDF;
+          }
+
+
+          .approval-timeline {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            //min-height: 30px;
+
+            .timeline-text {
+              width: 320px;
+              font-size: 12px;
+              font-family: 'MicrosoftYaHei';
+              color: rgba(176, 176, 176, 1);
+              line-height: 16px;
+              text-align: left;
+            }
+
+            .timeline-avatar {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+
+              .avatar-img {
+                width: 40px;
+                height: 40px;
+
+                img {
+                  border-radius: 50%;
+                }
+              }
+
+              .avatar-name {
+                //width: 24px;
+                height: 16px;
+                font-size: 12px;
+                font-family: 'MicrosoftYaHei';
+                color: rgba(176, 176, 176, 1);
+                line-height: 16px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

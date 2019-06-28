@@ -1,23 +1,25 @@
 <template>
   <div id="promotion-dialog">
-    <lj-dialog :visible.sync="promotion_dialog_visible" :size="size">
+    <lj-dialog :visible.sync="promotion_dialog_visible"
+               :size="size"
+               @close="cancelPromotion">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>文职晋升申请</h3>
         </div>
         <div class="dialog_main borderNone">
           <div class="dialog-top">
-            <el-form ref="groupChangeForm" :rules="promotion_form_rule" :model="promotion_form"
+            <el-form ref="promotionForm" :rules="promotion_form_rule" :model="promotion_form"
                      style="text-align: left" size="small" label-width="100px">
 
               <el-row>
                 <!--              第一列-->
                 <el-col :span="8">
-                  <el-form-item required prop="name" label="申请人">
+                  <el-form-item prop="name" label="申请人">
                     <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 220px"></el-input>
                   </el-form-item>
 
-                  <el-form-item required prop="enroll" label="入职时间">
+                  <el-form-item prop="enroll" label="入职时间">
                     <div class="items-center iconInput">
                       <el-date-picker disabled v-model="user_info.enroll" type="date"
                                       placeholder="自动获取">
@@ -26,13 +28,13 @@
                   </el-form-item>
 
                   <el-form-item required prop="old_salary" label="原有薪资">
-                    <el-input v-model="promotion_form.old_salary" placeholder="必填"
+                    <el-input v-model.number="promotion_form.old_salary" placeholder="必填"
                               style="width: 220px"></el-input>
                   </el-form-item>
                 </el-col>
                 <!--              第二列-->
                 <el-col :span="8">
-                  <el-form-item required prop="org" label="所属部门">
+                  <el-form-item prop="org" label="所属部门">
                     <el-input disabled disabled v-model="user_info.org" placeholder="自动获取"
                               style="width: 220px"></el-input>
                   </el-form-item>
@@ -44,13 +46,13 @@
                   </el-form-item>
 
                   <el-form-item required prop="now_salary" label="晋升后薪资">
-                    <el-input v-model="promotion_form.now_salary" placeholder="必填"
+                    <el-input v-model.number="promotion_form.now_salary" placeholder="必填"
                               style="width: 220px"></el-input>
                   </el-form-item>
                 </el-col>
                 <!--              第三列-->
                 <el-col :span="8">
-                  <el-form-item required prop="position" label="所属岗位">
+                  <el-form-item prop="position" label="所属岗位">
                     <el-input disabled disabled v-model="user_info.position" placeholder="自动获取"
                               style="width: 220px"></el-input>
                   </el-form-item>
@@ -98,6 +100,9 @@
               </el-row>
 
             </el-form>
+
+            <!--          流程组件-->
+            <ApprovalProcess :user_info="user_info" :type="promotion_form.type"></ApprovalProcess>
           </div>
 
           <!--          流程组件-->
@@ -116,15 +121,38 @@
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
-  import _ from 'lodash';
+  import ApprovalProcess from '../ApprovalProcess';
+
+  /**初始化数据 */
+  function createEmpty() {
+    return {
+      type: "civilian_promotion",
+      enroll: null,
+      // 晋升后部门
+      now_org: null,
+      // 晋升后岗位
+      now_position: null,
+      // 晋升原因
+      change_reason: null,
+      // 交接单
+      change_receipt: null,
+      // 原有薪资
+      old_salary: null,
+      // 晋升后薪资
+      now_salary: null,
+      // 附件
+      attachment: []
+    }
+  }
 
   export default {
     name: "PromotionDialog",
     components: {
       LjDialog,
-      LjUpload
+      LjUpload,
+      ApprovalProcess
     },
-    props: ['user_info_all', 'size'],
+    props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
         // 校验规则
@@ -151,28 +179,15 @@
           ]
         },
         promotion_dialog_visible: false,
-        promotion_form: {
-          type: "civilian_promotion",
-          enroll: null,
-          // 晋升后部门
-          now_org: null,
-          // 晋升后岗位
-          now_position: null,
-          // 晋升原因
-          change_reason: null,
-          // 交接单
-          change_receipt: null,
-          // 原有薪资
-          old_salary: null,
-          // 晋升后薪资
-          now_salary: null,
-          // 附件
-          attachment: []
-        },
+        promotion_form: createEmpty(),
         user_info: null
       }
     },
     methods: {
+      reset() {
+        this.promotion_form = createEmpty()
+        this.$refs.promotionForm.clearValidate()
+      },
       open() {
         this.promotion_dialog_visible = true
       },
@@ -183,13 +198,34 @@
           enroll: this.user_info_all.staff.enroll,
           org: this.user_info_all.org[0].name,
           position: this.user_info_all.position[0].name,
+          user_id: this.user_info_all.id,
+          org_id: this.user_info_all.org[0].id,
         }
+        this.promotion_form.enroll = this.user_info_all.staff.enroll
       },
       /**提交*/
       submitPromotion() {
+        this.$refs['promotionForm']
+          .validate((valid) => {
+            if (valid) {
+              this.promotion_form.enroll = this.myUtils.formatDate(this.promotion_form.enroll, 'yyyy-MM-dd')
+              let data = this.promotion_form
+              this.$http.post(this.addUrl, data)
+                .then(res => {
+                  this.$LjMessageEasy(res, () => {
+                    this.promotion_dialog_visible = false;
+                    this.reset()
+                  })
+                })
+            } else {
+              return false
+            }
+          })
       },
       /**取消*/
       cancelPromotion() {
+        this.promotion_dialog_visible = false;
+        this.reset()
       }
     },
     created() {

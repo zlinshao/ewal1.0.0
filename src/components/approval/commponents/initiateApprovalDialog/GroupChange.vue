@@ -1,6 +1,8 @@
 <template>
   <div id="group-change-dialog">
-    <lj-dialog :visible.sync="group_change_dialog_visible" :size="size">
+    <lj-dialog :visible.sync="group_change_dialog_visible"
+               :size="size"
+               @close="cancelGroupChange">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>整组异动/调岗审批</h3>
@@ -11,7 +13,7 @@
                      style="text-align: left" size="small" label-width="100px">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item required prop="name" label="申请人">
+                  <el-form-item prop="name" label="申请人">
                     <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 220px"></el-input>
                   </el-form-item>
 
@@ -24,7 +26,7 @@
                 <el-col :span="8">
                   <el-form-item required prop="group_user" label="调岗组员">
                     <div class="items-center iconInput" style="width: 220px">
-                      <user-choose width="220" num="1" :disabled="false" title="必填" :show-icon="false"
+                      <user-choose width="220" :disabled="false" title="必填" :show-icon="false"
                                    v-model="group_change_form.group_user">
                       </user-choose>
                     </div>
@@ -78,9 +80,9 @@
                 </el-col>
               </el-row>
             </el-form>
-          </div>
 
-          <!--          流程组件-->
+            <ApprovalProcess :user_info="user_info" :type="group_change_form.type"></ApprovalProcess>
+          </div>
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitGroupChange">提交
@@ -96,15 +98,39 @@
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
-  import _ from 'lodash';
+  import ApprovalProcess from '../ApprovalProcess';
+
+  const processData = require('../../js/processKey.json')
+
+  /**初始化数据 */
+  function createEmpty() {
+    return {
+      type: "group_change",
+      // 转入部门
+      now_org: null,
+      // 转入岗位
+      now_position: null,
+      // 调岗原因
+      change_reason: null,
+      // 附件
+      attachment: [],
+      // 调岗组员
+      group_user: null,
+      // 交接单
+      change_receipt: null,
+      // 调岗日期
+      date: null,
+    }
+  }
 
   export default {
     name: "GroupChange",
     components: {
       LjDialog,
-      LjUpload
+      LjUpload,
+      ApprovalProcess
     },
-    props: ['user_info_all', 'size'],
+    props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
         // 校验规则
@@ -131,45 +157,54 @@
           ]
         },
         group_change_dialog_visible: false,
-        group_change_form: {
-          type: "group_change",
-          // 转入部门
-          now_org: null,
-          // 转入岗位
-          now_position: null,
-          // 调岗原因
-          change_reason: null,
-          // 附件
-          attachment: [],
-          // 调岗组员
-          group_user: null,
-          change_receipt: null,
-          // 调岗日期
-          date: null,
-        },
+        group_change_form: createEmpty(),
         user_info: null
       }
     },
     methods: {
+      reset() {
+        this.group_change_form = createEmpty()
+        this.$refs.groupChangeForm.clearValidate()
+      },
       open() {
         this.group_change_dialog_visible = true
       },
       /**获取个人信息 */
       getUserInfo() {
         this.user_info = {
-          name: this.user_info_all.name
+          name: this.user_info_all.name,
+          org: this.user_info_all.org[0].name,
+          user_id: this.user_info_all.id,
+          org_id: this.user_info_all.org[0].id,
         }
       },
       /**提交*/
       submitGroupChange() {
+        this.$refs['groupChangeForm']
+          .validate((valid) => {
+            if (valid) {
+              this.group_change_form.date = this.myUtils.formatDate(this.group_change_form.date, 'yyyy-MM-dd')
+              let data = this.group_change_form
+              this.$http.post(this.addUrl, data)
+                .then(res => {
+                  this.$LjMessageEasy(res, () => {
+                    this.group_change_dialog_visible = false;
+                    this.reset()
+                  })
+                })
+            } else {
+              return false
+            }
+          })
       },
       /**取消*/
       cancelGroupChange() {
+        this.group_change_dialog_visible = false;
+        this.reset()
       }
     },
     created() {
       this.getUserInfo()
-
     }
   }
 </script>

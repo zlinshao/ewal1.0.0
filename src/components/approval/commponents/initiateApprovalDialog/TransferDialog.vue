@@ -1,6 +1,8 @@
 <template>
   <div id="transfer-dialog">
-    <lj-dialog :visible.sync="transfer_dialog_visible" :size="size">
+    <lj-dialog :visible.sync="transfer_dialog_visible"
+               :size="size"
+               @close="cancelTransfer">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>个人异动/调岗审批</h3>
@@ -13,7 +15,7 @@
               <el-row>
                 <!--              第一列-->
                 <el-col :span="8">
-                  <el-form-item required prop="name" label="申请人">
+                  <el-form-item prop="name" label="申请人">
                     <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 220px"></el-input>
                   </el-form-item>
 
@@ -27,7 +29,7 @@
                 </el-col>
                 <!--              第二列-->
                 <el-col :span="8">
-                  <el-form-item required prop="enroll" label="入职时间">
+                  <el-form-item prop="enroll" label="入职时间">
                     <div class="items-center iconInput">
                       <el-date-picker disabled v-model="user_info.enroll" type="date"
                                       placeholder="自动获取">
@@ -45,7 +47,7 @@
                 </el-col>
                 <!--              第三列-->
                 <el-col :span="8">
-                  <el-form-item required prop="org" label="原部门">
+                  <el-form-item prop="org" label="原部门">
                     <!--              <org-choose width="418" num="1" :disabled="false" title="自动获取" :show-icon="false"-->
                     <!--                          v-model="user_info.org">-->
                     <!--              </org-choose>-->
@@ -86,9 +88,10 @@
                 </el-col>
               </el-row>
             </el-form>
-          </div>
 
-          <!--          流程组件-->
+            <!--          流程组件-->
+            <ApprovalProcess :user_info="user_info" :type="transfer_form.type"></ApprovalProcess>
+          </div>
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitTransfer">提交
@@ -104,15 +107,35 @@
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
-  import _ from 'lodash';
+  import ApprovalProcess from '../ApprovalProcess';
+
+  /**初始化数据 */
+  function createEmpty() {
+    return {
+      type: "personal_change",
+      // 入职时间
+      enroll: null,
+      // 转入部门
+      now_org: null,
+      // 转入岗位
+      now_position: null,
+      // 调岗原因
+      change_reason: null,
+      // 异动申请单以及异动交接单附件
+      change_receipt: null,
+      // 附件
+      attachment: []
+    }
+  }
 
   export default {
     name: "TransferPosition",
     components: {
       LjDialog,
-      LjUpload
+      LjUpload,
+      ApprovalProcess
     },
-    props: ['user_info_all', 'size'],
+    props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
         // 校验规则
@@ -134,25 +157,16 @@
         },
 
         transfer_dialog_visible: false,
-        transfer_form: {
-          type: "personal_change",
-          // 入职时间
-          enroll: null,
-          // 转入部门
-          now_org: null,
-          // 转入岗位
-          now_position: null,
-          // 调岗原因
-          change_reason: null,
-          // 异动申请单以及异动交接单附件
-          change_receipt: null,
-          // 附件
-          attachment: []
-        },
+
+        transfer_form: createEmpty(),
         user_info: null,
       }
     },
     methods: {
+      reset() {
+        this.transfer_form = createEmpty()
+        this.$refs.transferForm.clearValidate()
+      },
       open() {
         this.transfer_dialog_visible = true
       },
@@ -161,14 +175,35 @@
         this.user_info = {
           name: this.user_info_all.name,
           enroll: this.user_info_all.staff.enroll,
-          org: this.user_info_all.org[0].name
+          org: this.user_info_all.org[0].name,
+          user_id: this.user_info_all.id,
+          org_id: this.user_info_all.org[0].id,
         }
+        this.transfer_form.enroll = this.user_info_all.staff.enroll
       },
       /**提交 */
       submitTransfer() {
+        this.$refs['transferForm']
+          .validate((valid) => {
+            if (valid) {
+              this.transfer_form.enroll = this.myUtils.formatDate(this.transfer_form.enroll, 'yyyy-MM-dd')
+              let data = this.transfer_form
+              this.$http.post(this.addUrl, data)
+                .then(res => {
+                  this.$LjMessageEasy(res, () => {
+                    this.transfer_dialog_visible = false;
+                    this.reset()
+                  })
+                })
+            } else {
+              return false
+            }
+          })
       },
       /**取消 */
       cancelTransfer() {
+        this.transfer_dialog_visible = false;
+        this.reset()
       },
     },
     created() {
