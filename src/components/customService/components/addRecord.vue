@@ -233,7 +233,7 @@ export default {
 
     checkRecord () {
       if (!this.followRecord.folow_status) {
-        return '工单类型未选择'
+        return '工单状态未选择'
       }
       if (this.followRecord.folow_status == 337) {
         if (!this.followRecord.emergency) return '紧急程度未选择'
