@@ -158,8 +158,6 @@
       setTimeout(()=> {
         console.log(this.count);
       },1000);
-      //this.data = generateOrgChartData(10)
-      //console.log(this.data);
     },
     async mounted() {
       console.log(new Date().getTime())
