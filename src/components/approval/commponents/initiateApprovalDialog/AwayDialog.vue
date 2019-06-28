@@ -1,28 +1,30 @@
 <template>
   <div id="away-dialog">
-    <lj-dialog :visible.sync="away_dialog_visible" :size="size">
+    <lj-dialog :visible.sync="away_dialog_visible"
+               :size="size"
+               @close="cancelAway">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>离宿申请</h3>
         </div>
         <div class="dialog_main borderNone">
           <div class="dialog-top">
-            <el-form ref="groupChangeForm" :rules="away_form_rule" :model="away_form"
+            <el-form ref="awayForm" :rules="away_form_rule" :model="away_form"
                      style="text-align: left" size="small" label-width="100px">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item required prop="name" label="离宿申请人">
+                  <el-form-item prop="name" label="离宿申请人">
                     <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 220px"></el-input>
                   </el-form-item>
 
-                  <el-form-item required prop="org" label="离宿地址">
+                  <el-form-item label="离宿地址">
                     <house-community :style="{width:220+'px'}" @getHouseIdName="getHouseInfo">
                     </house-community>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item required prop="org" label="所属部门">
+                  <el-form-item prop="org" label="所属部门">
                     <el-input disabled v-model="user_info.org" placeholder="自动获取"
                               style="width: 220px">
                     </el-input>
@@ -61,9 +63,10 @@
                 </el-col>
               </el-row>
             </el-form>
-          </div>
 
-          <!--          流程组件-->
+            <!--          流程组件-->
+            <ApprovalProcess :user_info="user_info" :type="away_form.type"></ApprovalProcess>
+          </div>
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitAway">提交
@@ -79,14 +82,29 @@
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
+  import ApprovalProcess from '../ApprovalProcess';
+
+  /**初始化数据 */
+  function createEmpty() {
+    return {
+      type: "leave_dormitory",
+      // 申请日期
+      date: null,
+      // 申请原因
+      reason: null,
+      // 附件
+      attachment: []
+    }
+  }
 
   export default {
     name: "AwayDialog",
     components: {
       LjDialog,
-      LjUpload
+      LjUpload,
+      ApprovalProcess
     },
-    props: ['user_info_all', 'size'],
+    props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
         // 校验规则
@@ -106,20 +124,16 @@
           ]
         },
         away_dialog_visible: false,
-        away_form: {
-          type: "leave_dormitory",
-          // 申请日期
-          date: null,
-          // 申请原因
-          reason: null,
-          // 申请地址
-          // 附件
-          attachment: []
-        },
-        user_info: null
+        away_form: createEmpty(),
+        user_info: null,
+        house_info: {}
       }
     },
     methods: {
+      reset() {
+        this.away_form = createEmpty()
+        this.$refs.awayForm.clearValidate()
+      },
       open() {
         this.away_dialog_visible = true
       },
@@ -127,18 +141,50 @@
       getUserInfo() {
         this.user_info = {
           name: this.user_info_all.name,
-          org: this.user_info_all.org[0].name
+          org: this.user_info_all.org[0].name,
+          user_id: this.user_info_all.id,
+          org_id: this.user_info_all.org[0].id,
         }
       },
       /**获取房屋信息 */
       getHouseInfo(val) {
-        console.log(val)
+        let {house_id, house_name} = val
+        this.house_info.house_id = house_id
+        this.house_info.house_name = house_name
       },
       /**提交*/
       submitAway() {
+        /**校验房屋地址 */
+        if (!this.house_info.house_id) {
+          this.$LjMessage('warning', {title: '警告', msg: `请选择离宿地址`});
+          return
+        }
+        this.$refs['awayForm']
+          .validate((valid) => {
+            if (valid) {
+              this.away_form.date = this.myUtils.formatDate(this.away_form.date, 'yyyy-MM-dd')
+              let data = {
+                ...this.away_form,
+                house_data: {
+                  house_info: this.house_info
+                }
+              }
+              this.$http.post(this.addUrl, data)
+                .then(res => {
+                  this.$LjMessageEasy(res, () => {
+                    this.away_dialog_visible = false;
+                    this.reset()
+                  })
+                })
+            } else {
+              return false
+            }
+          })
       },
       /**取消*/
       cancelAway() {
+        this.away_dialog_visible = false;
+        this.reset()
       }
     },
     created() {

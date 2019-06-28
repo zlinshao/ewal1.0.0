@@ -1,28 +1,30 @@
 <template>
   <div id="stay-dialog">
-    <lj-dialog :visible.sync="stay_dialog_visible" :size="size">
+    <lj-dialog :visible.sync="stay_dialog_visible" :size="size"
+               @close="cancelAddOffice">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>住宿申请</h3>
         </div>
         <div class="dialog_main borderNone">
           <div class="dialog-top">
-            <el-form ref="groupChangeForm" :rules="stay_form_rule" :model="stay_form"
+            <el-form ref="stayForm" :rules="stay_form_rule" :model="stay_form"
                      style="text-align: left" size="small" label-width="100px">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item required prop="name" label="住宿申请人">
+                  <el-form-item prop="name" label="住宿申请人">
                     <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 220px"></el-input>
                   </el-form-item>
 
-                  <el-form-item required prop="org" label="住宿地址">
-                    <house-community :style="{width:220+'px'}" @getHouseIdName="getHouseInfo">
+                  <el-form-item label="住宿地址">
+                    <house-community :style="{width:220+'px'}"
+                                     @getHouseIdName="getHouseInfo">
                     </house-community>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item required prop="org" label="所属部门">
+                  <el-form-item prop="org" label="所属部门">
                     <el-input disabled v-model="user_info.org" placeholder="自动获取"
                               style="width: 220px">
                     </el-input>
@@ -61,9 +63,10 @@
                 </el-col>
               </el-row>
             </el-form>
-          </div>
 
-          <!--          流程组件-->
+            <!--          流程组件-->
+            <ApprovalProcess :user_info="user_info" :type="stay_form.type"></ApprovalProcess>
+          </div>
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitAddOffice">提交
@@ -79,14 +82,30 @@
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
+  import ApprovalProcess from '../ApprovalProcess';
+
+  /**初始化数据 */
+  function createEmpty() {
+    return {
+      type: "live_dormitory",
+      // 申请日期
+      date: null,
+      // 申请原因
+      reason: null,
+      // 申请地址
+      // 附件
+      attachment: []
+    }
+  }
 
   export default {
     name: "StayDialog",
     components: {
       LjDialog,
-      LjUpload
+      LjUpload,
+      ApprovalProcess
     },
-    props: ['user_info_all', 'size'],
+    props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
         // 校验规则
@@ -106,20 +125,16 @@
           ]
         },
         stay_dialog_visible: false,
-        stay_form: {
-          type: "live_dormitory",
-          // 申请日期
-          date: null,
-          // 申请原因
-          reason: null,
-          // 申请地址
-          // 附件
-          attachment: []
-        },
-        user_info: null
+        stay_form: createEmpty(),
+        user_info: null,
+        house_info: {},
       }
     },
     methods: {
+      reset() {
+        this.stay_form = createEmpty()
+        this.$refs.stayForm.clearValidate()
+      },
       open() {
         this.stay_dialog_visible = true
       },
@@ -127,18 +142,51 @@
       getUserInfo() {
         this.user_info = {
           name: this.user_info_all.name,
-          org: this.user_info_all.org[0].name
+          org: this.user_info_all.org[0].name,
+          enroll: this.user_info_all.staff.enroll,
+          user_id: this.user_info_all.id,
+          org_id: this.user_info_all.org[0].id,
         }
       },
       /**获取房屋信息 */
       getHouseInfo(val) {
-        console.log(val)
+        let {house_id, house_name} = val
+        this.house_info.house_id = house_id
+        this.house_info.name = house_name
       },
       /**提交*/
       submitAddOffice() {
+        /**校验房屋地址 */
+        if (!this.house_info.house_id) {
+          this.$LjMessage('warning', {title: '警告', msg: `请选择住宿地址`});
+          return
+        }
+        this.$refs['stayForm']
+          .validate((valid) => {
+            if (valid) {
+              this.stay_form.date = this.myUtils.formatDate(this.stay_form.date, 'yyyy-MM-dd')
+              let data = {
+                ...this.stay_form,
+                house_data: {
+                  house_info: this.house_info
+                }
+              }
+              this.$http.post(this.addUrl, data)
+                .then(res => {
+                  this.$LjMessageEasy(res, () => {
+                    this.stay_dialog_visible = false;
+                    this.reset()
+                  })
+                })
+            } else {
+              return false
+            }
+          })
       },
       /**取消*/
       cancelAddOffice() {
+        this.stay_dialog_visible = false;
+        this.reset()
       }
     },
     created() {

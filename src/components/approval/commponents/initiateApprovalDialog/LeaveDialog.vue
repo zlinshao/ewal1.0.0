@@ -1,21 +1,23 @@
 <template>
   <div id="leave-dialog">
-    <lj-dialog :visible.sync="leave_dialog_visible" :size="size">
+    <lj-dialog :visible.sync="leave_dialog_visible"
+               :size="size"
+               @close="cancelLeave">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>离职审批</h3>
         </div>
         <div class="dialog_main borderNone">
           <div class="dialog-top">
-            <el-form ref="groupChangeForm" :rules="leave_form_rule" :model="leave_form"
+            <el-form ref="leaveForm" :rules="leave_form_rule" :model="leave_form"
                      style="text-align: left" size="small" label-width="100px">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item required prop="name" label="申请人">
+                  <el-form-item prop="name" label="申请人">
                     <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 220px"></el-input>
                   </el-form-item>
 
-                  <el-form-item required prop="enroll" label="入职时间">
+                  <el-form-item prop="enroll" label="入职时间">
                     <div class="items-center iconInput" style="width: 220px">
                       <el-date-picker disabled v-model="user_info.enroll" type="date"
                                       placeholder="自动获取"></el-date-picker>
@@ -32,8 +34,8 @@
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item required prop="org" label="所属部门">
-                    <el-input disabled disabled v-model="user_info.org" placeholder="自动获取"
+                  <el-form-item prop="org" label="所属部门">
+                    <el-input disabled v-model="user_info.org" placeholder="自动获取"
                               style="width: 220px"></el-input>
                   </el-form-item>
 
@@ -43,8 +45,8 @@
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item required prop="position" label="所属岗位">
-                    <el-input disabled disabled v-model="user_info.position" placeholder="自动获取"
+                  <el-form-item prop="position" label="所属岗位">
+                    <el-input disabled v-model="user_info.position" placeholder="自动获取"
                               style="width: 220px"></el-input>
                   </el-form-item>
 
@@ -90,9 +92,10 @@
                 </el-col>
               </el-row>
             </el-form>
-          </div>
 
-          <!--          流程组件-->
+            <!--          流程组件-->
+            <ApprovalProcess :user_info="user_info" :type="leave_form.type"></ApprovalProcess>
+          </div>
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitLeave">提交
@@ -108,15 +111,37 @@
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
-  import _ from 'lodash';
+  import ApprovalProcess from '../ApprovalProcess';
+
+  /**初始化数据 */
+  function createEmpty() {
+    return {
+      type: "dimission",
+      enroll: null,
+      // now_org: null,
+      // now_position: null,
+      // 离职原因
+      change_reason: null,
+      // 交接单
+      change_receipt: null,
+      // 离职日期
+      change_date: null,
+      // 工龄
+      seniority: null,
+      // 工作交接人
+      handover_id: null,
+      attachment: []
+    }
+  }
 
   export default {
     name: "LeaveDialog",
     components: {
       LjDialog,
-      LjUpload
+      LjUpload,
+      ApprovalProcess
     },
-    props: ['user_info_all', 'size'],
+    props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
         // 校验规则
@@ -140,27 +165,15 @@
           ]
         },
         leave_dialog_visible: false,
-        leave_form: {
-          type: "dimission",
-          enroll: null,
-          // now_org: null,
-          // now_position: null,
-          // 离职原因
-          change_reason: null,
-          // 交接单
-          change_receipt: null,
-          // 离职日期
-          change_date: null,
-          // 工龄
-          seniority: null,
-          // 工作交接人
-          handover_id: null,
-          attachment: []
-        },
+        leave_form: createEmpty(),
         user_info: null
       }
     },
     methods: {
+      reset() {
+        this.leave_form = createEmpty()
+        this.$refs.leaveForm.clearValidate()
+      },
       open() {
         this.leave_dialog_visible = true
       },
@@ -171,13 +184,34 @@
           enroll: this.user_info_all.staff.enroll,
           org: this.user_info_all.org[0].name,
           position: this.user_info_all.position[0].name,
+          user_id: this.user_info_all.id,
+          org_id: this.user_info_all.org[0].id,
         }
+        this.leave_form.enroll = this.user_info_all.staff.enroll
       },
       /**提交*/
       submitLeave() {
+        this.$refs['leaveForm']
+          .validate((valid) => {
+            if (valid) {
+              this.leave_form.enroll = this.myUtils.formatDate(this.leave_form.enroll, 'yyyy-MM-dd')
+              let data = this.leave_form
+              this.$http.post(this.addUrl, data)
+                .then(res => {
+                  this.$LjMessageEasy(res, () => {
+                    this.leave_dialog_visible = false;
+                    this.reset()
+                  })
+                })
+            } else {
+              return false
+            }
+          })
       },
       /**取消*/
       cancelLeave() {
+        this.leave_dialog_visible = false;
+        this.reset()
       }
     },
     created() {

@@ -33,6 +33,7 @@
       v-bind="dialog.props"
       :user_info_all="user_info_all"
       :size="size"
+      :addUrl="addUrl"
     />
   </div>
 </template>
@@ -68,10 +69,14 @@
 
   export default {
     name: "initiateApproval",
+    // provide() {
+    //   return {}
+    // },
     data() {
+      const url = globalConfig.humanResource_server
       return {
-        url: globalConfig.humanResource_server,
-
+        url,
+        addUrl: url + '/process/process',
         size: {
           width: '1400px',
           height: '800px'

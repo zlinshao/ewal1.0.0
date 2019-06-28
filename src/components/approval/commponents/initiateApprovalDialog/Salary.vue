@@ -1,41 +1,44 @@
 <template>
   <div id="salary-dialog">
-    <lj-dialog :visible.sync="salary_dialog_visible" :size="size">
+    <lj-dialog :visible.sync="salary_dialog_visible"
+               :size="size"
+               @close="cancelSalary">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>薪资调整申请</h3>
         </div>
         <div class="dialog_main borderNone">
           <div class="dialog-top">
-            <el-form ref="groupChangeForm" :rules="salary_form_rule" :model="salary_form"
+            <el-form ref="salaryForm" :rules="salary_form_rule" :model="salary_form"
                      style="text-align: left" size="small" label-width="100px">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item required prop="name" label="申请人">
+                  <el-form-item prop="name" label="申请人">
                     <el-input disabled v-model="user_info.name" placeholder="自动获取" style="width: 220px"></el-input>
                   </el-form-item>
 
                   <el-form-item required prop="old_salary" label="原有薪资">
-                    <el-input disabled v-model="salary_form.old_salary" placeholder="必填"
-                              style="width: 220px"></el-input>
+                    <el-input v-model.number="salary_form.old_salary" placeholder="必填"
+                              style="width: 220px">
+                    </el-input>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item required prop="org" label="所属部门">
+                  <el-form-item prop="org" label="所属部门">
                     <el-input disabled disabled v-model="user_info.org" placeholder="自动获取"
                               style="width: 220px">
                     </el-input>
                   </el-form-item>
 
-                  <el-form-item required prop="salary" label="期望调整薪资">
-                    <el-input disabled v-model="salary_form.salary" placeholder="必填" style="width: 220px"></el-input>
+                  <el-form-item prop="salary" label="期望调整薪资">
+                    <el-input v-model.number="salary_form.salary" placeholder="必填" style="width: 220px"></el-input>
                   </el-form-item>
                 </el-col>
 
 
                 <el-col :span="8">
-                  <el-form-item required prop="enroll" label="入职日期">
+                  <el-form-item prop="enroll" label="入职日期">
                     <div class="items-center iconInput" style="width: 220px">
                       <el-date-picker disabled v-model="user_info.enroll" type="date" placeholder="必填"></el-date-picker>
                     </div>
@@ -82,9 +85,10 @@
               <!--                </el-col>-->
               <!--              </el-row>-->
             </el-form>
-          </div>
 
-          <!--          流程组件-->
+            <!--          流程组件-->
+            <ApprovalProcess :user_info="user_info" :type="salary_form.type"></ApprovalProcess>
+          </div>
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="danger" @click="submitSalary">提交
@@ -100,14 +104,35 @@
 <script>
   import LjDialog from '../../../common/lj-dialog.vue';
   import LjUpload from '../../../common/lightweightComponents/lj-upload';
+  import ApprovalProcess from '../ApprovalProcess';
+
+  /**初始化数据 */
+  function createEmpty() {
+    return {
+      type: "salary",
+      // 实施日期
+      date: null,
+      // 入职时间
+      enroll: null,
+      // 期望调整薪资
+      salary: null,
+      // 原有薪资
+      old_salary: null,
+      // 申请理由
+      reason: null,
+      // 备注
+      remark: null
+    }
+  }
 
   export default {
     name: "Salary",
     components: {
       LjDialog,
-      LjUpload
+      LjUpload,
+      ApprovalProcess
     },
-    props: ['user_info_all', 'size'],
+    props: ['user_info_all', 'size', 'addUrl'],
     data() {
       return {
         // 校验规则
@@ -116,10 +141,10 @@
             {required: true, message: '请选择实施日期', trigger: ['blur', 'change']}
           ],
           salary: [
-            {required: true, message: '必填', trigger: ['blur', 'change']}
+            {required: true, message: '请输入期望调整薪资', trigger: ['blur', 'change']}
           ],
           old_salary: [
-            {required: true, message: '必填', trigger: ['blur', 'change']}
+            {required: true, message: '请输入原有薪资', trigger: ['blur', 'change']}
           ],
           reason: [
             {required: true, message: '请输入申请理由', trigger: ['blur', 'change']},
@@ -131,25 +156,15 @@
           ],
         },
         salary_dialog_visible: false,
-        salary_form: {
-          type: "salary",
-          // 实施日期
-          date: null,
-          // 入职时间
-          enroll: null,
-          // 期望调整薪资
-          salary: null,
-          // 原有薪资
-          old_salary: null,
-          // 申请理由
-          reason: null,
-          // 备注
-          remark: null
-        },
+        salary_form: createEmpty(),
         user_info: null
       }
     },
     methods: {
+      reset() {
+        this.salary_form = createEmpty()
+        this.$refs.salaryForm.clearValidate()
+      },
       open() {
         this.salary_dialog_visible = true
       },
@@ -158,14 +173,36 @@
         this.user_info = {
           name: this.user_info_all.name,
           enroll: this.user_info_all.staff.enroll,
-          org: this.user_info_all.org[0].name
+          org: this.user_info_all.org[0].name,
+          user_id: this.user_info_all.id,
+          org_id: this.user_info_all.org[0].id,
         }
+        this.salary_form.enroll = this.user_info_all.staff.enroll
       },
       /**提交*/
       submitSalary() {
+        this.$refs['salaryForm']
+          .validate((valid) => {
+            if (valid) {
+              this.salary_form.enroll = this.myUtils.formatDate(this.salary_form.enroll, 'yyyy-MM-dd')
+              this.salary_form.date = this.myUtils.formatDate(this.salary_form.date, 'yyyy-MM-dd')
+              let data = this.salary_form
+              this.$http.post(this.addUrl, data)
+                .then(res => {
+                  this.$LjMessageEasy(res, () => {
+                    this.salary_dialog_visible = false;
+                    this.reset()
+                  })
+                })
+            } else {
+              return false
+            }
+          })
       },
       /**取消*/
       cancelSalary() {
+        this.salary_dialog_visible = false;
+        this.reset()
       }
     },
     created() {

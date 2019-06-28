@@ -1,6 +1,8 @@
 <template>
   <div id="demand-dialog">
-    <lj-dialog :visible.sync="demand_dialog_visible" :size="size">
+    <lj-dialog :visible.sync="demand_dialog_visible"
+               :size="size"
+               @close="cancelDemand">
       <div class="dialog_container">
         <div class="dialog_header">
           <h3>人员需求审批</h3>
@@ -70,7 +72,7 @@
 
                 <el-col :span="8">
                   <el-form-item required prop="now_count" label="现有人数">
-                    <el-input v-model="demand_form.now_count" placeholder="必填" style="width: 220px"></el-input>
+                    <el-input v-model.number="demand_form.now_count" placeholder="必填" style="width: 220px"></el-input>
                   </el-form-item>
 
                   <el-form-item required label="性别" prop="gender">
@@ -89,6 +91,31 @@
                 </el-col>
               </el-row>
 
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item required prop="reason" label="申请原因">
+                    <el-input type="textarea"
+                              v-model="demand_form.reason"
+                              :autosize="{ minRows: 2, maxRows: 14}"
+                              placeholder="必填">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item required prop="content" label="招聘要求">
+                    <el-input type="textarea"
+                              v-model="demand_form.content"
+                              :autosize="{ minRows: 2, maxRows: 14}"
+                              placeholder="必填">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
               <el-row>
                 <el-col :span="24">
                   <el-form-item align="center" label="附件">
@@ -100,14 +127,12 @@
             </el-form>
 
             <!--          流程组件-->
-            <ApprovalProcess></ApprovalProcess>
+            <ApprovalProcess :user_info="user_info" :type="demand_form.type"></ApprovalProcess>
           </div>
         </div>
         <div class="dialog_footer">
-          <el-button size="small" type="danger" @click="submitDemand">提交
-          </el-button>
-          <el-button size="small" type="info" @click="cancelDemand">取消
-          </el-button>
+          <el-button size="small" type="danger" @click="submitDemand">提交</el-button>
+          <el-button size="small" type="info" @click="cancelDemand">取消</el-button>
         </div>
       </div>
     </lj-dialog>
@@ -121,6 +146,48 @@
 
   import ApprovalProcess from '../ApprovalProcess';
 
+  const processData = require('../../js/processKey.json')
+
+  /**初始化数据 */
+  function createEmpty() {
+    return {
+      type: "personnel_demand",
+      org_id: [],
+      position_id: [],
+      // 现有人数
+      now_count: null,
+      // 所需人数
+      number: {
+        max: null,
+        min: null,
+      },
+      year: {
+        max: null,
+        min: null
+      },
+      // 薪资范围
+      salary: {
+        max: null,
+        min: null
+      },
+      // 工作经验
+      experience: null,
+      // 学历
+      education: null,
+      // 性别
+      gender: null,
+      // 期望到岗日期
+      expect_date: null,
+      // 申请原因
+      reason: null,
+      // 招聘要求
+      content: null,
+      // 附件
+      attachment: [],
+      user_info: {}
+    }
+  }
+
   export default {
     name: "demandDialog",
     components: {
@@ -128,9 +195,10 @@
       LjUpload,
       ApprovalProcess
     },
-    props: ['size'],
+    props: ['size', 'user_info_all'],
     data() {
       return {
+        url: globalConfig.humanResource_server,
         // 校验规则
         demand_form_rule: {
           org_id: [
@@ -155,6 +223,16 @@
           // 期望到岗日期
           expect_date: [
             {required: true, message: '请选择到岗日期', trigger: ['blur', 'change']}
+          ],
+          // 申请理由
+          reason: [
+            {required: true, message: '请输入申请理由', trigger: ['blur', 'change']},
+            {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
+          ],
+          // 招聘要求
+          content: [
+            {required: true, message: '请输入招聘要求', trigger: ['blur', 'change']},
+            {min: 1, max: 300, message: '长度在 1 到 300 个字符', trigger: 'blur'}
           ]
         },
 
@@ -165,52 +243,65 @@
         experience: ['1年', '1-3年', '3-5年', '5-10年', '10年以上', '不限'],
         // 学历下拉选项
         education: _.map(this.DROPDOWN_CONSTANT.EDUCATION_BACKGROUND, 'name'),
-        demand_form: {
-          type: "personnel_demand",
-          org_id: [],
-          position_id: [],
-          // 现有人数
-          now_count: null,
-          // 所需人数
-          number: {
-            max: null,
-            min: null,
-          },
-          year: {
-            max: null,
-            min: null
-          },
-          // 薪资范围
-          salary: {
-            max: null,
-            min: null
-          },
-          // 工作经验
-          experience: null,
-          // 学历
-          education: null,
-          // 性别
-          gender: null,
-          // 期望到岗日期
-          expect_date: null,
-          // 附件
-          attachment: []
-        }
+        processKey: 'HR-ApplyForPersonnelDemand',
+        demand_form: createEmpty()
       }
     },
     methods: {
+      reset() {
+        this.demand_form = createEmpty()
+        this.$refs.demandForm.clearValidate()
+      },
       open() {
         this.demand_dialog_visible = true
       },
+      /**获取个人信息 */
+      getUserInfo() {
+        this.user_info = {
+          name: this.user_info_all.name,
+          org: this.user_info_all.org[0].name,
+          user_id: this.user_info_all.id,
+          org_id: this.user_info_all.org[0].id,
+        }
+      },
       /**提交 */
       submitDemand() {
+        /**校验字段 */
+        let nV = this.$parent.compare(this.demand_form.number, this, '所需人数')
+        let yV = this.$parent.compare(this.demand_form.year, this, '年龄范围')
+        let sV = this.$parent.compare(this.demand_form.salary, this, '薪资范围')
+        if (!(nV && yV && sV)) {
+          return
+        }
+        this.$refs['demandForm']
+          .validate((valid) => {
+            if (valid) {
+              this.demand_form.expect_date = this.myUtils.formatDate(this.demand_form.expect_date, 'yyyy-MM-dd')
+              let data = {
+                ...this.demand_form,
+                detail: [{...this.demand_form}],
+              }
+              this.$http.post(`${this.url}/process/process`, data)
+                .then(res => {
+                  this.$LjMessageEasy(res, () => {
+                    this.demand_dialog_visible = false;
+                    this.reset()
+                  })
+                })
+            } else {
+              return false
+            }
+          })
       },
       /**取消 */
       cancelDemand() {
+        this.demand_dialog_visible = false
+        this.reset()
       }
+
     },
     created() {
-
+      this.getUserInfo()
     }
   }
 </script>
