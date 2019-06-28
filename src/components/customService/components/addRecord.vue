@@ -143,7 +143,7 @@ export default {
         payer_org_id: [],
         album: []
       },
-
+     market_server: globalConfig.market_server,
       complainedType: [ // 认责人类型
         {
           label: '业务员',
@@ -222,7 +222,7 @@ export default {
       }
     },
     getOrganDepart (ids) {
-      this.$http.get(`staff/user/${ids}`).then(res => {
+      this.$http.get(`${this.market_server}/staff/user/${ids}`).then(res => {
         if (res.code == 20020) {
           let data = res.data.org[0]
           this.followRecord.payer_org_name = data.name
@@ -247,7 +247,7 @@ export default {
 
         if (!this.followRecord.payer_type) return '实际支付未填写'
         if (!this.followRecord.payer) return '实际支付人姓名未填写'
-        if (!this.followRecord.payer_org_name) return '部门未填写'
+        if (!this.followRecord.payer_org_id) return '部门未填写'
 
       }
 
