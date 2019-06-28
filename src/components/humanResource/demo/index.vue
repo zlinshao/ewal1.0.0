@@ -170,7 +170,7 @@
           limit: 999,
           is_top: 1
         }).then(res => {
-          if (res.code === '20000') {
+          if (res.code === '200000000') {
             //this.top_position = res.data.data;
             _.forEach(res.data.data,(o,index) => {
               //this.data.children[index] = {name:o.users[0]?.name||'无名',user:o.name};
