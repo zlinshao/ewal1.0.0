@@ -145,12 +145,8 @@
         view_result_list: []*/
       }
     },
-    created() {
-
-      //this.data = generateOrgChartData(10)
-      //console.log(this.data);
-    },
-    async mounted() {
+    async created() {
+      console.log(new Date().getTime())
       await this.getOrgDataOnce();
       //await this.getTopPosition();
       //await this.getOrganizationData(1,this.data);
@@ -162,6 +158,11 @@
       setTimeout(()=> {
         console.log(this.count);
       },1000);
+      //this.data = generateOrgChartData(10)
+      //console.log(this.data);
+    },
+    async mounted() {
+      console.log(new Date().getTime())
     },
     methods: {
 
