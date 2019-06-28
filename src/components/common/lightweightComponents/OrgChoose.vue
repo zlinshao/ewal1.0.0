@@ -45,7 +45,7 @@
         url: globalConfig.humanResource_server,
         departModule: false,
         organData: {
-          //num:1,
+          num:Infinity,
         },// 组织架构配置 选择数量 num
         inputContent: '',
         dropdownListWidth: 320
@@ -79,6 +79,8 @@
         handler(val, oldVal) {
           if (val) {
             this.organData.num = parseInt(val);
+          }else {
+            this.organData.num = Infinity;
           }
         },
         immediate: true

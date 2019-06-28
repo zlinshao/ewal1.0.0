@@ -564,7 +564,7 @@ export default {
           value: 9
         },
         {
-          label: '求组',
+          label: '求租',
           value: 10
         },
         {

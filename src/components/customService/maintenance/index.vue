@@ -32,43 +32,43 @@
         </el-table-column>
          <el-table-column show-overflow-tooltip label="创建时间" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.create_time || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.create_time || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="工单编号" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.num || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.num || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" v-for='item in Object.keys(showTableData)' :key='item' :prop='item' :label="showTableData[item]"></el-table-column>
         <el-table-column show-overflow-tooltip label="地址" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.house_name || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.house_name || '--'}}</span>
           </template>
         </el-table-column>
          <el-table-column show-overflow-tooltip label="内容" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.content || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.content || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="截止时间" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.expected_finish_time || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.expected_finish_time || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="处理人" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.operate_user_name || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.operate_user_name || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="创建人" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.create_name || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.create_name || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="部门" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.operate_org_name || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.operate_org_name || '--'}}</span>
           </template>
         </el-table-column>
         

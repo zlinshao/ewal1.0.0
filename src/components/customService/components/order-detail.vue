@@ -9,7 +9,7 @@
           <el-row :gutter="20">
             <el-col :span='14'>
               <p class='detail_tit'>工单详情</p>
-              <el-form label-width='80px' class='detail_box2 scroll_bar'>
+              <el-form label-width='80px' ref="orderDetail" class='detail_box2 scroll_bar'>
                 <el-form-item label='创建时间'>
                   <el-input v-model="detail_form.create_time" type="text" disabled> </el-input>
                 </el-form-item>
@@ -54,9 +54,9 @@
                 </template>
 
                 <el-form-item v-for='item in Object.keys(default_type)' :key='item' :label='default_type[item]'>
-                  <el-input v-model="detail_form[item]" type="text" disabled> </el-input>
+                  <el-input v-if="item=='content'" v-model="detail_form[item]" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" disabled> </el-input>
+                  <el-input v-else v-model="detail_form[item]" type="text" disabled> </el-input>
                 </el-form-item>
-
                 <el-form-item label='照片' style='width:100%;' v-if='detail_form.type != 699'>
                   <div style="width: 90%;text-align: left">
                     <Ljupload size='40' v-model='detail_form.album.image_pic' v-if='detail_form.album && detail_form.album.image_pic'
@@ -69,7 +69,7 @@
             <el-col :span='10'>
               <div class='detail_tit'>
                 <span>跟进进度</span>
-                <b v-if="$storage.get('VALIDATE_PERMISSION')['Order-Operate']" @click='handleAddRecord'>+</b>
+                <b v-if="$storage.get('VALIDATE_PERMISSION')['Order-Operate'] && chooseTabs!='338'" @click='handleAddRecord'>+</b>
               </div>
               <div class='detail_box scroll_bar'>
                 <div class="content flex" v-for='follow in follow_data' :key='follow.next_follow_time' v-if='follow_data'>
@@ -103,7 +103,7 @@
 import LjDialog from '../../common/lj-dialog.vue';
 import Ljupload from '../../common/lightweightComponents/lj-upload'
 export default {
-  props: ['visible', 'moduleData', 'change'], // id
+  props: ['visible', 'moduleData', 'change', 'chooseTab'], // id
   components: {
     LjDialog,
     Ljupload
@@ -154,6 +154,7 @@ export default {
       follow_data: null,
       transfer_visible: false,
       market_server: globalConfig.market_server,
+      chooseTabs: '',
     }
   },
   watch: {
@@ -163,7 +164,11 @@ export default {
       }
     },
     moduleData (val) {
+      console.log('val------------',val);
       this.currentRow = val.currentRow
+    },
+    chooseTab (val){
+      this.chooseTabs =val;
     },
     change (val) { //detail 数据发生改变
       if (val) {
@@ -177,6 +182,8 @@ export default {
       return this.currentType
     },
     handleCloseDetail () {
+      this.$refs['orderDetail'].resetFields();
+      this.detail_form=null
       this.$emit('close', {
         type: 'close',
         detail: null
