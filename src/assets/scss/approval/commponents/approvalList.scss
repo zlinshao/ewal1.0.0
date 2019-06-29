@@ -1,9 +1,5 @@
 @import '../../common.scss';
 
-#theme_name .el-tabs .el-tabs__item.is-active {
-  background-url: "";
-}
-
 #theme_name.theme1 {
   #approval {
     #approval_list {
@@ -15,7 +11,28 @@
         flex-direction: row;
 
         .left-text {
+          .el-tabs {
+            .el-tabs__item {
+              background: none;
+              font-size: 14px;
+              font-family: 'MicrosoftYaHei';
+              color: rgba(210, 210, 210, 1);
+              line-height: 19px;
+              margin: 0;
+            }
 
+            .el-tabs__item.is-active {
+              background: none;
+              font-size: 14px;
+              font-family: 'MicrosoftYaHei';
+              color: rgba(207, 46, 51, 1);
+              line-height: 19px;
+            }
+
+            .el-tabs__active-bar {
+              background-color: #B9292D;
+            }
+          }
         }
 
         .right-btn {

@@ -117,7 +117,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "../../../assets/scss/approval/commponents/approvalList.scss";
 
 </style>
