@@ -11,18 +11,33 @@
       </div>
 
       <div class="right-btn">
-
+        <div class="click-btn"
+             v-for="(btn,index) in btnData" :key="index">
+          <div :class="['icon','icon-'+ btn.btn_icon]">
+          </div>
+          <p class="text">{{btn.btn_text}}</p>
+        </div>
+        <div class="search-btn">
+          <i class='icons icons_search'></i>
+        </div>
       </div>
     </div>
     <!--    下面列表-->
     <div class="main-list">
-      <div class="mainListTable" :style="{'height': mainListHeight(130) + 'px'}">
+      <div class="mainListTable changeChoose" :style="{'height': mainListHeight(130) + 'px'}">
         <el-table :data="online_list"
                   @row-dblclick="handleClickRow"
                   style="width: 100%"
                   header-row-class-name="tableHeader"
                   :height="mainListHeight(30) + 'px'">
-          <el-table-column label="紧急程度" prop="tableA" align="center"></el-table-column>
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column label="紧急程度" align="center">
+            <template slot-scope="scope">
+              <div class="degree-item" :class="['emergency' + scope.row.emergency]">
+                {{scope.row.degree}}
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column label="审批标题" prop="tableB" align="center">
             <template slot-scope="scope">
               <span></span>
@@ -37,6 +52,11 @@
           <el-table-column label="发起时间" prop="tableD" align="center"></el-table-column>
           <el-table-column label="结束时间" prop="tableE" align="center"></el-table-column>
           <el-table-column label="状态" prop="tableF" align="center"></el-table-column>
+          <el-table-column align="center">
+            <template slot-scope="scope">
+              <span>阿斯蒂芬</span>
+            </template>
+          </el-table-column>
         </el-table>
         <footer class="flex-center bottomPage">
           <div class="develop flex-center">
@@ -61,6 +81,7 @@
     name: "approvalList",
     data() {
       return {
+        /**左侧标签 */
         activeName: 'pending',
         tabsData: [
           {
@@ -76,25 +97,47 @@
             name: 'transfer'
           }
         ],
-        online_list: [
+        /**右侧按钮 */
+        btnData: [
           {
-            tableA: 'tableA',
-            tableB: 'tableB',
-            tableC: 'tableC',
-            tableD: 'tableD',
-            tableE: 'tableE',
-            tableF: 'tableF',
-            tableG: 'tableG'
+            btn_text: '批量提交',
+            btn_icon: 'pltj'
           },
           {
-            tableA: 'tableA',
-            tableB: 'tableB',
-            tableC: 'tableC',
-            tableD: 'tableD',
-            tableE: 'tableE',
-            tableF: 'tableF',
-            tableG: 'tableG'
+            btn_text: '批量转交',
+            btn_icon: 'plzj'
           }
+        ],
+
+
+        online_list: [
+          {
+            degree: '紧急',
+            title: '审批标题1',
+            code: '审批编号1',
+            apply: '申请人1',
+            date: '2019.01.21 12:00:00',
+            dateEnd: '/',
+            status: '基础人事主管审核中'
+          },
+          {
+            degree: '重要',
+            title: '审批标题2',
+            code: '审批编号2',
+            apply: '申请人2',
+            date: '2019.01.21 12:00:00',
+            dateEnd: '/',
+            status: '基础人事主管审核中'
+          },
+          {
+            degree: '正常',
+            title: '审批标题3',
+            code: '审批编号3',
+            apply: '申请人3',
+            date: '2019.01.21 12:00:00',
+            dateEnd: '/',
+            status: '基础人事主管审核中'
+          },
         ],
         page_info: {
           page_total: 20,
@@ -120,4 +163,32 @@
 <style lang="scss">
   @import "../../../assets/scss/approval/commponents/approvalList.scss";
 
+  @mixin confirmImg($m, $n) {
+    $url: '../../../assets/image/approval/' + $n + '/' + $m;
+    @include bgImage($url);
+  }
+
+  #theme_name.theme1 {
+    #approval {
+      #approval_list {
+        $icons: pltj, plzj;
+        @each $icon in $icons {
+          .icon-#{$icon} {
+            @include confirmImg('#{$icon}.png', 'theme1')
+          }
+        }
+        /*右边搜索图标*/
+        .icons_search {
+          @include confirmImg('sousuo.png', 'theme1')
+        }
+
+        .main-list {
+          .urgent-item {
+            @include confirmImg('qxbgs.png', 'theme1')
+          }
+        }
+
+      }
+    }
+  }
 </style>

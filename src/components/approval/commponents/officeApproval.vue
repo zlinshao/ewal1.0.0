@@ -13,7 +13,7 @@
       </div>
 
       <!--    搜索-->
-      <div id="office-search">
+      <div v-if="hasInitiate" id="office-search">
         <i class='icons icons_search'></i>
       </div>
     </div>
@@ -25,9 +25,12 @@
     <!--    <ApprovalList></ApprovalList>-->
 
     <!--    动态组件-->
-    <component ref="approvalType"
-               v-if="approvalType.component"
-               :is="approvalType.component"/>
+    <transition appear name="approval-Switch">
+      <component ref="approvalType"
+                 v-if="approvalType.component"
+                 :is="approvalType.component"/>
+    </transition>
+
 
   </div>
 </template>
@@ -74,12 +77,17 @@
           }
         ],
         currentStatusType: 1,
-        isCaputer: true
+        isCaputer: true,
+
+        // 是否为发起审批
+        hasInitiate: true,
       }
     },
     methods: {
       /**动态加载组件 */
       getComponentInfo(statusItem) {
+        // 右侧搜索是否渲染
+        this.hasInitiate = statusItem.value == 1 ? true : false
         // 切换样式
         this.currentStatusType = statusItem.value
         // 动态组件
@@ -119,6 +127,19 @@
           @include confirmImg('sousuo.png', 'theme1')
         }
       }
+
+      /*.approval-Switch-enter-active {
+        @include transition(all 0.6s linear);
+      }
+
+      .approval-Switch-leave-active {
+        @include transition(all 0.6s linear);
+      }
+
+      .approval-Switch-enter, .approval-Switch-leave-to {
+        @include transform(scale(0));
+        opacity: 0;
+      }*/
     }
   }
 
