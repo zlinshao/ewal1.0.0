@@ -50,7 +50,7 @@
     watch: {
       value: {
         handler(val, oldVal) {
-          if (val && val.length > 0) {
+          if (val && val.constructor === Array && val.length > 0) {
             let params = {
               id:val
             };
