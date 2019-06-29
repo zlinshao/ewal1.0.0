@@ -4,9 +4,10 @@
     <div class="top-btn">
       <div class="left-text">
         <el-tabs v-model="activeName" @tab-click="clickTabs">
-          <el-tab-pane v-for="(item,index) in tabsData" :key="index"
-                       :label="item.label" :name="item.name">
-          </el-tab-pane>
+          <el-badge v-for="(item,index) in tabsData" :key="index" :value="item.number>=1?item.number:null">
+            <el-tab-pane :label="item.label" :name="item.name">
+            </el-tab-pane>
+          </el-badge>
         </el-tabs>
       </div>
 
@@ -31,30 +32,41 @@
                   header-row-class-name="tableHeader"
                   :height="mainListHeight(30) + 'px'">
           <el-table-column type="selection" width="55"></el-table-column>
+
           <el-table-column label="紧急程度" align="center">
             <template slot-scope="scope">
-              <div class="degree-item" :class="['emergency' + scope.row.emergency]">
+              <div class="degree-item urgent-item">
                 {{scope.row.degree}}
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="审批标题" prop="tableB" align="center">
+
+          <el-table-column prop="title" label="审批标题" align="center"></el-table-column>
+
+          <el-table-column prop="code" label="审批编号" align="center"></el-table-column>
+
+          <el-table-column prop="apply" label="申请人" align="center"></el-table-column>
+
+          <el-table-column label="发起时间" prop="date" align="center"></el-table-column>
+
+          <el-table-column label="结束时间" prop="dateEnd" align="center"></el-table-column>
+
+          <el-table-column label="状态" align="center">
             <template slot-scope="scope">
-              <span></span>
+              <span class="status-item check-item">{{scope.row.status}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="审批编号" prop="tableC" align="center"></el-table-column>
-          <el-table-column label="申请人" align="center">
-            <template slot-scope="scope">
-              <span>阿斯蒂芬</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="发起时间" prop="tableD" align="center"></el-table-column>
-          <el-table-column label="结束时间" prop="tableE" align="center"></el-table-column>
-          <el-table-column label="状态" prop="tableF" align="center"></el-table-column>
+
           <el-table-column align="center">
-            <template slot-scope="scope">
-              <span>阿斯蒂芬</span>
+            <template slot-scope="{ row }">
+              <el-tooltip placement="top-end" :visible-arrow="false">
+                <div class="flex control-btn" slot="content">
+                  <span class="option-btn" @click="submitPopover(row)">提交</span>
+                  <span class="option-btn" @click="transferPopover(row)">转交</span>
+                  <span class="option-btn" @click="denyPopover(row)">拒绝</span>
+                </div>
+                <span class="table-control writingMode">···</span>
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -86,15 +98,18 @@
         tabsData: [
           {
             label: '待审批',
-            name: 'pending'
+            name: 'pending',
+            number: 2
           },
           {
             label: '已审批',
-            name: 'approved'
+            name: 'approved',
+            number: 8
           },
           {
             label: '转交给我的',
-            name: 'transfer'
+            name: 'transfer',
+            number: 0
           }
         ],
         /**右侧按钮 */
@@ -155,6 +170,16 @@
       },
       handleChangePage() {
 
+      },
+      /**列表操作 */
+      // 提交
+      submitPopover(row) {
+      },
+      // 转办
+      transferPopover(row) {
+      },
+      // 拒绝
+      denyPopover(row) {
       }
     }
   }
