@@ -32,7 +32,7 @@
                      v-for="(item_act, item_index) in activity.assginees"
                      :key="item_index">
                   <div class="avatar-img">
-                    <img :src="item_act.avatar?item_act.avatar:''" alt="">
+                    <img :src="item_act.avatar==''?'../../../assets/image/no_avatar.png':item_act.avatar">
                   </div>
                   <p class="avatar-name">
                     {{item_act.name?item_act.name:''}}

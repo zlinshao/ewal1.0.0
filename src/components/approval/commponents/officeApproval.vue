@@ -7,7 +7,7 @@
         <div :class='["methods_box",item.value == currentStatusType ?"methods_box_active":""]'
              v-for='item in statusTypes'
              :key='item.value'
-             @click='currentStatusType = item.value'>
+             @click='getComponentInfo(item)'>
           {{item.title}}
         </div>
       </div>
@@ -19,30 +19,46 @@
     </div>
 
     <!--      发起审批-->
-    <initiate-approval></initiate-approval>
+    <!--    <initiate-approval></initiate-approval>-->
+
+    <!--      审批列表-->
+    <!--    <ApprovalList></ApprovalList>-->
+
+    <!--    动态组件-->
+    <component ref="approvalType"
+               v-if="approvalType.component"
+               :is="approvalType.component"/>
 
   </div>
 </template>
 
 <script>
   import InitiateApproval from './initiateApproval'
+  import ApprovalList from './approvalList'
 
   export default {
     name: "officeApproval",
     components: {
       //发起审批
-      InitiateApproval
+      InitiateApproval,
+      // 审批列表
+      ApprovalList
     },
     data() {
       return {
+        approvalType: {
+          component: InitiateApproval
+        },
         statusTypes: [
           {
             value: 1,
-            title: '发起审批'
+            title: '发起审批',
+            component: InitiateApproval
           },
           {
             value: 2,
-            title: '我审批的'
+            title: '我审批的',
+            component: ApprovalList
           },
           {
             value: 3,
@@ -59,6 +75,15 @@
         ],
         currentStatusType: 1,
         isCaputer: true
+      }
+    },
+    methods: {
+      /**动态加载组件 */
+      getComponentInfo(statusItem) {
+        // 切换样式
+        this.currentStatusType = statusItem.value
+        // 动态组件
+        this.approvalType.component = statusItem.component
       }
     }
   }
