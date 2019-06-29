@@ -1,0 +1,32 @@
+@import '../../common.scss';
+
+#theme_name .el-tabs .el-tabs__item.is-active {
+  background-url: "";
+}
+
+#theme_name.theme1 {
+  #approval {
+    #approval_list {
+      display: flex;
+      flex-direction: column;
+      /*上面按钮*/
+      .top-btn {
+        display: flex;
+        flex-direction: row;
+
+        .left-text {
+
+        }
+
+        .right-btn {
+
+        }
+      }
+
+      /*下面列表*/
+      .main-list {
+
+      }
+    }
+  }
+}
