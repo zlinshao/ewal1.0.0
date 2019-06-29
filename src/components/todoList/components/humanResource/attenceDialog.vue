@@ -1,6 +1,6 @@
 <template>
   <div id="attence_dialog" class="repository-dialog" style="position: absolute">
-    
+
     <lj-dialog
       :visible="humanResource_attence_visible"
       @close="attenceHandler"
@@ -124,8 +124,17 @@
         return this.$store.state.todo.humanResource_attence_visible;
       }
     },
+    watch: {
+      humanResource_attence_visible: {
+        handler(val,oldVal) {
+          if(val) {
+            this.getAttenceList();
+          }
+        }
+      }
+    },
     mounted(){
-      this.getAttenceList();
+      //this.getAttenceList();
     },
     methods: {
       getAttenceList: function () {
@@ -195,7 +204,7 @@
     $url: '../../../../assets/image/todoList/components/humanResource/' + $n + '/' + $m;
     @include bgImage($url);
   }
-  
+
 #attence_dialog {
   #lj_dialog{
     .dialog_container{
