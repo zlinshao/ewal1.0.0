@@ -147,12 +147,12 @@
                                  width="220px"
                                  v-model="notice_form.sanction_info[index].user_id">
                     </user-choose>
-                    <span v-if="index==0" class="btn_add" style="position: absolute;right: -10px;top: 3px;"
+                    <span v-if="index==0" class="btn_add" style="position: absolute;right: -4px;top: 3px;"
                           @click="handleSanctionInfo(index)">
                     +
                   </span>
                     <span v-if="index>=1" class="btn_add"
-                          style="position: absolute;right: -10px;top: 3px;background-color: #D2D2D2;"
+                          style="position: absolute;right: -4px;top: 3px;background-color: #D2D2D2;"
                           @click="handleSanctionInfo(index)">
                     -
                   </span>
@@ -276,7 +276,26 @@
     },
     methods: {
       reset() {
-        // this.notice_form = createEmpty()
+        this.notice_form = {
+          type: "announcement",
+          date: null,
+          type_id: null,
+          title: '',
+          content: '',
+          file_info: [],
+          send_scope: {
+            org_id: [],
+          },
+          sanction_info: [
+            {
+              user_id: [],
+              sanction_type: null,
+              money: null,
+              pay_type: null,
+              pay_status: 1
+            }
+          ]
+        }
         this.$refs.noticeForm.clearValidate()
       },
       open() {
@@ -312,7 +331,7 @@
       /**校验表单字段 */
       checkField() {
         let isReturn = false;
-        let newForm = this.notice_form;
+        let newForm = _.cloneDeep(this.notice_form);
         newForm.sanction_info = _.forEach(newForm.sanction_info, (o, index) => {
           if (o.user_id.constructor === Array) {
             o.user_id = o.user_id.join();
@@ -338,25 +357,25 @@
             title: '警告',
             msg: '奖惩信息有遗漏',
           });
-          return false;
+          return null;
         }
-        return true
+        return newForm
       },
       /**提交 */
       submitNotice() {
-        if (!this.checkField()) {
+        let newForm = this.checkField()
+        if (!newForm) {
           return
         }
         this.$refs['noticeForm']
           .validate((valid) => {
             if (valid) {
-              this.notice_form.date = this.myUtils.formatDate(this.notice_form.date, 'yyyy-MM-dd')
-              let data = this.notice_form
-              this.$http.post(this.addUrl, data)
+              newForm.date = this.myUtils.formatDate(newForm.date, 'yyyy-MM-dd')
+              this.$http.post(this.addUrl, newForm)
                 .then(res => {
                   this.$LjMessageEasy(res, () => {
                     this.notice_dialog_visible = false;
-                    //this.reset()
+                    this.reset()
                   })
                 })
             } else {
