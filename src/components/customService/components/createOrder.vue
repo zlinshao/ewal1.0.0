@@ -926,7 +926,6 @@ export default {
     // 历史工单搜索
     history_search () {
       if (this.chosenCustomer) {
-        // console.log('this.chosenCustomer', this.chosenCustomer)
         let history = {
           type: 0,
           page: this.history_info.page,
@@ -945,7 +944,7 @@ export default {
     // 来电记录
     temporary_search () {
       if (this.chosenCustomer) {
-        this.$http.get(`${this.market_server}v1.0/csd/revisit/${this.chosenCustomer.contract_type}/${this.chosenCustomer.contract_id}`).then(res => {
+        this.$http.get(`${this.market_server}/v1.0/csd/udesk/calllog/${this.chosenCustomer.contract_type}/${this.chosenCustomer.contract_id}`).then(res => {
           if (res.code === 200) {
             this.temporaryRecord.data = res.data.data
             this.temporaryRecord.dataCount = res.data.all_count || 0
@@ -1058,6 +1057,7 @@ export default {
       this.chosenCustomer = null
       this.customer_search = ''
     },
+    
     checkOutWarn () {
       let warning = null
       if (!this.createOrder.house_name) {
@@ -1132,7 +1132,12 @@ export default {
 
       if (!this.createOrder.next_follow_time) {
         return '截止时间未选择'
+      } else  {
+        console.log('this.createOrder.next_follow_time', this.createOrder.next_follow_time);
+         console.log('new Date()', new Date());
+      //  this.createOrder.next_follow_time < new Date()
       }
+
 
       if (!this.createOrder.content) {
         return '工单内容未填写'
@@ -1141,6 +1146,12 @@ export default {
       if (this.createOrder.type != 1 && this.createOrder.album.length == 0) {
         return '图片未上传'
       }
+       if (!this.chosenCustomer || !this.chosenCustomer.contract_number) {
+        return '合同不能为空'
+      }
+      if (!this.createOrder || !this.createOrder.operate_org.id) {
+        return '部门不能为空'
+      }
       return warning
     },
     createMaintence () { // 创建维修保洁
@@ -1148,7 +1159,7 @@ export default {
         house_id: this.chosenCustomer.house_id,
         house_name: this.chosenCustomer.house_name,
         contract_id: this.chosenCustomer.contract_id,
-        contract_num: this.chosenCustomer.contract_num,
+        contract_num: this.chosenCustomer.contract_number,
         contract_type: this.chosenCustomer.contract_type,
         type: this.createOrder.type,
         type_name: this.createOrder.type == 7 ? "维修" : "保洁",
@@ -1224,10 +1235,11 @@ export default {
         operate_user_id: this.createOrder.operate_user.id,
         operate_user_name: this.createOrder.operate_user.name,
         operate_org_id: this.createOrder.operate_org.id,
+        operate_org_name: this.createOrder.operate_org.name,
         replay_phone: this.createOrder.replay_phone,
         emergency: this.createOrder.emergency,
         contract_id: this.chosenCustomer.contract_id,
-        contract_num: this.chosenCustomer.contract_num,
+        contract_num: this.chosenCustomer.contract_number,
         contract_type: this.chosenCustomer.contract_type,
         complained_user_id: this.createOrder.complained_user.id,
         complained_user_name: this.createOrder.complained_user.name,

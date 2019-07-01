@@ -355,6 +355,7 @@ export default {
         currentRow: this.currentRow
       }
       this.detail_visible = true;
+      // console.log(' this.detail_visible',  this.detail_visible);
       if (this.chooseTab == 337) {
         this.getDoingCount()
       }
