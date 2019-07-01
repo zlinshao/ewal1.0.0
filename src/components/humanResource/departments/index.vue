@@ -22,7 +22,7 @@
                     :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
-        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management']" content="新增公司" placement="bottom"
+        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management'] &&chooseTab === 6" content="新增公司" placement="bottom"
                     :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management']"><b>+</b></div>
         </el-tooltip>
