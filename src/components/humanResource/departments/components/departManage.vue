@@ -615,6 +615,9 @@
             <el-form-item label="岗位排序">
               <el-input v-model="add_position_form.order" type="number" placeholder="值越小，越靠前"></el-input>
             </el-form-item>
+             <el-form-item label="父级岗位">
+               <post-choose v-model="add_position_form.parent_id" title="请选择父级岗位" width="305" num="1"></post-choose>
+            </el-form-item>
             <el-form-item label="所属部门">
               <div class="items-center iconInput">
                 <el-input v-model="add_position_form.depart" readonly></el-input>
@@ -627,6 +630,7 @@
                 <p class="icons user"></p>
               </div>
             </el-form-item>
+            
           </el-form>
         </div>
         <div class="dialog_footer">
@@ -1028,7 +1032,8 @@
           is_top: '',
           order: '',
           level: '',
-          id: ''
+          id: '',
+          parent_id: []
         },
         is_edit_position: false,
 
@@ -1153,6 +1158,7 @@
         this.add_position_form.org_id.push(this.departInfo.id);
         this.add_position_form.duty_id.push(this.currentDutyInfo.id);
         this.add_position_form.duty_name = this.currentDutyInfo.name || '';
+        this.add_position_form.parent_id = row.parent_id ? [row.parent_id] : [];
         this.addPostVisible = true;
       },
       handleConfirmDelPosition() {
