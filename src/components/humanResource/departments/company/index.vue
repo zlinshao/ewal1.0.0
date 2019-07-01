@@ -190,7 +190,7 @@
     methods: {
       //获取公司列表
       getStaffList() {
-        // if(!this.validatePermission('Company-Management')) return;
+        if(!this.validatePermission('Company-Management')) return;
         this.showLoading(true);
         this.params.limit=10;
         this.$http.get(this.url+'organization/company', this.params).then(res => {
