@@ -78,6 +78,12 @@ export const OrgSearch = {
     }]
 }
 
+
+export const companySearch = {
+    status: 'companySearch',
+    placeholder: '公司名称',
+    keywords: 'search',
+}
 // 离职管理
 export const LeaveJobSearch = {
     status: 'LeaveJobSearch',
