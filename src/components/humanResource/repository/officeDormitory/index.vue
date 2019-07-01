@@ -50,6 +50,14 @@
       </el-table>
     </div>
 
+    <!-- 办公室的高级搜索选项 -->
+    <searchHigh
+      class="searchOffice"
+      :module="searchOffice_visiable"
+      :show-data="officeSearchData"
+      @close="closeSearchOffice"
+    ></searchHigh>
+
     <!-- 宿舍管理列表页 -->
     <div class="dormitory-container" v-if="activeIndex == 1">
       <el-table
@@ -140,8 +148,8 @@
       <el-pagination
         :total="pages.total"
         layout="total,jumper,prev,pager,next"
-        :current-page="pages.currentPage"
-        :page-size="pages.size"
+        :current-page="pages.page"
+        :page-size="pages.limit"
       ></el-pagination>
     </div>
 
@@ -198,14 +206,6 @@
         </div>
       </div>
     </lj-dialog>
-
-    <!-- 办公室的高级搜索选项 -->
-    <searchHigh
-      class="searchOffice"
-      :module="searchOffice_visiable"
-      :show-data="officeSearchData"
-      @close="closeSearchOffice"
-    ></searchHigh>
 
     <!-- 办公室记录 -->
     <lj-dialog
@@ -765,7 +765,10 @@ import UserChoose from "../../../common/lightweightComponents/UserChoose";
 import OrgChoose from "../../../common/lightweightComponents/OrgChoose";
 import searchHigh from "../../../common/searchHigh.vue";
 import { constants } from "os";
-import { officeHightSearch,dormitoryHightSearch} from '../../../../assets/js/allSearchData.js';
+import {
+  officeHightSearch,
+  dormitoryHightSearch
+} from "../../../../assets/js/allSearchData.js";
 export default {
   name: "index",
   components: {
@@ -979,8 +982,8 @@ export default {
       periodChoosed: 0,
       // 分页信息
       pages: {
-        currentPage: 1,
-        size: 8,
+        page: 1,
+        limit: 8,
         total: 20
       },
       // 时间线的数据
@@ -1016,6 +1019,7 @@ export default {
   },
   mounted() {
     this.$emit("officeDormitoryChoose", this.activeIndex);
+    this.getOfficeList_fun();
   },
   watch: {
     activeIndex() {
@@ -1036,11 +1040,11 @@ export default {
       this.$emit("closeAddDormitory", false);
     },
     closeSearchOffice: function(val) {
-      console.log(val)
+      console.log(val);
       this.$emit("closeSearchOffice", false);
     },
     closeSearchDormitory: function(val) {
-      console.log(val)
+      console.log(val);
       this.$emit("closeSearchDormitory", false);
     },
     // 新增办公室
@@ -1094,6 +1098,31 @@ export default {
     getHouseId_add_office(val) {
       this.addOffice_form.house_id = val.house_id;
     },
+    // 办公室的列表获取
+    getOfficeList_fun() {
+      let data = {
+        house_type:1,
+        page:this.pages.page,
+        limit:this.pages.limit
+      };
+      this.$http.get(`${this.url}/v1.0/market/dormitory/list`,data).then(res => {
+        console.log("办公室列表", res);
+        switch (res.success) {
+          case true:
+            this.$LjMessage("success", {
+              title: "成功",
+              msg: res.message
+            });
+            break;
+          default:
+            this.$LjMessage("error", {
+              title: "失败",
+              msg: res.message
+            });
+            break;
+        }
+      });
+    },
     // 变更办公室信息获取组件id
     getHouseId_change_office(val) {
       this.changeOfficeInfo_form.house_id = val.house_id;
@@ -1132,8 +1161,8 @@ export default {
       console.log("确认离宿操作");
     },
     // 办公室高级搜索事件
-    officeSearch_fun(){
-      console.log(this.officeSearchData)
+    officeSearch_fun() {
+      console.log(this.officeSearchData);
     },
     // 处理办公室管理数据列表的点击事件
     // 根据event来判断具体事件
