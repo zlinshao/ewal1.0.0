@@ -59,9 +59,9 @@
             }
           }
         }
-        .attenceInfo{
-          margin-top: 100px;
-          >div{
+        .attence-info{
+          margin-top: 80px;
+          .attence-info-days{
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -87,20 +87,29 @@
               }
             }
           }
-          .submitButton{
-            width: 120px;
-            height:40px;
-            margin-top: 200px;
-            display: flex;
-            justify-content: center;
-            background-color: rgba(207,46,51,1);
-            color:white;
-            font-family: PingFangSC-Regular;
-            border-radius:4px;
-            font-size:18px;
-            line-height:13px;
-            letter-spacing:2px;
-          } 
+
+          .attence-textarea {
+            margin-top: 70px;
+          }
+
+          .attence-footer {
+            text-align: center;
+            margin-top: 100px;
+            .submit-button{
+              width: 120px;
+              height:40px;
+              display: flex;
+              justify-content: center;
+              background-color: rgba(207,46,51,1);
+              color:white;
+              font-family: PingFangSC-Regular;
+              border-radius:4px;
+              font-size:18px;
+              line-height:13px;
+              letter-spacing:2px;
+            }
+          }
+
         }
       }
     }

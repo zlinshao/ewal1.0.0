@@ -162,13 +162,21 @@
               label="加班统计">
             </el-table-column>
             <el-table-column
+              show-overflow-tooltip
+              width="150"
+              key="remarks"
+              align="center"
+              prop="remarks"
+              label="备注">
+            </el-table-column>
+            <el-table-column
               key="status"
               align="center"
               prop="status"
               width="110"
               label="考勤确认结果">
               <template slot-scope="scope">
-                <div @click="sendResult(scope.row)" class="table-operate"
+                <div class="table-operate"
                      :class="[scope.row.status==1?'no-send':'send']">
                   {{scope.row.status===0?'未确认':scope.row.status===1?'已确认':'-'}}
                 </div>
@@ -354,8 +362,6 @@
   import Calendar from '../../../common/lightweightComponents/Calendar/index';
   import MonthChoose from '../../../common/lightweightComponents/Calendar/MonthChoose/index';
   import YearChoose from '../../../common/lightweightComponents/Calendar/YearChoose/index';
-  import UserChoose from '../../../common/lightweightComponents/UserChoose';
-  import OrgChoose from '../../../common/lightweightComponents/OrgChoose';
   import ButtonUpload from '../../../common/lightweightComponents/ButtonUpload';
 
   export default {
@@ -363,8 +369,6 @@
     components: {
       MonthChoose,
       YearChoose,
-      UserChoose,
-      OrgChoose,
       Calendar,
       ButtonUpload,
     },
@@ -741,6 +745,7 @@
 
                 status: item.attendance[0]?.is_confirm === 0 ? 0 : (item.attendance[0]?.is_confirm || 2),//考勤确认结果
                 attendance: item.attendance,
+                remarks: item.attendance[0]?.remarks || '-',
               };
               this.tableSettingData.attence.tableData.push(obj);
             }
@@ -849,7 +854,7 @@
         }
       },
 
-      //发送通知
+      /*//发送通知
       sendResult(row) {
         if (row.status === 1) {
           this.$LjConfirm({icon: 'warning', content: '月度统计表将发送至对应员工待办中'}).then(() => {
@@ -857,7 +862,7 @@
             console.log('发送成功');
           });
         }
-      },
+      },*/
 
       //考勤确认
       confirmAttence() {
