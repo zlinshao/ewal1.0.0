@@ -16,7 +16,7 @@
         header-row-class-name="tableHeader"
         height="670px"
         :data="officeList"
-        @row-click="handle_office"
+        @row-click="handle_office"    
       >
         <el-table-column align="center" width="60">
           <template slot-scope="scope">
