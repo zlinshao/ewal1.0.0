@@ -9,7 +9,8 @@
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}<i></i>
+            <span v-show="item.id!==6">{{item.title}}<i></i></span>
+            <span v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management'] && item.id===6">{{item.title}}<i></i></span>
           </span>
         </h2>
       </div>
@@ -23,7 +24,7 @@
         </el-tooltip>
         <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management']" content="新增公司" placement="bottom"
                     :visible-arrow="false">
-          <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 6"><b>+</b></div>
+          <div class="icons add" @click="showAddModule(chooseTab)" v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management']"><b>+</b></div>
         </el-tooltip>
         <div class="icons search" @click="highSearch(chooseTab)" v-show=" chooseTab !== 1 && chooseTab !== 5"></div>
       </div>
