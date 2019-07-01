@@ -33,6 +33,7 @@
             </div>
           </template>
         </el-table-column>
+        
         <el-table-column label="房屋地址" align="center" prop="house_name"></el-table-column>
         <el-table-column label="小区地址" align="center" prop="village_name"></el-table-column>
         <el-table-column label="房型" align="center" prop="house_feature"></el-table-column>
