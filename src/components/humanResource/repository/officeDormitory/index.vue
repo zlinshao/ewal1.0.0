@@ -16,7 +16,7 @@
         header-row-class-name="tableHeader"
         height="670px"
         :data="officeList"
-        @row-click="handle_office"    
+        @row-click="handle_office"
       >
         <el-table-column align="center" width="60">
           <template slot-scope="scope">
@@ -33,20 +33,20 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="房屋地址" align="center" prop="housrAddress"></el-table-column>
-        <el-table-column label="小区地址" align="center" prop="communityAddress"></el-table-column>
-        <el-table-column label="房型" align="center" prop="houseType"></el-table-column>
+        <el-table-column label="房屋地址" align="center" prop="house_name"></el-table-column>
+        <el-table-column label="小区地址" align="center" prop="village_name"></el-table-column>
+        <el-table-column label="房型" align="center" prop="house_feature"></el-table-column>
         <el-table-column label="面积" align="center" prop="area"></el-table-column>
-        <el-table-column label="装修" align="center" prop="decorate"></el-table-column>
-        <el-table-column label="房屋类型" align="center" prop="buildingType"></el-table-column>
-        <el-table-column label="照片" align="center" prop="photo"></el-table-column>
-        <el-table-column label="收房价格" align="center" prop="housePrice"></el-table-column>
-        <el-table-column label="人均价格" align="center" prop="perPersonPrice"></el-table-column>
-        <el-table-column label="部门人数" align="center" prop="departmentPersonNum"></el-table-column>
-        <el-table-column label="办公室类型" align="center" prop="officeType"></el-table-column>
-        <el-table-column label="开始时间" align="center" prop="startTime"></el-table-column>
-        <el-table-column label="结束时间" align="center" prop="endTime"></el-table-column>
-        <el-table-column label="片区经理" align="center" prop="areaManager"></el-table-column>
+        <el-table-column label="装修" align="center" prop="decoration"></el-table-column>
+        <el-table-column label="房屋类型" align="center" prop="house_identity"></el-table-column>
+        <el-table-column label="照片" align="center" prop=""></el-table-column>
+        <el-table-column label="收房价格" align="center" prop="suggest_price"></el-table-column>
+        <el-table-column label="人均价格" align="center" prop="average_price"></el-table-column>
+        <el-table-column label="部门人数" align="center" prop="office_num"></el-table-column>
+        <el-table-column label="办公室类型" align="center" prop="office_type"></el-table-column>
+        <el-table-column label="开始时间" align="center" prop="start_at"></el-table-column>
+        <el-table-column label="结束时间" align="center" prop="end_at"></el-table-column>
+        <el-table-column label="片区经理" align="center" prop="leader_name"></el-table-column>
       </el-table>
     </div>
 
@@ -829,38 +829,38 @@ export default {
       },
       // 办公室详情的数据
       officeList: [
-        {
-          housrAddress: "1",
-          communityAddress: "2",
-          houseType: "3",
-          area: "4",
-          decorate: "5",
-          buildingType: "5",
-          photo: "6",
-          housePrice: "7",
-          perPersonPrice: "8",
-          departmentPersonNum: "9",
-          officeType: "10",
-          startTime: "11",
-          endTime: "12",
-          areaManager: "13"
-        },
-        {
-          housrAddress: "32131",
-          communityAddress: "656",
-          houseType: "787",
-          area: "fd54",
-          decorate: "bv87",
-          buildingType: "g3",
-          photo: "6fdgf",
-          housePrice: "776575gfd",
-          perPersonPrice: "8dfsad",
-          departmentPersonNum: "9fdsfsd",
-          officeType: "10fdgd",
-          startTime: "11edas",
-          endTime: "12dasdag",
-          areaManager: "13jh"
-        }
+        // {
+        //   housrAddress: "1",
+        //   communityAddress: "2",
+        //   houseType: "3",
+        //   area: "4",
+        //   decorate: "5",
+        //   buildingType: "5",
+        //   photo: "6",
+        //   housePrice: "7",
+        //   perPersonPrice: "8",
+        //   departmentPersonNum: "9",
+        //   officeType: "10",
+        //   startTime: "11",
+        //   endTime: "12",
+        //   areaManager: "13"
+        // },
+        // {
+        //   housrAddress: "32131",
+        //   communityAddress: "656",
+        //   houseType: "787",
+        //   area: "fd54",
+        //   decorate: "bv87",
+        //   buildingType: "g3",
+        //   photo: "6fdgf",
+        //   housePrice: "776575gfd",
+        //   perPersonPrice: "8dfsad",
+        //   departmentPersonNum: "9fdsfsd",
+        //   officeType: "10fdgd",
+        //   startTime: "11edas",
+        //   endTime: "12dasdag",
+        //   areaManager: "13jh"
+        // }
       ],
       // 宿舍详情的数据
       dormitoryList: [
@@ -1106,21 +1106,11 @@ export default {
         limit:this.pages.limit
       };
       this.$http.get(`${this.url}/v1.0/market/dormitory/list`,data).then(res => {
-        console.log("办公室列表", res);
-        switch (res.success) {
-          case true:
-            this.$LjMessage("success", {
-              title: "成功",
-              msg: res.message
-            });
-            break;
-          default:
-            this.$LjMessage("error", {
-              title: "失败",
-              msg: res.message
-            });
-            break;
-        }
+        console.log("办公室列表", res.data);
+        // 设置页数
+        this.pages.total=res.data.count;
+        // 渲染具体数据
+        this.officeList=res.data.data;
       });
     },
     // 变更办公室信息获取组件id
