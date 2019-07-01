@@ -200,7 +200,7 @@
                 <div class="circle"></div>
               </div>
               <div class='detail_dialog_right'>
-                <p>{{ item.tag_status == 1 ? "续租" : "退租" }}</p>
+                <p>{{item.tag_status == 1 ? chooseTab==1 ?"退房" : "退租":  chooseTab==1 ?"续约" : "续租" }}</p>
                 <p>{{item.remark}}</p>
               </div>
             </div>
@@ -407,13 +407,32 @@ export default {
       } else {
         _.forEach(data.data,(item)=>{
            if(item.keyName=='tag_status'){
-            item.keyType= 'check',
-            item.title ='状态';
+             item.keyType= 'check',
+              item.title ='状态';
+             if(this.chooseTab===1){
+                item.value =[{
+                    id: 1,
+                    title: '续约'
+                },
+                {
+                    id: 2,
+                    title: '退房'
+                }]
+             } else {
+                item.value =[{
+                    id: 1,
+                    title: '续租'
+                },
+                {
+                    id: 2,
+                    title: '退租'
+                }]
+             }
            }
         });
       }
       this.searchData=data;
-      console.log('this.searchData-----', this.searchData);
+      // console.log('this.searchData-----', this.searchData);
     },
     hiddenModule (val) {
       this.showSearch = false;

@@ -866,7 +866,7 @@
               search: '',
               page: 1,
               limit: 5,
-              type: 0,
+              type: null,
             },
             init() {
               this.params.page = 1;

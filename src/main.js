@@ -46,6 +46,9 @@ Vue.prototype.myUtils = myUtils
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios
 
+//asdf
+
+
 Vue.prototype.$LjConfirm = Confirm.install
 
 Vue.prototype.$video = Video

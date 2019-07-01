@@ -255,8 +255,13 @@
                       <el-radio v-model="chosenCustomer" :label="info" @change="changeCustomInfo">
                         <el-row width='100%'>
                           <el-col :span='index<2? 6:(index<4?3:6)' v-for='(item,index) in custmer_showInfo' :key='item.value'>
-                            <span class='tit'>{{item.title}}</span>
-                            <span class='content_tit'>{{info[item.value] || '--'}}</span>
+                             <span class='tit'>{{item.title}}</span>
+                             <el-tooltip v-if="item.value=='contract_type'" :content="info[item.value]==1 ? '新收' : '续收'" placement="bottom-start" :visible-arrow="false">
+                              <span class='content_tit'>{{info[item.value]==1 ? '新收' : '续收'}}</span>
+                            </el-tooltip>  
+                             <el-tooltip v-else :content="info[item.value]" placement="bottom-start" :visible-arrow="false">
+                              <span class='content_tit'>{{info[item.value] || '--'}}</span>
+                            </el-tooltip>                     
                           </el-col>
                         </el-row>
                       </el-radio>
@@ -335,7 +340,7 @@
                     <h5>房屋信息</h5>
                     <div>
                       <span class='tit'>房屋地址</span>
-                      <span class="content_tit" v-if='customer_info.contract_Detail.house_extension'>{{customer_info.contract_Detail.house_extension.address
+                      <span class="content_tit" v-if='customer_info.contract_Detail.house'>{{customer_info.contract_Detail.house.name
                         || '--'}}</span>
                       <span class="content_tit" v-else>--</span>
                     </div>
@@ -351,7 +356,7 @@
                       </div>
                       <div>
                         <span class='tit'>中介价格</span>
-                        <span class="content_tit" v-if='customer_info.contract_Detail.agency_info'>{{customer_info.contract_Detail.agency_info.agency_price_now
+                        <span class="content_tit" v-if='customer_info.contract_Detail.agency_info'>{{customer_info.contract_Detail.agency_info.agency_price
                           || '--' +
                           "元"}}</span>
                         <span class="content_tit" v-else>--</span>
@@ -559,7 +564,7 @@ export default {
           value: 9
         },
         {
-          label: '求组',
+          label: '求租',
           value: 10
         },
         {
@@ -921,11 +926,12 @@ export default {
     // 历史工单搜索
     history_search () {
       if (this.chosenCustomer) {
+        // console.log('this.chosenCustomer', this.chosenCustomer)
         let history = {
           type: 0,
           page: this.history_info.page,
           limit: 5,
-          search: this.chosenCustomer.contract_num,
+          search:this.chosenCustomer.contract_number,
         }
         this.$http.get(`${this.market_server}v1.0/csd/work_order/history`, history).then(res => {
           if (res.code === 200) {
@@ -1301,7 +1307,7 @@ export default {
             message: '工单创建成功'
           });
         } else {
-           this.$LjNotify('success', {
+           this.$LjNotify('warning', {
             title: '提示',
             message: '工单创建失败'
           });
@@ -1473,6 +1479,8 @@ export default {
             width: 70%;
             text-align: left;
             padding-left: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
       }

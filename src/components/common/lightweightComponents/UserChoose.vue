@@ -1,12 +1,14 @@
 <template>
   <div id="userChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
-      <el-input :size="size" :disabled="disabled" @focus="staffModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <el-input :size="size" :disabled="disabled" @focus="staffModule = true" readonly v-model="inputContent"
+                :placeholder="title"></el-input>
       <p v-if="showIcon" class="icons user"></p>
     </div>
 
 
-    <StaffOrgan :initial="value" :module="staffModule" :is_on_job="is_on_job" :organ-data="organData" @close="hiddenOrgan"></StaffOrgan>
+    <StaffOrgan :initial="value" :module="staffModule" :is_on_job="is_on_job" :organ-data="organData"
+                @close="hiddenOrgan"></StaffOrgan>
   </div>
 </template>
 
@@ -22,10 +24,10 @@
       width: {},
       num: {},
       is_on_job: {},
-      title:{},
+      title: {},
       disabled: {},
       size: {
-        default:'',
+        default: '',
       },
       showIcon: {
         default() {
@@ -42,7 +44,7 @@
         staffModule: false,
         // is_on_job: '',
         organData: {
-          //num:1,
+          num: Infinity,
         },// 组织架构配置 选择数量 num
         inputContent: '',
         dropdownListWidth: 320
@@ -53,14 +55,14 @@
         handler(val, oldVal) {
           if (val && val.length > 0) {
             let params = {
-              limit:1000,
-              user_id:val,
-              staff:1,
+              limit: 1000,
+              user_id: val,
+              staff: 1,
             };
-            this.$http.get(`${this.url}staff/user`,params).then(res=> {
-              this.inputContent = _.map(res.data?.data,'name').join(',');
+            this.$http.get(`${this.url}staff/user`, params).then(res => {
+              this.inputContent = _.map(res.data?.data, 'name').join(',');
             });
-          }else {
+          } else {
             this.inputContent = '';
           }
         },
@@ -78,6 +80,8 @@
         handler(val, oldVal) {
           if (val) {
             this.organData.num = parseInt(val);
+          } else {
+            this.organData.num = Infinity;
           }
         },
         immediate: true

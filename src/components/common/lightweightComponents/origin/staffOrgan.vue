@@ -296,7 +296,7 @@
           search: val,
           is_on_job: this.is_on_job2,
           page:1,
-          limit: 999
+          limit: 20
         });
       },
       // 选人

@@ -32,13 +32,12 @@
           <span @click="toggleSelection(tableSettingData.attence.tableData)">全选/</span>
           <span @click="tableSettingData.attence.isShowMultiSelection = false">取消</span>
         </span>-->
-
         <el-checkbox v-model="tableSettingData.attence.isLeave">离职员工</el-checkbox>
         <org-choose num="1" width="200" title="请选择部门" v-model="tableSettingData.attence.departmentId"></org-choose>
         <span @click="confirmAttence" class="colorE33">生成考勤确认表</span>
       </div>
       <div v-if="chooseTab==2" class="nav-right">
-        <org-choose width="140" title="请选择部门"></org-choose>
+        <org-choose width="140" v-model="tableSettingData.confirm.departmentId" title="请选择部门"></org-choose>
       </div>
     </div>
     <div v-if="chooseTab==1" class="attence-container">
@@ -47,7 +46,6 @@
           <el-table
             ref="multipleTable"
             :data="tableSettingData.attence.tableData"
-            height="100%"
             :border="true"
             @selection-change="handleSelectionChange"
             :row-class-name="tableChooseRow"
@@ -55,7 +53,7 @@
             @row-dblclick="tableDblClick($event,'attence')"
             header-row-class-name="tableHeader"
             :row-style="{height:'60px'}"
-            style="width: 100%">
+            style="width: 100%;height: 100%">
             <el-table-column
               :selectable='isDisabled'
               v-if="tableSettingData.attence.isShowMultiSelection"
@@ -183,7 +181,7 @@
         <div class="page">
           <el-pagination
             @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+            @current-change="handleCurrentChange($event,'attence')"
             :current-page="tableSettingData.attence.params.page"
             :page-size="tableSettingData.attence.params.limit"
             :total="tableSettingData.attence.counts"
@@ -197,14 +195,13 @@
         <div class="mainListTable changeChoose" :style="{'height': '100%'}">
           <el-table
             :data="tableSettingData.confirm.tableData"
-            height="100%"
             :border="true"
             :row-class-name="tableChooseRow"
             @cell-click="tableClickRow"
             @row-dblclick="tableDblClick($event,'confirm')"
             header-row-class-name="tableHeader"
             :row-style="{height:'80px'}"
-            style="width: 100%">
+            style="width: 100%;height: 100%">
             <el-table-column
               key="department"
               align="center"
@@ -218,11 +215,12 @@
               :prop="item"
               :label="tableSettingData.confirm.showData[item]">
               <template slot-scope="scope" id="templadd" style="height: 100%">
-<!--                <div>{{scope.row[item]}}</div>-->
-<!--                <div style="width: 100%;height: 60px;background-color: red;"></div>-->
-                <div @click="sendAttenceResult(scope.row[item])" v-if="Object.keys(scope.row[item]).length>0" class="icon-pdf">
+                <!--                <div>{{scope.row[item]}}</div>-->
+                <!--                <div style="width: 100%;height: 60px;background-color: red;"></div>-->
+                <div @click="sendAttenceResult(scope.row[item])" v-if="Object.keys(scope.row[item]).length>0"
+                     class="icon-pdf">
                   <div v-if="scope.row[item].is_send==0" class="icon-no-send"></div>
-                  <div v-if="scope.row[item].is_send==1"  class="icon-sent"></div>
+                  <div v-if="scope.row[item].is_send==1" class="icon-sent"></div>
                 </div>
                 <div v-else>-</div>
               </template>
@@ -234,7 +232,7 @@
         <div class="page">
           <el-pagination
             @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+            @current-change="handleCurrentChange($event,'confirm')"
             :current-page="tableSettingData.confirm.params.page"
             :page-size="tableSettingData.confirm.params.limit"
             :total="tableSettingData.confirm.counts"
@@ -352,14 +350,12 @@
 </template>
 
 <script>
-  import _ from 'lodash';
   import mixins from '@/assets/js/mixins/calendar.js';
   import Calendar from '../../../common/lightweightComponents/Calendar/index';
   import MonthChoose from '../../../common/lightweightComponents/Calendar/MonthChoose/index';
   import YearChoose from '../../../common/lightweightComponents/Calendar/YearChoose/index';
   import UserChoose from '../../../common/lightweightComponents/UserChoose';
   import OrgChoose from '../../../common/lightweightComponents/OrgChoose';
-  import LjDialog from '../../../common/lj-dialog';
   import ButtonUpload from '../../../common/lightweightComponents/ButtonUpload';
 
   export default {
@@ -369,7 +365,6 @@
       YearChoose,
       UserChoose,
       OrgChoose,
-      LjDialog,
       Calendar,
       ButtonUpload,
     },
@@ -450,7 +445,7 @@
             params: {
               //search: '',
               page: 1,
-              limit: 1000,
+              limit: 8,
 
             },
             init() {
@@ -460,7 +455,7 @@
             chooseRowIds: [],
             currentSelection: {},//当前选择行
 
-            departmentId: [106],
+            departmentId: [],
             isShowMultiSelection: false,//是否显示多选框
             multipleSelection: [],
             isLeave: false,//是否离职  true离职 false在职
@@ -515,7 +510,7 @@
             },
             chooseRowIds: [],
             currentSelection: {},//当前选择行
-
+            departmentId: [],
             table_dialog_visible: false,//form表单控制
             table_dialog_choose_tab: 1,
             table_dialog_tabs: [
@@ -565,54 +560,54 @@
         daysList: [],
 
 
-        monthNameList:[
+        monthNameList: [
           {
-            id:1,
-            name:'january',
+            id: 1,
+            name: 'january',
           },
           {
-            id:2,
-            name:'february',
+            id: 2,
+            name: 'february',
           },
           {
-            id:3,
-            name:'march',
+            id: 3,
+            name: 'march',
           },
           {
-            id:4,
-            name:'april',
+            id: 4,
+            name: 'april',
           },
           {
-            id:5,
-            name:'may',
+            id: 5,
+            name: 'may',
           },
           {
-            id:6,
-            name:'june',
+            id: 6,
+            name: 'june',
           },
           {
-            id:7,
-            name:'july',
+            id: 7,
+            name: 'july',
           },
           {
-            id:8,
-            name:'august',
+            id: 8,
+            name: 'august',
           },
           {
-            id:9,
-            name:'september',
+            id: 9,
+            name: 'september',
           },
           {
-            id:10,
-            name:'october',
+            id: 10,
+            name: 'october',
           },
           {
-            id:11,
-            name:'november',
+            id: 11,
+            name: 'november',
           },
           {
-            id:12,
-            name:'december',
+            id: 12,
+            name: 'december',
           },
         ],
       }
@@ -621,7 +616,7 @@
       monthValue: {
         handler(val, oldVal) {
           if (val) {
-            this.getAttenceList();
+            this.getAttenceList(true);
             this.monthContent = this.myUtils.formatDate(val, 'yyyy-MM');
           }
         },
@@ -630,38 +625,62 @@
       'tableSettingData.attence.departmentId': {
         handler(val, oldVal) {
           if (val && val.length > 0) {
-            this.getAttenceList();
+            this.getAttenceList(true);
           }
         },
       },
       'tableSettingData.attence.isLeave': {
         handler(val, oldVal) {
-          this.getAttenceList();
+          this.getAttenceList(true);
         },
       },
+
+
+      yearValue: {
+        handler(val, oldVal) {
+          if (val) {
+            this.getAttenceConfirmList(true);
+            //this.yearContent = this.myUtils.formatDate(val, 'yyyy');
+          }
+        },
+        immediate: true,
+      },
+      'tableSettingData.confirm.departmentId': {
+        handler(val, oldVal) {
+          if (val) {
+            this.getAttenceConfirmList(true);
+          }
+        },
+      },
+
+      //getAttenceConfirmList
     },
     methods: {
       changeTabs(item) {
         this.chooseTab = item.id;
-        if(this.chooseTab==2) {
+        if (this.chooseTab == 2) {
           this.getAttenceConfirmList();
         }
       },
 
-
-      getAttenceList() {
+      /*
+       *  description: 获取考勤列表
+       *  params: isOrigin 是否初始化页码  默认false 不初始化
+      **/
+      getAttenceList(isOrigin = false) {
+        if (isOrigin) {
+          this.tableSettingData.attence.params.page = 1;
+        }
         this.showLoading(true);
         this.tableSettingData.attence.tableData = [];
         let params = {
           is_on_job: this.tableSettingData.attence.isLeave ? 1 : 0,
           date: this.monthValue,
           ...this.tableSettingData.attence.params,
-          org_id: this.tableSettingData.attence.departmentId[0] || 2,
-          //org_id: 106,
+          org_id: this.tableSettingData.attence.departmentId[0] || null,
         };
         this.$http.get(`${this.url}attendance/attendance`, params).then(res => {
           this.showLoading(false);
-          //debugger
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               //console.log(item);
@@ -728,10 +747,6 @@
             this.tableSettingData.attence.counts = res.data.count;
           }
         });
-      },
-
-      demo() {
-        console.log(this.tableSettingData.attence.departmentId[0]);
       },
 
       //显示详情弹窗
@@ -837,8 +852,9 @@
       //发送通知
       sendResult(row) {
         if (row.status === 1) {
-          this.$LjConfirm({content: '月度统计表将发送至对应员工待办中'}).then(() => {
+          this.$LjConfirm({icon: 'warning', content: '月度统计表将发送至对应员工待办中'}).then(() => {
             alert('发送成功');
+            console.log('发送成功');
           });
         }
       },
@@ -846,7 +862,14 @@
       //考勤确认
       confirmAttence() {
         let org_id = this.tableSettingData.attence.departmentId;
-        this.$LjConfirm({content: '月度统计表将发送至对应部门待办中'}).then(() => {
+        if (org_id.length === 0) {
+          this.$LjMessage('warning', {
+            title: '警告',
+            msg: '未选择部门'
+          });
+          return;
+        }
+        this.$LjConfirm({icon: 'warning', content: '月度统计表将发送至对应部门待办中'}).then(() => {
           let params = {
             org_id: org_id[0],
             month: this.myUtils.formatDate(this.monthValue, 'yyyy-MM'),
@@ -862,22 +885,23 @@
         this.showLoading(true);
         this.tableSettingData['confirm'].tableData = [];
         let params = {
-          date:this.myUtils.formatDate(this.yearValue,'yyyy'),
+          date: this.myUtils.formatDate(this.yearValue, 'yyyy'),
+          org_id: this.tableSettingData.confirm.departmentId,
         };
 
-        this.$http.get(`${this.url}attendance/attendance/get_confirm`,params).then(res=> {
+        this.$http.get(`${this.url}attendance/attendance/get_confirm`, params).then(res => {
           this.showLoading(false);
-          if(res.code.endsWith('0')) {
+          if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let obj = {
-                department:item.org?.name||'-',
+                department: item.org?.name || '-',
               };
               for (let subItem of this.monthNameList) {
-                let result = _.find(item.data,(o)=> {
-                  let oMonth = Number(this.myUtils.formatDate(o.month,'MM'));
-                  return oMonth==subItem.id;
+                let result = _.find(item.data, (o) => {
+                  let oMonth = Number(this.myUtils.formatDate(o.month, 'MM'));
+                  return oMonth == subItem.id;
                 });
-                obj[subItem.name] = result||{};
+                obj[subItem.name] = result || {};
               }
               this.tableSettingData['confirm'].tableData.push(obj);
             }
@@ -888,18 +912,19 @@
 
       //发送考勤确认单
       sendAttenceResult(item) {
-        if(item.is_send) {
+        if (item.is_send) {
           return;
         }
         this.$LjConfirm({
-          content:'考勤确认单将发送到指定部门下',
-        }).then(()=> {
+          icon: 'warning',
+          content: '考勤确认单将发送到指定部门下',
+        }).then(() => {
           let params = {
-            date:item.month,
-            org_id:item.org_id,
+            date: item.month,
+            org_id: item.org_id,
           };
-          this.$http.get(`${this.url}attendance/attendance/todo`,params).then(res=> {
-            this.$LjMessageEasy(res,()=> {
+          this.$http.get(`${this.url}attendance/attendance/todo`, params).then(res => {
+            this.$LjMessageEasy(res, () => {
               this.getAttenceConfirmList();
             });
           });
@@ -989,18 +1014,18 @@
         //console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val, currentTable) {
-        /* switch (currentTable) {
-           case 'borrowReceive':
-             this.params.page = val;
-             this.getBorrowReceiveList();
-             break;
-           case 'goods':
-             this.tableSettingData[currentTable].params.page = val;
-             this.getGoodsDetailList();
-             break;
-           default :
-             break;
-         }*/
+        switch (currentTable) {
+          case 'attence':
+            this.tableSettingData[currentTable].params.page = val;
+            this.getAttenceList();
+            break;
+          case 'confirm':
+            this.tableSettingData[currentTable].params.page = val;
+            this.getAttenceConfirmList();
+            break;
+          default :
+            break;
+        }
       }
     },
     mounted() {
@@ -1116,7 +1141,6 @@
       }*/
 
 
-
       .tableHeader {
         th:nth-child(1) {
           border-left: 1px solid #EBEEF5;
@@ -1131,6 +1155,7 @@
               overflow: auto !important;
               height: 60px;
             }
+
             td:nth-child(1) {
               border-left: 1px solid #EBEEF5;
             }
@@ -1198,20 +1223,21 @@
       .confirm-container {
         .icon-pdf {
           @include militaryImg('s.png', 'theme1');
+
           &:hover {
             @include militaryImg('t.png', 'theme1');
 
             .icon-sent {
-              @include militaryImg('yifasong.png','theme1');
+              @include militaryImg('yifasong.png', 'theme1');
             }
           }
 
           .icon-no-send {
-            @include militaryImg('fasong.png','theme1');
+            @include militaryImg('fasong.png', 'theme1');
           }
 
           .icon-sent {
-            @include militaryImg('yidu_copy.png','theme1');
+            @include militaryImg('yidu_copy.png', 'theme1');
           }
 
         }
