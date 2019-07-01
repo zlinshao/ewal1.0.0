@@ -13,7 +13,14 @@
         <div v-for="(item,index) in table_column" :key="index">
           <el-table-column v-if="item.key!='id'" :min-width="item.width" show-overflow-tooltip :label="item.val" :prop="item.key" :align="'center'"></el-table-column>
         </div>
+        <el-table-column min-width="50" label="操作" align="'center'">
+               <template slot-scope="scope">
+              <el-button id='active-danger' plain size="mini" @click='handleDeleteRow(scope.row)'>删除</el-button>
+               </template>
+          </el-table-column>
       </el-table>
+      <!-- 确定删除 -->
+    <DeleteDialog :delete_visible='delete_visible' @close='handleCloseDelete' />
       <!--新增、编辑公司-->
       <lj-dialog
               :visible="companyVisible"
@@ -104,10 +111,11 @@
 
 <script>
   import LjDialog from '../../../common/lj-dialog';
+  import DeleteDialog from '../../components/delete-dialog';
   export default {
     name: "index",
     props: ['searchVal','searchParams','isfresh'],
-    components: {LjDialog},
+    components: {LjDialog, DeleteDialog},
     data() {
       return {
         url:globalConfig.humanResource_server,
@@ -115,6 +123,7 @@
         tableData: [],
         counts: 0,
         companyVisible: false,
+        delete_visible: false,
         table_column: [
           { key: 'id',val: 'id', width: "60px"},
           // { key: 'org_id',val: '公司id', width: "60px"},
@@ -145,6 +154,7 @@
         //员工详情
         staff_detail_info: '',
         random_key: '',
+        currentRow: ''
       }
     },
     mounted() {
@@ -162,7 +172,6 @@
       },
       isfresh: {
         handler(val, oldVal) {
-          console.log('----------------------',val,oldVal)
          if(oldVal!==val && val){
           this.getStaffList();
          }
@@ -208,7 +217,6 @@
         if(!this.validatePermission('Company-Management')) return;
         this.$http.get(`${this.url}organization/company/${id}`).then(res => {
           if (res.code === '20000') {
-            console.log('res', res);
             this.companyDeatil = res.data;
             this.companyVisible = true;
           } else {
@@ -226,6 +234,7 @@
           if(!this.validatePermission('Company-Management')) return;
           if(this.companyDeatil.name){
             this.$http.put(`${this.url}organization/company/${this.companyDeatil.id}`,this.companyDeatil).then(res => {
+              
                 if (res.code === '20000') {
                     this.$LjNotify('success',{
                         title: '成功',
@@ -250,12 +259,40 @@
                     });
           }
         },
+        // 删除
+    handleDeleteRow (row) {
+      this.currentRow = row
+      this.delete_visible = true
+    },
+    //关闭删除
+    handleCloseDelete (val) {
+      if (val) { //确定删除
+        this.$http.delete(`${this.url}organization/company/${this.currentRow.id}`).then(res => {
+          if (res.code === '20000') {
+             this.$LjNotify('success', {
+            title: '提示',
+            message: '删除成功'
+          });
+            this.delete_visible = false
+            this.getStaffList()
+          }else {
+             this.$LjNotify('warning', {
+            title: '提示',
+            message: res.msg
+          });
+          }
+        })
+      } else {
+        this.currentRow = null
+        this.delete_visible = false
+      }
+
+    },
       // 当前点击
       tableClickRow(row) {
         //let ids = this.chooseRowIds;
         //ids.push(row.id);
         //this.chooseRowIds = this.myUtils.arrayWeight(ids);
-        console.log('row--', row);
         this.getStaffDetail(row.id);
       },
       // 点击过
