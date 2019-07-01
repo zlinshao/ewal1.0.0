@@ -1946,3 +1946,133 @@ export const contractManagementSearch = {
         }
     ]
 }
+
+// 资产管理/办公室高级搜索
+export const officeHightSearch={
+    status: 'officeHightSearch',
+    keywords: 'keyWord',
+    placeholder: '请输入搜索内容',
+    data: [{
+            keyType: 'staff',
+            title: '片区经理',
+            placeholder: '请选择片区经理',
+            keyName: 'leader_id',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'radio',
+            title: '办公室类型',
+            keyName: 'office_type',
+            dataType: '',
+            value: [
+                { id: 1, title: '临时' },
+                { id: 2, title: '正式' },
+            ]
+        },
+        {
+            keyType: 'dateRange',
+            title: '日期',
+            placeholder: '选择时间',
+            keyName: 'start_at',
+            dataType: "",
+        },
+        {
+            keyType: 'input',
+            title: '人均价格',
+            placeholder: '最低价格',
+            keyName: 'price_min',
+            dataType: '',
+        },
+        {
+            keyType: 'input',
+            title: '',
+            placeholder: '最高价格',
+            keyName: 'price_max',
+            dataType: '',
+        },
+    ]
+}
+
+// 宿舍管理的search
+export const dormitoryHightSearch={
+    status: 'dormitoryHightSearch',
+    keywords: 'keyWord',
+    placeholder: '请输入搜索内容',
+    data: [{
+            keyType: 'staff',
+            title: '负责人',
+            placeholder: '请选择负责人',
+            keyName: 'leader_id',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'staff',
+            title: '住宿人员姓名',
+            placeholder: '请选择住宿人员姓名',
+            keyName: 'live_id',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        }, 
+        {
+            keyType: 'input',
+            title: '剩余床位数',
+            placeholder: '请输入床位数',
+            keyName: 'last_bed',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'dateRange',
+            title: '日期',
+            placeholder: '选择时间',
+            keyName: 'start_at',
+            dataType: "",
+        },
+        {
+            keyType: 'input',
+            title: '人均价格',
+            placeholder: '最低价格',
+            keyName: 'price_min',
+            dataType: '',
+        },
+        {
+            keyType: 'input',
+            title: '',
+            placeholder: '最高价格',
+            keyName: 'price_max',
+            dataType: '',
+        },
+    ]
+}

@@ -19,7 +19,7 @@
         <div class="icons add" @click="inRepositoryHandler(chooseTab)" v-if="chooseTab === 1"><b>+</b></div>
         <div class="icons search" @click="highSearch(chooseTab)" v-if="chooseTab === 1 || chooseTab===2"></div>
         <div class="icons add" @click="addDialog(chooseTab)" v-if="chooseTab===4"><b>+</b></div>
-        <div class="icons search" v-if="chooseTab === 4"></div>
+        <div class="icons search" v-if="chooseTab === 4" @click="startSearch(chooseTab)"></div>
       </div>
     </div>
 
@@ -51,6 +51,11 @@
                         :addDormitory_visiable="addDormitory_visiable" 
                         @closeAddOffice="closeAddOffice" 
                         @closeAddDormitory="closeAddDormitory"
+                        :searchOffice_visiable="searchOffice_visiable"
+                        :searchDormitory_visiable="searchDormitory_visiable"
+                        @closeSearchOffice="closeSearchOffice"
+                        @closeSearchDormitory="closeSearchDormitory"
+                        
                         @officeDormitoryChoose="officeDormitoryChoose"
                         >
       </office-dormitory>
@@ -105,6 +110,8 @@
         url: globalConfig.humanResource_server,
         addOffice_visiable: false,//是否添加办公室传递给子组件
         addDormitory_visiable: false,//是否添加宿舍传递给子组件
+        searchOffice_visiable: false,//是否办公室高级搜索传递给子组件
+        searchDormitory_visiable: false,//是否宿舍高级搜索传递给子组件
         officeDormitoryChoosed: 0,//子组件是办公室或者宿舍
         selects: [
           {
@@ -240,11 +247,26 @@
           }
         }
       },
+      startSearch(chooseTab){
+        if(chooseTab == 4) {
+          if(this.officeDormitoryChoosed == 0){
+            this.searchOffice_visiable= true
+          }else{
+            this.searchDormitory_visiable = true
+          }
+        }
+      },
       closeAddOffice(val){
         this.addOffice_visiable = val
       },
       closeAddDormitory(val){
         this.addDormitory_visiable = val
+      },
+      closeSearchOffice(val){
+        this.searchOffice_visiable = val
+      },
+      closeSearchDormitory(val){
+        this.searchDormitory_visiable = val
       },
       officeDormitoryChoose(val){
         this.officeDormitoryChoosed = val
