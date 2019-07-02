@@ -55,13 +55,15 @@ export default {
       this.staffModule = true
     },
     hidden (ids, names, arr) {
+      // console.log('ids', ids,'names', names)
       this.post_name = names
       this.post_id = ids
       this.staffModule = false
     },
     handleUrgedDeal () {
       let option = {
-        work_order_id: this.moduleData.id,
+        work_order_id: this.moduleData.work_order_id,
+        uid: this.post_id ?this.post_id[0] : this.moduleData.uid,
         user: this.post_name,
         content: this.post_note
       }
