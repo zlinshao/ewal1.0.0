@@ -6,8 +6,8 @@
       </div>
       <div class='dialog_main'>
         <el-table :data="table" height="480px" highlight-current-row header-row-class-name="tableHeader" style="width: 100%">
-          <el-table-column align="center" prop="create_time" label="应付时间"></el-table-column>
-          <el-table-column align="center" prop="operate_time" label="实付时间"></el-table-column>
+          <el-table-column align="center" prop="pay_date" label="应付时间"></el-table-column>
+          <el-table-column align="center" prop="complete_date" label="实付时间"></el-table-column>
           <el-table-column align="center" :label="moduleData.contract_type == 1 ?'应付金额':'应收金额'">
              <template slot-scope="scope">
               <span>{{moduleData.contract_type == 1 ? scope.row.amount_payable : scope.row.amount_receivable }}</span>
@@ -58,7 +58,6 @@ export default {
       this.$emit('close', true)
     },
     getData () {
-      console.log('this.moduleData', this.moduleData);
       let param = {
         contract_id: this.moduleData.contract_id,
         contract_type: this.moduleData.contract_type,
