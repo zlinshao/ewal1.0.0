@@ -113,27 +113,27 @@ export default {
       reimburse_type: {
         reimburse_water: '报销类型', // 水费
         reimburse_water_money: '报销金额',
-        water_album: '报销图片',
+        water_album: '报销水图片',
         reimburse_water_content: '报销备注',
         reimburse_electricity: '报销类型', //   电费
         reimburse_electricity_money: '报销金额',
-        electricity_album: '报销图片',
+        electricity_album: '报销电图片',
         reimburse_electricity_content: '报销备注',
         reimburse_gas: '报销类型', //  燃气费
         reimburse_gas_money: '报销金额',
-        gas_album: '报销图片',
+        gas_album: '报销燃气图片',
         reimburse_gas_content: '报销备注',
         reimburse_property: '报销类型', //  物业费
         reimburse_property_money: '报销金额',
-        property_album: '报销图片',
+        property_album: '报销物业费图片',
         reimburse_property_content: '报销备注',
         reimburse_service: '报销类型', //  维修费
         reimburse_service_money: '报销金额',
-        service_album: '报销图片',
+        service_album: '报销维修图片',
         reimburse_service_content: '报销备注',
         reimburse_other: '报销类型', //  其他
         reimburse_other_money: '报销金额',
-        other_album: '报销图片',
+        other_album: '报销其他图片',
         reimburse_other_content: '报销备注',
         reimbursement: '报销人'
       },
