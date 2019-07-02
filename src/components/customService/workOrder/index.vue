@@ -195,7 +195,8 @@ export default {
       urgedDeal_visible: false,// 催办
       urgedDeal_info: {
         work_order_id: '',
-        default_Person: ''
+        default_Person: '',
+        uid: ''
       },
       createOrder_visible: false, //创建新工单 
       sureEnding_visible: false, // 确定结束
@@ -305,7 +306,8 @@ export default {
     handleCuiBan (row) {
       this.urgedDeal_info = {
         work_order_id: row.id,
-        default_Person: row.create_name || row.operate_user_name
+        default_Person: row.create_name || row.operate_user_name,
+        uid: row.creator_id ||row.operate_user_id
       }
       this.urgedDeal_visible = true
       this.currentRow = row
@@ -315,8 +317,9 @@ export default {
       this.urgedDeal_visible = false
       this.urgedDeal_info = {
         work_order_id: '',
-        default_Person: ''
-      }
+        default_Person: '',
+        uid: ''
+              }
     },
     // 删除
     handleDeleteRow (row) {

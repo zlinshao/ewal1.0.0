@@ -58,21 +58,24 @@ export default {
       this.$emit('close', true)
     },
     getData () {
+      console.log('this.moduleData', this.moduleData);
       let param = {
         contract_id: this.moduleData.contract_id,
-        contract_type: this.moduleData.contract_type
+        contract_type: this.moduleData.contract_type,
+        page: this.page,
+        limit:10,
       }
-      this.$http.get(`${this.market_server}v1.0/csd/work_order/financeRunning`, param).then(res => {
+      this.$http.get(`${this.market_server}/v1.0/csd/work_order/financeRunning`, param).then(res => {
         if (res.code === 200) {
-          let running = res.data.running;
-          this.table = this.moduleData.contract_type == 1 ? running.receive : running.payable
-          // this.tableCount = res.data.all_count
+          // let running = res.data.data;
+          this.table = res.data.data
+          this.tableCount = res.data.count
 
         }
       })
     },
     handleFinancialCurrentPage (val) {
-      this.page = Val
+      this.page = val
       this.getData()
     }
   }

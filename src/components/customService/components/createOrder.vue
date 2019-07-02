@@ -16,9 +16,7 @@
                       disabled>
                     <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='customer_search'
                       v-on:keyup.enter='addOrder_search' @input='input_Search' v-else>
-                      
                   </div> -->
-
                   <div class='el-input'>
                     <!-- <input type="text" class="el-input__inner" v-model='createOrder.house_name' v-if='createOrder.house_name'
                       disabled> -->
@@ -31,7 +29,6 @@
 
               <el-col :span="moduleOrder == 78? 6 : createOrder_span">
                 <p class='el-col-p'><i class='icon type'></i><span>工单类型</span></p>
-
                 <!-- 维修保洁中的创建工单 -->
                 <div class='input_box' v-if='moduleOrder == 78'>
                   <el-radio v-model="createOrder.type" label="7">维修</el-radio>
@@ -44,9 +41,7 @@
                     </el-option>
                   </el-select>
                 </div>
-
               </el-col>
-
               <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type == 11'>
                 <p class='el-col-p'><i class='icon comtype'></i><span>投诉类型</span></p>
                 <div class='input_box'>
@@ -145,7 +140,6 @@
                   <OrgChoose v-model='createOrder.operate_org.id'></OrgChoose>
                 </div>
               </el-col>
-
               <el-col :span="moduleOrder == 78? 6 : createOrder_span">
                 <p class='el-col-p'><i class='icon phone'></i><span>回复电话</span></p>
                 <div class='input_box'>
@@ -455,7 +449,7 @@
 
 <script>
 import LjDialog from '../../common/lj-dialog.vue';
-import StaffOrgan from '../../common/staffOrgan.vue'
+import StaffOrgan from '../../common/lightweightComponents/origin/staffOrgan.vue'
 import DepartOrgan from '../../common/departOrgan';
 import Ljupload from '../../common/lightweightComponents/lj-upload'
 import RecordeDialog from './recorde-dialog';
@@ -706,6 +700,7 @@ export default {
         auth_photo: '委托书照片',
         deposit_photo: '押金照片',
         promise: '承诺书照片',
+        house_video: '房屋影像',
         property_photo: '房产证',
         water_card_photo: '水卡',
         electricity_card_photo: '电卡',
@@ -1149,9 +1144,9 @@ export default {
        if (!this.chosenCustomer || !this.chosenCustomer.contract_number) {
         return '合同不能为空'
       }
-      if (!this.createOrder || !this.createOrder.operate_org.id) {
-        return '部门不能为空'
-      }
+      // if (!this.createOrder || !this.createOrder.operate_org.id) {
+      //   return '部门不能为空'
+      // }
       return warning
     },
     createMaintence () { // 创建维修保洁
