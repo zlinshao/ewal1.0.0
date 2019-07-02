@@ -18,7 +18,7 @@
                 </el-form-item>
 
                 <el-form-item :label='detail_form.type == 7 ? "维修方":"保洁方"' v-if='detail_form.type == 7 || detail_form.type == 8'>
-                  <el-input :value="detail_form.send_order_type == 1 ? '内部保修':(detail_form.send_order_type == 2 ? '维修公司':'维修师傅')"
+                  <el-input :value="detail_form.send_order_type == 1 ? '内部员工':(detail_form.send_order_type == 2 ? '维修公司':'维修师傅')"
                     type="text" disabled>
                   </el-input>
                 </el-form-item>
@@ -145,7 +145,7 @@ export default {
       default_type: {
         replay_phone: '回复电话',
         emergency_name: '紧急程度',
-        finish_time: '截止时间',
+        expected_finish_time: '截止时间',
         content: '工单内容'
       },
       currentType: null,

@@ -247,7 +247,7 @@ export default {
         follow_status: this.chooseTab,
         search: this.searchParams.search,
         create_time: this.searchParams.create_time,
-        finish_time: this.searchParams.end_time,
+        follow_time: this.searchParams.end_time,
         operate_user_id: this.searchParams.staff,
         operate_org_id: this.searchParams.department,
         emergency: this.searchParams.emergency,
