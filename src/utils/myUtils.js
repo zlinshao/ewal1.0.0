@@ -112,6 +112,14 @@ class myUtils {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
   }
 
+  /**判断是否为空对象 */
+  static isNullObject(obj) {
+    let keyArr = Object.keys(obj)
+    if (keyArr.length === 0) {
+      return true
+    }
+    return false
+  }
 }
 
 

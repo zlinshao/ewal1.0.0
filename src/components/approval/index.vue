@@ -25,7 +25,7 @@
 
 <script>
   import ReportApproval from './commponents/reportApproval'
-  import OfficeApproval from './commponents/officeApproval'
+  import OfficeApproval from './commponents/offigiceApproval'
 
   export default {
     components: {
