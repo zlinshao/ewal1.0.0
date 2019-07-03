@@ -205,14 +205,13 @@
                 ...this.salary_form,
                 more_data: [
                   {key: '申请人', value: name},
-                  {key: '原有薪资', value: old_salary},
                   {key: '所属部门', value: org},
-                  {key: '期望调整薪资', value: salary},
                   {key: '入职日期', value: enroll},
+                  {key: '原有薪资', value: old_salary},
+                  {key: '期望调整薪资', value: salary},
                   {key: '实施日期', value: date},
                   {key: '申请理由', value: reason},
-                  {key: '备注', value: remark},
-                  // {key: '附件', value: attachment}
+                  {key: '备注', value: remark}
                 ]
               }
               this.$http.post(this.addUrl, data)

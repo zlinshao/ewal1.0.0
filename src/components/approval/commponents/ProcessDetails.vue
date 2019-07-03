@@ -8,7 +8,7 @@
           <h3>{{base_info.title}}</h3>
         </div>
         <div class="dialog_main borderNone">
-          <div class="process-details">
+          <div class="process-details scroll_bar">
             <div class="process-top-box" v-for="(assignee,index) in assigneeArr" :key="index">
               <div class="process-top-left">
                 <span class="process-left-label">处理人</span>
@@ -19,6 +19,7 @@
                 <span>{{assignee.org_name}}</span>
               </div>
             </div>
+
             <div class="process-details-box">
               <!--      左侧标题-->
               <div class="left-title">
@@ -41,13 +42,45 @@
                                     size="normal"
                                     color="#686874"
                                     :hide-timestamp="true">
+                    <!--                    发起人信息-->
                     <div class="approval-timeline">
-                      <p class="timeline-text">
-
-                      </p>
-                      <div>
-
+                      <div class="avatar-img">
+                        <img v-if="base_info.user.avatar"
+                             :src="base_info.user.avatar">
+                        <img v-else
+                             src="../../../assets/image/no_avatar.png">
                       </div>
+                      <div class="timeline-info">
+                        <div class="timeline-top">
+                          <p class="avatar-name">
+                            {{base_info.user.name?base_info.user.name:''}}
+                          </p>
+                          <!--                          审核中-->
+                          <!--                          <p :class="['timeline-result',activity.result?'result-agree':'result-check']">-->
+                          <!--                            {{activity.result?activity.result:'审核中'}}-->
+                          <!--                          </p>-->
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="approval-base-info">
+                      <p class="base-info-text">
+                        <span class="base-info-text-left">审批编号</span>：
+                        <span>{{row.code}}</span>
+                      </p>
+                      <!--                      信息详情-->
+                      <p class="base-info-text"
+                         v-for="(item_data,index) in base_info.data.more_data" :key="index">
+                        <span class="base-info-text-left">{{item_data.key}}</span>：
+                        <span>{{item_data.value}}</span>
+                      </p>
+
+                      <!--                      附件-->
+                      <p class="base-info-attachment">
+                        <span class="base-info-text-left">附件</span>：
+                        <!--                        附件 下载                     -->
+                        <lj-upload :view-file="base_info.attachment" size="40" :disabled="true"></lj-upload>
+                      </p>
                     </div>
                   </el-timeline-item>
                   <!--                  审批信息-->
@@ -59,14 +92,17 @@
                                     :hide-timestamp="true">
                     <div class="approval-timeline">
                       <div class="avatar-img">
-                        <img :src="activity.user.avatar?activity.user.avatar:'../../assets/image/no_avatar.png'">
+                        <img v-if="activity.user && activity.user.avatar"
+                             :src="activity.user && activity.user.avatar">
+                        <img v-else
+                             src="../../../assets/image/no_avatar.png">
                       </div>
 
 
                       <div class="timeline-info">
-                        <div class="timeline-top">
+                        <div class="timeline-top" v-if="activity.user">
                           <p class="avatar-name">
-                            {{activity.user.name?activity.user.name:''}}
+                            {{(activity.user && activity.user.name)?activity.user.name:''}}
                           </p>
                           <p :class="['timeline-result',activity.result?'result-agree':'result-check']">
                             {{activity.result?activity.result:'审核中'}}
@@ -152,11 +188,34 @@
             btn_key: "agree",
           },
         ],
-        activities: [],
-        base_info: {},
+        activities: [
+          {
+            user: {
+              avatar: '',
+              name: '',
+            }
+          }
+        ],
+        base_info: {
+          attachment: [],
+          data: {
+            more_data: []
+          },
+          user: {
+            avatar: "",
+            name: "",
+            result: "",
+            time: "",
+          }
+        },
         base_info_arr: [],
         /**处理人 */
-        assigneeArr: [],
+        assigneeArr: [
+          {
+            name: '',
+            org_name: ''
+          }
+        ],
         url
       }
     },
@@ -202,12 +261,18 @@
                 org_name: org[0].name
               }
               this.assigneeArr.push(assigneeObj)
+            } else {
+              this.assigneeArr = [
+                {
+                  name: '',
+                  org_name: ''
+                }
+              ]
             }
           })
       },
       /**获取处理人信息*/
       getHandleUser(row) {
-
         this.assigneeArr = []
         /**任务*/
         if (row.assignee) {

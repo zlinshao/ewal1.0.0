@@ -41,7 +41,8 @@
 
                   <el-form-item required prop="now_org" label="晋升后部门">
                     <org-choose width="220" num="1" :disabled="false" title="必填" :show-icon="false"
-                                v-model="promotion_form.now_org">
+                                v-model="promotion_form.now_org"
+                                ref="orgChoose">
                     </org-choose>
                   </el-form-item>
 
@@ -228,14 +229,13 @@
                 more_data: [
                   {key: '申请人', value: name},
                   {key: '入职时间', value: enroll},
-                  {key: '原有薪资', value: old_salary},
                   {key: '所属部门', value: org},
-                  {key: '晋升后部门', value: ''},
+                  {key: '原有薪资', value: old_salary},
+                  {key: '晋升后部门', value: this.$refs.orgChoose.org_name.join(' ')},
                   {key: '晋升后薪资', value: now_salary},
                   {key: '所属岗位', value: position},
                   {key: '晋升原因', value: change_reason},
-                  {key: '交接单', value: change_receipt},
-                  {key: '附件', value: attachment},
+                  {key: '交接单', value: change_receipt}
                 ]
               }
               this.$http.post(this.addUrl, data)

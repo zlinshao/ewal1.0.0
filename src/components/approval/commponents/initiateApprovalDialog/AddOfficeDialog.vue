@@ -73,6 +73,7 @@
 
                   <el-form-item required prop="user_list" label="入住人员名单">
                     <user-choose width="220" :disabled="false" title="必填" :show-icon="false"
+                                 ref="userListStay"
                                  v-model="add_office_form.user_list">
                     </user-choose>
                   </el-form-item>
@@ -246,8 +247,8 @@
           .validate((valid) => {
             if (valid) {
               this.add_office_form.date = this.myUtils.formatDate(this.add_office_form.date, 'yyyy-MM-dd');
-              let {house_type,date} = this.add_office_form
-              let {name,org} = this.user_info
+              let {house_type, date, reason, attachment} = this.add_office_form
+              let {name, org} = this.user_info
               let data = {
                 ...this.add_office_form,
                 // user_id: this.user_info.user_id,
@@ -259,14 +260,13 @@
                 }],
                 more_data: [
                   {key: '申请人', value: name},
+                  {key: '所属部门', value: org},
+                  {key: '申请日期', value: date},
                   {key: '办公室/宿舍', value: this.house_type[house_type]},
                   {key: '租金', value: this.rent},
-                  {key: '所属部门', value: org},
                   {key: '申请地址', value: this.house_info.name},
                   {key: '片区经理', value: this.org_leader.name},
-                  {key: '申请日期', value: date},
-                  {key: '房型', value: this.roomType},
-                  {key: '入住人员名单', value: this.roomType}
+                  {key: '申请原因', value: reason}
                 ]
               }
               this.$http.post(this.addUrl, data)
