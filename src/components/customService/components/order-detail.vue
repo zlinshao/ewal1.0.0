@@ -164,7 +164,7 @@ export default {
       }
     },
     moduleData (val) {
-      console.log('val------------',val);
+      // console.log('val------------',val);
       this.currentRow = val.currentRow
     },
     chooseTab (val){
