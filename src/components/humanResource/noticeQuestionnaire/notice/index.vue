@@ -3,7 +3,10 @@
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
         <!--        <div class="icons-font" @click="showPublishNoticeDialog"><b>发公告</b></div>-->
-        <div class="icons add" @click="showPublishNoticeDialog"><b>+</b></div>
+        <el-tooltip content="发公告" placement="top" :visible-arrow="false">
+          <div class="icons add" @click="showPublishNoticeDialog"><b>+</b></div>
+        </el-tooltip>
+
         <!--<div class="icons add" @click="publish_notice_dialog_visible = true"><b>+</b></div>-->
       </div>
 
@@ -14,7 +17,6 @@
         :data="tableData"
         highlight-current-row
         :height="this.mainListHeight(30) + 'px'"
-        :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         @row-dblclick="tableDblClick"
@@ -80,6 +82,7 @@
     <lj-dialog
       :visible.sync="publish_notice_dialog_visible"
       :size="{width: 530 + 'px',height: 650 + 'px'}"
+      @close="initForm()"
     >
       <div class="dialog_container">
         <div class="dialog_header">
@@ -607,6 +610,11 @@
       showPublishNoticeDialog() {
         this.publish_notice_dialog_title = '发布公告';
         this.publish_notice_dialog_visible = true;
+        this.initForm();
+      },
+
+      //初始化form表单
+      initForm() {
         this.publish_notice_form = {
           type_id: null,//公告类型id
           title: '',//标题
@@ -624,7 +632,6 @@
               pay_status: 1
             }
           ],
-
         };
       },
 

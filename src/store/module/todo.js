@@ -187,9 +187,15 @@ const todo = {
   // 计算属性
   getters: {
     //refresh_todo_list_getter: state => state.refresh_todo_list
-    refresh_todo_list_getter: (state) => () => {
+    refresh_todo_list: state => {
       return state.refresh_todo_list;
-    }
+    },
+    todo_list_current_selection: state =>  {//当前选中数据
+      return state.todo_list_current_selection;
+    },
+    humanResource_attence_visible: state => {//考勤代办
+      return state.humanResource_attence_visible;
+    },
   },
   // 函数声明
   mutations: {
