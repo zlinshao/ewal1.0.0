@@ -137,7 +137,7 @@
                 </el-col>
                 <el-col :span="8" v-if="contractDetailData.is_agency && contractDetailData.is_agency === 1">
                   <el-form-item label="渠道费">
-                    <span>{{ contractDetailData.agency_info && contractDetailData.agency_info.agency_price_now || '/'}}</span>
+                    <span>{{ contractDetailData.agency_info && contractDetailData.agency_info.agency_price || '/'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" v-if="contractDetailData.is_agency && contractDetailData.is_agency === 1">
