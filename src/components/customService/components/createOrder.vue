@@ -16,9 +16,7 @@
                       disabled>
                     <input type="text" placeholder="地址/合同编号/手机号/客户姓名" class="el-input__inner" v-model='customer_search'
                       v-on:keyup.enter='addOrder_search' @input='input_Search' v-else>
-                      
                   </div> -->
-
                   <div class='el-input'>
                     <!-- <input type="text" class="el-input__inner" v-model='createOrder.house_name' v-if='createOrder.house_name'
                       disabled> -->
@@ -31,7 +29,6 @@
 
               <el-col :span="moduleOrder == 78? 6 : createOrder_span">
                 <p class='el-col-p'><i class='icon type'></i><span>工单类型</span></p>
-
                 <!-- 维修保洁中的创建工单 -->
                 <div class='input_box' v-if='moduleOrder == 78'>
                   <el-radio v-model="createOrder.type" label="7">维修</el-radio>
@@ -44,9 +41,7 @@
                     </el-option>
                   </el-select>
                 </div>
-
               </el-col>
-
               <el-col :span="moduleOrder == 78? 6 : createOrder_span" v-if='createOrder.type == 11'>
                 <p class='el-col-p'><i class='icon comtype'></i><span>投诉类型</span></p>
                 <div class='input_box'>
@@ -145,7 +140,6 @@
                   <OrgChoose v-model='createOrder.operate_org.id'></OrgChoose>
                 </div>
               </el-col>
-
               <el-col :span="moduleOrder == 78? 6 : createOrder_span">
                 <p class='el-col-p'><i class='icon phone'></i><span>回复电话</span></p>
                 <div class='input_box'>
@@ -268,7 +262,7 @@
                     </div>
                   </div>
                   <el-pagination @current-change="handleCustomerChange" :current-page="customer_info.page" layout="total,  prev, pager, next, jumper"
-                    :total="customer_info.count" v-if='customer_info.count > 0'>
+                    :total="customer_info.count" v-if='customer_info.count > 0'  :page-size="5">
                   </el-pagination>
                 </div>
 
@@ -320,7 +314,7 @@
                         </div>
                         <div>
                           <span class='tit'>回访状态</span>
-                          <span class="content_tit">{{customer_info.contract_Detail.is_connect ?'已回访':'未回访'}}</span>
+                          <span class="content_tit">{{customer_info.contract_Detail.revisit_id!==null && customer_info.contract_Detail.revisit_id!=='' ?'已回访':'未回访'}}</span>
                         </div>
                         <div class='contract_img_box'>
                           <span class='tit'>其他附件</span>
@@ -455,7 +449,7 @@
 
 <script>
 import LjDialog from '../../common/lj-dialog.vue';
-import StaffOrgan from '../../common/staffOrgan.vue'
+import StaffOrgan from '../../common/lightweightComponents/origin/staffOrgan.vue'
 import DepartOrgan from '../../common/departOrgan';
 import Ljupload from '../../common/lightweightComponents/lj-upload'
 import RecordeDialog from './recorde-dialog';
@@ -564,7 +558,7 @@ export default {
           value: 9
         },
         {
-          label: '求组',
+          label: '求租',
           value: 10
         },
         {
@@ -706,6 +700,7 @@ export default {
         auth_photo: '委托书照片',
         deposit_photo: '押金照片',
         promise: '承诺书照片',
+        house_video: '房屋影像',
         property_photo: '房产证',
         water_card_photo: '水卡',
         electricity_card_photo: '电卡',
@@ -926,7 +921,6 @@ export default {
     // 历史工单搜索
     history_search () {
       if (this.chosenCustomer) {
-        // console.log('this.chosenCustomer', this.chosenCustomer)
         let history = {
           type: 0,
           page: this.history_info.page,
@@ -945,7 +939,7 @@ export default {
     // 来电记录
     temporary_search () {
       if (this.chosenCustomer) {
-        this.$http.get(`${this.market_server}v1.0/csd/revisit/${this.chosenCustomer.contract_type}/${this.chosenCustomer.contract_id}`).then(res => {
+        this.$http.get(`${this.market_server}/v1.0/csd/udesk/calllog/${this.chosenCustomer.contract_type}/${this.chosenCustomer.contract_id}`).then(res => {
           if (res.code === 200) {
             this.temporaryRecord.data = res.data.data
             this.temporaryRecord.dataCount = res.data.all_count || 0
@@ -1058,6 +1052,7 @@ export default {
       this.chosenCustomer = null
       this.customer_search = ''
     },
+    
     checkOutWarn () {
       let warning = null
       if (!this.createOrder.house_name) {
@@ -1132,8 +1127,9 @@ export default {
 
       if (!this.createOrder.next_follow_time) {
         return '截止时间未选择'
+      } else  if(this.createOrder.next_follow_time< this.format(new Date(), "yyyy-MM-dd")){
+        return '截止时间不小于当前日期'
       }
-
       if (!this.createOrder.content) {
         return '工单内容未填写'
       }
@@ -1141,6 +1137,12 @@ export default {
       if (this.createOrder.type != 1 && this.createOrder.album.length == 0) {
         return '图片未上传'
       }
+       if (!this.chosenCustomer || !this.chosenCustomer.contract_number) {
+        return '合同不能为空'
+      }
+      // if (!this.createOrder || !this.createOrder.operate_org.id) {
+      //   return '部门不能为空'
+      // }
       return warning
     },
     createMaintence () { // 创建维修保洁
@@ -1148,7 +1150,7 @@ export default {
         house_id: this.chosenCustomer.house_id,
         house_name: this.chosenCustomer.house_name,
         contract_id: this.chosenCustomer.contract_id,
-        contract_num: this.chosenCustomer.contract_num,
+        contract_num: this.chosenCustomer.contract_number,
         contract_type: this.chosenCustomer.contract_type,
         type: this.createOrder.type,
         type_name: this.createOrder.type == 7 ? "维修" : "保洁",
@@ -1224,10 +1226,11 @@ export default {
         operate_user_id: this.createOrder.operate_user.id,
         operate_user_name: this.createOrder.operate_user.name,
         operate_org_id: this.createOrder.operate_org.id,
+        operate_org_name: this.createOrder.operate_org.name,
         replay_phone: this.createOrder.replay_phone,
         emergency: this.createOrder.emergency,
         contract_id: this.chosenCustomer.contract_id,
-        contract_num: this.chosenCustomer.contract_num,
+        contract_num: this.chosenCustomer.contract_number,
         contract_type: this.chosenCustomer.contract_type,
         complained_user_id: this.createOrder.complained_user.id,
         complained_user_name: this.createOrder.complained_user.name,
@@ -1315,6 +1318,21 @@ export default {
       })
 
     },
+     format(date, fmt) {
+                let o = {
+                    "M+": date.getMonth() + 1, //月份
+                    "d+": date.getDate(), //日
+                    "H+": date.getHours(), //小时
+                    "m+": date.getMinutes(), //分
+                    "s+": date.getSeconds(), //秒
+                    "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+                    "S": date.getMilliseconds() //毫秒
+                };
+                if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+                for (let k in o)
+                    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                return fmt;
+            },
     // 财务记录 关闭
     handkeCloseFinancial () {
       this.financial_visible = false

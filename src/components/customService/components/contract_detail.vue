@@ -174,7 +174,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="资料补齐时间">
-                    <span>{{ contractDetail.dataTime || '--'}}</span>
+                    <span>{{ contractDetail.date_time || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -184,7 +184,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="备注条款">
-                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.remark_terms || '--'}}</span>
+                    <span>{{contractDetail.remark_clause || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">

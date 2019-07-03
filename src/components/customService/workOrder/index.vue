@@ -30,43 +30,43 @@
         </el-table-column>
          <el-table-column show-overflow-tooltip label="创建时间" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.create_time || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.create_time || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="工单编号" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.num || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.num || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" v-for='item in Object.keys(tableShowData)' :key='item' :prop='item' :label="tableShowData[item]"></el-table-column>
 <el-table-column show-overflow-tooltip label="地址" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.house_name || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.house_name || '--'}}</span>
           </template>
         </el-table-column>
          <el-table-column show-overflow-tooltip label="内容" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.content || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.content || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="截止时间" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.expected_finish_time || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.expected_finish_time || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="处理人" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.operate_user_name || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.operate_user_name || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="创建人" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.create_name || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.create_name || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip label="部门" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.operate_org_name || '--'}}</span>
+            <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{scope.row.operate_org_name || '--'}}</span>
           </template>
         </el-table-column>
         <el-table-column v-if="$storage.get('VALIDATE_PERMISSION')['Order-Operate']" width="180" align="center" label="操作">
@@ -92,7 +92,7 @@
     <!-- 新建工单 -->
     <CreateOrder :visible='createOrder_visible' @close="handleCloseOrder" />
     <!-- 工单详情 -->
-    <OrderDetail :visible="detail_visible" @close="handleCloseDetail" :moduleData='detail_info' :change='detail_Record_change'
+    <OrderDetail :visible="detail_visible" @close="handleCloseDetail" :chooseTab='chooseTab' :moduleData='detail_info' :change='detail_Record_change'
       @changDetail="handleChangeDetail" />
     <!--新增跟进记录-->
     <AddRecord :visible='followRecord_visible' :moduleData='followRecord_info' @close='handleCloseRecord' />
@@ -195,7 +195,8 @@ export default {
       urgedDeal_visible: false,// 催办
       urgedDeal_info: {
         work_order_id: '',
-        default_Person: ''
+        default_Person: '',
+        uid: ''
       },
       createOrder_visible: false, //创建新工单 
       sureEnding_visible: false, // 确定结束
@@ -246,7 +247,7 @@ export default {
         follow_status: this.chooseTab,
         search: this.searchParams.search,
         create_time: this.searchParams.create_time,
-        finish_time: this.searchParams.end_time,
+        follow_time: this.searchParams.end_time,
         operate_user_id: this.searchParams.staff,
         operate_org_id: this.searchParams.department,
         emergency: this.searchParams.emergency,
@@ -295,7 +296,7 @@ export default {
     // 关闭 添加工单
     handleCloseOrder (params) {
       let { visible, method } = params;
-      console.log('3333333333333333333333', visible, method)
+      // console.log('3333333333333333333333', visible, method)
       this.createOrder_visible = false;
       if (method != 'cancle') {
         this.getDataList()
@@ -305,7 +306,8 @@ export default {
     handleCuiBan (row) {
       this.urgedDeal_info = {
         work_order_id: row.id,
-        default_Person: row.create_name || row.operate_user_name
+        default_Person: row.create_name || row.operate_user_name,
+        uid: row.creator_id ||row.operate_user_id
       }
       this.urgedDeal_visible = true
       this.currentRow = row
@@ -315,8 +317,9 @@ export default {
       this.urgedDeal_visible = false
       this.urgedDeal_info = {
         work_order_id: '',
-        default_Person: ''
-      }
+        default_Person: '',
+        uid: ''
+              }
     },
     // 删除
     handleDeleteRow (row) {
@@ -355,6 +358,7 @@ export default {
         currentRow: this.currentRow
       }
       this.detail_visible = true;
+      // console.log(' this.detail_visible',  this.detail_visible);
       if (this.chooseTab == 337) {
         this.getDoingCount()
       }
@@ -379,11 +383,16 @@ export default {
         }
         this.followRecord_visible = true
       }
-
+      console.log('type------', type)
       if (type == "close") {
-        this.detail_visible = false
         this.currentRow = null
         this.detail_form = null
+        this.detail_info={
+          currentId: '',
+        chosenTag: {},
+        currentRow: {}
+        };
+        this.detail_visible = false
       }
     },
     // 转交
@@ -414,14 +423,20 @@ export default {
         flag: isCreated ? 1 : 0
       }
       this.$http.post(`${this.market_server}v1.0/csd/work_order/finish`, option).then(res => {
-        this.$LjNotify('success', {
+        if (res.code === 200) {
+          this.getDataList()
+          this.detail_visible=false
+          this.detail_Record_change = true
+           this.$LjNotify('success', {
+          title: '提示',
+          message: res.message
+        });
+        }else {
+           this.$LjNotify('warning', {
           title: '提示',
           message: res.message
         });
 
-        if (res.code === 200) {
-          this.getDataList()
-          this.detail_Record_change = true
         }
       })
     },
