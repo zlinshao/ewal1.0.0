@@ -58,7 +58,7 @@
             }
         },
         mounted() {
-          this.getSubjectList('all');
+          // this.getSubjectList('all');
         },
         watch: {
           visible(val) {

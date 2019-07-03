@@ -83,7 +83,7 @@
           </el-row>
 
           <el-row :gutter="5" class='add_record_form' v-if='recordFree == 1'>
-            <el-col v-if="recordOption.is_connect==1" :span='12' v-for='(feiyong,index) in other_free' :key='"feiyong" + index'>
+            <el-col v-if="recordOption.is_connect==1" :span='12' v-for='(feiyong,index) in other_fee' :key='"feiyong" + index'>
               <el-row :gutter="15">
                 <el-col :span="12" class='feiyong'>
                   <p><i class='icon'></i>费用名称</p>
@@ -453,7 +453,7 @@ export default {
         data_check_result:null,//信息审核
         doubt_reason:'',//存疑原因
       },
-      other_free: [{
+      other_fee: [{
         name: null,
         money: null
       }],
@@ -614,13 +614,13 @@ export default {
       })
     },
     addFeiyong () {
-      this.other_free.push({
+      this.other_fee.push({
         name: '',
         money: ''
       })
     },
     delFeiyong (index) {
-      this.other_free.splice(index, 1)
+      this.other_fee.splice(index, 1)
     },
     vailRecord () {
       let { is_connect, from, star, record, is_agency_order } = this.recordOption
@@ -628,6 +628,8 @@ export default {
        if(is_agency_order == '1' ) {
           if(!this.recordOption.data_check_result){
              return '信息审核必填'
+          } else if(this.recordOption.data_check_result=='doubt' && !this.recordOption.doubt_reason){
+              return '存疑原因必填'
           }
         }
       if (is_connect == 1) {
@@ -635,8 +637,8 @@ export default {
         if (!this.recordFree) return '是否收取其他费用未选择'
         if (star == 0) return '满意度未选择,满意度至少一分'
         if (this.recordFree == 1) {
-          for (let i = 0; i < this.other_free.length; i++) {
-            let el = this.other_free[i]
+          for (let i = 0; i < this.other_fee.length; i++) {
+            let el = this.other_fee[i]
             if (!el.name) return '费用名称未填写'
             if (!el.money) return '费用金额未填写'
             if(isNaN(el.money)) return "请输入正确的金额";
@@ -675,9 +677,9 @@ export default {
       let recordOption = this.recordOption;
       recordOption.contract_type = this.chooseTab;
       if (this.recordFree == 1) {
-        recordOption.other_free = this.other_free;
+        recordOption.other_fee = this.other_fee;
       } else {
-        recordOption.other_free = '';
+        recordOption.other_fee = '';
       }
       recordOption.status=status;
       this.$http.post(this.url + 'v1.0/csd/revisit', recordOption).then(res => {
@@ -713,7 +715,7 @@ export default {
         star: null,
         record: '',
       }
-      this.other_free = [{
+      this.other_fee = [{
         name: null,
         money: null
       }]

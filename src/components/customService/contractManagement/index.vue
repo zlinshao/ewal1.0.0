@@ -338,7 +338,7 @@
               <el-row :gutter="10">
                 <el-col :span="8">
                   <el-form-item label="签约时间">
-                    <span class="form-item-content">{{ contractDetail.sign_at }}</span>
+                    <span class="form-item-content">{{ contractDetail.sign_at ? contractDetail.sign_at.substring(0,10) : "" }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -357,17 +357,17 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="押金(元)">
-                    <span class="form-item-content">{{ contractDetail.deposit_payed || '/'}}</span>
+                    <span class="form-item-content">{{ contractDetail.mortgage_price || '/'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="合同开始时间">
-                    <span class="form-item-content">{{ contractDetail.start_at || '/'}}</span>
+                    <span class="form-item-content">{{ contractDetail.start_at ? contractDetail.start_at.substring(0,10) :'/'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="合同结束时间">
-                    <span class="form-item-content">{{ contractDetail.end_at || '/'}}</span>
+                    <span class="form-item-content">{{ contractDetail.end_at ? contractDetail.end_at.substring(0,10) :'/'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -386,8 +386,8 @@
                     <!--收有 租没-->
                     <!--"first_pay_at": "2017-12-25 00:00:00",//第一次打款日期-->
                     <!--"second_pay_at": "2018-03-25 00:00:00",//第二次打款日期-->
-                    <span class="form-item-content" v-if="contractDetail.first_pay_at ">第一次：{{ contractDetail.first_pay_at || '/' }}</span><br>
-                    <span class="form-item-content" v-if="contractDetail.second_pay_at">第二次：{{ contractDetail.second_pay_at || '/' }}</span>
+                    <span class="form-item-content" v-if="contractDetail.first_pay_at ">第一次：{{ contractDetail.first_pay_at ? contractDetail.first_pay_at.substring(0,10) :'/' }}</span><br>
+                    <span class="form-item-content" v-if="contractDetail.second_pay_at">第二次：{{ contractDetail.second_pay_at  ?contractDetail.second_pay_at.substring(0,10) :'/' }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" v-if="chooseTab === 1">
@@ -401,15 +401,15 @@
                     <!--收有 租没-->
                   </el-form-item>
                 </el-col>
-                <el-col :span="8" v-if="chooseTab === 1">
+               <el-col :span="8" v-if="chooseTab === 1">
                   <el-form-item label="可否装修">
                     <!--收有 租没-->
-                    <!--decorate_allow-->
+                    <span class="form-item-content">{{ (contractDetail.lease_collect &&contractDetail.lease_collect.can_decorate===1) ? '是' : '否'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="可否添加物品">
-
+                    <span class="form-item-content">{{ (contractDetail.lease_collect &&contractDetail.lease_collect.can_add_goods===1) ? '是' : '否'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -424,7 +424,7 @@
                 </el-col>
                 <el-col :span="8" v-if="contractDetail.is_agency && contractDetail.is_agency === 1">
                   <el-form-item label="渠道费">
-                    <span class="form-item-content">{{ contractDetail.agency_info && contractDetail.agency_info.agency_price_now || '/'}}</span>
+                    <span class="form-item-content">{{ contractDetail.agency_info && contractDetail.agency_info.agency_price || '/'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" v-if="contractDetail.is_agency && contractDetail.is_agency === 1">
@@ -765,7 +765,7 @@ export default {
         checkout_photo: '退租交接单照片',
         checkout_settle_photo: '退租结算照片',
         water_card_photo: '水卡照片',
-        property_photo: '物业照片',
+        property_photo: '房产证照片',
         house_video:'房屋影像',
       },
       //添加标记
@@ -829,7 +829,7 @@ export default {
         {
           checkin_photo: '交接单照片',
           certificate_photo: '截图凭证',
-          deposit_photo: '押金收条',
+          deposit_photo: '押金照片',
           identity_photo: '证件照片',
           photo: '合同照片',
           bank_photo: '银行卡照片',
@@ -1286,20 +1286,20 @@ export default {
       })
     },
     handleConfirmPolishing () {
-      if (!this.polishing_data_form.property_number) {
-        this.$LjNotify('warning',{
-          title: '警告',
-          message: '请输入房产证号'
-        });
-        return false;
-      }
-      if (!this.polishing_data_form.mound_number) {
-        this.$LjNotify('warning',{
-          title: '警告',
-          message: '请输入丘号'
-        });
-        return false;
-      }
+      // if (!this.polishing_data_form.property_number) {
+      //   this.$LjNotify('warning',{
+      //     title: '警告',
+      //     message: '请输入房产证号'
+      //   });
+      //   return false;
+      // }
+      // if (!this.polishing_data_form.mound_number) {
+      //   this.$LjNotify('warning',{
+      //     title: '警告',
+      //     message: '请输入丘号'
+      //   });
+      //   return false;
+      // }
       /*for (let key in this.polishing_params) {
         if (!this.polishing_params[key] || this.polishing_params[key].length < 1) {
           this.$LjNotify('warning',{

@@ -1,6 +1,5 @@
 <template>
   <div id="discussPolitics" class="discuss-politics">
-    <coming-soon></coming-soon>
     <div class="listTopCss items-bet">
       <div class="items-center listTopLeft">
         <p class="flex-center" @click="moduleList">
@@ -613,10 +612,8 @@
           <h3>本月会议数:{{meeting_counts_form.length}}</h3>
         </div>
         <div class="dialog_main flex-center borderNone">
-
           <div class="meeting-counts-container">
-
-            <div @click="meeting_detail_dialog_visible = true" class="form-item" v-for="item in meeting_counts_form">
+            <div @click="openMeetingDialog(item)" class="form-item" v-for="item in meeting_counts_form">
               <el-row :gutter="80">
                 <el-col :span="10">
                   <div class="form-item-title">{{item.name}}</div>
@@ -626,9 +623,7 @@
                 </el-col>
               </el-row>
             </div>
-
           </div>
-
         </div>
       </div>
     </lj-dialog>
@@ -1162,9 +1157,9 @@
         let startDate = utils.formatDate(this.dateValue, 'yyyy-MM-01 00:00:00');
         let endDate = this.lastTimeOfMonth(this.dateValue);
         let params = {
-          date: [startDate, endDate]
+          date: [startDate, endDate],
+          type:2
         };
-        // this.$http.get(`${this.url}/meeting/meeting?date[]=${startDate}&date[]=${endDate}`).then(res => {
         this.$http.get(`${this.url}/meeting/meeting`, params).then(res => {
           if (res.code.endsWith('0')) {
             this.meeting_counts_form = _.forEach(res.data.data, (value) => {
@@ -1177,7 +1172,6 @@
 
       //添加新会议
       addNewMeeting() {
-
         this.$refs['addMeetingForm'].validate((valid) => {
           if (valid) {//成功
             let curDate = this.currentSelectionDate.datetime;
@@ -1200,7 +1194,6 @@
                   this.$LjNotifyEasy(res2);
                 });
               }
-              //let id = res.data.id;
             });
           }
         });
@@ -1210,7 +1203,6 @@
 
       //修改会议
       editMeeting() {
-
         this.$refs['addMeetingForm'].validate((valid) => {
           if (valid) {//成功
             let id = this.add_meeting_form.id;
@@ -1241,34 +1233,25 @@
             return;
           }
         });
-
         let meeting_id = this.meeting_detail_form.id;//会议id
         let params = {
           meeting_id,
           ...this.meeting_summary_form
         };
-        debugger
-
         const promises = [];
         let promise1, promise2;
         if (params.id) {//修改
           promise1 = this.$http.put(`${this.url}meeting/minutes/${params.id}`, params).then(res => {
             return res;
-            /*this.$LjMessageEasy(res,()=> {
-              this.meeting_summary_editable = false;
-            });*/
           });
         } else {
           promise1 = this.$http.post(`${this.url}meeting/minutes`, params).then(res => {//添加
             return res;
-            /*this.$LjMessageEasy(res,()=> {
-              this.meeting_summary_editable = false;
-            });*/
           });
         }
         promises.push(promise1);
 
-        let list = this.meeting_remaining_form.list;
+        let list = _.cloneDeep(this.meeting_remaining_form.list);
         list.forEach(function (item, index) {
           item.meeting_id = meeting_id;
           item.follow_id = item.follow_id[0] || [];
@@ -1277,14 +1260,13 @@
           return res;
         });
         promises.push(promise2);
-
         Promise.all(promises).then(([res, res2]) => {
           if (res.code.endsWith('0') && res2.code.endsWith('0')) {
             this.$LjMessage('success', {
               title: '成功',
               msg: '操作成功',
             });
-            this.meeting_summary_editable = false;
+            this.meeting_summary_editable = false
           } else {
             this.$LjMessage('error', {
               title: '失败',
@@ -1292,8 +1274,6 @@
             });
           }
         });
-
-
       },
 
 
@@ -1303,10 +1283,8 @@
           this.meeting_summary_editable = true;
           return;
         }
-
         let startTime = this.meeting_detail_form.start_time;
         let endTime = this.meeting_detail_form.end_time;
-        debugger
         if (this.myUtils.judgeDateInRange(startTime, endTime)) {
           this.$LjMessage('warning', {
             title: '警告',
@@ -1332,7 +1310,6 @@
           attachment: _.map(this.meeting_detail_form.attachment, 'id'),//附件id
           remark: this.meeting_detail_form.remark,//备注
         };
-        debugger
       },
       //新建会议打开dialog
       showAddNewMeetingDialog(item) {
@@ -1492,7 +1469,7 @@
 
       //删除会议
       deleteMeeting(item, index, todoListIndex) {
-        this.$LjConfirm({content: '确定要删除会议吗？'}).then(res => {
+        this.$LjConfirm({icon:'warning', content: '确定要删除会议吗？'}).then(res => {
           this.$http.delete(`${this.url}/meeting/meeting/${item.id}`).then(res => {
             if (res.code.endsWith('0')) {
               this.$LjNotify('success', {
@@ -1512,7 +1489,7 @@
 
       //取消会议
       cancelMeeting(item, index, todoListIndex) {
-        this.$LjConfirm({content: '确定要取消会议吗？'}).then(res => {
+        this.$LjConfirm({icon:'warning', content: '确定要取消会议吗？'}).then(res => {
           let params = {
             status: 2
           };
@@ -1673,7 +1650,7 @@
           //处理数据
           let startTime = utils.formatDate(daysList[0].datetime, 'yyyy-MM-dd hh:mm:ss');
           let endTime = utils.formatDate(daysList[daysList.length - 1].datetime, 'yyyy-MM-dd hh:mm:ss');
-          let params = {data: [startTime, endTime]};
+          let params = {data: [startTime, endTime],type:2};
 
           let tempData = [];
 

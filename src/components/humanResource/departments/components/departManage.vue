@@ -97,7 +97,7 @@
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="部门">
-                      <org-choose width="260" num="1" v-model="interview_info_detail.org_id"></org-choose>
+                      <org-choose width="260" num="5" v-model="interview_info_detail.org_id"></org-choose>
 <!--                      <el-input placeholder="请选择" readonly @focus="departOrgan_visible = true" v-model="interview_info_detail.depart"></el-input>-->
                     </el-form-item>
                   </el-col>
@@ -414,7 +414,7 @@
                 <el-option value="position" label="岗位"></el-option>
                 <el-option value="user" label="用户"></el-option>
                 <el-option value="ban" label="黑名单"></el-option>
-                <!-- <el-option value="all" label="全部"></el-option> -->
+                <el-option value="all" label="全部"></el-option>
               </el-select>
             </div>
              <div class="inputLabel borderNone" v-show="self_power_params.type=='position'">
@@ -615,6 +615,9 @@
             <el-form-item label="岗位排序">
               <el-input v-model="add_position_form.order" type="number" placeholder="值越小，越靠前"></el-input>
             </el-form-item>
+             <el-form-item label="父级岗位">
+               <post-choose v-model="add_position_form.parent_id" title="请选择父级岗位" width="305" num="1"></post-choose>
+            </el-form-item>
             <el-form-item label="所属部门">
               <div class="items-center iconInput">
                 <el-input v-model="add_position_form.depart" readonly></el-input>
@@ -627,6 +630,7 @@
                 <p class="icons user"></p>
               </div>
             </el-form-item>
+            
           </el-form>
         </div>
         <div class="dialog_footer">
@@ -1028,7 +1032,8 @@
           is_top: '',
           order: '',
           level: '',
-          id: ''
+          id: '',
+          parent_id: []
         },
         is_edit_position: false,
 
@@ -1153,6 +1158,7 @@
         this.add_position_form.org_id.push(this.departInfo.id);
         this.add_position_form.duty_id.push(this.currentDutyInfo.id);
         this.add_position_form.duty_name = this.currentDutyInfo.name || '';
+        this.add_position_form.parent_id = row.parent_id ? [row.parent_id] : [];
         this.addPostVisible = true;
       },
       handleConfirmDelPosition() {
@@ -1694,6 +1700,7 @@
         if(type=='ok'){
           this.$resetForm(this.interview_info_detail);
         }
+        this.activeName = 'first';
         this.interview_info_detail.org_id = [this.departInfo.id];
         // console.log('this.interview_info_detail.recommenders.name');
         this.add_newStaff_visible = false;
@@ -1767,6 +1774,16 @@
           } else {
             this.interview_info_detail.role_id = [];
           }
+          if(res.data && res.data.org){
+               let orgs = [];
+              _.forEach(res.data.org,(o,index)=> {
+                 this.interview_info_detail.org_id=[];
+                orgs.push(o.id);
+              });
+              this.interview_info_detail.org_id=orgs;
+            } else {
+            this.interview_info_detail.org_id = [];
+          }
         })
           this.currentStaff = item;
           this.is_edit = true;
@@ -1791,9 +1808,9 @@
           this.interview_info_detail.name = item.name;
           this.interview_info_detail.position = item.position[0].name;
           this.interview_info_detail.position_id = [];
-          this.interview_info_detail.org_id = [];
+          // this.interview_info_detail.org_id = [];
           this.interview_info_detail.position_id.push(item.position[0].id);
-          this.interview_info_detail.org_id.push(item.org[0].id);
+          // this.interview_info_detail.org_id.push(item.org[0].id);
           this.interview_info_detail.depart = item.org[0].name;
           this.interview_info_detail.work_history = item.staff && item.staff.work_history || [];
           if (this.interview_info_detail.work_history === "[]") {

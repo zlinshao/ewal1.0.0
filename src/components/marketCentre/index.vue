@@ -1,6 +1,6 @@
 <template>
   <div id="marketCentre" ref="marketCentre" :style="mainHeight">
-    <coming-soon></coming-soon>
+    <!-- <coming-soon></coming-soon> -->
     <div class="container">
       <market-menu-list :show-market="show_market" :show-shadow="false" @close="handleCloseMenu" :title="top_title"></market-menu-list>
     </div>

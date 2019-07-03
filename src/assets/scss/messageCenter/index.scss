@@ -59,7 +59,7 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 30px;
+            // margin-bottom: 30px;
             >div{
               display: flex;
               flex-direction: row;
@@ -72,8 +72,8 @@
 
               }
             }
-            .check-all{
-
+            .read{
+              cursor: pointer;
             }
 
 
@@ -105,22 +105,28 @@
         .messageCenter-main-right{
           width: 39%;
           height: 500px;
-          //border:1px solid #ff4545;
           background: #FBFBFD;
           position: relative;
-          i{
-            display: block;
-            width: 100px;
-            height: 100px;
+          .no-content-box{
             position: absolute;
             top:50%;
             left:50%;
             transform: translate(-50%,-50%);
+            >i{
+              display: block;
+              width: 100px;
+              height: 100px;
+              margin-bottom: 10px;
+              margin-left:auto;
+              margin-right:auto;
+            }
+            >p{
+              font-size:24px;
+              font-family:MicrosoftYaHei;
+              color:rgba(223,223,223,1);
+              line-height:31px;
+            }
           }
-          >div{
-
-          }
-
         }
       }
       .messageCenter-bottom{
@@ -132,6 +138,51 @@
         justify-content: center;
 
 
+      }
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+      background: #B9292D;
+      border:none;
+    }
+    .msg-show-box{
+      .msg-show-box-header{
+        border-bottom:1px solid #F0F0F0;
+        padding: 18px;
+        >div{
+          .img{
+            >span{
+              float: left;
+              width:40px;
+              height:40px;
+              background:rgba(185,41,45,1);
+              color: white;
+              font-size: 27px;
+              text-align: center;
+              border-radius: 50%;
+              margin-right: 18px;
+            }
+          }
+          .txt{
+            h5{
+              height:19px;
+              font-size:14px;
+              font-family:MicrosoftYaHei-Bold;
+              font-weight:bold;
+              color:rgba(104,104,116,1);
+              line-height:19px;
+            }
+            p{
+              height:19px;
+              font-size:14px;
+              font-family:MicrosoftYaHei;
+              color:rgba(153,153,153,1);
+              line-height:19px;
+            }
+          }
+        }
+      }
+      .msg-show-box-body{
+        padding:25px;
       }
     }
 
