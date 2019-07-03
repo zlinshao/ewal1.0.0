@@ -3,7 +3,10 @@
     <div class="listTopCss">
       <div class="search-toolbar listTopRight">
         <!--        <div class="icons-font" @click="showPublishNoticeDialog"><b>发公告</b></div>-->
-        <div class="icons add" @click="showPublishNoticeDialog"><b>+</b></div>
+        <el-tooltip content="发公告" placement="top" :visible-arrow="false">
+          <div class="icons add" @click="showPublishNoticeDialog"><b>+</b></div>
+        </el-tooltip>
+
         <!--<div class="icons add" @click="publish_notice_dialog_visible = true"><b>+</b></div>-->
       </div>
 
@@ -14,7 +17,6 @@
         :data="tableData"
         highlight-current-row
         :height="this.mainListHeight(30) + 'px'"
-        :row-class-name="tableChooseRow"
         @cell-click="tableClickRow"
         header-row-class-name="tableHeader"
         @row-dblclick="tableDblClick"
@@ -721,7 +723,8 @@
             /*mData.sanction_info = _.forEach(mData.sanction_info,(o)=> {
               o.user_id = [parseInt(o.user_id)];
             });*/
-            this.publish_notice_form = mData;
+            this.publish_notice_form = _.cloneDeep(mData);
+            //this.publish_notice_form.file_info = _.cloneDeep(res.data.file_info);
           }
         })
       },

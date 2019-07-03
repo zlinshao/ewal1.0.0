@@ -118,7 +118,6 @@
       ...mapGetters([
         'todo_list_current_selection',
         'humanResource_attence_visible',
-        'refresh_todo_list'
       ])
     },
     watch: {

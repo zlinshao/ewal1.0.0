@@ -26,10 +26,10 @@
             </el-col>
             <el-col :span="22" style="height: 50px;">
               <div class="train-radio-style">
-                <el-radio-group v-model="exam_type">
+                <el-radio-group  v-model="exam_type">
                   <el-radio :label="1">单选题</el-radio>
-                  <el-radio :label="2">判断题</el-radio>
-                  <el-radio :label="3">解答题</el-radio>
+                  <el-radio v-if="!onlySingle" :label="2">判断题</el-radio>
+                  <el-radio v-if="!onlySingle" :label="3">解答题</el-radio>
                 </el-radio-group>
               </div>
             </el-col>
@@ -234,6 +234,7 @@
         </div>
       </div>
     </div>
+    <!--问卷调查满意度-->
     <div v-show="paper_type==3" class="statistical-paper">
       <div class="library-header flex">
         <div class="left">
@@ -317,6 +318,10 @@ export default {
         return [];
       }
     },
+    onlySingle: {//只有单选题 只在新增问卷调查的时候使用 问卷调查只可新增单选题
+      type: Boolean,
+      default: false
+    },
   },
   watch: {
     visible: {
@@ -331,6 +336,15 @@ export default {
         //this.$emit('update:visible', this.dialog_visible);
       },
       immediate: true,
+    },
+
+    onlySingle: {
+      handler(val,oldVal) {
+        if (val) {
+
+        }
+      },
+      immediate:true,
     },
 
     paper_visible: {

@@ -46,6 +46,10 @@
         type:String,
         default:'#686874',
       },
+      clear: {
+        type:Boolean,
+        default:false,
+      },
     },
     data() {
       return {
@@ -65,8 +69,15 @@
             this.getUserList();
           }*/
          },
-        immediate:true,
-      }
+        //immediate:true,
+      },
+      clear: {
+        handler(val, oldVal) {
+          if(val) {
+            this.userList = [];
+          }
+        }
+      },
     },
     methods: {
       getUserList() {

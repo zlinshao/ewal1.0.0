@@ -36,6 +36,9 @@ export default {
         Vue.prototype.showLoading = function(status = true) {
             return this.$store.dispatch('switch_loading', status);
         };
+        Vue.prototype.showLoading2 = function(status = true) {
+          return this.$store.dispatch('switch_loading2', status);
+        };
         // 克隆数据/JSON数据转换
         Vue.prototype.jsonData = function(val, way = 'clone') {
             let data;
