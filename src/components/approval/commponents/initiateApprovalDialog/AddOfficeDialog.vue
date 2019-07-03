@@ -28,7 +28,7 @@
 
 
                   <el-form-item label="租金">
-                    <el-input disabled disabled v-model="rent" placeholder="自动获取"
+                    <el-input disabled v-model="rent" placeholder="自动获取"
                               style="width: 220px">
                     </el-input>
                   </el-form-item>
@@ -246,7 +246,8 @@
           .validate((valid) => {
             if (valid) {
               this.add_office_form.date = this.myUtils.formatDate(this.add_office_form.date, 'yyyy-MM-dd');
-              let {house_type} = this.add_office_form
+              let {house_type,date} = this.add_office_form
+              let {name,org} = this.user_info
               let data = {
                 ...this.add_office_form,
                 // user_id: this.user_info.user_id,
@@ -256,7 +257,17 @@
                   house_info: this.house_info,
                   leader_org: this.org_leader,
                 }],
-
+                more_data: [
+                  {key: '申请人', value: name},
+                  {key: '办公室/宿舍', value: this.house_type[house_type]},
+                  {key: '租金', value: this.rent},
+                  {key: '所属部门', value: org},
+                  {key: '申请地址', value: this.house_info.name},
+                  {key: '片区经理', value: this.org_leader.name},
+                  {key: '申请日期', value: date},
+                  {key: '房型', value: this.roomType},
+                  {key: '入住人员名单', value: this.roomType}
+                ]
               }
               this.$http.post(this.addUrl, data)
                 .then(res => {
