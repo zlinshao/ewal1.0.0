@@ -46,11 +46,11 @@
 
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" :plain="scope.row.is_open===0?true:false" @click.stop="getStatus(scope.row,scope.$index,1)">{{scope.row.is_open===0?'发布':'已发布'}}
+              <el-button type="primary" size="mini" :plain="scope.row.is_open===0?true:false" @click.stop="getStatus(scope.row,scope.$index,1)">{{scope.row.is_open===0?'发&nbsp;&nbsp;&nbsp;&nbsp;布':'已发布'}}
               </el-button>
-              <el-button @click.stop="getStatus(scope.row,scope.$index,2)" type="warning" size="mini" :plain="scope.row.is_top===0?true:false">{{scope.row.is_top===0?'置顶':'已置顶'}}
+              <el-button @click.stop="getStatus(scope.row,scope.$index,2)" type="warning" size="mini" :plain="scope.row.is_top===0?true:false">{{scope.row.is_top===0?'置&nbsp;&nbsp;&nbsp;&nbsp;顶':'已置顶'}}
               </el-button>
-              <el-button @click.stop="getStatus(scope.row,scope.$index,3)" type="success" size="mini" :plain="scope.row.is_great===0?true:false">{{scope.row.is_great===0?'加精':'已加精'}}
+              <el-button @click.stop="getStatus(scope.row,scope.$index,3)" type="success" size="mini" :plain="scope.row.is_great===0?true:false">{{scope.row.is_great===0?'加&nbsp;&nbsp;&nbsp;&nbsp;精':'已加精'}}
               </el-button>
             </template>
           </el-table-column>
@@ -142,8 +142,24 @@
         </div>
         <div class="dialog_main borderNone">
           <el-form label-width="80px">
-            <el-form-item label="类型">
-              <el-input v-model="form.type_id"></el-input>
+            <el-form-item label="类型" v-show="chooseTab===1">
+              <el-select v-model="form.type_id" placeholder="请选择">
+                <el-option
+                  key="1"
+                  label="研发类"
+                  value="1">
+                </el-option>
+                 <el-option
+                  key="2"
+                  label="财务类"
+                  value="2">
+                </el-option>
+                 <el-option
+                  key="3"
+                  label="人力资源类"
+                  value="3">
+                </el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="标题">
               <el-input v-model="form.title"></el-input>
@@ -157,7 +173,7 @@
         </div>
         <div class="dialog_footer">
           <el-button size="small" type="warning" @click="getUEContent()">预览</el-button>
-          <el-button size="small" type="danger" @click="confirm()">发布</el-button>
+          <el-button size="small" type="danger" @click="submit">发布</el-button>
           <el-button size="small" type="info" @click="publish_visible = false">取消</el-button>
         </div>
       </div>
@@ -263,6 +279,7 @@ export default {
       unread_info: [],
 
       statusParams: {
+        article_id: '',
         is_open: '',
         cancel_open: '',
         is_top: '',
@@ -270,7 +287,6 @@ export default {
         is_great: '',
         cancel_great: '',
       },
-
     }
   },
   watch: {},
@@ -278,6 +294,9 @@ export default {
     this.getDataLists();
   },
   methods: {
+    getContentChange (val) {
+      this.form.content = val.slice(3,val.length-4);
+    },
     getUEContent () {
       let content = this.$refs.ue.getUEContent();
       this.$notify({
@@ -427,18 +446,79 @@ export default {
         }
       })
     },
-
-
+    submit () {//发布
+    console.log('222222222222222222222222');
+      let paramsForm = {
+        title: this.form.title,
+        type_id: this.form.type_id,
+        content: this.form.content,
+        is_open: 1,
+      };
+      if(paramsForm.title == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定标题',
+          });
+      }else if(this.type && paramsForm.type_id == undefined){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定导读类型',
+          });
+      }
+      // else if(paramsForm.is_open == undefined){
+      //   this.$LjNotify('error', {
+      //       title: '失败',
+      //       message: '必须指定',
+      //     });
+      // }
+      else if(paramsForm.content == ''){
+        this.$LjNotify('error', {
+            title: '失败',
+            message: '必须指定内容',
+          });
+      }
+      else{
+        this.$http.post(globalConfig.newMedia_sever + '/api/article/hot', paramsForm).then(res => {
+          if(res.status == 200){
+            this.add_visible = false;
+            // this.callbackSuccess(res);
+            this.form={
+              title: '',
+              type_id: '',
+              content: '',
+              is_open: '',
+            }
+          }
+        })
+      }
+    },
     //高级搜索
     highSearch () {
 
+    },
+    comfirmStatus(){
+      console.log('this.statusParams', this.statusParams);
+      this.$http.post(globalConfig.newMedia_sever + '/api/article/status', this.statusParams).then(res => {
+          console.log('this.res=====', res);
+          if(res.status == 200){
+            this.$LjNotify('success', {
+              title: '成功',
+              message: '操作成功',
+            });
+            this.showLoading(false);
+            this.getDataLists();
+            // this.callbackSuccess(res);
+          }else {
+            this.$LjNotify('error', {
+              title: '失败',
+              message: res.message,
+            });
+          }
+        })
     }
-
   }
-
 }
 </script>
-
 <style scoped lang="scss">
 @import "../../../../assets/scss/newMedia/back/news/index.scss";
 
