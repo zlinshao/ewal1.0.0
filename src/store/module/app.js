@@ -4,6 +4,7 @@ const app = {
     routeAnimation: false,
     themeName: '1',
     loading: false,
+    loading2: false,
     globalNotify: {
       visible: false,
       type: '',
@@ -42,6 +43,9 @@ const app = {
     },
     SHOW_LOADING(state,status) {
       state.loading = status;
+    },
+    SHOW_LOADING2(state,status) {
+      state.loading2 = status;
     },
     CLOSE_NOTIFY(state,status) {
       console.log(status);
@@ -94,6 +98,10 @@ const app = {
     //显示/隐藏loading
     switch_loading({commit},status) {
       commit('SHOW_LOADING',status);
+    },
+    //显示/隐藏loading2
+    switch_loading2({commit},status) {
+      commit('SHOW_LOADING2',status);
     },
     //关闭提示框
     close_notify({commit},status) {

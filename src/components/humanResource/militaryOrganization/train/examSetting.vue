@@ -110,7 +110,7 @@
             </el-form-item>
             <div v-if="new_question_bank_exam_list.length==0">
               <el-form-item label="批量导入试题">
-                <lj-upload size="40" style="position: absolute;top:-10px"
+                <lj-upload :limit="['xls']" size="40" style="position: absolute;top:-10px"
                            v-model="new_question_bank_form.attachment"></lj-upload>
               </el-form-item>
               <el-form-item label="下载模板">
@@ -328,10 +328,10 @@
               <div>单选{{new_exam_form.single}} 简答{{new_exam_form.judge}} 判断{{new_exam_form.short}}</div>
             </el-form-item>
             <el-form-item label="参加人员">
-              <user-list :mini="true" :ids="new_exam_form.join_persons"></user-list>
+              <user-list :mini="true" :clear="!exam_detail_dialog_visible" :ids="new_exam_form.join_persons"></user-list>
             </el-form-item>
             <el-form-item label="未参加人员">
-              <user-list :mini="true" color="#cf2e33" :ids="new_exam_form.no_enroll"></user-list>
+              <user-list :mini="true" color="#cf2e33" :clear="!exam_detail_dialog_visible" :ids="new_exam_form.no_enroll"></user-list>
             </el-form-item>
             <el-form-item label="开考时间">
               <div>{{new_exam_form.start_time}}</div>
@@ -561,17 +561,6 @@
         delete_info: '',
         is_delete_exam: false,
 
-        //考试管理列表
-        my_exam_list: [
-          {id: 1, title: '苏州新人训', time: '2019/03/01 10:10:00', status: '未开始'},
-          {id: 2, title: '苏州新人训', time: '2019/03/01 10:10:00', status: '未开始'},
-          {id: 3, title: '苏州新人训', time: '2019/03/01 10:10:00', status: '未开始'},
-          {id: 4, title: '苏州新人训', time: '2019/03/01 10:10:00', status: '未开始'},
-          {id: 5, title: '苏州新人训', time: '2019/03/01 10:10:00', status: '未开始'},
-          {id: 6, title: '苏州新人训', time: '2019/03/01 10:10:00', status: '未开始'}
-        ],
-
-
         //新建考试
         exam_form_type: 1,  //1为新建考试 2为编辑考试
         new_exam_form_dialog_visible: false,
@@ -683,7 +672,6 @@
         let params = {
           ...this.new_question_bank_form
         };
-        debugger
         if (this.new_question_bank_exam_list) {
           this.$http.post(`${this.url}train/exam_question_bank`, params).then(res => {
             return res;
@@ -771,7 +759,10 @@
       //获取考试列表
       getExamList() {
         this.tableSettingData['exam'].tableData = [];
-        this.$http.get(`${this.url}train/exam`).then(res => {
+        let params = {
+          ...this.tableSettingData['exam'].params
+        };
+        this.$http.get(`${this.url}train/exam`, params).then(res => {
           if (res.code.endsWith('0')) {
             for (let item of res.data.data) {
               let time = `${this.myUtils.formatDate(item.start_time, 'yyyy-MM-dd hh:mm')}-${this.myUtils.formatDate(item.end_time, 'hh:mm')}`;

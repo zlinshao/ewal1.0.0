@@ -78,6 +78,12 @@ export const OrgSearch = {
     }]
 }
 
+
+export const companySearch = {
+    status: 'companySearch',
+    placeholder: '公司名称',
+    keywords: 'search',
+}
 // 离职管理
 export const LeaveJobSearch = {
     status: 'LeaveJobSearch',
@@ -1198,8 +1204,7 @@ export const gatheringSearchList = {
             value: {
                 num: ''
             }
-        },
-        {
+        },{
             keyType: 'depart',
             title: '部门',
             placeholder: '请选择部门',
@@ -1209,6 +1214,13 @@ export const gatheringSearchList = {
                 num: '',
                 arr: []
             }
+        },{
+            keyType: 'subject',
+            title: '科目',
+            placeholder: '请选择科目',
+            keyName: 'subject_id',
+            lebleName: "subject_name",
+            value: ''
         }
     ]
 }
@@ -1291,6 +1303,13 @@ export const paySearchList = {
                 num: '',
                 arr: []
             }
+        },{
+            keyType: 'subject',
+            title: '科目',
+            placeholder: '请选择科目',
+            keyName: 'subject_id',
+            lebleName: "subject_name",
+            value: ''
         }
     ]
 }

@@ -8,8 +8,8 @@
         <div v-if="!item.img" class="user-item-left bg-img">
         </div>
         <div class="user-item-right">
-          <div class="user-name">{{item.name}}</div>
-          <div class="user-post">{{item.post}}</div>
+          <div :title="item.name" class="user-name">{{item.name}}</div>
+          <div :title="item.post" class="user-post">{{substringPlugin(item.post,8)}}</div>
         </div>
       </div>
       <div v-if="mini" v-for="item in userList" class="user-item-mini">
@@ -46,6 +46,10 @@
         type:String,
         default:'#686874',
       },
+      clear: {
+        type:Boolean,
+        default:false,
+      },
     },
     data() {
       return {
@@ -65,8 +69,15 @@
             this.getUserList();
           }*/
          },
-        immediate:true,
-      }
+        //immediate:true,
+      },
+      clear: {
+        handler(val, oldVal) {
+          if(val) {
+            this.userList = [];
+          }
+        }
+      },
     },
     methods: {
       getUserList() {

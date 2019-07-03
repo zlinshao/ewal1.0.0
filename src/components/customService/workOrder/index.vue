@@ -195,7 +195,8 @@ export default {
       urgedDeal_visible: false,// 催办
       urgedDeal_info: {
         work_order_id: '',
-        default_Person: ''
+        default_Person: '',
+        uid: ''
       },
       createOrder_visible: false, //创建新工单 
       sureEnding_visible: false, // 确定结束
@@ -246,7 +247,7 @@ export default {
         follow_status: this.chooseTab,
         search: this.searchParams.search,
         create_time: this.searchParams.create_time,
-        finish_time: this.searchParams.end_time,
+        follow_time: this.searchParams.end_time,
         operate_user_id: this.searchParams.staff,
         operate_org_id: this.searchParams.department,
         emergency: this.searchParams.emergency,
@@ -305,7 +306,8 @@ export default {
     handleCuiBan (row) {
       this.urgedDeal_info = {
         work_order_id: row.id,
-        default_Person: row.create_name || row.operate_user_name
+        default_Person: row.create_name || row.operate_user_name,
+        uid: row.creator_id ||row.operate_user_id
       }
       this.urgedDeal_visible = true
       this.currentRow = row
@@ -315,8 +317,9 @@ export default {
       this.urgedDeal_visible = false
       this.urgedDeal_info = {
         work_order_id: '',
-        default_Person: ''
-      }
+        default_Person: '',
+        uid: ''
+              }
     },
     // 删除
     handleDeleteRow (row) {
@@ -355,6 +358,7 @@ export default {
         currentRow: this.currentRow
       }
       this.detail_visible = true;
+      // console.log(' this.detail_visible',  this.detail_visible);
       if (this.chooseTab == 337) {
         this.getDoingCount()
       }

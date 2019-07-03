@@ -11,9 +11,9 @@
     </div>
     <div class="currentMonthAssessmentContainer changeChoose">
       <div class="containerTop">
-        <div class="selector"></div>
-        <h2 @click="selectAll()">全选</h2>
-        <div @click="sendKpi()" class="kpiconfirm">KPI确认</div>
+<!--        <div class="selector"></div>-->
+<!--        <h2 @click="selectAll()">全选</h2>-->
+        <div @click="sendKpi()" class="kpi-confirm">KPI确认</div>
       </div>
       <el-table highlight-current-row header-row-class-name="tableHeader" :data="kpiList" height="650px" ref="multipleTable"
         @selection-change="handleSelectionChange">
@@ -215,7 +215,7 @@ export default {
     }
   },
   methods: {
-    getKpiList: function () {
+    getKpiList () {
       let year = new Date().getFullYear()
       let month = new Date().getMonth()
       if (month == 0) {
@@ -257,7 +257,7 @@ export default {
         }
       })
     },
-    showKpiDetail: function (row, day) {
+    showKpiDetail (row, day) {
       this.row = row
       this.item = day
       let year = new Date().getFullYear()
@@ -290,7 +290,7 @@ export default {
         this.kpiDetail = []
         if (res.status == 200) {
           this.imgUrl = res.extend.avatar
-          for (var i = 0; i < res.data.length; i++) {
+          for (let i = 0; i < res.data.length; i++) {
             let obj = {
               id: res.data[i].id,
               standardName: res.data[i].standard.name,
@@ -302,7 +302,7 @@ export default {
             this.kpiDetail.push(obj)
           }
           this.fullScore = 0
-          for (var j = 0; j < this.kpiDetail.length; j++) {
+          for (let j = 0; j < this.kpiDetail.length; j++) {
             this.fullScore += this.kpiDetail[j].actual_score
           }
           this.month_day_id = res.extend.month_day_id
@@ -310,14 +310,14 @@ export default {
         }
       })
     },
-    modifyKpi: function (row) {
+    modifyKpi (row) {
       this.standardName = row.standardName
       this.oldScore = row.actual_score
       this.currentScore = 0
       this.standarId = row.id
       this.kpi_modify_visible = true
     },
-    modifyConfirm: function () {
+    modifyConfirm () {
       let param = {
         month_day_id: this.month_day_id,
         actual_score: this.currentScore,
@@ -330,17 +330,17 @@ export default {
         }
       })
     },
-    confirmKpi: function () {
+    confirmKpi () {
       this.getKpiList();
       this.kpi_detail_visible = false
     },
     handleSelectionChange (row) {
       this.multipleSelection = row;
     },
-    selectAll: function () {
+    selectAll () {
       this.$refs.multipleTable.toggleAllSelection()
     },
-    sendKpi: function () {
+    sendKpi () {
       if (this.multipleSelection.length > 0) {
         this.sendTodoList = true
       } else {
@@ -350,14 +350,14 @@ export default {
         });
       }
     },
-    confirmSendKpi: function () {
+    confirmSendKpi () {
       let param = {
         send_ids: []
       }
       for (let i = 0; i < this.multipleSelection.length; i++) {
         param.send_ids.push(this.multipleSelection[i].id)
       }
-      this.$http.post(`${this.url}/kpi/send`, param).then(res => {
+      this.$http.post(`${this.url}kpi/send`, param).then(res => {
         if (res.status == 200) {
           this.$LjNotify('success', {
             title: '成功',
@@ -369,26 +369,26 @@ export default {
       })
       this.sendTodoList = false
     },
-    handleKpi: function (obj, kpi) {
-      for (var i = 0; i < kpi.length; i++) {
+    handleKpi (obj, kpi) {
+      for (let i = 0; i < kpi.length; i++) {
         let time = kpi[i].checked_at.toString()
         let strTime = time.substring(time.length - 2)
         if (strTime.substring(0, 1) == '0') {
           strTime = strTime.substring(1)
         }
         let intTime = parseInt(strTime)
-        for (var j = 0; j < this.days.length; j++) {
+        for (let j = 0; j < this.days.length; j++) {
           if (intTime == this.days[j]) {
             obj[strTime] = kpi[i].staff_score
           }
         }
       }
     },
-    showHighSearch: function () {
+    showHighSearch () {
       this.showSearch = true
       this.searchData = this.currentMonthAssessmentSearch
     },
-    hiddenModule: function (val) {
+    hiddenModule (val) {
       this.showSearch = false
       if (val !== 'close') {
         if (val.sendStatus !== "") {
@@ -490,7 +490,7 @@ export default {
     }
     .currentMonthAssessmentContainer{
       .containerTop{
-        .kpiconfirm{
+        .kpi-confirm{
           @include currentMonthAssessmentImg("bykh.png", "theme1");
         }
       }

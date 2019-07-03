@@ -102,13 +102,13 @@
     },
     watch: {
       refresh_todo_list: {
-        handler(val,oldVal) {
+        handler(val, oldVal) {
           this.getTodoListToolBar();
         },
-        deep:true,
+        deep: true,
       },
       todo_list_visible(val) {
-        if(val) {
+        if (val) {
           this.getTodoListToolBar();
         }
       },
@@ -119,31 +119,31 @@
       *
       * */
       let processDefinitionKey = {
-        "Agency-Supervision":"",
+        "Agency-Supervision": "",
       };
       /*
       * 流程筛选(notIn)
       *
       * */
       let processDefinitionKeyNotIn = {
-        "MarketCollect":'',
-        "MC-Bulletin":'',
-        "HR-ApplyForSubOfficeDormitory":'',
-        "HR-ApplyForAddOfficeDormitory":'',
-        "Market-RentCompletionData":'租房资料补齐',
-        "Market-CompleteData":'补齐资料',
-        "HandoverOrder":'交接',
-        "Rent-Retainage":'尾款报备',
-        "MC-Bulletin-Collect":'报备',
-        "MG-BulletinApproval":'片区经理审批',
-        "Market-VillageExpand":'产控审核',
-        "Market-CollectTakeLook":'带看',
-        "MC-CollectContractSigning":'合同签署',
-        "MC-RentContractSigning":'合同签署',
-        "Market-RentBooking":'租房预定',
-        "Market-RentTakeLook":'租房带看',
-        "MC-Bulletin-Renter":'报备',
-        "Market-CompleteAsset":'报备-补齐物品',
+        "MarketCollect": '',
+        "MC-Bulletin": '',
+        "HR-ApplyForSubOfficeDormitory": '',
+        "HR-ApplyForAddOfficeDormitory": '',
+        "Market-RentCompletionData": '租房资料补齐',
+        "Market-CompleteData": '补齐资料',
+        "HandoverOrder": '交接',
+        "Rent-Retainage": '尾款报备',
+        "MC-Bulletin-Collect": '报备',
+        "MG-BulletinApproval": '片区经理审批',
+        "Market-VillageExpand": '产控审核',
+        "Market-CollectTakeLook": '带看',
+        "MC-CollectContractSigning": '合同签署',
+        "MC-RentContractSigning": '合同签署',
+        "Market-RentBooking": '租房预定',
+        "Market-RentTakeLook": '租房带看',
+        "MC-Bulletin-Renter": '报备',
+        "Market-CompleteAsset": '报备-补齐物品',
       };
 
       /*
@@ -151,8 +151,8 @@
       *
       * */
       let taskDefinitionKeyNotIn = {
-        "Return-visit":'回访',
-        "BulletinAgency":'报备中介费',
+        "Return-visit": '回访',
+        "BulletinAgency": '报备中介费',
       };
 
 
@@ -169,8 +169,8 @@
         checked: 1,//选择哪个toolbar
         categoryKey: '',
         categoryChecked: 0,
-        processDefinitionKey:Object.keys(processDefinitionKey).join(','),
-        taskDefinitionKeyNotIn:Object.keys(taskDefinitionKeyNotIn).join(','),
+        processDefinitionKey: Object.keys(processDefinitionKey).join(','),
+        taskDefinitionKeyNotIn: Object.keys(taskDefinitionKeyNotIn).join(','),
         processDefinitionKeyNotIn: Object.keys(processDefinitionKeyNotIn).join(','),//pc端不需要的category及列表 筛选
 
         todo_list_toolbar: [
@@ -190,7 +190,6 @@
     },
 
 
-
     methods: {
       handleCreateTodo() {
         //  收租房带看
@@ -204,11 +203,11 @@
       getTodoListToolBar() {
         let params = {
           ...this.params,
-          taskDefKeyNotIn:this.taskDefinitionKeyNotIn,
-          processDefinitionKey:this.search,
+          taskDefKeyNotIn: this.taskDefinitionKeyNotIn,
+          processDefinitionKey: this.search,
           procDefKeyNotIn: this.processDefinitionKeyNotIn,
         };
-        if(!params.assignee) return;
+        if (!params.assignee) return;
         this.$http.get(`${this.url}runtime/taskCatalog`, params).then(res => {
           if (res.constructor == Array) {//返回正确
             this.todo_list_toolbar = res;
@@ -237,20 +236,20 @@
         if (Object.keys(item).length > 0) {
           this.params.page = 1;
         }
-        if(categoryChecked==1) {
+        if (categoryChecked == 1) {
           categoryKey = '';
         }
         let params = {
           ...this.params,
           //taskDefinitionKey:this.taskDefinitionKey,
-          taskDefinitionKeyNotIn:this.taskDefinitionKeyNotIn,
+          taskDefinitionKeyNotIn: this.taskDefinitionKeyNotIn,
           //assignee:this.$storage.get('user_info').id,
           processDefinitionKey: item.key || categoryKey || '',
           //processDefinitionKey: this.taskDefinitionKey,
           processDefinitionKeyNotIn: this.processDefinitionKeyNotIn,
         };
 
-        if(params.processDefinitionKey=='Agency-Supervision') {
+        if (params.processDefinitionKey == 'Agency-Supervision') {
           params.taskDefinitionKey = 'jczx_approval';
         }
 
@@ -295,25 +294,28 @@
               /*补齐物品*/
               case 'Market-CompleteAsset':
                 break;
-                /*人资招聘*/
+              /*人资招聘*/
               case 'HR-Recruitment':
                 obj.onClick = 'humanResource_interview';
                 //obj.name = '面试任务';
-                obj.project = _.find(variables,{name:'position_name'})?.value||'-';
-                obj.date = _.find(variables,{name:'interview_time'})?.value||'-';
-                obj.user = _.find(variables,{name:'interview_name'})?.value||'-';
-                obj.platform = _.find(variables,{name:'platform'})?.value||'-';
+                obj.project = _.find(variables, {name: 'position_name'})?.value || '-';
+                obj.date = _.find(variables, {name: 'interview_time'})?.value || '-';
+                obj.user = _.find(variables, {name: 'interview_name'})?.value || '-';
+                obj.platform = _.find(variables, {name: 'platform'})?.value || '-';
                 break;
               /*罚款缴纳*/
               case 'HR-FinesPay':
                 obj.onClick = 'humanResource_finespayment';
-                obj.tip = _.find(variables,{name:'title'})?.value||'-';
-                obj.date = this.myUtils.formatDate(_.find(variables,{name:'send_at'})?.value,'yyyy-MM-dd');
-                obj.money = (_.find(variables,{name:'money'})?.value||0)+'元';
+                obj.tip = _.find(variables, {name: 'title'})?.value || '-';
+                obj.date = this.myUtils.formatDate(_.find(variables, {name: 'send_at'})?.value, 'yyyy-MM-dd');
+                obj.money = (_.find(variables, {name: 'money'})?.value || 0) + '元';
                 break;
               /*考勤*/
               case 'HR-Attendance':
                 obj.name = _.find(variables, {name: 'title'})?.value || '-';
+                obj.date = _.find(variables, {name: 'month'})?.value || '-';
+                obj.project = `请核对您的${this.myUtils.formatDate(_.find(variables, {name: 'month'})?.value, 'MM')}月考勤`;
+                obj.user = item.description || '-';
                 obj.onClick = 'humanResource_attence';
                 break;
               /*考试*/

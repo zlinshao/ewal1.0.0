@@ -9,7 +9,8 @@
         <h2 class="items-center">
           <span v-for="item in selects" @click="changeTabs(item.id)" class="items-column"
                 :class="{'chooseTab': chooseTab === item.id}">
-            {{item.title}}<i></i>
+            <span v-show="item.id!==6">{{item.title}}<i></i></span>
+            <span v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management'] && item.id===6">{{item.title}}<i></i></span>
           </span>
         </h2>
       </div>
@@ -21,6 +22,10 @@
                     :visible-arrow="false">
           <div class="icons add" @click="showAddModule(chooseTab)" v-show="chooseTab === 2"><b>+</b></div>
         </el-tooltip>
+        <el-tooltip v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management'] &&chooseTab === 6" content="新增公司" placement="bottom"
+                    :visible-arrow="false">
+          <div class="icons add" @click="showAddModule(chooseTab)" v-show="$storage.get('VALIDATE_PERMISSION')['Company-Management']"><b>+</b></div>
+        </el-tooltip>
         <div class="icons search" @click="highSearch(chooseTab)" v-show=" chooseTab !== 1 && chooseTab !== 5"></div>
       </div>
     </div>
@@ -29,7 +34,6 @@
     <div v-if="chooseTab === 1">
       <Organization></Organization>
     </div>
-
     <!--部门管理-->
     <div class="departList" v-if="chooseTab === 2">
       <div class="items-start mainList" :class="{'mainListHover': routeAnimation}">
@@ -130,6 +134,11 @@
       <StaffRoster :searchVal="searchFruit3" :export-data="export_data" :export-info="exportInfo"
                    :search-params="staff_params"></StaffRoster>
     </div>
+    <div v-if="chooseTab === 6">
+      <Company :searchVal="companySearch2"
+                   :search-params="company_params" :isfresh="isfresh"></Company>
+    </div>
+    
 
     <!--离职管理-->
     <div v-if="chooseTab === 4">
@@ -591,6 +600,74 @@
         </div>
       </div>
     </lj-dialog>
+    <!--新增、编辑公司-->
+      <lj-dialog
+              :visible="companyVisible"
+              :size="{width: 600 + 'px',height: 800 + 'px'}"
+              @close="companyVisible = false"
+      >
+        <div class="dialog_container">
+          <div class="dialog_header">
+            <h3>新增公司</h3>
+          </div>
+          <div class="dialog_main">
+            <el-form size="small" style="text-align: left">
+              <!-- <el-form-item class="item_margin">
+                <div class="flex" style="width: 80%">
+                  <div style="width: 150px;text-align: right">公司id</div>
+                  <el-input v-model="companyDeatil.org_id"></el-input>
+                </div>
+              </el-form-item> -->
+              <el-form-item class="item_margin">
+                <div class="flex" style="width: 80%">
+                  <div style="width: 150px;text-align: right">公司名称</div>
+                  <el-input v-model="companyDeatil.name"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex" style="width: 80%">
+                  <div style="width: 150px;text-align: right">公司链接</div>
+                  <el-input v-model="companyDeatil.company_url"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex" style="width: 80%">
+                  <div style="width: 150px;text-align: right">corpid</div>
+                  <el-input v-model="companyDeatil.corp_id"></el-input>
+                </div>
+              </el-form-item>
+             <el-form-item class="item_margin">
+                <div class="flex" style="width: 80%">
+                  <div style="width: 150px;text-align: right">agentid</div>
+                  <el-input v-model="companyDeatil.agent_id"></el-input>
+                </div>
+              </el-form-item>
+             <el-form-item class="item_margin">
+                <div class="flex" style="width: 80%">
+                  <div style="width: 150px;text-align: right">appid</div>
+                  <el-input v-model="companyDeatil.app_id"></el-input>
+                </div>
+              </el-form-item>
+              <el-form-item class="item_margin">
+                <div class="flex" style="width: 80%">
+                  <div style="width: 150px;text-align: right">appsecret</div>
+                  <el-input v-model="companyDeatil.app_secret"></el-input>
+                </div>
+              </el-form-item>
+             <el-form-item class="item_margin">
+                <div class="flex" style="width: 80%">
+                  <div style="width: 150px;text-align: right">公司配置文件</div>
+                  <el-input type="textarea" :autosize="{ minRows: 8, maxRows: 10}" v-model="companyDeatil.env"></el-input>
+                </div>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="dialog_footer">
+            <el-button type="danger" size="small" @click="handleAddOrUpdateCompany">确定</el-button>
+            <el-button type="info" size="small" @click="companyVisible = false">取消</el-button>
+          </div>
+        </div>
+      </lj-dialog>
 
   </div>
 </template>
@@ -602,11 +679,12 @@
   import SetForms from './components/setForms.vue';//设置表单
   import StaffRoster from './staffRoster/index.vue';//员工名册
   import LeaveJob from './leaveJob/index.vue';//离职管理
+  import Company from './company/index.vue';//离职管理
   import SearchHigh from '../../common/searchHigh.vue';
   import ljDialog from '../../common/lj-dialog.vue';
   import MenuList from '../../common/menuList.vue';
   import Upload from '../../common/upload.vue';
-  import {OrgSearch,staffBookSearch, LeaveJobSearch} from '../../../assets/js/allSearchData.js';
+  import {OrgSearch,staffBookSearch, LeaveJobSearch, companySearch} from '../../../assets/js/allSearchData.js';
   import {humanResource, resourceDepart} from '../../../assets/js/allModuleList.js';
 
   export default {
@@ -615,6 +693,7 @@
       SetForms,
       DepartManage,
       StaffRoster,
+      Company,
       LeaveJob,
       MenuList,
       ljDialog,
@@ -630,6 +709,19 @@
 
         //新部门管理
         show_depart_detail: false,
+        //新增公司
+        companyVisible: false,
+        //公司详情
+         companyDeatil: {
+          corp_id: '',
+          org_id: '',
+          name: '',
+          company_url: '',
+          agent_id: '',
+          app_id: '',
+          app_secret: '',
+          env: '',
+        },
         control_btn: [
           {id: 1, val: '人员管理'},
           {id: 2, val: '职位管理'},
@@ -768,6 +860,7 @@
         },
         OrgSearch,
         staffBookSearch,
+        companySearch,
         LeaveJobSearch,
         humanResource,
         resourceDepart,
@@ -793,6 +886,10 @@
             id: 1,
             title: '组织结构图',
           },
+           {
+            id: 6,
+            title: '公司管理',
+          },
         ],//tab切换
 
 
@@ -815,10 +912,15 @@
         searchData: {},//搜索项
         searchFruit3: {},//搜索结果
         searchFruit4: {},//搜索结果
-
+        searchCompany: {},//公司搜索结果
+        companySearch2: {},
+        isfresh: false,
         staff_params: {
           is_on_job: '',
           is_enable: '',
+        },
+        company_params: {
+          name: '',
         },
         value: '',
 
@@ -851,6 +953,35 @@
       },
     },
     methods: {
+      handleAddOrUpdateCompany(){
+          // console.log('this.companyDeatil',this.companyDeatil);
+          if(!this.validatePermission('Company-Management')) return;
+          if(this.companyDeatil.name){
+            this.$http.post(`${this.url}organization/company`,this.companyDeatil).then(res => {
+                if (res.code === '20000') {
+                    this.$LjNotify('success',{
+                        title: '成功',
+                        message: res.msg
+                    });
+                    this.companyVisible = false;
+                    this.isfresh = true;
+                }else {
+                    this.$LjNotify('warning',{
+                        title: '失败',
+                        message: res.msg
+                    });
+                    return false;
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+          }else {
+             this.$LjNotify('warning',{
+                        title: '警告',
+                        message: '公司名称必填'
+                    });
+          }
+        }, 
         getCityList(){
             this.$http.get(this.url+'company/city').then(res=>{
                 console.log(res);
@@ -1486,14 +1617,19 @@
       changeTabs(id) {
         this.departModule = false;
         this.show_depart_detail = false;
+        console.log('id', id);
         this.chooseTab = id;
         this.$nextTick(function () {
           switch (id) {
             case 3:
               this.searchFruit3 = this.handleSearch(this.staffBookSearch);
-              break;
+               break;
             case 5:
               this.getPowerList();
+               break;
+            case 6:
+              this.companySearch2 = this.handleSearch(this.companySearch);
+              break;
           }
         });
         this.$store.dispatch('route_animation');
@@ -1517,6 +1653,19 @@
               width: '510px',
               height: '650px',
             };
+          case 6:
+            this.companyVisible = true;
+            this.companyDeatil ={
+              corp_id: '',
+                      org_id: '',
+                      name: '',
+                      company_url: '',
+                      agent_id: '',
+                      app_id: '',
+                      app_secret: '',
+                      env: '',
+            };
+            this.isfresh = false;
             break;
         }
       },
@@ -1533,6 +1682,10 @@
           case 4:
             this.searchData = this.LeaveJobSearch;
             break;
+            case 6:
+            this.searchData = this.companySearch;
+            break;
+            
         }
       },
 
@@ -1590,6 +1743,9 @@
               break;
             case 4:
               this.searchFruit4 = val;
+              break;
+              case 6:
+              this.companySearch2 = val;
               break;
           }
         }

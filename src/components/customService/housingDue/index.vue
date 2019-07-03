@@ -420,11 +420,11 @@ export default {
                 }]
              } else {
                 item.value =[{
-                    id: 1,
+                    id: 2,
                     title: '续租'
                 },
                 {
-                    id: 2,
+                    id: 1,
                     title: '退租'
                 }]
              }

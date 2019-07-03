@@ -153,7 +153,16 @@
                 </el-table-column>
                 <el-table-column label="合同性质" prop="type" align="center"></el-table-column>
                 <!--<el-table-column label="所属公司" prop="" align="center"></el-table-column>-->
-                <el-table-column label="收房价格" prop="month_price" align="center">
+                <el-table-column v-if="current_house_type === 6" label="收房价格"  prop="month_price" align="center">
+                  <template slot-scope="scope">
+                    <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
+                        <span v-for="(item,index) in scope.row.month_price">
+                          {{ item.price }} 元 / {{ item.period }}月 <a v-if="index !== scope.row.month_price.length - 1">;</a>
+                        </span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column v-if="current_house_type === 7" label="租房价格" prop="month_price" align="center">
                   <template slot-scope="scope">
                     <div v-if="scope.row.month_price && scope.row.month_price.length > 0">
                         <span v-for="(item,index) in scope.row.month_price">
