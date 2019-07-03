@@ -80,7 +80,7 @@
                 </el-col>
                 <el-col :span="8" v-if='tagStatus == 1'>
                   <el-form-item label="空置期">
-                    <span>{{ contractDetail.ready_days || '--'}}</span>
+                    <span>{{contractDetail.ready_days}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -95,12 +95,12 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="押金">
-                    <span>{{ contractDetail.deposit_payed || '--' + '元'}}</span>
+                    <span>{{ (contractDetail.deposit_payed || '--') + '元' }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="违约金">
-                    <span>{{ contractDetail.mortgage_price || '--' + '元'}}</span>
+                    <span>{{ (contractDetail.mortgage_price || '--') + '元'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -158,8 +158,8 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="渠道费">
-                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_price_now
-                      ?contractDetail.agency_info.agency_price_now + '元':'--'}}</span>
+                    <span>{{ contractDetail.agency_info && contractDetail.agency_info.agency_price
+                      ?contractDetail.agency_info.agency_price + '元':'--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8" v-if="contractDetail.is_agency && contractDetail.is_agency === 1">
@@ -174,7 +174,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="资料补齐时间">
-                    <span>{{ contractDetail.dataTime || '--'}}</span>
+                    <span>{{ contractDetail.date_time || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -184,7 +184,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="备注条款">
-                    <span>{{ contractDetail.lease_collect && contractDetail.lease_collect.remark_terms || '--'}}</span>
+                    <span>{{contractDetail.remark_clause || '--'}}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">

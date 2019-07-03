@@ -78,6 +78,12 @@ export const OrgSearch = {
     }]
 }
 
+
+export const companySearch = {
+    status: 'companySearch',
+    placeholder: '公司名称',
+    keywords: 'search',
+}
 // 离职管理
 export const LeaveJobSearch = {
     status: 'LeaveJobSearch',
@@ -297,7 +303,7 @@ export const housingDueSearch = {
     keywords: 'search',
     data: [{
             keyType: 'dateRange',
-            title: '签约时间',
+            title: '到期时间',
             placeholder: '请选择日期',
             keyName: 'date1',
             dataType: []
@@ -476,7 +482,104 @@ export const maintenanceSearch = {
         }
     ]
 }
+// 接线记录
+export const onlineRecordSearch = {
+          status: 'village',
+          placeholder: '请输入搜索内容',
+          keywords: 'search',
+          data: [
+            {
+              keyType: 'dateRange',
+              title: '来电时间',
+              placeholder: '请选择日期',
+              keyName: 'date',
+              dataType: []
+            },
+            {
+              keyType: 'check',
+              title: '类型',
+              keyName: 'advisory_type',
+              dataType: [],
+              value: [
+                {
+                  id: 1,
+                  title: '投诉'
+                },
+                {
+                  id: 2,
+                  title: '其他'
+                },
+                {
+                  id: 3,
+                  title: '报修(公司)'
+                },
+                {
+                  id: 4,
+                  title: '报修(房东)'
+                },
+                {
+                  id: 5,
+                  title: '报修(超报修期)'
+                },
+                {
+                  id: 6,
+                  title: '报修(无信息)'
+                },
+                {
+                  id: 7,
+                  title: '报销'
+                },
+                {
+                  id: 8,
+                  title: '催缴'
+                },
+                {
+                  id: 9,
+                  title: '退租(违约金)'
+                },
+                {
+                  id: 10,
+                  title: '退租(到期退)'
+                },
+                {
+                  id: 11,
+                  title: '求租托管'
+                },
+                {
+                  id: 12,
+                  title: '续租'
+                },
+                {
+                  id: 13,
+                  title: '退押金'
+                },
+                {
+                  id: 14,
+                  title: '业主催房租'
+                },
+                {
+                  id: 15,
+                  title: '租客缴纳房租'
+                },
+                {
+                  id: 16,
+                  title: '业主收房(违约)'
+                },{
+                  id: 17,
+                  title: '业主收房(到期)'
+                },{
+                  id: 18,
+                  title: '催维修'
+                },
+                {
+                  id: 19,
+                  title: '转租'
+                },
 
+              ]
+            },
+          ]
+        };
 //科目
 export const subjectSearch = {
     status: 'subject',
@@ -1101,8 +1204,7 @@ export const gatheringSearchList = {
             value: {
                 num: ''
             }
-        },
-        {
+        },{
             keyType: 'depart',
             title: '部门',
             placeholder: '请选择部门',
@@ -1112,6 +1214,13 @@ export const gatheringSearchList = {
                 num: '',
                 arr: []
             }
+        },{
+            keyType: 'subject',
+            title: '科目',
+            placeholder: '请选择科目',
+            keyName: 'subject_id',
+            lebleName: "subject_name",
+            value: ''
         }
     ]
 }
@@ -1194,6 +1303,13 @@ export const paySearchList = {
                 num: '',
                 arr: []
             }
+        },{
+            keyType: 'subject',
+            title: '科目',
+            placeholder: '请选择科目',
+            keyName: 'subject_id',
+            lebleName: "subject_name",
+            value: ''
         }
     ]
 }
@@ -1726,21 +1842,22 @@ export const performanceSearch = {
     status: 'performanceSearch',
     keywords: 'search',
     limit: 5,
-    data: [{
-            keyType: 'radio',
-            title: '出租类型',
-            keyName: 'achv_type',
-            dataType: '',
-            value: [{
-                    id: 1,
-                    title: '新收新租'
-                },
-                {
-                    id: 2,
-                    title: '二次出租'
-                }
-            ]
-        },
+    data: [
+        // {
+        //     keyType: 'radio',
+        //     title: '出租类型',
+        //     keyName: 'achv_type',
+        //     dataType: '',
+        //     value: [{
+        //             id: 1,
+        //             title: '新收新租'
+        //         },
+        //         {
+        //             id: 2,
+        //             title: '二次出租'
+        //         }
+        //     ]
+        // },
         {
             keyType: 'depart',
             title: '租房片区',
@@ -1833,5 +1950,135 @@ export const contractManagementSearch = {
                 arr: []
             }
         }
+    ]
+}
+
+// 资产管理/办公室高级搜索
+export const officeHightSearch={
+    status: 'officeHightSearch',
+    keywords: 'keyWord',
+    placeholder: '请输入搜索内容',
+    data: [{
+            keyType: 'staff',
+            title: '片区经理',
+            placeholder: '请选择片区经理',
+            keyName: 'leader_id',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'radio',
+            title: '办公室类型',
+            keyName: 'office_type',
+            dataType: '',
+            value: [
+                { id: 1, title: '临时' },
+                { id: 2, title: '正式' },
+            ]
+        },
+        {
+            keyType: 'dateRange',
+            title: '日期',
+            placeholder: '选择时间',
+            keyName: 'start_at',
+            dataType: "",
+        },
+        {
+            keyType: 'input',
+            title: '人均价格',
+            placeholder: '最低价格',
+            keyName: 'price_min',
+            dataType: '',
+        },
+        {
+            keyType: 'input',
+            title: '',
+            placeholder: '最高价格',
+            keyName: 'price_max',
+            dataType: '',
+        },
+    ]
+}
+
+// 宿舍管理的search
+export const dormitoryHightSearch={
+    status: 'dormitoryHightSearch',
+    keywords: 'keyWord',
+    placeholder: '请输入搜索内容',
+    data: [{
+            keyType: 'staff',
+            title: '负责人',
+            placeholder: '请选择负责人',
+            keyName: 'leader_id',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'depart',
+            title: '部门',
+            placeholder: '请选择部门',
+            keyName: 'depart_id',
+            dataType: [],
+            value: {
+                num: 1,
+                arr: []
+            }
+        },
+        {
+            keyType: 'staff',
+            title: '住宿人员姓名',
+            placeholder: '请选择住宿人员姓名',
+            keyName: 'live_id',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        }, 
+        {
+            keyType: 'input',
+            title: '剩余床位数',
+            placeholder: '请输入床位数',
+            keyName: 'last_bed',
+            dataType: [],
+            value: {
+                num: 1
+            }
+        },        
+        {
+            keyType: 'dateRange',
+            title: '日期',
+            placeholder: '选择时间',
+            keyName: 'start_at',
+            dataType: "",
+        },
+        {
+            keyType: 'input',
+            title: '人均价格',
+            placeholder: '最低价格',
+            keyName: 'price_min',
+            dataType: '',
+        },
+        {
+            keyType: 'input',
+            title: '',
+            placeholder: '最高价格',
+            keyName: 'price_max',
+            dataType: '',
+        },
     ]
 }

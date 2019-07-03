@@ -1,7 +1,7 @@
 <template>
   <div id="postChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
-      <el-input :size="size" :disabled="disabled" @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <el-input :size="size" :disabled="disabled" readonly @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p v-if="showIcon" class="icons position"></p>
     </div>
 
@@ -41,28 +41,32 @@
         url: globalConfig.humanResource_server,
         departModule: false,
         organData: {
-          //num:1,
+          num:Infinity,
         },// 组织架构配置 选择数量 num
         inputContent: '',
+        post_name:[],
         dropdownListWidth: 320
       }
     },
     watch: {
       value: {
         handler(val, oldVal) {
-          if (val && val.length > 0) {
+          if (val && val.constructor === Array && val.length > 0) {
             let params = {
               id:val
             };
             this.$http.get(`${this.url}organization/position`,params).then(res=> {
               if(res.code.endsWith('0')) {
-                this.inputContent = _.map(res.data.data,'name').join(',');
+                this.post_name = _.map(res.data.data,'name');
+                this.inputContent = this.post_name.join(',');
               }else {
+                this.post_name = [];
                 this.inputContent = '';
               }
 
             });
           }else{
+            this.post_name = [];
             this.inputContent = '';
           }
         },
@@ -80,6 +84,8 @@
         handler(val, oldVal) {
           if (val) {
             this.organData.num = parseInt(val);
+          }else {
+            this.organData.num = Infinity;
           }
         },
         immediate: true

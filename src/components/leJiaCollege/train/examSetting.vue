@@ -437,7 +437,7 @@
 
           addExam: {
             name: [
-              {required: true, message: '请输入考试场次', trigger: 'blur'},
+              {required: true, message: '请输入考试场次', trigger: ['blur', 'change']},
               {min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: ['blur', 'change']}
             ],
             type: [
@@ -661,7 +661,6 @@
         };
         this.$http.get(`${this.url}train/exam_question`, params).then(res => {
           if (res.code.endsWith('0') || res.code == '20001') {
-            debugger
             this.exam_list = res.data?.data || [];
             this.paper_visible = true;
             this.paper_params.initial_page = 2;

@@ -8,7 +8,7 @@
 
     </div>
     <div class="mainListTable" :style="{'height': this.mainListHeight() + 'px'}">
-      <el-table :data="tableData" highlight-current-row :height="this.mainListHeight(30) + 'px'" :row-class-name="tableChooseRow"
+      <el-table :data="tableData" highlight-current-row :height="this.mainListHeight(30) + 'px'"
         @cell-click="tableClickRow" header-row-class-name="tableHeader" @row-dblclick="tableDblClick" :row-style="{height:'70px'}"
         style="width: 100%">
         <el-table-column key="name" align="center" prop="name" label="问卷名称">
@@ -101,7 +101,7 @@
       </div>
     </lj-dialog>
 
-    <test-paper :type="2" :visible.sync="paper_visible" :params="paper_params" :statisticsResult="statistics_result"
+    <test-paper :type="2" :only-single="true" :visible.sync="paper_visible" :params="paper_params" :statisticsResult="statistics_result"
       @success="getExamList"></test-paper>
 
   </div>

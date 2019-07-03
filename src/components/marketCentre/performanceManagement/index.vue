@@ -104,17 +104,19 @@
         selects: [
           {
             id: 1,
-            title: '业绩'
+            title: '新收新组'
+            // title: '业绩'
           },
           {
             id: 2,
-            title: '收益'
+            title: '二次出租'
+            // title: '收益'
           },
         ],
         chooseTab: 1,
         params: {
           page: 1,
-          limit: 5,
+          limit: 20,
           search: '',
           rent_bulletindate:[],
           achv_type: '',
@@ -131,7 +133,7 @@
       }
     },
     mounted() {
-      this.handleGetPerformanceList();
+      this.handleGetPerformanceList(1);
     },
     watch: {},
     computed: {},
@@ -149,15 +151,16 @@
       },
       handleExport(){
         this.params.export=1;
-        this.$http.get(this.url+'achv/achv/index',this.params,'arraybuffer').then((res) => {
-            if (!res) return;
-            this.$exportData(res);
-            this.params.export=0;
-        });
+        let params2 = _.map(this.params,(val,key)=>{
+          console.log('key', key, 'index', val)
+            return encodeURIComponent(key) + "=" + encodeURIComponent(val);
+        }).join("&"); 
+        window.location.href=this.url+'achv/achv/index?'+ params2;
       },
-      handleGetPerformanceList() {
+      handleGetPerformanceList(type) {
+         this.params.export=0;
+        this.params.achv_type=type;
         this.$http.get(this.url+'achv/achv/index', this.params).then(res => {
-          console.log(res);
           if (res.code === "50000") {
             this.performance_list = res.data.data;
             this.performance_count = res.data.count;
@@ -173,6 +176,7 @@
       },
       changeTabs(id) {
         this.chooseTab = id;
+        this.handleGetPerformanceList(id);
       },
       handleChangePage(page) {
         this.params.page = page;

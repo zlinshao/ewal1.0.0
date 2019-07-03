@@ -21,7 +21,8 @@
           <div class='shenpi'>
             <span @click.stop='openMessage'>审批</span>
           </div>
-<!--          <app-index-more :router-list="more_list">更多</app-index-more>-->
+          <app-index-more :router-list="more_list">更多</app-index-more>
+          <span title="消息" class="icon3024 icon-mess" @click="routerLink('/messageCenter')"></span>
         </div>
         <div class="items-center personal">
 
@@ -79,6 +80,10 @@
           </span>
         </div>
       </div>
+    </div>
+
+    <div class="loading2" v-if="all_loading2">
+      <div class="loading2-img"></div>
     </div>
 
     <!--请求回调-->
@@ -154,11 +159,11 @@ export default {
       showPersonal:false,//是否显示个人中心下拉框
 
       modules: [
-        /*{
+        {
           url: '/president',
           title: '总裁办',
           English: 'Presidents',
-        },*/
+        },
         {
           url: '/finance',
           title: '财务中心',
@@ -245,6 +250,9 @@ export default {
     },
     all_loading () {
       return this.$store.state.app.loading;
+    },
+    all_loading2 () {
+      return this.$store.state.app.loading2;
     },
     global_notify () {
       return this.$store.state.app.globalNotify;
@@ -448,6 +456,12 @@ export default {
 
   .icon-personal-center {
     @include notifyImg("personal_center.png", "theme1");
+  }
+
+  .loading2 {
+    .loading2-img {
+      @include notifyImg('loading2.png','theme1')
+    }
   }
 }
 </style>

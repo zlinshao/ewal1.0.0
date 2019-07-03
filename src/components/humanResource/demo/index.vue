@@ -1,25 +1,25 @@
 <template>
-  <!--<div class="demo-container" style="width: 800px">
+  <div class="demo-container" style="width: 800px">
 
-    &lt;!&ndash;div @click="more_visible = !more_visible">测试</div>
-  <app-index-more :visible.sync="more_visible"></app-index-more>&ndash;&gt;
+    <div @click="demo">测试</div>
+<!--  <app-index-more :visible.sync="more_visible"></app-index-more>-->
 
-&lt;!&ndash;    <el-button @click="demo">清空</el-button>&ndash;&gt;
-    &lt;!&ndash;    <lj-upload v-model="list" :limit="['png']"></lj-upload>&ndash;&gt;
-&lt;!&ndash;        <post-choose v-model="post_list" num="1"></post-choose>&ndash;&gt;
-&lt;!&ndash;        <user-choose v-model="user_list"></user-choose>&ndash;&gt;
-&lt;!&ndash;        <org-choose v-model="org_list"></org-choose>&ndash;&gt;
-    &lt;!&ndash;<el-button>测试</el-button>
-    <search-high></search-high>&ndash;&gt;
-    &lt;!&ndash;    <button-upload></button-upload>&ndash;&gt;
-    &lt;!&ndash;    <count-down :datetime="datetime"></count-down>&ndash;&gt;
-    &lt;!&ndash;<el-button @click="paper_visible=true">测试</el-button>
+<!--    <el-button @click="demo">清空</el-button>-->
+    <!--    <lj-upload v-model="list" :limit="['png']"></lj-upload>-->
+<!--        <post-choose v-model="post_list" num="1"></post-choose>-->
+        <user-choose ref="user" v-model="user_list"></user-choose>
+<!--        <org-choose v-model="org_list"></org-choose>-->
+    <!--<el-button>测试</el-button>
+    <search-high></search-high>-->
+    <!--    <button-upload></button-upload>-->
+    <!--    <count-down :datetime="datetime"></count-down>-->
+    <!--<el-button @click="paper_visible=true">测试</el-button>
     <el-button @click="demo2">测试222</el-button>
     <test-paper :visible.sync="paper_visible" :params="paper_params" :type="2" :statisticsResult="view_result_list"
-                @success="demoSuccess"></test-paper>&ndash;&gt;
-    &lt;!&ndash;        <name-shower type="user" :ids="org_list"></name-shower>&ndash;&gt;
-    &lt;!&ndash;    <user-list :mini="true" :ids="user_list"></user-list>&ndash;&gt;
-    &lt;!&ndash;<calendar week-type="en" style="width: 1366px;height: 768px">
+                @success="demoSuccess"></test-paper>-->
+    <!--        <name-shower type="user" :ids="org_list"></name-shower>-->
+    <!--    <user-list :mini="true" :ids="user_list"></user-list>-->
+    <!--<calendar week-type="en" style="width: 1366px;height: 768px">
       <div :slot="'slot'+item.id" v-for="item in daysList"
       class="days-item" :class="{rest:!item.reason,current:item.today}"
       >
@@ -29,37 +29,26 @@
 
         </div>
       </div>
-    </calendar>&ndash;&gt;
-    &lt;!&ndash;    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>&ndash;&gt;
-&lt;!&ndash;    <lj-upload ref="ljUpload" :limit-easy="['image']" v-model="list" :download="false" :disabled="true"></lj-upload>&ndash;&gt;
-    &lt;!&ndash;<dropdown-list
+    </calendar>-->
+    <!--    <img-slider :size="{width:'100%',height:'100%'}" :arr="sliders"></img-slider>-->
+<!--    <lj-upload ref="ljUpload" :limit-easy="['image']" v-model="list" :download="false" :disabled="true"></lj-upload>-->
+    <!--<dropdown-list
                    :json-arr="DROPDOWN_CONSTANT.ASSETS_MANAGEMENT.GOODS_DETAIL.RECEIVE_RETURN_STATUS"
-                   v-model="demo"></dropdown-list>&ndash;&gt;
-&lt;!&ndash;    <coming-soon></coming-soon>&ndash;&gt;
+                   v-model="demo"></dropdown-list>-->
+<!--    <coming-soon></coming-soon>-->
 
 
 
 
 
-  </div>-->
+  </div>
 
-  <div id="org-chart-container">
+  <!--<div id="org-chart-container">
     <div class="menu-container">
         <button @click="bigger()">+</button>
         <button @click="smaller()">-</button>
-
-      <!--<v-card>
-        <v-card-title>
-          <div slot="header" class="action-title">
-            <span>Support actions</span>
-          </div>
-          <div v-for="action in supportActions" :key="action" class="action-item">
-            {{'* ' + action}}
-          </div>
-        </v-card-title>
-      </v-card>-->
     </div>
-  </div>
+  </div>-->
 
 </template>
 
@@ -111,7 +100,7 @@
         url:globalConfig.humanResource_server,
 
 
-        /*more_visible: false,
+        more_visible: false,
         DROPDOWN_CONSTANT,
         datetime: '2019-05-01',
         daysList: [],
@@ -142,15 +131,11 @@
         },
         paper_visible: false,
 
-        view_result_list: []*/
+        view_result_list: []
       }
     },
-    created() {
-
-      //this.data = generateOrgChartData(10)
-      //console.log(this.data);
-    },
-    async mounted() {
+    async created() {
+      /*console.log(new Date().getTime())
       await this.getOrgDataOnce();
       //await this.getTopPosition();
       //await this.getOrganizationData(1,this.data);
@@ -161,9 +146,18 @@
       //debugger
       setTimeout(()=> {
         console.log(this.count);
-      },1000);
+      },1000);*/
+    },
+    async mounted() {
+      //console.log(new Date().getTime())
     },
     methods: {
+
+      demo() {
+        console.log(this.$refs['user']);
+        console.log(this.$refs['user'].user_name);
+
+      },
 
       async getTopPosition() {
         await this.$http.get(this.url+'organization/position',{

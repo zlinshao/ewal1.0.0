@@ -100,6 +100,7 @@
 
 <script>
   import searchHigh from '../../common/searchHigh.vue';
+  import { onlineRecordSearch } from '../../../assets/js/allSearchData.js';
   import MenuList from '../../common/menuList.vue';
   import LjDialog from '../../common/lj-dialog.vue';
   import {customService} from '../../../assets/js/allModuleList.js';
@@ -109,6 +110,7 @@
     components: {MenuList,searchHigh,LjDialog},
     data() {
       return {
+        onlineRecordSearch,
         server: globalConfig.market_server,
         //接线详情
         online_detail_visible: false,
@@ -188,103 +190,7 @@
       },
       //高级
       highSearch() {
-        this.searchData = {
-          status: 'village',
-          placeholder: '请输入搜索内容',
-          keywords: 'search',
-          data: [
-            {
-              keyType: 'dateRange',
-              title: '来电时间',
-              placeholder: '请选择日期',
-              keyName: 'date',
-              dataType: []
-            },
-            {
-              keyType: 'check',
-              title: '类型',
-              keyName: 'advisory_type',
-              dataType: [],
-              value: [
-                {
-                  id: 1,
-                  title: '投诉'
-                },
-                {
-                  id: 2,
-                  title: '其他'
-                },
-                {
-                  id: 3,
-                  title: '报修(公司)'
-                },
-                {
-                  id: 4,
-                  title: '报修(房东)'
-                },
-                {
-                  id: 5,
-                  title: '报修(超报修期)'
-                },
-                {
-                  id: 6,
-                  title: '报修(无信息)'
-                },
-                {
-                  id: 7,
-                  title: '报销'
-                },
-                {
-                  id: 8,
-                  title: '催缴'
-                },
-                {
-                  id: 9,
-                  title: '退租(违约金)'
-                },
-                {
-                  id: 10,
-                  title: '退租(到期退)'
-                },
-                {
-                  id: 11,
-                  title: '求租托管'
-                },
-                {
-                  id: 12,
-                  title: '续租'
-                },
-                {
-                  id: 13,
-                  title: '退押金'
-                },
-                {
-                  id: 14,
-                  title: '业主催房租'
-                },
-                {
-                  id: 15,
-                  title: '租客缴纳房租'
-                },
-                {
-                  id: 16,
-                  title: '业主收房(违约)'
-                },{
-                  id: 17,
-                  title: '业主收房(到期)'
-                },{
-                  id: 18,
-                  title: '催维修'
-                },
-                {
-                  id: 19,
-                  title: '转租'
-                },
-
-              ]
-            },
-          ]
-        };
+        this.searchData = onlineRecordSearch;
         this.searchHighVisible = true;
       },
       //关闭高级搜索

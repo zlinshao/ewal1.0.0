@@ -1,7 +1,7 @@
 <template>
   <div id="orgChoose" :style="{width:`${this.dropdownListWidth}px`}">
     <div :title="inputContent" class="input-container">
-      <el-input :size="size" :disabled="disabled" @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
+      <el-input :size="size" :disabled="disabled" readonly @focus="departModule = true" v-model="inputContent" :placeholder="title"></el-input>
       <p v-if="showIcon" class="icons organization"></p>
     </div>
 
@@ -45,23 +45,26 @@
         url: globalConfig.humanResource_server,
         departModule: false,
         organData: {
-          //num:1,
+          num:Infinity,
         },// 组织架构配置 选择数量 num
         inputContent: '',
+        org_name:[],
         dropdownListWidth: 320
       }
     },
     watch: {
       value: {
         handler(val, oldVal) {
-          if (val && val.length > 0) {
+          if (val && val.constructor === Array && val.length > 0) {
             let params = {
               org_id:val
             };
             this.$http.get(`${this.url}organization/organization`,params).then(res=> {
-              this.inputContent = _.map(res.data.data,'name').join(',');
+              this.org_name = _.map(res.data.data,'name');
+              this.inputContent = this.org_name.join(',');
             });
           }else {
+            this.org_name = [];
             this.inputContent = '';
           }
         },
@@ -79,6 +82,8 @@
         handler(val, oldVal) {
           if (val) {
             this.organData.num = parseInt(val);
+          }else {
+            this.organData.num = Infinity;
           }
         },
         immediate: true
